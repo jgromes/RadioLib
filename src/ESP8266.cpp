@@ -1,6 +1,8 @@
 #include "ESP8266.h"
 
 ESP8266::ESP8266(Module* module) {
+  portTCP = 80; // Default HTTP port (TCP application)
+  portUDP = 53; // Default DNS port (UDP application)
   _mod = module;
 }
 
@@ -14,8 +16,8 @@ uint8_t ESP8266::begin(long speed) {
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::restart() {
-  // send the restart command
+uint8_t ESP8266::reset() {
+  // send the reset command
   if(!_mod->ATsendCommand("AT+RST")) {
     return(ERR_UNKNOWN);
   }
@@ -23,7 +25,7 @@ uint8_t ESP8266::restart() {
   // wait for the module to start
   delay(2000);
   
-  // test AT setup
+  // test AT
   uint32_t start = millis();
   while (millis() - start < 3000) {
     if(!_mod->ATsendCommand("AT")) {
@@ -42,8 +44,8 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
     return(ERR_UNKNOWN);
   }
   
-  // restart module
-  uint8_t state = restart();
+  // reset the module
+  uint8_t state = reset();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -66,7 +68,7 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   return(ERR_NONE);
 }
 
-uint16_t ESP8266::HttpGet(const char* url, String& data, uint16_t port) {
+uint16_t ESP8266::HttpGet(const char* url, String& response) {
   String urlString(url);
   
   // get the host address and endpoint
@@ -77,18 +79,18 @@ uint16_t ESP8266::HttpGet(const char* url, String& data, uint16_t port) {
   String host = urlString.substring(7, resourceIndex);
   String endpoint = urlString.substring(resourceIndex);
   
-  // create TCP connection
-  uint8_t state = startTCP(host.c_str(), 80);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
   // build the GET request
   String request = "GET ";
   request += endpoint;
   request += " HTTP/1.1\r\nHost: ";
   request += host;
   request += "\r\n\r\n";
+  
+  // create TCP connection
+  uint8_t state = startTCP(host.c_str());
+  if(state != ERR_NONE) {
+    return(state);
+  }
   
   // send the GET request
   state = send(request);
@@ -110,33 +112,91 @@ uint16_t ESP8266::HttpGet(const char* url, String& data, uint16_t port) {
   if(numBytesIndex == -1) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  data = raw.substring(numBytesIndex + 1);
+  response = raw.substring(numBytesIndex + 1);
   
   // return the HTTP status code
-  int32_t spaceIndex = data.indexOf(" ");
+  int32_t spaceIndex = response.indexOf(" ");
   if(spaceIndex == -1) {
     return(ERR_RESPONSE_MALFORMED);
   }
-  String statusString = data.substring(spaceIndex + 1, spaceIndex + 4);
+  String statusString = response.substring(spaceIndex + 1, spaceIndex + 4);
   return(statusString.toInt());
 }
 
-uint8_t ESP8266::startTCP(const char* host, uint16_t port) {
-  String cmd = "AT+CIPSTART=\"TCP\",\"";
-  cmd += host;
-  cmd += "\",";
-  cmd += port;
-  if(!_mod->ATsendCommand(cmd)) {
-    return(ERR_UNKNOWN);
+uint16_t ESP8266::HttpPost(const char* url, String content, String& response, const char* contentType) {
+  String urlString(url);
+  String contentTypeString(contentType);
+  
+  // get the host address and endpoint
+  int32_t resourceIndex = urlString.indexOf("/", 7);
+  if(resourceIndex == -1) {
+    return(ERR_URL_MALFORMED);
   }
-  return(ERR_NONE);
+  String host = urlString.substring(7, resourceIndex);
+  String endpoint = urlString.substring(resourceIndex);
+  
+  // build the POST request
+  String request = "POST ";
+  request += endpoint;
+  request += " HTTP/1.1\r\nHost: ";
+  request += host;
+  request += "\r\nContent-Type: ";
+  request += contentTypeString;
+  request += "\r\nContent-length: ";
+  request += content.length();
+  request += "\r\n\r\n";
+  
+  // create TCP connection
+  uint8_t state = startTCP(host.c_str());
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // send the POST request
+  state = send(request);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // close the TCP connection
+  state = closeTCP();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // read the response
+  String raw = receive();
+  
+  // parse the response
+  int32_t numBytesIndex = raw.indexOf(":");
+  if(numBytesIndex == -1) {
+    return(ERR_RESPONSE_MALFORMED_AT);
+  }
+  response = raw.substring(numBytesIndex + 1);
+  
+  // return the HTTP status code
+  int32_t spaceIndex = response.indexOf(" ");
+  if(spaceIndex == -1) {
+    return(ERR_RESPONSE_MALFORMED);
+  }
+  String statusString = response.substring(spaceIndex + 1, spaceIndex + 4);
+  return(statusString.toInt());
+}
+
+uint8_t ESP8266::startTCP(const char* host) {
+  openTransportConnection(host, "TCP", portTCP);
 }
 
 uint8_t ESP8266::closeTCP() {
-  if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
-    return(ERR_UNKNOWN);
-  }
-  return(ERR_NONE);
+  closeTransportConnection();
+}
+
+uint8_t ESP8266::startUDP(const char* host) {
+  openTransportConnection(host, "UDP", portUDP);
+}
+
+uint8_t ESP8266::closeUDP() {
+  closeTransportConnection();
 }
 
 uint8_t ESP8266::send(String data) {
@@ -170,3 +230,22 @@ String ESP8266::receive(uint32_t timeout) {
   return(data);
 }
 
+uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port) {
+  String cmd = "AT+CIPSTART=\"";
+  cmd += protocol;
+  cmd += "\",\"";
+  cmd += host;
+  cmd += "\",";
+  cmd += port;
+  if(!_mod->ATsendCommand(cmd)) {
+    return(ERR_UNKNOWN);
+  }
+  return(ERR_NONE);
+}
+
+uint8_t ESP8266::closeTransportConnection() {
+  if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
+    return(ERR_UNKNOWN);
+    }
+  return(ERR_NONE);
+}
