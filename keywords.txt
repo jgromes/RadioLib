@@ -1,0 +1,93 @@
+#######################################
+# Syntax Coloring Map For LoRaLib
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+KiteLib	KEYWORD1
+Kite	KEYWORD1
+Packet	KEYWORD1
+ESP8266	KEYWORD1
+SX1278	KEYWORD1
+SX1272	KEYWORD1
+HC05	KEYWORD1
+
+Bandwidth	KEYWORD1
+SpreadingFactor	KEYWORD1
+CodingRate	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# KiteLib
+ModuleA	KEYWORD2
+ModuleB	KEYWORD2
+
+# Packet
+source	KEYWORD2
+destination	KEYWORD2
+data	KEYWORD2
+length	KEYWORD2
+getSourceStr	KEYWORD2
+getDestinationStr	KEYWORD2
+setSourceStr	KEYWORD2
+setDestinationStr	KEYWORD2
+copyInto	KEYWORD2
+
+# SX1278/SX1272
+dataRate	KEYWORD2
+lastPacketRSSI	KEYWORD2
+begin	KEYWORD2
+transmit	KEYWORD2
+receive	KEYWORD2
+sleep	KEYWORD2
+standby	KEYWORD2
+setBandwidth	KEYWORD2
+setSpreadingFactor	KEYWORD2
+setCodingRate	KEYWORD2
+
+# ESP8266
+join	KEYWORD2
+createTCP	KEYWORD2
+send	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+BW_7_80_KHZ	LITERAL1
+BW_10_40_KHZ	LITERAL1
+BW_15_60_KHZ	LITERAL1
+BW_20_80_KHZ	LITERAL1
+BW_31_25_KHZ	LITERAL1
+BW_41_70_KHZ	LITERAL1
+BW_62_50_KHZ	LITERAL1
+BW_125_00_KHZ	LITERAL1
+BW_250_00_KHZ	LITERAL1
+BW_500_00_KHZ	LITERAL1
+
+SF_6	LITERAL1
+SF_7	LITERAL1
+SF_8	LITERAL1
+SF_9	LITERAL1
+SF_10	LITERAL1
+SF_11	LITERAL1
+SF_12	LITERAL1
+
+CR_4_5	LITERAL1
+CR_4_6	LITERAL1
+CR_4_7	LITERAL1
+CR_4_8	LITERAL1
+
+ERR_NONE	LITERAL1
+ERR_CHIP_NOT_FOUND	LITERAL1
+ERR_PACKET_TOO_LONG	LITERAL1
+ERR_RX_TIMEOUT	LITERAL1
+ERR_CRC_MISMATCH	LITERAL1
+ERR_INVALID_BANDWIDTH	LITERAL1
+ERR_INVALID_SPREADING_FACTOR	LITERAL1
+ERR_INVALID_CODING_RATE	LITERAL1
+ERR_INVALID_BIT_RANGE	LITERAL1
