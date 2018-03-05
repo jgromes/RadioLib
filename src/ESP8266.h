@@ -18,13 +18,6 @@ class ESP8266 {
     uint16_t HttpGet(const char* url, String& response);
     uint16_t HttpPost(const char* url, String content, String& response, const char* contentType = "");
     
-    // MQTT methods
-    uint8_t MqttConnect(const char* clientId);
-    uint8_t MqttDisconnect();
-    uint8_t MqttSubscribe(const char* topic);
-    uint8_t MqttUnsubscribe();
-    uint8_t MqttPublish(const char* topic, const char* message);
-    
     // Transport layer methods
     uint8_t startTCP(const char* host);
     uint8_t closeTCP();
