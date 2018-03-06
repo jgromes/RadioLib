@@ -19,7 +19,7 @@ void setup() {
   }
 
   Serial.print("[ESP8266] Joining AP ... ");
-  state = wifi.join("Tenda", "Student20-X13");
+  state = wifi.join("SSID", "PASSWORD");
   if(state == ERR_NONE) {
     Serial.println("success!");
   } else {
@@ -45,8 +45,6 @@ void setup() {
 }
 
 void loop() {
-  //wifi.send("GET / HTTP/1.1\r\nHost: www.google.com\r\nConnection: close\r\n\r\n");
-  
   //lora.transmit(pack);
 
   //bluetooth.println("Hello World! (by Blueooth)");
