@@ -11,7 +11,7 @@ uint8_t ESP8266::begin(long speed) {
   _mod->init(USE_UART, INT_NONE);
   _mod->ATemptyBuffer();
   if(!_mod->ATsendCommand("AT")) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   return(ERR_NONE);
 }
@@ -19,7 +19,7 @@ uint8_t ESP8266::begin(long speed) {
 uint8_t ESP8266::reset() {
   // send the reset command
   if(!_mod->ATsendCommand("AT+RST")) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   // wait for the module to start
@@ -35,13 +35,13 @@ uint8_t ESP8266::reset() {
     }
   }
   
-  return(ERR_UNKNOWN);
+  return(ERR_AT_FAILED);
 }
 
 uint8_t ESP8266::join(const char* ssid, const char* password) {
   // set mode to station + soft AP
   if(!_mod->ATsendCommand("AT+CWMODE_CUR=3")) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   // reset the module
@@ -57,12 +57,12 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   cmd += password;
   cmd += "\"";
   if(!_mod->ATsendCommand(cmd)) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   // disable multiple connection mode
   if(!_mod->ATsendCommand("AT+CIPMUX=0")) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   return(ERR_NONE);
@@ -204,12 +204,12 @@ uint8_t ESP8266::send(String data) {
   String cmd = "AT+CIPSEND=";
   cmd += data.length();
   if(!_mod->ATsendCommand(cmd)) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   // send data
   if(!_mod->ATsendCommand(data)) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   
   return(ERR_NONE);
@@ -238,14 +238,14 @@ uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol,
   cmd += "\",";
   cmd += port;
   if(!_mod->ATsendCommand(cmd)) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
   }
   return(ERR_NONE);
 }
 
 uint8_t ESP8266::closeTransportConnection() {
   if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
-    return(ERR_UNKNOWN);
+    return(ERR_AT_FAILED);
     }
   return(ERR_NONE);
 }
