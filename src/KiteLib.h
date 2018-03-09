@@ -8,6 +8,8 @@
 #include "SX1278.h"
 #include "SX1272.h"
 #include "HC05.h"
+#include "XBee.h"
+#include "RF69.h"
 
 #define KITE_CS_A   10
 #define KITE_TX_A   9
