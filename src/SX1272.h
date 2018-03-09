@@ -193,7 +193,6 @@
 //SX1272_REG_FIFO_RX_BASE_ADDR
 #define SX1272_FIFO_RX_BASE_ADDR_MAX                  0b00000000  //  7     0     allocate the entire FIFO buffer for RX only
 
-
 class SX1272 {
   public:
     SX1272(Module* module);
@@ -214,13 +213,16 @@ class SX1272 {
   
   private:
     Module* _mod;
-    uint8_t _bw, _sf, _cr;
+    
+    Bandwidth _bw;
+    SpreadingFactor _sf;
+    CodingRate _cr;
     
     uint8_t _address[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     uint16_t _addrEeprom;
     
     void generateLoRaAdress();
-    uint8_t config(uint8_t bw, uint8_t sf, uint8_t cr);
+    uint8_t config(Bandwidth bw, SpreadingFactor sf, CodingRate cr);
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
     int8_t getLastPacketRSSI();

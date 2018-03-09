@@ -224,13 +224,16 @@ class SX1278 {
     
   private:
     Module* _mod;
-    uint8_t _bw, _sf, _cr;
+    
+    Bandwidth _bw;
+    SpreadingFactor _sf;
+    CodingRate _cr;
     
     uint16_t _addrEeprom;
     uint8_t _address[8] = {0, 0, 0, 0, 0, 0, 0, 0};
     
     void generateLoRaAdress();
-    uint8_t config(uint8_t bw, uint8_t sf, uint8_t cr);
+    uint8_t config(Bandwidth bw, SpreadingFactor sf, CodingRate cr);
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
     int8_t getLastPacketRSSI();

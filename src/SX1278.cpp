@@ -4,87 +4,10 @@ SX1278::SX1278(Module* module) {
   _mod = module;
 }
 
-uint8_t SX1278::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t addrEeprom) {  
-  switch(bw) {
-    case BW_7_80_KHZ:
-      _bw = SX1278_BW_7_80_KHZ;
-      break;
-    case BW_10_40_KHZ:
-      _bw = SX1278_BW_10_40_KHZ;
-      break;
-    case BW_15_60_KHZ:
-      _bw = SX1278_BW_15_60_KHZ;
-      break;
-    case BW_20_80_KHZ:
-      _bw = SX1278_BW_20_80_KHZ;
-      break;
-    case BW_31_25_KHZ:
-      _bw = SX1278_BW_31_25_KHZ;
-      break;
-      case BW_41_70_KHZ:
-      _bw = SX1278_BW_41_70_KHZ;
-      break;
-    case BW_62_50_KHZ:
-      _bw = SX1278_BW_62_50_KHZ;
-      break;
-    case BW_125_00_KHZ:
-      _bw = SX1278_BW_125_00_KHZ;
-      break;
-    case BW_250_00_KHZ:
-      _bw = SX1278_BW_250_00_KHZ;
-      break;
-    case BW_500_00_KHZ:
-      _bw = SX1278_BW_500_00_KHZ;
-      break;
-    default:
-      _bw = SX1278_BW_250_00_KHZ;
-      break;
-  }
-  
-  switch(sf) {
-    case SF_6:
-      _sf = SX1278_SF_6;
-      break;
-    case SF_7:
-      _sf = SX1278_SF_7;
-      break;
-    case SF_8:
-      _sf = SX1278_SF_8;
-      break;
-    case SF_9:
-      _sf = SX1278_SF_9;
-      break;
-    case SF_10:
-      _sf = SX1278_SF_10;
-      break;
-    case SF_11:
-      _sf = SX1278_SF_11;
-      break;
-    case SF_12:
-      _sf = SX1278_SF_12;
-      break;
-    default:
-      _sf = SX1278_SF_12;
-      break;
-  }
-  
-  switch(cr) {
-    case CR_4_5:
-      _cr = SX1278_CR_4_5;
-      break;
-    case CR_4_6:
-      _cr = SX1278_CR_4_6;
-      break;
-    case CR_4_7:
-      _cr = SX1278_CR_4_7;
-      break;
-    case CR_4_8:
-      _cr = SX1278_CR_4_8;
-      break;
-    default:
-      _cr = SX1278_CR_4_5;
-      break;
-  }
+uint8_t SX1278::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t addrEeprom) { 
+  _bw = bw;
+  _sf = sf;
+  _cr = cr;
   
   #ifdef ESP32
     if(!EEPROM.begin(9)) {
@@ -266,15 +189,27 @@ uint8_t SX1278::standby() {
 }
 
 uint8_t SX1278::setBandwidth(Bandwidth bw) {
-  return(config(bw, _sf, _cr));
+  uint8_t state = config(bw, _sf, _cr);
+  if(state == ERR_NONE) {
+    _bw = bw;
+  }
+  return(state);
 }
 
 uint8_t SX1278::setSpreadingFactor(SpreadingFactor sf) {
-  return(config(_bw, sf, _cr));
+  uint8_t state = config(_bw, sf, _cr);
+  if(state == ERR_NONE) {
+    _sf = sf;
+  }
+  return(state);
 }
 
 uint8_t SX1278::setCodingRate(CodingRate cr) {
-  return(config(_bw, _sf, cr));
+  uint8_t state = config(_bw, _sf, cr);
+  if(state == ERR_NONE) {
+    _cr = cr;
+  }
+  return(state);
 }
 
 void SX1278::generateLoRaAdress() {
@@ -283,38 +218,87 @@ void SX1278::generateLoRaAdress() {
   }
 }
 
-uint8_t SX1278::config(uint8_t bw, uint8_t sf, uint8_t cr) {
+uint8_t SX1278::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr) {
   uint8_t status = ERR_NONE;
+  uint8_t newBandwidth, newSpreadingFactor, newCodingRate;
   
   //check the supplied bw, cr and sf values
-  if((bw != SX1278_BW_7_80_KHZ) &&
-     (bw != SX1278_BW_10_40_KHZ) &&
-     (bw != SX1278_BW_15_60_KHZ) &&
-     (bw != SX1278_BW_20_80_KHZ) &&
-     (bw != SX1278_BW_31_25_KHZ) &&
-     (bw != SX1278_BW_41_70_KHZ) &&
-     (bw != SX1278_BW_62_50_KHZ) &&
-     (bw != SX1278_BW_125_00_KHZ) &&
-     (bw != SX1278_BW_250_00_KHZ) &&
-     (bw != SX1278_BW_500_00_KHZ)) {
-       return(ERR_INVALID_BANDWIDTH);
+  switch(bw) {
+    case BW_7_80_KHZ:
+      newBandwidth = SX1278_BW_7_80_KHZ;
+      break;
+    case BW_10_40_KHZ:
+      newBandwidth = SX1278_BW_10_40_KHZ;
+      break;
+    case BW_15_60_KHZ:
+      newBandwidth = SX1278_BW_15_60_KHZ;
+      break;
+    case BW_20_80_KHZ:
+      newBandwidth = SX1278_BW_20_80_KHZ;
+      break;
+    case BW_31_25_KHZ:
+      newBandwidth = SX1278_BW_31_25_KHZ;
+      break;
+      case BW_41_70_KHZ:
+      newBandwidth = SX1278_BW_41_70_KHZ;
+      break;
+    case BW_62_50_KHZ:
+      newBandwidth = SX1278_BW_62_50_KHZ;
+      break;
+    case BW_125_00_KHZ:
+      newBandwidth = SX1278_BW_125_00_KHZ;
+      break;
+    case BW_250_00_KHZ:
+      newBandwidth = SX1278_BW_250_00_KHZ;
+      break;
+    case BW_500_00_KHZ:
+      newBandwidth = SX1278_BW_500_00_KHZ;
+      break;
+    default:
+      return(ERR_INVALID_BANDWIDTH);
   }
   
-  if((sf != SX1278_SF_6) &&
-     (sf != SX1278_SF_7) &&
-     (sf != SX1278_SF_8) &&
-     (sf != SX1278_SF_9) &&
-     (sf != SX1278_SF_10) &&
-     (sf != SX1278_SF_11) &&
-     (sf != SX1278_SF_12)) {
-       return(ERR_INVALID_SPREADING_FACTOR);
+  switch(sf) {
+    case SF_6:
+      newSpreadingFactor = SX1278_SF_6;
+      break;
+    case SF_7:
+      newSpreadingFactor = SX1278_SF_7;
+      break;
+    case SF_8:
+      newSpreadingFactor = SX1278_SF_8;
+      break;
+    case SF_9:
+      newSpreadingFactor = SX1278_SF_9;
+      break;
+    case SF_10:
+      newSpreadingFactor = SX1278_SF_10;
+      break;
+    case SF_11:
+      newSpreadingFactor = SX1278_SF_11;
+      break;
+    case SF_12:
+      newSpreadingFactor = SX1278_SF_12;
+      break;
+    default:
+      return(ERR_INVALID_SPREADING_FACTOR);
   }
   
-  if((cr != SX1278_CR_4_5) &&
-     (cr != SX1278_CR_4_6) &&
-     (cr != SX1278_CR_4_7) &&
-     (cr != SX1278_CR_4_8)) {
-       return(ERR_INVALID_CODING_RATE);
+  switch(cr) {
+    case CR_4_5:
+      newCodingRate = SX1278_CR_4_5;
+      break;
+    case CR_4_6:
+      newCodingRate = SX1278_CR_4_6;
+      break;
+    case CR_4_7:
+      newCodingRate = SX1278_CR_4_7;
+      break;
+    case CR_4_8:
+      newCodingRate = SX1278_CR_4_8;
+      break;
+    default:
+      return(ERR_INVALID_CODING_RATE);
   }
   
   // set mode to SLEEP
@@ -353,14 +337,14 @@ uint8_t SX1278::config(uint8_t bw, uint8_t sf, uint8_t cr) {
   }
   
   // basic setting (bw, cr, sf, header mode and CRC)
-  if(sf == SX1278_SF_6) {
+  if(newSpreadingFactor == SX1278_SF_6) {
     status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_2, SX1278_SF_6 | SX1278_TX_MODE_SINGLE | SX1278_RX_CRC_MODE_OFF, 7, 2);
-    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_1, bw | cr | SX1278_HEADER_IMPL_MODE);
+    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_1, newBandwidth | newCodingRate | SX1278_HEADER_IMPL_MODE);
     status = _mod->SPIsetRegValue(SX1278_REG_DETECT_OPTIMIZE, SX1278_DETECT_OPTIMIZE_SF_6, 2, 0);
     status = _mod->SPIsetRegValue(SX1278_REG_DETECTION_THRESHOLD, SX1278_DETECTION_THRESHOLD_SF_6);
   } else {
-    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_2, sf | SX1278_TX_MODE_SINGLE | SX1278_RX_CRC_MODE_ON, 7, 2);
-    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_1, bw | cr | SX1278_HEADER_EXPL_MODE);
+    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_2, newSpreadingFactor | SX1278_TX_MODE_SINGLE | SX1278_RX_CRC_MODE_ON, 7, 2);
+    status = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_1, newBandwidth | newCodingRate | SX1278_HEADER_EXPL_MODE);
     status = _mod->SPIsetRegValue(SX1278_REG_DETECT_OPTIMIZE, SX1278_DETECT_OPTIMIZE_SF_7_12, 2, 0);
     status = _mod->SPIsetRegValue(SX1278_REG_DETECTION_THRESHOLD, SX1278_DETECTION_THRESHOLD_SF_7_12);
   }
@@ -381,6 +365,11 @@ uint8_t SX1278::config(uint8_t bw, uint8_t sf, uint8_t cr) {
   if(status != ERR_NONE) {
     return(status);
   }
+  
+  // save the new settings
+  _bw = bw;
+  _sf = sf;
+  _cr = cr;
   
   return(ERR_NONE);
 }
