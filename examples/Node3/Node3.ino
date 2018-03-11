@@ -3,6 +3,8 @@
 RF69 rf = Kite.ModuleA;
 ESP8266 wifi = Kite.ModuleB;
 
+Packet pack;
+
 void setup() {
   Serial.begin(9600);
 
@@ -17,7 +19,7 @@ void setup() {
   }
 
   Serial.print("[ESP8266] Connecting ... ");
-  byte state = wifi.begin(9600);
+  state = wifi.begin(9600);
   if(state == ERR_NONE) {
     Serial.println("success!");
   } else {
@@ -50,17 +52,9 @@ void loop() {
     Serial.print("[RF69] Data:\t\t");
     Serial.println(pack.data);
 
-    Serial.print("[RF69] Datarate:\t");
-    Serial.print(lora.dataRate);
-    Serial.println(" bps");
-
-    Serial.print("[RF69] RSSI:\t\t");
-    Serial.print(lora.lastPacketRSSI);
-    Serial.println(" dBm");
-
     Serial.print("[ESP266] Sending HTTP POST ...");
     String response;
-    int http_code = wifi.HttpPost("http://www.httpbin.org/ip", response);
+    int http_code = wifi.HttpPost("http://www.httpbin.org/ip", String(pack.data), response);
     if(http_code == 200) {
       Serial.println("success!");
       Serial.println("[ESP8266] Response:\n");
