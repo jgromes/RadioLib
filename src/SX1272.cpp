@@ -54,7 +54,7 @@ uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     uint8_t version = _mod->SPIreadRegister(SX1272_REG_VERSION);
-    if(version == 0x12) {
+    if(version == 0x22) {
       flagFound = true;
     } else {
       #ifdef DEBUG
@@ -210,6 +210,12 @@ uint8_t SX1272::setCodingRate(CodingRate cr) {
     _cr = cr;
   }
   return(state);
+}
+
+void SX1272::generateLoRaAdress() {
+  for(uint8_t i = _addrEeprom; i < (_addrEeprom + 8); i++) {
+    EEPROM.write(i, (uint8_t)random(0, 256));
+  }
 }
 
 uint8_t SX1272::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr) {
