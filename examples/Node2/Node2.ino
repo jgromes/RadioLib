@@ -30,7 +30,7 @@ void loop() {
     receivedFlag = false;
     Packet pack("01:23:45:67:89:AB:CD:EF", receivedString.c_str());
     Serial.print("[RF69] Transmitting packet ... ");
-    byte state = lora.transmit(pack);
+    byte state = rf.transmit(pack);
     if(state == ERR_NONE) {
       Serial.println("success!");
     } else {
