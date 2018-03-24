@@ -83,6 +83,9 @@
 #define RF69_REG_AES_KEY_16                           0x4D
 #define RF69_REG_TEMP_1                               0x4E
 #define RF69_REG_TEMP_2                               0x4F
+#define RF69_REG_TEST_PA1                             0x5A
+#define RF69_REG_TEST_PA2                             0x5C
+#define RF69_REG_TEST_DAGC                            0x6F
 
 //RF69 modem settings
 //RF69_REG_OP_MODE                                                    MSB   LSB   DESCRIPTION
@@ -111,16 +114,20 @@
 #define RF69_OOK_FILTER_2BR                           0b00000010  //  1     0                         OOK modulation filter, f_cutoff = 2*BR
 
 //RF69_REG_BITRATE_MSB + REG_BITRATE_LSB
-#define RF69_BITRATE_MSB                              0x1A        //  7     0     bit rate setting: rate = F(XOSC) / BITRATE
-#define RF69_BITRATE_LSB                              0x0B        //  7     0         default value: 4.8 kbps
+//#define RF69_BITRATE_MSB                              0x1A        //  7     0     bit rate setting: rate = F(XOSC) / BITRATE
+//#define RF69_BITRATE_LSB                              0x0B        //  7     0         default value: 4.8 kbps
+#define RF69_BITRATE_MSB                              0x02        //  7     0
+#define RF69_BITRATE_LSB                              0x40        //  7     0
 
 //RF69_REG_FDEV_MSB + REG_FDEV_LSB
-#define RF69_FDEV_MSB                                 0x00        //  5     0     frequency deviation: f_dev = f_step * FDEV
-#define RF69_FDEV_LSB                                 0x52        //  7     0         default value: 5 kHz
+//#define RF69_FDEV_MSB                                 0x00        //  5     0     frequency deviation: f_dev = f_step * FDEV
+//#define RF69_FDEV_LSB                                 0x52        //  7     0         default value: 5 kHz
+#define RF69_FDEV_MSB                                 0x03        //  5     0
+#define RF69_FDEV_LSB                                 0x33        //  7     0
 
 //RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
-#define RF69_FRF_MSB                                  0xE4        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
-#define RF69_FRF_MID                                  0xC0        //  7     0         where F(XOSC) = 32 MHz
+#define RF69_FRF_MSB                                  0x6C        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
+#define RF69_FRF_MID                                  0x40        //  7     0         where F(XOSC) = 32 MHz
 #define RF69_FRF_LSB                                  0x00        //  7     0         default value: 915 MHz
 
 //RF69_REG_OSC_1
@@ -200,7 +207,8 @@
 #define RF69_RX_BW_MANT_16                            0b00000000  //  4     3     Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
 #define RF69_RX_BW_MANT_20                            0b00001000  //  4     3                              OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
 #define RF69_RX_BW_MANT_24                            0b00010000  //  4     3     
-#define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value
+//#define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value = 5
+#define RF69_RX_BW_EXP                                0b00000010  //  2     0     
 
 //RF69_REG_AFC_BW
 #define RF69_DCC_FREQ_AFC                             0b10000000  //  7     5     default DccFreq parameter for AFC
@@ -310,15 +318,16 @@
 #define RF69_IRQ_CRC_OK                               0b00000010  //  1     1     CRC check passed
 
 //RF69_REG_RSSI_THRESH
-#define RF69_RSSI_THRESHOLD                           0xE4        //  7     0     RSSI threshold level (2 dB by default)
+//#define RF69_RSSI_THRESHOLD                           0xE4        //  7     0     RSSI threshold level (2 dB by default)
+#define RF69_RSSI_THRESHOLD                           0xDC        //  7     0
 
 //RF69_REG_RX_TIMEOUT_1
 #define RF69_TIMEOUT_RX_START_OFF                     0x00        //  7     0     RSSI interrupt timeout disabled (default)
-#define RF69_TIMEOUT_RX_START                         0xFF        //  7     0     timeout will occur if RSSI interrupt is not received
+#define RF69_TIMEOUT_RX_START                         0x70        //  7     0     timeout will occur if RSSI interrupt is not received
 
 //RF69_REG_RX_TIMEOUT_2
 #define RF69_TIMEOUT_RSSI_THRESH_OFF                  0x00        //  7     0     PayloadReady interrupt timeout disabled (default)
-#define RF69_TIMEOUT_RSSI_THRESH                      0xFF        //  7     0     timeout will occur if PayloadReady interrupt is not received
+#define RF69_TIMEOUT_RSSI_THRESH                      0x70        //  7     0     timeout will occur if PayloadReady interrupt is not received
 
 //RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
 #define RF69_PREAMBLE_MSB                             0x00        //  7     0     2-byte preamble size value
@@ -329,7 +338,8 @@
 #define RF69_SYNC_ON                                  0b10000000  //  7     7     sync word detection on (default)
 #define RF69_FIFO_FILL_CONDITION_SYNC                 0b00000000  //  6     6     FIFO fill condition: on SyncAddress interrupt (default)
 #define RF69_FIFO_FILL_CONDITION                      0b01000000  //  6     6                          as long as the bit is set
-#define RF69_SYNC_SIZE                                0b00011000  //  5     3     size of sync word: SyncSize + 1 bytes
+//#define RF69_SYNC_SIZE                                0b00011000  //  5     3     size of sync word: SyncSize + 1 bytes
+#define RF69_SYNC_SIZE                                0b00001000  //  5     3     size of sync word: SyncSize + 1 bytes
 #define RF69_SYNC_TOL                                 0b00000000  //  2     0     number of tolerated errors in sync word
 
 //RF69_REG_SYNC_VALUE_1 - SYNC_VALUE_8
@@ -357,7 +367,7 @@
 #define RF69_ADDRESS_FILTERING_NODE_BROADCAST         0b00000100  //  2     1                        node or broadcast
 
 //RF69_REG_PAYLOAD_LENGTH
-#define RF69_PAYLOAD_LENGTH                           0x40        //  7     0     payload length
+#define RF69_PAYLOAD_LENGTH                           0xFF        //  7     0     payload length
 
 //RF69_REG_AUTO_MODES
 #define RF69_ENTER_COND_NONE                          0b00000000  //  7     5     condition for entering intermediate mode: none, AutoModes disabled (default)
@@ -388,6 +398,7 @@
 
 //RF69_REG_PACKET_CONFIG_2
 #define RF69_INTER_PACKET_RX_DELAY                    0b00000000  //  7     4     delay between FIFO empty and start of new RSSI phase
+//#define RF69_INTER_PACKET_RX_DELAY                    0b00010000  //  7     4     
 #define RF69_RESTART_RX                               0b00000100  //  2     2     force receiver into wait mode
 #define RF69_AUTO_RX_RESTART_OFF                      0b00000000  //  1     1     auto Rx restart disabled
 #define RF69_AUTO_RX_RESTART_ON                       0b00000010  //  1     1     auto Rx restart enabled (default)
@@ -398,6 +409,19 @@
 #define RF69_TEMP_MEAS_START                          0b00001000  //  3     3     trigger temperature measurement
 #define RF69_TEMP_MEAS_RUNNING                        0b00000100  //  2     2     temperature measurement status: on-going
 #define RF69_TEMP_MEAS_DONE                           0b00000000  //  2     2                                     done
+
+//RF69_REG_TEST_DAGC
+#define RF69_CONTINUOUS_DAGC_NORMAL                   0x00        //  7     0     fading margin improvement:  normal mode
+#define RF69_CONTINUOUS_DAGC_LOW_BETA_ON              0x20        //  7     0                                 improved mode for AfcLowBetaOn
+#define RF69_CONTINUOUS_DAGC_LOW_BETA_OFF             0x30        //  7     0                                 improved mode for AfcLowBetaOff (default)
+
+//RF69_REG_TEST_PA1
+#define RF69_PA1_NORMAL                               0x55        //  7     0     PA_BOOST: none
+#define RF69_PA1_20_DBM                               0x5D        //  7     0               +20 dBm
+
+//RF69_REG_TEST_PA2
+#define RF69_PA2_NORMAL                               0x70        //  7     0     PA_BOOST: none
+#define RF69_PA2_20_DBM                               0x7C        //  7     0               +20 dBm
 
 class RF69 {
   public:
@@ -415,6 +439,7 @@ class RF69 {
     
     uint8_t config();
     uint8_t setMode(uint8_t mode);
+    void clearIRQFlags();
 };
 
 #endif

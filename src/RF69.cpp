@@ -46,11 +46,84 @@ uint8_t RF69::begin() {
 }
 
 uint8_t RF69::transmit(Packet& pack) {
+  char buffer[256];
   
+  for(uint8_t i = 0; i < 8; i++) {
+    buffer[i] = pack.source[i];
+    buffer[i+8] = pack.destination[i];
+  }
+  
+  for(uint8_t i = 0; i < pack.length; i++) {
+    buffer[i+16] = pack.data[i];
+  }
+  
+  //_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_RESTART_RX, 2, 2);
+  
+  setMode(RF69_STANDBY);
+  
+  _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PACKET_SENT, 7, 6);
+  clearIRQFlags();
+  
+  if(pack.length > 256) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  _mod->SPIwriteRegister(RF69_REG_FIFO, pack.length);
+  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, buffer, pack.length);
+  
+  setMode(RF69_TX);
+  _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_20_DBM);
+  _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
+  
+  while(!_mod->getInt0State()) {
+    #ifdef DEBUG
+      Serial.print('.');
+    #endif
+  }
+  
+  clearIRQFlags();
+  
+  return(ERR_NONE);
 }
 
 uint8_t RF69::receive(Packet& pack) {
+  char buffer[256];
   
+  setMode(RF69_STANDBY);
+  
+  //_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_RESTART_RX, 2, 2);
+  
+  _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
+  clearIRQFlags();
+  
+  setMode(RF69_RX);
+  _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
+  _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
+  
+  while(!_mod->getInt0State()) {
+    if(_mod->getInt1State()) {
+      clearIRQFlags();
+      return(ERR_RX_TIMEOUT);
+    }
+  }
+  
+  pack.length = _mod->SPIreadRegister(RF69_REG_FIFO);
+  
+  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, pack.length, buffer);
+  
+  clearIRQFlags();
+  
+  for(uint8_t i = 0; i < 8; i++) {
+    pack.source[i] = buffer[i];
+    pack.destination[i] = buffer[i+8];
+  }
+  
+  for(uint8_t i = 16; i < pack.length; i++) {
+    pack.data[i-16] = buffer[i];
+  }
+  pack.data[pack.length-16] = 0;
+  
+  return(ERR_NONE);
 }
 
 uint8_t RF69::sleep() {
@@ -76,6 +149,12 @@ uint8_t RF69::config() {
     return(status);
   }
   
+  //enable over-current protection
+  status = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON, 4, 4);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
   //set data mode and modulation type
   status = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_PACKET_MODE | RF69_FSK, 6, 3);
   status = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_NO_SHAPING, 1, 0);
@@ -97,7 +176,7 @@ uint8_t RF69::config() {
     return(status);
   }
   
-  //set carrier frequency (915 MHz by default)
+  //set carrier frequency
   status = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, RF69_FRF_MSB, 7, 0);
   status = _mod->SPIsetRegValue(RF69_REG_FRF_MID, RF69_FRF_MID, 7, 0);
   status = _mod->SPIsetRegValue(RF69_REG_FRF_LSB, RF69_FRF_LSB, 7, 0);
@@ -111,14 +190,33 @@ uint8_t RF69::config() {
     return(status);
   }
   
-  //set RSSI threshold (2 dB by default)
+  //set RSSI threshold
   status = _mod->SPIsetRegValue(RF69_REG_RSSI_THRESH, RF69_RSSI_THRESHOLD, 7, 0);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
+  //reset FIFO flags
+  status = _mod->SPIsetRegValue(RF69_REG_IRQ_FLAGS_2, RF69_IRQ_FIFO_OVERRUN, 4, 4);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
+  //disable ClkOut on DIO5
+  status = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_2, RF69_CLK_OUT_OFF, 2, 0);
   if(status != ERR_NONE) {
     return(status);
   }
   
   //set synchronization
   status = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | RF69_SYNC_SIZE | RF69_SYNC_TOL, 7, 0);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
+  //set sync word
+  status = _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_1, 0x2D, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_2, 100, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
@@ -131,7 +229,7 @@ uint8_t RF69::config() {
     return(status);
   }
   
-  //set payload length (64 by default)
+  //set payload length
   status = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, RF69_PAYLOAD_LENGTH, 7, 0);
   if(status != ERR_NONE) {
     return(status);
@@ -149,10 +247,30 @@ uint8_t RF69::config() {
     return(status);
   }
   
+  //set Rx timeouts
+  //status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START_OFF, 7, 0);
+  //status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH_OFF, 7, 0);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
+  //enable improved fading margin
+  status = _mod->SPIsetRegValue(RF69_REG_TEST_DAGC, RF69_CONTINUOUS_DAGC_LOW_BETA_OFF, 7, 0);
+  if(status != ERR_NONE) {
+    return(status);
+  }
+  
   return(ERR_NONE);
 }
 
 uint8_t RF69::setMode(uint8_t mode) {
   _mod->SPIsetRegValue(RF69_REG_OP_MODE, mode, 4, 2);
   return(ERR_NONE);
+}
+
+void RF69::clearIRQFlags() {
+  _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_1, 0b11111111);
+  _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_2, 0b11111111);
 }
