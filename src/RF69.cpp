@@ -5,7 +5,8 @@ RF69::RF69(Module* module) {
 }
 
 uint8_t RF69::begin() {
-  _mod->init(USE_SPI, INT_BOTH);
+  //_mod->init(USE_SPI, INT_BOTH);
+  _mod->init(USE_SPI, INT_0);
   
   uint8_t i = 0;
   bool flagFound = false;
@@ -93,15 +94,23 @@ uint8_t RF69::receive(Packet& pack) {
   
   //_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_RESTART_RX, 2, 2);
   
-  _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
+  //_mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
+  _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 6);
   clearIRQFlags();
   
   setMode(RF69_RX);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
   
-  while(!_mod->getInt0State()) {
+  /*while(!_mod->getInt0State()) {
     if(_mod->getInt1State()) {
+      clearIRQFlags();
+      return(ERR_RX_TIMEOUT);
+    }
+  }*/
+  unsigned long start = millis();
+  while(!_mod->getInt0State()) {
+    if(millis() - start > 2000) {
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
     }
