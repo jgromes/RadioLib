@@ -33,3 +33,6 @@
 
 # Arduino Library Development file
 .development
+
+# Arduino testing sketches
+examples/test/
