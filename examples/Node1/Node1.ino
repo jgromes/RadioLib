@@ -1,15 +1,15 @@
 #include "KiteLib.h"
 
-SX1272 lora = Kite.ModuleA;
-XBee bee = Kite.ModuleB;
+XBee bee = Kite.ModuleA;
+RF69 rf = Kite.ModuleB;
 
 Packet pack;
 
 void setup() {
   Serial.begin(9600);
 
-  Serial.print("[SX1272] Initializing ... ");
-  byte state = lora.begin();
+  Serial.print("[XBee] Initializing ... ");
+  byte state = bee.begin(9600);
   if(state == ERR_NONE) {
     Serial.println("success!");
   } else {
@@ -18,13 +18,30 @@ void setup() {
     while(true);
   }
 
-  bee.begin(9600);
-  Serial.println("[XBee] Port open!");
+  Serial.print("[XBee] Setting destination address ... ");
+  state = bee.setDestinationAddress("0013A200", "40A58A5D");
+  if(state == ERR_NONE) {
+    Serial.println("success!");
+  } else {
+    Serial.print("failed, code 0x");
+    Serial.println(state, HEX);
+    while(true);
+  }
+
+  Serial.print("[RF69] Initializing ... ");
+  state = rf.begin();
+  if(state == ERR_NONE) {
+    Serial.println("success!");
+  } else {
+    Serial.print("failed, code 0x");
+    Serial.println(state, HEX);
+    while(true);
+  }
 }
 
 void loop() {
-  Serial.print("[SX1272] Waiting for incoming transmission ... ");
-  byte state = lora.receive(pack);
+  Serial.print("[RF69] Waiting for incoming transmission ... ");
+  byte state = rf.receive(pack);
 
   if(state == ERR_NONE) {
     Serial.println("success!");
@@ -32,32 +49,22 @@ void loop() {
     char str[24];
 
     pack.getSourceStr(str);
-    Serial.print("[SX1272] Source:\t\t");
+    Serial.print("[RF69] Source:\t\t");
     Serial.println(str);
 
     pack.getDestinationStr(str);
-    Serial.print("[SX1272] Destination:\t");
+    Serial.print("[RF69] Destination:\t");
     Serial.println(str);
 
-    Serial.print("[SX1272] Length:\t\t");
+    Serial.print("[RF69] Length:\t\t");
     Serial.println(pack.length);
 
-    Serial.print("[SX1272] Data:\t\t");
+    Serial.print("[RF69] Data:\t\t");
     Serial.println(pack.data);
 
-    Serial.print("[SX1272] Datarate:\t");
-    Serial.print(lora.dataRate);
-    Serial.println(" bps");
-
-    Serial.print("[SX1272] RSSI:\t\t");
-    Serial.print(lora.lastPacketRSSI);
-    Serial.println(" dBm");
-
-    Serial.print("[XBee] Sending packet ...");
-    state = bee.send(0x0013A200, 0x40A58A62, pack.data);
-    if(state == ERR_NONE) {
-      Serial.println("success!");
-    }
+    Serial.print("[XBee] Sending packet ... ");
+    bee.println(pack.data);
+    Serial.println("done!");
     
   } else if(state == ERR_RX_TIMEOUT) {
     Serial.println("timeout!");
