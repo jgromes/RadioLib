@@ -7,6 +7,7 @@ ESP8266::ESP8266(Module* module) {
 }
 
 uint8_t ESP8266::begin(long speed) {
+  _mod->AtLineFeed = "\r\n";
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
   _mod->ATemptyBuffer();

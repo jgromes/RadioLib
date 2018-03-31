@@ -62,7 +62,7 @@ bool Module::ATsendCommand(String& cmd) {
 bool Module::ATsendCommand(const char* cmd) {
   ATemptyBuffer();
   ModuleSerial->print(cmd);
-  ModuleSerial->print("\r\n");
+  ModuleSerial->print(AtLineFeed);
   return(ATgetResponse());
 }
 
