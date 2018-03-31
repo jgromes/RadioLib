@@ -52,6 +52,8 @@
 #define ERR_RESPONSE_MALFORMED_AT       0x03
 #define ERR_RESPONSE_MALFORMED          0x04
 
+// XBee error codes
+#define ERR_CMD_MODE_FAILED             0x02
 
 enum Slot {SlotA, SlotB};
 
