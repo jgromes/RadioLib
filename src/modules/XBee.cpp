@@ -12,10 +12,9 @@ XBee::XBee(Module* module) {
 uint8_t XBee::begin(long speed) {
   pinMode(A4, OUTPUT);
   pinMode(A5, OUTPUT);
-  pinMode(3, OUTPUT);
+  pinMode(3, INPUT);
   digitalWrite(A4, LOW);
   digitalWrite(A5, LOW);
-  digitalWrite(3, HIGH);
   
   _mod->AtLineFeed = "\r";
   
