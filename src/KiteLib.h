@@ -5,11 +5,11 @@
 #include "Module.h"
 
 #include "modules/ESP8266.h"
-#include "modules/SX1278.h"
-#include "modules/SX1272.h"
 #include "modules/HC05.h"
-#include "modules/XBee.h"
 #include "modules/RF69.h"
+#include "modules/SX1272.h"
+#include "modules/SX1278.h"
+#include "modules/XBee.h"
 
 #define KITE_CS_A   10
 #define KITE_TX_A   9

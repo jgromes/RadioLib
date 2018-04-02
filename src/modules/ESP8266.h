@@ -7,7 +7,7 @@ class ESP8266 {
   public:
     ESP8266(Module* module);
     
-    uint16_t portTCP, portUDP;
+    uint16_t portTdp, portUdp;
     
     // Basic methods
     uint8_t begin(long speed);
@@ -19,10 +19,10 @@ class ESP8266 {
     uint16_t HttpPost(const char* url, String content, String& response, const char* contentType = "");
     
     // Transport layer methods
-    uint8_t startTCP(const char* host);
-    uint8_t closeTCP();
-    uint8_t startUDP(const char* host);
-    uint8_t closeUDP();
+    uint8_t startTcp(const char* host);
+    uint8_t closeTcp();
+    uint8_t startUdp(const char* host);
+    uint8_t closeUdp();
     uint8_t send(String data);
     String receive(uint32_t timeout = 10000);
     

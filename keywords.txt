@@ -9,12 +9,13 @@
 KiteLib	KEYWORD1
 Kite	KEYWORD1
 Packet	KEYWORD1
+
 ESP8266	KEYWORD1
-SX1278	KEYWORD1
-SX1272	KEYWORD1
 HC05	KEYWORD1
-XBee	KEYWORD1
 RF69	KEYWORD1
+SX1272	KEYWORD1
+SX1278	KEYWORD1
+XBee	KEYWORD1
 
 Bandwidth	KEYWORD1
 SpreadingFactor	KEYWORD1
@@ -39,7 +40,7 @@ setSourceStr	KEYWORD2
 setDestinationStr	KEYWORD2
 copyInto	KEYWORD2
 
-# SX1278/SX1272
+# SX1278/SX1272 + RF69
 dataRate	KEYWORD2
 lastPacketRSSI	KEYWORD2
 begin	KEYWORD2
@@ -53,11 +54,19 @@ setCodingRate	KEYWORD2
 
 # ESP8266
 join	KEYWORD2
-createTCP	KEYWORD2
+reset	KEYWORD2
+HttpGet	KEYWORD2
+HttpPost	KEYWORD2
+startTcp	KEYWORD2
+closeTcp	KEYWORD2
+startUdp	KEYWORD2
+closeUdp	KEYWORD2
 send	KEYWORD2
+receive	KEYWORD2
 
 # XBee
-send	KEYWORD2
+setDestinationAddress	KEYWORD2
+setPanId	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

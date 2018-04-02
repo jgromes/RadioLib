@@ -1,8 +1,8 @@
 #include "ESP8266.h"
 
 ESP8266::ESP8266(Module* module) {
-  portTCP = 80; // Default HTTP port (TCP application)
-  portUDP = 53; // Default DNS port (UDP application)
+  portTcp = 80; // Default HTTP port (TCP application)
+  portUdp = 53; // Default DNS port (UDP application)
   _mod = module;
 }
 
@@ -88,7 +88,7 @@ uint16_t ESP8266::HttpGet(const char* url, String& response) {
   request += "\r\n\r\n";
   
   // create TCP connection
-  uint8_t state = startTCP(host.c_str());
+  uint8_t state = startTcp(host.c_str());
   if(state != ERR_NONE) {
     return(state);
   }
@@ -103,7 +103,7 @@ uint16_t ESP8266::HttpGet(const char* url, String& response) {
   String raw = receive();
   
   // close the TCP connection
-  state = closeTCP();
+  state = closeTcp();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -148,7 +148,7 @@ uint16_t ESP8266::HttpPost(const char* url, String content, String& response, co
   request += "\r\n\r\n";
   
   // create TCP connection
-  uint8_t state = startTCP(host.c_str());
+  uint8_t state = startTcp(host.c_str());
   if(state != ERR_NONE) {
     return(state);
   }
@@ -160,7 +160,7 @@ uint16_t ESP8266::HttpPost(const char* url, String content, String& response, co
   }
   
   // close the TCP connection
-  state = closeTCP();
+  state = closeTcp();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -184,19 +184,19 @@ uint16_t ESP8266::HttpPost(const char* url, String content, String& response, co
   return(statusString.toInt());
 }
 
-uint8_t ESP8266::startTCP(const char* host) {
-  openTransportConnection(host, "TCP", portTCP);
+uint8_t ESP8266::startTcp(const char* host) {
+  openTransportConnection(host, "TCP", portTcp);
 }
 
-uint8_t ESP8266::closeTCP() {
+uint8_t ESP8266::closeTcp() {
   closeTransportConnection();
 }
 
-uint8_t ESP8266::startUDP(const char* host) {
-  openTransportConnection(host, "UDP", portUDP);
+uint8_t ESP8266::startUdp(const char* host) {
+  openTransportConnection(host, "UDP", portUdp);
 }
 
-uint8_t ESP8266::closeUDP() {
+uint8_t ESP8266::closeUdp() {
   closeTransportConnection();
 }
 
