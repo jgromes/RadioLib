@@ -18,6 +18,16 @@ void setup() {
     while(true);
   }
 
+  Serial.print("[XBee] Setting PAN ID ... ");
+  state = bee.setPanId("0123456789ABCDEF");
+  if(state == ERR_NONE) {
+    Serial.println("success!");
+  } else {
+    Serial.print("failed, code 0x");
+    Serial.println(state, HEX);
+    while(true);
+  }
+
   Serial.print("[XBee] Setting destination address ... ");
   state = bee.setDestinationAddress("0013A200", "40A58A5D");
   if(state == ERR_NONE) {
@@ -42,6 +52,7 @@ void setup() {
 void loop() {
   Serial.print("[RF69] Waiting for incoming transmission ... ");
   byte state = rf.receive(pack);
+  bee.println("Hello World!");
 
   if(state == ERR_NONE) {
     Serial.println("success!");
