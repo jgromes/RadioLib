@@ -4,12 +4,12 @@
 #include "TypeDef.h"
 #include "Module.h"
 
-#include "ESP8266.h"
-#include "SX1278.h"
-#include "SX1272.h"
-#include "HC05.h"
-#include "XBee.h"
-#include "RF69.h"
+#include "modules/ESP8266.h"
+#include "modules/SX1278.h"
+#include "modules/SX1272.h"
+#include "modules/HC05.h"
+#include "modules/XBee.h"
+#include "modules/RF69.h"
 
 #define KITE_CS_A   10
 #define KITE_TX_A   9

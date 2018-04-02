@@ -58,13 +58,6 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   }
   
   #ifdef DEBUG
-    Serial.println("Setting PAN ID to 1 ...");
-  #endif
-  if(!_mod->ATsendCommand("ATID1")) {
-    return(ERR_AT_FAILED);
-  }
-  
-  #ifdef DEBUG
     Serial.println("Setting address (high) ...");
   #endif
   String addressHigh = "ATDH";
@@ -92,39 +85,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   return(ERR_NONE);
 }
 
-size_t XBee::println(const char str[]) {
-  return(_mod->ModuleSerial->println(str));
-}
-
-size_t XBee::write(uint8_t b) {
-  return(_mod->ModuleSerial->write(b));
-}
-
-int XBee::available() {
-  return(_mod->ModuleSerial->available());
-}
-
-int XBee::read() {
-  return(_mod->ModuleSerial->read());
-}
-
-/*uint8_t XBee::transmit(Packet& pack) {
-  
-  #ifdef DEBUG
-    Serial.println("Writing packet data ...");
-  #endif
-  for(uint8_t i = 0; i < pack.length - 16; i++) {
-    #ifdef DEBUG
-      Serial.println(pack.data[i]);
-    #endif
-    _mod->ModuleSerial->write(pack.data[i]);
-  }
-  _mod->ModuleSerial->write('\n');
-  
-  return(ERR_NONE);
-}
-
-uint8_t XBee::receive(Packet& pack) {
+uint8_t XBee::setPanId(const char panId[]) {
   #ifdef DEBUG
     Serial.println("Entering command mode ...");
   #endif
@@ -132,8 +93,24 @@ uint8_t XBee::receive(Packet& pack) {
     return(ERR_CMD_MODE_FAILED);
   }
   
+  #ifdef DEBUG
+    Serial.println("Setting PAN ID ...");
+  #endif
+  String panIdCmd = "ATID";
+  panIdCmd += panId;
+  if(!_mod->ATsendCommand(panIdCmd)) {
+    return(ERR_AT_FAILED);
+  }
+  
+  #ifdef DEBUG
+    Serial.println("Exiting command mode ...");
+  #endif
+  if(!_mod->ATsendCommand("ATCN")) {
+    return(ERR_AT_FAILED);
+  }
+  
   return(ERR_NONE);
-}*/
+}
 
 bool XBee::enterCmdMode() {
   for(uint8_t i = 0; i < 10; i++) {
@@ -161,7 +138,7 @@ bool XBee::enterCmdMode() {
       
       if(i == 9) {
         #ifdef DEBUG
-          Serial.println("Terminated, check your wiring.");
+          Serial.println("Terminated, check your wiring. Is AT FW uploaded?");
         #endif
         return(false);
       }

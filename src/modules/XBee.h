@@ -1,11 +1,11 @@
 #ifndef _KITELIB_XBEE_H
 #define _KITELIB_XBEE_H
 
-#include "Module.h"
+#include "ISerial.h"
 #include "TypeDef.h"
 #include "Packet.h"
 
-/*//API reserved characters
+//API reserved characters
 #define XBEE_API_START                                0x7E
 #define XBEE_API_ESCAPE                               0x7D
 #define XBEE_API_XON                                  0x11
@@ -32,7 +32,7 @@
 #define XBEE_API_FRAME_ROUTE_RECORD                   0xA1
 #define XBEE_API_FRAME_MANY_TO_ONE_ROUTE_REQUEST      0xA3
 
-#define XBEE_API_DEFAULT_FRAME_ID                     0x01*/
+#define XBEE_API_DEFAULT_FRAME_ID                     0x01
 
 class XBeeApiFrame {
   public:
@@ -48,22 +48,16 @@ class XBeeApiFrame {
     uint8_t* _data;
 };
 
-class XBee {
+class XBee: public ISerial {
   public:
     XBee(Module* module);
     
     uint8_t begin(long speed);
-    //uint8_t transmit(uint32_t destinationAddressHigh, uint32_t destinationAddressLow, const char* data, uint8_t length);
+    
     uint8_t setDestinationAddress(const char destinationAddressHigh[], const char destinationAddressLow[]);
-    /*uint8_t transmit(Packet& pack);
-    uint8_t receive(Packet& pack);*/
-    size_t println(const char str[]);
-    size_t write(uint8_t b);
-    int available();
-    int read();
+    uint8_t setPanId(const char panId[]);
     
   private:
-    Module* _mod;
     bool enterCmdMode();
     //void sendApiFrame(uint8_t id, uint8_t* data, uint16_t length);
     //uint8_t readApiFrame(uint16_t timeout);
