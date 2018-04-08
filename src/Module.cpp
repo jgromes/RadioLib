@@ -1,9 +1,5 @@
 #include "Module.h"
 
-Module::Module() {
-  
-}
-
 Module::Module(int cs, int tx, int rx, int int0, int int1) {
   _cs = cs;
   _tx = tx;
