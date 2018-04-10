@@ -51,6 +51,7 @@
 #define ERR_URL_MALFORMED               0x02
 #define ERR_RESPONSE_MALFORMED_AT       0x03
 #define ERR_RESPONSE_MALFORMED          0x04
+#define ERR_MQTT_CONNECTION_REFUSED     0x05
 
 // XBee error codes
 #define ERR_CMD_MODE_FAILED             0x02
