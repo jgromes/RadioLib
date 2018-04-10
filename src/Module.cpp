@@ -62,6 +62,16 @@ bool Module::ATsendCommand(const char* cmd) {
   return(ATgetResponse());
 }
 
+bool Module::ATsendData(uint8_t* data, uint32_t len) {
+  ATemptyBuffer();
+  for(uint32_t i = 0; i < len; i++) {
+    ModuleSerial->write(data[i]);
+  }
+  
+  ModuleSerial->print(AtLineFeed);
+  return(ATgetResponse());
+}
+
 bool Module::ATgetResponse() {
   String data;
   uint32_t start = millis(); 

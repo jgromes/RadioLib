@@ -25,6 +25,7 @@ class Module {
     bool ATgetResponse();
     bool ATsendCommand(String& cmd);
     bool ATsendCommand(const char* cmd);
+    bool ATsendData(uint8_t* data, uint32_t len);
     
     uint8_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
     uint8_t SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
