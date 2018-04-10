@@ -27,6 +27,26 @@ void setup() {
     Serial.println(state, HEX);
     while(true);
   }
+
+  Serial.print("[ESP8266] Joining AP ... ");
+  state = wifi.join("SSID", "PASSWORD");
+  if(state == ERR_NONE) {
+    Serial.println("success!");
+  } else {
+    Serial.print("failed, code 0x");
+    Serial.println(state, HEX);
+    while(true);
+  }
+
+  Serial.print("[ESP8266] Connecting to MQTT broker ... ");
+  state = wifi.MqttConnect("broker.shiftr.io", "KiteNode3", "KiteNode3", "adea1a9c95ef8cb6");
+  if(state == ERR_NONE) {
+    Serial.println("success!");
+  } else {
+    Serial.print("failed, code 0x");
+    Serial.println(state, HEX);
+    while(true);
+  }
 }
 
 void loop() {
@@ -60,17 +80,14 @@ void loop() {
     Serial.print(lora.lastPacketRSSI);
     Serial.println(" dBm");
 
-    /*Serial.print("[ESP266] Sending HTTP POST ...");
-    String response;
-    int http_code = wifi.HttpPost("http://www.httpbin.org/ip", String(pack.data), response);
-    if(http_code == 200) {
+    Serial.print("[ESP8266] Publishing MQTT message ... ");
+    byte state = wifi.MqttPublish("Kite", String(pack.data));
+    if(state == ERR_NONE) {
       Serial.println("success!");
-      Serial.println("[ESP8266] Response:\n");
-      Serial.println(response);
     } else {
       Serial.print("failed, code 0x");
-      Serial.println(http_code, HEX);
-    }*/
+      Serial.println(state, HEX);
+    }
     
   } else if(state == ERR_RX_TIMEOUT) {
     Serial.println("timeout!");
