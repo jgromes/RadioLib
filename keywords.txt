@@ -57,6 +57,8 @@ join	KEYWORD2
 reset	KEYWORD2
 HttpGet	KEYWORD2
 HttpPost	KEYWORD2
+MqttConnect	KEYWORD2
+MqttPublish	KEYWORD2
 startTcp	KEYWORD2
 closeTcp	KEYWORD2
 startUdp	KEYWORD2
