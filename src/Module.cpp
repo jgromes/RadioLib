@@ -73,7 +73,7 @@ bool Module::ATsendData(uint8_t* data, uint32_t len) {
 }
 
 bool Module::ATgetResponse() {
-  String data;
+  String data = "";
   uint32_t start = millis(); 
   while (millis() - start < _ATtimeout) {
     while(ModuleSerial->available() > 0) {
@@ -83,6 +83,7 @@ bool Module::ATgetResponse() {
       #endif
       data += c;
     }
+    
     if(data.indexOf("OK") != -1) {
       #ifdef DEBUG
         Serial.println();
@@ -94,6 +95,7 @@ bool Module::ATgetResponse() {
       #endif
       return(false);
     }
+    
   }
   #ifdef DEBUG
     Serial.println();

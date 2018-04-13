@@ -12,9 +12,11 @@ XBee::XBee(Module* module) {
 uint8_t XBee::begin(long speed) {
   pinMode(A4, OUTPUT);
   pinMode(A5, OUTPUT);
-  pinMode(3, INPUT);
+  //pinMode(3, INPUT);
+  pinMode(3, OUTPUT);
   digitalWrite(A4, LOW);
   digitalWrite(A5, LOW);
+  digitalWrite(3, HIGH);
   
   _mod->AtLineFeed = "\r";
   
@@ -132,6 +134,15 @@ bool XBee::enterCmdMode() {
         Serial.print(i + 1);
         Serial.println(" of 10 tries)");
       #endif
+      
+      pinMode(3, OUTPUT);
+      delay(10);
+      digitalWrite(3, HIGH);
+      delay(500);
+      digitalWrite(3, LOW);
+      delay(500);
+      pinMode(3, INPUT);
+      delay(500);
       
       _mod->ATsendCommand("ATCN");
       
