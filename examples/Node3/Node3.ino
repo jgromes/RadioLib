@@ -21,58 +21,58 @@ void setup() {
   pinMode(LED_TRANSMITING, OUTPUT);
 
   ledsHigh();
-
-  Serial.print("[SX1278]  Initializing ... ");
+  
+  Serial.print(F("[SX1278]  Initializing ... "));
   byte state = lora.begin();
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
     ledsLow();
     delay(BLINK_DELAY);
     ledsHigh();
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
     while(true);
   }
-
-  Serial.print("[ESP8266] Connecting ... ");
+  
+  Serial.print(F("[ESP8266] Connecting ... "));
   state = wifi.begin(9600);
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
     ledsLow();
     delay(BLINK_DELAY);
     ledsHigh();
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
+    Serial.println(state, HEX);
+    ledsLow();
+    digitalWrite(LED_START_ERROR, HIGH);
+    while(true);
+  }
+  
+  Serial.print(F("[ESP8266] Joining AP ... "));
+  state = wifi.join("Tenda", "Student20-X13");
+  if(state == ERR_NONE) {
+    Serial.println(F("success!"));
+    ledsLow();
+    delay(BLINK_DELAY);
+    ledsHigh();
+  } else {
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
     while(true);
   }
 
-  Serial.print("[ESP8266] Joining AP ... ");
-  state = wifi.join("SSID", "PASSWORD");
+  Serial.print(F("[ESP8266] Connecting to MQTT broker ... "));
+  state = wifi.MqttConnect("broker.shiftr.io", "Node3", "7dfeba8b", "3b0bb0efc0916009");
   if(state == ERR_NONE) {
-    Serial.println("success!");
-    ledsLow();
-    delay(BLINK_DELAY);
-    ledsHigh();
+    Serial.println(F("success!"));
   } else {
-    Serial.print("failed, code 0x");
-    Serial.println(state, HEX);
-    ledsLow();
-    digitalWrite(LED_START_ERROR, HIGH);
-    while(true);
-  }
-
-  Serial.print("[ESP8266] Connecting to MQTT broker ... ");
-  state = wifi.MqttConnect("broker.shiftr.io", "KiteNode3", "KiteNode3", "adea1a9c95ef8cb6");
-  if(state == ERR_NONE) {
-    Serial.println("success!");
-  } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
@@ -84,55 +84,55 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("[SX1278]  Waiting for incoming transmission ... ");
+  Serial.print(F("[SX1278]  Waiting for incoming transmission ... "));
   byte state = lora.receive(pack);
 
   if(state == ERR_NONE) {
     digitalWrite(LED_RECEIVING, HIGH);
-    Serial.println("success!");
+    Serial.println(F("success!"));
 
     char str[24];
 
     pack.getSourceStr(str);
-    Serial.print("[SX1278]  Source:\t");
+    Serial.print(F("[SX1278]  Source:\t"));
     Serial.println(str);
 
     pack.getDestinationStr(str);
-    Serial.print("[SX1278]  Destination:\t");
+    Serial.print(F("[SX1278]  Destination:\t"));
     Serial.println(str);
 
-    Serial.print("[SX1278]  Length:\t");
+    Serial.print(F("[SX1278]  Length:\t"));
     Serial.println(pack.length);
 
-    Serial.print("[SX1278]  Data:\t\t");
+    Serial.print(F("[SX1278]  Data:\t\t"));
     Serial.println(pack.data);
 
-    Serial.print("[SX1278]  Datarate:\t");
+    Serial.print(F("[SX1278]  Datarate:\t"));
     Serial.print(lora.dataRate);
-    Serial.println(" bps");
+    Serial.println(F(" bps"));
 
-    Serial.print("[SX1278]  RSSI:\t\t");
+    Serial.print(F("[SX1278]  RSSI:\t\t"));
     Serial.print(lora.lastPacketRSSI);
-    Serial.println(" dBm");
+    Serial.println(F(" dBm"));
 
     digitalWrite(LED_RECEIVING, LOW);
 
-    Serial.print("[ESP8266] Publishing MQTT message ... ");
+    Serial.print(F("[ESP8266] Publishing MQTT message ... "));
     digitalWrite(LED_TRANSMITING, HIGH);
-    byte state = wifi.MqttPublish("Kite", String(pack.data));
+    byte state = wifi.MqttPublish("Kite", pack.data);
     if(state == ERR_NONE) {
-      Serial.println("success!");
+      Serial.println(F("success!"));
     } else {
-      Serial.print("failed, code 0x");
+      Serial.print(F("failed, code 0x"));
       Serial.println(state, HEX);
     }
     digitalWrite(LED_TRANSMITING, LOW);
     
   } else if(state == ERR_RX_TIMEOUT) {
-    Serial.println("timeout!");
+    Serial.println(F("timeout!"));
     
   } else if(state == ERR_CRC_MISMATCH) {
-    Serial.println("CRC error!");
+    Serial.println(F("CRC error!"));
     
   }
 }
@@ -150,4 +150,3 @@ void ledsLow() {
   digitalWrite(LED_RECEIVING, LOW);
   digitalWrite(LED_TRANSMITING, LOW);
 }
-
