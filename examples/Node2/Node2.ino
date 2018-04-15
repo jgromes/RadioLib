@@ -95,9 +95,9 @@ void loop() {
     Serial.print("\t 0x");
     Serial.println(receivedCharacter, HEX);
     digitalWrite(LED_RECEIVING, LOW);
-    if(receivedCharacter != '\n') {
+    if((receivedCharacter != '\n') && (receivedCharacter != '\r')) {
       receivedString += receivedCharacter;
-    } else {
+    } else if(receivedCharacter != '\n') {
       Serial.print("[XBee]   Received string: ");
       Serial.println(receivedString);
       receivedFlag = true;
