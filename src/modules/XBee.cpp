@@ -10,20 +10,23 @@ XBee::XBee(Module* module) {
 }
 
 uint8_t XBee::begin(long speed) {
+  // set Arduino pins
   pinMode(A4, OUTPUT);
   pinMode(A5, OUTPUT);
-  //pinMode(3, INPUT);
   pinMode(3, OUTPUT);
   digitalWrite(A4, LOW);
   digitalWrite(A5, LOW);
   digitalWrite(3, HIGH);
   
+  // set module properties
   _mod->AtLineFeed = "\r";
-  
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
+  
+  // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
   
+  // enter command mode
   #ifdef DEBUG
     Serial.println("Entering command mode ...");
   #endif
@@ -31,6 +34,7 @@ uint8_t XBee::begin(long speed) {
     return(ERR_CMD_MODE_FAILED);
   }
   
+  // test AT setup
   #ifdef DEBUG
     Serial.println("Sending test command ...");
   #endif
@@ -38,6 +42,7 @@ uint8_t XBee::begin(long speed) {
     return(ERR_AT_FAILED);
   }
   
+  // exit command mode
   #ifdef DEBUG
     Serial.println("Exiting command mode ...");
   #endif
@@ -51,6 +56,7 @@ uint8_t XBee::begin(long speed) {
 }
 
 uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const char destinationAddressLow[]) {
+  // enter command mode
   #ifdef DEBUG
     Serial.println("Entering command mode ...");
   #endif
@@ -58,6 +64,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
     return(ERR_CMD_MODE_FAILED);
   }
   
+  // set higher address bytes
   #ifdef DEBUG
     Serial.println("Setting address (high) ...");
   #endif
@@ -67,6 +74,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
     return(ERR_AT_FAILED);
   }
   
+  // set lower address bytes
   #ifdef DEBUG
     Serial.println("Setting address (low) ...");
   #endif
@@ -76,6 +84,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
     return(ERR_AT_FAILED);
   }
   
+  // exit command mode
   #ifdef DEBUG
     Serial.println("Exiting command mode ...");
   #endif
@@ -87,6 +96,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
 }
 
 uint8_t XBee::setPanId(const char panId[]) {
+  // enter command mode
   #ifdef DEBUG
     Serial.println("Entering command mode ...");
   #endif
@@ -94,6 +104,7 @@ uint8_t XBee::setPanId(const char panId[]) {
     return(ERR_CMD_MODE_FAILED);
   }
   
+  // set PAN ID
   #ifdef DEBUG
     Serial.println("Setting PAN ID ...");
   #endif
@@ -103,6 +114,7 @@ uint8_t XBee::setPanId(const char panId[]) {
     return(ERR_AT_FAILED);
   }
   
+  // exit command mode
   #ifdef DEBUG
     Serial.println("Exiting command mode ...");
   #endif

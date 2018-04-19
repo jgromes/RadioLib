@@ -22,6 +22,7 @@ class ESP8266 {
   public:
     ESP8266(Module* module);
     
+    // Port numbers
     uint16_t portTcp, portUdp, portMqtt;
     
     // Basic methods

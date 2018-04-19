@@ -5,6 +5,7 @@ HC05::HC05(Module* module) {
 }
 
 void HC05::begin(long speed) {
+  // set module properties
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
 }

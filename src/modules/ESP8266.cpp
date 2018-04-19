@@ -1,20 +1,26 @@
 #include "ESP8266.h"
 
 ESP8266::ESP8266(Module* module) {
-  portTcp = 80; // Default HTTP port (TCP application)
-  portUdp = 53; // Default DNS port (UDP application)
+  portTcp = 80;     // Default HTTP port (TCP application)
+  portUdp = 53;     // Default DNS port (UDP application)
   portMqtt = 1883;
   _mod = module;
 }
 
 uint8_t ESP8266::begin(long speed) {
+  // set module properties
   _mod->AtLineFeed = "\r\n";
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
+  
+  // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
+  
+  // test AT setup
   if(!_mod->ATsendCommand("AT")) {
     return(ERR_AT_FAILED);
   }
+  
   return(ERR_NONE);
 }
 
@@ -27,7 +33,7 @@ uint8_t ESP8266::reset() {
   // wait for the module to start
   delay(2000);
   
-  // test AT
+  // test AT setup
   uint32_t start = millis();
   while (millis() - start < 3000) {
     if(!_mod->ATsendCommand("AT")) {
@@ -207,8 +213,8 @@ uint8_t ESP8266::MqttConnect(String host, String clientId, String username, Stri
   packet[5] = 'Q';
   packet[6] = 'T';
   packet[7] = 'T';
-  packet[8] = 0x04;        //protocol level
-  packet[9] = 0b11000010;  //flags: user name + password + clean session
+  packet[8] = 0x04;         //protocol level
+  packet[9] = 0b11000010;   //flags: user name + password + clean session
   packet[10] = 0x00;        //keep-alive interval MSB
   packet[11] = 0x3C;        //keep-alive interval LSB
   
@@ -230,14 +236,6 @@ uint8_t ESP8266::MqttConnect(String host, String clientId, String username, Stri
     packet[i + 18 + clientId.length() + username.length()] = (uint8_t)password.charAt(i);
   }
   
-  /*for(uint8_t i = 0; i < len + 2; i++) {
-    Serial.print(i);
-    Serial.print('\t');
-    Serial.write(packet[i]);
-    Serial.print("\t0x");
-    Serial.println(packet[i], HEX);
-  }*/
-  
   // create TCP connection
   uint8_t state = openTransportConnection(_MqttHost.c_str(), "TCP", portMqtt, 7200);
   if(state != ERR_NONE) {
@@ -251,17 +249,7 @@ uint8_t ESP8266::MqttConnect(String host, String clientId, String username, Stri
   }
   
   // read the response
-  /*uint8_t response[] = {0, 0, 0, 0, 0};
-  receive(response);*/
   String raw = receive();
-  
-  /*for(uint8_t i = 0; i < raw.length(); i++) {
-    Serial.print(i);
-    Serial.print('\t');
-    Serial.write(raw.charAt(i));
-    Serial.print("\t0x");
-    Serial.println(raw.charAt(i), HEX);
-  }*/
   
   // parse the response
   int32_t numBytesIndex = raw.indexOf(":");
@@ -274,13 +262,6 @@ uint8_t ESP8266::MqttConnect(String host, String clientId, String username, Stri
     response[i] = raw.charAt(i + numBytesIndex + 1);
   }
   
-  /*for(uint8_t i = 0; i < 4; i++) {
-    Serial.print(i);
-    Serial.print('\t');
-    Serial.write(response[i]);
-    Serial.print("\t0x");
-    Serial.println(response[i], HEX);
-  }*/
   if(response[3] != 0x00) {
     return(ERR_MQTT_CONNECTION_REFUSED);
   }
@@ -306,14 +287,6 @@ uint8_t ESP8266::MqttPublish(String topic, String message) {
   for(uint8_t i = 0; i < message.length(); i++) {
     packet[i + 4 + topic.length()] = (uint8_t)message.charAt(i);
   }
-  
-  /*for(uint8_t i = 0; i < len + 2; i++) {
-    Serial.print(i);
-    Serial.print('\t');
-    Serial.write(packet[i]);
-    Serial.print("\t0x");
-    Serial.println(packet[i], HEX);
-  }*/
   
   // send MQTT packet
   uint8_t state = send(packet, len + 2);
@@ -393,9 +366,6 @@ uint32_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
   while(millis() - start < timeout) {
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
-      /*Serial.write(b);
-      Serial.print("\t0x");
-      Serial.println(b, HEX);*/
       #ifdef DEBUG
         Serial.print(b);
       #endif

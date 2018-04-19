@@ -5,10 +5,12 @@ SX1272::SX1272(Module* module) {
 }
 
 uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t addrEeprom) {
+  // copy LoRa modem settings
   _bw = bw;
   _sf = sf;
   _cr = cr;
   
+  // ESP32-only: initialize  EEPROM
   #ifdef ESP32
     if(!EEPROM.begin(9)) {
       #ifdef DEBUG
@@ -18,8 +20,10 @@ uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
     }
   #endif
   
+  // copy EEPROM start address
   _addrEeprom = addrEeprom;
   
+  // check if the node has address
   bool hasAddress = false;
   for(uint16_t i = 0; i < 8; i++) {
     if(EEPROM.read(_addrEeprom + i) != 255) {
@@ -28,6 +32,7 @@ uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
     }
   }
   
+  // generate new address
   if(!hasAddress) {
     randomSeed(analogRead(5));
     generateLoRaAdress();
@@ -48,8 +53,10 @@ uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
     #endif
   }
   
+  // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
+  // try to find the SX1272 chip
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
@@ -85,38 +92,49 @@ uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
     }
   #endif
   
+  // configure LoRa modem
   return(config(_bw, _sf, _cr));
 }
 
 uint8_t SX1272::transmit(Packet& pack) {
   char buffer[256];
   
+  // copy packet source and destination addresses into buffer
   for(uint8_t i = 0; i < 8; i++) {
     buffer[i] = pack.source[i];
     buffer[i+8] = pack.destination[i];
   }
   
+  // copy packet data into buffer
   for(uint8_t i = 0; i < pack.length; i++) {
     buffer[i+16] = pack.data[i];
   }
   
+  // set mode to standby
   setMode(SX1272_STANDBY);
   
+  // set DIO pin mapping
   _mod->SPIsetRegValue(SX1272_REG_DIO_MAPPING_1, SX1272_DIO0_TX_DONE, 7, 6);
+  
+  // clear interrupt flags
   clearIRQFlags();
   
+  // check overall packet length
   if(pack.length > 256) {
     return(ERR_PACKET_TOO_LONG);
   }
-
+  
+  // write packet to FIFO
   _mod->SPIsetRegValue(SX1272_REG_PAYLOAD_LENGTH, pack.length);
   _mod->SPIsetRegValue(SX1272_REG_FIFO_TX_BASE_ADDR, SX1272_FIFO_TX_BASE_ADDR_MAX);
   _mod->SPIsetRegValue(SX1272_REG_FIFO_ADDR_PTR, SX1272_FIFO_TX_BASE_ADDR_MAX);
-  
   _mod->SPIwriteRegisterBurstStr(SX1272_REG_FIFO, buffer, pack.length);
   
+  
+  // set mode to transmit
   setMode(SX1272_TX);
   
+  // wait for transmission end
   unsigned long start = millis();
   while(!_mod->getInt0State()) {
     #ifdef DEBUG
@@ -124,6 +142,7 @@ uint8_t SX1272::transmit(Packet& pack) {
     #endif
   }
   
+  // clear interrupt flags
   clearIRQFlags();
   
   return(ERR_NONE);
@@ -133,16 +152,23 @@ uint8_t SX1272::receive(Packet& pack) {
   char buffer[256];
   uint32_t startTime = millis();
   
+  // set mode to standby
   setMode(SX1272_STANDBY);
   
+  // set DIO pin mapping
   _mod->SPIsetRegValue(SX1272_REG_DIO_MAPPING_1, SX1272_DIO0_RX_DONE | SX1272_DIO1_RX_TIMEOUT, 7, 4);
+  
+  // clear interrupt flags
   clearIRQFlags();
   
+  // set FIFO address pointers
   _mod->SPIsetRegValue(SX1272_REG_FIFO_RX_BASE_ADDR, SX1272_FIFO_RX_BASE_ADDR_MAX);
   _mod->SPIsetRegValue(SX1272_REG_FIFO_ADDR_PTR, SX1272_FIFO_RX_BASE_ADDR_MAX);
   
+  // set mode to receive
   setMode(SX1272_RXSINGLE);
   
+  // wait for packet reception or timeout
   while(!_mod->getInt0State()) {
     if(_mod->getInt1State()) {
       clearIRQFlags();
@@ -150,31 +176,40 @@ uint8_t SX1272::receive(Packet& pack) {
     }
   }
   
+  // check received packet CRC
   if(_mod->SPIgetRegValue(SX1272_REG_IRQ_FLAGS, 5, 5) == SX1272_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
     return(ERR_CRC_MISMATCH);
   }
   
+  // get header type
   uint8_t headerMode = _mod->SPIgetRegValue(SX1272_REG_MODEM_CONFIG_1, 0, 0);
   if(headerMode == SX1272_HEADER_EXPL_MODE) {
     pack.length = _mod->SPIgetRegValue(SX1272_REG_RX_NB_BYTES);
   }
   
+  // read packet from FIFO
   _mod->SPIreadRegisterBurstStr(SX1272_REG_FIFO, pack.length, buffer);
   
+  // clear interrupt flags
   clearIRQFlags();
   
+  // get packet source and destination addresses from buffer
   for(uint8_t i = 0; i < 8; i++) {
     pack.source[i] = buffer[i];
     pack.destination[i] = buffer[i+8];
   }
   
+  // get packet source and destination addresses from buffer
   for(uint8_t i = 16; i < pack.length; i++) {
     pack.data[i-16] = buffer[i];
   }
   pack.data[pack.length-16] = 0;
   
+  // measure overall datarate
   uint32_t elapsedTime = millis() - startTime;
   dataRate = (pack.length*8.0)/((float)elapsedTime/1000.0);
+  
+  // get packet RSSI
   lastPacketRSSI = getLastPacketRSSI();
   
   return(ERR_NONE);

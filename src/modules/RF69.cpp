@@ -5,9 +5,10 @@ RF69::RF69(Module* module) {
 }
 
 uint8_t RF69::begin() {
-  //_mod->init(USE_SPI, INT_BOTH);
+  // set module properties
   _mod->init(USE_SPI, INT_0);
   
+  // try to find the RF69 chip
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
@@ -49,39 +50,48 @@ uint8_t RF69::begin() {
 uint8_t RF69::transmit(Packet& pack) {
   char buffer[256];
   
+  // copy packet source and destination addresses into buffer
   for(uint8_t i = 0; i < 8; i++) {
     buffer[i] = pack.source[i];
     buffer[i+8] = pack.destination[i];
   }
   
+  // copy packet data into buffer
   for(uint8_t i = 0; i < pack.length; i++) {
     buffer[i+16] = pack.data[i];
   }
   
-  //_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_RESTART_RX, 2, 2);
-  
+  // set mode to standby
   setMode(RF69_STANDBY);
   
+  // set DIO pin mapping
   _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PACKET_SENT, 7, 6);
+  
+  // clear interrupt flags
   clearIRQFlags();
   
+  // check overall packet length
   if(pack.length > 256) {
     return(ERR_PACKET_TOO_LONG);
   }
-
+  
+  // write packet to FIFO
   _mod->SPIwriteRegister(RF69_REG_FIFO, pack.length);
   _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, buffer, pack.length);
   
+  // set mode to transmit
   setMode(RF69_TX);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_20_DBM);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
   
+  // wait for transmission end
   while(!_mod->getInt0State()) {
     #ifdef DEBUG
       Serial.print('.');
     #endif
   }
   
+  // clear interrupt flags
   clearIRQFlags();
   
   return(ERR_NONE);
@@ -90,18 +100,22 @@ uint8_t RF69::transmit(Packet& pack) {
 uint8_t RF69::receive(Packet& pack) {
   char buffer[256];
   
+  // set mode to standby
   setMode(RF69_STANDBY);
   
-  //_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_RESTART_RX, 2, 2);
-  
+  // set DIO pin mapping
   //_mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
   _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 6);
+  
+  // clear interrupt flags
   clearIRQFlags();
   
+  // set mode to receive
   setMode(RF69_RX);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
   
+  // wait for packet reception or timeout
   /*while(!_mod->getInt0State()) {
     if(_mod->getInt1State()) {
       clearIRQFlags();
@@ -116,17 +130,20 @@ uint8_t RF69::receive(Packet& pack) {
     }
   }
   
+  // read packet from FIFO
   pack.length = _mod->SPIreadRegister(RF69_REG_FIFO);
-  
   _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, pack.length, buffer);
   
+  // clear interrupt flags
   clearIRQFlags();
   
+  // get packet source and destination addresses from buffer
   for(uint8_t i = 0; i < 8; i++) {
     pack.source[i] = buffer[i];
     pack.destination[i] = buffer[i+8];
   }
   
+  // get packet source and destination addresses from buffer
   for(uint8_t i = 16; i < pack.length; i++) {
     pack.data[i-16] = buffer[i];
   }
