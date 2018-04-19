@@ -22,57 +22,57 @@ void setup() {
 
   ledsHigh();
 
-  Serial.print("[XBee] Initializing ... ");
+  Serial.print(F("[XBee] Initializing ... "));
   byte state = bee.begin(9600);
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
     ledsLow();
     delay(BLINK_DELAY);
     ledsHigh();
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
     while(true);
   }
 
-  Serial.print("[XBee] Setting PAN ID ... ");
+  Serial.print(F("[XBee] Setting PAN ID ... "));
   state = bee.setPanId("0123456789ABCDEF");
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
     ledsLow();
     delay(BLINK_DELAY);
     ledsHigh();
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
     while(true);
   }
 
-  Serial.print("[XBee] Setting destination address ... ");
+  Serial.print(F("[XBee] Setting destination address ... "));
   state = bee.setDestinationAddress("0013A200", "40A58A5D");
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
     ledsLow();
     delay(BLINK_DELAY);
     ledsHigh();
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
     while(true);
   }
 
-  Serial.print("[RF69] Initializing ... ");
+  Serial.print(F("[RF69] Initializing ... "));
   state = rf.begin();
   if(state == ERR_NONE) {
-    Serial.println("success!");
+    Serial.println(F("success!"));
   } else {
-    Serial.print("failed, code 0x");
+    Serial.print(F("failed, code 0x"));
     Serial.println(state, HEX);
     ledsLow();
     digitalWrite(LED_START_ERROR, HIGH);
@@ -84,42 +84,42 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("[RF69] Waiting for incoming transmission ... ");
+  Serial.print(F("[RF69] Waiting for incoming transmission ... "));
   byte state = rf.receive(pack);
 
   if(state == ERR_NONE) {
     digitalWrite(LED_RECEIVING, HIGH);
-    Serial.println("success!");
+    Serial.println(F("success!"));
 
     char str[24];
 
     pack.getSourceStr(str);
-    Serial.print("[RF69] Source:\t\t");
+    Serial.print(F("[RF69] Source:\t\t"));
     Serial.println(str);
 
     pack.getDestinationStr(str);
-    Serial.print("[RF69] Destination:\t");
+    Serial.print(F("[RF69] Destination:\t"));
     Serial.println(str);
 
-    Serial.print("[RF69] Length:\t\t");
+    Serial.print(F("[RF69] Length:\t\t"));
     Serial.println(pack.length);
 
-    Serial.print("[RF69] Data:\t\t");
+    Serial.print(F("[RF69] Data:\t\t"));
     Serial.println(pack.data);
 
     digitalWrite(LED_RECEIVING, LOW);
     
-    Serial.print("[XBee] Sending packet ... ");
+    Serial.print(F("[XBee] Sending packet ... "));
     digitalWrite(LED_TRANSMITING, HIGH);
     bee.println(pack.data);
     digitalWrite(LED_TRANSMITING, LOW);
-    Serial.println("done!");
+    Serial.println(F("done!"));
     
   } else if(state == ERR_RX_TIMEOUT) {
-    Serial.println("timeout!");
+    Serial.println(F("timeout!"));
     
   } else if(state == ERR_CRC_MISMATCH) {
-    Serial.println("CRC error!");
+    Serial.println(F("CRC error!"));
     
   }
 }
