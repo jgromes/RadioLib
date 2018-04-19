@@ -13,9 +13,7 @@ uint8_t SX1278::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
   // ESP32-only: initialize  EEPROM
   #ifdef ESP32
     if(!EEPROM.begin(9)) {
-      #ifdef DEBUG
-        Serial.println("Unable to initialize EEPROM");
-      #endif
+      DEBUG_PRINTLN_STR("Unable to initialize EEPROM");
       return(ERR_EEPROM_NOT_INITIALIZED);
     }
   #endif
@@ -38,9 +36,7 @@ uint8_t SX1278::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
     generateLoRaAdress();
   }
   
-  #ifdef DEBUG
-    Serial.print("LoRa node address string: ");
-  #endif
+  DEBUG_PRINTLN_STR("LoRa node address string: ");
   for(uint8_t i = 0; i < 8; i++) {
     _address[i] = EEPROM.read(i);
     #ifdef DEBUG
@@ -80,17 +76,12 @@ uint8_t SX1278::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t 
   }
   
   if(!flagFound) {
-    #ifdef DEBUG
-      Serial.println("No SX1278 found!");
-    #endif
+    DEBUG_PRINTLN_STR("No SX1278 found!");
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
+  } else {
+    DEBUG_PRINTLN_STR("Found SX1278! (match by SX1278_REG_VERSION == 0x12)");
   }
-  #ifdef DEBUG
-    else {
-      Serial.println("Found SX1278! (match by SX1278_REG_VERSION == 0x12)");
-    }
-  #endif
   
   // configure LoRa modem
   return(config(_bw, _sf, _cr));
@@ -136,9 +127,7 @@ uint8_t SX1278::transmit(Packet& pack) {
   // wait for transmission end
   unsigned long start = millis();
   while(!_mod->getInt0State()) {
-    #ifdef DEBUG
-      Serial.print('.');
-    #endif
+    DEBUG_PRINT('.');
   }
   
   // clear interrupt flags

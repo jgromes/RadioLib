@@ -9,6 +9,22 @@
 
 //#define DEBUG
 
+#ifdef DEBUG
+  #define DEBUG_PRINT(x)                Serial.print (x)
+  #define DEBUG_PRINT_DEC(x)            Serial.print (x, DEC)
+  #define DEBUG_PRINT_HEX(x)            Serial.print (x, HEX)
+  #define DEBUG_PRINTLN(x)              Serial.println (x)
+  #define DEBUG_PRINT_STR(x)            Serial.print (F(x))
+  #define DEBUG_PRINTLN_STR(x)          Serial.println (F(x))
+#else
+  #define DEBUG_PRINT(x)
+  #define DEBUG_PRINT_DEC(x)
+  #define DEBUG_PRINT_HEX(x)
+  #define DEBUG_PRINTLN(x)
+  #define DEBUG_PRINT_STR(x)
+  #define DEBUG_PRINTLN_STR(x)
+#endif
+
 // Shield configuration
 #define USE_SPI                         0x00
 #define USE_UART                        0x01

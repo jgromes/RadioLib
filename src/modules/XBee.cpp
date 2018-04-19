@@ -27,25 +27,19 @@ uint8_t XBee::begin(long speed) {
   _mod->ATemptyBuffer();
   
   // enter command mode
-  #ifdef DEBUG
-    Serial.println("Entering command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // test AT setup
-  #ifdef DEBUG
-    Serial.println("Sending test command ...");
-  #endif
+  DEBUG_PRINTLN_STR("Sending test command ...");
   if(!_mod->ATsendCommand("AT")) {
     return(ERR_AT_FAILED);
   }
   
   // exit command mode
-  #ifdef DEBUG
-    Serial.println("Exiting command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Exiting command mode ...");
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -57,17 +51,13 @@ uint8_t XBee::begin(long speed) {
 
 uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const char destinationAddressLow[]) {
   // enter command mode
-  #ifdef DEBUG
-    Serial.println("Entering command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // set higher address bytes
-  #ifdef DEBUG
-    Serial.println("Setting address (high) ...");
-  #endif
+  DEBUG_PRINTLN_STR("Setting address (high) ...");
   String addressHigh = "ATDH";
   addressHigh += destinationAddressHigh;
   if(!_mod->ATsendCommand(addressHigh)) {
@@ -75,9 +65,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   }
   
   // set lower address bytes
-  #ifdef DEBUG
-    Serial.println("Setting address (low) ...");
-  #endif
+  DEBUG_PRINTLN_STR("Setting address (low) ...");
   String addressLow = "ATDL";
   addressLow += destinationAddressLow;
   if(!_mod->ATsendCommand(addressLow)) {
@@ -85,9 +73,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   }
   
   // exit command mode
-  #ifdef DEBUG
-    Serial.println("Exiting command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Exiting command mode ...");
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -97,17 +83,13 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
 
 uint8_t XBee::setPanId(const char panId[]) {
   // enter command mode
-  #ifdef DEBUG
-    Serial.println("Entering command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // set PAN ID
-  #ifdef DEBUG
-    Serial.println("Setting PAN ID ...");
-  #endif
+  DEBUG_PRINTLN_STR("Setting PAN ID ...");
   String panIdCmd = "ATID";
   panIdCmd += panId;
   if(!_mod->ATsendCommand(panIdCmd)) {
@@ -115,9 +97,7 @@ uint8_t XBee::setPanId(const char panId[]) {
   }
   
   // exit command mode
-  #ifdef DEBUG
-    Serial.println("Exiting command mode ...");
-  #endif
+  DEBUG_PRINTLN_STR("Exiting command mode ...");
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -127,25 +107,20 @@ uint8_t XBee::setPanId(const char panId[]) {
 
 bool XBee::enterCmdMode() {
   for(uint8_t i = 0; i < 10; i++) {
-    //guard time silence
     delay(1000);
     
-    //command sequence
     _mod->ModuleSerial->write('+');
     _mod->ModuleSerial->write('+');
     _mod->ModuleSerial->write('+');
     
-    //guard time silence
     delay(1000);
     
     if(_mod->ATgetResponse()) {
       return(true);
     } else {
-      #ifdef DEBUG
-        Serial.print("Unable to enter command mode! (");
-        Serial.print(i + 1);
-        Serial.println(" of 10 tries)");
-      #endif
+      DEBUG_PRINT_STR("Unable to enter command mode! (");
+      DEBUG_PRINT(i + 1);
+      DEBUG_PRINTLN_STR(" of 10 tries)");
       
       pinMode(3, OUTPUT);
       delay(10);
@@ -159,9 +134,7 @@ bool XBee::enterCmdMode() {
       _mod->ATsendCommand("ATCN");
       
       if(i == 9) {
-        #ifdef DEBUG
-          Serial.println("Terminated, check your wiring. Is AT FW uploaded?");
-        #endif
+        DEBUG_PRINTLN_STR("Terminated, check your wiring. Is AT FW uploaded?");
         return(false);
       }
     }

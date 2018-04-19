@@ -78,28 +78,20 @@ bool Module::ATgetResponse() {
   while (millis() - start < _ATtimeout) {
     while(ModuleSerial->available() > 0) {
       char c = ModuleSerial->read();
-      #ifdef DEBUG
-        Serial.print(c);
-      #endif
+      DEBUG_PRINT(c);
       data += c;
     }
     
     if(data.indexOf("OK") != -1) {
-      #ifdef DEBUG
-        Serial.println();
-      #endif
+      DEBUG_PRINTLN();
       return(true);
     } else if (data.indexOf("ERROR") != -1) {
-      #ifdef DEBUG
-        Serial.println();
-      #endif
+      DEBUG_PRINTLN();
       return(false);
     }
     
   }
-  #ifdef DEBUG
-    Serial.println();
-  #endif
+  DEBUG_PRINTLN();
   return(false);
 }
 

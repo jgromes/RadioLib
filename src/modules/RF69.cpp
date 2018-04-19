@@ -32,17 +32,12 @@ uint8_t RF69::begin() {
   }
   
   if(!flagFound) {
-    #ifdef DEBUG
-      Serial.println("No RF69 found!");
-    #endif
+    DEBUG_PRINTLN_STR("No RF69 found!");
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
+  } else {
+    DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x12)");
   }
-  #ifdef DEBUG
-    else {
-      Serial.println("Found RF69! (match by RF69_REG_VERSION == 0x12)");
-    }
-  #endif
   
   return(config());
 }
@@ -86,9 +81,7 @@ uint8_t RF69::transmit(Packet& pack) {
   
   // wait for transmission end
   while(!_mod->getInt0State()) {
-    #ifdef DEBUG
-      Serial.print('.');
-    #endif
+    DEBUG_PRINT('.');
   }
   
   // clear interrupt flags
