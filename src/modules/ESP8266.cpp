@@ -1,8 +1,7 @@
 #include "ESP8266.h"
 
 ESP8266::ESP8266(Module* module) {
-  portTcp = 80;     // Default HTTP port (TCP application)
-  portUdp = 53;     // Default DNS port (UDP application)
+  portHttp = 80;
   portMqtt = 1883;
   _mod = module;
 }
@@ -59,14 +58,21 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   }
   
   // join AP
-  String cmd = "AT+CWJAP_CUR=\"";
-  cmd += ssid;
-  cmd += "\",\"";
-  cmd += password;
-  cmd += "\"";
+  const char* atStr = "AT+CWJAP_CUR=\"";
+  uint8_t cmdLen = strlen(atStr) + strlen(ssid) + strlen(password) + 4;
+  
+  char* cmd = new char[cmdLen];
+  strcpy(cmd, atStr);
+  strcat(cmd, ssid);
+  strcat(cmd, "\",\"");
+  strcat(cmd, password);
+  strcat(cmd, "\"");
+
   if(!_mod->ATsendCommand(cmd)) {
+    delete[] cmd;
     return(ERR_AT_FAILED);
   }
+  delete[] cmd;
   
   // disable multiple connection mode
   if(!_mod->ATsendCommand("AT+CIPMUX=0")) {
@@ -77,125 +83,217 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
 }
 
 uint16_t ESP8266::HttpGet(const char* url, String& response) {
-  String urlString(url);
-  
   // get the host address and endpoint
-  int32_t resourceIndex = urlString.indexOf("/", 7);
-  if(resourceIndex == -1) {
-    return(ERR_URL_MALFORMED);
+  char* httpPrefix = strstr(url, "http://");
+  char* endpoint;
+  char* host;
+  if(httpPrefix != NULL) {
+    // find the host string
+    char* hostStart = strchr(url, '/');
+    hostStart = strchr(hostStart + 1, '/');
+    char* hostEnd = strchr(hostStart + 1, '/');
+    host = new char[hostEnd - hostStart];
+    strncpy(host, hostStart + 1, hostEnd - hostStart - 1);
+    host[hostEnd - hostStart - 1] = 0x00;
+    
+    // find the endpoint string
+    endpoint = new char[url + strlen(url) - hostEnd + 1];
+    strcpy(endpoint, hostEnd);
+  } else {
+    // find the host string
+    char* hostEnd = strchr(url, '/');
+    host = new char[hostEnd - url + 1];
+    strncpy(host, url, hostEnd - url);
+    host[hostEnd - url] = 0x00;
+    
+    // find the endpoint string
+    endpoint = new char[url + strlen(url) - hostEnd + 1];
+    strcpy(endpoint, hostEnd);
   }
-  String host = urlString.substring(7, resourceIndex);
-  String endpoint = urlString.substring(resourceIndex);
   
   // build the GET request
-  String request = "GET ";
-  request += endpoint;
-  request += " HTTP/1.1\r\nHost: ";
-  request += host;
-  request += "\r\n\r\n";
+  char* request = new char[strlen(endpoint) + strlen(host) + 25];
+  strcpy(request, "GET ");
+  strcat(request, endpoint);
+  strcat(request, " HTTP/1.1\r\nHost: ");
+  strcat(request, host);
+  strcat(request, "\r\n\r\n");
+  
+  delete[] endpoint;
   
   // create TCP connection
-  uint8_t state = startTcp(host.c_str());
+  uint8_t state = openTransportConnection(host, "TCP", portHttp);
+  delete[] host;
   if(state != ERR_NONE) {
+    delete[] request;
     return(state);
   }
   
   // send the GET request
   state = send(request);
+  delete[] request;
   if(state != ERR_NONE) {
     return(state);
+  }
+  
+  delay(1000);
+  
+  // get the response length
+  uint16_t numBytes = getNumBytes();
+  if(numBytes == 0) {
+    return(ERR_RESPONSE_MALFORMED_AT);
   }
   
   // read the response
-  String raw = receive();
+  char* raw = new char[numBytes];
+  size_t rawLength = receive((uint8_t*)raw);
+  if(rawLength == 0) {
+    delete[] raw;
+    return(ERR_RESPONSE_MALFORMED);
+  }
   
   // close the TCP connection
-  state = closeTcp();
+  state = closeTransportConnection();
   if(state != ERR_NONE) {
+    delete[] raw;
     return(state);
   }
   
-  // parse the response
-  int32_t numBytesIndex = raw.indexOf(":");
-  if(numBytesIndex == -1) {
-    return(ERR_RESPONSE_MALFORMED_AT);
-  }
-  response = raw.substring(numBytesIndex + 1);
-  
-  // return the HTTP status code
-  int32_t spaceIndex = response.indexOf(" ");
-  if(spaceIndex == -1) {
+  // get the response body
+  char* responseStart = strstr(raw, "\r\n");
+  if(responseStart == NULL) {
+    delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
   }
-  String statusString = response.substring(spaceIndex + 1, spaceIndex + 4);
-  return(statusString.toInt());
+  char* responseStr = new char[raw + rawLength - responseStart - 1];
+  strncpy(responseStr, responseStart + 2, raw + rawLength - responseStart - 1);
+  responseStr[raw + rawLength - responseStart - 2] = 0x00;
+  response = String(responseStr);
+  delete[] responseStr;
+  
+  // return the HTTP status code
+  char* statusStart = strchr(raw, ' ');
+  delete[] raw;
+  if(statusStart == NULL) {
+    return(ERR_RESPONSE_MALFORMED);
+  }
+  char statusStr[4];
+  strncpy(statusStr, statusStart + 1, 3);
+  statusStr[3] = 0x00;
+  return(atoi(statusStr));
 }
 
-uint16_t ESP8266::HttpPost(const char* url, String content, String& response, const char* contentType) {
-  String urlString(url);
-  String contentTypeString(contentType);
-  
+uint16_t ESP8266::HttpPost(const char* url, const char* content, String& response, const char* contentType) {
   // get the host address and endpoint
-  int32_t resourceIndex = urlString.indexOf("/", 7);
-  if(resourceIndex == -1) {
-    return(ERR_URL_MALFORMED);
+  char* httpPrefix = strstr(url, "http://");
+  char* endpoint;
+  char* host;
+  if(httpPrefix != NULL) {
+    // find the host string
+    char* hostStart = strchr(url, '/');
+    hostStart = strchr(hostStart + 1, '/');
+    char* hostEnd = strchr(hostStart + 1, '/');
+    host = new char[hostEnd - hostStart];
+    strncpy(host, hostStart + 1, hostEnd - hostStart - 1);
+    host[hostEnd - hostStart - 1] = 0x00;
+    
+    // find the endpoint string
+    endpoint = new char[url + strlen(url) - hostEnd + 1];
+    strcpy(endpoint, hostEnd);
+    } else {
+    // find the host string
+    char* hostEnd = strchr(url, '/');
+    host = new char[hostEnd - url + 1];
+    strncpy(host, url, hostEnd - url);
+    host[hostEnd - url] = 0x00;
+    
+    // find the endpoint string
+    endpoint = new char[url + strlen(url) - hostEnd + 1];
+    strcpy(endpoint, hostEnd);
   }
-  String host = urlString.substring(7, resourceIndex);
-  String endpoint = urlString.substring(resourceIndex);
   
   // build the POST request
-  String request = "POST ";
-  request += endpoint;
-  request += " HTTP/1.1\r\nHost: ";
-  request += host;
-  request += "\r\nContent-Type: ";
-  request += contentTypeString;
-  request += "\r\nContent-length: ";
-  request += content.length();
-  request += "\r\n\r\n";
+  char contentLengthStr[8];
+  itoa(strlen(content), contentLengthStr, 10);
+  char* request = new char[strlen(endpoint) + strlen(host) + strlen(contentType) + strlen(contentLengthStr) + strlen(content) + 64];
+  strcpy(request, "POST ");
+  strcat(request, endpoint);
+  strcat(request, " HTTP/1.1\r\nHost: ");
+  strcat(request, host);
+  strcat(request, "\r\nContent-Type: ");
+  strcat(request, contentType);
+  strcat(request, "\r\nContent-length: ");
+  strcat(request, contentLengthStr);
+  strcat(request, "\r\n\r\n");
+  strcat(request, content);
+  strcat(request, "\r\n\r\n");
+  
+  delete[] endpoint;
   
   // create TCP connection
-  uint8_t state = startTcp(host.c_str());
+  uint8_t state = openTransportConnection(host, "TCP", portHttp);
+  delete[] host;
   if(state != ERR_NONE) {
     return(state);
   }
   
   // send the POST request
   state = send(request);
+  delete[] request;
   if(state != ERR_NONE) {
     return(state);
   }
   
-  // close the TCP connection
-  state = closeTcp();
-  if(state != ERR_NONE) {
-    return(state);
+  delay(2000);
+  
+  // get the response length
+  uint16_t numBytes = getNumBytes();
+  if(numBytes == 0) {
+    return(ERR_RESPONSE_MALFORMED_AT);
   }
   
   // read the response
-  String raw = receive();
-  
-  // parse the response
-  int32_t numBytesIndex = raw.indexOf(":");
-  if(numBytesIndex == -1) {
-    return(ERR_RESPONSE_MALFORMED_AT);
-  }
-  response = raw.substring(numBytesIndex + 1);
-  
-  // return the HTTP status code
-  int32_t spaceIndex = response.indexOf(" ");
-  if(spaceIndex == -1) {
+  char* raw = new char[numBytes];
+  size_t rawLength = receive((uint8_t*)raw);
+  if(rawLength == 0) {
+    delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
   }
-  String statusString = response.substring(spaceIndex + 1, spaceIndex + 4);
-  return(statusString.toInt());
+  
+  // close the TCP connection
+  state = closeTransportConnection();
+  if(state != ERR_NONE) {
+    delete[] raw;
+    return(state);
+  }
+  
+  // get the response body
+  char* responseStart = strstr(raw, "\r\n");
+  if(responseStart == NULL) {
+    delete[] raw;
+    return(ERR_RESPONSE_MALFORMED);
+  }
+  char* responseStr = new char[raw + rawLength - responseStart - 1];
+  strncpy(responseStr, responseStart + 2, raw + rawLength - responseStart - 1);
+  responseStr[raw + rawLength - responseStart - 2] = 0x00;
+  response = String(responseStr);
+  delete[] responseStr;
+  
+  // return the HTTP status code
+  char* statusStart = strchr(raw, ' ');
+  delete[] raw;
+  if(statusStart == NULL) {
+    return(ERR_RESPONSE_MALFORMED);
+  }
+  char statusStr[4];
+  strncpy(statusStr, statusStart + 1, 3);
+  statusStr[3] = 0x00;
+  return(atoi(statusStr));
 }
 
-uint8_t ESP8266::MqttConnect(String host, String clientId, String username, String password) {
-  _MqttHost = host;
-  
+uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char* username, const char* password) {
   // encode packet length
-  uint32_t len = 16 + clientId.length() + username.length() + password.length();
+  uint32_t len = strlen(clientId) + strlen(username) + strlen(password) + 16;
   /*uint8_t encoded[] = {0, 0, 0, 0};
   MqttEncodeLength(len, encoded);*/
   
@@ -213,113 +311,93 @@ uint8_t ESP8266::MqttConnect(String host, String clientId, String username, Stri
   packet[5] = 'Q';
   packet[6] = 'T';
   packet[7] = 'T';
-  packet[8] = 0x04;         //protocol level
-  packet[9] = 0b11000010;   //flags: user name + password + clean session
-  packet[10] = 0x00;        //keep-alive interval MSB
-  packet[11] = 0x3C;        //keep-alive interval LSB
+  packet[8] = 0x04;         // protocol level
+  packet[9] = 0b11000010;   // flags: user name + password + clean session
+  packet[10] = 0x00;        // keep-alive interval MSB
+  packet[11] = 0x3C;        // keep-alive interval LSB
   
   packet[12] = 0x00;
-  packet[13] = clientId.length();
-  for(uint8_t i = 0; i < clientId.length(); i++) {
-    packet[i + 14] = (uint8_t)clientId.charAt(i);
-  }
+  packet[13] = strlen(clientId);
+  memcpy(packet + 14, clientId, strlen(clientId));
   
-  packet[14 + clientId.length()] = 0x00;
-  packet[15 + clientId.length()] = username.length();
-  for(uint8_t i = 0; i < username.length(); i++) {
-    packet[i + 16 + clientId.length()] = (uint8_t)username.charAt(i);
-  }
+  packet[14 + strlen(clientId)] = 0x00;
+  packet[15 + strlen(clientId)] = strlen(username);
+  memcpy(packet + 16 + strlen(clientId), username, strlen(username));
   
-  packet[16 + clientId.length() + username.length()] = 0x00;
-  packet[17 + clientId.length() + username.length()] = password.length();
-  for(uint8_t i = 0; i < password.length(); i++) {
-    packet[i + 18 + clientId.length() + username.length()] = (uint8_t)password.charAt(i);
-  }
+  packet[16 + strlen(clientId) + strlen(username)] = 0x00;
+  packet[17 + strlen(clientId) + strlen(username)] = strlen(password);
+  memcpy(packet + 18 + strlen(clientId) + strlen(username), password, strlen(password));
   
   // create TCP connection
-  uint8_t state = openTransportConnection(_MqttHost.c_str(), "TCP", portMqtt, 7200);
+  uint8_t state = openTransportConnection(host, "TCP", portMqtt, 7200);
   if(state != ERR_NONE) {
+    delete[] packet;
     return(state);
   }
   
   // send MQTT packet
   state = send(packet, len + 2);
+  delete[] packet;
   if(state != ERR_NONE) {
     return(state);
   }
   
-  // read the response
-  String raw = receive();
-  
-  // parse the response
-  int32_t numBytesIndex = raw.indexOf(":");
-  if(numBytesIndex == -1) {
+  // get the response length (MQTT response has to be 4 bytes long)
+  uint16_t numBytes = getNumBytes();
+  if(numBytes != 4) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
   
-  uint8_t response[] = {0, 0, 0, 0};
-  for(uint8_t i = 0; i < 4; i++) {
-    response[i] = raw.charAt(i + numBytesIndex + 1);
+  // read the response
+  uint8_t* response = new uint8_t[numBytes];
+  receive(response);
+  if((response[0x00] == MQTT_CONNACK << 4) && (response[0x01] == 2)) {
+    uint8_t returnCode = response[0x03];
+    delete[] response;
+    return(returnCode);
   }
   
-  if(response[3] != 0x00) {
-    return(ERR_MQTT_CONNECTION_REFUSED);
-  }
-  
-  return(ERR_NONE);
+  delete[] response;
+  return(ERR_RESPONSE_MALFORMED);
 }
 
-uint8_t ESP8266::MqttPublish(String topic, String message) {
+uint8_t ESP8266::MqttPublish(const char* topic, const char* message) {
   // encode packet length
-  uint32_t len = 2 + topic.length() + message.length();
+  uint32_t len = 2 + strlen(topic) + strlen(message);
   
   // build the PUBLISH packet
   uint8_t* packet = new uint8_t[len + 2];
-  packet[0] = (MQTT_PUBLISH << 4) & 0xFF;
+  packet[0] = (MQTT_PUBLISH << 4);
   packet[1] = len;
-  
   packet[2] = 0x00;
-  packet[3] = topic.length();
-  for(uint8_t i = 0; i < topic.length(); i++) {
-    packet[i + 4] = (uint8_t)topic.charAt(i);
-  }
-  
-  for(uint8_t i = 0; i < message.length(); i++) {
-    packet[i + 4 + topic.length()] = (uint8_t)message.charAt(i);
-  }
+  packet[3] = strlen(topic);
+  memcpy(packet + 4, topic, strlen(topic));
+  memcpy(packet + 4 + strlen(topic), message, strlen(message));
   
   // send MQTT packet
   uint8_t state = send(packet, len + 2);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  delete[] packet;
+  return(state);
   
-  return(ERR_NONE);
+  //TODO: implement QoS > 0 and PUBACK response checking
 }
 
-uint8_t ESP8266::startTcp(const char* host, uint16_t tcpKeepAlive) {
-  return(openTransportConnection(host, "TCP", portTcp, tcpKeepAlive));
-}
-
-uint8_t ESP8266::closeTcp() {
-  return(closeTransportConnection());
-}
-
-uint8_t ESP8266::startUdp(const char* host) {
-  return(openTransportConnection(host, "UDP", portUdp));
-}
-
-uint8_t ESP8266::closeUdp() {
-  return(closeTransportConnection());
-}
-
-uint8_t ESP8266::send(String data) {
+uint8_t ESP8266::send(const char* data) {
+  // build AT command
+  char lenStr[8];
+  itoa(strlen(data), lenStr, 10);
+  const char* atStr = "AT+CIPSEND=";
+  char* cmd = new char[strlen(atStr) + strlen(lenStr)];
+  strcpy(cmd, atStr);
+  strcat(cmd, lenStr);
+  
   // send data length in bytes
-  String cmd = "AT+CIPSEND=";
-  cmd += data.length();
   if(!_mod->ATsendCommand(cmd)) {
+    delete[] cmd;
     return(ERR_AT_FAILED);
   }
+  
+  delete[] cmd;
   
   // send data
   if(!_mod->ATsendCommand(data)) {
@@ -330,12 +408,21 @@ uint8_t ESP8266::send(String data) {
 }
 
 uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
-  // send data length in bytes
-  String cmd = "AT+CIPSEND=";
-  cmd += len;
+  // build AT command
+  char lenStr[8];
+  itoa(len, lenStr, 10);
+  const char atStr[] = "AT+CIPSEND=";
+  char* cmd = new char[strlen(atStr) + strlen(lenStr)];
+  strcpy(cmd, atStr);
+  strcat(cmd, lenStr);
+  
+  // send command and data length in bytes
   if(!_mod->ATsendCommand(cmd)) {
+    delete[] cmd;
     return(ERR_AT_FAILED);
   }
+  
+  delete[] cmd;
   
   // send data
   if(!_mod->ATsendData(data, len)) {
@@ -345,30 +432,13 @@ uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
   return(ERR_NONE);
 }
 
-String ESP8266::receive(uint32_t timeout) {
-  String data;
-  uint32_t start = millis();
-  while(millis() - start < timeout) {
-    while(_mod->ModuleSerial->available() > 0) {
-      char c = _mod->ModuleSerial->read();
-      #ifdef DEBUG
-        Serial.print(c);
-      #endif
-      data += c;
-    }
-  }
-  return(data);
-}
-
-uint32_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
-  uint8_t i = 0;
+size_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
+  size_t i = 0;
   uint32_t start = millis();
   while(millis() - start < timeout) {
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
-      #ifdef DEBUG
-        Serial.print(b);
-      #endif
+      DEBUG_PRINT(c);
       data[i] = b;
       i++;
     }
@@ -377,19 +447,37 @@ uint32_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
 }
 
 uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
-  String cmd = "AT+CIPSTART=\"";
-  cmd += protocol;
-  cmd += "\",\"";
-  cmd += host;
-  cmd += "\",";
-  cmd += port;
-  if((protocol == "TCP") && (tcpKeepAlive > 0)) {
-    cmd += ",";
-    cmd += tcpKeepAlive;
+  char portStr[6];
+  itoa(port, portStr, 10);
+  char tcpKeepAliveStr[6];
+  itoa(tcpKeepAlive, tcpKeepAliveStr, 10);
+  
+  const char* atStr = "AT+CIPSTART=\"";
+  uint8_t cmdLen = strlen(atStr) + strlen(protocol) + strlen(host) + strlen(portStr) + 5;
+  
+  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
+	  cmdLen += strlen(tcpKeepAliveStr) + 1;
   }
+  
+  char* cmd = new char[cmdLen];
+  strcpy(cmd, atStr);
+  strcat(cmd, protocol);
+  strcat(cmd, "\",\"");
+  strcat(cmd, host);
+  strcat(cmd, "\",");
+  strcat(cmd, portStr);
+  
+  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
+    strcat(cmd, ",");
+    strcat(cmd, tcpKeepAliveStr);
+  }
+  
   if(!_mod->ATsendCommand(cmd)) {
+    delete[] cmd;
     return(ERR_AT_FAILED);
   }
+  
+  delete[] cmd;
   return(ERR_NONE);
 }
 
@@ -425,4 +513,44 @@ uint32_t ESP8266::MqttDecodeLength(uint8_t* encoded) {
     }
   } while((encoded[i] & 128) != 0);
   return len;
+}
+
+uint16_t ESP8266::getNumBytes(uint32_t timeout) {
+  // wait for available data
+  uint32_t start = millis();
+  while(_mod->ModuleSerial->available() < 10) {
+    if(millis() - start >= timeout) {
+      return(0);
+    }
+  }
+  
+  // read response
+  char rawStr[20];
+  uint8_t i = 0;
+  start = millis();
+  while(_mod->ModuleSerial->available() > 0) {
+    char c = _mod->ModuleSerial->read();
+    rawStr[i++] = c;
+    if(c == ':') {
+      rawStr[i++] = 0;
+      break;
+    }
+    if(millis() - start >= timeout) {
+      rawStr[i++] = 0;
+      break;
+    }
+  }
+  
+  // get the number of bytes in response
+  char* pch = strtok(rawStr, ",:");
+  if(pch == NULL) {
+    return(0);
+  }
+  
+  pch = strtok(NULL, ",:");
+  if(pch == NULL) {
+    return(0);
+  }
+  
+  return(atoi(pch));
 }

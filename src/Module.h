@@ -17,7 +17,7 @@ class Module {
     SoftwareSerial* ModuleSerial;
     
     uint32_t baudrate = 9600;
-    String AtLineFeed = "\r\n";
+    const char* AtLineFeed = "\r\n";
     
     uint8_t init(uint8_t interface, uint8_t gpio);
     

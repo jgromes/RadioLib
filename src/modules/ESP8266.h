@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+// MQTT packet types
 #define MQTT_CONNECT                                  0x01
 #define MQTT_CONNACK                                  0x02
 #define MQTT_PUBLISH                                  0x03
@@ -23,7 +24,7 @@ class ESP8266 {
     ESP8266(Module* module);
     
     // Port numbers
-    uint16_t portTcp, portUdp, portMqtt;
+    uint16_t portHttp, portMqtt;
     
     // Basic methods
     uint8_t begin(long speed);
@@ -32,31 +33,26 @@ class ESP8266 {
     
     // HTTP methods
     uint16_t HttpGet(const char* url, String& response);
-    uint16_t HttpPost(const char* url, String content, String& response, const char* contentType = "");
+    uint16_t HttpPost(const char* url, const char* content, String& response, const char* contentType = "text/plain");
     
     // MQTT methods
-    uint8_t MqttConnect(String host, String clientId, String username, String password);
-    uint8_t MqttPublish(String topic, String message);
+    uint8_t MqttConnect(const char* host, const char* clientId, const char* username, const char* password);
+    uint8_t MqttPublish(const char* topic, const char* message);
     
     // Transport layer methods
-    uint8_t startTcp(const char* host, uint16_t tcpKeepAlive = 0);
-    uint8_t closeTcp();
-    uint8_t startUdp(const char* host);
-    uint8_t closeUdp();
-    uint8_t send(String data);
+    uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
+    uint8_t closeTransportConnection();
+    uint8_t send(const char* data);
     uint8_t send(uint8_t* data, uint32_t len);
-    String receive(uint32_t timeout = 10000);
-    uint32_t receive(uint8_t* data, uint32_t timeout = 10000);
+    size_t receive(uint8_t* data, uint32_t timeout = 10000);
     
   private:
     Module* _mod;
     
-    uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
-    uint8_t closeTransportConnection();
-    
-    String _MqttHost;
     void MqttEncodeLength(uint32_t len, uint8_t* encoded);
     uint32_t MqttDecodeLength(uint8_t* encoded);
+    
+    uint16_t getNumBytes(uint32_t timeout = 10000);
 };
 
 #endif

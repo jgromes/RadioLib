@@ -11,10 +11,8 @@ Module::Module(int cs, int tx, int rx, int int0, int int1) {
 }
 
 uint8_t Module::init(uint8_t interface, uint8_t gpio) {
-  #ifdef DEBUG
-    Serial.begin(9600);
-    Serial.println();
-  #endif
+  DEBUG_BEGIN(9600);
+  DEBUG_PRINTLN();
   
   switch(interface) {
     case USE_SPI:
