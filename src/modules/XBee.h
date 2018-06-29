@@ -54,8 +54,8 @@ class XBee: public ISerial {
     
     uint8_t begin(long speed);
     
-    uint8_t setDestinationAddress(const char destinationAddressHigh[], const char destinationAddressLow[]);
-    uint8_t setPanId(const char panId[]);
+    uint8_t setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow);
+    uint8_t setPanId(const char* panId);
     
   private:
     bool enterCmdMode();

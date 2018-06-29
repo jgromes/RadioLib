@@ -49,7 +49,7 @@ uint8_t XBee::begin(long speed) {
   return(ERR_NONE);
 }
 
-uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const char destinationAddressLow[]) {
+uint8_t XBee::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -58,17 +58,23 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   
   // set higher address bytes
   DEBUG_PRINTLN_STR("Setting address (high) ...");
-  String addressHigh = "ATDH";
-  addressHigh += destinationAddressHigh;
-  if(!_mod->ATsendCommand(addressHigh)) {
+  char* addressHigh = new char[strlen(destinationAddressHigh) + 4];
+  strcpy(addressHigh, "ATDH");
+  strcat(addressHigh, destinationAddressHigh);
+  bool res = _mod->ATsendCommand(addressHigh);
+  delete[] addressHigh;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
   
   // set lower address bytes
   DEBUG_PRINTLN_STR("Setting address (low) ...");
-  String addressLow = "ATDL";
-  addressLow += destinationAddressLow;
-  if(!_mod->ATsendCommand(addressLow)) {
+  char* addressLow = new char[strlen(destinationAddressLow) + 4];
+  strcpy(addressLow, "ATDL");
+  strcat(addressLow, destinationAddressLow);
+  res = _mod->ATsendCommand(addressLow);
+  delete[] addressLow;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
   
@@ -81,7 +87,7 @@ uint8_t XBee::setDestinationAddress(const char destinationAddressHigh[], const c
   return(ERR_NONE);
 }
 
-uint8_t XBee::setPanId(const char panId[]) {
+uint8_t XBee::setPanId(const char* panId) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -90,9 +96,12 @@ uint8_t XBee::setPanId(const char panId[]) {
   
   // set PAN ID
   DEBUG_PRINTLN_STR("Setting PAN ID ...");
-  String panIdCmd = "ATID";
-  panIdCmd += panId;
-  if(!_mod->ATsendCommand(panIdCmd)) {
+  char* cmd = new char[strlen(panId) + 4];
+  strcpy(cmd, "ATID");
+  strcat(cmd, panId);
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
   

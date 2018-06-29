@@ -23,7 +23,6 @@ class Module {
     
     void ATemptyBuffer();
     bool ATgetResponse();
-    bool ATsendCommand(String& cmd);
     bool ATsendCommand(const char* cmd);
     bool ATsendData(uint8_t* data, uint32_t len);
     

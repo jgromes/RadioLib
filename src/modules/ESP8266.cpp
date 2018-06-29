@@ -67,12 +67,12 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   strcat(cmd, "\",\"");
   strcat(cmd, password);
   strcat(cmd, "\"");
-
-  if(!_mod->ATsendCommand(cmd)) {
-    delete[] cmd;
+  
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
-  delete[] cmd;
   
   // disable multiple connection mode
   if(!_mod->ATsendCommand("AT+CIPMUX=0")) {
@@ -392,12 +392,11 @@ uint8_t ESP8266::send(const char* data) {
   strcat(cmd, lenStr);
   
   // send data length in bytes
-  if(!_mod->ATsendCommand(cmd)) {
-    delete[] cmd;
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
-  
-  delete[] cmd;
   
   // send data
   if(!_mod->ATsendCommand(data)) {
@@ -417,12 +416,11 @@ uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
   strcat(cmd, lenStr);
   
   // send command and data length in bytes
-  if(!_mod->ATsendCommand(cmd)) {
-    delete[] cmd;
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
-  
-  delete[] cmd;
   
   // send data
   if(!_mod->ATsendData(data, len)) {
@@ -472,12 +470,12 @@ uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol,
     strcat(cmd, tcpKeepAliveStr);
   }
   
-  if(!_mod->ATsendCommand(cmd)) {
-    delete[] cmd;
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
     return(ERR_AT_FAILED);
   }
   
-  delete[] cmd;
   return(ERR_NONE);
 }
 

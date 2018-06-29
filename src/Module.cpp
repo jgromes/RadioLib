@@ -49,10 +49,6 @@ void Module::ATemptyBuffer() {
   }
 }
 
-bool Module::ATsendCommand(String& cmd) {
-  return(ATsendCommand(cmd.c_str()));
-}
-
 bool Module::ATsendCommand(const char* cmd) {
   ATemptyBuffer();
   ModuleSerial->print(cmd);
