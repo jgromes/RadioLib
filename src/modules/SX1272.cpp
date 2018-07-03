@@ -1,262 +1,55 @@
 #include "SX1272.h"
 
-SX1272::SX1272(Module* module) {
-  _mod = module;
+SX1272::SX1272(Module* mod) : SX127x(mod) {
+  
 }
 
-uint8_t SX1272::begin(Bandwidth bw, SpreadingFactor sf, CodingRate cr, uint16_t addrEeprom) {
-  // copy LoRa modem settings
-  _bw = bw;
-  _sf = sf;
-  _cr = cr;
-  
-  // ESP32-only: initialize  EEPROM
-  #ifdef ESP32
-    if(!EEPROM.begin(9)) {
-      DEBUG_PRINTLN_STR("Unable to initialize EEPROM");
-      return(ERR_EEPROM_NOT_INITIALIZED);
-    }
-  #endif
-  
-  // copy EEPROM start address
-  _addrEeprom = addrEeprom;
-  
-  // check if the node has address
-  bool hasAddress = false;
-  for(uint16_t i = 0; i < 8; i++) {
-    if(EEPROM.read(_addrEeprom + i) != 255) {
-      hasAddress = true;
-      break;
-    }
+uint8_t SX1272::begin(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t addrEeprom) {
+  uint8_t state = SX127x::begin(freq, bw, sf, cr, syncWord, addrEeprom);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
-  // generate new address
-  if(!hasAddress) {
-    randomSeed(analogRead(5));
-    generateLoRaAdress();
-  }
-  
-  #ifdef DEBUG
-    Serial.print("LoRa node address string: ");
-  #endif
-  for(uint8_t i = 0; i < 8; i++) {
-    _address[i] = EEPROM.read(i);
-    #ifdef DEBUG
-      Serial.print(_address[i], HEX);
-      if(i < 7) {
-        Serial.print(":");
-      } else {
-        Serial.println();
-      }
-    #endif
-  }
-  
-  // set module properties
-  _mod->init(USE_SPI, INT_BOTH);
-  
-  // try to find the SX1272 chip
-  uint8_t i = 0;
-  bool flagFound = false;
-  while((i < 10) && !flagFound) {
-    uint8_t version = _mod->SPIreadRegister(SX1272_REG_VERSION);
-    if(version == 0x22) {
-      flagFound = true;
-    } else {
-      #ifdef DEBUG
-        Serial.print("SX1272 not found! (");
-        Serial.print(i + 1);
-        Serial.print(" of 10 tries) SX1272_REG_VERSION == ");
-        
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
-        Serial.print(buffHex);
-        Serial.println();
-      #endif
-      delay(1000);
-      i++;
-    }
-  }
-  
-  if(!flagFound) {
-    DEBUG_PRINTLN_STR("No SX1272 found!");
-    SPI.end();
-    return(ERR_CHIP_NOT_FOUND);
-  } else {
-    DEBUG_PRINTLN_STR("Found SX1272! (match by SX1272_REG_VERSION == 0x12)");
-  }
-  
-  // configure LoRa modem
-  return(config(_bw, _sf, _cr));
+  return(config(freq, bw, sf, cr, syncWord));
 }
 
-uint8_t SX1272::transmit(Packet& pack) {
-  char buffer[256];
-  
-  // copy packet source and destination addresses into buffer
-  for(uint8_t i = 0; i < 8; i++) {
-    buffer[i] = pack.source[i];
-    buffer[i+8] = pack.destination[i];
-  }
-  
-  // copy packet data into buffer
-  for(uint8_t i = 0; i < pack.length; i++) {
-    buffer[i+16] = pack.data[i];
-  }
-  
-  // set mode to standby
-  setMode(SX1272_STANDBY);
-  
-  // set DIO pin mapping
-  _mod->SPIsetRegValue(SX1272_REG_DIO_MAPPING_1, SX1272_DIO0_TX_DONE, 7, 6);
-  
-  // clear interrupt flags
-  clearIRQFlags();
-  
-  // check overall packet length
-  if(pack.length > 256) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-  
-  // write packet to FIFO
-  _mod->SPIsetRegValue(SX1272_REG_PAYLOAD_LENGTH, pack.length);
-  _mod->SPIsetRegValue(SX1272_REG_FIFO_TX_BASE_ADDR, SX1272_FIFO_TX_BASE_ADDR_MAX);
-  _mod->SPIsetRegValue(SX1272_REG_FIFO_ADDR_PTR, SX1272_FIFO_TX_BASE_ADDR_MAX);
-  _mod->SPIwriteRegisterBurstStr(SX1272_REG_FIFO, buffer, pack.length);
-  
-  
-  // set mode to transmit
-  setMode(SX1272_TX);
-  
-  // wait for transmission end
-  unsigned long start = millis();
-  while(!_mod->getInt0State()) {
-    DEBUG_PRINT('.');
-  }
-  
-  // clear interrupt flags
-  clearIRQFlags();
-  
-  return(ERR_NONE);
-}
-
-uint8_t SX1272::receive(Packet& pack) {
-  char buffer[256];
-  uint32_t startTime = millis();
-  
-  // set mode to standby
-  setMode(SX1272_STANDBY);
-  
-  // set DIO pin mapping
-  _mod->SPIsetRegValue(SX1272_REG_DIO_MAPPING_1, SX1272_DIO0_RX_DONE | SX1272_DIO1_RX_TIMEOUT, 7, 4);
-  
-  // clear interrupt flags
-  clearIRQFlags();
-  
-  // set FIFO address pointers
-  _mod->SPIsetRegValue(SX1272_REG_FIFO_RX_BASE_ADDR, SX1272_FIFO_RX_BASE_ADDR_MAX);
-  _mod->SPIsetRegValue(SX1272_REG_FIFO_ADDR_PTR, SX1272_FIFO_RX_BASE_ADDR_MAX);
-  
-  // set mode to receive
-  setMode(SX1272_RXSINGLE);
-  
-  // wait for packet reception or timeout
-  while(!_mod->getInt0State()) {
-    if(_mod->getInt1State()) {
-      clearIRQFlags();
-      return(ERR_RX_TIMEOUT);
-    }
-  }
-  
-  // check received packet CRC
-  if(_mod->SPIgetRegValue(SX1272_REG_IRQ_FLAGS, 5, 5) == SX1272_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
-    return(ERR_CRC_MISMATCH);
-  }
-  
-  // get header type
-  uint8_t headerMode = _mod->SPIgetRegValue(SX1272_REG_MODEM_CONFIG_1, 0, 0);
-  if(headerMode == SX1272_HEADER_EXPL_MODE) {
-    pack.length = _mod->SPIgetRegValue(SX1272_REG_RX_NB_BYTES);
-  }
-  
-  // read packet from FIFO
-  _mod->SPIreadRegisterBurstStr(SX1272_REG_FIFO, pack.length, buffer);
-  
-  // clear interrupt flags
-  clearIRQFlags();
-  
-  // get packet source and destination addresses from buffer
-  for(uint8_t i = 0; i < 8; i++) {
-    pack.source[i] = buffer[i];
-    pack.destination[i] = buffer[i+8];
-  }
-  
-  // get packet source and destination addresses from buffer
-  for(uint8_t i = 16; i < pack.length; i++) {
-    pack.data[i-16] = buffer[i];
-  }
-  pack.data[pack.length-16] = 0;
-  
-  // measure overall datarate
-  uint32_t elapsedTime = millis() - startTime;
-  dataRate = (pack.length*8.0)/((float)elapsedTime/1000.0);
-  
-  // get packet RSSI
-  lastPacketRSSI = getLastPacketRSSI();
-  
-  return(ERR_NONE);
-}
-
-uint8_t SX1272::sleep() {
-  return(setMode(0b00000000));
-}
-
-uint8_t SX1272::standby() {
-  return(setMode(0b00000001));
-}
-
-uint8_t SX1272::setBandwidth(Bandwidth bw) {
-  uint8_t state = config(bw, _sf, _cr);
+uint8_t SX1272::setBandwidth(uint32_t bw) {
+  uint8_t state = SX1272::config(bw, _sf, _cr, _freq, _syncWord);
   if(state == ERR_NONE) {
     _bw = bw;
   }
   return(state);
 }
 
-uint8_t SX1272::setSpreadingFactor(SpreadingFactor sf) {
-  uint8_t state = config(_bw, sf, _cr);
+uint8_t SX1272::setSpreadingFactor(uint8_t sf) {
+  uint8_t state = SX1272::config(_bw, sf, _cr, _freq, _syncWord);
   if(state == ERR_NONE) {
     _sf = sf;
   }
   return(state);
 }
 
-uint8_t SX1272::setCodingRate(CodingRate cr) {
-  uint8_t state = config(_bw, _sf, cr);
+uint8_t SX1272::setCodingRate(uint8_t cr) {
+  uint8_t state = SX1272::config(_bw, _sf, cr, _freq, _syncWord);
   if(state == ERR_NONE) {
     _cr = cr;
   }
   return(state);
 }
 
-void SX1272::generateLoRaAdress() {
-  for(uint8_t i = _addrEeprom; i < (_addrEeprom + 8); i++) {
-    EEPROM.write(i, (uint8_t)random(0, 256));
-  }
-}
-
-uint8_t SX1272::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr) {
+uint8_t SX1272::config(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord) {
   uint8_t status = ERR_NONE;
   uint8_t newBandwidth, newSpreadingFactor, newCodingRate;
   
-  //check the supplied bw, cr and sf values
+  // check the supplied BW, CR and SF values
   switch(bw) {
-    case BW_125_00_KHZ:
+    case 125000:
       newBandwidth = SX1272_BW_125_00_KHZ;
       break;
-    case BW_250_00_KHZ:
+    case 250000:
       newBandwidth = SX1272_BW_250_00_KHZ;
       break;
-    case BW_500_00_KHZ:
+    case 500000:
       newBandwidth = SX1272_BW_500_00_KHZ;
       break;
     default:
@@ -264,130 +57,107 @@ uint8_t SX1272::config(Bandwidth bw, SpreadingFactor sf, CodingRate cr) {
   }
   
   switch(sf) {
-    case SF_6:
-      newSpreadingFactor = SX1272_SF_6;
+    case 6:
+      newSpreadingFactor = SX127X_SF_6;
       break;
-    case SF_7:
-      newSpreadingFactor = SX1272_SF_7;
+    case 7:
+      newSpreadingFactor = SX127X_SF_7;
       break;
-    case SF_8:
-      newSpreadingFactor = SX1272_SF_8;
+    case 8:
+      newSpreadingFactor = SX127X_SF_8;
       break;
-    case SF_9:
-      newSpreadingFactor = SX1272_SF_9;
+    case 9:
+      newSpreadingFactor = SX127X_SF_9;
       break;
-    case SF_10:
-      newSpreadingFactor = SX1272_SF_10;
+    case 10:
+      newSpreadingFactor = SX127X_SF_10;
       break;
-    case SF_11:
-      newSpreadingFactor = SX1272_SF_11;
+    case 11:
+      newSpreadingFactor = SX127X_SF_11;
       break;
-    case SF_12:
-      newSpreadingFactor = SX1272_SF_12;
+    case 12:
+      newSpreadingFactor = SX127X_SF_12;
       break;
     default:
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
   switch(cr) {
-    case CR_4_5:
+    case 5:
       newCodingRate = SX1272_CR_4_5;
       break;
-    case CR_4_6:
+    case 6:
       newCodingRate = SX1272_CR_4_6;
       break;
-    case CR_4_7:
+    case 7:
       newCodingRate = SX1272_CR_4_7;
       break;
-    case CR_4_8:
+    case 8:
       newCodingRate = SX1272_CR_4_8;
       break;
     default:
       return(ERR_INVALID_CODING_RATE);
   }
   
-  // set mode to SLEEP
-  status = setMode(SX1272_SLEEP);
+  if((freq < 137.0) || (freq > 525.0)) {
+    return(ERR_INVALID_FREQUENCY);
+  }
+  
+  // execute common part
+  status = SX1272::configCommon(newBandwidth, newSpreadingFactor, newCodingRate, freq, syncWord);
   if(status != ERR_NONE) {
     return(status);
   }
   
-  // set LoRa mode
-  status = _mod->SPIsetRegValue(SX1272_REG_OP_MODE, SX1272_LORA, 7, 7);
-  if(status != ERR_NONE) {
-    return(status);
-  }
+  // configuration successful, save the new settings
+  _bw = bw;
+  _sf = sf;
+  _cr = cr;
+  _freq = freq;
   
-  // set carrier frequency
-  status = _mod->SPIsetRegValue(SX1272_REG_FRF_MSB, SX1272_FRF_MSB);
-  status = _mod->SPIsetRegValue(SX1272_REG_FRF_MID, SX1272_FRF_MID);
-  status = _mod->SPIsetRegValue(SX1272_REG_FRF_LSB, SX1272_FRF_LSB);
+  return(ERR_NONE);
+}
+
+uint8_t SX1272::configCommon(uint8_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord) {
+  // configure common registers
+  uint8_t status = SX127x::config(bw, sf, cr, freq, syncWord);
   if(status != ERR_NONE) {
     return(status);
   }
   
   // output power configuration
-  status = _mod->SPIsetRegValue(SX1272_REG_PA_CONFIG, SX1272_PA_SELECT_BOOST | SX1272_OUTPUT_POWER);
-  status = _mod->SPIsetRegValue(SX1272_REG_OCP, SX1272_OCP_ON | SX1272_OCP_TRIM, 5, 0);
-  status = _mod->SPIsetRegValue(SX1272_REG_LNA, SX1272_LNA_GAIN_1 | SX1272_LNA_BOOST_ON);
-  status = _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX1272_PA_BOOST_ON, 2, 0);
+  status = _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
   if(status != ERR_NONE) {
     return(status);
   }
   
-  // turn off frequency hopping
-  status = _mod->SPIsetRegValue(SX1272_REG_HOP_PERIOD, SX1272_HOP_PERIOD_OFF);
+  // enable LNA gain setting by register
+  status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
   if(status != ERR_NONE) {
     return(status);
   }
   
-  // basic setting (bw, cr, sf, header mode and CRC)
-  if(newSpreadingFactor == SX1272_SF_6) {
-    status = _mod->SPIsetRegValue(SX1272_REG_MODEM_CONFIG_2, SX1272_SF_6 | SX1272_TX_MODE_SINGLE | SX1272_RX_CRC_MODE_OFF, 7, 2);
-    status = _mod->SPIsetRegValue(SX1272_REG_MODEM_CONFIG_1, newBandwidth | newCodingRate | SX1272_HEADER_IMPL_MODE);
-    status = _mod->SPIsetRegValue(SX1272_REG_DETECT_OPTIMIZE, SX1272_DETECT_OPTIMIZE_SF_6, 2, 0);
-    status = _mod->SPIsetRegValue(SX1272_REG_DETECTION_THRESHOLD, SX1272_DETECTION_THRESHOLD_SF_6);
+  // set SF6 optimizations
+  if(sf == SX127X_SF_6) {
+    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, bw | cr | SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_OFF, 7, 1);
   } else {
-    status = _mod->SPIsetRegValue(SX1272_REG_MODEM_CONFIG_2, newSpreadingFactor | SX1272_TX_MODE_SINGLE | SX1272_RX_CRC_MODE_ON, 7, 2);
-    status = _mod->SPIsetRegValue(SX1272_REG_MODEM_CONFIG_1, newBandwidth | newCodingRate | SX1272_HEADER_EXPL_MODE);
-    status = _mod->SPIsetRegValue(SX1272_REG_DETECT_OPTIMIZE, SX1272_DETECT_OPTIMIZE_SF_7_12, 2, 0);
-    status = _mod->SPIsetRegValue(SX1272_REG_DETECTION_THRESHOLD, SX1272_DETECTION_THRESHOLD_SF_7_12);
+    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, bw | cr | SX1272_HEADER_EXPL_MODE | SX1272_RX_CRC_MODE_ON,  7, 1);
   }
-  
   if(status != ERR_NONE) {
     return(status);
   }
   
-  // set default preamble length
-  status = _mod->SPIsetRegValue(SX1272_REG_PREAMBLE_MSB, SX1272_PREAMBLE_LENGTH_MSB);
-  status = _mod->SPIsetRegValue(SX1272_REG_PREAMBLE_LSB, SX1272_PREAMBLE_LENGTH_LSB);
+  // calculate symbol length and set low datarate optimization, if needed
+  uint16_t base = 1;
+  float symbolLength = (float)(base << _sf) / (float)_bw;
+  if(symbolLength >= 0.016) {
+    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON,  0, 0);
+  } else {
+    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF,  0, 0);
+  }
   if(status != ERR_NONE) {
     return(status);
   }
   
-  // set mode to STANDBY
-  status = setMode(SX1272_STANDBY);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // save the new settings
-  _bw = bw;
-  _sf = sf;
-  _cr = cr;
-  
-  return(ERR_NONE);
-}
-
-uint8_t SX1272::setMode(uint8_t mode) {
-  _mod->SPIsetRegValue(SX1272_REG_OP_MODE, mode, 2, 0);
-  return(ERR_NONE);
-}
-
-void SX1272::clearIRQFlags() {
-  _mod->SPIwriteRegister(SX1272_REG_IRQ_FLAGS, 0b11111111);
-}
-
-int8_t SX1272::getLastPacketRSSI() {
-  return(-164 + _mod->SPIgetRegValue(SX1272_REG_PKT_RSSI_VALUE));
+  return(status);
 }

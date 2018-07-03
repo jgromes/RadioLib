@@ -8,7 +8,11 @@
 #include "modules/HC05.h"
 #include "modules/RF69.h"
 #include "modules/SX1272.h"
+#include "modules/SX1273.h"
+#include "modules/SX1276.h"
+#include "modules/SX1277.h"
 #include "modules/SX1278.h"
+#include "modules/SX1279.h"
 #include "modules/XBee.h"
 
 #define KITE_CS_A   10

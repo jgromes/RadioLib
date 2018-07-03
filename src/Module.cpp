@@ -136,8 +136,9 @@ uint8_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   }
   
   uint8_t currentValue = SPIreadRegister(reg);
-  uint8_t newValue = currentValue & ((0b11111111 << (msb + 1)) & (0b11111111 >> (8 - lsb)));
-  SPIwriteRegister(reg, newValue | value);
+  uint8_t mask = ~((0b11111111 << (msb + 1)) | (0b11111111 >> (8 - lsb)));
+  uint8_t newValue = (currentValue & ~mask) | (value & mask);
+  SPIwriteRegister(reg, newValue);
   return(ERR_NONE);
 }
 
