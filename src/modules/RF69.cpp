@@ -4,7 +4,7 @@ RF69::RF69(Module* module) {
   _mod = module;
 }
 
-uint8_t RF69::begin() {
+uint8_t RF69::begin(float freq) {
   // set module properties
   _mod->init(USE_SPI, INT_0);
   
@@ -36,10 +36,10 @@ uint8_t RF69::begin() {
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x12)");
+    DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x24)");
   }
   
-  return(config());
+  return(config(freq));
 }
 
 uint8_t RF69::transmit(Packet& pack) {
@@ -71,9 +71,7 @@ uint8_t RF69::transmit(Packet& pack) {
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
   
   // wait for transmission end
-  while(!_mod->getInt0State()) {
-    DEBUG_PRINT('.');
-  }
+  while(!_mod->getInt0State());
   
   // clear interrupt flags
   clearIRQFlags();
@@ -131,8 +129,14 @@ uint8_t RF69::standby() {
   return(setMode(RF69_STANDBY));
 }
 
-uint8_t RF69::config() {
+uint8_t RF69::config(float freq) {
   uint8_t status = ERR_NONE;
+  
+  if(!((freq > 290.0) && (freq < 340.0) ||
+       (freq > 431.0) && (freq < 510.0) ||
+       (freq > 862.0) && (freq < 1020.0))) {
+    return(ERR_INVALID_FREQUENCY);
+  }
   
   //set mode to STANDBY
   status = setMode(RF69_STANDBY);
@@ -174,9 +178,11 @@ uint8_t RF69::config() {
   }
   
   //set carrier frequency
-  status = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, RF69_FRF_MSB, 7, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_FRF_MID, RF69_FRF_MID, 7, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_FRF_LSB, RF69_FRF_LSB, 7, 0);
+  uint32_t base = 1;
+  uint32_t FRF = (freq * (base << 19)) / 32.0;
+  status = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_FRF_LSB, FRF & 0x0000FF, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
@@ -245,10 +251,8 @@ uint8_t RF69::config() {
   }
   
   //set Rx timeouts
-  //status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START_OFF, 7, 0);
-  //status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH_OFF, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }

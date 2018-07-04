@@ -126,8 +126,8 @@
 #define RF69_FDEV_LSB                                 0x33        //  7     0
 
 //RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
-#define RF69_FRF_MSB                                  0x6C        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
-#define RF69_FRF_MID                                  0x40        //  7     0         where F(XOSC) = 32 MHz
+#define RF69_FRF_MSB                                  0xE4        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
+#define RF69_FRF_MID                                  0xC0        //  7     0         where F(XOSC) = 32 MHz
 #define RF69_FRF_LSB                                  0x00        //  7     0         default value: 915 MHz
 
 //RF69_REG_OSC_1
@@ -318,8 +318,7 @@
 #define RF69_IRQ_CRC_OK                               0b00000010  //  1     1     CRC check passed
 
 //RF69_REG_RSSI_THRESH
-//#define RF69_RSSI_THRESHOLD                           0xE4        //  7     0     RSSI threshold level (2 dB by default)
-#define RF69_RSSI_THRESHOLD                           0xDC        //  7     0
+#define RF69_RSSI_THRESHOLD                           0xE4        //  7     0     RSSI threshold level (2 dB by default)
 
 //RF69_REG_RX_TIMEOUT_1
 #define RF69_TIMEOUT_RX_START_OFF                     0x00        //  7     0     RSSI interrupt timeout disabled (default)
@@ -398,7 +397,6 @@
 
 //RF69_REG_PACKET_CONFIG_2
 #define RF69_INTER_PACKET_RX_DELAY                    0b00000000  //  7     4     delay between FIFO empty and start of new RSSI phase
-//#define RF69_INTER_PACKET_RX_DELAY                    0b00010000  //  7     4     
 #define RF69_RESTART_RX                               0b00000100  //  2     2     force receiver into wait mode
 #define RF69_AUTO_RX_RESTART_OFF                      0b00000000  //  1     1     auto Rx restart disabled
 #define RF69_AUTO_RX_RESTART_ON                       0b00000010  //  1     1     auto Rx restart enabled (default)
@@ -427,17 +425,21 @@ class RF69 {
   public:
     RF69(Module* module);
     
-    uint8_t begin();
+    uint8_t begin(float freq = 915.0);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     
     uint8_t sleep();
     uint8_t standby();
+    
+    uint8_t setFrequency(float freq);
   
   private:
     Module* _mod;
     
-    uint8_t config();
+    float _freq;
+    
+    uint8_t config(float freq);
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
