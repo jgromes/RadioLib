@@ -16,7 +16,7 @@ uint8_t RF69::begin() {
     if(version == 0x24) {
       flagFound = true;
     } else {
-      #ifdef DEBUG
+      #ifdef KITELIB_DEBUG
         Serial.print("RF69 not found! (");
         Serial.print(i + 1);
         Serial.print(" of 10 tries) RF69_REG_VERSION == ");
