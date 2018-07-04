@@ -82,10 +82,4 @@
 // XBee status codes
 #define ERR_CMD_MODE_FAILED                   0x02
 
-enum Slot {SlotA, SlotB};
-
-enum Bandwidth {BW_7_80_KHZ, BW_10_40_KHZ, BW_15_60_KHZ, BW_20_80_KHZ, BW_31_25_KHZ, BW_41_70_KHZ, BW_62_50_KHZ, BW_125_00_KHZ, BW_250_00_KHZ, BW_500_00_KHZ};
-enum SpreadingFactor {SF_6, SF_7, SF_8, SF_9, SF_10, SF_11, SF_12};
-enum CodingRate {CR_4_5, CR_4_6, CR_4_7, CR_4_8};
-
 #endif
