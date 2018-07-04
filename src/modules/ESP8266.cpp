@@ -436,7 +436,7 @@ size_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
   while(millis() - start < timeout) {
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
-      DEBUG_PRINT(c);
+      DEBUG_PRINT(b);
       data[i] = b;
       i++;
     }
