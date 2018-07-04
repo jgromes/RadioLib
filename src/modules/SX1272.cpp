@@ -37,6 +37,14 @@ uint8_t SX1272::setCodingRate(uint8_t cr) {
   return(state);
 }
 
+uint8_t SX1272::setFrequency(float freq) {
+  uint8_t state = SX1272::config(_bw, _sf, _cr, freq, _syncWord);
+  if(state == ERR_NONE) {
+    _freq = freq;
+  }
+  return(state);
+}
+
 uint8_t SX1272::config(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord) {
   uint8_t status = ERR_NONE;
   uint8_t newBandwidth, newSpreadingFactor, newCodingRate;

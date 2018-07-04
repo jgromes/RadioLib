@@ -52,6 +52,7 @@ class SX1272: public SX127x {
     uint8_t setBandwidth(uint32_t bw);
     uint8_t setSpreadingFactor(uint8_t sf);
     uint8_t setCodingRate(uint8_t cr);
+    uint8_t setFrequency(float freq);
   
   protected:
     uint8_t configCommon(uint8_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord);   // common for SX1272/73

@@ -181,7 +181,6 @@ class SX127x {
     uint8_t sleep();
     uint8_t standby();
     
-    uint8_t setFrequency(float freq);
     uint8_t setSyncWord(uint8_t syncWord);
     uint8_t setOutputPower(int8_t power);
   

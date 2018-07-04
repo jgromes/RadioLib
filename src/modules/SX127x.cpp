@@ -232,16 +232,8 @@ uint8_t SX127x::standby() {
   return(setMode(SX127X_STANDBY));
 }
 
-uint8_t SX127x::setFrequency(float freq) {
-  uint8_t state = config(_bw, _sf, _cr, freq, _syncWord);
-  if(state == ERR_NONE) {
-    _freq = freq;
-  }
-  return(state);
-}
-
 uint8_t SX127x::setSyncWord(uint8_t syncWord) {
-  uint8_t state = config(_bw, _sf, _cr, _freq, syncWord);
+  uint8_t state = SX127x::config(_bw, _sf, _cr, _freq, syncWord);
   if(state == ERR_NONE) {
     _syncWord = syncWord;
   }
