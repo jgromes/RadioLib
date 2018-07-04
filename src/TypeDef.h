@@ -67,6 +67,7 @@
 #define ERR_INVALID_OUTPUT_POWER              0x0C
 #define PREAMBLE_DETECTED                     0x0D
 #define CHANNEL_FREE                          0x0E
+#define ERR_INVALID_BIT_RATE                  0x0F
 
 // ESP8266 status codes
 #define ERR_AT_FAILED                         0x01

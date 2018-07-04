@@ -322,11 +322,11 @@
 
 //RF69_REG_RX_TIMEOUT_1
 #define RF69_TIMEOUT_RX_START_OFF                     0x00        //  7     0     RSSI interrupt timeout disabled (default)
-#define RF69_TIMEOUT_RX_START                         0x70        //  7     0     timeout will occur if RSSI interrupt is not received
+#define RF69_TIMEOUT_RX_START                         0xFF        //  7     0     timeout will occur if RSSI interrupt is not received
 
 //RF69_REG_RX_TIMEOUT_2
 #define RF69_TIMEOUT_RSSI_THRESH_OFF                  0x00        //  7     0     PayloadReady interrupt timeout disabled (default)
-#define RF69_TIMEOUT_RSSI_THRESH                      0x70        //  7     0     timeout will occur if PayloadReady interrupt is not received
+#define RF69_TIMEOUT_RSSI_THRESH                      0xFF        //  7     0     timeout will occur if PayloadReady interrupt is not received
 
 //RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
 #define RF69_PREAMBLE_MSB                             0x00        //  7     0     2-byte preamble size value
@@ -425,7 +425,7 @@ class RF69 {
   public:
     RF69(Module* module);
     
-    uint8_t begin(float freq = 915.0);
+    uint8_t begin(float freq = 434.0, uint32_t br = 48000);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     
@@ -433,13 +433,15 @@ class RF69 {
     uint8_t standby();
     
     uint8_t setFrequency(float freq);
+    uint8_t setBitRate(uint32_t br);
   
   private:
     Module* _mod;
     
     float _freq;
+    uint32_t _br;
     
-    uint8_t config(float freq);
+    uint8_t config(float freq, uint32_t br);
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };

@@ -4,7 +4,7 @@ RF69::RF69(Module* module) {
   _mod = module;
 }
 
-uint8_t RF69::begin(float freq) {
+uint8_t RF69::begin(float freq, uint32_t br) {
   // set module properties
   _mod->init(USE_SPI, INT_0);
   
@@ -39,7 +39,7 @@ uint8_t RF69::begin(float freq) {
     DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x24)");
   }
   
-  return(config(freq));
+  return(config(freq, br));
 }
 
 uint8_t RF69::transmit(Packet& pack) {
@@ -129,13 +129,34 @@ uint8_t RF69::standby() {
   return(setMode(RF69_STANDBY));
 }
 
-uint8_t RF69::config(float freq) {
+uint8_t RF69::setFrequency(float freq) {
+  uint8_t state = RF69::config(freq, _br);
+  if(state == ERR_NONE) {
+    RF69::_freq = freq;
+  }
+  return(state);
+}
+
+uint8_t RF69::setBitRate(uint32_t br) {
+  uint8_t state = RF69::config(_freq, br);
+  if(state == ERR_NONE) {
+    RF69::_br = br;
+  }
+  return(state);
+}
+
+uint8_t RF69::config(float freq, uint32_t br) {
   uint8_t status = ERR_NONE;
   
+  // check supplied settings
   if(!((freq > 290.0) && (freq < 340.0) ||
        (freq > 431.0) && (freq < 510.0) ||
        (freq > 862.0) && (freq < 1020.0))) {
     return(ERR_INVALID_FREQUENCY);
+  }
+  
+  if((br < 1200) || (br > 300000)) {
+    return(ERR_INVALID_BIT_RATE);
   }
   
   //set mode to STANDBY
@@ -163,9 +184,10 @@ uint8_t RF69::config(float freq) {
     return(status);
   }
   
-  //set bit rate (4.8 kbps by default)
-  status = _mod->SPIsetRegValue(RF69_REG_BITRATE_MSB, RF69_BITRATE_MSB, 7, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_BITRATE_LSB, RF69_BITRATE_LSB, 7, 0);
+  //set bit rate
+  uint16_t bitRate = 32000000 / br;
+  status = _mod->SPIsetRegValue(RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
