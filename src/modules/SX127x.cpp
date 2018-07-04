@@ -107,16 +107,23 @@ uint8_t SX127x::transmit(Packet& pack) {
   float n_pay = 8.0 + max(ceil((8.0 * (float)pack.length - 4.0 * (float)_sf + 28.0 + 16.0 * crc - 20.0 * ih)/(4.0 * (float)_sf - 8.0 * de)) * (float)_cr, 0);
   uint32_t timeout = ceil(symbolLength * (n_pre + n_pay + 4.25) * 1000.0);
   
-  // write packet to FIFO
+  // set mode to standby
   setMode(SX127X_STANDBY);
   
+  // set DIO mapping
   _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_TX_DONE, 7, 6);
+  
+  // clear interrupt flags
   clearIRQFlags();
-
+  
+  // set packet length
   _mod->SPIsetRegValue(SX127X_REG_PAYLOAD_LENGTH, pack.length);
+  
+  // set FIFO pointers
   _mod->SPIsetRegValue(SX127X_REG_FIFO_TX_BASE_ADDR, SX127X_FIFO_TX_BASE_ADDR_MAX);
   _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_TX_BASE_ADDR_MAX);
   
+  // write packet to FIFO
   _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.source, 8);
   _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.destination, 8);
   _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.data, pack.length - 16);
@@ -124,7 +131,7 @@ uint8_t SX127x::transmit(Packet& pack) {
   // start transmission
   setMode(SX127X_TX);
   
-  // check for timeout
+  // wait for packet transmission or timeout
   uint32_t start = millis();
   while(!_mod->getInt0State()) {
     if(millis() - start > timeout) {
@@ -133,24 +140,30 @@ uint8_t SX127x::transmit(Packet& pack) {
     }
   }
   
+  // clear interrupt flags
   clearIRQFlags();
   
   return(ERR_NONE);
 }
 
 uint8_t SX127x::receive(Packet& pack) {
-  // prepare for packet reception
+  // set mode to standby
   setMode(SX127X_STANDBY);
   
+  // set DIO pin mapping
   _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
+  
+  // clear interrupt flags
   clearIRQFlags();
   
+  // set FIFO pointers
   _mod->SPIsetRegValue(SX127X_REG_FIFO_RX_BASE_ADDR, SX127X_FIFO_RX_BASE_ADDR_MAX);
   _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_RX_BASE_ADDR_MAX);
   
-  // start receiving
+  // set mode to receive
   setMode(SX127X_RXSINGLE);
   
+  // wait for packet reception or timeout
   uint32_t start = millis();
   while(!_mod->getInt0State()) {
     if(_mod->getInt1State()) {
@@ -160,27 +173,33 @@ uint8_t SX127x::receive(Packet& pack) {
   }
   uint32_t elapsed = millis() - start;
   
+  // check integrity CRC
   if(_mod->SPIgetRegValue(SX127X_REG_IRQ_FLAGS, 5, 5) == SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
     return(ERR_CRC_MISMATCH);
   }
   
+  // get packet length
   if(_sf != 6) {
     pack.length = _mod->SPIgetRegValue(SX127X_REG_RX_NB_BYTES);
   }
   
+  // read packet addresses
   _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, pack.source);
   _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, pack.destination);
   
+  // read packet data
   delete[] pack.data;
   pack.data = new char[pack.length - 15];
   _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, pack.length - 16, pack.data);
   pack.data[pack.length - 16] = 0;
   
+  // update data rate, RSSI and SNR
   dataRate = (pack.length*8.0)/((float)elapsed/1000.0);
   lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
   int8_t rawSNR = (int8_t)_mod->SPIgetRegValue(SX127X_REG_PKT_SNR_VALUE);
   lastPacketSNR = rawSNR / 4.0;
   
+  // clear interrupt flags
   clearIRQFlags();
   
   return(ERR_NONE);
