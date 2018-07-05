@@ -114,16 +114,12 @@
 #define RF69_OOK_FILTER_2BR                           0b00000010  //  1     0                         OOK modulation filter, f_cutoff = 2*BR
 
 //RF69_REG_BITRATE_MSB + REG_BITRATE_LSB
-//#define RF69_BITRATE_MSB                              0x1A        //  7     0     bit rate setting: rate = F(XOSC) / BITRATE
-//#define RF69_BITRATE_LSB                              0x0B        //  7     0         default value: 4.8 kbps
-#define RF69_BITRATE_MSB                              0x02        //  7     0
-#define RF69_BITRATE_LSB                              0x40        //  7     0
+#define RF69_BITRATE_MSB                              0x1A        //  7     0     bit rate setting: rate = F(XOSC) / BITRATE
+#define RF69_BITRATE_LSB                              0x0B        //  7     0         default value: 4.8 kbps                            0x40        //  7     0
 
 //RF69_REG_FDEV_MSB + REG_FDEV_LSB
-//#define RF69_FDEV_MSB                                 0x00        //  5     0     frequency deviation: f_dev = f_step * FDEV
-//#define RF69_FDEV_LSB                                 0x52        //  7     0         default value: 5 kHz
-#define RF69_FDEV_MSB                                 0x03        //  5     0
-#define RF69_FDEV_LSB                                 0x33        //  7     0
+#define RF69_FDEV_MSB                                 0x00        //  5     0     frequency deviation: f_dev = f_step * FDEV
+#define RF69_FDEV_LSB                                 0x52        //  7     0         default value: 5 kHz
 
 //RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
 #define RF69_FRF_MSB                                  0xE4        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
@@ -207,8 +203,7 @@
 #define RF69_RX_BW_MANT_16                            0b00000000  //  4     3     Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
 #define RF69_RX_BW_MANT_20                            0b00001000  //  4     3                              OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
 #define RF69_RX_BW_MANT_24                            0b00010000  //  4     3     
-//#define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value = 5
-#define RF69_RX_BW_EXP                                0b00000010  //  2     0     
+#define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value = 5
 
 //RF69_REG_AFC_BW
 #define RF69_DCC_FREQ_AFC                             0b10000000  //  7     5     default DccFreq parameter for AFC
@@ -425,7 +420,7 @@ class RF69 {
   public:
     RF69(Module* module);
     
-    uint8_t begin(float freq = 434.0, uint32_t br = 48000);
+    uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     
@@ -433,15 +428,19 @@ class RF69 {
     uint8_t standby();
     
     uint8_t setFrequency(float freq);
-    uint8_t setBitRate(uint32_t br);
+    uint8_t setBitRate(float br);
+    uint8_t setRxBandwidth(float rxBw);
+    uint8_t setFrequencyDeviation(float freqDev);
   
   private:
     Module* _mod;
     
     float _freq;
-    uint32_t _br;
+    float _br;
+    float _rxBw;
+    float _freqDev;
     
-    uint8_t config(float freq, uint32_t br);
+    uint8_t config(float freq, float br, float rxBw, float freqDev);
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };

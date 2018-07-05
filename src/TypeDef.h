@@ -68,6 +68,9 @@
 #define PREAMBLE_DETECTED                     0x0D
 #define CHANNEL_FREE                          0x0E
 #define ERR_INVALID_BIT_RATE                  0x0F
+#define ERR_INVALID_FREQUENCY_DEVIATION       0x10
+#define ERR_INVALID_BIT_RATE_BW_RATIO         0x11
+#define ERR_INVALID_RX_BANDWIDTH              0x12
 
 // ESP8266 status codes
 #define ERR_AT_FAILED                         0x01

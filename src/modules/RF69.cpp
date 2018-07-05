@@ -4,7 +4,7 @@ RF69::RF69(Module* module) {
   _mod = module;
 }
 
-uint8_t RF69::begin(float freq, uint32_t br) {
+uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev) {
   // set module properties
   _mod->init(USE_SPI, INT_0);
   
@@ -39,7 +39,7 @@ uint8_t RF69::begin(float freq, uint32_t br) {
     DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x24)");
   }
   
-  return(config(freq, br));
+  return(config(freq, br, rxBw, freqDev));
 }
 
 uint8_t RF69::transmit(Packet& pack) {
@@ -130,22 +130,38 @@ uint8_t RF69::standby() {
 }
 
 uint8_t RF69::setFrequency(float freq) {
-  uint8_t state = RF69::config(freq, _br);
+  uint8_t state = RF69::config(freq, RF69::_br, RF69::_rxBw, RF69::_freqDev);
   if(state == ERR_NONE) {
     RF69::_freq = freq;
   }
   return(state);
 }
 
-uint8_t RF69::setBitRate(uint32_t br) {
-  uint8_t state = RF69::config(_freq, br);
+uint8_t RF69::setBitRate(float br) {
+  uint8_t state = RF69::config(RF69::_freq, br, RF69::_rxBw, RF69::_freqDev);
   if(state == ERR_NONE) {
     RF69::_br = br;
   }
   return(state);
 }
 
-uint8_t RF69::config(float freq, uint32_t br) {
+uint8_t RF69::setRxBandwidth(float rxBw) {
+  uint8_t state = RF69::config(RF69::_freq, RF69::_br, rxBw, RF69::_freqDev);
+  if(state == ERR_NONE) {
+    RF69::_rxBw = rxBw;
+  }
+  return(state);
+}
+
+uint8_t RF69::setFrequencyDeviation(float freqDev) {
+  uint8_t state = RF69::config(RF69::_freq, RF69::_br, RF69::_rxBw, freqDev);
+  if(state == ERR_NONE) {
+    RF69::_freqDev = freqDev;
+  }
+  return(state);
+}
+
+uint8_t RF69::config(float freq, float br, float rxBw, float freqDev) {
   uint8_t status = ERR_NONE;
   
   // check supplied settings
@@ -155,8 +171,16 @@ uint8_t RF69::config(float freq, uint32_t br) {
     return(ERR_INVALID_FREQUENCY);
   }
   
-  if((br < 1200) || (br > 300000)) {
+  if((br < 1.2) || (br > 300.0)) {
     return(ERR_INVALID_BIT_RATE);
+  }
+  
+  if(!(br < 2000 * rxBw)) {
+    return(ERR_INVALID_BIT_RATE_BW_RATIO);
+  }
+  
+  if(!((freqDev + br/2 <= 500) && (freqDev >= 0.6))) {
+    return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
   
   //set mode to STANDBY
@@ -177,30 +201,32 @@ uint8_t RF69::config(float freq, uint32_t br) {
     return(status);
   }
   
-  //set data mode and modulation type
+  //set data mode, modulation type and shaping
   status = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_PACKET_MODE | RF69_FSK, 6, 3);
-  status = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_NO_SHAPING, 1, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_3, 1, 0);
   if(status != ERR_NONE) {
     return(status);
   }
   
   //set bit rate
-  uint16_t bitRate = 32000000 / br;
+  uint16_t bitRate = 32000 / br;
   status = _mod->SPIsetRegValue(RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
   status = _mod->SPIsetRegValue(RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
   
-  //set allowed frequency deviation (5 kHz by default)
-  status = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, RF69_FDEV_MSB, 5, 0);
-  status = _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, RF69_FDEV_LSB, 7, 0);
+  //set allowed frequency deviation
+  uint32_t base = 1;
+  uint32_t FDEV = (freqDev * (base << 19)) / 32000;
+  status = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
+  status = _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, FDEV & 0x00FF, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
   
   //set carrier frequency
-  uint32_t base = 1;
+  base = 1;
   uint32_t FRF = (freq * (base << 19)) / 32.0;
   status = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
   status = _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
@@ -210,7 +236,107 @@ uint8_t RF69::config(float freq, uint32_t br) {
   }
   
   //set Rx bandwidth
-  status = _mod->SPIsetRegValue(RF69_REG_RX_BW, RF69_DCC_FREQ | RF69_RX_BW_MANT_16 | RF69_RX_BW_EXP, 7, 0);
+  uint8_t bwMant, bwExp;
+  if((rxBw >= 2.6) && (rxBw < 2.825)) {
+    // RxBw = 2.6 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 7;
+  } else if((rxBw >= 2.825) && (rxBw < 3.5)) {
+    // RxBw = 3.1 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 7;
+  } else if((rxBw >= 3.5) && (rxBw < 4.55)) {
+    // RxBw = 3.9 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 7;
+  } else if((rxBw >= 4.55) && (rxBw < 5.75)) {
+    // RxBw = 5.2 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 6;
+  } else if((rxBw >= 5.75) && (rxBw < 7.05)) {
+    // RxBw = 6.3 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 6;
+  } else if((rxBw >= 7.05) && (rxBw < 9.1)) {
+    // RxBw = 7.8 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 6;
+  } else if((rxBw >= 9.1) && (rxBw < 11.45)) {
+    // RxBw = 10.4 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 5;
+  } else if((rxBw >= 11.45) && (rxBw < 14.05)) {
+    // RxBw = 12.5 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 5;
+  } else if((rxBw >= 14.05) && (rxBw < 18.2)) {
+    // RxBw = 15.6 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 5;
+  } else if((rxBw >= 18.2) && (rxBw < 22.9)) {
+    // RxBw = 20.8 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 4;
+  } else if((rxBw >= 22.9) && (rxBw < 28.15)) {
+    // RxBw = 25.0 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 4;
+  } else if((rxBw >= 28.15) && (rxBw < 36.5)) {
+    // RxBw = 31.3 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 4;
+  } else if((rxBw >= 36.5) && (rxBw < 45.85)) {
+    // RxBw = 41.7 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 3;
+  } else if((rxBw >= 45.85) && (rxBw < 56.25)) {
+    // RxBw = 50.0 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 3;
+  } else if((rxBw >= 56.25) && (rxBw < 72.9)) {
+    // RxBw = 62.5 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 3;
+  } else if((rxBw >= 72.9) && (rxBw < 91.65)) {
+    // RxBw = 83.3 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 2;
+  } else if((rxBw >= 91.65) && (rxBw < 112.5)) {
+    // RxBw = 100.0 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 2;
+  } else if((rxBw >= 112.5) && (rxBw < 145.85)) {
+    // RxBw = 125.0 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 2;
+  } else if((rxBw >= 145.85) && (rxBw < 183.35)) {
+    // RxBw = 166.7 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 1;
+  } else if((rxBw >= 183.35) && (rxBw < 225.0)) {
+    // RxBw = 200.0 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 1;
+  } else if((rxBw >= 225.0) && (rxBw < 291.65)) {
+    // RxBw = 250.0 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 1;
+  } else if((rxBw >= 291.65) && (rxBw < 366.65)) {
+    // RxBw = 333.3 kHz
+    bwMant = RF69_RX_BW_MANT_24;
+    bwExp = 0;
+  } else if((rxBw >= 366.65) && (rxBw < 450.0)) {
+    // RxBw = 400.0 kHz
+    bwMant = RF69_RX_BW_MANT_20;
+    bwExp = 0;
+  } else if((rxBw >= 450.0) && (rxBw <= 500.0)) {
+    // RxBw = 500.0 kHz
+    bwMant = RF69_RX_BW_MANT_16;
+    bwExp = 0;
+  } else {
+    return(ERR_INVALID_RX_BANDWIDTH);
+  }
+  status = _mod->SPIsetRegValue(RF69_REG_RX_BW, RF69_DCC_FREQ | bwMant | bwExp, 7, 0);
   if(status != ERR_NONE) {
     return(status);
   }
@@ -284,6 +410,12 @@ uint8_t RF69::config(float freq, uint32_t br) {
   if(status != ERR_NONE) {
     return(status);
   }
+  
+  // configuration successful, save the new settings
+  RF69::_freq = freq;
+  RF69::_br = br;
+  RF69::_rxBw = rxBw;
+  RF69::_freqDev = freqDev;
   
   return(ERR_NONE);
 }
