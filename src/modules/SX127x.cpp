@@ -4,14 +4,7 @@ SX127x::SX127x(Module* mod) {
   _mod = mod;
 }
 
-uint8_t SX127x::begin(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t addrEeprom) {
-  // copy LoRa modem settings
-  _freq = freq;
-  _bw = bw;
-  _sf = sf;
-  _cr = cr;
-  _syncWord = syncWord;
-
+uint8_t SX127x::begin(uint8_t syncWord, int8_t power, uint16_t addrEeprom) {
   // ESP32-only: initialize  EEPROM
   #ifdef ESP32
     if(!EEPROM.begin(9)) {
@@ -82,8 +75,21 @@ uint8_t SX127x::begin(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t s
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN_STR("Found SX127x! (match by SX127X_REG_VERSION == 0x12)");
+    DEBUG_PRINTLN_STR("Found SX127x!");
   }
+  
+  // set LoRa sync word
+  uint8_t state = SX127x::setSyncWord(syncWord);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set output power
+  state = SX127x::setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
   
   return(ERR_NONE);
 }
@@ -124,8 +130,8 @@ uint8_t SX127x::transmit(Packet& pack) {
   _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_TX_BASE_ADDR_MAX);
   
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.source, 8);
-  _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.destination, 8);
+  _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, (char*)pack.source, 8);
+  _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, (char*)pack.destination, 8);
   _mod->SPIwriteRegisterBurstStr(SX127X_REG_FIFO, pack.data, pack.length - 16);
   
   // start transmission
@@ -184,8 +190,8 @@ uint8_t SX127x::receive(Packet& pack) {
   }
   
   // read packet addresses
-  _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, pack.source);
-  _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, pack.destination);
+  _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, (char*)pack.source);
+  _mod->SPIreadRegisterBurstStr(SX127X_REG_FIFO, 8, (char*)pack.destination);
   
   // read packet data
   delete[] pack.data;
@@ -233,10 +239,13 @@ uint8_t SX127x::standby() {
 }
 
 uint8_t SX127x::setSyncWord(uint8_t syncWord) {
-  uint8_t state = SX127x::config(_bw, _sf, _cr, _freq, syncWord);
+  setMode(SX127X_STANDBY);
+  
+  uint8_t state = _mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord);
   if(state == ERR_NONE) {
     _syncWord = syncWord;
   }
+  
   return(state);
 }
 
@@ -247,79 +256,67 @@ uint8_t SX127x::setOutputPower(int8_t power) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
   
-  return(_mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, power - 2, 3, 0));
+  uint8_t state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, power - 2, 3, 0);
+  if(state == ERR_NONE) {
+    _power = power;
+  }
+  
+  return(state);
 }
 
-uint8_t SX127x::config(uint8_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord) {
-  uint8_t status = ERR_NONE;
+uint8_t SX127x::setFrequencyRaw(float newFreq) {
+  // set mode to standby
+  setMode(SX127X_STANDBY);
   
+  // calculate register values
+  uint32_t base = 1;
+  uint32_t FRF = (newFreq * (base << 19)) / 32.0;
+  
+  // write registers
+  uint8_t state = _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
+  state |= _mod->SPIsetRegValue(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
+  state |= _mod->SPIsetRegValue(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
+  
+  return(state);
+}
+
+uint8_t SX127x::config() {
   // set mode to SLEEP
-  status = setMode(SX127X_SLEEP);
-  if(status != ERR_NONE) {
-    return(status);
+  uint8_t state = setMode(SX127X_SLEEP);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // set LoRa mode
-  status = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_LORA, 7, 7);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // set carrier frequency
-  uint32_t base = 1;
-  uint32_t FRF = (freq * (base << 19)) / 32.0;
-  status = _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
-  status = _mod->SPIsetRegValue(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
-  status = _mod->SPIsetRegValue(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_LORA, 7, 7);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // output power configuration
-  status = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST | SX127X_OUTPUT_POWER);
-  status = _mod->SPIsetRegValue(SX127X_REG_OCP, SX127X_OCP_ON | SX127X_OCP_TRIM, 5, 0);
-  status = _mod->SPIsetRegValue(SX127X_REG_LNA, SX127X_LNA_GAIN_1 | SX127X_LNA_BOOST_ON);
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST | SX127X_OUTPUT_POWER);
+  state |= _mod->SPIsetRegValue(SX127X_REG_OCP, SX127X_OCP_ON | SX127X_OCP_TRIM, 5, 0);
+  state |= _mod->SPIsetRegValue(SX127X_REG_LNA, SX127X_LNA_GAIN_1 | SX127X_LNA_BOOST_ON);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // turn off frequency hopping
-  status = _mod->SPIsetRegValue(SX127X_REG_HOP_PERIOD, SX127X_HOP_PERIOD_OFF);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // basic setting (bw, cr, sf, header mode and CRC)
-  if(sf == SX127X_SF_6) {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX127X_SF_6 | SX127X_TX_MODE_SINGLE, 7, 3);
-    status = _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_6, 2, 0);
-    status = _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_6);
-  } else {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, sf | SX127X_TX_MODE_SINGLE, 7, 3);
-    status = _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_7_12, 2, 0);
-    status = _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_7_12);
-  }
-  
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // set the sync word
-  status = _mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord);
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX127X_REG_HOP_PERIOD, SX127X_HOP_PERIOD_OFF);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // set default preamble length
-  status = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB, SX127X_PREAMBLE_LENGTH_MSB);
-  status = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB, SX127X_PREAMBLE_LENGTH_LSB);
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB, SX127X_PREAMBLE_LENGTH_MSB);
+  state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB, SX127X_PREAMBLE_LENGTH_LSB);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // set mode to STANDBY
-  status = setMode(SX127X_STANDBY);
-  return(status);
+  state = setMode(SX127X_STANDBY);
+  return(state);
 }
 
 void SX127x::generateNodeAdress() {

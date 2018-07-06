@@ -7,9 +7,9 @@
 class SX1277: public SX1278 {
   public:
     SX1277(Module* mod);
-  
-  private:
-    uint8_t config(uint32_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord);
+    
+    uint8_t setFrequency(float freq);
+    uint8_t setSpreadingFactor(uint8_t sf);
 };
 
 #endif

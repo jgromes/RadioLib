@@ -4,25 +4,23 @@ SX1277::SX1277(Module* mod) : SX1278(mod) {
   
 }
 
-uint8_t SX1277::config(uint32_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord) {
-  uint8_t status = ERR_NONE;
-  uint8_t newBandwidth, newSpreadingFactor, newCodingRate;
-  
-  // check the supplied BW, CR and SF values
-  switch(bw) {
-    case 125000:
-      newBandwidth = SX1278_BW_125_00_KHZ;
-      break;
-    case 250000:
-      newBandwidth = SX1278_BW_250_00_KHZ;
-      break;
-    case 500000:
-      newBandwidth = SX1278_BW_500_00_KHZ;
-      break;
-    default:
-      return(ERR_INVALID_BANDWIDTH);
+uint8_t SX1277::setFrequency(float freq) {
+  // check frequency range
+  if((freq < 137.0) || (freq > 1020.0)) {
+    return(ERR_INVALID_FREQUENCY);
   }
   
+  uint8_t state = SX1278::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
+}
+
+uint8_t SX1277::setSpreadingFactor(uint8_t sf) {
+  uint8_t newSpreadingFactor;
+  
+  // check allowed spreading factor values
   switch(sf) {
     case 6:
       newSpreadingFactor = SX127X_SF_6;
@@ -40,37 +38,10 @@ uint8_t SX1277::config(uint32_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t 
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
-  switch(cr) {
-    case 5:
-      newCodingRate = SX1278_CR_4_5;
-      break;
-    case 6:
-      newCodingRate = SX1278_CR_4_6;
-      break;
-    case 7:
-      newCodingRate = SX1278_CR_4_7;
-      break;
-    case 8:
-      newCodingRate = SX1278_CR_4_8;
-      break;
-    default:
-      return(ERR_INVALID_CODING_RATE);
+  uint8_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
+  if(state == ERR_NONE) {
+    SX127x::_sf = sf;
   }
   
-  if((freq < 137.0) || (freq > 1020.0)) {
-    return(ERR_INVALID_FREQUENCY);
-  }
-  
-  // execute common part
-  status = configCommon(newBandwidth, newSpreadingFactor, newCodingRate, freq, syncWord);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // configuration successful, save the new settings
-  _bw = bw;
-  _sf = sf;
-  _cr = cr;
-  
-  return(ERR_NONE);
+  return(state);
 }

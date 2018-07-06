@@ -4,66 +4,82 @@ SX1272::SX1272(Module* mod) : SX127x(mod) {
   
 }
 
-uint8_t SX1272::begin(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t addrEeprom) {
-  uint8_t state = SX127x::begin(freq, bw, sf, cr, syncWord, addrEeprom);
+uint8_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t addrEeprom) {
+  // execute common part
+  uint8_t state = SX127x::begin(syncWord, power, addrEeprom);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  return(config(freq, bw, sf, cr, syncWord));
+  // configure settings not accessible by API
+  state = config();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setBandwidth(bw);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setSpreadingFactor(sf);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setCodingRate(cr);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  return(ERR_NONE);
 }
 
-uint8_t SX1272::setBandwidth(uint32_t bw) {
-  uint8_t state = SX1272::config(bw, _sf, _cr, _freq, _syncWord);
-  if(state == ERR_NONE) {
-    _bw = bw;
+uint8_t SX1272::setFrequency(float freq) {
+  // check frequency range
+  if((freq < 860.0) || (freq > 1020.0)) {
+    return(ERR_INVALID_FREQUENCY);
   }
+  
+  uint8_t state = SX1272::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
+}
+
+uint8_t SX1272::setBandwidth(float bw) {
+  uint8_t newBandwidth;
+  
+  // check alowed bandwidth values
+  if(bw == 125.0) {
+    newBandwidth = SX1272_BW_125_00_KHZ;
+  } else if(bw == 250.0) {
+    newBandwidth = SX1272_BW_250_00_KHZ;
+  } else if(bw == 500.0) {
+    newBandwidth = SX1272_BW_500_00_KHZ;
+  } else {
+    return(ERR_INVALID_BANDWIDTH);
+  }
+  
+  uint8_t state = SX1272::setBandwidthRaw(newBandwidth);
+  if(state == ERR_NONE) {
+    SX127x::_bw = bw;
+  }
+  
   return(state);
 }
 
 uint8_t SX1272::setSpreadingFactor(uint8_t sf) {
-  uint8_t state = SX1272::config(_bw, sf, _cr, _freq, _syncWord);
-  if(state == ERR_NONE) {
-    _sf = sf;
-  }
-  return(state);
-}
-
-uint8_t SX1272::setCodingRate(uint8_t cr) {
-  uint8_t state = SX1272::config(_bw, _sf, cr, _freq, _syncWord);
-  if(state == ERR_NONE) {
-    _cr = cr;
-  }
-  return(state);
-}
-
-uint8_t SX1272::setFrequency(float freq) {
-  uint8_t state = SX1272::config(_bw, _sf, _cr, freq, _syncWord);
-  if(state == ERR_NONE) {
-    _freq = freq;
-  }
-  return(state);
-}
-
-uint8_t SX1272::config(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t syncWord) {
-  uint8_t status = ERR_NONE;
-  uint8_t newBandwidth, newSpreadingFactor, newCodingRate;
+  uint8_t newSpreadingFactor;
   
-  // check the supplied BW, CR and SF values
-  switch(bw) {
-    case 125000:
-      newBandwidth = SX1272_BW_125_00_KHZ;
-      break;
-    case 250000:
-      newBandwidth = SX1272_BW_250_00_KHZ;
-      break;
-    case 500000:
-      newBandwidth = SX1272_BW_500_00_KHZ;
-      break;
-    default:
-      return(ERR_INVALID_BANDWIDTH);
-  }
-  
+  // check allowed spreading factor values
   switch(sf) {
     case 6:
       newSpreadingFactor = SX127X_SF_6;
@@ -90,6 +106,18 @@ uint8_t SX1272::config(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t 
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
+  uint8_t state = SX1272::setSpreadingFactorRaw(newSpreadingFactor);
+  if(state == ERR_NONE) {
+    SX127x::_sf = sf;
+  }
+  
+  return(state);
+}
+
+uint8_t SX1272::setCodingRate(uint8_t cr) {
+  uint8_t newCodingRate;
+  
+  // check allowed coding rate values
   switch(cr) {
     case 5:
       newCodingRate = SX1272_CR_4_5;
@@ -107,65 +135,78 @@ uint8_t SX1272::config(float freq, uint32_t bw, uint8_t sf, uint8_t cr, uint8_t 
       return(ERR_INVALID_CODING_RATE);
   }
   
-  if((freq < 137.0) || (freq > 525.0)) {
-    return(ERR_INVALID_FREQUENCY);
+  uint8_t state = SX1272::setCodingRateRaw(newCodingRate);
+  if(state == ERR_NONE) {
+    SX127x::_cr = cr;
   }
   
-  // execute common part
-  status = SX1272::configCommon(newBandwidth, newSpreadingFactor, newCodingRate, freq, syncWord);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // configuration successful, save the new settings
-  _bw = bw;
-  _sf = sf;
-  _cr = cr;
-  _freq = freq;
-  
-  return(ERR_NONE);
+  return(state);
 }
 
-uint8_t SX1272::configCommon(uint8_t bw, uint8_t sf, uint8_t cr, float freq, uint8_t syncWord) {
+uint8_t SX1272::setBandwidthRaw(uint8_t newBandwidth) {
+  // set mode to standby
+  SX127x::standby();
+  
+  // write register
+  return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newBandwidth, 7, 6));
+}
+
+uint8_t SX1272::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
+  // set mode to standby
+  SX127x::standby();
+  
+  // write registers
+  uint8_t state = 0;
+  if(newSpreadingFactor == SX127X_SF_6) {
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_OFF, 2, 1);
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX127X_SF_6 | SX127X_TX_MODE_SINGLE, 7, 3);
+    state |= _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_6, 2, 0);
+    state |= _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_6);
+  } else {
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_HEADER_EXPL_MODE | SX1272_RX_CRC_MODE_ON,  2, 1);
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, newSpreadingFactor | SX127X_TX_MODE_SINGLE, 7, 3);
+    state |= _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_7_12, 2, 0);
+    state |= _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_7_12);
+  }
+  
+  return(state);
+}
+
+uint8_t SX1272::setCodingRateRaw(uint8_t newCodingRate) {
+  // set mode to standby
+  SX127x::standby();
+  
+  // write register
+  return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 5, 3));
+}
+
+uint8_t SX1272::config() {
   // configure common registers
-  uint8_t status = SX127x::config(bw, sf, cr, freq, syncWord);
-  if(status != ERR_NONE) {
-    return(status);
+  uint8_t state = SX127x::config();
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // output power configuration
-  status = _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // enable LNA gain setting by register
-  status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
-  if(status != ERR_NONE) {
-    return(status);
-  }
-  
-  // set SF6 optimizations
-  if(sf == SX127X_SF_6) {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, bw | cr | SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_OFF, 7, 1);
-  } else {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, bw | cr | SX1272_HEADER_EXPL_MODE | SX1272_RX_CRC_MODE_ON,  7, 1);
-  }
-  if(status != ERR_NONE) {
-    return(status);
+  state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
+  if(state != ERR_NONE) {
+    return(state);
   }
   
   // calculate symbol length and set low datarate optimization, if needed
   uint16_t base = 1;
   float symbolLength = (float)(base << _sf) / (float)_bw;
   if(symbolLength >= 0.016) {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON,  0, 0);
+    state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
   } else {
-    status = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF,  0, 0);
-  }
-  if(status != ERR_NONE) {
-    return(status);
+    state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
   }
   
-  return(status);
+  return(state);
 }
