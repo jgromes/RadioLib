@@ -420,7 +420,7 @@ class RF69 {
   public:
     RF69(Module* module);
     
-    uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0);
+    uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     
@@ -431,6 +431,7 @@ class RF69 {
     uint8_t setBitRate(float br);
     uint8_t setRxBandwidth(float rxBw);
     uint8_t setFrequencyDeviation(float freqDev);
+    uint8_t setOutputPower(int8_t power);
   
   private:
     Module* _mod;
@@ -439,6 +440,7 @@ class RF69 {
     float _br;
     float _rxBw;
     float _freqDev;
+    int8_t _power;
     
     uint8_t config();
     uint8_t setMode(uint8_t mode);
