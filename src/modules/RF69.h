@@ -440,7 +440,7 @@ class RF69 {
     float _rxBw;
     float _freqDev;
     
-    uint8_t config(float freq, float br, float rxBw, float freqDev);
+    uint8_t config();
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
