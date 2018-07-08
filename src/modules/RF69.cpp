@@ -94,8 +94,8 @@ uint8_t RF69::transmit(Packet& pack) {
   _mod->SPIwriteRegister(RF69_REG_FIFO, pack.length);
   
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, pack.source, 8);
-  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, pack.destination, 8);
+  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, (char*)pack.source, 8);
+  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, (char*)pack.destination, 8);
   _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, pack.data, pack.length - 16);
   
   // set mode to transmit
@@ -139,8 +139,8 @@ uint8_t RF69::receive(Packet& pack) {
   pack.length = _mod->SPIreadRegister(RF69_REG_FIFO);
   
   // read packet addresses
-  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, pack.source);
-  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, pack.destination);
+  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, (char*)pack.source);
+  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, (char*)pack.destination);
   
   // read packet data
   delete[] pack.data;
