@@ -49,7 +49,7 @@ class ESP8266 {
   private:
     Module* _mod;
     
-    void MqttEncodeLength(uint32_t len, uint8_t* encoded);
+    size_t MqttEncodeLength(uint32_t len, uint8_t* encoded);
     uint32_t MqttDecodeLength(uint8_t* encoded);
     
     uint16_t getNumBytes(uint32_t timeout = 10000);

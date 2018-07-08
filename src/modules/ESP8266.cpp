@@ -294,39 +294,38 @@ uint16_t ESP8266::HttpPost(const char* url, const char* content, String& respons
 uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char* username, const char* password) {
   // encode packet length
   uint32_t len = strlen(clientId) + strlen(username) + strlen(password) + 16;
-  /*uint8_t encoded[] = {0, 0, 0, 0};
-  MqttEncodeLength(len, encoded);*/
+  uint8_t encoded[] = {0, 0, 0, 0};
+  size_t encodedBytes = MqttEncodeLength(len, encoded);
   
   // build the CONNECT packet
-  uint8_t* packet = new uint8_t[len + 2];
+  uint8_t* packet = new uint8_t[len + encodedBytes + 2];
   packet[0] = (MQTT_CONNECT << 4) & 0xFF;
-  packet[1] = len;
-  /*for(uint8_t i = 1; i < 4; i++) {
-    packet[i] = encoded[i];
-  }*/
+  memcpy(packet + 1, encoded, encodedBytes);
   
-  packet[2] = 0x00;
-  packet[3] = 0x04;
-  packet[4] = 'M';
-  packet[5] = 'Q';
-  packet[6] = 'T';
-  packet[7] = 'T';
-  packet[8] = 0x04;         // protocol level
-  packet[9] = 0b11000010;   // flags: user name + password + clean session
-  packet[10] = 0x00;        // keep-alive interval MSB
-  packet[11] = 0x3C;        // keep-alive interval LSB
+  packet[encodedBytes + 1] = 0x00;
+  packet[encodedBytes + 2] = 0x04;
+  packet[encodedBytes + 3] = 'M';
+  packet[encodedBytes + 4] = 'Q';
+  packet[encodedBytes + 5] = 'T';
+  packet[encodedBytes + 6] = 'T';
   
-  packet[12] = 0x00;
-  packet[13] = strlen(clientId);
-  memcpy(packet + 14, clientId, strlen(clientId));
+  packet[encodedBytes + 7] = 0x04;         // protocol level
+  packet[encodedBytes + 8] = 0b11000010;   // flags: user name + password + clean session
   
-  packet[14 + strlen(clientId)] = 0x00;
-  packet[15 + strlen(clientId)] = strlen(username);
-  memcpy(packet + 16 + strlen(clientId), username, strlen(username));
+  packet[encodedBytes + 9] = 0x00;         // keep-alive interval MSB
+  packet[encodedBytes + 10] = 0x3C;        // keep-alive interval LSB
   
-  packet[16 + strlen(clientId) + strlen(username)] = 0x00;
-  packet[17 + strlen(clientId) + strlen(username)] = strlen(password);
-  memcpy(packet + 18 + strlen(clientId) + strlen(username), password, strlen(password));
+  packet[encodedBytes + 11] = (strlen(clientId) & 0xFF00) >> 8;
+  packet[encodedBytes + 12] = strlen(clientId) & 0x00FF;
+  memcpy(encodedBytes + packet + 13, clientId, strlen(clientId));
+  
+  packet[encodedBytes + 13 + strlen(clientId)] = (strlen(username) & 0xFF00) >> 8;
+  packet[encodedBytes + 14 + strlen(clientId)] = strlen(username) & 0x00FF;
+  memcpy(encodedBytes + packet + 15 + strlen(clientId), username, strlen(username));
+  
+  packet[encodedBytes + 15 + strlen(clientId) + strlen(username)] = (strlen(password) & 0xFF00) >> 8;;
+  packet[encodedBytes + 16 + strlen(clientId) + strlen(username)] = strlen(password) & 0x00FF;
+  memcpy(encodedBytes + packet + 17 + strlen(clientId) + strlen(username), password, strlen(password));
   
   // create TCP connection
   uint8_t state = openTransportConnection(host, "TCP", portMqtt, 7200);
@@ -364,15 +363,18 @@ uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char*
 uint8_t ESP8266::MqttPublish(const char* topic, const char* message) {
   // encode packet length
   uint32_t len = 2 + strlen(topic) + strlen(message);
+  uint8_t encoded[] = {0, 0, 0, 0};
+  size_t encodedBytes = MqttEncodeLength(len, encoded);
   
   // build the PUBLISH packet
   uint8_t* packet = new uint8_t[len + 2];
   packet[0] = (MQTT_PUBLISH << 4);
-  packet[1] = len;
-  packet[2] = 0x00;
-  packet[3] = strlen(topic);
-  memcpy(packet + 4, topic, strlen(topic));
-  memcpy(packet + 4 + strlen(topic), message, strlen(message));
+  memcpy(packet + 1, encoded, encodedBytes);
+  
+  packet[encodedBytes + 1] = (strlen(topic) & 0xFF00) >> 8;
+  packet[encodedBytes + 2] = strlen(topic) & 0x00FF;
+  memcpy(encodedBytes + packet + 3, topic, strlen(topic));
+  memcpy(encodedBytes + packet + 3 + strlen(topic), message, strlen(message));
   
   // send MQTT packet
   uint8_t state = send(packet, len + 2);
@@ -486,8 +488,8 @@ uint8_t ESP8266::closeTransportConnection() {
   return(ERR_NONE);
 }
 
-void ESP8266::MqttEncodeLength(uint32_t len, uint8_t* encoded) {
-  uint8_t i = 0;
+size_t ESP8266::MqttEncodeLength(uint32_t len, uint8_t* encoded) {
+  size_t i = 0;
   do {
     encoded[i] = len % 128;
     len /= 128;
@@ -496,6 +498,7 @@ void ESP8266::MqttEncodeLength(uint32_t len, uint8_t* encoded) {
     }
     i++;
   } while(len > 0);
+  return(i);
 }
 
 uint32_t ESP8266::MqttDecodeLength(uint8_t* encoded) {
