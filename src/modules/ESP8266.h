@@ -46,6 +46,8 @@ class ESP8266 {
     uint8_t MqttConnect(const char* host, const char* clientId, const char* userName = "", const char* password = "", uint16_t keepAlive = 60, bool cleanSession = true, const char* willTopic = "", const char* willMessage = "");
     uint8_t MqttDisconnect();
     uint8_t MqttPublish(const char* topic, const char* message);
+    uint8_t MqttSubscribe(const char* topicFilter);
+    uint8_t MqttUnsubscribe(const char* topicFilter);
     
     // Transport layer methods
     uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
@@ -56,6 +58,8 @@ class ESP8266 {
     
   private:
     Module* _mod;
+    
+    uint16_t _MqttPacketId;
     
     size_t MqttEncodeLength(uint32_t len, uint8_t* encoded);
     uint32_t MqttDecodeLength(uint8_t* encoded);
