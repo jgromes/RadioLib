@@ -412,6 +412,19 @@ uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char*
   return(ERR_RESPONSE_MALFORMED);
 }
 
+uint8_t ESP8266::MqttDisconnect() {
+  // build the DISCONNECT packet
+  uint8_t packet[2];
+  
+  // fixed header
+  packet[0] = (MQTT_DISCONNECT << 4);
+  packet[1] = 0x00;
+  
+  // send MQTT packet
+  uint8_t state = send(packet, 2);
+  return(state);
+}
+
 uint8_t ESP8266::MqttPublish(const char* topic, const char* message) {
   // encode packet length
   size_t topicLen = strlen(topic);

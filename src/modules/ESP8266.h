@@ -44,6 +44,7 @@ class ESP8266 {
     
     // MQTT methods
     uint8_t MqttConnect(const char* host, const char* clientId, const char* userName = "", const char* password = "", uint16_t keepAlive = 60, bool cleanSession = true, const char* willTopic = "", const char* willMessage = "");
+    uint8_t MqttDisconnect();
     uint8_t MqttPublish(const char* topic, const char* message);
     
     // Transport layer methods
