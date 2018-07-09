@@ -53,6 +53,7 @@ class SX1272: public SX127x {
     uint8_t setBandwidth(float bw);
     uint8_t setSpreadingFactor(uint8_t sf);
     uint8_t setCodingRate(uint8_t cr);
+    uint8_t setOutputPower(int8_t power);
   
   protected:
     uint8_t setBandwidthRaw(uint8_t newBandwidth);

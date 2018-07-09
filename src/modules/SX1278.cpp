@@ -6,7 +6,7 @@ SX1278::SX1278(Module* mod) : SX127x(mod) {
 
 uint8_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t addrEeprom) {
   // execute common part
-  uint8_t state = SX127x::begin(syncWord, power, addrEeprom);
+  uint8_t state = SX127x::begin(syncWord, addrEeprom);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -34,6 +34,11 @@ uint8_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   }
   
   state = setCodingRate(cr);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -155,6 +160,38 @@ uint8_t SX1278::setCodingRate(uint8_t cr) {
   return(state);
 }
 
+uint8_t SX1278::setOutputPower(int8_t power) {
+  if((power < -3) || (power > 20)) {
+    return(ERR_INVALID_OUTPUT_POWER);
+  }
+  
+  SX127x::standby();
+  
+  uint8_t state;
+  if(power < 13) {
+    // power is less than 12 dBm, enable PA on RFO
+    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_RFO, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_LOW_POWER | (power + 3), 6, 0);
+    state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
+  } else if((power >= 13) && (power < 18)) {
+    // power is 13 - 17 dBm, enable PA1 + PA2 on PA_BOOST
+    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power + 2), 6, 0);
+    state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
+  } else if(power >= 18) {
+    // power is 18 - 20 dBm, enable PA1 + PA2 on PA_BOOST and enable high power mode
+    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power + 2), 6, 0);
+    state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
+  }
+
+  if(state == ERR_NONE) {
+    _power = power;
+  }
+  
+  return(state);
+}
+
 uint8_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   SX127x::standby();
@@ -195,13 +232,6 @@ uint8_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
 uint8_t SX1278::config() {
   // configure common registers
   uint8_t state = SX127x::config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // output power configuration
-  state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER, 6, 4);
-  state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
   if(state != ERR_NONE) {
     return(state);
   }

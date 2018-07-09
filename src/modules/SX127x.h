@@ -173,7 +173,7 @@ class SX127x {
     int8_t lastPacketRSSI;
     float lastPacketSNR;
     
-    uint8_t begin(uint8_t syncWord, int8_t power, uint16_t addrEeprom);
+    uint8_t begin(uint8_t syncWord, uint16_t addrEeprom);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     uint8_t scanChannel();
@@ -182,7 +182,6 @@ class SX127x {
     uint8_t standby();
     
     uint8_t setSyncWord(uint8_t syncWord);
-    uint8_t setOutputPower(int8_t power);
   
   protected:
     Module* _mod;

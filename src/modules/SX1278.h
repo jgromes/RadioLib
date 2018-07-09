@@ -28,6 +28,7 @@
 
 //SX1278_REG_PA_CONFIG
 #define SX1278_MAX_POWER                              0b01110000  //  6     4     max power: P_max = 10.8 + 0.6*MAX_POWER [dBm]; P_max(MAX_POWER = 0b111) = 15 dBm
+#define SX1278_LOW_POWER                              0b00100000  //  6     4
 
 //SX1278_REG_LNA
 #define SX1278_LNA_BOOST_LF_OFF                       0b00000000  //  4     3     default LNA current
@@ -70,6 +71,7 @@ class SX1278: public SX127x {
     uint8_t setBandwidth(float bw);
     uint8_t setSpreadingFactor(uint8_t sf);
     uint8_t setCodingRate(uint8_t cr);
+    uint8_t setOutputPower(int8_t power);
   
   protected:
     uint8_t setBandwidthRaw(uint8_t newBandwidth);
