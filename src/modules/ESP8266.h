@@ -19,6 +19,13 @@
 #define MQTT_PINGRESP                                 0x0D
 #define MQTT_DISCONNECT                               0x0E
 
+// MQTT CONNECT flags
+#define MQTT_CONNECT_USER_NAME_FLAG                   0b10000000
+#define MQTT_CONNECT_PASSWORD_FLAG                    0b01000000
+#define MQTT_CONNECT_WILL_RETAIN                      0b00100000
+#define MQTT_CONNECT_WILL_FLAG                        0b00000100
+#define MQTT_CONNECT_CLEAN_SESSION                    0b00000010
+
 class ESP8266 {
   public:
     ESP8266(Module* module);
@@ -36,7 +43,7 @@ class ESP8266 {
     uint16_t HttpPost(const char* url, const char* content, String& response, const char* contentType = "text/plain");
     
     // MQTT methods
-    uint8_t MqttConnect(const char* host, const char* clientId, const char* username, const char* password);
+    uint8_t MqttConnect(const char* host, const char* clientId, const char* userName = "", const char* password = "", uint16_t keepAlive = 60, bool cleanSession = true, const char* willTopic = "", const char* willMessage = "");
     uint8_t MqttPublish(const char* topic, const char* message);
     
     // Transport layer methods

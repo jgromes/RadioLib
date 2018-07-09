@@ -291,44 +291,96 @@ uint16_t ESP8266::HttpPost(const char* url, const char* content, String& respons
   return(atoi(statusStr));
 }
 
-uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char* username, const char* password) {
+uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char* userName, const char* password, uint16_t keepAlive, bool cleanSession, const char* willTopic, const char* willMessage) {
   // encode packet length
-  uint32_t len = strlen(clientId) + strlen(username) + strlen(password) + 16;
+  size_t clientIdLen = strlen(clientId);
+  size_t userNameLen = strlen(userName);
+  size_t passwordLen = strlen(password);
+  size_t willTopicLen = strlen(willTopic);
+  size_t willMessageLen = strlen(willMessage);
+  uint32_t len = 10 + 2 + clientIdLen;
+  if(userNameLen > 0) {
+    len += 2 + userNameLen;
+  }
+  if(passwordLen > 0) {
+    len += 2 + passwordLen;  
+  }
+  if((willTopicLen > 0) && (willMessageLen > 0)) {
+    len += 4 + willTopicLen + willMessageLen;
+  }
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = MqttEncodeLength(len, encoded);
   
   // build the CONNECT packet
   uint8_t* packet = new uint8_t[len + encodedBytes + 2];
+  
+  // fixed header
   packet[0] = (MQTT_CONNECT << 4) & 0xFF;
   memcpy(packet + 1, encoded, encodedBytes);
   
-  packet[encodedBytes + 1] = 0x00;
-  packet[encodedBytes + 2] = 0x04;
-  packet[encodedBytes + 3] = 'M';
-  packet[encodedBytes + 4] = 'Q';
-  packet[encodedBytes + 5] = 'T';
-  packet[encodedBytes + 6] = 'T';
+  // variable header
+  // protocol name
+  size_t pos = encodedBytes + 1;
+  packet[pos++] = 0x00;
+  packet[pos++] = 0x04;
+  memcpy(packet + pos, "MQTT", 4);
+  pos += 4;
   
-  packet[encodedBytes + 7] = 0x04;         // protocol level
-  packet[encodedBytes + 8] = 0b11000010;   // flags: user name + password + clean session
+  // protocol level
+  packet[pos++] = 0x04; 
   
-  packet[encodedBytes + 9] = 0x00;         // keep-alive interval MSB
-  packet[encodedBytes + 10] = 0x3C;        // keep-alive interval LSB
+  // flags        
+  packet[pos++] = 0x00;
+  if(cleanSession) {
+    packet[encodedBytes + 8] |= MQTT_CONNECT_CLEAN_SESSION;
+  }
   
-  packet[encodedBytes + 11] = (strlen(clientId) & 0xFF00) >> 8;
-  packet[encodedBytes + 12] = strlen(clientId) & 0x00FF;
-  memcpy(encodedBytes + packet + 13, clientId, strlen(clientId));
+  // keep alive interval in seconds
+  packet[pos++] = (keepAlive & 0xFF00) >> 8;
+  packet[pos++] = keepAlive & 0x00FF;
   
-  packet[encodedBytes + 13 + strlen(clientId)] = (strlen(username) & 0xFF00) >> 8;
-  packet[encodedBytes + 14 + strlen(clientId)] = strlen(username) & 0x00FF;
-  memcpy(encodedBytes + packet + 15 + strlen(clientId), username, strlen(username));
+  // payload
+  // clientId
+  packet[pos++] = (clientIdLen & 0xFF00) >> 8;
+  packet[pos++] = clientIdLen & 0x00FF;
+  memcpy(packet + pos, clientId, clientIdLen);
+  pos += clientIdLen;
   
-  packet[encodedBytes + 15 + strlen(clientId) + strlen(username)] = (strlen(password) & 0xFF00) >> 8;;
-  packet[encodedBytes + 16 + strlen(clientId) + strlen(username)] = strlen(password) & 0x00FF;
-  memcpy(encodedBytes + packet + 17 + strlen(clientId) + strlen(username), password, strlen(password));
+  // will topic and message
+  if((willTopicLen > 0) && (willMessageLen > 0)) {
+    packet[encodedBytes + 8] |= MQTT_CONNECT_WILL_FLAG;
+    
+    packet[pos++] = (willTopicLen & 0xFF00) >> 8;
+    packet[pos++] = willTopicLen & 0x00FF;
+    memcpy(packet + pos, willTopic, willTopicLen);
+    pos += willTopicLen;
+    
+    packet[pos++] = (willMessageLen & 0xFF00) >> 8;
+    packet[pos++] = willMessageLen & 0x00FF;
+    memcpy(packet + pos, willMessage, willMessageLen);
+    pos += willMessageLen;
+  }
   
+  // user name
+  if(userNameLen > 0) {
+    packet[encodedBytes + 8] |= MQTT_CONNECT_USER_NAME_FLAG;
+    packet[pos++] = (userNameLen & 0xFF00) >> 8;
+    packet[pos++] = userNameLen & 0x00FF;
+    memcpy(packet + pos, userName, userNameLen);
+    pos += userNameLen;
+  }
+  
+  // password
+  if(passwordLen > 0) {
+    packet[encodedBytes + 8] |= MQTT_CONNECT_PASSWORD_FLAG;
+    packet[pos++] = (passwordLen & 0xFF00) >> 8;;
+    packet[pos++] = passwordLen & 0x00FF;
+    memcpy(packet + pos, password, passwordLen);
+    pos += passwordLen;
+  }
+    
   // create TCP connection
-  uint8_t state = openTransportConnection(host, "TCP", portMqtt, 7200);
+  uint8_t state = openTransportConnection(host, "TCP", portMqtt, keepAlive);
   if(state != ERR_NONE) {
     delete[] packet;
     return(state);
@@ -362,19 +414,30 @@ uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char*
 
 uint8_t ESP8266::MqttPublish(const char* topic, const char* message) {
   // encode packet length
-  uint32_t len = 2 + strlen(topic) + strlen(message);
+  size_t topicLen = strlen(topic);
+  size_t messageLen = strlen(message);
+  uint32_t len = 2 + topicLen + messageLen;
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = MqttEncodeLength(len, encoded);
   
   // build the PUBLISH packet
   uint8_t* packet = new uint8_t[len + 2];
+  
+  // fixed header
   packet[0] = (MQTT_PUBLISH << 4);
   memcpy(packet + 1, encoded, encodedBytes);
   
-  packet[encodedBytes + 1] = (strlen(topic) & 0xFF00) >> 8;
-  packet[encodedBytes + 2] = strlen(topic) & 0x00FF;
-  memcpy(encodedBytes + packet + 3, topic, strlen(topic));
-  memcpy(encodedBytes + packet + 3 + strlen(topic), message, strlen(message));
+  // variable header
+  // topic name
+  size_t pos = encodedBytes + 1;
+  packet[pos++] = (topicLen & 0xFF00) >> 8;
+  packet[pos++] = topicLen & 0x00FF;
+  memcpy(packet + pos, topic, topicLen);
+  pos += topicLen;
+  
+  // message
+  memcpy(packet + pos, message, messageLen);
+  pos += messageLen;
   
   // send MQTT packet
   uint8_t state = send(packet, len + 2);
