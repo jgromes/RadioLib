@@ -661,7 +661,7 @@ uint8_t ESP8266::MqttCheck(void (*func)(const char*, const char*)) {
   }
   delete[] dataIn;
   
-  return(MQTT_NO_NEW_PACKET);
+  return(ERR_MQTT_NO_NEW_PACKET_AVAILABLE);
 }
 
 uint8_t ESP8266::send(const char* data) {
