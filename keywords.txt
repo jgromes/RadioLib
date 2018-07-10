@@ -69,7 +69,12 @@ reset	KEYWORD2
 HttpGet	KEYWORD2
 HttpPost	KEYWORD2
 MqttConnect	KEYWORD2
+MqttDisconnect	KEYWORD2
 MqttPublish	KEYWORD2
+MqttSubscribe	KEYWORD2
+MqttUnsubscribe	KEYWORD2
+MqttPing	KEYWORD2
+MqttCheck	KEYWORD2
 startTcp	KEYWORD2
 closeTcp	KEYWORD2
 startUdp	KEYWORD2
