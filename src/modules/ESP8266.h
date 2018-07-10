@@ -48,6 +48,7 @@ class ESP8266 {
     uint8_t MqttPublish(const char* topic, const char* message);
     uint8_t MqttSubscribe(const char* topicFilter);
     uint8_t MqttUnsubscribe(const char* topicFilter);
+    uint8_t MqttPing();
     
     // Transport layer methods
     uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
@@ -64,7 +65,7 @@ class ESP8266 {
     size_t MqttEncodeLength(uint32_t len, uint8_t* encoded);
     uint32_t MqttDecodeLength(uint8_t* encoded);
     
-    uint16_t getNumBytes(uint32_t timeout = 10000);
+    uint16_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10);
 };
 
 #endif

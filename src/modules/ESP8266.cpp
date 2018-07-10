@@ -582,6 +582,38 @@ uint8_t ESP8266::MqttUnsubscribe(const char* topicFilter) {
   return(ERR_RESPONSE_MALFORMED);
 }
 
+uint8_t ESP8266::MqttPing() {
+  // build the PINGREQ packet
+  uint8_t packet[2];
+  
+  // fixed header
+  packet[0] = (MQTT_PINGREQ << 4) | 0b0000;
+  packet[1] = 0x00;
+  
+  // send MQTT packet
+  uint8_t state = send(packet, 2);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // get the response length (MQTT PINGRESP response has to be 2 bytes long)
+  uint16_t numBytes = getNumBytes();
+  if(numBytes != 2) {
+    return(ERR_RESPONSE_MALFORMED_AT);
+  }
+  
+  // read the response
+  uint8_t* response = new uint8_t[numBytes];
+  receive(response, numBytes);
+  if((response[0] == MQTT_PINGRESP << 4) && (response[1] == 0)) {
+    delete[] response;
+    return(ERR_NONE);
+  }
+  
+  delete[] response;
+  return(ERR_RESPONSE_MALFORMED);
+}
+
 uint8_t ESP8266::send(const char* data) {
   // build AT command
   char lenStr[8];
