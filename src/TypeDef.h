@@ -83,6 +83,7 @@
 #define ERR_MQTT_CONN_BAD_USERNAME_PASSWORD   0x08
 #define ERR_MQTT_CONN_NOT_AUTHORIZED          0x09
 #define ERR_MQTT_UNEXPECTED_PACKET_ID         0x0A
+#define ERR_MQTT_NO_NEW_PACKET_AVAILABLE      0x0B
 #define MQTT_SUBS_SUCCESS_QOS_0               0x00
 #define MQTT_SUBS_SUCCESS_QOS_1               0x01
 #define MQTT_SUBS_SUCCESS_QOS_2               0x02

@@ -619,6 +619,51 @@ uint8_t ESP8266::MqttPing() {
   return(ERR_RESPONSE_MALFORMED);
 }
 
+uint8_t ESP8266::MqttCheck(void (*func)(const char*, const char*)) {
+  // ping the server
+  uint8_t state = MqttPing();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // check new data
+  uint16_t numBytes = getNumBytes();
+  if(numBytes == 0) {
+    return(ERR_MQTT_NO_NEW_PACKET_AVAILABLE);
+  }
+  
+  // read the PUBLISH packet from server
+  uint8_t* dataIn = new uint8_t[numBytes];
+  receive(dataIn, numBytes);
+  if(dataIn[0] == MQTT_PUBLISH << 4) {
+    // TODO: properly decode remaining length
+    uint8_t remainingLength = dataIn[1];
+    
+    // get the topic
+    size_t topicLength = dataIn[3] | dataIn[2] << 8;
+    char* topic = new char[topicLength + 1];
+    memcpy(topic, dataIn + 4, topicLength);
+    topic[topicLength] = 0x00;
+    
+    // get the message
+    size_t messageLength = remainingLength - topicLength - 2;
+    char* message = new char[messageLength + 1];
+    memcpy(message, dataIn + 4 + topicLength, messageLength);
+    message[messageLength] = 0x00;
+    
+    // execute the callback function provided by user
+    func(topic, message);
+    
+    delete[] topic;
+    delete[] message;
+    delete[] dataIn;
+    return(ERR_NONE);
+  }
+  delete[] dataIn;
+  
+  return(MQTT_NO_NEW_PACKET);
+}
+
 uint8_t ESP8266::send(const char* data) {
   // build AT command
   char lenStr[8];

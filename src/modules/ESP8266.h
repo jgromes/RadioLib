@@ -49,6 +49,7 @@ class ESP8266 {
     uint8_t MqttSubscribe(const char* topicFilter);
     uint8_t MqttUnsubscribe(const char* topicFilter);
     uint8_t MqttPing();
+    uint8_t MqttCheck(void (*func)(const char*, const char*));
     
     // Transport layer methods
     uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
