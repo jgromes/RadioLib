@@ -404,7 +404,7 @@ uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char*
   uint8_t* response = new uint8_t[numBytes];
   receive(response, numBytes);
   if((response[0] == MQTT_CONNACK << 4) && (response[1] == 2)) {
-    uint8_t returnCode = response[0x03];
+    uint8_t returnCode = response[3];
     delete[] response;
     return(returnCode);
   }
@@ -505,7 +505,7 @@ uint8_t ESP8266::MqttSubscribe(const char* topicFilter) {
     return(state);
   }
   
-  // get the response length (MQTT SUBACK response has to be 5 bytes long)
+  // get the response length (MQTT SUBACK response has to be 5 bytes long for single subscription)
   uint16_t numBytes = getNumBytes();
   if(numBytes != 5) {
     return(ERR_RESPONSE_MALFORMED_AT);
@@ -514,9 +514,14 @@ uint8_t ESP8266::MqttSubscribe(const char* topicFilter) {
   // read the response
   uint8_t* response = new uint8_t[numBytes];
   receive(response, numBytes);
-  if((response[0] == MQTT_SUBACK << 4) && (response[2] == packetId)) {
-    uint8_t returnCode = response[0x04];
+  if((response[0] == MQTT_SUBACK << 4) && (response[1] == 3)) {
+    // check packet ID
+    uint16_t receivedId = response[3] | response[2] << 8;
+    uint8_t returnCode = response[4];
     delete[] response;
+    if(receivedId != packetId) {
+      return(ERR_MQTT_UNEXPECTED_PACKET_ID);
+    }
     return(returnCode);
   }
   
@@ -570,10 +575,10 @@ uint8_t ESP8266::MqttUnsubscribe(const char* topicFilter) {
   receive(response, numBytes);
   if((response[0] == MQTT_UNSUBACK << 4) && (response[1] == 2)) {
     // check packet ID
-    uint16_t receivedId = response[2] | response[3] << 8;
+    uint16_t receivedId = response[3] | response[2] << 8;
     delete[] response;
     if(receivedId != packetId) {
-      return(ERR_RESPONSE_MALFORMED);
+      return(ERR_MQTT_UNEXPECTED_PACKET_ID);
     }
     return(ERR_NONE);
   }
