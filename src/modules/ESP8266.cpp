@@ -147,7 +147,7 @@ uint16_t ESP8266::HttpGet(const char* url, String& response) {
   
   // read the response
   char* raw = new char[numBytes];
-  size_t rawLength = receive((uint8_t*)raw);
+  size_t rawLength = receive((uint8_t*)raw, numBytes);
   if(rawLength == 0) {
     delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
@@ -255,7 +255,7 @@ uint16_t ESP8266::HttpPost(const char* url, const char* content, String& respons
   
   // read the response
   char* raw = new char[numBytes];
-  size_t rawLength = receive((uint8_t*)raw);
+  size_t rawLength = receive((uint8_t*)raw, numBytes);
   if(rawLength == 0) {
     delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
@@ -402,7 +402,7 @@ uint8_t ESP8266::MqttConnect(const char* host, const char* clientId, const char*
   
   // read the response
   uint8_t* response = new uint8_t[numBytes];
-  receive(response);
+  receive(response, numBytes);
   if((response[0] == MQTT_CONNACK << 4) && (response[1] == 2)) {
     uint8_t returnCode = response[0x03];
     delete[] response;
@@ -423,7 +423,12 @@ uint8_t ESP8266::MqttDisconnect() {
   
   // send MQTT packet
   uint8_t state = send(packet, 2);
-  return(state);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // close TCP connection
+  return(closeTransportConnection());
 }
 
 uint8_t ESP8266::MqttPublish(const char* topic, const char* message) {
@@ -496,7 +501,9 @@ uint8_t ESP8266::MqttSubscribe(const char* topicFilter) {
   // send MQTT packet
   uint8_t state = send(packet, 1 + encodedBytes + remainingLength);
   delete[] packet;
-  return(state);
+  if(state != ERR_NONE) {
+    return(state);
+  }
   
   // get the response length (MQTT SUBACK response has to be 5 bytes long)
   uint16_t numBytes = getNumBytes();
@@ -506,7 +513,7 @@ uint8_t ESP8266::MqttSubscribe(const char* topicFilter) {
   
   // read the response
   uint8_t* response = new uint8_t[numBytes];
-  receive(response);
+  receive(response, numBytes);
   if((response[0] == MQTT_SUBACK << 4) && (response[2] == packetId)) {
     uint8_t returnCode = response[0x04];
     delete[] response;
@@ -548,7 +555,9 @@ uint8_t ESP8266::MqttUnsubscribe(const char* topicFilter) {
   // send MQTT packet
   uint8_t state = send(packet, 1 + encodedBytes + remainingLength);
   delete[] packet;
-  return(state);
+  if(state != ERR_NONE) {
+    return(state);
+  }
   
   // get the response length (MQTT UNSUBACK response has to be 4 bytes long)
   uint16_t numBytes = getNumBytes();
@@ -558,7 +567,7 @@ uint8_t ESP8266::MqttUnsubscribe(const char* topicFilter) {
   
   // read the response
   uint8_t* response = new uint8_t[numBytes];
-  receive(response);
+  receive(response, numBytes);
   if((response[0] == MQTT_UNSUBACK << 4) && (response[1] == 2)) {
     // check packet ID
     uint16_t receivedId = response[2] | response[3] << 8;
@@ -621,10 +630,10 @@ uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
   return(ERR_NONE);
 }
 
-size_t ESP8266::receive(uint8_t* data, uint32_t timeout) {
+size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
   size_t i = 0;
   uint32_t start = millis();
-  while(millis() - start < timeout) {
+  while((millis() - start < timeout) && (i < len)) {
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
       DEBUG_PRINT(b);
@@ -705,10 +714,10 @@ uint32_t ESP8266::MqttDecodeLength(uint8_t* encoded) {
   return len;
 }
 
-uint16_t ESP8266::getNumBytes(uint32_t timeout) {
+uint16_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
   uint32_t start = millis();
-  while(_mod->ModuleSerial->available() < 10) {
+  while(_mod->ModuleSerial->available() < minBytes) {
     if(millis() - start >= timeout) {
       return(0);
     }

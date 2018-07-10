@@ -54,7 +54,7 @@ class ESP8266 {
     uint8_t closeTransportConnection();
     uint8_t send(const char* data);
     uint8_t send(uint8_t* data, uint32_t len);
-    size_t receive(uint8_t* data, uint32_t timeout = 10000);
+    size_t receive(uint8_t* data, size_t len, uint32_t timeout = 10000);
     
   private:
     Module* _mod;
