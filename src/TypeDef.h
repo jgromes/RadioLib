@@ -82,6 +82,11 @@
 #define ERR_MQTT_CONN_SERVER_UNAVAILABLE      0x07
 #define ERR_MQTT_CONN_BAD_USERNAME_PASSWORD   0x08
 #define ERR_MQTT_CONN_NOT_AUTHORIZED          0x09
+#define ERR_MQTT_UNEXPECTED_PACKET_ID         0x0A
+#define MQTT_SUBS_SUCCESS_QOS_0               0x00
+#define MQTT_SUBS_SUCCESS_QOS_1               0x01
+#define MQTT_SUBS_SUCCESS_QOS_2               0x02
+#define ERR_MQTT_SUBS_FAILED                  0x80
 
 // XBee status codes
 #define ERR_CMD_MODE_FAILED                   0x02
