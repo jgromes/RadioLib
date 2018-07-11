@@ -6,7 +6,7 @@
  * The messages are published to https://shiftr.io/try. You can use this namespace
  * for testing purposes, but remember that it is publicly accessible!
  * 
- * IMPORTANT: Before upolading this example, make sure that the ESP8266 module is running
+ * IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
  * AT firmware (can be found in the /extras folder of the library)!
  */
 
@@ -15,6 +15,9 @@
 
 // ESP8266 module is in slot A on the shield
 ESP8266 wifi = Kite.ModuleA;
+
+// create MQTT client instance using the wifi module
+MQTTClient mqtt(&wifi);
 
 void setup() {
   Serial.begin(9600);
@@ -41,9 +44,9 @@ void setup() {
     while(true);
   }
 
-  // connect to MQTT broker using client ID "arduino", username "try" and password "try"
-  Serial.print(F("[ESP8266] Connecting to MQTT broker ... "));
-  state = wifi.MqttConnect("broker.shiftr.io", "arduino", "try", "try");
+  // connect to MQTT server using client ID "arduino", username "try" and password "try"
+  Serial.print(F("[ESP8266] Connecting to MQTT server ... "));
+  state = mqtt.connect("broker.shiftr.io", "arduino", "try", "try");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -56,7 +59,7 @@ void setup() {
 void loop() {
   // publish MQTT message to the topic "hello" with content "world"
   Serial.print(F("[ESP8266] Publishing MQTT message ... "));
-  byte state = wifi.MqttPublish("hello", "world");
+  byte state = mqtt.publish("hello", "world");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
