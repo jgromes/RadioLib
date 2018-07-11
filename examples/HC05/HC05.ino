@@ -15,7 +15,8 @@ HC05 bluetooth = Kite.ModuleA;
 void setup() {
   Serial.begin(9600);
 
-  // initialize HC05 with baudrate 9600 baud
+  // initialize HC05
+  // baudrate:  9600 baud
   bluetooth.begin(9600);
 }
 
