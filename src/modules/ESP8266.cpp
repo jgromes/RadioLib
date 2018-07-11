@@ -55,10 +55,9 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
     return(state);
   }
   
-  // join AP
+  // build AT command
   const char* atStr = "AT+CWJAP_CUR=\"";
   uint8_t cmdLen = strlen(atStr) + strlen(ssid) + strlen(password) + 4;
-  
   char* cmd = new char[cmdLen];
   strcpy(cmd, atStr);
   strcat(cmd, ssid);
@@ -66,6 +65,7 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   strcat(cmd, password);
   strcat(cmd, "\"");
   
+  // send command
   bool res = _mod->ATsendCommand(cmd);
   delete[] cmd;
   if(!res) {
@@ -80,6 +80,48 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   return(ERR_NONE);
 }
 
+uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
+  char portStr[6];
+  itoa(port, portStr, 10);
+  char tcpKeepAliveStr[6];
+  itoa(tcpKeepAlive, tcpKeepAliveStr, 10);
+  
+  // build AT command
+  const char* atStr = "AT+CIPSTART=\"";
+  uint8_t cmdLen = strlen(atStr) + strlen(protocol) + strlen(host) + strlen(portStr) + 5;
+  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
+	  cmdLen += strlen(tcpKeepAliveStr) + 1;
+  }
+  char* cmd = new char[cmdLen];
+  strcpy(cmd, atStr);
+  strcat(cmd, protocol);
+  strcat(cmd, "\",\"");
+  strcat(cmd, host);
+  strcat(cmd, "\",");
+  strcat(cmd, portStr);
+  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
+    strcat(cmd, ",");
+    strcat(cmd, tcpKeepAliveStr);
+  }
+  
+  // send command
+  bool res = _mod->ATsendCommand(cmd);
+  delete[] cmd;
+  if(!res) {
+    return(ERR_AT_FAILED);
+  }
+  
+  return(ERR_NONE);
+}
+
+uint8_t ESP8266::closeTransportConnection() {
+  // send AT command
+  if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
+    return(ERR_AT_FAILED);
+    }
+  return(ERR_NONE);
+}
+
 uint8_t ESP8266::send(const char* data) {
   // build AT command
   char lenStr[8];
@@ -89,7 +131,7 @@ uint8_t ESP8266::send(const char* data) {
   strcpy(cmd, atStr);
   strcat(cmd, lenStr);
   
-  // send data length in bytes
+  // send command
   bool res = _mod->ATsendCommand(cmd);
   delete[] cmd;
   if(!res) {
@@ -113,7 +155,7 @@ uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
   strcpy(cmd, atStr);
   strcat(cmd, lenStr);
   
-  // send command and data length in bytes
+  // send command
   bool res = _mod->ATsendCommand(cmd);
   delete[] cmd;
   if(!res) {
@@ -131,6 +173,8 @@ uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
 size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
   size_t i = 0;
   uint32_t start = millis();
+  
+  // wait until the required number of bytes is received or until timeout
   while((millis() - start < timeout) && (i < len)) {
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
@@ -140,48 +184,6 @@ size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
     }
   }
   return(i);
-}
-
-uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
-  char portStr[6];
-  itoa(port, portStr, 10);
-  char tcpKeepAliveStr[6];
-  itoa(tcpKeepAlive, tcpKeepAliveStr, 10);
-  
-  const char* atStr = "AT+CIPSTART=\"";
-  uint8_t cmdLen = strlen(atStr) + strlen(protocol) + strlen(host) + strlen(portStr) + 5;
-  
-  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
-	  cmdLen += strlen(tcpKeepAliveStr) + 1;
-  }
-  
-  char* cmd = new char[cmdLen];
-  strcpy(cmd, atStr);
-  strcat(cmd, protocol);
-  strcat(cmd, "\",\"");
-  strcat(cmd, host);
-  strcat(cmd, "\",");
-  strcat(cmd, portStr);
-  
-  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
-    strcat(cmd, ",");
-    strcat(cmd, tcpKeepAliveStr);
-  }
-  
-  bool res = _mod->ATsendCommand(cmd);
-  delete[] cmd;
-  if(!res) {
-    return(ERR_AT_FAILED);
-  }
-  
-  return(ERR_NONE);
-}
-
-uint8_t ESP8266::closeTransportConnection() {
-  if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
-    return(ERR_AT_FAILED);
-    }
-  return(ERR_NONE);
 }
 
 uint16_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {

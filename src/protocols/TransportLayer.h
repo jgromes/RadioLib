@@ -5,6 +5,10 @@
 
 class TransportLayer {
   public:
+    // constructor
+    // this class is purely virtual and does not require explicit constructor
+    
+    // basic methods
     virtual uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0) = 0;
     virtual uint8_t closeTransportConnection() = 0;
     virtual uint8_t send(const char* data) = 0;

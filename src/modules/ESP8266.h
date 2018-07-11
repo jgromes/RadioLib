@@ -7,14 +7,15 @@
 
 class ESP8266: public TransportLayer {
   public:
+    // constructor
     ESP8266(Module* module);
     
-    // Basic methods
+    // basic methods
     uint8_t begin(long speed);
     uint8_t reset();
     uint8_t join(const char* ssid, const char* password);
     
-    // Transport layer methods
+    // transport layer methods (implementations of purely virtual methods in TransportMethod class)
     uint8_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
     uint8_t closeTransportConnection();
     uint8_t send(const char* data);
