@@ -15,6 +15,10 @@
 #include "modules/SX1279.h"
 #include "modules/XBee.h"
 
+#include "protocols/TransportLayer.h"
+#include "protocols/HTTP.h"
+#include "protocols/MQTT.h"
+
 #define KITE_CS_A   10
 #define KITE_TX_A   9
 #define KITE_RX_A   8

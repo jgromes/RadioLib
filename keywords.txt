@@ -1,5 +1,5 @@
 #######################################
-# Syntax Coloring Map For LoRaLib
+# Syntax Coloring Map For KiteLib
 #######################################
 
 #######################################
@@ -21,9 +21,8 @@ SX1278	KEYWORD1
 SX1279	KEYWORD1
 XBee	KEYWORD1
 
-Bandwidth	KEYWORD1
-SpreadingFactor	KEYWORD1
-CodingRate	KEYWORD1
+MQTTClient	KEYWORD1
+HTTPClient	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -66,25 +65,30 @@ setFrequencyDeviation	KEYWORD2
 # ESP8266
 join	KEYWORD2
 reset	KEYWORD2
-HttpGet	KEYWORD2
-HttpPost	KEYWORD2
-MqttConnect	KEYWORD2
-MqttDisconnect	KEYWORD2
-MqttPublish	KEYWORD2
-MqttSubscribe	KEYWORD2
-MqttUnsubscribe	KEYWORD2
-MqttPing	KEYWORD2
-MqttCheck	KEYWORD2
-startTcp	KEYWORD2
-closeTcp	KEYWORD2
-startUdp	KEYWORD2
-closeUdp	KEYWORD2
-send	KEYWORD2
-receive	KEYWORD2
 
 # XBee
 setDestinationAddress	KEYWORD2
 setPanId	KEYWORD2
+
+# HTTP
+get	KEYWORD2
+post	KEYWORD2
+
+# MQTT
+connect	KEYWORD2
+disconnect	KEYWORD2
+publish	KEYWORD2
+subscribe	KEYWORD2
+unsubscribe	KEYWORD2
+ping	KEYWORD2
+check	KEYWORD2
+
+# TransportLayer
+openTransportConnection	KEYWORD2
+closeTransportConnection	KEYWORD2
+send	KEYWORD2
+receive	KEYWORD2
+getNumBytes	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
