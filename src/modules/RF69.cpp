@@ -155,10 +155,12 @@ uint8_t RF69::receive(Packet& pack) {
 }
 
 uint8_t RF69::sleep() {
+  // set module to sleep
   return(setMode(RF69_SLEEP));
 }
 
 uint8_t RF69::standby() {
+  // set module to standby
   return(setMode(RF69_STANDBY));
 }
 
@@ -351,63 +353,63 @@ uint8_t RF69::setOutputPower(int8_t power) {
 uint8_t RF69::config() {
   uint8_t state = ERR_NONE;
 
-  //set mode to STANDBY
+  // set mode to STANDBY
   state = setMode(RF69_STANDBY);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set operation modes
+  // set operation modes
   state = _mod->SPIsetRegValue(RF69_REG_OP_MODE, RF69_SEQUENCER_ON | RF69_LISTEN_OFF, 7, 6);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //enable over-current protection
+  // enable over-current protection
   state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON, 4, 4);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set data mode, modulation type and shaping
+  // set data mode, modulation type and shaping
   state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_PACKET_MODE | RF69_FSK, 6, 3);
   state |= _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_3, 1, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set RSSI threshold
+  // set RSSI threshold
   state = _mod->SPIsetRegValue(RF69_REG_RSSI_THRESH, RF69_RSSI_THRESHOLD, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //reset FIFO flags
+  // reset FIFO flags
   state = _mod->SPIsetRegValue(RF69_REG_IRQ_FLAGS_2, RF69_IRQ_FIFO_OVERRUN, 4, 4);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //disable ClkOut on DIO5
+  // disable ClkOut on DIO5
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_2, RF69_CLK_OUT_OFF, 2, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set synchronization
+  // set synchronization
   state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | RF69_SYNC_SIZE | RF69_SYNC_TOL, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set sync word
+  // set sync word
   state = _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_1, 0x2D, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_2, 100, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set packet configuration and disable encryption
+  // set packet configuration and disable encryption
   state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_VARIABLE | RF69_DC_FREE_NONE | RF69_CRC_ON | RF69_CRC_AUTOCLEAR_ON | RF69_ADDRESS_FILTERING_OFF, 7, 1);
   state |= _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_INTER_PACKET_RX_DELAY, 7, 4);
   state |= _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AUTO_RX_RESTART_ON | RF69_AES_OFF, 1, 0);
@@ -415,26 +417,26 @@ uint8_t RF69::config() {
     return(state);
   }
   
-  //set payload length
+  // set payload length
   state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, RF69_PAYLOAD_LENGTH, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set FIFO threshold
+  // set FIFO threshold
   state = _mod->SPIsetRegValue(RF69_REG_FIFO_THRESH, RF69_TX_START_CONDITION_FIFO_NOT_EMPTY | RF69_FIFO_THRESHOLD, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //set Rx timeouts
+  // set Rx timeouts
   state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
   state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  //enable improved fading margin
+  // enable improved fading margin
   state = _mod->SPIsetRegValue(RF69_REG_TEST_DAGC, RF69_CONTINUOUS_DAGC_LOW_BETA_OFF, 7, 0);
   if(state != ERR_NONE) {
     return(state);

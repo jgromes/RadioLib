@@ -418,15 +418,17 @@
 
 class RF69 {
   public:
+    // constructor
     RF69(Module* module);
     
+    // basic methods
     uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
-    
     uint8_t sleep();
     uint8_t standby();
     
+    // setting methods
     uint8_t setFrequency(float freq);
     uint8_t setBitRate(float br);
     uint8_t setRxBandwidth(float rxBw);
