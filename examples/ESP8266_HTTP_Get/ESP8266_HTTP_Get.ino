@@ -17,13 +17,15 @@
 ESP8266 wifi = Kite.ModuleA;
 
 // create HTTP client instance using the wifi module
-HTTPClient http(&wifi);
+// the default port used for HTTP is 80
+HTTPClient http(&wifi, 80);
 
 void setup() {
   Serial.begin(9600);
   
-  // initialize ESP8266 with baudrate 9600
+  // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
+  // baudrate:  9600 baud
   byte state = wifi.begin(9600);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -33,9 +35,11 @@ void setup() {
     while(true);
   }
 
-  // join AP named "SSID" using the password "password"
+  // join access point
   Serial.print(F("[ESP8266] Joining AP ... "));
-  state = wifi.join("Tenda", "Student20-X13");
+  // name:      SSID
+  // password:  password
+  state = wifi.join("SSID", "password");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -51,6 +55,7 @@ void loop() {
   // the response will contain origin IP address of the request
   String response;
   Serial.print(F("[ESP8266] Sending HTTP GET request ... "));
+  // URL:   www.httpbin.org/ip
   int http_code = http.get("www.httpbin.org/ip", response);
   if(http_code == 200) {
     Serial.println(F("success!"));
