@@ -25,6 +25,7 @@ uint8_t SX1273::setSpreadingFactor(uint8_t sf) {
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
+  // set spreading factor and if successful, save the new setting
   uint8_t state = setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;

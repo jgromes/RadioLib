@@ -205,13 +205,17 @@ uint8_t SX127x::receive(Packet& pack) {
 }
 
 uint8_t SX127x::scanChannel() {
+  // set mode to standby
   setMode(SX127X_STANDBY);
   
+  // set DIO pin mapping
   _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_CAD_DONE | SX127X_DIO1_CAD_DETECTED, 7, 4);
   clearIRQFlags();
   
+  // set mode to CAD
   setMode(SX127X_CAD);
   
+  // wait for channel activity detected or timeout
   while(!_mod->getInt0State()) {
     if(_mod->getInt1State()) {
       clearIRQFlags();
@@ -219,21 +223,27 @@ uint8_t SX127x::scanChannel() {
     }
   }
   
+  // clear interrupt flags
   clearIRQFlags();
+  
   return(CHANNEL_FREE);
 }
 
 uint8_t SX127x::sleep() {
+  // set mode to sleep
   return(setMode(SX127X_SLEEP));
 }
 
 uint8_t SX127x::standby() {
+  // set mode to standby
   return(setMode(SX127X_STANDBY));
 }
 
 uint8_t SX127x::setSyncWord(uint8_t syncWord) {
+  // set mode to standby
   setMode(SX127X_STANDBY);
   
+  // write register
   uint8_t state = _mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord);
   if(state == ERR_NONE) {
     _syncWord = syncWord;

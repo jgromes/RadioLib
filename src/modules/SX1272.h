@@ -45,10 +45,13 @@
 
 class SX1272: public SX127x {
   public:
+    // constructor
     SX1272(Module* mod);
     
+    // basic methods
     uint8_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17, uint16_t addrEeprom = 0);
     
+    // configuration methods
     uint8_t setFrequency(float freq);
     uint8_t setBandwidth(float bw);
     uint8_t setSpreadingFactor(uint8_t sf);

@@ -167,20 +167,23 @@
 
 class SX127x {
   public:
+    // constructor
     SX127x(Module* mod);
     
+    // public member variables
     float dataRate;
     int8_t lastPacketRSSI;
     float lastPacketSNR;
     
+    // basic methods
     uint8_t begin(uint8_t syncWord, uint16_t addrEeprom);
     uint8_t transmit(Packet& pack);
     uint8_t receive(Packet& pack);
     uint8_t scanChannel();
-    
     uint8_t sleep();
     uint8_t standby();
     
+    // configuration methods
     uint8_t setSyncWord(uint8_t syncWord);
   
   protected:
@@ -195,9 +198,7 @@ class SX127x {
     
     uint8_t tx(char* data, uint8_t length);
     uint8_t rxSingle(char* data, uint8_t* length);
-    
     uint8_t setFrequencyRaw(float newFreq);
-    
     uint8_t config();
   
   private:

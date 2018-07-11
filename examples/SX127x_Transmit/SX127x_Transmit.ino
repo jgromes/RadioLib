@@ -26,6 +26,13 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
+  // carrier frequency:                   434.0 MHz
+  // bandwidth:                           125.0 kHz
+  // spreading factor:                    9
+  // coding rate:                         7
+  // sync word:                           0x12
+  // output power:                        17 dBm
+  // node address in EEPROM starts at:    0
   byte state = lora.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));

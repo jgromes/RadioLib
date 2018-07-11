@@ -10,6 +10,7 @@ uint8_t SX1277::setFrequency(float freq) {
     return(ERR_INVALID_FREQUENCY);
   }
   
+  // set frequency and if successful, save the new setting
   uint8_t state = SX1278::setFrequencyRaw(freq);
   if(state == ERR_NONE) {
     SX127x::_freq = freq;
@@ -38,6 +39,7 @@ uint8_t SX1277::setSpreadingFactor(uint8_t sf) {
       return(ERR_INVALID_SPREADING_FACTOR);
   }
   
+  // set spreading factor and if successful, save the new setting
   uint8_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;

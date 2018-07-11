@@ -6,8 +6,10 @@
 
 class SX1273: public SX1272 {
   public:
+    // constructor
     SX1273(Module* mod);
     
+    // configuration methods
     uint8_t setSpreadingFactor(uint8_t sf);
 };
 

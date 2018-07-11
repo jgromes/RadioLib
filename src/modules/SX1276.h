@@ -6,8 +6,10 @@
 
 class SX1276: public SX1278 {
   public:
+    // constructor
     SX1276(Module* mod);
     
+    // configuration methods
     uint8_t setFrequency(float freq);
 };
 

@@ -6,8 +6,10 @@
 
 class SX1277: public SX1278 {
   public:
+    // constructor
     SX1277(Module* mod);
     
+    // configuration methods
     uint8_t setFrequency(float freq);
     uint8_t setSpreadingFactor(uint8_t sf);
 };
