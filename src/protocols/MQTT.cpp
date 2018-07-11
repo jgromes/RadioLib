@@ -379,6 +379,7 @@ uint8_t MQTTClient::check(void (*func)(const char*, const char*)) {
 }
 
 size_t MQTTClient::encodeLength(uint32_t len, uint8_t* encoded) {
+  // algorithm to encode packet length as per MQTT specification 3.1.1
   size_t i = 0;
   do {
     encoded[i] = len % 128;
@@ -392,6 +393,7 @@ size_t MQTTClient::encodeLength(uint32_t len, uint8_t* encoded) {
 }
 
 uint32_t MQTTClient::decodeLength(uint8_t* encoded) {
+  // algorithm to decode packet length as per MQTT specification 3.1.1
   uint32_t mult = 1;
   uint32_t len = 0;
   uint8_t i = 0;

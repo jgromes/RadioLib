@@ -17,13 +17,15 @@
 ESP8266 wifi = Kite.ModuleA;
 
 // create MQTT client instance using the wifi module
-MQTTClient mqtt(&wifi);
+// the default port used for MQTT is 1883
+MQTTClient mqtt(&wifi, 1883);
 
 void setup() {
   Serial.begin(9600);
 
-  // initialize ESP8266 with baudrate 9600
+  // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
+  // baudrate:  9600 baud
   byte state = wifi.begin(9600);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -33,8 +35,10 @@ void setup() {
     while(true);
   }
 
-  // join AP named "SSID" using the password "password"
+  // join access point
   Serial.print(F("[ESP8266] Joining AP ... "));
+  // name:      SSID
+  // password:  password
   state = wifi.join("SSID", "password");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -44,8 +48,12 @@ void setup() {
     while(true);
   }
 
-  // connect to MQTT broker using client ID "arduino", username "try" and password "try"
-  Serial.print(F("[ESP8266] Connecting to MQTT broker ... "));
+  // connect to MQTT server
+  Serial.print(F("[ESP8266] Connecting to MQTT server ... "));
+  // server URL:  broker.shiftr.io
+  // client ID:   arduino
+  // username:    try
+  // password:    try
   state = mqtt.connect("broker.shiftr.io", "arduino", "try", "try");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -55,10 +63,11 @@ void setup() {
     while(true);
   }
 
-  // subscribe to the topic "hello"
+  // subscribe to MQTT topic
   // after calling this method, server will send PUBLISH packets
   // to this client each time a new message was published at the topic
   Serial.print(F("[ESP8266] Subscribing to MQTT topic ... "));
+  // topic name:  hello
   state = wifi.subscribe("hello");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -67,9 +76,10 @@ void setup() {
     Serial.println(state, HEX);
   }
 
-  // unsubscribe from topic "hello"
+  // unsubscribe from MQTT topic
   // after calling this method, server will stop sending PUBLISH packets
   Serial.print(F("[ESP8266] Unsubscribing from MQTT topic ... "));
+  // topic filter:  hello
   state = wifi.unsubscribe("hello");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));

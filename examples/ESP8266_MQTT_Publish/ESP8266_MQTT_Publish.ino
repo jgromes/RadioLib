@@ -17,13 +17,15 @@
 ESP8266 wifi = Kite.ModuleA;
 
 // create MQTT client instance using the wifi module
-MQTTClient mqtt(&wifi);
+// the default port used for MQTT is 1883
+MQTTClient mqtt(&wifi, 1883);
 
 void setup() {
   Serial.begin(9600);
 
-  // initialize ESP8266 with baudrate 9600
+  // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
+  // baudrate:  9600 baud
   byte state = wifi.begin(9600);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -33,8 +35,10 @@ void setup() {
     while(true);
   }
 
-  // join AP named "SSID" using the password "password"
+  // join access point
   Serial.print(F("[ESP8266] Joining AP ... "));
+  // name:      SSID
+  // password:  password
   state = wifi.join("SSID", "password");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -44,8 +48,12 @@ void setup() {
     while(true);
   }
 
-  // connect to MQTT server using client ID "arduino", username "try" and password "try"
+  // connect to MQTT server
   Serial.print(F("[ESP8266] Connecting to MQTT server ... "));
+  // server URL:  broker.shiftr.io
+  // client ID:   arduino
+  // username:    try
+  // password:    try
   state = mqtt.connect("broker.shiftr.io", "arduino", "try", "try");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -57,8 +65,10 @@ void setup() {
 }
 
 void loop() {
-  // publish MQTT message to the topic "hello" with content "world"
+  // publish MQTT message
   Serial.print(F("[ESP8266] Publishing MQTT message ... "));
+  // topic name:            hello
+  // application message:   world
   byte state = mqtt.publish("hello", "world");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));

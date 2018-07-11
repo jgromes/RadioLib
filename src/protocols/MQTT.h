@@ -29,8 +29,10 @@
 
 class MQTTClient {
   public:
+    // constructor
     MQTTClient(TransportLayer* tl, uint16_t port = 1883);
     
+    // basic methods
     uint8_t connect(const char* host, const char* clientId, const char* userName = "", const char* password = "", uint16_t keepAlive = 60, bool cleanSession = true, const char* willTopic = "", const char* willMessage = "");
     uint8_t disconnect();
     uint8_t publish(const char* topic, const char* message);
