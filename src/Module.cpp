@@ -1,5 +1,13 @@
 #include "Module.h"
 
+Module::Module(int cs, int int0, int int1) {
+  _cs = cs;
+  _tx = -1;
+  _rx = -1;
+  _int0 = int0;
+  _int1 = int1;
+}
+
 Module::Module(int cs, int tx, int rx, int int0, int int1) {
   _cs = cs;
   _tx = tx;

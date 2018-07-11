@@ -12,6 +12,7 @@
 
 class Module {
   public:
+    Module(int cs, int int0, int int1);
     Module(int cs, int tx, int rx, int int0, int int1);
     
     SoftwareSerial* ModuleSerial;
