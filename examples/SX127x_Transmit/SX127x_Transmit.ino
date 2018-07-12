@@ -2,6 +2,10 @@
  * KiteLib SX127x Transmit Example
  * 
  * This example transmits packets using SX1278 LoRa radio module.
+ * Each packet contains up to 256 bytes of data, in the form of:
+ *  - Arduino String
+ *  - null-terminated char array (C-string)
+ *  - arbitrary binary data (byte array)
  * 
  * Other modules from SX127x family can also be used.
  * SX1272 lora = Kite.ModuleA;
@@ -17,10 +21,6 @@
 // SX1278 module is in slot A on the shield
 SX1278 lora = Kite.ModuleA;
 
-// create instance of Packet class with destination address
-// "01:23:45:67:89:AB:CD:EF" and data "Hello World !"
-Packet pack("01:23:45:67:89:AB:CD:EF", "Hello World!");
-
 void setup() {
   Serial.begin(9600);
 
@@ -32,7 +32,6 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  // node address in EEPROM starts at:    0
   byte state = lora.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -46,8 +45,14 @@ void setup() {
 void loop() {
   Serial.print(F("[SX1278] Transmitting packet ... "));
 
-  // start transmitting the packet
-  byte state = lora.transmit(pack);
+  // you can transmit C-string or Arduino string up to 256 characters long
+  byte state = lora.transmit("Hello World!");
+
+  // you can also transmit byte array up to 256 bytes long
+  /*
+  byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+  byte state = lora.transmit(byteArr, 8);
+  */
   
   if(state == ERR_NONE) {
     // the packet was successfully transmitted

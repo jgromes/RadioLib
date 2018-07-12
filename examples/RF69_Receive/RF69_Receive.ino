@@ -10,9 +10,6 @@
 // RF69 module is in slot A on the shield
 RF69 rf = Kite.ModuleA;
 
-// create empty instance of Packet class
-Packet pack;
-
 void setup() {
   Serial.begin(9600);
 
@@ -36,28 +33,23 @@ void setup() {
 void loop() {
   Serial.print(F("[RF69] Waiting for incoming transmission ... "));
 
-  // wait for single packet
-  byte state = rf.receive(pack);
+  // you can receive data as an Arduino String
+  String str;
+  byte state = rf.receive(str);
+
+  // you can also receive data as byte array
+  /*
+  byte byteArr[8];
+  byte state = rf.receive(byteArr, 8);
+  */
 
   if(state == ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
-    // print the source of the packet
-    Serial.print(F("[RF69] Source:\t\t"));
-    Serial.println(pack.getSourceStr());
-
-    // print the destination of the packet
-    Serial.print(F("[RF69] Destination:\t"));
-    Serial.println(pack.getDestinationStr());
-
-    // print the length of the packet
-    Serial.print(F("[RF69] Length:\t\t"));
-    Serial.println(pack.length);
-
     // print the data of the packet
     Serial.print(F("[RF69] Data:\t\t"));
-    Serial.println(pack.data);
+    Serial.println(str);
     
   } else if(state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet

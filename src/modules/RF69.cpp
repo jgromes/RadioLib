@@ -75,9 +75,9 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   return(ERR_NONE);
 }
 
-uint8_t RF69::transmit(Packet& pack) {
+uint8_t RF69::transmit(uint8_t* data, size_t len) {
   // check packet length
-  if(pack.length >= 256) {
+  if(len >= 256) {
     return(ERR_PACKET_TOO_LONG);
   }
   
@@ -91,12 +91,10 @@ uint8_t RF69::transmit(Packet& pack) {
   clearIRQFlags();
   
   // set packet length
-  _mod->SPIwriteRegister(RF69_REG_FIFO, pack.length);
+  _mod->SPIwriteRegister(RF69_REG_FIFO, len);
   
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, (char*)pack.source, 8);
-  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, (char*)pack.destination, 8);
-  _mod->SPIwriteRegisterBurstStr(RF69_REG_FIFO, pack.data, pack.length - 16);
+  _mod->SPIwriteRegisterBurst(RF69_REG_FIFO, data, len);
   
   // set mode to transmit
   setMode(RF69_TX);
@@ -112,7 +110,15 @@ uint8_t RF69::transmit(Packet& pack) {
   return(ERR_NONE);
 }
 
-uint8_t RF69::receive(Packet& pack) {
+uint8_t RF69::transmit(const char* str) {
+  return(RF69::transmit((uint8_t*)str, strlen(str)));
+}
+
+uint8_t RF69::transmit(String& str) {
+  return(RF69::transmit(str.c_str()));
+}
+
+uint8_t RF69::receive(uint8_t* data, size_t len) {
   // set mode to standby
   setMode(RF69_STANDBY);
   
@@ -135,23 +141,31 @@ uint8_t RF69::receive(Packet& pack) {
     }
   }
   
-  // read packet length
-  pack.length = _mod->SPIreadRegister(RF69_REG_FIFO);
-  
-  // read packet addresses
-  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, (char*)pack.source);
-  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, 8, (char*)pack.destination);
+  // get packet length
+  size_t length = _mod->SPIreadRegister(RF69_REG_FIFO);
   
   // read packet data
-  delete[] pack.data;
-  pack.data = new char[pack.length - 15];
-  _mod->SPIreadRegisterBurstStr(RF69_REG_FIFO, pack.length - 16, pack.data);
-  pack.data[pack.length - 16] = 0;
+  _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
   
   // clear interrupt flags
   clearIRQFlags();
   
   return(ERR_NONE);
+}
+
+uint8_t RF69::receive(String& str, size_t len) {
+  // create temporary array to store received data
+  char* data = new char[0];
+  uint8_t state = RF69::receive((uint8_t*)data, len);
+  
+  // if packet was received successfully, copy data into String
+  if(state == ERR_NONE) {
+    data[strlen(data) - 1] = 0;
+    str = String(data);
+  }
+  
+  delete[] data;
+  return(state);
 }
 
 uint8_t RF69::sleep() {

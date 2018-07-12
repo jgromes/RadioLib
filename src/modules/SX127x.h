@@ -1,11 +1,8 @@
 #ifndef _KITELIB_SX127X_H
 #define _KITELIB_SX127X_H
 
-#include <EEPROM.h>
-
 #include "TypeDef.h"
 #include "Module.h"
-#include "Packet.h"
 
 // SX127x series common registers
 #define SX127X_REG_FIFO                               0x00
@@ -176,9 +173,12 @@ class SX127x {
     float lastPacketSNR;
     
     // basic methods
-    uint8_t begin(uint8_t syncWord, uint16_t addrEeprom);
-    uint8_t transmit(Packet& pack);
-    uint8_t receive(Packet& pack);
+    uint8_t begin(uint8_t syncWord);
+    uint8_t transmit(uint8_t* data, size_t len);
+    uint8_t transmit(const char* str);
+    uint8_t transmit(String& str);
+    uint8_t receive(uint8_t* data, size_t len);
+    uint8_t receive(String& str, size_t len = 0);
     uint8_t scanChannel();
     uint8_t sleep();
     uint8_t standby();
@@ -202,10 +202,6 @@ class SX127x {
     uint8_t config();
   
   private:
-    uint8_t _address[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    uint16_t _addrEeprom;
-    
-    void generateNodeAdress();
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };

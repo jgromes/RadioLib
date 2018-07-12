@@ -1,11 +1,8 @@
 #ifndef _KITELIB_RF69_H
 #define _KITELIB_RF69_H
 
-#include <EEPROM.h>
-
 #include "TypeDef.h"
 #include "Module.h"
-#include "Packet.h"
 
 //RF69 register map
 #define RF69_REG_FIFO                                 0x00
@@ -423,8 +420,11 @@ class RF69 {
     
     // basic methods
     uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
-    uint8_t transmit(Packet& pack);
-    uint8_t receive(Packet& pack);
+    uint8_t transmit(uint8_t* data, size_t len);
+    uint8_t transmit(const char* str);
+    uint8_t transmit(String& str);
+    uint8_t receive(uint8_t* data, size_t len);
+    uint8_t receive(String& str, size_t len = 0);
     uint8_t sleep();
     uint8_t standby();
     

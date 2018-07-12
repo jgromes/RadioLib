@@ -1,7 +1,14 @@
 /*
  * KiteLib SX127x Receive Example
  * 
- * This example receives packets using SX1278 LoRa radio module.
+ * This example listens for LoRa transmissions using SX127x Lora modules.
+ * To successfully receive data, the following settings have to be the same
+ * on both transmitter and receiver:
+ *  - carrier frequency
+ *  - bandwidth
+ *  - spreading factor
+ *  - coding rate
+ *  - sync word
  * 
  * Other modules from SX127x family can also be used.
  * SX1272 lora = Kite.ModuleA;
@@ -17,9 +24,6 @@
 // SX1278 module is in slot A on the shield
 SX1278 lora = Kite.ModuleA;
 
-// create empty instance of Packet class
-Packet pack;
-
 void setup() {
   Serial.begin(9600);
 
@@ -31,7 +35,6 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  // node address in EEPROM starts at:    0
   byte state = lora.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -45,28 +48,23 @@ void setup() {
 void loop() {
   Serial.print(F("[SX1278] Waiting for incoming transmission ... "));
 
-  // wait for single packet
-  byte state = lora.receive(pack);
+  // you can receive data as an Arduino String
+  String str;
+  byte state = lora.receive(str);
+
+  // you can also receive data as byte array
+  /*
+  byte byteArr[8];
+  byte state = lora.receive(byteArr, 8);
+  */
 
   if(state == ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
-    // print the source of the packet
-    Serial.print(F("[SX1278] Source:\t\t"));
-    Serial.println(pack.getSourceStr());
-
-    // print the destination of the packet
-    Serial.print(F("[SX1278] Destination:\t"));
-    Serial.println(pack.getDestinationStr());
-
-    // print the length of the packet
-    Serial.print(F("[SX1278] Length:\t\t"));
-    Serial.println(pack.length);
-
     // print the data of the packet
-    Serial.print(F("[SX1278] Data:\t\t"));
-    Serial.println(pack.data);
+    Serial.print("[SX1278] Data:\t\t");
+    Serial.println(str);
 
     //print the measured data rate
     Serial.print("[SX1278] Datarate:\t");

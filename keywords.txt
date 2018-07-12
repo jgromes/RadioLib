@@ -8,7 +8,6 @@
 
 KiteLib	KEYWORD1
 Kite	KEYWORD1
-Packet	KEYWORD1
 Module	KEYWORD1
 
 ESP8266	KEYWORD1
@@ -32,18 +31,6 @@ HTTPClient	KEYWORD1
 # KiteLib
 ModuleA	KEYWORD2
 ModuleB	KEYWORD2
-
-# Packet
-source	KEYWORD2
-destination	KEYWORD2
-data	KEYWORD2
-length	KEYWORD2
-getSourceStr	KEYWORD2
-getDestinationStr	KEYWORD2
-setSourceStr	KEYWORD2
-setDestinationStr	KEYWORD2
-copyInto	KEYWORD2
-setPacketData	KEYWORD2
 
 # SX1272/73/76/77/78/79 + RF69
 dataRate	KEYWORD2

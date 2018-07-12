@@ -3,7 +3,6 @@
 
 #include "ISerial.h"
 #include "TypeDef.h"
-#include "Packet.h"
 
 //API reserved characters
 #define XBEE_API_START                                0x7E

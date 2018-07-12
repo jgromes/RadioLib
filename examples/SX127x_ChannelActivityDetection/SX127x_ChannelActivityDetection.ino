@@ -31,7 +31,6 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  // node address in EEPROM starts at:    0
   byte state = lora.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));

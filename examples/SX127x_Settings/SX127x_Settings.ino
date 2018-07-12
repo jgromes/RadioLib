@@ -42,7 +42,6 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  // node address in EEPROM starts at:    0
   byte state = loraSX1278.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -61,7 +60,6 @@ void setup() {
   // coding rate:                         8
   // sync word:                           0x13
   // output power:                        17 dBm
-  // node address in EEPROM starts at:    0
   state = loraSX1276.begin(434.0, 7.8, 12, 8, 0x13);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -84,7 +82,6 @@ void setup() {
   // coding rate:                         5
   // sync word:                           0x14
   // output power:                        2 dBm
-  // node address in EEPROM starts at:    0
   state = loraSX1272.begin(915.0, 500.0, 6, 5, 0x14, 2);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
