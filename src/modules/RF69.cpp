@@ -145,18 +145,7 @@ uint8_t RF69::receive(uint8_t* data, size_t len) {
   size_t length = _mod->SPIreadRegister(RF69_REG_FIFO);
   
   // read packet data
-  if(len == 0) {
-    // argument len equal to zero indicates String call, which means dynamically allocated data array
-    // dispose of the original and create a new one
-    delete[] data;
-    data = new uint8_t[length];
-  }
   _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
-  
-  // add terminating null
-  if(len == 0) {
-    data[length] = 0;
-  }
   
   // clear interrupt flags
   clearIRQFlags();
@@ -166,11 +155,12 @@ uint8_t RF69::receive(uint8_t* data, size_t len) {
 
 uint8_t RF69::receive(String& str, size_t len) {
   // create temporary array to store received data
-  char* data = new char[len];
+  char* data = new char[0];
   uint8_t state = RF69::receive((uint8_t*)data, len);
   
   // if packet was received successfully, copy data into String
   if(state == ERR_NONE) {
+    data[strlen(data) - 1] = 0;
     str = String(data);
   }
   
