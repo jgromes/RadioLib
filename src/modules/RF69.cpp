@@ -205,9 +205,7 @@ uint8_t RF69::setFrequency(float freq) {
   uint8_t state = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_LSB, FRF & 0x0000FF, 7, 0);
-  if(state == ERR_NONE) {
-    RF69::_freq = freq;
-  }
+
   return(state);
 }
 
@@ -339,14 +337,12 @@ uint8_t RF69::setFrequencyDeviation(float freqDev) {
   // set mode to standby
   setMode(RF69_STANDBY);
   
-  //set allowed frequency deviation
+  // set allowed frequency deviation
   uint32_t base = 1;
   uint32_t FDEV = (freqDev * (base << 19)) / 32000;
   uint8_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, FDEV & 0x00FF, 7, 0);
-  if(state == ERR_NONE) {
-    RF69::_freqDev = freqDev;
-  }
+
   return(state);
 }
 
@@ -368,9 +364,7 @@ uint8_t RF69::setOutputPower(int8_t power) {
     // requested output power is lower than 13 dBm, enable PA0 on RFIO
     state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_ON | RF69_PA1_OFF | RF69_PA2_OFF | power + 18, 7, 0);
   }
-  if(state == ERR_NONE) {
-    RF69::_power = _power;
-  }
+
   return(state);
 }
 

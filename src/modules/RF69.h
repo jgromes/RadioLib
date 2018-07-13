@@ -438,11 +438,8 @@ class RF69 {
   private:
     Module* _mod;
     
-    float _freq;
     float _br;
     float _rxBw;
-    float _freqDev;
-    int8_t _power;
     
     uint8_t config();
     uint8_t setMode(uint8_t mode);
