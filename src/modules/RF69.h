@@ -435,13 +435,15 @@ class RF69 {
     uint8_t setFrequencyDeviation(float freqDev);
     uint8_t setOutputPower(int8_t power);
   
-  private:
+  protected:
     Module* _mod;
     
     float _br;
     float _rxBw;
     
     uint8_t config();
+    
+  private:
     uint8_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
