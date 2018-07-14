@@ -428,12 +428,13 @@ class RF69 {
     uint8_t sleep();
     uint8_t standby();
     
-    // setting methods
+    // configuration methods
     uint8_t setFrequency(float freq);
     uint8_t setBitRate(float br);
     uint8_t setRxBandwidth(float rxBw);
     uint8_t setFrequencyDeviation(float freqDev);
     uint8_t setOutputPower(int8_t power);
+    uint8_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
   
   protected:
     Module* _mod;

@@ -72,6 +72,13 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
     return(state);
   }
   
+  // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
+  uint8_t syncWord[] = {0x2D, 0x01};
+  state = setSyncWord(syncWord, 2);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
   return(ERR_NONE);
 }
 
@@ -366,6 +373,41 @@ uint8_t RF69::setOutputPower(int8_t power) {
   }
 
   return(state);
+}
+
+uint8_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
+  // check constraints
+  if((maxErrBits > 7) || (len > 8)) {
+    return(ERR_INVALID_SYNC_WORD);
+  }
+  
+  // sync word must not contain value 0x00
+  for(uint8_t i = 0; i < len; i++) {
+    if(syncWord[i] == 0x00) {
+      return(ERR_INVALID_SYNC_WORD);
+    }
+  }
+  
+  // enable sync word recognition
+  uint8_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (len - 1) << 3 | maxErrBits, 7, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set sync word
+  _mod->SPIwriteRegisterBurst(RF69_REG_SYNC_VALUE_1, syncWord, len);
+  return(ERR_NONE);
+}
+
+uint8_t RF69::setNodeAddress(uint8_t nodeAddr) {
+  // enable address filtering (node only)
+  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE, 2, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set node address
+  return(_mod->SPIsetRegValue(RF69_REG_NODE_ADRS, nodeAddr));
 }
 
 uint8_t RF69::config() {

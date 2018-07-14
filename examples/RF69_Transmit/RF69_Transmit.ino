@@ -20,6 +20,7 @@ void setup() {
   // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
+  // sync word:                           0x2D  0x01
   byte state = rf.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
