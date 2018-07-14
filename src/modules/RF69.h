@@ -442,12 +442,17 @@ class RF69 {
     uint8_t setNodeAddress(uint8_t nodeAddr);
     uint8_t setBroadcastAddress(uint8_t broadAddr);
     uint8_t disableAddressFiltering();
+    
+    // measurement methods
+    void setAmbientTemperature(int16_t tempAmbient);
+    int16_t getTemperature();
   
   protected:
     Module* _mod;
     
     float _br;
     float _rxBw;
+    int16_t _tempOffset;
     
     uint8_t config();
     

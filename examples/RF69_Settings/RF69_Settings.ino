@@ -67,41 +67,41 @@ void setup() {
 
   // set carrier frequency to 433.5 MHz
   if(rf1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
-    Serial.println("Selected frequency is invalid for this module!");
+    Serial.println(F("Selected frequency is invalid for this module!"));
     while(true);
   }
 
   // set bit rate to 100.0 kbps
   state = rf1.setBitRate(100.0);
   if(state == ERR_INVALID_BIT_RATE) {
-    Serial.println("Selected bit rate is invalid for this module!");
+    Serial.println(F("[RF69] Selected bit rate is invalid for this module!"));
     while(true);
   } else if(state == ERR_INVALID_BIT_RATE_BW_RATIO) {
-    Serial.println("Selected bit rate to bandwidth ratio is invalid!");
-    Serial.println("Increase receiver bandwidth to set this bit rate.");
+    Serial.println(F("[RF69] Selected bit rate to bandwidth ratio is invalid!"));
+    Serial.println(F("[RF69] Increase receiver bandwidth to set this bit rate."));
     while(true);
   }
 
   // set receiver bandwidth to 250.0 kHz
   state = rf1.setRxBandwidth(250.0);
   if(state == ERR_INVALID_RX_BANDWIDTH) {
-    Serial.println("Selected receiver bandwidth is invalid for this module!");
+    Serial.println(F("[RF69] Selected receiver bandwidth is invalid for this module!"));
     while(true);
   } else if(state == ERR_INVALID_BIT_RATE_BW_RATIO) {
-    Serial.println("Selected bit rate to bandwidth ratio is invalid!");
-    Serial.println("Decrease bit rate to set this receiver bandwidth.");
+    Serial.println(F("[RF69] Selected bit rate to bandwidth ratio is invalid!"));
+    Serial.println(F("[RF69] Decrease bit rate to set this receiver bandwidth."));
     while(true);
   }
 
   // set allowed frequency deviation to 10.0 kHz
   if(rf1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
-    Serial.println("Selected frequency deviation is invalid for this module!");
+    Serial.println(F("[RF69] Selected frequency deviation is invalid for this module!"));
     while(true);
   }
 
   // set output power to 2 dBm
   if(rf1.setOutputPower(2) == ERR_INVALID_OUTPUT_POWER) {
-    Serial.println("Selected output power is invalid for this module!");
+    Serial.println(F("[RF69] Selected output power is invalid for this module!"));
     while(true);
   }
 
@@ -110,11 +110,24 @@ void setup() {
   // set sync word to 0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
   if(rf1.setSyncWord(syncWord, 8) == ERR_INVALID_SYNC_WORD) {
-    Serial.println("Selected sync word is invalid for this module!");
+    Serial.println(F("[RF69] Selected sync word is invalid for this module!"));
     while(true);
-  }  
+  }
+
+  Serial.println(F("[RF69] All settings changed successfully!"));
+
+  // RF69 can also measure temperature (roughly)
+  // to get correct temperature measurements, the sensor must be calibrated
+  // at ambient temperature
+  rf1.setAmbientTemperature(25); // replace 25 with your ambient temperature  
 }
 
 void loop() {
-  // nothing here
+  // measure temperature
+  Serial.print(F("[RF69] Measured temperature: "));
+  Serial.print(rf1.getTemperature());
+  Serial.println(F(" deg C"));
+
+  // wait 100 ms before the next measurement
+  delay(100);
 }

@@ -59,6 +59,8 @@ disableAddressFiltering	KEYWORD2
 setAESKey	KEYWORD2
 enableAES	KEYWORD2
 disableAES	KEYWORD2
+getTemperature	KEYWORD2
+setAmbientTemperature	KEYWORD2
 
 # ESP8266
 join	KEYWORD2

@@ -2,6 +2,7 @@
 
 RF69::RF69(Module* module) {
   _mod = module;
+  _tempOffset = 0;
 }
 
 uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -460,6 +461,27 @@ uint8_t RF69::disableAddressFiltering() {
   
   // set broadcast address to default (0x00)
   return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, 0x00));
+}
+
+void RF69::setAmbientTemperature(int16_t tempAmbient) {
+  _tempOffset = getTemperature() -  tempAmbient;
+}
+
+int16_t RF69::getTemperature() {
+  // set mode to STANDBY
+  setMode(RF69_STANDBY);
+  
+  // start temperature measurement
+  _mod->SPIsetRegValue(RF69_REG_TEMP_1, RF69_TEMP_MEAS_START, 3, 3);
+  
+  // wait until measurement is finished
+  while(_mod->SPIgetRegValue(RF69_REG_TEMP_1, 2, 2) == RF69_TEMP_MEAS_RUNNING) {
+    // check every 10 us
+    delay(10);
+  }
+  int8_t rawTemp = _mod->SPIgetRegValue(RF69_REG_TEMP_2);
+  
+  return(0 - (rawTemp + _tempOffset));
 }
 
 uint8_t RF69::config() {
