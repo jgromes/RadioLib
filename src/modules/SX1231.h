@@ -9,6 +9,12 @@
 #define SX1231_CHIP_REVISION_2_B                      0x22
 #define SX1231_CHIP_REVISION_2_C                      0x23
 
+//SX1231 specific register map
+#define SX1231_REG_TEST_OOK                           0x6E
+
+//SX1231_REG_TEST_OOK
+#define SX1231_OOK_DELTA_THRESHOLHD                   0x0C
+
 class SX1231: public RF69  {
   public:
     // constructor
