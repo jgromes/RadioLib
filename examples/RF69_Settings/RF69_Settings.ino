@@ -53,7 +53,7 @@ void setup() {
   // frequency deviation:                 60.0 kHz
   // output power:                        17 dBm
   // sync word:                           0x2D  0x01
-  byte state = rf1.begin(868.0, 300.0, 250.0, 60.0, 17);
+  state = rf1.begin(868.0, 300.0, 250.0, 60.0, 17);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
