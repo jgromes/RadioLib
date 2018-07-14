@@ -433,6 +433,23 @@ uint8_t RF69::setBroadcastAddress(uint8_t broadAddr) {
   return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, broadAddr));
 }
 
+uint8_t RF69::disableAddressFiltering() {
+  // disable address filtering
+  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_OFF, 2, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set node address to default (0x00)
+  state = _mod->SPIsetRegValue(RF69_REG_NODE_ADRS, 0x00);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set broadcast address to default (0x00)
+  return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, 0x00));
+}
+
 uint8_t RF69::config() {
   uint8_t state = ERR_NONE;
 

@@ -32,6 +32,7 @@ HTTPClient	KEYWORD1
 # KiteLib
 ModuleA	KEYWORD2
 ModuleB	KEYWORD2
+Module	KEYWORD2
 
 # SX1272/73/76/77/78/79 + RF69
 dataRate	KEYWORD2
@@ -54,6 +55,7 @@ setRxBandwidth	KEYWORD2
 setFrequencyDeviation	KEYWORD2
 setNodeAddress	KEYWORD2
 setBroadcastAddress	KEYWORD2
+disableAddressFiltering	KEYWORD2
 
 # ESP8266
 join	KEYWORD2

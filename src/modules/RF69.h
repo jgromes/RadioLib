@@ -436,6 +436,7 @@ class RF69 {
     uint8_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
     uint8_t setNodeAddress(uint8_t nodeAddr);
     uint8_t setBroadcastAddress(uint8_t broadAddr);
+    uint8_t disableAddressFiltering();
   
   protected:
     Module* _mod;
