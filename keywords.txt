@@ -47,9 +47,13 @@ setCodingRate	KEYWORD2
 setFrequency	KEYWORD2
 setSyncWord	KEYWORD2
 setOutputPower	KEYWORD2
+
+# RF69-specific
 setBitRate	KEYWORD2
 setRxBandwidth	KEYWORD2
 setFrequencyDeviation	KEYWORD2
+setNodeAddress	KEYWORD2
+setBroadcastAddress	KEYWORD2
 
 # ESP8266
 join	KEYWORD2
