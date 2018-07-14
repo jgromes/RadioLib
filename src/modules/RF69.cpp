@@ -410,6 +410,17 @@ uint8_t RF69::setNodeAddress(uint8_t nodeAddr) {
   return(_mod->SPIsetRegValue(RF69_REG_NODE_ADRS, nodeAddr));
 }
 
+uint8_t RF69::setBroadcastAddress(uint8_t broadAddr) {
+  // enable address filtering (node + broadcast)
+  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE_BROADCAST, 2, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set broadcast address
+  return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, broadAddr));
+}
+
 uint8_t RF69::config() {
   uint8_t state = ERR_NONE;
 
@@ -452,19 +463,6 @@ uint8_t RF69::config() {
   
   // disable ClkOut on DIO5
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_2, RF69_CLK_OUT_OFF, 2, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // set synchronization
-  state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | RF69_SYNC_SIZE | RF69_SYNC_TOL, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // set sync word
-  state = _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_1, 0x2D, 7, 0);
-  state |= _mod->SPIsetRegValue(RF69_REG_SYNC_VALUE_2, 100, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
