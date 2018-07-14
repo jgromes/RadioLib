@@ -329,7 +329,6 @@
 #define RF69_SYNC_ON                                  0b10000000  //  7     7     sync word detection on (default)
 #define RF69_FIFO_FILL_CONDITION_SYNC                 0b00000000  //  6     6     FIFO fill condition: on SyncAddress interrupt (default)
 #define RF69_FIFO_FILL_CONDITION                      0b01000000  //  6     6                          as long as the bit is set
-//#define RF69_SYNC_SIZE                                0b00011000  //  5     3     size of sync word: SyncSize + 1 bytes
 #define RF69_SYNC_SIZE                                0b00001000  //  5     3     size of sync word: SyncSize + 1 bytes
 #define RF69_SYNC_TOL                                 0b00000000  //  2     0     number of tolerated errors in sync word
 
@@ -420,9 +419,9 @@ class RF69 {
     
     // basic methods
     uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
-    uint8_t transmit(uint8_t* data, size_t len);
-    uint8_t transmit(const char* str);
-    uint8_t transmit(String& str);
+    uint8_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    uint8_t transmit(const char* str, uint8_t addr = 0);
+    uint8_t transmit(String& str, uint8_t addr = 0);
     uint8_t receive(uint8_t* data, size_t len);
     uint8_t receive(String& str, size_t len = 0);
     uint8_t sleep();

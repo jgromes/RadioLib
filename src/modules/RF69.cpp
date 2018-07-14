@@ -82,9 +82,9 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   return(ERR_NONE);
 }
 
-uint8_t RF69::transmit(uint8_t* data, size_t len) {
+uint8_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
-  if(len >= 256) {
+  if(len > 64) {
     return(ERR_PACKET_TOO_LONG);
   }
   
@@ -99,6 +99,12 @@ uint8_t RF69::transmit(uint8_t* data, size_t len) {
   
   // set packet length
   _mod->SPIwriteRegister(RF69_REG_FIFO, len);
+  
+  // check address filtering
+  uint8_t filter = _mod->SPIgetRegValue(RF69_REG_PACKET_CONFIG_1, 2, 1);
+  if((filter == RF69_ADDRESS_FILTERING_NODE) || (filter == RF69_ADDRESS_FILTERING_NODE_BROADCAST)) {
+    _mod->SPIwriteRegister(RF69_REG_FIFO, addr);
+  }
   
   // write packet to FIFO
   _mod->SPIwriteRegisterBurst(RF69_REG_FIFO, data, len);
@@ -117,11 +123,11 @@ uint8_t RF69::transmit(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-uint8_t RF69::transmit(const char* str) {
-  return(RF69::transmit((uint8_t*)str, strlen(str)));
+uint8_t RF69::transmit(const char* str, uint8_t addr) {
+  return(RF69::transmit((uint8_t*)str, strlen(str), addr));
 }
 
-uint8_t RF69::transmit(String& str) {
+uint8_t RF69::transmit(String& str, uint8_t addr) {
   return(RF69::transmit(str.c_str()));
 }
 
@@ -150,6 +156,12 @@ uint8_t RF69::receive(uint8_t* data, size_t len) {
   
   // get packet length
   size_t length = _mod->SPIreadRegister(RF69_REG_FIFO);
+  
+  // check address filtering
+  uint8_t filter = _mod->SPIgetRegValue(RF69_REG_PACKET_CONFIG_1, 2, 1);
+  if((filter == RF69_ADDRESS_FILTERING_NODE) || (filter == RF69_ADDRESS_FILTERING_NODE_BROADCAST)) {
+    _mod->SPIreadRegister(RF69_REG_FIFO);
+  }
   
   // read packet data
   if(len == 0) {
