@@ -92,12 +92,17 @@ void setup() {
   }
 
   // you can also change the settings at runtime
+  // and check if the configuration was changed successfully
   
   // different modules accept different parameters
   // see https://github.com/jgromes/LoRaLib/wiki/Supported-LoRa-modules
-  
-  // you can check if the setting was changed successfully
 
+  // set carrier frequency to 433.5 MHz
+  if(loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+    Serial.println("Selected frequency is invalid for this module!");
+    while(true);
+  }
+  
   // set bandwidth to 250 kHz
   if(loraSX1278.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
     Serial.println("Selected bandwidth is invalid for this module!");
@@ -113,12 +118,6 @@ void setup() {
   // set coding rate to 6
   if(loraSX1278.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
     Serial.println("Selected coding rate is invalid for this module!");
-    while(true);
-  }
-
-  // set carrier frequency to 433.5 MHz
-  if(loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
-    Serial.println("Selected frequency is invalid for this module!");
     while(true);
   }
 
