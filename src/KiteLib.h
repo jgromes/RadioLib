@@ -6,6 +6,7 @@
 
 #include "modules/ESP8266.h"
 #include "modules/HC05.h"
+#include "modules/JDY08.h"
 #include "modules/RF69.h"
 #include "modules/SX1231.h"
 #include "modules/SX1272.h"
