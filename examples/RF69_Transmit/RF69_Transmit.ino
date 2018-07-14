@@ -34,12 +34,12 @@ void setup() {
 void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
-  // you can transmit C-string or Arduino string up to 256 characters long
+  // you can transmit C-string or Arduino string up to 64 characters long
   byte state = rf.transmit("Hello World!");
-
-  // you can also transmit byte array up to 256 bytes long
+  
+  // you can also transmit byte array up to 64 bytes long
   /*
-  byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+  byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
   byte state = rf.transmit(byteArr, 8);
   */
   
