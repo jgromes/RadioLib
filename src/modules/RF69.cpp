@@ -207,6 +207,18 @@ uint8_t RF69::standby() {
   return(setMode(RF69_STANDBY));
 }
 
+void RF69::setAESKey(uint8_t* key) {
+  _mod->SPIwriteRegisterBurst(RF69_REG_AES_KEY_1, key, 16);
+}
+
+uint8_t RF69::enableAES() {
+  return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_ON, 0, 0));
+}
+
+uint8_t RF69::disableAES() {
+  return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_OFF, 0, 0));
+}
+
 uint8_t RF69::setFrequency(float freq) {
   // check allowed frequency range
   if(!((freq > 290.0) && (freq < 340.0) ||

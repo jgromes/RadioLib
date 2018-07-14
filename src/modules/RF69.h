@@ -427,6 +427,11 @@ class RF69 {
     uint8_t sleep();
     uint8_t standby();
     
+    // hardware AES support
+    void setAESKey(uint8_t* key);
+    uint8_t enableAES();
+    uint8_t disableAES();
+    
     // configuration methods
     uint8_t setFrequency(float freq);
     uint8_t setBitRate(float br);

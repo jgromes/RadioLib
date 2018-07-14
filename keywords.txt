@@ -56,6 +56,9 @@ setFrequencyDeviation	KEYWORD2
 setNodeAddress	KEYWORD2
 setBroadcastAddress	KEYWORD2
 disableAddressFiltering	KEYWORD2
+setAESKey	KEYWORD2
+enableAES	KEYWORD2
+disableAES	KEYWORD2
 
 # ESP8266
 join	KEYWORD2
