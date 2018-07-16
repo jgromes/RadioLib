@@ -1,7 +1,7 @@
 #include "JDY08.h"
 
-JDY08::JDY08(Module* module) {
-  _mod = module;
+JDY08::JDY08(Module* mod) : ISerial(mod) {
+  
 }
 
 void JDY08::begin(long speed) {

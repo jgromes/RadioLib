@@ -6,7 +6,7 @@
 class JDY08: public ISerial {
   public:
     // constructor
-    JDY08(Module* module);
+    JDY08(Module* mod);
     
     // basic methods
     void begin(long speed);

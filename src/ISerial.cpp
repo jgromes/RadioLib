@@ -1,7 +1,7 @@
 #include "ISerial.h"
 
-ISerial::ISerial() {
-  
+ISerial::ISerial(Module* mod) {
+  _mod = mod;
 }
 
 void ISerial::begin(long speed) {

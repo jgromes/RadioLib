@@ -19,12 +19,14 @@ void setup() {
 }
 
 void loop() {
-  // read data incoming from Serial port and write them to bluetooth
   // JDY08 supports all methods of the Serial class
+  // read data incoming from Serial port and write them to Bluetooth
   while(Serial.available() > 0) {
-    ble.write(Serial.read());
+    bluetooth.write(Serial.read());
   }
-  while(ble.available() > 0) {
-    Serial.write(ble.read());
+  
+  // read data incoming from Bluetooth and write them to Serial port
+  while(bluetooth.available() > 0) {
+    Serial.write(bluetooth.read());
   }
 }

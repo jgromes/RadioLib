@@ -6,7 +6,7 @@
 class HC05: public ISerial {
   public:
     // constructor
-    HC05(Module* module);
+    HC05(Module* mod);
     
     // basic methods
     void begin(long speed);

@@ -10,7 +10,7 @@
 
 class ISerial {
   public:
-    ISerial();
+    ISerial(Module* mod);
     
     void begin(long);
     bool listen();
