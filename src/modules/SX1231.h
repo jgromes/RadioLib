@@ -13,7 +13,7 @@
 #define SX1231_REG_TEST_OOK                           0x6E
 
 //SX1231_REG_TEST_OOK
-#define SX1231_OOK_DELTA_THRESHOLHD                   0x0C
+#define SX1231_OOK_DELTA_THRESHOLD                    0x0C
 
 class SX1231: public RF69  {
   public:

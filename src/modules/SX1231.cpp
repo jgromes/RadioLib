@@ -83,13 +83,13 @@ uint8_t SX1231::begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, f
   // SX1231 V2a only
   if(_chipRevision == SX1231_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
-    state = _mod->SPIsetRegValue(SX1231_REG_TEST_OOK, SX1231_OOK_DELTA_THRESHOLHD);
+    state = _mod->SPIsetRegValue(SX1231_REG_TEST_OOK, SX1231_OOK_DELTA_THRESHOLD);
     if(state != ERR_NONE) {
       return(state);
     }
     
     // enable OCP with 95 mA limit
-    state = _mod->SPIsetRegValue(RF69_REG_OCP, SX1231_OOK_DELTA_THRESHOLHD, RF69_OCP_ON | RF69_OCP_TRIM, 4, 0);
+    state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON | RF69_OCP_TRIM, 4, 0);
     if(state != ERR_NONE) {
       return(state);
     }
