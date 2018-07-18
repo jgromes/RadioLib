@@ -4,7 +4,7 @@ SX127x::SX127x(Module* mod) {
   _mod = mod;
 }
 
-uint8_t SX127x::begin(uint8_t syncWord) {
+uint8_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
@@ -13,7 +13,7 @@ uint8_t SX127x::begin(uint8_t syncWord) {
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     uint8_t version = _mod->SPIreadRegister(SX127X_REG_VERSION);
-    if(version == 0x12) {
+    if(version == chipVersion) {
       flagFound = true;
     } else {
       #ifdef KITELIB_DEBUG
@@ -228,13 +228,8 @@ uint8_t SX127x::setSyncWord(uint8_t syncWord) {
   // set mode to standby
   setMode(SX127X_STANDBY);
   
-  // write register
-  uint8_t state = _mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord);
-  if(state == ERR_NONE) {
-    _syncWord = syncWord;
-  }
-  
-  return(state);
+  // write register 
+  return(_mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord));
 }
 
 uint8_t SX127x::setFrequencyRaw(float newFreq) {

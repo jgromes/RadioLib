@@ -43,6 +43,9 @@
 #define SX1272_AGC_AUTO_OFF                           0b00000000  //  2     2     LNA gain set by REG_LNA
 #define SX1272_AGC_AUTO_ON                            0b00000100  //  2     2     LNA gain set by internal AGC loop
 
+//SX127X_REG_VERSION
+#define SX1272_CHIP_VERSION                           0x22
+
 class SX1272: public SX127x {
   public:
     // constructor

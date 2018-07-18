@@ -6,7 +6,7 @@ SX1278::SX1278(Module* mod) : SX127x(mod) {
 
 uint8_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power) {
   // execute common part
-  uint8_t state = SX127x::begin(syncWord);
+  uint8_t state = SX127x::begin(SX1278_CHIP_VERSION, syncWord);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -52,12 +52,8 @@ uint8_t SX1278::setFrequency(float freq) {
     return(ERR_INVALID_FREQUENCY);
   }
   
-  // set frequency and if successful, save the new setting
-  uint8_t state = SX1278::setFrequencyRaw(freq);
-  if(state == ERR_NONE) {
-    SX127x::_freq = freq;
-  }
-  return(state);
+  // set frequency
+  return(SX1278::setFrequencyRaw(freq));
 }
 
 uint8_t SX1278::setBandwidth(float bw) {
@@ -188,11 +184,6 @@ uint8_t SX1278::setOutputPower(int8_t power) {
     state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power + 2), 6, 0);
     state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
-  }
-  
-  // configuration successful, save new setting
-  if(state == ERR_NONE) {
-    _power = power;
   }
   
   return(state);

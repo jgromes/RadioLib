@@ -10,10 +10,6 @@ uint8_t SX1279::setFrequency(float freq) {
     return(ERR_INVALID_FREQUENCY);
   }
   
-  // set frequency and if successful, save the new setting
-  uint8_t state = SX1278::setFrequencyRaw(freq);
-  if(state == ERR_NONE) {
-    SX127x::_freq = freq;
-  }
-  return(state);
+  // set frequency
+  return(SX1278::setFrequencyRaw(freq));
 }
