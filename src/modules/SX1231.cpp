@@ -4,7 +4,7 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-uint8_t SX1231::begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13) {
+uint8_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
