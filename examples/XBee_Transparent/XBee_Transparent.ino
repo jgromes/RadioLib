@@ -1,19 +1,20 @@
 /*
- * KiteLib XBee AT Transmit Example
+ * KiteLib XBee Transparent Operation Example
  * 
- * This example transmits packets using XBee AT mode.
- * In AT mode, two XBee modules act like a Serial line. Both modules must have
- * the same PAN ID, and the destination addresses have to be set properly.
+ * This example transmits packets using XBee Transparent mode.
+ * In Transparent mode, two XBee modules act like a Serial line. 
+ * Both modules must have the same PAN ID, and the destination 
+ * addresses have to be set properly.
  * 
- * IMPORTANT: Before uplolading this example, make sure that the XBee module is running 
- * AT COORDINATOR firmware!
+ * IMPORTANT: Before uploading this example, make sure that the XBee modules 
+ * are running AT COORDINATOR and AT ROUTER firmware!
  */
 
 // include the library
 #include <KiteLib.h>
 
 // XBee module is in slot A on the shield
-XBee bee = Kite.ModuleA;
+XBeeSerial bee = Kite.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -53,9 +54,14 @@ void setup() {
 }
 
 void loop() {
+  // XBeeSerial supports all methods of the Serial class
   // read data incoming from Serial port and write them to XBee
-  // XBee supports all methods of the Serial class
   while(Serial.available() > 0) {
     bee.write(Serial.read());
+  }
+
+  // read data incoming from XBee and write them to Serial port
+  while(bee.available() > 0) {
+    Serial.write(bee.read());
   }
 }
