@@ -1,23 +1,88 @@
 #include "XBee.h"
 
-XBeeApiFrame::XBeeApiFrame(uint8_t apiId, uint8_t frameId) {
-  _apiId = apiId;
-  _frameId = frameId;
-}
-
-XBee::XBee(Module* module) {
-  _mod = module;
+XBee::XBee(Module* mod) {
+  _mod = mod;
+  _frameID = 0x01;
 }
 
 uint8_t XBee::begin(long speed) {
-  // set Arduino pins
-  pinMode(A4, OUTPUT);
-  pinMode(A5, OUTPUT);
-  pinMode(3, OUTPUT);
-  digitalWrite(A4, LOW);
-  digitalWrite(A5, LOW);
-  digitalWrite(3, HIGH);
+  // set module properties
+  _mod->baudrate = speed;
+  _mod->init(USE_UART, INT_NONE);
   
+  // wait for boot
+  delay(2000);
+  
+  // empty UART buffer (garbage data)
+  _mod->ATemptyBuffer();
+  
+  // send test frame (get baudrate setting)
+  uint8_t frameID = _frameID++;
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND, frameID, "BD");
+  delay(20);
+  
+  // get response code
+  return(readApiFrame(frameID, 4));
+}
+
+uint8_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
+  uint8_t destNetwork[] = {0xFF, 0xFE};
+  return(transmit(dest, destNetwork, payload));
+}
+
+uint8_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius) {
+  // build the frame
+  size_t payloadLen = strlen(payload);
+  size_t dataLen = 8 + 2 + 1 + 1 + payloadLen;
+  uint8_t* cmd = new uint8_t[dataLen];
+  memcpy(cmd, dest, 8);
+  memcpy(cmd + 8, destNetwork, 2);
+  cmd[10] = radius;
+  cmd[11] = 0x01;   // options: no retries
+  memcpy(cmd + 12, payload, payloadLen);
+  
+  // send frame
+  uint8_t frameID = _frameID++;
+  sendApiFrame(XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST, frameID, cmd, dataLen);
+  delete[] cmd;
+  delay(40);
+  
+  // get response code
+  return(readApiFrame(frameID, 5));
+}
+
+size_t XBee::available() {
+  
+}
+
+String XBee::getPacketSource() {
+  
+}
+
+String XBee::getPacketData() {
+  
+}
+
+uint8_t XBee::setPanId(uint8_t* panId) {
+  // build AT command
+  uint8_t cmd[10];
+  memcpy(cmd, "ID", 2);
+  memcpy(cmd + 2, panId, 8);
+  
+  // send frame
+  uint8_t frameID = _frameID++;
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND, frameID, cmd, 10);
+  delay(40);
+  
+  // get response code
+  return(readApiFrame(frameID, 4));
+}
+
+XBeeSerial::XBeeSerial(Module* mod) : ISerial(mod) {
+  
+}
+
+uint8_t XBeeSerial::begin(long speed) {
   // set module properties
   _mod->AtLineFeed = "\r";
   _mod->baudrate = speed;
@@ -43,13 +108,11 @@ uint8_t XBee::begin(long speed) {
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
-  
-  delay(1000);
 
   return(ERR_NONE);
 }
 
-uint8_t XBee::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
+uint8_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -87,7 +150,7 @@ uint8_t XBee::setDestinationAddress(const char* destinationAddressHigh, const ch
   return(ERR_NONE);
 }
 
-uint8_t XBee::setPanId(const char* panId) {
+uint8_t XBeeSerial::setPanId(const char* panId) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -114,7 +177,7 @@ uint8_t XBee::setPanId(const char* panId) {
   return(ERR_NONE);
 }
 
-bool XBee::enterCmdMode() {
+bool XBeeSerial::enterCmdMode() {
   for(uint8_t i = 0; i < 10; i++) {
     delay(1000);
     
@@ -150,120 +213,92 @@ bool XBee::enterCmdMode() {
   }
 }
 
-/*uint8_t XBee::transmit(uint32_t destinationAddressHigh, uint32_t destinationAddressLow, const char* data, uint8_t length) {
-  //build the API frame
-  uint8_t frameLength = length + 12;
-  uint8_t * frameData = new uint8_t[frameLength];
+void XBee::sendApiFrame(uint8_t type, uint8_t id, const char* data) {
+  sendApiFrame(type, id, (uint8_t*)data, strlen(data));
+}
+
+void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length) {
+  // build the API frame
+  size_t frameLength = 1 + 2 + length + 1 + 2;
+  uint8_t* frame = new uint8_t[frameLength];
   
-  //set the destination address
-  frameData[0] = (destinationAddressHigh >> 24) & 0xFF;
-  frameData[1] = (destinationAddressHigh >> 16) & 0xFF;
-  frameData[2] = (destinationAddressHigh >> 8) & 0xFF;
-  frameData[3] = destinationAddressHigh & 0xFF;
+  frame[0] = 0x7E;                          // start delimiter
+  frame[1] = ((length + 2) & 0xFF00) >> 8;  // length MSB
+  frame[2] = (length + 2) & 0x00FF;         // length LSB
+  frame[3] = type;                          // frame type
+  frame[4] = id;                            // frame ID
+  memcpy(frame + 5, data, length);          // data
   
-  frameData[4] = (destinationAddressLow >> 24) & 0xFF;
-  frameData[5] = (destinationAddressLow >> 16) & 0xFF;
-  frameData[6] = (destinationAddressLow >> 8) & 0xFF;
-  frameData[7] = destinationAddressLow & 0xFF;
+  // calculate the checksum
+  uint8_t checksum = 0;
+  for(uint16_t i = 3; i < frameLength - 1; i++) {
+    checksum += frame[i];
+  }
+  frame[5 + length] = 0xFF - checksum;
   
-  //set the destination network address
-  frameData[8] = 0xFF;
-  frameData[9] = 0xFE;
-  
-  //set broadcast radius (number of allowed hops, 0 - maximum)
-  frameData[10] = 0x00;
-  
-  //set the options
-  frameData[11] = 0x00;
-  
-  //copy payload data
-  for(uint8_t i = 0; i < length; i++) {
-    frameData[12 + i] = (uint8_t)data[i];
+  // send the frame
+  for(uint16_t i = 0; i < frameLength; i++) {
+    _mod->ModuleSerial->write(frame[i]);
   }
   
-  //send the frame to XBee
-  sendApiFrame(XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST, frameData, frameLength);
-  
-  //deallocate memory
-  delete frameData;
-  
-  //wait for status frame
-  readApiFrame(1000);
-}*/
+  // deallocate memory
+  delete[] frame;
+}
 
-/*void XBee::sendApiFrame(uint8_t apiId, uint8_t* data, uint16_t length) {
-  //send frame start delimiter
-  _mod->ModuleSerial->write(XBEE_API_START);
-  
-  //send frame length (API ID, frame ID and data length)
-  write(((length + 2) >> 8) & 0xFF);
-  write((length + 2) & 0xFF);
-  
-  //send API ID
-  write(apiId);
-  
-  //send default frame ID (value 0x00 would disable some feedback)
-  write(XBEE_API_DEFAULT_FRAME_ID);
-  
-  //checksum is calculated from API ID, frame ID and data
-  uint8_t checksum = apiId;
-  checksum += XBEE_API_DEFAULT_FRAME_ID;
-  
-  //send the data and calculate checksum
-  for(uint16_t i = 0; i < length; i++) {
-    write(data[i]);
-    checksum += data[i];
+uint8_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
+  // get number of bytes in response
+  uint16_t numBytes = getNumBytes(10000, 5);
+  if(numBytes == 0) {
+    return(ERR_FRAME_MALFORMED);
   }
   
-  //send the checksum
-  checksum = 0xFF - checksum;
-  write(checksum);
-}*/
+  // checksum byte is not included in length field
+  numBytes++;
+  
+  // read the response
+  uint8_t* resp = new uint8_t[numBytes];
+  for(uint16_t i = 0; i < numBytes; i++) {
+    resp[i] = _mod->ModuleSerial->read();
+  }
+  
+  // verify checksum 
+  uint8_t checksum = 0;
+  for(uint16_t i = 0; i < numBytes; i++) {
+    checksum += resp[i];
+  }
+  if(checksum != 0xFF) {
+    return(ERR_FRAME_INCORRECT_CHECKSUM);
+  }
+  
+  // check frame ID
+  if(resp[1] != frameID) {
+    return(ERR_FRAME_UNEXPECTED_ID);
+  }
+  
+  uint8_t code = resp[codePos];
+  delete[] resp;
+  return(code);
+}
 
-/*uint8_t XBee::readApiFrame(uint16_t timeout) {
-  //start the timer
-  unsigned long start = millis();
-  
-  Serial.println("reading");
-  
-  
-  //array to store frame length, type and ID
-  uint8_t header[4];
-  while(millis() - start < timeout) {
-    Serial.println(_mod->ModuleSerial->available());
-    //check buffer for new data
-    while(_mod->ModuleSerial->available()) {
-      uint8_t b = _mod->ModuleSerial->read();
-      
-      Serial.write(b);
-      Serial.print('\t');
-      Serial.println(b, HEX);
-      
-      if(b == XBEE_API_START) {
-        //received the start character
-        n = 0;
-      } else {
-        n++;
-      }
-      
-      //check escaped characters
-      if(b == XBEE_API_ESCAPE) {
-        //wait for the next byte
-        while(!_mod->ModuleSerial->available());
-        
-        //resolve the escaped character
-        b =_mod->ModuleSerial->read();
-        b = 0x20 ^ b;
-      }
+uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
+  // wait for available data
+  uint32_t start = millis();
+  while(_mod->ModuleSerial->available() < minBytes) {
+    if(millis() - start >= timeout) {
+      return(0);
     }
   }
-}*/
-
-/*void XBee::write(uint8_t b) {
-  if((b == XBEE_API_START) || (b == XBEE_API_ESCAPE) || (b == XBEE_API_XON) || (b == XBEE_API_XOFF)) {
-    _mod->ModuleSerial->write(XBEE_API_ESCAPE);
-    _mod->ModuleSerial->write(b ^ 0x20);
-  } else {
-    _mod->ModuleSerial->write(b);
+  
+  // read response
+  uint8_t resp[3];
+  uint8_t i = 0;
+  while(_mod->ModuleSerial->available() > 0) {
+    uint8_t b = _mod->ModuleSerial->read();
+    resp[i++] = b;
+    if(i == 3) {
+      break;
+    }
   }
-}*/
+  
+  return((resp[1] << 8) | resp[2]);
+}

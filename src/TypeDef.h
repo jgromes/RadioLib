@@ -94,5 +94,8 @@
 
 // XBee status codes
 #define ERR_CMD_MODE_FAILED                   0x02
+#define ERR_FRAME_MALFORMED                   0x03
+#define ERR_FRAME_INCORRECT_CHECKSUM          0x04
+#define ERR_FRAME_UNEXPECTED_ID               0x05
 
 #endif

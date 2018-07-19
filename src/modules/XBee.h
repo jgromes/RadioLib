@@ -4,13 +4,13 @@
 #include "ISerial.h"
 #include "TypeDef.h"
 
-//API reserved characters
+// API reserved characters
 #define XBEE_API_START                                0x7E
 #define XBEE_API_ESCAPE                               0x7D
 #define XBEE_API_XON                                  0x11
 #define XBEE_API_XOFF                                 0x13
 
-//API frame IDs
+// API frame IDs
 #define XBEE_API_FRAME_AT_COMMAND                     0x08
 #define XBEE_API_FRAME_AT_COMMAND_PARAMETER           0x09
 #define XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST        0x10
@@ -31,36 +31,48 @@
 #define XBEE_API_FRAME_ROUTE_RECORD                   0xA1
 #define XBEE_API_FRAME_MANY_TO_ONE_ROUTE_REQUEST      0xA3
 
-#define XBEE_API_DEFAULT_FRAME_ID                     0x01
-
-class XBeeApiFrame {
+class XBeeSerial: public ISerial {
   public:
-    XBeeApiFrame(uint8_t apiId, uint8_t frameId);
+    // constructor
+    XBeeSerial(Module* mod);
     
-    uint8_t getApiId();
-    uint8_t getFrameId();
-    
-  private:
-    uint16_t _length;
-    uint8_t _apiId;
-    uint8_t _frameId;
-    uint8_t* _data;
-};
-
-class XBee: public ISerial {
-  public:
-    XBee(Module* module);
-    
+    // basic methods
     uint8_t begin(long speed);
     
+    // configuration methods
     uint8_t setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow);
-    uint8_t setPanId(const char* panId);
+    uint8_t setPanId(const char* panID);
     
   private:
     bool enterCmdMode();
-    //void sendApiFrame(uint8_t id, uint8_t* data, uint16_t length);
-    //uint8_t readApiFrame(uint16_t timeout);
-    //void write(uint8_t b);
+    
+};
+
+class XBee {
+  public:
+    // constructor
+    XBee(Module* mod);
+    
+    // basic methods
+    uint8_t begin(long speed);
+    uint8_t transmit(uint8_t* dest, const char* payload, uint8_t radius = 1);
+    uint8_t transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius = 1);
+    size_t available();
+    String getPacketSource();
+    String getPacketData();
+    
+    // configuration methods
+    uint8_t setPanId(uint8_t* panID);
+  
+  private:
+    Module* _mod;
+    uint8_t _frameID;
+    
+    void sendApiFrame(uint8_t type, uint8_t id, const char* data);
+    void sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length);
+    uint8_t readApiFrame(uint8_t frameID, uint8_t codePos);
+    
+    uint16_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10);
 };
 
 #endif
