@@ -21,7 +21,7 @@ class SX1231: public RF69  {
     SX1231(Module* mod);
     
     // basic methods
-    uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
+    int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
   
   private:
     uint8_t _chipRevision;

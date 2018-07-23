@@ -1,8 +1,8 @@
 /*
- * KiteLib SX1231 Transmit Example
- * 
- * This example transmits packets using SX1231 FSK radio module.
- */
+   KiteLib SX1231 Transmit Example
+
+   This example transmits packets using SX1231 FSK radio module.
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -21,13 +21,13 @@ void setup() {
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D  0x01
-  byte state = rf.begin();
-  if(state == ERR_NONE) {
+  int state = rf.begin();
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // you can change the sync word at runtime
@@ -38,9 +38,9 @@ void setup() {
   // length:                  2
   // tolerated error bits:    0
   state == rf.setSyncWord(syncWord, 2);
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
-  } else if(state == ERR_INVALID_SYNC_WORD) {
+  } else if (state == ERR_INVALID_SYNC_WORD) {
     Serial.println(F("invalid!"));
   }
 }
@@ -49,22 +49,22 @@ void loop() {
   Serial.print(F("[SX1231] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 256 characters long
-  byte state = rf.transmit("Hello World!");
+  int state = rf.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
   /*
-  byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-  byte state = rf.transmit(byteArr, 8);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+    int state = rf.transmit(byteArr, 8);
   */
-  
-  if(state == ERR_NONE) {
+
+  if (state == ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(" success!");
-    
-  } else if(state == ERR_PACKET_TOO_LONG) {
+
+  } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
     Serial.println(" too long!");
-    
+
   }
 
   // wait for a second before transmitting again

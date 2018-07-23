@@ -4,7 +4,7 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-uint8_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
@@ -18,13 +18,14 @@ uint8_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       _chipRevision = version;
     } else {
       #ifdef KITELIB_DEBUG
-        Serial.print("SX1231 not found! (");
+        Serial.print(F("SX127x not found! ("));
         Serial.print(i + 1);
-        Serial.print(" of 10 tries) RF69_REG_VERSION == ");
+        Serial.print(F(" of 10 tries) SX127X_REG_VERSION == "));
         
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
+        char buffHex[7];
+        sprintf(buffHex, "0x%04X", version);
         Serial.print(buffHex);
+        Serial.print(F(", expected 0x0021 / 0x0022 / 0x0023"));
         Serial.println();
       #endif
       delay(1000);
@@ -41,7 +42,7 @@ uint8_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   }
   
   // configure settings not accessible by API
-  uint8_t state = config();
+  int16_t state = config();
   if(state != ERR_NONE) {
     return(state);
   }
