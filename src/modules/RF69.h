@@ -418,30 +418,30 @@ class RF69 {
     RF69(Module* module);
     
     // basic methods
-    uint8_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
-    uint8_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
-    uint8_t transmit(const char* str, uint8_t addr = 0);
-    uint8_t transmit(String& str, uint8_t addr = 0);
-    uint8_t receive(uint8_t* data, size_t len);
-    uint8_t receive(String& str, size_t len = 0);
-    uint8_t sleep();
-    uint8_t standby();
+    int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(const char* str, uint8_t addr = 0);
+    int16_t transmit(String& str, uint8_t addr = 0);
+    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(String& str, size_t len = 0);
+    int16_t sleep();
+    int16_t standby();
     
     // hardware AES support
     void setAESKey(uint8_t* key);
-    uint8_t enableAES();
-    uint8_t disableAES();
+    int16_t enableAES();
+    int16_t disableAES();
     
     // configuration methods
-    uint8_t setFrequency(float freq);
-    uint8_t setBitRate(float br);
-    uint8_t setRxBandwidth(float rxBw);
-    uint8_t setFrequencyDeviation(float freqDev);
-    uint8_t setOutputPower(int8_t power);
-    uint8_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
-    uint8_t setNodeAddress(uint8_t nodeAddr);
-    uint8_t setBroadcastAddress(uint8_t broadAddr);
-    uint8_t disableAddressFiltering();
+    int16_t setFrequency(float freq);
+    int16_t setBitRate(float br);
+    int16_t setRxBandwidth(float rxBw);
+    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setOutputPower(int8_t power);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
+    int16_t setNodeAddress(uint8_t nodeAddr);
+    int16_t setBroadcastAddress(uint8_t broadAddr);
+    int16_t disableAddressFiltering();
     
     // measurement methods
     void setAmbientTemperature(int16_t tempAmbient);
@@ -454,10 +454,10 @@ class RF69 {
     float _rxBw;
     int16_t _tempOffset;
     
-    uint8_t config();
+    int16_t config();
     
   private:
-    uint8_t setMode(uint8_t mode);
+    int16_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
 

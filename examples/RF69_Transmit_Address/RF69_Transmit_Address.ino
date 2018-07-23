@@ -1,12 +1,12 @@
 /*
- * KiteLib RF69 Transmit to Address Example
- * 
- * This example transmits packets using RF69 FSK radio module.
- * Packets can have 1-byte address of the destination node.
- * After setting node (or broadcast) address, this node will 
- * automatically filter out any packets that do not contain 
- * either node address or broadcast address.
- */
+   KiteLib RF69 Transmit to Address Example
+
+   This example transmits packets using RF69 FSK radio module.
+   Packets can have 1-byte address of the destination node.
+   After setting node (or broadcast) address, this node will
+   automatically filter out any packets that do not contain
+   either node address or broadcast address.
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -25,13 +25,13 @@ void setup() {
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D  0x01
-  byte state = rf.begin();
-  if(state == ERR_NONE) {
+  int state = rf.begin();
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // set node address
@@ -39,12 +39,12 @@ void setup() {
   // address filtering (node address only)
   Serial.print(F("[RF69] Setting node address ... "));
   state == rf.setNodeAddress(0x01);
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // set broadcast address
@@ -52,27 +52,27 @@ void setup() {
   // address filtering (node or broadcast address)
   Serial.print(F("[RF69] Setting broadcast address ... "));
   state == rf.setBroadcastAddress(0xFF);
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // address filtering can also be disabled
   // NOTE: calling this method will also erase previously set
   // node and broadcast address
   /*
-  Serial.print(F("[RF69] Disabling address filtering ... "));
-  state == rf.disableAddressFiltering();
-  if(state == ERR_NONE) {
+    Serial.print(F("[RF69] Disabling address filtering ... "));
+    state == rf.disableAddressFiltering();
+    if(state == ERR_NONE) {
     Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
     while(true);
-  }
+    }
   */
 }
 
@@ -80,33 +80,33 @@ void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // transmit C-string or Arduino string to node with address 0x02
-  //byte state = rf.transmit("Hello World!", 0x02);
-  
+  //int state = rf.transmit("Hello World!", 0x02);
+
   // transmit byte array to node with address 0x02
-  
+
   byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-  byte state = rf.transmit(byteArr, 8, 0x02);
-  
+  int state = rf.transmit(byteArr, 8, 0x02);
+
 
   // transmit C-string or Arduino string in broadcast mode
   /*
-  byte state = rf.transmit("Hello World!", 0xFF);
+    int state = rf.transmit("Hello World!", 0xFF);
   */
 
   // transmit byte array in broadcast mode
   /*
-  byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-  byte state = rf.transmit(byteArr, 8, 0xFF);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+    int state = rf.transmit(byteArr, 8, 0xFF);
   */
-  
-  if(state == ERR_NONE) {
+
+  if (state == ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(" success!");
-    
-  } else if(state == ERR_PACKET_TOO_LONG) {
+
+  } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
     Serial.println(" too long!");
-    
+
   }
 
   // wait for a second before transmitting again

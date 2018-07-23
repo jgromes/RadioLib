@@ -5,7 +5,7 @@ RF69::RF69(Module* module) {
   _tempOffset = 0;
 }
 
-uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
   _mod->init(USE_SPI, INT_0);
   
@@ -18,13 +18,14 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
       flagFound = true;
     } else {
       #ifdef KITELIB_DEBUG
-        Serial.print("RF69 not found! (");
+        Serial.print(F("RF69 not found! ("));
         Serial.print(i + 1);
-        Serial.print(" of 10 tries) RF69_REG_VERSION == ");
+        Serial.print(F(" of 10 tries) RF69_REG_VERSION == "));
         
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
+        char buffHex[7];
+        sprintf(buffHex, "0x%04X", version);
         Serial.print(buffHex);
+        Serial.print(F(", expected 0x0024"));
         Serial.println();
       #endif
       delay(1000);
@@ -41,7 +42,7 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   }
   
   // configure settings not accessible by API
-  uint8_t state = config();
+  int16_t state = config();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -83,7 +84,7 @@ uint8_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   return(ERR_NONE);
 }
 
-uint8_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > 64) {
     return(ERR_PACKET_TOO_LONG);
@@ -124,15 +125,15 @@ uint8_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   return(ERR_NONE);
 }
 
-uint8_t RF69::transmit(const char* str, uint8_t addr) {
+int16_t RF69::transmit(const char* str, uint8_t addr) {
   return(RF69::transmit((uint8_t*)str, strlen(str), addr));
 }
 
-uint8_t RF69::transmit(String& str, uint8_t addr) {
+int16_t RF69::transmit(String& str, uint8_t addr) {
   return(RF69::transmit(str.c_str()));
 }
 
-uint8_t RF69::receive(uint8_t* data, size_t len) {
+int16_t RF69::receive(uint8_t* data, size_t len) {
   // set mode to standby
   setMode(RF69_STANDBY);
   
@@ -184,10 +185,10 @@ uint8_t RF69::receive(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-uint8_t RF69::receive(String& str, size_t len) {
+int16_t RF69::receive(String& str, size_t len) {
   // create temporary array to store received data
   char* data = new char[len];
-  uint8_t state = RF69::receive((uint8_t*)data, len);
+  int16_t state = RF69::receive((uint8_t*)data, len);
   
   // if packet was received successfully, copy data into String
   if(state == ERR_NONE) {
@@ -198,12 +199,12 @@ uint8_t RF69::receive(String& str, size_t len) {
   return(state);
 }
 
-uint8_t RF69::sleep() {
+int16_t RF69::sleep() {
   // set module to sleep
   return(setMode(RF69_SLEEP));
 }
 
-uint8_t RF69::standby() {
+int16_t RF69::standby() {
   // set module to standby
   return(setMode(RF69_STANDBY));
 }
@@ -212,15 +213,15 @@ void RF69::setAESKey(uint8_t* key) {
   _mod->SPIwriteRegisterBurst(RF69_REG_AES_KEY_1, key, 16);
 }
 
-uint8_t RF69::enableAES() {
+int16_t RF69::enableAES() {
   return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_ON, 0, 0));
 }
 
-uint8_t RF69::disableAES() {
+int16_t RF69::disableAES() {
   return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_OFF, 0, 0));
 }
 
-uint8_t RF69::setFrequency(float freq) {
+int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
   if(!((freq > 290.0) && (freq < 340.0) ||
        (freq > 431.0) && (freq < 510.0) ||
@@ -234,14 +235,14 @@ uint8_t RF69::setFrequency(float freq) {
   //set carrier frequency
   uint32_t base = 1;
   uint32_t FRF = (freq * (base << 19)) / 32.0;
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_LSB, FRF & 0x0000FF, 7, 0);
 
   return(state);
 }
 
-uint8_t RF69::setBitRate(float br) {
+int16_t RF69::setBitRate(float br) {
   // check allowed bitrate
   if((br < 1.2) || (br > 300.0)) {
     return(ERR_INVALID_BIT_RATE);
@@ -257,7 +258,7 @@ uint8_t RF69::setBitRate(float br) {
   
   // set bit rate
   uint16_t bitRate = 32000 / br;
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
   if(state == ERR_NONE) {
     RF69::_br = br;
@@ -265,7 +266,7 @@ uint8_t RF69::setBitRate(float br) {
   return(state);
 }
 
-uint8_t RF69::setRxBandwidth(float rxBw) {
+int16_t RF69::setRxBandwidth(float rxBw) {
   // check bitrate-bandwidth ratio
   if(!(_br < 2000 * rxBw)) {
     return(ERR_INVALID_BIT_RATE_BW_RATIO);
@@ -353,14 +354,14 @@ uint8_t RF69::setRxBandwidth(float rxBw) {
   setMode(RF69_STANDBY);
   
   // set Rx bandwidth
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_RX_BW, RF69_DCC_FREQ | bwMant | bwExp, 7, 0);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_RX_BW, RF69_DCC_FREQ | bwMant | bwExp, 7, 0);
   if(state == ERR_NONE) {
     RF69::_rxBw = rxBw;
   }
   return(state);
 }
 
-uint8_t RF69::setFrequencyDeviation(float freqDev) {
+int16_t RF69::setFrequencyDeviation(float freqDev) {
   // check frequency deviation range
   if(!((freqDev + _br/2 <= 500) && (freqDev >= 0.6))) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
@@ -372,13 +373,13 @@ uint8_t RF69::setFrequencyDeviation(float freqDev) {
   // set allowed frequency deviation
   uint32_t base = 1;
   uint32_t FDEV = (freqDev * (base << 19)) / 32000;
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, FDEV & 0x00FF, 7, 0);
 
   return(state);
 }
 
-uint8_t RF69::setOutputPower(int8_t power) {
+int16_t RF69::setOutputPower(int8_t power) {
   // check output power range
   if((power < -18) || (power > 17)) {
     return(ERR_INVALID_OUTPUT_POWER);
@@ -388,7 +389,7 @@ uint8_t RF69::setOutputPower(int8_t power) {
   setMode(RF69_STANDBY);
   
   // set output power
-  uint8_t state;
+  int16_t state;
   if(power > 13) {
     // requested output power is higher than 13 dBm, enable PA2 + PA1 on PA_BOOST
     state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | power + 14, 7, 0);
@@ -400,7 +401,7 @@ uint8_t RF69::setOutputPower(int8_t power) {
   return(state);
 }
 
-uint8_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
+int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
   if((maxErrBits > 7) || (len > 8)) {
     return(ERR_INVALID_SYNC_WORD);
@@ -414,7 +415,7 @@ uint8_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   }
   
   // enable sync word recognition
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (len - 1) << 3 | maxErrBits, 7, 0);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (len - 1) << 3 | maxErrBits, 7, 0);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -424,9 +425,9 @@ uint8_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   return(ERR_NONE);
 }
 
-uint8_t RF69::setNodeAddress(uint8_t nodeAddr) {
+int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
   // enable address filtering (node only)
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE, 2, 1);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE, 2, 1);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -435,9 +436,9 @@ uint8_t RF69::setNodeAddress(uint8_t nodeAddr) {
   return(_mod->SPIsetRegValue(RF69_REG_NODE_ADRS, nodeAddr));
 }
 
-uint8_t RF69::setBroadcastAddress(uint8_t broadAddr) {
+int16_t RF69::setBroadcastAddress(uint8_t broadAddr) {
   // enable address filtering (node + broadcast)
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE_BROADCAST, 2, 1);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE_BROADCAST, 2, 1);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -446,9 +447,9 @@ uint8_t RF69::setBroadcastAddress(uint8_t broadAddr) {
   return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, broadAddr));
 }
 
-uint8_t RF69::disableAddressFiltering() {
+int16_t RF69::disableAddressFiltering() {
   // disable address filtering
-  uint8_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_OFF, 2, 1);
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_OFF, 2, 1);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -484,8 +485,8 @@ int16_t RF69::getTemperature() {
   return(0 - (rawTemp + _tempOffset));
 }
 
-uint8_t RF69::config() {
-  uint8_t state = ERR_NONE;
+int16_t RF69::config() {
+  int16_t state = ERR_NONE;
 
   // set mode to STANDBY
   state = setMode(RF69_STANDBY);
@@ -518,11 +519,8 @@ uint8_t RF69::config() {
     return(state);
   }
   
-  // reset FIFO flags
-  state = _mod->SPIsetRegValue(RF69_REG_IRQ_FLAGS_2, RF69_IRQ_FIFO_OVERRUN, 4, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  // reset FIFO flag
+  _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_2, RF69_IRQ_FIFO_OVERRUN);
   
   // disable ClkOut on DIO5
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_2, RF69_CLK_OUT_OFF, 2, 0);
@@ -566,9 +564,8 @@ uint8_t RF69::config() {
   return(ERR_NONE);
 }
 
-uint8_t RF69::setMode(uint8_t mode) {
-  _mod->SPIsetRegValue(RF69_REG_OP_MODE, mode, 4, 2);
-  return(ERR_NONE);
+int16_t RF69::setMode(uint8_t mode) {
+  return(_mod->SPIsetRegValue(RF69_REG_OP_MODE, mode, 4, 2));
 }
 
 void RF69::clearIRQFlags() {

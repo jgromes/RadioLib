@@ -1,10 +1,10 @@
 /*
- * KiteLib RF69 Transmit with AES Example
- * 
- * This example transmits packets using RF69 FSK radio module.
- * Packets are encrypted using hardware AES.
- * NOTE: When using address filtering, the address byte is NOT encrypted!
- */
+   KiteLib RF69 Transmit with AES Example
+
+   This example transmits packets using RF69 FSK radio module.
+   Packets are encrypted using hardware AES.
+   NOTE: When using address filtering, the address byte is NOT encrypted!
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -23,19 +23,20 @@ void setup() {
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D  0x01
-  byte state = rf.begin();
-  if(state == ERR_NONE) {
+  int state = rf.begin();
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // set AES key to encrypt the packet
   // NOTE: the key must be exactly 16 bytes long!
   uint8_t key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-                   0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
+                   0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
+                  };
   rf.setAESKey(key);
 
   // enable AES encryption
@@ -43,7 +44,7 @@ void setup() {
 
   // AES encryption can also be disabled
   /*
-  rf.disableAES();
+    rf.disableAES();
   */
 }
 
@@ -51,22 +52,22 @@ void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 64 characters long
-  byte state = rf.transmit("Hello World!");
-  
+  int state = rf.transmit("Hello World!");
+
   // you can also transmit byte array up to 64 bytes long
   /*
-  byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-  byte state = rf.transmit(byteArr, 8);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
+    int state = rf.transmit(byteArr, 8);
   */
-  
-  if(state == ERR_NONE) {
+
+  if (state == ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(" success!");
-    
-  } else if(state == ERR_PACKET_TOO_LONG) {
+
+  } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
     Serial.println(" too long!");
-    
+
   }
 
   // wait for a second before transmitting again
