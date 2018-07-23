@@ -5,7 +5,7 @@ HTTPClient::HTTPClient(TransportLayer* tl, uint16_t port) {
   _port = port;
 }
 
-uint16_t HTTPClient::get(const char* url, String& response) {
+int16_t HTTPClient::get(const char* url, String& response) {
   // get the host address and endpoint
   char* httpPrefix = strstr(url, "http://");
   char* endpoint;
@@ -45,7 +45,7 @@ uint16_t HTTPClient::get(const char* url, String& response) {
   delete[] endpoint;
   
   // create TCP connection
-  uint8_t state = _tl->openTransportConnection(host, "TCP", _port);
+  int16_t state = _tl->openTransportConnection(host, "TCP", _port);
   delete[] host;
   if(state != ERR_NONE) {
     delete[] request;
@@ -62,7 +62,7 @@ uint16_t HTTPClient::get(const char* url, String& response) {
   //delay(1000);
   
   // get the response length
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
@@ -106,7 +106,7 @@ uint16_t HTTPClient::get(const char* url, String& response) {
   return(atoi(statusStr));
 }
 
-uint16_t HTTPClient::post(const char* url, const char* content, String& response, const char* contentType) {
+int16_t HTTPClient::post(const char* url, const char* content, String& response, const char* contentType) {
   // get the host address and endpoint
   char* httpPrefix = strstr(url, "http://");
   char* endpoint;
@@ -154,7 +154,7 @@ uint16_t HTTPClient::post(const char* url, const char* content, String& response
   delete[] endpoint;
   
   // create TCP connection
-  uint8_t state = _tl->openTransportConnection(host, "TCP", _port);
+  int16_t state = _tl->openTransportConnection(host, "TCP", _port);
   delete[] host;
   if(state != ERR_NONE) {
     return(state);
@@ -168,7 +168,7 @@ uint16_t HTTPClient::post(const char* url, const char* content, String& response
   }
   
   // get the response length
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
