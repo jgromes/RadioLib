@@ -1,14 +1,14 @@
 /*
- * KiteLib ESP8266 MQTT Publish Example
- * 
- * This example publishes MQTT messages using ESP8266 WiFi module.
- * 
- * The messages are published to https://shiftr.io/try. You can use this namespace
- * for testing purposes, but remember that it is publicly accessible!
- * 
- * IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
- * AT firmware (can be found in the /extras folder of the library)!
- */
+   KiteLib ESP8266 MQTT Publish Example
+
+   This example publishes MQTT messages using ESP8266 WiFi module.
+
+   The messages are published to https://shiftr.io/try. You can use this namespace
+   for testing purposes, but remember that it is publicly accessible!
+
+   IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
+   AT firmware (can be found in the /extras folder of the library)!
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -26,13 +26,13 @@ void setup() {
   // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
   // baudrate:  9600 baud
-  byte state = wifi.begin(9600);
-  if(state == ERR_NONE) {
+  int state = wifi.begin(9600);
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // join access point
@@ -40,12 +40,12 @@ void setup() {
   // name:      SSID
   // password:  password
   state = wifi.join("SSID", "password");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // connect to MQTT server
@@ -55,12 +55,12 @@ void setup() {
   // username:    try
   // password:    try
   state = mqtt.connect("broker.shiftr.io", "arduino", "try", "try");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 }
 
@@ -69,12 +69,12 @@ void loop() {
   Serial.print(F("[ESP8266] Publishing MQTT message ... "));
   // topic name:            hello
   // application message:   world
-  byte state = mqtt.publish("hello", "world");
-  if(state == ERR_NONE) {
+  int state = mqtt.publish("hello", "world");
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
   }
 
   // wait for a second before publishing again

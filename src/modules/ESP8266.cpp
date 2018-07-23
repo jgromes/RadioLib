@@ -4,7 +4,7 @@ ESP8266::ESP8266(Module* module) {
   _mod = module;
 }
 
-uint8_t ESP8266::begin(long speed) {
+int16_t ESP8266::begin(long speed) {
   // set module properties
   _mod->AtLineFeed = "\r\n";
   _mod->baudrate = speed;
@@ -21,7 +21,7 @@ uint8_t ESP8266::begin(long speed) {
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::reset() {
+int16_t ESP8266::reset() {
   // send the reset command
   if(!_mod->ATsendCommand("AT+RST")) {
     return(ERR_AT_FAILED);
@@ -43,14 +43,14 @@ uint8_t ESP8266::reset() {
   return(ERR_AT_FAILED);
 }
 
-uint8_t ESP8266::join(const char* ssid, const char* password) {
+int16_t ESP8266::join(const char* ssid, const char* password) {
   // set mode to station + soft AP
   if(!_mod->ATsendCommand("AT+CWMODE_CUR=3")) {
     return(ERR_AT_FAILED);
   }
   
   // reset the module
-  uint8_t state = reset();
+  int16_t state = reset();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -80,7 +80,7 @@ uint8_t ESP8266::join(const char* ssid, const char* password) {
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
+int16_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
   char portStr[6];
   itoa(port, portStr, 10);
   char tcpKeepAliveStr[6];
@@ -114,7 +114,7 @@ uint8_t ESP8266::openTransportConnection(const char* host, const char* protocol,
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::closeTransportConnection() {
+int16_t ESP8266::closeTransportConnection() {
   // send AT command
   if(!_mod->ATsendCommand("AT+CIPCLOSE")) {
     return(ERR_AT_FAILED);
@@ -122,7 +122,7 @@ uint8_t ESP8266::closeTransportConnection() {
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::send(const char* data) {
+int16_t ESP8266::send(const char* data) {
   // build AT command
   char lenStr[8];
   itoa(strlen(data), lenStr, 10);
@@ -146,7 +146,7 @@ uint8_t ESP8266::send(const char* data) {
   return(ERR_NONE);
 }
 
-uint8_t ESP8266::send(uint8_t* data, uint32_t len) {
+int16_t ESP8266::send(uint8_t* data, uint32_t len) {
   // build AT command
   char lenStr[8];
   itoa(len, lenStr, 10);

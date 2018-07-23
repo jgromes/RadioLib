@@ -1,14 +1,14 @@
 /*
- * KiteLib ESP8266 MQTT Subscribe Example
- * 
- * This example subscribes to MQTT topic using ESP8266 WiFi module.
- * 
- * The messages are pulled from https://shiftr.io/try. You can use this namespace
- * for testing purposes, but remember that it is publicly accessible!
- * 
- * IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
- * AT firmware (can be found in the /extras folder of the library)!
- */
+   KiteLib ESP8266 MQTT Subscribe Example
+
+   This example subscribes to MQTT topic using ESP8266 WiFi module.
+
+   The messages are pulled from https://shiftr.io/try. You can use this namespace
+   for testing purposes, but remember that it is publicly accessible!
+
+   IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
+   AT firmware (can be found in the /extras folder of the library)!
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -26,13 +26,13 @@ void setup() {
   // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
   // baudrate:  9600 baud
-  byte state = wifi.begin(9600);
-  if(state == ERR_NONE) {
+  int state = wifi.begin(9600);
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // join access point
@@ -40,12 +40,12 @@ void setup() {
   // name:      SSID
   // password:  password
   state = wifi.join("SSID", "password");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // connect to MQTT server
@@ -55,12 +55,12 @@ void setup() {
   // username:    try
   // password:    try
   state = mqtt.connect("broker.shiftr.io", "arduino", "try", "try");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // subscribe to MQTT topic
@@ -69,11 +69,11 @@ void setup() {
   Serial.print(F("[ESP8266] Subscribing to MQTT topic ... "));
   // topic name:  hello
   state = wifi.subscribe("hello");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
-    } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
   }
 
   // unsubscribe from MQTT topic
@@ -81,11 +81,11 @@ void setup() {
   Serial.print(F("[ESP8266] Unsubscribing from MQTT topic ... "));
   // topic filter:  hello
   state = wifi.unsubscribe("hello");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
-    } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
   }
 }
 
@@ -104,13 +104,13 @@ void onPublish(const char* topic, const char* message) {
 void loop() {
   // check for new MQTT packets from server each time the loop() runs
   // this will also send a PING packet, restarting the keep alive timer
-  byte state = wifi.check(onPublish);
+  int state = wifi.check(onPublish);
   Serial.print("[ESP8266] MQTT check ");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
-    } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
   }
 
   // the rest of your loop() code goes here

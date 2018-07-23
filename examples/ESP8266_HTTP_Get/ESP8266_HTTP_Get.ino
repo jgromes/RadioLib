@@ -1,14 +1,14 @@
 /*
- * KiteLib ESP8266 HTTP GET Example
- * 
- * This example sends HTTP GET request using ESP8266 WiFi module.
- * 
- * Please note that the response will be saved including header. HTTP header size
- * can easily exceed Arduino resources and cause the program to behave erratically.
- * 
- * IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
- * AT firmware (can be found in the /extras folder of the library)!
- */
+   KiteLib ESP8266 HTTP GET Example
+
+   This example sends HTTP GET request using ESP8266 WiFi module.
+
+   Please note that the response will be saved including header. HTTP header size
+   can easily exceed Arduino resources and cause the program to behave erratically.
+
+   IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
+   AT firmware (can be found in the /extras folder of the library)!
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -22,17 +22,17 @@ HTTPClient http(&wifi, 80);
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
   // baudrate:  9600 baud
-  byte state = wifi.begin(9600);
-  if(state == ERR_NONE) {
+  int state = wifi.begin(9600);
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // join access point
@@ -40,12 +40,12 @@ void setup() {
   // name:      SSID
   // password:  password
   state = wifi.join("SSID", "password");
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
 }
@@ -57,14 +57,15 @@ void loop() {
   Serial.print(F("[ESP8266] Sending HTTP GET request ... "));
   // URL:   www.httpbin.org/ip
   int http_code = http.get("www.httpbin.org/ip", response);
-  if(http_code == 200) {
-    Serial.println(F("success!"));
+  if (http_code > 0) {
+    Serial.print(F("HTTP code "));
+    Serial.println(http_code);
     Serial.print(F("[ESP8266] Response is "));
     Serial.print(response.length());
     Serial.println(F(" bytes long."));
     Serial.println(response);
   } else {
-    Serial.print(F("failed, HTTP code "));
+    Serial.print(F("failed, code "));
     Serial.println(http_code);
   }
 

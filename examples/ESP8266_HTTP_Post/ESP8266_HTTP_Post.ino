@@ -26,12 +26,12 @@ void setup() {
   // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
   // baudrate:  9600 baud
-  byte state = wifi.begin(9600);
+  int state = wifi.begin(9600);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
     while(true);
   }
 
@@ -43,8 +43,8 @@ void setup() {
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
     while(true);
   }
 
@@ -60,7 +60,7 @@ void loop() {
   // content:         str
   // content type:    text/plain
   int http_code = http.post("www.httpbin.org/status/404", "str", response);
-  if(http_code >= 100) {
+  if(http_code > 0) {
     Serial.print(F("HTTP code "));
     Serial.println(http_code);
     Serial.print(F("[ESP8266] Response is "));
@@ -68,8 +68,8 @@ void loop() {
     Serial.println(F(" bytes long."));
     Serial.println(response);
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(http_code, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(http_code);
   }
 
   // wait for a second before sending new request
