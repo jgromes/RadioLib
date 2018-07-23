@@ -19,12 +19,12 @@ void setup() {
 
   // initialize XBee module with baudrate 9600
   Serial.print(F("[XBee] Initializing ... "));
-  byte state = bee.begin(9600);
+  int state = bee.begin(9600);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
     while(true);
   }
 
@@ -36,8 +36,8 @@ void setup() {
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
     while(true);
   }
 }
@@ -47,11 +47,11 @@ void loop() {
   uint8_t dest[] = {0x00, 0x13, 0xA2, 0x00, 
                     0x40, 0xA5, 0x8A, 0x6B};
   Serial.print(F("[XBee] Transmitting message ... "));
-  byte state = bee.transmit(dest, "Hello World!");
+  int state = bee.transmit(dest, "Hello World!");
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
   }
 }

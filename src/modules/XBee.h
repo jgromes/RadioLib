@@ -37,11 +37,11 @@ class XBeeSerial: public ISerial {
     XBeeSerial(Module* mod);
     
     // basic methods
-    uint8_t begin(long speed);
+    int16_t begin(long speed);
     
     // configuration methods
-    uint8_t setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow);
-    uint8_t setPanId(const char* panID);
+    int16_t setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow);
+    int16_t setPanId(const char* panID);
     
   private:
     bool enterCmdMode();
@@ -54,15 +54,15 @@ class XBee {
     XBee(Module* mod);
     
     // basic methods
-    uint8_t begin(long speed);
-    uint8_t transmit(uint8_t* dest, const char* payload, uint8_t radius = 1);
-    uint8_t transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius = 1);
+    int16_t begin(long speed);
+    int16_t transmit(uint8_t* dest, const char* payload, uint8_t radius = 1);
+    int16_t transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius = 1);
     size_t available();
     String getPacketSource();
     String getPacketData();
     
     // configuration methods
-    uint8_t setPanId(uint8_t* panID);
+    int16_t setPanId(uint8_t* panID);
   
   private:
     Module* _mod;
@@ -70,7 +70,7 @@ class XBee {
     
     void sendApiFrame(uint8_t type, uint8_t id, const char* data);
     void sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length);
-    uint8_t readApiFrame(uint8_t frameID, uint8_t codePos);
+    int16_t readApiFrame(uint8_t frameID, uint8_t codePos);
     
     uint16_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10);
 };

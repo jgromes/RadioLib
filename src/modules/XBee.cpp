@@ -5,7 +5,7 @@ XBee::XBee(Module* mod) {
   _frameID = 0x01;
 }
 
-uint8_t XBee::begin(long speed) {
+int16_t XBee::begin(long speed) {
   // set module properties
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
@@ -25,12 +25,12 @@ uint8_t XBee::begin(long speed) {
   return(readApiFrame(frameID, 4));
 }
 
-uint8_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
+int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
   uint8_t destNetwork[] = {0xFF, 0xFE};
   return(transmit(dest, destNetwork, payload));
 }
 
-uint8_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius) {
+int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius) {
   // build the frame
   size_t payloadLen = strlen(payload);
   size_t dataLen = 8 + 2 + 1 + 1 + payloadLen;
@@ -63,7 +63,7 @@ String XBee::getPacketData() {
   
 }
 
-uint8_t XBee::setPanId(uint8_t* panId) {
+int16_t XBee::setPanId(uint8_t* panId) {
   // build AT command
   uint8_t cmd[10];
   memcpy(cmd, "ID", 2);
@@ -82,7 +82,7 @@ XBeeSerial::XBeeSerial(Module* mod) : ISerial(mod) {
   
 }
 
-uint8_t XBeeSerial::begin(long speed) {
+int16_t XBeeSerial::begin(long speed) {
   // set module properties
   _mod->AtLineFeed = "\r";
   _mod->baudrate = speed;
@@ -112,7 +112,7 @@ uint8_t XBeeSerial::begin(long speed) {
   return(ERR_NONE);
 }
 
-uint8_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
+int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -150,7 +150,7 @@ uint8_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, co
   return(ERR_NONE);
 }
 
-uint8_t XBeeSerial::setPanId(const char* panId) {
+int16_t XBeeSerial::setPanId(const char* panId) {
   // enter command mode
   DEBUG_PRINTLN_STR("Entering command mode ...");
   if(!enterCmdMode()) {
@@ -245,7 +245,7 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
   delete[] frame;
 }
 
-uint8_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
+int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
   // get number of bytes in response
   uint16_t numBytes = getNumBytes(10000, 5);
   if(numBytes == 0) {
