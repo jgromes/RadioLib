@@ -6,7 +6,7 @@ MQTTClient::MQTTClient(TransportLayer* tl, uint16_t port) {
   _packetId = 1;
 }
 
-uint8_t MQTTClient::connect(const char* host, const char* clientId, const char* userName, const char* password, uint16_t keepAlive, bool cleanSession, const char* willTopic, const char* willMessage) {
+int16_t MQTTClient::connect(const char* host, const char* clientId, const char* userName, const char* password, uint16_t keepAlive, bool cleanSession, const char* willTopic, const char* willMessage) {
   // encode packet length
   size_t clientIdLen = strlen(clientId);
   size_t userNameLen = strlen(userName);
@@ -95,7 +95,7 @@ uint8_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   }
     
   // create TCP connection
-  uint8_t state = _tl->openTransportConnection(host, "TCP", _port, keepAlive);
+  int16_t state = _tl->openTransportConnection(host, "TCP", _port, keepAlive);
   if(state != ERR_NONE) {
     delete[] packet;
     return(state);
@@ -109,7 +109,7 @@ uint8_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   }
   
   // get the response length (MQTT CONNACK response has to be 4 bytes long)
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes != 4) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
@@ -127,7 +127,7 @@ uint8_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   return(ERR_RESPONSE_MALFORMED);
 }
 
-uint8_t MQTTClient::disconnect() {
+int16_t MQTTClient::disconnect() {
   // build the DISCONNECT packet
   uint8_t packet[2];
   
@@ -136,7 +136,7 @@ uint8_t MQTTClient::disconnect() {
   packet[1] = 0x00;
   
   // send MQTT packet
-  uint8_t state = _tl->send(packet, 2);
+  int16_t state = _tl->send(packet, 2);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -145,7 +145,7 @@ uint8_t MQTTClient::disconnect() {
   return(_tl->closeTransportConnection());
 }
 
-uint8_t MQTTClient::publish(const char* topic, const char* message) {
+int16_t MQTTClient::publish(const char* topic, const char* message) {
   // encode packet length
   size_t topicLen = strlen(topic);
   size_t messageLen = strlen(message);
@@ -176,14 +176,14 @@ uint8_t MQTTClient::publish(const char* topic, const char* message) {
   pos += messageLen;
   
   // send MQTT packet
-  uint8_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
+  int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
   delete[] packet;
   return(state);
   
   //TODO: implement QoS > 0 and PUBACK response checking
 }
 
-uint8_t MQTTClient::subscribe(const char* topicFilter) {
+int16_t MQTTClient::subscribe(const char* topicFilter) {
   // encode packet length
   size_t topicFilterLen = strlen(topicFilter);
   uint32_t remainingLength = 2 + (2 + topicFilterLen + 1);
@@ -213,14 +213,14 @@ uint8_t MQTTClient::subscribe(const char* topicFilter) {
   packet[pos++] = 0x00; // QoS 0
   
   // send MQTT packet
-  uint8_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
+  int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
   delete[] packet;
   if(state != ERR_NONE) {
     return(state);
   }
   
   // get the response length (MQTT SUBACK response has to be 5 bytes long for single subscription)
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes != 5) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
@@ -231,7 +231,7 @@ uint8_t MQTTClient::subscribe(const char* topicFilter) {
   if((response[0] == MQTT_SUBACK << 4) && (response[1] == 3)) {
     // check packet ID
     uint16_t receivedId = response[3] | response[2] << 8;
-    uint8_t returnCode = response[4];
+    int16_t returnCode = response[4];
     delete[] response;
     if(receivedId != packetId) {
       return(ERR_MQTT_UNEXPECTED_PACKET_ID);
@@ -243,7 +243,7 @@ uint8_t MQTTClient::subscribe(const char* topicFilter) {
   return(ERR_RESPONSE_MALFORMED);
 }
 
-uint8_t MQTTClient::unsubscribe(const char* topicFilter) {
+int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   // encode packet length
   size_t topicFilterLen = strlen(topicFilter);
   uint32_t remainingLength = 2 + (2 + topicFilterLen);
@@ -272,14 +272,14 @@ uint8_t MQTTClient::unsubscribe(const char* topicFilter) {
   pos += topicFilterLen;
   
   // send MQTT packet
-  uint8_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
+  int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
   delete[] packet;
   if(state != ERR_NONE) {
     return(state);
   }
   
   // get the response length (MQTT UNSUBACK response has to be 4 bytes long)
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes != 4) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
@@ -301,7 +301,7 @@ uint8_t MQTTClient::unsubscribe(const char* topicFilter) {
   return(ERR_RESPONSE_MALFORMED);
 }
 
-uint8_t MQTTClient::ping() {
+int16_t MQTTClient::ping() {
   // build the PINGREQ packet
   uint8_t packet[2];
   
@@ -310,13 +310,13 @@ uint8_t MQTTClient::ping() {
   packet[1] = 0x00;
   
   // send MQTT packet
-  uint8_t state = _tl->send(packet, 2);
+  int16_t state = _tl->send(packet, 2);
   if(state != ERR_NONE) {
     return(state);
   }
   
   // get the response length (MQTT PINGRESP response has to be 2 bytes long)
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes != 2) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
@@ -333,15 +333,15 @@ uint8_t MQTTClient::ping() {
   return(ERR_RESPONSE_MALFORMED);
 }
 
-uint8_t MQTTClient::check(void (*func)(const char*, const char*)) {
+int16_t MQTTClient::check(void (*func)(const char*, const char*)) {
   // ping the server
-  uint8_t state = ping();
+  int16_t state = ping();
   if(state != ERR_NONE) {
     return(state);
   }
   
   // check new data
-  uint16_t numBytes = _tl->getNumBytes();
+  size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_MQTT_NO_NEW_PACKET_AVAILABLE);
   }
