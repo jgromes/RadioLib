@@ -10,7 +10,7 @@ class SX1279: public SX1278 {
     SX1279(Module* mod);
     
     // configuration methods
-    uint8_t setFrequency(float freq);
+    int16_t setFrequency(float freq);
 };
 
 #endif

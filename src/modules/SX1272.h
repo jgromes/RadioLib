@@ -52,22 +52,22 @@ class SX1272: public SX127x {
     SX1272(Module* mod);
     
     // basic methods
-    uint8_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17);
+    int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17);
     
     // configuration methods
-    uint8_t setFrequency(float freq);
-    uint8_t setBandwidth(float bw);
-    uint8_t setSpreadingFactor(uint8_t sf);
-    uint8_t setCodingRate(uint8_t cr);
-    uint8_t setOutputPower(int8_t power);
+    int16_t setFrequency(float freq);
+    int16_t setBandwidth(float bw);
+    int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setCodingRate(uint8_t cr);
+    int16_t setOutputPower(int8_t power);
   
   protected:
-    uint8_t setBandwidthRaw(uint8_t newBandwidth);
-    uint8_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
-    uint8_t setCodingRateRaw(uint8_t newCodingRate);
+    int16_t setBandwidthRaw(uint8_t newBandwidth);
+    int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
+    int16_t setCodingRateRaw(uint8_t newCodingRate);
 
   private:
-    uint8_t config();
+    int16_t config();
 };
 
 #endif

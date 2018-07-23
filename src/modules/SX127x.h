@@ -173,18 +173,18 @@ class SX127x {
     float lastPacketSNR;
     
     // basic methods
-    uint8_t begin(uint8_t chipVersion, uint8_t syncWord);
-    uint8_t transmit(uint8_t* data, size_t len);
-    uint8_t transmit(const char* str);
-    uint8_t transmit(String& str);
-    uint8_t receive(uint8_t* data, size_t len);
-    uint8_t receive(String& str, size_t len = 0);
-    uint8_t scanChannel();
-    uint8_t sleep();
-    uint8_t standby();
+    int16_t begin(uint8_t chipVersion, uint8_t syncWord);
+    int16_t transmit(uint8_t* data, size_t len);
+    int16_t transmit(const char* str);
+    int16_t transmit(String& str);
+    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(String& str, size_t len = 0);
+    int16_t scanChannel();
+    int16_t sleep();
+    int16_t standby();
     
     // configuration methods
-    uint8_t setSyncWord(uint8_t syncWord);
+    int16_t setSyncWord(uint8_t syncWord);
   
   protected:
     Module* _mod;
@@ -193,13 +193,13 @@ class SX127x {
     uint8_t _sf;
     uint8_t _cr;
     
-    uint8_t tx(char* data, uint8_t length);
-    uint8_t rxSingle(char* data, uint8_t* length);
-    uint8_t setFrequencyRaw(float newFreq);
-    uint8_t config();
+    int16_t tx(char* data, uint8_t length);
+    int16_t rxSingle(char* data, uint8_t* length);
+    int16_t setFrequencyRaw(float newFreq);
+    int16_t config();
   
   private:
-    uint8_t setMode(uint8_t mode);
+    int16_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
 

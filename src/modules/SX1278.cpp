@@ -4,9 +4,9 @@ SX1278::SX1278(Module* mod) : SX127x(mod) {
   
 }
 
-uint8_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power) {
+int16_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power) {
   // execute common part
-  uint8_t state = SX127x::begin(SX1278_CHIP_VERSION, syncWord);
+  int16_t state = SX127x::begin(SX1278_CHIP_VERSION, syncWord);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -46,7 +46,7 @@ uint8_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(ERR_NONE);
 }
 
-uint8_t SX1278::setFrequency(float freq) {
+int16_t SX1278::setFrequency(float freq) {
   // check frequency range
   if((freq < 137.0) || (freq > 525.0)) {
     return(ERR_INVALID_FREQUENCY);
@@ -116,7 +116,7 @@ uint8_t SX1278::setFrequency(float freq) {
   return(SX127x::setFrequencyRaw(freq));
 }
 
-uint8_t SX1278::setBandwidth(float bw) {
+int16_t SX1278::setBandwidth(float bw) {
   uint8_t newBandwidth;
   
   // check alowed bandwidth values
@@ -145,7 +145,7 @@ uint8_t SX1278::setBandwidth(float bw) {
   }
   
   // set bandwidth and if successful, save the new setting
-  uint8_t state = SX1278::setBandwidthRaw(newBandwidth);
+  int16_t state = SX1278::setBandwidthRaw(newBandwidth);
   if(state == ERR_NONE) {
     SX127x::_bw = bw;
   }
@@ -153,7 +153,7 @@ uint8_t SX1278::setBandwidth(float bw) {
   return(state);
 }
 
-uint8_t SX1278::setSpreadingFactor(uint8_t sf) {
+int16_t SX1278::setSpreadingFactor(uint8_t sf) {
   uint8_t newSpreadingFactor;
   
   // check allowed spreading factor values
@@ -184,7 +184,7 @@ uint8_t SX1278::setSpreadingFactor(uint8_t sf) {
   }
   
   // set spreading factor and if successful, save the new setting
-  uint8_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
+  int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
   }
@@ -192,7 +192,7 @@ uint8_t SX1278::setSpreadingFactor(uint8_t sf) {
   return(state);
 }
 
-uint8_t SX1278::setCodingRate(uint8_t cr) {
+int16_t SX1278::setCodingRate(uint8_t cr) {
   uint8_t newCodingRate;
   
   // check allowed coding rate values
@@ -214,7 +214,7 @@ uint8_t SX1278::setCodingRate(uint8_t cr) {
   }
   
   // set coding rate and if successful, save the new setting
-  uint8_t state = SX1278::setCodingRateRaw(newCodingRate);
+  int16_t state = SX1278::setCodingRateRaw(newCodingRate);
   if(state == ERR_NONE) {
     SX127x::_cr = cr;
   }
@@ -222,7 +222,7 @@ uint8_t SX1278::setCodingRate(uint8_t cr) {
   return(state);
 }
 
-uint8_t SX1278::setOutputPower(int8_t power) {
+int16_t SX1278::setOutputPower(int8_t power) {
   if((power < -3) || (power > 20)) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
@@ -230,7 +230,7 @@ uint8_t SX1278::setOutputPower(int8_t power) {
   // set mode to standby
   SX127x::standby();
   
-  uint8_t state;
+  int16_t state;
   if(power < 13) {
     // power is less than 12 dBm, enable PA on RFO
     state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_RFO, 7, 7);
@@ -251,7 +251,7 @@ uint8_t SX1278::setOutputPower(int8_t power) {
   return(state);
 }
 
-uint8_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
+int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   SX127x::standby();
   
@@ -259,12 +259,12 @@ uint8_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newBandwidth, 7, 4));
 }
 
-uint8_t SX1278::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
+int16_t SX1278::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
   // set mode to standby
   SX127x::standby();
   
   // write registers
-  uint8_t state = 0;
+  int16_t state = 0;
   if(newSpreadingFactor == SX127X_SF_6) {
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1278_HEADER_IMPL_MODE, 0, 0);
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX127X_SF_6 | SX127X_TX_MODE_SINGLE | SX1278_RX_CRC_MODE_OFF, 7, 2);
@@ -280,7 +280,7 @@ uint8_t SX1278::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
   return(state);
 }
 
-uint8_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
+int16_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
   // set mode to standby
   SX127x::standby();
   
@@ -288,9 +288,9 @@ uint8_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
   return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 3, 1));
 }
 
-uint8_t SX1278::config() {
+int16_t SX1278::config() {
   // configure common registers
-  uint8_t state = SX127x::config();
+  int16_t state = SX127x::config();
   if(state != ERR_NONE) {
     return(state);
   }

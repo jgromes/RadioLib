@@ -4,7 +4,7 @@ SX1273::SX1273(Module* mod) : SX1272(mod) {
   
 }
 
-uint8_t SX1273::setSpreadingFactor(uint8_t sf) {
+int16_t SX1273::setSpreadingFactor(uint8_t sf) {
   uint8_t newSpreadingFactor;
   
   // check allowed spreading factor values
@@ -26,7 +26,7 @@ uint8_t SX1273::setSpreadingFactor(uint8_t sf) {
   }
   
   // set spreading factor and if successful, save the new setting
-  uint8_t state = setSpreadingFactorRaw(newSpreadingFactor);
+  int16_t state = setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
   }

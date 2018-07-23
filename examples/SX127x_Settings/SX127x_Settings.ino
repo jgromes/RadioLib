@@ -1,16 +1,16 @@
 /*
- * KiteLib SX127x Settings Example
- * 
- * This example shows how to change all the properties of LoRa transmission.
- * KiteLib currently supports the following settings:
- *  - pins (SPI slave select, digital IO 0, digital IO 1)
- *  - carrier frequency
- *  - bandwidth
- *  - spreading factor
- *  - coding rate
- *  - sync word
- *  - output power during transmission
- */
+   KiteLib SX127x Settings Example
+
+   This example shows how to change all the properties of LoRa transmission.
+   KiteLib currently supports the following settings:
+    - pins (SPI slave select, digital IO 0, digital IO 1)
+    - carrier frequency
+    - bandwidth
+    - spreading factor
+    - coding rate
+    - sync word
+    - output power during transmission
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -42,13 +42,13 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  byte state = loraSX1278.begin();
-  if(state == ERR_NONE) {
+  int state = loraSX1278.begin();
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // initialize the second LoRa instance with non-default settings
@@ -61,18 +61,18 @@ void setup() {
   // sync word:                           0x13
   // output power:                        17 dBm
   state = loraSX1276.begin(434.0, 7.8, 12, 8, 0x13);
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // initialize the third LoRa instance with non-default settings
   // this LoRa link will have high data rate, but lower range
   // NOTE: when using spreading factor 6, the total packet length has to be known in advance!
-  //       it can be set using the length variable of your Packet instance 
+  //       it can be set using the length variable of your Packet instance
   //       Packet::length = x;
   //       where x is the total packet length including both addresses
   Serial.print(F("[SX1272] Initializing ... "));
@@ -83,55 +83,55 @@ void setup() {
   // sync word:                           0x14
   // output power:                        2 dBm
   state = loraSX1272.begin(915.0, 500.0, 6, 5, 0x14, 2);
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 
   // you can also change the settings at runtime
   // and check if the configuration was changed successfully
-  
+
   // different modules accept different parameters
   // see https://github.com/jgromes/LoRaLib/wiki/Supported-LoRa-modules
 
   // set carrier frequency to 433.5 MHz
-  if(loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
     Serial.println("Selected frequency is invalid for this module!");
-    while(true);
+    while (true);
   }
-  
+
   // set bandwidth to 250 kHz
-  if(loraSX1278.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
+  if (loraSX1278.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
     Serial.println("Selected bandwidth is invalid for this module!");
-    while(true);
+    while (true);
   }
 
   // set spreading factor to 10
-  if(loraSX1278.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
+  if (loraSX1278.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
     Serial.println("Selected spreading factor is invalid for this module!");
-    while(true);
+    while (true);
   }
 
   // set coding rate to 6
-  if(loraSX1278.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
+  if (loraSX1278.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
     Serial.println("Selected coding rate is invalid for this module!");
-    while(true);
+    while (true);
   }
 
   // set LoRa sync word to 0x14
   // NOTE: value 0x34 is reserved for LoRaWAN networks and should not be used
-  if(loraSX1278.setSyncWord(0x14) != ERR_NONE) {
+  if (loraSX1278.setSyncWord(0x14) != ERR_NONE) {
     Serial.println("Unable to set sync word!");
-    while(true);
+    while (true);
   }
 
   // set output power to 10 dBm (accepted range is 2 - 17 dBm)
-  if(loraSX1278.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
+  if (loraSX1278.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
     Serial.println("Selected output power is invalid for this module!");
-    while(true);
+    while (true);
   }
 
   Serial.println("All settings succesfully changed!");

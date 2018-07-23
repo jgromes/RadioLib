@@ -4,7 +4,7 @@ SX1277::SX1277(Module* mod) : SX1278(mod) {
   
 }
 
-uint8_t SX1277::setFrequency(float freq) {
+int16_t SX1277::setFrequency(float freq) {
   // check frequency range
   if((freq < 137.0) || (freq > 1020.0)) {
     return(ERR_INVALID_FREQUENCY);
@@ -74,7 +74,7 @@ uint8_t SX1277::setFrequency(float freq) {
   return(SX127x::setFrequencyRaw(freq));
 }
 
-uint8_t SX1277::setSpreadingFactor(uint8_t sf) {
+int16_t SX1277::setSpreadingFactor(uint8_t sf) {
   uint8_t newSpreadingFactor;
   
   // check allowed spreading factor values
@@ -96,7 +96,7 @@ uint8_t SX1277::setSpreadingFactor(uint8_t sf) {
   }
   
   // set spreading factor and if successful, save the new setting
-  uint8_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
+  int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
   }

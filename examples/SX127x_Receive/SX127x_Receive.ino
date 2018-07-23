@@ -1,22 +1,22 @@
 /*
- * KiteLib SX127x Receive Example
- * 
- * This example listens for LoRa transmissions using SX127x Lora modules.
- * To successfully receive data, the following settings have to be the same
- * on both transmitter and receiver:
- *  - carrier frequency
- *  - bandwidth
- *  - spreading factor
- *  - coding rate
- *  - sync word
- * 
- * Other modules from SX127x family can also be used.
- * SX1272 lora = Kite.ModuleA;
- * SX1273 lora = Kite.ModuleA;
- * SX1276 lora = Kite.ModuleA;
- * SX1277 lora = Kite.ModuleA;
- * SX1279 lora = Kite.ModuleA;
- */
+   KiteLib SX127x Receive Example
+
+   This example listens for LoRa transmissions using SX127x Lora modules.
+   To successfully receive data, the following settings have to be the same
+   on both transmitter and receiver:
+    - carrier frequency
+    - bandwidth
+    - spreading factor
+    - coding rate
+    - sync word
+
+   Other modules from SX127x family can also be used.
+   SX1272 lora = Kite.ModuleA;
+   SX1273 lora = Kite.ModuleA;
+   SX1276 lora = Kite.ModuleA;
+   SX1277 lora = Kite.ModuleA;
+   SX1279 lora = Kite.ModuleA;
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -35,13 +35,13 @@ void setup() {
   // coding rate:                         7
   // sync word:                           0x12
   // output power:                        17 dBm
-  byte state = lora.begin();
-  if(state == ERR_NONE) {
+  int state = lora.begin();
+  if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
-    Serial.print(F("failed, code 0x"));
-    Serial.println(state, HEX);
-    while(true);
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true);
   }
 }
 
@@ -50,15 +50,15 @@ void loop() {
 
   // you can receive data as an Arduino String
   String str;
-  byte state = lora.receive(str);
+  int state = lora.receive(str);
 
   // you can also receive data as byte array
   /*
-  byte byteArr[8];
-  byte state = lora.receive(byteArr, 8);
+    byte byteArr[8];
+    int state = lora.receive(byteArr, 8);
   */
 
-  if(state == ERR_NONE) {
+  if (state == ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
@@ -80,14 +80,14 @@ void loop() {
     Serial.print("[SX1278] SNR:\t\t");
     Serial.print(lora.lastPacketSNR);
     Serial.println(" dBm");
-    
-  } else if(state == ERR_RX_TIMEOUT) {
+
+  } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));
-    
-  } else if(state == ERR_CRC_MISMATCH) {
+
+  } else if (state == ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));
-    
+
   }
 }

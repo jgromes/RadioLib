@@ -4,7 +4,7 @@ SX127x::SX127x(Module* mod) {
   _mod = mod;
 }
 
-uint8_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
+int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
@@ -12,18 +12,20 @@ uint8_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
-    uint8_t version = _mod->SPIreadRegister(SX127X_REG_VERSION);
+    int16_t version = _mod->SPIreadRegister(SX127X_REG_VERSION);
     if(version == chipVersion) {
       flagFound = true;
     } else {
       #ifdef KITELIB_DEBUG
-        Serial.print("SX127x not found! (");
+        Serial.print(F("SX127x not found! ("));
         Serial.print(i + 1);
-        Serial.print(" of 10 tries) SX127X_REG_VERSION == ");
+        Serial.print(F(" of 10 tries) SX127X_REG_VERSION == "));
         
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
+        char buffHex[7];
+        sprintf(buffHex, "0x%04X", version);
         Serial.print(buffHex);
+        Serial.print(F(", expected 0x00"));
+        Serial.print(chipVersion, HEX);
         Serial.println();
       #endif
       delay(1000);
@@ -39,7 +41,7 @@ uint8_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
   }
   
   // set LoRa sync word
-  uint8_t state = SX127x::setSyncWord(syncWord);
+  int16_t state = SX127x::setSyncWord(syncWord);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -47,7 +49,7 @@ uint8_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord) {
   return(ERR_NONE);
 }
 
-uint8_t SX127x::transmit(uint8_t* data, size_t len) {
+int16_t SX127x::transmit(uint8_t* data, size_t len) {
   // check packet length
   if(len >= 256) {
     return(ERR_PACKET_TOO_LONG);
@@ -103,15 +105,15 @@ uint8_t SX127x::transmit(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-uint8_t SX127x::transmit(const char* str) {
+int16_t SX127x::transmit(const char* str) {
   return(SX127x::transmit((uint8_t*)str, strlen(str)));
 }
 
-uint8_t SX127x::transmit(String& str) {
+int16_t SX127x::transmit(String& str) {
   return(SX127x::transmit(str.c_str()));
 }
 
-uint8_t SX127x::receive(uint8_t* data, size_t len) {
+int16_t SX127x::receive(uint8_t* data, size_t len) {
   // set mode to standby
   setMode(SX127X_STANDBY);
   
@@ -175,10 +177,10 @@ uint8_t SX127x::receive(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-uint8_t SX127x::receive(String& str, size_t len) {
+int16_t SX127x::receive(String& str, size_t len) {
   // create temporary array to store received data
   char* data = new char[len];
-  uint8_t state = SX127x::receive((uint8_t*)data, len);
+  int16_t state = SX127x::receive((uint8_t*)data, len);
   
   // if packet was received successfully, copy data into String
   if(state == ERR_NONE) {
@@ -189,7 +191,7 @@ uint8_t SX127x::receive(String& str, size_t len) {
   return(state);
 }
 
-uint8_t SX127x::scanChannel() {
+int16_t SX127x::scanChannel() {
   // set mode to standby
   setMode(SX127X_STANDBY);
   
@@ -214,17 +216,17 @@ uint8_t SX127x::scanChannel() {
   return(CHANNEL_FREE);
 }
 
-uint8_t SX127x::sleep() {
+int16_t SX127x::sleep() {
   // set mode to sleep
   return(setMode(SX127X_SLEEP));
 }
 
-uint8_t SX127x::standby() {
+int16_t SX127x::standby() {
   // set mode to standby
   return(setMode(SX127X_STANDBY));
 }
 
-uint8_t SX127x::setSyncWord(uint8_t syncWord) {
+int16_t SX127x::setSyncWord(uint8_t syncWord) {
   // set mode to standby
   setMode(SX127X_STANDBY);
   
@@ -232,7 +234,7 @@ uint8_t SX127x::setSyncWord(uint8_t syncWord) {
   return(_mod->SPIsetRegValue(SX127X_REG_SYNC_WORD, syncWord));
 }
 
-uint8_t SX127x::setFrequencyRaw(float newFreq) {
+int16_t SX127x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   setMode(SX127X_STANDBY);
   
@@ -241,22 +243,28 @@ uint8_t SX127x::setFrequencyRaw(float newFreq) {
   uint32_t FRF = (newFreq * (base << 19)) / 32.0;
   
   // write registers
-  uint8_t state = _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
+  int16_t state = _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   state |= _mod->SPIsetRegValue(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
   state |= _mod->SPIsetRegValue(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
   
   return(state);
 }
 
-uint8_t SX127x::config() {
+int16_t SX127x::config() {
   // set mode to SLEEP
-  uint8_t state = setMode(SX127X_SLEEP);
+  int16_t state = setMode(SX127X_SLEEP);
   if(state != ERR_NONE) {
     return(state);
   }
   
   // set LoRa mode
   state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_LORA, 7, 7);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set mode to STANDBY
+  state = setMode(SX127X_STANDBY);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -286,7 +294,7 @@ uint8_t SX127x::config() {
   return(state);
 }
 
-uint8_t SX127x::setMode(uint8_t mode) {
+int16_t SX127x::setMode(uint8_t mode) {
   _mod->SPIsetRegValue(SX127X_REG_OP_MODE, mode, 2, 0);
   return(ERR_NONE);
 }
