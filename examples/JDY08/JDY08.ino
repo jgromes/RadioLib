@@ -1,8 +1,8 @@
 /*
- * KiteLib JDY08 Example
- * 
- * This example sends data using JDY08 Bluetooth module.
- */
+   KiteLib JDY08 Example
+
+   This example sends data using JDY08 Bluetooth module.
+*/
 
 // include the library
 #include <KiteLib.h>
@@ -21,12 +21,12 @@ void setup() {
 void loop() {
   // JDY08 supports all methods of the Serial class
   // read data incoming from Serial port and write them to Bluetooth
-  while(Serial.available() > 0) {
+  while (Serial.available() > 0) {
     bluetooth.write(Serial.read());
   }
-  
+
   // read data incoming from Bluetooth and write them to Serial port
-  while(bluetooth.available() > 0) {
+  while (bluetooth.available() > 0) {
     Serial.write(bluetooth.read());
   }
 }
