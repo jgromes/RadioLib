@@ -102,10 +102,9 @@
 #define ERR_MQTT_SUBS_FAILED                  0x80
 
 // XBee status codes
-#define ERR_AT_FAILED                         -301
-#define ERR_CMD_MODE_FAILED                   -302
-#define ERR_FRAME_MALFORMED                   -303
-#define ERR_FRAME_INCORRECT_CHECKSUM          -304
-#define ERR_FRAME_UNEXPECTED_ID               -305
+#define ERR_CMD_MODE_FAILED                   -301
+#define ERR_FRAME_MALFORMED                   -302
+#define ERR_FRAME_INCORRECT_CHECKSUM          -303
+#define ERR_FRAME_UNEXPECTED_ID               -304
 
 #endif
