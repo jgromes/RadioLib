@@ -67,6 +67,11 @@ class XBee {
   private:
     Module* _mod;
     uint8_t _frameID;
+    size_t _frameLength;
+    bool _frameHeaderProcessed;
+    
+    char* _packetData;
+    uint8_t _packetSource[8];
     
     void sendApiFrame(uint8_t type, uint8_t id, const char* data);
     void sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length);

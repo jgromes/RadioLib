@@ -3,9 +3,20 @@
 XBee::XBee(Module* mod) {
   _mod = mod;
   _frameID = 0x01;
+  _frameLength = 0;
+  _frameHeaderProcessed = false;
+  _packetData = new char[0];
 }
 
 int16_t XBee::begin(long speed) {
+  // set Arduino pins
+  pinMode(A4, OUTPUT);
+  pinMode(A5, OUTPUT);
+  pinMode(3, OUTPUT);
+  digitalWrite(A4, LOW);
+  digitalWrite(A5, LOW);
+  digitalWrite(3, HIGH);
+
   // set module properties
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
@@ -52,15 +63,66 @@ int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload,
 }
 
 size_t XBee::available() {
+  // check if there are data available in the buffer
+  size_t serialBytes = _mod->ModuleSerial->available();
+  if(serialBytes < 3) {
+    return(0);
+  } 
   
+  uint8_t header[3];
+  if(!_frameHeaderProcessed) {
+    // read frame header
+    for(uint8_t i = 0; i < 3; i++) {
+      header[i] = _mod->ModuleSerial->read();
+    }
+    
+    // check if we received API frame
+    if(header[0] != XBEE_API_START) {
+      return(0);
+    }
+    
+    // get expected frame length
+    _frameLength = ((header[1] << 8) | header[2]) + 1;
+    _frameHeaderProcessed = true;
+  }
+  
+  // check if the header is complete
+  if(serialBytes < _frameLength) {
+    return(0);
+  }
+  
+  uint8_t* frame = new uint8_t[_frameLength];  //24
+  for(size_t i = 0; i < _frameLength; i++) {
+    frame[i] = _mod->ModuleSerial->read();
+  }
+  
+  // save packet source and data
+  size_t payloadLength = _frameLength - 12;
+  delete[] _packetData;
+  _packetData = new char[payloadLength];
+  memcpy(_packetData, frame + 12, payloadLength - 1);
+  _packetData[payloadLength - 1] = '\0';
+  memcpy(_packetSource, frame + 1, 8);
+  
+  delete[] frame;
+  _frameLength = 0;
+  _frameHeaderProcessed = false;
+  
+  // return number of bytes in payload
+  return(payloadLength);
 }
 
 String XBee::getPacketSource() {
-  
+  char buff[17];
+  sprintf(buff, "%02X%02X%02X%02X%02X%02X%02X%02X", _packetSource[0], _packetSource[1], _packetSource[2], _packetSource[3],
+                                                    _packetSource[4], _packetSource[5], _packetSource[6], _packetSource[7]);
+  String str(buff);
+  return(str);
 }
 
 String XBee::getPacketData() {
-  
+  String str(_packetData);
+  return(str);
 }
 
 int16_t XBee::setPanId(uint8_t* panId) {
