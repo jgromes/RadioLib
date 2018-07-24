@@ -119,7 +119,7 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   
   // some registers need a bit of time to process the change
   // e.g. SX127X_REG_OP_MODE
-  delay(5);
+  delay(20);
   
   // check if the write was successful
   uint8_t readValue = SPIreadRegister(reg);
