@@ -204,11 +204,3 @@ void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
   SPI.endTransaction();
   digitalWrite(_cs, HIGH);
 }
-
-bool Module::getInt0State() {
-  return(digitalRead(_int0));
-}
-
-bool Module::getInt1State() {
-  return(digitalRead(_int1));
-}

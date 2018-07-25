@@ -38,8 +38,8 @@ class Module {
     void SPIwriteRegisterBurstStr(uint8_t reg, const char* data, uint8_t numBytes);
     void SPIwriteRegister(uint8_t reg, uint8_t data);
     
-    bool getInt0State();
-    bool getInt1State();
+    int int0() const { return(_int0); }
+    int int1() const { return(_int1); }
     
   private:
     int _cs;

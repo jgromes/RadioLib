@@ -117,7 +117,7 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
   
   // wait for transmission end
-  while(!_mod->getInt0State());
+  while(!digitalRead(_mod->int0()));
   
   // clear interrupt flags
   clearIRQFlags();
@@ -149,8 +149,8 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
   
   // wait for packet reception or timeout
-  while(!_mod->getInt0State()) {
-    if(_mod->getInt1State()) {
+  while(!digitalRead(_mod->int0())) {
+    if(digitalRead(_mod->int1())) {
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
     }
