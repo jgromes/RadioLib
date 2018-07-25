@@ -68,7 +68,7 @@ void setup() {
   // to this client each time a new message was published at the topic
   Serial.print(F("[ESP8266] Subscribing to MQTT topic ... "));
   // topic name:  hello
-  state = wifi.subscribe("hello");
+  state = mqtt.subscribe("hello");
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -80,7 +80,7 @@ void setup() {
   // after calling this method, server will stop sending PUBLISH packets
   Serial.print(F("[ESP8266] Unsubscribing from MQTT topic ... "));
   // topic filter:  hello
-  state = wifi.unsubscribe("hello");
+  state = mqtt.unsubscribe("hello");
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -104,7 +104,7 @@ void onPublish(const char* topic, const char* message) {
 void loop() {
   // check for new MQTT packets from server each time the loop() runs
   // this will also send a PING packet, restarting the keep alive timer
-  int state = wifi.check(onPublish);
+  int state = mqtt.check(onPublish);
   Serial.print("[ESP8266] MQTT check ");
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
