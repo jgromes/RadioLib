@@ -50,6 +50,9 @@ setCodingRate	KEYWORD2
 setFrequency	KEYWORD2
 setSyncWord	KEYWORD2
 setOutputPower	KEYWORD2
+listen	KEYWORD2
+onReceive	KEYWORD2
+readData	KEYWORD2
 
 # RF69-specific
 setBitRate	KEYWORD2

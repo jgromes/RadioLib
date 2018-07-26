@@ -174,14 +174,20 @@ class SX127x {
     
     // basic methods
     int16_t begin(uint8_t chipVersion, uint8_t syncWord);
-    int16_t transmit(uint8_t* data, size_t len);
-    int16_t transmit(const char* str);
     int16_t transmit(String& str);
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t transmit(const char* str);
+    int16_t transmit(uint8_t* data, size_t len);
     int16_t receive(String& str, size_t len = 0);
+    int16_t receive(uint8_t* data, size_t len);
     int16_t scanChannel();
     int16_t sleep();
     int16_t standby();
+    int16_t listen();
+    
+    // interrupt methods
+    int16_t readData(String& str, size_t len = 0);
+    int16_t readData(uint8_t* data, size_t len);
+    void onReceive(void (*func)(void));
     
     // configuration methods
     int16_t setSyncWord(uint8_t syncWord);
