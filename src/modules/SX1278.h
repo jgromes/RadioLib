@@ -70,7 +70,7 @@ class SX1278: public SX127x {
     SX1278(Module* mod);
     
     // basic methods
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17, uint8_t currentLimit = 100, uint16_t preambleLength = 8, uint8_t gain = 0);
     
     // configuration methods
     int16_t setFrequency(float freq);
@@ -78,14 +78,17 @@ class SX1278: public SX127x {
     int16_t setSpreadingFactor(uint8_t sf);
     int16_t setCodingRate(uint8_t cr);
     int16_t setOutputPower(int8_t power);
+    int16_t setGain(uint8_t gain);
   
   protected:
     int16_t setBandwidthRaw(uint8_t newBandwidth);
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
     
-  private:
     int16_t config();
+    
+  private:
+    
 };
 
 #endif

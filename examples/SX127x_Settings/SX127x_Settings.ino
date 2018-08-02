@@ -36,12 +36,15 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   125.0 kHz
+  // spreading factor:            9
+  // coding rate:                 7
+  // sync word:                   0x12
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   int state = loraSX1278.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -54,12 +57,15 @@ void setup() {
   // initialize the second LoRa instance with non-default settings
   // this LoRa link will have maximum range, but very low data rate
   Serial.print(F("[SX1276] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           7.8 kHz
-  // spreading factor:                    12
-  // coding rate:                         8
-  // sync word:                           0x13
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   7.8 kHz
+  // spreading factor:            12
+  // coding rate:                 8
+  // sync word:                   0x13
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   state = loraSX1276.begin(434.0, 7.8, 12, 8, 0x13);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -69,19 +75,24 @@ void setup() {
     while (true);
   }
 
-  // initialize the third LoRa instance with non-default settings
-  // this LoRa link will have high data rate, but lower range
-  // NOTE: when using spreading factor 6, the total packet length has to be known in advance!
-  //       it can be set using the length variable of your Packet instance
-  //       Packet::length = x;
-  //       where x is the total packet length including both addresses
+  // initialize the third LoRa instance with
+  // non-default settings
+  // this LoRa link will have high data rate, 
+  // but lower range
+  // NOTE: when using spreading factor 6, the total packet
+  //       length has to be known in advance!
+  //       you have to pass the number of expected bytes
+  //       to the receive() method
   Serial.print(F("[SX1272] Initializing ... "));
-  // carrier frequency:                   915.0 MHz
-  // bandwidth:                           500.0 kHz
-  // spreading factor:                    6
-  // coding rate:                         5
-  // sync word:                           0x14
-  // output power:                        2 dBm
+  // carrier frequency:           915.0 MHz
+  // bandwidth:                   500.0 kHz
+  // spreading factor:            6
+  // coding rate:                 5
+  // sync word:                   0x14
+  // output power:                2 dBm
+  // current limit:               50 mA
+  // preamble length:             20 symbols
+  // amplifier gain:              1 (maximum gain)
   state = loraSX1272.begin(915.0, 500.0, 6, 5, 0x14, 2);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -128,9 +139,32 @@ void setup() {
     while (true);
   }
 
-  // set output power to 10 dBm (accepted range is 2 - 17 dBm)
+  // set output power to 10 dBm (accepted range is -3 - 17 dBm)
+  // NOTE: 20 dBm value allows high power operation, but transmission
+  //       duty cycle MUST NOT exceed 1%
   if (loraSX1278.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
     Serial.println("Selected output power is invalid for this module!");
+    while (true);
+  }
+
+  // set over current protection limit to 80 mA (accepted range is 45 - 240 mA)
+  // NOTE: set value to 0 to disable overcurrent protection
+  if (loraSX1278.setCurrentLimit(80) == ERR_INVALID_CURRENT_LIMIT) {
+    Serial.println("Selected current limit is invalid for this module!");
+    while (true);
+  }
+
+  // set LoRa preamble length to 15 symbols (accepted range is 6 - 65535)
+  if (loraSX1278.setPreambleLength(15) == ERR_INVALID_PREAMBLE_LENGTH) {
+    Serial.println("Selected preamble length is invalid for this module!");
+    while (true);
+  }
+
+  // set amplifier gain to 1 (accepted range is 1 - 6, where 1 is maximum gain)
+  // NOTE: set value to 0 to enable autmatic gain control
+  //       leave at 0 unless you know what you're doing
+  if (loraSX1278.setGain(1) == ERR_INVALID_GAIN) {
+    Serial.println("Selected gain is invalid for this module!");
     while (true);
   }
 

@@ -1,10 +1,11 @@
 /*
    KiteLib SX127x Channel Activity Detection Example
 
-   This example scans the current LoRa channel using SX1278 LoRa radio module
-   and detects valid LoRa preambles. Preamble is the first part of LoRa transmission,
-   so this can be used to check if the LoRa channel is free,
-   or if you should start receiving a message.
+   This example scans the current LoRa channel and detects 
+   valid LoRa preambles. Preamble is the first part of 
+   LoRa transmission, so this can be used to check 
+   if the LoRa channel is free, or if you should start 
+   receiving a message.
 
    Other modules from SX127x family can also be used.
    SX1272 lora = Kite.ModuleA;
@@ -25,12 +26,15 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   125.0 kHz
+  // spreading factor:            9
+  // coding rate:                 7
+  // sync word:                   0x12
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   int state = lora.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));

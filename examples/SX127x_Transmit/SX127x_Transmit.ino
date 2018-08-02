@@ -26,12 +26,15 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   125.0 kHz
+  // spreading factor:            9
+  // coding rate:                 7
+  // sync word:                   0x12
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   int state = lora.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -45,7 +48,8 @@ void setup() {
 void loop() {
   Serial.print(F("[SX1278] Transmitting packet ... "));
 
-  // you can transmit C-string or Arduino string up to 256 characters long
+  // you can transmit C-string or Arduino string up to
+  // 256 characters long
   int state = lora.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
@@ -57,6 +61,11 @@ void loop() {
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(" success!");
+
+    // print measured data rate
+    Serial.print("Datarate:\t");
+    Serial.print(lora.dataRate);
+    Serial.println(" bps");
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes

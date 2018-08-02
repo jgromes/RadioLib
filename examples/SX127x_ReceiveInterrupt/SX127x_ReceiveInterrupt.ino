@@ -31,12 +31,15 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   125.0 kHz
+  // spreading factor:            9
+  // coding rate:                 7
+  // sync word:                   0x12
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   int state = lora.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -128,6 +131,11 @@ void loop() {
       Serial.print("SNR:\t\t");
       Serial.print(lora.lastPacketSNR);
       Serial.println(" dBm");
+
+      // print frequency error
+      Serial.print("Frequency error:\t");
+      Serial.print(lora.getFrequencyError());
+      Serial.println(" Hz");
   
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed

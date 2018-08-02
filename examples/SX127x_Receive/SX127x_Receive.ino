@@ -9,6 +9,7 @@
     - spreading factor
     - coding rate
     - sync word
+    - preamble length
 
    Other modules from SX127x family can also be used.
    SX1272 lora = Kite.ModuleA;
@@ -29,12 +30,15 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
+  // carrier frequency:           434.0 MHz
+  // bandwidth:                   125.0 kHz
+  // spreading factor:            9
+  // coding rate:                 7
+  // sync word:                   0x12
+  // output power:                17 dBm
+  // current limit:               100 mA
+  // preamble length:             8 symbols
+  // amplifier gain:              0 (automatic gain control)
   int state = lora.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -66,20 +70,23 @@ void loop() {
     Serial.print("[SX1278] Data:\t\t");
     Serial.println(str);
 
-    //print the measured data rate
-    Serial.print("[SX1278] Datarate:\t");
-    Serial.print(lora.dataRate);
-    Serial.println(" bps");
-
-    //print the RSSI (Received Signal Strength Indicator) of the last received packet
+    // print the RSSI (Received Signal Strength Indicator)
+    // of the last received packet
     Serial.print("[SX1278] RSSI:\t\t");
     Serial.print(lora.lastPacketRSSI);
     Serial.println(" dBm");
 
-    //print the SNR (Signal-to-Noise Ratio) of the last received packet
+    // print the SNR (Signal-to-Noise Ratio)
+    // of the last received packet
     Serial.print("[SX1278] SNR:\t\t");
     Serial.print(lora.lastPacketSNR);
     Serial.println(" dBm");
+
+    // print frequency error
+    // of the last received packet
+    Serial.print("Frequency error:\t");
+    Serial.print(lora.getFrequencyError());
+    Serial.println(" Hz");
 
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet

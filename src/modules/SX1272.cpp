@@ -4,15 +4,22 @@ SX1272::SX1272(Module* mod) : SX127x(mod) {
   
 }
 
-int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power) {
+int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint8_t currentLimit, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord);
+  int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, currentLimit, preambleLength);
   if(state != ERR_NONE) {
     return(state);
   }
   
   // configure settings not accessible by API
   state = config();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // mitigation of receiver spurious response
+  // see SX1272/73 Errata, section 2.2 for details
+  state = _mod->SPIsetRegValue(0x31, 0b10000000, 7, 7);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -43,7 +50,12 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
     return(state);
   }
   
-  return(ERR_NONE);
+  state = setGain(gain);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  return(state);
 }
 
 int16_t SX1272::setFrequency(float freq) {
@@ -60,11 +72,11 @@ int16_t SX1272::setBandwidth(float bw) {
   uint8_t newBandwidth;
   
   // check alowed bandwidth values
-  if(bw == 125.0) {
+  if(abs(bw - 125.0) <= 0.001) {
     newBandwidth = SX1272_BW_125_00_KHZ;
-  } else if(bw == 250.0) {
+  } else if(abs(bw - 250.0) <= 0.001) {
     newBandwidth = SX1272_BW_250_00_KHZ;
-  } else if(bw == 500.0) {
+  } else if(abs(bw - 500.0) <= 0.001) {
     newBandwidth = SX1272_BW_500_00_KHZ;
   } else {
     return(ERR_INVALID_BANDWIDTH);
@@ -75,7 +87,6 @@ int16_t SX1272::setBandwidth(float bw) {
   if(state == ERR_NONE) {
     SX127x::_bw = bw;
   }
-  
   return(state);
 }
 
@@ -114,7 +125,6 @@ int16_t SX1272::setSpreadingFactor(uint8_t sf) {
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
   }
-  
   return(state);
 }
 
@@ -144,7 +154,6 @@ int16_t SX1272::setCodingRate(uint8_t cr) {
   if(state == ERR_NONE) {
     SX127x::_cr = cr;
   }
-  
   return(state);
 }
 
@@ -155,43 +164,62 @@ int16_t SX1272::setOutputPower(int8_t power) {
   }
   
   // set mode to standby
-  SX127x::standby();
+  int16_t state = SX127x::standby();
   
-  int16_t state;
+  // set output power
   if(power < 2) {
     // power is less than 2 dBm, enable PA0 on RFIO
-    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_RFO, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_RFO, 7, 7);
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, (power + 1), 3, 0);
     state |= _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
   } else if((power >= 2) && (power <= 17)) {
     // power is 2 - 17 dBm, enable PA1 + PA2 on PA_BOOST
-    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, (power - 2), 3, 0);
     state |= _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
   } else if(power == 20) {
     // power is 20 dBm, enable PA1 + PA2 on PA_BOOST and enable high power control
-    state = _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, (power - 5), 3, 0);
     state |= _mod->SPIsetRegValue(SX1272_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
   }
+  return(state);
+}
+
+int16_t SX1272::setGain(uint8_t gain) {
+  // check allowed range
+  if(gain > 6) {
+    return(ERR_INVALID_GAIN);
+  }
   
+  // set mode to standby
+  int16_t state = SX127x::standby();
+  
+  // set gain
+  if(gain == 0) {
+    // gain set to 0, enable AGC loop
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_ON, 2, 2);
+  } else {
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
+    state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+  }
   return(state);
 }
 
 int16_t SX1272::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
-  SX127x::standby();
+  int16_t state = SX127x::standby();
   
   // write register
-  return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newBandwidth, 7, 6));
+  state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newBandwidth, 7, 6);
+  return(state);
 }
 
 int16_t SX1272::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
   // set mode to standby
-  SX127x::standby();
+  int16_t state = SX127x::standby();
   
   // write registers
-  int16_t state = 0;
   if(newSpreadingFactor == SX127X_SF_6) {
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_OFF, 2, 1);
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX127X_SF_6 | SX127X_TX_MODE_SINGLE, 7, 3);
@@ -203,27 +231,21 @@ int16_t SX1272::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
     state |= _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_7_12, 2, 0);
     state |= _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_7_12);
   }
-  
   return(state);
 }
 
 int16_t SX1272::setCodingRateRaw(uint8_t newCodingRate) {
   // set mode to standby
-  SX127x::standby();
+  int16_t state = SX127x::standby();
   
   // write register
-  return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 5, 3));
+  state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 5, 3);
+  return(state);
 }
 
 int16_t SX1272::config() {
   // configure common registers
   int16_t state = SX127x::config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // enable LNA gain setting by register
-  state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -236,6 +258,5 @@ int16_t SX1272::config() {
   } else {
     state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
   }
-  
   return(state);
 }

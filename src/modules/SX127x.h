@@ -78,14 +78,12 @@
 #define SX127X_OCP_TRIM                               0b00001011  //  4     0     OCP current: I_max(OCP_TRIM = 0b1011) = 100 mA
 
 // SX127X_REG_LNA
-#define SX127X_LNA_GAIN_0                             0b00000000  //  7     5     LNA gain setting:   not used
-#define SX127X_LNA_GAIN_1                             0b00100000  //  7     5                         max gain
+#define SX127X_LNA_GAIN_1                             0b00100000  //  7     5     LNA gain setting:   max gain
 #define SX127X_LNA_GAIN_2                             0b01000000  //  7     5                         .
 #define SX127X_LNA_GAIN_3                             0b01100000  //  7     5                         .
 #define SX127X_LNA_GAIN_4                             0b10000000  //  7     5                         .
 #define SX127X_LNA_GAIN_5                             0b10100000  //  7     5                         .
 #define SX127X_LNA_GAIN_6                             0b11000000  //  7     5                         min gain
-#define SX127X_LNA_GAIN_7                             0b11100000  //  7     5                         not used
 #define SX127X_LNA_BOOST_OFF                          0b00000000  //  1     0     default LNA current
 #define SX127X_LNA_BOOST_ON                           0b00000011  //  1     0     150% LNA current
 
@@ -173,7 +171,7 @@ class SX127x {
     float lastPacketSNR;
     
     // basic methods
-    int16_t begin(uint8_t chipVersion, uint8_t syncWord);
+    int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
     int16_t transmit(String& str);
     int16_t transmit(const char* str);
     int16_t transmit(uint8_t* data, size_t len);
@@ -182,15 +180,22 @@ class SX127x {
     int16_t scanChannel();
     int16_t sleep();
     int16_t standby();
-    int16_t listen();
     
     // interrupt methods
+    void setDio0Action(void (*func)(void));
+    void setDio1Action(void (*func)(void));
+    int16_t startTransmit(String& str);
+    int16_t startTransmit(const char* str);
+    int16_t startTransmit(uint8_t* data, size_t len);
+    int16_t startReceive();
     int16_t readData(String& str, size_t len = 0);
     int16_t readData(uint8_t* data, size_t len);
-    void onReceive(void (*func)(void));
     
     // configuration methods
     int16_t setSyncWord(uint8_t syncWord);
+    int16_t setCurrentLimit(uint8_t currentLimit);
+    int16_t setPreambleLength(uint16_t preambleLength);
+    float getFrequencyError();
   
   protected:
     Module* _mod;
