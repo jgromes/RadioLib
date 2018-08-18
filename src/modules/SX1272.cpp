@@ -58,6 +58,33 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
+int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit) {
+  // execute common part
+  int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // configure settings not accessible by API
+  state = configFSK();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  return(state);
+}
+
 int16_t SX1272::setFrequency(float freq) {
   // check frequency range
   if((freq < 860.0) || (freq > 1020.0)) {
@@ -69,6 +96,11 @@ int16_t SX1272::setFrequency(float freq) {
 }
 
 int16_t SX1272::setBandwidth(float bw) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
   uint8_t newBandwidth;
   
   // check alowed bandwidth values
@@ -91,6 +123,11 @@ int16_t SX1272::setBandwidth(float bw) {
 }
 
 int16_t SX1272::setSpreadingFactor(uint8_t sf) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
   uint8_t newSpreadingFactor;
   
   // check allowed spreading factor values
@@ -129,6 +166,11 @@ int16_t SX1272::setSpreadingFactor(uint8_t sf) {
 }
 
 int16_t SX1272::setCodingRate(uint8_t cr) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
   uint8_t newCodingRate;
   
   // check allowed coding rate values
@@ -187,6 +229,11 @@ int16_t SX1272::setOutputPower(int8_t power) {
 }
 
 int16_t SX1272::setGain(uint8_t gain) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
   // check allowed range
   if(gain > 6) {
     return(ERR_INVALID_GAIN);
@@ -258,5 +305,21 @@ int16_t SX1272::config() {
   } else {
     state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
   }
+  return(state);
+}
+
+int16_t SX1272::configFSK() {
+  // configure common registers
+  int16_t state = SX127x::configFSK();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set data shaping
+  state = _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_FSK_GAUSSIAN_0_3, 6, 5);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
   return(state);
 }

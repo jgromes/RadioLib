@@ -79,6 +79,7 @@
 #define ERR_INVALID_CURRENT_LIMIT             -17
 #define ERR_INVALID_PREAMBLE_LENGTH           -18
 #define ERR_INVALID_GAIN                      -19
+#define ERR_WRONG_MODEM                       -20
 
 // RF69-specific status codes
 #define ERR_INVALID_BIT_RATE                  -101
