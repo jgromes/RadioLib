@@ -38,7 +38,7 @@ void setup() {
   // NOTE: calling this method will autmatically enable
   // address filtering (node address only)
   Serial.print(F("[RF69] Setting node address ... "));
-  state == rf.setNodeAddress(0x01);
+  state = rf.setNodeAddress(0x01);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -51,7 +51,7 @@ void setup() {
   // NOTE: calling this method will autmatically enable
   // address filtering (node or broadcast address)
   Serial.print(F("[RF69] Setting broadcast address ... "));
-  state == rf.setBroadcastAddress(0xFF);
+  state = rf.setBroadcastAddress(0xFF);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -65,13 +65,13 @@ void setup() {
   // node and broadcast address
   /*
     Serial.print(F("[RF69] Disabling address filtering ... "));
-    state == rf.disableAddressFiltering();
+    state = rf.disableAddressFiltering();
     if(state == ERR_NONE) {
-    Serial.println(F("success!"));
+      Serial.println(F("success!"));
     } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
     }
   */
 }
