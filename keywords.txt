@@ -26,6 +26,7 @@ XBeeSerial	KEYWORD1
 
 MQTTClient	KEYWORD1
 HTTPClient	KEYWORD1
+RTTYClient	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -91,6 +92,9 @@ subscribe	KEYWORD2
 unsubscribe	KEYWORD2
 ping	KEYWORD2
 check	KEYWORD2
+
+# RTTY
+leadIn	KEYWORD2
 
 # TransportLayer
 openTransportConnection	KEYWORD2

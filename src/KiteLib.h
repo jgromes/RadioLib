@@ -17,6 +17,9 @@
 #include "modules/SX1279.h"
 #include "modules/XBee.h"
 
+#include "protocols/PhysicalLayer.h"
+#include "protocols/RTTY.h"
+
 #include "protocols/TransportLayer.h"
 #include "protocols/HTTP.h"
 #include "protocols/MQTT.h"
