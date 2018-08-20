@@ -421,9 +421,9 @@ int16_t SX127x::directMode(uint32_t FRF) {
   
   // user requested to start transmitting immediately (required for RTTY)
   if(FRF != 0) {
-    _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
-    _mod->SPIsetRegValue(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
-    _mod->SPIsetRegValue(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
+    _mod->SPIwriteRegister(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
+    _mod->SPIwriteRegister(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
+    _mod->SPIwriteRegister(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
   
     return(setMode(SX127X_TX));
   }
@@ -902,7 +902,7 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   }
 
   // check constraints
-  if(len > 7) {
+  if(len >= 7) {
     return(ERR_INVALID_SYNC_WORD);
   }
   

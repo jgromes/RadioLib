@@ -4,6 +4,8 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+#include "../protocols/PhysicalLayer.h"
+
 // SX127x series common LoRa registers
 #define SX127X_REG_FIFO                               0x00
 #define SX127X_REG_OP_MODE                            0x01
@@ -515,7 +517,7 @@
 #define SX127X_PLL_BANDWIDTH_225_KHZ                  0b10000000  //  7     6                    225 kHz
 #define SX127X_PLL_BANDWIDTH_300_KHZ                  0b11000000  //  7     6                    300 kHz (default)
 
-class SX127x {
+class SX127x: public PhysicalLayer {
   public:
     // constructor
     SX127x(Module* mod);
