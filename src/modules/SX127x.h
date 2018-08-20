@@ -499,10 +499,11 @@
 #define SX127X_DIO1_PACK_FIFO_LEVEL                   0b00000000  //  5     4     
 #define SX127X_DIO1_PACK_FIFO_EMPTY                   0b00010000  //  5     4     
 #define SX127X_DIO1_PACK_FIFO_FULL                    0b00100000  //  5     4     
+#define SX127X_DIO2_CONT_DATA                         0b00000000  //  3     2     
 
 // SX1272_REG_PLL_HOP + SX1278_REG_PLL_HOP
-#define SX127X_FAST_HOP_OFF                           0b10000000  //  7     7     carrier frequency validated when FRF registers are written
-#define SX127X_FAST_HOP_ON                            0b00000000  //  7     7     carrier frequency validated when FS modes are requested
+#define SX127X_FAST_HOP_OFF                           0b00000000  //  7     7     carrier frequency validated when FRF registers are written
+#define SX127X_FAST_HOP_ON                            0b10000000  //  7     7     carrier frequency validated when FS modes are requested
 
 // SX1272_REG_TCXO + SX1278_REG_TCXO
 #define SX127X_TCXO_INPUT_EXTERNAL                    0b00000000  //  4     4     use external crystal oscillator
@@ -535,6 +536,8 @@ class SX127x {
     int16_t scanChannel();
     int16_t sleep();
     int16_t standby();
+    int16_t directMode(uint32_t FRF = 0);
+    int16_t packetMode();
     
     // interrupt methods
     void setDio0Action(void (*func)(void));

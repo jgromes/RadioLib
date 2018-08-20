@@ -321,5 +321,8 @@ int16_t SX1272::configFSK() {
     return(state);
   }
   
+  // set fast PLL hop
+  state = _mod->SPIsetRegValue(SX1272_REG_PLL_HOP, SX127X_FAST_HOP_ON, 7, 7);
+  
   return(state);
 }
