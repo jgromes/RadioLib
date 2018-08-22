@@ -27,14 +27,12 @@ void setup() {
   // initialize SX1278
   Serial.print("[SX1278] Initializing ... ");
   // carrier frequency:           434.4 MHz
-  // bandwidth:                   125.0 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // sync word:                   0x12
-  // output power:                17 dBm
+  // bit rate:                    48.0 kbps
+  // frequency deviation:         50.0 kHz
+  // Rx bandwidth:                125.0 kHz
+  // output power:                13 dBm
   // current limit:               100 mA
-  // preamble length:             8 symbols
-  // amplifier gain:              0 (automatic gain control)
+  // sync word:                   0x2D  0x01
   int state = fsk.beginFSK(434.4);
   if(state == ERR_NONE) {
     Serial.println("success!");
@@ -62,16 +60,40 @@ void setup() {
 }
 
 void loop() {
+  Serial.println("Sending RTTY data ... ");
+  
   // send 500 ms high frequency beep
   rtty.leadIn(500);
 
   // RTTYClient supports all methods of the Serial class
-  // send the string "Hello World!", followed by
-  // carriage return and line feed chracters
-  rtty.println("Hello World!");
+  String aStr = "Arduino String";
+  rtty.print(aStr);
+  rtty.println(aStr);
+  
+  const char cStr[] = "C-string";
+  rtty.print(cStr);
+  rtty.println(cStr);
+
+  char c = 'c';
+  rtty.print(c);
+  rtty.println(c);
+  
+  byte b = 0xAA;
+  rtty.print(b, HEX);
+  rtty.println(b, HEX);
+
+  int i = 1000;
+  rtty.print(i);
+  rtty.println(i);
+
+  float f = 3.1415;
+  rtty.print(f, 3);
+  rtty.println(f, 3);
 
   // turn transmitter off
   fsk.standby();
+
+  Serial.println("done!");
 
   // wait for a second before transmitting again
   delay(1000);
