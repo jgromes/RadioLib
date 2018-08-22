@@ -51,8 +51,6 @@ size_t RTTYClient::write(uint8_t* buff, size_t len) {
 }
 
 size_t RTTYClient::write(uint8_t b) {
-  Serial.write(b);
-
   space();
   
   for(uint8_t mask = 0x01; mask; mask <<= 1) {
