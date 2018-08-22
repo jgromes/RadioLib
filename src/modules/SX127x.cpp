@@ -1046,12 +1046,6 @@ int16_t SX127x::configFSK() {
     return(state);
   }
   
-  // set frequency error to zero
-  // for some reason unbeknownst to man, this write always fails, yet without it, switching modems doesn't work
-  // literally spent 8 hours debugging this ... well played Semtech, well played
-  _mod->SPIsetRegValue(SX127X_REG_FEI_MSB_FSK, 0x00);
-  _mod->SPIsetRegValue(SX127X_REG_FEI_LSB_FSK, 0x00);
-  
   return(state);
 }
 

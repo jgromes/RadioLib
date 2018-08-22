@@ -69,52 +69,55 @@ int16_t SX1276::setFrequency(float freq) {
     }
   }
   
-  // mitigation of receiver spurious response
-  // see SX1276/77/78 Errata, section 2.3 for details
-  if(abs(_bw - 7.8) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x48);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 7.8;
-  } else if(abs(_bw - 10.4) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x44);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 10.4;
-  } else if(abs(_bw - 15.6) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x44);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 15.6;
-  } else if(abs(_bw - 20.8) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x44);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 20.8;
-  } else if(abs(_bw - 31.25) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x44);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 31.25;
-  } else if(abs(_bw - 41.7) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x44);
-    _mod->SPIsetRegValue(0x30, 0x00);
-    freq += 41.7;
-  } else if(abs(_bw - 62.5) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x40);
-    _mod->SPIsetRegValue(0x30, 0x00);
-  } else if(abs(_bw - 125.0) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x40);
-    _mod->SPIsetRegValue(0x30, 0x00);
-  } else if(abs(_bw - 250.0) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
-    _mod->SPIsetRegValue(0x2F, 0x40);
-    _mod->SPIsetRegValue(0x30, 0x00);
-  } else if(abs(_bw - 500.0) <= 0.001) {
-    _mod->SPIsetRegValue(0x31, 0b1000000, 7, 7);
+  // SX1276/77/78 Errata fixes
+  if(getActiveModem() == SX127X_LORA) {
+    // mitigation of receiver spurious response
+    // see SX1276/77/78 Errata, section 2.3 for details
+    if(abs(_bw - 7.8) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x48);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 7.8;
+    } else if(abs(_bw - 10.4) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x44);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 10.4;
+    } else if(abs(_bw - 15.6) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x44);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 15.6;
+    } else if(abs(_bw - 20.8) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x44);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 20.8;
+    } else if(abs(_bw - 31.25) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x44);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 31.25;
+    } else if(abs(_bw - 41.7) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x44);
+      _mod->SPIsetRegValue(0x30, 0x00);
+      freq += 41.7;
+    } else if(abs(_bw - 62.5) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x40);
+      _mod->SPIsetRegValue(0x30, 0x00);
+    } else if(abs(_bw - 125.0) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x40);
+      _mod->SPIsetRegValue(0x30, 0x00);
+    } else if(abs(_bw - 250.0) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
+      _mod->SPIsetRegValue(0x2F, 0x40);
+      _mod->SPIsetRegValue(0x30, 0x00);
+    } else if(abs(_bw - 500.0) <= 0.001) {
+      _mod->SPIsetRegValue(0x31, 0b1000000, 7, 7);
+    }
   }
   
   // set frequency
