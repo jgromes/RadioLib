@@ -94,7 +94,7 @@ ping	KEYWORD2
 check	KEYWORD2
 
 # RTTY
-leadIn	KEYWORD2
+idle	KEYWORD2
 
 # TransportLayer
 openTransportConnection	KEYWORD2

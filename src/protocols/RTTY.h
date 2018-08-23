@@ -10,7 +10,7 @@ class RTTYClient {
     
     // basic methods
     int16_t begin(float base, uint16_t shift, uint16_t rate, uint8_t dataBits = 8, uint8_t stopBits = 1);
-    void leadIn(uint16_t length);
+    void idle();
     size_t write(const char* str);
     size_t write(uint8_t* buff, size_t len);
     size_t write(uint8_t b);

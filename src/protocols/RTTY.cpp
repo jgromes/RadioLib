@@ -28,11 +28,10 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t dat
   return(state);
 }
 
-void RTTYClient::leadIn(uint16_t length) {
+void RTTYClient::idle() {
   _phy->directMode();
   
   mark();
-  delay(length);
 }
 
 size_t RTTYClient::write(const char* str) {
