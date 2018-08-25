@@ -106,11 +106,11 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
 }
 
 int16_t SX127x::transmit(String& str, uint8_t addr) {
-  return(SX127x::transmit(str.c_str()), addr);
+  return(SX127x::transmit(str.c_str(), addr));
 }
 
 int16_t SX127x::transmit(const char* str, uint8_t addr) {
-  return(SX127x::transmit((uint8_t*)str, strlen(str)), addr);
+  return(SX127x::transmit((uint8_t*)str, strlen(str), addr));
 }
 
 int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -207,7 +207,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(state);
     }
     
-    // wait for transmission end or timeout (150 % of expected time-one-air)
+    // wait for transmission end or timeout (150 % of expected time-on-air)
     uint32_t timeout = (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 1500.0);
     uint32_t start = millis();
     while(!digitalRead(_mod->int0())) {
@@ -241,11 +241,11 @@ int16_t SX127x::receive(String& str, size_t len) {
 }
 
 int16_t SX127x::receive(uint8_t* data, size_t len) {
+  // set mode to standby
+  int16_t state = setMode(SX127X_STANDBY);
+
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
-    // set mode to standby
-    int16_t state = setMode(SX127X_STANDBY);
-    
     // set DIO pin mapping
     state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
     
@@ -263,7 +263,6 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
     
     // wait for packet reception or timeout
-    uint32_t start = millis();
     while(!digitalRead(_mod->int0())) {
       if(digitalRead(_mod->int1())) {
         clearIRQFlags();
@@ -307,11 +306,8 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     return(ERR_NONE);
     
   } else if(modem == SX127X_FSK_OOK) {
-    // set mode to standby
-    int16_t state = setMode(SX127X_STANDBY);
-    
     // set DIO pin mapping
-    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PACKET_SENT, 7, 6);
+    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
     
     // clear interrupt flags
     clearIRQFlags();
@@ -460,21 +456,35 @@ int16_t SX127x::startReceive() {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
   
-  // set DIO pin mapping
-  state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
-  
-  // clear interrupt flags
-  clearIRQFlags();
-  
-  // set FIFO pointers
-  state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_RX_BASE_ADDR, SX127X_FIFO_RX_BASE_ADDR_MAX);
-  state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_RX_BASE_ADDR_MAX);
-  if(state != ERR_NONE) {
-    return(state);
+  if(modem == SX127X_LORA) {
+    // set DIO pin mapping
+    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
+    
+    // clear interrupt flags
+    clearIRQFlags();
+    
+    // set FIFO pointers
+    state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_RX_BASE_ADDR, SX127X_FIFO_RX_BASE_ADDR_MAX);
+    state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_RX_BASE_ADDR_MAX);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+    
+    // set mode to continuous reception
+    return(setMode(SX127X_RXCONTINUOUS));
+    
+  } else if(modem == SX127X_FSK_OOK) {
+    // set DIO pin mapping
+    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
+    
+    // clear interrupt flags
+    clearIRQFlags();
+    
+    // set mode to receive
+    return(setMode(SX127X_RX));
   }
   
-  // set mode to continuous reception
-  return(setMode(SX127X_RXCONTINUOUS));
+  return(ERR_UNKNOWN);
 }
 
 void SX127x::setDio0Action(void (*func)(void)) {
@@ -486,11 +496,11 @@ void SX127x::setDio1Action(void (*func)(void)) {
 }
 
 int16_t SX127x::startTransmit(String& str, uint8_t addr) {
-  return(SX127x::startTransmit(str.c_str()), addr);
+  return(SX127x::startTransmit(str.c_str(), addr));
 }
 
 int16_t SX127x::startTransmit(const char* str, uint8_t addr) {
-  return(SX127x::startTransmit((uint8_t*)str, strlen(str)), addr);
+  return(SX127x::startTransmit((uint8_t*)str, strlen(str), addr));
 }
 
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -701,11 +711,11 @@ int16_t SX127x::setPreambleLength(uint16_t preambleLength) {
   return(state);
 }
 
-float SX127x::getFrequencyError() {
+float SX127x::getFrequencyError(bool autoCorrect) {
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
     // get raw frequency error
-    uint32_t raw = _mod->SPIgetRegValue(SX127X_REG_FEI_MSB, 3, 0) << 16;
+    uint32_t raw = (uint32_t)_mod->SPIgetRegValue(SX127X_REG_FEI_MSB, 3, 0) << 16;
     raw |= _mod->SPIgetRegValue(SX127X_REG_FEI_MID) << 8;
     raw |= _mod->SPIgetRegValue(SX127X_REG_FEI_LSB);
     
@@ -715,10 +725,17 @@ float SX127x::getFrequencyError() {
     // check the first bit
     if(raw & 0x80000) {
       // frequency error is negative
+      raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
       error = (((float)raw * (float)base)/32000000.0) * (_bw/500.0) * -1.0;
     } else {
       error = (((float)raw * (float)base)/32000000.0) * (_bw/500.0);
+    }
+    
+    if(autoCorrect) {
+      // adjust LoRa modem data rate
+      float ppmOffset = 0.95 * (error/32.0);
+      _mod->SPIwriteRegister(0x27, (uint8_t)ppmOffset);
     }
     
     return(error);
@@ -734,6 +751,7 @@ float SX127x::getFrequencyError() {
     // check the first bit
     if(raw & 0x8000) {
       // frequency error is negative
+      raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
       error = (float)raw * (32000000.0 / (float)(base << 19)) * -1.0;
     } else {
@@ -902,7 +920,7 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   }
 
   // check constraints
-  if(len >= 7) {
+  if(len > 8) {
     return(ERR_INVALID_SYNC_WORD);
   }
   

@@ -318,7 +318,7 @@
 #define SX127X_PREAMBLE_DETECTOR_ON                   0b10000000  //  7     7     preamble detection enabled (default)
 #define SX127X_PREAMBLE_DETECTOR_1_BYTE               0b00000000  //  6     5     preamble detection size: 1 byte (default)
 #define SX127X_PREAMBLE_DETECTOR_2_BYTE               0b00100000  //  6     5                              2 bytes
-#define SX127X_PREAMBLE_DETECTOR_2_BYTE               0b01000000  //  6     5                              3 bytes
+#define SX127X_PREAMBLE_DETECTOR_3_BYTE               0b01000000  //  6     5                              3 bytes
 #define SX127X_PREAMBLE_DETECTOR_TOL                  0x0A        //  4     0     default number of tolerated errors per chip (4 chips per bit)
 
 // SX127X_REG_RX_TIMEOUT_1
@@ -555,7 +555,7 @@ class SX127x: public PhysicalLayer {
     int16_t setSyncWord(uint8_t syncWord);
     int16_t setCurrentLimit(uint8_t currentLimit);
     int16_t setPreambleLength(uint16_t preambleLength);
-    float getFrequencyError();
+    float getFrequencyError(bool autoCorrect = false);
     int16_t setBitRate(float br);
     int16_t setFrequencyDeviation(float freqDev);
     int16_t setRxBandwidth(float rxBw);

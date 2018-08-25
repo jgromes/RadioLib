@@ -93,8 +93,8 @@ int16_t SX1278::setFrequency(float freq) {
         _mod->SPIwriteRegister(0x36, 0x02);
         _mod->SPIwriteRegister(0x3a, 0x64);
       } else if((freq >= 410.0) && (freq <= 525.0)) {
-        _mod->SPIwriteRegister(0x36, 0x03);
-        _mod->SPIwriteRegister(0x3a, 0x65);
+        _mod->SPIwriteRegister(0x36, 0x02);
+        _mod->SPIwriteRegister(0x3a, 0x7F);
       }
     }
     
@@ -168,7 +168,7 @@ int16_t SX1278::setBandwidth(float bw) {
     newBandwidth = SX1278_BW_15_60_KHZ;
   } else if(abs(bw - 20.8) <= 0.001) {
     newBandwidth = SX1278_BW_20_80_KHZ;
-  } else if(abs(bw - 32.5) <= 0.001) {
+  } else if(abs(bw - 31.25) <= 0.001) {
     newBandwidth = SX1278_BW_31_25_KHZ;
   } else if(abs(bw - 41.7) <= 0.001) {
     newBandwidth = SX1278_BW_41_70_KHZ;

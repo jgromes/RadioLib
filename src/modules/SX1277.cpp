@@ -66,8 +66,8 @@ int16_t SX1277::setFrequency(float freq) {
         _mod->SPIwriteRegister(0x36, 0x02);
         _mod->SPIwriteRegister(0x3a, 0x64);
       } else if((freq >= 410.0) && (freq <= 525.0)) {
-        _mod->SPIwriteRegister(0x36, 0x03);
-        _mod->SPIwriteRegister(0x3a, 0x65);
+        _mod->SPIwriteRegister(0x36, 0x02);
+        _mod->SPIwriteRegister(0x3a, 0x7F);
       }
     }
     
