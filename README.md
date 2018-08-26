@@ -22,6 +22,7 @@ KiteLib was originally created as a driver for the [__KITE shield__](https://git
 ### Supported protocols:
 * __MQTT__ on modules: ESP8266
 * __HTTP__ on modules: ESP8266
+* __RTTY__ on modules: SX1272/73/76/77/78/79
 
 ### In development:
 * __SIM800C__ GSM module
