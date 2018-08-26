@@ -61,7 +61,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(F("Sending RTTY data ... "));
+  Serial.print(F("[RTTY] Sending RTTY data ... "));
   
   // send out idle condition for 500 ms
   rtty.idle();

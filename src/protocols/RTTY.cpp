@@ -52,7 +52,7 @@ size_t RTTYClient::write(uint8_t* buff, size_t len) {
 size_t RTTYClient::write(uint8_t b) {
   space();
   
-  for(uint8_t mask = 0x01; mask; mask <<= 1) {
+  for(uint16_t mask = 0x01; mask <= (0x01 << (_dataBits - 1)); mask <<= 1) {
     if(b & mask) {
       mark();
     } else {
