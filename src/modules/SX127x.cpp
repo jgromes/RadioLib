@@ -456,6 +456,7 @@ int16_t SX127x::startReceive() {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
   
+  int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
     // set DIO pin mapping
     state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
