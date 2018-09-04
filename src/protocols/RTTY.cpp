@@ -29,7 +29,7 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t dat
 }
 
 void RTTYClient::idle() {
-  _phy->directMode();
+  _phy->transmitDirect();
   
   mark();
 }
@@ -178,13 +178,13 @@ size_t RTTYClient::println(double d, int digits) {
 
 void RTTYClient::mark() {
   uint32_t start = micros();
-  _phy->directMode(_base + _shift);
+  _phy->transmitDirect(_base + _shift);
   while(micros() - start < _bitDuration);
 }
 
 void RTTYClient::space() {
   uint32_t start = micros();
-  _phy->directMode(_base);
+  _phy->transmitDirect(_base);
   while(micros() - start < _bitDuration);
 }
 

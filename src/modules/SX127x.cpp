@@ -409,7 +409,7 @@ int16_t SX127x::standby() {
   return(setMode(SX127X_STANDBY));
 }
 
-int16_t SX127x::directMode(uint32_t FRF) {
+int16_t SX127x::transmitDirect(uint32_t FRF) {
   // check modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
@@ -424,6 +424,33 @@ int16_t SX127x::directMode(uint32_t FRF) {
     return(setMode(SX127X_TX));
   }
   
+  // activate direct mode
+  int16_t state = directMode();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // start transmitting
+  return(setMode(SX127X_TX));
+}
+
+int16_t SX127x::receiveDirect() {
+  // check modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+  
+  // activate direct mode
+  int16_t state = directMode();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // start receiving
+  return(setMode(SX127X_RX));
+}
+
+int16_t SX127x::directMode() {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
   if(state != ERR_NONE) {
@@ -435,12 +462,7 @@ int16_t SX127x::directMode(uint32_t FRF) {
   
   // set continuous mode
   state |= _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_2, SX127X_DATA_MODE_CONTINUOUS, 6, 6);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // start transmitting
-  return(setMode(SX127X_TX));
+  return(state);
 }
 
 int16_t SX127x::packetMode() {

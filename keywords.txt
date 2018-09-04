@@ -54,7 +54,8 @@ setOutputPower	KEYWORD2
 listen	KEYWORD2
 onReceive	KEYWORD2
 readData	KEYWORD2
-directMode	KEYWORD2
+transmitDirect	KEYWORD2
+receiveDirect	KEYWORD2
 packetMode	KEYWORD2
 
 # RF69-specific

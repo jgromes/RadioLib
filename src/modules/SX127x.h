@@ -538,7 +538,8 @@ class SX127x: public PhysicalLayer {
     int16_t scanChannel();
     int16_t sleep();
     int16_t standby();
-    int16_t directMode(uint32_t FRF = 0);
+    int16_t transmitDirect(uint32_t FRF = 0);
+    int16_t receiveDirect();
     int16_t packetMode();
     
     // interrupt methods
@@ -583,6 +584,7 @@ class SX127x: public PhysicalLayer {
     int16_t config();
     int16_t configFSK();
     int16_t getActiveModem();
+    int16_t directMode();
   
   private:
     bool findChip(uint8_t ver);
