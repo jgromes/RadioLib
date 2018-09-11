@@ -92,6 +92,20 @@ void loop() {
   float f = -3.1415;
   rtty.println(f, 3);
 
+  /*
+    // KiteLib also provides ITA2 ("Baudot") code support
+    // RTTY client must be configured to 5 bits
+    rtty.begin(434, 183, 45, 5);
+
+    // create ITA2-encoded string
+    // NOTE: ASCII characters that do not have ITA2
+    //       equivalent will be replaced with NUL
+    ITA2 itaStr = "HELLO WORLD\n";
+
+    // send the ITA2 string
+    rtty.write(itaStr.byteArr(), itaStr.length());  
+  */
+  
   // turn transmitter off
   fsk.standby();
 

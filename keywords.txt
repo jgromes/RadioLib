@@ -27,6 +27,7 @@ XBeeSerial	KEYWORD1
 MQTTClient	KEYWORD1
 HTTPClient	KEYWORD1
 RTTYClient	KEYWORD1
+ITA2	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -96,6 +97,7 @@ check	KEYWORD2
 
 # RTTY
 idle	KEYWORD2
+byteArr	KEYWORD2
 
 # TransportLayer
 openTransportConnection	KEYWORD2

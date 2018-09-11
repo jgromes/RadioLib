@@ -4,6 +4,33 @@
 #include "TypeDef.h"
 #include "PhysicalLayer.h"
 
+#define ITA2_FIGS                                     0x1B
+#define ITA2_LTRS                                     0x1F
+#define ITA2_LENGTH                                   32
+
+// ITA2 character table: - position in array corresponds to 5-bit ITA2 code
+//                       - characters to the left are in letters shift, characters to the right in figures shift
+//                       - characters marked 0x7F do not have ASCII equivalent
+const char ITA2Table[ITA2_LENGTH][2] = {{'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, {'A', '-'}, {' ', ' '}, {'S', '\''}, {'I', '8'}, {'U', '7'}, 
+                                        {'\r', '\r'}, {'D', 0x05}, {'R', '4'}, {'J', '\a'}, {'N', ','}, {'F', '!'}, {'C', ':'}, {'K', '('}, 
+                                        {'T', '5'}, {'Z', '+'}, {'L', ')'}, {'W', '2'}, {'H', 0x7F}, {'Y', '6'}, {'P', '0'}, {'Q', '1'}, 
+                                        {'O', '9'}, {'B', '?'}, {'G', '&'}, {0x7F, 0x7F}, {'M', '.'}, {'X', '/'}, {'V', ';'}, {0x7F, 0x7F}};
+
+class ITA2 {
+  public:
+    ITA2(const char* str);
+    ~ITA2();
+    
+    size_t length();
+    uint8_t* byteArr();
+  
+  private:
+    char* _str;
+    size_t _len;
+    
+    uint16_t getBits(char c);
+};
+
 class RTTYClient {
   public:
     RTTYClient(PhysicalLayer* phy);

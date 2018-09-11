@@ -1,5 +1,62 @@
 #include "RTTY.h"
 
+ITA2::ITA2(const char* str) {
+  _len = strlen(str);
+  _str = new char[_len];
+  strcpy(_str, str);
+}
+
+ITA2::~ITA2() {
+  delete[] _str;
+}
+
+size_t ITA2::length() {
+  return(_len);
+}
+
+uint8_t* ITA2::byteArr() {
+  // create temporary array 3x the string length (figures may be 3 bytes)
+  uint8_t* temp = new uint8_t[_len*3];
+  
+  size_t arrayLen = 0;
+  for(size_t i = 0; i < _len; i++) {
+    uint16_t code = getBits(_str[i]);
+    // check if the code is letter or figure
+    if(code & (ITA2_FIGS << 10)) {
+      temp[arrayLen] = ITA2_FIGS;
+      temp[arrayLen + 1] = (code >> 5) & ITA2_LTRS;
+      temp[arrayLen + 2] = ITA2_LTRS;
+      arrayLen += 3;
+    } else {
+      temp[arrayLen] = code;
+      arrayLen += 1;
+    }
+  }
+  
+  uint8_t* arr = new uint8_t[arrayLen];
+  memcpy(arr, temp, arrayLen);
+  delete[] temp;
+  return(arr);
+}
+
+uint16_t ITA2::getBits(char c) {
+  // search ITA2 table
+  uint16_t code = 0x0000;
+  for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
+    if(ITA2Table[i][0] == c) {
+      // character is in letter shift
+      code = i;
+      break;
+    } else if(ITA2Table[i][1] == c) {
+      // character is in figures shift
+      code = (ITA2_FIGS << 10) | (i << 5) | ITA2_LTRS;
+      break;
+    }
+  }
+  
+  return(code);
+}
+
 RTTYClient::RTTYClient(PhysicalLayer* phy) {
   _phy = phy;
 }
@@ -68,11 +125,11 @@ size_t RTTYClient::write(uint8_t b) {
 }
 
 size_t RTTYClient::print(const String& str) {
-  return(RTTYClient::write(str.c_str(), str.length()));
+  return(RTTYClient::write((uint8_t*)str.c_str(), str.length()));
 }
 
 size_t RTTYClient::print(const char str[]) {
-  return(RTTYClient::write(str, strlen(str)));
+  return(RTTYClient::write((uint8_t*)str, strlen(str)));
 }
 
 size_t RTTYClient::print(char c) {
