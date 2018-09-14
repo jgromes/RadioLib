@@ -2,7 +2,7 @@
 #define _KITELIB_MODULE_H
 
 #include <SPI.h>
-#include <Wire.h>
+//#include <Wire.h>
 #include <SoftwareSerial.h>
 
 #include "TypeDef.h"
