@@ -157,6 +157,10 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   // clear interrupt flags
   clearIRQFlags();
   
+  // enable RX timouts
+  _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START);
+  _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH);
+  
   // set mode to receive
   setMode(RF69_RX);
   _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
@@ -193,6 +197,9 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
     data[length] = 0;
   }
   
+  // update RSSI
+  lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
+  
   // clear interrupt flags
   clearIRQFlags();
   
@@ -219,6 +226,132 @@ int16_t RF69::enableAES() {
 
 int16_t RF69::disableAES() {
   return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_OFF, 0, 0));
+}
+
+int16_t RF69::startReceive() {
+  // set mode to standby
+  int16_t state = setMode(RF69_STANDBY);
+  
+  // set DIO pin mapping
+  state |= _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 6);
+  
+  // clear interrupt flags
+  clearIRQFlags();
+  
+  // disable RX timeouts
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START_OFF);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH_OFF);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set mode to receive
+  state = setMode(RF69_RX);
+  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
+  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
+  
+  return(state);
+}
+
+void RF69::setDio0Action(void (*func)(void)) {
+  attachInterrupt(digitalPinToInterrupt(_mod->int0()), func, RISING);
+}
+
+void RF69::setDio1Action(void (*func)(void)) {
+  attachInterrupt(digitalPinToInterrupt(_mod->int1()), func, RISING);
+}
+
+int16_t RF69::startTransmit(String& str, uint8_t addr) {
+  return(RF69::startTransmit(str.c_str(), addr));
+}
+
+int16_t RF69::startTransmit(const char* str, uint8_t addr) {
+  return(RF69::startTransmit((uint8_t*)str, strlen(str), addr));
+}
+
+int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  // check packet length
+  if(len > 64) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+  
+  // set mode to standby
+  int16_t state = setMode(RF69_STANDBY);
+  
+  // set DIO pin mapping
+  state |= _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PACKET_SENT, 7, 6);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // clear interrupt flags
+  clearIRQFlags();
+  
+  // set packet length
+  _mod->SPIwriteRegister(RF69_REG_FIFO, len);
+  
+  // check address filtering
+  uint8_t filter = _mod->SPIgetRegValue(RF69_REG_PACKET_CONFIG_1, 2, 1);
+  if((filter == RF69_ADDRESS_FILTERING_NODE) || (filter == RF69_ADDRESS_FILTERING_NODE_BROADCAST)) {
+    _mod->SPIwriteRegister(RF69_REG_FIFO, addr);
+  }
+  
+  // write packet to FIFO
+  _mod->SPIwriteRegisterBurst(RF69_REG_FIFO, data, len);
+  
+  // set mode to transmit
+  state = setMode(RF69_TX);
+  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_20_DBM);
+  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
+  
+  return(state);
+}
+
+int16_t RF69::readData(String& str, size_t len) {
+  // create temporary array to store received data
+  char* data = new char[len];
+  int16_t state = RF69::readData((uint8_t*)data, len);
+  
+  // if packet was received successfully, copy data into String
+  if(state == ERR_NONE) {
+    str = String(data);
+  }
+  
+  delete[] data;
+  return(state);
+}
+
+int16_t RF69::readData(uint8_t* data, size_t len) {
+  // get packet length
+  size_t length = _mod->SPIreadRegister(RF69_REG_FIFO);
+  
+  // check address filtering
+  uint8_t filter = _mod->SPIgetRegValue(RF69_REG_PACKET_CONFIG_1, 2, 1);
+  if((filter == RF69_ADDRESS_FILTERING_NODE) || (filter == RF69_ADDRESS_FILTERING_NODE_BROADCAST)) {
+    _mod->SPIreadRegister(RF69_REG_FIFO);
+  }
+  
+  // read packet data
+  if(len == 0) {
+    // argument len equal to zero indicates String call, which means dynamically allocated data array
+    // dispose of the original and create a new one
+    delete[] data;
+    data = new uint8_t[length + 1];
+  }
+  _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
+  
+  // add terminating null
+  if(len == 0) {
+    data[length] = 0;
+  }
+  
+  // update RSSI
+  lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
+  
+  // clear interrupt flags
+  clearIRQFlags();
+  
+  return(ERR_NONE);
 }
 
 int16_t RF69::setFrequency(float freq) {
@@ -392,10 +525,10 @@ int16_t RF69::setOutputPower(int8_t power) {
   int16_t state;
   if(power > 13) {
     // requested output power is higher than 13 dBm, enable PA2 + PA1 on PA_BOOST
-    state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | power + 14, 7, 0);
+    state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | (power + 14), 7, 0);
   } else {
     // requested output power is lower than 13 dBm, enable PA0 on RFIO
-    state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_ON | RF69_PA1_OFF | RF69_PA2_OFF | power + 18, 7, 0);
+    state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_ON | RF69_PA1_OFF | RF69_PA2_OFF | (power + 18), 7, 0);
   }
 
   return(state);

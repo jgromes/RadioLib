@@ -417,6 +417,9 @@ class RF69 {
     // constructor
     RF69(Module* module);
     
+    // public member variables
+    float lastPacketRSSI;
+    
     // basic methods
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
@@ -431,6 +434,16 @@ class RF69 {
     void setAESKey(uint8_t* key);
     int16_t enableAES();
     int16_t disableAES();
+    
+    // interrupt methods
+    void setDio0Action(void (*func)(void));
+    void setDio1Action(void (*func)(void));
+    int16_t startTransmit(String& str, uint8_t addr = 0);
+    int16_t startTransmit(const char* str, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startReceive();
+    int16_t readData(String& str, size_t len = 0);
+    int16_t readData(uint8_t* data, size_t len);
     
     // configuration methods
     int16_t setFrequency(float freq);
