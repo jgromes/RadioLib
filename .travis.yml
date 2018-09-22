@@ -25,5 +25,5 @@ install:
 script:
   # build all example sketches
   - for exampleName in */ ; do
-      echo $exampleName
+      echo "$exampleName"
     done
