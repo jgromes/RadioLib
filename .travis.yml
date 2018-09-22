@@ -25,6 +25,6 @@ install:
 script:
   # build all example sketches
   - cd examples
-  - for exampleName in */ ; do
-      echo "$PWD/examples/$exampleName/$exampleName.ino";
+  - for d in */ ; do
+      echo "$PWD/examples/${d%/}/${d%/}.ino";
     done
