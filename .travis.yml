@@ -26,5 +26,14 @@ script:
   # build all example sketches
   - cd examples
   - for d in */ ; do
-      arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
+      local status;
+      status = $(arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino 2>&1);
+      if [ $status -ne 0 ]; then
+        # example build failed
+        echo -e "\033[0;31m${d%/} build failed"
+        return $status;
+      else
+        # example build succeeded
+        echo -e "\033[0;32m${d%/} build passed"
+      fi
     done
