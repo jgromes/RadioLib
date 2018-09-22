@@ -51,11 +51,11 @@ void setup() {
 
   // set the function that will be called 
   // when new packet is received
-  lora.onReceive(setFlag);
+  lora.setDio0Action(setFlag);
   
   // start listening for LoRa packets
   Serial.print(F("Starting to listen ... "));
-  state = lora.listen();
+  state = lora.startReceive();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
