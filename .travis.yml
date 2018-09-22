@@ -19,12 +19,13 @@ before_install:
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
   - arduino --install-boards esp8266:esp8266
   - arduino --install-boards esp32:esp32
+  
+  - cd examples
 install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/KiteLib
 script:
   # build all example sketches
-  - cd examples
   - for d in */ ; do
-      echo "$PWD/examples/${d%/}/${d%/}.ino";
+      arduino --verify --board $BOARD $PWD/examples/${d%/}/${d%/}.ino;
     done
