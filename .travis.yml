@@ -26,5 +26,6 @@ script:
   # build all example sketches
   - cd examples
   - for exampleName in */ ; do
-      echo "$exampleName";
+      #arduino --verify --board $BOARD $PWD/examples/$exampleName/$exampleName.ino;
+      echo "$PWD/examples/$exampleName/$exampleName.ino";
     done
