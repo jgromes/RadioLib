@@ -6,8 +6,6 @@ env:
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
-    - BOARD="esp8266:esp8266:generic:CpuFrequency=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,FlashSize=512K0,led=2,LwIPVariant=v2mss536,Debug=Disabled,DebugLevel=None____,FlashErase=none,UploadSpeed=115200"
-    - BOARD="esp32:esp32:esp32"
 before_install:
   # install Arduino IDE
   - wget http://downloads.arduino.cc/arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
@@ -26,11 +24,12 @@ script:
   # build all example sketches
   - cd examples
   - for d in */ ; do
+      echo -e "\033[1;33mBuilding ${d%/} ... \n"
       arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
       if [ $? -ne 0 ]; then
-        echo -e "\033[0;31m${d%/} build failed";
+        echo -e "\033[0;31m${d%/} build FAILED\n";
         exit 1;
       else
-        echo -e "\033[0;32m${d%/} build passed";
+        echo -e "\033[0;32m${d%/} build PASSED\n";
       fi
     done
