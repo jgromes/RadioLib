@@ -27,5 +27,5 @@ install:
 script:
   # build all example sketches
   - for d in */ ; do
-      arduino --verify --board $BOARD $PWD/examples/${d%/}/${d%/}.ino;
+      arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
     done
