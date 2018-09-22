@@ -19,7 +19,7 @@ void setup() {
 
   // set the function that will be called 
   // when new packet is received
-  lora.setDio0Action(setFlag);
+  rf.setDio0Action(setFlag);
   
   // start listening for packets
   Serial.print(F("Starting to listen ... "));
