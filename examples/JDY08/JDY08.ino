@@ -26,7 +26,7 @@ void loop() {
   }
 
   // read data incoming from Bluetooth and write them to Serial port
-  while (bluetooth.available() > 0) {
+  while (ble.available() > 0) {
     Serial.write(ble.read());
   }
 }
