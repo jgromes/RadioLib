@@ -28,11 +28,9 @@ script:
   - for d in */ ; do
       arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
       if [ $? -ne 0 ]; then
-        # example build failed
         echo -e "\033[0;31m${d%/} build failed";
         exit 1;
       else
-        # example build succeeded
         echo -e "\033[0;32m${d%/} build passed";
       fi
     done
