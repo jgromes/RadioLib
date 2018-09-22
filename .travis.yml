@@ -1,0 +1,29 @@
+language: c
+env:
+  global:
+     - ARDUINO_IDE_VERSION="1.8.5"
+  matrix:
+    - BOARD="arduino:avr:uno"
+    - BOARD="arduino:avr:leonardo"
+    - BOARD="arduino:avr:mega:cpu=atmega2560"
+    - BOARD="esp8266:esp8266:generic:CpuFrequency=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,FlashSize=512K0,led=2,LwIPVariant=v2mss536,Debug=Disabled,DebugLevel=None____,FlashErase=none,UploadSpeed=115200"
+    - BOARD="esp32:esp32:esp32"
+before_install:
+  # install Arduino IDE
+  - wget http://downloads.arduino.cc/arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
+  - tar xf arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
+  - mv arduino-$ARDUINO_IDE_VERSION $HOME/arduino-ide
+  - export PATH=$PATH:$HOME/arduino-ide
+  
+  # install 3rd party boards
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
+  - arduino --install-boards esp8266:esp8266
+  - arduino --install-boards esp32:esp32
+install:
+  - mkdir -p $HOME/Arduino/libraries
+  - ln -s $PWD $HOME/Arduino/libraries/KiteLib
+script:
+  # build all example sketches
+  - for exampleName in */ ; do
+      arduino --verify --board $BOARD $PWD/examples/$exampleName/$exampleName.ino;
+    done
