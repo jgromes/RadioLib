@@ -1,4 +1,4 @@
-# KiteLib
+# KiteLib [![Build Status](https://travis-ci.org/jgromes/KiteLib.svg?branch=master)](https://travis-ci.org/jgromes/KiteLib)
 
 ### _One library to rule them all!_
 

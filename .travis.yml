@@ -27,9 +27,9 @@ script:
       echo -e "\033[1;33mBuilding ${d%/} ... \n"
       arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
       if [ $? -ne 0 ]; then
-        echo -e "\033[0;31m${d%/} build FAILED\n";
+        echo -e "\033[1;31m${d%/} build FAILED\n";
         exit 1;
       else
-        echo -e "\033[0;32m${d%/} build PASSED\n";
+        echo -e "\033[1;32m${d%/} build PASSED\n";
       fi
     done
