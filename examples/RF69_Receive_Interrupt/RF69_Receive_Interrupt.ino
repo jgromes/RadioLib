@@ -35,11 +35,11 @@ void setup() {
   // if needed, 'listen' mode can be disabled by calling
   // any of the following methods:
   //
-  // lora.standby()
-  // lora.sleep()
-  // lora.transmit();
-  // lora.receive();
-  // lora.scanChannel();
+  // rf.standby()
+  // rf.sleep()
+  // rf.transmit();
+  // rf.receive();
+  // rf.scanChannel();
 }
 
 // flag to indicate that a packet was received
@@ -89,11 +89,6 @@ void loop() {
       // print data of the packet
       Serial.print("Data:\t\t\t");
       Serial.println(str);
-  
-      // print RSSI (Received Signal Strength Indicator) 
-      Serial.print("RSSI:\t\t\t");
-      Serial.print(lora.lastPacketRSSI);
-      Serial.println(" dBm");
     }
 
     // we're ready to receive more packets,
