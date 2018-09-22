@@ -24,6 +24,6 @@ install:
   - ln -s $PWD $HOME/Arduino/libraries/KiteLib
 script:
   # build all example sketches
-  - for exampleName in */ ; do
+  - for exampleName in examples/*/ ; do
       echo "$exampleName";
     done
