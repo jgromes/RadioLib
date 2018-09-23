@@ -19,7 +19,7 @@ script:
   # build all example sketches
   - cd examples
   - for d in */ ; do
-      echo -e "\033[1;33mBuilding ${d%/} ... \033[0m\n";
+      echo -e "\n\033[1;33mBuilding ${d%/} ... \033[0m";
       arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
       if [ $? -ne 0 ]; then
         echo -e "\033[1;31m${d%/} build FAILED\033[0m\n";
