@@ -10,35 +10,50 @@ XBee::XBee(Module* mod) {
 
 int16_t XBee::begin(long speed) {
   // set Arduino pins
-  pinMode(A4, OUTPUT);
+  /*pinMode(A4, OUTPUT);
   pinMode(A5, OUTPUT);
   pinMode(3, OUTPUT);
   digitalWrite(A4, LOW);
   digitalWrite(A5, LOW);
-  digitalWrite(3, HIGH);
-
+  digitalWrite(3, HIGH);*/
+  
   // set module properties
   _mod->baudrate = speed;
   _mod->init(USE_UART, INT_NONE);
   
+  // reset module
+  pinMode(_mod->int1(), OUTPUT);
+  delay(10);
+  digitalWrite(_mod->int1(), HIGH);
+  delay(500);
+  digitalWrite(_mod->int1(), LOW);
+  delay(500);
+  pinMode(_mod->int1(), INPUT);
+  delay(500);
+  
   // wait for boot
-  delay(2000);
+  delay(3000);
   
   // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
   
   // send test frame (get baudrate setting)
   uint8_t frameID = _frameID++;
-  sendApiFrame(XBEE_API_FRAME_AT_COMMAND, frameID, "BD");
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "BD");
   delay(20);
   
   // get response code
-  return(readApiFrame(frameID, 4));
+  int16_t state = readApiFrame(frameID, 4);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  return(state);
 }
 
 int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
   uint8_t destNetwork[] = {0xFF, 0xFE};
-  return(transmit(dest, destNetwork, payload));
+  return(transmit(dest, destNetwork, payload, radius));
 }
 
 int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius) {
@@ -133,11 +148,17 @@ int16_t XBee::setPanId(uint8_t* panId) {
   
   // send frame
   uint8_t frameID = _frameID++;
-  sendApiFrame(XBEE_API_FRAME_AT_COMMAND, frameID, cmd, 10);
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, cmd, 10);
   delay(40);
   
   // get response code
-  return(readApiFrame(frameID, 4));
+  int16_t state = readApiFrame(frameID, 4);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // confirm changes
+  return(confirmChanges());
 }
 
 XBeeSerial::XBeeSerial(Module* mod) : ISerial(mod) {
@@ -256,23 +277,47 @@ bool XBeeSerial::enterCmdMode() {
       DEBUG_PRINT(i + 1);
       DEBUG_PRINTLN_STR(" of 10 tries)");
       
-      pinMode(3, OUTPUT);
+      pinMode(_mod->int1(), OUTPUT);
       delay(10);
-      digitalWrite(3, HIGH);
+      digitalWrite(_mod->int1(), HIGH);
       delay(500);
-      digitalWrite(3, LOW);
+      digitalWrite(_mod->int1(), LOW);
       delay(500);
-      pinMode(3, INPUT);
+      pinMode(_mod->int1(), INPUT);
       delay(500);
       
       _mod->ATsendCommand("ATCN");
-      
-      if(i == 9) {
-        DEBUG_PRINTLN_STR("Terminated, check your wiring. Is AT FW uploaded?");
-        return(false);
-      }
     }
   }
+  
+  DEBUG_PRINTLN_STR("Terminated, check your wiring. Is AT FW uploaded?");
+  return(false);
+}
+
+int16_t XBee::confirmChanges() {
+  // save changes to non-volatile memory
+  uint8_t frameID = _frameID++;
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "WR");
+  delay(40);
+  
+  // get response code
+  int16_t state = readApiFrame(frameID, 4);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // apply changes
+  frameID = _frameID++;
+  sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "AC");
+  delay(40);
+  
+  // get response code
+  state = readApiFrame(frameID, 4);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  return(state);
 }
 
 void XBee::sendApiFrame(uint8_t type, uint8_t id, const char* data) {
@@ -308,6 +353,7 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
 }
 
 int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
+  // TODO: modemStatus frames may be sent at any time, interfering with frame parsing. Add check to make sure this does not happen.
   // get number of bytes in response
   uint16_t numBytes = getNumBytes(10000, 5);
   if(numBytes == 0) {
@@ -337,6 +383,7 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
     return(ERR_FRAME_UNEXPECTED_ID);
   }
   
+  // codePos does not include start delimiter and frame ID
   uint8_t code = resp[codePos];
   delete[] resp;
   return(code);
@@ -345,7 +392,7 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
 uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
   uint32_t start = millis();
-  while(_mod->ModuleSerial->available() < minBytes) {
+  while((size_t)_mod->ModuleSerial->available() < minBytes) {
     if(millis() - start >= timeout) {
       return(0);
     }

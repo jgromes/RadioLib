@@ -12,7 +12,7 @@
 
 // API frame IDs
 #define XBEE_API_FRAME_AT_COMMAND                     0x08
-#define XBEE_API_FRAME_AT_COMMAND_PARAMETER           0x09
+#define XBEE_API_FRAME_AT_COMMAND_QUEUE               0x09
 #define XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST        0x10
 #define XBEE_API_FRAME_ZIGBEE_ADDRESS_EXPLICIT        0x11
 #define XBEE_API_FRAME_REMOTE_COMMAND                 0x17
@@ -72,6 +72,8 @@ class XBee {
     
     char* _packetData;
     uint8_t _packetSource[8];
+    
+    int16_t confirmChanges();
     
     void sendApiFrame(uint8_t type, uint8_t id, const char* data);
     void sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length);
