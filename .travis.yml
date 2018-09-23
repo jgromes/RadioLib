@@ -12,11 +12,6 @@ before_install:
   - tar xf arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
   - mv arduino-$ARDUINO_IDE_VERSION $HOME/arduino-ide
   - export PATH=$PATH:$HOME/arduino-ide
-  
-  # install 3rd party boards
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
-  - arduino --install-boards esp8266:esp8266
-  - arduino --install-boards esp32:esp32
 install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/KiteLib
@@ -24,12 +19,12 @@ script:
   # build all example sketches
   - cd examples
   - for d in */ ; do
-      echo -e "\033[1;33mBuilding ${d%/} ... \n"
-      arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino;
+      echo -e "\033[1;33mBuilding ${d%/} ... \033[0m\n"
+      arduino --verify --board $BOARD $PWD/${d%/}/${d%/}.ino
       if [ $? -ne 0 ]; then
-        echo -e "\033[1;31m${d%/} build FAILED\n";
+        echo -e "\033[1;31m${d%/} build FAILED\033[0m\n";
         exit 1;
       else
-        echo -e "\033[1;32m${d%/} build PASSED\n";
+        echo -e "\033[1;32m${d%/} build PASSED\033[0m\n";
       fi
     done
