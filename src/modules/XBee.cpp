@@ -22,17 +22,7 @@ int16_t XBee::begin(long speed) {
   _mod->init(USE_UART, INT_NONE);
   
   // reset module
-  pinMode(_mod->int1(), OUTPUT);
-  delay(10);
-  digitalWrite(_mod->int1(), HIGH);
-  delay(500);
-  digitalWrite(_mod->int1(), LOW);
-  delay(500);
-  pinMode(_mod->int1(), INPUT);
-  delay(500);
-  
-  // wait for boot
-  delay(3000);
+  reset();
   
   // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
@@ -40,7 +30,6 @@ int16_t XBee::begin(long speed) {
   // send test frame (get baudrate setting)
   uint8_t frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "BD");
-  delay(20);
   
   // get response code
   int16_t state = readApiFrame(frameID, 4);
@@ -49,6 +38,17 @@ int16_t XBee::begin(long speed) {
   }
   
   return(state);
+}
+
+void XBee::reset() {
+  pinMode(_mod->int1(), OUTPUT);
+  delay(10);
+  digitalWrite(_mod->int1(), HIGH);
+  delay(500);
+  digitalWrite(_mod->int1(), LOW);
+  delay(500);
+  pinMode(_mod->int1(), INPUT);
+  delay(500);
 }
 
 int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
@@ -71,7 +71,6 @@ int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload,
   uint8_t frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST, frameID, cmd, dataLen);
   delete[] cmd;
-  delay(40);
   
   // get response code
   return(readApiFrame(frameID, 5));
@@ -149,7 +148,6 @@ int16_t XBee::setPanId(uint8_t* panId) {
   // send frame
   uint8_t frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, cmd, 10);
-  delay(40);
   
   // get response code
   int16_t state = readApiFrame(frameID, 4);
@@ -193,6 +191,17 @@ int16_t XBeeSerial::begin(long speed) {
   }
 
   return(ERR_NONE);
+}
+
+void XBeeSerial::reset() {
+  pinMode(_mod->int1(), OUTPUT);
+  delay(10);
+  digitalWrite(_mod->int1(), HIGH);
+  delay(500);
+  digitalWrite(_mod->int1(), LOW);
+  delay(500);
+  pinMode(_mod->int1(), INPUT);
+  delay(500);
 }
 
 int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
@@ -277,14 +286,7 @@ bool XBeeSerial::enterCmdMode() {
       DEBUG_PRINT(i + 1);
       DEBUG_PRINTLN_STR(" of 10 tries)");
       
-      pinMode(_mod->int1(), OUTPUT);
-      delay(10);
-      digitalWrite(_mod->int1(), HIGH);
-      delay(500);
-      digitalWrite(_mod->int1(), LOW);
-      delay(500);
-      pinMode(_mod->int1(), INPUT);
-      delay(500);
+      reset();
       
       _mod->ATsendCommand("ATCN");
     }
@@ -298,7 +300,6 @@ int16_t XBee::confirmChanges() {
   // save changes to non-volatile memory
   uint8_t frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "WR");
-  delay(40);
   
   // get response code
   int16_t state = readApiFrame(frameID, 4);
@@ -309,7 +310,6 @@ int16_t XBee::confirmChanges() {
   // apply changes
   frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "AC");
-  delay(40);
   
   // get response code
   state = readApiFrame(frameID, 4);
@@ -354,14 +354,23 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
 
 int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
   // TODO: modemStatus frames may be sent at any time, interfering with frame parsing. Add check to make sure this does not happen.
-  // get number of bytes in response
-  uint16_t numBytes = getNumBytes(10000, 5);
+  
+  // get number of bytes in response (must be enough to read the length field
+  uint16_t numBytes = getNumBytes(5000, 3);
   if(numBytes == 0) {
     return(ERR_FRAME_MALFORMED);
   }
   
   // checksum byte is not included in length field
   numBytes++;
+  
+  // wait until all response bytes are available (5s timeout)
+  uint32_t start = millis();
+  while(_mod->ModuleSerial->available() < numBytes) {
+    if(millis() - start >= 5000) {
+      return(ERR_FRAME_MALFORMED);
+    }
+  }
   
   // read the response
   uint8_t* resp = new uint8_t[numBytes];
@@ -375,11 +384,13 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
     checksum += resp[i];
   }
   if(checksum != 0xFF) {
+    DEBUG_PRINTLN_HEX(checksum);
     return(ERR_FRAME_INCORRECT_CHECKSUM);
   }
   
   // check frame ID
   if(resp[1] != frameID) {
+    DEBUG_PRINTLN(resp[1]);
     return(ERR_FRAME_UNEXPECTED_ID);
   }
   

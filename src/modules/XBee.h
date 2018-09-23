@@ -38,6 +38,7 @@ class XBeeSerial: public ISerial {
     
     // basic methods
     int16_t begin(long speed);
+    void reset();
     
     // configuration methods
     int16_t setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow);
@@ -55,6 +56,7 @@ class XBee {
     
     // basic methods
     int16_t begin(long speed);
+    void reset();
     int16_t transmit(uint8_t* dest, const char* payload, uint8_t radius = 1);
     int16_t transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload, uint8_t radius = 1);
     size_t available();
