@@ -27,7 +27,6 @@ XBeeSerial	KEYWORD1
 MQTTClient	KEYWORD1
 HTTPClient	KEYWORD1
 RTTYClient	KEYWORD1
-ITA2	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -109,6 +108,8 @@ getNumBytes	KEYWORD2
 #######################################
 # Constants (LITERAL1)
 #######################################
+
+ITA2	LITERAL1
 
 ERR_NONE	LITERAL1
 ERR_UNKNOWN	LITERAL1
