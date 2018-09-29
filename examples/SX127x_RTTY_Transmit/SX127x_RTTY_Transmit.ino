@@ -97,7 +97,7 @@ void loop() {
     // RTTY client must be configured to 5 bits
     rtty.begin(434, 183, 45, 5);
 
-    // synd synchronization string ("RYRY..." corresponds
+    // send synchronization string ("RYRY..." corresponds
     // to binary 01010101010101010101...)
     ITA2 sync = "RYRYRYRY";
     rtty.println(sync);
