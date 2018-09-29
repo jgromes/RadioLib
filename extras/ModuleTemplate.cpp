@@ -7,7 +7,7 @@
   _mod = mod;
 }
 
-uint8_t <module_name>::begin() {
+int16_t <module_name>::begin() {
   /*
     "begin" method implementation MUST call the "init" method with appropriate settings.
   */
