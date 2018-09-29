@@ -151,16 +151,7 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
 
 void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {
   digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPI_READ);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    inBytes[i] = SPI.transfer(reg);
-  }
-  digitalWrite(_cs, HIGH);
-}
-
-void Module::SPIreadRegisterBurstStr(uint8_t reg, uint8_t numBytes, char* inBytes) {
-  digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPI_READ);
+  SPI.transfer(reg | SPIreadCommand);
   for(uint8_t i = 0; i < numBytes; i++) {
     inBytes[i] = SPI.transfer(reg);
   }
@@ -171,7 +162,7 @@ uint8_t Module::SPIreadRegister(uint8_t reg) {
   uint8_t inByte;
   digitalWrite(_cs, LOW);
   SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(reg | SPI_READ);
+  SPI.transfer(reg | SPIreadCommand);
   SPI.endTransaction();
   inByte = SPI.transfer(0x00);
   digitalWrite(_cs, HIGH);
@@ -180,16 +171,7 @@ uint8_t Module::SPIreadRegister(uint8_t reg) {
 
 void Module::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes) {
   digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPI_WRITE);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    SPI.transfer(data[i]);
-  }
-  digitalWrite(_cs, HIGH);
-}
-
-void Module::SPIwriteRegisterBurstStr(uint8_t reg, const char* data, uint8_t numBytes) {
-  digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPI_WRITE);
+  SPI.transfer(reg | SPIwriteCommand);
   for(uint8_t i = 0; i < numBytes; i++) {
     SPI.transfer(data[i]);
   }
@@ -199,7 +181,7 @@ void Module::SPIwriteRegisterBurstStr(uint8_t reg, const char* data, uint8_t num
 void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
   digitalWrite(_cs, LOW);
   SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(reg | SPI_WRITE);
+  SPI.transfer(reg | SPIwriteCommand);
   SPI.transfer(data);
   SPI.endTransaction();
   digitalWrite(_cs, HIGH);
