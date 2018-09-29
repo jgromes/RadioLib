@@ -97,13 +97,18 @@ void loop() {
     // RTTY client must be configured to 5 bits
     rtty.begin(434, 183, 45, 5);
 
+    // synd synchronization string ("RYRY..." corresponds
+    // to binary 01010101010101010101...)
+    ITA2 sync = "RYRYRYRY";
+    rtty.println(sync);
+
     // create ITA2-encoded string
     // NOTE: ASCII characters that do not have ITA2
     //       equivalent will be replaced with NUL
-    ITA2 itaStr = "HELLO WORLD\n";
-
-    // send the ITA2 string
-    rtty.write(itaStr.byteArr(), itaStr.length());  
+    ITA2 itaStr = "HELLO WORLD";
+    
+    // print the ITA2 string
+    rtty.println(itaStr);
   */
   
   // turn transmitter off

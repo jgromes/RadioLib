@@ -124,6 +124,10 @@ size_t RTTYClient::write(uint8_t b) {
   return(1);
 }
 
+size_t RTTYClient::print(ITA2& ita2) {
+  return(RTTYClient::write(ita2.byteArr(), ita2.length()));
+}
+
 size_t RTTYClient::print(const String& str) {
   return(RTTYClient::write((uint8_t*)str.c_str(), str.length()));
 }
@@ -176,7 +180,22 @@ size_t RTTYClient::print(double n, int digits) {
 }
 
 size_t RTTYClient::println(void) {
-  return(RTTYClient::write("\r\n"));
+  size_t n = 0;
+  if(_dataBits == 5) {
+    // use ITA2 line
+    ITA2 lf = "\r\n";
+    n = RTTYClient::print(lf);
+  } else {
+    // use ASCII line
+    n = RTTYClient::write("\r\n");
+  }
+  return(n);
+}
+
+size_t RTTYClient::println(ITA2& ita2) {
+  size_t n = RTTYClient::print(ita2);
+  n += RTTYClient::println();
+  return(n);
 }
 
 size_t RTTYClient::println(const String& str) {

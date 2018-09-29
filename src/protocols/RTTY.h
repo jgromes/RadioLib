@@ -42,6 +42,7 @@ class RTTYClient {
     size_t write(uint8_t* buff, size_t len);
     size_t write(uint8_t b);
     
+    size_t print(ITA2 &);
     size_t print(const String &);
     size_t print(const char[]);
     size_t print(char);
@@ -53,6 +54,7 @@ class RTTYClient {
     size_t print(double, int = 2);
     
     size_t println(void);
+    size_t println(ITA2 &);
     size_t println(const String &s);
     size_t println(const char[]);
     size_t println(char);
