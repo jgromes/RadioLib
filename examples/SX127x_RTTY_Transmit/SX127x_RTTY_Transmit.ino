@@ -50,7 +50,7 @@ void setup() {
   // baud rate:                   45 baud
   // data bits:                   8
   // stop bits:                   1
-  state = rtty.begin(434, 183, 45);
+  state = rtty.begin(434, 183, 45, 5);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -98,7 +98,7 @@ void loop() {
     rtty.begin(434, 183, 45, 5);
 
     // send synchronization string ("RYRY..." corresponds
-    // to binary 01010101010101010101...)
+    // to binary 01010101010101010101... in ITA2 encoding)
     ITA2 sync = "RYRYRYRY";
     rtty.println(sync);
 
@@ -109,6 +109,10 @@ void loop() {
     
     // print the ITA2 string
     rtty.println(itaStr);
+
+    // all numbers can also be sent using ITA2
+    float f = -3.1415;
+    rtty.println(f, 3);
   */
   
   // turn transmitter off

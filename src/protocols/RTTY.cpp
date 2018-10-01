@@ -11,7 +11,22 @@ ITA2::~ITA2() {
 }
 
 size_t ITA2::length() {
-  return(_len);
+  // length returned by this method is different than the length of ASCII-encoded _str
+  // ITA2-encoded string length varies based on how many number and characters the string contains
+  size_t length = 0;
+  
+  // step through the code table
+  for(size_t i = 0; i < _len; i++) {
+    uint16_t code = getBits(_str[i]);
+    // check if the code is letter or figure
+    if(code & (ITA2_FIGS << 10)) {
+      length += 3;
+    } else {
+      length += 1;
+    }
+  }
+  
+  return(length);
 }
 
 uint8_t* ITA2::byteArr() {
@@ -125,7 +140,10 @@ size_t RTTYClient::write(uint8_t b) {
 }
 
 size_t RTTYClient::print(ITA2& ita2) {
-  return(RTTYClient::write(ita2.byteArr(), ita2.length()));
+  uint8_t* arr = ita2.byteArr();
+  size_t n = RTTYClient::write(arr, ita2.length());
+  delete[] arr;
+  return(n);
 }
 
 size_t RTTYClient::print(const String& str) {
@@ -280,22 +298,54 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
 
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
-
-  return(RTTYClient::write(str));
+  
+  size_t l = 0;
+  if(_dataBits == 5) {
+    // use ITA2 encoding
+    ITA2 ita2 = str;
+    uint8_t* arr = ita2.byteArr();
+    l = RTTYClient::write(arr, ita2.length());
+    delete[] arr;
+  } else {
+    // use ASCII encoding
+    l = RTTYClient::write(str);
+  }
+  
+  return(l);
 }
 
 size_t RTTYClient::printFloat(double number, uint8_t digits)  { 
   size_t n = 0;
   
-  if (isnan(number)) return RTTYClient::print("nan");
-  if (isinf(number)) return RTTYClient::print("inf");
-  if (number > 4294967040.0) return RTTYClient::print("ovf");  // constant determined empirically
-  if (number <-4294967040.0) return RTTYClient::print("ovf");  // constant determined empirically
+  char code[] = {0x00, 0x00, 0x00, 0x00};
+  if (isnan(number)) strcpy(code, "nan");
+  if (isinf(number)) strcpy(code, "inf");
+  if (number > 4294967040.0) strcpy(code, "ovf");  // constant determined empirically
+  if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
+  
+  if(code[0] != 0x00) {
+    if(_dataBits == 5) {
+      ITA2 ita2 = code;
+      uint8_t* arr = ita2.byteArr();
+      n = RTTYClient::write(arr, ita2.length());
+      delete[] arr;
+      return(n);
+    } else {
+      return(RTTYClient::write(code));
+    }
+  }
   
   // Handle negative numbers
   if (number < 0.0) {
-     n += RTTYClient::print('-');
-     number = -number;
+    if(_dataBits == 5) {
+      ITA2 ita2 = "-";
+      uint8_t* arr = ita2.byteArr();
+      n += RTTYClient::write(arr, ita2.length());
+      delete[] arr;
+    } else {
+      n += RTTYClient::print('-');
+    }
+    number = -number;
   }
 
   // Round correctly so that print(1.999, 2) prints as "2.00"
@@ -312,7 +362,14 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
 
   // Print the decimal point, but only if there are digits beyond
   if(digits > 0) {
-    n += RTTYClient::print('.'); 
+    if(_dataBits == 5) {
+      ITA2 ita2 = ".";
+      uint8_t* arr = ita2.byteArr();
+      n += RTTYClient::write(arr, ita2.length());
+      delete[] arr;
+    } else {
+      n += RTTYClient::print('.');
+    }
   }
 
   // Extract digits from the remainder one at a time
