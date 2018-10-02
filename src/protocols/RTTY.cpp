@@ -1,5 +1,11 @@
 #include "RTTY.h"
 
+ITA2::ITA2(char c) {
+  _len = 1;
+  _str = new char[1];
+  _str[0] = c;
+}
+
 ITA2::ITA2(const char* str) {
   _len = strlen(str);
   _str = new char[_len];
@@ -147,15 +153,36 @@ size_t RTTYClient::print(ITA2& ita2) {
 }
 
 size_t RTTYClient::print(const String& str) {
-  return(RTTYClient::write((uint8_t*)str.c_str(), str.length()));
+  size_t n = 0;
+  if(_dataBits == 5) {
+    ITA2 ita2 = str.c_str();
+    n = RTTYClient::print(ita2);
+  } else {
+    n = RTTYClient::write((uint8_t*)str.c_str(), str.length());
+  }
+  return(n);
 }
 
 size_t RTTYClient::print(const char str[]) {
-  return(RTTYClient::write((uint8_t*)str, strlen(str)));
+  size_t n = 0;
+  if(_dataBits == 5) {
+    ITA2 ita2 = str;
+    n = RTTYClient::print(ita2);
+  } else {
+    n = RTTYClient::write((uint8_t*)str, strlen(str));
+  }
+  return(n);
 }
 
 size_t RTTYClient::print(char c) {
-  return(RTTYClient::write(c));
+  size_t n = 0;
+  if(_dataBits == 5) {
+    ITA2 ita2 = c;
+    n = RTTYClient::print(ita2);
+  } else {
+    n = RTTYClient::write(c);
+  }
+  return(n);
 }
 
 size_t RTTYClient::print(unsigned char b, int base) {

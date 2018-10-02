@@ -48,9 +48,9 @@ void setup() {
   // low frequency:               434.0 MHz
   // frequency shift:             183 Hz
   // baud rate:                   45 baud
-  // data bits:                   8
+  // data bits:                   8 (ASCII encoding)
   // stop bits:                   1
-  state = rtty.begin(434, 183, 45, 5);
+  state = rtty.begin(434, 183, 45, 8);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -94,21 +94,27 @@ void loop() {
 
   /*
     // KiteLib also provides ITA2 ("Baudot") code support
-    // RTTY client must be configured to 5 bits
+    // To enable ITA2 encoding, set RTTY client
+    // to 5 data bits
     rtty.begin(434, 183, 45, 5);
 
     // send synchronization string ("RYRY..." corresponds
     // to binary 01010101010101010101... in ITA2 encoding)
-    ITA2 sync = "RYRYRYRY";
-    rtty.println(sync);
+    rtty.println("RYRYRYRY");
 
-    // create ITA2-encoded string
-    // NOTE: ASCII characters that do not have ITA2
-    //       equivalent will be replaced with NUL
-    ITA2 itaStr = "HELLO WORLD";
-    
-    // print the ITA2 string
-    rtty.println(itaStr);
+    // send ITA2-encoded string (all ASCII characters
+    // that do not have ITA2 equivalent will be replaced
+    // with NUL
+    rtty.println("HELLO WORLD!");
+
+    String aStr = "ARDUINO STRING";
+    rtty.println(aStr);
+  
+    // character array (C-string)
+    rtty.println("C-STRING");
+  
+    // character
+    rtty.println('C');
 
     // all numbers can also be sent using ITA2
     float f = -3.1415;

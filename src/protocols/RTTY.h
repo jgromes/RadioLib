@@ -18,6 +18,7 @@ const char ITA2Table[ITA2_LENGTH][2] = {{'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, 
 
 class ITA2 {
   public:
+    ITA2(char c);
     ITA2(const char* str);
     ~ITA2();
     
