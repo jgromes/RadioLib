@@ -48,9 +48,9 @@ void setup() {
   // low frequency:               434.0 MHz
   // frequency shift:             183 Hz
   // baud rate:                   45 baud
-  // data bits:                   8 (ASCII encoding)
+  // encoding:                    ASCII (7-bit)
   // stop bits:                   1
-  state = rtty.begin(434, 183, 45, 8);
+  state = rtty.begin(434, 183, 45);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -58,6 +58,17 @@ void setup() {
     Serial.println(state);
     while(true);
   }
+
+  /*
+    // KiteLib also provides ITA2 ("Baudot") encoding support
+    rtty.begin(434, 183, 45, ITA2);
+
+    // All transmissions in loop() (strings and numbers)
+    // will now be encoded using ITA2 code
+
+    // ASCII characters that do not have ITA2 euqivalent
+    // will be sent as NUL (including lower case letters!)
+  */
 }
 
 void loop() {
@@ -73,8 +84,8 @@ void loop() {
   String aStr = "Arduino String";
   rtty.println(aStr);
 
-  // character array (C-string)
-  rtty.println("C-string");
+  // character array (C-String)
+  rtty.println("C-String");
 
   // character
   rtty.println('c');
@@ -91,35 +102,6 @@ void loop() {
   // floating point number
   float f = -3.1415;
   rtty.println(f, 3);
-
-  /*
-    // KiteLib also provides ITA2 ("Baudot") code support
-    // To enable ITA2 encoding, set RTTY client
-    // to 5 data bits
-    rtty.begin(434, 183, 45, 5);
-
-    // send synchronization string ("RYRY..." corresponds
-    // to binary 01010101010101010101... in ITA2 encoding)
-    rtty.println("RYRYRYRY");
-
-    // send ITA2-encoded string (all ASCII characters
-    // that do not have ITA2 equivalent will be replaced
-    // with NUL
-    rtty.println("HELLO WORLD!");
-
-    String aStr = "ARDUINO STRING";
-    rtty.println(aStr);
-  
-    // character array (C-string)
-    rtty.println("C-STRING");
-  
-    // character
-    rtty.println('C');
-
-    // all numbers can also be sent using ITA2
-    float f = -3.1415;
-    rtty.println(f, 3);
-  */
   
   // turn transmitter off
   fsk.standby();

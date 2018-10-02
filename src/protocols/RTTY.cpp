@@ -1,22 +1,22 @@
 #include "RTTY.h"
 
-ITA2::ITA2(char c) {
+ITA2String::ITA2String(char c) {
   _len = 1;
   _str = new char[1];
   _str[0] = c;
 }
 
-ITA2::ITA2(const char* str) {
+ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
   _str = new char[_len];
   strcpy(_str, str);
 }
 
-ITA2::~ITA2() {
+ITA2String::~ITA2String() {
   delete[] _str;
 }
 
-size_t ITA2::length() {
+size_t ITA2String::length() {
   // length returned by this method is different than the length of ASCII-encoded _str
   // ITA2-encoded string length varies based on how many number and characters the string contains
   size_t length = 0;
@@ -35,7 +35,7 @@ size_t ITA2::length() {
   return(length);
 }
 
-uint8_t* ITA2::byteArr() {
+uint8_t* ITA2String::byteArr() {
   // create temporary array 3x the string length (figures may be 3 bytes)
   uint8_t* temp = new uint8_t[_len*3];
   
@@ -60,7 +60,7 @@ uint8_t* ITA2::byteArr() {
   return(arr);
 }
 
-uint16_t ITA2::getBits(char c) {
+uint16_t ITA2String::getBits(char c) {
   // search ITA2 table
   uint16_t code = 0x0000;
   for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
@@ -82,7 +82,7 @@ RTTYClient::RTTYClient(PhysicalLayer* phy) {
   _phy = phy;
 }
 
-int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t dataBits, uint8_t stopBits) {
+int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
   // check supplied values
   if(shift % 61 != 0) {
     return(ERR_INVALID_RTTY_SHIFT);
@@ -90,8 +90,22 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t dat
   
   // save configuration
   _shift = shift / 61;
-  _dataBits = dataBits;
+  _encoding = encoding;
   _stopBits = stopBits;
+  
+  switch(encoding) {
+    case ASCII:
+      _dataBits = 7;
+      break;
+    case ASCII_EXTENDED:
+      _dataBits = 8;
+      break;
+    case ITA2:
+      _dataBits = 5;
+      break;
+    default:
+      return(ERR_UNSUPPORTED_ENCODING);
+  }
   
   // calculate duration of 1 bit
   _bitDuration = (uint32_t)1000000/rate;
@@ -145,7 +159,7 @@ size_t RTTYClient::write(uint8_t b) {
   return(1);
 }
 
-size_t RTTYClient::print(ITA2& ita2) {
+size_t RTTYClient::print(ITA2String& ita2) {
   uint8_t* arr = ita2.byteArr();
   size_t n = RTTYClient::write(arr, ita2.length());
   delete[] arr;
@@ -154,10 +168,10 @@ size_t RTTYClient::print(ITA2& ita2) {
 
 size_t RTTYClient::print(const String& str) {
   size_t n = 0;
-  if(_dataBits == 5) {
-    ITA2 ita2 = str.c_str();
+  if(_encoding == ITA2) {
+    ITA2String ita2 = str.c_str();
     n = RTTYClient::print(ita2);
-  } else {
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str.c_str(), str.length());
   }
   return(n);
@@ -165,10 +179,10 @@ size_t RTTYClient::print(const String& str) {
 
 size_t RTTYClient::print(const char str[]) {
   size_t n = 0;
-  if(_dataBits == 5) {
-    ITA2 ita2 = str;
+  if(_encoding == ITA2) {
+    ITA2String ita2 = str;
     n = RTTYClient::print(ita2);
-  } else {
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, strlen(str));
   }
   return(n);
@@ -176,10 +190,10 @@ size_t RTTYClient::print(const char str[]) {
 
 size_t RTTYClient::print(char c) {
   size_t n = 0;
-  if(_dataBits == 5) {
-    ITA2 ita2 = c;
+  if(_encoding == ITA2) {
+    ITA2String ita2 = c;
     n = RTTYClient::print(ita2);
-  } else {
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write(c);
   }
   return(n);
@@ -226,18 +240,16 @@ size_t RTTYClient::print(double n, int digits) {
 
 size_t RTTYClient::println(void) {
   size_t n = 0;
-  if(_dataBits == 5) {
-    // use ITA2 line
-    ITA2 lf = "\r\n";
+  if(_encoding == ITA2) {
+    ITA2String lf = "\r\n";
     n = RTTYClient::print(lf);
-  } else {
-    // use ASCII line
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write("\r\n");
   }
   return(n);
 }
 
-size_t RTTYClient::println(ITA2& ita2) {
+size_t RTTYClient::println(ITA2String& ita2) {
   size_t n = RTTYClient::print(ita2);
   n += RTTYClient::println();
   return(n);
@@ -327,14 +339,12 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
   } while(n);
   
   size_t l = 0;
-  if(_dataBits == 5) {
-    // use ITA2 encoding
-    ITA2 ita2 = str;
+  if(_encoding == ITA2) {
+    ITA2String ita2 = str;
     uint8_t* arr = ita2.byteArr();
     l = RTTYClient::write(arr, ita2.length());
     delete[] arr;
-  } else {
-    // use ASCII encoding
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     l = RTTYClient::write(str);
   }
   
@@ -351,25 +361,25 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
   
   if(code[0] != 0x00) {
-    if(_dataBits == 5) {
-      ITA2 ita2 = code;
+    if(_encoding == ITA2) {
+      ITA2String ita2 = code;
       uint8_t* arr = ita2.byteArr();
       n = RTTYClient::write(arr, ita2.length());
       delete[] arr;
       return(n);
-    } else {
+    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
       return(RTTYClient::write(code));
     }
   }
   
   // Handle negative numbers
   if (number < 0.0) {
-    if(_dataBits == 5) {
-      ITA2 ita2 = "-";
+    if(_encoding == ITA2) {
+      ITA2String ita2 = "-";
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;
-    } else {
+    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
       n += RTTYClient::print('-');
     }
     number = -number;
@@ -389,12 +399,12 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
 
   // Print the decimal point, but only if there are digits beyond
   if(digits > 0) {
-    if(_dataBits == 5) {
-      ITA2 ita2 = ".";
+    if(_encoding == ITA2) {
+      ITA2String ita2 = ".";
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;
-    } else {
+    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
       n += RTTYClient::print('.');
     }
   }

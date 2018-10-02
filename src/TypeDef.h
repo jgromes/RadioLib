@@ -80,7 +80,6 @@
 #define ERR_INVALID_PREAMBLE_LENGTH           -18
 #define ERR_INVALID_GAIN                      -19
 #define ERR_WRONG_MODEM                       -20
-#define ERR_INVALID_RTTY_SHIFT                -21
 
 // RF69-specific status codes
 #define ERR_INVALID_BIT_RATE                  -101
@@ -111,5 +110,9 @@
 #define ERR_FRAME_MALFORMED                   -302
 #define ERR_FRAME_INCORRECT_CHECKSUM          -303
 #define ERR_FRAME_UNEXPECTED_ID               -304
+
+// RTTY status codes
+#define ERR_INVALID_RTTY_SHIFT                -401
+#define ERR_UNSUPPORTED_ENCODING              -402
 
 #endif

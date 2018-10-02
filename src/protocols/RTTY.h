@@ -16,11 +16,11 @@ const char ITA2Table[ITA2_LENGTH][2] = {{'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, 
                                         {'T', '5'}, {'Z', '+'}, {'L', ')'}, {'W', '2'}, {'H', 0x7F}, {'Y', '6'}, {'P', '0'}, {'Q', '1'}, 
                                         {'O', '9'}, {'B', '?'}, {'G', '&'}, {0x7F, 0x7F}, {'M', '.'}, {'X', '/'}, {'V', ';'}, {0x7F, 0x7F}};
 
-class ITA2 {
+class ITA2String {
   public:
-    ITA2(char c);
-    ITA2(const char* str);
-    ~ITA2();
+    ITA2String(char c);
+    ITA2String(const char* str);
+    ~ITA2String();
     
     size_t length();
     uint8_t* byteArr();
@@ -32,18 +32,23 @@ class ITA2 {
     uint16_t getBits(char c);
 };
 
+// supported ancoding schemes
+#define ASCII                                         0
+#define ASCII_EXTENDED                                1
+#define ITA2                                          2
+
 class RTTYClient {
   public:
     RTTYClient(PhysicalLayer* phy);
     
     // basic methods
-    int16_t begin(float base, uint16_t shift, uint16_t rate, uint8_t dataBits = 8, uint8_t stopBits = 1);
+    int16_t begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding = ASCII, uint8_t stopBits = 1);
     void idle();
     size_t write(const char* str);
     size_t write(uint8_t* buff, size_t len);
     size_t write(uint8_t b);
     
-    size_t print(ITA2 &);
+    size_t print(ITA2String &);
     size_t print(const String &);
     size_t print(const char[]);
     size_t print(char);
@@ -55,7 +60,7 @@ class RTTYClient {
     size_t print(double, int = 2);
     
     size_t println(void);
-    size_t println(ITA2 &);
+    size_t println(ITA2String &);
     size_t println(const String &s);
     size_t println(const char[]);
     size_t println(char);
@@ -69,6 +74,7 @@ class RTTYClient {
   private:
     PhysicalLayer* _phy;
     
+    uint8_t _encoding;
     uint32_t _base;
     uint16_t _shift;
     uint16_t _bitDuration;
