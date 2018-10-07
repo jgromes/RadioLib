@@ -1,5 +1,5 @@
 /*
-   KiteLib SX127x RTTY Transmit Example
+   KiteLib RTTY Transmit Example
 
    This example sends RTTY message using SX1278's
    FSK modem.
@@ -40,7 +40,8 @@ void setup() {
   }
 
   // initialize RTTY client
-  // NOTE: RTTY frequency shift MUST be divisible by 61 Hz!
+  // NOTE: RTTY frequency shift will be rounded
+  //       to multiples of 61 Hz (hardware limitation)
   Serial.print(F("[RTTY] Initializing ... "));
   // low frequency:               434.0 MHz
   // frequency shift:             183 Hz
@@ -57,7 +58,7 @@ void setup() {
   }
 
   /*
-    // KiteLib also provides ITA2 ("Baudot") encoding support
+    // KiteLib also provides ITA2 ("Baudot") support
     rtty.begin(434, 183, 45, ITA2);
 
     // All transmissions in loop() (strings and numbers)
