@@ -4,12 +4,9 @@
    This example sends RTTY message using SX1278's
    FSK modem.
 
-   Other modules from SX127x family can also be used.
-   SX1272 lora = Kite.ModuleA;
-   SX1273 lora = Kite.ModuleA;
-   SX1276 lora = Kite.ModuleA;
-   SX1277 lora = Kite.ModuleA;
-   SX1279 lora = Kite.ModuleA;
+   Other modules that can be used for RTTY:
+    - SX1272/73/76/77/79
+    - RF69
 */
 
 // include the library
