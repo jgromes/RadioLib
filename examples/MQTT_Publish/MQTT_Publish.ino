@@ -1,5 +1,5 @@
 /*
-   KiteLib ESP8266 MQTT Publish Example
+   KiteLib MQTT Publish Example
 
    This example publishes MQTT messages using ESP8266 WiFi module.
 

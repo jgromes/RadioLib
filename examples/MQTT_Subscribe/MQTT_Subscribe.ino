@@ -1,5 +1,5 @@
 /*
-   KiteLib ESP8266 MQTT Subscribe Example
+   KiteLib MQTT Subscribe Example
 
    This example subscribes to MQTT topic using ESP8266 WiFi module.
 
