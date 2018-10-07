@@ -85,7 +85,7 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
 }
 
 int16_t RF69::transmit(String& str, uint8_t addr) {
-  return(RF69::transmit(str.c_str()));
+  return(RF69::transmit(str.c_str()), addr);
 }
 
 int16_t RF69::transmit(const char* str, uint8_t addr) {
@@ -356,9 +356,9 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
-  if(!((freq > 290.0) && (freq < 340.0) ||
-       (freq > 431.0) && (freq < 510.0) ||
-       (freq > 862.0) && (freq < 1020.0))) {
+  if(!(((freq > 290.0) && (freq < 340.0)) ||
+       ((freq > 431.0) && (freq < 510.0)) ||
+       ((freq > 862.0) && (freq < 1020.0)))) {
     return(ERR_INVALID_FREQUENCY);
   }
   
@@ -496,14 +496,14 @@ int16_t RF69::setRxBandwidth(float rxBw) {
 
 int16_t RF69::setFrequencyDeviation(float freqDev) {
   // check frequency deviation range
-  if(!((freqDev + _br/2 <= 500) && (freqDev >= 0.6))) {
+  if(!((freqDev + _br/2 <= 500))) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
   
   // set mode to standby
   setMode(RF69_STANDBY);
   
-  // set allowed frequency deviation
+  // set frequency deviation from carrier frequency
   uint32_t base = 1;
   uint32_t FDEV = (freqDev * (base << 19)) / 32000;
   int16_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
