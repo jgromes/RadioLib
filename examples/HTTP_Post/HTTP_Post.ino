@@ -1,13 +1,13 @@
 /*
- * KiteLib ESP8266 HTTP POST Example
- * 
- * This example sends HTTP POST request using ESP8266 WiFi module.
- * 
- * Please note that the response will be saved including header. HTTP header size
- * can easily exceed Arduino resources and cause the program to behave erratically.
- * 
- * IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
- * AT firmware (can be found in the /extras folder of the library)!
+   KiteLib HTTP POST Example
+   
+   This example sends HTTP POST request using ESP8266 WiFi module.
+   
+   Please note that the response will be saved including header. HTTP header size
+   can easily exceed Arduino resources and cause the program to behave erratically.
+   
+   IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
+   AT firmware (can be found in the /extras folder of the library)!
  */
 
 // include the library

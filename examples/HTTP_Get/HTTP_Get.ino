@@ -1,5 +1,5 @@
 /*
-   KiteLib ESP8266 HTTP GET Example
+   KiteLib HTTP GET Example
 
    This example sends HTTP GET request using ESP8266 WiFi module.
 
