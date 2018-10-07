@@ -832,7 +832,7 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
     return(state);
   }
   
-  // set allowed frequency deviation
+  // set frequency deviation from carrier frequency
   uint32_t base = 1;
   uint32_t FDEV = (freqDev * (base << 19)) / 32000;
   state = _mod->SPIsetRegValue(SX127X_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
