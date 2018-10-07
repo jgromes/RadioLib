@@ -4,12 +4,14 @@ ITA2String::ITA2String(char c) {
   _len = 1;
   _str = new char[1];
   _str[0] = c;
+  _ita2Len = 0;
 }
 
 ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
   _str = new char[_len];
   strcpy(_str, str);
+  _ita2Len = 0;
 }
 
 ITA2String::~ITA2String() {
@@ -19,44 +21,62 @@ ITA2String::~ITA2String() {
 size_t ITA2String::length() {
   // length returned by this method is different than the length of ASCII-encoded _str
   // ITA2-encoded string length varies based on how many number and characters the string contains
-  size_t length = 0;
   
-  // step through the code table
-  for(size_t i = 0; i < _len; i++) {
-    uint16_t code = getBits(_str[i]);
-    // check if the code is letter or figure
-    if(code & (ITA2_FIGS << 10)) {
-      length += 3;
-    } else {
-      length += 1;
-    }
+  if(_ita2Len == 0) {
+    // ITA2 length wasn't calculated yet, call byteArr() to calculate it
+    byteArr();
   }
   
-  return(length);
+  return(_ita2Len);
 }
 
 uint8_t* ITA2String::byteArr() {
-  // create temporary array 3x the string length (figures may be 3 bytes)
-  uint8_t* temp = new uint8_t[_len*3];
+  // create temporary array 2x the string length (figures may be 3 bytes)
+  uint8_t* temp = new uint8_t[_len*2 + 1];
   
   size_t arrayLen = 0;
+  bool flagFigure = false;
   for(size_t i = 0; i < _len; i++) {
     uint16_t code = getBits(_str[i]);
+    uint8_t shift = (code >> 5) & 0b11111;
+    uint8_t character = code & 0b11111;
     // check if the code is letter or figure
-    if(code & (ITA2_FIGS << 10)) {
-      temp[arrayLen] = ITA2_FIGS;
-      temp[arrayLen + 1] = (code >> 5) & ITA2_LTRS;
-      temp[arrayLen + 2] = ITA2_LTRS;
-      arrayLen += 3;
+    if(shift == ITA2_FIGS) {
+      // check if this is the first figure in sequence
+      if(!flagFigure) {
+        flagFigure = true;
+        temp[arrayLen++] = ITA2_FIGS;
+      }
+      
+      // add the character code
+      temp[arrayLen++] = character & 0b11111;
+      
+      // check the following character (skip for message end)
+      if(i < (_len - 1)) {
+        uint16_t nextCode = getBits(_str[i+1]);
+        uint8_t nextShift = (nextCode >> 5) & 0b11111;
+        if(nextShift == ITA2_LTRS) {
+          // next character is a letter, terminate figure shift
+          temp[arrayLen++] = ITA2_LTRS;
+          flagFigure = false;
+        }
+      } else {
+        // reached the end of the message, terminate figure shift
+        temp[arrayLen++] = ITA2_LTRS;
+        flagFigure = false;
+      }
     } else {
-      temp[arrayLen] = code;
-      arrayLen += 1;
+      temp[arrayLen++] = character & 0b11111;
     }
   }
+  
+  // save ITA2 string length
+  _ita2Len = arrayLen;
   
   uint8_t* arr = new uint8_t[arrayLen];
   memcpy(arr, temp, arrayLen);
   delete[] temp;
+  
   return(arr);
 }
 
@@ -66,11 +86,11 @@ uint16_t ITA2String::getBits(char c) {
   for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
     if(ITA2Table[i][0] == c) {
       // character is in letter shift
-      code = i;
+      code = (ITA2_LTRS << 5) | i;
       break;
     } else if(ITA2Table[i][1] == c) {
       // character is in figures shift
-      code = (ITA2_FIGS << 10) | (i << 5) | ITA2_LTRS;
+      code = (ITA2_FIGS << 5) | i;
       break;
     }
   }
@@ -84,12 +104,18 @@ RTTYClient::RTTYClient(PhysicalLayer* phy) {
 
 int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
   // check supplied values
-  if(shift % 61 != 0) {
+  if(shift < 30) {
     return(ERR_INVALID_RTTY_SHIFT);
   }
   
+  // clamp shift to multiples of 61 Hz (SX127x synthesis resolution)
+  if(shift % 61 < 31) {
+    _shift = shift / 61;
+  } else {
+    _shift = (shift / 61) + 1;
+  }
+  
   // save configuration
-  _shift = shift / 61;
   _encoding = encoding;
   _stopBits = stopBits;
   
@@ -136,7 +162,7 @@ size_t RTTYClient::write(const char* str) {
 size_t RTTYClient::write(uint8_t* buff, size_t len) {
   size_t n = 0;
   for(size_t i = 0; i < len; i++) {
-    n += write(buff[i]);
+    n += RTTYClient::write(buff[i]);
   }
   return(n);
 }
@@ -144,7 +170,7 @@ size_t RTTYClient::write(uint8_t* buff, size_t len) {
 size_t RTTYClient::write(uint8_t b) {
   space();
   
-  for(uint16_t mask = 0x01; mask <= (0x01 << (_dataBits - 1)); mask <<= 1) {
+  for(uint16_t mask = 0x01; mask <= (uint16_t)(0x01 << (_dataBits - 1)); mask <<= 1) {
     if(b & mask) {
       mark();
     } else {
@@ -351,6 +377,8 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
   return(l);
 }
 
+// TODO: improve ITA2 float print speed
+//       (characters are sent one at a time)
 size_t RTTYClient::printFloat(double number, uint8_t digits)  { 
   size_t n = 0;
   

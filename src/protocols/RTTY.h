@@ -28,6 +28,7 @@ class ITA2String {
   private:
     char* _str;
     size_t _len;
+    size_t _ita2Len;
     
     uint16_t getBits(char c);
 };
