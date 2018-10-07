@@ -216,6 +216,56 @@ int16_t RF69::standby() {
   return(setMode(RF69_STANDBY));
 }
 
+int16_t RF69::transmitDirect(uint32_t FRF) {
+  // user requested to start transmitting immediately (required for RTTY)
+  if(FRF != 0) {
+    _mod->SPIwriteRegister(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
+    _mod->SPIwriteRegister(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
+    _mod->SPIwriteRegister(RF69_REG_FRF_LSB, FRF & 0x0000FF);
+  
+    return(setMode(RF69_TX));
+  }
+  
+  // activate direct mode
+  int16_t state = directMode();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // start transmitting
+  return(setMode(RF69_TX));
+}
+
+int16_t RF69::receiveDirect() {
+  // activate direct mode
+  int16_t state = directMode();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // start receiving
+  return(setMode(RF69_RX));
+}
+
+int16_t RF69::directMode() {
+  // set mode to standby
+  int16_t state = setMode(RF69_STANDBY);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set DIO mapping
+  state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO1_CONT_DCLK | RF69_DIO2_CONT_DATA, 5, 2);
+  
+  // set continuous mode
+  state |= _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5);
+  return(state);
+}
+
+int16_t RF69::packetMode() {
+  return(_mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_PACKET_MODE, 6, 5));
+}
+
 void RF69::setAESKey(uint8_t* key) {
   _mod->SPIwriteRegisterBurst(RF69_REG_AES_KEY_1, key, 16);
 }

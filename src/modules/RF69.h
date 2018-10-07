@@ -4,6 +4,8 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+#include "../protocols/PhysicalLayer.h"
+
 //RF69 register map
 #define RF69_REG_FIFO                                 0x00
 #define RF69_REG_OP_MODE                              0x01
@@ -279,6 +281,7 @@
 #define RF69_DIO1_PACK_FIFO_NOT_EMPTY                 0b00100000  //  5     4
 #define RF69_DIO1_PACK_PLL_LOCK                       0b00110000  //  5     4
 #define RF69_DIO1_PACK_TIMEOUT                        0b00110000  //  5     4
+#define RF69_DIO2_CONT_DATA                           0b00000000  //  3     2  
 
 //RF69_REG_DIO_MAPPING_2
 #define RF69_CLK_OUT_FXOSC                            0b00000000  //  2     0     ClkOut frequency: F(XOSC)
@@ -412,7 +415,7 @@
 #define RF69_PA2_NORMAL                               0x70        //  7     0     PA_BOOST: none
 #define RF69_PA2_20_DBM                               0x7C        //  7     0               +20 dBm
 
-class RF69 {
+class RF69: public PhysicalLayer {
   public:
     // constructor
     RF69(Module* module);
@@ -429,6 +432,9 @@ class RF69 {
     int16_t receive(String& str, size_t len = 0);
     int16_t sleep();
     int16_t standby();
+    int16_t transmitDirect(uint32_t FRF = 0);
+    int16_t receiveDirect();
+    int16_t packetMode();
     
     // hardware AES support
     void setAESKey(uint8_t* key);
@@ -468,6 +474,7 @@ class RF69 {
     int16_t _tempOffset;
     
     int16_t config();
+    int16_t directMode();
     
   private:
     int16_t setMode(uint8_t mode);
