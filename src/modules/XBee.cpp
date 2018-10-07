@@ -366,7 +366,7 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos) {
   
   // wait until all response bytes are available (5s timeout)
   uint32_t start = millis();
-  while(_mod->ModuleSerial->available() < numBytes) {
+  while(_mod->ModuleSerial->available() < (int16_t)numBytes) {
     if(millis() - start >= 5000) {
       return(ERR_FRAME_MALFORMED);
     }
