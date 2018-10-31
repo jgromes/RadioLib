@@ -107,7 +107,7 @@ int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
   return(maskedValue);
 }
 
-int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb) {
+int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(ERR_INVALID_BIT_RANGE);
   }
@@ -117,36 +117,39 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   uint8_t newValue = (currentValue & ~mask) | (value & mask);
   SPIwriteRegister(reg, newValue);
   
-  // some registers need a bit of time to process the change
-  // e.g. SX127X_REG_OP_MODE
-  delay(20);
-  
-  // check if the write was successful
-  uint8_t readValue = SPIreadRegister(reg);
-  if(readValue != newValue) {
-    DEBUG_PRINTLN();
-    DEBUG_PRINT_STR("address:\t0x");
-    DEBUG_PRINTLN_HEX(reg);
-    DEBUG_PRINT_STR("bits:\t\t");
-    DEBUG_PRINT(msb);
-    DEBUG_PRINT(' ');
-    DEBUG_PRINTLN(lsb);
-    DEBUG_PRINT_STR("value:\t\t0b");
-    DEBUG_PRINTLN_BIN(value);
-    DEBUG_PRINT_STR("current:\t0b");
-    DEBUG_PRINTLN_BIN(currentValue);
-    DEBUG_PRINT_STR("mask:\t\t0b");
-    DEBUG_PRINTLN_BIN(mask);
-    DEBUG_PRINT_STR("new:\t\t0b");
-    DEBUG_PRINTLN_BIN(newValue);
-    DEBUG_PRINT_STR("read:\t\t0b");
-    DEBUG_PRINTLN_BIN(readValue);
-    DEBUG_PRINTLN();
-    
-    return(ERR_SPI_WRITE_FAILED);
+  // check register value each millisecond until check interval is reached
+  // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
+  uint32_t start = micros();
+  uint8_t readValue = 0;
+  while(micros() - start < (checkInterval * 1000)) {
+    readValue = SPIreadRegister(reg);
+    if(readValue == newValue) {
+      // check passed, we can stop the loop
+      return(ERR_NONE);
+    }
   }
   
-  return(ERR_NONE);
+  // check failed, print debug info
+  DEBUG_PRINTLN();
+  DEBUG_PRINT_STR("address:\t0x");
+  DEBUG_PRINTLN_HEX(reg);
+  DEBUG_PRINT_STR("bits:\t\t");
+  DEBUG_PRINT(msb);
+  DEBUG_PRINT(' ');
+  DEBUG_PRINTLN(lsb);
+  DEBUG_PRINT_STR("value:\t\t0b");
+  DEBUG_PRINTLN_BIN(value);
+  DEBUG_PRINT_STR("current:\t0b");
+  DEBUG_PRINTLN_BIN(currentValue);
+  DEBUG_PRINT_STR("mask:\t\t0b");
+  DEBUG_PRINTLN_BIN(mask);
+  DEBUG_PRINT_STR("new:\t\t0b");
+  DEBUG_PRINTLN_BIN(newValue);
+  DEBUG_PRINT_STR("read:\t\t0b");
+  DEBUG_PRINTLN_BIN(readValue);
+  DEBUG_PRINTLN();
+  
+  return(ERR_SPI_WRITE_FAILED);
 }
 
 void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {

@@ -11,12 +11,7 @@
     - sync word
     - preamble length
 
-   Other modules from SX127x family can also be used.
-   SX1272 lora = Kite.ModuleA;
-   SX1273 lora = Kite.ModuleA;
-   SX1276 lora = Kite.ModuleA;
-   SX1277 lora = Kite.ModuleA;
-   SX1279 lora = Kite.ModuleA;
+   Other modules from SX127x/RFM9x family can also be used.
 */
 
 // include the library
@@ -73,13 +68,13 @@ void loop() {
     // print the RSSI (Received Signal Strength Indicator)
     // of the last received packet
     Serial.print("[SX1278] RSSI:\t\t");
-    Serial.print(lora.lastPacketRSSI);
+    Serial.print(lora.getRSSI());
     Serial.println(" dBm");
 
     // print the SNR (Signal-to-Noise Ratio)
     // of the last received packet
     Serial.print("[SX1278] SNR:\t\t");
-    Serial.print(lora.lastPacketSNR);
+    Serial.print(lora.getSNR());
     Serial.println(" dBm");
 
     // print frequency error

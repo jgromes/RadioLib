@@ -147,8 +147,12 @@ int16_t SX1278::setFrequency(float freq) {
     }
   }
   
-  // set frequency
-  return(SX127x::setFrequencyRaw(freq));
+  // set frequency and if successful, save the new setting
+  int16_t state = SX127x::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
 }
 
 int16_t SX1278::setBandwidth(float bw) {
@@ -323,6 +327,31 @@ int16_t SX1278::setGain(uint8_t gain) {
   return(state);
 }
 
+int8_t SX1278::getRSSI() {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(0);
+  }
+
+  int8_t lastPacketRSSI;
+  
+  // RSSI calculation uses different constant for low-frequency and high-frequency ports
+  if(_freq < 868.0) {
+    lastPacketRSSI = -164 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
+  } else {
+    lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
+  }
+  
+  // spread-spectrum modulation signal can be received below noise floor
+  // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
+  float lastPacketSNR = SX127x::getSNR();
+  if(lastPacketSNR < 0.0) {
+    lastPacketRSSI += lastPacketSNR;
+  }
+  
+  return(lastPacketRSSI);
+}
+
 int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
@@ -370,7 +399,7 @@ int16_t SX1278::config() {
   // calculate symbol length and set low datarate optimization, if needed
   uint16_t base = 1;
   float symbolLength = (float)(base << _sf) / (float)_bw;
-  if(symbolLength >= 0.016) {
+  if(symbolLength >= 16.0) {
     state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 0, 0);
   } else {
     state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_OFF, 0, 0);

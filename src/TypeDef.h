@@ -60,7 +60,7 @@
 #define ERR_NONE                               0
 #define ERR_UNKNOWN                            -1
 
-// SX1278/SX1272/RF69 status codes
+// SX127x/RFM9x/RF69 status codes
 #define ERR_CHIP_NOT_FOUND                    -2
 #define ERR_EEPROM_NOT_INITIALIZED            -3
 #define ERR_PACKET_TOO_LONG                   -4

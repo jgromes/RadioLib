@@ -522,11 +522,6 @@ class SX127x: public PhysicalLayer {
     // constructor
     SX127x(Module* mod);
     
-    // public member variables
-    float dataRate;
-    int8_t lastPacketRSSI;
-    float lastPacketSNR;
-    
     // basic methods
     int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
     int16_t beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit);
@@ -557,6 +552,8 @@ class SX127x: public PhysicalLayer {
     int16_t setCurrentLimit(uint8_t currentLimit);
     int16_t setPreambleLength(uint16_t preambleLength);
     float getFrequencyError(bool autoCorrect = false);
+    float getSNR();
+    float getDataRate();
     int16_t setBitRate(float br);
     int16_t setFrequencyDeviation(float freqDev);
     int16_t setRxBandwidth(float rxBw);
@@ -572,6 +569,7 @@ class SX127x: public PhysicalLayer {
   protected:
     Module* _mod;
     
+    float _freq;
     float _bw;
     uint8_t _sf;
     uint8_t _cr;
@@ -587,6 +585,8 @@ class SX127x: public PhysicalLayer {
     int16_t directMode();
   
   private:
+    float _dataRate;
+  
     bool findChip(uint8_t ver);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);

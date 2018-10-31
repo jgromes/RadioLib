@@ -99,6 +99,7 @@ class SX1272: public SX127x {
     int16_t setCodingRate(uint8_t cr);
     int16_t setOutputPower(int8_t power);
     int16_t setGain(uint8_t gain);
+    int8_t getRSSI();
   
   protected:
     int16_t setBandwidthRaw(uint8_t newBandwidth);

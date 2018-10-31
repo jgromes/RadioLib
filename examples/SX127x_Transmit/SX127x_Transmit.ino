@@ -7,12 +7,7 @@
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
 
-   Other modules from SX127x family can also be used.
-   SX1272 lora = Kite.ModuleA;
-   SX1273 lora = Kite.ModuleA;
-   SX1276 lora = Kite.ModuleA;
-   SX1277 lora = Kite.ModuleA;
-   SX1279 lora = Kite.ModuleA;
+   Other modules from SX127x/RFM9x family can also be used.
 */
 
 // include the library
@@ -64,7 +59,7 @@ void loop() {
 
     // print measured data rate
     Serial.print("Datarate:\t");
-    Serial.print(lora.dataRate);
+    Serial.print(lora.getDataRate());
     Serial.println(" bps");
 
   } else if (state == ERR_PACKET_TOO_LONG) {

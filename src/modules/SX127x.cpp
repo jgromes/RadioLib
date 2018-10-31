@@ -42,6 +42,9 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   // set preamble length
   state = SX127x::setPreambleLength(preambleLength);
   
+  // initalize internal variables
+  _dataRate = 0.0;
+  
   return(state);
 }
 
@@ -128,14 +131,14 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     uint16_t base = 1;
     float symbolLength = (float)(base << _sf) / (float)_bw;
     float de = 0;
-    if(symbolLength >= 0.016) {
+    if(symbolLength >= 16.0) {
       de = 1;
     }
     float ih = (float)_mod->SPIgetRegValue(SX127X_REG_MODEM_CONFIG_1, 0, 0);
     float crc = (float)(_mod->SPIgetRegValue(SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
     float n_pre = (float)_mod->SPIgetRegValue(SX127X_REG_PREAMBLE_LSB);
     float n_pay = 8.0 + max(ceil((8.0 * (float)len - 4.0 * (float)_sf + 28.0 + 16.0 * crc - 20.0 * ih)/(4.0 * (float)_sf - 8.0 * de)) * (float)_cr, 0.0);
-    uint32_t timeout = ceil(symbolLength * (n_pre + n_pay + 4.25) * 1000.0);
+    uint32_t timeout = ceil(symbolLength * (n_pre + n_pay + 4.25) * 1.5);
     
     // set DIO mapping
     _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_TX_DONE, 7, 6);
@@ -170,7 +173,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     uint32_t elapsed = millis() - start;
     
     // update data rate
-    dataRate = (len*8.0)/((float)elapsed/1000.0);
+    _dataRate = (len*8.0)/((float)elapsed/1000.0);
     
     // clear interrupt flags
     clearIRQFlags();
@@ -294,11 +297,6 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     if(len == 0) {
       data[length] = 0;
     }
-    
-    // update RSSI and SNR
-    lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
-    int8_t rawSNR = (int8_t)_mod->SPIgetRegValue(SX127X_REG_PKT_SNR_VALUE);
-    lastPacketSNR = rawSNR / 4.0;
     
     // clear interrupt flags
     clearIRQFlags();
@@ -634,11 +632,6 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
       data[length] = 0;
     }
     
-    // update RSSI and SNR
-    lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
-    int8_t rawSNR = (int8_t)_mod->SPIgetRegValue(SX127X_REG_PKT_SNR_VALUE);
-    lastPacketSNR = rawSNR / 4.0;
-    
     // clear interrupt flags
     clearIRQFlags();
     
@@ -787,6 +780,26 @@ float SX127x::getFrequencyError(bool autoCorrect) {
   return(ERR_UNKNOWN);
 }
 
+float SX127x::getSNR() {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(0);
+  }
+  
+  // get SNR value
+  int8_t rawSNR = (int8_t)_mod->SPIgetRegValue(SX127X_REG_PKT_SNR_VALUE);
+  return(rawSNR / 4.0);
+}
+
+float SX127x::getDataRate() {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(0);
+  }
+
+  return(_dataRate);
+}
+
 int16_t SX127x::setBitRate(float br) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
@@ -832,7 +845,7 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
     return(state);
   }
   
-  // set frequency deviation from carrier frequency
+  // set allowed frequency deviation
   uint32_t base = 1;
   uint32_t FDEV = (freqDev * (base << 19)) / 32000;
   state = _mod->SPIsetRegValue(SX127X_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
@@ -1043,7 +1056,7 @@ int16_t SX127x::config() {
 
 int16_t SX127x::configFSK() {
   // set FSK modulation
-  int16_t state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_MODULATION_FSK, 6, 5);
+  int16_t state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_MODULATION_FSK, 6, 5, 5);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -1119,7 +1132,7 @@ bool SX127x::findChip(uint8_t ver) {
 }
 
 int16_t SX127x::setMode(uint8_t mode) {
-  return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, mode, 2, 0));
+  return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, mode, 2, 0, 5));
 }
 
 int16_t SX127x::getActiveModem() {
@@ -1131,7 +1144,7 @@ int16_t SX127x::setActiveModem(uint8_t modem) {
   int16_t state = setMode(SX127X_SLEEP);
   
   // set LoRa mode
-  state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, modem, 7, 7);
+  state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, modem, 7, 7, 5);
   
   // set mode to STANDBY
   state |= setMode(SX127X_STANDBY);

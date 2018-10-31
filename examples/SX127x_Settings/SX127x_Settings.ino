@@ -10,6 +10,8 @@
     - coding rate
     - sync word
     - output power during transmission
+
+    Other modules from SX127x/RFM9x family can also be used.
 */
 
 // include the library
@@ -18,18 +20,8 @@
 // SX1278 module is in slot A on the shield
 SX1278 loraSX1278 = Kite.ModuleA;
 
-// create another instance of LoRa class using SX1272 module and user-specified pinout
-// NSS pin:   6
-// DIO0 pin:  4
-// DIO1 pin:  5
-SX1272 loraSX1272 = new Module(6, 4, 5);
-
-// create third instance of LoRa class using SX1276 module and user-specified pinout
-// we ran out of Uno digital pins, so here we use analog ones
-// NSS pin:   A0
-// DIO0 pin:  A1
-// DIO1 pin:  A2
-SX1276 loraSX1276 = new Module(A0, A1, A2);
+// SX1272 module is in slot B on the shield
+SX1272 loraSX1272 = Kite.ModuleB;
 
 void setup() {
   Serial.begin(9600);
@@ -54,28 +46,7 @@ void setup() {
     while (true);
   }
 
-  // initialize the second LoRa instance with non-default settings
-  // this LoRa link will have maximum range, but very low data rate
-  Serial.print(F("[SX1276] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bandwidth:                   7.8 kHz
-  // spreading factor:            12
-  // coding rate:                 8
-  // sync word:                   0x13
-  // output power:                17 dBm
-  // current limit:               100 mA
-  // preamble length:             8 symbols
-  // amplifier gain:              0 (automatic gain control)
-  state = loraSX1276.begin(434.0, 7.8, 12, 8, 0x13);
-  if (state == ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true);
-  }
-
-  // initialize the third LoRa instance with
+  // initialize the second LoRa instance with
   // non-default settings
   // this LoRa link will have high data rate, 
   // but lower range

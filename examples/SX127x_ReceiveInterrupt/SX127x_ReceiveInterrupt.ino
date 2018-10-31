@@ -12,12 +12,7 @@
     - coding rate
     - sync word
 
-   Other modules from SX127x family can also be used.
-   SX1272 lora = Kite.ModuleA;
-   SX1273 lora = Kite.ModuleA;
-   SX1276 lora = Kite.ModuleA;
-   SX1277 lora = Kite.ModuleA;
-   SX1279 lora = Kite.ModuleA;
+   Other modules from SX127x/RFM9x family can also be used.
 */
 
 // include the library
@@ -124,12 +119,12 @@ void loop() {
   
       // print RSSI (Received Signal Strength Indicator) 
       Serial.print("RSSI:\t\t");
-      Serial.print(lora.lastPacketRSSI);
+      Serial.print(lora.getRSSI());
       Serial.println(" dBm");
   
       // print SNR (Signal-to-Noise Ratio) 
       Serial.print("SNR:\t\t");
-      Serial.print(lora.lastPacketSNR);
+      Serial.print(lora.getSNR());
       Serial.println(" dBm");
 
       // print frequency error
