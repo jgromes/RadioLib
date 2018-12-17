@@ -231,7 +231,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t SX127x::receive(String& str, size_t len) {
   // create temporary array to store received data
-  char* data = new char[len];
+  char* data = new char[len + 1];
   int16_t state = SX127x::receive((uint8_t*)data, len);
   
   // if packet was received successfully, copy data into String
@@ -1093,7 +1093,7 @@ int16_t SX127x::configFSK() {
   }
   
   // enable preamble detector and set preamble length
-  state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_DETECT, SX127X_REG_PREAMBLE_DETECT | SX127X_PREAMBLE_DETECTOR_1_BYTE | SX127X_PREAMBLE_DETECTOR_TOL);
+  state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_DETECT, SX127X_PREAMBLE_DETECTOR_ON | SX127X_PREAMBLE_DETECTOR_1_BYTE | SX127X_PREAMBLE_DETECTOR_TOL);
   state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB_FSK, SX127X_PREAMBLE_SIZE_MSB);
   state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB_FSK, SX127X_PREAMBLE_SIZE_LSB);
   if(state != ERR_NONE) {
