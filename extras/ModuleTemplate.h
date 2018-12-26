@@ -3,10 +3,11 @@
   
   Before opening pull request, please make sure that:
   1. All files MUST be compiled without errors using default Arduino IDE settings.
-  2. Example sketches MUST be working correctly and MUST be stable enough to run for prolonged periods of time.
-  3. Writing style SHOULD be consistent.
-  4. Comments SHOULD be in place for the most important chunks of code and SHOULD be free of typos.
-  5. To indent, 2 spaces MUST be used.
+  2. All files SHOULD be compiled without warnings with compiler warnings set to "All".
+  3. Example sketches MUST be working correctly and MUST be stable enough to run for prolonged periods of time.
+  4. Writing style SHOULD be consistent.
+  5. Comments SHOULD be in place for the most important chunks of code and SHOULD be free of typos.
+  6. To indent, 2 spaces MUST be used.
   
   If at any point you are unsure about the required style, please refer to the rest of the modules.
 */
@@ -25,20 +26,22 @@
   This concerns only modules similar to e.g. ESP8266. 
   
   In this case, your class MUST implement all virtual methods of TransportLayer class.
+  You also MUST provide crystal oscillator frequency and frequency configuration divisor step resolution
+  to the TransportLayer constructor.
 */
 //#include "../protocols/TransportLayer.h"
 
 /* 
   Only use the following include if the module implements methods for OSI physical layer control.
-  This concerns only modules similar to e.g. SX127x. 
+  This concerns only modules similar to SX127x/RF69/CC1101 etc.
   
-  In this case, your class MUST implement all virtual methods of PhysicalLayer class.
+  In this case, your class MUST implement all virtual methods of PhysicalLayer class. 
 */
 //#include "../protocols/PhysicalLayer.h"
 
 /*  
   Register map
-  Definition of SPI/I2C register map MAY be placed here. The register map MAY have two parts:
+  Definition of SPI/I2C register map SHOULD be placed here. The register map SHOULD have two parts:
   
   1 - Address map: only defines register names and addresses. Register names MUST match names in
       official documentation (datasheets etc.).
