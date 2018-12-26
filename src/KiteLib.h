@@ -4,6 +4,7 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+#include "modules/CC1101.h"
 #include "modules/ESP8266.h"
 #include "modules/HC05.h"
 #include "modules/JDY08.h"
