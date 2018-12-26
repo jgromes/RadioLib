@@ -1,6 +1,6 @@
 #include "SX127x.h"
 
-SX127x::SX127x(Module* mod) {
+SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_CRYSTAL_FREQ, SX127X_DIV_EXPONENT) {
   _mod = mod;
 }
 
@@ -820,7 +820,7 @@ int16_t SX127x::setBitRate(float br) {
   // set bit rate
   uint16_t bitRate = 32000 / br;
   state = _mod->SPIsetRegValue(SX127X_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
-  state |= _mod->SPIsetRegValue(SX127X_REG_BITRATE_MSB, bitRate & 0x00FF, 7, 0);
+  state |= _mod->SPIsetRegValue(SX127X_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
   // TODO: fractional part of bit rate setting
   if(state == ERR_NONE) {
     SX127x::_br = br;

@@ -1,6 +1,6 @@
 #include "RF69.h"
 
-RF69::RF69(Module* module) {
+RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT)  {
   _mod = module;
   _tempOffset = 0;
 }

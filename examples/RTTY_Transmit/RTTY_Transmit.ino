@@ -7,6 +7,7 @@
    Other modules that can be used for RTTY:
     - SX1272/73/76/77/79
     - RF69
+    - CC1101
 */
 
 // include the library
@@ -41,9 +42,13 @@ void setup() {
 
   // initialize RTTY client
   // NOTE: RTTY frequency shift will be rounded
-  //       to multiples of 61 Hz (hardware limitation)
+  //       to the nearest multiple of frequency step size.
+  //       The exact value depends on the module:
+  //         SX127x - 61 Hz
+  //         RF69 - 61 Hz
+  //         CC1101 - 397 Hz
   Serial.print(F("[RTTY] Initializing ... "));
-  // low frequency:               434.0 MHz
+  // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz
   // baud rate:                   45 baud
   // encoding:                    ASCII (7-bit)

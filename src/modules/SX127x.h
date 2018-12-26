@@ -6,6 +6,10 @@
 
 #include "../protocols/PhysicalLayer.h"
 
+// SX127x physical layer properties
+#define SX127X_CRYSTAL_FREQ                           32.0
+#define SX127X_DIV_EXPONENT                           19
+
 // SX127x series common LoRa registers
 #define SX127X_REG_FIFO                               0x00
 #define SX127X_REG_OP_MODE                            0x01

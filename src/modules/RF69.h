@@ -6,7 +6,11 @@
 
 #include "../protocols/PhysicalLayer.h"
 
-//RF69 register map
+// RF69 physical layer properties
+#define RF69_CRYSTAL_FREQ                             32.0
+#define RF69_DIV_EXPONENT                             19
+
+// RF69 register map
 #define RF69_REG_FIFO                                 0x00
 #define RF69_REG_OP_MODE                              0x01
 #define RF69_REG_DATA_MODUL                           0x02
@@ -86,8 +90,8 @@
 #define RF69_REG_TEST_PA2                             0x5C
 #define RF69_REG_TEST_DAGC                            0x6F
 
-//RF69 modem settings
-//RF69_REG_OP_MODE                                                    MSB   LSB   DESCRIPTION
+// RF69 modem settings
+// RF69_REG_OP_MODE                                                   MSB   LSB   DESCRIPTION
 #define RF69_SEQUENCER_OFF                            0b00000000  //  7     7     disable automatic sequencer
 #define RF69_SEQUENCER_ON                             0b10000000  //  7     7     enable automatic sequencer
 #define RF69_LISTEN_OFF                               0b00000000  //  6     6     disable Listen mode
@@ -99,7 +103,7 @@
 #define RF69_TX                                       0b00001100  //  4     2     transmit
 #define RF69_RX                                       0b00010000  //  4     2     receive
 
-//RF69_REG_DATA_MODUL
+// RF69_REG_DATA_MODUL
 #define RF69_PACKET_MODE                              0b00000000  //  6     5     packet mode (default)
 #define RF69_CONTINUOUS_MODE_WITH_SYNC                0b01000000  //  6     5     continuous mode with bit synchronizer
 #define RF69_CONTINUOUS_MODE                          0b01100000  //  6     5     continuous mode without bit synchronizer
@@ -112,29 +116,29 @@
 #define RF69_OOK_FILTER_BR                            0b00000001  //  1     0                         OOK modulation filter, f_cutoff = BR
 #define RF69_OOK_FILTER_2BR                           0b00000010  //  1     0                         OOK modulation filter, f_cutoff = 2*BR
 
-//RF69_REG_BITRATE_MSB + REG_BITRATE_LSB
+// RF69_REG_BITRATE_MSB + REG_BITRATE_LSB
 #define RF69_BITRATE_MSB                              0x1A        //  7     0     bit rate setting: rate = F(XOSC) / BITRATE
 #define RF69_BITRATE_LSB                              0x0B        //  7     0         default value: 4.8 kbps                            0x40        //  7     0
 
-//RF69_REG_FDEV_MSB + REG_FDEV_LSB
+// RF69_REG_FDEV_MSB + REG_FDEV_LSB
 #define RF69_FDEV_MSB                                 0x00        //  5     0     frequency deviation: f_dev = f_step * FDEV
 #define RF69_FDEV_LSB                                 0x52        //  7     0         default value: 5 kHz
 
-//RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
+// RF69_REG_FRF_MSB + REG_FRF_MID + REG_FRF_LSB
 #define RF69_FRF_MSB                                  0xE4        //  7     0     carrier frequency setting: f_RF = (F(XOSC) * FRF)/2^19
 #define RF69_FRF_MID                                  0xC0        //  7     0         where F(XOSC) = 32 MHz
 #define RF69_FRF_LSB                                  0x00        //  7     0         default value: 915 MHz
 
-//RF69_REG_OSC_1
+// RF69_REG_OSC_1
 #define RF69_RC_CAL_START                             0b10000000  //  7     7     force RC oscillator calibration
 #define RF69_RC_CAL_RUNNING                           0b00000000  //  6     6     RC oscillator calibration is still running
 #define RF69_RC_CAL_DONE                              0b00000000  //  5     5     RC oscillator calibration has finished
 
-//RF69_REG_AFC_CTRL
+// RF69_REG_AFC_CTRL
 #define RF69_AFC_LOW_BETA_OFF                         0b00000000  //  5     5     standard AFC routine
 #define RF69_AFC_LOW_BETA_ON                          0b00100000  //  5     5     improved AFC routine for signals with modulation index less than 2
 
-//RF69_REG_LISTEN_1
+// RF69_REG_LISTEN_1
 #define RF69_LISTEN_RES_IDLE_64_US                    0b01000000  //  7     6     resolution of Listen mode idle time: 64 us
 #define RF69_LISTEN_RES_IDLE_4_1_MS                   0b10000000  //  7     6                                          4.1 ms (default)
 #define RF69_LISTEN_RES_IDLE_262_MS                   0b11000000  //  7     6                                          262 ms
@@ -147,13 +151,13 @@
 #define RF69_LISTEN_END_KEEP_RX_TIMEOUT               0b00000010  //  2     1                                     stay in Rx mode until timeout (default)
 #define RF69_LISTEN_END_KEEP_RX_TIMEOUT_RESUME        0b00000100  //  2     1                                     stay in Rx mode until timeout, Listen mode will resume
 
-//RF69_REG_LISTEN_2
+// RF69_REG_LISTEN_2
 #define RF69_LISTEN_COEF_IDLE                         0xF5        //  7     0     duration of idle phase in Listen mode
 
-//RF69_REG_LISTEN_3
+// RF69_REG_LISTEN_3
 #define RF69_LISTEN_COEF_RX                           0x20        //  7     0     duration of Rx phase in Listen mode
 
-//RF69_REG_PA_LEVEL
+// RF69_REG_PA_LEVEL
 #define RF69_PA0_OFF                                  0b00000000  //  7     7     PA0 disabled
 #define RF69_PA0_ON                                   0b10000000  //  7     7     PA0 enabled (default)
 #define RF69_PA1_OFF                                  0b00000000  //  6     6     PA1 disabled (default)
@@ -162,7 +166,7 @@
 #define RF69_PA2_ON                                   0b00100000  //  5     5     PA2 enabled
 #define RF69_OUTPUT_POWER                             0b00011111  //  4     0     output power: P_out = -18 + OUTPUT_POWER
 
-//RF69_REG_PA_RAMP
+// RF69_REG_PA_RAMP
 #define RF69_PA_RAMP_3_4_MS                           0b00000000  //  3     0     PA ramp rise/fall time: 3.4 ms
 #define RF69_PA_RAMP_2_MS                             0b00000001  //  3     0                             2 ms
 #define RF69_PA_RAMP_1_MS                             0b00000010  //  3     0                             1 ms
@@ -180,12 +184,12 @@
 #define RF69_PA_RAMP_12_US                            0b00001110  //  3     0                             12 us
 #define RF69_PA_RAMP_10_US                            0b00001111  //  3     0                             10 us
 
-//RF69_REG_OCP
+// RF69_REG_OCP
 #define RF69_OCP_OFF                                  0b00000000  //  4     4     PA overload current protection disabled
 #define RF69_OCP_ON                                   0b00100000  //  4     4     PA overload current protection enabled
 #define RF69_OCP_TRIM                                 0b00001010  //  3     0     OCP current: I_max(OCP_TRIM = 0b1010) = 95 mA
 
-//RF69_REG_LNA
+// RF69_REG_LNA
 #define RF69_LNA_Z_IN_50_OHM                          0b00000000  //  7     7     LNA input impedance: 50 ohm
 #define RF69_LNA_Z_IN_200_OHM                         0b10000000  //  7     7                          200 ohm
 #define RF69_LNA_CURRENT_GAIN                         0b00001000  //  5     3     manually set LNA current gain
@@ -197,19 +201,19 @@
 #define RF69_LNA_GAIN_MAX_36_DB                       0b00000101  //  2     0                       max gain - 36 dB
 #define RF69_LNA_GAIN_MAX_48_DB                       0b00000110  //  2     0                       max gain - 48 dB
 
-//RF69_REG_RX_BW
+// RF69_REG_RX_BW
 #define RF69_DCC_FREQ                                 0b01000000  //  7     5     DC offset canceller cutoff frequency (4% Rx BW by default)
 #define RF69_RX_BW_MANT_16                            0b00000000  //  4     3     Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
 #define RF69_RX_BW_MANT_20                            0b00001000  //  4     3                              OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
 #define RF69_RX_BW_MANT_24                            0b00010000  //  4     3     
 #define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value = 5
 
-//RF69_REG_AFC_BW
+// RF69_REG_AFC_BW
 #define RF69_DCC_FREQ_AFC                             0b10000000  //  7     5     default DccFreq parameter for AFC
 #define RF69_DCC_RX_BW_MANT_AFC                       0b00001000  //  4     3     default RxBwMant parameter for AFC
 #define RF69_DCC_RX_BW_EXP_AFC                        0b00000011  //  2     0     default RxBwExp parameter for AFC
 
-//RF69_REG_OOK_PEAK
+// RF69_REG_OOK_PEAK
 #define RF69_OOK_THRESH_FIXED                         0b00000000  //  7     6     OOK threshold type: fixed
 #define RF69_OOK_THRESH_PEAK                          0b01000000  //  7     6                         peak (default)
 #define RF69_OOK_THRESH_AVERAGE                       0b10000000  //  7     6                         average
@@ -230,16 +234,16 @@
 #define RF69_OOK_PEAK_THRESH_DEC_8_1_CHIP             0b00000110  //  2     0                                  8 times per chip
 #define RF69_OOK_PEAK_THRESH_DEC_16_1_CHIP            0b00000111  //  2     0                                  16 times per chip
 
-//RF69_REG_OOK_AVG
+// RF69_REG_OOK_AVG
 #define RF69_OOK_AVG_THRESH_FILT_32_PI                0b00000000  //  7     6     OOK average filter coefficient: chip rate / 32*pi
 #define RF69_OOK_AVG_THRESH_FILT_8_PI                 0b01000000  //  7     6                                     chip rate / 8*pi
 #define RF69_OOK_AVG_THRESH_FILT_4_PI                 0b10000000  //  7     6                                     chip rate / 4*pi (default)
 #define RF69_OOK_AVG_THRESH_FILT_2_PI                 0b11000000  //  7     6                                     chip rate / 2*pi
 
-//RF69_REG_OOK_FIX
+// RF69_REG_OOK_FIX
 #define RF69_OOK_FIXED_THRESH                         0b00000110  //  7     0     default OOK fixed threshold (6 dB)
 
-//RF69_REG_AFC_FEI
+// RF69_REG_AFC_FEI
 #define RF69_FEI_RUNNING                              0b00000000  //  6     6     FEI status: on-going
 #define RF69_FEI_DONE                                 0b01000000  //  6     6                 done
 #define RF69_FEI_START                                0b00100000  //  5     5     force new FEI measurement
@@ -252,12 +256,12 @@
 #define RF69_AFC_CLEAR                                0b00000010  //  1     1     clear AFC register
 #define RF69_AFC_START                                0b00000001  //  0     0     start AFC
 
-//RF69_REG_RSSI_CONFIG
+// RF69_REG_RSSI_CONFIG
 #define RF69_RSSI_RUNNING                             0b00000000  //  1     1     RSSI status: on-going
 #define RF69_RSSI_DONE                                0b00000010  //  1     1                  done
 #define RF69_RSSI_START                               0b00000001  //  0     0     start RSSI measurement
 
-//RF69_REG_DIO_MAPPING_1
+// RF69_REG_DIO_MAPPING_1
 #define RF69_DIO0_CONT_MODE_READY                     0b11000000  //  7     6
 #define RF69_DIO0_CONT_PLL_LOCK                       0b00000000  //  7     6
 #define RF69_DIO0_CONT_SYNC_ADDRESS                   0b00000000  //  7     6
@@ -283,7 +287,7 @@
 #define RF69_DIO1_PACK_TIMEOUT                        0b00110000  //  5     4
 #define RF69_DIO2_CONT_DATA                           0b00000000  //  3     2  
 
-//RF69_REG_DIO_MAPPING_2
+// RF69_REG_DIO_MAPPING_2
 #define RF69_CLK_OUT_FXOSC                            0b00000000  //  2     0     ClkOut frequency: F(XOSC)
 #define RF69_CLK_OUT_FXOSC_2                          0b00000001  //  2     0                       F(XOSC) / 2
 #define RF69_CLK_OUT_FXOSC_4                          0b00000010  //  2     0                       F(XOSC) / 4
@@ -293,7 +297,7 @@
 #define RF69_CLK_OUT_RC                               0b00000110  //  2     0                       RC
 #define RF69_CLK_OUT_OFF                              0b00000111  //  2     0                       disabled (default)
 
-//RF69_REG_IRQ_FLAGS_1
+// RF69_REG_IRQ_FLAGS_1
 #define RF69_IRQ_MODE_READY                           0b10000000  //  7     7     requested mode was set
 #define RF69_IRQ_RX_READY                             0b01000000  //  6     6     Rx mode ready
 #define RF69_IRQ_TX_READY                             0b00100000  //  5     5     Tx mode ready
@@ -303,7 +307,7 @@
 #define RF69_IRQ_AUTO_MODE                            0b00000010  //  1     1     entered intermediate mode
 #define RF69_SYNC_ADDRESS_MATCH                       0b00000001  //  0     0     sync address detected
 
-//RF69_REG_IRQ_FLAGS_2
+// RF69_REG_IRQ_FLAGS_2
 #define RF69_IRQ_FIFO_FULL                            0b10000000  //  7     7     FIFO is full
 #define RF69_IRQ_FIFO_NOT_EMPTY                       0b01000000  //  6     6     FIFO contains at least 1 byte
 #define RF69_IRQ_FIFO_LEVEL                           0b00100000  //  5     5     FIFO contains more than FifoThreshold bytes
@@ -312,22 +316,22 @@
 #define RF69_IRQ_PAYLOAD_READY                        0b00000100  //  2     2     last payload byte received and CRC check passed
 #define RF69_IRQ_CRC_OK                               0b00000010  //  1     1     CRC check passed
 
-//RF69_REG_RSSI_THRESH
+// RF69_REG_RSSI_THRESH
 #define RF69_RSSI_THRESHOLD                           0xE4        //  7     0     RSSI threshold level (2 dB by default)
 
-//RF69_REG_RX_TIMEOUT_1
+// RF69_REG_RX_TIMEOUT_1
 #define RF69_TIMEOUT_RX_START_OFF                     0x00        //  7     0     RSSI interrupt timeout disabled (default)
 #define RF69_TIMEOUT_RX_START                         0xFF        //  7     0     timeout will occur if RSSI interrupt is not received
 
-//RF69_REG_RX_TIMEOUT_2
+// RF69_REG_RX_TIMEOUT_2
 #define RF69_TIMEOUT_RSSI_THRESH_OFF                  0x00        //  7     0     PayloadReady interrupt timeout disabled (default)
 #define RF69_TIMEOUT_RSSI_THRESH                      0xFF        //  7     0     timeout will occur if PayloadReady interrupt is not received
 
-//RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
+// RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
 #define RF69_PREAMBLE_MSB                             0x00        //  7     0     2-byte preamble size value
 #define RF69_PREAMBLE_LSB                             0x03        //  7     0     
 
-//RF69_REG_SYNC_CONFIG
+// RF69_REG_SYNC_CONFIG
 #define RF69_SYNC_OFF                                 0b00000000  //  7     7     sync word detection off
 #define RF69_SYNC_ON                                  0b10000000  //  7     7     sync word detection on (default)
 #define RF69_FIFO_FILL_CONDITION_SYNC                 0b00000000  //  6     6     FIFO fill condition: on SyncAddress interrupt (default)
@@ -335,7 +339,7 @@
 #define RF69_SYNC_SIZE                                0b00001000  //  5     3     size of sync word: SyncSize + 1 bytes
 #define RF69_SYNC_TOL                                 0b00000000  //  2     0     number of tolerated errors in sync word
 
-//RF69_REG_SYNC_VALUE_1 - SYNC_VALUE_8
+// RF69_REG_SYNC_VALUE_1 - SYNC_VALUE_8
 #define RF69_SYNC_BYTE_1                              0x01        //  7     0     sync word: 1st byte (MSB)
 #define RF69_SYNC_BYTE_2                              0x01        //  7     0                2nd byte
 #define RF69_SYNC_BYTE_3                              0x01        //  7     0                3rd byte
@@ -345,7 +349,7 @@
 #define RF69_SYNC_BYTE_7                              0x01        //  7     0                7th byte
 #define RF69_SYNC_BYTE_8                              0x01        //  7     0                8th byte (LSB)
 
-//RF69_REG_PACKET_CONFIG_1
+// RF69_REG_PACKET_CONFIG_1
 #define RF69_PACKET_FORMAT_FIXED                      0b00000000  //  7     7     fixed packet length (default)
 #define RF69_PACKET_FORMAT_VARIABLE                   0b10000000  //  7     7     variable packet length
 #define RF69_DC_FREE_NONE                             0b00000000  //  6     5     DC-free encoding: none (default)
@@ -359,10 +363,10 @@
 #define RF69_ADDRESS_FILTERING_NODE                   0b00000010  //  2     1                        node
 #define RF69_ADDRESS_FILTERING_NODE_BROADCAST         0b00000100  //  2     1                        node or broadcast
 
-//RF69_REG_PAYLOAD_LENGTH
+// RF69_REG_PAYLOAD_LENGTH
 #define RF69_PAYLOAD_LENGTH                           0xFF        //  7     0     payload length
 
-//RF69_REG_AUTO_MODES
+// RF69_REG_AUTO_MODES
 #define RF69_ENTER_COND_NONE                          0b00000000  //  7     5     condition for entering intermediate mode: none, AutoModes disabled (default)
 #define RF69_ENTER_COND_FIFO_NOT_EMPTY                0b00100000  //  7     5                                               FifoNotEmpty rising edge
 #define RF69_ENTER_COND_FIFO_LEVEL                    0b01000000  //  7     5                                               FifoLevel rising edge
@@ -384,12 +388,12 @@
 #define RF69_INTER_MODE_RX                            0b00000010  //  1     0                        Rx
 #define RF69_INTER_MODE_TX                            0b00000011  //  1     0                        Tx
 
-//RF69_REG_FIFO_THRESH
+// RF69_REG_FIFO_THRESH
 #define RF69_TX_START_CONDITION_FIFO_LEVEL            0b00000000  //  7     7     packet transmission start condition: FifoLevel
 #define RF69_TX_START_CONDITION_FIFO_NOT_EMPTY        0b10000000  //  7     7                                          FifoNotEmpty (default)
 #define RF69_FIFO_THRESHOLD                           0b00001111  //  6     0     default threshold to trigger FifoLevel interrupt
 
-//RF69_REG_PACKET_CONFIG_2
+// RF69_REG_PACKET_CONFIG_2
 #define RF69_INTER_PACKET_RX_DELAY                    0b00000000  //  7     4     delay between FIFO empty and start of new RSSI phase
 #define RF69_RESTART_RX                               0b00000100  //  2     2     force receiver into wait mode
 #define RF69_AUTO_RX_RESTART_OFF                      0b00000000  //  1     1     auto Rx restart disabled
@@ -397,21 +401,21 @@
 #define RF69_AES_OFF                                  0b00000000  //  0     0     AES encryption disabled (default)
 #define RF69_AES_ON                                   0b00000001  //  0     0     AES encryption enabled, payload size limited to 66 bytes
 
-//RF69_REG_TEMP_1
+// RF69_REG_TEMP_1
 #define RF69_TEMP_MEAS_START                          0b00001000  //  3     3     trigger temperature measurement
 #define RF69_TEMP_MEAS_RUNNING                        0b00000100  //  2     2     temperature measurement status: on-going
 #define RF69_TEMP_MEAS_DONE                           0b00000000  //  2     2                                     done
 
-//RF69_REG_TEST_DAGC
+// RF69_REG_TEST_DAGC
 #define RF69_CONTINUOUS_DAGC_NORMAL                   0x00        //  7     0     fading margin improvement:  normal mode
 #define RF69_CONTINUOUS_DAGC_LOW_BETA_ON              0x20        //  7     0                                 improved mode for AfcLowBetaOn
 #define RF69_CONTINUOUS_DAGC_LOW_BETA_OFF             0x30        //  7     0                                 improved mode for AfcLowBetaOff (default)
 
-//RF69_REG_TEST_PA1
+// RF69_REG_TEST_PA1
 #define RF69_PA1_NORMAL                               0x55        //  7     0     PA_BOOST: none
 #define RF69_PA1_20_DBM                               0x5D        //  7     0               +20 dBm
 
-//RF69_REG_TEST_PA2
+// RF69_REG_TEST_PA2
 #define RF69_PA2_NORMAL                               0x70        //  7     0     PA_BOOST: none
 #define RF69_PA2_20_DBM                               0x7C        //  7     0               +20 dBm
 

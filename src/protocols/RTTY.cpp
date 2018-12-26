@@ -103,18 +103,6 @@ RTTYClient::RTTYClient(PhysicalLayer* phy) {
 }
 
 int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
-  // check supplied values
-  if(shift < 30) {
-    return(ERR_INVALID_RTTY_SHIFT);
-  }
-  
-  // clamp shift to multiples of 61 Hz (SX127x synthesis resolution)
-  if(shift % 61 < 31) {
-    _shift = shift / 61;
-  } else {
-    _shift = (shift / 61) + 1;
-  }
-  
   // save configuration
   _encoding = encoding;
   _stopBits = stopBits;
@@ -136,9 +124,23 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t enc
   // calculate duration of 1 bit
   _bitDuration = (uint32_t)1000000/rate;
   
+  // calculate module carrier frequency resolution
+  uint16_t step = round((_phy->getCrystalFreq() * 1000000) / (uint32_t(1) << _phy->getDivExponent()));
+  
+  // check minimum shift value
+  if(shift < step / 2) {
+    return(ERR_INVALID_RTTY_SHIFT);
+  }
+  
+  // round shift to multiples of frequency step size
+  if(shift % step < (step / 2)) {
+    _shift = shift / step;
+  } else {
+    _shift = (shift / step) + 1;
+  }
+  
   // calculate 24-bit frequency
-  uint32_t mult = 1;
-  _base = (base * (mult << 19)) / 32.0;
+  _base = (base * (uint32_t(1) << _phy->getDivExponent())) / _phy->getCrystalFreq();
 
   // set module frequency deviation to 0
   int16_t state = _phy->setFrequencyDeviation(0);

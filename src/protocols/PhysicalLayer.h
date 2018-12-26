@@ -6,7 +6,7 @@
 class PhysicalLayer {
   public:
     // constructor
-    // this class is purely virtual and does not require explicit constructor
+    PhysicalLayer(float crysFreq, uint8_t divExp) { _crystalFreq = crysFreq; _divExponent = divExp; }
     
     // basic methods
     virtual int16_t transmitDirect(uint32_t FRF = 0) = 0;
@@ -17,7 +17,12 @@ class PhysicalLayer {
     
     // configuration methods
     virtual int16_t setFrequencyDeviation(float freqDev) = 0;
+    float getCrystalFreq() { return(_crystalFreq); }
+    uint8_t getDivExponent() { return(_divExponent); }
 
+  private:
+    float _crystalFreq;
+    uint8_t _divExponent;
 };
 
 #endif
