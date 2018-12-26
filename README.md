@@ -1,6 +1,6 @@
 # KiteLib [![Build Status](https://travis-ci.org/jgromes/KiteLib.svg?branch=master)](https://travis-ci.org/jgromes/KiteLib)
 
-### _One library to rule them all!_
+### _One radio library to rule them all!_
 
 ## Universal wireless communication library for Arduino
 
@@ -11,10 +11,12 @@ KiteLib was originally created as a driver for the [__KITE shield__](https://git
 
 
 ### Supported modules:
+* __CC1101__ FSK radio module
 * __ES8266__ WiFi module
 * __HC05__ Bluetooth module
 * __JDY08__ BLE module
 * __RF69__ FSK/OOK radio module
+* __RFM9x__ series LoRa modules (RFM95/96/97)
 * __SX127x__ series LoRa modules (SX1272/73/76/77/78/79)
 * __SX1231__ FSK/OOK radio module
 * __XBee__ modules (S2B)
@@ -22,11 +24,10 @@ KiteLib was originally created as a driver for the [__KITE shield__](https://git
 ### Supported protocols:
 * __MQTT__ on modules: ESP8266
 * __HTTP__ on modules: ESP8266
-* __RTTY__ on modules: SX1272/73/76/77/78/79
+* __RTTY__ on modules: SX1272/73/76/77/78/79, RFM95/96/97, RF69, SX1231 and CC1101
 
 ### In development:
 * __SIM800C__ GSM module
-* __CC1101__ FSK module
 * __nRF24L01__ 2.4 GHz module
 * __LoRaWAN__ protocol on SX127x modules
 * ___and more!___
