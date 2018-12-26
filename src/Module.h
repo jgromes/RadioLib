@@ -36,6 +36,7 @@ class Module {
     void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes);
     void SPIwriteRegister(uint8_t reg, uint8_t data);
     
+    int cs() const { return(_cs); }
     int int0() const { return(_int0); }
     int int1() const { return(_int1); }
     
