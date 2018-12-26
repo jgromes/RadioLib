@@ -72,15 +72,15 @@ int16_t CC1101::begin(float freq, float br, uint16_t rxBw, float freqDev) {
   return(state);
 }
 
-int16_t CC1101::transmit(String& str, uint8_t addr = 0) {
+int16_t CC1101::transmit(String& str, uint8_t addr) {
   return(CC1101::transmit(str.c_str()));
 }
 
-int16_t CC1101::transmit(const char* str, uint8_t addr = 0) {
+int16_t CC1101::transmit(const char* str, uint8_t addr) {
   return(CC1101::transmit((uint8_t*)str, strlen(str)));
 }
 
-int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr = 0) {
+int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // TODO
   // check packet length
   
@@ -102,7 +102,7 @@ int16_t CC1101::standby() {
   return(ERR_NONE);
 }
 
-int16_t CC1101::transmitDirect(uint32_t FRF = 0) {
+int16_t CC1101::transmitDirect(uint32_t FRF) {
   // user requested to start transmitting immediately (required for RTTY)
   if(FRF != 0) {
     _mod->SPIwriteRegister(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16);
