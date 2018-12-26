@@ -99,7 +99,7 @@ class SX1278: public SX127x {
     
     // basic methods
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17, uint8_t currentLimit = 100, uint16_t preambleLength = 8, uint8_t gain = 0);
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100, float sh = 0.3);
     
     // configuration methods
     int16_t setFrequency(float freq);
@@ -108,6 +108,7 @@ class SX1278: public SX127x {
     int16_t setCodingRate(uint8_t cr);
     int16_t setOutputPower(int8_t power);
     int16_t setGain(uint8_t gain);
+    int16_t setDataShaping(float sh);
     int8_t getRSSI();
   
   protected:

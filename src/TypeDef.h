@@ -87,6 +87,7 @@
 #define ERR_INVALID_BIT_RATE_BW_RATIO         -103
 #define ERR_INVALID_RX_BANDWIDTH              -104
 #define ERR_INVALID_SYNC_WORD                 -105
+#define ERR_INVALID_DATA_SHAPING              -106
 
 // ESP8266 status codes
 #define ERR_AT_FAILED                         -201

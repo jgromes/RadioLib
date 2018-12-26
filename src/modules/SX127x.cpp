@@ -136,7 +136,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     }
     float ih = (float)_mod->SPIgetRegValue(SX127X_REG_MODEM_CONFIG_1, 0, 0);
     float crc = (float)(_mod->SPIgetRegValue(SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
-    float n_pre = (float)_mod->SPIgetRegValue(SX127X_REG_PREAMBLE_LSB);
+    float n_pre = (float)((_mod->SPIgetRegValue(SX127X_REG_PREAMBLE_MSB) << 8) | _mod->SPIgetRegValue(SX127X_REG_PREAMBLE_LSB));
     float n_pay = 8.0 + max(ceil((8.0 * (float)len - 4.0 * (float)_sf + 28.0 + 16.0 * crc - 20.0 * ih)/(4.0 * (float)_sf - 8.0 * de)) * (float)_cr, 0.0);
     uint32_t timeout = ceil(symbolLength * (n_pre + n_pay + 4.25) * 1.5);
     

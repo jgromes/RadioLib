@@ -58,7 +58,7 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit) {
+int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit, float sh) {
   // execute common part
   int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit);
   if(state != ERR_NONE) {
@@ -78,6 +78,11 @@ int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t
   }
   
   state = setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  state = setDataShaping(sh);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -257,6 +262,30 @@ int16_t SX1272::setGain(uint8_t gain) {
   return(state);
 }
 
+int16_t SX1272::setDataShaping(float sh) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+  
+  // set mode to standby
+  int16_t state = SX127x::standby();
+  
+  // set data shaping
+  if(abs(sh - 0.0) <= 0.001) {
+    state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_NO_SHAPING, 4, 3);
+  } else if(abs(sh - 0.3) <= 0.001) {
+    state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_3, 4, 3);
+  } else if(abs(sh - 0.5) <= 0.001) {
+    state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_5, 4, 3);
+  } else if(abs(sh - 1.0) <= 0.001) {
+    state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_1_0, 4, 3);
+  } else {
+    return(ERR_INVALID_DATA_SHAPING);
+  }
+  return(state);
+}
+
 int8_t SX1272::getRSSI() {
   // check active modem
   if(getActiveModem() != SX127X_LORA) {
@@ -333,12 +362,6 @@ int16_t SX1272::config() {
 int16_t SX1272::configFSK() {
   // configure common registers
   int16_t state = SX127x::configFSK();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  // set data shaping
-  state = _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_FSK_GAUSSIAN_0_3, 6, 5);
   if(state != ERR_NONE) {
     return(state);
   }
