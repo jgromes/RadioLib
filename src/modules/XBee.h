@@ -79,7 +79,7 @@ class XBee {
     
     void sendApiFrame(uint8_t type, uint8_t id, const char* data);
     void sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length);
-    int16_t readApiFrame(uint8_t frameID, uint8_t codePos);
+    int16_t readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout = 5000);
     
     uint16_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10);
 };

@@ -111,6 +111,7 @@
 #define ERR_FRAME_MALFORMED                   -302
 #define ERR_FRAME_INCORRECT_CHECKSUM          -303
 #define ERR_FRAME_UNEXPECTED_ID               -304
+#define ERR_FRAME_NO_RESPONSE                 -305
 
 // RTTY status codes
 #define ERR_INVALID_RTTY_SHIFT                -401
