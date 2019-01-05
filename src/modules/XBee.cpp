@@ -32,9 +32,8 @@ int16_t XBee::begin(long speed) {
   uint8_t i = 0;
   while((i < 10) && !flagFound) {
     // send test frame (get baudrate setting)
-    uint8_t frameID = _frameID++;
-    sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, frameID, "BD");
-    int16_t state = readApiFrame(frameID, 4, 2000);
+    sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, 0x00, "BD");
+    int16_t state = readApiFrame(0x00, 4, 2000);
     
     if(state == ERR_NONE) {
       flagFound = true;
@@ -45,6 +44,7 @@ int16_t XBee::begin(long speed) {
       DEBUG_PRINTLN(state);
       DEBUG_PRINTLN_STR("Resetting ...");
       reset();
+      i++;
     }
   }
   
@@ -386,7 +386,6 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   uint32_t start = millis();
   while(_mod->ModuleSerial->available() < (int16_t)numBytes) {
     if(millis() - start >= timeout/2) {
-      Serial.println(_mod->ModuleSerial->available());
       return(ERR_FRAME_MALFORMED);
     }
   }
