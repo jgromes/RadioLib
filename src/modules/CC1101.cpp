@@ -4,7 +4,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _mod = module;
 }
 
-int16_t CC1101::begin(float freq, float br, uint16_t rxBw, float freqDev) {
+int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
@@ -91,6 +91,20 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   return(ERR_NONE);
 }
 
+int16_t CC1101::receive(String& str, size_t len) {
+  // create temporary array to store received data
+  char* data = new char[len + 1];
+  int16_t state = CC1101::receive((uint8_t*)data, len);
+  
+  // if packet was received successfully, copy data into String
+  if(state == ERR_NONE) {
+    str = String(data);
+  }
+  
+  delete[] data;
+  return(state);
+}
+
 int16_t CC1101::receive(uint8_t* data, size_t len) {
   // TODO
 
@@ -160,119 +174,36 @@ int16_t CC1101::setBitRate(float br) {
   SPIsendCommand(CC1101_CMD_IDLE);
   
   // calculate exponent and mantisa values
-  for(uint8_t e = 14; e > 0; e++) {
-    float intervalStart = 406250.00/(float)(1 << (14 - e));
-    if((br * 1000.0) > intervalStart) {
-      float stepSize = intervalStart/256.0;
-      uint8_t m = (uint8_t)(((br * 1000.0) - intervalStart) / stepSize);
-      
-      // set bit rate value
-      int16_t state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
-      state |= _mod->SPIsetRegValue(CC1101_REG_MDMCFG3, m);
-      return(state);
-    }
-	}
+  uint8_t e, m;
+  getExpMant(br * 1000.0, 256, 28, 14, e, m);
   
-  return(ERR_UNKNOWN);
+  // set bit rate value
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
+  state |= _mod->SPIsetRegValue(CC1101_REG_MDMCFG3, m);
+  return(state);
 }
 
-int16_t CC1101::setRxBandwidth(uint16_t rxBw) {
+int16_t CC1101::setRxBandwidth(float rxBw) {
   // check allowed bandwidth range
-  uint8_t bwMant, bwExp;
-  switch(rxBw) {
-    case 58:
-      bwMant = 3;
-      bwExp = 3;
-      break;
-    case 68:
-      bwMant = 2;
-      bwExp = 3;
-      break;
-    case 81:
-      bwMant = 1;
-      bwExp = 3;
-      break;
-    case 102:
-      bwMant = 0;
-      bwExp = 3;
-      break;
-    case 116:
-      bwMant = 3;
-      bwExp = 2;
-      break;
-    case 135:
-      bwMant = 2;
-      bwExp = 2;
-      break;
-    case 162:
-      bwMant = 1;
-      bwExp = 2;
-      break;
-    case 203:
-      bwMant = 0;
-      bwExp = 2;
-      break;
-    case 232:
-      bwMant = 3;
-      bwExp = 1;
-      break;
-    case 270:
-      bwMant = 2;
-      bwExp = 1;
-      break;
-    case 325:
-      bwMant = 1;
-      bwExp = 1;
-      break;
-    case 406:
-      bwMant = 0;
-      bwExp = 1;
-      break;
-    case 464:
-      bwMant = 3;
-      bwExp = 0;
-      break;
-    case 541:
-      bwMant = 2;
-      bwExp = 0;
-      break;
-    case 650:
-      bwMant = 1;
-      bwExp = 0;
-      break;
-    case 812:
-      bwMant = 0;
-      bwExp = 0;
-      break;
-    default:
-      return(ERR_INVALID_RX_BANDWIDTH);
+  if(!((rxBw >= 58) && (rxBw <= 812))) {
+    return(ERR_INVALID_RX_BANDWIDTH);
   }
   
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
   
-  // set Rx channel filter bandwidth
-  return(_mod->SPIsetRegValue(CC1101_REG_MDMCFG4, (bwExp << 6) | (bwMant << 4), 7, 4));
-}
-
-int16_t CC1101::directMode() {
-  // set mode to standby
-  SPIsendCommand(CC1101_CMD_IDLE);
+  // calculate exponent and mantisa values
+  for(int8_t e = 3; e >= 0; e--) {
+    for(int8_t m = 3; m >= 0; m --) {
+      float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
+      if(abs((rxBw * 1000.0) - point) <= 0.001) {
+        // set Rx channel filter bandwidth
+        return(_mod->SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
+      }
+    }
+  }
   
-  // set GDO0 and GDO2 mapping
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SERIAL_CLOCK , 5, 0);
-  state |= _mod->SPIsetRegValue(CC1101_REG_IOCFG2, CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
-  
-  // set continuous mode
-  state |= _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
-  return(state);
-}
-
-int16_t CC1101::config() {
-  // enable autmatic frequency synthesizer calibration 
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
-
-  return(state);
+  return(ERR_UNKNOWN);
 }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
@@ -292,20 +223,59 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   SPIsendCommand(CC1101_CMD_IDLE);
   
   // calculate exponent and mantisa values
-  for(uint8_t e = 7; e > 0; e++) {
-    float intervalStart = 203125.00/(float)(1 << (7 - e));
-    if((freqDev * 1000.0) > intervalStart) {
-      float stepSize = intervalStart/8.0;
-      uint8_t m = (uint8_t)(((freqDev * 1000.0) - intervalStart) / stepSize);
-      
-      // set frequency deviation value
-      int16_t state = _mod->SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
-      state |= _mod->SPIsetRegValue(CC1101_REG_DEVIATN, m, 2, 0);
-      return(state);
-    }
-	}
+  uint8_t e, m;
+  getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
   
-  return(ERR_UNKNOWN);
+  // set frequency deviation value
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
+  state |= _mod->SPIsetRegValue(CC1101_REG_DEVIATN, m, 2, 0);
+  return(state);
+}
+
+int16_t CC1101::config() {
+  // enable autmatic frequency synthesizer calibration 
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
+
+  return(state);
+}
+
+int16_t CC1101::directMode() {
+  // set mode to standby
+  SPIsendCommand(CC1101_CMD_IDLE);
+  
+  // set GDO0 and GDO2 mapping
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SERIAL_CLOCK , 5, 0);
+  state |= _mod->SPIsetRegValue(CC1101_REG_IOCFG2, CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
+  
+  // set continuous mode
+  state |= _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  return(state);
+}
+
+void CC1101::getExpMant(float target, uint8_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant) {
+  // get table origin point (exp = 0, mant = 0)
+  float origin = (mantOffset * CC1101_CRYSTAL_FREQ * 1000000.0)/((uint32_t)1 << divExp);
+  
+  // iterate over possible exponent values
+  for(int8_t e = expMax; e >= 0; e--) {
+    // get table column start value (exp = e, mant = 0);
+	  float intervalStart = ((uint32_t)1 << e) * origin;
+    
+    // check if target value is in this column
+	  if(target >= intervalStart) {
+      // save exponent value
+      exp = e;
+      
+      // calculate size of step between table rows
+	    float stepSize = intervalStart/(float)mantOffset;
+      
+      // get target point position (exp = e, mant = m)
+	    mant = ((target - intervalStart) / stepSize);
+      
+      // we only need the first match, terminate
+	    return;
+	  }
+	}
 }
 
 int16_t CC1101::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
@@ -317,9 +287,9 @@ uint8_t CC1101::SPIreadRegister(uint8_t reg) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
-  digitalWrite(_mod->cs(), LOW);
+  digitalWrite(_mod->getCs(), LOW);
   SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
   SPI.transfer(cmd);
   SPI.endTransaction();
-  digitalWrite(_mod->cs(), HIGH);
+  digitalWrite(_mod->getCs(), HIGH);
 }

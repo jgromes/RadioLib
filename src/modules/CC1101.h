@@ -498,10 +498,11 @@ class CC1101: public PhysicalLayer {
     CC1101(Module* module);
     
     // basic methods
-    int16_t begin(float freq = 868.0, float br = 115.2, uint16_t rxBw = 203, float freqDev = 48.0);
+    int16_t begin(float freq = 868.0, float br = 115.2, float rxBw = 325.0, float freqDev = 48.0);
     int16_t transmit(String& str, uint8_t addr = 0);
     int16_t transmit(const char* str, uint8_t addr = 0);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t receive(String& str, size_t len = 0);
     int16_t receive(uint8_t* data, size_t len);
     int16_t standby();
     int16_t transmitDirect(uint32_t FRF = 0);
@@ -510,7 +511,7 @@ class CC1101: public PhysicalLayer {
     // configuration methods
     int16_t setFrequency(float freq);
     int16_t setBitRate(float br);
-    int16_t setRxBandwidth(uint16_t rxBw);
+    int16_t setRxBandwidth(float rxBw);
     int16_t setFrequencyDeviation(float freqDev);
     
   private:
@@ -518,6 +519,7 @@ class CC1101: public PhysicalLayer {
     
     int16_t config();
     int16_t directMode();
+    void getExpMant(float target, uint8_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     
     // SPI read overrides to set access bit for status registers
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
