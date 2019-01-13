@@ -519,7 +519,7 @@ class CC1101: public PhysicalLayer {
     
     int16_t config();
     int16_t directMode();
-    void getExpMant(float target, uint8_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
+    void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     
     // SPI read overrides to set access bit for status registers
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);

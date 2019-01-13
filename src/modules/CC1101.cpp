@@ -174,7 +174,8 @@ int16_t CC1101::setBitRate(float br) {
   SPIsendCommand(CC1101_CMD_IDLE);
   
   // calculate exponent and mantisa values
-  uint8_t e, m;
+  uint8_t e = 0;
+  uint8_t m = 0;
   getExpMant(br * 1000.0, 256, 28, 14, e, m);
   
   // set bit rate value
@@ -223,7 +224,8 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   SPIsendCommand(CC1101_CMD_IDLE);
   
   // calculate exponent and mantisa values
-  uint8_t e, m;
+  uint8_t e = 0;
+  uint8_t m = 0;
   getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
   
   // set frequency deviation value
@@ -252,7 +254,7 @@ int16_t CC1101::directMode() {
   return(state);
 }
 
-void CC1101::getExpMant(float target, uint8_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant) {
+void CC1101::getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant) {
   // get table origin point (exp = 0, mant = 0)
   float origin = (mantOffset * CC1101_CRYSTAL_FREQ * 1000000.0)/((uint32_t)1 << divExp);
   
