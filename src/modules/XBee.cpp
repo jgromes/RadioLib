@@ -9,17 +9,9 @@ XBee::XBee(Module* mod) {
 }
 
 int16_t XBee::begin(long speed) {
-  // set Arduino pins
-  /*pinMode(A4, OUTPUT);
-  pinMode(A5, OUTPUT);
-  pinMode(3, OUTPUT);
-  digitalWrite(A4, LOW);
-  digitalWrite(A5, LOW);
-  digitalWrite(3, HIGH);*/
-  
   // set module properties
   _mod->baudrate = speed;
-  _mod->init(USE_UART, INT_NONE);
+  _mod->init(USE_UART, INT_1);
   
   // reset module
   reset();
@@ -44,6 +36,8 @@ int16_t XBee::begin(long speed) {
       DEBUG_PRINTLN(state);
       DEBUG_PRINTLN_STR("Resetting ...");
       reset();
+      delay(1000);
+      _mod->ATemptyBuffer();
       i++;
     }
   }
@@ -59,14 +53,11 @@ int16_t XBee::begin(long speed) {
 }
 
 void XBee::reset() {
-  pinMode(_mod->int1(), OUTPUT);
-  delay(10);
-  digitalWrite(_mod->int1(), HIGH);
-  delay(500);
-  digitalWrite(_mod->int1(), LOW);
-  delay(500);
-  pinMode(_mod->int1(), INPUT);
-  delay(500);
+  pinMode(_mod->getInt1(), OUTPUT);
+  digitalWrite(_mod->getInt1(), LOW);
+  delayMicroseconds(200);
+  digitalWrite(_mod->getInt1(), HIGH);
+  pinMode(_mod->getInt1(), INPUT);
 }
 
 int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
@@ -212,14 +203,11 @@ int16_t XBeeSerial::begin(long speed) {
 }
 
 void XBeeSerial::reset() {
-  pinMode(_mod->int1(), OUTPUT);
-  delay(10);
-  digitalWrite(_mod->int1(), HIGH);
-  delay(500);
-  digitalWrite(_mod->int1(), LOW);
-  delay(500);
-  pinMode(_mod->int1(), INPUT);
-  delay(500);
+  pinMode(_mod->getInt1(), OUTPUT);
+  digitalWrite(_mod->getInt1(), LOW);
+  delayMicroseconds(200);
+  digitalWrite(_mod->getInt1(), HIGH);
+  pinMode(_mod->getInt1(), INPUT);
 }
 
 int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
