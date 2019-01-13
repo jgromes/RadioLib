@@ -521,49 +521,331 @@
 #define SX127X_PLL_BANDWIDTH_225_KHZ                  0b10000000  //  7     6                    225 kHz
 #define SX127X_PLL_BANDWIDTH_300_KHZ                  0b11000000  //  7     6                    300 kHz (default)
 
+/*!
+  \class SX127x
+
+  \brief Implements all common high-level chip functions. All derived classes (e.g. SX1278 or SX1272) inherit from this base class.
+  This class should not be instantiated directly from Arduino sketch, only from its derived classes.
+*/
 class SX127x: public PhysicalLayer {
   public:
+    // introduce PhysicalLayer overloads
+    using PhysicalLayer::transmit;
+    using PhysicalLayer::receive;
+    
     // constructor
+    
+    /*!
+      \brief Default constructor. Called internally when creating new LoRa instance.
+      
+      \param mod Instance of Module that will be used to communicate with the %LoRa chip.
+    */
     SX127x(Module* mod);
     
     // basic methods
+    
+    /*!
+      \brief Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.
+      
+      \param chipVersion Value in SPI version register. Used to verify the connection and hardware version.
+      
+      \param syncWord %LoRa sync word.
+      
+      \param currentLimit Trim value for OCP (over current protection) in mA.
+      
+      \param preambleLength Length of %LoRa transmission preamble in symbols.
+      
+      \returns \ref status_codes
+    */
     int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
+    
+    /*!
+      \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
+      
+      \param chipVersion Value in SPI version register. Used to verify the connection and hardware version.
+      
+      \param br Bit rate of the FSK transmission in kbps (kilobits per second).
+      
+      \param freqDev Frequency deviation of the FSK transmission in kHz.
+      
+      \param rxBw Receiver bandwidth in kHz.
+      
+      \param currentLimit Trim value for OCP (over current protection) in mA.
+      
+      \returns \ref status_codes
+    */
     int16_t beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit);
-    int16_t transmit(String& str, uint8_t addr = 0);
-    int16_t transmit(const char* str, uint8_t addr = 0);
+    
+    /*!
+      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      For overloads to transmit Arduino String or C-string, see PhysicalLayer::transmit.
+      
+      \param data Binary data that will be transmitted.
+      
+      \param len Length of binary data to transmit (in bytes).
+      
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
-    int16_t receive(String& str, size_t len = 0);
+    
+    /*!
+      \brief Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      For overloads to receive Arduino String, see PhysicalLayer::receive.
+      
+      \param data Pointer to array to save the received binary data.
+      
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      
+      \returns \ref status_codes
+    */
     int16_t receive(uint8_t* data, size_t len);
+    
+    /*!
+      \brief Performs scan for valid %LoRa preamble in the current channel.
+      
+      \returns \ref status_codes
+    */
     int16_t scanChannel();
+    
+    /*!
+      \brief Sets the %LoRa module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
+      %Module will wake up autmatically when methods like transmit or receive are called.
+      
+      \returns \ref status_codes
+    */
     int16_t sleep();
+    
+    /*!
+      \brief Sets the %LoRa module to standby.
+      
+      \returns \ref status_codes
+    */
     int16_t standby();
+    
+    /*!
+      \brief Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). 
+      While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
+      
+      \param FRF 24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.
+      
+      \returns \ref status_codes
+    */
     int16_t transmitDirect(uint32_t FRF = 0);
+    
+    /*!
+      \brief Enables direct reception mode on pins DIO1 (clock) and DIO2 (data). 
+      While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t receiveDirect();
+    
+    /*!
+      \brief Disables direct mode and enables packet mode, allowing the module to receive packets. Can only be activated in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t packetMode();
     
+    
     // interrupt methods
+    
+    /*!
+      \brief Set interrupt service routine function to call when DIO0 activates.
+      
+      \param func Pointer to interrupt service routine.
+    */
     void setDio0Action(void (*func)(void));
+    
+    /*!
+      \brief Set interrupt service routine function to call when DIO1 activates.
+      
+      \param func Pointer to interrupt service routine.
+    */
     void setDio1Action(void (*func)(void));
+    
+    /*!
+      \brief Interrupt-driven Arduino String transmit method. Will start transmitting Arduino String up to 255 characters long using %LoRa or up to 63 bytes using FSK modem.
+      Unlike the standard transmit method, this one is non-blocking. DIO0 will be activated when transmission finishes.
+      
+      \param str Address of Arduino String that will be transmitted.
+      
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t startTransmit(String& str, uint8_t addr = 0);
+    
+    /*!
+      \brief Interrupt-driven Arduino String transmit method. Will start transmitting Arduino String up to 255 characters long using %LoRa or up to 63 bytes using FSK modem.
+      Unlike the standard transmit method, this one is non-blocking. DIO0 will be activated when transmission finishes.
+      
+      \param str C-string that will be transmitted.
+      
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t startTransmit(const char* str, uint8_t addr = 0);
+    
+    /*!
+      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      
+      \param data Binary data that will be transmitted.
+      
+      \param len Length of binary data to transmit (in bytes).
+      
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      
+      \returns \ref status_codes
+    */
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    
+    /*!
+      \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
+      
+      \returns \ref status_codes
+    */
     int16_t startReceive();
+    
+    /*!
+      \brief Reads data that was received after calling startReceive method.
+      
+      \param str Address of Arduino String to save the received data.
+      
+      \param len Expected number of characters in the message. Must be known in advance for %LoRa spreading factor 6.
+      
+      \returns \ref status_codes
+    */
     int16_t readData(String& str, size_t len = 0);
+    
+    /*!
+      \brief Reads data that was received after calling startReceive method.
+      
+      \param data Pointer to array to save the received binary data.
+      
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      
+      \returns \ref status_codes
+    */
     int16_t readData(uint8_t* data, size_t len);
     
+    
     // configuration methods
+    
+    /*!
+      \brief Sets %LoRa sync word. Only available in %LoRa mode.
+      
+      \param syncWord Sync word to be set.
+      
+      \returns \ref status_codes
+    */
     int16_t setSyncWord(uint8_t syncWord);
+    
+    /*!
+      \brief Sets current limit for over current protection at transmitter amplifier. Allowed values range from 45 to 120 mA in 5 mA steps and 120 to 240 mA in 10 mA steps.
+      
+      \param currentLimit Current limit to be set (in mA).
+      
+      \returns \ref status_codes
+    */
     int16_t setCurrentLimit(uint8_t currentLimit);
+    
+    /*!
+      \brief Sets %LoRa preamble length. Allowed values range from 6 to 65535. Only available in %LoRa mode.
+      
+      \param preambleLength Preamble length to be set (in symbols).
+      
+      \returns \ref status_codes
+    */
     int16_t setPreambleLength(uint16_t preambleLength);
+    
+    /*!
+      \brief Gets frequency error of the latest received packet.
+      
+      \param autoCorrect When set to true, frequency will be autmatically corrected.
+      
+      \returns Frequency error in Hz.
+    */
     float getFrequencyError(bool autoCorrect = false);
+    
+    /*!
+      \brief Gets signal-to-noise ratio of the latest received packet.
+      
+      \returns Last packet signal-to-noise ratio (SNR).
+    */
     float getSNR();
+    
+    /*!
+      \brief Get data rate of the latest transmitted packet.
+      
+      \returns Last packet data rate in bps (bits per second).
+    */
     float getDataRate();
+    
+    /*!
+      \brief Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.
+      
+      \param br Bit rate to be set (in kbps).
+      
+      \returns \ref status_codes
+    */
     int16_t setBitRate(float br);
+    
+    /*!
+      \brief Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.
+      
+      \param freqDev Frequency deviation to be set (in kHz).
+      
+      \returns \ref status_codes
+    */
     int16_t setFrequencyDeviation(float freqDev);
+    
+    /*!
+      \brief Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
+      
+      \param rxBw Receiver bandwidth to be set (in kHz).
+      
+      \returns \ref status_codes
+    */
     int16_t setRxBandwidth(float rxBw);
+    
+    /*!
+      \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not conatain null bytes. Only available in FSK mode.
+      
+      \param syncWord Sync word array.
+      
+      \param len Sync word length (in bytes).
+      
+      \returns \ref status_codes
+    */
     int16_t setSyncWord(uint8_t* syncWord, size_t len);
+    
+    /*!
+      \brief Sets FSK node address. Calling this method will enable address filtering. Only available in FSK mode.
+      
+      \param nodeAddr Node address to be set.
+      
+      \returns \ref status_codes
+    */
     int16_t setNodeAddress(uint8_t nodeAddr);
+    
+    /*!
+      \brief Sets FSK broadcast address. Calling this method will enable address filtering. Only available in FSK mode.
+      
+      \param broadAddr Broadcast address to be set.
+      
+      \returns \ref status_codes
+    */
     int16_t setBroadcastAddress(uint8_t broadAddr);
+    
+    /*!
+      \brief Disables FSK address filtering.
+      
+      \returns \ref status_codes
+    */
     int16_t disableAddressFiltering();
     
     #ifdef KITELIB_DEBUG

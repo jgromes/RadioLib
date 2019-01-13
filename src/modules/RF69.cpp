@@ -125,7 +125,7 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
   
   // wait for transmission end
-  while(!digitalRead(_mod->int0()));
+  while(!digitalRead(_mod->getInt0()));
   
   // clear interrupt flags
   clearIRQFlags();
@@ -167,8 +167,8 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
   
   // wait for packet reception or timeout
-  while(!digitalRead(_mod->int0())) {
-    if(digitalRead(_mod->int1())) {
+  while(!digitalRead(_mod->getInt0())) {
+    if(digitalRead(_mod->getInt1())) {
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
     }
@@ -304,11 +304,11 @@ int16_t RF69::startReceive() {
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->int0()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->int1()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
 }
 
 int16_t RF69::startTransmit(String& str, uint8_t addr) {
@@ -416,8 +416,7 @@ int16_t RF69::setFrequency(float freq) {
   setMode(RF69_STANDBY);
   
   //set carrier frequency
-  uint32_t base = 1;
-  uint32_t FRF = (freq * (base << 19)) / 32.0;
+  uint32_t FRF = (freq * (uint32_t(1) << RF69_DIV_EXPONENT)) / RF69_CRYSTAL_FREQ;
   int16_t state = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FRF_LSB, FRF & 0x0000FF, 7, 0);

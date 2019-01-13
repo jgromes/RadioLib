@@ -108,14 +108,6 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   return(state);
 }
 
-int16_t SX127x::transmit(String& str, uint8_t addr) {
-  return(SX127x::transmit(str.c_str(), addr));
-}
-
-int16_t SX127x::transmit(const char* str, uint8_t addr) {
-  return(SX127x::transmit((uint8_t*)str, strlen(str), addr));
-}
-
 int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
@@ -164,7 +156,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     
     // wait for packet transmission or timeout
     uint32_t start = millis();
-    while(!digitalRead(_mod->int0())) {
+    while(!digitalRead(_mod->getInt0())) {
       if(millis() - start > timeout) {
         clearIRQFlags();
         return(ERR_TX_TIMEOUT);
@@ -213,7 +205,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     // wait for transmission end or timeout (150 % of expected time-on-air)
     uint32_t timeout = (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 1500.0);
     uint32_t start = millis();
-    while(!digitalRead(_mod->int0())) {
+    while(!digitalRead(_mod->getInt0())) {
       if(millis() - start > timeout) {
         clearIRQFlags();
         return(ERR_TX_TIMEOUT);
@@ -227,20 +219,6 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
   
   return(ERR_UNKNOWN);
-}
-
-int16_t SX127x::receive(String& str, size_t len) {
-  // create temporary array to store received data
-  char* data = new char[len + 1];
-  int16_t state = SX127x::receive((uint8_t*)data, len);
-  
-  // if packet was received successfully, copy data into String
-  if(state == ERR_NONE) {
-    str = String(data);
-  }
-  
-  delete[] data;
-  return(state);
 }
 
 int16_t SX127x::receive(uint8_t* data, size_t len) {
@@ -266,8 +244,8 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
     
     // wait for packet reception or timeout
-    while(!digitalRead(_mod->int0())) {
-      if(digitalRead(_mod->int1())) {
+    while(!digitalRead(_mod->getInt0())) {
+      if(digitalRead(_mod->getInt1())) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
       }
@@ -323,7 +301,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
     uint32_t timeout = (uint32_t)((((float)(maxLen * 8)) / (_br * 1000.0)) * 1500.0);
     uint32_t start = millis();
-    while(!digitalRead(_mod->int0())) {
+    while(!digitalRead(_mod->getInt0())) {
       if(millis() - start > timeout) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
@@ -384,8 +362,8 @@ int16_t SX127x::scanChannel() {
   }
   
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->int0())) {
-    if(digitalRead(_mod->int1())) {
+  while(!digitalRead(_mod->getInt0())) {
+    if(digitalRead(_mod->getInt1())) {
       clearIRQFlags();
       return(PREAMBLE_DETECTED);
     }
@@ -509,11 +487,11 @@ int16_t SX127x::startReceive() {
 }
 
 void SX127x::setDio0Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->int0()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
 }
 
 void SX127x::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->int1()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
 }
 
 int16_t SX127x::startTransmit(String& str, uint8_t addr) {
@@ -860,71 +838,7 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
   }
 
   // check allowed bandwidth values
-  uint8_t bwMant, bwExp;
-  if(abs(rxBw - 2.6) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 7;
-  } else if(abs(rxBw - 3.1) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 7;
-  } else if(abs(rxBw - 3.9) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 7;
-  } else if(abs(rxBw - 5.2) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 6;
-  } else if(abs(rxBw - 6.3) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 6;
-  } else if(abs(rxBw - 7.8) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 6;
-  } else if(abs(rxBw - 10.4) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 5;
-  } else if(abs(rxBw - 12.5) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 5;
-  } else if(abs(rxBw - 15.6) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 5;
-  } else if(abs(rxBw - 20.8) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 4;
-  } else if(abs(rxBw - 25.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 4;
-  } else if(abs(rxBw - 31.3) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 4;
-  } else if(abs(rxBw - 41.7) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 3;
-  } else if(abs(rxBw - 50.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 3;
-  } else if(abs(rxBw - 62.5) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 3;
-  } else if(abs(rxBw - 83.3) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 2;
-  } else if(abs(rxBw - 100.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 2;
-  } else if(abs(rxBw - 125.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 2;
-  } else if(abs(rxBw - 166.7) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_24;
-    bwExp = 1;
-  } else if(abs(rxBw - 200.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_20;
-    bwExp = 1;
-  } else if(abs(rxBw - 250.0) <= 0.001) {
-    bwMant = SX127X_RX_BW_MANT_16;
-    bwExp = 1;
-  } else {
+  if(!((rxBw >= 2.6) && (rxBw <= 250.0))) {
     return(ERR_INVALID_RX_BANDWIDTH);
   }
   
@@ -934,19 +848,29 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
     return(state);
   }
   
-  // set Rx bandwidth during AFC
-  state = _mod->SPIsetRegValue(SX127X_REG_AFC_BW, bwMant | bwExp, 4, 0);
-  if(state != ERR_NONE) {
-    return(state);
+  // calculate exponent and mantisa values
+  for(uint8_t e = 7; e >= 1; e--) {
+    for(int8_t m = 2; m >= 0; m--) {
+      float point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
+      if(abs(rxBw - ((point / 1000.0) + 0.05)) <= 0.5) {
+        // set Rx bandwidth during AFC
+        state = _mod->SPIsetRegValue(SX127X_REG_AFC_BW, (m << 3) | e, 4, 0);
+        if(state != ERR_NONE) {
+          return(state);
+        }
+        
+        // set Rx bandwidth
+        state = _mod->SPIsetRegValue(SX127X_REG_RX_BW, (m << 3) | e, 4, 0);
+        if(state == ERR_NONE) {
+          SX127x::_rxBw = rxBw;
+        }
+        
+        return(state);
+      }
+    }
   }
   
-  // set Rx bandwidth
-  state = _mod->SPIsetRegValue(SX127X_REG_RX_BW, bwMant | bwExp, 4, 0);
-  if(state == ERR_NONE) {
-    SX127x::_rxBw = rxBw;
-  }
-  
-  return(state);
+  return(ERR_UNKNOWN);
 }
 
 int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
@@ -1038,8 +962,7 @@ int16_t SX127x::setFrequencyRaw(float newFreq) {
   int16_t state = setMode(SX127X_STANDBY);
   
   // calculate register values
-  uint32_t base = 1;
-  uint32_t FRF = (newFreq * (base << 19)) / 32.0;
+  uint32_t FRF = (newFreq * (uint32_t(1) << SX127X_DIV_EXPONENT)) / SX127X_CRYSTAL_FREQ;
   
   // write registers
   state |= _mod->SPIsetRegValue(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
