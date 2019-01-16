@@ -2,20 +2,20 @@
 
 Module::Module(int cs, int int0, int int1) {
   _cs = cs;
-  _tx = -1;
   _rx = -1;
+  _tx = -1;
   _int0 = int0;
   _int1 = int1;
 }
 
-Module::Module(int cs, int tx, int rx, int int0, int int1) {
+Module::Module(int cs, int rx, int tx, int int0, int int1) {
   _cs = cs;
-  _tx = tx;
   _rx = rx;
+  _tx = tx;
   _int0 = int0;
   _int1 = int1;
   
-  ModuleSerial = new SoftwareSerial(_tx, _rx);
+  ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
 
 void Module::init(uint8_t interface, uint8_t gpio) {
