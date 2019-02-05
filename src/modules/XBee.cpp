@@ -23,9 +23,9 @@ int16_t XBee::begin(long speed) {
   bool flagFound = false;
   uint8_t i = 0;
   while((i < 10) && !flagFound) {
-    // send test frame (get baudrate setting)
-    sendApiFrame(XBEE_API_FRAME_AT_COMMAND_QUEUE, 0x00, "BD");
-    int16_t state = readApiFrame(0x00, 4, 2000);
+    // hardware reset should return 2 modem status frames - 1st status 0x00, second status 0x06
+    int16_t state = readApiFrame(0x00, 1, 2000);
+    readApiFrame(0x00, 1, 2000);
     
     if(state == ERR_NONE) {
       flagFound = true;
@@ -377,6 +377,8 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
       return(ERR_FRAME_MALFORMED);
     }
   }
+  DEBUG_PRINT_STR("frame data field length: ");
+  DEBUG_PRINTLN(numBytes);
   
   // read the response
   uint8_t* resp = new uint8_t[numBytes];
@@ -387,8 +389,11 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   // verify checksum 
   uint8_t checksum = 0;
   for(uint16_t i = 0; i < numBytes; i++) {
+    DEBUG_PRINT_HEX(resp[i]);
+    DEBUG_PRINT_STR("\t");
     checksum += resp[i];
   }
+  DEBUG_PRINTLN();
   if(checksum != 0xFF) {
     DEBUG_PRINTLN_HEX(checksum);
     return(ERR_FRAME_INCORRECT_CHECKSUM);
@@ -396,7 +401,10 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   
   // check frame ID
   if(resp[1] != frameID) {
+    DEBUG_PRINT_STR("received frame ID: ");
     DEBUG_PRINTLN(resp[1]);
+    DEBUG_PRINT_STR("expected frame ID: ");
+    DEBUG_PRINTLN(frameID);
     return(ERR_FRAME_UNEXPECTED_ID);
   }
   
@@ -418,13 +426,17 @@ uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
   // read response
   uint8_t resp[3];
   uint8_t i = 0;
+  DEBUG_PRINT_STR("reading frame length: ");
   while(_mod->ModuleSerial->available() > 0) {
     uint8_t b = _mod->ModuleSerial->read();
+    DEBUG_PRINT_HEX(b);
+    DEBUG_PRINT_STR("\t");
     resp[i++] = b;
     if(i == 3) {
       break;
     }
   }
+  DEBUG_PRINTLN();
   
   return((resp[1] << 8) | resp[2]);
 }
