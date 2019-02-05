@@ -49,12 +49,6 @@ int16_t ESP8266::join(const char* ssid, const char* password) {
     return(ERR_AT_FAILED);
   }
   
-  // reset the module
-  int16_t state = reset();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
   // build AT command
   const char* atStr = "AT+CWJAP_CUR=\"";
   uint8_t cmdLen = strlen(atStr) + strlen(ssid) + strlen(password) + 4;
