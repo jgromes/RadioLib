@@ -2,6 +2,10 @@
    KiteLib SX1231 Transmit Example
 
    This example transmits packets using SX1231 FSK radio module.
+
+   NOTE: SX1231 offers the same features as RF69 and has the same
+         interface. Please see RF69 examples for examples on AES,
+         address filtering, interrupts and settings.
 */
 
 // include the library
@@ -20,7 +24,7 @@ void setup() {
   // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
-  // sync word:                           0x2D  0x01
+  // sync word:                           0x2D01
   int state = rf.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -28,20 +32,6 @@ void setup() {
     Serial.print(F("failed, code "));
     Serial.println(state);
     while (true);
-  }
-
-  // you can change the sync word at runtime
-  // sync word can be up to 8 non-zero bytes
-  Serial.print(F("[SX1231] Settings sync word ... "));
-  uint8_t syncWord[] = {0x01, 0x23};
-  // sync word:               0x01  0x23
-  // length:                  2
-  // tolerated error bits:    0
-  state == rf.setSyncWord(syncWord, 2);
-  if (state == ERR_NONE) {
-    Serial.println(F("success!"));
-  } else if (state == ERR_INVALID_SYNC_WORD) {
-    Serial.println(F("invalid!"));
   }
 }
 
