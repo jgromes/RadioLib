@@ -1,7 +1,7 @@
 /*
    KiteLib CC1101 Transmit Example
 
-   This example transmits packets using RF69 FSK radio module.
+   This example transmits packets using CC1101 FSK radio module.
 */
 
 // include the library
@@ -19,7 +19,8 @@ void setup() {
   // bit rate:                            115.2 kbps
   // Rx bandwidth:                        203 kHz
   // frequency deviation:                 48.0 kHz
-  int state = cc.begin(434);
+  // sync word:                           0xD391
+  int state = cc.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
