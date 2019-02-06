@@ -35,7 +35,7 @@ void setup() {
   // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
   // output power:                        13 dBm
-  // sync word:                           0x2D  0x01
+  // sync word:                           0x2D01
   int state = rf1.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -52,7 +52,7 @@ void setup() {
   // Rx bandwidth:                        250.0 kHz
   // frequency deviation:                 60.0 kHz
   // output power:                        17 dBm
-  // sync word:                           0x2D  0x01
+  // sync word:                           0x2D01
   state = rf1.begin(868.0, 300.0, 250.0, 60.0, 17);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -107,7 +107,7 @@ void setup() {
 
   // up to 8 bytes can be set as sync word
   // NOTE: sync word must not conatin any zero bytes
-  // set sync word to 0x01 0x23 0x45 0x67 0x89 0xAB 0xCD 0xEF
+  // set sync word to 0x0123456789ABCDEF
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
   if (rf1.setSyncWord(syncWord, 8) == ERR_INVALID_SYNC_WORD) {
     Serial.println(F("[RF69] Selected sync word is invalid for this module!"));

@@ -7,7 +7,12 @@ void setup() {
   
   // initialize RF69 with default settings
   Serial.print(F("Initializing ... "));
-  
+  // carrier frequency:                   434.0 MHz
+  // bit rate:                            48.0 kbps
+  // Rx bandwidth:                        125.0 kHz
+  // frequency deviation:                 50.0 kHz
+  // output power:                        13 dBm
+  // sync word:                           0x2D01
   int state = rf.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
