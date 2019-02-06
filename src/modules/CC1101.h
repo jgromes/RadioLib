@@ -30,8 +30,6 @@
 #define CC1101_CMD_FLUSH_TX                           0x3B
 #define CC1101_CMD_WOR_RESET                          0x3C
 #define CC1101_CMD_NOP                                0x3D
-#define CC1101_CMD_PATABLE                            0x3E
-#define CC1101_CMD_FIFO                               0x3F
 
 // CC1101 regsiter map
 #define CC1101_REG_IOCFG2                             0x00
@@ -61,9 +59,9 @@
 #define CC1101_REG_MCSM0                              0x18
 #define CC1101_REG_FOCCFG                             0x19
 #define CC1101_REG_BSCFG                              0x1A
-#define CC1101_REG_AGCTRL2                            0x1B
-#define CC1101_REG_AGCTRL1                            0x1C
-#define CC1101_REG_AGCTRL0                            0x1D
+#define CC1101_REG_AGCCTRL2                           0x1B
+#define CC1101_REG_AGCCTRL1                           0x1C
+#define CC1101_REG_AGCCTRL0                           0x1D
 #define CC1101_REG_WOREVT1                            0x1E
 #define CC1101_REG_WOREVT0                            0x1F
 #define CC1101_REG_WORCTRL                            0x20
@@ -95,6 +93,8 @@
 #define CC1101_REG_RXBYTES                            0x3B
 #define CC1101_REG_RCCTRL1_STATUS                     0x3C
 #define CC1101_REG_RCCTRL0_STATUS                     0x3D
+#define CC1101_REG_PATABLE                            0x3E
+#define CC1101_REG_FIFO                               0x3F
 
 // CC1101_REG_IOCFG2                                                  MSB   LSB   DESCRIPTION
 #define CC1101_GDO2_NORM                              0b00000000  //  6     6     GDO2 output: active high (default)
@@ -513,6 +513,7 @@ class CC1101: public PhysicalLayer {
     int16_t setBitRate(float br);
     int16_t setRxBandwidth(float rxBw);
     int16_t setFrequencyDeviation(float freqDev);
+    int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
     
   private:
     Module* _mod;
@@ -521,7 +522,8 @@ class CC1101: public PhysicalLayer {
     int16_t directMode();
     void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     
-    // SPI read overrides to set access bit for status registers
+    // SPI read overrides to set bit for burst write and status registers access
+    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
     uint8_t SPIreadRegister(uint8_t reg);
     
