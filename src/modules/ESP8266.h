@@ -1,5 +1,5 @@
-#ifndef _KITELIB_ESP8266_H
-#define _KITELIB_ESP8266_H
+#ifndef _RADIOLIB_ESP8266_H
+#define _RADIOLIB_ESP8266_H
 
 #include "Module.h"
 

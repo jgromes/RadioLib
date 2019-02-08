@@ -1034,7 +1034,7 @@ bool SX127x::findChip(uint8_t ver) {
     if(version == ver) {
       flagFound = true;
     } else {
-      #ifdef KITELIB_DEBUG
+      #ifdef RADIOLIB_DEBUG
         Serial.print(F("SX127x not found! ("));
         Serial.print(i + 1);
         Serial.print(F(" of 10 tries) SX127X_REG_VERSION == "));
@@ -1084,7 +1084,7 @@ void SX127x::clearIRQFlags() {
   }
 }
 
-#ifdef KITELIB_DEBUG
+#ifdef RADIOLIB_DEBUG
 void SX127x::regDump() {
   Serial.println();
   Serial.println(F("ADDR\tVALUE"));

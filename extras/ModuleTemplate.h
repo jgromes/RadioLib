@@ -1,5 +1,5 @@
 /* 
-  KiteLib Module Template header file
+  RadioLib Module Template header file
   
   Before opening pull request, please make sure that:
   1. All files MUST be compiled without errors using default Arduino IDE settings.
@@ -12,8 +12,8 @@
   If at any point you are unsure about the required style, please refer to the rest of the modules.
 */
 
-#ifndef _KITELIB_<module_name>_H
-#define _KITELIB_<module_name>_H
+#ifndef _RADIOLIB_<module_name>_H
+#define _RADIOLIB_<module_name>_H
 
 /*
   Header file for each module MUST include Module.h.

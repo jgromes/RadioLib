@@ -1,5 +1,5 @@
-#ifndef _KITELIB_JDY08_H
-#define _KITELIB_JDY08_H
+#ifndef _RADIOLIB_JDY08_H
+#define _RADIOLIB_JDY08_H
 
 #include "ISerial.h"
 

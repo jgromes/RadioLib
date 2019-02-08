@@ -1,14 +1,14 @@
 /*
-   KiteLib CC1101 Transmit Example
+   RadioLib CC1101 Transmit Example
 
    This example transmits packets using CC1101 FSK radio module.
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // CC1101 is in slot A on the shield
-CC1101 cc = Kite.ModuleA;
+CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

@@ -1,8 +1,8 @@
 /*
-   KiteLib SX127x Settings Example
+   RadioLib SX127x Settings Example
 
    This example shows how to change all the properties of RF69 radio.
-   KiteLib currently supports the following settings:
+   RadioLib currently supports the following settings:
     - pins (SPI slave select, digital IO 0, digital IO 1)
     - carrier frequency
     - bit rate
@@ -13,12 +13,12 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-RF69 rf1 = Kite.ModuleA;
+RF69 rf1 = RadioShield.ModuleA;
 
-// if you're not using Kite shield, you can specify
+// if you're not using RadioShield, you can specify
 // the connection yourself
 // NSS pin:   6
 // DIO0 pin:  4

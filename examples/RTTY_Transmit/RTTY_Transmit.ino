@@ -1,5 +1,5 @@
 /*
-   KiteLib RTTY Transmit Example
+   RadioLib RTTY Transmit Example
 
    This example sends RTTY message using SX1278's
    FSK modem.
@@ -7,14 +7,15 @@
    Other modules that can be used for RTTY:
     - SX1272/73/76/77/79
     - RF69
+    - SX1231
     - CC1101
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 fsk = Kite.ModuleA;
+SX1278 fsk = RadioShield.ModuleA;
 
 // create RTTY client instance using the FSK module
 RTTYClient rtty(&fsk);
@@ -63,7 +64,7 @@ void setup() {
   }
 
   /*
-    // KiteLib also provides ITA2 ("Baudot") support
+    // RadioLib also provides ITA2 ("Baudot") support
     rtty.begin(434, 183, 45, ITA2);
 
     // All transmissions in loop() (strings and numbers)

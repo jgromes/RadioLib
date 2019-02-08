@@ -1,5 +1,5 @@
 /*
-   KiteLib Transmit with Inerrupts Example
+   RadioLib Transmit with Inerrupts Example
 
    This example transmits LoRa packets with one second delays
    between them. Each packet contains up to 256 bytes
@@ -12,10 +12,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 lora = Kite.ModuleA;
+SX1278 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

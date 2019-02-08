@@ -1,5 +1,5 @@
 /*
-   KiteLib HC05 Example
+   RadioLib HC05 Example
 
    This example sends data using HC05 Bluetooth module.
    HC05 works exactly like a Serial line, data are sent to the paired device.
@@ -7,10 +7,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // HC05 module is in slot A on the shield
-HC05 bluetooth = Kite.ModuleA;
+HC05 bluetooth = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

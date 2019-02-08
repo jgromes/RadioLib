@@ -17,7 +17,7 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
     if(version == 0x24) {
       flagFound = true;
     } else {
-      #ifdef KITELIB_DEBUG
+      #ifdef RADIOLIB_DEBUG
         Serial.print(F("RF69 not found! ("));
         Serial.print(i + 1);
         Serial.print(F(" of 10 tries) RF69_REG_VERSION == "));

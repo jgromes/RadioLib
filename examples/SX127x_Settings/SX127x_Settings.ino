@@ -1,8 +1,8 @@
 /*
-   KiteLib SX127x Settings Example
+   RadioLib SX127x Settings Example
 
    This example shows how to change all the properties of LoRa transmission.
-   KiteLib currently supports the following settings:
+   RadioLib currently supports the following settings:
     - pins (SPI slave select, digital IO 0, digital IO 1)
     - carrier frequency
     - bandwidth
@@ -15,13 +15,13 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 loraSX1278 = Kite.ModuleA;
+SX1278 loraSX1278 = RadioShield.ModuleA;
 
 // SX1272 module is in slot B on the shield
-SX1272 loraSX1272 = Kite.ModuleB;
+SX1272 loraSX1272 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

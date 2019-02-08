@@ -1,14 +1,14 @@
 /*
-   KiteLib RF69 Transmit Example
+   RadioLib RF69 Transmit Example
 
    This example transmits packets using RF69 FSK radio module.
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // RF69 module is in slot A on the shield
-RF69 rf = Kite.ModuleA;
+RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

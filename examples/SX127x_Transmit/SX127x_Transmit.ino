@@ -1,5 +1,5 @@
 /*
-   KiteLib SX127x Transmit Example
+   RadioLib SX127x Transmit Example
 
    This example transmits packets using SX1278 LoRa radio module.
    Each packet contains up to 256 bytes of data, in the form of:
@@ -11,10 +11,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 lora = Kite.ModuleA;
+SX1278 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

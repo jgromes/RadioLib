@@ -1,5 +1,5 @@
 /*
-   KiteLib RF69 Receive with Address Example
+   RadioLib RF69 Receive with Address Example
 
    This example receives packets using RF69 FSK radio module.
    Packets can have 1-byte address of the destination node.
@@ -9,10 +9,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // RF69 module is in slot A on the shield
-RF69 rf = Kite.ModuleA;
+RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

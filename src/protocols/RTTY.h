@@ -1,5 +1,5 @@
-#ifndef _KITELIB_RTTY_H
-#define _KITELIB_RTTY_H
+#ifndef _RADIOLIB_RTTY_H
+#define _RADIOLIB_RTTY_H
 
 #include "TypeDef.h"
 #include "PhysicalLayer.h"

@@ -1,5 +1,5 @@
-#ifndef _KITELIB_TYPES_H
-#define _KITELIB_TYPES_H
+#ifndef _RADIOLIB_TYPES_H
+#define _RADIOLIB_TYPES_H
 
 #if ARDUINO >= 100
   #include "Arduino.h"
@@ -7,9 +7,9 @@
   #include "WProgram.h"
 #endif
 
-//#define KITELIB_DEBUG
+//#define RADIOLIB_DEBUG
 
-#ifdef KITELIB_DEBUG
+#ifdef RADIOLIB_DEBUG
   #define DEBUG_BEGIN(x)                Serial.begin (x)
   #define DEBUG_PRINT(x)                Serial.print (x)
   #define DEBUG_PRINT_BIN(x)            Serial.print (x, BIN)

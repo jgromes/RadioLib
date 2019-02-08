@@ -1,5 +1,5 @@
-#ifndef _KITELIB_HTTP_H
-#define _KITELIB_HTTP_H
+#ifndef _RADIOLIB_HTTP_H
+#define _RADIOLIB_HTTP_H
 
 #include "TypeDef.h"
 #include "TransportLayer.h"

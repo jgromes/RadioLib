@@ -1,5 +1,5 @@
 /*
-   KiteLib HTTP POST Example
+   RadioLib HTTP POST Example
    
    This example sends HTTP POST request using ESP8266 WiFi module.
    
@@ -11,10 +11,10 @@
  */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // ESP8266 module is in slot A on the shield
-ESP8266 wifi = Kite.ModuleA;
+ESP8266 wifi = RadioShield.ModuleA;
 
 // create HTTP client instance using the wifi module
 // the default port used for HTTP is 80

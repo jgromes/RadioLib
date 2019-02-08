@@ -1,5 +1,5 @@
-#ifndef _KITELIB_MQTT_H
-#define _KITELIB_MQTT_H
+#ifndef _RADIOLIB_MQTT_H
+#define _RADIOLIB_MQTT_H
 
 #include "TypeDef.h"
 #include "TransportLayer.h"

@@ -1,5 +1,5 @@
 /*
-   KiteLib SX127x Channel Activity Detection Example
+   RadioLib SX127x Channel Activity Detection Example
 
    This example scans the current LoRa channel and detects 
    valid LoRa preambles. Preamble is the first part of 
@@ -11,10 +11,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 lora = Kite.ModuleA;
+SX1278 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

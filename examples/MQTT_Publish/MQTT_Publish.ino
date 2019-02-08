@@ -1,5 +1,5 @@
 /*
-   KiteLib MQTT Publish Example
+   RadioLib MQTT Publish Example
 
    This example publishes MQTT messages using ESP8266 WiFi module.
 
@@ -11,10 +11,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // ESP8266 module is in slot A on the shield
-ESP8266 wifi = Kite.ModuleA;
+ESP8266 wifi = RadioShield.ModuleA;
 
 // create MQTT client instance using the wifi module
 // the default port used for MQTT is 1883

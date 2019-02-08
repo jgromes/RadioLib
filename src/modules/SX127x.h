@@ -1,5 +1,5 @@
-#ifndef _KITELIB_SX127X_H
-#define _KITELIB_SX127X_H
+#ifndef _RADIOLIB_SX127X_H
+#define _RADIOLIB_SX127X_H
 
 #include "TypeDef.h"
 #include "Module.h"
@@ -848,7 +848,7 @@ class SX127x: public PhysicalLayer {
     */
     int16_t disableAddressFiltering();
     
-    #ifdef KITELIB_DEBUG
+    #ifdef RADIOLIB_DEBUG
       void regDump();
     #endif
   

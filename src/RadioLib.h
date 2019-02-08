@@ -1,5 +1,5 @@
-#ifndef _KITELIB_H
-#define _KITELIB_H
+#ifndef _RADIOLIB_H
+#define _RADIOLIB_H
 
 #include "TypeDef.h"
 #include "Module.h"
@@ -28,18 +28,18 @@
 #include "protocols/HTTP.h"
 #include "protocols/MQTT.h"
 
-#define KITE_CS_A   10
-#define KITE_RX_A   9
-#define KITE_TX_A   8
-#define KITE_CS_B   5
-#define KITE_RX_B   7
-#define KITE_TX_B   6
-#define KITE_INT_0  2
-#define KITE_INT_1  3
+#define RADIOSHIELD_CS_A   10
+#define RADIOSHIELD_RX_A   9
+#define RADIOSHIELD_TX_A   8
+#define RADIOSHIELD_CS_B   5
+#define RADIOSHIELD_RX_B   7
+#define RADIOSHIELD_TX_B   6
+#define RADIOSHIELD_INT_0  2
+#define RADIOSHIELD_INT_1  3
 
-class KiteShield {
+class Radio {
   public:
-    KiteShield();
+    Radio();
     
     Module* ModuleA;
     Module* ModuleB;
@@ -49,6 +49,6 @@ class KiteShield {
   
 };
 
-extern KiteShield Kite;
+extern Radio RadioShield;
 
 #endif

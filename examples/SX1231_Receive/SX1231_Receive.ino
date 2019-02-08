@@ -1,5 +1,5 @@
 /*
-   KiteLib SX1231 Receive Example
+   RadioLib SX1231 Receive Example
 
    This example receives packets using SX1231 FSK radio module.
 
@@ -9,10 +9,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1231 module is in slot A on the shield
-SX1231 rf = Kite.ModuleA;
+SX1231 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

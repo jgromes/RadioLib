@@ -1,14 +1,14 @@
 /*
-   KiteLib JDY08 Example
+   RadioLib JDY08 Example
 
    This example sends data using JDY08 Bluetooth module.
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // JDY08 module is in slot A on the shield
-JDY08 ble = Kite.ModuleA;
+JDY08 ble = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

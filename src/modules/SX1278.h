@@ -1,5 +1,5 @@
-#ifndef _KITELIB_SX1278_H
-#define _KITELIB_SX1278_H
+#ifndef _RADIOLIB_SX1278_H
+#define _RADIOLIB_SX1278_H
 
 #include "TypeDef.h"
 #include "Module.h"

@@ -1,5 +1,5 @@
 /*
-   KiteLib XBee Transparent Operation Example
+   RadioLib XBee Transparent Operation Example
 
    This example transmits packets using XBee Transparent mode.
    In Transparent mode, two XBee modules act like a Serial line.
@@ -11,10 +11,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // XBee module is in slot A on the shield
-XBeeSerial bee = Kite.ModuleA;
+XBeeSerial bee = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

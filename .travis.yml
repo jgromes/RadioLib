@@ -15,7 +15,7 @@ before_install:
   - export PATH=$PATH:$HOME/arduino-ide
 install:
   - mkdir -p $HOME/Arduino/libraries
-  - ln -s $PWD $HOME/Arduino/libraries/KiteLib
+  - ln -s $PWD $HOME/Arduino/libraries/RadioLib
 script:
   # build all example sketches
   - cd examples

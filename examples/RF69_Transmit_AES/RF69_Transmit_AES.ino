@@ -1,5 +1,5 @@
 /*
-   KiteLib RF69 Transmit with AES Example
+   RadioLib RF69 Transmit with AES Example
 
    This example transmits packets using RF69 FSK radio module.
    Packets are encrypted using hardware AES.
@@ -7,10 +7,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // RF69 module is in slot A on the shield
-RF69 rf = Kite.ModuleA;
+RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

@@ -1,4 +1,4 @@
-# RadioLib [![Build Status](https://travis-ci.org/jgromes/KiteLib.svg?branch=master)](https://travis-ci.org/jgromes/KiteLib)
+# RadioLib [![Build Status](https://travis-ci.org/jgromes/RadioLib.svg?branch=master)](https://travis-ci.org/jgromes/RadioLib)
 
 ### _One radio library to rule them all!_
 

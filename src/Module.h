@@ -1,5 +1,5 @@
-#ifndef _KITELIB_MODULE_H
-#define _KITELIB_MODULE_H
+#ifndef _RADIOLIB_MODULE_H
+#define _RADIOLIB_MODULE_H
 
 #include <SPI.h>
 //#include <Wire.h>

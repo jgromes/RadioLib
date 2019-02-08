@@ -1,5 +1,5 @@
 /*
-   KiteLib SX127x Receive Example
+   RadioLib SX127x Receive Example
 
    This example listens for LoRa transmissions using SX127x Lora modules.
    To successfully receive data, the following settings have to be the same
@@ -15,10 +15,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 lora = Kite.ModuleA;
+SX1278 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

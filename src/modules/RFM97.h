@@ -1,5 +1,5 @@
-#ifndef _KITELIB_RFM97_H
-#define _KITELIB_RFM97_H
+#ifndef _RADIOLIB_RFM97_H
+#define _RADIOLIB_RFM97_H
 
 #include "TypeDef.h"
 #include "Module.h"

@@ -1,5 +1,5 @@
-#ifndef _KITELIB_XBEE_H
-#define _KITELIB_XBEE_H
+#ifndef _RADIOLIB_XBEE_H
+#define _RADIOLIB_XBEE_H
 
 #include "ISerial.h"
 #include "TypeDef.h"

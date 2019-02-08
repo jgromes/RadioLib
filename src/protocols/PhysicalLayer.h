@@ -1,5 +1,5 @@
-#ifndef _KITELIB_PHYSICAL_LAYER_H
-#define _KITELIB_PHYSICAL_LAYER_H
+#ifndef _RADIOLIB_PHYSICAL_LAYER_H
+#define _RADIOLIB_PHYSICAL_LAYER_H
 
 #include "TypeDef.h"
 

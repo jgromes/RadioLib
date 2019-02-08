@@ -17,7 +17,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       flagFound = true;
       _chipRevision = version;
     } else {
-      #ifdef KITELIB_DEBUG
+      #ifdef RADIOLIB_DEBUG
         Serial.print(F("SX127x not found! ("));
         Serial.print(i + 1);
         Serial.print(F(" of 10 tries) SX127X_REG_VERSION == "));

@@ -1,13 +1,13 @@
 #######################################
-# Syntax Coloring Map For KiteLib
+# Syntax Coloring Map For RadioLib
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-KiteLib	KEYWORD1
-Kite	KEYWORD1
+RadioLib	KEYWORD1
+RadioShield	KEYWORD1
 Module	KEYWORD1
 
 CC1101	KEYWORD1
@@ -37,7 +37,7 @@ RTTYClient	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 
-# KiteLib
+# RadioLib
 ModuleA	KEYWORD2
 ModuleB	KEYWORD2
 Module	KEYWORD2

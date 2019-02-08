@@ -1,5 +1,5 @@
 /*
-   KiteLib XBee API Receive Example
+   RadioLib XBee API Receive Example
 
    This example receives packets using XBee API mode.
    In API mode, many XBee modules can form a mesh network.
@@ -9,10 +9,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // XBee module is in slot A on the shield
-XBee bee = Kite.ModuleA;
+XBee bee = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

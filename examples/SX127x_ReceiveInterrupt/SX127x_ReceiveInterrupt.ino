@@ -1,5 +1,5 @@
 /*
-   KiteLib Receive with Inerrupts Example
+   RadioLib SX127x Receive with Inerrupts Example
 
    This example listens for LoRa transmissions and tries to
    receive them. Once a packet is received, an interrupt is
@@ -16,10 +16,10 @@
 */
 
 // include the library
-#include <KiteLib.h>
+#include <RadioLib.h>
 
 // SX1278 module is in slot A on the shield
-SX1278 lora = Kite.ModuleA;
+SX1278 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

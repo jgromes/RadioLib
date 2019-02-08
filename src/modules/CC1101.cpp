@@ -18,7 +18,7 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
     if(version == 0x14) {
       flagFound = true;
     } else {
-      #ifdef KITELIB_DEBUG
+      #ifdef RADIOLIB_DEBUG
         Serial.print(F("CC1101 not found! ("));
         Serial.print(i + 1);
         Serial.print(F(" of 10 tries) CC1101_REG_VERSION == "));

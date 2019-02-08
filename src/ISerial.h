@@ -1,5 +1,5 @@
-#ifndef _KITELIB_ISERIAL_H
-#define _KITELIB_ISERIAL_H
+#ifndef _RADIOLIB_ISERIAL_H
+#define _RADIOLIB_ISERIAL_H
 
 #include "Module.h"
 
