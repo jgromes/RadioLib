@@ -327,6 +327,32 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL) {
   return(state);
 }
 
+int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
+  if(!(numBroadcastAddrs > 0) && (numBroadcastAddrs <= 2)) {
+    return(ERR_INVALID_NUM_BROAD_ADDRS);
+  }
+
+  // enable address filtering
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL1, numBroadcastAddrs + 0x01, 1, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set node address
+  return(SPIsetRegValue(CC1101_REG_ADDR, nodeAddr));
+}
+
+int16_t CC1101::disableAddressFiltering() {
+  // disable address filtering
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_ADR_CHK_NONE, 1, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set node address to default (0x00)
+  return(SPIsetRegValue(CC1101_REG_ADDR, 0x00));
+}
+
 float CC1101::getRSSI() {
   float rssi;
   if(_rawRSSI >= 128) {
@@ -349,7 +375,6 @@ int16_t CC1101::config() {
   }
   
   // set packet mode
-  // TODO: address filtering
   state = SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_CRC_AUTOFLUSH_OFF | CC1101_APPEND_STATUS_ON | CC1101_ADR_CHK_NONE, 3, 0); 
   state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF | CC1101_PKT_FORMAT_NORMAL, 6, 4);
   state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON | CC1101_LENGTH_CONFIG_VARIABLE, 2, 0);

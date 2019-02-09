@@ -60,7 +60,7 @@
 #define ERR_NONE                               0
 #define ERR_UNKNOWN                            -1
 
-// SX127x/RFM9x/RF69 status codes
+// SX127x/RFM9x/RF69/CC1101 status codes
 #define ERR_CHIP_NOT_FOUND                    -2
 #define ERR_EEPROM_NOT_INITIALIZED            -3
 #define ERR_PACKET_TOO_LONG                   -4
@@ -116,5 +116,8 @@
 // RTTY status codes
 #define ERR_INVALID_RTTY_SHIFT                -401
 #define ERR_UNSUPPORTED_ENCODING              -402
+
+// CC1101-specific status codes
+#define ERR_INVALID_NUM_BROAD_ADDRS           -601
 
 #endif

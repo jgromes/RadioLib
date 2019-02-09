@@ -516,6 +516,8 @@ class CC1101: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
     int16_t setFrequencyDeviation(float freqDev);
     int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
+    int16_t setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs = 0);
+    int16_t disableAddressFiltering();
     float getRSSI();
     uint8_t getLQI();
     
