@@ -271,7 +271,8 @@
 #define CC1101_RX_TIMEOUT_RSSI_ON                     0b00010000  //  4     4                                     enabled
 #define CC1101_RX_TIMEOUT_QUAL_OFF                    0b00000000  //  3     3     check for sync word on Rx timeout
 #define CC1101_RX_TIMEOUT_QUAL_ON                     0b00001000  //  3     3     check for PQI set on Rx timeout
-#define CC1101_RX_TIMEOUT                             0b00000111  //  2     0     Rx timeout coefficient value
+#define CC1101_RX_TIMEOUT_OFF                         0b00000111  //  2     0     Rx timeout: disabled (default)
+#define CC1101_RX_TIMEOUT_MAX                         0b00000000  //  2     0                 max value (actual value depends on WOR_RES, EVENT0 and f(XOSC))
 
 // CC1101_REG_MCSM1
 #define CC1101_CCA_MODE_ALWAYS                        0b00000000  //  5     4     clear channel indication: always
@@ -485,6 +486,7 @@
 
 // CC1101_REG_PKTSTATUS
 #define CC1101_CRC_OK                                 0b10000000  //  7     7     CRC check passed
+#define CC1101_CRC_ERROR                              0b00000000  //  7     7     CRC check failed
 #define CC1101_CS                                     0b01000000  //  6     6     carrier sense
 #define CC1101_PQT_REACHED                            0b00100000  //  5     5     preamble quality reached
 #define CC1101_CCA                                    0b00010000  //  4     4     channel clear
@@ -498,7 +500,7 @@ class CC1101: public PhysicalLayer {
     CC1101(Module* module);
     
     // basic methods
-    int16_t begin(float freq = 868.0, float br = 115.2, float rxBw = 325.0, float freqDev = 48.0);
+    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0);
     int16_t transmit(String& str, uint8_t addr = 0);
     int16_t transmit(const char* str, uint8_t addr = 0);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
@@ -514,18 +516,26 @@ class CC1101: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
     int16_t setFrequencyDeviation(float freqDev);
     int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
+    float getRSSI();
+    uint8_t getLQI();
     
   private:
     Module* _mod;
+    
+    uint8_t _rawRSSI;
+    uint8_t _rawLQI;
     
     int16_t config();
     int16_t directMode();
     void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     
     // SPI read overrides to set bit for burst write and status registers access
-    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
+    void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
     uint8_t SPIreadRegister(uint8_t reg);
+    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
+    void SPIwriteRegister(uint8_t reg, uint8_t data);
     
     void SPIsendCommand(uint8_t cmd);
 };

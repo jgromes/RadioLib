@@ -69,6 +69,10 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
     return(state);
   }
   
+  // flush FIFOs
+  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+  SPIsendCommand(CC1101_CMD_FLUSH_TX);
+  
   return(state);
 }
 
@@ -82,7 +86,7 @@ int16_t CC1101::transmit(const char* str, uint8_t addr) {
 
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
-  if(len > 255) {
+  if(len > 63) {
     return(ERR_PACKET_TOO_LONG);
   }
   
@@ -90,13 +94,13 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   standby();
   
   // set GDO0 mapping
-  _mod->SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
   
   // write packet length
-  _mod->SPIwriteRegister(CC1101_REG_FIFO, len);
+  SPIwriteRegister(CC1101_REG_FIFO, len);
   
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurst(CC1101_REG_FIFO | CC1101_CMD_BURST, data, len);
+  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
   
   // set mode to transmit
   SPIsendCommand(CC1101_CMD_TX);
@@ -131,10 +135,58 @@ int16_t CC1101::receive(String& str, size_t len) {
 }
 
 int16_t CC1101::receive(uint8_t* data, size_t len) {
-  // TODO
   // set mode to standby
+  standby();
   
-  // set GDO0 and GDO2 mapping
+  // flush Rx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+  
+  // set GDO0 mapping
+  SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  
+  // set mode to receive
+  SPIsendCommand(CC1101_CMD_RX);
+  
+  // wait for sync word
+  while(!digitalRead(_mod->getInt0()));
+  
+  // wait for packet end
+  while(digitalRead(_mod->getInt0()));
+  
+  // get packet length
+  size_t length = SPIreadRegister(CC1101_REG_RXBYTES) - 2;
+
+  // read packet data
+  if(len == 0) {
+    // argument len equal to zero indicates String call, which means dynamically allocated data array
+    // dispose of the original and create a new one
+    delete[] data;
+    data = new uint8_t[length + 1];
+  }
+  SPIreadRegisterBurst(CC1101_REG_FIFO, length, data);
+  
+  // read RSSI byte
+  _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
+  
+  // read LQI and CRC byte
+  uint8_t val = SPIgetRegValue(CC1101_REG_FIFO);
+  _rawLQI = val & 0x7F;
+  
+  // add terminating null
+  if(len == 0) {
+    data[length] = 0;
+  }
+  
+  // flush Rx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+  
+  // set mode to standby
+  standby();
+  
+  // check CRC
+  if((val & 0b10000000) == 0b00000000) {
+    return(ERR_CRC_MISMATCH);
+  }
   
   return(ERR_NONE);
 }
@@ -147,9 +199,9 @@ int16_t CC1101::standby() {
 int16_t CC1101::transmitDirect(uint32_t FRF) {
   // user requested to start transmitting immediately (required for RTTY)
   if(FRF != 0) {
-    _mod->SPIwriteRegister(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16);
-    _mod->SPIwriteRegister(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8);
-    _mod->SPIwriteRegister(CC1101_REG_FREQ0, FRF & 0x0000FF);
+    SPIwriteRegister(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16);
+    SPIwriteRegister(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8);
+    SPIwriteRegister(CC1101_REG_FREQ0, FRF & 0x0000FF);
   
     SPIsendCommand(CC1101_CMD_TX);
   }
@@ -191,9 +243,9 @@ int16_t CC1101::setFrequency(float freq) {
   //set carrier frequency
   uint32_t base = 1;
   uint32_t FRF = (freq * (base << 16)) / 26.0;
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16, 7, 0);
-  state |= _mod->SPIsetRegValue(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8, 7, 0);
-  state |= _mod->SPIsetRegValue(CC1101_REG_FREQ0, FRF & 0x0000FF, 7, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16, 7, 0);
+  state |= SPIsetRegValue(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8, 7, 0);
+  state |= SPIsetRegValue(CC1101_REG_FREQ0, FRF & 0x0000FF, 7, 0);
 
   return(state);
 }
@@ -213,8 +265,8 @@ int16_t CC1101::setBitRate(float br) {
   getExpMant(br * 1000.0, 256, 28, 14, e, m);
   
   // set bit rate value
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
-  state |= _mod->SPIsetRegValue(CC1101_REG_MDMCFG3, m);
+  int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
+  state |= SPIsetRegValue(CC1101_REG_MDMCFG3, m);
   return(state);
 }
 
@@ -233,7 +285,7 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
       float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
       if(abs((rxBw * 1000.0) - point) <= 0.001) {
         // set Rx channel filter bandwidth
-        return(_mod->SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
+        return(SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
       }
     }
   }
@@ -244,8 +296,8 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set frequency deviation to lowest available setting (required for RTTY)
   if(freqDev == 0.0) {
-    int16_t state = _mod->SPIsetRegValue(CC1101_REG_DEVIATN, 0, 6, 4);
-    state |= _mod->SPIsetRegValue(CC1101_REG_DEVIATN, 0, 2, 0);
+    int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, 0, 6, 4);
+    state |= SPIsetRegValue(CC1101_REG_DEVIATN, 0, 2, 0);
     return(state);
   }
 
@@ -263,27 +315,50 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
   
   // set frequency deviation value
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
-  state |= _mod->SPIsetRegValue(CC1101_REG_DEVIATN, m, 2, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
+  state |= SPIsetRegValue(CC1101_REG_DEVIATN, m, 2, 0);
   return(state);
 }
 
 int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL) {
   // set sync word
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_SYNC1, syncH);
-  state |= _mod->SPIsetRegValue(CC1101_REG_SYNC0, syncL);
+  int16_t state = SPIsetRegValue(CC1101_REG_SYNC1, syncH);
+  state |= SPIsetRegValue(CC1101_REG_SYNC0, syncL);
   return(state);
+}
+
+float CC1101::getRSSI() {
+  float rssi;
+  if(_rawRSSI >= 128) {
+    rssi = (((float)_rawRSSI - 256.0)/2.0) - 74.0;
+  } else {
+    rssi = (((float)_rawRSSI)/2.0) - 74.0;
+  }
+  return(rssi);
+}
+
+uint8_t CC1101::getLQI() {
+  return(_rawLQI);
 }
 
 int16_t CC1101::config() {
   // enable automatic frequency synthesizer calibration 
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
+  int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
   if(state != ERR_NONE) {
     return(state);
   }
   
-  // set output power
-  _mod->SPIwriteRegister(CC1101_REG_PATABLE, 0x60);
+  // set packet mode
+  // TODO: address filtering
+  state = SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_CRC_AUTOFLUSH_OFF | CC1101_APPEND_STATUS_ON | CC1101_ADR_CHK_NONE, 3, 0); 
+  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF | CC1101_PKT_FORMAT_NORMAL, 6, 4);
+  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON | CC1101_LENGTH_CONFIG_VARIABLE, 2, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // TODO: configurable power output
+  SPIwriteRegister(CC1101_REG_PATABLE, 0x60);
   
   return(state);
 }
@@ -293,11 +368,11 @@ int16_t CC1101::directMode() {
   SPIsendCommand(CC1101_CMD_IDLE);
   
   // set GDO0 and GDO2 mapping
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SERIAL_CLOCK , 5, 0);
-  state |= _mod->SPIsetRegValue(CC1101_REG_IOCFG2, CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SERIAL_CLOCK , 5, 0);
+  state |= SPIsetRegValue(CC1101_REG_IOCFG2, CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
   
   // set continuous mode
-  state |= _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
   return(state);
 }
 
@@ -327,9 +402,7 @@ void CC1101::getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8
 	}
 }
 
-void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
-  _mod->SPIwriteRegisterBurst(reg | CC1101_CMD_BURST, data, len);
-}
+
 
 int16_t CC1101::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
   // status registers require special command
@@ -340,6 +413,19 @@ int16_t CC1101::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
   return(_mod->SPIgetRegValue(reg, msb, lsb));
 }
 
+int16_t CC1101::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval) {
+  // status registers require special command
+  if(reg > CC1101_REG_TEST0) {
+    reg |= CC1101_CMD_ACCESS_STATUS_REG;
+  }
+  
+  return(_mod->SPIsetRegValue(reg, value, msb, lsb, checkInterval));
+}
+
+void CC1101::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {
+  _mod->SPIreadRegisterBurst(reg | CC1101_CMD_BURST, numBytes, inBytes);
+}
+
 uint8_t CC1101::SPIreadRegister(uint8_t reg) {
   // status registers require special command
   if(reg > CC1101_REG_TEST0) {
@@ -347,6 +433,19 @@ uint8_t CC1101::SPIreadRegister(uint8_t reg) {
   }
 
   return(_mod->SPIreadRegister(reg));
+}
+
+void CC1101::SPIwriteRegister(uint8_t reg, uint8_t data) {
+  // status registers require special command
+  if(reg > CC1101_REG_TEST0) {
+    reg |= CC1101_CMD_ACCESS_STATUS_REG;
+  }
+  
+  return(_mod->SPIwriteRegister(reg, data));
+}
+
+void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
+  _mod->SPIwriteRegisterBurst(reg | CC1101_CMD_BURST, data, len);
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
