@@ -1,7 +1,8 @@
 /*
    RadioLib CC1101 Receive Example
 
-   This example receives packets using CC1101 FSK radio module.
+   This example receives packets using CC1101 FSK radio 
+   module.
 */
 
 // include the library
