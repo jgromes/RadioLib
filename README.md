@@ -25,6 +25,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __MQTT__ on modules: ESP8266
 * __HTTP__ on modules: ESP8266
 * __RTTY__ on modules: SX1272/73/76/77/78/79, RFM95/96/97, RF69, SX1231 and CC1101
+* __Morse Code__ on modules: SX1272/73/76/77/78/79, RFM95/96/97, RF69, SX1231 and CC1101
 
 ### In development:
 * __SIM800C__ GSM module
