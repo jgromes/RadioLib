@@ -96,14 +96,6 @@ void loop() {
     // print the data of the packet
     Serial.print(F("[RF69] Data:\t\t"));
     Serial.println(str);
-    /*
-      for(int i = 0; i < 8; i++) {
-      Serial.print("0x");
-      Serial.print(byteArr[i], HEX);
-      Serial.print(' ');
-      }
-      Serial.println();
-    */
 
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
