@@ -22,6 +22,7 @@
 #include "modules/XBee.h"
 
 #include "protocols/PhysicalLayer.h"
+#include "protocols/Morse.h"
 #include "protocols/RTTY.h"
 
 #include "protocols/TransportLayer.h"
