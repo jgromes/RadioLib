@@ -43,7 +43,7 @@ ModuleA	KEYWORD2
 ModuleB	KEYWORD2
 Module	KEYWORD2
 
-# SX127x/RFM9x + RF69
+# SX127x/RFM9x + RF69 + CC1101
 begin	KEYWORD2
 beginFSK	KEYWORD2
 transmit	KEYWORD2
@@ -86,6 +86,9 @@ enableAES	KEYWORD2
 disableAES	KEYWORD2
 getTemperature	KEYWORD2
 setAmbientTemperature	KEYWORD2
+
+# CC1101-specific
+getLQI	KEYWORD2
 
 # ESP8266
 join	KEYWORD2
