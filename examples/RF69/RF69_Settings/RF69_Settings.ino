@@ -1,5 +1,5 @@
 /*
-   RadioLib SX127x Settings Example
+   RadioLib RF69 Settings Example
 
    This example shows how to change all the properties of RF69 radio.
    RadioLib currently supports the following settings:
@@ -15,7 +15,7 @@
 // include the library
 #include <RadioLib.h>
 
-// SX1278 module is in slot A on the shield
+// RF69 module is in slot A on the shield
 RF69 rf1 = RadioShield.ModuleA;
 
 // if you're not using RadioShield, you can specify
@@ -53,7 +53,7 @@ void setup() {
   // frequency deviation:                 60.0 kHz
   // output power:                        17 dBm
   // sync word:                           0x2D01
-  state = rf1.begin(868.0, 300.0, 250.0, 60.0, 17);
+  state = rf2.begin(868.0, 300.0, 250.0, 60.0, 17);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -67,7 +67,7 @@ void setup() {
 
   // set carrier frequency to 433.5 MHz
   if (rf1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
-    Serial.println(F("Selected frequency is invalid for this module!"));
+    Serial.println(F("[RF69] Selected frequency is invalid for this module!"));
     while (true);
   }
 
