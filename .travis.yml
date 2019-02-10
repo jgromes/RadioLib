@@ -17,7 +17,7 @@ install:
   - ln -s $PWD $HOME/Arduino/libraries/RadioLib
 script:
   # build all example sketches
-  - for example in $(find $PWD/examples -name '*.ino'); do
+  - for example in $(find $PWD/examples -name '*.ino' | sort); do
       echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
       arduino --verify --board $BOARD $example;
       if [ $? -ne 0 ]; then
