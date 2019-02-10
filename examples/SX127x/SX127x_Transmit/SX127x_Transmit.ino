@@ -58,7 +58,7 @@ void loop() {
     Serial.println(" success!");
 
     // print measured data rate
-    Serial.print("Datarate:\t");
+    Serial.print("[SX1278] Datarate:\t");
     Serial.print(lora.getDataRate());
     Serial.println(" bps");
 

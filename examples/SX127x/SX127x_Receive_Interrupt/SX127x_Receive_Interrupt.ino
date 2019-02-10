@@ -25,7 +25,7 @@ void setup() {
   Serial.begin(9600);
 
   // initialize SX1278 with default settings
-  Serial.print(F("Initializing ... "));
+  Serial.print(F("[SX1278] Initializing ... "));
   // carrier frequency:           434.0 MHz
   // bandwidth:                   125.0 kHz
   // spreading factor:            9
@@ -49,7 +49,7 @@ void setup() {
   lora.setDio0Action(setFlag);
   
   // start listening for LoRa packets
-  Serial.print(F("Starting to listen ... "));
+  Serial.print(F("[SX1278] Starting to listen ... "));
   state = lora.startReceive();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -111,24 +111,24 @@ void loop() {
     
     if (state == ERR_NONE) {
       // packet was successfully received
-      Serial.println("Received packet!");
+      Serial.println("[SX1278] Received packet!");
   
       // print data of the packet
-      Serial.print("Data:\t\t");
+      Serial.print("[SX1278] Data:\t\t");
       Serial.println(str);
   
       // print RSSI (Received Signal Strength Indicator) 
-      Serial.print("RSSI:\t\t");
+      Serial.print("[SX1278] RSSI:\t\t");
       Serial.print(lora.getRSSI());
       Serial.println(" dBm");
   
       // print SNR (Signal-to-Noise Ratio) 
-      Serial.print("SNR:\t\t");
+      Serial.print("[SX1278] SNR:\t\t");
       Serial.print(lora.getSNR());
       Serial.println(" dBm");
 
       // print frequency error
-      Serial.print("Frequency error:\t");
+      Serial.print("[SX1278] Frequency error:\t");
       Serial.print(lora.getFrequencyError());
       Serial.println(" Hz");
   

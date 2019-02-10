@@ -41,7 +41,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(F("Scanning channel for LoRa preamble ... "));
+  Serial.print(F("[SX1278] Scanning channel for LoRa preamble ... "));
 
   // start scanning current channel
   int state = lora.scanChannel();

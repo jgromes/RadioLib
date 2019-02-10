@@ -1,5 +1,5 @@
 /*
-   RadioLib Transmit with Inerrupts Example
+   RadioLib SX127x Transmit with Inerrupts Example
 
    This example transmits LoRa packets with one second delays
    between them. Each packet contains up to 256 bytes
@@ -21,7 +21,7 @@ void setup() {
   Serial.begin(9600);
 
   // initialize SX1278 with default settings
-  Serial.print(F("Initializing ... "));
+  Serial.print(F("[SX1278] Initializing ... "));
   // carrier frequency:                   434.0 MHz
   // bandwidth:                           125.0 kHz
   // spreading factor:                    9
@@ -45,7 +45,7 @@ void setup() {
   lora.setDio0Action(setFlag);
 
   // start transmitting the first packet
-  Serial.print(F("Sending first packet ... "));
+  Serial.print(F("[SX1278] Sending first packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
@@ -75,13 +75,13 @@ void setFlag(void) {
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
-    Serial.println(F("Packet transmission finished!"));
+    Serial.println(F("[SX1278] Packet transmission finished!"));
 
     // wait one second before next transmission
     delay(1000);
 
     // send another packet
-    Serial.print(F("Sending another packet ... "));
+    Serial.print(F("[SX1278] Sending another packet ... "));
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
