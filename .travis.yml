@@ -1,4 +1,3 @@
-language: c
 env:
   global:
     # keep Arduino IDE version at 1.8.1 until https://github.com/per1234/arduino-ci-script/issues/1 is resolved
@@ -22,9 +21,9 @@ script:
       echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
       arduino --verify --board $BOARD $example;
       if [ $? -ne 0 ]; then
-        echo -e "\033[1;31m$example build FAILED\033[0m\n";
+        echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
         exit 1;
       else
-        echo -e "\033[1;32m$example build PASSED\033[0m\n";
+        echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
       fi
     done
