@@ -3,14 +3,7 @@
 
    This example listens for FSK transmissions and tries to
    receive them. Once a packet is received, an interrupt is
-   triggered. To successfully receive data, the following
-   settings have to be the same on both transmitter 
-   and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
+   triggered.
 */
 
 // include the library
