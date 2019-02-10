@@ -93,8 +93,14 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   standby();
   
+  // flush Tx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_TX);
+  
   // set GDO0 mapping
-  SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  if(state != ERR_NONE) {
+    return(state);
+  }
   
   // write packet length
   SPIwriteRegister(CC1101_REG_FIFO, len);
@@ -117,7 +123,7 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // flush Tx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_TX);
   
-  return(ERR_NONE);
+  return(state);
 }
 
 int16_t CC1101::receive(String& str, size_t len) {
@@ -142,7 +148,10 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
   
   // set GDO0 mapping
-  SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  if(state != ERR_NONE) {
+    return(state);
+  }
   
   // set mode to receive
   SPIsendCommand(CC1101_CMD_RX);
@@ -188,7 +197,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
     return(ERR_CRC_MISMATCH);
   }
   
-  return(ERR_NONE);
+  return(state);
 }
 
 int16_t CC1101::standby() {
@@ -228,6 +237,125 @@ int16_t CC1101::receiveDirect() {
   SPIsendCommand(CC1101_CMD_RX);
   return(ERR_NONE);
 }
+
+void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, dir);
+}
+
+void CC1101::setGdo1Action(void (*func)(void), uint8_t dir) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, dir);
+}
+
+int16_t CC1101::startTransmit(String& str, uint8_t addr) {
+  return(CC1101::startTransmit(str.c_str(), addr));
+}
+
+int16_t CC1101::startTransmit(const char* str, uint8_t addr) {
+  return(CC1101::startTransmit((uint8_t*)str, strlen(str), addr));
+}
+
+int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  // check packet length
+  if(len > 63) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+  
+  // set mode to standby
+  standby();
+  
+  // flush Tx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_TX);
+  
+  // set GDO0 mapping
+  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // write packet length
+  SPIwriteRegister(CC1101_REG_FIFO, len);
+  
+  // write packet to FIFO
+  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
+  
+  // set mode to transmit
+  SPIsendCommand(CC1101_CMD_TX);
+  
+  return(state);
+}
+
+int16_t CC1101::startReceive() {
+  // set mode to standby
+  standby();
+  
+  // flush Rx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+  
+  // set GDO0 mapping
+  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // set mode to receive
+  SPIsendCommand(CC1101_CMD_RX);
+  
+  return(state);
+}
+
+int16_t CC1101::readData(String& str, size_t len) {
+  // create temporary array to store received data
+  char* data = new char[len];
+  int16_t state = CC1101::readData((uint8_t*)data, len);
+  
+  // if packet was received successfully, copy data into String
+  if(state == ERR_NONE) {
+    str = String(data);
+  }
+  
+  delete[] data;
+  return(state);
+}
+
+int16_t CC1101::readData(uint8_t* data, size_t len) {
+  // get packet length
+  size_t length = SPIreadRegister(CC1101_REG_RXBYTES) - 2;
+
+  // read packet data
+  if(len == 0) {
+    // argument len equal to zero indicates String call, which means dynamically allocated data array
+    // dispose of the original and create a new one
+    delete[] data;
+    data = new uint8_t[length + 1];
+  }
+  SPIreadRegisterBurst(CC1101_REG_FIFO, length, data);
+  
+  // read RSSI byte
+  _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
+  
+  // read LQI and CRC byte
+  uint8_t val = SPIgetRegValue(CC1101_REG_FIFO);
+  _rawLQI = val & 0x7F;
+  
+  // add terminating null
+  if(len == 0) {
+    data[length] = 0;
+  }
+  
+  // flush Rx FIFO
+  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+  
+  // set mode to receive
+  SPIsendCommand(CC1101_CMD_RX);
+  
+  // check CRC
+  if((val & 0b10000000) == 0b00000000) {
+    return(ERR_CRC_MISMATCH);
+  }
+  
+  return(ERR_NONE);
+}
+
 
 int16_t CC1101::setFrequency(float freq) {
   // check allowed frequency range

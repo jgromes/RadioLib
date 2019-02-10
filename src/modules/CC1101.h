@@ -510,6 +510,16 @@ class CC1101: public PhysicalLayer {
     int16_t transmitDirect(uint32_t FRF = 0);
     int16_t receiveDirect();
     
+    // interrupt methods
+    void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo1Action(void (*func)(void), uint8_t dir = FALLING);
+    int16_t startTransmit(String& str, uint8_t addr = 0);
+    int16_t startTransmit(const char* str, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startReceive();
+    int16_t readData(String& str, size_t len = 0);
+    int16_t readData(uint8_t* data, size_t len);
+    
     // configuration methods
     int16_t setFrequency(float freq);
     int16_t setBitRate(float br);

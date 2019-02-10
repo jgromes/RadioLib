@@ -89,6 +89,8 @@ setAmbientTemperature	KEYWORD2
 
 # CC1101-specific
 getLQI	KEYWORD2
+setGdo0Action	KEYWORD2
+setGdo1Action KEYWORD2
 
 # ESP8266
 join	KEYWORD2
