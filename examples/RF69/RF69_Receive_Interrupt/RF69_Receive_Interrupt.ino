@@ -1,5 +1,5 @@
 /*
-   RadioLib RF69 Receive with Inerrupts Example
+   RadioLib RF69 Receive with Interrupts Example
 
    This example listens for FSK transmissions and tries to
    receive them. Once a packet is received, an interrupt is
@@ -13,15 +13,17 @@
     - sync word
 */
 
+// include the library
 #include <RadioLib.h>
 
+// RF69 module is in slot A on the shield
 RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
   
   // initialize RF69 with default settings
-  Serial.print(F("Initializing ... "));
+  Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   434.0 MHz
   // bit rate:                            48.0 kbps
   // Rx bandwidth:                        125.0 kHz
@@ -42,7 +44,7 @@ void setup() {
   rf.setDio0Action(setFlag);
   
   // start listening for packets
-  Serial.print(F("Starting to listen ... "));
+  Serial.print(F("[RF69] Starting to listen ... "));
   state = rf.startReceive();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -104,10 +106,10 @@ void loop() {
     
     if (state == ERR_NONE) {
       // packet was successfully received
-      Serial.println("Received packet!");
+      Serial.println("[RF69] Received packet!");
   
       // print data of the packet
-      Serial.print("Data:\t\t\t");
+      Serial.print("[RF69] Data:\t\t\t");
       Serial.println(str);
     }
 
