@@ -500,7 +500,7 @@ class CC1101: public PhysicalLayer {
     CC1101(Module* module);
     
     // basic methods
-    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0);
+    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0);
     int16_t transmit(String& str, uint8_t addr = 0);
     int16_t transmit(const char* str, uint8_t addr = 0);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
@@ -526,6 +526,7 @@ class CC1101: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
     int16_t setFrequencyDeviation(float freqDev);
     int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
+    int16_t setOutputPower(int8_t power);
     int16_t setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs = 0);
     int16_t disableAddressFiltering();
     float getRSSI();
@@ -534,6 +535,7 @@ class CC1101: public PhysicalLayer {
   private:
     Module* _mod;
     
+    float _freq;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
     

@@ -4,7 +4,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _mod = module;
 }
 
-int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
+int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
@@ -69,6 +69,11 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
     return(state);
   }
   
+  state = setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
   // flush FIFOs
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
   SPIsendCommand(CC1101_CMD_FLUSH_TX);
@@ -77,11 +82,11 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev) {
 }
 
 int16_t CC1101::transmit(String& str, uint8_t addr) {
-  return(CC1101::transmit(str.c_str()));
+  return(CC1101::transmit(str.c_str(), addr));
 }
 
 int16_t CC1101::transmit(const char* str, uint8_t addr) {
-  return(CC1101::transmit((uint8_t*)str, strlen(str)));
+  return(CC1101::transmit((uint8_t*)str, strlen(str), addr));
 }
 
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -104,6 +109,12 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   
   // write packet length
   SPIwriteRegister(CC1101_REG_FIFO, len);
+  
+  // check address filtering
+  uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
+  if(filter != CC1101_ADR_CHK_NONE) {
+    SPIwriteRegister(CC1101_REG_FIFO, addr);
+  }
   
   // write packet to FIFO
   SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
@@ -164,6 +175,12 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   
   // get packet length
   size_t length = SPIreadRegister(CC1101_REG_RXBYTES) - 2;
+  
+  // check address filtering
+  uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
+  if(filter != CC1101_ADR_CHK_NONE) {
+    SPIreadRegister(CC1101_REG_FIFO);
+  }
 
   // read packet data
   if(len == 0) {
@@ -275,6 +292,12 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // write packet length
   SPIwriteRegister(CC1101_REG_FIFO, len);
   
+  // check address filtering
+  uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
+  if(filter != CC1101_ADR_CHK_NONE) {
+    SPIwriteRegister(CC1101_REG_FIFO, addr);
+  }
+  
   // write packet to FIFO
   SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
   
@@ -320,6 +343,12 @@ int16_t CC1101::readData(String& str, size_t len) {
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
   size_t length = SPIreadRegister(CC1101_REG_RXBYTES) - 2;
+  
+  // check address filtering
+  uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
+  if(filter != CC1101_ADR_CHK_NONE) {
+    SPIreadRegister(CC1101_REG_FIFO);
+  }
 
   // read packet data
   if(len == 0) {
@@ -374,7 +403,11 @@ int16_t CC1101::setFrequency(float freq) {
   int16_t state = SPIsetRegValue(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16, 7, 0);
   state |= SPIsetRegValue(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8, 7, 0);
   state |= SPIsetRegValue(CC1101_REG_FREQ0, FRF & 0x0000FF, 7, 0);
-
+  
+  if(state == ERR_NONE) {
+    _freq = freq;
+  }
+  
   return(state);
 }
 
@@ -455,6 +488,67 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL) {
   return(state);
 }
 
+int16_t CC1101::setOutputPower(int8_t power) {
+  // round to the known frequency settings
+  uint8_t f;
+  if(_freq < 374.0) {
+    // 315 MHz
+    f = 0;
+  } else if(_freq < 650.5) {
+    // 434 MHz
+    f = 1;
+  } else if(_freq < 891.5) {
+    // 868 MHz
+    f = 2;
+  } else {
+    // 915 MHz
+    f = 3;
+  }
+  
+  // get raw power setting
+  uint8_t paTable[8][4] = {{0x12, 0x12, 0x03, 0x03},
+                           {0x0D, 0x0E, 0x0F, 0x0E},
+                           {0x1C, 0x1D, 0x1E, 0x1E},
+                           {0x34, 0x34, 0x27, 0x27},
+                           {0x51, 0x60, 0x50, 0x8E},
+                           {0x85, 0x84, 0x81, 0xCD},
+                           {0xCB, 0xC8, 0xCB, 0xC7},
+                           {0xC2, 0xC0, 0xC2, 0xC0}};
+
+  uint8_t powerRaw;
+  switch(power) {
+    case -30:
+      powerRaw = paTable[0][f];
+      break;
+    case -20:
+      powerRaw = paTable[1][f];
+      break;
+    case -15:
+      powerRaw = paTable[2][f];
+      break;
+    case -10:
+      powerRaw = paTable[3][f];
+      break;
+    case 0:
+      powerRaw = paTable[4][f];
+      break;
+    case 5:
+      powerRaw = paTable[5][f];
+      break;
+    case 7:
+      powerRaw = paTable[6][f];
+      break;
+    case 10:
+      powerRaw = paTable[7][f];
+      break;
+    default:
+      return(ERR_INVALID_OUTPUT_POWER);
+  }
+  
+  // write raw power setting
+  return(SPIsetRegValue(CC1101_REG_PATABLE, powerRaw));
+}
+
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
   if(!(numBroadcastAddrs > 0) && (numBroadcastAddrs <= 2)) {
     return(ERR_INVALID_NUM_BROAD_ADDRS);
@@ -509,9 +603,6 @@ int16_t CC1101::config() {
   if(state != ERR_NONE) {
     return(state);
   }
-  
-  // TODO: configurable power output
-  SPIwriteRegister(CC1101_REG_PATABLE, 0x60);
   
   return(state);
 }
