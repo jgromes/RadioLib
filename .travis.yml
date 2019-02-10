@@ -19,7 +19,7 @@ install:
 script:
   # build all example sketches
   - for example in $(find $PWD/examples -name '*.ino'); do
-      echo -e "\n\033[1;33mBuilding $example ... \033[0m";
+      echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
       arduino --verify --board $BOARD $example;
       if [ $? -ne 0 ]; then
         echo -e "\033[1;31m$example build FAILED\033[0m\n";
