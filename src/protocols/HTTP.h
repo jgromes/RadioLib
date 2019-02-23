@@ -10,6 +10,7 @@ class HTTPClient {
     HTTPClient(TransportLayer* tl, uint16_t port = 80);
     
     // basic methods
+    int16_t get(String& url, String& response);
     int16_t get(const char* url, String& response);
     int16_t post(const char* url, const char* content, String& response, const char* contentType = "text/plain");
   

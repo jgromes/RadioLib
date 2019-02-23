@@ -5,6 +5,10 @@ HTTPClient::HTTPClient(TransportLayer* tl, uint16_t port) {
   _port = port;
 }
 
+int16_t HTTPClient::get(String& url, String& response) {
+  return(HTTPClient::get(url.c_str(), response));
+}
+
 int16_t HTTPClient::get(const char* url, String& response) {
   // get the host address and endpoint
   char* httpPrefix = strstr(url, "http://");
