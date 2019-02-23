@@ -34,11 +34,11 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   }
   
   if(!flagFound) {
-    DEBUG_PRINTLN_STR("No RF69 found!");
+    DEBUG_PRINTLN(F("No RF69 found!"));
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN_STR("Found RF69! (match by RF69_REG_VERSION == 0x24)");
+    DEBUG_PRINTLN(F("Found RF69! (match by RF69_REG_VERSION == 0x24)"));
   }
   
   // configure settings not accessible by API

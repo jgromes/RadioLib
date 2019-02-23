@@ -141,22 +141,22 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   
   // check failed, print debug info
   DEBUG_PRINTLN();
-  DEBUG_PRINT_STR("address:\t0x");
-  DEBUG_PRINTLN_HEX(reg);
-  DEBUG_PRINT_STR("bits:\t\t");
+  DEBUG_PRINT(F("address:\t0x"));
+  DEBUG_PRINTLN(reg, HEX);
+  DEBUG_PRINT(F("bits:\t\t"));
   DEBUG_PRINT(msb);
   DEBUG_PRINT(' ');
   DEBUG_PRINTLN(lsb);
-  DEBUG_PRINT_STR("value:\t\t0b");
-  DEBUG_PRINTLN_BIN(value);
-  DEBUG_PRINT_STR("current:\t0b");
-  DEBUG_PRINTLN_BIN(currentValue);
-  DEBUG_PRINT_STR("mask:\t\t0b");
-  DEBUG_PRINTLN_BIN(mask);
-  DEBUG_PRINT_STR("new:\t\t0b");
-  DEBUG_PRINTLN_BIN(newValue);
-  DEBUG_PRINT_STR("read:\t\t0b");
-  DEBUG_PRINTLN_BIN(readValue);
+  DEBUG_PRINT(F("value:\t\t0b"));
+  DEBUG_PRINTLN(value, BIN);
+  DEBUG_PRINT(F("current:\t0b"));
+  DEBUG_PRINTLN(currentValue, BIN);
+  DEBUG_PRINT(F("mask:\t\t0b"));
+  DEBUG_PRINTLN(mask, BIN);
+  DEBUG_PRINT(F("new:\t\t0b"));
+  DEBUG_PRINTLN(newValue, BIN);
+  DEBUG_PRINT(F("read:\t\t0b"));
+  DEBUG_PRINTLN(readValue, BIN);
   DEBUG_PRINTLN();
   
   return(ERR_SPI_WRITE_FAILED);

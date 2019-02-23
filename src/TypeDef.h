@@ -10,29 +10,13 @@
 //#define RADIOLIB_DEBUG
 
 #ifdef RADIOLIB_DEBUG
-  #define DEBUG_BEGIN(x)                Serial.begin (x)
-  #define DEBUG_PRINT(x)                Serial.print (x)
-  #define DEBUG_PRINT_BIN(x)            Serial.print (x, BIN)
-  #define DEBUG_PRINTLN_BIN(x)          Serial.println (x, BIN)
-  #define DEBUG_PRINT_DEC(x)            Serial.print (x, DEC)
-  #define DEBUG_PRINTLN_DEC(x)          Serial.println (x, DEC)
-  #define DEBUG_PRINT_HEX(x)            Serial.print (x, HEX)
-  #define DEBUG_PRINTLN_HEX(x)          Serial.println (x, HEX)
-  #define DEBUG_PRINTLN(x)              Serial.println (x)
-  #define DEBUG_PRINT_STR(x)            Serial.print (F(x))
-  #define DEBUG_PRINTLN_STR(x)          Serial.println (F(x))
+  #define DEBUG_BEGIN(...) { Serial.begin(__VA_ARGS__); }
+  #define DEBUG_PRINT(...) { Serial.print(__VA_ARGS__); }
+  #define DEBUG_PRINTLN(...) { Serial.println(__VA_ARGS__); }
 #else
-  #define DEBUG_BEGIN(x)
-  #define DEBUG_PRINT(x)
-  #define DEBUG_PRINT_BIN(x)
-  #define DEBUG_PRINTLN_BIN(x)
-  #define DEBUG_PRINT_DEC(x)
-  #define DEBUG_PRINTLN_DEC(x)
-  #define DEBUG_PRINT_HEX(x)
-  #define DEBUG_PRINTLN_HEX(x)
-  #define DEBUG_PRINTLN(x)
-  #define DEBUG_PRINT_STR(x)
-  #define DEBUG_PRINTLN_STR(x)
+  #define DEBUG_BEGIN(...) {}
+  #define DEBUG_PRINT(...) {}
+  #define DEBUG_PRINTLN(...) {}
 #endif
 
 // Shield configuration
@@ -116,6 +100,11 @@
 // RTTY status codes
 #define ERR_INVALID_RTTY_SHIFT                -401
 #define ERR_UNSUPPORTED_ENCODING              -402
+
+// nRF24 status codes
+#define ERR_INVALID_DATA_RATE                 -501
+#define ERR_INVALID_ADDRESS_WIDTH             -502
+#define ERR_INVALID_PIPE_NUMBER               -503
 
 // CC1101-specific status codes
 #define ERR_INVALID_NUM_BROAD_ADDRS           -601

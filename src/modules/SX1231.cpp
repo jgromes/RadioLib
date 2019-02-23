@@ -34,11 +34,11 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   }
   
   if(!flagFound) {
-    DEBUG_PRINTLN_STR("No SX1231 found!");
+    DEBUG_PRINTLN(F("No SX1231 found!"));
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN_STR("Found SX1231!");
+    DEBUG_PRINTLN(F("Found SX1231!"));
   }
   
   // configure settings not accessible by API

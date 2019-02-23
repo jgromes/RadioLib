@@ -30,11 +30,11 @@ int16_t XBee::begin(long speed) {
     if(state == ERR_NONE) {
       flagFound = true;
     } else {
-      DEBUG_PRINT_STR("XBee not found! (");
+      DEBUG_PRINT(F("XBee not found! ("));
       DEBUG_PRINT(i + 1);
-      DEBUG_PRINT_STR(" of 10 tries) STATE == ");
+      DEBUG_PRINT(F(" of 10 tries) STATE == "));
       DEBUG_PRINTLN(state);
-      DEBUG_PRINTLN_STR("Resetting ...");
+      DEBUG_PRINTLN(F("Resetting ..."));
       reset();
       delay(1000);
       _mod->ATemptyBuffer();
@@ -43,10 +43,10 @@ int16_t XBee::begin(long speed) {
   }
   
   if(!flagFound) {
-    DEBUG_PRINTLN_STR("No XBee found!");
+    DEBUG_PRINTLN(F("No XBee found!"));
     return(ERR_CMD_MODE_FAILED);
   } else {
-    DEBUG_PRINTLN_STR("Found XBee!");
+    DEBUG_PRINTLN(F("Found XBee!"));
   }
   
   return(ERR_NONE);
@@ -182,19 +182,19 @@ int16_t XBeeSerial::begin(long speed) {
   _mod->ATemptyBuffer();
   
   // enter command mode
-  DEBUG_PRINTLN_STR("Entering command mode ...");
+  DEBUG_PRINTLN(F("Entering command mode ..."));
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // test AT setup
-  DEBUG_PRINTLN_STR("Sending test command ...");
+  DEBUG_PRINTLN(F("Sending test command ..."));
   if(!_mod->ATsendCommand("AT")) {
     return(ERR_AT_FAILED);
   }
   
   // exit command mode
-  DEBUG_PRINTLN_STR("Exiting command mode ...");
+  DEBUG_PRINTLN(F("Exiting command mode ..."));
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -212,13 +212,13 @@ void XBeeSerial::reset() {
 
 int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
   // enter command mode
-  DEBUG_PRINTLN_STR("Entering command mode ...");
+  DEBUG_PRINTLN(F("Entering command mode ..."));
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // set higher address bytes
-  DEBUG_PRINTLN_STR("Setting address (high) ...");
+  DEBUG_PRINTLN(F("Setting address (high) ..."));
   char* addressHigh = new char[strlen(destinationAddressHigh) + 4];
   strcpy(addressHigh, "ATDH");
   strcat(addressHigh, destinationAddressHigh);
@@ -229,7 +229,7 @@ int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, co
   }
   
   // set lower address bytes
-  DEBUG_PRINTLN_STR("Setting address (low) ...");
+  DEBUG_PRINTLN(F("Setting address (low) ..."));
   char* addressLow = new char[strlen(destinationAddressLow) + 4];
   strcpy(addressLow, "ATDL");
   strcat(addressLow, destinationAddressLow);
@@ -240,7 +240,7 @@ int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, co
   }
   
   // exit command mode
-  DEBUG_PRINTLN_STR("Exiting command mode ...");
+  DEBUG_PRINTLN(F("Exiting command mode ..."));
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -250,13 +250,13 @@ int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, co
 
 int16_t XBeeSerial::setPanId(const char* panId) {
   // enter command mode
-  DEBUG_PRINTLN_STR("Entering command mode ...");
+  DEBUG_PRINTLN(F("Entering command mode ..."));
   if(!enterCmdMode()) {
     return(ERR_CMD_MODE_FAILED);
   }
   
   // set PAN ID
-  DEBUG_PRINTLN_STR("Setting PAN ID ...");
+  DEBUG_PRINTLN(F("Setting PAN ID ..."));
   char* cmd = new char[strlen(panId) + 4];
   strcpy(cmd, "ATID");
   strcat(cmd, panId);
@@ -267,7 +267,7 @@ int16_t XBeeSerial::setPanId(const char* panId) {
   }
   
   // exit command mode
-  DEBUG_PRINTLN_STR("Exiting command mode ...");
+  DEBUG_PRINTLN(F("Exiting command mode ..."));
   if(!_mod->ATsendCommand("ATCN")) {
     return(ERR_AT_FAILED);
   }
@@ -288,9 +288,9 @@ bool XBeeSerial::enterCmdMode() {
     if(_mod->ATgetResponse()) {
       return(true);
     } else {
-      DEBUG_PRINT_STR("Unable to enter command mode! (");
+      DEBUG_PRINT(F("Unable to enter command mode! ("));
       DEBUG_PRINT(i + 1);
-      DEBUG_PRINTLN_STR(" of 10 tries)");
+      DEBUG_PRINTLN(F(" of 10 tries)"));
       
       reset();
       
@@ -298,7 +298,7 @@ bool XBeeSerial::enterCmdMode() {
     }
   }
   
-  DEBUG_PRINTLN_STR("Terminated, check your wiring. Is AT FW uploaded?");
+  DEBUG_PRINTLN(F("Terminated, check your wiring. Is AT FW uploaded?"));
   return(false);
 }
 
@@ -377,7 +377,7 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
       return(ERR_FRAME_MALFORMED);
     }
   }
-  DEBUG_PRINT_STR("frame data field length: ");
+  DEBUG_PRINT(F("frame data field length: "));
   DEBUG_PRINTLN(numBytes);
   
   // read the response
@@ -389,21 +389,21 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   // verify checksum 
   uint8_t checksum = 0;
   for(uint16_t i = 0; i < numBytes; i++) {
-    DEBUG_PRINT_HEX(resp[i]);
-    DEBUG_PRINT_STR("\t");
+    DEBUG_PRINT(resp[i], HEX);
+    DEBUG_PRINT('\t');
     checksum += resp[i];
   }
   DEBUG_PRINTLN();
   if(checksum != 0xFF) {
-    DEBUG_PRINTLN_HEX(checksum);
+    DEBUG_PRINTLN(checksum, HEX);
     return(ERR_FRAME_INCORRECT_CHECKSUM);
   }
   
   // check frame ID
   if(resp[1] != frameID) {
-    DEBUG_PRINT_STR("received frame ID: ");
+    DEBUG_PRINT(F("received frame ID: "));
     DEBUG_PRINTLN(resp[1]);
-    DEBUG_PRINT_STR("expected frame ID: ");
+    DEBUG_PRINT(F("expected frame ID: "));
     DEBUG_PRINTLN(frameID);
     return(ERR_FRAME_UNEXPECTED_ID);
   }
@@ -426,11 +426,11 @@ uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
   // read response
   uint8_t resp[3];
   uint8_t i = 0;
-  DEBUG_PRINT_STR("reading frame length: ");
+  DEBUG_PRINT(F("reading frame length: "));
   while(_mod->ModuleSerial->available() > 0) {
     uint8_t b = _mod->ModuleSerial->read();
-    DEBUG_PRINT_HEX(b);
-    DEBUG_PRINT_STR("\t");
+    DEBUG_PRINT(b, HEX);
+    DEBUG_PRINT('\t');
     resp[i++] = b;
     if(i == 3) {
       break;
