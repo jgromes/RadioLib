@@ -29,9 +29,6 @@ Module::Module(int cs, int rx, int tx, int int0, int int1) {
 }
 
 void Module::init(uint8_t interface, uint8_t gpio) {
-  DEBUG_BEGIN(9600);
-  DEBUG_PRINTLN();
-  
   switch(interface) {
     case USE_SPI:
       pinMode(_cs, OUTPUT);
