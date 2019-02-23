@@ -145,6 +145,10 @@ int16_t MQTTClient::disconnect() {
   return(_tl->closeTransportConnection());
 }
 
+int16_t MQTTClient::publish(String& topic, String& message) {
+  return(MQTTClient::publish(topic.c_str(), message.c_str()));
+}
+
 int16_t MQTTClient::publish(const char* topic, const char* message) {
   // encode packet length
   size_t topicLen = strlen(topic);
