@@ -9,8 +9,9 @@
 
 class Module {
   public:
+    Module(int tx, int rx);
     Module(int cs, int int0, int int1);
-    Module(int cs, int tx, int rx, int int0, int int1);
+    Module(int cs, int rx, int tx, int int0, int int1);
     
     SoftwareSerial* ModuleSerial;
     

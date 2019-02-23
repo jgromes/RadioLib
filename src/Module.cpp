@@ -1,5 +1,15 @@
 #include "Module.h"
 
+Module::Module(int rx, int tx) {
+  _cs = -1;
+  _rx = rx;
+  _tx = tx;
+  _int0 = -1;
+  _int1 = -1;
+  
+  ModuleSerial = new SoftwareSerial(_rx, _tx);
+}
+
 Module::Module(int cs, int int0, int int1) {
   _cs = cs;
   _rx = -1;
