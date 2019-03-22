@@ -512,7 +512,7 @@ class CC1101: public PhysicalLayer {
     
     // interrupt methods
     void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
-    void setGdo1Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
     int16_t startTransmit(String& str, uint8_t addr = 0);
     int16_t startTransmit(const char* str, uint8_t addr = 0);
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);

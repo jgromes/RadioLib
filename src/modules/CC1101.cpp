@@ -259,8 +259,8 @@ void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
   attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, dir);
 }
 
-void CC1101::setGdo1Action(void (*func)(void), uint8_t dir) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, dir);
+void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, dir);
 }
 
 int16_t CC1101::startTransmit(String& str, uint8_t addr) {
