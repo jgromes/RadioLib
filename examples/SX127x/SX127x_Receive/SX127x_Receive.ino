@@ -48,6 +48,9 @@ void loop() {
   Serial.print(F("[SX1278] Waiting for incoming transmission ... "));
 
   // you can receive data as an Arduino String
+  // NOTE: receive() is a blocking method!
+  //       See example ReceiveInterrupt for details
+  //       on non-blocking reception method.
   String str;
   int state = lora.receive(str);
 

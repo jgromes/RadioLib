@@ -157,11 +157,11 @@ class SX1278: public SX127x {
       \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. 
       Set to 0 to disable OCP (not recommended).
       
-      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping. Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping.
+      \param enableOOK Use OOK modulation instead of FSK.
       
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100, float sh = 0.3);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100, bool enableOOK = false);
     
     // configuration methods
     
@@ -221,8 +221,8 @@ class SX1278: public SX127x {
     int16_t setGain(uint8_t gain);
     
     /*!
-      \brief Sets gaussian shaping bandwidth-time product that will be used for data shaping. 
-      Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping. Only available in FSK mode.
+      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping. 
+      Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping. Only available in FSK mode with FSK modulation.
       
       \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
       
@@ -231,11 +231,31 @@ class SX1278: public SX127x {
     int16_t setDataShaping(float sh);
     
     /*!
+      \brief Sets filter cutoff frequency that will be used for data shaping. 
+      Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping.
+      Only available in FSK mode with OOK modulation.
+      
+      \param sh Cutoff frequency that will be used for data shaping
+      
+      \returns \ref status_codes
+    */
+    int16_t setDataShapingOOK(uint8_t sh);
+    
+    /*!
       \brief Gets recorded signal strength indicator of the latest received packet.
       
       \returns Last packet recorded signal strength indicator (RSSI).
     */
     int8_t getRSSI();
+    
+    /*!
+      \brief Enables/disables CRC check of received packets.
+      
+      \param enableCRC Enable (true) or disable (false) CRC.
+      
+      \returns \ref status_codes
+    */
+    int16_t setCRC(bool enableCRC);
   
   protected:
     int16_t setBandwidthRaw(uint8_t newBandwidth);

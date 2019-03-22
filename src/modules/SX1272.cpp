@@ -58,9 +58,9 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit, float sh) {
+int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit, bool enableOOK) {
   // execute common part
-  int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit);
+  int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit, enableOOK);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -78,11 +78,6 @@ int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t
   }
   
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
-  state = setDataShaping(sh);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -268,6 +263,11 @@ int16_t SX1272::setDataShaping(float sh) {
     return(ERR_WRONG_MODEM);
   }
   
+  // check modulation
+  if(!SX127x::_ook) {
+    return(ERR_INVALID_MODULATION);
+  }
+  
   // set mode to standby
   int16_t state = SX127x::standby();
   
@@ -283,6 +283,39 @@ int16_t SX1272::setDataShaping(float sh) {
   } else {
     return(ERR_INVALID_DATA_SHAPING);
   }
+  return(state);
+}
+
+int16_t SX1272::setDataShapingOOK(uint8_t sh) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+  
+  // check modulation
+  if(!SX127x::_ook) {
+    return(ERR_INVALID_MODULATION);
+  }
+  
+  // set mode to standby
+  int16_t state = SX127x::standby();
+  
+  // set data shaping
+  switch(sh) {
+    case 0:
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_NO_SHAPING, 4, 3);
+      break;
+    case 1:
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_OOK_FILTER_BR, 4, 3);
+      break;
+    case 2:
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_OOK_FILTER_2BR, 4, 3);
+      break;
+    default:
+      state = ERR_INVALID_DATA_SHAPING;
+      break;
+  }
+  
   return(state);
 }
 
@@ -304,6 +337,24 @@ int8_t SX1272::getRSSI() {
   return(lastPacketRSSI);
 }
 
+int16_t SX1272::setCRC(bool enableCRC) {
+  if(getActiveModem() == SX127X_LORA) {
+    // set LoRa CRC
+    if(enableCRC) {
+      return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_RX_CRC_MODE_ON, 2, 2));
+    } else {
+      return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_RX_CRC_MODE_OFF, 2, 2));
+    }
+  } else {
+    // set FSK CRC
+    if(enableCRC) {
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_ON, 4, 4));
+    } else {
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_OFF, 4, 4));
+    }
+  }
+}
+
 int16_t SX1272::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
@@ -319,7 +370,7 @@ int16_t SX1272::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
   
   // write registers
   if(newSpreadingFactor == SX127X_SF_6) {
-    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_OFF, 2, 1);
+    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_HEADER_IMPL_MODE | SX1272_RX_CRC_MODE_ON, 2, 1);
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX127X_SF_6 | SX127X_TX_MODE_SINGLE, 7, 3);
     state |= _mod->SPIsetRegValue(SX127X_REG_DETECT_OPTIMIZE, SX127X_DETECT_OPTIMIZE_SF_6, 2, 0);
     state |= _mod->SPIsetRegValue(SX127X_REG_DETECTION_THRESHOLD, SX127X_DETECTION_THRESHOLD_SF_6);

@@ -10,11 +10,11 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
-    DEBUG_PRINTLN(F("No SX127x found!"));
-    SPI.end();
+    DEBUG_PRINTLN("No SX127x found!");
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN(F("Found SX127x!"));
+    DEBUG_PRINTLN("Found SX127x!");
   }
   
   // check active modem
@@ -48,17 +48,17 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   return(state);
 }
 
-int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit) {
+int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit, bool enableOOK) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
-    DEBUG_PRINTLN(F("No SX127x found!"));
-    SPI.end();
+    DEBUG_PRINTLN("No SX127x found!");
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN(F("Found SX127x!"));
+    DEBUG_PRINTLN("Found SX127x!");
   }
   
   // check currently active modem
@@ -104,6 +104,12 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   
   // disable address filtering
   state = disableAddressFiltering();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+  
+  // enable/disable OOK
+  state = setOOK(enableOOK);
   
   return(state);
 }
@@ -208,6 +214,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     while(!digitalRead(_mod->getInt0())) {
       if(millis() - start > timeout) {
         clearIRQFlags();
+        standby();
         return(ERR_TX_TIMEOUT);
       }
     }
@@ -215,7 +222,10 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     // clear interrupt flags
     clearIRQFlags();
     
-    return(ERR_NONE);
+    // set mode to standby to disable transmitter
+    state |= standby();
+    
+    return(state);
   }
   
   return(ERR_UNKNOWN);
@@ -785,8 +795,14 @@ int16_t SX127x::setBitRate(float br) {
   }
 
   // check allowed bitrate
-  if((br < 1.2) || (br > 300.0)) {
-    return(ERR_INVALID_BIT_RATE);
+  if(_ook) {
+    if((br < 1.2) || (br > 32.768)) {
+      return(ERR_INVALID_BIT_RATE);
+    }
+  } else {
+    if((br < 1.2) || (br > 300.0)) {
+      return(ERR_INVALID_BIT_RATE);
+    }
   }
   
   // set mode to STANDBY
@@ -794,12 +810,13 @@ int16_t SX127x::setBitRate(float br) {
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // set bit rate
-  uint16_t bitRate = 32000 / br;
+  uint16_t bitRate = (SX127X_CRYSTAL_FREQ * 1000.0) / br;
   state = _mod->SPIsetRegValue(SX127X_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(SX127X_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
-  // TODO: fractional part of bit rate setting
+
+  // TODO: fractional part of bit rate setting (not in OOK)
   if(state == ERR_NONE) {
     SX127x::_br = br;
   }
@@ -899,7 +916,7 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   }
   
   // set sync word
-  _mod->SPIwriteRegisterBurst(SX127X_SYNC_VALUE_1, syncWord, len);
+  _mod->SPIwriteRegisterBurst(SX127X_REG_SYNC_VALUE_1, syncWord, len);
   return(ERR_NONE);
 }
 
@@ -957,6 +974,26 @@ int16_t SX127x::disableAddressFiltering() {
   return(_mod->SPIsetRegValue(SX127X_REG_BROADCAST_ADRS, 0x00));
 }
 
+int16_t SX127x::setOOK(bool enableOOK) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+  
+  // set OOK and if successful, save the new setting
+  int16_t state = ERR_NONE;
+  if(enableOOK) { 
+    state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_MODULATION_OOK, 6, 5, 5);
+  } else {
+    state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_MODULATION_FSK, 6, 5, 5);
+  }
+  if(state == ERR_NONE) {
+    _ook = enableOOK;
+  }
+  
+  return(state);
+}
+
 int16_t SX127x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
@@ -978,14 +1015,8 @@ int16_t SX127x::config() {
 }
 
 int16_t SX127x::configFSK() {
-  // set FSK modulation
-  int16_t state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX127X_MODULATION_FSK, 6, 5, 5);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-  
   // set RSSI threshold
-  state = _mod->SPIsetRegValue(SX127X_REG_RSSI_THRESH, SX127X_RSSI_THRESHOLD);
+  int16_t state = _mod->SPIsetRegValue(SX127X_REG_RSSI_THRESH, SX127X_RSSI_THRESHOLD);
   if(state != ERR_NONE) {
     return(state);
   }

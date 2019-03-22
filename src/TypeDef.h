@@ -70,6 +70,7 @@
 #define ERR_INVALID_RX_BANDWIDTH              -104
 #define ERR_INVALID_SYNC_WORD                 -105
 #define ERR_INVALID_DATA_SHAPING              -106
+#define ERR_INVALID_MODULATION                -107
 
 // ESP8266 status codes
 #define ERR_AT_FAILED                         -201

@@ -10,20 +10,22 @@ Module::Module(int rx, int tx) {
   ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
 
-Module::Module(int cs, int int0, int int1) {
+Module::Module(int cs, int int0, int int1, SPIClass& spi) {
   _cs = cs;
   _rx = -1;
   _tx = -1;
   _int0 = int0;
   _int1 = int1;
+  _spi = &spi;
 }
 
-Module::Module(int cs, int rx, int tx, int int0, int int1) {
+Module::Module(int cs, int rx, int tx, int int0, int int1, SPIClass& spi) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
   _int0 = int0;
   _int1 = int1;
+  _spi = &spi;
   
   ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
@@ -33,7 +35,7 @@ void Module::init(uint8_t interface, uint8_t gpio) {
     case USE_SPI:
       pinMode(_cs, OUTPUT);
       digitalWrite(_cs, HIGH);
-      SPI.begin();
+      _spi->begin();
       break;
     case USE_UART:
       ModuleSerial->begin(baudrate);
@@ -56,6 +58,11 @@ void Module::init(uint8_t interface, uint8_t gpio) {
       pinMode(_int1, INPUT);
       break;
   }
+}
+
+void Module::term() {
+  // stop SPI
+  _spi->end();
 }
 
 void Module::ATemptyBuffer() {
@@ -160,39 +167,47 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
 }
 
 void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {
-  digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPIreadCommand);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    inBytes[i] = SPI.transfer(reg);
-  }
-  digitalWrite(_cs, HIGH);
+  SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
 }
 
 uint8_t Module::SPIreadRegister(uint8_t reg) {
-  uint8_t inByte;
-  digitalWrite(_cs, LOW);
-  SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(reg | SPIreadCommand);
-  SPI.endTransaction();
-  inByte = SPI.transfer(0x00);
-  digitalWrite(_cs, HIGH);
-  return(inByte);
+  uint8_t resp;
+  SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
+  return(resp);
 }
 
 void Module::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes) {
-  digitalWrite(_cs, LOW);
-  SPI.transfer(reg | SPIwriteCommand);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    SPI.transfer(data[i]);
-  }
-  digitalWrite(_cs, HIGH);
+  SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
 }
 
 void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
+  SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
+}
+
+void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
+  // start SPI transaction
+  _spi->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  
+  // pull CS low
   digitalWrite(_cs, LOW);
-  SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(reg | SPIwriteCommand);
-  SPI.transfer(data);
-  SPI.endTransaction();
+  
+  // send SPI register address with access command
+  _spi->transfer(reg | cmd);
+  
+  // send data or get response
+  if(cmd == SPIwriteCommand) {
+    for(size_t n = 0; n < numBytes; n++) {
+      _spi->transfer(dataOut[n]);
+    }
+  } else if (cmd == SPIreadCommand) {
+    for(size_t n = 0; n < numBytes; n++) {
+      dataIn[n] = _spi->transfer(0x00);
+    }
+  }
+  
+  // release CS
   digitalWrite(_cs, HIGH);
+  
+  // end SPI transaction
+  _spi->endTransaction();
 }

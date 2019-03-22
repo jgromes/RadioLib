@@ -29,6 +29,7 @@ void setup() {
   // current limit:               100 mA
   // data shaping:                Gaussian, BT = 0.3
   // sync word:                   0x2D  0x01
+  // OOK modulation:              false
   int state = fsk.beginFSK();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -57,6 +58,19 @@ void setup() {
   state = fsk.setSyncWord(syncWord, 8);
   if (state != ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
+    Serial.println(state);
+    while (true);
+  }
+
+  // FSK modulation can be changed to OOK
+  // NOTE: When using OOK, the maximum bit rate is only 32.768 kbps!
+  //       Also, data shaping changes from Gaussian filter to
+  //       simple filter with cutoff frequency. Make sure to call
+  //       setDataShapingOOK() to set the correct shaping!
+  state = fsk.setOOK(true);
+  state = fsk.setDataShapingOOK(1);
+  if (state != ERR_NONE) {
+    Serial.print(F("Unable to change modulation, code "));
     Serial.println(state);
     while (true);
   }

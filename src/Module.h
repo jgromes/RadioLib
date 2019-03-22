@@ -10,8 +10,8 @@
 class Module {
   public:
     Module(int tx, int rx);
-    Module(int cs, int int0, int int1);
-    Module(int cs, int rx, int tx, int int0, int int1);
+    Module(int cs, int int0, int int1, SPIClass& spi = SPI);
+    Module(int cs, int rx, int tx, int int0, int int1, SPIClass& spi = SPI);
     
     SoftwareSerial* ModuleSerial;
     
@@ -22,6 +22,7 @@ class Module {
     uint8_t SPIwriteCommand = 0b10000000;
     
     void init(uint8_t interface, uint8_t gpio);
+    void term();
     
     void ATemptyBuffer();
     bool ATgetResponse();
@@ -37,6 +38,8 @@ class Module {
     void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes);
     void SPIwriteRegister(uint8_t reg, uint8_t data);
     
+    void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    
     int getCs() const { return(_cs); }
     int getInt0() const { return(_int0); }
     int getInt1() const { return(_int1); }
@@ -47,6 +50,8 @@ class Module {
     int _rx;
     int _int0;
     int _int1;
+    
+    SPIClass* _spi;
     
     uint32_t _ATtimeout = 15000;
 };

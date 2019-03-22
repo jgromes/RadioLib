@@ -45,6 +45,9 @@ void loop() {
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
+  // NOTE: transmit() is a blocking method!
+  //       See example SX127x_Transmit_Interrupt for details
+  //       on non-blocking transmission method.
   int state = lora.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
