@@ -31,6 +31,7 @@ Module::Module(int cs, int rx, int tx, int int0, int int1, SPIClass& spi) {
 }
 
 void Module::init(uint8_t interface, uint8_t gpio) {
+  // select interface
   switch(interface) {
     case USE_SPI:
       pinMode(_cs, OUTPUT);
@@ -44,6 +45,7 @@ void Module::init(uint8_t interface, uint8_t gpio) {
       break;
   }
   
+  // select GPIO
   switch(gpio) {
     case INT_NONE:
       break;
