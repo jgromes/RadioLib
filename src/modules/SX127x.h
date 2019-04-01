@@ -874,8 +874,6 @@ class SX127x: public PhysicalLayer {
     float _rxBw;
     bool _ook;
     
-    int16_t tx(char* data, uint8_t length);
-    int16_t rxSingle(char* data, uint8_t* length);
     int16_t setFrequencyRaw(float newFreq);
     int16_t config();
     int16_t configFSK();
