@@ -11,7 +11,7 @@ class Module {
   public:
     Module(int tx, int rx);
     Module(int cs, int int0, int int1, SPIClass& spi = SPI);
-    Module(int cs, int rx, int tx, int int0, int int1, SPIClass& spi = SPI);
+    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI);
     
     SoftwareSerial* ModuleSerial;
     
@@ -43,6 +43,9 @@ class Module {
     int getCs() const { return(_cs); }
     int getInt0() const { return(_int0); }
     int getInt1() const { return(_int1); }
+    int getRx() const { return(_rx); }
+    int getTx() const { return(_tx); }
+    SPIClass* getSpi() const { return(_spi); }
     
   private:
     int _cs;
