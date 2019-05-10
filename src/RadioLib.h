@@ -13,6 +13,7 @@
 #include "modules/RFM96.h"
 #include "modules/RFM97.h"
 #include "modules/SX1231.h"
+#include "modules/SX1262.h"
 #include "modules/SX1272.h"
 #include "modules/SX1273.h"
 #include "modules/SX1276.h"
