@@ -84,14 +84,6 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   return(ERR_NONE);
 }
 
-int16_t RF69::transmit(String& str, uint8_t addr) {
-  return(RF69::transmit(str.c_str()), addr);
-}
-
-int16_t RF69::transmit(const char* str, uint8_t addr) {
-  return(RF69::transmit((uint8_t*)str, strlen(str), addr));
-}
-
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > 64) {
@@ -131,20 +123,6 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   clearIRQFlags();
   
   return(ERR_NONE);
-}
-
-int16_t RF69::receive(String& str, size_t len) {
-  // create temporary array to store received data
-  char* data = new char[len];
-  int16_t state = RF69::receive((uint8_t*)data, len);
-  
-  // if packet was received successfully, copy data into String
-  if(state == ERR_NONE) {
-    str = String(data);
-  }
-  
-  delete[] data;
-  return(state);
 }
 
 int16_t RF69::receive(uint8_t* data, size_t len) {
