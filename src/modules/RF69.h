@@ -421,6 +421,10 @@
 
 class RF69: public PhysicalLayer {
   public:
+    // introduce PhysicalLayer overloads
+    using PhysicalLayer::transmit;
+    using PhysicalLayer::receive;
+  
     // constructor
     RF69(Module* module);
     
@@ -430,10 +434,7 @@ class RF69: public PhysicalLayer {
     // basic methods
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
-    int16_t transmit(const char* str, uint8_t addr = 0);
-    int16_t transmit(String& str, uint8_t addr = 0);
     int16_t receive(uint8_t* data, size_t len);
-    int16_t receive(String& str, size_t len = 0);
     int16_t sleep();
     int16_t standby();
     int16_t transmitDirect(uint32_t FRF = 0);
