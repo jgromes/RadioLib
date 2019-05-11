@@ -496,15 +496,16 @@
 
 class CC1101: public PhysicalLayer {
   public:
+    // introduce PhysicalLayer overloads
+    using PhysicalLayer::transmit;
+    using PhysicalLayer::receive;
+  
     // constructor
     CC1101(Module* module);
     
     // basic methods
     int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0);
-    int16_t transmit(String& str, uint8_t addr = 0);
-    int16_t transmit(const char* str, uint8_t addr = 0);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
-    int16_t receive(String& str, size_t len = 0);
     int16_t receive(uint8_t* data, size_t len);
     int16_t standby();
     int16_t transmitDirect(uint32_t FRF = 0);

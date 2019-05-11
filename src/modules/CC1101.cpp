@@ -81,14 +81,6 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   return(state);
 }
 
-int16_t CC1101::transmit(String& str, uint8_t addr) {
-  return(CC1101::transmit(str.c_str(), addr));
-}
-
-int16_t CC1101::transmit(const char* str, uint8_t addr) {
-  return(CC1101::transmit((uint8_t*)str, strlen(str), addr));
-}
-
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > 63) {
@@ -134,20 +126,6 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // flush Tx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_TX);
   
-  return(state);
-}
-
-int16_t CC1101::receive(String& str, size_t len) {
-  // create temporary array to store received data
-  char* data = new char[len + 1];
-  int16_t state = CC1101::receive((uint8_t*)data, len);
-  
-  // if packet was received successfully, copy data into String
-  if(state == ERR_NONE) {
-    str = String(data);
-  }
-  
-  delete[] data;
   return(state);
 }
 
@@ -199,9 +177,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   _rawLQI = val & 0x7F;
   
   // add terminating null
-  if(len == 0) {
-    data[length] = 0;
-  }
+  data[length] = 0;
   
   // flush Rx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
