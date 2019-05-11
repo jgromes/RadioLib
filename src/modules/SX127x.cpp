@@ -285,9 +285,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     _mod->SPIreadRegisterBurst(SX127X_REG_FIFO, length, data);
     
     // add terminating null
-    if(len == 0) {
-      data[length] = 0;
-    }
+    data[length] = 0;
     
     // clear interrupt flags
     clearIRQFlags();
@@ -340,9 +338,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     _mod->SPIreadRegisterBurst(SX127X_REG_FIFO, length, data);
     
     // add terminating null
-    if(len == 0) {
-      data[length] = 0;
-    }
+    data[length] = 0;
     
     // clear interrupt flags
     clearIRQFlags();
