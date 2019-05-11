@@ -341,7 +341,7 @@ class SX126x: public PhysicalLayer {
   
   protected:
     // SX1276x SPI command implementations
-    void setTx(uint32_t timeout);
+    void setTx(uint32_t timeout = 0);
     void setRx(uint32_t timeout);
     void setCad();
     void setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = SX126X_PA_CONFIG_PA_LUT);
@@ -353,6 +353,7 @@ class SX126x: public PhysicalLayer {
     void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_80U);
     void setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     void setPacketParams(uint16_t preambleLength, uint8_t payloadLength, uint8_t crcType, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    uint8_t getStatus();
     uint8_t getRssiInt();
     
     int16_t setFrequencyRaw(float freq);

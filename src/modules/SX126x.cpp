@@ -7,6 +7,9 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
   _sf = 9;
   _cr = SX126X_LORA_CR_4_7;
   _ldro = 0x00;
+  _payloadLength = 255;
+  _crcType = SX126X_LORA_CRC_ON;
+  _preambleLength = 8;
 }
 
 int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength) {
@@ -63,7 +66,15 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::transmitDirect(uint32_t frf) {
-
+  // user requested to start transmitting immediately (required for RTTY)
+  if(frf != 0) {
+    setRfFrequency(frf);
+  }
+  
+  // start transmitting
+  uint8_t data[] = {SX126X_CMD_NOP};
+  SPIwriteCommand(SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1);
+  return(ERR_NONE);
 }
 
 int16_t SX126x::receiveDirect() {
@@ -119,7 +130,7 @@ int16_t SX126x::setBandwidth(float bw) {
   
   // update modulation parameters
   _bwKhz = bw;
-  setModulationParams(_bw, _sf, _cr);
+  setModulationParams(_sf, _bw, _cr);
   return(ERR_NONE);
 }
 
@@ -136,7 +147,7 @@ int16_t SX126x::setSpreadingFactor(uint8_t sf) {
   
   // update modulation parameters
   _sf = sf;
-  setModulationParams(_bw, _sf, _cr);
+  setModulationParams(_sf, _bw, _cr);
   return(ERR_NONE);
 }
 
@@ -153,7 +164,7 @@ int16_t SX126x::setCodingRate(uint8_t cr) {
   
   // update modulation parameters
   _cr = cr - 4;
-  setModulationParams(_bw, _sf, _cr);
+  setModulationParams(_sf, _bw, _cr);
   return(ERR_NONE);
 }
 
@@ -181,7 +192,7 @@ int16_t SX126x::setCurrentLimit(float currentLimit) {
 int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   // update packet parameters
   _preambleLength = preambleLength;
-  setPacketParams((uint8_t)((_preambleLength >> 8) & 0xFF), (uint8_t)(_preambleLength & 0xFF), _payloadLength, _crcType);
+  setPacketParams(_preambleLength, _payloadLength, _crcType);
   return(ERR_NONE);
 }
 
@@ -209,7 +220,7 @@ void SX126x::setCad() {
 
 void SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax, uint8_t paLut) {
   uint8_t data[4] = {paDutyCycle, deviceSel, hpMax, paLut};
-  SPIwriteCommand(SX126X_CMD_SET_TX_PARAMS, data, 4);
+  SPIwriteCommand(SX126X_CMD_SET_PA_CONFIG, data, 4);
 }
 
 void SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
@@ -267,9 +278,15 @@ void SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldr
   SPIwriteCommand(SX126X_CMD_SET_MODULATION_PARAMS, data, 4);
 }
 
-void SX126x::setPacketParams(uint16_t preambleLength, uint8_t headerType, uint8_t payloadLength, uint8_t crcType, uint8_t invertIQ) {
-  uint8_t data[7] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF), headerType, payloadLength, crcType, invertIQ};
-  SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 7);
+void SX126x::setPacketParams(uint16_t preambleLength, uint8_t payloadLength, uint8_t crcType, uint8_t headerType, uint8_t invertIQ) {
+  uint8_t data[6] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF), headerType, payloadLength, crcType, invertIQ};
+  SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 6);
+}
+
+uint8_t SX126x::getStatus() {
+  uint8_t data[1];
+  SPIreadCommand(SX126X_CMD_GET_STATUS, data, 1);
+  return(data[0]);
 }
 
 uint8_t SX126x::getRssiInt() {
@@ -279,6 +296,7 @@ uint8_t SX126x::getRssiInt() {
 }
 
 int16_t SX126x::setFrequencyRaw(float freq) {
+  // TODO CalibrateImage
   // calculate raw value
   uint32_t frf = (freq * (uint32_t(1) << SX126X_DIV_EXPONENT)) / SX126X_CRYSTAL_FREQ;
   setRfFrequency(frf);
@@ -333,18 +351,34 @@ void SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dat
   
   // send command byte
   spi->transfer(cmd);
+  DEBUG_PRINT(cmd, HEX);
+  DEBUG_PRINT('\t');
   
   // send/receive all bytes
   if(write) {
     for(uint8_t n = 0; n < numBytes; n++) {
-      spi->transfer(dataOut[n]);
+      uint8_t in = spi->transfer(dataOut[n]);
+      DEBUG_PRINT(dataOut[n], HEX);
+      DEBUG_PRINT('\t');
+      DEBUG_PRINT(in, HEX);
+      DEBUG_PRINT('\t');
     }
+    DEBUG_PRINTLN();
   } else {
     // skip the first byte for read-type commands (status-only)
-    spi->transfer(SX126X_CMD_NOP);
+    uint8_t in = spi->transfer(SX126X_CMD_NOP);
+    DEBUG_PRINT(SX126X_CMD_NOP, HEX);
+    DEBUG_PRINT('\t');
+    DEBUG_PRINT(in, HEX);
+    DEBUG_PRINT('\t')
     for(uint8_t n = 0; n < numBytes; n++) {
       dataIn[n] = spi->transfer(SX126X_CMD_NOP);
+      DEBUG_PRINT(SX126X_CMD_NOP, HEX);
+      DEBUG_PRINT('\t');
+      DEBUG_PRINT(dataIn[n], HEX);
+      DEBUG_PRINT('\t');
     }
+    DEBUG_PRINTLN();
   }
   
   // stop transfer
