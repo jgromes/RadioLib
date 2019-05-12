@@ -36,3 +36,7 @@
 
 # Arduino testing sketches
 examples/test/
+
+# Atom
+*.tags
+*.tags1
