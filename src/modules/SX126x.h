@@ -165,6 +165,8 @@
 #define SX126X_IRQ_PREAMBLE_DETECTED                0b0000000100  //  2     2     preamble detected
 #define SX126X_IRQ_RX_DONE                          0b0000000010  //  1     1     packet received
 #define SX126X_IRQ_TX_DONE                          0b0000000001  //  0     0     packet transmission completed
+#define SX126X_IRQ_ALL                              0b1111111111  //  9     0     all interrupts
+#define SX126X_IRQ_NONE                             0b0000000000  //  9     0     no interrupts
 
 //SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL
 #define SX126X_DIO2_AS_IRQ                            0x00        //  7     0     DIO2 configuration: IRQ
@@ -316,19 +318,20 @@ class SX126x: public PhysicalLayer {
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
     using PhysicalLayer::receive;
-  
+
     // constructor
     SX126x(Module* mod);
-    
+
     // basic methods
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint16_t preambleLength);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
     int16_t receive(uint8_t* data, size_t len);
     int16_t transmitDirect(uint32_t frf = 0);
     int16_t receiveDirect();
     int16_t sleep();
     int16_t standby(uint8_t mode = SX126X_STANDBY_RC);
-    
+    void reset();
+
     // configuration methods
     int16_t setBandwidth(float bw);
     int16_t setSpreadingFactor(uint8_t sf);
@@ -338,7 +341,7 @@ class SX126x: public PhysicalLayer {
     int16_t setPreambleLength(uint16_t preambleLength);
     float getDataRate();
     int16_t setFrequencyDeviation(float freqDev);
-  
+
   protected:
     // SX1276x SPI command implementations
     void setTx(uint32_t timeout = 0);
@@ -350,23 +353,25 @@ class SX126x: public PhysicalLayer {
     void clearIrqStatus(uint16_t clearIrqParams = 0xFFFF);
     void setRfFrequency(uint32_t frf);
     uint8_t getPacketType();
-    void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_80U);
+    void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_40U);
     void setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
-    void setPacketParams(uint16_t preambleLength, uint8_t payloadLength, uint8_t crcType, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    void setPacketParams(uint16_t preambleLength, uint8_t payloadLength, uint8_t crcType, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_INVERTED);
     uint8_t getStatus();
     uint8_t getRssiInt();
-    
-    int16_t setFrequencyRaw(float freq);
-  
+    uint16_t getDeviceErrors();
+    void clearDeviceErrors();
+
+    int16_t setFrequencyRaw(float freq, bool calibrate = true);
+
   private:
     Module* _mod;
-    
+
     uint8_t _bw, _sf, _cr, _ldro, _payloadLength, _crcType;
     uint16_t _preambleLength;
     float _bwKhz;
-    
+
     int16_t config();
-    
+
     // common low-level SPI interface
     void SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
     void SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
