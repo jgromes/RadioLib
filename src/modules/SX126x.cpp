@@ -63,14 +63,16 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = standby();
 
+  // check packet length
+  if(len >= 256) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  uint32_t timeout = 0;
+
   // get currently active modem
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
-    // check packet length
-    if(len >= 256) {
-      return(ERR_PACKET_TOO_LONG);
-    }
-
     // calculate timeout (150% of expected time-on-air)
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
     float sfCoeff1 = 4.25;
@@ -84,59 +86,132 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
       sfDivisor = 4*(_sf - 2);
     }
     float nSymbol = _preambleLength + sfCoeff1 + 8 + ceil(max(8.0 * len + (_crcType * 16.0) - 4.0 * _sf + sfCoeff2 + 20.0, 0.0) / sfDivisor) * (_cr + 4);
-    uint32_t timeout = (uint32_t)(symbolLength * nSymbol * 1.5);
-    DEBUG_PRINTLN(timeout);
-
-    // set DIO mapping
-    setDioIrqParams(SX126X_IRQ_TX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_TX_DONE);
+    timeout = (uint32_t)(symbolLength * nSymbol * 1500.0);
 
     // set packet length
     setPacketParams(_preambleLength, _crcType, len);
 
-    // set buffer pointers
-    setBufferBaseAddress();
-
-    // write packet to buffer
-    writeBuffer(data, len);
-
-    // clear interrupt flags
-    clearIrqStatus();
-
-    // start transmission
-    uint32_t timeoutValue = (uint32_t)((float)timeout / 0.015625);
-    setTx(timeoutValue);
-    //DEBUG_PRINTLN(digitalRead(_mod->getRx()));
-
-    // wait for BUSY to go low (= PA ramp up done)
-    while(digitalRead(_mod->getRx()));
-
-    // wait for packet transmission or timeout
-    uint32_t start = millis();
-    while(!digitalRead(_mod->getInt0())) {
-      if(millis() - start > timeout) {
-        clearIrqStatus();
-        return(ERR_TX_TIMEOUT);
-      }
-    }
-    uint32_t elapsed = millis() - start;
-
-    // update data rate
-    _dataRate = (len*8.0)/((float)elapsed/1000.0);
-
-    // clear interrupt flags
-    clearIrqStatus();
-
-    return(ERR_NONE);
-
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
 
+  } else {
+    return(ERR_UNKNOWN);
   }
 
-  return(ERR_UNKNOWN);
+  DEBUG_PRINT(F("Timeout in "))
+  DEBUG_PRINT(timeout);
+  DEBUG_PRINTLN(F(" us"))
+
+  // set DIO mapping
+  setDioIrqParams(SX126X_IRQ_TX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_TX_DONE);
+
+  // set buffer pointers
+  setBufferBaseAddress();
+
+  // write packet to buffer
+  writeBuffer(data, len);
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // start transmission
+  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
+  setTx(timeoutValue);
+
+  // wait for BUSY to go low (= PA ramp up done)
+  while(digitalRead(_mod->getRx()));
+
+  // wait for packet transmission or timeout
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getInt0())) {
+    if(micros() - start > timeout) {
+      clearIrqStatus();
+      return(ERR_TX_TIMEOUT);
+    }
+  }
+  uint32_t elapsed = micros() - start;
+
+  // update data rate
+  _dataRate = (len*8.0)/((float)elapsed/1000000.0);
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  return(ERR_NONE);
 }
 
 int16_t SX126x::receive(uint8_t* data, size_t len) {
+  // set mode to standby
+  int16_t state = standby();
 
+  uint32_t timeout = 0;
+
+  // get currently active modem
+  uint8_t modem = getPacketType();
+  if(modem == SX126X_PACKET_TYPE_LORA) {
+    // calculate timeout (100 LoRa symbols, the default for SX127x series)
+    float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
+    timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
+
+  } else if(modem == SX126X_PACKET_TYPE_GFSK) {
+
+  } else {
+    return(ERR_UNKNOWN);
+  }
+
+  DEBUG_PRINT(F("Timeout in "))
+  DEBUG_PRINT(timeout);
+  DEBUG_PRINTLN(F(" us"))
+
+  // set DIO mapping
+  setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_RX_DONE);
+
+  // set buffer pointers
+  setBufferBaseAddress();
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // start reception
+  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
+  setRx(timeoutValue);
+
+  // wait for packet reception or timeout
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getInt0())) {
+    if(micros() - start > timeout) {
+      clearIrqStatus();
+      return(ERR_RX_TIMEOUT);
+    }
+  }
+
+  // check integrity CRC
+  uint16_t irq = getIrqStatus();
+  if((irq & SX126X_IRQ_CRC_ERR) || (irq & SX126X_IRQ_HEADER_ERR)) {
+    clearIrqStatus();
+    return(ERR_CRC_MISMATCH);
+  }
+
+  // get packet length
+  uint8_t rxBufStatus[2];
+  SPIreadCommand(SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+  size_t length = rxBufStatus[0];
+
+  // read packet data
+  if(len == 0) {
+    // argument 'len' equal to zero indicates String call, which means dynamically allocated data array
+    // dispose of the original and create a new one
+    delete[] data;
+    data = new uint8_t[length + 1];
+  }
+  readBuffer(data, length);
+
+  // add terminating null
+  data[length] = 0;
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  return(ERR_NONE);
 }
 
 int16_t SX126x::transmitDirect(uint32_t frf) {
@@ -152,7 +227,8 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
 }
 
 int16_t SX126x::receiveDirect() {
-
+  // SX126x is unable to ouput received data directly
+  return(ERR_UNKNOWN);
 }
 
 int16_t SX126x::sleep() {
@@ -279,6 +355,30 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   return(ERR_NONE);
 }
 
+float SX126x::getRSSI() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // get last packet RSSI from packet status
+  uint32_t packetStatus = getPacketStatus();
+  uint8_t rssiPkt = packetStatus & 0xFF;
+  return(-1.0 * rssiPkt/2.0);
+}
+
+float SX126x::getSNR() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // get last packet SNR from packet status
+  uint32_t packetStatus = getPacketStatus();
+  uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
+  return(snrPkt/4.0);
+}
+
 void SX126x::setTx(uint32_t timeout) {
   uint8_t data[3] = {(uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF)};
   SPIwriteCommand(SX126X_CMD_SET_TX, data, 3);
@@ -311,7 +411,17 @@ void SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
   uint8_t* dat = new uint8_t[1 + numBytes];
   dat[0] = offset;
   memcpy(dat + 1, data, numBytes);
-  SPIwriteCommand(SX126X_CMD_WRITE_BUFFER, data, 1 + numBytes);
+  SPIwriteCommand(SX126X_CMD_WRITE_BUFFER, dat, 1 + numBytes);
+  delete[] dat;
+}
+
+void SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
+  // offset will be always set to 0 (one extra NOP is sent)
+  uint8_t* dat = new uint8_t[1 + numBytes];
+  dat[0] = SX126X_CMD_NOP;
+  memcpy(dat + 1, data, numBytes);
+  SPIreadCommand(SX126X_CMD_READ_BUFFER, dat, numBytes);
+  memcpy(data, dat + 1, numBytes);
   delete[] dat;
 }
 
@@ -321,6 +431,12 @@ void SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2M
                      (uint8_t)((dio2Mask >> 8) & 0xFF), (uint8_t)(dio2Mask & 0xFF),
                      (uint8_t)((dio3Mask >> 8) & 0xFF), (uint8_t)(dio3Mask & 0xFF)};
   SPIwriteCommand(SX126X_CMD_SET_DIO_IRQ_PARAMS, data, 8);
+}
+
+uint16_t SX126x::getIrqStatus() {
+  uint8_t data[2];
+  SPIreadCommand(SX126X_CMD_GET_IRQ_STATUS, data, 2);
+  return(((uint16_t)(data[1]) << 8) | data[0]);
 }
 
 void SX126x::clearIrqStatus(uint16_t clearIrqParams) {
@@ -377,10 +493,10 @@ uint8_t SX126x::getStatus() {
   return(data[0]);
 }
 
-uint8_t SX126x::getRssiInt() {
-  uint8_t data[1];
-  SPIreadCommand(SX126X_CMD_GET_RSSI_INST, data, 1);
-  return(data[0]);
+uint32_t SX126x::getPacketStatus() {
+  uint8_t data[3];
+  SPIreadCommand(SX126X_CMD_GET_PACKET_STATUS, data, 3);
+  return((((uint32_t)data[2]) << 16) | (((uint32_t)data[1]) << 8) | (uint32_t)data[0]);
 }
 
 uint16_t SX126x::getDeviceErrors() {
