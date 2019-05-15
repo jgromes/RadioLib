@@ -9,6 +9,7 @@
     - RF69
     - SX1231
     - CC1101
+    - SX1262/68
 */
 
 // include the library
@@ -48,6 +49,7 @@ void setup() {
   //         SX127x - 61 Hz
   //         RF69 - 61 Hz
   //         CC1101 - 397 Hz
+  //         SX126x - 1 Hz
   Serial.print(F("[RTTY] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz

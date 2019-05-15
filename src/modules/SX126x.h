@@ -219,7 +219,7 @@
 #define SX126X_GFSK_RX_BW_117_3                       0x0B        //  7     0                        117.3 kHz
 #define SX126X_GFSK_RX_BW_156_2                       0x1A        //  7     0                        156.2 kHz
 #define SX126X_GFSK_RX_BW_187_2                       0x12        //  7     0                        187.2 kHz
-#define SX126X_GFSK_RX_BW_232_3                       0x0A        //  7     0                        232.3 kHz
+#define SX126X_GFSK_RX_BW_234_3                       0x0A        //  7     0                        234.3 kHz
 #define SX126X_GFSK_RX_BW_312_0                       0x19        //  7     0                        312.0 kHz
 #define SX126X_GFSK_RX_BW_373_6                       0x11        //  7     0                        373.6 kHz
 #define SX126X_GFSK_RX_BW_467_0                       0x09        //  7     0                        467.0 kHz
@@ -324,6 +324,7 @@ class SX126x: public PhysicalLayer {
 
     // basic methods
     int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint16_t preambleLength);
+    int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float dataShaping);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
     int16_t receive(uint8_t* data, size_t len);
     int16_t transmitDirect(uint32_t frf = 0);
@@ -338,8 +339,12 @@ class SX126x: public PhysicalLayer {
     int16_t setSyncWord(uint16_t syncWord);
     int16_t setCurrentLimit(float currentLimit);
     int16_t setPreambleLength(uint16_t preambleLength);
-    float getDataRate();
     int16_t setFrequencyDeviation(float freqDev);
+    int16_t setBitRate(float br);
+    int16_t setRxBandwidth(float rxBw);
+    int16_t setDataShaping(float sh);
+    int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+    float getDataRate();
     float getRSSI();
     float getSNR();
 
@@ -359,7 +364,9 @@ class SX126x: public PhysicalLayer {
     uint8_t getPacketType();
     void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
     void setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
+    void setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     void setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    void setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t addrComp = SX126X_GFSK_ADDRESS_FILT_OFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_8, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
     void setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     uint8_t getStatus();
     uint32_t getPacketStatus();
@@ -375,9 +382,14 @@ class SX126x: public PhysicalLayer {
     uint16_t _preambleLength;
     float _bwKhz;
 
+    uint32_t _br, _freqDev;
+    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength;
+    uint16_t _preambleLengthFSK;
+
     float _dataRate;
 
     int16_t config();
+    int16_t configFSK();
 
     // common low-level SPI interface
     void SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);

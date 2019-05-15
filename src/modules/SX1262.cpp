@@ -31,6 +31,33 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
   return(state);
 }
 
+int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping) {
+  // execute common part
+  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, dataShaping);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  state = setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // OCP must be configured after PA
+  state = SX126x::setCurrentLimit(currentLimit);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  return(state);
+}
+
 int16_t SX1262::setFrequency(float freq) {
   // check frequency range
   if((freq < 150.0) || (freq > 960.0)) {
