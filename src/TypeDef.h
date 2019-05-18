@@ -108,4 +108,8 @@
 // CC1101-specific status codes
 #define ERR_INVALID_NUM_BROAD_ADDRS           -601
 
+// SX126x-specific status codes
+#define ERR_INVALID_CRC                       -701
+#define LORA_DETECTED                         -702
+
 #endif

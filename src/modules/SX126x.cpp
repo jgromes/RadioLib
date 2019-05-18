@@ -65,12 +65,13 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   pinMode(_mod->getRx(), INPUT);
 
   // initialize configuration variables (will be overwritten during public settings configuration)
-  _br = 21333;
-  _freqDev = 52429;
+  _br = 21333;                                  // 48.0 kbps
+  _freqDev = 52428;                             // 50.0 kHz
   _rxBw = SX126X_GFSK_RX_BW_117_3;
   _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_5;
-  _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE;
+  _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE_INV;     // CCIT CRC configuration
   _preambleLengthFSK = preambleLength;
+  _addrComp = SX126X_GFSK_ADDRESS_FILT_OFF;
 
   // get status and errors
   getStatus();
@@ -110,8 +111,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
 
   // set default sync word 0x2D01 - not a beginFSK attribute
   uint8_t sync[] = {0x2D, 0x01};
-  _syncWordLength = 2;
-  state = setSyncWord(sync, _syncWordLength);
+  state = setSyncWord(sync, 2);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -148,37 +148,22 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     float nSymbol = _preambleLength + sfCoeff1 + 8 + ceil(max(8.0 * len + (_crcType * 16.0) - 4.0 * _sf + sfCoeff2 + 20.0, 0.0) / sfDivisor) * (_cr + 4);
     timeout = (uint32_t)(symbolLength * nSymbol * 1500.0);
 
-    // set packet length
-    setPacketParams(_preambleLength, _crcType, len);
-
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
+
+    // calculate timeout (500% of expected time-on-air)
+    float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
+    timeout = (uint32_t)(((len * 8.0) / brBps) * 1000000.0 * 5.0);
 
   } else {
     return(ERR_UNKNOWN);
   }
 
-  DEBUG_PRINT(F("Timeout in "))
+  DEBUG_PRINT(F("Timeout in "));
   DEBUG_PRINT(timeout);
-  DEBUG_PRINTLN(F(" us"))
-
-  // set DIO mapping
-  setDioIrqParams(SX126X_IRQ_TX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_TX_DONE);
-
-  // set buffer pointers
-  setBufferBaseAddress();
-
-  // write packet to buffer
-  writeBuffer(data, len);
-
-  // clear interrupt flags
-  clearIrqStatus();
+  DEBUG_PRINTLN(F(" us"));
 
   // start transmission
-  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
-  setTx(timeoutValue);
-
-  // wait for BUSY to go low (= PA ramp up done)
-  while(digitalRead(_mod->getRx()));
+  startTransmit(data, len, addr);
 
   // wait for packet transmission or timeout
   uint32_t start = micros();
@@ -195,6 +180,9 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // clear interrupt flags
   clearIrqStatus();
+
+  // set mode to standby to disable transmitter
+  standby();
 
   return(ERR_NONE);
 }
@@ -213,27 +201,25 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
 
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
+    // calculate timeout (500 % of expected time-one-air)
+    size_t maxLen = len;
+    if(len == 0) {
+      maxLen = 0xFF;
+    }
+    float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
+    timeout = (uint32_t)(((maxLen * 8.0) / brBps) * 1000000.0 * 5.0);
 
   } else {
     return(ERR_UNKNOWN);
   }
 
-  DEBUG_PRINT(F("Timeout in "))
+  DEBUG_PRINT(F("Timeout in "));
   DEBUG_PRINT(timeout);
-  DEBUG_PRINTLN(F(" us"))
-
-  // set DIO mapping
-  setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_RX_DONE);
-
-  // set buffer pointers
-  setBufferBaseAddress();
-
-  // clear interrupt flags
-  clearIrqStatus();
+  DEBUG_PRINTLN(F(" us"));
 
   // start reception
   uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
-  setRx(timeoutValue);
+  startReceive(timeoutValue);
 
   // wait for packet reception or timeout
   uint32_t start = micros();
@@ -244,6 +230,132 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     }
   }
 
+  // read the received data
+  return(readData(data, len));
+}
+
+int16_t SX126x::transmitDirect(uint32_t frf) {
+  // user requested to start transmitting immediately (required for RTTY)
+  if(frf != 0) {
+    setRfFrequency(frf);
+  }
+
+  // start transmitting
+  uint8_t data[] = {SX126X_CMD_NOP};
+  SPIwriteCommand(SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1);
+  return(ERR_NONE);
+}
+
+int16_t SX126x::receiveDirect() {
+  // SX126x is unable to ouput received data directly
+  return(ERR_UNKNOWN);
+}
+
+int16_t SX126x::scanChannel() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  standby();
+
+  // set DIO pin mapping
+  setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED);
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // set mode to CAD
+  setCad();
+
+  // wait for channel activity detected or timeout
+  while(!digitalRead(_mod->getInt0())) {
+    if(digitalRead(_mod->getInt1())) {
+      clearIrqStatus();
+      return(LORA_DETECTED);
+    }
+  }
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  return(CHANNEL_FREE);
+}
+
+int16_t SX126x::sleep() {
+  uint8_t data[] = {SX126X_SLEEP_START_COLD | SX126X_SLEEP_RTC_OFF};
+  SPIwriteCommand(SX126X_CMD_SET_SLEEP, data, 1);
+
+  // wait for SX126x to safely enter sleep mode
+  delayMicroseconds(500);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::standby(uint8_t mode) {
+  uint8_t data[] = {mode};
+  SPIwriteCommand(SX126X_CMD_SET_STANDBY, data, 1);
+  return(ERR_NONE);
+}
+
+void SX126x::setDio1Action(void (*func)(void)) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
+}
+
+void SX126x::setDio2Action(void (*func)(void)) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
+}
+
+int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  // set packet Length
+  uint8_t modem = getPacketType();
+  if(modem == SX126X_PACKET_TYPE_LORA) {
+    setPacketParams(_preambleLength, _crcType, len);
+  } else if(modem == SX126X_PACKET_TYPE_LORA) {
+    setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, len);
+  } else {
+    return(ERR_UNKNOWN);
+  }
+
+  // set DIO mapping
+  setDioIrqParams(SX126X_IRQ_TX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_TX_DONE);
+
+  // set buffer pointers
+  setBufferBaseAddress();
+
+  // write packet to buffer
+  writeBuffer(data, len);
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // start transmission
+  setTx(0x000000);
+
+  // wait for BUSY to go low (= PA ramp up done)
+  while(digitalRead(_mod->getRx()));
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::startReceive(uint32_t timeout) {
+  // set DIO mapping
+  setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_RX_DONE);
+
+  // set buffer pointers
+  setBufferBaseAddress();
+
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // set mode to receive
+  setRx(timeout);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::readData(uint8_t* data, size_t len) {
   // check integrity CRC
   uint16_t irq = getIrqStatus();
   if((irq & SX126X_IRQ_CRC_ERR) || (irq & SX126X_IRQ_HEADER_ERR)) {
@@ -271,39 +383,6 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   // clear interrupt flags
   clearIrqStatus();
 
-  return(ERR_NONE);
-}
-
-int16_t SX126x::transmitDirect(uint32_t frf) {
-  // user requested to start transmitting immediately (required for RTTY)
-  if(frf != 0) {
-    setRfFrequency(frf);
-  }
-
-  // start transmitting
-  uint8_t data[] = {SX126X_CMD_NOP};
-  SPIwriteCommand(SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1);
-  return(ERR_NONE);
-}
-
-int16_t SX126x::receiveDirect() {
-  // SX126x is unable to ouput received data directly
-  return(ERR_UNKNOWN);
-}
-
-int16_t SX126x::sleep() {
-  uint8_t data[] = {SX126X_SLEEP_START_COLD | SX126X_SLEEP_RTC_OFF};
-  SPIwriteCommand(SX126X_CMD_SET_SLEEP, data, 1);
-
-  // wait for SX126x to safely enter sleep mode
-  delayMicroseconds(500);
-
-  return(ERR_NONE);
-}
-
-int16_t SX126x::standby(uint8_t mode) {
-  uint8_t data[] = {mode};
-  SPIwriteCommand(SX126X_CMD_SET_STANDBY, data, 1);
   return(ERR_NONE);
 }
 
@@ -407,7 +486,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
     return(ERR_NONE);
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
-    setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength);
+    setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
     return(ERR_NONE);
   }
 
@@ -426,7 +505,8 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   }
 
   // calculate raw frequency deviation value
-  _freqDev = (uint32_t)((freqDev * 1000.0) / ((SX126X_CRYSTAL_FREQ * 1000000.0) / (float)((uint32_t)(1) << 25)));
+  //_freqDev = (uint32_t)((freqDev * 1000.0) / ((SX126X_CRYSTAL_FREQ * 1000000.0) / (float)((uint32_t)(1) << 25)));
+  _freqDev = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // update modulation parameters
   setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev);
@@ -520,15 +600,16 @@ int16_t SX126x::setDataShaping(float sh) {
   }
 
   // check allowed values
+  sh *= 10.0;
   if(abs(sh - 0.0) <= 0.001) {
     _pulseShape = SX126X_GFSK_FILTER_NONE;
-  } else if(abs(sh - 0.3) <= 0.001) {
+  } else if(abs(sh - 3.0) <= 0.001) {
     _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_3;
-  } else if(abs(sh - 0.5) <= 0.001) {
+  } else if(abs(sh - 5.0) <= 0.001) {
     _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_5;
-  } else if(abs(sh - 0.7) <= 0.001) {
+  } else if(abs(sh - 7.0) <= 0.001) {
     _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_7;
-  } else if(abs(sh - 1.0) <= 0.001) {
+  } else if(abs(sh - 10.0) <= 0.001) {
     _pulseShape = SX126X_GFSK_FILTER_GAUSS_1;
   } else {
     return(ERR_INVALID_DATA_SHAPING);
@@ -555,8 +636,112 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
   writeRegister(SX126X_REG_SYNC_WORD_0, syncWord, len);
 
   // update packet parameters
-  _syncWordLength = len;
-  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength);
+  _syncWordLength = len * 8;
+  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node only)
+  _addrComp = SX126X_GFSK_ADDRESS_FILT_NODE;
+  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  // set node address
+  writeRegister(SX126X_REG_NODE_ADDRESS, &nodeAddr, 1);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::setBroadcastAddress(uint8_t broadAddr) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node and broadcast)
+  _addrComp = SX126X_GFSK_ADDRESS_FILT_NODE_BROADCAST;
+  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  // set broadcast address
+  writeRegister(SX126X_REG_BROADCAST_ADDRESS, &broadAddr, 1);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::disableAddressFiltering() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // disable address filtering
+  _addrComp = SX126X_GFSK_ADDRESS_FILT_OFF;
+  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::setCRC(bool enableCRC) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // update packet parameters
+  if(enableCRC) {
+    _crcType = SX126X_LORA_CRC_ON;
+  } else {
+    _crcType = SX126X_LORA_CRC_OFF;
+  }
+  setPacketParams(_preambleLength, _crcType);
+
+  return(ERR_NONE);
+}
+
+int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // update packet parameters
+  switch(len) {
+    case 0:
+      _crcTypeFSK = SX126X_GFSK_CRC_OFF;
+      break;
+    case 1:
+      if(inverted) {
+        _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE_INV;
+      } else {
+        _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE;
+      }
+      break;
+    case 2:
+      if(inverted) {
+        _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE_INV;
+      } else {
+        _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE;
+      }
+      break;
+    default:
+      return(ERR_INVALID_CRC);
+  }
+  setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  // write initial CRC value
+  uint8_t data[2] = {(uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF)};
+  writeRegister(SX126X_REG_CRC_INITIAL_MSB, data, 2);
+
+  // write CRC polynomial value
+  data[0] = (uint8_t)((polynomial >> 8) & 0xFF);
+  data[1] = (uint8_t)(polynomial & 0xFF);
+  writeRegister(SX126X_REG_CRC_POLYNOMIAL_MSB, data, 2);
 
   return(ERR_NONE);
 }
@@ -566,11 +751,6 @@ float SX126x::getDataRate() {
 }
 
 float SX126x::getRSSI() {
-  // check active modem
-  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
-    return(ERR_WRONG_MODEM);
-  }
-
   // get last packet RSSI from packet status
   uint32_t packetStatus = getPacketStatus();
   uint8_t rssiPkt = packetStatus & 0xFF;
@@ -630,7 +810,7 @@ void SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
   uint8_t* dat = new uint8_t[1 + numBytes];
   dat[0] = SX126X_CMD_NOP;
   memcpy(dat + 1, data, numBytes);
-  SPIreadCommand(SX126X_CMD_READ_BUFFER, dat, numBytes);
+  SPIreadCommand(SX126X_CMD_READ_BUFFER, dat, 1 + numBytes);
   memcpy(data, dat + 1, numBytes);
   delete[] dat;
 }
@@ -699,11 +879,11 @@ void SX126x::setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t p
   SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 6);
 }
 
-void SX126x::setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t payloadLength, uint8_t packetType, uint8_t addrComp, uint8_t preambleDetectorLength, uint8_t whitening) {
+void SX126x::setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength, uint8_t packetType, uint8_t preambleDetectorLength, uint8_t whitening) {
   uint8_t data[9] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF),
                      preambleDetectorLength, syncWordLength, addrComp,
                      packetType, payloadLength, crcType, whitening};
-  SPIwriteCommand(SX126X_CMD_SET_MODULATION_PARAMS, data, 9);
+  SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 9);
 }
 
 void SX126x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddress) {
@@ -768,7 +948,7 @@ int16_t SX126x::config() {
   // set DIO2 as IRQ
   uint8_t* data = new uint8_t[1];
   data[0] = SX126X_DIO2_AS_IRQ;
-  SPIwriteCommand(SX126X_DIO2_AS_RF_SWITCH, data, 1);
+  SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
 
   // set regulator mode
   data[0] = SX126X_REGULATOR_DC_DC;
@@ -810,7 +990,7 @@ int16_t SX126x::configFSK() {
   // set DIO2 as IRQ
   uint8_t* data = new uint8_t[1];
   data[0] = SX126X_DIO2_AS_IRQ;
-  SPIwriteCommand(SX126X_DIO2_AS_RF_SWITCH, data, 1);
+  SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
 
   // set regulator mode
   data[0] = SX126X_REGULATOR_DC_DC;

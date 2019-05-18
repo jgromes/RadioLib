@@ -318,6 +318,8 @@ class SX126x: public PhysicalLayer {
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
     using PhysicalLayer::receive;
+    using PhysicalLayer::startTransmit;
+    using PhysicalLayer::readData;
 
     // constructor
     SX126x(Module* mod);
@@ -329,8 +331,16 @@ class SX126x: public PhysicalLayer {
     int16_t receive(uint8_t* data, size_t len);
     int16_t transmitDirect(uint32_t frf = 0);
     int16_t receiveDirect();
+    int16_t scanChannel();
     int16_t sleep();
     int16_t standby(uint8_t mode = SX126X_STANDBY_RC);
+
+    // interrupt methods
+    void setDio1Action(void (*func)(void));
+    void setDio2Action(void (*func)(void));
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startReceive(uint32_t timeout = 0xFFFFFF);
+    int16_t readData(uint8_t* data, size_t len);
 
     // configuration methods
     int16_t setBandwidth(float bw);
@@ -344,6 +354,11 @@ class SX126x: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
     int16_t setDataShaping(float sh);
     int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+    int16_t setNodeAddress(uint8_t nodeAddr);
+    int16_t setBroadcastAddress(uint8_t broadAddr);
+    int16_t disableAddressFiltering();
+    int16_t setCRC(bool enableCRC);
+    int16_t setCRC(uint8_t len, uint16_t initial = 0x1D0F, uint16_t polynomial = 0x1021, bool inverted = true);
     float getDataRate();
     float getRSSI();
     float getSNR();
@@ -359,14 +374,14 @@ class SX126x: public PhysicalLayer {
     void readBuffer(uint8_t* data, uint8_t numBytes);
     void setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX126X_IRQ_NONE, uint16_t dio3Mask = SX126X_IRQ_NONE);
     uint16_t getIrqStatus();
-    void clearIrqStatus(uint16_t clearIrqParams = 0xFFFF);
+    void clearIrqStatus(uint16_t clearIrqParams = SX126X_IRQ_ALL);
     void setRfFrequency(uint32_t frf);
     uint8_t getPacketType();
     void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
     void setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     void setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     void setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
-    void setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t addrComp = SX126X_GFSK_ADDRESS_FILT_OFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_8, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
+    void setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
     void setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     uint8_t getStatus();
     uint32_t getPacketStatus();
@@ -383,7 +398,7 @@ class SX126x: public PhysicalLayer {
     float _bwKhz;
 
     uint32_t _br, _freqDev;
-    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength;
+    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength, _addrComp;
     uint16_t _preambleLengthFSK;
 
     float _dataRate;

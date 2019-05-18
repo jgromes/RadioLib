@@ -29,6 +29,7 @@ void setup() {
   // output power:                14 dBm
   // current limit:               60 mA
   // preamble length:             8 symbols
+  // CRC:                         enabled
   int state = lora.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
