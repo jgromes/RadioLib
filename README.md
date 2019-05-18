@@ -18,6 +18,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __RF69__ FSK/OOK radio module
 * __RFM9x__ series LoRa modules (RFM95/96/97)
 * __SX127x__ series LoRa modules (SX1272/73/76/77/78/79)
+* __SX126x__ series LoRa modules (SX1261/62/68)
 * __SX1231__ FSK/OOK radio module
 * __XBee__ modules (S2B)
 
