@@ -1,14 +1,15 @@
 /*
    RadioLib Morse Transmit Example
 
-   This example sends Morse code message using 
+   This example sends Morse code message using
    SX1278's FSK modem.
 
    Other modules that can be used for Morse:
-    - SX1272/73/76/77/79
+    - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
+    - SX126x
 */
 
 // include the library
@@ -65,7 +66,7 @@ void loop() {
 
   // send start signal first
   morse.startSignal();
-  
+
   // Arduino String class
   String aStr = "Arduino String";
   morse.print(aStr);
@@ -75,7 +76,7 @@ void loop() {
 
   // character
   morse.print('c');
-  
+
   // byte
   // formatting DEC/HEX/OCT/BIN is supported for
   // any integer type (byte/int/long)
@@ -86,7 +87,7 @@ void loop() {
   morse.print(i);
 
   // floating point number
-  // NOTE: When using println(), the transmission will be 
+  // NOTE: When using println(), the transmission will be
   //       terminated with cross signal (.-.-.).
   float f = -3.1415;
   morse.println(f, 3);
