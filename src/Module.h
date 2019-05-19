@@ -10,7 +10,7 @@
 class Module {
   public:
     Module(int tx, int rx);
-    Module(int cs, int int0, int int1, SPIClass& spi = SPI);
+    Module(int cs, int int0, int int1, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI);
 
     SoftwareSerial* ModuleSerial;
@@ -46,6 +46,7 @@ class Module {
     int getRx() const { return(_rx); }
     int getTx() const { return(_tx); }
     SPIClass* getSpi() const { return(_spi); }
+    SPISettings getSpiSettings() const { return(_spiSettings); }
 
   private:
     int _cs;
@@ -55,6 +56,7 @@ class Module {
     int _int1;
 
     SPIClass* _spi;
+    SPISettings _spiSettings;
 
     uint32_t _ATtimeout = 15000;
 };

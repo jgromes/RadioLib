@@ -10,13 +10,14 @@ Module::Module(int rx, int tx) {
   ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
 
-Module::Module(int cs, int int0, int int1, SPIClass& spi) {
+Module::Module(int cs, int int0, int int1, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
   _rx = -1;
   _tx = -1;
   _int0 = int0;
   _int1 = int1;
   _spi = &spi;
+  _spiSettings = spiSettings;
 }
 
 Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi) {
@@ -188,7 +189,8 @@ void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
 
 void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start SPI transaction
-  _spi->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  //_spi->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  _spi->beginTransaction(_spiSettings);
 
   // pull CS low
   digitalWrite(_cs, LOW);
