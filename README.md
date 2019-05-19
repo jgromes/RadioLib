@@ -16,22 +16,22 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __HC05__ Bluetooth module
 * __JDY08__ BLE module
 * __RF69__ FSK/OOK radio module
-* __RFM9x__ series LoRa modules (RFM95/96/97)
-* __SX127x__ series LoRa modules (SX1272/73/76/77/78/79)
-* __SX126x__ series LoRa modules (SX1261/62/68)
+* __RFM9x__ series LoRa modules (RFM95, RM96, RFM97, RFM98)
+* __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
+* __SX126x__ series LoRa modules (SX1261, SX1262, SX1268)
 * __SX1231__ FSK/OOK radio module
 * __XBee__ modules (S2B)
 
 ### Supported protocols:
-* __MQTT__ on modules: ESP8266
-* __HTTP__ on modules: ESP8266
-* __RTTY__ on modules: SX1272/73/76/77/78/79, RFM95/96/97, RF69, SX1231 and CC1101
-* __Morse Code__ on modules: SX1272/73/76/77/78/79, RFM95/96/97, RF69, SX1231 and CC1101
+* __MQTT__ for modules: ESP8266
+* __HTTP__ for modules: ESP8266
+* __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231 and CC1101
+* __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231 and CC1101
 
 ### In development:
 * __SIM800C__ GSM module
 * __nRF24L01__ 2.4 GHz module
-* __LoRaWAN__ protocol on SX127x modules
+* __LoRaWAN__ protocol for SX127x, RFM9x and SX126x modules
 * ___and more!___
 
 ## Frequently Asked Questions
