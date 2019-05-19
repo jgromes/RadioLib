@@ -20,7 +20,7 @@ Module::Module(int cs, int int0, int int1, SPIClass& spi, SPISettings spiSetting
   _spiSettings = spiSettings;
 }
 
-Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi) {
+Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
