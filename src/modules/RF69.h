@@ -205,7 +205,7 @@
 #define RF69_DCC_FREQ                                 0b01000000  //  7     5     DC offset canceller cutoff frequency (4% Rx BW by default)
 #define RF69_RX_BW_MANT_16                            0b00000000  //  4     3     Channel filter bandwidth FSK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 2))
 #define RF69_RX_BW_MANT_20                            0b00001000  //  4     3                              OOK: RxBw = F(XOSC)/(RxBwMant * 2^(RxBwExp + 3))
-#define RF69_RX_BW_MANT_24                            0b00010000  //  4     3     
+#define RF69_RX_BW_MANT_24                            0b00010000  //  4     3
 #define RF69_RX_BW_EXP                                0b00000101  //  2     0     default RxBwExp value = 5
 
 // RF69_REG_AFC_BW
@@ -285,7 +285,7 @@
 #define RF69_DIO1_PACK_FIFO_NOT_EMPTY                 0b00100000  //  5     4
 #define RF69_DIO1_PACK_PLL_LOCK                       0b00110000  //  5     4
 #define RF69_DIO1_PACK_TIMEOUT                        0b00110000  //  5     4
-#define RF69_DIO2_CONT_DATA                           0b00000000  //  3     2  
+#define RF69_DIO2_CONT_DATA                           0b00000000  //  3     2
 
 // RF69_REG_DIO_MAPPING_2
 #define RF69_CLK_OUT_FXOSC                            0b00000000  //  2     0     ClkOut frequency: F(XOSC)
@@ -329,7 +329,7 @@
 
 // RF69_REG_PREAMBLE_MSB + REG_PREAMBLE_MSB
 #define RF69_PREAMBLE_MSB                             0x00        //  7     0     2-byte preamble size value
-#define RF69_PREAMBLE_LSB                             0x03        //  7     0     
+#define RF69_PREAMBLE_LSB                             0x03        //  7     0
 
 // RF69_REG_SYNC_CONFIG
 #define RF69_SYNC_OFF                                 0b00000000  //  7     7     sync word detection off
@@ -424,38 +424,37 @@ class RF69: public PhysicalLayer {
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
     using PhysicalLayer::receive;
-  
+    using PhysicalLayer::startTransmit;
+    using PhysicalLayer::readData;
+
     // constructor
     RF69(Module* module);
-    
+
     // public member variables
     float lastPacketRSSI;
-    
+
     // basic methods
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
     int16_t receive(uint8_t* data, size_t len);
     int16_t sleep();
     int16_t standby();
-    int16_t transmitDirect(uint32_t FRF = 0);
+    int16_t transmitDirect(uint32_t frf = 0);
     int16_t receiveDirect();
     int16_t packetMode();
-    
+
     // hardware AES support
     void setAESKey(uint8_t* key);
     int16_t enableAES();
     int16_t disableAES();
-    
+
     // interrupt methods
     void setDio0Action(void (*func)(void));
     void setDio1Action(void (*func)(void));
-    int16_t startTransmit(String& str, uint8_t addr = 0);
-    int16_t startTransmit(const char* str, uint8_t addr = 0);
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
     int16_t startReceive();
-    int16_t readData(String& str, size_t len = 0);
     int16_t readData(uint8_t* data, size_t len);
-    
+
     // configuration methods
     int16_t setFrequency(float freq);
     int16_t setBitRate(float br);
@@ -466,21 +465,21 @@ class RF69: public PhysicalLayer {
     int16_t setNodeAddress(uint8_t nodeAddr);
     int16_t setBroadcastAddress(uint8_t broadAddr);
     int16_t disableAddressFiltering();
-    
+
     // measurement methods
     void setAmbientTemperature(int16_t tempAmbient);
     int16_t getTemperature();
-  
+
   protected:
     Module* _mod;
-    
+
     float _br;
     float _rxBw;
     int16_t _tempOffset;
-    
+
     int16_t config();
     int16_t directMode();
-    
+
   private:
     int16_t setMode(uint8_t mode);
     void clearIRQFlags();
