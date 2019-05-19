@@ -139,9 +139,9 @@
 #define CC1101_GDOX_CLK_256                           0x26        //  5     0     256 Hz clock
 #define CC1101_GDOX_CLK_32K                           0x27        //  5     0     32 kHz clock
 #define CC1101_GDOX_CHIP_RDYN                         0x29        //  5     0      (default for GDO2)
-#define CC1101_GDOX_XOSC_STABLE                       0x2B        //  5     0     
+#define CC1101_GDOX_XOSC_STABLE                       0x2B        //  5     0
 #define CC1101_GDOX_HIGH_Z                            0x2E        //  5     0     high impedance state (default for GDO1)
-#define CC1101_GDOX_HW_TO_0                           0x2F        //  5     0     
+#define CC1101_GDOX_HW_TO_0                           0x2F        //  5     0
 #define CC1101_GDOX_CLOCK_XOSC_1                      0x30        //  5     0     crystal oscillator clock: f = f(XOSC)/1
 #define CC1101_GDOX_CLOCK_XOSC_1_5                    0x31        //  5     0                               f = f(XOSC)/1.5
 #define CC1101_GDOX_CLOCK_XOSC_2                      0x32        //  5     0                               f = f(XOSC)/2
@@ -166,7 +166,7 @@
 #define CC1101_RX_ATTEN_6_DB                          0b00010000  //  5     4                     6 dB
 #define CC1101_RX_ATTEN_12_DB                         0b00100000  //  5     4                     12 dB
 #define CC1101_RX_ATTEN_18_DB                         0b00110000  //  5     4                     18 dB
-#define CC1101_FIFO_THR                               0b00000111  //  5     4     Rx FIFO threshold [bytes] = CC1101_FIFO_THR * 4; Tx FIFO threshold [bytes] = 65 - (CC1101_FIFO_THR * 4) 
+#define CC1101_FIFO_THR                               0b00000111  //  5     4     Rx FIFO threshold [bytes] = CC1101_FIFO_THR * 4; Tx FIFO threshold [bytes] = 65 - (CC1101_FIFO_THR * 4)
 
 // CC1101_REG_SYNC1
 #define CC1101_SYNC_WORD_MSB                          0xD3        //  7     0     sync word MSB
@@ -227,7 +227,7 @@
 #define CC1101_DRATE_M                                0x22        //  7     0         default value for 26 MHz crystal: 115 051 Baud
 
 // CC1101_REG_MDMCFG2
-#define CC1101_DEM_DCFILT_OFF                         0b10000000  //  7     7     digital DC filter: disabled 
+#define CC1101_DEM_DCFILT_OFF                         0b10000000  //  7     7     digital DC filter: disabled
 #define CC1101_DEM_DCFILT_ON                          0b00000000  //  7     7                        enabled - only for data rates above 250 kBaud (default)
 #define CC1101_MOD_FORMAT_2_FSK                       0b00000000  //  6     4     modulation format: 2-FSK (default)
 #define CC1101_MOD_FORMAT_GFSK                        0b00010000  //  6     4                        GFSK
@@ -482,7 +482,7 @@
 
 // CC1101_REG_WORTIME1 + REG_WORTIME0
 #define CC1101_WORTIME_MSB                            0x00        //  7     0     WOR timer value
-#define CC1101_WORTIME_LSB                            0x00        //  7     0     
+#define CC1101_WORTIME_LSB                            0x00        //  7     0
 
 // CC1101_REG_PKTSTATUS
 #define CC1101_CRC_OK                                 0b10000000  //  7     7     CRC check passed
@@ -499,10 +499,12 @@ class CC1101: public PhysicalLayer {
     // introduce PhysicalLayer overloads
     using PhysicalLayer::transmit;
     using PhysicalLayer::receive;
-  
+    using PhysicalLayer::startTransmit;
+    using PhysicalLayer::readData;
+
     // constructor
     CC1101(Module* module);
-    
+
     // basic methods
     int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0);
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
@@ -510,17 +512,14 @@ class CC1101: public PhysicalLayer {
     int16_t standby();
     int16_t transmitDirect(uint32_t FRF = 0);
     int16_t receiveDirect();
-    
+
     // interrupt methods
     void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
     void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
-    int16_t startTransmit(String& str, uint8_t addr = 0);
-    int16_t startTransmit(const char* str, uint8_t addr = 0);
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
     int16_t startReceive();
-    int16_t readData(String& str, size_t len = 0);
     int16_t readData(uint8_t* data, size_t len);
-    
+
     // configuration methods
     int16_t setFrequency(float freq);
     int16_t setBitRate(float br);
@@ -532,18 +531,18 @@ class CC1101: public PhysicalLayer {
     int16_t disableAddressFiltering();
     float getRSSI();
     uint8_t getLQI();
-    
+
   private:
     Module* _mod;
-    
+
     float _freq;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
-    
+
     int16_t config();
     int16_t directMode();
     void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
-    
+
     // SPI read overrides to set bit for burst write and status registers access
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
     int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
@@ -551,7 +550,7 @@ class CC1101: public PhysicalLayer {
     uint8_t SPIreadRegister(uint8_t reg);
     void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
     void SPIwriteRegister(uint8_t reg, uint8_t data);
-    
+
     void SPIsendCommand(uint8_t cmd);
 };
 
