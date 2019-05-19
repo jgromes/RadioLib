@@ -308,6 +308,9 @@ void SX126x::setDio2Action(void (*func)(void)) {
 }
 
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  // suppress unused variable warning
+  (void)addr;
+
   // set packet Length
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
@@ -1025,8 +1028,9 @@ void SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool w
 }
 
 void SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy) {
-  // get pointer to used SPI interface
+  // get pointer to used SPI interface and the settings
   SPIClass* spi = _mod->getSpi();
+  SPISettings spiSettings = _mod->getSpiSettings();
 
   // ensure BUSY is low (state meachine ready)
   // TODO timeout
@@ -1034,7 +1038,7 @@ void SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dat
 
   // start transfer
   digitalWrite(_mod->getCs(), LOW);
-  spi->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
+  spi->beginTransaction(spiSettings);
 
   // send command byte
   spi->transfer(cmd);
@@ -1044,7 +1048,11 @@ void SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dat
   // send/receive all bytes
   if(write) {
     for(uint8_t n = 0; n < numBytes; n++) {
+      #ifdef RADIOLIB_DEBUG
       uint8_t in = spi->transfer(dataOut[n]);
+      #else
+      spi->transfer(dataOut[n]);
+      #endif
       DEBUG_PRINT(dataOut[n], HEX);
       DEBUG_PRINT('\t');
       DEBUG_PRINT(in, HEX);
@@ -1053,7 +1061,11 @@ void SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dat
     DEBUG_PRINTLN();
   } else {
     // skip the first byte for read-type commands (status-only)
+    #ifdef RADIOLIB_DEBUG
     uint8_t in = spi->transfer(SX126X_CMD_NOP);
+    #else
+    spi->transfer(SX126X_CMD_NOP);
+    #endif
     DEBUG_PRINT(SX126X_CMD_NOP, HEX);
     DEBUG_PRINT('\t');
     DEBUG_PRINT(in, HEX);
