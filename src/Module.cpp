@@ -27,6 +27,7 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
   _int0 = int0;
   _int1 = int1;
   _spi = &spi;
+  _spiSettings = spiSettings;
 
   ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
