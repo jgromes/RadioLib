@@ -615,7 +615,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Sets the %LoRa module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
-      %Module will wake up autmatically when methods like transmit or receive are called.
+      %Module will wake up automatically when methods like transmit or receive are called.
 
       \returns \ref status_codes
     */
@@ -736,7 +736,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Gets frequency error of the latest received packet.
 
-      \param autoCorrect When set to true, frequency will be autmatically corrected.
+      \param autoCorrect When set to true, frequency will be automatically corrected.
 
       \returns Frequency error in Hz.
     */
@@ -784,7 +784,7 @@ class SX127x: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
 
     /*!
-      \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not conatain null bytes. Only available in FSK mode.
+      \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.
 
       \param syncWord Sync word array.
 

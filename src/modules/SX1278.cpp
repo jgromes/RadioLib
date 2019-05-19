@@ -1,7 +1,7 @@
 #include "SX1278.h"
 
 SX1278::SX1278(Module* mod) : SX127x(mod) {
-  
+
 }
 
 int16_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint8_t currentLimit, uint16_t preambleLength, uint8_t gain) {
@@ -10,44 +10,44 @@ int16_t SX1278::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // configure settings not accessible by API
   state = config();
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // configure publicly accessible settings
   state = setFrequency(freq);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setBandwidth(bw);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setSpreadingFactor(sf);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setCodingRate(cr);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setGain(gain);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   return(state);
 }
 
@@ -57,24 +57,24 @@ int16_t SX1278::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // configure settings not accessible by API
   state = configFSK();
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // configure publicly accessible settings
   state = setFrequency(freq);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   return(state);
 }
 
@@ -83,7 +83,7 @@ int16_t SX1278::setFrequency(float freq) {
   if((freq < 137.0) || (freq > 525.0)) {
     return(ERR_INVALID_FREQUENCY);
   }
-  
+
   // SX1276/77/78 Errata fixes
   if(getActiveModem() == SX127X_LORA) {
     // sensitivity optimization for 500kHz bandwidth
@@ -97,9 +97,9 @@ int16_t SX1278::setFrequency(float freq) {
         _mod->SPIwriteRegister(0x3a, 0x7F);
       }
     }
-    
+
     // mitigation of receiver spurious response
-    // see SX1276/77/78 Errata, section 2.3 for details  
+    // see SX1276/77/78 Errata, section 2.3 for details
     if(abs(_bw - 7.8) <= 0.001) {
       _mod->SPIsetRegValue(0x31, 0b0000000, 7, 7);
       _mod->SPIsetRegValue(0x2F, 0x48);
@@ -146,7 +146,7 @@ int16_t SX1278::setFrequency(float freq) {
       _mod->SPIsetRegValue(0x31, 0b1000000, 7, 7);
     }
   }
-  
+
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);
   if(state == ERR_NONE) {
@@ -162,8 +162,8 @@ int16_t SX1278::setBandwidth(float bw) {
   }
 
   uint8_t newBandwidth;
-  
-  // check alowed bandwidth values
+
+  // check allowed bandwidth values
   if(abs(bw - 7.8) <= 0.001) {
     newBandwidth = SX1278_BW_7_80_KHZ;
   } else if(abs(bw - 10.4) <= 0.001) {
@@ -187,7 +187,7 @@ int16_t SX1278::setBandwidth(float bw) {
   } else {
     return(ERR_INVALID_BANDWIDTH);
   }
-  
+
   // set bandwidth and if successful, save the new setting
   int16_t state = SX1278::setBandwidthRaw(newBandwidth);
   if(state == ERR_NONE) {
@@ -203,7 +203,7 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
   }
 
   uint8_t newSpreadingFactor;
-  
+
   // check allowed spreading factor values
   switch(sf) {
     case 6:
@@ -230,7 +230,7 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
     default:
       return(ERR_INVALID_SPREADING_FACTOR);
   }
-  
+
   // set spreading factor and if successful, save the new setting
   int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
@@ -246,7 +246,7 @@ int16_t SX1278::setCodingRate(uint8_t cr) {
   }
 
   uint8_t newCodingRate;
-  
+
   // check allowed coding rate values
   switch(cr) {
     case 5:
@@ -264,7 +264,7 @@ int16_t SX1278::setCodingRate(uint8_t cr) {
     default:
       return(ERR_INVALID_CODING_RATE);
   }
-  
+
   // set coding rate and if successful, save the new setting
   int16_t state = SX1278::setCodingRateRaw(newCodingRate);
   if(state == ERR_NONE) {
@@ -278,10 +278,10 @@ int16_t SX1278::setOutputPower(int8_t power) {
   if(!(((power >= -3) && (power <= 17)) || (power == 20))) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
-  
+
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // set output power
   if(power < 2) {
     // power is less than 2 dBm, enable PA on RFO
@@ -312,10 +312,10 @@ int16_t SX1278::setGain(uint8_t gain) {
   if(gain > 6) {
     return(ERR_INVALID_GAIN);
   }
-  
+
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // set gain
   if(gain == 0) {
     // gain set to 0, enable AGC loop
@@ -332,15 +332,15 @@ int16_t SX1278::setDataShaping(float sh) {
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
   }
-  
+
   // check modulation
   if(SX127x::_ook) {
     return(ERR_INVALID_MODULATION);
   }
-  
+
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // set data shaping
   if(abs(sh - 0.0) <= 0.001) {
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_NO_SHAPING, 6, 5);
@@ -361,15 +361,15 @@ int16_t SX1278::setDataShapingOOK(uint8_t sh) {
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
   }
-  
+
   // check modulation
   if(!SX127x::_ook) {
     return(ERR_INVALID_MODULATION);
   }
-  
+
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // set data shaping
   switch(sh) {
     case 0:
@@ -384,7 +384,7 @@ int16_t SX1278::setDataShapingOOK(uint8_t sh) {
     default:
       return(ERR_INVALID_DATA_SHAPING);
   }
-  
+
   return(state);
 }
 
@@ -395,21 +395,21 @@ int8_t SX1278::getRSSI() {
   }
 
   int8_t lastPacketRSSI;
-  
+
   // RSSI calculation uses different constant for low-frequency and high-frequency ports
   if(_freq < 868.0) {
     lastPacketRSSI = -164 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
   } else {
     lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
   }
-  
+
   // spread-spectrum modulation signal can be received below noise floor
   // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
   float lastPacketSNR = SX127x::getSNR();
   if(lastPacketSNR < 0.0) {
     lastPacketRSSI += lastPacketSNR;
   }
-  
+
   return(lastPacketRSSI);
 }
 
@@ -434,7 +434,7 @@ int16_t SX1278::setCRC(bool enableCRC) {
 int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // write register
   state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newBandwidth, 7, 4);
   return(state);
@@ -443,7 +443,7 @@ int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
 int16_t SX1278::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // write registers
   if(newSpreadingFactor == SX127X_SF_6) {
     state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1278_HEADER_IMPL_MODE, 0, 0);
@@ -462,7 +462,7 @@ int16_t SX1278::setSpreadingFactorRaw(uint8_t newSpreadingFactor) {
 int16_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
   // set mode to standby
   int16_t state = SX127x::standby();
-  
+
   // write register
   state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 3, 1);
   return(state);
@@ -474,8 +474,8 @@ int16_t SX1278::config() {
   if(state != ERR_NONE) {
     return(state);
   }
-  
-  // calculate symbol length and set low datarate optimization, if needed
+
+  // calculate symbol length and set low data rate optimization, if needed
   uint16_t base = 1;
   float symbolLength = (float)(base << _sf) / (float)_bw;
   if(symbolLength >= 16.0) {
@@ -492,9 +492,9 @@ int16_t SX1278::configFSK() {
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // set fast PLL hop
   state = _mod->SPIsetRegValue(SX1278_REG_PLL_HOP, SX127X_FAST_HOP_ON, 7, 7);
-  
+
   return(state);
 }
