@@ -11,7 +11,7 @@ class Module {
   public:
     Module(int tx, int rx);
     Module(int cs, int int0, int int1, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
-    Module(int cs, int int0, int int1, int int2, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0))
+    Module(int cs, int int0, int int1, int int2, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
 
     SoftwareSerial* ModuleSerial;

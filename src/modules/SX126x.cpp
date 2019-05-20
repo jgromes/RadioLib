@@ -800,9 +800,9 @@ int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
 
   // calculate timeout
   uint32_t timeoutValue = (float)timeout / 15.625;
-  data[1] = (uint8_t)((timeoutValue >> 16) & 0xFF)
-  data[2] = (uint8_t)((timeoutValue >> 8) & 0xFF)
-  data[3] = (uint8_t)(timeoutValue & 0xFF)
+  data[1] = (uint8_t)((timeoutValue >> 16) & 0xFF);
+  data[2] = (uint8_t)((timeoutValue >> 8) & 0xFF);
+  data[3] = (uint8_t)(timeoutValue & 0xFF);
 
   // enable TCXO control on DIO3
   SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4);
