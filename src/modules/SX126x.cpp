@@ -733,7 +733,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
       }
       break;
     default:
-      return(ERR_INVALID_CRC);
+      return(ERR_INVALID_CRC_CONFIGURATION);
   }
   setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
 
@@ -770,6 +770,44 @@ float SX126x::getSNR() {
   uint32_t packetStatus = getPacketStatus();
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
   return(snrPkt/4.0);
+}
+
+int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
+  // set mode to standby
+  standby();
+
+  // check alowed voltage values
+  uint8_t data[4];
+  if(abs(voltage - 1.6) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_1_6;
+  } else if(abs(voltage - 1.7) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_1_7;
+  } else if(abs(voltage - 1.8) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_1_8;
+  } else if(abs(voltage - 2.2) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_2_2;
+  } else if(abs(voltage - 2.4) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_2_4;
+  } else if(abs(voltage - 2.7) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_2_7;
+  } else if(abs(voltage - 3.0) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_3_0;
+  } else if(abs(voltage - 3.3) <= 0.001) {
+    data[0] = SX126X_DIO3_OUTPUT_3_3;
+  } else {
+    return(ERR_INVALID_TCXO_VOLTAGE);
+  }
+
+  // calculate timeout
+  uint32_t timeoutValue = (float)timeout / 15.625;
+  data[1] = (uint8_t)((timeoutValue >> 16) & 0xFF)
+  data[2] = (uint8_t)((timeoutValue >> 8) & 0xFF)
+  data[3] = (uint8_t)(timeoutValue & 0xFF)
+
+  // enable TCXO control on DIO3
+  SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4);
+
+  return(ERR_NONE);
 }
 
 void SX126x::setTx(uint32_t timeout) {

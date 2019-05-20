@@ -109,7 +109,8 @@
 #define ERR_INVALID_NUM_BROAD_ADDRS           -601
 
 // SX126x-specific status codes
-#define ERR_INVALID_CRC                       -701
+#define ERR_INVALID_CRC_CONFIGURATION         -701
 #define LORA_DETECTED                         -702
+#define ERR_INVALID_TCXO_VOLTAGE              -703
 
 #endif

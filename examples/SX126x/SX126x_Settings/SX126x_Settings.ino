@@ -3,7 +3,7 @@
 
    This example shows how to change all the properties of LoRa transmission.
    RadioLib currently supports the following settings:
-    - pins (SPI slave select, digital IO 0, digital IO 1)
+    - pins (SPI slave select, DIO1, DIO2, BUSY pin)
     - carrier frequency
     - bandwidth
     - spreading factor
@@ -12,6 +12,7 @@
     - output power during transmission
     - CRC
     - preamble length
+    - TCXO voltage
 
     Other modules from SX126x family can also be used.
 */
@@ -124,10 +125,19 @@ void setup() {
   }
 
   // disable CRC
-  if (loraSX1268.setCRC(false) == ERR_INVALID_CRC) {
+  if (loraSX1268.setCRC(false) == ERR_INVALID_CRC_CONFIGURATION) {
     Serial.println(F("Selected CRC is invalid for this module!"));
     while (true);
   }
+
+  // Some SX126x have TCXO (temprature compensated crystal
+  // oscillator). To configure TCXO reference voltage,
+  // the following method can be used.
+  if (loraSX1268.setTCXO(2.4) == ERR_INVALID_TCXO_VOLTAGE) {
+    Serial.println(F("Selected TCXO voltage is invalid for this module!"));
+    while (true);
+  }
+  
 
   Serial.println(F("All settings succesfully changed!"));
 }

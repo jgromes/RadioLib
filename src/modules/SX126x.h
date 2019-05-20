@@ -359,6 +359,7 @@ class SX126x: public PhysicalLayer {
     int16_t disableAddressFiltering();
     int16_t setCRC(bool enableCRC);
     int16_t setCRC(uint8_t len, uint16_t initial = 0x1D0F, uint16_t polynomial = 0x1021, bool inverted = true);
+    int16_t setTCXO(float voltage, uint32_t timeout = 5000);
     float getDataRate();
     float getRSSI();
     float getSNR();
