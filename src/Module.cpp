@@ -32,6 +32,16 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
   ModuleSerial = new SoftwareSerial(_rx, _tx);
 }
 
+Module::Module(int cs, int int0, int int1, int int2, SPIClass& spi, SPISettings spiSettings) {
+  _cs = cs;
+  _rx = int2;
+  _tx = -1;
+  _int0 = int0;
+  _int1 = int1;
+  _spi = &spi;
+  _spiSettings = spiSettings;
+}
+
 void Module::init(uint8_t interface, uint8_t gpio) {
   // select interface
   switch(interface) {
