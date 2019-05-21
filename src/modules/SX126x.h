@@ -401,6 +401,7 @@ class SX126x: public PhysicalLayer {
     uint32_t _br, _freqDev;
     uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength, _addrComp;
     uint16_t _preambleLengthFSK;
+    float _rxBwKhz;
 
     float _dataRate;
 

@@ -24,7 +24,7 @@ void setup() {
   // carrier frequency:           434.0 MHz
   // bit rate:                    48.0 kbps
   // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                117.3 kHz
+  // Rx bandwidth:                156.2 kHz
   // output power:                14 dBm
   // current limit:               60.0 mA
   // preamble length:             16 bits

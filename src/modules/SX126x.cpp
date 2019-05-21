@@ -67,7 +67,8 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   // initialize configuration variables (will be overwritten during public settings configuration)
   _br = 21333;                                  // 48.0 kbps
   _freqDev = 52428;                             // 50.0 kHz
-  _rxBw = SX126X_GFSK_RX_BW_117_3;
+  _rxBw = SX126X_GFSK_RX_BW_156_2;
+  _rxBwKhz = 156.2;
   _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_5;
   _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE_INV;     // CCIT CRC configuration
   _preambleLengthFSK = preambleLength;
@@ -163,7 +164,10 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   DEBUG_PRINTLN(F(" us"));
 
   // start transmission
-  startTransmit(data, len, addr);
+  int16_t state = startTransmit(data, len, addr);
+  if(state != ERR_NONE) {
+    return(state);
+  }
 
   // wait for packet transmission or timeout
   uint32_t start = micros();
@@ -508,8 +512,13 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   }
 
   // calculate raw frequency deviation value
-  //_freqDev = (uint32_t)((freqDev * 1000.0) / ((SX126X_CRYSTAL_FREQ * 1000000.0) / (float)((uint32_t)(1) << 25)));
-  _freqDev = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
+  uint32_t freqDevRaw = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
+
+  // check modulation parameters
+  if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
+    return(ERR_INVALID_MODULATION_PARAMETERS);
+  }
+  _freqDev = freqDevRaw;
 
   // update modulation parameters
   setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev);
@@ -529,7 +538,13 @@ int16_t SX126x::setBitRate(float br) {
   }
 
   // calculate raw bit rate value
-  _br = (uint32_t)((SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
+  uint32_t brRaw = (uint32_t)((SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
+
+  // check modulation parameters
+  if(2 * _freqDev + brRaw > _rxBwKhz * 1000.0) {
+    return(ERR_INVALID_MODULATION_PARAMETERS);
+  }
+  _br = brRaw;
 
   // update modulation parameters
   setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev);
@@ -542,6 +557,12 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
   }
+
+  // check modulation parameters
+  if(2 * _freqDev + _br > rxBw * 1000.0) {
+    return(ERR_INVALID_MODULATION_PARAMETERS);
+  }
+  _rxBwKhz = rxBw;
 
   // check alowed receiver bandwidth values
   if(abs(rxBw - 4.8) <= 0.001) {

@@ -112,5 +112,9 @@
 #define ERR_INVALID_CRC_CONFIGURATION         -701
 #define LORA_DETECTED                         -702
 #define ERR_INVALID_TCXO_VOLTAGE              -703
+#define ERR_INVALID_MODULATION_PARAMETERS     -704
+#define ERR_SPI_CMD_TIMEOUT                   -705
+#define ERR_SPI_CMD_INVALID                   -706
+#define ERR_SPI_CMD_FAILED                    -707
 
 #endif
