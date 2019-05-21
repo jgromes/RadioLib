@@ -108,6 +108,9 @@
 #define SX126X_RX_TIMEOUT_NONE                        0x000000    //  23    0     Rx timeout duration: no timeout (Rx single mode)
 #define SX126X_RX_TIMEOUT_INF                         0xFFFFFF    //  23    0                          infinite (Rx continuous mode)
 
+//SX126X_CMD_SET_TX
+#define SX126X_TX_TIMEOUT_NONE                        0x000000    //  23    0     Tx timeout duration: no timeout (Tx single mode)
+
 //SX126X_CMD_STOP_TIMER_ON_PREAMBLE
 #define SX126X_STOP_ON_PREAMBLE_OFF                   0x00        //  7     0     stop timer on: sync word or header (default)
 #define SX126X_STOP_ON_PREAMBLE_ON                    0x01        //  7     0                    preamble detection
@@ -366,28 +369,28 @@ class SX126x: public PhysicalLayer {
 
   protected:
     // SX1276x SPI command implementations
-    void setTx(uint32_t timeout = 0);
-    void setRx(uint32_t timeout);
-    void setCad();
-    void setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = SX126X_PA_CONFIG_PA_LUT);
-    void writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
-    void writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
-    void readBuffer(uint8_t* data, uint8_t numBytes);
-    void setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX126X_IRQ_NONE, uint16_t dio3Mask = SX126X_IRQ_NONE);
+    int16_t setTx(uint32_t timeout = 0);
+    int16_t setRx(uint32_t timeout);
+    int16_t setCad();
+    int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = SX126X_PA_CONFIG_PA_LUT);
+    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
+    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
+    int16_t readBuffer(uint8_t* data, uint8_t numBytes);
+    int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX126X_IRQ_NONE, uint16_t dio3Mask = SX126X_IRQ_NONE);
     uint16_t getIrqStatus();
-    void clearIrqStatus(uint16_t clearIrqParams = SX126X_IRQ_ALL);
-    void setRfFrequency(uint32_t frf);
+    int16_t clearIrqStatus(uint16_t clearIrqParams = SX126X_IRQ_ALL);
+    int16_t setRfFrequency(uint32_t frf);
     uint8_t getPacketType();
-    void setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
-    void setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
-    void setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
-    void setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
-    void setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
-    void setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
+    int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
+    int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
+    int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
+    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
+    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     uint8_t getStatus();
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();
-    void clearDeviceErrors();
+    int16_t clearDeviceErrors();
 
     int16_t setFrequencyRaw(float freq, bool calibrate = true);
 
@@ -409,9 +412,9 @@ class SX126x: public PhysicalLayer {
     int16_t configFSK();
 
     // common low-level SPI interface
-    void SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    void SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    void SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy);
+    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy);
 };
 
 #endif
