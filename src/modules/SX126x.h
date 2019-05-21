@@ -134,6 +134,7 @@
 #define SX126X_CALIBRATE_RC13M_ON                     0b00000010  //  1     1                                 enabled
 #define SX126X_CALIBRATE_RC64K_OFF                    0b00000000  //  0     0     64 kHz RC osc. calibration: disabled
 #define SX126X_CALIBRATE_RC64K_ON                     0b00000001  //  0     0                                 enabled
+#define SX126X_CALIBRATE_ALL                          0b01111111  //  6     0     calibrate all blocks
 
 //SX126X_CMD_CALIBRATE_IMAGE
 #define SX126X_CAL_IMG_430_MHZ_1                      0x6B
@@ -408,8 +409,7 @@ class SX126x: public PhysicalLayer {
 
     float _dataRate;
 
-    int16_t config();
-    int16_t configFSK();
+    int16_t config(uint8_t modem);
 
     // common low-level SPI interface
     int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);

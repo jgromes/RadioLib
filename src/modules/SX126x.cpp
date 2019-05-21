@@ -27,7 +27,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   }
 
   // configure settings not accessible by API
-  state = config();
+  state = config(SX126X_PACKET_TYPE_LORA);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -80,7 +80,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   }
 
   // configure settings not accessible by API
-  state = configFSK();
+  state = config(SX126X_PACKET_TYPE_GFSK);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -1069,7 +1069,7 @@ int16_t SX126x::setFrequencyRaw(float freq, bool calibrate) {
   return(ERR_NONE);
 }
 
-int16_t SX126x::config() {
+int16_t SX126x::config(uint8_t modem) {
   // set DIO2 as IRQ
   uint8_t* data = new uint8_t[1];
   data[0] = SX126X_DIO2_AS_IRQ;
@@ -1091,8 +1091,8 @@ int16_t SX126x::config() {
     return(state);
   }
 
-  // set LoRa mode
-  data[0] = SX126X_PACKET_TYPE_LORA;
+  // set modem
+  data[0] = modem;
   state = SPIwriteCommand(SX126X_CMD_SET_PACKET_TYPE, data, 1);
   if(state != ERR_NONE) {
     return(state);
@@ -1123,55 +1123,26 @@ int16_t SX126x::config() {
   // clear IRQ
   state = clearIrqStatus();
   state |= setDioIrqParams(SX126X_IRQ_NONE, SX126X_IRQ_NONE);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // calibrate all blocks
+  delete[] data;
+  data = new uint8_t[1];
+  data[0] = SX126X_CALIBRATE_ALL;
+  state = SPIwriteCommand(SX126X_CMD_CALIBRATE, data, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // wait for calibration completion
+  delayMicroseconds(1);
+  while(digitalRead(_mod->getRx()));
 
   delete[] data;
 
   return(ERR_NONE);
-}
-
-int16_t SX126x::configFSK() {
-  // set DIO2 as IRQ
-  uint8_t* data = new uint8_t[1];
-  data[0] = SX126X_DIO2_AS_IRQ;
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // set regulator mode
-  data[0] = SX126X_REGULATOR_DC_DC;
-  state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // reset buffer base address
-  state = setBufferBaseAddress();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // set FSK mode
-  data[0] = SX126X_PACKET_TYPE_GFSK;
-  state = SPIwriteCommand(SX126X_CMD_SET_PACKET_TYPE, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // set Rx/Tx fallback mode to STDBY_RC
-  data[0] = SX126X_RX_TX_FALLBACK_MODE_STDBY_RC;
-  state = SPIwriteCommand(SX126X_CMD_SET_RX_TX_FALLBACK_MODE, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // clear IRQ
-  state = clearIrqStatus();
-  state |= setDioIrqParams(SX126X_IRQ_NONE, SX126X_IRQ_NONE);
-
-  delete[] data;
-
-  return(state);
 }
 
 int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
