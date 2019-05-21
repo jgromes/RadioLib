@@ -315,7 +315,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     setPacketParams(_preambleLength, _crcType, len);
-  } else if(modem == SX126X_PACKET_TYPE_LORA) {
+  } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, len);
   } else {
     return(ERR_UNKNOWN);
