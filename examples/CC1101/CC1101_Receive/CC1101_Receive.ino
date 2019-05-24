@@ -1,7 +1,7 @@
 /*
    RadioLib CC1101 Receive Example
 
-   This example receives packets using CC1101 FSK radio 
+   This example receives packets using CC1101 FSK radio
    module.
 */
 
@@ -52,15 +52,15 @@ void loop() {
     Serial.print(F("[CC1101] Data:\t\t"));
     Serial.println(str);
 
-    // print RSSI (Received Signal Strength Indicator) 
+    // print RSSI (Received Signal Strength Indicator)
     // of the last received packet
-    Serial.print("[CC1101] RSSI:\t\t");
+    Serial.print(F("[CC1101] RSSI:\t\t"));
     Serial.print(cc.getRSSI());
-    Serial.println(" dBm");
+    Serial.println(F(" dBm"));
 
-    // print LQI (Link Quality Indicator) 
+    // print LQI (Link Quality Indicator)
     // of the last received packet, lower is better
-    Serial.print("[CC1101] LQI:\t\t");
+    Serial.print(F("[CC1101] LQI:\t\t"));
     Serial.println(cc.getLQI());
 
   } else if (state == ERR_CRC_MISMATCH) {

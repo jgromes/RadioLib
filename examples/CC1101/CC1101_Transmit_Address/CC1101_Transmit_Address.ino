@@ -1,8 +1,8 @@
 /*
    RadioLib CC1101 Transmit to Address Example
 
-   This example transmits packets using CC1101 FSK radio 
-   module. Packets can have 1-byte address of the 
+   This example transmits packets using CC1101 FSK radio
+   module. Packets can have 1-byte address of the
    destination node. After setting node address, this node
    will automatically filter out any packets that do not
    contain either node address or broadcast addresses.
@@ -16,7 +16,7 @@ CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
   // carrier frequency:                   868.0 MHz
@@ -34,10 +34,10 @@ void setup() {
   }
 
   // set node address
-  // NOTE: Calling this method will autmatically enable
+  // NOTE: Calling this method will automatically enable
   //       address filtering. CC1101 also allows to set
   //       number of broadcast address (0/1/2).
-  //       The following sets one brodcast address 0x00.
+  //       The following sets one broadcast address 0x00.
   //       When setting two broadcast addresses, 0x00 and
   //       0xFF will be used.
   Serial.print(F("[CC1101] Setting node address ... "));
@@ -51,7 +51,7 @@ void setup() {
   }
 
   // address filtering can also be disabled
-  // NOTE: Calling this method will also erase previously 
+  // NOTE: Calling this method will also erase previously
   //       set node address
   /*
     Serial.print(F("[CC1101] Disabling address filtering ... "));
@@ -80,11 +80,11 @@ void loop() {
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(" success!");
+    Serial.println(F(" success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 255 bytes
-    Serial.println(" too long!");
+    Serial.println(F(" too long!"));
 
   }
 

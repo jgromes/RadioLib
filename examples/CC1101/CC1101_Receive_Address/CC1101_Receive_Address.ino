@@ -1,8 +1,8 @@
 /*
    RadioLib CC1101 Receive with Address Example
 
-   This example receives packets using CC1101 FSK radio 
-   module. Packets can have 1-byte address of the 
+   This example receives packets using CC1101 FSK radio
+   module. Packets can have 1-byte address of the
    destination node. After setting node address, this node
    will automatically filter out any packets that do not
    contain either node address or broadcast addresses.
@@ -16,7 +16,7 @@ CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
   // carrier frequency:                   868.0 MHz
@@ -34,10 +34,10 @@ void setup() {
   }
 
   // set node address
-  // NOTE: Calling this method will autmatically enable
+  // NOTE: Calling this method will automatically enable
   //       address filtering. CC1101 also allows to set
   //       number of broadcast address (0/1/2).
-  //       The following sets one brodcast address 0x00.
+  //       The following sets one broadcast address 0x00.
   //       When setting two broadcast addresses, 0x00 and
   //       0xFF will be used.
   Serial.print(F("[CC1101] Setting node address ... "));
@@ -51,7 +51,7 @@ void setup() {
   }
 
   // address filtering can also be disabled
-  // NOTE: Calling this method will also erase previously 
+  // NOTE: Calling this method will also erase previously
   //       set node address
   /*
     Serial.print(F("[CC1101] Disabling address filtering ... "));
@@ -87,15 +87,15 @@ void loop() {
     Serial.print(F("[CC1101] Data:\t\t"));
     Serial.println(str);
 
-    // print RSSI (Received Signal Strength Indicator) 
+    // print RSSI (Received Signal Strength Indicator)
     // of the last received packet
-    Serial.print("[CC1101] RSSI:\t\t");
+    Serial.print(F("[CC1101] RSSI:\t\t"));
     Serial.print(cc.getRSSI());
-    Serial.println(" dBm");
+    Serial.println(F(" dBm"));
 
-    // print LQI (Link Quality Indicator) 
+    // print LQI (Link Quality Indicator)
     // of the last received packet, lower is better
-    Serial.print("[CC1101] LQI:\t\t");
+    Serial.print(F("[CC1101] LQI:\t\t"));
     Serial.println(cc.getLQI());
 
   } else if (state == ERR_CRC_MISMATCH) {

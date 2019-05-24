@@ -14,7 +14,7 @@ CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
   // carrier frequency:                   868.0 MHz
@@ -30,11 +30,11 @@ void setup() {
     Serial.println(state);
     while (true);
   }
-  
-  // set the function that will be called 
+
+  // set the function that will be called
   // when new packet is received
   cc.setGdo0Action(setFlag);
-  
+
   // start listening for packets
   Serial.print(F("[CC1101] Starting to listen ... "));
   state = cc.startReceive();
@@ -53,7 +53,6 @@ void setup() {
   // cc.sleep()
   // cc.transmit();
   // cc.receive();
-  // cc.scanChannel();
 }
 
 // flag to indicate that a packet was received
@@ -85,34 +84,34 @@ void loop() {
 
     // reset flag
     receivedFlag = false;
-    
+
     // you can read received data as an Arduino String
     String str;
     int state = cc.readData(str);
-  
+
     // you can also read received data as byte array
     /*
       byte byteArr[8];
       int state = cc.receive(byteArr, 8);
     */
-    
+
     if (state == ERR_NONE) {
       // packet was successfully received
-      Serial.println("[CC1101] Received packet!");
-  
+      Serial.println(F("[CC1101] Received packet!"));
+
       // print data of the packet
-      Serial.print("[CC1101] Data:\t\t");
+      Serial.print(F("[CC1101] Data:\t\t"));
       Serial.println(str);
 
-      // print RSSI (Received Signal Strength Indicator) 
+      // print RSSI (Received Signal Strength Indicator)
       // of the last received packet
-      Serial.print("[CC1101] RSSI:\t\t");
+      Serial.print(F("[CC1101] RSSI:\t\t"));
       Serial.print(cc.getRSSI());
-      Serial.println(" dBm");
-  
-      // print LQI (Link Quality Indicator) 
+      Serial.println(F(" dBm"));
+
+      // print LQI (Link Quality Indicator)
       // of the last received packet, lower is better
-      Serial.print("[CC1101] LQI:\t\t");
+      Serial.print(F("[CC1101] LQI:\t\t"));
       Serial.println(cc.getLQI());
     }
 
