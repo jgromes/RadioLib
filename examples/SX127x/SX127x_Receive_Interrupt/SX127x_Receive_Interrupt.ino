@@ -1,10 +1,10 @@
 /*
-   RadioLib SX127x Receive with Inerrupts Example
+   RadioLib SX127x Receive with Interrupts Example
 
    This example listens for LoRa transmissions and tries to
    receive them. Once a packet is received, an interrupt is
    triggered. To successfully receive data, the following
-   settings have to be the same on both transmitter 
+   settings have to be the same on both transmitter
    and receiver:
     - carrier frequency
     - bandwidth
@@ -44,10 +44,10 @@ void setup() {
     while (true);
   }
 
-  // set the function that will be called 
+  // set the function that will be called
   // when new packet is received
   lora.setDio0Action(setFlag);
-  
+
   // start listening for LoRa packets
   Serial.print(F("[SX1278] Starting to listen ... "));
   state = lora.startReceive();
@@ -98,44 +98,44 @@ void loop() {
 
     // reset flag
     receivedFlag = false;
-    
+
     // you can read received data as an Arduino String
     String str;
     int state = lora.readData(str);
-  
+
     // you can also read received data as byte array
     /*
       byte byteArr[8];
       int state = lora.receive(byteArr, 8);
     */
-    
+
     if (state == ERR_NONE) {
       // packet was successfully received
-      Serial.println("[SX1278] Received packet!");
-  
+      Serial.println(F("[SX1278] Received packet!"));
+
       // print data of the packet
-      Serial.print("[SX1278] Data:\t\t");
+      Serial.print(F("[SX1278] Data:\t\t"));
       Serial.println(str);
-  
-      // print RSSI (Received Signal Strength Indicator) 
-      Serial.print("[SX1278] RSSI:\t\t");
+
+      // print RSSI (Received Signal Strength Indicator)
+      Serial.print(F("[SX1278] RSSI:\t\t"));
       Serial.print(lora.getRSSI());
-      Serial.println(" dBm");
-  
-      // print SNR (Signal-to-Noise Ratio) 
-      Serial.print("[SX1278] SNR:\t\t");
+      Serial.println(F(" dBm"));
+
+      // print SNR (Signal-to-Noise Ratio)
+      Serial.print(F("[SX1278] SNR:\t\t"));
       Serial.print(lora.getSNR());
-      Serial.println(" dBm");
+      Serial.println(F(" dBm"));
 
       // print frequency error
-      Serial.print("[SX1278] Frequency error:\t");
+      Serial.print(F("[SX1278] Frequency error:\t"));
       Serial.print(lora.getFrequencyError());
-      Serial.println(" Hz");
-  
+      Serial.println(F(" Hz"));
+
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
-      Serial.println("CRC error!");
-  
+      Serial.println(F("CRC error!"));
+
     }
 
     // we're ready to receive more packets,

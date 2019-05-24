@@ -20,8 +20,12 @@
 // SX1278 module is in slot A on the shield
 SX1278 loraSX1278 = RadioShield.ModuleA;
 
-// SX1272 module is in slot B on the shield
-SX1272 loraSX1272 = RadioShield.ModuleB;
+// if you're not using RadioShield, you can specify
+// the connection yourself
+// NSS pin:   6
+// DIO1 pin:  4
+// DIO2 pin:  5
+SX1272 loraSX1272 = new Module(6, 4, 5);
 
 void setup() {
   Serial.begin(9600);
@@ -48,7 +52,7 @@ void setup() {
 
   // initialize the second LoRa instance with
   // non-default settings
-  // this LoRa link will have high data rate, 
+  // this LoRa link will have high data rate,
   // but lower range
   // NOTE: when using spreading factor 6, the total packet
   //       length has to be known in advance!
@@ -81,32 +85,32 @@ void setup() {
 
   // set carrier frequency to 433.5 MHz
   if (loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
-    Serial.println("Selected frequency is invalid for this module!");
+    Serial.println(F("Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bandwidth to 250 kHz
   if (loraSX1278.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
-    Serial.println("Selected bandwidth is invalid for this module!");
+    Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set spreading factor to 10
   if (loraSX1278.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
-    Serial.println("Selected spreading factor is invalid for this module!");
+    Serial.println(F("Selected spreading factor is invalid for this module!"));
     while (true);
   }
 
   // set coding rate to 6
   if (loraSX1278.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
-    Serial.println("Selected coding rate is invalid for this module!");
+    Serial.println(F("Selected coding rate is invalid for this module!"));
     while (true);
   }
 
   // set LoRa sync word to 0x14
   // NOTE: value 0x34 is reserved for LoRaWAN networks and should not be used
   if (loraSX1278.setSyncWord(0x14) != ERR_NONE) {
-    Serial.println("Unable to set sync word!");
+    Serial.println(F("Unable to set sync word!"));
     while (true);
   }
 
@@ -114,20 +118,20 @@ void setup() {
   // NOTE: 20 dBm value allows high power operation, but transmission
   //       duty cycle MUST NOT exceed 1%
   if (loraSX1278.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
-    Serial.println("Selected output power is invalid for this module!");
+    Serial.println(F("Selected output power is invalid for this module!"));
     while (true);
   }
 
   // set over current protection limit to 80 mA (accepted range is 45 - 240 mA)
   // NOTE: set value to 0 to disable overcurrent protection
   if (loraSX1278.setCurrentLimit(80) == ERR_INVALID_CURRENT_LIMIT) {
-    Serial.println("Selected current limit is invalid for this module!");
+    Serial.println(F("Selected current limit is invalid for this module!"));
     while (true);
   }
 
   // set LoRa preamble length to 15 symbols (accepted range is 6 - 65535)
   if (loraSX1278.setPreambleLength(15) == ERR_INVALID_PREAMBLE_LENGTH) {
-    Serial.println("Selected preamble length is invalid for this module!");
+    Serial.println(F("Selected preamble length is invalid for this module!"));
     while (true);
   }
 
@@ -135,11 +139,11 @@ void setup() {
   // NOTE: set value to 0 to enable autmatic gain control
   //       leave at 0 unless you know what you're doing
   if (loraSX1278.setGain(1) == ERR_INVALID_GAIN) {
-    Serial.println("Selected gain is invalid for this module!");
+    Serial.println(F("Selected gain is invalid for this module!"));
     while (true);
   }
 
-  Serial.println("All settings succesfully changed!");
+  Serial.println(F("All settings succesfully changed!"));
 }
 
 void loop() {

@@ -58,20 +58,20 @@ void loop() {
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(" success!");
+    Serial.println(F(" success!"));
 
     // print measured data rate
-    Serial.print("[SX1278] Datarate:\t");
+    Serial.print(F("[SX1278] Datarate:\t"));
     Serial.print(lora.getDataRate());
-    Serial.println(" bps");
+    Serial.println(F(" bps"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
-    Serial.println(" too long!");
+    Serial.println(F(" too long!"));
 
   } else if (state == ERR_TX_TIMEOUT) {
     // timeout occured while transmitting packet
-    Serial.println(" timeout!");
+    Serial.println(F(" timeout!"));
 
   }
 

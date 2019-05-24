@@ -2,7 +2,7 @@
    RadioLib SX127x FSK Modem Example
 
    This example shows how to use FSK modem in SX127x chips.
-   
+
    NOTE: The sketch below is just a guide on how to use
          FSK modem, so this code should not be run directly!
          Instead, modify the other examples to use FSK
@@ -29,7 +29,7 @@ void setup() {
   // current limit:               100 mA
   // data shaping:                Gaussian, BT = 0.3
   // sync word:                   0x2D  0x01
-  // OOK modulation:              false
+  // OOK modulation:              disabled
   int state = fsk.beginFSK();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -44,7 +44,7 @@ void setup() {
   // lora.begin()       start LoRa mode (and disable FSK)
   // lora.beginFSK()    start FSK mode (and disable LoRa)
 
-  // the following settings can also 
+  // the following settings can also
   // be modified at run-time
   state = fsk.setFrequency(433.5);
   state = fsk.setBitRate(100.0);
@@ -53,7 +53,7 @@ void setup() {
   state = fsk.setOutputPower(10.0);
   state = fsk.setCurrentLimit(100);
   state = fsk.setDataShaping(0.5);
-  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
   state = fsk.setSyncWord(syncWord, 8);
   if (state != ERR_NONE) {
@@ -82,7 +82,7 @@ void loop() {
   // FSK modem can use the same transmit/receive methods
   // as the LoRa modem, even their interrupt-driven versions
   // NOTE: FSK modem maximum packet length is 63 bytes!
-  
+
   // transmit FSK packet
   int state = fsk.transmit("Hello World!");
   /*
@@ -123,7 +123,7 @@ void loop() {
   // it can be enabled by setting node address, broadcast
   // address, or both
   //
-  // to transmit packet to a particular address, 
+  // to transmit packet to a particular address,
   // use the following methods:
   //
   // fsk.transmit("Hello World!", address);
@@ -161,7 +161,7 @@ void loop() {
 
   // using the direct mode, it is possible to transmit
   // FM notes with Arduino tone() function
-  
+
   // it is recommended to set data shaping to 0
   // (no shaping) when transmitting audio
   state = fsk.setDataShaping(0.0);
@@ -193,7 +193,7 @@ void loop() {
     Serial.println(F("[SX1278] Unable to start direct reception mode, code "));
     Serial.println(state);
   }
-  
+
   // NOTE: you will not be able to send or receive packets
   // while direct mode is active! to deactivate it, call method
   // fsk.packetMode()
