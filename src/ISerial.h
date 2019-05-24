@@ -8,10 +8,15 @@
 #include "WString.h"
 #include "Printable.h"
 
+/*!
+  \class ISerial
+
+  \brief Interface class for Arduino Serial. Only calls the appropriate methods for the active UART interface.
+*/
 class ISerial {
   public:
     ISerial(Module* mod);
-    
+
     void begin(long);
     bool listen();
     void end();
@@ -23,7 +28,7 @@ class ISerial {
     int read();
     int available();
     void flush();
-    
+
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);
     size_t print(const char[]);
@@ -48,7 +53,7 @@ class ISerial {
     size_t println(double, int = 2);
     size_t println(const Printable&);
     size_t println(void);
-  
+
   protected:
     Module* _mod;
 };
