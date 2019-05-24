@@ -6,15 +6,24 @@ env:
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
+
 before_install:
   # install Arduino IDE
   - wget http://downloads.arduino.cc/arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
   - tar xf arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
   - mv arduino-$ARDUINO_IDE_VERSION $HOME/arduino-ide
   - export PATH=$PATH:$HOME/arduino-ide
+
+# create directory to save the library and create symbolic link
 install:
   - mkdir -p $HOME/Arduino/libraries
   - ln -s $PWD $HOME/Arduino/libraries/RadioLib
+
+# only build the master branch
+branches:
+  only:
+    - master
+
 script:
   # build all example sketches
   - for example in $(find $PWD/examples -name '*.ino' | sort); do
@@ -27,3 +36,20 @@ script:
         echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
       fi
     done
+  # generate Doxygen documentation (only for Arduino UNO)
+  - if [ $BOARD = "arduino:avr:uno" ]; then
+      sudo apt-get update;
+      sudo apt-get install -y doxygen;
+      cd ..;
+      doxygen Doxyfile;
+    fi
+
+# deploy Doxygen docs on master branch and only when building for Arduino UNO
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: docs/html
+  github_token: $GH_REPO_TOKEN
+  on:
+    branch: master
+    condition: $BOARD = "arduino:avr:uno"

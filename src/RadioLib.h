@@ -1,6 +1,40 @@
 #ifndef _RADIOLIB_H
 #define _RADIOLIB_H
 
+/*!
+  \mainpage RadioLib Documentation
+
+  Universal wireless communication library for Arduino.
+
+  \par Currently Supported Wireless Modules and Protocols
+  - CC1101 FSK module
+  - HC05 Bluetooth module
+  - JDY08 BLE module
+  - RF69 FSK module
+  - SX126x LoRa/FSK module
+  - SX127x LoRa/FSK module
+  - SX1231 FSK module
+  - XBee module (S2B)
+  - PhysicalLayer protocols
+    - RTTY
+    - Morse Code
+  - TransportLayer protocols
+    - HTTP
+    - MQTT
+
+  \par Quick Links
+  Documentation for most common methods can be found in its reference page (see the list above).\n
+  Some methods (mainly configuration) are also overridden in derived classes, such as SX1272, SX1278, RFM96 etc. for SX127x.\n
+  \ref status_codes have their own page.\n
+  Some modules implement methods of one or more compatibility layers, loosely based on the ISO/OSI model.
+  - PhysicalLayer - FSK and LoRa radio modules
+  - TransportLayer - Modules with Internet connectivity
+
+  \see https://github.com/jgromes/RadioLib
+
+  \copyright  Copyright (c) 2019 Jan Gromes
+*/
+
 #include "TypeDef.h"
 #include "Module.h"
 
@@ -24,14 +58,17 @@
 #include "modules/SX1279.h"
 #include "modules/XBee.h"
 
+// physical layer protocols
 #include "protocols/PhysicalLayer.h"
 #include "protocols/Morse.h"
 #include "protocols/RTTY.h"
 
+// transport layer protocols
 #include "protocols/TransportLayer.h"
 #include "protocols/HTTP.h"
 #include "protocols/MQTT.h"
 
+// RadioShield pin definitions
 #define RADIOSHIELD_CS_A   10
 #define RADIOSHIELD_RX_A   9
 #define RADIOSHIELD_TX_A   8
@@ -41,15 +78,25 @@
 #define RADIOSHIELD_INT_0  2
 #define RADIOSHIELD_INT_1  3
 
+/*!
+  \class Radio
+
+  \brief Library control object when using RadioShield.
+  Contains two pre-configured "modules", which correspond to the slots on shield.
+*/
+
 class Radio {
   public:
+
+    /*!
+      \brief Default constructor. Only used to preconfigure ModuleA and ModuleB.
+    */
     Radio();
 
     Module* ModuleA;
     Module* ModuleB;
 
   private:
-
 
 };
 
