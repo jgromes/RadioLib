@@ -72,14 +72,14 @@ void setup() {
     // All transmissions in loop() (strings and numbers)
     // will now be encoded using ITA2 code
 
-    // ASCII characters that do not have ITA2 euqivalent
+    // ASCII characters that do not have ITA2 equivalent
     // will be sent as NUL (including lower case letters!)
   */
 }
 
 void loop() {
   Serial.print(F("[RTTY] Sending RTTY data ... "));
-  
+
   // send out idle condition for 500 ms
   rtty.idle();
   delay(500);
@@ -95,7 +95,7 @@ void loop() {
 
   // character
   rtty.println('c');
-  
+
   // byte
   // formatting DEC/HEX/OCT/BIN is supported for
   // any integer type (byte/int/long)
@@ -108,7 +108,7 @@ void loop() {
   // floating point number
   float f = -3.1415;
   rtty.println(f, 3);
-  
+
   // turn transmitter off
   fsk.standby();
 
