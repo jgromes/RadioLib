@@ -524,7 +524,7 @@
 /*!
   \class SX127x
 
-  \brief Implements all common high-level chip functions. All derived classes (e.g. SX1278 or SX1272) inherit from this base class.
+  \brief Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from this base class.
   This class should not be instantiated directly from Arduino sketch, only from its derived classes.
 */
 class SX127x: public PhysicalLayer {
