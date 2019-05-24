@@ -125,12 +125,12 @@ int16_t CC1101::standby() {
   return(ERR_NONE);
 }
 
-int16_t CC1101::transmitDirect(uint32_t FRF) {
+int16_t CC1101::transmitDirect(uint32_t frf) {
   // user requested to start transmitting immediately (required for RTTY)
-  if(FRF != 0) {
-    SPIwriteRegister(CC1101_REG_FREQ2, (FRF & 0xFF0000) >> 16);
-    SPIwriteRegister(CC1101_REG_FREQ1, (FRF & 0x00FF00) >> 8);
-    SPIwriteRegister(CC1101_REG_FREQ0, FRF & 0x0000FF);
+  if(frf != 0) {
+    SPIwriteRegister(CC1101_REG_FREQ2, (frf & 0xFF0000) >> 16);
+    SPIwriteRegister(CC1101_REG_FREQ1, (frf & 0x00FF00) >> 8);
+    SPIwriteRegister(CC1101_REG_FREQ0, frf & 0x0000FF);
 
     SPIsendCommand(CC1101_CMD_TX);
   }
@@ -311,7 +311,7 @@ int16_t CC1101::setBitRate(float br) {
 
 int16_t CC1101::setRxBandwidth(float rxBw) {
   // check allowed bandwidth range
-  if(!((rxBw >= 58) && (rxBw <= 812))) {
+  if(!((rxBw >= 58.0) && (rxBw <= 812.0))) {
     return(ERR_INVALID_RX_BANDWIDTH);
   }
 

@@ -31,7 +31,7 @@
 #define CC1101_CMD_WOR_RESET                          0x3C
 #define CC1101_CMD_NOP                                0x3D
 
-// CC1101 regsiter map
+// CC1101 register map
 #define CC1101_REG_IOCFG2                             0x00
 #define CC1101_REG_IOCFG1                             0x01
 #define CC1101_REG_IOCFG0                             0x02
@@ -502,34 +502,221 @@ class CC1101: public PhysicalLayer {
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::readData;
 
-    // constructor
+    /*!
+      \brief Default constructor.
+
+      \param mod Instance of Module that will be used to communicate with the radio.
+    */
     CC1101(Module* module);
 
     // basic methods
+
+    /*!
+      \brief Initialization method.
+
+      \param freq Carrier frequency in MHz. Defaults to 868.0 MHz.
+
+      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
+
+      \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
+
+      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48 kHz.
+
+      \param power Output power in dBm. Defaults to 0dBm.
+
+      \returns \ref status_codes
+    */
     int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0);
+
+    /*!
+      \brief Blocking binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
+      \brief Blocking binary receive method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \returns \ref status_codes
+    */
     int16_t receive(uint8_t* data, size_t len);
+
+    /*!
+      \brief Sets the module to standby mode.
+
+      \returns \ref status_codes
+    */
     int16_t standby();
-    int16_t transmitDirect(uint32_t FRF = 0);
+
+    /*!
+      \brief Start direct mode transmission.
+
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+
+      \returns \ref status_codes
+    */
+    int16_t transmitDirect(uint32_t frf = 0);
+
+    /*!
+      \brief Start direct mode reception.
+
+      \returns \ref status_codes
+    */
     int16_t receiveDirect();
 
     // interrupt methods
+
+    /*!
+      \brief Sets interrupt service routine to call when GDO0 activates.
+
+      \param func ISR to call.
+
+      \param dir Signal change direction. Defaults to FALLING.
+    */
     void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
+
+    /*!
+      \brief Sets interrupt service routine to call when GDO2 activates.
+
+      \param func ISR to call.
+
+      \param dir Signal change direction. Defaults to FALLING.
+    */
     void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
+
+    /*!
+      \brief Interrupt-driven binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
+      \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
+
+      \returns \ref status_codes
+    */
     int16_t startReceive();
+
+    /*!
+      \brief Reads data received after calling startReceive method.
+
+      \param data Pointer to array to save the received binary data.
+
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+
+      \returns \ref status_codes
+    */
     int16_t readData(uint8_t* data, size_t len);
 
     // configuration methods
+
+    /*!
+      \brief Sets carrier frequency. Allowed values are in bands 300.0 to 348.0 MHz, 387.0 to 464.0 MHz and 779.0 to 928.0 MHz.
+
+      \param freq Carrier frequency to be set in MHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequency(float freq);
+
+    /*!
+      \brief Sets bit rate. Allowed values range from 0.025 to 600.0 kbps.
+
+      \param br Bit rate to be set in kbps.
+
+      \returns \ref status_codes
+    */
     int16_t setBitRate(float br);
+
+    /*!
+      \brief Sets receiver bandwidth. Allowed values range from 58.0 to 812.0 kHz.
+
+      \param rxBw Receiver bandwidth to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setRxBandwidth(float rxBw);
+
+    /*!
+      \brief Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.
+
+      \param freqDev Frequency deviation to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequencyDeviation(float freqDev);
+
+    /*!
+      \brief Sets 16-bit sync word as a two byte value.
+
+      \param syncH MSB of the sync word.
+
+      \param syncL LSB of the sync word.
+
+      \returns \ref status_codes
+    */
     int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
+
+    /*!
+      \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
+
+      \param power Output power to be set in dBm.
+
+      \returns \ref status_codes
+    */
     int16_t setOutputPower(int8_t power);
+
+    /*!
+      \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.
+
+      \param nodeAddr Node address to be set.
+
+      \param numBroadcastAddrs Number of broadcast addresses to be used. Can be set to 0 (no broadcast), 1 (broadcast at 0x00) or 2 (broadcast at 0x00 and 0xFF).
+
+      \returns \ref status_codes
+    */
     int16_t setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs = 0);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+
+      \returns \ref status_codes
+    */
     int16_t disableAddressFiltering();
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+
+      \returns Last packet RSSI in dBm.
+    */
     float getRSSI();
+
+    /*!
+      \brief Gets LQI (Link Quality Indicator) of the last received packet.
+
+      \returns Last packet LQI (lower is better).
+    */
     uint8_t getLQI();
 
   private:
