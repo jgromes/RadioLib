@@ -419,6 +419,11 @@
 #define RF69_PA2_NORMAL                               0x70        //  7     0     PA_BOOST: none
 #define RF69_PA2_20_DBM                               0x7C        //  7     0               +20 dBm
 
+/*!
+  \class RF69
+
+  \brief Control class for %RF69 module. Also serves as base class for SX1231.
+*/
 class RF69: public PhysicalLayer {
   public:
     // introduce PhysicalLayer overloads
@@ -427,47 +432,266 @@ class RF69: public PhysicalLayer {
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::readData;
 
-    // constructor
+    /*!
+      \brief Default constructor.
+
+      \param mod Instance of Module that will be used to communicate with the radio.
+    */
     RF69(Module* module);
 
-    // public member variables
+    /*!
+      \brief RSSI value of the last received packet.
+    */
     float lastPacketRSSI;
 
     // basic methods
+
+    /*!
+      \brief Initialization method.
+
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+
+      \param br Bit rate to be used in kbps. Defaults to 48.0 kbps.
+
+      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
+
+      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 50.0 kHz.
+
+      \param power Output power in dBm. Defaults to 13 dBm.
+
+      \returns \ref status_codes
+    */
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
+
+    /*!
+      \brief Blocking binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
+      \brief Blocking binary receive method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \returns \ref status_codes
+    */
     int16_t receive(uint8_t* data, size_t len);
+
+    /*!
+      \brief Sets the module to sleep mode.
+
+      \returns \ref status_codes
+    */
     int16_t sleep();
+
+    /*!
+      \brief Sets the module to standby mode.
+
+      \returns \ref status_codes
+    */
     int16_t standby();
+
+    /*!
+      \brief Starts direct mode transmission.
+
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+
+      \returns \ref status_codes
+    */
     int16_t transmitDirect(uint32_t frf = 0);
+
+    /*!
+      \brief Starts direct mode reception.
+
+      \returns \ref status_codes
+    */
     int16_t receiveDirect();
+
+    /*!
+      \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
+    */
     int16_t packetMode();
 
     // hardware AES support
+
+    /*!
+      \brief Sets AES key.
+
+      \param Key to be used for AES encryption. Must be exactly 16 bytes long.
+    */
     void setAESKey(uint8_t* key);
+
+    /*!
+      \brief Enables AES encryption.
+
+      \returns \ref status_codes
+    */
     int16_t enableAES();
+
+    /*!
+      \brief Disables AES encryption.
+
+      \returns \ref status_codes
+    */
     int16_t disableAES();
 
     // interrupt methods
+
+    /*!
+      \brief Sets interrupt service routine to call when DIO0 activates.
+
+      \param func ISR to call.
+    */
     void setDio0Action(void (*func)(void));
+
+    /*!
+      \brief Sets interrupt service routine to call when DIO1 activates.
+
+      \param func ISR to call.
+    */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Interrupt-driven binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
+      \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
+
+      \returns \ref status_codes
+    */
     int16_t startReceive();
+
+    /*!
+      \brief Reads data received after calling startReceive method.
+
+      \param data Pointer to array to save the received binary data.
+
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+
+      \returns \ref status_codes
+    */
     int16_t readData(uint8_t* data, size_t len);
 
     // configuration methods
+
+    /*!
+      \brief Sets carrier frequency. Allowed values are in bands 290.0 to 340.0 MHz, 431.0 to 510.0 MHz and 862.0 to 1020.0 MHz.
+
+      \param freq Carrier frequency to be set in MHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequency(float freq);
+
+    /*!
+      \brief Sets bit rate. Allowed values range from 1.2 to 300.0 kbps.
+
+      \param br Bit rate to be set in kbps.
+
+      \returns \ref status_codes
+    */
     int16_t setBitRate(float br);
+
+    /*!
+      \brief Sets receiver bandwidth. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25.0, 31.3, 41.7, 50.0, 62.5, 83.3, 100.0, 125.0, 166.7, 200.0, 250.0, 333.3, 400.0 and 500.0 kHz.
+
+      \param rxBw Receiver bandwidth to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setRxBandwidth(float rxBw);
+
+    /*!
+      \brief Sets frequency deviation.
+
+      \param freqDev Frequency deviation to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequencyDeviation(float freqDev);
+
+    /*!
+      \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
+
+      \param power Output power to be set in dBm.
+
+      \returns \ref status_codes
+    */
     int16_t setOutputPower(int8_t power);
+
+    /*!
+      \brief Sets sync word. Up to 8 bytes can be set as snyc word.
+
+      \param syncWord Pointer to the array of sync word bytes.
+
+      \param len Sync word length in bytes.
+
+      \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
+    */
     int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
+
+    /*!
+      \brief Sets node address. Calling this method will also enable address filtering for node address only.
+
+      \param nodeAddr Node address to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setNodeAddress(uint8_t nodeAddr);
+
+    /*!
+      \brief Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address.
+
+      \param broadAddr Node address to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setBroadcastAddress(uint8_t broadAddr);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+
+      \returns \ref status_codes
+    */
     int16_t disableAddressFiltering();
 
     // measurement methods
+
+    /*!
+      \brief Sets ambient temperature. Required to correct values from on-board temperature sensor.
+
+      \param tempAmbient Ambient temperature in degrees Celsius.
+    */
     void setAmbientTemperature(int16_t tempAmbient);
+
+    /*!
+      \brief Measures temperature.
+
+      \returns Measured temperature in degrees Celsius.
+    */
     int16_t getTemperature();
 
   protected:
