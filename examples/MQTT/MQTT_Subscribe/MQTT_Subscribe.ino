@@ -94,10 +94,10 @@ void setup() {
 //
 // IMPORTANT: This function MUST have two C-strings as arguments!
 void onPublish(const char* topic, const char* message) {
-  Serial.println("[ESP8266] Received packet from MQTT server: ");
-  Serial.print("[ESP8266] Topic:\t");
+  Serial.println(F("[ESP8266] Received packet from MQTT server: "));
+  Serial.print(F("[ESP8266] Topic:\t"));
   Serial.println(topic);
-  Serial.print("[ESP8266] Message:\t");
+  Serial.print(F("[ESP8266] Message:\t"));
   Serial.println(message);
 }
 
@@ -105,7 +105,7 @@ void loop() {
   // check for new MQTT packets from server each time the loop() runs
   // this will also send a PING packet, restarting the keep alive timer
   int state = mqtt.check(onPublish);
-  Serial.print("[ESP8266] MQTT check ");
+  Serial.print(F("[ESP8266] MQTT check "));
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -117,4 +117,3 @@ void loop() {
   // make sure that the maximum time the loop() runs is less than 1.5x keep alive,
   // otherwise the server will close the network connection
 }
-
