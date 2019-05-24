@@ -6,7 +6,7 @@
 /*!
   \class PhysicalLayer
 
-  \brief Provides common interface for protocols that run on %LoRa/FSK modules, such as RTTY or LoRaWAN. Also provides extracts some common
+  \brief Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common
   module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity.
   Because this class is used mainly as interface, all of its virtual members must be implemented in the module class.
 */
@@ -27,7 +27,7 @@ class PhysicalLayer {
     // basic methods
 
     /*!
-      \brief Arduino String transmit method. Will transmit Arduino String up to 255 characters long using %LoRa or up to 63 bytes using FSK modem.
+      \brief Arduino String transmit method.
 
       \param str Address of Arduino string that will be transmitted.
 
@@ -38,7 +38,7 @@ class PhysicalLayer {
     int16_t transmit(String& str, uint8_t addr = 0);
 
     /*!
-      \brief C-string transmit method. Will transmit C-string up to 255 characters long using %LoRa or up to 63 characters using FSK modem.
+      \brief C-string transmit method.
 
       \param str C-string that will be transmitted.
 
@@ -49,8 +49,7 @@ class PhysicalLayer {
     int16_t transmit(const char* str, uint8_t addr = 0);
 
     /*!
-      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
-      Must be implemented in module class.
+      \brief Binary transmit method. Must be implemented in module class.
 
       \param data Binary data that will be transmitted.
 
@@ -63,19 +62,18 @@ class PhysicalLayer {
     virtual int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) = 0;
 
     /*!
-      \brief Arduino String receive method. Will attempt to receive Arduino String up to 255 characters long using %LoRa or up to 63 characters using FSK modem.
+      \brief Arduino String receive method.
 
       \param str Address of Arduino String to save the received data.
 
-      \param len Expected number of characters in the message. Must be known in advance for %LoRa spreading factor 6.
+      \param len Expected number of characters in the message.
 
       \returns \ref status_codes
     */
     int16_t receive(String& str, size_t len = 0);
 
     /*!
-      \brief Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
-      Must be implemented in module class.
+      \brief Binary receive method. Must be implemented in module class.
 
       \param data Pointer to array to save the received binary data.
 
@@ -86,8 +84,8 @@ class PhysicalLayer {
     virtual int16_t receive(uint8_t* data, size_t len) = 0;
 
     /*!
-      \brief Interrupt-driven Arduino String transmit method. Will start transmitting Arduino String up to 255 characters long using %LoRa or up to 63 bytes using FSK modem.
-      Unlike the standard transmit method, this one is non-blocking. DIO0 will be activated when transmission finishes.
+      \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
+      Interrupt pin will be activated when transmission finishes.
 
       \param str Address of Arduino String that will be transmitted.
 
@@ -98,8 +96,8 @@ class PhysicalLayer {
     int16_t startTransmit(String& str, uint8_t addr = 0);
 
     /*!
-      \brief Interrupt-driven Arduino String transmit method. Will start transmitting Arduino String up to 255 characters long using %LoRa or up to 63 bytes using FSK modem.
-      Unlike the standard transmit method, this one is non-blocking. DIO0 will be activated when transmission finishes.
+      \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
+      Interrupt pin will be activated when transmission finishes.
 
       \param str C-string that will be transmitted.
 
@@ -110,7 +108,7 @@ class PhysicalLayer {
     int16_t startTransmit(const char* str, uint8_t addr = 0);
 
     /*!
-      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
+      \brief Interrupt-driven binary transmit method.
 
       \param data Binary data that will be transmitted.
 
