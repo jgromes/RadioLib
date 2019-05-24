@@ -89,7 +89,7 @@ class Radio {
   public:
 
     /*!
-      \brief Default constructor. Only used to preconfigure ModuleA and ModuleB.
+      \brief Default constructor. Only used to set ModuleA and ModuleB configuration.
     */
     Radio();
 
