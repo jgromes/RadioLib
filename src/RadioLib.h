@@ -16,17 +16,17 @@
   - SX1231 FSK module
   - XBee module (S2B)
   - PhysicalLayer protocols
-    - RTTY
-    - Morse Code
+    - RTTY (RTTYClient)
+    - Morse Code (MorseClient)
   - TransportLayer protocols
-    - HTTP
-    - MQTT
+    - HTTP (HTTPClient)
+    - MQTT (MQTTClient)
 
   \par Quick Links
   Documentation for most common methods can be found in its reference page (see the list above).\n
   Some methods (mainly configuration) are also overridden in derived classes, such as SX1272, SX1278, RFM96 etc. for SX127x.\n
   \ref status_codes have their own page.\n
-  Some modules implement methods of one or more compatibility layers, loosely based on the ISO/OSI model.
+  Some modules implement methods of one or more compatibility layers, loosely based on the ISO/OSI model:
   - PhysicalLayer - FSK and LoRa radio modules
   - TransportLayer - Modules with Internet connectivity
 
