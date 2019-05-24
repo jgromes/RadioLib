@@ -497,7 +497,7 @@
 /*!
   \class CC1101
 
-  \brief Control class for CC1101 module.
+  \brief Control class for %CC1101 module.
 */
 class CC1101: public PhysicalLayer {
   public:
@@ -525,9 +525,9 @@ class CC1101: public PhysicalLayer {
 
       \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
 
-      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48 kHz.
+      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
 
-      \param power Output power in dBm. Defaults to 0dBm.
+      \param power Output power in dBm. Defaults to 0 dBm.
 
       \returns \ref status_codes
     */
@@ -567,7 +567,7 @@ class CC1101: public PhysicalLayer {
     int16_t standby();
 
     /*!
-      \brief Start direct mode transmission.
+      \brief Starts direct mode transmission.
 
       \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
 
@@ -576,11 +576,16 @@ class CC1101: public PhysicalLayer {
     int16_t transmitDirect(uint32_t frf = 0);
 
     /*!
-      \brief Start direct mode reception.
+      \brief Starts direct mode reception.
 
       \returns \ref status_codes
     */
     int16_t receiveDirect();
+
+    /*!
+      \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
+    */
+    int16_t packetMode();
 
     // interrupt methods
 
@@ -673,6 +678,15 @@ class CC1101: public PhysicalLayer {
     int16_t setFrequencyDeviation(float freqDev);
 
     /*!
+      \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
+
+      \param power Output power to be set in dBm.
+
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power);
+
+    /*!
       \brief Sets 16-bit sync word as a two byte value.
 
       \param syncH MSB of the sync word.
@@ -682,15 +696,6 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
-
-    /*!
-      \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
-
-      \param power Output power to be set in dBm.
-
-      \returns \ref status_codes
-    */
-    int16_t setOutputPower(int8_t power);
 
     /*!
       \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.
