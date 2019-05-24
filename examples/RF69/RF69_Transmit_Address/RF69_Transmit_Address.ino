@@ -48,7 +48,7 @@ void setup() {
   }
 
   // set broadcast address
-  // NOTE: calling this method will autmatically enable
+  // NOTE: calling this method will automatically enable
   // address filtering (node or broadcast address)
   Serial.print(F("[RF69] Setting broadcast address ... "));
   state = rf.setBroadcastAddress(0xFF);
@@ -101,11 +101,11 @@ void loop() {
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(" success!");
+    Serial.println(F(" success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
-    Serial.println(" too long!");
+    Serial.println(F(" too long!"));
 
   }
 

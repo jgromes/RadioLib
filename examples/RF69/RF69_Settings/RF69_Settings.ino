@@ -106,7 +106,7 @@ void setup() {
   }
 
   // up to 8 bytes can be set as sync word
-  // NOTE: sync word must not conatin any zero bytes
+  // NOTE: sync word must not contain any zero bytes
   // set sync word to 0x0123456789ABCDEF
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
   if (rf1.setSyncWord(syncWord, 8) == ERR_INVALID_SYNC_WORD) {

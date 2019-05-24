@@ -35,7 +35,7 @@ void setup() {
   }
 
   // set node address
-  // NOTE: calling this method will autmatically enable
+  // NOTE: calling this method will automatically enable
   // address filtering (node address only)
   Serial.print(F("[RF69] Setting node address ... "));
   state = rf.setNodeAddress(0x02);

@@ -14,7 +14,7 @@ RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   434.0 MHz
@@ -32,10 +32,10 @@ void setup() {
     while (true);
   }
 
-  // set the function that will be called 
+  // set the function that will be called
   // when new packet is received
   rf.setDio0Action(setFlag);
-  
+
   // start listening for packets
   Serial.print(F("[RF69] Starting to listen ... "));
   state = rf.startReceive();
@@ -54,7 +54,6 @@ void setup() {
   // rf.sleep()
   // rf.transmit();
   // rf.receive();
-  // rf.scanChannel();
 }
 
 // flag to indicate that a packet was received
@@ -86,23 +85,23 @@ void loop() {
 
     // reset flag
     receivedFlag = false;
-    
+
     // you can read received data as an Arduino String
     String str;
     int state = rf.readData(str);
-  
+
     // you can also read received data as byte array
     /*
       byte byteArr[8];
       int state = lora.receive(byteArr, 8);
     */
-    
+
     if (state == ERR_NONE) {
       // packet was successfully received
-      Serial.println("[RF69] Received packet!");
-  
+      Serial.println(F("[RF69] Received packet!"));
+
       // print data of the packet
-      Serial.print("[RF69] Data:\t\t\t");
+      Serial.print(F("[RF69] Data:\t\t\t"));
       Serial.println(str);
     }
 
