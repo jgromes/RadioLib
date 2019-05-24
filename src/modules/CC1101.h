@@ -494,6 +494,11 @@
 #define CC1101_GDO2_ACTIVE                            0b00000100  //  2     2     GDO2 is active/asserted
 #define CC1101_GDO0_ACTIVE                            0b00000001  //  0     0     GDO0 is active/asserted
 
+/*!
+  \class CC1101
+
+  \brief Control class for CC1101 module.
+*/
 class CC1101: public PhysicalLayer {
   public:
     // introduce PhysicalLayer overloads
