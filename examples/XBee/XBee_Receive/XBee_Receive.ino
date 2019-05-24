@@ -46,11 +46,11 @@ void loop() {
   // check if XBee received some data
   if (bee.available() > 0) {
     // print source address
-    Serial.print("[XBee] Packet source:\t");
+    Serial.print(F("[XBee] Packet source:\t"));
     Serial.println(bee.getPacketSource());
-    
+
     // print data
-    Serial.print("[XBee] Packet data:\t");
+    Serial.print(F("[XBee] Packet data:\t"));
     Serial.println(bee.getPacketData());
   }
 }
