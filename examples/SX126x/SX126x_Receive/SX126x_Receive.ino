@@ -65,20 +65,20 @@ void loop() {
     Serial.println(F("success!"));
 
     // print the data of the packet
-    Serial.print("[SX1262] Data:\t\t");
+    Serial.print(F("[SX1262] Data:\t\t"));
     Serial.println(str);
 
     // print the RSSI (Received Signal Strength Indicator)
     // of the last received packet
-    Serial.print("[SX1262] RSSI:\t\t");
+    Serial.print(F("[SX1262] RSSI:\t\t"));
     Serial.print(lora.getRSSI());
-    Serial.println(" dBm");
+    Serial.println(F(" dBm"));
 
     // print the SNR (Signal-to-Noise Ratio)
     // of the last received packet
-    Serial.print("[SX1262] SNR:\t\t");
+    Serial.print(F("[SX1262] SNR:\t\t"));
     Serial.print(lora.getSNR());
-    Serial.println(" dBm");
+    Serial.println(F(" dBm"));
 
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet

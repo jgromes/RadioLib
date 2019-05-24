@@ -1,5 +1,5 @@
 /*
-   RadioLib SX126x Transmit with Inerrupts Example
+   RadioLib SX126x Transmit with Interrupts Example
 
    This example transmits LoRa packets with one second delays
    between them. Each packet contains up to 256 bytes
@@ -40,7 +40,7 @@ void setup() {
     while (true);
   }
 
-  // set the function that will be called 
+  // set the function that will be called
   // when packet transmission is finished
   lora.setDio1Action(setFlag);
 
@@ -57,7 +57,7 @@ void setup() {
                       0x78, 0xAB, 0xCD, 0xEF};
     state = lora.transmit(byteArr, 8);
   */
-  
+
   if (state != ERR_NONE) {
     Serial.print(F("failed, code "));
     Serial.println(state);
@@ -86,7 +86,7 @@ void loop() {
     // you can transmit C-string or Arduino string up to
     // 256 characters long
     int state = lora.startTransmit("Hello World!");
-  
+
     // you can also transmit byte array up to 256 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
@@ -97,7 +97,7 @@ void loop() {
     // NOTE: when using interrupt-driven transmit method,
     //       it is not possible to automatically measure
     //       transmission data rate using getDataRate()
-    
+
     if (state != ERR_NONE) {
       Serial.print(F("failed, code "));
       Serial.println(state);

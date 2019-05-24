@@ -23,8 +23,13 @@
 // SX1268 module is in slot A on the shield
 SX1268 loraSX1268 = RadioShield.ModuleA;
 
-// SX1262 module is in slot B on the shield
-SX1262 loraSX1262 = RadioShield.ModuleB;
+// if you're not using RadioShield, you can specify
+// the connection yourself
+// NSS pin:   6
+// DIO1 pin:  4
+// DIO2 pin:  5
+// BUSY pin:  7
+SX1262 loraSX1262 = new Module(6, 4, 5, 7);
 
 void setup() {
   Serial.begin(9600);
@@ -51,7 +56,7 @@ void setup() {
 
   // initialize the second LoRa instance with
   // non-default settings
-  // this LoRa link will have high data rate, 
+  // this LoRa link will have high data rate,
   // but lower range
   Serial.print(F("[SX1262] Initializing ... "));
   // carrier frequency:           915.0 MHz
@@ -130,14 +135,14 @@ void setup() {
     while (true);
   }
 
-  // Some SX126x have TCXO (temprature compensated crystal
+  // Some SX126x have TCXO (temperature compensated crystal
   // oscillator). To configure TCXO reference voltage,
   // the following method can be used.
   if (loraSX1268.setTCXO(2.4) == ERR_INVALID_TCXO_VOLTAGE) {
     Serial.println(F("Selected TCXO voltage is invalid for this module!"));
     while (true);
   }
-  
+
 
   Serial.println(F("All settings succesfully changed!"));
 }

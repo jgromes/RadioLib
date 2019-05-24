@@ -1,10 +1,10 @@
 /*
-   RadioLib SX126x Receive with Inerrupts Example
+   RadioLib SX126x Receive with Interrupts Example
 
    This example listens for LoRa transmissions and tries to
    receive them. Once a packet is received, an interrupt is
    triggered. To successfully receive data, the following
-   settings have to be the same on both transmitter 
+   settings have to be the same on both transmitter
    and receiver:
     - carrier frequency
     - bandwidth
@@ -44,10 +44,10 @@ void setup() {
     while (true);
   }
 
-  // set the function that will be called 
+  // set the function that will be called
   // when new packet is received
   lora.setDio1Action(setFlag);
-  
+
   // start listening for LoRa packets
   Serial.print(F("[SX1262] Starting to listen ... "));
   state = lora.startReceive();
@@ -98,39 +98,39 @@ void loop() {
 
     // reset flag
     receivedFlag = false;
-    
+
     // you can read received data as an Arduino String
     String str;
     int state = lora.readData(str);
-  
+
     // you can also read received data as byte array
     /*
       byte byteArr[8];
       int state = lora.receive(byteArr, 8);
     */
-    
+
     if (state == ERR_NONE) {
       // packet was successfully received
       Serial.println(F("[SX1262] Received packet!"));
-  
+
       // print data of the packet
       Serial.print(F("[SX1262] Data:\t\t"));
       Serial.println(str);
-  
-      // print RSSI (Received Signal Strength Indicator) 
+
+      // print RSSI (Received Signal Strength Indicator)
       Serial.print(F("[SX1262] RSSI:\t\t"));
       Serial.print(lora.getRSSI());
-      Serial.println(" dBm");
-  
-      // print SNR (Signal-to-Noise Ratio) 
+      Serial.println(F(" dBm"));
+
+      // print SNR (Signal-to-Noise Ratio)
       Serial.print(F("[SX1262] SNR:\t\t"));
       Serial.print(lora.getSNR());
       Serial.println(F(" dBm"));
-  
+
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
       Serial.println(F("CRC error!"));
-  
+
     }
 
     // we're ready to receive more packets,
