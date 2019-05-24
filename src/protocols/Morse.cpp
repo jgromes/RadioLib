@@ -1,10 +1,16 @@
 #include "Morse.h"
 
 // structure to save data about character Morse code
+/*!
+  \cond RADIOLIB_DOXYGEN_HIDDEN
+*/
 struct Morse_t {
   char c;                                             // ASCII character
   const char* m;                                      // Morse code representation
 };
+/*!
+  \endcond
+*/
 
 // array of all Morse code characters
 static const Morse_t MorseTable[MORSE_LENGTH] = {
@@ -72,10 +78,10 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
 
   // calculate dot length (assumes PARIS as typical word)
   _dotLength = 1200 / speed;
-  
+
   // set module frequency deviation to 0
   int16_t state = _phy->setFrequencyDeviation(0);
-  
+
   return(state);
 }
 
@@ -83,7 +89,7 @@ size_t MorseClient::write(const char* str) {
   if(str == NULL) {
     return(0);
   }
-  
+
   return(MorseClient::write((uint8_t*)str, strlen(str)));
 }
 
@@ -125,16 +131,16 @@ size_t MorseClient::write(uint8_t b) {
           // do nothing (word space)
           break;
       }
-      
+
       // symbol space
       _phy->receiveDirect();
       delay(_dotLength);
     }
     Serial.println();
-    
+
     // letter space
     delay(_dotLength * 3);
-    
+
     return(1);
   }
 
@@ -144,7 +150,7 @@ size_t MorseClient::write(uint8_t b) {
 size_t MorseClient::startSignal() {
   return(MorseClient::write(0x01));
 }
-    
+
 size_t MorseClient::print(const String& str) {
   return(MorseClient::write((uint8_t*)str.c_str(), str.length()));
 }
@@ -270,23 +276,23 @@ size_t MorseClient::printNumber(unsigned long n, uint8_t base) {
 
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
-  
+
   return(MorseClient::write(str));
 }
 
-size_t MorseClient::printFloat(double number, uint8_t digits)  { 
+size_t MorseClient::printFloat(double number, uint8_t digits)  {
   size_t n = 0;
-  
+
   char code[] = {0x00, 0x00, 0x00, 0x00};
   if (isnan(number)) strcpy(code, "nan");
   if (isinf(number)) strcpy(code, "inf");
   if (number > 4294967040.0) strcpy(code, "ovf");  // constant determined empirically
   if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
-  
+
   if(code[0] != 0x00) {
     return(MorseClient::write(code));
   }
-  
+
   // Handle negative numbers
   if (number < 0.0) {
     n += MorseClient::print('-');
@@ -315,8 +321,8 @@ size_t MorseClient::printFloat(double number, uint8_t digits)  {
     remainder *= 10.0;
     unsigned int toPrint = (unsigned int)(remainder);
     n += MorseClient::print(toPrint);
-    remainder -= toPrint; 
-  } 
-  
+    remainder -= toPrint;
+  }
+
   return n;
 }
