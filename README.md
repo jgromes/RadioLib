@@ -4,6 +4,8 @@
 
 ## Universal wireless communication library for Arduino
 
+## See the [Wiki](https://github.com/jgromes/RadioLib/wiki) for further information. See the [GitHub Pages](https://jgromes.github.io/RadioLib) for detailed and up-to-date API reference.
+
 RadioLib allows its users to integrate all sorts of different wireless communication modules into a single consistent system.
 Want to add a Bluetooth interface to your ZigBee network? Sure thing! Need to connect LoRa network to the Internet with a GSM module? RadioLib has got your back!
 
