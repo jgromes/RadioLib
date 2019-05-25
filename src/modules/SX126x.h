@@ -317,6 +317,12 @@
 #define SX126X_SYNC_WORD_PRIVATE                      0x1424
 
 
+/*!
+  \class SX126x
+
+  \brief Base class for %SX126x series. All derived classes for %SX126x (e.g. SX1278 or SX1272) inherit from this base class.
+  This class should not be instantiated directly from Arduino sketch, only from its derived classes.
+*/
 class SX126x: public PhysicalLayer {
   public:
     // introduce PhysicalLayer overloads
@@ -325,47 +331,345 @@ class SX126x: public PhysicalLayer {
     using PhysicalLayer::startTransmit;
     using PhysicalLayer::readData;
 
-    // constructor
+    /*!
+      \brief Default constructor.
+
+      \param mod Instance of Module that will be used to communicate with the radio.
+    */
     SX126x(Module* mod);
 
     // basic methods
+
+    /*!
+      \brief Initialization method for LoRa modem.
+
+      \param bw LoRa bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.
+
+      \param sf LoRa spreading factor. Allowed values are in range 5 to 12.
+
+      \param cr LoRa coding rate denominator. Allowed values range from 5 to 8.
+
+      \param syncWord 2-byte LoRa sync word.
+
+      \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
+
+      \returns \ref status_codes
+    */
     int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint16_t preambleLength);
+
+    /*!
+      \brief Initialization method for FSK modem.
+
+      \param br FSK bit rate in kbps. Allowed values range from 0.6 to 300.0 kbps.
+
+      \param freqDev Frequency deviation from carrier frequency in kHz. Allowed values range from 0.0 to 200.0 kHz.
+
+      \param rxBw Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
+
+      \parma preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
+
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Allowed values are 0.3, 0.5, 0.7 and 1.0. Set to 0 to disable shaping.
+
+      \returns \ref status_codes
+    */
     int16_t beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float dataShaping);
+
+    /*!
+      \brief Blocking binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+
+    /*!
+      \brief Blocking binary receive method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \returns \ref status_codes
+    */
     int16_t receive(uint8_t* data, size_t len);
+
+    /*!
+      \brief Starts direct mode transmission.
+
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+
+      \returns \ref status_codes
+    */
     int16_t transmitDirect(uint32_t frf = 0);
+
+    /*!
+      \brief Starts direct mode reception. Only implemented for PhysicalLyer compatibility, as %SX126x series does not support direct mode reception.
+      Will always return ERR_UNKNOWN.
+
+      \returns \ref status_codes
+    */
     int16_t receiveDirect();
+
+    /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+
+      \returns \ref status_codes
+    */
     int16_t scanChannel();
+
+    /*!
+      \brief Sets the module to sleep mode.
+
+      \returns \ref status_codes
+    */
     int16_t sleep();
+
+    /*!
+      \brief Sets the module to standby mode.
+
+      \param mode Oscillator to be used in standby mode. Defaults to SX126X_STANDBY_RC (13 MHz RC oscillator), can also be set SX126X_STANDBY_XOSC (32 MHz external crystal oscillator).
+
+      \returns \ref status_codes
+    */
     int16_t standby(uint8_t mode = SX126X_STANDBY_RC);
 
     // interrupt methods
+
+    /*!
+      \brief Sets interrupt service routine to call when DIO1 activates.
+
+      \param func ISR to call.
+    */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Sets interrupt service routine to call when DIO2 activates.
+
+      \param func ISR to call.
+    */
     void setDio2Action(void (*func)(void));
+
+    /*!
+      \brief Interrupt-driven binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+
+      \returns \ref status_codes
+    */
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
-    int16_t startReceive(uint32_t timeout = 0xFFFFFF);
+
+    /*!
+      \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
+
+      \param timeout Raw timeout value, expressed as multiples of 15.625 us. Defaults to SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode).
+
+      \returns \ref status_codes
+    */
+    int16_t startReceive(uint32_t timeout = SX126X_RX_TIMEOUT_INF);
+
+    /*!
+      \brief Reads data received after calling startReceive method.
+
+      \param data Pointer to array to save the received binary data.
+
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+
+      \returns \ref status_codes
+    */
     int16_t readData(uint8_t* data, size_t len);
 
     // configuration methods
+
+    /*!
+      \brief Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.
+
+      \param bw LoRa bandwidth to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setBandwidth(float bw);
+
+    /*!
+      \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
+
+      \param sf LoRa spreading factor to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setSpreadingFactor(uint8_t sf);
+
+    /*!
+      \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
+
+      \param cr LoRa coding rate denominator to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setCodingRate(uint8_t cr);
+
+    /*!
+      \brief Sets LoRa sync word.
+
+      \param syncWord LoRa sync word to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setSyncWord(uint16_t syncWord);
+
+    /*!
+      \brief Sets current protection limit. Can be set in 0.25 mA steps.
+
+      \param currentLimit current protection limit to be set in mA.
+
+      \returns \ref status_codes
+    */
     int16_t setCurrentLimit(float currentLimit);
+
+    /*!
+      \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
+
+      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK).
+
+      \returns \ref status_codes
+    */
     int16_t setPreambleLength(uint16_t preambleLength);
+
+    /*!
+      \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
+
+      \param freqDev FSK frequency deviation to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequencyDeviation(float freqDev);
+
+    /*!
+      \brief Sets FSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
+
+      \param br FSK bit rate to be set in kbps.
+
+      \returns \ref status_codes
+    */
     int16_t setBitRate(float br);
+
+    /*!
+      \brief Sets FSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
+
+      \param FSK receiver bandwidth to be set in kHz.
+
+      \returns \ref status_codes
+    */
     int16_t setRxBandwidth(float rxBw);
+
+    /*!
+      \brief Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are 0.3, 0.5, 0.7 and 1.0. Set to 0 to disable shaping.
+
+      \param sh Time-bandwidth product of Gaussian filter to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setDataShaping(float sh);
+
+    /*!
+      \brief Sets FSK sync word in the form of array of up to 8 bytes.
+
+      \param syncWord FSK sync word to be set.
+
+      \param len FSK sync word length in bytes.
+
+      \returns \ref status_codes
+    */
     int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+
+    /*!
+      \brief Sets node address. Calling this method will also enable address filtering for node address only.
+
+      \param nodeAddr Node address to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setNodeAddress(uint8_t nodeAddr);
+
+    /*!
+      \brief Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address.
+
+      \param broadAddr Node address to be set.
+
+      \returns \ref status_codes
+    */
     int16_t setBroadcastAddress(uint8_t broadAddr);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+
+      \returns \ref status_codes
+    */
     int16_t disableAddressFiltering();
+
+    /*!
+      \brief Sets LoRa CRC.
+
+      \param enableCRC Enable or disable LoRa CRC.
+
+      \returns \ref status_codes
+    */
     int16_t setCRC(bool enableCRC);
+
+    /*!
+      \brief Sets FSK CRC configuration.
+
+      \param len CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable FSK CRC.
+
+      \param initial Initial CRC value. Defaults to 0x1D0F (CCIT CRC).
+
+      \param polynomial Polynomial for CRC calculation. Defaults to 0x1021 (CCIT CRC).
+
+      \param inverted Invert CRC bytes. Defaults to true (CCIT CRC)
+
+      \returns \ref status_codes
+    */
     int16_t setCRC(uint8_t len, uint16_t initial = 0x1D0F, uint16_t polynomial = 0x1021, bool inverted = true);
+
+    /*!
+      \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
+
+      \param TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V
+
+      \param TCXO timeout in us. Defaults to 5000 us.
+    */
     int16_t setTCXO(float voltage, uint32_t timeout = 5000);
+
+    /*!
+      \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
+
+      \returns Effective data rate in bps.
+    */
     float getDataRate();
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+
+      \returns RSSI of the last received packet in dBm.
+    */
     float getRSSI();
+
+    /*!
+      \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
+
+      \returns SNR of the last received packet in dB.
+    */
     float getSNR();
 
   protected:
