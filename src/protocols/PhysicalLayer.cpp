@@ -5,6 +5,33 @@ PhysicalLayer::PhysicalLayer(float crysFreq, uint8_t divExp) {
   _divExponent = divExp;
 }
 
+int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
+  // read flash string length
+  size_t len = 0;
+  PGM_P p = reinterpret_cast<PGM_P>(fstr);
+  while(true) {
+    char c = pgm_read_byte(p++);
+    len++;
+    if(c == '\0') {
+      break;
+    }
+  }
+
+  // dynamically allocate memory
+  char* str = new char[len];
+
+  // copy string from flash
+  p = reinterpret_cast<PGM_P>(fstr);
+  for(size_t i = 0; i < len; i++) {
+    str[i] = pgm_read_byte(p + i);
+  }
+
+  // transmit string
+  int16_t state = transmit(str, addr);
+  delete[] str;
+  return(state);
+}
+
 int16_t PhysicalLayer::transmit(String& str, uint8_t addr) {
   return(transmit(str.c_str(), addr));
 }

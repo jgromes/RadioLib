@@ -6,7 +6,7 @@
 /*!
   \class PhysicalLayer
 
-  \brief Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common
+  \brief Provides common interface for protocols that run on %LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common
   module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity.
   Because this class is used mainly as interface, all of its virtual members must be implemented in the module class.
 */
@@ -25,6 +25,17 @@ class PhysicalLayer {
     PhysicalLayer(float crysFreq, uint8_t divExp);
 
     // basic methods
+
+    /*!
+      \brief Arduino Flash String transmit method.
+
+      \param str Pointer to Arduino Flash String that will be transmitted.
+
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+
+      \returns \ref status_codes
+    */
+    int16_t transmit(__FlashStringHelper* fstr, uint8_t addr = 0);
 
     /*!
       \brief Arduino String transmit method.
@@ -125,7 +136,7 @@ class PhysicalLayer {
 
       \param str Address of Arduino String to save the received data.
 
-      \param len Expected number of characters in the message. Must be known in advance for %LoRa spreading factor 6.
+      \param len Expected number of characters in the message.
 
       \returns \ref status_codes
     */
