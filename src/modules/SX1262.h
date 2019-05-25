@@ -9,6 +9,11 @@
 #define SX126X_PA_CONFIG_SX1261                       0x01
 #define SX126X_PA_CONFIG_SX1262                       0x00
 
+/*!
+  \class SX1262
+
+  \brief Derived class for %SX1262 modules.
+*/
 class SX1262: public SX126x {
   public:
     /*!

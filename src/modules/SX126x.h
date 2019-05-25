@@ -320,7 +320,7 @@
 /*!
   \class SX126x
 
-  \brief Base class for %SX126x series. All derived classes for %SX126x (e.g. SX1278 or SX1272) inherit from this base class.
+  \brief Base class for %SX126x series. All derived classes for %SX126x (e.g. SX1262 or SX1268) inherit from this base class.
   This class should not be instantiated directly from Arduino sketch, only from its derived classes.
 */
 class SX126x: public PhysicalLayer {
