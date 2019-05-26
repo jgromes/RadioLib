@@ -93,6 +93,9 @@ void loop() {
   // character array (C-String)
   rtty.println("C-String");
 
+  // string saved in flash
+  rtty.println(F("Flash String"));
+
   // character
   rtty.println('c');
 

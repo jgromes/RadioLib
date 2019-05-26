@@ -21,19 +21,19 @@ ITA2String::~ITA2String() {
 size_t ITA2String::length() {
   // length returned by this method is different than the length of ASCII-encoded _str
   // ITA2-encoded string length varies based on how many number and characters the string contains
-  
+
   if(_ita2Len == 0) {
     // ITA2 length wasn't calculated yet, call byteArr() to calculate it
     byteArr();
   }
-  
+
   return(_ita2Len);
 }
 
 uint8_t* ITA2String::byteArr() {
   // create temporary array 2x the string length (figures may be 3 bytes)
   uint8_t* temp = new uint8_t[_len*2 + 1];
-  
+
   size_t arrayLen = 0;
   bool flagFigure = false;
   for(size_t i = 0; i < _len; i++) {
@@ -47,10 +47,10 @@ uint8_t* ITA2String::byteArr() {
         flagFigure = true;
         temp[arrayLen++] = ITA2_FIGS;
       }
-      
+
       // add the character code
       temp[arrayLen++] = character & 0b11111;
-      
+
       // check the following character (skip for message end)
       if(i < (_len - 1)) {
         uint16_t nextCode = getBits(_str[i+1]);
@@ -69,14 +69,14 @@ uint8_t* ITA2String::byteArr() {
       temp[arrayLen++] = character & 0b11111;
     }
   }
-  
+
   // save ITA2 string length
   _ita2Len = arrayLen;
-  
+
   uint8_t* arr = new uint8_t[arrayLen];
   memcpy(arr, temp, arrayLen);
   delete[] temp;
-  
+
   return(arr);
 }
 
@@ -94,7 +94,7 @@ uint16_t ITA2String::getBits(char c) {
       break;
     }
   }
-  
+
   return(code);
 }
 
@@ -106,7 +106,7 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t enc
   // save configuration
   _encoding = encoding;
   _stopBits = stopBits;
-  
+
   switch(encoding) {
     case ASCII:
       _dataBits = 7;
@@ -120,37 +120,37 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t enc
     default:
       return(ERR_UNSUPPORTED_ENCODING);
   }
-  
+
   // calculate duration of 1 bit
   _bitDuration = (uint32_t)1000000/rate;
-  
+
   // calculate module carrier frequency resolution
   uint16_t step = round((_phy->getCrystalFreq() * 1000000) / (uint32_t(1) << _phy->getDivExponent()));
-  
+
   // check minimum shift value
   if(shift < step / 2) {
     return(ERR_INVALID_RTTY_SHIFT);
   }
-  
+
   // round shift to multiples of frequency step size
   if(shift % step < (step / 2)) {
     _shift = shift / step;
   } else {
     _shift = (shift / step) + 1;
   }
-  
+
   // calculate 24-bit frequency
   _base = (base * (uint32_t(1) << _phy->getDivExponent())) / _phy->getCrystalFreq();
 
   // set module frequency deviation to 0
   int16_t state = _phy->setFrequencyDeviation(0);
-  
+
   return(state);
 }
 
 void RTTYClient::idle() {
   _phy->transmitDirect();
-  
+
   mark();
 }
 
@@ -171,7 +171,7 @@ size_t RTTYClient::write(uint8_t* buff, size_t len) {
 
 size_t RTTYClient::write(uint8_t b) {
   space();
-  
+
   for(uint16_t mask = 0x01; mask <= (uint16_t)(0x01 << (_dataBits - 1)); mask <<= 1) {
     if(b & mask) {
       mark();
@@ -179,12 +179,44 @@ size_t RTTYClient::write(uint8_t b) {
       space();
     }
   }
-  
+
   for(uint8_t i = 0; i < _stopBits; i++) {
     mark();
   }
-  
+
   return(1);
+}
+
+size_t RTTYClient::print(__FlashStringHelper* fstr) {
+  // read flash string length
+  size_t len = 0;
+  PGM_P p = reinterpret_cast<PGM_P>(fstr);
+  while(true) {
+    char c = pgm_read_byte(p++);
+    len++;
+    if(c == '\0') {
+      break;
+    }
+  }
+
+  // dynamically allocate memory
+  char* str = new char[len];
+
+  // copy string from flash
+  p = reinterpret_cast<PGM_P>(fstr);
+  for(size_t i = 0; i < len; i++) {
+    str[i] = pgm_read_byte(p + i);
+  }
+
+  size_t n = 0;
+  if(_encoding == ITA2) {
+    ITA2String ita2 = str;
+    n = RTTYClient::print(ita2);
+  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+    n = RTTYClient::write((uint8_t*)str, len);
+  }
+  delete[] str;
+  return(n);
 }
 
 size_t RTTYClient::print(ITA2String& ita2) {
@@ -277,6 +309,12 @@ size_t RTTYClient::println(void) {
   return(n);
 }
 
+size_t RTTYClient::println(__FlashStringHelper* fstr) {
+  size_t n = RTTYClient::print(fstr);
+  n += RTTYClient::println();
+  return(n);
+}
+
 size_t RTTYClient::println(ITA2String& ita2) {
   size_t n = RTTYClient::print(ita2);
   n += RTTYClient::println();
@@ -365,7 +403,7 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
 
     *--str = c < 10 ? c + '0' : c + 'A' - 10;
   } while(n);
-  
+
   size_t l = 0;
   if(_encoding == ITA2) {
     ITA2String ita2 = str;
@@ -375,21 +413,21 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     l = RTTYClient::write(str);
   }
-  
+
   return(l);
 }
 
 // TODO: improve ITA2 float print speed
 //       (characters are sent one at a time)
-size_t RTTYClient::printFloat(double number, uint8_t digits)  { 
+size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   size_t n = 0;
-  
+
   char code[] = {0x00, 0x00, 0x00, 0x00};
   if (isnan(number)) strcpy(code, "nan");
   if (isinf(number)) strcpy(code, "inf");
   if (number > 4294967040.0) strcpy(code, "ovf");  // constant determined empirically
   if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
-  
+
   if(code[0] != 0x00) {
     if(_encoding == ITA2) {
       ITA2String ita2 = code;
@@ -401,7 +439,7 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
       return(RTTYClient::write(code));
     }
   }
-  
+
   // Handle negative numbers
   if (number < 0.0) {
     if(_encoding == ITA2) {
@@ -444,8 +482,8 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
     remainder *= 10.0;
     unsigned int toPrint = (unsigned int)(remainder);
     n += RTTYClient::print(toPrint);
-    remainder -= toPrint; 
-  } 
-  
+    remainder -= toPrint;
+  }
+
   return n;
 }
