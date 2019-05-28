@@ -85,6 +85,10 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
   return(state);
 }
 
+size_t MorseClient::startSignal() {
+  return(MorseClient::write(0x01));
+}
+
 size_t MorseClient::write(const char* str) {
   if(str == NULL) {
     return(0);
@@ -147,8 +151,17 @@ size_t MorseClient::write(uint8_t b) {
   return(0);
 }
 
-size_t MorseClient::startSignal() {
-  return(MorseClient::write(0x01));
+size_t MorseClient::print(__FlashStringHelper* fstr) {
+  PGM_P p = reinterpret_cast<PGM_P>(fstr);
+  size_t n = 0;
+  while(true) {
+    char c = pgm_read_byte(p++);
+    if(c == '\0') {
+      break;
+    }
+    n += MorseClient::write(c);
+  }
+  return n;
 }
 
 size_t MorseClient::print(const String& str) {
@@ -204,6 +217,12 @@ size_t MorseClient::print(double n, int digits) {
 
 size_t MorseClient::println(void) {
   return(MorseClient::write(0x02));
+}
+
+size_t MorseClient::println(__FlashStringHelper* fstr) {
+  size_t n = MorseClient::print(fstr);
+  n += MorseClient::println();
+  return(n);
 }
 
 size_t MorseClient::println(const String& str) {

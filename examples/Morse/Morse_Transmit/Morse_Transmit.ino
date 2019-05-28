@@ -74,6 +74,9 @@ void loop() {
   // character array (C-String)
   morse.print("C-String");
 
+  // string saved in flash
+  morse.print(F("Flash String"));
+
   // character
   morse.print('c');
 
