@@ -95,6 +95,13 @@ class PhysicalLayer {
     virtual int16_t receive(uint8_t* data, size_t len) = 0;
 
     /*!
+      \brief Sets module to standby.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t standby() = 0;
+
+    /*!
       \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
       Interrupt pin will be activated when transmission finishes.
 
