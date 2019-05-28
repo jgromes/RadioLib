@@ -5,11 +5,11 @@
    FSK modem.
 
    Other modules that can be used for RTTY:
-    - SX1272/73/76/77/79
+    - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
-    - SX1262/68
+    - SX126x
 */
 
 // include the library
@@ -111,9 +111,6 @@ void loop() {
   // floating point number
   float f = -3.1415;
   rtty.println(f, 3);
-
-  // turn transmitter off
-  fsk.standby();
 
   Serial.println(F("done!"));
 
