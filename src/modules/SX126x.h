@@ -410,7 +410,7 @@ class SX126x: public PhysicalLayer {
     int16_t transmitDirect(uint32_t frf = 0);
 
     /*!
-      \brief Starts direct mode reception. Only implemented for PhysicalLyer compatibility, as %SX126x series does not support direct mode reception.
+      \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as %SX126x series does not support direct mode reception.
       Will always return ERR_UNKNOWN.
 
       \returns \ref status_codes
@@ -432,13 +432,20 @@ class SX126x: public PhysicalLayer {
     int16_t sleep();
 
     /*!
-      \brief Sets the module to standby mode.
-
-      \param mode Oscillator to be used in standby mode. Defaults to SX126X_STANDBY_RC (13 MHz RC oscillator), can also be set SX126X_STANDBY_XOSC (32 MHz external crystal oscillator).
+      \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
 
       \returns \ref status_codes
     */
-    int16_t standby(uint8_t mode = SX126X_STANDBY_RC);
+    int16_t standby();
+
+    /*!
+      \brief Sets the module to standby mode.
+
+      \param mode Oscillator to be used in standby mode. Can be set to SX126X_STANDBY_RC (13 MHz RC oscillator) or SX126X_STANDBY_XOSC (32 MHz external crystal oscillator).
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode);
 
     // interrupt methods
 

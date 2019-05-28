@@ -322,6 +322,10 @@ int16_t SX126x::sleep() {
   return(state);
 }
 
+int16_t SX126x::standby() {
+  return(SX126x::standby(SX126X_STANDBY_RC));
+}
+
 int16_t SX126x::standby(uint8_t mode) {
   uint8_t data[] = {mode};
   return(SPIwriteCommand(SX126X_CMD_SET_STANDBY, data, 1));
