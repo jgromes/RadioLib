@@ -137,7 +137,7 @@ size_t MorseClient::write(uint8_t b) {
       }
 
       // symbol space
-      _phy->receiveDirect();
+      _phy->standby();
       delay(_dotLength);
     }
     Serial.println();
