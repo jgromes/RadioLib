@@ -47,6 +47,7 @@
 #include "modules/RFM95.h"
 #include "modules/RFM96.h"
 #include "modules/RFM97.h"
+#include "modules/SIM800.h"
 #include "modules/SX1231.h"
 #include "modules/SX1261.h"
 #include "modules/SX1262.h"
