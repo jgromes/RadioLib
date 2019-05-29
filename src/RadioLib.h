@@ -63,6 +63,7 @@
 #include "protocols/Morse.h"
 #include "protocols/RTTY.h"
 #include "protocols/Pager.h"
+#include "protocols/PSK.h"
 
 // transport layer protocols
 #include "protocols/TransportLayer.h"
