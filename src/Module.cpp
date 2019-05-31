@@ -200,7 +200,6 @@ void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
 
 void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start SPI transaction
-  //_spi->beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
   _spi->beginTransaction(_spiSettings);
 
   // pull CS low
