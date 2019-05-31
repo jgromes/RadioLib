@@ -168,7 +168,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    virtual int16_t transmitDirect(uint32_t FRF = 0) = 0;
+    virtual int16_t transmitDirect(uint32_t frf = 0) = 0;
 
     /*!
       \brief Enables direct reception mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class.
