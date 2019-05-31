@@ -115,13 +115,10 @@ size_t MorseClient::write(uint8_t b) {
       break;
     }
   }
-  Serial.print((char)b);
-  Serial.print('\t');
   // check if the requested code was found in the array
   if(found) {
     // iterate over Morse code representation and output appropriate tones
     for(uint8_t i = 0; i < strlen(MorseTable[pos].m); i++) {
-      Serial.print(MorseTable[pos].m[i]);
       switch(MorseTable[pos].m[i]) {
         case '.':
           _phy->transmitDirect(_base);
@@ -140,7 +137,6 @@ size_t MorseClient::write(uint8_t b) {
       _phy->standby();
       delay(_dotLength);
     }
-    Serial.println();
 
     // letter space
     delay(_dotLength * 3);
