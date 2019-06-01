@@ -343,6 +343,11 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
 
+  // check packet length
+  if(len >= 256) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
   // set packet Length
   int16_t state = ERR_NONE;
   uint8_t modem = getPacketType();
