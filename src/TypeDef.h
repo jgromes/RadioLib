@@ -395,7 +395,7 @@
 */
 #define ERR_UNSUPPORTED_ENCODING              -402
 
-// nRF24 status codes
+// nRF24-specific status codes
 
 /*!
   \brief Supplied data rate is invalid.
@@ -411,6 +411,11 @@
   \brief Supplied data pipe number is invalid.
 */
 #define ERR_INVALID_PIPE_NUMBER               -503
+
+/*!
+  \brief ACK packet from destination module was not received within 15 retries.
+*/
+#define ERR_ACK_NOT_RECEIVED                  -504
 
 // CC1101-specific status codes
 

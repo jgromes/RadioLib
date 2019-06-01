@@ -2,6 +2,13 @@
 #define _RADIOLIB_NRF24_H
 
 #include "Module.h"
+#include "TypeDef.h"
+
+#include "../protocols/PhysicalLayer.h"
+
+// nRF24 physical layer properties (dummy only)
+#define NRF24_CRYSTAL_FREQ                            1.0
+#define NRF24_DIV_EXPONENT                            0
 
 // nRF24 SPI commands
 #define NRF24_CMD_READ                                0b00000000
@@ -107,6 +114,8 @@
 #define NRF24_DR_250_KBPS                             0b00100000  //  5     5     data rate: 250 kbps
 #define NRF24_DR_1_MBPS                               0b00000000  //  3     3                1 Mbps (default)
 #define NRF24_DR_2_MBPS                               0b00001000  //  3     3                2 Mbps
+#define NRF24_PLL_LOCK_ON                             0b00010000  //  4     4     force PLL lock: enabled
+#define NRF24_PLL_LOCK_OFF                            0b00000000  //  4     4                     disabled (default)
 #define NRF24_RF_PWR_18_DBM                           0b00000000  //  2     1     output power: -18 dBm
 #define NRF24_RF_PWR_12_DBM                           0b00000010  //  2     1                   -12 dBm
 #define NRF24_RF_PWR_6_DBM                            0b00000100  //  2     1                   -6 dBm
@@ -132,8 +141,8 @@
 #define NRF24_TX_REUSE                                0b01000000  //  6     6     reusing last transmitted payload
 #define NRF24_TX_FIFO_FULL_FLAG                       0b00100000  //  5     5     Tx FIFO is full
 #define NRF24_TX_FIFO_EMPTY_FLAG                      0b00010000  //  4     4     Tx FIFO is empty
-#define NRF24_RX_FIFO_FULL_FLAG                       0b00000010  //  5     5     Rx FIFO is full
-#define NRF24_RX_FIFO_EMPTY_FLAG                      0b00000001  //  4     4     Rx FIFO is empty
+#define NRF24_RX_FIFO_FULL_FLAG                       0b00000010  //  1     1     Rx FIFO is full
+#define NRF24_RX_FIFO_EMPTY_FLAG                      0b00000001  //  0     0     Rx FIFO is empty
 
 // NRF24_REG_DYNPD
 #define NRF24_DPL_P5_OFF                              0b00000000  //  5     5     dynamic payload length on pipe 5: disabled (default)
@@ -148,44 +157,258 @@
 #define NRF24_DPL_P1_ON                               0b00000010  //  1     1                                       enabled
 #define NRF24_DPL_P0_OFF                              0b00000000  //  0     0     dynamic payload length on pipe 0: disabled (default)
 #define NRF24_DPL_P0_ON                               0b00000001  //  0     0                                       enabled
+#define NRF24_DPL_ALL_OFF                             0b00000000  //  5     0     disable all dynamic payloads
+#define NRF24_DPL_ALL_ON                              0b00111111  //  5     0     enable all dynamic payloads
 
 // NRF24_REG_FEATURE
 #define NRF24_DPL_OFF                                 0b00000000  //  2     2     dynamic payload length: disabled (default)
 #define NRF24_DPL_ON                                  0b00000100  //  2     2                             enabled
 #define NRF24_ACK_PAY_OFF                             0b00000000  //  1     1     payload with ACK packets: disabled (default)
 #define NRF24_ACK_PAY_ON                              0b00000010  //  1     1                               enabled
-#define NRF24_DYN_ACK_OFF                             0b00000000  //  0     0     payloads without ACK packets: disabled (default)
-#define NRF24_DYN_ACK_ON                              0b00000001  //  0     0                                   enabled
+#define NRF24_DYN_ACK_OFF                             0b00000000  //  0     0     payloads without ACK: disabled (default)
+#define NRF24_DYN_ACK_ON                              0b00000001  //  0     0                           enabled
 
-class nRF24 {
+/*!
+  \class nRF24
+
+  \brief Control class for %nRF24 module.
+*/
+class nRF24: public PhysicalLayer {
   public:
-    // constructor
+    // introduce PhysicalLayer overloads
+    using PhysicalLayer::transmit;
+    using PhysicalLayer::receive;
+    using PhysicalLayer::startTransmit;
+    using PhysicalLayer::readData;
+
+    /*!
+      \brief Default constructor.
+
+      \param mod Instance of Module that will be used to communicate with the radio.
+    */
     nRF24(Module* module);
-    
+
     // basic methods
-    int16_t begin(int16_t freq = 2400, int16_t dataRate = 1000, uint8_t addrWidth = 5);
+
+    /*!
+      \brief Initialization method.
+
+      \param freq Carrier frequency in MHz. Defaults to 2400 MHz.
+
+      \param dataRate Data rate to be used in kbps. Defaults to 1000 kbps.
+
+      \param power Output power in dBm. Defaults to -12 dBm.
+
+      \param addrWidth Address width in bytes. Defaults to 5 bytes.
+
+      \returns \ref status_codes
+    */
+    int16_t begin(int16_t freq = 2400, int16_t dataRate = 1000, int8_t power = -12, uint8_t addrWidth = 5);
+
+    /*!
+      \brief Sets the module to sleep mode.
+
+      \returns \ref status_codes
+    */
     int16_t sleep();
+
+    /*!
+      \brief Sets the module to standby mode.
+
+      \returns \ref status_codes
+    */
     int16_t standby();
-    int16_t transmit(String& str, uint8_t* addr);
-    int16_t transmit(const char* str, uint8_t* addr);
-    int16_t transmit(uint8_t* data, size_t len, uint8_t* addr);
-    
+
+    /*!
+      \brief Blocking binary transmit method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Dummy address parameter, to ensure PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr);
+
+    /*!
+      \brief Blocking binary receive method.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \returns \ref status_codes
+    */
+    int16_t receive(uint8_t* data, size_t len);
+
+    /*!
+      \brief Starts direct mode transmission.
+
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+
+      \returns \ref status_codes
+    */
+    int16_t transmitDirect(uint32_t frf = 0);
+
+    /*!
+      \brief Dummy direct mode reception method, to ensure PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t receiveDirect();
+
+    // interrupt methods
+
+    /*!
+      \brief Sets interrupt service routine to call when IRQ activates.
+
+      \param func ISR to call.
+    */
+    void setIrqAction(void (*func)(void));
+
+    /*!
+      \brief Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted.
+      Overloads for string-based transmissions are implemented in PhysicalLayer.
+
+      \param data Binary data to be sent.
+
+      \param len Number of bytes to send.
+
+      \param addr Dummy address parameter, to ensure PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr);
+
+    /*!
+      \brief Interrupt-driven receive method. IRQ will be activated when full packet is received.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceive();
+
+    /*!
+      \brief Reads data received after calling startReceive method.
+
+      \param data Pointer to array to save the received binary data.
+
+      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+
+      \returns \ref status_codes
+    */
+    int16_t readData(uint8_t* data, size_t len);
+
     // configuration methods
+
+    /*!
+      \brief Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.
+
+      \param freq Carrier frequency to be set in MHz.
+
+      \returns \ref status_codes
+    */
     int16_t setFrequency(int16_t freq);
+
+    /*!
+      \brief Sets data rate. Allowed values are 2000, 1000 or 250 kbps.
+
+      \param dataRate Data rate to be set in kbps.
+
+      \returns \ref status_codes
+    */
     int16_t setDataRate(int16_t dataRate);
+
+    /*!
+      \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
+
+      \param power Output power to be set in dBm.
+
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power);
+
+    /*!
+      \brief Sets address width of transmit and receive pipes in bytes. Allowed values are 3, 4 or 5 bytes.
+
+      \param addrWidth Address width to be set in bytes.
+
+      \returns \ref status_codes
+    */
     int16_t setAddressWidth(uint8_t addrWidth);
+
+    /*!
+      \brief Sets address of transmit pipe. The address width must be the same as the same as the configured in setAddressWidth.
+
+      \param addr Address to which the next packet shall be transmitted.
+
+      \returns \ref status_codes
+    */
+    int16_t setTransmitPipe(uint8_t* addr);
+
+    /*!
+      \brief Sets address of receive pipes 0 or 1. The address width must be the same as the same as the configured in setAddressWidth.
+
+      \param pipeNum Number of pipe to which the address shall be set. Either 0 or 1, other pipes are handled using overloaded method.
+
+      \param addr Address from which %nRF24 shall receive new packets on the specified pipe.
+
+      \returns \ref status_codes
+    */
     int16_t setReceivePipe(uint8_t pipeNum, uint8_t* addr);
+
+    /*!
+      \brief Sets address of receive pipes 2 - 5. The first 2 - 4 address bytes for these pipes are the same as for address pipe 1, only the last byte can be set.
+
+      \param pipeNum Number of pipe to which the address shall be set. Allowed values range from 2 to 5.
+
+      \param addrByte LSB of address from which %nRF24 shall receive new packets on the specified pipe.
+
+      \returns \ref status_codes
+    */
     int16_t setReceivePipe(uint8_t pipeNum, uint8_t addrByte);
+
+    /*!
+      \brief Disables specified receive pipe.
+
+      \param pipeNum Receive pipe to be disabled.
+
+      \returns \ref status_codes
+    */
     int16_t disablePipe(uint8_t pipeNum);
-  
+
+    /*!
+      \brief Gets nRF24 status register.
+
+      \param mask Bit mask to be used on the returned register value.
+
+      \returns Status register value or \ref status_codes
+    */
+    int16_t getStatus(uint8_t mask = 0xFF);
+
+    /*!
+      \brief Dummy configuration method, to ensure PhysicalLayer compatibility.
+
+      \param freqDev Dummy frequency deviation parameter, no configuration will be changed.
+
+      \returns \ref status_codes
+    */
+    int16_t setFrequencyDeviation(float freqDev);
+
   private:
     Module* _mod;
-    
+
     uint8_t _addrWidth;
-    
-    void SPIreadRxPayload(uint8_t numBytes, uint8_t* inBytes);
-    void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
+
+    int16_t config();
     void clearIRQ();
+
+    void SPIreadRxPayload(uint8_t* data, uint8_t numBytes);
+    void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
+    void SPItransfer(uint8_t cmd, bool write = false, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);
 };
 
 #endif

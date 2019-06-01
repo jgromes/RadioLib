@@ -1,5 +1,13 @@
 /*
    RadioLib nRF24 Transmit Example
+
+   This example transmits packets using nRF24 2.4 GHz radio module.
+   Each packet contains up to 32 bytes of data, in the form of:
+    - Arduino String
+    - null-terminated char array (C-string)
+    - arbitrary binary data (byte array)
+
+   Packet delivery is automatically acknowledged by the receiver.
 */
 
 // include the library
@@ -15,6 +23,7 @@ void setup() {
   Serial.print(F("[nRF24] Initializing ... "));
   // carrier frequency:           2400 MHz
   // data rate:                   1000 kbps
+  // output power:                -12 dBm
   // address width:               5 bytes
   int state = nrf.begin();
   if(state == ERR_NONE) {
@@ -25,46 +34,13 @@ void setup() {
     while(true);
   }
 
-  // set receive pipe 0 address
-  // NOTE: address width in bytes MUST be equal to the 
+  // set transmit address
+  // NOTE: address width in bytes MUST be equal to the
   //       width set in begin() or setAddressWidth()
   //       methods (5 by default)
-  Serial.print(F("[nRF24] Setting address for receive pipe 0 ... "));
-  byte receiveAddr0[] = {0x05, 0x06, 0x07, 0x08, 0x09};
-  state = nrf.setReceivePipe(0, receiveAddr0);
-  if(state == ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
-  }
-  
-  // set receive pipe 1 - 5 address
-  // NOTE: unlike receive pipe 0, pipes 1 - 5 are only
-  //       distinguished by their least significant byte,
-  //       the upper bytes will be the same!
-  Serial.print(F("[nRF24] Setting addresses for receive pipes 1 - 5 ... "));
-  byte receiveAddr1[] = {0xAA, 0xBB, 0xCC, 0xDD, 0xE1};
-  // set pipe 1 address
-  state = nrf.setReceivePipe(1, receiveAddr1);
-  // set the addresses for rest of pipes
-  state |= nrf.setReceivePipe(2, 0xE2);
-  state |= nrf.setReceivePipe(3, 0xE3);
-  state |= nrf.setReceivePipe(4, 0xE4);
-  state |= nrf.setReceivePipe(5, 0xE5);
-  if(state == ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
-  }
-
-  // pipes 1 - 5 are automatically enabled upon address
-  // change, but can be disabled manually
-  Serial.print(F("[nRF24] Disabling pipes 2 - 5 ... "));
-  state = nrf.disablePipe(2);
+  byte addr[] = {0x01, 0x23, 0x45, 0x67, 0x89};
+  Serial.print(F("[nRF24] Setting transmit pipe ... "));
+  state = nrf.setTransmitPipe(addr);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -77,23 +53,26 @@ void setup() {
 void loop() {
   Serial.print(F("[nRF24] Transmitting packet ... "));
 
-  // set transmit address
-  // NOTE: address width in bytes MUST be equal to the 
-  //       width set in begin() or setAddressWidth()
-  //       methods (5 by default)
-  byte addr[] = {0x00, 0x01, 0x02, 0x03, 0x04};
-
   // you can transmit C-string or Arduino string up to
   // 32 characters long
-  int state = nrf.transmit("Hello World!", addr);
+  int state = nrf.transmit("Hello World!");
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(" success!");
+    Serial.println(F("success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
-    // the supplied packet was longer than 256 bytes
-    Serial.println(" too long!");
+    // the supplied packet was longer than 32 bytes
+    Serial.println(F("too long!"));
+
+  } else if (state == ERR_ACK_NOT_RECEIVED) {
+    // acknowledge from destination module
+    // was not received within 15 retries
+    Serial.println(F("ACK not received!"));
+
+  } else if (state == ERR_TX_TIMEOUT) {
+    // timed out while transmitting
+    Serial.println(F("timeout!"));
 
   }
 

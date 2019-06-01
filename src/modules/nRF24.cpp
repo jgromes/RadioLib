@@ -1,36 +1,66 @@
 #include "nRF24.h"
 
-nRF24::nRF24(Module* mod) {
+nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_CRYSTAL_FREQ, NRF24_DIV_EXPONENT) {
   _mod = mod;
 }
 
-int16_t nRF24::begin(int16_t freq, int16_t dataRate, uint8_t addrWidth) {
+int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrWidth) {
   // set module properties
   _mod->SPIreadCommand = NRF24_CMD_READ;
   _mod->SPIwriteCommand = NRF24_CMD_WRITE;
   _mod->init(USE_SPI, INT_BOTH);
-  
+
   // override pin mode on INT0 (connected to nRF24 CE pin)
   pinMode(_mod->getInt0(), OUTPUT);
-  
-  // set frequency
-  int16_t state = setFrequency(freq);
+  digitalWrite(_mod->getInt0(), LOW);
+
+  // wait for minimum power-on reset duration
+  delay(100);
+
+  // check SPI connection
+  int16_t val = _mod->SPIgetRegValue(NRF24_REG_SETUP_AW);
+  if(!((val >= 1) && (val <= 3))) {
+    DEBUG_PRINTLN(F("No nRF24 found!"));
+    _mod->term();
+    return(ERR_CHIP_NOT_FOUND);
+  }
+
+  // configure settings inaccessible by public API
+  int16_t state = config();
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
+  // set mode to standby
+  state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set frequency
+  state = setFrequency(freq);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // set data rate
   state = setDataRate(dataRate);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
+  // set output power
+  state = setOutputPower(power);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // set address width
   state = setAddressWidth(addrWidth);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   return(state);
 }
 
@@ -39,60 +69,198 @@ int16_t nRF24::sleep() {
 }
 
 int16_t nRF24::standby() {
+  // make sure carrier output is disabled
+  _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_OFF, 7, 7);
+  _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_OFF, 4, 4);
+  digitalWrite(_mod->getInt0(), LOW);
+
+  // use standby-1 mode
   return(_mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_POWER_UP, 1, 1));
 }
 
-int16_t nRF24::transmit(String& str, uint8_t* addr) {
-  return(nRF24::transmit(str.c_str(), addr));
+int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
+  // start transmission
+  int16_t state = startTransmit(data, len, addr);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // wait until transmission is finished
+  uint32_t start = micros();
+  while(digitalRead(_mod->getInt1())) {
+    // check maximum number of retransmits
+    if(getStatus(NRF24_MAX_RT)) {
+      standby();
+      clearIRQ();
+      return(ERR_ACK_NOT_RECEIVED);
+    }
+
+    // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
+    if(micros() - start >= 60000) {
+      standby();
+      clearIRQ();
+      return(ERR_TX_TIMEOUT);
+    }
+  }
+
+  // clear interrupts
+  clearIRQ();
+
+  return(state);
 }
 
-int16_t nRF24::transmit(const char* str, uint8_t* addr) {
-  return(nRF24::transmit((uint8_t*)str, strlen(str), addr));
+int16_t nRF24::receive(uint8_t* data, size_t len) {
+  // start reception
+  int16_t state = startReceive();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // wait for Rx_DataReady or timeout
+  uint32_t start = micros();
+  while(digitalRead(_mod->getInt1())) {
+    // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
+    if(micros() - start >= 60000) {
+      standby();
+      clearIRQ();
+      return(ERR_RX_TIMEOUT);
+    }
+  }
+
+  // read the received data
+  return(readData(data, len));
 }
 
-int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t* addr) {
+int16_t nRF24::transmitDirect(uint32_t frf) {
+  // set raw frequency value
+  if(frf != 0) {
+    uint8_t freqRaw = frf - 2400;
+    _mod->SPIwriteRegister(NRF24_REG_RF_CH, freqRaw & 0b01111111);
+  }
+
+  // output carrier
+  int16_t state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
+  state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_ON, 7, 7);
+  state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_ON, 4, 4);
+  digitalWrite(_mod->getInt0(), HIGH);
+  return(state);
+}
+
+int16_t nRF24::receiveDirect() {
+  // nRF24 is unable to directly output demodulated data
+  // this method is implemented only for PhysicalLayer compatibility
+  return(ERR_NONE);
+}
+
+void nRF24::setIrqAction(void (*func)(void)) {
+  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, FALLING);
+}
+
+int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  // suppress unused variable warning
+  (void)addr;
+
+  // check packet length
+  if(len > 32) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
   // set mode to standby
   int16_t state = standby();
   if(state != ERR_NONE) {
      return(state);
   }
-  
-  // reverse address byte order (LSB must be written first)
-  uint8_t* addrReversed = new uint8_t[_addrWidth];
-  for(uint8_t i = 0; i < _addrWidth; i++) {
-    addrReversed[i] = addr[_addrWidth - 1 - i];
-  }
-  
-  // set transmit address
-  _mod->SPIwriteRegisterBurst(NRF24_REG_TX_ADDR, addrReversed, _addrWidth);
-  
-  // check packet length
-  if(len > 32) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-  
-  // enable Tx_DataSent interrupt
-  state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_MASK_RX_DR_IRQ_OFF | NRF24_MASK_TX_DS_IRQ_ON | NRF24_MASK_MAX_RT_IRQ_OFF, 6, 4);
-  
-  // fill Tx FIFO
-  SPIwriteTxPayload(data, len);
-  
+
   // enable primary Tx mode
-  state |= _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
-  
+  state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
+
+  // clear interrupts
+  clearIRQ();
+
+  // enable Tx_DataSent interrupt
+  state |= _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_MASK_TX_DS_IRQ_ON, 5, 5);
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // flush Tx FIFO
+  SPItransfer(NRF24_CMD_FLUSH_TX);
+
+  // fill Tx FIFO
+  uint8_t buff[32];
+  memset(buff, 0x00, 32);
+  memcpy(buff, data, len);
+  SPIwriteTxPayload(data, len);
+
   // CE high to start transmitting
   digitalWrite(_mod->getInt0(), HIGH);
-  
-  // wait until transmission is finished
-  while(digitalRead(_mod->getInt1()));
-  
-  // CE low
+  delayMicroseconds(10);
   digitalWrite(_mod->getInt0(), LOW);
-  
+
+  return(state);
+}
+
+int16_t nRF24::startReceive() {
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // enable primary Rx mode
+  state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PRX, 0, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // enable Rx_DataReady interrupt
+  clearIRQ();
+  state |= _mod->SPIsetRegValue(NRF24_REG_CONFIG,  NRF24_MASK_RX_DR_IRQ_ON, 6, 6);
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // flush Rx FIFO
+  SPItransfer(NRF24_CMD_FLUSH_RX);
+
+  // CE high to start receiving
+  digitalWrite(_mod->getInt0(), HIGH);
+
+  // wait to enter Rx state
+  delayMicroseconds(130);
+
+  return(state);
+}
+
+int16_t nRF24::readData(uint8_t* data, size_t len) {
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // read payload length
+  uint8_t buff[1];
+  SPItransfer(NRF24_CMD_READ_RX_PAYLOAD_WIDTH, false, NULL, buff, 1);
+
+  size_t length = buff[0];
+
+  // read packet data
+  if(len == 0) {
+    // argument 'len' equal to zero indicates String call, which means dynamically allocated data array
+    // dispose of the original and create a new one
+    delete[] data;
+    data = new uint8_t[length + 1];
+  }
+  SPIreadRxPayload(data, length);
+
+  // add terminating null
+  data[length] = 0;
+
   // clear interrupt
   clearIRQ();
-  
-  return(state);
+
+  return(ERR_NONE);
 }
 
 int16_t nRF24::setFrequency(int16_t freq) {
@@ -100,13 +268,13 @@ int16_t nRF24::setFrequency(int16_t freq) {
   if(!((freq >= 2400) && (freq <= 2525))) {
     return(ERR_INVALID_FREQUENCY);
   }
-  
+
   // set mode to standby
   int16_t state = standby();
   if(state != ERR_NONE) {
      return(state);
   }
-  
+
   // set frequency
   uint8_t freqRaw = freq - 2400;
   state = _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
@@ -119,7 +287,7 @@ int16_t nRF24::setDataRate(int16_t dataRate) {
   if(state != ERR_NONE) {
      return(state);
   }
-  
+
   // set data rate
   if(dataRate == 250) {
     state = _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_DR_250_KBPS, 5, 5);
@@ -133,7 +301,38 @@ int16_t nRF24::setDataRate(int16_t dataRate) {
   } else {
     return(ERR_INVALID_DATA_RATE);
   }
-  
+
+  return(state);
+}
+
+int16_t nRF24::setOutputPower(int8_t power) {
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // check allowed values
+  uint8_t powerRaw = 0;
+  switch(power) {
+    case -18:
+      powerRaw = NRF24_RF_PWR_18_DBM;
+      break;
+    case -12:
+      powerRaw = NRF24_RF_PWR_12_DBM;
+      break;
+    case -6:
+      powerRaw = NRF24_RF_PWR_6_DBM;
+      break;
+    case 0:
+      powerRaw = NRF24_RF_PWR_0_DBM;
+      break;
+    default:
+      return(ERR_INVALID_OUTPUT_POWER);
+  }
+
+  // write new register value
+  state = _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, powerRaw, 2, 1);
   return(state);
 }
 
@@ -143,7 +342,7 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
   if(state != ERR_NONE) {
      return(state);
   }
-  
+
   // set address width
   switch(addrWidth) {
     case 3:
@@ -158,10 +357,26 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
     default:
       return(ERR_INVALID_ADDRESS_WIDTH);
   }
-  
+
   // save address width
   _addrWidth = addrWidth;
-  
+
+  return(state);
+}
+
+int16_t nRF24::setTransmitPipe(uint8_t* addr) {
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+     return(state);
+  }
+
+  // set transmit address
+  _mod->SPIwriteRegisterBurst(NRF24_REG_TX_ADDR, addr, _addrWidth);
+
+  // set Rx pipe 0 address (for ACK)
+  _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addr, _addrWidth);
+
   return(state);
 }
 
@@ -171,26 +386,20 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t* addr) {
   if(state != ERR_NONE) {
      return(state);
   }
-  
-  // reverse byte order (LSB must be written first)
-  uint8_t* addrReversed = new uint8_t[_addrWidth];
-  for(uint8_t i = 0; i < _addrWidth; i++) {
-    addrReversed[i] = addr[_addrWidth - 1 - i];
-  }
-  
+
   // write full pipe 0 - 1 address and enable the pipe
   switch(pipeNum) {
     case 0:
-      _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addrReversed, _addrWidth);
+      _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addr, _addrWidth);
       state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P0_ON, 0, 0);
     case 1:
-      _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P1, addrReversed, _addrWidth);
+      _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P1, addr, _addrWidth);
       state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P1_ON, 1, 1);
       break;
     default:
       return(ERR_INVALID_PIPE_NUMBER);
   }
-  
+
   return(state);
 }
 
@@ -200,7 +409,7 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t addrByte) {
   if(state != ERR_NONE) {
      return(state);
   }
-  
+
   // write unique pipe 2 - 5 address and enable the pipe
   switch(pipeNum) {
     case 2:
@@ -222,7 +431,7 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t addrByte) {
     default:
       return(ERR_INVALID_PIPE_NUMBER);
   }
-  
+
   return(state);
 }
 
@@ -232,7 +441,7 @@ int16_t nRF24::disablePipe(uint8_t pipeNum) {
   if(state != ERR_NONE) {
      return(state);
   }
-  
+
   switch(pipeNum) {
     case 0:
       state = _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P0_OFF, 0, 0);
@@ -255,28 +464,103 @@ int16_t nRF24::disablePipe(uint8_t pipeNum) {
     default:
       return(ERR_INVALID_PIPE_NUMBER);
   }
-  
+
   return(state);
 }
 
-void nRF24::SPIreadRxPayload(uint8_t numBytes, uint8_t* inBytes) {
-  digitalWrite(_mod->getCs(), LOW);
-  SPI.transfer(NRF24_CMD_READ_RX_PAYLOAD);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    inBytes[i] = SPI.transfer(0x00);
-  }
-  digitalWrite(_mod->getCs(), HIGH);
+int16_t nRF24::getStatus(uint8_t mask) {
+  return(_mod->SPIgetRegValue(NRF24_REG_STATUS) & mask);
 }
 
-void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
-  digitalWrite(_mod->getCs(), LOW);
-  SPI.transfer(NRF24_CMD_WRITE_TX_PAYLOAD);
-  for(uint8_t i = 0; i < numBytes; i++) {
-    SPI.transfer(data[i]);
-  }
-  digitalWrite(_mod->getCs(), HIGH);
+int16_t nRF24::setFrequencyDeviation(float freqDev) {
+  // nRF24 is unable to set frequency deviation
+  // this method is implemented only for PhysicalLayer compatibility
+  (void)freqDev;
+  return(ERR_NONE);
 }
 
 void nRF24::clearIRQ() {
+  // clear status bits
+  _mod->SPIsetRegValue(NRF24_REG_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT, 6, 4);
+
+  // disable interrupts
   _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_MASK_RX_DR_IRQ_OFF | NRF24_MASK_TX_DS_IRQ_OFF | NRF24_MASK_MAX_RT_IRQ_OFF, 6, 4);
+}
+
+int16_t nRF24::config() {
+  // enable 16-bit CRC
+  int16_t state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_CRC_ON | NRF24_CRC_16, 3, 2);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set 15 retries and delay 1500 (5*250) us
+  _mod->SPIsetRegValue(NRF24_REG_SETUP_RETR, (5 << 4) | 5);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set features: dynamic payload on, payload with ACK packets off, dynamic ACK off
+  state = _mod->SPIsetRegValue(NRF24_REG_FEATURE, NRF24_DPL_ON | NRF24_ACK_PAY_OFF | NRF24_DYN_ACK_OFF, 2, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // enable dynamic payloads
+  state = _mod->SPIsetRegValue(NRF24_REG_DYNPD, NRF24_DPL_ALL_ON, 5, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // reset IRQ
+  clearIRQ();
+
+  // clear status
+  _mod->SPIsetRegValue(NRF24_REG_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT, 6, 4);
+
+  // flush FIFOs
+  SPItransfer(NRF24_CMD_FLUSH_TX);
+  SPItransfer(NRF24_CMD_FLUSH_RX);
+
+  // power up
+  _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_POWER_UP, 1, 1);
+  delay(5);
+
+  return(state);
+}
+
+void nRF24::SPIreadRxPayload(uint8_t* data, uint8_t numBytes) {
+  SPItransfer(NRF24_CMD_READ_RX_PAYLOAD, false, NULL, data, numBytes);
+}
+
+void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
+  SPItransfer(NRF24_CMD_WRITE_TX_PAYLOAD, true, data, NULL, numBytes);
+}
+
+void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
+  // get pointer to used SPI interface and the settings
+  SPIClass* spi = _mod->getSpi();
+  SPISettings spiSettings = _mod->getSpiSettings();
+
+  // start transfer
+  digitalWrite(_mod->getCs(), LOW);
+  spi->beginTransaction(spiSettings);
+
+  // send command
+  spi->transfer(cmd);
+
+  // send data
+  if(write) {
+    for(uint8_t i = 0; i < numBytes; i++) {
+      spi->transfer(dataOut[i]);
+    }
+  } else {
+    for(uint8_t i = 0; i < numBytes; i++) {
+      dataIn[i] = spi->transfer(0x00);
+    }
+  }
+
+  // stop transfer
+  spi->endTransaction();
+  digitalWrite(_mod->getCs(), HIGH);
 }
