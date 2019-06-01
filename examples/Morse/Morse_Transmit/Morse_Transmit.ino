@@ -4,12 +4,13 @@
    This example sends Morse code message using
    SX1278's FSK modem.
 
-   Other modules that can be used for Morse:
+   Other modules that can be used for Morse Code:
     - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
     - SX126x
+    - nRF24
 */
 
 // include the library
