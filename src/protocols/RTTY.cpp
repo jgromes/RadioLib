@@ -102,7 +102,7 @@ RTTYClient::RTTYClient(PhysicalLayer* phy) {
   _phy = phy;
 }
 
-int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
+int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
   // save configuration
   _encoding = encoding;
   _stopBits = stopBits;
@@ -125,7 +125,7 @@ int16_t RTTYClient::begin(float base, uint16_t shift, uint16_t rate, uint8_t enc
   _bitDuration = (uint32_t)1000000/rate;
 
   // calculate module carrier frequency resolution
-  uint16_t step = round((_phy->getCrystalFreq() * 1000000) / (uint32_t(1) << _phy->getDivExponent()));
+  uint32_t step = round((_phy->getCrystalFreq() * 1000000) / (uint32_t(1) << _phy->getDivExponent()));
 
   // check minimum shift value
   if(shift < step / 2) {

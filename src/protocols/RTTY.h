@@ -101,7 +101,7 @@ class RTTYClient {
 
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint16_t shift, uint16_t rate, uint8_t encoding = ASCII, uint8_t stopBits = 1);
+    int16_t begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding = ASCII, uint8_t stopBits = 1);
 
     /*!
       \brief Send out idle condition (RF tone at mark frequency).
@@ -142,7 +142,7 @@ class RTTYClient {
 
     uint8_t _encoding;
     uint32_t _base;
-    uint16_t _shift;
+    uint32_t _shift;
     uint16_t _bitDuration;
     uint8_t _dataBits;
     uint8_t _stopBits;
