@@ -50,13 +50,14 @@ void setup() {
   //         RF69 - 61 Hz
   //         CC1101 - 397 Hz
   //         SX126x - 1 Hz
+  //         nRF24 - 1000000 Hz
   Serial.print(F("[RTTY] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz
   // baud rate:                   45 baud
   // encoding:                    ASCII (7-bit)
   // stop bits:                   1
-  state = rtty.begin(434, 183, 45);
+  state = rtty.begin(434.0, 183, 45);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
