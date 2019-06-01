@@ -42,6 +42,7 @@
 #include "modules/ESP8266.h"
 #include "modules/HC05.h"
 #include "modules/JDY08.h"
+#include "modules/nRF24.h"
 #include "modules/RF69.h"
 #include "modules/RFM95.h"
 #include "modules/RFM96.h"
