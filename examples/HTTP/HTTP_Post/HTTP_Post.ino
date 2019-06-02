@@ -1,20 +1,29 @@
 /*
    RadioLib HTTP POST Example
-   
+
    This example sends HTTP POST request using ESP8266 WiFi module.
-   
+
    Please note that the response will be saved including header. HTTP header size
    can easily exceed Arduino resources and cause the program to behave erratically.
-   
+
    IMPORTANT: Before uploading this example, make sure that the ESP8266 module is running
    AT firmware (can be found in the /extras folder of the library)!
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
  */
 
 // include the library
 #include <RadioLib.h>
 
-// ESP8266 module is in slot A on the shield
-ESP8266 wifi = RadioShield.ModuleA;
+// ESP8266 has the following connections:
+// TX pin: 9
+// RX pin: 8
+ESP8266 wifi = new Module(9, 8);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//ESP8266 wifi = RadioShield.ModuleA;
 
 // create HTTP client instance using the wifi module
 // the default port used for HTTP is 80
@@ -22,7 +31,7 @@ HTTPClient http(&wifi, 80);
 
 void setup() {
   Serial.begin(9600);
-  
+
   // initialize ESP8266
   Serial.print(F("[ESP8266] Initializing ... "));
   // baudrate:  9600 baud
@@ -75,4 +84,3 @@ void loop() {
   // wait for a second before sending new request
   delay(1000);
 }
-
