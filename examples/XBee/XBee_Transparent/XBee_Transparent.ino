@@ -8,13 +8,23 @@
 
    IMPORTANT: Before uploading this example, make sure that the XBee modules
    are running AT COORDINATOR and AT ROUTER firmware!
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// XBee module is in slot A on the shield
-XBeeSerial bee = RadioShield.ModuleA;
+// XBee has the following connections:
+// TX pin:    9
+// RX pin:    8
+// RESET pin: 3
+XBee bee = new Module(9, 8);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//XBee bee = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
