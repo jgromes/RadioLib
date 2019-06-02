@@ -20,11 +20,11 @@
 // TX pin:    9
 // RX pin:    8
 // RESET pin: 3
-XBee bee = new Module(9, 8);
+XBeeSerial bee = new Module(9, 8);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//XBee bee = RadioShield.ModuleA;
+//XBeeSerial bee = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
