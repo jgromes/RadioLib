@@ -8,13 +8,23 @@
     - data rate
     - transmit pipe on transmitter must match receive pipe
       on receiver
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// nRF24 is in slot A on the shield
-nRF24 nrf = RadioShield.ModuleA;
+// nRF24 has the following connections:
+// NSS pin:   10
+// CE pin:    2
+// IRQ pin:   3
+nRF24 nrf = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//nRF24 nrf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +45,7 @@ void setup() {
   }
 
   // set receive pipe 0 address
-  // NOTE: address width in bytes MUST be equal to the 
+  // NOTE: address width in bytes MUST be equal to the
   //       width set in begin() or setAddressWidth()
   //       methods (5 by default)
   Serial.print(F("[nRF24] Setting address for receive pipe 0 ... "));
@@ -77,6 +87,11 @@ void loop() {
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));
+
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 }
