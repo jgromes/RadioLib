@@ -23,9 +23,9 @@
 // BUSY pin:  9
 SX1262 lora = new Module(10, 2, 3, 9);
 
- // or using RadioShield
- // https://github.com/jgromes/RadioShield
- //SX1262 lora = RadioShield.ModuleA;
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//SX1262 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
