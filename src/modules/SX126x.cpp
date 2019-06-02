@@ -983,6 +983,9 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   // calculate symbol length and enable low data rate optimization, if needed
   if(ldro == 0xFF) {
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
+    DEBUG_PRINT("Symbol length: ");
+    DEBUG_PRINT(symbolLength);
+    DEBUG_PRINTLN(" ms");
     if(symbolLength >= 16.0) {
       _ldro = SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
