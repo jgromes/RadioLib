@@ -100,173 +100,172 @@
 */
 class SX1278: public SX127x {
   public:
-  
+
     // constructor
-    
+
     /*!
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
-      
+
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
     SX1278(Module* mod);
-    
+
     // basic methods
-    
+
     /*!
       \brief %LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
-      
+
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      
+
       \param bw %LoRa link bandwidth in kHz. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
-      
+
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
-      
+
       \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
-      
+
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
-      
+
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      
-      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. 
+
+      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA.
       Set to 0 to disable OCP (not recommended).
-      
-      \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. 
+
+      \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
       Allowed values range from 6 to 65535.
-      
+
       \param gain Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
       Set to 0 to enable automatic gain control (recommended).
-      
+
       \returns \ref status_codes
     */
     int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 17, uint8_t currentLimit = 100, uint16_t preambleLength = 8, uint8_t gain = 0);
-    
+
     /*!
       \brief FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
-      
+
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      
+
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
-      
-      \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz. 
+
+      \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
       Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 <= 250 kHz is always met.
-      
+
       \param rxBw Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz.
-      
+
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
-      
-      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. 
+
+      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA.
       Set to 0 to disable OCP (not recommended).
-      
+
       \param enableOOK Use OOK modulation instead of FSK.
-      
+
       \returns \ref status_codes
     */
     int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100, bool enableOOK = false);
-    
+
     // configuration methods
-    
+
     /*!
       \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.
-      
+
       \param freq Carrier frequency to be set in MHz.
-      
+
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq);
-    
+
     /*!
       \brief Sets %LoRa link bandwidth. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
-      
+
       \param bw %LoRa link bandwidth to be set in kHz.
-      
+
       \returns \ref status_codes
     */
     int16_t setBandwidth(float bw);
-    
+
     /*!
       \brief Sets %LoRa link spreading factor. Allowed values range from 6 to 12. Only available in %LoRa mode.
-      
+
       \param sf %LoRa link spreading factor to be set.
-      
+
       \returns \ref status_codes
     */
     int16_t setSpreadingFactor(uint8_t sf);
-    
+
     /*!
       \brief Sets %LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in %LoRa mode.
-      
+
       \param cr %LoRa link coding rate denominator to be set.
-      
+
       \returns \ref status_codes
     */
     int16_t setCodingRate(uint8_t cr);
-    
+
     /*!
       \brief Sets transmission output power. Allowed values range from 2 to 17 dBm.
-      
+
       \param power Transmission output power in dBm.
-      
+
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power);
-    
+
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
       Set to 0 to enable automatic gain control (recommended). Only available in %LoRa mode.
-      
+
       \param gain Gain of receiver LNA (low-noise amplifier) to be set.
-      
+
       \returns \ref status_codes
     */
     int16_t setGain(uint8_t gain);
-    
+
     /*!
-      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping. 
+      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
       Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping. Only available in FSK mode with FSK modulation.
-      
+
       \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
-      
+
       \returns \ref status_codes
     */
     int16_t setDataShaping(float sh);
-    
+
     /*!
-      \brief Sets filter cutoff frequency that will be used for data shaping. 
+      \brief Sets filter cutoff frequency that will be used for data shaping.
       Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping.
       Only available in FSK mode with OOK modulation.
-      
+
       \param sh Cutoff frequency that will be used for data shaping
-      
+
       \returns \ref status_codes
     */
     int16_t setDataShapingOOK(uint8_t sh);
-    
+
     /*!
       \brief Gets recorded signal strength indicator of the latest received packet.
-      
+
       \returns Last packet recorded signal strength indicator (RSSI).
     */
     int8_t getRSSI();
-    
+
     /*!
       \brief Enables/disables CRC check of received packets.
-      
+
       \param enableCRC Enable (true) or disable (false) CRC.
-      
+
       \returns \ref status_codes
     */
     int16_t setCRC(bool enableCRC);
-  
+
   protected:
     int16_t setBandwidthRaw(uint8_t newBandwidth);
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
     
-    int16_t config();
     int16_t configFSK();
-    
+
   private:
-  
+
 };
 
 #endif

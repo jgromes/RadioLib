@@ -121,8 +121,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
     // calculate timeout (150 % of expected time-one-air)
-    uint16_t base = 1;
-    float symbolLength = (float)(base << _sf) / (float)_bw;
+    float symbolLength = (float)(uint32_t(1) <<_sf) / (float)_bw;
     float de = 0;
     if(symbolLength >= 16.0) {
       de = 1;

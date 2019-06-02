@@ -192,6 +192,17 @@ int16_t SX1278::setBandwidth(float bw) {
   int16_t state = SX1278::setBandwidthRaw(newBandwidth);
   if(state == ERR_NONE) {
     SX127x::_bw = bw;
+
+    // calculate symbol length and set low data rate optimization, if needed
+    float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
+    DEBUG_PRINT("Symbol length: ");
+    DEBUG_PRINT(symbolLength);
+    DEBUG_PRINTLN(" ms");
+    if(symbolLength >= 16.0) {
+      state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
+    } else {
+      state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_OFF, 3, 3);
+    }
   }
   return(state);
 }
@@ -235,6 +246,17 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
   int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
+
+    // calculate symbol length and set low data rate optimization, if needed
+    float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
+    DEBUG_PRINT("Symbol length: ");
+    DEBUG_PRINT(symbolLength);
+    DEBUG_PRINTLN(" ms");
+    if(symbolLength >= 16.0) {
+      state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
+    } else {
+      state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_OFF, 3, 3);
+    }
   }
   return(state);
 }
@@ -465,24 +487,6 @@ int16_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
 
   // write register
   state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 3, 1);
-  return(state);
-}
-
-int16_t SX1278::config() {
-  // configure common registers
-  int16_t state = SX127x::config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // calculate symbol length and set low data rate optimization, if needed
-  uint16_t base = 1;
-  float symbolLength = (float)(base << _sf) / (float)_bw;
-  if(symbolLength >= 16.0) {
-    state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 0, 0);
-  } else {
-    state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_OFF, 0, 0);
-  }
   return(state);
 }
 
