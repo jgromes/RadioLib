@@ -75,24 +75,24 @@ void loop() {
     Serial.println(F("success!"));
 
     // print the data of the packet
-    Serial.print(F("[SX1278] Data:\t\t"));
+    Serial.print(F("[SX1278] Data:\t\t\t"));
     Serial.println(str);
 
     // print the RSSI (Received Signal Strength Indicator)
     // of the last received packet
-    Serial.print(F("[SX1278] RSSI:\t\t"));
+    Serial.print(F("[SX1278] RSSI:\t\t\t"));
     Serial.print(lora.getRSSI());
     Serial.println(F(" dBm"));
 
     // print the SNR (Signal-to-Noise Ratio)
     // of the last received packet
-    Serial.print(F("[SX1278] SNR:\t\t"));
+    Serial.print(F("[SX1278] SNR:\t\t\t"));
     Serial.print(lora.getSNR());
     Serial.println(F(" dBm"));
 
     // print frequency error
     // of the last received packet
-    Serial.print(F("Frequency error:\t"));
+    Serial.print(F("[SX1278] Frequency error:\t"));
     Serial.print(lora.getFrequencyError());
     Serial.println(F(" Hz"));
 

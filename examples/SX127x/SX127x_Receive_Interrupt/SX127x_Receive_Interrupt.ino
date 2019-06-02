@@ -144,11 +144,11 @@ void loop() {
 
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
-      Serial.println(F("CRC error!"));
+      Serial.println(F("[SX1278] CRC error!"));
 
     } else {
       // some other error occurred
-      Serial.print(F("failed, code "));
+      Serial.print(F("[SX1278] Failed, code "));
       Serial.println(state);
 
     }
