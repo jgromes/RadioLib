@@ -12,20 +12,24 @@
     - output power during transmission
 
     Other modules from SX127x/RFM9x family can also be used.
+
+    For full API reference, see the GitHub Pages
+    https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// SX1278 module is in slot A on the shield
-SX1278 loraSX1278 = RadioShield.ModuleA;
+// SX1278 has the following connections:
+// NSS pin:   10
+// DIO1 pin:  2
+// DIO2 pin:  3
+// BUSY pin:  9
+SX1262 loraSX1278 = new Module(10, 2, 3, 9);
 
-// if you're not using RadioShield, you can specify
-// the connection yourself
-// NSS pin:   6
-// DIO1 pin:  4
-// DIO2 pin:  5
-SX1272 loraSX1272 = new Module(6, 4, 5);
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+SX1268 loraSX1272 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
