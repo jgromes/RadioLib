@@ -6,13 +6,23 @@
    destination node. After setting node address, this node
    will automatically filter out any packets that do not
    contain either node address or broadcast addresses.
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// CC1101 is in slot A on the shield
-CC1101 cc = RadioShield.ModuleA;
+// CC1101 has the following connections:
+// NSS pin:   10
+// GDO0 pin:  2
+// GDO2 pin:  3
+CC1101 cc = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -101,6 +111,11 @@ void loop() {
   } else if (state == ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));
+
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 }

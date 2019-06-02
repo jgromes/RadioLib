@@ -10,20 +10,23 @@
     - allowed frequency deviation
     - output power during transmission
     - sync word
+
+    For full API reference, see the GitHub Pages
+    https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// CC1101 module is in slot A on the shield
-CC1101 cc1 = RadioShield.ModuleA;
+// CC1101 has the following connections:
+// NSS pin:   10
+// GDO0 pin:  2
+// GDO2 pin:  3
+CC1101 cc1 = new Module(10, 2, 3);
 
-// if you're not using RadioShield, you can specify
-// the connection yourself
-// NSS pin:   6
-// DIO0 pin:  4
-// DIO1 pin:  5
-CC1101 cc2 = new Module(6, 4, 5);
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+CC1101 cc2 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

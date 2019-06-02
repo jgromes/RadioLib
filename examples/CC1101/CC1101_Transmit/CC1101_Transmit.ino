@@ -2,13 +2,27 @@
    RadioLib CC1101 Transmit Example
 
    This example transmits packets using CC1101 FSK radio module.
+   Each packet contains up to 64 bytes of data, in the form of:
+    - Arduino String
+    - null-terminated char array (C-string)
+    - arbitrary binary data (byte array)
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// CC1101 is in slot A on the shield
-CC1101 cc = RadioShield.ModuleA;
+// CC1101 has the following connections:
+// NSS pin:   10
+// GDO0 pin:  2
+// GDO2 pin:  3
+CC1101 cc = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//CC1101 cc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -49,6 +63,11 @@ void loop() {
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 255 bytes
     Serial.println(F(" too long!"));
+
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 
