@@ -1,20 +1,31 @@
 /*
    RadioLib SX126x Channel Activity Detection Example
 
-   This example scans the current LoRa channel and detects 
-   valid LoRa preambles. Preamble is the first part of 
-   LoRa transmission, so this can be used to check 
-   if the LoRa channel is free, or if you should start 
+   This example scans the current LoRa channel and detects
+   valid LoRa preambles. Preamble is the first part of
+   LoRa transmission, so this can be used to check
+   if the LoRa channel is free, or if you should start
    receiving a message.
 
    Other modules from SX126x family can also be used.
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// SX1262 module is in slot A on the shield
-SX1262 lora = RadioShield.ModuleA;
+// SX1262 has the following connections:
+// NSS pin:   10
+// DIO1 pin:  2
+// DIO2 pin:  3
+// BUSY pin:  9
+SX1262 lora = new Module(10, 2, 3, 9);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//SX1262 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);

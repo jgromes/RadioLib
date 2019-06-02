@@ -13,13 +13,24 @@
     - sync word
 
    Other modules from SX126x/RFM9x family can also be used.
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// SX1262 module is in slot A on the shield
-SX1262 lora = RadioShield.ModuleA;
+// SX1262 has the following connections:
+// NSS pin:   10
+// DIO1 pin:  2
+// DIO2 pin:  3
+// BUSY pin:  9
+SX1262 lora = new Module(10, 2, 3, 9);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//SX1262 lora = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -130,6 +141,11 @@ void loop() {
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
       Serial.println(F("CRC error!"));
+
+    } else {
+      // some other error occurred
+      Serial.print(F("failed, code "));
+      Serial.println(state);
 
     }
 
