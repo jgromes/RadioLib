@@ -4,13 +4,23 @@
    This example receives packets using RF69 FSK radio module.
    Packets are decrypted using hardware AES.
    NOTE: When using address filtering, the address byte is NOT encrypted!
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// RF69 module is in slot A on the shield
-RF69 rf = RadioShield.ModuleA;
+// RF69 has the following connections:
+// NSS pin:   10
+// DIO0 pin:  2
+// DIO1 pin:  3
+RF69 rf = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -35,8 +45,7 @@ void setup() {
   // set AES key that will be used to decrypt the packet
   // NOTE: the key must be exactly 16 bytes long!
   uint8_t key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-                   0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F
-                  };
+                   0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
   rf.setAESKey(key);
 
   // enable AES encryption
@@ -76,6 +85,11 @@ void loop() {
   } else if (state == ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));
+
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 }

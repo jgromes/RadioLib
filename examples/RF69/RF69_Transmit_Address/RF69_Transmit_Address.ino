@@ -6,13 +6,23 @@
    After setting node (or broadcast) address, this node will
    automatically filter out any packets that do not contain
    either node address or broadcast address.
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// RF69 module is in slot A on the shield
-RF69 rf = RadioShield.ModuleA;
+// RF69 has the following connections:
+// NSS pin:   10
+// DIO0 pin:  2
+// DIO1 pin:  3
+RF69 rf = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +45,7 @@ void setup() {
   }
 
   // set node address
-  // NOTE: calling this method will autmatically enable
+  // NOTE: calling this method will automatically enable
   // address filtering (node address only)
   Serial.print(F("[RF69] Setting node address ... "));
   state = rf.setNodeAddress(0x01);
@@ -104,8 +114,13 @@ void loop() {
     Serial.println(F(" success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
-    // the supplied packet was longer than 256 bytes
+    // the supplied packet was longer than 64 bytes
     Serial.println(F(" too long!"));
+
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 

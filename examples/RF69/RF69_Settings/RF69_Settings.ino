@@ -10,20 +10,23 @@
     - allowed frequency deviation
     - output power during transmission
     - sync word
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// RF69 module is in slot A on the shield
-RF69 rf1 = RadioShield.ModuleA;
+// RF69 has the following connections:
+// NSS pin:   10
+// DIO0 pin:  2
+// DIO1 pin:  3
+RF69 rf1 = new Module(10, 2, 3);
 
-// if you're not using RadioShield, you can specify
-// the connection yourself
-// NSS pin:   6
-// DIO0 pin:  4
-// DIO1 pin:  5
-RF69 rf2 = new Module(6, 4, 5);
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+RF69 rf2 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

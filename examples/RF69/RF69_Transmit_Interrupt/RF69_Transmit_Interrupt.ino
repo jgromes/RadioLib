@@ -7,13 +7,23 @@
     - Arduino String
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
 #include <RadioLib.h>
 
-// RF69 module is in slot A on the shield
-RF69 rf = RadioShield.ModuleA;
+// RF69 has the following connections:
+// NSS pin:   10
+// DIO0 pin:  2
+// DIO1 pin:  3
+RF69 rf = new Module(10, 2, 3);
+
+// or using RadioShield
+// https://github.com/jgromes/RadioShield
+//RF69 rf = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -35,7 +45,7 @@ void setup() {
     while (true);
   }
 
-  // set the function that will be called 
+  // set the function that will be called
   // when packet transmission is finished
   rf.setDio0Action(setFlag);
 
@@ -52,7 +62,7 @@ void setup() {
                       0x78, 0xAB, 0xCD, 0xEF};
     state = rf.transmit(byteArr, 8);
   */
-  
+
   if (state != ERR_NONE) {
     Serial.print(F("failed, code "));
     Serial.println(state);
@@ -70,7 +80,7 @@ void setFlag(void) {
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
-    Serial.println(F("[RF69] Packet transmission finished!"));
+    Serial.println(F("packet transmission finished!"));
 
     // wait one second before next transmission
     delay(1000);
@@ -81,14 +91,14 @@ void loop() {
     // you can transmit C-string or Arduino string up to
     // 64 characters long
     int state = rf.startTransmit("Hello World!");
-  
+
     // you can also transmit byte array up to 256 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                         0x78, 0xAB, 0xCD, 0xEF};
       int state = rf.transmit(byteArr, 8);
     */
-    
+
     if (state != ERR_NONE) {
       Serial.print(F("failed, code "));
       Serial.println(state);
