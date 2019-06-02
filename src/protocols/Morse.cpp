@@ -6,66 +6,66 @@
 */
 struct Morse_t {
   char c;                                             // ASCII character
-  const char* m;                                      // Morse code representation
+  char m[7];                                          // Morse code representation
 };
 /*!
   \endcond
 */
 
 // array of all Morse code characters
-static const Morse_t MorseTable[MORSE_LENGTH] = {
-  {.c = 'A', .m = ".-"},
-  {.c = 'B', .m = "-..."},
-  {.c = 'C', .m = "-.-."},
-  {.c = 'D', .m = "-.."},
-  {.c = 'E', .m = "."},
-  {.c = 'F', .m = "..-."},
-  {.c = 'G', .m = "--."},
-  {.c = 'H', .m = "...."},
-  {.c = 'I', .m = ".."},
-  {.c = 'J', .m = ".---"},
-  {.c = 'K', .m = "-.-"},
-  {.c = 'L', .m = ".-.."},
-  {.c = 'M', .m = "--"},
-  {.c = 'N', .m = "-."},
-  {.c = 'O', .m = "---"},
-  {.c = 'P', .m = ".--."},
-  {.c = 'Q', .m = "--.-"},
-  {.c = 'R', .m = ".-."},
-  {.c = 'S', .m = "..."},
-  {.c = 'T', .m = "-"},
-  {.c = 'U', .m = "..-"},
-  {.c = 'V', .m = "...-"},
-  {.c = 'W', .m = ".--"},
-  {.c = 'X', .m = "-..-"},
-  {.c = 'Y', .m = "-.--"},
-  {.c = 'Z', .m = "--.."},
-  {.c = '1', .m = ".----"},
-  {.c = '2', .m = "..---"},
-  {.c = '3', .m = "...--"},
-  {.c = '4', .m = "....-"},
-  {.c = '5', .m = "....."},
-  {.c = '6', .m = "-...."},
-  {.c = '7', .m = "--..."},
-  {.c = '8', .m = "---.."},
-  {.c = '9', .m = "----."},
-  {.c = '0', .m = "-----"},
-  {.c = '.', .m = ".-.-.-"},
-  {.c = ',', .m = "--..--"},
-  {.c = ':', .m = "---..."},
-  {.c = '?', .m = "..--.."},
-  {.c = '\'', .m = ".----."},
-  {.c = '-', .m = "-....-"},
-  {.c = '/', .m = "-..-."},
-  {.c = '(', .m = "-.--."},
-  {.c = ')', .m = "-.--.-"},
-  {.c = '\"', .m = ".-..-."},
-  {.c = '=', .m = "-...-"},
-  {.c = '+', .m = ".-.-."},
-  {.c = '@', .m = ".--.-."},
-  {.c = ' ', .m = "_"},                               // space is used to separate words
-  {.c = 0x01, .m = "-.-.-"},                          // ASCII SOH (start of heading) is used as alias for start signal
-  {.c = 0x02, .m = ".-.-."}                           // ASCII EOT (end of transmission) is used as alias for stop signal
+const Morse_t MorseTable[MORSE_LENGTH] PROGMEM = {
+  {'A', ".-"},
+  {'B',"-..."},
+  {'C', "-.-."},
+  {'D',"-.."},
+  {'E',"."},
+  {'F',"..-."},
+  {'G',"--."},
+  {'H',"...."},
+  {'I',".."},
+  {'J',".---"},
+  {'K',"-.-"},
+  {'L',".-.."},
+  {'M',"--"},
+  {'N',"-."},
+  {'O',"---"},
+  {'P',".--."},
+  {'Q',"--.-"},
+  {'R',".-."},
+  {'S',"..."},
+  {'T',"-"},
+  {'U',"..-"},
+  {'V',"...-"},
+  {'W',".--"},
+  {'X',"-..-"},
+  {'Y',"-.--"},
+  {'Z',"--.."},
+  {'1',".----"},
+  {'2',"..---"},
+  {'3',"...--"},
+  {'4',"....-"},
+  {'5',"....."},
+  {'6',"-...."},
+  {'7',"--..."},
+  {'8',"---.."},
+  {'9',"----."},
+  {'0',"-----"},
+  {'.',".-.-.-"},
+  {',',"--..--"},
+  {':',"---..."},
+  {'?',"..--.."},
+  {'\'',".----."},
+  {'-',"-....-"},
+  {'/',"-..-."},
+  {'(',"-.--."},
+  {')',"-.--.-"},
+  {'\"',".-..-."},
+  {'=',"-...-"},
+  {'+',".-.-."},
+  {'@',".--.-."},
+  {' ',"_"},                               // space is used to separate words
+  {0x01,"-.-.-"},                          // ASCII SOH (start of heading) is used as alias for start signal
+  {0x02,".-.-."}                           // ASCII EOT (end of transmission) is used as alias for stop signal
 };
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
@@ -107,19 +107,25 @@ size_t MorseClient::write(uint8_t* buff, size_t len) {
 
 size_t MorseClient::write(uint8_t b) {
   // find the correct Morse code in array
-  uint8_t pos;
+  Morse_t mc;
   bool found = false;
-  for(pos = 0; pos < MORSE_LENGTH; pos++) {
-    if(MorseTable[pos].c == toupper(b)) {
+  for(uint8_t pos = 0; pos < MORSE_LENGTH; pos++) {
+    memcpy_P(&mc, &MorseTable[pos], sizeof(Morse_t));
+    if(mc.c == toupper(b)) {
       found = true;
       break;
     }
   }
+
   // check if the requested code was found in the array
   if(found) {
+    DEBUG_PRINT(mc.c);
+    DEBUG_PRINT('\t');
+    DEBUG_PRINTLN(mc.m);
+
     // iterate over Morse code representation and output appropriate tones
-    for(uint8_t i = 0; i < strlen(MorseTable[pos].m); i++) {
-      switch(MorseTable[pos].m[i]) {
+    for(uint8_t i = 0; i < strlen(mc.m); i++) {
+      switch(mc.m[i]) {
         case '.':
           _phy->transmitDirect(_base);
           delay(_dotLength);
@@ -139,6 +145,7 @@ size_t MorseClient::write(uint8_t b) {
     }
 
     // letter space
+    DEBUG_PRINTLN();
     delay(_dotLength * 3);
 
     return(1);
