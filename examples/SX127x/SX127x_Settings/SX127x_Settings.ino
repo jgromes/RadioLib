@@ -25,11 +25,11 @@
 // DIO1 pin:  2
 // DIO2 pin:  3
 // BUSY pin:  9
-SX1262 loraSX1278 = new Module(10, 2, 3, 9);
+SX1278 loraSX1278 = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-SX1268 loraSX1272 = RadioShield.ModuleB;
+SX1272 loraSX1272 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
