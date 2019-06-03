@@ -150,7 +150,6 @@
 
 //SX126X_CMD_SET_PA_CONFIG
 #define SX126X_PA_CONFIG_HP_MAX                       0x07
-#define SX126X_PA_CONFIG_SX1268                       0x01
 #define SX126X_PA_CONFIG_PA_LUT                       0x01
 
 //SX126X_CMD_SET_RX_TX_FALLBACK_MODE
@@ -366,7 +365,7 @@ class SX126x: public PhysicalLayer {
 
       \param rxBw Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
 
-      \parma preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
+      \param preambleLength FSK preamble length in bits. Allowed values range from 0 to 65535.
 
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Allowed values are 0.3, 0.5, 0.7 and 1.0. Set to 0 to disable shaping.
 
@@ -692,6 +691,7 @@ class SX126x: public PhysicalLayer {
     uint16_t getIrqStatus();
     int16_t clearIrqStatus(uint16_t clearIrqParams = SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
+    int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
@@ -704,7 +704,7 @@ class SX126x: public PhysicalLayer {
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
 
-    int16_t setFrequencyRaw(float freq, bool calibrate = true);
+    int16_t setFrequencyRaw(float freq);
 
   private:
     Module* _mod;

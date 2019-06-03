@@ -576,9 +576,9 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   uint32_t freqDevRaw = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // check modulation parameters
-  if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
+  /*if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
     return(ERR_INVALID_MODULATION_PARAMETERS);
-  }
+  }*/
   _freqDev = freqDevRaw;
 
   // update modulation parameters
@@ -600,9 +600,9 @@ int16_t SX126x::setBitRate(float br) {
   uint32_t brRaw = (uint32_t)((SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
 
   // check modulation parameters
-  if(2 * _freqDev + brRaw > _rxBwKhz * 1000.0) {
+  /*if(2 * _freqDev + brRaw > _rxBwKhz * 1000.0) {
     return(ERR_INVALID_MODULATION_PARAMETERS);
-  }
+  }*/
   _br = brRaw;
 
   // update modulation parameters
@@ -616,9 +616,9 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   }
 
   // check modulation parameters
-  if(2 * _freqDev + _br > rxBw * 1000.0) {
+  /*if(2 * _freqDev + _br > rxBw * 1000.0) {
     return(ERR_INVALID_MODULATION_PARAMETERS);
-  }
+  }*/
   _rxBwKhz = rxBw;
 
   // check alowed receiver bandwidth values
@@ -968,6 +968,10 @@ int16_t SX126x::setRfFrequency(uint32_t frf) {
   return(SPIwriteCommand(SX126X_CMD_SET_RF_FREQUENCY, data, 4));
 }
 
+int16_t SX126x::calibrateImage(uint8_t* data) {
+  return(SPIwriteCommand(SX126X_CMD_CALIBRATE_IMAGE, data, 2));
+}
+
 uint8_t SX126x::getPacketType() {
   uint8_t data = 0xFF;
   SPIreadCommand(SX126X_CMD_GET_PACKET_TYPE, &data, 1);
@@ -1047,34 +1051,7 @@ int16_t SX126x::clearDeviceErrors() {
   return(SPIwriteCommand(SX126X_CMD_CLEAR_DEVICE_ERRORS, data, 1));
 }
 
-int16_t SX126x::setFrequencyRaw(float freq, bool calibrate) {
-  int16_t state = ERR_NONE;
-
-  // calibrate image
-  if(calibrate) {
-    uint8_t data[2];
-    if(freq > 900.0) {
-      data[0] = SX126X_CAL_IMG_902_MHZ_1;
-      data[1] = SX126X_CAL_IMG_902_MHZ_2;
-    } else if(freq > 850.0) {
-      data[0] = SX126X_CAL_IMG_863_MHZ_1;
-      data[1] = SX126X_CAL_IMG_863_MHZ_2;
-    } else if(freq > 770.0) {
-      data[0] = SX126X_CAL_IMG_779_MHZ_1;
-      data[1] = SX126X_CAL_IMG_779_MHZ_2;
-    } else if(freq > 460.0) {
-      data[0] = SX126X_CAL_IMG_470_MHZ_1;
-      data[1] = SX126X_CAL_IMG_470_MHZ_2;
-    } else {
-      data[0] = SX126X_CAL_IMG_430_MHZ_1;
-      data[1] = SX126X_CAL_IMG_430_MHZ_2;
-    }
-    state = SPIwriteCommand(SX126X_CMD_CALIBRATE_IMAGE, data, 2);
-    if(state != ERR_NONE) {
-      return(state);
-    }
-  }
-
+int16_t SX126x::setFrequencyRaw(float freq) {
   // calculate raw value
   uint32_t frf = (freq * (uint32_t(1) << SX126X_DIV_EXPONENT)) / SX126X_CRYSTAL_FREQ;
   setRfFrequency(frf);
@@ -1184,7 +1161,7 @@ int16_t SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* 
   DEBUG_PRINT('\t');
 
   // variable to save error during SPI transfer
-  uint8_t status;
+  uint8_t status = 0;
 
   // send/receive all bytes
   if(write) {

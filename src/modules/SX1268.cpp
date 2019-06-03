@@ -1,10 +1,10 @@
-#include "SX1262.h"
+#include "SX1268.h"
 
-SX1262::SX1262(Module* mod) : SX126x(mod) {
+SX1268::SX1268(Module* mod) : SX126x(mod) {
 
 }
 
-int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength) {
+int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength) {
   // execute common part
   int16_t state = SX126x::begin(bw, sf, cr, syncWord, preambleLength);
   if(state != ERR_NONE) {
@@ -30,8 +30,7 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
 
   return(state);
 }
-
-int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping) {
+int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping) {
   // execute common part
   int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, dataShaping);
   if(state != ERR_NONE) {
@@ -58,9 +57,9 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(state);
 }
 
-int16_t SX1262::setFrequency(float freq, bool calibrate) {
+int16_t SX1268::setFrequency(float freq, bool calibrate) {
   // check frequency range
-  if((freq < 150.0) || (freq > 960.0)) {
+  if((freq < 410.0) || (freq > 810.0)) {
     return(ERR_INVALID_FREQUENCY);
   }
 
@@ -69,13 +68,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
   // calibrate image
   if(calibrate) {
     uint8_t data[2];
-    if(freq > 900.0) {
-      data[0] = SX126X_CAL_IMG_902_MHZ_1;
-      data[1] = SX126X_CAL_IMG_902_MHZ_2;
-    } else if(freq > 850.0) {
-      data[0] = SX126X_CAL_IMG_863_MHZ_1;
-      data[1] = SX126X_CAL_IMG_863_MHZ_2;
-    } else if(freq > 770.0) {
+    if(freq > 770.0) {
       data[0] = SX126X_CAL_IMG_779_MHZ_1;
       data[1] = SX126X_CAL_IMG_779_MHZ_2;
     } else if(freq > 460.0) {
@@ -95,18 +88,14 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
   return(SX126x::setFrequencyRaw(freq));
 }
 
-int16_t SX1262::setOutputPower(int8_t power) {
+int16_t SX1268::setOutputPower(int8_t power) {
   // check allowed power range
-  if(!((power >= -17) && (power <= 22))) {
+  if(!((power >= -9) && (power <= 22))) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
 
-  // enable high power PA for output power higher than 14 dBm
-  if(power > 13) {
-    SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262);
-  } else {
-    SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1261);
-  }
+  // enable high power PA
+  SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
 
   // set output power
   // TODO power ramp time configuration

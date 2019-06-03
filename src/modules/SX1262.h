@@ -78,9 +78,11 @@ class SX1262: public SX126x {
 
       \param freq Carrier frequency to be set in MHz.
 
+      \param calibrate Run image calibration.
+
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq, bool calibrate = true);
 
     /*!
       \brief Sets output power. Allowed values are in range from -17 to 22 dBm.
