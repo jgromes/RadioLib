@@ -297,6 +297,7 @@ class Module {
     int _rx;
     int _int0;
     int _int1;
+
     SPIClass* _spi;
     SPISettings _spiSettings;
 
