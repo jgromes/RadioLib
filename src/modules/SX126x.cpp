@@ -1084,7 +1084,7 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
 
   if (state == ERR_NONE) {
-    _dio2RfSwitch = true;
+    _dio2RfSwitch = enable;
   }
   return(state);
 }
