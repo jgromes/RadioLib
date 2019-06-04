@@ -683,7 +683,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes 
     */
-    int16_t setDio2AsRfSwitch(bool enable = false);
+    int16_t setDio2AsRfSwitch(bool enable = true);
 
   protected:
     // SX1276x SPI command implementations
@@ -726,6 +726,8 @@ class SX126x: public PhysicalLayer {
     float _rxBwKhz;
 
     float _dataRate;
+
+    bool _dio2RfSwitch = false;
 
     int16_t config(uint8_t modem);
 

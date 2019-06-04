@@ -274,9 +274,9 @@ int16_t SX126x::scanChannel() {
     return(ERR_WRONG_MODEM);
   }
 
-  if (_mod->getDio2Func()) {
+  if (_dio2RfSwitch) {
     // If DIO2 is used as RF switch this function does not work
-    return(ERR_WRONG_MODEM);
+    return(ERR_DIO2_UNAVAIL_CAD_FAILED);
   }
 
   // set mode to standby
@@ -1064,14 +1064,7 @@ int16_t SX126x::setFrequencyRaw(float freq) {
 }
 
 int16_t SX126x::setDio2AsRfSwitch(bool enable) {
-  int dio2 = _mod->getInt1();
-  if (dio2 == -1)
-  {
-    // DIO2 is not defined, return error
-    _mod->setDio2Func(false);
-    return ERR_WRONG_MODEM;
-  }
-  uint8_t* data = new uint8_t[1];
+  uint8_t data[1];
   if (enable) {
   // set DIO2 as RF switch
     data[0] = SX126X_DIO2_AS_RF_SWITCH;
@@ -1081,13 +1074,14 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
 
   if (state == ERR_NONE) {
-    _mod->setDio2Func(enable);
+    _dio2RfSwitch = true;
   }
   return(state);
 }
 
 int16_t SX126x::config(uint8_t modem) {
   // set DIO2 as IRQ
+  _dio2RfSwitch = false;
   uint8_t* data = new uint8_t[1];
   data[0] = SX126X_DIO2_AS_IRQ;
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
