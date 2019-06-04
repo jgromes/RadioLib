@@ -59,11 +59,16 @@ void loop() {
 
   if (state == LORA_DETECTED) {
     // LoRa preamble was detected
-    Serial.println(F(" detected!"));
+    Serial.println(F("detected!"));
 
   } else if (state == CHANNEL_FREE) {
     // no preamble was detected, channel is free
-    Serial.println(F(" channel is free!"));
+    Serial.println(F("channel is free!"));
+
+  } else if (state == ERR_CAD_UNAVAILABLE) {
+    // no preamble was detected, channel is free
+    Serial.println(F("unable to perform scan!"));
+    Serial.println(F("[SX1262] Disable DIO2 RF control to run CAD."));
 
   }
 

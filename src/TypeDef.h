@@ -464,7 +464,7 @@
 /*!
   \brief SX126x scan channel not possible because DIO2 is used as RF antenna switch.
 */
-#define ERR_DIO2_UNAVAIL_CAD_FAILED           -708
+#define ERR_CAD_UNAVAILABLE                  -708
 
 /*!
   \}

@@ -33,11 +33,6 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   }
 
   // configure publicly accessible settings
-  state = setDio2AsRfSwitch(false);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
   state = setSpreadingFactor(sf);
   if(state != ERR_NONE) {
     return(state);
@@ -59,6 +54,12 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   }
 
   state = setPreambleLength(preambleLength);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set publicly accessible settings that are not a part of begin method
+  state = setDio2AsRfSwitch(false);
 
   return(state);
 }
@@ -91,11 +92,6 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   }
 
   // configure publicly accessible settings
-  state = setDio2AsRfSwitch(false);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
@@ -121,9 +117,14 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
     return(state);
   }
 
-  // set default sync word 0x2D01 - not a beginFSK attribute
+  // set publicly accessible settings that are not a part of begin method
   uint8_t sync[] = {0x2D, 0x01};
   state = setSyncWord(sync, 2);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  state = setDio2AsRfSwitch(false);
 
   return(state);
 }
@@ -286,7 +287,7 @@ int16_t SX126x::scanChannel() {
 
   if (_dio2RfSwitch) {
     // If DIO2 is used as RF switch this function does not work
-    return(ERR_DIO2_UNAVAIL_CAD_FAILED);
+    return(ERR_CAD_UNAVAILABLE);
   }
 
   // set mode to standby
@@ -1074,16 +1075,15 @@ int16_t SX126x::setFrequencyRaw(float freq) {
 }
 
 int16_t SX126x::setDio2AsRfSwitch(bool enable) {
-  uint8_t data[1];
-  if (enable) {
-  // set DIO2 as RF switch
-    data[0] = SX126X_DIO2_AS_RF_SWITCH;
+  uint8_t data = 0;
+  if(enable) {
+    data = SX126X_DIO2_AS_RF_SWITCH;
   } else {
-    data[0] = SX126X_DIO2_AS_IRQ;
+    data = SX126X_DIO2_AS_IRQ;
   }
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1);
 
-  if (state == ERR_NONE) {
+  if(state == ERR_NONE) {
     _dio2RfSwitch = enable;
   }
   return(state);
