@@ -33,6 +33,11 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   }
 
   // configure publicly accessible settings
+  state = setDio2AsRfSwitch(false);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setSpreadingFactor(sf);
   if(state != ERR_NONE) {
     return(state);
@@ -86,6 +91,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   }
 
   // configure publicly accessible settings
+  state = setDio2AsRfSwitch(false);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
@@ -272,6 +282,11 @@ int16_t SX126x::scanChannel() {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
     return(ERR_WRONG_MODEM);
+  }
+
+  if (_dio2RfSwitch) {
+    // If DIO2 is used as RF switch this function does not work
+    return(ERR_DIO2_UNAVAIL_CAD_FAILED);
   }
 
   // set mode to standby
@@ -1058,18 +1073,27 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   return(ERR_NONE);
 }
 
-int16_t SX126x::config(uint8_t modem) {
-  // set DIO2 as IRQ
-  uint8_t* data = new uint8_t[1];
-  data[0] = SX126X_DIO2_AS_IRQ;
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
+int16_t SX126x::setDio2AsRfSwitch(bool enable) {
+  uint8_t data[1];
+  if (enable) {
+  // set DIO2 as RF switch
+    data[0] = SX126X_DIO2_AS_RF_SWITCH;
+  } else {
+    data[0] = SX126X_DIO2_AS_IRQ;
   }
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
 
+  if (state == ERR_NONE) {
+    _dio2RfSwitch = enable;
+  }
+  return(state);
+}
+
+int16_t SX126x::config(uint8_t modem) {
   // set regulator mode
+  uint8_t* data = new uint8_t[1];
   data[0] = SX126X_REGULATOR_DC_DC;
-  state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
   if(state != ERR_NONE) {
     return(state);
   }

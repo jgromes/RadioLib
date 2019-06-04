@@ -678,6 +678,13 @@ class SX126x: public PhysicalLayer {
     */
     float getSNR();
 
+    /*!
+      \brief Set DIO2 to function as RF switch (default in Semtech example designs).
+
+      \returns \ref status_codes 
+    */
+    int16_t setDio2AsRfSwitch(bool enable = true);
+
   protected:
     // SX1276x SPI command implementations
     int16_t setTx(uint32_t timeout = 0);
@@ -719,6 +726,8 @@ class SX126x: public PhysicalLayer {
     float _rxBwKhz;
 
     float _dataRate;
+
+    bool _dio2RfSwitch = false;
 
     int16_t config(uint8_t modem);
 

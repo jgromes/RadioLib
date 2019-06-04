@@ -180,7 +180,7 @@ size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
   return(i);
 }
 
-uint16_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
+size_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
   uint32_t start = millis();
   while(_mod->ModuleSerial->available() < (int16_t)minBytes) {

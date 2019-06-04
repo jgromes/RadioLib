@@ -104,6 +104,7 @@ setGdo1Action	KEYWORD2
 # SX126x-specific
 setDio2Action	KEYWORD2
 setTCXO	KEYWORD2
+setDio2AsRfSwitch	KEYWORD2
 
 # ESP8266
 join	KEYWORD2
