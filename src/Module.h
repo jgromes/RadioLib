@@ -278,6 +278,20 @@ class Module {
     int getTx() const { return(_tx); }
 
     /*!
+      \brief Access method to get DIO2 RF switch flag.
+
+      \returns true if DIO2 is set as RF switch.
+    */
+    int getDio2Func() const { return(_dio2RfSwitch); }
+
+    /*!
+      \brief Access method to set/reset DIO2 RF switch flag.
+
+      \returns true if DIO2 is set as RF switch.
+    */
+    void setDio2Func(bool enable);
+
+    /*!
       \brief Access method to get the SPI interface.
 
       \returns SPI interface configured in the constructor.
@@ -297,7 +311,7 @@ class Module {
     int _rx;
     int _int0;
     int _int1;
-
+    bool _dio2RfSwitch = false;
     SPIClass* _spi;
     SPISettings _spiSettings;
 

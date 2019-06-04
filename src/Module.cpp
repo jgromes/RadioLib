@@ -79,6 +79,10 @@ void Module::term() {
   _spi->end();
 }
 
+void Module::setDio2Func(bool enable) { 
+  _dio2RfSwitch = enable;
+}
+
 void Module::ATemptyBuffer() {
   while(ModuleSerial->available() > 0) {
     ModuleSerial->read();

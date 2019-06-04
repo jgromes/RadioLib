@@ -274,6 +274,11 @@ int16_t SX126x::scanChannel() {
     return(ERR_WRONG_MODEM);
   }
 
+  if (_mod->getDio2Func()) {
+    // If DIO2 is used as RF switch this function does not work
+    return(ERR_WRONG_MODEM);
+  }
+
   // set mode to standby
   int16_t state = standby();
   if(state != ERR_NONE) {
@@ -1056,6 +1061,29 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   uint32_t frf = (freq * (uint32_t(1) << SX126X_DIV_EXPONENT)) / SX126X_CRYSTAL_FREQ;
   setRfFrequency(frf);
   return(ERR_NONE);
+}
+
+int16_t SX126x::setDio2AsRfSwitch(bool enable) {
+  int dio2 = _mod->getInt1();
+  if (dio2 == -1)
+  {
+    // DIO2 is not defined, return error
+    _mod->setDio2Func(false);
+    return ERR_WRONG_MODEM;
+  }
+  uint8_t* data = new uint8_t[1];
+  if (enable) {
+  // set DIO2 as RF switch
+    data[0] = SX126X_DIO2_AS_RF_SWITCH;
+  } else {
+    data[0] = SX126X_DIO2_AS_IRQ;
+  }
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
+
+  if (state == ERR_NONE) {
+    _mod->setDio2Func(enable);
+  }
+  return(state);
 }
 
 int16_t SX126x::config(uint8_t modem) {
