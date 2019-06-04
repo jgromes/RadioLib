@@ -33,6 +33,11 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   }
 
   // configure publicly accessible settings
+  state = setDio2AsRfSwitch(false);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setSpreadingFactor(sf);
   if(state != ERR_NONE) {
     return(state);
@@ -86,6 +91,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   }
 
   // configure publicly accessible settings
+  state = setDio2AsRfSwitch(false);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
@@ -1080,18 +1090,10 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
 }
 
 int16_t SX126x::config(uint8_t modem) {
-  // set DIO2 as IRQ
-  _dio2RfSwitch = false;
-  uint8_t* data = new uint8_t[1];
-  data[0] = SX126X_DIO2_AS_IRQ;
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, data, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
   // set regulator mode
+  uint8_t* data = new uint8_t[1];
   data[0] = SX126X_REGULATOR_DC_DC;
-  state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
   if(state != ERR_NONE) {
     return(state);
   }
