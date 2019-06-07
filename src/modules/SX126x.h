@@ -658,6 +658,13 @@ class SX126x: public PhysicalLayer {
     int16_t setTCXO(float voltage, uint32_t timeout = 5000);
 
     /*!
+      \brief Set DIO2 to function as RF switch (default in Semtech example designs).
+
+      \returns \ref status_codes
+    */
+    int16_t setDio2AsRfSwitch(bool enable = true);
+
+    /*!
       \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
 
       \returns Effective data rate in bps.
@@ -677,13 +684,6 @@ class SX126x: public PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     float getSNR();
-
-    /*!
-      \brief Set DIO2 to function as RF switch (default in Semtech example designs).
-
-      \returns \ref status_codes 
-    */
-    int16_t setDio2AsRfSwitch(bool enable = true);
 
   protected:
     // SX1276x SPI command implementations
@@ -726,8 +726,6 @@ class SX126x: public PhysicalLayer {
     float _rxBwKhz;
 
     float _dataRate;
-
-    bool _dio2RfSwitch = false;
 
     int16_t config(uint8_t modem);
 

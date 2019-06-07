@@ -150,7 +150,7 @@ void setup() {
   // Some SX126x modules use DIO2 as RF switch. To enable
   // this feature, the following method can be used.
   // NOTE: As long as DIO2 is configured to control RF switch,
-  //       Channel Activity Detection is disabled!
+  //       it can't be used as interrupt pin!
   if (loraSX1262.setDio2AsRfSwitch() != ERR_NONE) {
     Serial.println(F("Failed to set DIO2 as RF switch!"));
     while (true);

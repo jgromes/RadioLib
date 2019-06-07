@@ -285,11 +285,6 @@ int16_t SX126x::scanChannel() {
     return(ERR_WRONG_MODEM);
   }
 
-  if (_dio2RfSwitch) {
-    // If DIO2 is used as RF switch this function does not work
-    return(ERR_CAD_UNAVAILABLE);
-  }
-
   // set mode to standby
   int16_t state = standby();
   if(state != ERR_NONE) {
@@ -297,7 +292,7 @@ int16_t SX126x::scanChannel() {
   }
 
   // set DIO pin mapping
-  state = setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED);
+  state = setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -315,17 +310,21 @@ int16_t SX126x::scanChannel() {
   }
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getInt0())) {
-    if(digitalRead(_mod->getInt1())) {
-      clearIrqStatus();
-      return(LORA_DETECTED);
-    }
+  while(!digitalRead(_mod->getInt0()));
+
+  // check CAD result
+  uint16_t cadResult = getIrqStatus();
+  if(cadResult & SX126X_IRQ_CAD_DETECTED) {
+    // detected some LoRa activity
+    clearIrqStatus();
+    return(LORA_DETECTED);
+  } else if(cadResult & SX126X_IRQ_CAD_DONE) {
+    // channel is free
+    clearIrqStatus();
+    return(CHANNEL_FREE);
   }
 
-  // clear interrupt flags
-  clearIrqStatus();
-
-  return(CHANNEL_FREE);
+  return(ERR_UNKNOWN);
 }
 
 int16_t SX126x::sleep() {
@@ -911,6 +910,16 @@ int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
   return(ERR_NONE);
 }
 
+int16_t SX126x::setDio2AsRfSwitch(bool enable) {
+  uint8_t data = 0;
+  if(enable) {
+    data = SX126X_DIO2_AS_RF_SWITCH;
+  } else {
+    data = SX126X_DIO2_AS_IRQ;
+  }
+  return(SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
+}
+
 int16_t SX126x::setTx(uint32_t timeout) {
   uint8_t data[3] = {(uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF)};
   return(SPIwriteCommand(SX126X_CMD_SET_TX, data, 3));
@@ -971,7 +980,7 @@ int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t di
 uint16_t SX126x::getIrqStatus() {
   uint8_t data[2];
   SPIreadCommand(SX126X_CMD_GET_IRQ_STATUS, data, 2);
-  return(((uint16_t)(data[1]) << 8) | data[0]);
+  return(((uint16_t)(data[0]) << 8) | data[1]);
 }
 
 int16_t SX126x::clearIrqStatus(uint16_t clearIrqParams) {
@@ -1072,21 +1081,6 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   uint32_t frf = (freq * (uint32_t(1) << SX126X_DIV_EXPONENT)) / SX126X_CRYSTAL_FREQ;
   setRfFrequency(frf);
   return(ERR_NONE);
-}
-
-int16_t SX126x::setDio2AsRfSwitch(bool enable) {
-  uint8_t data = 0;
-  if(enable) {
-    data = SX126X_DIO2_AS_RF_SWITCH;
-  } else {
-    data = SX126X_DIO2_AS_IRQ;
-  }
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1);
-
-  if(state == ERR_NONE) {
-    _dio2RfSwitch = enable;
-  }
-  return(state);
 }
 
 int16_t SX126x::config(uint8_t modem) {

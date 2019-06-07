@@ -65,10 +65,10 @@ void loop() {
     // no preamble was detected, channel is free
     Serial.println(F("channel is free!"));
 
-  } else if (state == ERR_CAD_UNAVAILABLE) {
-    // no preamble was detected, channel is free
-    Serial.println(F("unable to perform scan!"));
-    Serial.println(F("[SX1262] Disable DIO2 RF control to run CAD."));
+  } else {
+    // some other error occurred
+    Serial.print(F("failed, code "));
+    Serial.println(state);
 
   }
 

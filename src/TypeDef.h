@@ -462,11 +462,6 @@
 #define ERR_SPI_CMD_FAILED                    -707
 
 /*!
-  \brief SX126x scan channel not possible because DIO2 is used as RF antenna switch.
-*/
-#define ERR_CAD_UNAVAILABLE                  -708
-
-/*!
   \}
 */
 
