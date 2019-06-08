@@ -1,11 +1,10 @@
 /*
    RadioLib SX126x Channel Activity Detection Example
 
-   This example scans the current LoRa channel and detects
-   valid LoRa preambles. Preamble is the first part of
-   LoRa transmission, so this can be used to check
-   if the LoRa channel is free, or if you should start
-   receiving a message.
+   This example uses SX1262 to scan the current LoRa 
+   channel and detect ongoing LoRa transmissions.
+   Unlike SX127x CAD, SX126x can detect any part 
+   of LoRa transmission, not just the preamble.
 
    Other modules from SX126x family can also be used.
 
