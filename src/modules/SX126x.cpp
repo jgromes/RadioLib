@@ -1,6 +1,6 @@
 #include "SX126x.h"
 
-SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPONENT) {
+SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPONENT, SX126X_MAX_PACKET_LENGTH) {
   _mod = mod;
 }
 
@@ -137,7 +137,7 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // check packet length
-  if(len >= 256) {
+  if(len > SX126X_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
   }
 
@@ -359,7 +359,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   (void)addr;
 
   // check packet length
-  if(len >= 256) {
+  if(len > SX126X_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
   }
 
@@ -447,22 +447,10 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   }
 
   // get packet length
-  uint8_t rxBufStatus[2];
-  int16_t state = SPIreadCommand(SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  size_t length = rxBufStatus[0];
+  size_t length = getPacketLength();
 
   // read packet data
-  if(len == 0) {
-    // argument 'len' equal to zero indicates String call, which means dynamically allocated data array
-    // dispose of the original and create a new one
-    delete[] data;
-    data = new uint8_t[length + 1];
-  }
-  state = readBuffer(data, length);
+  int16_t state = readBuffer(data, length);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -870,6 +858,13 @@ float SX126x::getSNR() {
   uint32_t packetStatus = getPacketStatus();
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
   return(snrPkt/4.0);
+}
+
+size_t SX126x::getPacketLength(bool update) {
+  (void)update;
+  uint8_t rxBufStatus[2];
+  SPIreadCommand(SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+  return((size_t)rxBufStatus[0]);
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {

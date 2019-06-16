@@ -9,6 +9,7 @@
 // SX126X physical layer properties
 #define SX126X_CRYSTAL_FREQ                           32.0
 #define SX126X_DIV_EXPONENT                           25
+#define SX126X_MAX_PACKET_LENGTH                      255
 
 // SX126X SPI commands
 // operational modes commands
@@ -684,6 +685,15 @@ class SX126x: public PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     float getSNR();
+
+     /*!
+      \brief Query modem for the packet length of received payload.
+
+      \param update Update received packet length. Will return cached value when set to false.
+
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true);
 
   protected:
     // SX1276x SPI command implementations
