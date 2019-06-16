@@ -9,6 +9,7 @@
 // RF69 physical layer properties
 #define RF69_CRYSTAL_FREQ                             32.0
 #define RF69_DIV_EXPONENT                             19
+#define RF69_MAX_PACKET_LENGTH                        64
 
 // RF69 register map
 #define RF69_REG_FIFO                                 0x00
@@ -580,9 +581,11 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
 
+      \param timeout Enable module-driven timeout. Set to false for listen mode.
+
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive(bool timeout = false);
 
     /*!
       \brief Reads data received after calling startReceive method.
@@ -694,12 +697,24 @@ class RF69: public PhysicalLayer {
     */
     int16_t getTemperature();
 
+     /*!
+      \brief Query modem for the packet length of received payload.
+
+      \param update Update received packet length. Will return cached value when set to false.
+
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true);
+
   protected:
     Module* _mod;
 
     float _br;
     float _rxBw;
     int16_t _tempOffset;
+
+    size_t _packetLength;
+    bool _packetLengthQueried;
 
     int16_t config();
     int16_t directMode();
