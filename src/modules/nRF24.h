@@ -9,6 +9,7 @@
 // nRF24 physical layer properties (dummy only)
 #define NRF24_CRYSTAL_FREQ                            1.0
 #define NRF24_DIV_EXPONENT                            0
+#define NRF24_MAX_PACKET_LENGTH                       32
 
 // nRF24 SPI commands
 #define NRF24_CMD_READ                                0b00000000
@@ -397,6 +398,15 @@ class nRF24: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setFrequencyDeviation(float freqDev);
+
+     /*!
+      \brief Query modem for the packet length of received payload.
+
+      \param update Update received packet length. Will return cached value when set to false.
+
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true);
 
   private:
     Module* _mod;

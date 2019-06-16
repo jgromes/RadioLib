@@ -1,6 +1,6 @@
 #include "nRF24.h"
 
-nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_CRYSTAL_FREQ, NRF24_DIV_EXPONENT) {
+nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_CRYSTAL_FREQ, NRF24_DIV_EXPONENT, NRF24_MAX_PACKET_LENGTH) {
   _mod = mod;
 }
 
@@ -161,7 +161,7 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   (void)addr;
 
   // check packet length
-  if(len > 32) {
+  if(len > NRF24_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
   }
 
@@ -239,19 +239,13 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
      return(state);
   }
 
-  // read payload length
-  uint8_t buff[1];
-  SPItransfer(NRF24_CMD_READ_RX_PAYLOAD_WIDTH, false, NULL, buff, 1);
-
-  size_t length = buff[0];
+  // get packet length
+  size_t length = len;
+  if(len == NRF24_MAX_PACKET_LENGTH) {
+    length = getPacketLength();
+  }
 
   // read packet data
-  if(len == 0) {
-    // argument 'len' equal to zero indicates String call, which means dynamically allocated data array
-    // dispose of the original and create a new one
-    delete[] data;
-    data = new uint8_t[length + 1];
-  }
   SPIreadRxPayload(data, length);
 
   // add terminating null
@@ -477,6 +471,13 @@ int16_t nRF24::setFrequencyDeviation(float freqDev) {
   // this method is implemented only for PhysicalLayer compatibility
   (void)freqDev;
   return(ERR_NONE);
+}
+
+size_t nRF24::getPacketLength(bool update) {
+  (void)update;
+  uint8_t length = 0;
+  SPItransfer(NRF24_CMD_READ_RX_PAYLOAD_WIDTH, false, NULL, &length, 1);
+  return((size_t)length);
 }
 
 void nRF24::clearIRQ() {
