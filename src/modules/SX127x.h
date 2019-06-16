@@ -9,6 +9,7 @@
 // SX127x physical layer properties
 #define SX127X_CRYSTAL_FREQ                           32.0
 #define SX127X_DIV_EXPONENT                           19
+#define SX127X_MAX_PACKET_LENGTH                      256
 
 // SX127x series common LoRa registers
 #define SX127X_REG_FIFO                               0x00
@@ -574,11 +575,13 @@ class SX127x: public PhysicalLayer {
 
       \param currentLimit Trim value for OCP (over current protection) in mA.
 
+      \param preambleLength Length of FSK preamble in bits.
+
       \param enableOOK Flag to specify OOK mode. This modulation is similar to FSK.
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit, bool enableOOK);
+    int16_t beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit, uint16_t preambleLength, bool enableOOK);
 
     /*!
       \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -686,14 +689,16 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
 
+      \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
+
       \param mode Receive mode to be used. Defaults to RxContinuous.
 
       \returns \ref status_codes
     */
-    int16_t startReceive(uint8_t mode = SX127X_RXCONTINUOUS);
+    int16_t startReceive(uint8_t len = 0, uint8_t mode = SX127X_RXCONTINUOUS);
 
     /*!
-      \brief Reads data that was received after calling startReceive method.
+      \brief Reads data that was received after calling startReceive method. This method reads len characters.
 
       \param data Pointer to array to save the received binary data.
 
@@ -828,6 +833,15 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setOOK(bool enableOOK);
 
+     /*!
+      \brief Query modem for the packet length of received payload.
+
+      \param update Update received packet length. Will return cached value when set to false.
+
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true);
+
     #ifdef RADIOLIB_DEBUG
       void regDump();
     #endif
@@ -849,13 +863,17 @@ class SX127x: public PhysicalLayer {
     int16_t getActiveModem();
     int16_t directMode();
 
+
   private:
     float _dataRate;
+    size_t _packetLength;
+    bool _packetLengthQueried; // FSK packet length is the first byte in FIFO, length can only be queried once
 
     bool findChip(uint8_t ver);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearIRQFlags();
+    void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
 };
 
 #endif

@@ -58,9 +58,9 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit, bool enableOOK) {
+int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t currentLimit, uint16_t preambleLength, bool enableOOK) {
   // execute common part
-  int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit, enableOOK);
+  int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, currentLimit, preambleLength, enableOOK);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -294,13 +294,14 @@ int16_t SX1272::setDataShaping(float sh) {
   int16_t state = SX127x::standby();
 
   // set data shaping
+  sh *= 10.0;
   if(abs(sh - 0.0) <= 0.001) {
     state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_NO_SHAPING, 4, 3);
-  } else if(abs(sh - 0.3) <= 0.001) {
+  } else if(abs(sh - 3.0) <= 0.001) {
     state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_3, 4, 3);
-  } else if(abs(sh - 0.5) <= 0.001) {
+  } else if(abs(sh - 5.0) <= 0.001) {
     state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_5, 4, 3);
-  } else if(abs(sh - 1.0) <= 0.001) {
+  } else if(abs(sh - 10.0) <= 0.001) {
     state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_1_0, 4, 3);
   } else {
     return(ERR_INVALID_DATA_SHAPING);
