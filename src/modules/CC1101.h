@@ -9,6 +9,7 @@
 // CC1101 physical layer properties
 #define CC1101_CRYSTAL_FREQ                           26.0
 #define CC1101_DIV_EXPONENT                           16
+#define CC1101_MAX_PACKET_LENGTH                      63
 
 // CC1101 SPI commands
 #define CC1101_CMD_READ                               0b10000000
@@ -729,12 +730,24 @@ class CC1101: public PhysicalLayer {
     */
     uint8_t getLQI();
 
+     /*!
+      \brief Query modem for the packet length of received payload.
+
+      \param update Update received packet length. Will return cached value when set to false.
+
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update = true);
+
   private:
     Module* _mod;
 
     float _freq;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
+
+    size_t _packetLength;
+    bool _packetLengthQueried;
 
     int16_t config();
     int16_t directMode();

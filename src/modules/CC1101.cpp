@@ -1,7 +1,8 @@
 #include "CC1101.h"
 
-CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_EXPONENT) {
+CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_EXPONENT, CC1101_MAX_PACKET_LENGTH) {
   _mod = module;
+  _packetLengthQueried = false;
 }
 
 int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -175,7 +176,7 @@ void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
-  if(len > 63) {
+  if(len > CC1101_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
   }
 
@@ -230,7 +231,10 @@ int16_t CC1101::startReceive() {
 
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
-  size_t length = SPIreadRegister(CC1101_REG_RXBYTES) - 2;
+  size_t length = len;
+  if(len == CC1101_MAX_PACKET_LENGTH) {
+    length = getPacketLength();
+  }
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
@@ -239,12 +243,6 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   }
 
   // read packet data
-  if(len == 0) {
-    // argument len equal to zero indicates String call, which means dynamically allocated data array
-    // dispose of the original and create a new one
-    delete[] data;
-    data = new uint8_t[length + 1];
-  }
   SPIreadRegisterBurst(CC1101_REG_FIFO, length, data);
 
   // read RSSI byte
@@ -259,6 +257,9 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   // flush Rx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
+
+  // clear internal flag so getPacketLength can return the new packet length
+  _packetLengthQueried = false;
 
   // set mode to standby
   standby();
@@ -472,6 +473,15 @@ float CC1101::getRSSI() {
 
 uint8_t CC1101::getLQI() {
   return(_rawLQI);
+}
+
+size_t CC1101::getPacketLength(bool update) {
+  if(!_packetLengthQueried && update) {
+    _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+    _packetLengthQueried = true;
+  }
+
+  return(_packetLength);
 }
 
 int16_t CC1101::config() {
