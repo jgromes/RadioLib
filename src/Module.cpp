@@ -207,17 +207,30 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 
   // send SPI register address with access command
   _spi->transfer(reg | cmd);
+  DEBUG_PRINT(reg | cmd, HEX);
+  DEBUG_PRINT('\t');
+  DEBUG_PRINT(reg | cmd, BIN);
+  DEBUG_PRINT('\t');
 
   // send data or get response
   if(cmd == SPIwriteCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       _spi->transfer(dataOut[n]);
+      DEBUG_PRINT(dataOut[n], HEX);
+      DEBUG_PRINT('\t');
+      DEBUG_PRINT(dataOut[n], BIN);
+      DEBUG_PRINT('\t');
     }
   } else if (cmd == SPIreadCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       dataIn[n] = _spi->transfer(0x00);
+      DEBUG_PRINT(dataIn[n], HEX);
+      DEBUG_PRINT('\t');
+      DEBUG_PRINT(dataIn[n], BIN);
+      DEBUG_PRINT('\t');
     }
   }
+  DEBUG_PRINTLN();
 
   // release CS
   digitalWrite(_cs, HIGH);
