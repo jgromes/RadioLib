@@ -139,7 +139,7 @@
   \brief There was an unexpected, unknown error. If you see this, something went incredibly wrong.
   Your Arduino may be possessed, contact your local exorcist to resolve this error.
 */
-#define ERR_UNKNOWN                            -1
+#define ERR_UNKNOWN                           -1
 
 // SX127x/RFM9x status codes
 
