@@ -4,7 +4,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
   _mod = mod;
 }
 
-int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint16_t preambleLength) {
+int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
@@ -53,6 +53,11 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
     return(state);
   }
 
+  state = setCurrentLimit(currentLimit);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setPreambleLength(preambleLength);
   if(state != ERR_NONE) {
     return(state);
@@ -64,7 +69,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, uint1
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float dataShaping) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping) {
   // set module properties
   _mod->init(USE_SPI, INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
@@ -103,6 +108,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   }
 
   state = setRxBandwidth(rxBw);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  state = setCurrentLimit(currentLimit);
   if(state != ERR_NONE) {
     return(state);
   }
