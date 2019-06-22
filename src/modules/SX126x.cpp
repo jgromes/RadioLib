@@ -447,7 +447,10 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   }
 
   // get packet length
-  size_t length = getPacketLength();
+  size_t length = len;
+  if(len == SX126X_MAX_PACKET_LENGTH) {
+    length = getPacketLength();
+  }
 
   // read packet data
   int16_t state = readBuffer(data, length);
@@ -774,67 +777,67 @@ int16_t SX126x::disableAddressFiltering() {
   return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp));
 }
 
-int16_t SX126x::setCRC(bool enableCRC) {
-  // check active modem
-  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
-    return(ERR_WRONG_MODEM);
-  }
-
-  // update packet parameters
-  if(enableCRC) {
-    _crcType = SX126X_LORA_CRC_ON;
-  } else {
-    _crcType = SX126X_LORA_CRC_OFF;
-  }
-  return(setPacketParams(_preambleLength, _crcType));
-}
-
 int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
   // check active modem
-  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
-    return(ERR_WRONG_MODEM);
-  }
+  uint8_t modem = getPacketType();
 
-  // update packet parameters
-  switch(len) {
-    case 0:
-      _crcTypeFSK = SX126X_GFSK_CRC_OFF;
-      break;
-    case 1:
-      if(inverted) {
-        _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE_INV;
-      } else {
-        _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE;
-      }
-      break;
-    case 2:
-      if(inverted) {
-        _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE_INV;
-      } else {
-        _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE;
-      }
-      break;
-    default:
-      return(ERR_INVALID_CRC_CONFIGURATION);
-  }
-  int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
-  if(state != ERR_NONE) {
+  if(modem == SX126X_PACKET_TYPE_GFSK) {
+    // update packet parameters
+    switch(len) {
+      case 0:
+        _crcTypeFSK = SX126X_GFSK_CRC_OFF;
+        break;
+      case 1:
+        if(inverted) {
+          _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE_INV;
+        } else {
+          _crcTypeFSK = SX126X_GFSK_CRC_1_BYTE;
+        }
+        break;
+      case 2:
+        if(inverted) {
+          _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE_INV;
+        } else {
+          _crcTypeFSK = SX126X_GFSK_CRC_2_BYTE;
+        }
+        break;
+      default:
+        return(ERR_INVALID_CRC_CONFIGURATION);
+    }
+
+    int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+
+    // write initial CRC value
+    uint8_t data[2] = {(uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF)};
+    state = writeRegister(SX126X_REG_CRC_INITIAL_MSB, data, 2);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+
+    // write CRC polynomial value
+    data[0] = (uint8_t)((polynomial >> 8) & 0xFF);
+    data[1] = (uint8_t)(polynomial & 0xFF);
+    state = writeRegister(SX126X_REG_CRC_POLYNOMIAL_MSB, data, 2);
+
     return(state);
+
+  } else if(modem == SX126X_PACKET_TYPE_LORA) {
+    // LoRa CRC doesn't allow to set CRC polynomial, inital value, or inversion
+
+    // update packet parameters
+    if(len) {
+      _crcType = SX126X_LORA_CRC_ON;
+    } else {
+      _crcType = SX126X_LORA_CRC_OFF;
+    }
+
+    return(setPacketParams(_preambleLength, _crcType));
   }
 
-  // write initial CRC value
-  uint8_t data[2] = {(uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF)};
-  state = writeRegister(SX126X_REG_CRC_INITIAL_MSB, data, 2);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // write CRC polynomial value
-  data[0] = (uint8_t)((polynomial >> 8) & 0xFF);
-  data[1] = (uint8_t)(polynomial & 0xFF);
-  state = writeRegister(SX126X_REG_CRC_POLYNOMIAL_MSB, data, 2);
-
-  return(state);
+  return(ERR_UNKNOWN);
 }
 
 float SX126x::getDataRate() {
@@ -942,6 +945,11 @@ int16_t SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
   int16_t state = SPIwriteCommand(SX126X_CMD_WRITE_REGISTER, dat, 2 + numBytes);
   delete[] dat;
   return(state);
+}
+
+int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
+  uint8_t cmd[] = {SX126X_CMD_READ_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF)};
+  return(SX126x::SPItransfer(cmd, 3, false, NULL, data, numBytes, true));
 }
 
 int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
@@ -1148,14 +1156,16 @@ int16_t SX126x::config(uint8_t modem) {
 }
 
 int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
-  return(SX126x::SPItransfer(cmd, true, data, NULL, numBytes, waitForBusy));
+  uint8_t cmdBuffer[] = {cmd};
+  return(SX126x::SPItransfer(cmdBuffer, 1, true, data, NULL, numBytes, waitForBusy));
 }
 
 int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
-  return(SX126x::SPItransfer(cmd, false, NULL, data, numBytes, waitForBusy));
+  uint8_t cmdBuffer[] = {cmd};
+  return(SX126x::SPItransfer(cmdBuffer, 1, false, NULL, data, numBytes, waitForBusy));
 }
 
-int16_t SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy) {
   // get pointer to used SPI interface and the settings
   SPIClass* spi = _mod->getSpi();
   SPISettings spiSettings = _mod->getSpiSettings();
@@ -1168,10 +1178,12 @@ int16_t SX126x::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* 
   digitalWrite(_mod->getCs(), LOW);
   spi->beginTransaction(spiSettings);
 
-  // send command byte
-  spi->transfer(cmd);
-  DEBUG_PRINT(cmd, HEX);
-  DEBUG_PRINT('\t');
+  // send command byte(s)
+  for(uint8_t n = 0; n < cmdLen; n++) {
+    spi->transfer(cmd[n]);
+    DEBUG_PRINT(cmd[n], HEX);
+    DEBUG_PRINT('\t');
+  }
 
   // variable to save error during SPI transfer
   uint8_t status = 0;

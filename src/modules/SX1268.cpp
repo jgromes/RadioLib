@@ -6,7 +6,7 @@ SX1268::SX1268(Module* mod) : SX126x(mod) {
 
 int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength) {
   // execute common part
-  int16_t state = SX126x::begin(bw, sf, cr, syncWord, preambleLength);
+  int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -18,12 +18,6 @@ int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
   }
 
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // OCP must be configured after PA
-  state = SX126x::setCurrentLimit(currentLimit);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -32,7 +26,7 @@ int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
 }
 int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping) {
   // execute common part
-  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, dataShaping);
+  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -44,12 +38,6 @@ int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   }
 
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // OCP must be configured after PA
-  state = SX126x::setCurrentLimit(currentLimit);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -94,11 +82,20 @@ int16_t SX1268::setOutputPower(int8_t power) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
 
+  // get current OCP configuration
+  uint8_t ocp = 0;
+  int16_t state = readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // enable high power PA
   SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
 
   // set output power
   // TODO power ramp time configuration
   SX126x::setTxParams(power);
-  return(ERR_NONE);
+
+  // restore OCP configuration
+  return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
