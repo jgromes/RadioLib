@@ -468,9 +468,6 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
     return(state);
   }
 
-  // add terminating null
-  data[length] = 0;
-
   // clear interrupt flags
   state = clearIrqStatus();
 
