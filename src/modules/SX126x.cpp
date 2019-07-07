@@ -1172,14 +1172,18 @@ int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, boo
   return(SX126x::SPItransfer(cmdBuffer, 1, false, NULL, data, numBytes, waitForBusy));
 }
 
-int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout) {
   // get pointer to used SPI interface and the settings
   SPIClass* spi = _mod->getSpi();
   SPISettings spiSettings = _mod->getSpiSettings();
 
   // ensure BUSY is low (state meachine ready)
-  // TODO timeout
-  while(digitalRead(_mod->getRx()));
+  uint32_t start = millis();
+  while(digitalRead(_mod->getRx())) {
+    if(millis() - start >= timeout) {
+      return(ERR_SPI_CMD_TIMEOUT);
+    }
+  }
 
   // start transfer
   digitalWrite(_mod->getCs(), LOW);
@@ -1242,10 +1246,14 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   digitalWrite(_mod->getCs(), HIGH);
 
   // wait for BUSY to go high and then low
-  // TODO timeout
   if(waitForBusy) {
     delayMicroseconds(1);
-    while(digitalRead(_mod->getRx()));
+    start = millis();
+    while(digitalRead(_mod->getRx())) {
+        if(millis() - start >= timeout) {
+          return(ERR_SPI_CMD_TIMEOUT);
+        }
+    }
   }
 
   // parse status
