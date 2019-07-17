@@ -14,7 +14,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 
 ### Supported modules:
 * __CC1101__ FSK radio module
-* __ES8266__ WiFi module
+* __ESP8266__ WiFi module
 * __HC05__ Bluetooth module
 * __JDY08__ BLE module
 * __nRF24L01__ 2.4 GHz module
