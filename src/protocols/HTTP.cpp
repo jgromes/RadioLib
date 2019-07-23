@@ -22,7 +22,7 @@ int16_t HTTPClient::get(const char* url, String& response) {
     host = new char[hostEnd - hostStart];
     strncpy(host, hostStart + 1, hostEnd - hostStart - 1);
     host[hostEnd - hostStart - 1] = 0x00;
-    
+
     // find the endpoint string
     endpoint = new char[url + strlen(url) - hostEnd + 1];
     strcpy(endpoint, hostEnd);
@@ -32,12 +32,12 @@ int16_t HTTPClient::get(const char* url, String& response) {
     host = new char[hostEnd - url + 1];
     strncpy(host, url, hostEnd - url);
     host[hostEnd - url] = 0x00;
-    
+
     // find the endpoint string
     endpoint = new char[url + strlen(url) - hostEnd + 1];
     strcpy(endpoint, hostEnd);
   }
-  
+
   // build the GET request
   char* request = new char[strlen(endpoint) + strlen(host) + 25];
   strcpy(request, "GET ");
@@ -45,9 +45,9 @@ int16_t HTTPClient::get(const char* url, String& response) {
   strcat(request, " HTTP/1.1\r\nHost: ");
   strcat(request, host);
   strcat(request, "\r\n\r\n");
-  
+
   delete[] endpoint;
-  
+
   // create TCP connection
   int16_t state = _tl->openTransportConnection(host, "TCP", _port);
   delete[] host;
@@ -55,22 +55,22 @@ int16_t HTTPClient::get(const char* url, String& response) {
     delete[] request;
     return(state);
   }
-  
+
   // send the GET request
   state = _tl->send(request);
   delete[] request;
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   //delay(1000);
-  
+
   // get the response length
   size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
   char* raw = new char[numBytes];
   size_t rawLength = _tl->receive((uint8_t*)raw, numBytes);
@@ -78,14 +78,14 @@ int16_t HTTPClient::get(const char* url, String& response) {
     delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
   }
-  
+
   // close the tl connection
   state = _tl->closeTransportConnection();
   if(state != ERR_NONE) {
     delete[] raw;
     return(state);
   }
-  
+
   // get the response body
   char* responseStart = strstr(raw, "\r\n");
   if(responseStart == NULL) {
@@ -97,7 +97,7 @@ int16_t HTTPClient::get(const char* url, String& response) {
   responseStr[raw + rawLength - responseStart - 2] = 0x00;
   response = String(responseStr);
   delete[] responseStr;
-  
+
   // return the HTTP status code
   char* statusStart = strchr(raw, ' ');
   delete[] raw;
@@ -123,7 +123,7 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
     host = new char[hostEnd - hostStart];
     strncpy(host, hostStart + 1, hostEnd - hostStart - 1);
     host[hostEnd - hostStart - 1] = 0x00;
-    
+
     // find the endpoint string
     endpoint = new char[url + strlen(url) - hostEnd + 1];
     strcpy(endpoint, hostEnd);
@@ -133,12 +133,12 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
     host = new char[hostEnd - url + 1];
     strncpy(host, url, hostEnd - url);
     host[hostEnd - url] = 0x00;
-    
+
     // find the endpoint string
     endpoint = new char[url + strlen(url) - hostEnd + 1];
     strcpy(endpoint, hostEnd);
   }
-  
+
   // build the POST request
   char contentLengthStr[8];
   itoa(strlen(content), contentLengthStr, 10);
@@ -154,29 +154,30 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
   strcat(request, "\r\n\r\n");
   strcat(request, content);
   strcat(request, "\r\n\r\n");
-  
+
   delete[] endpoint;
-  
+
   // create TCP connection
   int16_t state = _tl->openTransportConnection(host, "TCP", _port);
   delete[] host;
   if(state != ERR_NONE) {
+    delete[] request;
     return(state);
   }
-  
+
   // send the POST request
   state = _tl->send(request);
   delete[] request;
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // get the response length
   size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
   char* raw = new char[numBytes];
   size_t rawLength = _tl->receive((uint8_t*)raw, numBytes);
@@ -184,14 +185,14 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
     delete[] raw;
     return(ERR_RESPONSE_MALFORMED);
   }
-  
+
   // close the tl connection
   state = _tl->closeTransportConnection();
   if(state != ERR_NONE) {
     delete[] raw;
     return(state);
   }
-  
+
   // get the response body
   char* responseStart = strstr(raw, "\r\n");
   if(responseStart == NULL) {
@@ -203,7 +204,7 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
   responseStr[raw + rawLength - responseStart - 2] = 0x00;
   response = String(responseStr);
   delete[] responseStr;
-  
+
   // return the HTTP status code
   char* statusStart = strchr(raw, ' ');
   delete[] raw;
