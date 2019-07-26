@@ -690,6 +690,15 @@ class SX126x: public PhysicalLayer {
     */
     size_t getPacketLength(bool update = true);
 
+    /*!
+     \brief Get expected time-on-air for a given size of payload
+
+     \param len Payload length in bytes.
+
+     \returns Expected time-on-air in microseconds.
+   */
+   uint32_t getTimeOnAir(size_t len);
+
   protected:
     // SX1276x SPI command implementations
     int16_t setTx(uint32_t timeout = 0);

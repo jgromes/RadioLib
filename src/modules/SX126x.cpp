@@ -157,25 +157,11 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     // calculate timeout (150% of expected time-on-air)
-    float symbolLength = (float)((uint32_t)(1) << _sf) / (float)_bwKhz;
-    float sfCoeff1 = 4.25;
-    float sfCoeff2 = 8.0;
-    if(_sf == 5 || _sf == 6) {
-      sfCoeff1 = 6.25;
-      sfCoeff2 = 0.0;
-    }
-    uint8_t sfDivisor = 4*_sf;
-    if(symbolLength >= 16.0) {
-      sfDivisor = 4*(_sf - 2);
-    }
-    float nSymbol = _preambleLength + sfCoeff1 + 8 + ceil(max(8.0 * len + (_crcType * 16.0) - 4.0 * _sf + sfCoeff2 + 20.0, 0.0) / sfDivisor) * (_cr + 4);
-    timeout = (uint32_t)(symbolLength * nSymbol * 1500.0);
+    timeout = (float)getTimeOnAir(len) * 1.5;
 
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
-
     // calculate timeout (500% of expected time-on-air)
-    float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
-    timeout = (uint32_t)(((len * 8.0) / brBps) * 1000000.0 * 5.0);
+    timeout = (float)getTimeOnAir(len) * 5.0;
 
   } else {
     return(ERR_UNKNOWN);
@@ -875,6 +861,27 @@ size_t SX126x::getPacketLength(bool update) {
   uint8_t rxBufStatus[2];
   SPIreadCommand(SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
   return((size_t)rxBufStatus[0]);
+}
+
+uint32_t SX126x::getTimeOnAir(size_t len) {
+  if(getPacketType() == SX126X_PACKET_TYPE_LORA) {
+    float symbolLength = (float)((uint32_t)(1) << _sf) / (float)_bwKhz;
+    float sfCoeff1 = 4.25;
+    float sfCoeff2 = 8.0;
+    if(_sf == 5 || _sf == 6) {
+      sfCoeff1 = 6.25;
+      sfCoeff2 = 0.0;
+    }
+    uint8_t sfDivisor = 4*_sf;
+    if(symbolLength >= 16.0) {
+      sfDivisor = 4*(_sf - 2);
+    }
+    float nSymbol = _preambleLength + sfCoeff1 + 8 + ceil(max(8.0 * len + (_crcType * 16.0) - 4.0 * _sf + sfCoeff2 + 20.0, 0.0) / sfDivisor) * (_cr + 4);
+    return((uint32_t)(symbolLength * nSymbol * 1000.0));
+  } else {
+    float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
+    return((uint32_t)(((len * 8.0) / brBps) * 1000000.0));
+  }
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
