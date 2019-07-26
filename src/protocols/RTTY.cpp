@@ -84,11 +84,11 @@ uint16_t ITA2String::getBits(char c) {
   // search ITA2 table
   uint16_t code = 0x0000;
   for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
-    if(pgm_read_byte(ITA2Table[i][0]) == c) {
+    if(pgm_read_byte(&ITA2Table[i][0]) == c) {
       // character is in letter shift
       code = (ITA2_LTRS << 5) | i;
       break;
-    } else if(pgm_read_byte(ITA2Table[i][1]) == c) {
+    } else if(pgm_read_byte(&ITA2Table[i][1]) == c) {
       // character is in figures shift
       code = (ITA2_FIGS << 5) | i;
       break;
