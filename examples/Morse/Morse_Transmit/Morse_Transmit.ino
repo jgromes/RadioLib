@@ -42,6 +42,11 @@ void setup() {
   // current limit:               100 mA
   // sync word:                   0x2D  0x01
   int state = fsk.beginFSK();
+
+  // when using one of the non-LoRa modules for Morse code
+  // (RF69, CC1101, etc.), use the basic begin() method
+  // int state = fsk.begin();
+
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
