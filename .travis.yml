@@ -46,7 +46,7 @@ script:
   - |
     for example in $(find $PWD/examples -name '*.ino' | sort); do
       # check whether to skip this sketch
-      if [[ ${example} =~ $PAT2 ]]; then
+      if [[ ${example} =~ $SKIP_PAT ]]; then
         # skip sketch
         echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
       else
