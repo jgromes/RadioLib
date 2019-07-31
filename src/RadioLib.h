@@ -67,9 +67,11 @@
 #include "protocols/RTTY.h"
 
 // transport layer protocols
+#ifndef ESP8266
 #include "protocols/TransportLayer.h"
 #include "protocols/HTTP.h"
 #include "protocols/MQTT.h"
+#endif
 
 // RadioShield pin definitions
 #define RADIOSHIELD_CS_A   10
