@@ -39,17 +39,34 @@ branches:
     - master
 
 script:
+  # set sketch skipping pattern for some boards
+  if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+    # on ESP8266, skip HTTP and MQTT examples
+    SKIP_PAT='(HTTP|MQTT).*ino'
+  else
+    # default skip pattern (matches everything)
+    SKIP_PAT='.*'
+  fi
+
   # build all example sketches
   - for example in $(find $PWD/examples -name '*.ino' | sort); do
-      echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-      arduino --verify --board $BOARD $example;
-      if [ $? -ne 0 ]; then
-        echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
-        exit 1;
+      # check whether to skip this sketch
+      if [[ ${example} =~ $PAT2 ]]; then
+        # skip sketch
+        echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
       else
-        echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+        # build sketch
+        echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+        arduino --verify --board $BOARD $example;
+        if [ $? -ne 0 ]; then
+          echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+          exit 1;
+        else
+          echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+        fi
       fi
     done
+
   # generate Doxygen documentation (only for Arduino UNO)
   - if [ $BOARD = "arduino:avr:uno" ]; then
       sudo apt-get update;
