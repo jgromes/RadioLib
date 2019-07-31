@@ -11,7 +11,6 @@ Want to add a Bluetooth interface to your ZigBee network? Sure thing! Need to co
 
 RadioLib was originally created as a driver for [__RadioShield__](https://github.com/jgromes/RadioShield), but it can be used to control as many different wireless modules as you like - or at least as many as your Arduino can handle!
 
-
 ### Supported modules:
 * __CC1101__ FSK radio module
 * __ESP8266__ WiFi module
@@ -30,6 +29,10 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __HTTP__ for modules: ESP8266
 * __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101 and nRF24L01
 * __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101 and nRF24L01
+
+### Supported platforms:
+* __Arduino AVR boards__ - tested on Uno, Mega and Leonardo
+* __ESP8266 boards__ - NodeMCU, Wemos D1, etc.
 
 ### In development:
 * __SIM800C__ GSM module
