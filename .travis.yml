@@ -26,6 +26,9 @@ before_install:
   - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       arduino --install-boards esp8266:esp8266;
+      export SKIP_PAT='(HTTP|MQTT).*ino';
+    else
+      SKIP_PAT='.*';
     fi
 
 # create directory to save the library and create symbolic link
@@ -39,15 +42,6 @@ branches:
     - master
 
 script:
-  # set sketch skipping pattern for some boards
-  - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
-      # on ESP8266, skip HTTP and MQTT examples
-      SKIP_PAT='(HTTP|MQTT).*ino';
-    else
-      # default skip pattern (matches everything)
-      SKIP_PAT='.*';
-    fi
-
   # build all example sketches
   - for example in $(find $PWD/examples -name '*.ino' | sort); do
       # check whether to skip this sketch
