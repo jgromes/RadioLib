@@ -28,7 +28,7 @@ before_install:
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
     else
-      SKIP_PAT='.*';
+      export SKIP_PAT='.*';
     fi
 
 # create directory to save the library and create symbolic link
@@ -43,7 +43,8 @@ branches:
 
 script:
   # build all example sketches
-  - for example in $(find $PWD/examples -name '*.ino' | sort); do
+  - |
+    for example in $(find $PWD/examples -name '*.ino' | sort); do
       # check whether to skip this sketch
       if [[ ${example} =~ $PAT2 ]]; then
         # skip sketch
