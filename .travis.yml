@@ -42,10 +42,10 @@ script:
   # set sketch skipping pattern for some boards
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       # on ESP8266, skip HTTP and MQTT examples
-      SKIP_PAT='(HTTP|MQTT).*ino'
+      SKIP_PAT='(HTTP|MQTT).*ino';
     else
       # default skip pattern (matches everything)
-      SKIP_PAT='.*'
+      SKIP_PAT='.*';
     fi
 
   # build all example sketches
