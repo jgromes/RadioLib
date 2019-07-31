@@ -27,8 +27,6 @@ before_install:
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
-    else
-      export SKIP_PAT='.*';
     fi
 
 # create directory to save the library and create symbolic link
