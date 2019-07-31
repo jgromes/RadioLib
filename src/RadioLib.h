@@ -39,7 +39,9 @@
 #include "Module.h"
 
 #include "modules/CC1101.h"
+#ifndef ESP8266
 #include "modules/ESP8266.h"
+#endif
 #include "modules/HC05.h"
 #include "modules/JDY08.h"
 #include "modules/nRF24.h"

@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_ESP8266_H
+#if !defined(_RADIOLIB_ESP8266_H) && !defined(ESP8266)
 #define _RADIOLIB_ESP8266_H
 
 #include "Module.h"

@@ -5,6 +5,7 @@ env:
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
+    - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
 
 before_install:
   # install Arduino IDE
@@ -12,6 +13,7 @@ before_install:
   - tar xf arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
   - mv arduino-$ARDUINO_IDE_VERSION $HOME/arduino-ide
   - export PATH=$PATH:$HOME/arduino-ide
+
   # firewall Arduino IDE noise (https://github.com/per1234/arduino-ci-script/issues/1#issuecomment-504158113)
   - sudo iptables -P INPUT DROP
   - sudo iptables -P FORWARD DROP
@@ -19,6 +21,12 @@ before_install:
   - sudo iptables -A INPUT -i lo -j ACCEPT
   - sudo iptables -A OUTPUT -o lo -j ACCEPT
   - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+  # install 3rd party boards
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
+  - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+      arduino --install-boards esp8266:esp8266;
+    fi
 
 # create directory to save the library and create symbolic link
 install:

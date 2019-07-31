@@ -4,7 +4,7 @@
 #if ARDUINO >= 100
   #include "Arduino.h"
 #else
-  #include "WProgram.h"
+  #error "Unsupported Arduino version (< 1.0.0)"
 #endif
 
 //#define RADIOLIB_DEBUG
@@ -71,52 +71,52 @@
 /*!
   \brief Use 1 bit stop.
 */
-#define UART_STOPBIT_1                        0x01
+#define RADIOLIB_UART_STOPBIT_1               0x01
 
 /*!
   \brief Use 1.5 bit stop.
 */
-#define UART_STOPBIT_1_5                      0x02
+#define RADIOLIB_UART_STOPBIT_1_5             0x02
 
 /*!
   \brief Use 2 bit stop.
 */
-#define UART_STOPBIT_2                        0x03
+#define RADIOLIB_UART_STOPBIT_2               0x03
 
 /*!
   \brief No parity.
 */
-#define UART_PARITY_NONE                      0x00
+#define RADIOLIB_UART_PARITY_NONE             0x00
 
 /*!
   \brief Odd parity.
 */
-#define UART_PARITY_ODD                       0x01
+#define RADIOLIB_UART_PARITY_ODD              0x01
 
 /*!
   \brief Even parity.
 */
-#define UART_PARITY_EVEN                      0x02
+#define RADIOLIB_UART_PARITY_EVEN             0x02
 
 /*!
   \brief No flow control.
 */
-#define UART_FLOW_NONE                        0x00
+#define RADIOLIB_UART_FLOW_NONE               0x00
 
 /*!
   \brief RTS only.
 */
-#define UART_FLOW_RTS                         0x01
+#define RADIOLIB_UART_FLOW_RTS                0x01
 
 /*!
   \brief CTS only.
 */
-#define UART_FLOW_CTS                         0x02
+#define RADIOLIB_UART_FLOW_CTS                0x02
 
 /*!
   \brief Both RTS and CTS.
 */
-#define UART_FLOW_BOTH                        0x03
+#define RADIOLIB_UART_FLOW_BOTH               0x03
 
 /*!
   \}
