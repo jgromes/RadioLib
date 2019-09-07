@@ -9,7 +9,11 @@ void ISerial::begin(long speed) {
 }
 
 bool ISerial::listen() {
+#ifndef ESP32
   return(_mod->ModuleSerial->listen());
+#else
+  return true;
+#endif
 }
 
 void ISerial::end() {
@@ -17,15 +21,27 @@ void ISerial::end() {
 }
 
 bool ISerial::isListening() {
+#ifndef ESP32
   return(_mod->ModuleSerial->isListening());
+#else
+  return true;
+#endif
 }
 
 bool ISerial::stopListening() {
+#ifndef ESP32
   return(_mod->ModuleSerial->stopListening());
+#else
+  return true;
+#endif
 }
 
 bool ISerial::overflow() {
+#ifndef ESP32
   return(_mod->ModuleSerial->overflow());
+#else
+  return true;
+#endif
 }
 
 int ISerial::peek() {

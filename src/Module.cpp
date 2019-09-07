@@ -1,13 +1,17 @@
 #include "Module.h"
 
-Module::Module(int rx, int tx) {
+Module::Module(int rx, int tx, int sernum) {
   _cs = -1;
   _rx = rx;
   _tx = tx;
   _int0 = -1;
   _int1 = -1;
 
+#ifndef ESP32
   ModuleSerial = new SoftwareSerial(_rx, _tx);
+#else
+  ModuleSerial = new HardwareSerial(sernum);
+#endif
 }
 
 Module::Module(int cs, int int0, int int1, SPIClass& spi, SPISettings spiSettings) {
@@ -20,7 +24,7 @@ Module::Module(int cs, int int0, int int1, SPIClass& spi, SPISettings spiSetting
   _spiSettings = spiSettings;
 }
 
-Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISettings spiSettings) {
+Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISettings spiSettings, int sernum) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
@@ -29,7 +33,11 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
   _spi = &spi;
   _spiSettings = spiSettings;
 
+#ifndef ESP32
   ModuleSerial = new SoftwareSerial(_rx, _tx);
+#else
+  ModuleSerial = new HardwareSerial(sernum);
+#endif
 }
 
 Module::Module(int cs, int int0, int int1, int int2, SPIClass& spi, SPISettings spiSettings) {
@@ -51,7 +59,11 @@ void Module::init(uint8_t interface, uint8_t gpio) {
       _spi->begin();
       break;
     case USE_UART:
+#ifndef ESP32
       ModuleSerial->begin(baudrate);
+#else
+      ModuleSerial->begin(baudrate, _rx, _tx);
+#endif
       break;
     case USE_I2C:
       break;
