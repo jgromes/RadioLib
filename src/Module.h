@@ -3,7 +3,10 @@
 
 #include <SPI.h>
 //#include <Wire.h>
+#if defined(ESP32) || defined(SAMD_SERIES)
+#else
 #include <SoftwareSerial.h>
+#endif
 
 #include "TypeDef.h"
 
@@ -22,8 +25,14 @@ class Module {
       \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
 
       \param rx Arduino pin to be used as Rx pin for SoftwareSerial communication.
+
+      \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-    Module(int tx, int rx);
+#if defined(ESP32) || defined(SAMD_SERIES)
+    Module(int tx, int rx, HardwareSerial* useSer = &Serial1);
+#else
+    Module(int tx, int rx, HardwareSerial* useSer = nullptr);
+#endif
 
     /*!
       \brief SPI-based module constructor.
@@ -73,15 +82,26 @@ class Module {
       \param spi SPI interface to be used. Defaults to Arduino hardware SPI interface, can also use software SPI implementations.
 
       \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
+
+      \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
+#if defined(ESP32) || defined(SAMD_SERIES)
+    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = &Serial1);
+#else
+    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = nullptr);
+#endif
+      
 
     // public member variables
 
     /*!
       \brief Internal SoftwareSerial instance.
     */
+#if defined(ESP32) || defined(SAMD_SERIES)
+    HardwareSerial* ModuleSerial;
+#else
     SoftwareSerial* ModuleSerial;
+#endif
 
     /*!
       \brief Baud rate of SoftwareSerial UART communication. Defaults to 9600 baud.
