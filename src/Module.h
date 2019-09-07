@@ -3,9 +3,7 @@
 
 #include <SPI.h>
 //#include <Wire.h>
-#ifndef ESP32
 #include <SoftwareSerial.h>
-#endif
 
 #include "TypeDef.h"
 
@@ -24,10 +22,8 @@ class Module {
       \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
 
       \param rx Arduino pin to be used as Rx pin for SoftwareSerial communication.
-
-      \param sernum number of the HW serial to be used on ESP32. Defaults to 2.
     */
-    Module(int tx, int rx, int sernum = 2);
+    Module(int tx, int rx);
 
     /*!
       \brief SPI-based module constructor.
@@ -77,21 +73,15 @@ class Module {
       \param spi SPI interface to be used. Defaults to Arduino hardware SPI interface, can also use software SPI implementations.
 
       \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
-
-      \param sernum number of the HW serial to be used on ESP32. Defaults to 2.
     */
-    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), int sernum = 2);
+    Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
 
     // public member variables
 
     /*!
       \brief Internal SoftwareSerial instance.
     */
-#ifndef ESP32
     SoftwareSerial* ModuleSerial;
-#else
-	HardwareSerial* ModuleSerial;
-#endif
 
     /*!
       \brief Baud rate of SoftwareSerial UART communication. Defaults to 9600 baud.

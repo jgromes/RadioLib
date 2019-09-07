@@ -6,10 +6,6 @@ env:
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
-    - HARDWARE=espressif/esp32 \
-      CORE=https://github.com/espressif/arduino-esp32/archive/70d0d4648766cea047613062ed50a9ecfc9de31f.tar.gz \
-      BOARD=espressif:esp32:esp32
-
 
 before_install:
   # install Arduino IDE
