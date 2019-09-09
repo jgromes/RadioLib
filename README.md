@@ -33,6 +33,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 ### Supported platforms:
 * __Arduino AVR boards__ - tested on Uno, Mega and Leonardo
 * __ESP8266 boards__ - NodeMCU, Wemos D1, etc.
+* __ESP32 boards__ - tested on ESP-WROOM-32
 
 ### In development:
 * __SIM800C__ GSM module
