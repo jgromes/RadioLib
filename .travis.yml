@@ -6,6 +6,7 @@ env:
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
+    - BOARD="esp32:esp32:esp32"
 
 before_install:
   # install Arduino IDE
@@ -27,6 +28,8 @@ before_install:
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
+    elif [[ "$BOARD" =~ "esp32:esp32:" ]]; then
+      arduino --install-boards esp32:esp32;
     fi
 
 # create directory to save the library and create symbolic link
