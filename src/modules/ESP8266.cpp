@@ -53,7 +53,7 @@ int16_t ESP8266::join(const char* ssid, const char* password) {
   // build AT command
   const char* atStr = "AT+CWJAP_CUR=\"";
   uint8_t cmdLen = strlen(atStr) + strlen(ssid) + strlen(password) + 4;
-  char* cmd = new char[cmdLen];
+  char* cmd = new char[cmdLen + 1];
   strcpy(cmd, atStr);
   strcat(cmd, ssid);
   strcat(cmd, "\",\"");
@@ -87,7 +87,7 @@ int16_t ESP8266::openTransportConnection(const char* host, const char* protocol,
   if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
 	  cmdLen += strlen(tcpKeepAliveStr) + 1;
   }
-  char* cmd = new char[cmdLen];
+  char* cmd = new char[cmdLen + 1];
   strcpy(cmd, atStr);
   strcat(cmd, protocol);
   strcat(cmd, "\",\"");
@@ -122,7 +122,7 @@ int16_t ESP8266::send(const char* data) {
   char lenStr[8];
   itoa(strlen(data), lenStr, 10);
   const char* atStr = "AT+CIPSEND=";
-  char* cmd = new char[strlen(atStr) + strlen(lenStr)];
+  char* cmd = new char[strlen(atStr) + strlen(lenStr) + 1];
   strcpy(cmd, atStr);
   strcat(cmd, lenStr);
 
@@ -146,7 +146,7 @@ int16_t ESP8266::send(uint8_t* data, uint32_t len) {
   char lenStr[8];
   itoa(len, lenStr, 10);
   const char atStr[] = "AT+CIPSEND=";
-  char* cmd = new char[strlen(atStr) + strlen(lenStr)];
+  char* cmd = new char[strlen(atStr) + strlen(lenStr) + 1];
   strcpy(cmd, atStr);
   strcat(cmd, lenStr);
 
