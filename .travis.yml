@@ -2,11 +2,14 @@ env:
   global:
     - ARDUINO_IDE_VERSION="1.8.9"
   matrix:
+    # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
     - BOARD="esp32:esp32:esp32"
+    - BOARD="stm32duino:STM32F1:genericSTM32F103C"
+    - BOARD="arduino:samd:arduino_zero_native"
 
 before_install:
   # install Arduino IDE
@@ -24,12 +27,16 @@ before_install:
   - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
   # install 3rd party boards
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json" --save-prefs 2>&1
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://dl.espressif.com/dl/package_esp32_index.json,http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
     elif [[ "$BOARD" =~ "esp32:esp32:" ]]; then
       arduino --install-boards esp32:esp32;
+    elif [[ "$BOARD" =~ "stm32duino:STM32F1:" ]]; then
+      arduino --install-boards stm32duino:STM32F1;
+    elif [[ "$BOARD" =~ "arduino:samd:" ]]; then
+      arduino --install-boards arduino:samd;
     fi
 
 # create directory to save the library and create symbolic link
