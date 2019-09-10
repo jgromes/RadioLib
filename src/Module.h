@@ -3,7 +3,7 @@
 
 #include <SPI.h>
 //#include <Wire.h>
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
 #else
 #include <SoftwareSerial.h>
 #endif
@@ -28,7 +28,7 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
     Module(int tx, int rx, HardwareSerial* useSer = &Serial1);
 #else
     Module(int tx, int rx, HardwareSerial* useSer = nullptr);
@@ -85,19 +85,19 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = &Serial1);
 #else
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = nullptr);
 #endif
-      
+
 
     // public member variables
 
     /*!
       \brief Internal SoftwareSerial instance.
     */
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
     HardwareSerial* ModuleSerial;
 #else
     SoftwareSerial* ModuleSerial;
