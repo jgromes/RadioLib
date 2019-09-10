@@ -8,7 +8,7 @@ env:
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
     - BOARD="esp32:esp32:esp32"
-    - BOARD="stm32duino:STM32F1:genericSTM32F103C"
+    - BOARD="stm32duino:STM32F1:genericSTM32F103C:device_variant=STM32F103C8"
     - BOARD="arduino:samd:arduino_zero_native"
 
 before_install:
