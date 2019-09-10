@@ -7,7 +7,7 @@ Module::Module(int rx, int tx, HardwareSerial* useSer) {
   _int0 = -1;
   _int1 = -1;
 
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
     ModuleSerial = useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
@@ -33,7 +33,7 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
   _spi = &spi;
   _spiSettings = spiSettings;
 
-#if defined(ESP32) || defined(SAMD_SERIES)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
   ModuleSerial = useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
