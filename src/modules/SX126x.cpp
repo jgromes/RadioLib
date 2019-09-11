@@ -325,7 +325,7 @@ int16_t SX126x::scanChannel() {
 
 int16_t SX126x::sleep() {
   uint8_t data[] = {SX126X_SLEEP_START_COLD | SX126X_SLEEP_RTC_OFF};
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_SLEEP, data, 1);
+  int16_t state = SPIwriteCommand(SX126X_CMD_SET_SLEEP, data, 1, false);
 
   // wait for SX126x to safely enter sleep mode
   delayMicroseconds(500);
