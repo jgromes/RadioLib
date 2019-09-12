@@ -605,6 +605,17 @@ class SX126x: public PhysicalLayer {
     int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
 
     /*!
+      \brief Sets FSK sync word in the form of array of up to 8 bytes.
+
+      \param syncWord FSK sync word to be set.
+
+      \param len FSK sync word length in bits.
+
+      \returns \ref status_codes
+    */
+    int16_t setSyncBits(uint8_t *sync, uint8_t bitsLen);
+
+    /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.
 
       \param nodeAddr Node address to be set.

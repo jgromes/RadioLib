@@ -721,6 +721,33 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
   return(state);
 }
 
+int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) { 
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // check sync word Length
+  if(bitsLen > 0x40) {
+    return(ERR_INVALID_SYNC_WORD);
+  }
+
+  uint8_t bytesLen = bitsLen / 8;
+  if ((bitsLen % 8) != 0) bytesLen++;
+  
+  // write sync word
+  int16_t state = writeRegister(SX126X_REG_SYNC_WORD_0, syncWord, bytesLen);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // update packet parameters
+  _syncWordLength = bitsLen;
+  state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+
+  return(state);
+}
+
 int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
