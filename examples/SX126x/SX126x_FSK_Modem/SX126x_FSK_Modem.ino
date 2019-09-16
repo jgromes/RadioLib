@@ -73,6 +73,13 @@ void setup() {
     Serial.println(state);
     while (true);
   }
+   
+  // FSK modem on SX126x can handle the sync word setting in bits, not just
+  // whole bytes. The value used is LSB first.
+  // This makes same result as fsk.setSyncWord(syncWord, 8):
+  state = fsk.setSyncBits(syncWord, 64);
+  // This will use 0x012 as sync word (12 bits only):
+  state = fsk.setSyncBits(syncWord, 12);
 
   // FSK modem allows advanced CRC configuration
   // Default is CCIT CRC16 (2 bytes, initial 0x1D0F, polynomial 0x1021, inverted)
