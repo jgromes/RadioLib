@@ -733,7 +733,9 @@ int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
   }
 
   uint8_t bytesLen = bitsLen / 8;
-  if ((bitsLen % 8) != 0) bytesLen++;
+  if ((bitsLen % 8) != 0) {
+    bytesLen++;
+  }
   
   // write sync word
   int16_t state = writeRegister(SX126X_REG_SYNC_WORD_0, syncWord, bytesLen);
