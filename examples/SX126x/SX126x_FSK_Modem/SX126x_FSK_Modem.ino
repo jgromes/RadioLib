@@ -75,7 +75,7 @@ void setup() {
   }
    
   // FSK modem on SX126x can handle the sync word setting in bits, not just
-  // whole bytes. The value used is LSB first.
+  // whole bytes. The value used is left-justified.
   // This makes same result as fsk.setSyncWord(syncWord, 8):
   state = fsk.setSyncBits(syncWord, 64);
   // This will use 0x012 as sync word (12 bits only):
