@@ -25,6 +25,9 @@ RF69 rf = new Module(10, 2, 3);
 // https://github.com/jgromes/RadioShield
 //RF69 rf = RadioShield.ModuleA;
 
+// save transmission state between loops
+int transmissionState = ERR_NONE;
+
 void setup() {
   Serial.begin(9600);
 
@@ -54,7 +57,7 @@ void setup() {
 
   // you can transmit C-string or Arduino string up to
   // 64 characters long
-  state = rf.startTransmit("Hello World!");
+  transmissionState = rf.startTransmit("Hello World!");
 
   // you can also transmit byte array up to 64 bytes long
   /*
@@ -62,35 +65,61 @@ void setup() {
                       0x78, 0xAB, 0xCD, 0xEF};
     state = rf.transmit(byteArr, 8);
   */
-
-  if (state != ERR_NONE) {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-  }
 }
 
-// flag to indicate that a packet was received
+// flag to indicate that a packet was sent
 volatile bool transmittedFlag = false;
 
+// disable interrupt when it's not needed
+volatile bool enableInterrupt = true;
+
+// this function is called when a complete packet
+// is transmitted by the module
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
 void setFlag(void) {
-  // packet transmission is finished, set the flag
+  // check if the interrupt is enabled
+  if(!enableInterrupt) {
+    return;
+  }
+
+  // we sent a packet, set the flag
   transmittedFlag = true;
 }
 
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
-    Serial.println(F("packet transmission finished!"));
+    // disable the interrupt service routine while
+    // processing the data
+    enableInterrupt = false;
 
-    // wait one second before next transmission
+    // reset flag
+    transmittedFlag = false;
+
+    if (transmissionState == ERR_NONE) {
+      // packet was successfully sent
+      Serial.println(F("transmission finished!"));
+
+      // NOTE: when using interrupt-driven transmit method,
+      //       it is not possible to automatically measure
+      //       transmission data rate using getDataRate()
+
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(transmissionState);
+
+    }
+
+    // wait a second before transmitting again
     delay(1000);
 
-    // send another packet
+    // send another one
     Serial.print(F("[RF69] Sending another packet ... "));
 
     // you can transmit C-string or Arduino string up to
-    // 64 characters long
-    int state = rf.startTransmit("Hello World!");
+    // 256 characters long
+    transmissionState = rf.startTransmit("Hello World!");
 
     // you can also transmit byte array up to 256 bytes long
     /*
@@ -99,10 +128,8 @@ void loop() {
       int state = rf.transmit(byteArr, 8);
     */
 
-    if (state != ERR_NONE) {
-      Serial.print(F("failed, code "));
-      Serial.println(state);
-    }
+    // we're ready to send more packets,
+    // enable interrupt service routine
+    enableInterrupt = true;
   }
-
 }
