@@ -106,6 +106,7 @@ setDio2Action	KEYWORD2
 setTCXO	KEYWORD2
 setDio2AsRfSwitch	KEYWORD2
 getTimeOnAir	KEYWORD2
+setSyncBits KEYWORD2
 
 # ESP8266
 join	KEYWORD2
