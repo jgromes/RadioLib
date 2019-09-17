@@ -607,9 +607,9 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets FSK sync word in the form of array of up to 8 bytes.
 
-      \param syncWord FSK sync word to be set. 
+      \param syncWord FSK sync word to be set.
 
-      \param len FSK sync word length in bits. If less than 64 bits the LSB's of syncWord will be ignored.
+      \param bitsLen FSK sync word length in bits. If length is not divisible by 8, least significant bits of syncWord will be ignored.
 
       \returns \ref status_codes
     */
