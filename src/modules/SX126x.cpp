@@ -134,6 +134,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
     return(state);
   }
 
+  state = setWhitening(true, 0x0100);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   state = setDio2AsRfSwitch(false);
 
   return(state);
@@ -365,7 +370,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   if(modem == SX126X_PACKET_TYPE_LORA) {
     state = setPacketParams(_preambleLength, _crcType, len);
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
-    state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, len);
+    state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, len);
   } else {
     return(ERR_UNKNOWN);
   }
@@ -554,7 +559,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
     return(setPacketParams(_preambleLength, _crcType));
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
-    return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp));
+    return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening));
   }
 
   return(ERR_UNKNOWN);
@@ -716,7 +721,7 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
 
   // update packet parameters
   _syncWordLength = len * 8;
-  state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+  state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
 
   return(state);
 }
@@ -745,7 +750,7 @@ int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
 
   // update packet parameters
   _syncWordLength = bitsLen;
-  state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+  state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
 
   return(state);
 }
@@ -758,7 +763,7 @@ int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
 
   // enable address filtering (node only)
   _addrComp = SX126X_GFSK_ADDRESS_FILT_NODE;
-  int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+  int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -777,7 +782,7 @@ int16_t SX126x::setBroadcastAddress(uint8_t broadAddr) {
 
   // enable address filtering (node and broadcast)
   _addrComp = SX126X_GFSK_ADDRESS_FILT_NODE_BROADCAST;
-  int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+  int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -796,7 +801,7 @@ int16_t SX126x::disableAddressFiltering() {
 
   // disable address filtering
   _addrComp = SX126X_GFSK_ADDRESS_FILT_OFF;
-  return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp));
+  return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening));
 }
 
 int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
@@ -827,7 +832,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
         return(ERR_INVALID_CRC_CONFIGURATION);
     }
 
-    int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp);
+    int16_t state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
     if(state != ERR_NONE) {
       return(state);
     }
@@ -860,6 +865,38 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
   }
 
   return(ERR_UNKNOWN);
+}
+
+int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state = ERR_NONE;
+  if(enabled != true) {
+    // disable whitening
+    _whitening = SX126X_GFSK_WHITENING_OFF;
+    state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+  } else {
+    // TODO: possibly take care of this note (pg. 65 of datasheet v1.2): "The user should not change the value of the 7 MSB's of this register."
+    // enable whitening
+    _whitening = SX126X_GFSK_WHITENING_ON;
+    // write initial whitening value
+    uint8_t data[2] = {(uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF)};
+    state = writeRegister(SX126X_REG_WHITENING_INITIAL_MSB, data, 2);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+    state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+  }
+  return(state);
 }
 
 float SX126x::getDataRate() {
@@ -1086,7 +1123,7 @@ int16_t SX126x::setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_
   return(SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 6));
 }
 
-int16_t SX126x::setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength, uint8_t packetType, uint8_t preambleDetectorLength, uint8_t whitening) {
+int16_t SX126x::setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t payloadLength, uint8_t packetType, uint8_t preambleDetectorLength) {
   uint8_t data[9] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF),
                      preambleDetectorLength, syncWordLength, addrComp,
                      packetType, payloadLength, crcType, whitening};

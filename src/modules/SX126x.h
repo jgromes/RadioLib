@@ -656,6 +656,18 @@ class SX126x: public PhysicalLayer {
     int16_t setCRC(uint8_t len, uint16_t initial = 0x1D0F, uint16_t polynomial = 0x1021, bool inverted = true);
 
     /*!
+      \brief Sets FSK whitening parameters.
+
+      \param enabled True = Whitening enabled
+
+      \param initial Initial value used for the whitening LFSR in FSK mode.
+      The user should not change the value of the 7 MSB's of this register (pg. 65 of datasheet v1.2)
+
+      \returns \ref status_codes
+    */
+    int16_t setWhitening(bool enabled, uint16_t initial = 0x0100);
+
+    /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
 
       \param TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V
@@ -730,7 +742,7 @@ class SX126x: public PhysicalLayer {
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
-    int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16, uint8_t whitening = SX126X_GFSK_WHITENING_ON);
+    int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t payloadLength = 0xFF, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     uint8_t getStatus();
     uint32_t getPacketStatus();
@@ -747,7 +759,7 @@ class SX126x: public PhysicalLayer {
     float _bwKhz;
 
     uint32_t _br, _freqDev;
-    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength, _addrComp;
+    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength, _addrComp, _whitening;
     uint16_t _preambleLengthFSK;
     float _rxBwKhz;
 
