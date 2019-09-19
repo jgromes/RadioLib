@@ -386,6 +386,7 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t* addr) {
     case 0:
       _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addr, _addrWidth);
       state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P0_ON, 0, 0);
+      break;
     case 1:
       _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P1, addr, _addrWidth);
       state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P1_ON, 1, 1);
