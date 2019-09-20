@@ -661,7 +661,6 @@ class SX126x: public PhysicalLayer {
       \param enabled True = Whitening enabled
 
       \param initial Initial value used for the whitening LFSR in FSK mode.
-      The user should not change the value of the 7 MSB's of this register (pg. 65 of datasheet v1.2)
 
       \returns \ref status_codes
     */

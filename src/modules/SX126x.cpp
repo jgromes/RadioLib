@@ -877,20 +877,32 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
   if(enabled != true) {
     // disable whitening
     _whitening = SX126X_GFSK_WHITENING_OFF;
+
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
     if(state != ERR_NONE) {
       return(state);
     }
   } else {
-    // TODO: possibly take care of this note (pg. 65 of datasheet v1.2): "The user should not change the value of the 7 MSB's of this register."
     // enable whitening
     _whitening = SX126X_GFSK_WHITENING_ON;
+
     // write initial whitening value
-    uint8_t data[2] = {(uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF)};
-    state = writeRegister(SX126X_REG_WHITENING_INITIAL_MSB, data, 2);
+    // as per note on pg. 65 of datasheet v1.2: "The user should not change the value of the 7 MSB's of this register"
+    uint8_t data[2];
+    // first read the actual value and mask 7 MSB which we can not change
+    // if different value is written in 7 MSB, the Rx won't even work (tested on HW)
+    state = readRegister(SX126X_REG_WHITENING_INITIAL_MSB, data, 1);
     if(state != ERR_NONE) {
       return(state);
     }
+    data[0] = (data[0] & 0xFE) | (uint8_t)((initial >> 8) & 0x01);
+    data[1] = (uint8_t)(initial & 0xFF);
+    state = writeRegister(SX126X_REG_WHITENING_INITIAL_MSB, data, 2);
+
+    if(state != ERR_NONE) {
+      return(state);
+    }
+
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening);
     if(state != ERR_NONE) {
       return(state);
