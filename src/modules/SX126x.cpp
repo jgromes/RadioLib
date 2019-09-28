@@ -726,7 +726,7 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
   return(state);
 }
 
-int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) { 
+int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
@@ -741,7 +741,7 @@ int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
   if ((bitsLen % 8) != 0) {
     bytesLen++;
   }
-  
+
   // write sync word
   int16_t state = writeRegister(SX126X_REG_SYNC_WORD_0, syncWord, bytesLen);
   if(state != ERR_NONE) {
@@ -1297,7 +1297,8 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       // check status
       if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
-         ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
+         ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED) ||
+         in == 0x00 || in == 0xFF) {
         status = in;
       }
     }
@@ -1313,7 +1314,8 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     // check status
     if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
-       ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
+       ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED) ||
+       in == 0x00 || in == 0xFF) {
       status = in;
     }
     for(uint8_t n = 0; n < numBytes; n++) {
@@ -1349,6 +1351,9 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       return(ERR_SPI_CMD_INVALID);
     case SX126X_STATUS_CMD_FAILED:
       return(ERR_SPI_CMD_FAILED);
+    case(0x00):
+    case(0xFF):
+      return(ERR_CHIP_NOT_FOUND);
     default:
       return(ERR_NONE);
   }
