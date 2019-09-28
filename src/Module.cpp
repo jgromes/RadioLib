@@ -11,6 +11,7 @@ Module::Module(int rx, int tx, HardwareSerial* useSer) {
   ModuleSerial = useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
+  (void)useSer;
 #endif
 }
 
@@ -37,6 +38,7 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
   ModuleSerial = useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
+  (void)useSer;
 #endif
 }
 
