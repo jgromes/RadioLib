@@ -289,6 +289,7 @@
 #define SX126X_STATUS_CMD_INVALID                     0b00001000  //  3     1                     invalid SPI command
 #define SX126X_STATUS_CMD_FAILED                      0b00001010  //  3     1                     SPI command failed to execute
 #define SX126X_STATUS_TX_DONE                         0b00001100  //  3     1                     packet transmission done
+#define SX126X_STATUS_SPI_FAILED                      0b11111111  //  7     0     SPI transaction failed
 
 //SX126X_CMD_GET_PACKET_STATUS
 #define SX126X_GFSK_RX_STATUS_PREAMBLE_ERR            0b10000000  //  7     7     GFSK Rx status: preamble error

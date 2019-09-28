@@ -1294,13 +1294,13 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       RADIOLIB_VERBOSE_PRINT(in, HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
 
-      // check status
-      if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
+      // check status - SX126X_STATUS_CMD_TIMEOUT is disabled due to regular timeouts
+      if(//((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
-        status = in;
+        status = in & 0b00001110;
       } else if(in == 0x00 || in == 0xFF) {
-        status = ERR_CHIP_NOT_FOUND;
+        status = SX126X_STATUS_SPI_FAILED;
       }
     }
     RADIOLIB_VERBOSE_PRINTLN();
@@ -1313,12 +1313,12 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     RADIOLIB_VERBOSE_PRINT('\t')
 
     // check status
-    if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
+    if(//((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
-      status = in;
+      status = in & 0b00001110;
     } else if(in == 0x00 || in == 0xFF) {
-      status = ERR_CHIP_NOT_FOUND;
+      status = SX126X_STATUS_SPI_FAILED;
     }
     for(uint8_t n = 0; n < numBytes; n++) {
       dataIn[n] = spi->transfer(SX126X_CMD_NOP);
@@ -1353,7 +1353,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       return(ERR_SPI_CMD_INVALID);
     case SX126X_STATUS_CMD_FAILED:
       return(ERR_SPI_CMD_FAILED);
-    case(ERR_CHIP_NOT_FOUND):
+    case SX126X_STATUS_SPI_FAILED:
       return(ERR_CHIP_NOT_FOUND);
     default:
       return(ERR_NONE);
