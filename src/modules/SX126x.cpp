@@ -1297,12 +1297,13 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       // check status
       if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
-         ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED) ||
-         in == 0x00 || in == 0xFF) {
+         ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
         status = in;
+      } else if(in == 0x00 || in == 0xFF) {
+        status = ERR_CHIP_NOT_FOUND;
       }
     }
-    RADIOLIB_VERBOSE_PRINT();
+    RADIOLIB_VERBOSE_PRINTLN();
   } else {
     // skip the first byte for read-type commands (status-only)
     uint8_t in = spi->transfer(SX126X_CMD_NOP);
@@ -1314,9 +1315,10 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     // check status
     if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
-       ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED) ||
-       in == 0x00 || in == 0xFF) {
+       ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
       status = in;
+    } else if(in == 0x00 || in == 0xFF) {
+      status = ERR_CHIP_NOT_FOUND;
     }
     for(uint8_t n = 0; n < numBytes; n++) {
       dataIn[n] = spi->transfer(SX126X_CMD_NOP);
@@ -1325,7 +1327,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
     }
-    RADIOLIB_VERBOSE_PRINT();
+    RADIOLIB_VERBOSE_PRINTLN();
   }
 
   // stop transfer
@@ -1351,8 +1353,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       return(ERR_SPI_CMD_INVALID);
     case SX126X_STATUS_CMD_FAILED:
       return(ERR_SPI_CMD_FAILED);
-    case(0x00):
-    case(0xFF):
+    case(ERR_CHIP_NOT_FOUND):
       return(ERR_CHIP_NOT_FOUND);
     default:
       return(ERR_NONE);
