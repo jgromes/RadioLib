@@ -36,11 +36,11 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   }
 
   if(!flagFound) {
-    DEBUG_PRINTLN(F("No CC1101 found!"));
+    RADIOLIB_DEBUG_PRINTLN(F("No CC1101 found!"));
     SPI.end();
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    DEBUG_PRINTLN(F("Found CC1101! (match by CC1101_REG_VERSION == 0x14)"));
+    RADIOLIB_DEBUG_PRINTLN(F("Found CC1101! (match by CC1101_REG_VERSION == 0x14)"));
   }
 
   // configure settings not accessible by API

@@ -195,9 +195,9 @@ int16_t SX1278::setBandwidth(float bw) {
 
     // calculate symbol length and set low data rate optimization, if needed
     float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
-    DEBUG_PRINT("Symbol length: ");
-    DEBUG_PRINT(symbolLength);
-    DEBUG_PRINTLN(" ms");
+    RADIOLIB_DEBUG_PRINT("Symbol length: ");
+    RADIOLIB_DEBUG_PRINT(symbolLength);
+    RADIOLIB_DEBUG_PRINTLN(" ms");
     if(symbolLength >= 16.0) {
       state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
     } else {
@@ -249,9 +249,9 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
 
     // calculate symbol length and set low data rate optimization, if needed
     float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
-    DEBUG_PRINT("Symbol length: ");
-    DEBUG_PRINT(symbolLength);
-    DEBUG_PRINTLN(" ms");
+    RADIOLIB_DEBUG_PRINT("Symbol length: ");
+    RADIOLIB_DEBUG_PRINT(symbolLength);
+    RADIOLIB_DEBUG_PRINTLN(" ms");
     if(symbolLength >= 16.0) {
       state = _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
     } else {

@@ -172,9 +172,9 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     return(ERR_UNKNOWN);
   }
 
-  DEBUG_PRINT(F("Timeout in "));
-  DEBUG_PRINT(timeout);
-  DEBUG_PRINTLN(F(" us"));
+  RADIOLIB_DEBUG_PRINT(F("Timeout in "));
+  RADIOLIB_DEBUG_PRINT(timeout);
+  RADIOLIB_DEBUG_PRINTLN(F(" us"));
 
   // start transmission
   state = startTransmit(data, len, addr);
@@ -236,9 +236,9 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     return(ERR_UNKNOWN);
   }
 
-  DEBUG_PRINT(F("Timeout in "));
-  DEBUG_PRINT(timeout);
-  DEBUG_PRINTLN(F(" us"));
+  RADIOLIB_DEBUG_PRINT(F("Timeout in "));
+  RADIOLIB_DEBUG_PRINT(timeout);
+  RADIOLIB_DEBUG_PRINTLN(F(" us"));
 
   // start reception
   uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
@@ -1107,9 +1107,9 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   // calculate symbol length and enable low data rate optimization, if needed
   if(ldro == 0xFF) {
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
-    DEBUG_PRINT("Symbol length: ");
-    DEBUG_PRINT(symbolLength);
-    DEBUG_PRINTLN(" ms");
+    RADIOLIB_DEBUG_PRINT("Symbol length: ");
+    RADIOLIB_DEBUG_PRINT(symbolLength);
+    RADIOLIB_DEBUG_PRINTLN(" ms");
     if(symbolLength >= 16.0) {
       _ldro = SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
@@ -1277,8 +1277,8 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   // send command byte(s)
   for(uint8_t n = 0; n < cmdLen; n++) {
     spi->transfer(cmd[n]);
-    DEBUG_PRINT(cmd[n], HEX);
-    DEBUG_PRINT('\t');
+    RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
+    RADIOLIB_VERBOSE_PRINT('\t');
   }
 
   // variable to save error during SPI transfer
@@ -1289,10 +1289,10 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     for(uint8_t n = 0; n < numBytes; n++) {
       // send byte
       uint8_t in = spi->transfer(dataOut[n]);
-      DEBUG_PRINT(dataOut[n], HEX);
-      DEBUG_PRINT('\t');
-      DEBUG_PRINT(in, HEX);
-      DEBUG_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(in, HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
 
       // check status
       if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
@@ -1302,14 +1302,14 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
         status = in;
       }
     }
-    DEBUG_PRINTLN();
+    RADIOLIB_VERBOSE_PRINT();
   } else {
     // skip the first byte for read-type commands (status-only)
     uint8_t in = spi->transfer(SX126X_CMD_NOP);
-    DEBUG_PRINT(SX126X_CMD_NOP, HEX);
-    DEBUG_PRINT('\t');
-    DEBUG_PRINT(in, HEX);
-    DEBUG_PRINT('\t')
+    RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
+    RADIOLIB_VERBOSE_PRINT('\t');
+    RADIOLIB_VERBOSE_PRINT(in, HEX);
+    RADIOLIB_VERBOSE_PRINT('\t')
 
     // check status
     if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
@@ -1320,12 +1320,12 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     }
     for(uint8_t n = 0; n < numBytes; n++) {
       dataIn[n] = spi->transfer(SX126X_CMD_NOP);
-      DEBUG_PRINT(SX126X_CMD_NOP, HEX);
-      DEBUG_PRINT('\t');
-      DEBUG_PRINT(dataIn[n], HEX);
-      DEBUG_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
     }
-    DEBUG_PRINTLN();
+    RADIOLIB_VERBOSE_PRINT();
   }
 
   // stop transfer

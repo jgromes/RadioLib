@@ -20,7 +20,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // check SPI connection
   int16_t val = _mod->SPIgetRegValue(NRF24_REG_SETUP_AW);
   if(!((val >= 1) && (val <= 3))) {
-    DEBUG_PRINTLN(F("No nRF24 found!"));
+    RADIOLIB_DEBUG_PRINTLN(F("No nRF24 found!"));
     _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   }

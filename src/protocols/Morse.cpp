@@ -119,9 +119,9 @@ size_t MorseClient::write(uint8_t b) {
 
   // check if the requested code was found in the array
   if(found) {
-    DEBUG_PRINT(mc.c);
-    DEBUG_PRINT('\t');
-    DEBUG_PRINTLN(mc.m);
+    RADIOLIB_DEBUG_PRINT(mc.c);
+    RADIOLIB_DEBUG_PRINT('\t');
+    RADIOLIB_DEBUG_PRINTLN(mc.m);
 
     // iterate over Morse code representation and output appropriate tones
     for(uint8_t i = 0; i < strlen(mc.m); i++) {
@@ -145,7 +145,7 @@ size_t MorseClient::write(uint8_t b) {
     }
 
     // letter space
-    DEBUG_PRINTLN();
+    RADIOLIB_DEBUG_PRINTLN();
     delay(_dotLength * 3);
 
     return(1);
