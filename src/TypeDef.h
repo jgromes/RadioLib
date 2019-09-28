@@ -7,6 +7,9 @@
   #error "Unsupported Arduino version (< 1.0.0)"
 #endif
 
+// the following platforms do not support SoftwareSerial library
+#define SOFTWARE_SERIAL_UNSUPPORTED (defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32))
+
 #define RADIOLIB_DEBUG_PORT  Serial
 
 //#define RADIOLIB_DEBUG
