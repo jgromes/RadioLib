@@ -135,7 +135,7 @@ void loop() {
       // print SNR (Signal-to-Noise Ratio)
       Serial.print(F("[SX1278] SNR:\t\t"));
       Serial.print(lora.getSNR());
-      Serial.println(F(" dBm"));
+      Serial.println(F(" dB"));
 
       // print frequency error
       Serial.print(F("[SX1278] Frequency error:\t"));
