@@ -176,7 +176,11 @@ class XBee {
     size_t _frameLength;
     bool _frameHeaderProcessed;
 
-    char* _packetData;
+    #ifdef STATIC_ONLY
+      char _packetData[STATIC_ARRAY_SIZE];
+    #else
+      char* _packetData = new char[0];
+    #endif
     uint8_t _packetSource[8];
 
     int16_t confirmChanges();

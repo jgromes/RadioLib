@@ -2,20 +2,20 @@
 
 ITA2String::ITA2String(char c) {
   _len = 1;
-  _str = new char[1];
   _str[0] = c;
   _ita2Len = 0;
 }
 
 ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
-  _str = new char[_len];
   strcpy(_str, str);
   _ita2Len = 0;
 }
 
 ITA2String::~ITA2String() {
-  delete[] _str;
+  #ifndef STATIC_ONLY
+    delete[] _str;
+  #endif
 }
 
 size_t ITA2String::length() {
@@ -32,7 +32,11 @@ size_t ITA2String::length() {
 
 uint8_t* ITA2String::byteArr() {
   // create temporary array 2x the string length (figures may be 3 bytes)
-  uint8_t* temp = new uint8_t[_len*2 + 1];
+  #ifdef STATIC_ONLY
+    uint8_t temp[STATIC_ARRAY_SIZE*2 + 1];
+  #else
+    uint8_t* temp = new uint8_t[_len*2 + 1];
+  #endif
 
   size_t arrayLen = 0;
   bool flagFigure = false;
@@ -75,7 +79,9 @@ uint8_t* ITA2String::byteArr() {
 
   uint8_t* arr = new uint8_t[arrayLen];
   memcpy(arr, temp, arrayLen);
-  delete[] temp;
+  #ifndef STATIC_ONLY
+    delete[] temp;
+  #endif
 
   return(arr);
 }
@@ -202,7 +208,11 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   }
 
   // dynamically allocate memory
-  char* str = new char[len];
+  #ifdef STATIC_ONLY
+    char str[STATIC_ARRAY_SIZE];
+  #else
+    char* str = new char[len];
+  #endif
 
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
@@ -217,7 +227,9 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, len);
   }
-  delete[] str;
+  #ifndef STATIC_ONLY
+    delete[] str;
+  #endif
   return(n);
 }
 

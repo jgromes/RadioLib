@@ -18,21 +18,25 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
     remainingLength += (2 + userNameLen);
   }
   if(passwordLen > 0) {
-    remainingLength += (2 + passwordLen);  
+    remainingLength += (2 + passwordLen);
   }
   if((willTopicLen > 0) && (willMessageLen > 0)) {
     remainingLength += (2 + willTopicLen) + (2 + willMessageLen);
   }
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = encodeLength(remainingLength, encoded);
-  
+
   // build the CONNECT packet
-  uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
-  
+  #ifdef STATIC_ONLY
+    uint8_t packet[256];
+  #else
+    uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
+  #endif
+
   // fixed header
   packet[0] = (MQTT_CONNECT << 4)  | 0b0000;
   memcpy(packet + 1, encoded, encodedBytes);
-  
+
   // variable header
   // protocol name
   size_t pos = encodedBytes + 1;
@@ -40,42 +44,42 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   packet[pos++] = 0x04;
   memcpy(packet + pos, "MQTT", 4);
   pos += 4;
-  
+
   // protocol level
-  packet[pos++] = 0x04; 
-  
-  // flags        
+  packet[pos++] = 0x04;
+
+  // flags
   packet[pos++] = 0x00;
   if(cleanSession) {
     packet[encodedBytes + 8] |= MQTT_CONNECT_CLEAN_SESSION;
   }
-  
+
   // keep alive interval in seconds
   packet[pos++] = (keepAlive & 0xFF00) >> 8;
   packet[pos++] = keepAlive & 0x00FF;
-  
+
   // payload
   // clientId
   packet[pos++] = (clientIdLen & 0xFF00) >> 8;
   packet[pos++] = clientIdLen & 0x00FF;
   memcpy(packet + pos, clientId, clientIdLen);
   pos += clientIdLen;
-  
+
   // will topic and message
   if((willTopicLen > 0) && (willMessageLen > 0)) {
     packet[encodedBytes + 8] |= MQTT_CONNECT_WILL_FLAG;
-    
+
     packet[pos++] = (willTopicLen & 0xFF00) >> 8;
     packet[pos++] = willTopicLen & 0x00FF;
     memcpy(packet + pos, willTopic, willTopicLen);
     pos += willTopicLen;
-    
+
     packet[pos++] = (willMessageLen & 0xFF00) >> 8;
     packet[pos++] = willMessageLen & 0x00FF;
     memcpy(packet + pos, willMessage, willMessageLen);
     pos += willMessageLen;
   }
-  
+
   // user name
   if(userNameLen > 0) {
     packet[encodedBytes + 8] |= MQTT_CONNECT_USER_NAME_FLAG;
@@ -84,7 +88,7 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
     memcpy(packet + pos, userName, userNameLen);
     pos += userNameLen;
   }
-  
+
   // password
   if(passwordLen > 0) {
     packet[encodedBytes + 8] |= MQTT_CONNECT_PASSWORD_FLAG;
@@ -93,54 +97,66 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
     memcpy(packet + pos, password, passwordLen);
     pos += passwordLen;
   }
-    
+
   // create TCP connection
   int16_t state = _tl->openTransportConnection(host, "TCP", _port, keepAlive);
   if(state != ERR_NONE) {
-    delete[] packet;
+    #ifndef STATIC_ONLY
+      delete[] packet;
+    #endif
     return(state);
   }
-  
+
   // send MQTT packet
   state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  delete[] packet;
+  #ifndef STATIC_ONLY
+    delete[] packet;
+  #endif
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // get the response length (MQTT CONNACK response has to be 4 bytes long)
   size_t numBytes = _tl->getNumBytes();
   if(numBytes != 4) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
-  uint8_t* response = new uint8_t[numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t response[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* response = new uint8_t[numBytes];
+  #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_CONNACK << 4) && (response[1] == 2)) {
     uint8_t returnCode = response[3];
-    delete[] response;
+    #ifndef STATIC_ONLY
+      delete[] response;
+    #endif
     return(returnCode);
   }
-  
-  delete[] response;
+
+  #ifndef STATIC_ONLY
+    delete[] response;
+  #endif
   return(ERR_RESPONSE_MALFORMED);
 }
 
 int16_t MQTTClient::disconnect() {
   // build the DISCONNECT packet
   uint8_t packet[2];
-  
+
   // fixed header
   packet[0] = (MQTT_DISCONNECT << 4) | 0b0000;
   packet[1] = 0x00;
-  
+
   // send MQTT packet
   int16_t state = _tl->send(packet, 2);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // close tl connection
   return(_tl->closeTransportConnection());
 }
@@ -156,14 +172,18 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
   uint32_t remainingLength = (2 + topicLen) + messageLen;
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = encodeLength(remainingLength, encoded);
-  
+
   // build the PUBLISH packet
-  uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
-  
+  #ifdef STATIC_ONLY
+    uint8_t packet[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
+  #endif
+
   // fixed header
   packet[0] = (MQTT_PUBLISH << 4) | 0b0000;
   memcpy(packet + 1, encoded, encodedBytes);
-  
+
   // variable header
   // topic name
   size_t pos = encodedBytes + 1;
@@ -171,19 +191,21 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
   packet[pos++] = topicLen & 0x00FF;
   memcpy(packet + pos, topic, topicLen);
   pos += topicLen;
-  
+
   // packet ID
-  
+
   // payload
   // message
   memcpy(packet + pos, message, messageLen);
   pos += messageLen;
-  
+
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  delete[] packet;
+  #ifndef STATIC_ONLY
+    delete[] packet;
+  #endif
   return(state);
-  
+
   //TODO: implement QoS > 0 and PUBACK response checking
 }
 
@@ -193,21 +215,25 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
   uint32_t remainingLength = 2 + (2 + topicFilterLen + 1);
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = encodeLength(remainingLength, encoded);
-  
+
   // build the SUBSCRIBE packet
-  uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
-  
+  #ifdef STATIC_ONLY
+    uint8_t packet[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
+  #endif
+
   // fixed header
   packet[0] = (MQTT_SUBSCRIBE << 4) | 0b0010;
   memcpy(packet + 1, encoded, encodedBytes);
-  
+
   // variable header
   // packet ID
   size_t pos = encodedBytes + 1;
   uint16_t packetId = _packetId++;
   packet[pos++] = (packetId & 0xFF00) >> 8;
   packet[pos++] = packetId & 0x00FF;
-  
+
   // payload
   // topic filter
   packet[pos++] = (topicFilterLen & 0xFF00) >> 8;;
@@ -215,35 +241,45 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
   memcpy(packet + pos, topicFilter, topicFilterLen);
   pos += topicFilterLen;
   packet[pos++] = 0x00; // QoS 0
-  
+
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  delete[] packet;
+  #ifndef STATIC_ONLY
+    delete[] packet;
+  #endif
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // get the response length (MQTT SUBACK response has to be 5 bytes long for single subscription)
   size_t numBytes = _tl->getNumBytes();
   if(numBytes != 5) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
-  uint8_t* response = new uint8_t[numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t response[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* response = new uint8_t[numBytes];
+  #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_SUBACK << 4) && (response[1] == 3)) {
     // check packet ID
     uint16_t receivedId = response[3] | response[2] << 8;
     int16_t returnCode = response[4];
-    delete[] response;
+    #ifndef STATIC_ONLY
+      delete[] response;
+    #endif
     if(receivedId != packetId) {
       return(ERR_MQTT_UNEXPECTED_PACKET_ID);
     }
     return(returnCode);
   }
-  
-  delete[] response;
+
+  #ifndef STATIC_ONLY
+    delete[] response;
+  #endif
   return(ERR_RESPONSE_MALFORMED);
 }
 
@@ -253,87 +289,109 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   uint32_t remainingLength = 2 + (2 + topicFilterLen);
   uint8_t encoded[] = {0, 0, 0, 0};
   size_t encodedBytes = encodeLength(remainingLength, encoded);
-  
+
   // build the UNSUBSCRIBE packet
-  uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
-  
+  #ifdef STATIC_ONLY
+    uint8_t packet[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
+  #endif
+
   // fixed header
   packet[0] = (MQTT_UNSUBSCRIBE << 4) | 0b0010;
   memcpy(packet + 1, encoded, encodedBytes);
-  
+
   // variable header
   // packet ID
   size_t pos = encodedBytes + 1;
   uint16_t packetId = _packetId++;
   packet[pos++] = (packetId & 0xFF00) >> 8;
   packet[pos++] = packetId & 0x00FF;
-  
+
   // payload
   // topic filter
   packet[pos++] = (topicFilterLen & 0xFF00) >> 8;;
   packet[pos++] = topicFilterLen & 0x00FF;
   memcpy(packet + pos, topicFilter, topicFilterLen);
   pos += topicFilterLen;
-  
+
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  delete[] packet;
+  #ifndef STATIC_ONLY
+    delete[] packet;
+  #endif
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // get the response length (MQTT UNSUBACK response has to be 4 bytes long)
   size_t numBytes = _tl->getNumBytes();
   if(numBytes != 4) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
-  uint8_t* response = new uint8_t[numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t response[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* response = new uint8_t[numBytes];
+  #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_UNSUBACK << 4) && (response[1] == 2)) {
     // check packet ID
     uint16_t receivedId = response[3] | response[2] << 8;
-    delete[] response;
+    #ifndef STATIC_ONLY
+      delete[] response;
+    #endif
     if(receivedId != packetId) {
       return(ERR_MQTT_UNEXPECTED_PACKET_ID);
     }
     return(ERR_NONE);
   }
-  
-  delete[] response;
+
+  #ifndef STATIC_ONLY
+    delete[] response;
+  #endif
   return(ERR_RESPONSE_MALFORMED);
 }
 
 int16_t MQTTClient::ping() {
   // build the PINGREQ packet
   uint8_t packet[2];
-  
+
   // fixed header
   packet[0] = (MQTT_PINGREQ << 4) | 0b0000;
   packet[1] = 0x00;
-  
+
   // send MQTT packet
   int16_t state = _tl->send(packet, 2);
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // get the response length (MQTT PINGRESP response has to be 2 bytes long)
   size_t numBytes = _tl->getNumBytes();
   if(numBytes != 2) {
     return(ERR_RESPONSE_MALFORMED_AT);
   }
-  
+
   // read the response
-  uint8_t* response = new uint8_t[numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t response[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* response = new uint8_t[numBytes];
+  #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_PINGRESP << 4) && (response[1] == 0)) {
-    delete[] response;
+    #ifndef STATIC_ONLY
+      delete[] response;
+    #endif
     return(ERR_NONE);
   }
-  
-  delete[] response;
+
+  #ifndef STATIC_ONLY
+    delete[] response;
+  #endif
   return(ERR_RESPONSE_MALFORMED);
 }
 
@@ -343,42 +401,42 @@ int16_t MQTTClient::check(void (*func)(const char*, const char*)) {
   if(state != ERR_NONE) {
     return(state);
   }
-  
+
   // check new data
   size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {
     return(ERR_MQTT_NO_NEW_PACKET_AVAILABLE);
   }
-  
+
   // read the PUBLISH packet from server
   uint8_t* dataIn = new uint8_t[numBytes];
   _tl->receive(dataIn, numBytes);
   if(dataIn[0] == MQTT_PUBLISH << 4) {
     // TODO: properly decode remaining length
     uint8_t remainingLength = dataIn[1];
-    
+
     // get the topic
     size_t topicLength = dataIn[3] | dataIn[2] << 8;
     char* topic = new char[topicLength + 1];
     memcpy(topic, dataIn + 4, topicLength);
     topic[topicLength] = 0x00;
-    
+
     // get the message
     size_t messageLength = remainingLength - topicLength - 2;
     char* message = new char[messageLength + 1];
     memcpy(message, dataIn + 4 + topicLength, messageLength);
     message[messageLength] = 0x00;
-    
+
     // execute the callback function provided by user
     func(topic, message);
-    
+
     delete[] topic;
     delete[] message;
     delete[] dataIn;
     return(ERR_NONE);
   }
   delete[] dataIn;
-  
+
   return(ERR_MQTT_NO_NEW_PACKET_AVAILABLE);
 }
 

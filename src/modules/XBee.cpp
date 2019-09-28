@@ -5,7 +5,6 @@ XBee::XBee(Module* mod) {
   _frameID = 0x01;
   _frameLength = 0;
   _frameHeaderProcessed = false;
-  _packetData = new char[0];
 }
 
 int16_t XBee::begin(long speed) {
@@ -69,7 +68,11 @@ int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload,
   // build the frame
   size_t payloadLen = strlen(payload);
   size_t dataLen = 8 + 2 + 1 + 1 + payloadLen;
-  uint8_t* cmd = new uint8_t[dataLen];
+  #ifdef STATIC_ONLY
+    uint8_t cmd[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* cmd = new uint8_t[dataLen];
+  #endif
   memcpy(cmd, dest, 8);
   memcpy(cmd + 8, destNetwork, 2);
   cmd[10] = radius;
@@ -79,7 +82,9 @@ int16_t XBee::transmit(uint8_t* dest, uint8_t* destNetwork, const char* payload,
   // send frame
   uint8_t frameID = _frameID++;
   sendApiFrame(XBEE_API_FRAME_ZIGBEE_TRANSMIT_REQUEST, frameID, cmd, dataLen);
-  delete[] cmd;
+  #ifndef STATIC_ONLY
+    delete[] cmd;
+  #endif
 
   // get response code
   return(readApiFrame(frameID, 5));
@@ -114,20 +119,28 @@ size_t XBee::available() {
     return(0);
   }
 
-  uint8_t* frame = new uint8_t[_frameLength];  //24
+  #ifdef STATIC_ONLY
+    char frame[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* frame = new uint8_t[_frameLength];
+  #endif
   for(size_t i = 0; i < _frameLength; i++) {
     frame[i] = _mod->ModuleSerial->read();
   }
 
   // save packet source and data
   size_t payloadLength = _frameLength - 12;
-  delete[] _packetData;
-  _packetData = new char[payloadLength];
+  #ifndef STATIC_ONLY
+    delete[] _packetData;
+    _packetData = new char[payloadLength];
+  #endif
   memcpy(_packetData, frame + 12, payloadLength - 1);
   _packetData[payloadLength - 1] = '\0';
   memcpy(_packetSource, frame + 1, 8);
 
-  delete[] frame;
+  #ifndef STATIC_ONLY
+    delete[] frame;
+  #endif
   _frameLength = 0;
   _frameHeaderProcessed = false;
 
@@ -219,22 +232,34 @@ int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, co
 
   // set higher address bytes
   RADIOLIB_DEBUG_PRINTLN(F("Setting address (high) ..."));
-  char* addressHigh = new char[strlen(destinationAddressHigh) + 4];
+  #ifdef STATIC_ONLY
+    char addressHigh[13];
+  #else
+    char* addressHigh = new char[strlen(destinationAddressHigh) + 4];
+  #endif
   strcpy(addressHigh, "ATDH");
   strcat(addressHigh, destinationAddressHigh);
   bool res = _mod->ATsendCommand(addressHigh);
-  delete[] addressHigh;
+  #ifndef STATIC_ONLY
+    delete[] addressHigh;
+  #endif
   if(!res) {
     return(ERR_AT_FAILED);
   }
 
   // set lower address bytes
   RADIOLIB_DEBUG_PRINTLN(F("Setting address (low) ..."));
-  char* addressLow = new char[strlen(destinationAddressLow) + 4];
+  #ifdef STATIC_ONLY
+    char addressLow[13];
+  #else
+    char* addressLow = new char[strlen(destinationAddressLow) + 4];
+  #endif
   strcpy(addressLow, "ATDL");
   strcat(addressLow, destinationAddressLow);
   res = _mod->ATsendCommand(addressLow);
-  delete[] addressLow;
+  #ifndef STATIC_ONLY
+    delete[] addressLow;
+  #endif
   if(!res) {
     return(ERR_AT_FAILED);
   }
@@ -257,11 +282,17 @@ int16_t XBeeSerial::setPanId(const char* panId) {
 
   // set PAN ID
   RADIOLIB_DEBUG_PRINTLN(F("Setting PAN ID ..."));
-  char* cmd = new char[strlen(panId) + 4];
+  #ifdef STATIC_ONLY
+    char cmd[21];
+  #else
+    char* cmd = new char[strlen(panId) + 4];
+  #endif
   strcpy(cmd, "ATID");
   strcat(cmd, panId);
   bool res = _mod->ATsendCommand(cmd);
-  delete[] cmd;
+  #ifndef STATIC_ONLY
+    delete[] cmd;
+  #endif
   if(!res) {
     return(ERR_AT_FAILED);
   }
@@ -333,7 +364,11 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, const char* data) {
 void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length) {
   // build the API frame
   size_t frameLength = 1 + 2 + length + 1 + 2;
-  uint8_t* frame = new uint8_t[frameLength];
+  #ifdef STATIC_ONLY
+    uint8_t frame[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* frame = new uint8_t[frameLength];
+  #endif
 
   frame[0] = 0x7E;                          // start delimiter
   frame[1] = ((length + 2) & 0xFF00) >> 8;  // length MSB
@@ -355,7 +390,9 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
   }
 
   // deallocate memory
-  delete[] frame;
+  #ifndef STATIC_ONLY
+    delete[] frame;
+  #endif
 }
 
 int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
@@ -381,7 +418,11 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   RADIOLIB_DEBUG_PRINTLN(numBytes);
 
   // read the response
-  uint8_t* resp = new uint8_t[numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t resp[STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* resp = new uint8_t[numBytes];
+  #endif
   for(uint16_t i = 0; i < numBytes; i++) {
     resp[i] = _mod->ModuleSerial->read();
   }
@@ -410,7 +451,9 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
 
   // codePos does not include start delimiter and frame ID
   uint8_t code = resp[codePos];
-  delete[] resp;
+  #ifndef STATIC_ONLY
+    delete[] resp;
+  #endif
   return(code);
 }
 

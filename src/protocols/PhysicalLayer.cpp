@@ -19,7 +19,11 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   }
 
   // dynamically allocate memory
-  char* str = new char[len];
+  #ifdef STATIC_ONLY
+    char str[STATIC_ARRAY_SIZE];
+  #else
+    char* str = new char[len];
+  #endif
 
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
@@ -29,7 +33,9 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
 
   // transmit string
   int16_t state = transmit(str, addr);
-  delete[] str;
+  #ifndef STATIC_ONLY
+    delete[] str;
+  #endif
   return(state);
 }
 
@@ -62,10 +68,14 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  uint8_t* data = new uint8_t[length + 1];
-  if(!data) {
-    return(ERR_MEMORY_ALLOCATION_FAILED);
-  }
+  #ifdef STATIC_ONLY
+    uint8_t data[STATIC_ARRAY_SIZE + 1];
+  #else
+    uint8_t* data = new uint8_t[length + 1];
+    if(!data) {
+      return(ERR_MEMORY_ALLOCATION_FAILED);
+    }
+  #endif
 
   // read the received data
   state = readData(data, length);
@@ -79,7 +89,9 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  delete[] data;
+  #ifndef STATIC_ONLY
+    delete[] data;
+  #endif
 
   return(state);
 }
@@ -96,10 +108,14 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  uint8_t* data = new uint8_t[length + 1];
-  if(!data) {
-    return(ERR_MEMORY_ALLOCATION_FAILED);
-  }
+  #ifdef STATIC_ONLY
+    uint8_t data[STATIC_ARRAY_SIZE + 1];
+  #else
+    uint8_t* data = new uint8_t[length + 1];
+    if(!data) {
+      return(ERR_MEMORY_ALLOCATION_FAILED);
+    }
+  #endif
 
   // attempt packet reception
   state = receive(data, length);
@@ -118,7 +134,9 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  delete[] data;
+  #ifndef STATIC_ONLY
+    delete[] data;
+  #endif
 
   return(state);
 }

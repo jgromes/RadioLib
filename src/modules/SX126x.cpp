@@ -1030,12 +1030,18 @@ int16_t SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMa
 }
 
 int16_t SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
-  uint8_t* dat = new uint8_t[2 + numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t dat[STATIC_ARRAY_SIZE + 2];
+  #else
+    uint8_t* dat = new uint8_t[2 + numBytes];
+  #endif
   dat[0] = (uint8_t)((addr >> 8) & 0xFF);
   dat[1] = (uint8_t)(addr & 0xFF);
   memcpy(dat + 2, data, numBytes);
   int16_t state = SPIwriteCommand(SX126X_CMD_WRITE_REGISTER, dat, 2 + numBytes);
-  delete[] dat;
+  #ifndef STATIC_ONLY
+    delete[] dat;
+  #endif
   return(state);
 }
 
@@ -1045,22 +1051,34 @@ int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
 }
 
 int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
-  uint8_t* dat = new uint8_t[1 + numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t dat[STATIC_ARRAY_SIZE + 1];
+  #else
+    uint8_t* dat = new uint8_t[1 + numBytes];
+  #endif
   dat[0] = offset;
   memcpy(dat + 1, data, numBytes);
   int16_t state = SPIwriteCommand(SX126X_CMD_WRITE_BUFFER, dat, 1 + numBytes);
-  delete[] dat;
+  #ifndef STATIC_ONLY
+    delete[] dat;
+  #endif
   return(state);
 }
 
 int16_t SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
   // offset will be always set to 0 (one extra NOP is sent)
-  uint8_t* dat = new uint8_t[1 + numBytes];
+  #ifdef STATIC_ONLY
+    uint8_t dat[STATIC_ARRAY_SIZE + 1];
+  #else
+    uint8_t* dat = new uint8_t[1 + numBytes];
+  #endif
   dat[0] = SX126X_CMD_NOP;
   memcpy(dat + 1, data, numBytes);
   int16_t state = SPIreadCommand(SX126X_CMD_READ_BUFFER, dat, 1 + numBytes);
   memcpy(data, dat + 1, numBytes);
-  delete[] dat;
+  #ifndef STATIC_ONLY
+    delete[] dat;
+  #endif
   return(state);
 }
 
@@ -1180,7 +1198,7 @@ int16_t SX126x::setFrequencyRaw(float freq) {
 
 int16_t SX126x::config(uint8_t modem) {
   // set regulator mode
-  uint8_t* data = new uint8_t[1];
+  uint8_t data[7];
   data[0] = SX126X_REGULATOR_DC_DC;
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
   if(state != ERR_NONE) {
@@ -1208,8 +1226,6 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // set CAD parameters
-  delete[] data;
-  data = new uint8_t[7];
   data[0] = SX126X_CAD_ON_8_SYMB;
   data[1] = _sf + 13;
   data[2] = 10;
@@ -1230,8 +1246,6 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // calibrate all blocks
-  delete[] data;
-  data = new uint8_t[1];
   data[0] = SX126X_CALIBRATE_ALL;
   state = SPIwriteCommand(SX126X_CMD_CALIBRATE, data, 1);
   if(state != ERR_NONE) {
@@ -1241,8 +1255,6 @@ int16_t SX126x::config(uint8_t modem) {
   // wait for calibration completion
   delayMicroseconds(1);
   while(digitalRead(_mod->getRx()));
-
-  delete[] data;
 
   return(ERR_NONE);
 }
