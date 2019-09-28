@@ -89,7 +89,7 @@ void loop() {
     // of the last received packet
     Serial.print(F("[SX1262] SNR:\t\t"));
     Serial.print(lora.getSNR());
-    Serial.println(F(" dBm"));
+    Serial.println(F(" dB"));
 
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
