@@ -1,14 +1,13 @@
 #ifndef _RADIOLIB_MODULE_H
 #define _RADIOLIB_MODULE_H
 
+#include "TypeDef.h"
+
 #include <SPI.h>
 //#include <Wire.h>
-#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
-#else
+#if !(SOFTWARE_SERIAL_UNSUPPORTED)
 #include <SoftwareSerial.h>
 #endif
-
-#include "TypeDef.h"
 
 /*!
   \class Module
@@ -28,7 +27,7 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
+#if SOFTWARE_SERIAL_UNSUPPORTED
     Module(int tx, int rx, HardwareSerial* useSer = &Serial1);
 #else
     Module(int tx, int rx, HardwareSerial* useSer = nullptr);
@@ -85,7 +84,7 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
+#if SOFTWARE_SERIAL_UNSUPPORTED
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = &Serial1);
 #else
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = nullptr);
@@ -97,7 +96,7 @@ class Module {
     /*!
       \brief Internal SoftwareSerial instance.
     */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
+#if SOFTWARE_SERIAL_UNSUPPORTED
     HardwareSerial* ModuleSerial;
 #else
     SoftwareSerial* ModuleSerial;
