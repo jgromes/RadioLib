@@ -256,6 +256,12 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     }
   }
 
+  // put radio to standby
+  state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // read the received data
   return(readData(data, len));
 }
