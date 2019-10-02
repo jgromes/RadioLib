@@ -77,6 +77,7 @@ void setup() {
   // lora.sleep()
   // lora.transmit();
   // lora.receive();
+  // lora.readData();
   // lora.scanChannel();
 }
 
@@ -109,9 +110,6 @@ void loop() {
 
     // reset flag
     receivedFlag = false;
-
-    // put module to standby while reading data
-    lora.standby();
 
     // you can read received data as an Arduino String
     String str;

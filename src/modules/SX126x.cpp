@@ -256,12 +256,6 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     }
   }
 
-  // put radio to standby
-  state = standby();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
   // read the received data
   return(readData(data, len));
 }
@@ -446,6 +440,12 @@ int16_t SX126x::startReceive(uint32_t timeout) {
 }
 
 int16_t SX126x::readData(uint8_t* data, size_t len) {
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // check integrity CRC
   uint16_t irq = getIrqStatus();
   if((irq & SX126X_IRQ_CRC_ERR) || (irq & SX126X_IRQ_HEADER_ERR)) {
@@ -460,7 +460,7 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   }
 
   // read packet data
-  int16_t state = readBuffer(data, length);
+  state = readBuffer(data, length);
   if(state != ERR_NONE) {
     return(state);
   }
