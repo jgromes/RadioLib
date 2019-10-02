@@ -110,6 +110,9 @@ void loop() {
     // reset flag
     receivedFlag = false;
 
+    // put module to standby while reading data
+    lora.standby();
+
     // you can read received data as an Arduino String
     String str;
     int state = lora.readData(str);
@@ -148,6 +151,9 @@ void loop() {
       Serial.println(state);
 
     }
+
+    // put module back to listen mode
+    lora.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine
