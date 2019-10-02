@@ -5,7 +5,7 @@
 
 #include <SPI.h>
 //#include <Wire.h>
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifndef SOFTWARE_SERIAL_UNSUPPORTED
 #include <SoftwareSerial.h>
 #endif
 
