@@ -8,7 +8,9 @@
 #endif
 
 // the following platforms do not support SoftwareSerial library
-#define SOFTWARE_SERIAL_UNSUPPORTED (defined(ESP32) || defined(SAMD_SERIES) || defined (ARDUINO_ARCH_STM32))
+#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32)
+  #define SOFTWARE_SERIAL_UNSUPPORTED
+#endif
 
 // uncomment to enable static-only memory management: no dynamic allocation will be performed
 // Warning: Large static arrays will be created in some methods. It is also not advised to send large packets in this mode.
