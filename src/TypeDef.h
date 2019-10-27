@@ -8,7 +8,7 @@
 #endif
 
 // the following platforms do not support SoftwareSerial library
-#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__)
   #define SOFTWARE_SERIAL_UNSUPPORTED
 #endif
 

@@ -8,6 +8,7 @@ env:
     - BOARD="STM32:stm32:GenF1:pnum=BLUEPILL_F103C6"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
     - BOARD="arduino:samd:arduino_zero_native"
+    - BOARD="arduino:sam:arduino_due_x"
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:leonardo"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
@@ -38,6 +39,8 @@ before_install:
       arduino --install-boards STM32:stm32;
     elif [[ "$BOARD" =~ "arduino:samd:" ]]; then
       arduino --install-boards arduino:samd;
+    elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
+      arduino --install-boards arduino:sam;
     fi
 
 # create directory to save the library and create symbolic link

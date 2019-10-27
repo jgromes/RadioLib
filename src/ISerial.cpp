@@ -9,7 +9,7 @@ void ISerial::begin(long speed) {
 }
 
 bool ISerial::listen() {
-#if defined ( ESP32 )  || defined (SAMD_SERIES) || defined (ARDUINO_ARCH_STM32)
+#ifdef SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->listen());
@@ -21,7 +21,7 @@ void ISerial::end() {
 }
 
 bool ISerial::isListening() {
-#if defined( ESP32 ) || defined ( SAMD_SERIES ) || defined (ARDUINO_ARCH_STM32)
+#ifdef SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->isListening());
@@ -29,7 +29,7 @@ bool ISerial::isListening() {
 }
 
 bool ISerial::stopListening() {
-#if defined( ESP32 ) || defined ( SAMD_SERIES ) || defined (ARDUINO_ARCH_STM32)
+#ifdef SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->stopListening());
@@ -37,7 +37,7 @@ bool ISerial::stopListening() {
 }
 
 bool ISerial::overflow() {
-#if defined( ESP32 ) || defined ( SAMD_SERIES ) || defined (ARDUINO_ARCH_STM32)
+#ifdef SOFTWARE_SERIAL_UNSUPPORTED
   return false;
 #else
   return(_mod->ModuleSerial->overflow());
