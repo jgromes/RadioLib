@@ -1293,17 +1293,21 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   spi->beginTransaction(spiSettings);
 
   // send command byte(s)
+  RADIOLIB_VERBOSE_PRINT("CMD\t");
   for(uint8_t n = 0; n < cmdLen; n++) {
     spi->transfer(cmd[n]);
     RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
     RADIOLIB_VERBOSE_PRINT('\t');
   }
+  RADIOLIB_VERBOSE_PRINTLN();
 
   // variable to save error during SPI transfer
   uint8_t status = 0;
 
   // send/receive all bytes
+  RADIOLIB_VERBOSE_PRINT("DAT");
   if(write) {
+    RADIOLIB_VERBOSE_PRINT("W\t");
     for(uint8_t n = 0; n < numBytes; n++) {
       // send byte
       uint8_t in = spi->transfer(dataOut[n]);
@@ -1323,6 +1327,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     }
     RADIOLIB_VERBOSE_PRINTLN();
   } else {
+    RADIOLIB_VERBOSE_PRINT("R\t");
     // skip the first byte for read-type commands (status-only)
     uint8_t in = spi->transfer(SX126X_CMD_NOP);
     RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
@@ -1347,6 +1352,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     }
     RADIOLIB_VERBOSE_PRINTLN();
   }
+  RADIOLIB_VERBOSE_PRINTLN();
 
   // stop transfer
   spi->endTransaction();
