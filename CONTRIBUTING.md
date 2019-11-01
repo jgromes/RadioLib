@@ -15,6 +15,8 @@ To report bugs or suggest new features, use the provided issue templates. Use th
 Issues with generic titles (e.g. "not working", "lora", etc.) will be **CLOSED** until the title is fixed, since the title is supposed to categorize the issue. The same applies for issues with very little information and extensive grammatical or formatting errors that make it difficult to find out what is the actual issue.
 4. **Issues deserve some attention too.**  
 Issues that are left for 2 weeks without response by the original author when asked for further information will be closed due to inactivity. This is to keep track of important issues, the author is encouraged to reopen the issue at a later date.
+5. **LoRaLib is a separate project.**
+RadioLib was created as an extension of LoRaLib for radios other than SX127x. However, LoRaLib project is still active and RadioLib is reusing its code. **Because of that, please open issues/PRs related to SX127x in [LoRaLib](https://github.com/jgromes/LoRaLib)**.
 
 ## Code style guidelines
 
@@ -22,6 +24,7 @@ I like pretty code! Or at least, I like *consistent* code style. When creating p
 
 1. **Bracket style**  
 This library uses the following style of bracket indentation (1TBS, or "javascript" style):
+
 ```c++
 if (foo) {
   bar();
@@ -35,6 +38,7 @@ Use 2 space characters for tabs.
 
 3. **Single-line comments**  
 Comments can be very useful - and they can become the bane of readability. Every single-line comment should start at new line, have one space between comment delimiter `//` and the start of the comment itself. The comment should also start with a lower-case letter.
+
 ```c++
 // this function does something
 foo("bar");
@@ -45,6 +49,7 @@ foo(12345);
 
 4. **Split code into blocks**  
 It is very easy to write code that machine can read. It is much harder to write one that humans can read. That's why it's a great idea to split code into blocks - even if the block is just a single line!
+
 ```c++
 // build a temporary buffer (first block)
 uint8_t* data = new uint8_t[len + 1];
@@ -63,4 +68,4 @@ data[len] = 0;
 If you're adding a new method, make sure to add appropriate Doxygen comments, so that the documentation is always complete.
 
 6. **Keywords**  
-This is an Arduino library, so it needs to comply with the Arduino library specification. To add a new keyword to the Arduino IDE syntax highlighting, add it to the keywords.txt file. **Use true tabs in keywords.txt! No spaces there!"
+This is an Arduino library, so it needs to comply with the Arduino library specification. To add a new keyword to the Arduino IDE syntax highlighting, add it to the keywords.txt file. **Use true tabs in keywords.txt! No spaces there!**
