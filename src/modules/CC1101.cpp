@@ -3,6 +3,7 @@
 CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_EXPONENT, CC1101_MAX_PACKET_LENGTH) {
   _mod = module;
   _packetLengthQueried = false;
+  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 }
 
 int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -20,15 +21,15 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
-        Serial.print(F("CC1101 not found! ("));
-        Serial.print(i + 1);
-        Serial.print(F(" of 10 tries) CC1101_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F("CC1101 not found! ("));
+        RADIOLIB_DEBUG_PRINT(i + 1);
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) CC1101_REG_VERSION == "));
 
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
-        Serial.print(buffHex);
-        Serial.print(F(", expected 0x0014"));
-        Serial.println();
+        RADIOLIB_DEBUG_PRINT(buffHex);
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x0014"));
+        RADIOLIB_DEBUG_PRINTLN();
       #endif
       delay(1000);
       i++;
@@ -192,8 +193,10 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     return(state);
   }
 
-  // write packet length
-  SPIwriteRegister(CC1101_REG_FIFO, len);
+  // optionally write packet length
+  if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
+    SPIwriteRegister(CC1101_REG_FIFO, len);
+  }
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
@@ -477,7 +480,11 @@ uint8_t CC1101::getLQI() {
 
 size_t CC1101::getPacketLength(bool update) {
   if(!_packetLengthQueried && update) {
-    _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+
+    uint8_t format = SPIgetRegValue(CC1101_REG_PKTCTRL0, 1, 0);
+    if (format == CC1101_LENGTH_CONFIG_VARIABLE) {
+      _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+    } 
     _packetLengthQueried = true;
   }
 
@@ -495,6 +502,38 @@ int16_t CC1101::config() {
   state = packetMode();
 
   return(state);
+}
+
+int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
+  if (len > CC1101_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  uint16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_FIXED, 1, 0);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  state = SPIsetRegValue(CC1101_REG_PKTLEN, len);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+}
+
+int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
+  if (maxLen > CC1101_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  uint16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_VARIABLE, 1, 0);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  state = SPIsetRegValue(CC1101_REG_PKTLEN, maxLen);
+  if (state != ERR_NONE) {
+    return(state);
+  }
 }
 
 int16_t CC1101::directMode() {

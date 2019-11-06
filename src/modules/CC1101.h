@@ -739,6 +739,24 @@ class CC1101: public PhysicalLayer {
     */
     size_t getPacketLength(bool update = true);
 
+     /*!
+      \brief Set modem in fixed packet length mode.
+
+      \param len Packet length.
+
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = CC1101_MAX_PACKET_LENGTH);
+
+     /*!
+      \brief Set modem in variable packet length mode.
+
+      \param len Maximum packet length.
+
+      \returns \ref status_codes
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = CC1101_MAX_PACKET_LENGTH);
+
   private:
     Module* _mod;
 
@@ -748,6 +766,7 @@ class CC1101: public PhysicalLayer {
 
     size_t _packetLength;
     bool _packetLengthQueried;
+    uint8_t _packetLengthConfig;
 
     int16_t config();
     int16_t directMode();
