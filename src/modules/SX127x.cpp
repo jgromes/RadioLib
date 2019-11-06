@@ -955,16 +955,16 @@ bool SX127x::findChip(uint8_t ver) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
-        Serial.print(F("SX127x not found! ("));
-        Serial.print(i + 1);
-        Serial.print(F(" of 10 tries) SX127X_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F("SX127x not found! ("));
+        RADIOLIB_DEBUG_PRINT(i + 1);
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SX127X_REG_VERSION == "));
 
         char buffHex[5];
         sprintf(buffHex, "0x%02X", version);
-        Serial.print(buffHex);
-        Serial.print(F(", expected 0x00"));
-        Serial.print(ver, HEX);
-        Serial.println();
+        RADIOLIB_DEBUG_PRINT(buffHex);
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
+        RADIOLIB_DEBUG_PRINT(ver, HEX);
+        RADIOLIB_DEBUG_PRINTLN();
       #endif
       delay(1000);
       i++;
@@ -1013,23 +1013,23 @@ void SX127x::clearFIFO(size_t count) {
 
 #ifdef RADIOLIB_DEBUG
 void SX127x::regDump() {
-  Serial.println();
-  Serial.println(F("ADDR\tVALUE"));
+  RADIOLIB_DEBUG_PRINTLN();
+  RADIOLIB_DEBUG_PRINTLN(F("ADDR\tVALUE"));
   for(uint16_t addr = 0x01; addr <= 0x70; addr++) {
     if(addr <= 0x0F) {
-      Serial.print(F("0x0"));
+      RADIOLIB_DEBUG_PRINT(F("0x0"));
     } else {
-      Serial.print(F("0x"));
+      RADIOLIB_DEBUG_PRINT(F("0x"));
     }
-    Serial.print(addr, HEX);
-    Serial.print('\t');
+    RADIOLIB_DEBUG_PRINT(addr, HEX);
+    RADIOLIB_DEBUG_PRINT('\t');
     uint8_t val = _mod->SPIreadRegister(addr);
     if(val <= 0x0F) {
-      Serial.print(F("0x0"));
+      RADIOLIB_DEBUG_PRINT(F("0x0"));
     } else {
-      Serial.print(F("0x"));
+      RADIOLIB_DEBUG_PRINT(F("0x"));
     }
-    Serial.println(val, HEX);
+    RADIOLIB_DEBUG_PRINTLN(val, HEX);
 
     delay(50);
   }
