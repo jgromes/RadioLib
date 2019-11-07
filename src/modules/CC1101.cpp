@@ -520,7 +520,7 @@ int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
   }
 
   // all went well: cache the reg value
-  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
+  _packetLengthConfig = CC1101_LENGTH_CONFIG_FIXED;
 
   return(state);
 }
