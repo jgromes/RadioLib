@@ -56,23 +56,33 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
     return(state);
   }
 
+  // configure bitrate
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default RX bandwidth
   state = setRxBandwidth(rxBw);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default frequency deviation
   state = setFrequencyDeviation(freqDev);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default TX output power
   state = setOutputPower(power);
   if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default packet length mode
+  state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
     return(state);
   }
 
@@ -163,7 +173,7 @@ int16_t CC1101::receiveDirect() {
 int16_t CC1101::packetMode() {
   int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_CRC_AUTOFLUSH_OFF | CC1101_APPEND_STATUS_ON | CC1101_ADR_CHK_NONE, 3, 0);
   state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF | CC1101_PKT_FORMAT_NORMAL, 6, 4);
-  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON | CC1101_LENGTH_CONFIG_VARIABLE, 2, 0);
+  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON | _packetLengthConfig, 2, 0);
   return(state);
 }
 
@@ -492,19 +502,6 @@ size_t CC1101::getPacketLength(bool update) {
   return(_packetLength);
 }
 
-int16_t CC1101::config() {
-  // enable automatic frequency synthesizer calibration
-  int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // set packet mode
-  state = packetMode();
-
-  return(state);
-}
-
 int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
   if (len > CC1101_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
@@ -540,6 +537,19 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 
   state = SPIsetRegValue(CC1101_REG_PKTLEN, maxLen);
+  return(state);
+}
+
+int16_t CC1101::config() {
+  // enable automatic frequency synthesizer calibration
+  int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set packet mode
+  state = packetMode();
+
   return(state);
 }
 
