@@ -480,11 +480,12 @@ uint8_t CC1101::getLQI() {
 
 size_t CC1101::getPacketLength(bool update) {
   if(!_packetLengthQueried && update) {
-
-    uint8_t format = SPIgetRegValue(CC1101_REG_PKTCTRL0, 1, 0);
-    if (format == CC1101_LENGTH_CONFIG_VARIABLE) {
+    if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
       _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
-    } 
+    } else {
+      _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+    }
+
     _packetLengthQueried = true;
   }
 
@@ -509,15 +510,22 @@ int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
     return(ERR_PACKET_TOO_LONG);
   }
 
-  uint16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_FIXED, 1, 0);
+  // set to fixed packet length
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_FIXED, 1, 0);
   if (state != ERR_NONE) {
     return(state);
   }
 
+  // set max length to register
   state = SPIsetRegValue(CC1101_REG_PKTLEN, len);
   if (state != ERR_NONE) {
     return(state);
   }
+
+  // all went well: cache the reg value
+  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
+
+  return(state);
 }
 
 int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
@@ -525,15 +533,14 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
     return(ERR_PACKET_TOO_LONG);
   }
 
-  uint16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_VARIABLE, 1, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_VARIABLE, 1, 0);
   if (state != ERR_NONE) {
     return(state);
   }
+  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 
   state = SPIsetRegValue(CC1101_REG_PKTLEN, maxLen);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  return(state);
 }
 
 int16_t CC1101::directMode() {
