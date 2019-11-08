@@ -19,15 +19,15 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
-        Serial.print(F("RF69 not found! ("));
-        Serial.print(i + 1);
-        Serial.print(F(" of 10 tries) RF69_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F("RF69 not found! ("));
+        RADIOLIB_DEBUG_PRINT(i + 1);
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
 
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
-        Serial.print(buffHex);
-        Serial.print(F(", expected 0x0024"));
-        Serial.println();
+        RADIOLIB_DEBUG_PRINT(buffHex);
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
+        RADIOLIB_DEBUG_PRINTLN();
       #endif
       delay(1000);
       i++;
