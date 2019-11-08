@@ -53,22 +53,26 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
     return(state);
   }
 
+  // configure bitrate
   _rxBw = 125.0;
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default RX bandwidth
   state = setRxBandwidth(rxBw);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default frequency deviation
   state = setFrequencyDeviation(freqDev);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default TX output power
   state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
@@ -78,6 +82,12 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   uint8_t syncWord[] = {0x2D, 0x01};
   state = setSyncWord(syncWord, 2);
   if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default packet length mode
+  state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
     return(state);
   }
 

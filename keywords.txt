@@ -88,7 +88,7 @@ setDataShaping	KEYWORD2
 setOOK	KEYWORD2
 setDataShapingOOK	KEYWORD2
 setCRC	KEYWORD2
-variablePacketLengthMode KEYWORD2
+variablePacketLengthMode  KEYWORD2
 fixedPacketLengthMode KEYWORD2
 
 # RF69-specific
