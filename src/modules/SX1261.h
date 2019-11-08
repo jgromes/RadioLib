@@ -11,6 +11,19 @@
 #define SX126X_PA_CONFIG_SX1262                       0x00
 
 // TODO: implement SX1261 class
-using SX1261 = SX1262;
+class SX1261 : public SX1262 {
+public:
+  /*!
+    \brief Default constructor.
+
+    \param mod Instance of Module that will be used to communicate with the radio.
+  */
+  SX1261(Module* mod)
+    : SX1262(mod) {
+  }
+
+  int16_t setOutputPower(int8_t power);
+};
+
 
 #endif

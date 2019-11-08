@@ -85,7 +85,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 
 int16_t SX1262::setOutputPower(int8_t power) {
   // check allowed power range
-  if(!((power >= -17) && (power <= 22))) {
+  if(!((power >= -9) && (power <= 22))) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
 
@@ -96,16 +96,31 @@ int16_t SX1262::setOutputPower(int8_t power) {
     return(state);
   }
 
-  // enable high power PA for output power higher than 14 dBm
-  if(power > 13) {
-    SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262);
+  // set PA config for optimal consumption as described in section 13-21 of the datasheet:
+  // the final column of Table 13-21 suggests that the value passed in SetTxParams is actually scaled depending on the parameters of setPaConfig. However, testing suggests this isn't the case.
+  if (power >= 21) {
+    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
+  } else if (power >= 18) {
+    state = SX126x::setPaConfig(0x03, SX126X_PA_CONFIG_SX1262, 0x05);
+  } else if (power >= 15) {
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262, 0x03);
   } else {
-    SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1261);
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262, 0x02);
   }
+  if (state != ERR_NONE) {
+    return(state);
+  }
+  // TODO investigate if better power efficiency can be achieved using undocumented even lower settings
+
+  // note that we set SX126X_PA_CONFIG_SX1262 for all power levels - setting SX126X_PA_CONFIG_SX1261 causes no output (on the nameless module I have).
 
   // set output power
   // TODO power ramp time configuration
-  SX126x::setTxParams(power);
+  state = SX126x::setTxParams(power);
+  if (state != ERR_NONE) {
+    return state;
+  }
+
 
   // restore OCP configuration
   return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
