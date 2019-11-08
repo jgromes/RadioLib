@@ -1280,7 +1280,12 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   SPIClass* spi = _mod->getSpi();
   SPISettings spiSettings = _mod->getSpiSettings();
 
+  #ifdef RADIOLIB_VERBOSE
+    uint8_t debugBuff[256];
+  #endif
+
   // ensure BUSY is low (state meachine ready)
+  RADIOLIB_VERBOSE_PRINTLN(F("Wait for BUSY ... "));
   uint32_t start = millis();
   while(digitalRead(_mod->getRx())) {
     if(millis() - start >= timeout) {
@@ -1293,66 +1298,54 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   spi->beginTransaction(spiSettings);
 
   // send command byte(s)
-  RADIOLIB_VERBOSE_PRINT("CMD\t");
   for(uint8_t n = 0; n < cmdLen; n++) {
     spi->transfer(cmd[n]);
-    RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
-    RADIOLIB_VERBOSE_PRINT('\t');
   }
-  RADIOLIB_VERBOSE_PRINTLN();
 
   // variable to save error during SPI transfer
   uint8_t status = 0;
 
   // send/receive all bytes
-  RADIOLIB_VERBOSE_PRINT("DAT");
   if(write) {
-    RADIOLIB_VERBOSE_PRINT("W\t");
     for(uint8_t n = 0; n < numBytes; n++) {
       // send byte
       uint8_t in = spi->transfer(dataOut[n]);
-      RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(in, HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
+      #ifdef RADIOLIB_VERBOSE
+        debugBuff[n] = in;
+      #endif
 
-      // check status - SX126X_STATUS_CMD_TIMEOUT is disabled due to regular timeouts
-      if(//((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
+      // check status
+      if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
          ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
         status = in & 0b00001110;
+        break;
       } else if(in == 0x00 || in == 0xFF) {
         status = SX126X_STATUS_SPI_FAILED;
+        break;
       }
     }
-    RADIOLIB_VERBOSE_PRINTLN();
+
   } else {
-    RADIOLIB_VERBOSE_PRINT("R\t");
     // skip the first byte for read-type commands (status-only)
     uint8_t in = spi->transfer(SX126X_CMD_NOP);
-    RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
-    RADIOLIB_VERBOSE_PRINT('\t');
-    RADIOLIB_VERBOSE_PRINT(in, HEX);
-    RADIOLIB_VERBOSE_PRINT('\t')
+    #ifdef RADIOLIB_VERBOSE
+      debugBuff[0] = in;
+    #endif
 
     // check status
-    if(//((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
+    if(((in & 0b00001110) == SX126X_STATUS_CMD_TIMEOUT) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_INVALID) ||
        ((in & 0b00001110) == SX126X_STATUS_CMD_FAILED)) {
       status = in & 0b00001110;
     } else if(in == 0x00 || in == 0xFF) {
       status = SX126X_STATUS_SPI_FAILED;
+    } else {
+      for(uint8_t n = 0; n < numBytes; n++) {
+        dataIn[n] = spi->transfer(SX126X_CMD_NOP);
+      }
     }
-    for(uint8_t n = 0; n < numBytes; n++) {
-      dataIn[n] = spi->transfer(SX126X_CMD_NOP);
-      RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-    }
-    RADIOLIB_VERBOSE_PRINTLN();
   }
-  RADIOLIB_VERBOSE_PRINTLN();
 
   // stop transfer
   spi->endTransaction();
@@ -1364,10 +1357,51 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     start = millis();
     while(digitalRead(_mod->getRx())) {
         if(millis() - start >= timeout) {
-          return(ERR_SPI_CMD_TIMEOUT);
+          status = SX126X_STATUS_CMD_TIMEOUT;
+          break;
         }
     }
   }
+
+  // print debug output
+  #ifdef RADIOLIB_VERBOSE
+    // print command byte(s)
+    RADIOLIB_VERBOSE_PRINT("CMD\t");
+    for(uint8_t n = 0; n < cmdLen; n++) {
+      RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
+
+    // print data bytes
+    RADIOLIB_VERBOSE_PRINT("DAT");
+    if(write) {
+      RADIOLIB_VERBOSE_PRINT("W\t");
+      for(uint8_t n = 0; n < numBytes; n++) {
+        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
+      RADIOLIB_VERBOSE_PRINTLN();
+    } else {
+      RADIOLIB_VERBOSE_PRINT("R\t");
+      // skip the first byte for read-type commands (status-only)
+      RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t')
+
+      for(uint8_t n = 0; n < numBytes; n++) {
+        RADIOLIB_VERBOSE_PRINT(SX126X_CMD_NOP, HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
+      RADIOLIB_VERBOSE_PRINTLN();
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
+  #endif
 
   // parse status
   switch(status) {
