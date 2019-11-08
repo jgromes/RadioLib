@@ -263,7 +263,7 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // optionally write packet length
   if (_packetLengthConfig == RF69_PACKET_FORMAT_VARIABLE) {
-    SPIwriteRegister(RF69_REG_FIFO, len);
+    _mod->SPIwriteRegister(RF69_REG_FIFO, len);
   }
 
   // check address filtering
