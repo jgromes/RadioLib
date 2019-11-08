@@ -697,7 +697,7 @@ class RF69: public PhysicalLayer {
     */
     int16_t getTemperature();
 
-     /*!
+    /*!
       \brief Query modem for the packet length of received payload.
 
       \param update Update received packet length. Will return cached value when set to false.
@@ -705,6 +705,24 @@ class RF69: public PhysicalLayer {
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update = true);
+
+    /*!
+      \brief Set modem in fixed packet length mode.
+
+      \param len Packet length.
+
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = RF69_MAX_PACKET_LENGTH);
+
+     /*!
+      \brief Set modem in variable packet length mode.
+
+      \param len Maximum packet length.
+
+      \returns \ref status_codes
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = RF69_MAX_PACKET_LENGTH);
 
   protected:
     Module* _mod;
@@ -715,6 +733,7 @@ class RF69: public PhysicalLayer {
 
     size_t _packetLength;
     bool _packetLengthQueried;
+    uint8_t _packetLengthConfig;
 
     int16_t config();
     int16_t directMode();
