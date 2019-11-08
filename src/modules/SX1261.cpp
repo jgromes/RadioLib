@@ -17,10 +17,10 @@ int16_t SX1261::setOutputPower(int8_t power) {
   // set PA config for optimal consumption as described in section 13-21 of the datasheet:
   // the final column of Table 13-21 suggests that the value passed in SetTxParams is actually scaled depending on the parameters of setPaConfig. However, testing suggests this isn't the case.
   if (power > 10) {
-    state = SX126x::setPaConfig(0x04, 0x00, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
+    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1261, 0x00);
   }
   else {
-    state = SX126x::setPaConfig(0x01, 0x00, 0x05);
+    state = SX126x::setPaConfig(0x01, SX126X_PA_CONFIG_SX1261, 0x00);
   }
   if (state != ERR_NONE) {
     return(state);
