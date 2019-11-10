@@ -4,6 +4,7 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT,
   _mod = module;
   _tempOffset = 0;
   _packetLengthQueried = false;
+  _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
 }
 
 int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -19,15 +20,15 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
-        Serial.print(F("RF69 not found! ("));
-        Serial.print(i + 1);
-        Serial.print(F(" of 10 tries) RF69_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F("RF69 not found! ("));
+        RADIOLIB_DEBUG_PRINT(i + 1);
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
 
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
-        Serial.print(buffHex);
-        Serial.print(F(", expected 0x0024"));
-        Serial.println();
+        RADIOLIB_DEBUG_PRINT(buffHex);
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
+        RADIOLIB_DEBUG_PRINTLN();
       #endif
       delay(1000);
       i++;
@@ -54,24 +55,34 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
     return(state);
   }
 
+  // configure bitrate
   _rxBw = 125.0;
   state = setBitRate(br);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default RX bandwidth
   state = setRxBandwidth(rxBw);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default frequency deviation
   state = setFrequencyDeviation(freqDev);
   if(state != ERR_NONE) {
     return(state);
   }
 
+  // configure default TX output power
   state = setOutputPower(power);
   if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default packet length mode
+  state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
     return(state);
   }
 
@@ -249,6 +260,11 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // set packet length
   _mod->SPIwriteRegister(RF69_REG_FIFO, len);
+
+  // optionally write packet length
+  if (_packetLengthConfig == RF69_PACKET_FORMAT_VARIABLE) {
+    _mod->SPIwriteRegister(RF69_REG_FIFO, len);
+  }
 
   // check address filtering
   uint8_t filter = _mod->SPIgetRegValue(RF69_REG_PACKET_CONFIG_1, 2, 1);
@@ -563,11 +579,61 @@ int16_t RF69::getTemperature() {
 
 size_t RF69::getPacketLength(bool update) {
   if(!_packetLengthQueried && update) {
-    _packetLength = _mod->SPIreadRegister(RF69_REG_FIFO);
+    if (_packetLengthConfig == RF69_PACKET_FORMAT_VARIABLE) {
+      _packetLength = _mod->SPIreadRegister(RF69_REG_FIFO);
+    } else {
+      _packetLength = _mod->SPIreadRegister(RF69_REG_PAYLOAD_LENGTH);
+    }
     _packetLengthQueried = true;
   }
 
   return(_packetLength);
+}
+
+int16_t RF69::fixedPacketLengthMode(uint8_t len) {
+  if (len > RF69_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  // set to fixed packet length
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_FIXED, 7, 7);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // set length to register
+  state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, len);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // all went well: cache the reg value
+  _packetLengthConfig = RF69_PACKET_FORMAT_FIXED;
+
+  return(state);
+}
+
+int16_t RF69::variablePacketLengthMode(uint8_t maxLen) {
+  if (maxLen > RF69_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  // set to variable packet length
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_VARIABLE, 7, 7);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // set max length to register
+  state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, maxLen);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // all went well: cache the reg value
+  _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
+
+  return(state);
 }
 
 int16_t RF69::config() {
