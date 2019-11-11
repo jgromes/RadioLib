@@ -8,6 +8,7 @@
 //SX126X_CMD_SET_PA_CONFIG
 #define SX126X_PA_CONFIG_SX1261                       0x01
 #define SX126X_PA_CONFIG_SX1262                       0x00
+#define SX126X_REG_TX_CLAMP_CONFIG                    0x08D8 //Datasheet 15.2
 
 /*!
   \class SX1262
@@ -94,8 +95,10 @@ class SX1262: public SX126x {
     int16_t setOutputPower(int8_t power);
 
   private:
-
-
+    /*!
+      \brief Fixes overly eager PA clamping, as described in section 15.2 of the datasheet
+    */
+    int16_t fixPaClamping();
 };
 
 #endif
