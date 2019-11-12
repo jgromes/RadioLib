@@ -22,7 +22,7 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
     return(state);
   }
 
-  state = fixPaClamping();
+  state = SX126x::fixPaClamping();
   if (state != ERR_NONE) {
     return state;
   }
@@ -46,6 +46,11 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
+  }
+
+  state = SX126x::fixPaClamping();
+  if (state != ERR_NONE) {
+    return state;
   }
 
   return(state);
@@ -114,14 +119,4 @@ int16_t SX1262::setOutputPower(int8_t power) {
 
   // restore OCP configuration
   return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
-}
-
-int16_t SX1262::fixPaClamping() {
-  uint8_t clampConfig;
-  uint16_t state = readRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
-  if (state != ERR_NONE) {
-    return state;
-  }
-  clampConfig |= 0x1E;
-  return writeRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
 }

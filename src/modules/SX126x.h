@@ -92,6 +92,7 @@
 #define SX126X_REG_OCP_CONFIGURATION                  0x08E7
 #define SX126X_REG_XTA_TRIM                           0x0911
 #define SX126X_REG_XTB_TRIM                           0x0912
+#define SX126X_REG_TX_CLAMP_CONFIG                    0x08D8 //Datasheet 15.2
 
 
 // SX126X SPI command variables
@@ -751,6 +752,10 @@ class SX126x: public PhysicalLayer {
 
     int16_t setFrequencyRaw(float freq);
 
+    /*!
+      \brief Fixes overly eager PA clamping on SX1262 / SX1268, as described in section 15.2 of the datasheet
+    */
+    int16_t fixPaClamping();
   private:
     Module* _mod;
 
