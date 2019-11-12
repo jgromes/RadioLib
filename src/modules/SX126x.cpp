@@ -1127,6 +1127,32 @@ int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
   return(SPIwriteCommand(SX126X_CMD_SET_TX_PARAMS, data, 2));
 }
 
+// set PA config for optimal consumption as described in section 13-21 of the datasheet:
+// the final column of Table 13-21 suggests that the value passed in SetTxParams 
+// is actually scaled depending on the parameters of setPaConfig.
+// Testing confirms this is approximately right
+int16_t SX126x::setOptimalHiPowerPaConfig(int8_t* inOutPower)
+{
+  int16_t state;
+  if (*inOutPower >= 21) {
+    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262_8, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
+  }
+  else if (*inOutPower >= 18) {
+    state = SX126x::setPaConfig(0x03, SX126X_PA_CONFIG_SX1262_8, 0x05);
+    *inOutPower += 2;
+  }
+  else if (*inOutPower >= 15) {
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x03);
+    *inOutPower += 5;
+  }
+  else {
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x02);
+    *inOutPower += 8;
+  }
+  // TODO investigate if better power efficiency can be achieved using undocumented even lower settings
+  return state;
+}
+
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if needed
   if(ldro == 0xFF) {

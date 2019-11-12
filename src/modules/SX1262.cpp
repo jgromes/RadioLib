@@ -85,7 +85,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 
 int16_t SX1262::setOutputPower(int8_t power) {
   // check allowed power range
-  if (!((power >= -17) && (power <= 22))) {
+  if (!(power >= -17 && power <= 22)) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
 
@@ -96,42 +96,22 @@ int16_t SX1262::setOutputPower(int8_t power) {
     return(state);
   }
 
-  int8_t scaledPower;
-  // set PA config for optimal consumption as described in section 13-21 of the datasheet:
-  // the final column of Table 13-21 suggests that the value passed in SetTxParams 
-  // is actually scaled depending on the parameters of setPaConfig.
-  // Testing confirms this is approximately right
-  if (power >= 21) {
-    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
-    scaledPower = power;
-  }
-  else if (power >= 18) {
-    state = SX126x::setPaConfig(0x03, SX126X_PA_CONFIG_SX1262, 0x05);
-    scaledPower = power + 2;
-  }
-  else if (power >= 15) {
-    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262, 0x03);
-    scaledPower = power + 5;
-  }
-  else {
-    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262, 0x02);
-    scaledPower = power + 8;
-  }
-  if (state != ERR_NONE) {
-    return(state);
-  }
-  // TODO investigate if better power efficiency can be achieved using undocumented even lower settings
-
-  // note that we set SX126X_PA_CONFIG_SX1262 for all power levels - setting SX126X_PA_CONFIG_SX1261 causes no output (on the nameless module I have).
+  // this function sets the optimal PA settings 
+  // and scales our requested power based
+  state = SX126x::setOptimalHiPowerPaConfig(&power);
 
   // set output power
   // TODO power ramp time configuration
-  state = SX126x::setTxParams(scaledPower);
-  if (state != ERR_NONE) {
-    return state;
+  if (state == ERR_NONE) {
+    state = SX126x::setTxParams(power);
   }
 
-
   // restore OCP configuration
-  return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
+  int16_t state2 = writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  
+  if (state != ERR_NONE) {
+    return state;
+  } else {
+    return state2;
+  }
 }
