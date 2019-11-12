@@ -4,6 +4,8 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _mod = module;
   _packetLengthQueried = false;
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
+
+  _syncWordLength = CC1101_DEFAULT_SYNC_WORD_LENGTH;
 }
 
 int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -441,11 +443,35 @@ int16_t CC1101::setOutputPower(int8_t power) {
   return(SPIsetRegValue(CC1101_REG_PATABLE, powerRaw));
 }
 
-int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL) {
-  // set sync word
-  int16_t state = SPIsetRegValue(CC1101_REG_SYNC1, syncH);
-  state |= SPIsetRegValue(CC1101_REG_SYNC0, syncL);
-  return(state);
+int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
+  if(maxErrBits > 1) {
+    return(ERR_INVALID_SYNC_WORD);
+  }
+
+  // sync word must not contain value 0x00
+  for(uint8_t i = 0; i < len; i++) {
+    if(syncWord[i] == 0x00) {
+      return(ERR_INVALID_SYNC_WORD);
+    }
+  }
+
+  _syncWordLength = len;
+
+  // enable sync word filtering
+  int16_t state = enableSyncWordFiltering(maxErrBits);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // set sync word register
+  _mod->SPIwriteRegisterBurst(CC1101_REG_SYNC1, syncWord, len);
+
+  return(ERR_NONE);
+}
+
+int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
+  uint8_t syncWord[] = { syncH, syncL };
+  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits));
 }
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
@@ -544,6 +570,76 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 
   // all went well: cache the reg value
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
+  return(state);
+}
+
+int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
+  if (maxErrBits > 1) {
+    return(ERR_INVALID_SYNC_WORD);
+  }
+
+  if (maxErrBits == 0) {
+    if (_syncWordLength == 1) {
+      // in 16 bit sync word, expect all 16 bits
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
+    } else if (_syncWordLength == 2) {
+      // there's no 32 of 32 case, so we resort to 30 of 32 bits required
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
+    }
+  }
+
+  if (maxErrBits == 1) {
+    if (_syncWordLength == 1) {
+      // in 16 bit sync word, expect at least 15 bits
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
+    } else if (_syncWordLength == 2) {
+      // in 32 bits sync word (16 + 16), expect 30 of 32 to match
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
+    }
+  }
+
+  return(ERR_NONE);
+}
+
+int16_t CC1101::disableSyncWordFiltering() {
+  return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_NONE, 2, 0));
+}
+
+int16_t CC1101::enableCrcFiltering() {
+  return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON, 2, 2));
+}
+
+int16_t CC1101::disableCrcFiltering() {
+  return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_OFF, 2, 2));
+}
+
+int16_t CC1101::promiscuousMode(bool promiscuous) {
+  int16_t state = ERR_NONE;
+
+  if (_promiscuous == promiscuous) {
+    return(state);
+  }
+
+  if (promiscuous == true) {
+    // disable preamble and sync word filtering and insertion
+    state = disableSyncWordFiltering();
+    if (state != ERR_NONE) {
+      return(state);
+    }
+
+    // disable CRC filtering
+    state = disableCrcFiltering();
+  } else {
+    // enable preamble and sync word filtering and insertion
+    state = enableSyncWordFiltering();
+    if (state != ERR_NONE) {
+      return(state);
+    }
+
+    // enable CRC filtering
+    state = enableCrcFiltering();
+  }
+
   return(state);
 }
 
