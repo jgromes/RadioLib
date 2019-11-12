@@ -5,7 +5,11 @@ ISerial::ISerial(Module* mod) {
 }
 
 void ISerial::begin(long speed) {
+#if defined(ESP8266)
+  _mod->ModuleSerial->begin(speed, _mod->getRx(), _mod->getTx(), SWSERIAL_8N1);
+#else
   _mod->ModuleSerial->begin(speed);
+#endif
 }
 
 bool ISerial::listen() {
