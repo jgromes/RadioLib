@@ -9,6 +9,9 @@ Module::Module(int rx, int tx, HardwareSerial* useSer) {
 
 #ifdef SOFTWARE_SERIAL_UNSUPPORTED
   ModuleSerial = useSer;
+#elif defined(ESP8266)
+  ModuleSerial = new SoftwareSerial();
+  (void)useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
   (void)useSer;
@@ -36,6 +39,9 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
 
 #ifdef SOFTWARE_SERIAL_UNSUPPORTED
   ModuleSerial = useSer;
+#elif defined(ESP8266)
+  ModuleSerial = new SoftwareSerial();
+  (void)useSer;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
   (void)useSer;
@@ -63,6 +69,8 @@ void Module::init(uint8_t interface, uint8_t gpio) {
     case USE_UART:
 #if defined(ESP32)
       ModuleSerial->begin(baudrate, SERIAL_8N1, _rx, _tx);
+#elif defined(ESP8266)
+      ModuleSerial->begin(baudrate, _rx, _tx, SWSERIAL_8N1);
 #else
       ModuleSerial->begin(baudrate);
 #endif
