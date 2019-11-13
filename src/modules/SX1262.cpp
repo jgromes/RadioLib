@@ -22,6 +22,11 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
     return(state);
   }
 
+  state = SX126x::fixPaClamping();
+  if (state != ERR_NONE) {
+    return state;
+  }
+
   return(state);
 }
 
@@ -41,6 +46,11 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   state = setOutputPower(power);
   if(state != ERR_NONE) {
     return(state);
+  }
+
+  state = SX126x::fixPaClamping();
+  if (state != ERR_NONE) {
+    return state;
   }
 
   return(state);

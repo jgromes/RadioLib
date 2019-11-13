@@ -1199,6 +1199,16 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   return(ERR_NONE);
 }
 
+int16_t SX126x::fixPaClamping() {
+  uint8_t clampConfig;
+  uint16_t state = readRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
+  if (state != ERR_NONE) {
+    return state;
+  }
+  clampConfig |= 0x1E;
+  return writeRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
+}
+
 int16_t SX126x::config(uint8_t modem) {
   // set regulator mode
   uint8_t data[7];
