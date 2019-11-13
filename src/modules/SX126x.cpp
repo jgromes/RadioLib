@@ -1036,18 +1036,8 @@ int16_t SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMa
 }
 
 int16_t SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
-  #ifdef STATIC_ONLY
-    uint8_t dat[STATIC_ARRAY_SIZE + 2];
-  #else
-    uint8_t* dat = new uint8_t[2 + numBytes];
-  #endif
-  dat[0] = (uint8_t)((addr >> 8) & 0xFF);
-  dat[1] = (uint8_t)(addr & 0xFF);
-  memcpy(dat + 2, data, numBytes);
-  int16_t state = SPIwriteCommand(SX126X_CMD_WRITE_REGISTER, dat, 2 + numBytes);
-  #ifndef STATIC_ONLY
-    delete[] dat;
-  #endif
+  uint8_t cmd[] = { SX126X_CMD_WRITE_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
+  int16_t state = SPIwriteCommand(cmd, 3, data, numBytes);
   return(state);
 }
 
@@ -1057,34 +1047,15 @@ int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
 }
 
 int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
-  #ifdef STATIC_ONLY
-    uint8_t dat[STATIC_ARRAY_SIZE + 1];
-  #else
-    uint8_t* dat = new uint8_t[1 + numBytes];
-  #endif
-  dat[0] = offset;
-  memcpy(dat + 1, data, numBytes);
-  int16_t state = SPIwriteCommand(SX126X_CMD_WRITE_BUFFER, dat, 1 + numBytes);
-  #ifndef STATIC_ONLY
-    delete[] dat;
-  #endif
+  uint8_t cmd[] = { SX126X_CMD_WRITE_BUFFER, offset };
+  int16_t state = SPIwriteCommand(cmd, 2, data, numBytes);
+
   return(state);
 }
 
 int16_t SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
-  // offset will be always set to 0 (one extra NOP is sent)
-  #ifdef STATIC_ONLY
-    uint8_t dat[STATIC_ARRAY_SIZE + 1];
-  #else
-    uint8_t* dat = new uint8_t[1 + numBytes];
-  #endif
-  dat[0] = SX126X_CMD_NOP;
-  memcpy(dat + 1, data, numBytes);
-  int16_t state = SPIreadCommand(SX126X_CMD_READ_BUFFER, dat, 1 + numBytes);
-  memcpy(data, dat + 1, numBytes);
-  #ifndef STATIC_ONLY
-    delete[] dat;
-  #endif
+  uint8_t cmd[] = { SX126X_CMD_READ_BUFFER, SX126X_CMD_NOP };
+  int16_t state = SPIreadCommand(cmd, 2, data, numBytes);
   return(state);
 }
 
@@ -1125,6 +1096,32 @@ uint8_t SX126x::getPacketType() {
 int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
   uint8_t data[2] = {power, rampTime};
   return(SPIwriteCommand(SX126X_CMD_SET_TX_PARAMS, data, 2));
+}
+
+// set PA config for optimal consumption as described in section 13-21 of the datasheet.
+int16_t SX126x::setOptimalHiPowerPaConfig(int8_t * inOutPower)
+{
+  // the final column of Table 13-21 suggests that the value passed in SetTxParams 
+  // is actually scaled depending on the parameters of setPaConfig.
+  // Testing confirms this is approximately right
+  int16_t state;
+  if (*inOutPower >= 21) {
+    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262_8, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
+  }
+  else if (*inOutPower >= 18) {
+    state = SX126x::setPaConfig(0x03, SX126X_PA_CONFIG_SX1262_8, 0x05);
+    // datasheet instructs request 22 dBm for 20 dBm actual output power
+    *inOutPower += 2;
+  } else if (*inOutPower >= 15) {
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x03);
+    // datasheet instructs request 22 dBm for 17 dBm actual output power
+    *inOutPower += 5;
+  } else {
+    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x02);
+    // datasheet instructs request 22 dBm for 14 dBm actual output power.
+    *inOutPower += 8;
+  }
+  return state;
 }
 
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
@@ -1265,14 +1262,20 @@ int16_t SX126x::config(uint8_t modem) {
   return(ERR_NONE);
 }
 
+int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+  return(SX126x::SPItransfer(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy));
+}
+
 int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
-  uint8_t cmdBuffer[] = {cmd};
-  return(SX126x::SPItransfer(cmdBuffer, 1, true, data, NULL, numBytes, waitForBusy));
+  return(SX126x::SPItransfer(&cmd, 1, true, data, NULL, numBytes, waitForBusy));
+}
+
+int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+  return(SX126x::SPItransfer(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy));
 }
 
 int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
-  uint8_t cmdBuffer[] = {cmd};
-  return(SX126x::SPItransfer(cmdBuffer, 1, false, NULL, data, numBytes, waitForBusy));
+  return(SX126x::SPItransfer(&cmd, 1, false, NULL, data, numBytes, waitForBusy));
 }
 
 int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout) {
