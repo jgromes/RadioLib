@@ -152,6 +152,7 @@
 //SX126X_CMD_SET_PA_CONFIG
 #define SX126X_PA_CONFIG_HP_MAX                       0x07
 #define SX126X_PA_CONFIG_PA_LUT                       0x01
+#define SX126X_PA_CONFIG_SX1262_8                     0x00
 
 //SX126X_CMD_SET_RX_TX_FALLBACK_MODE
 #define SX126X_RX_TX_FALLBACK_MODE_FS                 0x40        //  7     0     after Rx/Tx go to: FS mode
@@ -739,6 +740,7 @@ class SX126x: public PhysicalLayer {
     int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
+    int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);

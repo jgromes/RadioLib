@@ -89,13 +89,19 @@ int16_t SX1268::setOutputPower(int8_t power) {
     return(state);
   }
 
-  // enable high power PA
-  SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
+  // enable optimal PA - this changes the value of power.
+  state = SX126x::setOptimalHiPowerPaConfig(&power);
+  if (state != ERR_NONE) {
+    return(state);
+  }
 
   // set output power
   // TODO power ramp time configuration
-  SX126x::setTxParams(power);
+  state = SX126x::setTxParams(power);
+  if (state != ERR_NONE) {
+    return(state);
+  }
 
   // restore OCP configuration
-  return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
+  return writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
 }
