@@ -605,15 +605,15 @@ int16_t CC1101::disableSyncWordFiltering() {
   return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_NONE, 2, 0));
 }
 
-int16_t CC1101::enableCrcFiltering() {
-  return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON, 2, 2));
+int16_t CC1101::setCrcFiltering(bool crcOn) {
+  if (crcOn == true) {
+    return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON, 2, 2));
+  } else {
+    return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_OFF, 2, 2));
+  }
 }
 
-int16_t CC1101::disableCrcFiltering() {
-  return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_OFF, 2, 2));
-}
-
-int16_t CC1101::promiscuousMode(bool promiscuous) {
+int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   int16_t state = ERR_NONE;
 
   if (_promiscuous == promiscuous) {
@@ -628,7 +628,7 @@ int16_t CC1101::promiscuousMode(bool promiscuous) {
     }
 
     // disable CRC filtering
-    state = disableCrcFiltering();
+    state = setCrcFiltering(false);
   } else {
     // enable preamble and sync word filtering and insertion
     state = enableSyncWordFiltering();
@@ -637,7 +637,7 @@ int16_t CC1101::promiscuousMode(bool promiscuous) {
     }
 
     // enable CRC filtering
-    state = enableCrcFiltering();
+    state = setCrcFiltering(true);
   }
 
   return(state);

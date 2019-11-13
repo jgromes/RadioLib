@@ -669,15 +669,15 @@ int16_t RF69::disableSyncWordFiltering() {
   return(state);
 }
 
-int16_t RF69::enableCrcFiltering() {
-  return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_ON), 4, 4);
+int16_t RF69::setCrcFiltering(bool crcOn) {
+  if (crcOn == true) {
+    return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_ON, 4, 4));
+  } else {
+    return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_OFF, 4, 4));
+  }
 }
 
-int16_t RF69::disableCrcFiltering() {
-  return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_OFF), 4, 4);
-}
-
-int16_t RF69::promiscuousMode(bool promiscuous) {
+int16_t RF69::setPromiscuousMode(bool promiscuous) {
   int16_t state = ERR_NONE;
 
   if (_promiscuous == promiscuous) {
@@ -692,7 +692,7 @@ int16_t RF69::promiscuousMode(bool promiscuous) {
     }
 
     // disable CRC filtering
-    state = disableCrcFiltering();
+    state = setCrcFiltering(false);
   } else {
     // enable preamble and sync word filtering and insertion
     state = enableSyncWordFiltering();
@@ -701,7 +701,7 @@ int16_t RF69::promiscuousMode(bool promiscuous) {
     }
 
     // enable CRC filtering
-    state = enableCrcFiltering();
+    state = setCrcFiltering(true);
   }
 
   return(state);

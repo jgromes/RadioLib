@@ -735,7 +735,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t enableSyncWordFiltering(uint8_t numBits = 16);
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);
 
      /*!
       \brief Disable preamble and sync word filtering and generation.
@@ -747,16 +747,11 @@ class RF69: public PhysicalLayer {
      /*!
       \brief Enable CRC filtering and generation.
 
-      \returns \ref status_codes
-    */
-    int16_t enableCrcFiltering();
-
-     /*!
-      \brief Disable CRC filtering and generation.
+      \param crcOn Set or unset promiscuous mode.
 
       \returns \ref status_codes
     */
-    int16_t disableCrcFiltering();
+    int16_t setCrcFiltering(bool crcOn = true);
 
      /*!
       \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
@@ -765,7 +760,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t promiscuousMode(bool promiscuous = true);
+    int16_t setPromiscuousMode(bool promiscuous = true);
 
   protected:
     Module* _mod;
