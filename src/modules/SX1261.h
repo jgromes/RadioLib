@@ -6,6 +6,8 @@
 #include "SX126x.h"
 #include "SX1262.h"
 
+//SX126X_CMD_SET_PA_CONFIG
+#define SX126X_PA_CONFIG_SX1261                       0x01
 
 // TODO: implement SX1261 class
 class SX1261 : public SX1262 {
@@ -15,10 +17,15 @@ class SX1261 : public SX1262 {
 
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX1261(Module* mod)
-      : SX1262(mod) {
-    }
+    SX1261(Module* mod);
 
+    /*!
+      \brief Sets output power. Allowed values are in range from -17 to 14 dBm.
+
+      \param power Output power to be set in dBm.
+
+      \returns \ref status_codes
+    */
     int16_t setOutputPower(int8_t power);
 
   private:

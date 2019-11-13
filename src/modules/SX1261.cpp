@@ -1,6 +1,10 @@
 #include "SX1261.h"
 
-// note that this is untested (lacking the hardware) and based purely on the datasheet.
+SX1261::SX1261(Module* mod) 
+  : SX1262(mod) {
+
+}
+
 int16_t SX1261::setOutputPower(int8_t power) {  
   // check allowed power range
   if (!((power >= -17) && (power <= 14))) {
@@ -15,21 +19,19 @@ int16_t SX1261::setOutputPower(int8_t power) {
   }
 
   state = setOptimalLowPowerPaConfig(&power);
+  if (state != ERR_NONE) {
+    return(state);
+  }
 
   // set output power
   // TODO power ramp time configuration
-  if (state == ERR_NONE) {
-    state = SX126x::setTxParams(power);
+  state = SX126x::setTxParams(power);
+  if (state != ERR_NONE) {
+    return(state);
   }
 
   // restore OCP configuration
-  int16_t state2 = writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
-
-  if (state != ERR_NONE) {
-    return state;
-  } else {
-    return state2;
-  }
+  return writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
 }
 
 int16_t SX1261::setOptimalLowPowerPaConfig(int8_t* inOutPower)
@@ -40,7 +42,9 @@ int16_t SX1261::setOptimalLowPowerPaConfig(int8_t* inOutPower)
   }
   else {
     state = SX126x::setPaConfig(0x01, SX126X_PA_CONFIG_SX1261, 0x00);
-    *inOutPower -= 4;
+    // changing the PaConfig means output power is now scaled so we get 3 dB less than requested.
+    // see datasheet table 13-21 and comments in setOptimalHiPowerPaConfig.
+    *inOutPower -= 3;
   }
   return state;
 }

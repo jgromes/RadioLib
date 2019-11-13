@@ -152,7 +152,6 @@
 //SX126X_CMD_SET_PA_CONFIG
 #define SX126X_PA_CONFIG_HP_MAX                       0x07
 #define SX126X_PA_CONFIG_PA_LUT                       0x01
-#define SX126X_PA_CONFIG_SX1261                       0x01
 #define SX126X_PA_CONFIG_SX1262_8                     0x00
 
 //SX126X_CMD_SET_RX_TX_FALLBACK_MODE

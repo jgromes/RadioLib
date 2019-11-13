@@ -85,7 +85,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 
 int16_t SX1262::setOutputPower(int8_t power) {
   // check allowed power range
-  if (!(power >= -17 && power <= 22)) {
+  if (!((power >= -17) && (power <= 22))) {
     return(ERR_INVALID_OUTPUT_POWER);
   }
 
@@ -97,21 +97,20 @@ int16_t SX1262::setOutputPower(int8_t power) {
   }
 
   // this function sets the optimal PA settings 
-  // and scales our requested power based
+  // and adjusts power based on the PA settings chosen
+  // so that output power matches requested power.
   state = SX126x::setOptimalHiPowerPaConfig(&power);
+  if (state != ERR_NONE) {
+    return(state);
+  }
 
   // set output power
   // TODO power ramp time configuration
-  if (state == ERR_NONE) {
-    state = SX126x::setTxParams(power);
+  state = SX126x::setTxParams(power);
+  if (state != ERR_NONE) {
+    return(state);
   }
 
   // restore OCP configuration
-  int16_t state2 = writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
-  
-  if (state != ERR_NONE) {
-    return state;
-  } else {
-    return state2;
-  }
+  return writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
 }
