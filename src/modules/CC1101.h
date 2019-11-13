@@ -10,6 +10,9 @@
 #define CC1101_CRYSTAL_FREQ                           26.0
 #define CC1101_DIV_EXPONENT                           16
 #define CC1101_MAX_PACKET_LENGTH                      63
+#define CC1101_MAX_SYNC_WORD_LENGTH                   2
+#define CC1101_DEFAULT_SYNC_WORD_LENGTH               2
+#define CC1101_DEFAULT_SYNC_WORD                      { 0xD3, 0x91 }
 
 // CC1101 SPI commands
 #define CC1101_CMD_READ                               0b10000000
@@ -237,7 +240,7 @@
 #define CC1101_MOD_FORMAT_MFSK                        0b01110000  //  6     4                        MFSK - only for data rates above 26 kBaud
 #define CC1101_MANCHESTER_EN_OFF                      0b00000000  //  3     3     Manchester encoding: disabled (default)
 #define CC1101_MANCHESTER_EN_ON                       0b00001000  //  3     3                          enabled
-#define CC1101_SYNC_MODE_NONE                         0b00000000  //  2     0     synchronization: no preamble sync
+#define CC1101_SYNC_MODE_NONE                         0b00000000  //  2     0     synchronization: no preamble/sync
 #define CC1101_SYNC_MODE_15_16                        0b00000001  //  2     0                      15/16 sync word bits
 #define CC1101_SYNC_MODE_16_16                        0b00000010  //  2     0                      16/16 sync word bits (default)
 #define CC1101_SYNC_MODE_30_32                        0b00000011  //  2     0                      30/32 sync word bits
@@ -694,9 +697,24 @@ class CC1101: public PhysicalLayer {
 
       \param syncL LSB of the sync word.
 
+      \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncH, uint8_t syncL);
+    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0);
+
+    /*!
+      \brief Sets 1 or 2 bytes of sync word.
+
+      \param syncWord Pointer to the array of sync word bytes.
+
+      \param len Sync word length in bytes.
+
+      \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
+
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0);
 
     /*!
       \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.
@@ -757,6 +775,40 @@ class CC1101: public PhysicalLayer {
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = CC1101_MAX_PACKET_LENGTH);
 
+     /*!
+      \brief Enable sync word filtering and generation.
+
+      \param numBits Sync word length in bits.
+
+      \returns \ref status_codes
+    */
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);
+
+     /*!
+      \brief Disable preamble and sync word filtering and generation.
+
+      \returns \ref status_codes
+    */
+    int16_t disableSyncWordFiltering();
+
+     /*!
+      \brief Enable CRC filtering and generation.
+
+      \param crcOn Set or unset promiscuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t setCrcFiltering(bool crcOn = true);
+
+     /*!
+      \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
+
+      \param promiscuous Set or unset promiscuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t setPromiscuousMode(bool promiscuous = true);
+
   private:
     Module* _mod;
 
@@ -767,6 +819,10 @@ class CC1101: public PhysicalLayer {
     size_t _packetLength;
     bool _packetLengthQueried;
     uint8_t _packetLengthConfig;
+
+    bool _promiscuous;
+
+    uint8_t _syncWordLength;
 
     int16_t config();
     int16_t directMode();

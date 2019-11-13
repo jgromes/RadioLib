@@ -10,6 +10,10 @@
 #define RF69_CRYSTAL_FREQ                             32.0
 #define RF69_DIV_EXPONENT                             19
 #define RF69_MAX_PACKET_LENGTH                        64
+#define RF69_MAX_PREAMBLE_LENGTH                      4
+#define RF69_MAX_SYNC_WORD_LENGTH                     8
+#define RF69_DEFAULT_SYNC_WORD_LENGTH                 2
+#define RF69_DEFAULT_SYNC_WORD                        { 0x2D, 0x01 }
 
 // RF69 register map
 #define RF69_REG_FIFO                                 0x00
@@ -646,7 +650,7 @@ class RF69: public PhysicalLayer {
     int16_t setOutputPower(int8_t power);
 
     /*!
-      \brief Sets sync word. Up to 8 bytes can be set as snyc word.
+      \brief Sets sync word. Up to 8 bytes can be set as sync word.
 
       \param syncWord Pointer to the array of sync word bytes.
 
@@ -724,6 +728,40 @@ class RF69: public PhysicalLayer {
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RF69_MAX_PACKET_LENGTH);
 
+     /*!
+      \brief Enable sync word filtering and generation.
+
+      \param numBits Sync word length in bits.
+
+      \returns \ref status_codes
+    */
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);
+
+     /*!
+      \brief Disable preamble and sync word filtering and generation.
+
+      \returns \ref status_codes
+    */
+    int16_t disableSyncWordFiltering();
+
+     /*!
+      \brief Enable CRC filtering and generation.
+
+      \param crcOn Set or unset promiscuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t setCrcFiltering(bool crcOn = true);
+
+     /*!
+      \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
+
+      \param promiscuous Set or unset promiscuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t setPromiscuousMode(bool promiscuous = true);
+
   protected:
     Module* _mod;
 
@@ -734,6 +772,10 @@ class RF69: public PhysicalLayer {
     size_t _packetLength;
     bool _packetLengthQueried;
     uint8_t _packetLengthConfig;
+
+    bool _promiscuous;
+
+    uint8_t _syncWordLength;
 
     int16_t config();
     int16_t directMode();

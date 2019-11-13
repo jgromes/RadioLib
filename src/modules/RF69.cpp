@@ -3,8 +3,13 @@
 RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT, RF69_MAX_PACKET_LENGTH)  {
   _mod = module;
   _tempOffset = 0;
+
   _packetLengthQueried = false;
   _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
+
+  _promiscuous = false;
+
+  _syncWordLength = RF69_DEFAULT_SYNC_WORD_LENGTH;
 }
 
 int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -87,8 +92,8 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   }
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
-  uint8_t syncWord[] = {0x2D, 0x01};
-  state = setSyncWord(syncWord, 2);
+  uint8_t syncWord[] = RF69_DEFAULT_SYNC_WORD;
+  state = setSyncWord(syncWord, sizeof(syncWord));
   if(state != ERR_NONE) {
     return(state);
   }
@@ -495,7 +500,7 @@ int16_t RF69::setOutputPower(int8_t power) {
 
 int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
-  if((maxErrBits > 7) || (len > 8)) {
+  if((maxErrBits > 7) || (len > RF69_MAX_SYNC_WORD_LENGTH)) {
     return(ERR_INVALID_SYNC_WORD);
   }
 
@@ -506,13 +511,14 @@ int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
     }
   }
 
-  // enable sync word recognition
-  int16_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (len - 1) << 3 | maxErrBits, 7, 0);
-  if(state != ERR_NONE) {
+  _syncWordLength = len;
+
+  int16_t state = enableSyncWordFiltering(maxErrBits);
+  if (state != ERR_NONE) {
     return(state);
   }
 
-  // set sync word
+  // set sync word register
   _mod->SPIwriteRegisterBurst(RF69_REG_SYNC_VALUE_1, syncWord, len);
   return(ERR_NONE);
 }
@@ -632,6 +638,71 @@ int16_t RF69::variablePacketLengthMode(uint8_t maxLen) {
 
   // all went well: cache the reg value
   _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
+
+  return(state);
+}
+
+int16_t RF69::enableSyncWordFiltering(uint8_t maxErrBits) {
+  // enable sync word recognition
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (_syncWordLength - 1) << 3 | maxErrBits, 7, 0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  return(state);
+}
+
+int16_t RF69::disableSyncWordFiltering() {
+  // disable preamble detection and generation
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PREAMBLE_LSB, 0, 7, 0);
+  state |= _mod->SPIsetRegValue(RF69_REG_PREAMBLE_MSB, 0, 7, 0);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // disable sync word detection and generation
+  state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_OFF | RF69_FIFO_FILL_CONDITION, 7, 6);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  return(state);
+}
+
+int16_t RF69::setCrcFiltering(bool crcOn) {
+  if (crcOn == true) {
+    return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_ON, 4, 4));
+  } else {
+    return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_CRC_OFF, 4, 4));
+  }
+}
+
+int16_t RF69::setPromiscuousMode(bool promiscuous) {
+  int16_t state = ERR_NONE;
+
+  if (_promiscuous == promiscuous) {
+    return(state);
+  }
+
+  if (promiscuous == true) {
+    // disable preamble and sync word filtering and insertion
+    state = disableSyncWordFiltering();
+    if (state != ERR_NONE) {
+      return(state);
+    }
+
+    // disable CRC filtering
+    state = setCrcFiltering(false);
+  } else {
+    // enable preamble and sync word filtering and insertion
+    state = enableSyncWordFiltering();
+    if (state != ERR_NONE) {
+      return(state);
+    }
+
+    // enable CRC filtering
+    state = setCrcFiltering(true);
+  }
 
   return(state);
 }
