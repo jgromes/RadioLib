@@ -772,6 +772,8 @@ class SX126x: public PhysicalLayer {
 
     int16_t config(uint8_t modem);
 
+
+
     // common low-level SPI interface
     int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
     int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
