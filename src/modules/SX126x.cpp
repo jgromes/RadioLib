@@ -1101,7 +1101,7 @@ int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
 // set PA config for optimal consumption as described in section 13-21 of the datasheet.
 int16_t SX126x::setOptimalHiPowerPaConfig(int8_t * inOutPower)
 {
-  // the final column of Table 13-21 suggests that the value passed in SetTxParams 
+  // the final column of Table 13-21 suggests that the value passed in SetTxParams
   // is actually scaled depending on the parameters of setPaConfig.
   // Testing confirms this is approximately right
   int16_t state;
@@ -1297,6 +1297,9 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     uint8_t debugBuff[256];
   #endif
 
+  // pull NSS low
+  digitalWrite(_mod->getCs(), LOW);
+
   // ensure BUSY is low (state meachine ready)
   RADIOLIB_VERBOSE_PRINTLN(F("Wait for BUSY ... "));
   uint32_t start = millis();
@@ -1307,7 +1310,6 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   }
 
   // start transfer
-  digitalWrite(_mod->getCs(), LOW);
   spi->beginTransaction(spiSettings);
 
   // send command byte(s)
