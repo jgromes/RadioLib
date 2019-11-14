@@ -9,7 +9,11 @@
 //SX126X_CMD_SET_PA_CONFIG
 #define SX126X_PA_CONFIG_SX1261                       0x01
 
-// TODO: implement SX1261 class
+/*!
+  \class SX1261
+
+  \brief Derived class for %SX1261 modules.
+*/
 class SX1261 : public SX1262 {
   public:
     /*!
