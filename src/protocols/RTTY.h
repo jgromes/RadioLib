@@ -147,7 +147,7 @@ class RTTYClient {
     uint8_t _encoding;
     uint32_t _base;
     uint32_t _shift;
-    uint16_t _bitDuration;
+    uint32_t _bitDuration;
     uint8_t _dataBits;
     uint8_t _stopBits;
 
