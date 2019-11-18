@@ -5,10 +5,6 @@
 #include "Module.h"
 #include "SX126x.h"
 
-//SX126X_CMD_SET_PA_CONFIG
-#define SX126X_PA_CONFIG_SX1261                       0x01
-#define SX126X_PA_CONFIG_SX1262                       0x00
-
 /*!
   \class SX1262
 
@@ -94,8 +90,6 @@ class SX1262: public SX126x {
     int16_t setOutputPower(int8_t power);
 
   private:
-
-
 };
 
 #endif
