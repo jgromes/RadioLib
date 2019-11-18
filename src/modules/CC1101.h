@@ -533,9 +533,11 @@ class CC1101: public PhysicalLayer {
 
       \param power Output power in dBm. Defaults to 0 dBm.
 
+      \param preambleLength Preamble Length in bytes. Defaults to 4 bytes.
+
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0);
+    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0, uint8_t preambleLength = 4);
 
     /*!
       \brief Blocking binary transmit method.
@@ -715,6 +717,15 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0);
+
+    /*!
+      \brief Sets preamble length.
+
+      \param preambleLength Preamble length to be set (in bytes), allowed values: 2, 3, 4, 6, 8, 12, 16, 24
+
+      \returns \ref status_codes
+    */
+    int16_t setPreambleLength(uint8_t preambleLength);
 
     /*!
       \brief Sets node and broadcast addresses. Calling this method will also enable address filtering.

@@ -8,7 +8,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _syncWordLength = CC1101_DEFAULT_SYNC_WORD_LENGTH;
 }
 
-int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLength) {
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
@@ -84,6 +84,12 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // configure default preamble lenght
+  state = setPreambleLength(preambleLength);
   if (state != ERR_NONE) {
     return(state);
   }
@@ -473,6 +479,43 @@ int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
   uint8_t syncWord[] = { syncH, syncL };
   return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits));
 }
+
+int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
+  // check allowed values
+  uint8_t value;
+  switch(preambleLength){
+    case 2:
+      value = CC1101_NUM_PREAMBLE_2;
+      break;
+    case 3:
+      value = CC1101_NUM_PREAMBLE_3;
+      break;
+    case 4:
+      value = CC1101_NUM_PREAMBLE_4;
+      break;
+    case 6:
+      value = CC1101_NUM_PREAMBLE_6;
+      break;
+    case 8:
+      value = CC1101_NUM_PREAMBLE_8;
+      break;
+    case 12:
+      value = CC1101_NUM_PREAMBLE_12;
+      break;
+    case 16:
+      value = CC1101_NUM_PREAMBLE_16;
+      break;
+    case 24:
+      value = CC1101_NUM_PREAMBLE_24;
+      break;
+    default:
+      return(ERR_INVALID_PREAMBLE_LENGTH);
+  }
+
+
+  return SPIsetRegValue(CC1101_REG_MDMCFG1, value, 6, 4);
+}
+
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
   if(!(numBroadcastAddrs > 0) && (numBroadcastAddrs <= 2)) {
