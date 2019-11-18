@@ -8,7 +8,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _syncWordLength = CC1101_DEFAULT_SYNC_WORD_LENGTH;
 }
 
-int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLength) {
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
@@ -84,6 +84,12 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // configure default preamble lenght
+  state = setPreambleLength(preambleLength);
   if (state != ERR_NONE) {
     return(state);
   }
