@@ -76,6 +76,7 @@ void setup() {
   // lora.sleep()
   // lora.transmit();
   // lora.receive();
+  // lora.readData();
   // lora.scanChannel();
 }
 
@@ -152,6 +153,9 @@ void loop() {
       Serial.println(state);
 
     }
+
+    // put module back to listen mode
+    lora.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine
