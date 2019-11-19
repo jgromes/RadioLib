@@ -70,6 +70,7 @@ void setup() {
   // cc.sleep()
   // cc.transmit();
   // cc.receive();
+  // cc.readData();
 }
 
 // flag to indicate that a packet was received
@@ -141,6 +142,9 @@ void loop() {
       Serial.println(state);
 
     }
+
+    // put module back to listen mode
+    cc.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine
