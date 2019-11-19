@@ -64,6 +64,7 @@ void setup() {
   // rf.sleep()
   // rf.transmit();
   // rf.receive();
+  // rf.readData();
 }
 
 // flag to indicate that a packet was received
@@ -124,6 +125,9 @@ void loop() {
       Serial.println(state);
 
     }
+
+    // put module back to listen mode
+    rf.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine
