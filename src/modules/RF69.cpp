@@ -289,6 +289,12 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t RF69::readData(uint8_t* data, size_t len) {
+  // set mdoe to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // get packet length
   size_t length = len;
   if(len == RF69_MAX_PACKET_LENGTH) {
