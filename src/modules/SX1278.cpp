@@ -411,29 +411,40 @@ int16_t SX1278::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
-int8_t SX1278::getRSSI() {
-  // check active modem
-  if(getActiveModem() != SX127X_LORA) {
-    return(0);
-  }
+float SX1278::getRSSI() {
+  if(getActiveModem() == SX127X_LORA) {
+    // for LoRa, get RSSI of the last packet
+    float lastPacketRSSI;
 
-  int8_t lastPacketRSSI;
+    // RSSI calculation uses different constant for low-frequency and high-frequency ports
+    if(_freq < 868.0) {
+      lastPacketRSSI = -164 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
+    } else {
+      lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
+    }
 
-  // RSSI calculation uses different constant for low-frequency and high-frequency ports
-  if(_freq < 868.0) {
-    lastPacketRSSI = -164 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
+    // spread-spectrum modulation signal can be received below noise floor
+    // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
+    float lastPacketSNR = SX127x::getSNR();
+    if(lastPacketSNR < 0.0) {
+      lastPacketRSSI += lastPacketSNR;
+    }
+
+    return(lastPacketRSSI);
+
   } else {
-    lastPacketRSSI = -157 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
-  }
+    // enable listen mode
+    startReceive();
 
-  // spread-spectrum modulation signal can be received below noise floor
-  // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
-  float lastPacketSNR = SX127x::getSNR();
-  if(lastPacketSNR < 0.0) {
-    lastPacketRSSI += lastPacketSNR;
-  }
+    // read the value for FSK
+    float rssi = (float)_mod->SPIgetRegValue(SX127X_REG_RSSI_VALUE_FSK) / -2.0;
 
-  return(lastPacketRSSI);
+    // set mode back to standby
+    standby();
+
+    // return the value
+    return(rssi);
+  }
 }
 
 int16_t SX1278::setCRC(bool enableCRC) {

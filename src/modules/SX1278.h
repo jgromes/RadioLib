@@ -244,11 +244,11 @@ class SX1278: public SX127x {
     int16_t setDataShapingOOK(uint8_t sh);
 
     /*!
-      \brief Gets recorded signal strength indicator of the latest received packet.
+      \brief Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.
 
-      \returns Last packet recorded signal strength indicator (RSSI).
+      \returns Last packet RSSI for LoRa modem, or current RSSI level for FSK modem.
     */
-    int8_t getRSSI();
+    float getRSSI();
 
     /*!
       \brief Enables/disables CRC check of received packets.

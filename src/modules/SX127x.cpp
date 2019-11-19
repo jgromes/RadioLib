@@ -117,6 +117,18 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
 
   // enable/disable OOK
   state = setOOK(enableOOK);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default RSSI measurement config
+  state = setRSSIConfig(2);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default encoding
+  state = setEncoding(0);
 
   return(state);
 }
@@ -174,6 +186,8 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
         return(ERR_TX_TIMEOUT);
       }
     }
+  } else {
+    return(ERR_UNKNOWN);
   }
 
   // update data rate
@@ -891,6 +905,52 @@ size_t SX127x::getPacketLength(bool update) {
   return(_packetLength);
 }
 
+int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // check provided values
+  if(!(smoothingSamples <= 7)) {
+    return(ERR_INVALID_NUM_SAMPLES);
+  }
+
+  if(!((offset >= -16) && (offset <= 15))) {
+    return(ERR_INVALID_RSSI_OFFSET);
+  }
+
+  // set new register values
+  state = _mod->SPIsetRegValue(SX127X_REG_RSSI_CONFIG, offset, 7, 3);
+  state |= _mod->SPIsetRegValue(SX127X_REG_RSSI_CONFIG, smoothingSamples, 2, 0);
+  return(state);
+}
+
+int16_t SX127x::setEncoding(uint8_t encoding) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set encoding
+  switch(encoding) {
+    case 0:
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_DC_FREE_NONE, 6, 5));
+    case 1:
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_DC_FREE_MANCHESTER, 6, 5));
+    case 2:
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_DC_FREE_WHITENING, 6, 5));
+    default:
+      return(ERR_INVALID_ENCODING);
+  }
+}
+
 int16_t SX127x::config() {
   // turn off frequency hopping
   int16_t state = _mod->SPIsetRegValue(SX127X_REG_HOP_PERIOD, SX127X_HOP_PERIOD_OFF);
@@ -963,8 +1023,7 @@ bool SX127x::findChip(uint8_t ver) {
         sprintf(buffHex, "0x%02X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
-        RADIOLIB_DEBUG_PRINT(ver, HEX);
-        RADIOLIB_DEBUG_PRINTLN();
+        RADIOLIB_DEBUG_PRINTLN(ver, HEX);
       #endif
       delay(1000);
       i++;

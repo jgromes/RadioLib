@@ -263,6 +263,21 @@
 */
 #define ERR_WRONG_MODEM                       -20
 
+/*!
+  \brief The supplied number of RSSI samples is invalid.
+*/
+#define ERR_INVALID_NUM_SAMPLES               -21
+
+/*!
+  \brief The supplied RSSI offset is invalid.
+*/
+#define ERR_INVALID_RSSI_OFFSET               -22
+
+/*!
+  \brief The supplied encoding is invalid.
+*/
+#define ERR_INVALID_ENCODING                  -23
+
 // RF69-specific status codes
 
 /*!

@@ -842,6 +842,27 @@ class SX127x: public PhysicalLayer {
     */
     size_t getPacketLength(bool update = true);
 
+    /*!
+      \brief Sets RSSI measurement configuration in FSK mode.
+
+      \param smoothingSamples Number of samples taken to avergae the RSSI result.
+      numSamples = 2 ^ (1 + smoothingSamples), allowed values are in range 0 (2 samples) - 7 (256 samples)
+
+      \param offset Signed RSSI offset that will be automatically compensated. 1 dB per LSB, defaults to 0, allowed values are in range -16 dB to +15 dB.
+
+      \returns \ref status_codes
+    */
+    int16_t setRSSIConfig(uint8_t smoothingSamples, int8_t offset = 0);
+
+    /*!
+      \brief Sets transmission encoding. Only available in FSK mode.
+
+      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding);
+
     #ifdef RADIOLIB_DEBUG
       void regDump();
     #endif
