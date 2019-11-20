@@ -38,6 +38,10 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+#ifdef RADIOLIB_GODMODE
+  #warning "God mode active, I hope it was intentional. Buckle up, lads."
+#endif
+
 #include "modules/CC1101.h"
 #ifndef ESP8266
 #include "modules/ESP8266.h"
@@ -101,7 +105,9 @@ class Radio {
     Module* ModuleA;
     Module* ModuleB;
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
 
 };
 

@@ -91,6 +91,11 @@ class SX1268: public SX126x {
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power);
+
+#ifndef RADIOLIB_GODMODE
+  private:
+#endif
+    
 };
 
 #endif

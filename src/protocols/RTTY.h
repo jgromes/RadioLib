@@ -57,7 +57,9 @@ class ITA2String {
     */
     uint8_t* byteArr();
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     #ifdef RADIOLIB_STATIC_ONLY
       char _str[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
@@ -141,7 +143,9 @@ class RTTYClient {
     size_t println(unsigned long, int = DEC);
     size_t println(double, int = 2);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     PhysicalLayer* _phy;
 
     uint8_t _encoding;

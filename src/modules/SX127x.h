@@ -867,7 +867,9 @@ class SX127x: public PhysicalLayer {
       void regDump();
     #endif
 
+#ifndef RADIOLIB_GODMODE
   protected:
+#endif
     Module* _mod;
 
     float _freq;
@@ -884,8 +886,9 @@ class SX127x: public PhysicalLayer {
     int16_t getActiveModem();
     int16_t directMode();
 
-
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     float _dataRate;
     size_t _packetLength;
     bool _packetLengthQueried; // FSK packet length is the first byte in FIFO, length can only be queried once

@@ -58,7 +58,9 @@ class HTTPClient {
     */
     int16_t post(const char* url, const char* content, String& response, const char* contentType = "text/plain");
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     TransportLayer* _tl;
 
     uint16_t _port;

@@ -724,7 +724,9 @@ class SX126x: public PhysicalLayer {
    */
    uint32_t getTimeOnAir(size_t len);
 
+#ifndef RADIOLIB_GODMODE
   protected:
+#endif
     // SX1276x SPI command implementations
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
@@ -758,7 +760,10 @@ class SX126x: public PhysicalLayer {
       \brief Fixes overly eager PA clamping on SX1262 / SX1268, as described in section 15.2 of the datasheet
     */
     int16_t fixPaClamping();
+
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     Module* _mod;
 
     uint8_t _bw, _sf, _cr, _ldro, _crcType;
@@ -773,8 +778,6 @@ class SX126x: public PhysicalLayer {
     float _dataRate;
 
     int16_t config(uint8_t modem);
-
-
 
     // common low-level SPI interface
     int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);

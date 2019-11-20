@@ -310,7 +310,9 @@ class Module {
     */
     SPISettings getSpiSettings() const { return(_spiSettings); }
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     int _cs;
     int _tx;
     int _rx;

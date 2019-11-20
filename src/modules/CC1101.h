@@ -820,7 +820,9 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     Module* _mod;
 
     float _freq;

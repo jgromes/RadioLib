@@ -89,7 +89,10 @@ class SX1262: public SX126x {
     */
     int16_t setOutputPower(int8_t power);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
+
 };
 
 #endif

@@ -32,7 +32,9 @@ class SX1261 : public SX1262 {
     */
     int16_t setOutputPower(int8_t power);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     int16_t setOptimalLowPowerPaConfig(int8_t* inOutPower);
 };
 

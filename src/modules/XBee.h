@@ -81,7 +81,9 @@ class XBeeSerial: public ISerial {
     */
     int16_t setPanId(const char* panID);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     bool enterCmdMode();
 
 };
@@ -170,7 +172,9 @@ class XBee {
     */
     int16_t setPanId(uint8_t* panID);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     Module* _mod;
     uint8_t _frameID;
     size_t _frameLength;

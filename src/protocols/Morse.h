@@ -67,7 +67,9 @@ class MorseClient {
     size_t println(unsigned long, int = DEC);
     size_t println(double, int = 2);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     PhysicalLayer* _phy;
     uint32_t _base;
     uint16_t _dotLength;

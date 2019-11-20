@@ -408,7 +408,9 @@ class nRF24: public PhysicalLayer {
     */
     size_t getPacketLength(bool update = true);
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     Module* _mod;
 
     uint8_t _addrWidth;

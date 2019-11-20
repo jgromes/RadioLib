@@ -18,7 +18,8 @@
 
 /*
  * Uncomment to enable debug output.
- * Warning: Debug output will slow down the whole system significantly
+ * Warning: Debug output will slow down the whole system significantly.
+ *          Also, it will result in larger compiled binary.
  * Levels: debug - only main info
  *         verbose - full transcript of all SPI/UART communication
  */

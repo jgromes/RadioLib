@@ -54,7 +54,9 @@ class ISerial {
     size_t println(const Printable&);
     size_t println(void);
 
+#ifndef RADIOLIB_GODMODE
   protected:
+#endif
     Module* _mod;
 };
 

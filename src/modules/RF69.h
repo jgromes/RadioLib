@@ -762,7 +762,9 @@ class RF69: public PhysicalLayer {
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
 
+#ifndef RADIOLIB_GODMODE
   protected:
+#endif
     Module* _mod;
 
     float _br;
@@ -780,7 +782,9 @@ class RF69: public PhysicalLayer {
     int16_t config();
     int16_t directMode();
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     int16_t setMode(uint8_t mode);
     void clearIRQFlags();
 };

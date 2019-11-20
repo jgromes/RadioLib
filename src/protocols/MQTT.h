@@ -127,7 +127,9 @@ class MQTTClient {
     */
     int16_t check(void (*func)(const char*, const char*));
 
+#ifndef RADIOLIB_GODMODE
   private:
+#endif
     TransportLayer* _tl;
 
     uint16_t _port;
