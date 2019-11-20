@@ -19,8 +19,8 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   }
 
   // dynamically allocate memory
-  #ifdef STATIC_ONLY
-    char str[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
   #endif
@@ -33,7 +33,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
 
   // transmit string
   int16_t state = transmit(str, addr);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] str;
   #endif
   return(state);
@@ -68,8 +68,8 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  #ifdef STATIC_ONLY
-    uint8_t data[STATIC_ARRAY_SIZE + 1];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
     if(!data) {
@@ -89,7 +89,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] data;
   #endif
 
@@ -108,8 +108,8 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  #ifdef STATIC_ONLY
-    uint8_t data[STATIC_ARRAY_SIZE + 1];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
     if(!data) {
@@ -134,7 +134,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] data;
   #endif
 

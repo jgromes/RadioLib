@@ -58,8 +58,8 @@ class ITA2String {
     uint8_t* byteArr();
 
   private:
-    #ifdef STATIC_ONLY
-      char _str[STATIC_ARRAY_SIZE];
+    #ifdef RADIOLIB_STATIC_ONLY
+      char _str[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
       char* _str = new char[1];
     #endif

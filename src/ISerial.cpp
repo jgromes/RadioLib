@@ -9,7 +9,7 @@ void ISerial::begin(long speed) {
 }
 
 bool ISerial::listen() {
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->listen());
@@ -21,7 +21,7 @@ void ISerial::end() {
 }
 
 bool ISerial::isListening() {
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->isListening());
@@ -29,7 +29,7 @@ bool ISerial::isListening() {
 }
 
 bool ISerial::stopListening() {
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   return true;
 #else
   return(_mod->ModuleSerial->stopListening());
@@ -37,7 +37,7 @@ bool ISerial::stopListening() {
 }
 
 bool ISerial::overflow() {
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   return false;
 #else
   return(_mod->ModuleSerial->overflow());

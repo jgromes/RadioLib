@@ -9,7 +9,7 @@ int16_t ESP8266::begin(long speed) {
   // set module properties
   _mod->AtLineFeed = "\r\n";
   _mod->baudrate = speed;
-  _mod->init(USE_UART, INT_NONE);
+  _mod->init(RADIOLIB_USE_UART, RADIOLIB_INT_NONE);
 
   // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
@@ -52,8 +52,8 @@ int16_t ESP8266::join(const char* ssid, const char* password) {
 
   // build AT command
   const char* atStr = "AT+CWJAP_CUR=\"";
-  #ifdef STATIC_ONLY
-    char cmd[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t cmdLen = strlen(atStr) + strlen(ssid) + strlen(password) + 4;
     char* cmd = new char[cmdLen + 1];
@@ -66,7 +66,7 @@ int16_t ESP8266::join(const char* ssid, const char* password) {
 
   // send command
   bool res = _mod->ATsendCommand(cmd);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] cmd;
   #endif
   if(!res) {
@@ -93,8 +93,8 @@ int16_t ESP8266::openTransportConnection(const char* host, const char* protocol,
   if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
 	  cmdLen += strlen(tcpKeepAliveStr) + 1;
   }
-  #ifdef STATIC_ONLY
-    char cmd[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* cmd = new char[cmdLen + 1];
   #endif
@@ -111,7 +111,7 @@ int16_t ESP8266::openTransportConnection(const char* host, const char* protocol,
 
   // send command
   bool res = _mod->ATsendCommand(cmd);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] cmd;
   #endif
   if(!res) {
@@ -134,8 +134,8 @@ int16_t ESP8266::send(const char* data) {
   char lenStr[8];
   itoa(strlen(data), lenStr, 10);
   const char* atStr = "AT+CIPSEND=";
-  #ifdef STATIC_ONLY
-    char cmd[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* cmd = new char[strlen(atStr) + strlen(lenStr) + 1];
   #endif
@@ -144,7 +144,7 @@ int16_t ESP8266::send(const char* data) {
 
   // send command
   bool res = _mod->ATsendCommand(cmd);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] cmd;
   #endif
   if(!res) {
@@ -164,8 +164,8 @@ int16_t ESP8266::send(uint8_t* data, uint32_t len) {
   char lenStr[8];
   itoa(len, lenStr, 10);
   const char atStr[] = "AT+CIPSEND=";
-  #ifdef STATIC_ONLY
-    char cmd[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* cmd = new char[strlen(atStr) + strlen(lenStr) + 1];
   #endif
@@ -174,7 +174,7 @@ int16_t ESP8266::send(uint8_t* data, uint32_t len) {
 
   // send command
   bool res = _mod->ATsendCommand(cmd);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] cmd;
   #endif
   if(!res) {

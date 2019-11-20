@@ -13,7 +13,7 @@ ITA2String::ITA2String(const char* str) {
 }
 
 ITA2String::~ITA2String() {
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] _str;
   #endif
 }
@@ -32,8 +32,8 @@ size_t ITA2String::length() {
 
 uint8_t* ITA2String::byteArr() {
   // create temporary array 2x the string length (figures may be 3 bytes)
-  #ifdef STATIC_ONLY
-    uint8_t temp[STATIC_ARRAY_SIZE*2 + 1];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t temp[RADIOLIB_STATIC_ARRAY_SIZE*2 + 1];
   #else
     uint8_t* temp = new uint8_t[_len*2 + 1];
   #endif
@@ -79,7 +79,7 @@ uint8_t* ITA2String::byteArr() {
 
   uint8_t* arr = new uint8_t[arrayLen];
   memcpy(arr, temp, arrayLen);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] temp;
   #endif
 
@@ -208,8 +208,8 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   }
 
   // dynamically allocate memory
-  #ifdef STATIC_ONLY
-    char str[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
   #endif
@@ -227,7 +227,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, len);
   }
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] str;
   #endif
   return(n);

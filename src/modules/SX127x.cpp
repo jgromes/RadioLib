@@ -7,7 +7,7 @@ SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_CRYSTAL_FREQ, SX127X_DIV_EXPO
 
 int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength) {
   // set module properties
-  _mod->init(USE_SPI, INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -51,7 +51,7 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
 
 int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit, uint16_t preambleLength, bool enableOOK) {
   // set module properties
-  _mod->init(USE_SPI, INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {

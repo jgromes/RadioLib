@@ -176,8 +176,8 @@ class XBee {
     size_t _frameLength;
     bool _frameHeaderProcessed;
 
-    #ifdef STATIC_ONLY
-      char _packetData[STATIC_ARRAY_SIZE];
+    #ifdef RADIOLIB_STATIC_ONLY
+      char _packetData[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
       char* _packetData = new char[0];
     #endif

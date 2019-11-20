@@ -12,7 +12,7 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
-  _mod->init(USE_SPI, INT_0);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_0);
 
   // try to find the CC1101 chip
   uint8_t i = 0;

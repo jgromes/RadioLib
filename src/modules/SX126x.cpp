@@ -6,7 +6,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
 
 int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength) {
   // set module properties
-  _mod->init(USE_SPI, INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
@@ -71,7 +71,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
 
 int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping) {
   // set module properties
-  _mod->init(USE_SPI, INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
 
   // initialize configuration variables (will be overwritten during public settings configuration)

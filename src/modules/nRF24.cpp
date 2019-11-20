@@ -8,7 +8,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // set module properties
   _mod->SPIreadCommand = NRF24_CMD_READ;
   _mod->SPIwriteCommand = NRF24_CMD_WRITE;
-  _mod->init(USE_SPI, INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
 
   // override pin mode on INT0 (connected to nRF24 CE pin)
   pinMode(_mod->getInt0(), OUTPUT);

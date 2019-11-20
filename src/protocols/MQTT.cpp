@@ -27,7 +27,7 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   size_t encodedBytes = encodeLength(remainingLength, encoded);
 
   // build the CONNECT packet
-  #ifdef STATIC_ONLY
+  #ifdef RADIOLIB_STATIC_ONLY
     uint8_t packet[256];
   #else
     uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
@@ -101,7 +101,7 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   // create TCP connection
   int16_t state = _tl->openTransportConnection(host, "TCP", _port, keepAlive);
   if(state != ERR_NONE) {
-    #ifndef STATIC_ONLY
+    #ifndef RADIOLIB_STATIC_ONLY
       delete[] packet;
     #endif
     return(state);
@@ -109,7 +109,7 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
 
   // send MQTT packet
   state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] packet;
   #endif
   if(state != ERR_NONE) {
@@ -123,21 +123,21 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
   }
 
   // read the response
-  #ifdef STATIC_ONLY
-    uint8_t response[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t response[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* response = new uint8_t[numBytes];
   #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_CONNACK << 4) && (response[1] == 2)) {
     uint8_t returnCode = response[3];
-    #ifndef STATIC_ONLY
+    #ifndef RADIOLIB_STATIC_ONLY
       delete[] response;
     #endif
     return(returnCode);
   }
 
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] response;
   #endif
   return(ERR_RESPONSE_MALFORMED);
@@ -174,8 +174,8 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
   size_t encodedBytes = encodeLength(remainingLength, encoded);
 
   // build the PUBLISH packet
-  #ifdef STATIC_ONLY
-    uint8_t packet[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t packet[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
   #endif
@@ -201,7 +201,7 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
 
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] packet;
   #endif
   return(state);
@@ -217,8 +217,8 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
   size_t encodedBytes = encodeLength(remainingLength, encoded);
 
   // build the SUBSCRIBE packet
-  #ifdef STATIC_ONLY
-    uint8_t packet[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t packet[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
   #endif
@@ -244,7 +244,7 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
 
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] packet;
   #endif
   if(state != ERR_NONE) {
@@ -258,8 +258,8 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
   }
 
   // read the response
-  #ifdef STATIC_ONLY
-    uint8_t response[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t response[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* response = new uint8_t[numBytes];
   #endif
@@ -268,7 +268,7 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
     // check packet ID
     uint16_t receivedId = response[3] | response[2] << 8;
     int16_t returnCode = response[4];
-    #ifndef STATIC_ONLY
+    #ifndef RADIOLIB_STATIC_ONLY
       delete[] response;
     #endif
     if(receivedId != packetId) {
@@ -277,7 +277,7 @@ int16_t MQTTClient::subscribe(const char* topicFilter) {
     return(returnCode);
   }
 
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] response;
   #endif
   return(ERR_RESPONSE_MALFORMED);
@@ -291,8 +291,8 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   size_t encodedBytes = encodeLength(remainingLength, encoded);
 
   // build the UNSUBSCRIBE packet
-  #ifdef STATIC_ONLY
-    uint8_t packet[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t packet[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* packet = new uint8_t[1 + encodedBytes + remainingLength];
   #endif
@@ -317,7 +317,7 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
 
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] packet;
   #endif
   if(state != ERR_NONE) {
@@ -331,8 +331,8 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   }
 
   // read the response
-  #ifdef STATIC_ONLY
-    uint8_t response[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t response[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* response = new uint8_t[numBytes];
   #endif
@@ -340,7 +340,7 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   if((response[0] == MQTT_UNSUBACK << 4) && (response[1] == 2)) {
     // check packet ID
     uint16_t receivedId = response[3] | response[2] << 8;
-    #ifndef STATIC_ONLY
+    #ifndef RADIOLIB_STATIC_ONLY
       delete[] response;
     #endif
     if(receivedId != packetId) {
@@ -349,7 +349,7 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
     return(ERR_NONE);
   }
 
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] response;
   #endif
   return(ERR_RESPONSE_MALFORMED);
@@ -376,20 +376,20 @@ int16_t MQTTClient::ping() {
   }
 
   // read the response
-  #ifdef STATIC_ONLY
-    uint8_t response[STATIC_ARRAY_SIZE];
+  #ifdef RADIOLIB_STATIC_ONLY
+    uint8_t response[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* response = new uint8_t[numBytes];
   #endif
   _tl->receive(response, numBytes);
   if((response[0] == MQTT_PINGRESP << 4) && (response[1] == 0)) {
-    #ifndef STATIC_ONLY
+    #ifndef RADIOLIB_STATIC_ONLY
       delete[] response;
     #endif
     return(ERR_NONE);
   }
 
-  #ifndef STATIC_ONLY
+  #ifndef RADIOLIB_STATIC_ONLY
     delete[] response;
   #endif
   return(ERR_RESPONSE_MALFORMED);

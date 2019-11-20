@@ -5,7 +5,7 @@
 
 #include <SPI.h>
 //#include <Wire.h>
-#ifndef SOFTWARE_SERIAL_UNSUPPORTED
+#ifndef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
 #include <SoftwareSerial.h>
 #endif
 
@@ -27,7 +27,7 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     Module(int tx, int rx, HardwareSerial* useSer = &Serial1);
 #else
     Module(int tx, int rx, HardwareSerial* useSer = nullptr);
@@ -84,7 +84,7 @@ class Module {
 
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = &Serial1);
 #else
     Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* useSer = nullptr);
@@ -96,7 +96,7 @@ class Module {
     /*!
       \brief Internal SoftwareSerial instance.
     */
-#ifdef SOFTWARE_SERIAL_UNSUPPORTED
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     HardwareSerial* ModuleSerial;
 #else
     SoftwareSerial* ModuleSerial;
