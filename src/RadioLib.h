@@ -42,39 +42,39 @@
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
 #endif
 
-#include "modules/CC1101.h"
+#include "modules/CC1101/CC1101.h"
 #ifndef ESP8266
-#include "modules/ESP8266.h"
+#include "modules/ESP8266/ESP8266.h"
 #endif
-#include "modules/HC05.h"
-#include "modules/JDY08.h"
-#include "modules/nRF24.h"
-#include "modules/RF69.h"
-#include "modules/RFM95.h"
-#include "modules/RFM96.h"
-#include "modules/RFM97.h"
-#include "modules/SX1231.h"
-#include "modules/SX1261.h"
-#include "modules/SX1262.h"
-#include "modules/SX1268.h"
-#include "modules/SX1272.h"
-#include "modules/SX1273.h"
-#include "modules/SX1276.h"
-#include "modules/SX1277.h"
-#include "modules/SX1278.h"
-#include "modules/SX1279.h"
-#include "modules/XBee.h"
+#include "modules/HC05/HC05.h"
+#include "modules/JDY08/JDY08.h"
+#include "modules/nRF24/nRF24.h"
+#include "modules/RF69/RF69.h"
+#include "modules/RFM9x/RFM95.h"
+#include "modules/RFM9x/RFM96.h"
+#include "modules/RFM9x/RFM97.h"
+#include "modules/SX1231/SX1231.h"
+#include "modules/SX126x/SX1261.h"
+#include "modules/SX126x/SX1262.h"
+#include "modules/SX126x/SX1268.h"
+#include "modules/SX127x/SX1272.h"
+#include "modules/SX127x/SX1273.h"
+#include "modules/SX127x/SX1276.h"
+#include "modules/SX127x/SX1277.h"
+#include "modules/SX127x/SX1278.h"
+#include "modules/SX127x/SX1279.h"
+#include "modules/XBee/XBee.h"
 
 // physical layer protocols
-#include "protocols/PhysicalLayer.h"
-#include "protocols/Morse.h"
-#include "protocols/RTTY.h"
+#include "protocols/PhysicalLayer/PhysicalLayer.h"
+#include "protocols/Morse/Morse.h"
+#include "protocols/RTTY/RTTY.h"
 
 // transport layer protocols
 #ifndef ESP8266
-#include "protocols/TransportLayer.h"
-#include "protocols/HTTP.h"
-#include "protocols/MQTT.h"
+#include "protocols/TransportLayer/TransportLayer.h"
+#include "protocols/HTTP/HTTP.h"
+#include "protocols/MQTT/MQTT.h"
 #endif
 
 // RadioShield pin definitions
@@ -97,13 +97,16 @@
 class Radio {
   public:
 
+    Module* ModuleA;
+    Module* ModuleB;
+
     /*!
       \brief Default constructor. Only used to set ModuleA and ModuleB configuration.
     */
-    Radio();
-
-    Module* ModuleA;
-    Module* ModuleB;
+    Radio() {
+      ModuleA = new Module(RADIOSHIELD_CS_A, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_A, RADIOSHIELD_TX_A, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), nullptr);
+      ModuleB = new Module(RADIOSHIELD_CS_B, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_B, RADIOSHIELD_TX_B, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), nullptr);
+    }
 
 #ifndef RADIOLIB_GODMODE
   private:
@@ -111,6 +114,6 @@ class Radio {
 
 };
 
-extern Radio RadioShield;
+Radio RadioShield;
 
 #endif
