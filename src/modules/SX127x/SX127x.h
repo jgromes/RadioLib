@@ -9,7 +9,8 @@
 // SX127x physical layer properties
 #define SX127X_CRYSTAL_FREQ                           32.0
 #define SX127X_DIV_EXPONENT                           19
-#define SX127X_MAX_PACKET_LENGTH                      256
+#define SX127X_MAX_PACKET_LENGTH                      255
+#define SX127X_MAX_PACKET_LENGTH_FSK                  64
 
 // SX127x series common LoRa registers
 #define SX127X_REG_FIFO                               0x00
@@ -843,6 +844,24 @@ class SX127x: public PhysicalLayer {
     size_t getPacketLength(bool update = true);
 
     /*!
+     \brief Set modem in fixed packet length mode. Available in FSK mode only.
+
+     \param len Packet length.
+
+     \returns \ref status_codes
+   */
+   int16_t fixedPacketLengthMode(uint8_t len = SX127X_MAX_PACKET_LENGTH_FSK);
+
+    /*!
+     \brief Set modem in variable packet length mode. Available in FSK mode only.
+
+     \param len Maximum packet length.
+
+     \returns \ref status_codes
+   */
+   int16_t variablePacketLengthMode(uint8_t maxLen = SX127X_MAX_PACKET_LENGTH_FSK);
+
+    /*!
       \brief Sets RSSI measurement configuration in FSK mode.
 
       \param smoothingSamples Number of samples taken to avergae the RSSI result.
@@ -885,6 +904,7 @@ class SX127x: public PhysicalLayer {
     int16_t configFSK();
     int16_t getActiveModem();
     int16_t directMode();
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 
 #ifndef RADIOLIB_GODMODE
   private:
@@ -892,6 +912,7 @@ class SX127x: public PhysicalLayer {
     float _dataRate;
     size_t _packetLength;
     bool _packetLengthQueried; // FSK packet length is the first byte in FIFO, length can only be queried once
+    uint8_t _packetLengthConfig;
 
     bool findChip(uint8_t ver);
     int16_t setMode(uint8_t mode);

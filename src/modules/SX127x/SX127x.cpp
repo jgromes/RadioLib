@@ -42,6 +42,9 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
 
   // set preamble length
   state = SX127x::setPreambleLength(preambleLength);
+  if(state != ERR_NONE) {
+    return(state);
+  }
 
   // initalize internal variables
   _dataRate = 0.0;
@@ -129,6 +132,15 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
 
   // set default encoding
   state = setEncoding(0);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set default packet length mode
+  state = variablePacketLengthMode();
+  if (state != ERR_NONE) {
+    return(state);
+  }
 
   return(state);
 }
@@ -413,7 +425,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
     // check packet length
-    if(len >= 256) {
+    if(len >= SX127X_MAX_PACKET_LENGTH) {
       return(ERR_PACKET_TOO_LONG);
     }
 
@@ -443,7 +455,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   } else if(modem == SX127X_FSK_OOK) {
     // check packet length
-    if(len >= 64) {
+    if(len >= SX127X_MAX_PACKET_LENGTH_FSK) {
       return(ERR_PACKET_TOO_LONG);
     }
 
@@ -905,6 +917,14 @@ size_t SX127x::getPacketLength(bool update) {
   return(_packetLength);
 }
 
+int16_t SX127x::fixedPacketLengthMode(uint8_t len) {
+  return(SX127x::setPacketMode(SX127X_PACKET_FIXED, len));
+}
+
+int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
+  return(SX127x::setPacketMode(SX127X_PACKET_VARIABLE, maxLen));
+}
+
 int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
@@ -1003,6 +1023,34 @@ int16_t SX127x::configFSK() {
     return(state);
   }
 
+  return(state);
+}
+
+int16_t SX127x::setPacketMode(uint8_t mode, uint8_t len) {
+  // check packet length
+  if (len > SX127X_MAX_PACKET_LENGTH_FSK) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set to fixed packet length
+  int16_t state = _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, mode, 7, 7);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set length to register
+  state = _mod->SPIsetRegValue(SX127X_REG_PAYLOAD_LENGTH_FSK, len);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // update cached value
+  _packetLengthConfig = mode;
   return(state);
 }
 
