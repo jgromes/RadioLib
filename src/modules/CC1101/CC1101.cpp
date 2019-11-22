@@ -588,9 +588,8 @@ int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
     return(state);
   }
 
-  // all went well: cache the reg value
+  // update cached value
   _packetLengthConfig = CC1101_LENGTH_CONFIG_FIXED;
-
   return(state);
 }
 
@@ -599,7 +598,7 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
     return(ERR_PACKET_TOO_LONG);
   }
 
-  // set to fixed packet length
+  // set to variable packet length
   int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_VARIABLE, 1, 0);
   if (state != ERR_NONE) {
     return(state);
@@ -611,7 +610,7 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
     return(state);
   }
 
-  // all went well: cache the reg value
+  // update cached value
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
   return(state);
 }
