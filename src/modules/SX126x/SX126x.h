@@ -92,7 +92,16 @@
 #define SX126X_REG_OCP_CONFIGURATION                  0x08E7
 #define SX126X_REG_XTA_TRIM                           0x0911
 #define SX126X_REG_XTB_TRIM                           0x0912
-#define SX126X_REG_TX_CLAMP_CONFIG                    0x08D8 //Datasheet 15.2
+
+// undocumented registers
+#define SX126X_REG_SENSITIVITY_CONFIG                 0x0889 // SX1268 datasheet v1.1, section 15.1
+#define SX126X_REG_TX_CLAMP_CONFIG                    0x08D8 // SX1268 datasheet v1.1, section 15.2
+#define SX126X_REG_RTC_STOP                           0x0920 // SX1268 datasheet v1.1, section 15.3
+#define SX126X_REG_RTC_EVENT                          0x0944 // SX1268 datasheet v1.1, section 15.3
+#define SX126X_REG_IQ_CONFIG                          0x0736 // SX1268 datasheet v1.1, section 15.4
+#define SX126X_REG_RX_GAIN_RETENTION_0                0x029F // SX1268 datasheet v1.1, section 9.6
+#define SX126X_REG_RX_GAIN_RETENTION_1                0x02A0 // SX1268 datasheet v1.1, section 9.6
+#define SX126X_REG_RX_GAIN_RETENTION_2                0x02A1 // SX1268 datasheet v1.1, section 9.6
 
 
 // SX126X SPI command variables
@@ -676,7 +685,7 @@ class SX126x: public PhysicalLayer {
 
       \param TCXO timeout in us. Defaults to 5000 us.
     */
-    int16_t setTCXO(float voltage, uint32_t timeout = 5000);
+    int16_t setTCXO(float voltage, uint32_t delay = 5000);
 
     /*!
       \brief Set DIO2 to function as RF switch (default in Semtech example designs).
@@ -743,7 +752,6 @@ class SX126x: public PhysicalLayer {
     int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
-    int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
@@ -755,11 +763,13 @@ class SX126x: public PhysicalLayer {
     int16_t clearDeviceErrors();
 
     int16_t setFrequencyRaw(float freq);
+    int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
 
-    /*!
-      \brief Fixes overly eager PA clamping on SX1262 / SX1268, as described in section 15.2 of the datasheet
-    */
+    // fixes to errata
+    int16_t fixSensitivity();
     int16_t fixPaClamping();
+    int16_t fixImplicitTimeout();
+    int16_t fixInvertedIQ(uint8_t iqConfig);
 
 #ifndef RADIOLIB_GODMODE
   private:

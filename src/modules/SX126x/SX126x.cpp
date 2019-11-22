@@ -251,9 +251,16 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   uint32_t start = micros();
   while(!digitalRead(_mod->getInt0())) {
     if(micros() - start > timeout) {
+      fixImplicitTimeout();
       clearIrqStatus();
       return(ERR_RX_TIMEOUT);
     }
+  }
+
+  // timeout fix is recommended after any reception with active timeout
+  state = fixImplicitTimeout();
+  if(state != ERR_NONE) {
+    return(state);
   }
 
   // read the received data
@@ -364,6 +371,11 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     return(ERR_PACKET_TOO_LONG);
   }
 
+  // maximum packet length is decreased by 1 when address filtering is active
+  if((_addrComp != SX126X_GFSK_ADDRESS_FILT_OFF) && (len > SX126X_MAX_PACKET_LENGTH - 1)) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
   // set packet Length
   int16_t state = ERR_NONE;
   uint8_t modem = getPacketType();
@@ -398,6 +410,12 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // clear interrupt flags
   state = clearIrqStatus();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // fix sensitivity
+  state = fixSensitivity();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -968,9 +986,14 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
+int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();
+
+  // check SX126X_XOSC_START_ERR flag and clear it
+  if(getDeviceErrors() & SX126X_XOSC_START_ERR) {
+    clearDeviceErrors();
+  }
 
   // check alowed voltage values
   uint8_t data[4];
@@ -994,11 +1017,11 @@ int16_t SX126x::setTCXO(float voltage, uint32_t timeout) {
     return(ERR_INVALID_TCXO_VOLTAGE);
   }
 
-  // calculate timeout
-  uint32_t timeoutValue = (float)timeout / 15.625;
-  data[1] = (uint8_t)((timeoutValue >> 16) & 0xFF);
-  data[2] = (uint8_t)((timeoutValue >> 8) & 0xFF);
-  data[3] = (uint8_t)(timeoutValue & 0xFF);
+  // calculate delay
+  uint32_t delayValue = (float)delay / 15.625;
+  data[1] = (uint8_t)((delayValue >> 16) & 0xFF);
+  data[2] = (uint8_t)((delayValue >> 8) & 0xFF);
+  data[3] = (uint8_t)(delayValue & 0xFF);
 
   // enable TCXO control on DIO3
   SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4);
@@ -1098,12 +1121,10 @@ int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
   return(SPIwriteCommand(SX126X_CMD_SET_TX_PARAMS, data, 2));
 }
 
-// set PA config for optimal consumption as described in section 13-21 of the datasheet.
-int16_t SX126x::setOptimalHiPowerPaConfig(int8_t * inOutPower)
-{
+int16_t SX126x::setOptimalHiPowerPaConfig(int8_t * inOutPower) {
+  // set PA config for optimal consumption as described in section 13-21 of SX1268 datasheet v1.1
   // the final column of Table 13-21 suggests that the value passed in SetTxParams
-  // is actually scaled depending on the parameters of setPaConfig.
-  // Testing confirms this is approximately right
+  // is actually scaled depending on the parameters of setPaConfig
   int16_t state;
   if (*inOutPower >= 21) {
     state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262_8, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
@@ -1152,6 +1173,7 @@ int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t 
 }
 
 int16_t SX126x::setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ) {
+  fixInvertedIQ(invertIQ);
   uint8_t data[6] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF), headerType, payloadLength, crcType, invertIQ};
   return(SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 6));
 }
@@ -1188,8 +1210,8 @@ uint16_t SX126x::getDeviceErrors() {
 }
 
 int16_t SX126x::clearDeviceErrors() {
-  uint8_t data[1] = {SX126X_CMD_NOP};
-  return(SPIwriteCommand(SX126X_CMD_CLEAR_DEVICE_ERRORS, data, 1));
+  uint8_t data[2] = {SX126X_CMD_NOP, SX126X_CMD_NOP};
+  return(SPIwriteCommand(SX126X_CMD_CLEAR_DEVICE_ERRORS, data, 2));
 }
 
 int16_t SX126x::setFrequencyRaw(float freq) {
@@ -1199,14 +1221,85 @@ int16_t SX126x::setFrequencyRaw(float freq) {
   return(ERR_NONE);
 }
 
+int16_t SX126x::fixSensitivity() {
+  // fix receiver sensitivity for 500 kHz LoRa
+  // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.1 for details
+
+  // read current sensitivity configuration
+  uint8_t sensitivityConfig = 0;
+  int16_t state = readRegister(SX126X_REG_SENSITIVITY_CONFIG, &sensitivityConfig, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // fix the value for LoRa with 500 kHz bandwidth
+  if((getPacketType() == SX126X_PACKET_TYPE_LORA) && (abs(_bwKhz - 500.0) <= 0.001)) {
+    sensitivityConfig &= 0xFB;
+  } else {
+    sensitivityConfig |= 0x04;
+  }
+  return(writeRegister(SX126X_REG_SENSITIVITY_CONFIG, &sensitivityConfig, 1));
+}
+
 int16_t SX126x::fixPaClamping() {
-  uint8_t clampConfig;
-  uint16_t state = readRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
+  // fixes overly eager PA clamping
+  // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.2 for details
+
+  // read current clamping configuration
+  uint8_t clampConfig = 0;
+  int16_t state = readRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
   if (state != ERR_NONE) {
     return state;
   }
+
+  // update with the new value
   clampConfig |= 0x1E;
-  return writeRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
+  return(writeRegister(SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1));
+}
+
+int16_t SX126x::fixImplicitTimeout() {
+  // fixes timeout in implicit header mode
+  // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.3 for details
+
+  // stop RTC counter
+  uint8_t rtcStop = 0x00;
+  int16_t state = writeRegister(SX126X_REG_RTC_STOP, &rtcStop, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // read currently active event
+  uint8_t rtcEvent = 0;
+  state = readRegister(SX126X_REG_RTC_EVENT, &rtcEvent, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // clear events
+  rtcEvent |= 0x02;
+  return(writeRegister(SX126X_REG_RTC_EVENT, &rtcEvent, 1));
+}
+
+int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
+  // fixes IQ configuration for inverted IQ
+  // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.4 for details
+
+  // read current IQ configuration
+  uint8_t iqConfigCurrent = 0;
+  int16_t state = readRegister(SX126X_REG_IQ_CONFIG, &iqConfigCurrent, 1);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // set correct IQ configuration
+  if(iqConfig == SX126X_LORA_IQ_STANDARD) {
+    iqConfigCurrent &= 0xFB;
+  } else {
+    iqConfigCurrent |= 0x04;
+  }
+
+  // update with the new value
+  return(writeRegister(SX126X_REG_IQ_CONFIG, &iqConfigCurrent, 1));
 }
 
 int16_t SX126x::config(uint8_t modem) {
