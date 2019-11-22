@@ -5,7 +5,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _packetLengthQueried = false;
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 
-  _syncWordLength = CC1101_DEFAULT_SYNC_WORD_LENGTH;
+  _syncWordLength = 2;
 }
 
 int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLength) {
@@ -450,7 +450,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
 }
 
 int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
-  if((maxErrBits > 1) || (len > CC1101_MAX_SYNC_WORD_LENGTH)) {
+  if((maxErrBits > 1) || (len > 2)) {
     return(ERR_INVALID_SYNC_WORD);
   }
 
@@ -572,47 +572,11 @@ size_t CC1101::getPacketLength(bool update) {
 }
 
 int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
-  if (len > CC1101_MAX_PACKET_LENGTH) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-
-  // set to fixed packet length
-  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_FIXED, 1, 0);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // set length to register
-  state = SPIsetRegValue(CC1101_REG_PKTLEN, len);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // update cached value
-  _packetLengthConfig = CC1101_LENGTH_CONFIG_FIXED;
-  return(state);
+  return(setPacketMode(CC1101_LENGTH_CONFIG_FIXED, len));
 }
 
 int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
-  if (maxLen > CC1101_MAX_PACKET_LENGTH) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-
-  // set to variable packet length
-  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_VARIABLE, 1, 0);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // set max length to register
-  state = SPIsetRegValue(CC1101_REG_PKTLEN, maxLen);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // update cached value
-  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
-  return(state);
+  return(setPacketMode(CC1101_LENGTH_CONFIG_VARIABLE, maxLen));
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
@@ -735,6 +699,29 @@ void CC1101::getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8
 	    return;
 	  }
 	}
+}
+
+int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
+  // check length
+  if (len > CC1101_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  // set to fixed packet length
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 7, 7);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // set length to register
+  state = _mod->SPIsetRegValue(CC1101_REG_PKTLEN, len);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // update the cached value
+  _packetLengthConfig = mode;
+  return(state);
 }
 
 int16_t CC1101::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {

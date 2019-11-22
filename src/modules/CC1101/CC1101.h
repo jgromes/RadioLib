@@ -10,9 +10,6 @@
 #define CC1101_CRYSTAL_FREQ                           26.0
 #define CC1101_DIV_EXPONENT                           16
 #define CC1101_MAX_PACKET_LENGTH                      63
-#define CC1101_MAX_SYNC_WORD_LENGTH                   2
-#define CC1101_DEFAULT_SYNC_WORD_LENGTH               2
-#define CC1101_DEFAULT_SYNC_WORD                      { 0xD3, 0x91 }
 
 // CC1101 SPI commands
 #define CC1101_CMD_READ                               0b10000000
@@ -840,6 +837,7 @@ class CC1101: public PhysicalLayer {
     int16_t config();
     int16_t directMode();
     void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 
     // SPI read overrides to set bit for burst write and status registers access
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
