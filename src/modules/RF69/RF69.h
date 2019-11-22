@@ -10,10 +10,6 @@
 #define RF69_CRYSTAL_FREQ                             32.0
 #define RF69_DIV_EXPONENT                             19
 #define RF69_MAX_PACKET_LENGTH                        64
-#define RF69_MAX_PREAMBLE_LENGTH                      4
-#define RF69_MAX_SYNC_WORD_LENGTH                     8
-#define RF69_DEFAULT_SYNC_WORD_LENGTH                 2
-#define RF69_DEFAULT_SYNC_WORD                        { 0x2D, 0x01 }
 
 // RF69 register map
 #define RF69_REG_FIFO                                 0x00
@@ -781,6 +777,7 @@ class RF69: public PhysicalLayer {
 
     int16_t config();
     int16_t directMode();
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 
 #ifndef RADIOLIB_GODMODE
   private:

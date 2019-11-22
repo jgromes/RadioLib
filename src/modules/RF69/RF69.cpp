@@ -9,7 +9,7 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT,
 
   _promiscuous = false;
 
-  _syncWordLength = RF69_DEFAULT_SYNC_WORD_LENGTH;
+  _syncWordLength = 2;
 }
 
 int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
@@ -92,7 +92,7 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   }
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
-  uint8_t syncWord[] = RF69_DEFAULT_SYNC_WORD;
+  uint8_t syncWord[] = {0x2D, 0x01};
   state = setSyncWord(syncWord, sizeof(syncWord));
   if(state != ERR_NONE) {
     return(state);
@@ -506,7 +506,7 @@ int16_t RF69::setOutputPower(int8_t power) {
 
 int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
-  if((maxErrBits > 7) || (len > RF69_MAX_SYNC_WORD_LENGTH)) {
+  if((maxErrBits > 7) || (len > 8)) {
     return(ERR_INVALID_SYNC_WORD);
   }
 
@@ -603,49 +603,11 @@ size_t RF69::getPacketLength(bool update) {
 }
 
 int16_t RF69::fixedPacketLengthMode(uint8_t len) {
-  if (len > RF69_MAX_PACKET_LENGTH) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-
-  // set to fixed packet length
-  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_FIXED, 7, 7);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // set length to register
-  state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, len);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // all went well: cache the reg value
-  _packetLengthConfig = RF69_PACKET_FORMAT_FIXED;
-
-  return(state);
+  return(setPacketMode(RF69_PACKET_FORMAT_FIXED, len));
 }
 
 int16_t RF69::variablePacketLengthMode(uint8_t maxLen) {
-  if (maxLen > RF69_MAX_PACKET_LENGTH) {
-    return(ERR_PACKET_TOO_LONG);
-  }
-
-  // set to variable packet length
-  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_VARIABLE, 7, 7);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // set max length to register
-  state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, maxLen);
-  if (state != ERR_NONE) {
-    return(state);
-  }
-
-  // all went well: cache the reg value
-  _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
-
-  return(state);
+  return(setPacketMode(RF69_PACKET_FORMAT_VARIABLE, maxLen));
 }
 
 int16_t RF69::enableSyncWordFiltering(uint8_t maxErrBits) {
@@ -790,6 +752,29 @@ int16_t RF69::config() {
   }
 
   return(ERR_NONE);
+}
+
+int16_t RF69::setPacketMode(uint8_t mode, uint8_t len) {
+  // check length
+  if (len > RF69_MAX_PACKET_LENGTH) {
+    return(ERR_PACKET_TOO_LONG);
+  }
+
+  // set to fixed packet length
+  int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, mode, 7, 7);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // set length to register
+  state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, len);
+  if (state != ERR_NONE) {
+    return(state);
+  }
+
+  // update the cached value
+  _packetLengthConfig = mode;
+  return(state);
 }
 
 int16_t RF69::setMode(uint8_t mode) {
