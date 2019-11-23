@@ -31,12 +31,13 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101 and nRF24L01
 
 ### Supported platforms:
-* __Arduino AVR boards__ - tested on Uno, Mega and Leonardo
-* __ESP8266 boards__ - NodeMCU, Wemos D1, etc.
-* __ESP32 boards__ - tested on ESP-WROOM-32
-* __STM32 boards__ - tested on Nucleo L452RE-P
-* __SAMD boards__ - Arduino Zero
-* __SAM boards__ - Arduino Due
+* __AVR__ - tested on Uno, Mega and Leonardo
+* __ESP8266__ - NodeMCU, Wemos D1, etc.
+* __ESP32__ - tested on ESP-WROOM-32
+* __STM32__ - tested on Nucleo L452RE-P
+* __SAMD__ - Arduino Zero, Arduino MKR boards
+* __SAM__ - Arduino Due
+* __nRF52__ - Adafruit Bluefruit Feather
 
 ### In development:
 * __SIM800C__ GSM module
