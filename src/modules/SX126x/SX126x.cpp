@@ -960,7 +960,7 @@ float SX126x::getSNR() {
 
 size_t SX126x::getPacketLength(bool update) {
   (void)update;
-  uint8_t rxBufStatus[2];
+  uint8_t rxBufStatus[2] = {0, 0};
   SPIreadCommand(SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
   return((size_t)rxBufStatus[0]);
 }
@@ -1099,7 +1099,7 @@ int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t di
 }
 
 uint16_t SX126x::getIrqStatus() {
-  uint8_t data[2];
+  uint8_t data[2] = {0, 0};;
   SPIreadCommand(SX126X_CMD_GET_IRQ_STATUS, data, 2);
   return(((uint16_t)(data[0]) << 8) | data[1]);
 }
@@ -1216,19 +1216,19 @@ int16_t SX126x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddres
 }
 
 uint8_t SX126x::getStatus() {
-  uint8_t data[1];
-  SPIreadCommand(SX126X_CMD_GET_STATUS, data, 1);
-  return(data[0]);
+  uint8_t data = 0;
+  SPIreadCommand(SX126X_CMD_GET_STATUS, &data, 1);
+  return(data);
 }
 
 uint32_t SX126x::getPacketStatus() {
-  uint8_t data[3];
+  uint8_t data[3] = {0, 0, 0};
   SPIreadCommand(SX126X_CMD_GET_PACKET_STATUS, data, 3);
   return((((uint32_t)data[0]) << 16) | (((uint32_t)data[1]) << 8) | (uint32_t)data[2]);
 }
 
 uint16_t SX126x::getDeviceErrors() {
-  uint8_t data[2];
+  uint8_t data[2] = {0, 0};
   SPIreadCommand(SX126X_CMD_GET_DEVICE_ERRORS, data, 2);
   uint16_t opError = (((uint16_t)data[0] & 0xFF) << 8) & ((uint16_t)data[1]);
   return(opError);

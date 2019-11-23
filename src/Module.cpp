@@ -199,7 +199,7 @@ void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inByte
 }
 
 uint8_t Module::SPIreadRegister(uint8_t reg) {
-  uint8_t resp;
+  uint8_t resp = 0;
   SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
   return(resp);
 }
