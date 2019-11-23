@@ -15,8 +15,6 @@ To report bugs or suggest new features, use the provided issue templates. Use th
 Issues with generic titles (e.g. "not working", "lora", etc.) will be **CLOSED** until the title is fixed, since the title is supposed to categorize the issue. The same applies for issues with very little information and extensive grammatical or formatting errors that make it difficult to find out what is the actual issue.
 4. **Issues deserve some attention too.**  
 Issues that are left for 2 weeks without response by the original author when asked for further information will be closed due to inactivity. This is to keep track of important issues, the author is encouraged to reopen the issue at a later date.
-5. **LoRaLib is a separate project.**
-RadioLib was created as an extension of LoRaLib for radios other than SX127x. However, LoRaLib project is still active and RadioLib is reusing its code. **Because of that, please open issues/PRs related to SX127x in [LoRaLib](https://github.com/jgromes/LoRaLib)**.
 
 ## Code style guidelines
 
