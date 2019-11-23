@@ -54,6 +54,11 @@
 //#define RADIOLIB_GODMODE
 
 /*
+ * Uncomment to enable pre-defined modules when using RadioShield.
+ */
+//#define RADIOLIB_RADIOSHIELD
+
+/*
  * The following platforms do not support SoftwareSerial library.
  */
 #if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__)

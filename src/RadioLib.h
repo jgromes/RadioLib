@@ -77,6 +77,9 @@
 #include "protocols/MQTT/MQTT.h"
 #endif
 
+// only create Radio class when using RadioShield
+#ifdef RADIOLIB_RADIOSHIELD
+
 // RadioShield pin definitions
 #define RADIOSHIELD_CS_A   10
 #define RADIOSHIELD_RX_A   9
@@ -115,5 +118,6 @@ class Radio {
 };
 
 Radio RadioShield;
+#endif
 
 #endif
