@@ -31,9 +31,16 @@
 // BUSY pin:  9
 SX1262 loraSX1262 = new Module(10, 2, 3, 9);
 
+// SX12628 has different connections:
+// NSS pin:   8
+// DIO1 pin:  4
+// DIO2 pin:  5
+// BUSY pin:  6
+SX1268 loraSX1268 = new Module(8, 4, 5, 6);
+
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-SX1268 loraSX1268 = RadioShield.ModuleB;
+//SX1261 loraSX1261 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

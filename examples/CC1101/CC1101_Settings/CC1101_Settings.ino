@@ -24,9 +24,15 @@
 // GDO2 pin:  3
 CC1101 cc1 = new Module(10, 2, 3);
 
+// second CC1101 has different connections:
+// NSS pin:   9
+// GDO0 pin:  4
+// GDO2 pin:  5
+CC1101 cc2 = new Module(9, 4, 5);
+
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-CC1101 cc2 = RadioShield.ModuleB;
+//CC1101 cc3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

@@ -22,14 +22,19 @@
 
 // SX1278 has the following connections:
 // NSS pin:   10
-// DIO1 pin:  2
-// DIO2 pin:  3
-// BUSY pin:  9
-SX1278 loraSX1278 = new Module(10, 2, 3, 9);
+// DIO0 pin:  2
+// DIO1 pin:  3
+SX1278 loraSX1278 = new Module(10, 2, 3);
+
+// SX1272 has different connections:
+// NSS pin:   9
+// DIO0 pin:  4
+// DIO1 pin:  5
+SX1272 loraSX1272 = new Module(9, 4, 5);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-SX1272 loraSX1272 = RadioShield.ModuleB;
+//SX1276 loraSX1276 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);

@@ -24,9 +24,15 @@
 // DIO1 pin:  3
 RF69 rf1 = new Module(10, 2, 3);
 
+// second CC1101 has different connections:
+// NSS pin:   9
+// DIO0 pin:  4
+// DIO1 pin:  5
+RF69 rf2 = new Module(9, 4, 5);
+
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-RF69 rf2 = RadioShield.ModuleB;
+//RF69 rf3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
