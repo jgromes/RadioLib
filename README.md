@@ -32,12 +32,16 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 
 ### Supported platforms:
 * __AVR__ - tested on Uno, Mega and Leonardo
-* __ESP8266__ - NodeMCU, Wemos D1, etc.
+* __ESP8266__ - tested NodeMCU and Wemos D1
 * __ESP32__ - tested on ESP-WROOM-32
 * __STM32__ - tested on Nucleo L452RE-P
-* __SAMD__ - Arduino Zero, Arduino MKR boards
+* __SAMD__ - Arduino Zero, Arduino MKR boards, M0 Pro etc.
 * __SAM__ - Arduino Due
-* __nRF52__ - Adafruit Bluefruit Feather
+* __nRF52__ - Adafruit Bluefruit Feather etc.
+* __Intel Curie__ - Arduino 101
+* __megaAVR__ - Arduino Uno WiFi Rev.2 etc.
+
+The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work.
 
 ### In development:
 * __SIM800C__ GSM module
