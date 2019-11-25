@@ -133,6 +133,7 @@ setTransmitPipe	KEYWORD2
 setReceivePipe	KEYWORD2
 disablePipe	KEYWORD2
 getStatus	KEYWORD2
+setAutoAck	KEYWORD2
 
 # HTTP
 get	KEYWORD2
