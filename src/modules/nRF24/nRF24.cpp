@@ -19,7 +19,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
 
   // check SPI connection
   int16_t val = _mod->SPIgetRegValue(NRF24_REG_SETUP_AW);
-  if(!((val >= 1) && (val <= 3))) {
+  if(!((val >= 0) && (val <= 3))) {
     RADIOLIB_DEBUG_PRINTLN(F("No nRF24 found!"));
     _mod->term();
     return(ERR_CHIP_NOT_FOUND);
@@ -339,6 +339,11 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
 
   // set address width
   switch(addrWidth) {
+    case 2:
+      // Even if marked as 'Illegal' on the datasheet this will work:
+      // http://travisgoodspeed.blogspot.com/2011/02/promiscuity-is-nrf24l01s-duty.html
+      state = _mod->SPIsetRegValue(NRF24_REG_SETUP_AW, NRF24_ADDRESS_2_BYTES, 1, 0);
+      break;
     case 3:
       state = _mod->SPIsetRegValue(NRF24_REG_SETUP_AW, NRF24_ADDRESS_3_BYTES, 1, 0);
       break;
@@ -479,6 +484,39 @@ size_t nRF24::getPacketLength(bool update) {
   uint8_t length = 0;
   SPItransfer(NRF24_CMD_READ_RX_PAYLOAD_WIDTH, false, NULL, &length, 1);
   return((size_t)length);
+}
+
+int16_t nRF24::setCrcFiltering(bool crcOn) {
+  return _mod->SPIsetRegValue(NRF24_REG_CONFIG, crcOn ? NRF24_CRC_ON : NRF24_CRC_OFF, 3, 3);
+}
+
+int16_t nRF24::setAutoAck(bool autoAckOn){
+  return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_ALL_ON : NRF24_AA_ALL_OFF, 5, 0);
+}
+
+int16_t nRF24::setAutoAck(uint8_t pipeNum, bool autoAckOn){
+  switch(pipeNum) {
+    case 0:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P0_ON : NRF24_AA_P0_OFF, 0, 0);
+      break;
+    case 1:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P1_ON : NRF24_AA_P1_OFF, 1, 1);
+      break;
+    case 2:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P2_ON : NRF24_AA_P2_OFF, 2, 2);
+      break;
+    case 3:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P3_ON : NRF24_AA_P3_OFF, 3, 3);
+      break;
+    case 4:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P4_ON : NRF24_AA_P4_OFF, 4, 4);
+      break;
+    case 5:
+      return _mod->SPIsetRegValue(NRF24_REG_EN_AA, autoAckOn ? NRF24_AA_P5_ON : NRF24_AA_P5_OFF, 5, 5);
+      break;
+    default:
+      return (ERR_INVALID_PIPE_NUMBER);
+  }
 }
 
 void nRF24::clearIRQ() {

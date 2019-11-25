@@ -69,6 +69,8 @@
 #define NRF24_PRX                                     0b00000001  //  0     0     enable primary Rx
 
 // NRF24_REG_EN_AA
+#define NRF24_AA_ALL_OFF                              0b00000000  //  5     0     auto-ACK on all pipes: disabled
+#define NRF24_AA_ALL_ON                               0b00111111  //  5     0                         enabled (default)
 #define NRF24_AA_P5_OFF                               0b00000000  //  5     5     auto-ACK on pipe 5: disabled
 #define NRF24_AA_P5_ON                                0b00100000  //  5     5                         enabled (default)
 #define NRF24_AA_P4_OFF                               0b00000000  //  4     4     auto-ACK on pipe 4: disabled
@@ -97,7 +99,8 @@
 #define NRF24_P0_ON                                   0b00000001  //  0     0                     enabled (default)
 
 // NRF24_REG_SETUP_AW
-#define NRF24_ADDRESS_3_BYTES                         0b00000001  //  1     0     address width: 3 bytes
+#define NRF24_ADDRESS_2_BYTES                         0b00000000  //  1     0     address width: 2 bytes
+#define NRF24_ADDRESS_3_BYTES                         0b00000001  //  1     0                    3 bytes
 #define NRF24_ADDRESS_4_BYTES                         0b00000010  //  1     0                    4 bytes
 #define NRF24_ADDRESS_5_BYTES                         0b00000011  //  1     0                    5 bytes (default)
 
@@ -407,6 +410,36 @@ class nRF24: public PhysicalLayer {
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update = true);
+
+
+    /*!
+     \brief Enable CRC filtering and generation.
+
+     \param crcOn Set or unset CRC check.
+
+     \returns \ref status_codes
+   */
+    int16_t setCrcFiltering(bool crcOn = true);
+
+    /*!
+     \brief Enable or disable auto-acknowlede packets on all pipes
+
+     \param autoAckOn Enable (true) or disable (false) auto-acks.
+
+     \returns \ref status_codes
+   */
+    int16_t setAutoAck(bool autoAckOn = true);
+
+    /*!
+     \brief Enable or disable auto-acknowlede packets on given pipe.
+
+     \param pipeNum Number of pipe to which enable / disable auto-acks.
+
+     \param autoAckOn Enable (true) or disable (false) auto-acks.
+
+     \returns \ref status_codes
+   */
+    int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn = true);
 
 #ifndef RADIOLIB_GODMODE
   private:
