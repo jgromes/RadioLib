@@ -422,20 +422,20 @@ class nRF24: public PhysicalLayer {
     int16_t setCrcFiltering(bool crcOn = true);
 
     /*!
-     \brief Enable or disable auto-acknowlede packets
+     \brief Enable or disable auto-acknowlede packets on all pipes
 
-     \param crcOn Enable (true) or disable (false) auto-acks.
+     \param autoAckOn Enable (true) or disable (false) auto-acks.
 
      \returns \ref status_codes
    */
     int16_t setAutoAck(bool autoAckOn = true);
 
     /*!
-     \brief Enable or disable auto-acknowlede packets
-
-     \param crcOn Enable (true) or disable (false) auto-acks.
+     \brief Enable or disable auto-acknowlede packets on given pipe.
 
      \param pipeNum Number of pipe to which enable / disable auto-acks.
+
+     \param autoAckOn Enable (true) or disable (false) auto-acks.
 
      \returns \ref status_codes
    */
