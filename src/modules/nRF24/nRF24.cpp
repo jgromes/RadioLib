@@ -19,7 +19,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
 
   // check SPI connection
   int16_t val = _mod->SPIgetRegValue(NRF24_REG_SETUP_AW);
-  if(!((val >= 1) && (val <= 3))) {
+  if(!((val >= 0) && (val <= 3))) {
     RADIOLIB_DEBUG_PRINTLN(F("No nRF24 found!"));
     _mod->term();
     return(ERR_CHIP_NOT_FOUND);
@@ -339,6 +339,11 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
 
   // set address width
   switch(addrWidth) {
+    case 2:
+      // Even if marked as 'Illegal' on the datasheet this will work:
+      // http://travisgoodspeed.blogspot.com/2011/02/promiscuity-is-nrf24l01s-duty.html
+      state = _mod->SPIsetRegValue(NRF24_REG_SETUP_AW, NRF24_ADDRESS_2_BYTES, 1, 0);
+      break;
     case 3:
       state = _mod->SPIsetRegValue(NRF24_REG_SETUP_AW, NRF24_ADDRESS_3_BYTES, 1, 0);
       break;

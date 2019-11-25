@@ -99,7 +99,8 @@
 #define NRF24_P0_ON                                   0b00000001  //  0     0                     enabled (default)
 
 // NRF24_REG_SETUP_AW
-#define NRF24_ADDRESS_3_BYTES                         0b00000001  //  1     0     address width: 3 bytes
+#define NRF24_ADDRESS_2_BYTES                         0b00000000  //  1     0     address width: 2 bytes
+#define NRF24_ADDRESS_3_BYTES                         0b00000001  //  1     0                    3 bytes
 #define NRF24_ADDRESS_4_BYTES                         0b00000010  //  1     0                    4 bytes
 #define NRF24_ADDRESS_5_BYTES                         0b00000011  //  1     0                    5 bytes (default)
 
