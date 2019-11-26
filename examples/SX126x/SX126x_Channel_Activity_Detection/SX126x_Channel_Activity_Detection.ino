@@ -1,9 +1,9 @@
 /*
    RadioLib SX126x Channel Activity Detection Example
 
-   This example uses SX1262 to scan the current LoRa 
+   This example uses SX1262 to scan the current LoRa
    channel and detect ongoing LoRa transmissions.
-   Unlike SX127x CAD, SX126x can detect any part 
+   Unlike SX127x CAD, SX126x can detect any part
    of LoRa transmission, not just the preamble.
 
    Other modules from SX126x family can also be used.
@@ -39,6 +39,7 @@ void setup() {
   // output power:                14 dBm
   // current limit:               60 mA
   // preamble length:             8 symbols
+  // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
   // CRC:                         enabled
   int state = lora.begin();
   if (state == ERR_NONE) {

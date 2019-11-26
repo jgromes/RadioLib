@@ -40,6 +40,7 @@ void setup() {
   // output power:                14 dBm
   // current limit:               60 mA
   // preamble length:             8 symbols
+  // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
   // CRC:                         enabled
   int state = lora.begin();
   if (state == ERR_NONE) {
@@ -49,29 +50,6 @@ void setup() {
     Serial.println(state);
     while (true);
   }
-
-  // NOTE: Some SX126x modules use TCXO
-  //       (Temprature-Compensated Crystal Oscillator).
-  //       To be able to use these modules, TCXO
-  //       control must be enabled by calling
-  //       setTCXO() and specifying the reference
-  //       voltage.
-  
-  /*
-    Serial.print(F("[SX1262] Setting TCXO reference ... "));
-    // enable TCXO
-    // reference voltage:           1.6 V
-    // timeout:                     5000 us
-    state = lora.setTCXO(1.6);
-    if (state == ERR_NONE) {
-      Serial.println(F("success!"));
-    } else {
-      Serial.print(F("failed, code "));
-      Serial.println(state);
-      while (true);
-    }
-  */
-  
 }
 
 void loop() {

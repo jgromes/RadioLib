@@ -40,9 +40,11 @@ class SX1262: public SX126x {
 
       \param preambleLength LoRa preamble length in symbols.Defaults to 8 symbols.
 
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint16_t syncWord = SX126X_SYNC_WORD_PRIVATE, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 8);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint16_t syncWord = SX126X_SYNC_WORD_PRIVATE, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 8, float tcxoVoltage = 1.6);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -63,9 +65,11 @@ class SX1262: public SX126x {
 
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
 
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 16, float dataShaping = 0.5);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 16, float dataShaping = 0.5, float tcxoVoltage = 1.6);
 
     // configuration methods
 

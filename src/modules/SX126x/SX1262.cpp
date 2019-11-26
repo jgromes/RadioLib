@@ -4,9 +4,9 @@ SX1262::SX1262(Module* mod) : SX126x(mod) {
 
 }
 
-int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength) {
+int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
   // execute common part
-  int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength);
+  int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength, tcxoVoltage);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -30,9 +30,9 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syn
   return(state);
 }
 
-int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping) {
+int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage) {
   // execute common part
-  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping);
+  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping, tcxoVoltage);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -106,7 +106,7 @@ int16_t SX1262::setOutputPower(int8_t power) {
     return(state);
   }
 
-  // this function sets the optimal PA settings 
+  // this function sets the optimal PA settings
   // and adjusts power based on the PA settings chosen
   // so that output power matches requested power.
   state = SX126x::setOptimalHiPowerPaConfig(&power);

@@ -367,9 +367,11 @@ class SX126x: public PhysicalLayer {
 
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
 
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -386,9 +388,11 @@ class SX126x: public PhysicalLayer {
 
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Allowed values are 0.3, 0.5, 0.7 and 1.0. Set to 0 to disable shaping.
 
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping);
+    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage);
 
     /*!
       \brief Blocking binary transmit method.

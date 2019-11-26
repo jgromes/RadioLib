@@ -55,6 +55,7 @@ void setup() {
   // output power:                14 dBm
   // current limit:               60 mA
   // preamble length:             8 symbols
+  // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
   // CRC:                         enabled
   int state = loraSX1262.begin();
   if (state == ERR_NONE) {

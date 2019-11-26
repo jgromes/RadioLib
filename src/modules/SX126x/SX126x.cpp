@@ -4,7 +4,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
   _mod = mod;
 }
 
-int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength) {
+int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
@@ -30,6 +30,14 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
   state = config(SX126X_PACKET_TYPE_LORA);
   if(state != ERR_NONE) {
     return(state);
+  }
+
+  // set TCXO control, if requested
+  if(tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    if(state != ERR_NONE) {
+      return(state);
+    }
   }
 
   // configure publicly accessible settings
@@ -69,7 +77,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
   pinMode(_mod->getRx(), INPUT);
@@ -94,6 +102,14 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   state = config(SX126X_PACKET_TYPE_GFSK);
   if(state != ERR_NONE) {
     return(state);
+  }
+
+  // set TCXO control, if requested
+  if(tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    if(state != ERR_NONE) {
+      return(state);
+    }
   }
 
   // configure publicly accessible settings
@@ -1384,7 +1400,8 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // wait for calibration completion
-  delayMicroseconds(1);
+  //delayMicroseconds(1);
+  delay(5);
   while(digitalRead(_mod->getRx()));
 
   return(ERR_NONE);
