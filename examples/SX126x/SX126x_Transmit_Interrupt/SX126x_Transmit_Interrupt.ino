@@ -20,9 +20,8 @@
 // SX1262 has the following connections:
 // NSS pin:   10
 // DIO1 pin:  2
-// DIO2 pin:  3
 // BUSY pin:  9
-SX1262 lora = new Module(10, 2, 3, 9);
+SX1262 lora = new Module(10, 2, 9);
 
 // save transmission state between loops
 int transmissionState = ERR_NONE;

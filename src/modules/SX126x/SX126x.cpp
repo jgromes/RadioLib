@@ -7,7 +7,6 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
 int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
-  pinMode(_mod->getRx(), INPUT);
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   _bwKhz = bw;
@@ -80,7 +79,6 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
 int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
-  pinMode(_mod->getRx(), INPUT);
 
   // initialize configuration variables (will be overwritten during public settings configuration)
   _br = 21333;                                  // 48.0 kbps
@@ -374,10 +372,6 @@ void SX126x::setDio1Action(void (*func)(void)) {
   attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
 }
 
-void SX126x::setDio2Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
-}
-
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
@@ -443,7 +437,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // wait for BUSY to go low (= PA ramp up done)
-  while(digitalRead(_mod->getRx()));
+  while(digitalRead(_mod->getInt1()));
 
   return(state);
 }
@@ -1400,9 +1394,8 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   // wait for calibration completion
-  //delayMicroseconds(1);
   delay(5);
-  while(digitalRead(_mod->getRx()));
+  while(digitalRead(_mod->getInt1()));
 
   return(ERR_NONE);
 }
@@ -1438,7 +1431,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   // ensure BUSY is low (state meachine ready)
   RADIOLIB_VERBOSE_PRINTLN(F("Wait for BUSY ... "));
   uint32_t start = millis();
-  while(digitalRead(_mod->getRx())) {
+  while(digitalRead(_mod->getInt1())) {
     if(millis() - start >= timeout) {
       return(ERR_SPI_CMD_TIMEOUT);
     }
@@ -1505,7 +1498,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   if(waitForBusy) {
     delayMicroseconds(1);
     start = millis();
-    while(digitalRead(_mod->getRx())) {
+    while(digitalRead(_mod->getInt1())) {
         if(millis() - start >= timeout) {
           status = SX126X_STATUS_CMD_TIMEOUT;
           break;
