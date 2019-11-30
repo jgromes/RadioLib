@@ -450,7 +450,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
 }
 
 int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
-  if((maxErrBits > 1) || (len > 2)) {
+  if((maxErrBits > 1) || (len != 2)) {
     return(ERR_INVALID_SYNC_WORD);
   }
 
