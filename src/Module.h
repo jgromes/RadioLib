@@ -323,6 +323,8 @@ class Module {
     SPISettings _spiSettings;
 
     uint32_t _ATtimeout = 15000;
+
+    void setPin(int16_t pin, uint8_t mode);
 };
 
 #endif

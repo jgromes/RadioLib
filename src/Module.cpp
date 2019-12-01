@@ -56,7 +56,7 @@ void Module::init(uint8_t interface, uint8_t gpio) {
   // select interface
   switch(interface) {
     case RADIOLIB_USE_SPI:
-      pinMode(_cs, OUTPUT);
+      setPin(_cs, OUTPUT);
       digitalWrite(_cs, HIGH);
       _spi->begin();
       break;
@@ -76,14 +76,14 @@ void Module::init(uint8_t interface, uint8_t gpio) {
     case RADIOLIB_INT_NONE:
       break;
     case RADIOLIB_INT_0:
-      pinMode(_int0, INPUT);
+      setPin(_int0, INPUT);
       break;
     case RADIOLIB_INT_1:
-      pinMode(_int1, INPUT);
+      setPin(_int1, INPUT);
       break;
     case RADIOLIB_INT_BOTH:
-      pinMode(_int0, INPUT);
-      pinMode(_int1, INPUT);
+      setPin(_int0, INPUT);
+      setPin(_int1, INPUT);
       break;
   }
 }
@@ -251,4 +251,10 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 
   // end SPI transaction
   _spi->endTransaction();
+}
+
+void Module::setPin(int16_t pin, uint8_t mode) {
+  if(pin != -1) {
+    pinMode(pin, mode);
+  }
 }
