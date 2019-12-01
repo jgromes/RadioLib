@@ -1042,9 +1042,7 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   data[3] = (uint8_t)(delayValue & 0xFF);
 
   // enable TCXO control on DIO3
-  SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4);
-
-  return(ERR_NONE);
+  return(SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4));
 }
 
 int16_t SX126x::setDio2AsRfSwitch(bool enable) {
@@ -1252,8 +1250,7 @@ int16_t SX126x::clearDeviceErrors() {
 int16_t SX126x::setFrequencyRaw(float freq) {
   // calculate raw value
   uint32_t frf = (freq * (uint32_t(1) << SX126X_DIV_EXPONENT)) / SX126X_CRYSTAL_FREQ;
-  setRfFrequency(frf);
-  return(ERR_NONE);
+  return(setRfFrequency(frf));
 }
 
 int16_t SX126x::fixSensitivity() {
