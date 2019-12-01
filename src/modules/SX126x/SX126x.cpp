@@ -444,7 +444,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t SX126x::startReceive(uint32_t timeout) {
   // set DIO mapping
-  int16_t state = setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT, SX126X_IRQ_RX_DONE);
+  int16_t state = setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT | SX126X_IRQ_CRC_ERR | SX126X_IRQ_HEADER_ERR, SX126X_IRQ_RX_DONE);
   if(state != ERR_NONE) {
     return(state);
   }
