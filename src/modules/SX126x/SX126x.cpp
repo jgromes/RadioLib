@@ -506,15 +506,13 @@ int16_t SX126x::setBandwidth(float bw) {
   }
 
   // ensure byte conversion doesn't overflow:
-  if (!(0 < bw && bw < 510)) {
+  if(!((bw > 0) && (bw < 510))) {
     return(ERR_INVALID_BANDWIDTH);
   }
 
-  uint8_t bw_div2 = bw / 2 + 0.01;
-
   // check alowed bandwidth values
-  switch (bw_div2)
-  {
+  uint8_t bw_div2 = bw / 2 + 0.01;
+  switch (bw_div2)  {
     case 3: // 7.8:
       _bw = SX126X_LORA_BW_7_8;
       break;
@@ -549,7 +547,6 @@ int16_t SX126x::setBandwidth(float bw) {
       return(ERR_INVALID_BANDWIDTH);
   }
 
-  return ERR_NONE;
   // update modulation parameters
   _bwKhz = bw;
   return(setModulationParams(_sf, _bw, _cr));
@@ -1004,9 +1001,9 @@ int16_t SX126x::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 uint32_t SX126x::getTimeOnAir(size_t len) {
+  // everything is in microseconds to allow integer arithmetic
+  // some constants have .25, these are multiplied by 4, and have _x4 postfix to indicate that fact
   if(getPacketType() == SX126X_PACKET_TYPE_LORA) {
-    // Everything is working in microseconds to allow integer arithmetic
-    // Some datasheet constants have .25, these are multiplied by 4, and have _x4 to indicate that fact.
     uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << _sf) / (_bwKhz * 10) ;
     uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
     uint8_t sfCoeff2 = 8;
@@ -1020,22 +1017,20 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
     }
     const int8_t bitsPerCrc = 16;
     const int8_t N_symbol_header = 20;
-    
-    // numerator of equation in section 6.1.4 of datasheet (might not actually be bitcount, but it has len * 8.)
+
+    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
     int16_t bitCount = (int16_t) 8 * len + _crcType * bitsPerCrc - 4 * _sf  + sfCoeff2 + N_symbol_header;
-    // in the datasheet, this is done as max(bitCount, 0)
-    if (bitCount < 0)
+    if(bitCount < 0) {
       bitCount = 0;
-    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...).
-    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor); 
-    // preamble can be 65k. Therefore nSymbol_x4 needs to be 32 bit.
+    }
+    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
+    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
+
+    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
     uint32_t nSymbol_x4 = (_preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * (_cr + 4) * 4;
 
     return((symbolLength_us * nSymbol_x4) / 4);
   } else {
-    // float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
-    // return((uint32_t)(((len * 8.0) / brBps) * 1000000.0));
-    // equivalent:
     return((len * 8 * _br) / (SX126X_CRYSTAL_FREQ * 32));
   }
 }
