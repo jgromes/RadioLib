@@ -305,6 +305,19 @@
 */
 #define ERR_INVALID_ENCODING                  -23
 
+/*!
+  \brief The supplied sleep period is invalid.
+
+  The specified sleep period is shorter than the time necessary to sleep and wake the hardware,
+  including TCXO delay
+*/
+#define ERR_INVALID_SLEEP_PERIOD              -24
+
+/*!
+  \brief A specified value would cause an integer overflow
+*/
+#define ERR_OVERFLOW                          -25
+
 // RF69-specific status codes
 
 /*!

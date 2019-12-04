@@ -500,6 +500,36 @@ class SX126x: public PhysicalLayer {
     int16_t startReceive(uint32_t timeout = SX126X_RX_TIMEOUT_INF);
 
     /*!
+      \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
+
+      \param rxPeriod_us The duration the receiver will be in Rx mode, in microseconds.
+
+      \param sleepPeriod_us The duration the receiver will not be in Rx mode, in microseconds.
+
+      \returns \ref status_codes
+
+      Note that this function assumes the unit will take 500us to change state. See datasheet [SECTION].
+    */
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod_us, uint32_t sleepPeriod_us);
+
+    /*!
+      \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
+
+      \param senderPreambleLength Expected preamble length of the messages to receive.
+      If zero, uses the currently configured preamble length. Default zero.
+
+      \param minSymbols Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length.
+      Default 3.
+
+      Note that Semtech in the CAD application note state that 2 symbols are fine for CAD,
+      but in the RX duty cycle note specify that sleep duration should be 8 symbols less than preamble length (corresponding to minSymbols = 4).
+      Testing suggests that a value of 3 for minSymbols works at high SNR.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 3);
+
+    /*!
       \brief Reads data received after calling startReceive method.
 
       \param data Pointer to array to save the received binary data.
@@ -747,7 +777,6 @@ class SX126x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
-
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -776,7 +805,8 @@ class SX126x: public PhysicalLayer {
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
-
+    
+    int16_t startReceiveCommon();
     int16_t setFrequencyRaw(float freq);
     int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
@@ -802,6 +832,8 @@ class SX126x: public PhysicalLayer {
     float _rxBwKhz;
 
     float _dataRate;
+
+    uint32_t _tcxoDelay_us = 0;
 
     int16_t config(uint8_t modem);
 
