@@ -457,20 +457,21 @@ int16_t SX126x::startReceive(uint32_t timeout) {
 int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod_us, uint32_t sleepPeriod_us)
 {
   // datasheet claims time to go to sleep is ~500us, same to wake up.
-  // compensate for that 1ms + tcxo delay:
+  // compensate for that 1ms + tcxo delay.
   uint32_t transitionTime = _tcxoDelay_us + 1000;
-  if (sleepPeriod_us < transitionTime + 16) {
-    return(ERR_INVALID_SLEEP_PERIOD);
-  }
   sleepPeriod_us -= transitionTime;
 
   // divide by 15.625
   uint32_t rxPeriodRaw = (rxPeriod_us * 8) / 125;
   uint32_t sleepPeriodRaw = (sleepPeriod_us * 8) / 125;
 
-  // 24 bit limit:
-  if ((rxPeriodRaw & 0xFF000000) || (sleepPeriodRaw & 0xFF000000)) {
-    return(ERR_OVERFLOW);
+  // 24 bit limit. Also give an error if the user passes zero values (likely unintentional)
+  if ((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
+    return(ERR_INVALID_RX_PERIOD);
+  }
+  // this check of the high byte also catches underflow when we subtracted transitionTime
+  if ((sleepPeriodRaw & 0xFF000000) || (sleepPeriodRaw == 0)) {
+    return(ERR_INVALID_SLEEP_PERIOD);
   }
 
   int16_t state = startReceiveCommon();
@@ -478,7 +479,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod_us, uint32_t sleepPeriod
     return(state);
   }
 
-  byte data[6] = {
+  uint8_t data[6] = {
     (rxPeriodRaw >> 16) & 0xFF,    (rxPeriodRaw >> 8) & 0xFF,    rxPeriodRaw & 0xFF,
     (sleepPeriodRaw >> 16) & 0xFF, (sleepPeriodRaw >> 8) & 0xFF, sleepPeriodRaw & 0xFF
   };

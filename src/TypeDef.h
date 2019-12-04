@@ -308,15 +308,17 @@
 /*!
   \brief The supplied sleep period is invalid.
 
-  The specified sleep period is shorter than the time necessary to sleep and wake the hardware,
-  including TCXO delay
+  The specified sleep period is shorter than the time necessary to sleep and wake the hardware
+  including TCXO delay, or longer than the maximum possible
 */
 #define ERR_INVALID_SLEEP_PERIOD              -24
 
 /*!
-  \brief A specified value would cause an integer overflow
+  \brief The supplied Rx period is invalid.
+
+  The specified Rx period is shorter or longer than the hardware can handle.
 */
-#define ERR_OVERFLOW                          -25
+#define ERR_INVALID_RX_PERIOD                 -25
 
 // RF69-specific status codes
 

@@ -508,7 +508,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
 
-      Note that this function assumes the unit will take 500us to change state. See datasheet [SECTION].
+      Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.
     */
     int16_t startReceiveDutyCycle(uint32_t rxPeriod_us, uint32_t sleepPeriod_us);
 
