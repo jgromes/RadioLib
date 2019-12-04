@@ -176,11 +176,11 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     // calculate timeout (150% of expected time-on-air)
-    timeout = (float)getTimeOnAir(len) * 1.5;
+    timeout = (getTimeOnAir(len) * 3) / 2;
 
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500% of expected time-on-air)
-    timeout = (float)getTimeOnAir(len) * 5.0;
+    timeout = getTimeOnAir(len) * 5;
 
   } else {
     return(ERR_UNKNOWN);
@@ -505,29 +505,46 @@ int16_t SX126x::setBandwidth(float bw) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check alowed bandwidth values
-  if(abs(bw - 7.8) <= 0.001) {
-    _bw = SX126X_LORA_BW_7_8;
-  } else if(abs(bw - 10.4) <= 0.001) {
-    _bw = SX126X_LORA_BW_10_4;
-  } else if(abs(bw - 15.6) <= 0.001) {
-    _bw = SX126X_LORA_BW_15_6;
-  } else if(abs(bw - 20.8) <= 0.001) {
-    _bw = SX126X_LORA_BW_20_8;
-  } else if(abs(bw - 31.25) <= 0.001) {
-    _bw = SX126X_LORA_BW_31_25;
-  } else if(abs(bw - 41.7) <= 0.001) {
-    _bw = SX126X_LORA_BW_41_7;
-  } else if(abs(bw - 62.5) <= 0.001) {
-    _bw = SX126X_LORA_BW_62_5;
-  } else if(abs(bw - 125.0) <= 0.001) {
-    _bw = SX126X_LORA_BW_125_0;
-  } else if(abs(bw - 250.0) <= 0.001) {
-    _bw = SX126X_LORA_BW_250_0;
-  } else if(abs(bw - 500.0) <= 0.001) {
-    _bw = SX126X_LORA_BW_500_0;
-  } else {
+  // ensure byte conversion doesn't overflow:
+  if(!((bw > 0) && (bw < 510))) {
     return(ERR_INVALID_BANDWIDTH);
+  }
+
+  // check alowed bandwidth values
+  uint8_t bw_div2 = bw / 2 + 0.01;
+  switch (bw_div2)  {
+    case 3: // 7.8:
+      _bw = SX126X_LORA_BW_7_8;
+      break;
+    case 5: // 10.4:
+      _bw = SX126X_LORA_BW_10_4;
+      break;
+    case 7: // 15.6:
+      _bw = SX126X_LORA_BW_15_6;
+      break;
+    case 10: // 20.8:
+      _bw = SX126X_LORA_BW_20_8;
+      break;
+    case 15: // 31.25:
+      _bw = SX126X_LORA_BW_31_25;
+      break;
+    case 20: // 41.7:
+      _bw = SX126X_LORA_BW_41_7;
+      break;
+    case 31: // 62.5:
+      _bw = SX126X_LORA_BW_62_5;
+      break;
+    case 62: // 125.0:
+      _bw = SX126X_LORA_BW_125_0;
+      break;
+    case 125: // 250.0
+      _bw = SX126X_LORA_BW_250_0;
+      break;
+    case 250: // 500.0
+      _bw = SX126X_LORA_BW_500_0;
+      break;
+    default:
+      return(ERR_INVALID_BANDWIDTH);
   }
 
   // update modulation parameters
@@ -984,23 +1001,37 @@ int16_t SX126x::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 uint32_t SX126x::getTimeOnAir(size_t len) {
+  // everything is in microseconds to allow integer arithmetic
+  // some constants have .25, these are multiplied by 4, and have _x4 postfix to indicate that fact
   if(getPacketType() == SX126X_PACKET_TYPE_LORA) {
-    float symbolLength = (float)((uint32_t)(1) << _sf) / (float)_bwKhz;
-    float sfCoeff1 = 4.25;
-    float sfCoeff2 = 8.0;
+    uint32_t symbolLength_us = ((uint32_t)(1000 * 10) << _sf) / (_bwKhz * 10) ;
+    uint8_t sfCoeff1_x4 = 17; // (4.25 * 4)
+    uint8_t sfCoeff2 = 8;
     if(_sf == 5 || _sf == 6) {
-      sfCoeff1 = 6.25;
-      sfCoeff2 = 0.0;
+      sfCoeff1_x4 = 25; // 6.25 * 4
+      sfCoeff2 = 0;
     }
     uint8_t sfDivisor = 4*_sf;
-    if(symbolLength >= 16.0) {
+    if(symbolLength_us >= 16000) {
       sfDivisor = 4*(_sf - 2);
     }
-    float nSymbol = _preambleLength + sfCoeff1 + 8 + ceil(max(8.0 * len + (_crcType * 16.0) - 4.0 * _sf + sfCoeff2 + 20.0, 0.0) / sfDivisor) * (_cr + 4);
-    return((uint32_t)(symbolLength * nSymbol * 1000.0));
+    const int8_t bitsPerCrc = 16;
+    const int8_t N_symbol_header = 20;
+
+    // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
+    int16_t bitCount = (int16_t) 8 * len + _crcType * bitsPerCrc - 4 * _sf  + sfCoeff2 + N_symbol_header;
+    if(bitCount < 0) {
+      bitCount = 0;
+    }
+    // add (sfDivisor) - 1 to the numerator to give integer CEIL(...)
+    uint16_t nPreCodedSymbols = (bitCount + (sfDivisor - 1)) / (sfDivisor);
+
+    // preamble can be 65k, therefore nSymbol_x4 needs to be 32 bit
+    uint32_t nSymbol_x4 = (_preambleLength + 8) * 4 + sfCoeff1_x4 + nPreCodedSymbols * (_cr + 4) * 4;
+
+    return((symbolLength_us * nSymbol_x4) / 4);
   } else {
-    float brBps = ((float)(SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)_br;
-    return((uint32_t)(((len * 8.0) / brBps) * 1000000.0));
+    return((len * 8 * _br) / (SX126X_CRYSTAL_FREQ * 32));
   }
 }
 
