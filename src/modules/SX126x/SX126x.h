@@ -830,7 +830,7 @@ class SX126x: public PhysicalLayer {
 
     float _dataRate;
 
-    uint32_t _tcxoDelay_us = 0;
+    uint32_t _tcxoDelay;
 
     int16_t config(uint8_t modem);
 

@@ -18,6 +18,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
   _ldro = 0x00;
   _crcType = SX126X_LORA_CRC_ON;
   _preambleLength = preambleLength;
+  _tcxoDelay = 0;
 
   // set mode to standby
   int16_t state = standby();
