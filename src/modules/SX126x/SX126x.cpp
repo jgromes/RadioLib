@@ -479,8 +479,8 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
     return(state);
   }
 
-  uint8_t data[6] = {(rxPeriodRaw >> 16) & 0xFF, (rxPeriodRaw >> 8) & 0xFF, rxPeriodRaw & 0xFF,
-    (sleepPeriodRaw >> 16) & 0xFF, (sleepPeriodRaw >> 8) & 0xFF, sleepPeriodRaw & 0xFF};
+  uint8_t data[6] = {(uint8_t)((rxPeriodRaw >> 16) & 0xFF), (uint8_t)((rxPeriodRaw >> 8) & 0xFF), (uint8_t)(rxPeriodRaw & 0xFF),
+                     (uint8_t)((sleepPeriodRaw >> 16) & 0xFF), (uint8_t)((sleepPeriodRaw >> 8) & 0xFF), (uint8_t)(sleepPeriodRaw & 0xFF)};
   return(SPIwriteCommand(SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
