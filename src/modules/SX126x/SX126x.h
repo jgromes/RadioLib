@@ -517,14 +517,12 @@ class SX126x: public PhysicalLayer {
       \param senderPreambleLength Expected preamble length of the messages to receive.
       If set to zero, the currently configured preamble length will be used. Defaults to zero.
 
-      \param minSymbols Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length. Defaults to 3.
-      Note that Semtech in the CAD application note state that 2 symbols are fine for CAD,
-      but in the RX duty cycle note specify that sleep duration should be 8 symbols less than preamble length (corresponding to minSymbols = 4).
-      Testing suggests that a value of 3 for minSymbols works at high SNR.
+      \param minSymbols Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length. Defaults to 8.
+      According to Semtech, receiver requires 8 symbols to reliably latch a preamble. This makes this method redundant when transmitter preamble length is less than 17 (2*minSymbols + 1).
 
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 3);
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8);
 
     /*!
       \brief Reads data received after calling startReceive method.
