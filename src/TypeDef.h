@@ -305,21 +305,6 @@
 */
 #define ERR_INVALID_ENCODING                  -23
 
-/*!
-  \brief The supplied sleep period is invalid.
-
-  The specified sleep period is shorter than the time necessary to sleep and wake the hardware
-  including TCXO delay, or longer than the maximum possible
-*/
-#define ERR_INVALID_SLEEP_PERIOD              -24
-
-/*!
-  \brief The supplied Rx period is invalid.
-
-  The specified Rx period is shorter or longer than the hardware can handle.
-*/
-#define ERR_INVALID_RX_PERIOD                 -25
-
 // RF69-specific status codes
 
 /*!
@@ -538,6 +523,21 @@
   \brief SX126x failed to execute SPI command.
 */
 #define ERR_SPI_CMD_FAILED                    -707
+
+/*!
+  \brief The supplied sleep period is invalid.
+
+  The specified sleep period is shorter than the time necessary to sleep and wake the hardware
+  including TCXO delay, or longer than the maximum possible
+*/
+#define ERR_INVALID_SLEEP_PERIOD              -708
+
+/*!
+  \brief The supplied Rx period is invalid.
+
+  The specified Rx period is shorter or longer than the hardware can handle.
+*/
+#define ERR_INVALID_RX_PERIOD                 -709
 
 /*!
   \}
