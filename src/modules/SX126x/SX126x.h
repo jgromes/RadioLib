@@ -500,6 +500,31 @@ class SX126x: public PhysicalLayer {
     int16_t startReceive(uint32_t timeout = SX126X_RX_TIMEOUT_INF);
 
     /*!
+      \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
+      Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.
+
+      \param rxPeriod The duration the receiver will be in Rx mode, in microseconds.
+
+      \param sleepPeriod The duration the receiver will not be in Rx mode, in microseconds.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod);
+
+    /*!
+      \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
+
+      \param senderPreambleLength Expected preamble length of the messages to receive.
+      If set to zero, the currently configured preamble length will be used. Defaults to zero.
+
+      \param minSymbols Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length. Defaults to 8.
+      According to Semtech, receiver requires 8 symbols to reliably latch a preamble. This makes this method redundant when transmitter preamble length is less than 17 (2*minSymbols + 1).
+
+      \returns \ref status_codes
+    */
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8);
+
+    /*!
       \brief Reads data received after calling startReceive method.
 
       \param data Pointer to array to save the received binary data.
@@ -747,7 +772,6 @@ class SX126x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
-
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -777,6 +801,7 @@ class SX126x: public PhysicalLayer {
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
 
+    int16_t startReceiveCommon();
     int16_t setFrequencyRaw(float freq);
     int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
@@ -802,6 +827,8 @@ class SX126x: public PhysicalLayer {
     float _rxBwKhz;
 
     float _dataRate;
+
+    uint32_t _tcxoDelay;
 
     int16_t config(uint8_t modem);
 
