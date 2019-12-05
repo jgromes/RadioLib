@@ -454,41 +454,37 @@ int16_t SX126x::startReceive(uint32_t timeout) {
   return(state);
 }
 
-int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod_us, uint32_t sleepPeriod_us)
-{
-  // datasheet claims time to go to sleep is ~500us, same to wake up.
-  // compensate for that 1ms + tcxo delay.
-  uint32_t transitionTime = _tcxoDelay_us + 1000;
-  sleepPeriod_us -= transitionTime;
+int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
+  // datasheet claims time to go to sleep is ~500us, same to wake up, compensate for that with 1 ms + TCXO delay
+  uint32_t transitionTime = _tcxoDelay + 1000;
+  sleepPeriod -= transitionTime;
 
   // divide by 15.625
-  uint32_t rxPeriodRaw = (rxPeriod_us * 8) / 125;
-  uint32_t sleepPeriodRaw = (sleepPeriod_us * 8) / 125;
+  uint32_t rxPeriodRaw = (rxPeriod * 8) / 125;
+  uint32_t sleepPeriodRaw = (sleepPeriod * 8) / 125;
 
-  // 24 bit limit. Also give an error if the user passes zero values (likely unintentional)
-  if ((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
+  // check 24 bit limit and zero value (likely not intended)
+  if((rxPeriodRaw & 0xFF000000) || (rxPeriodRaw == 0)) {
     return(ERR_INVALID_RX_PERIOD);
   }
+
   // this check of the high byte also catches underflow when we subtracted transitionTime
-  if ((sleepPeriodRaw & 0xFF000000) || (sleepPeriodRaw == 0)) {
+  if((sleepPeriodRaw & 0xFF000000) || (sleepPeriodRaw == 0)) {
     return(ERR_INVALID_SLEEP_PERIOD);
   }
 
   int16_t state = startReceiveCommon();
-  if (state != ERR_NONE) {
+  if(state != ERR_NONE) {
     return(state);
   }
 
-  uint8_t data[6] = {
-    (rxPeriodRaw >> 16) & 0xFF,    (rxPeriodRaw >> 8) & 0xFF,    rxPeriodRaw & 0xFF,
-    (sleepPeriodRaw >> 16) & 0xFF, (sleepPeriodRaw >> 8) & 0xFF, sleepPeriodRaw & 0xFF
-  };
+  uint8_t data[6] = {(rxPeriodRaw >> 16) & 0xFF, (rxPeriodRaw >> 8) & 0xFF, rxPeriodRaw & 0xFF,
+    (sleepPeriodRaw >> 16) & 0xFF, (sleepPeriodRaw >> 8) & 0xFF, sleepPeriodRaw & 0xFF};
   return(SPIwriteCommand(SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
-int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols)
-{
-  if (senderPreambleLength == 0) {
+int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols) {
+  if(senderPreambleLength == 0) {
     senderPreambleLength = _preambleLength;
   }
 
@@ -498,37 +494,37 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   uint16_t sleepSymbols = senderPreambleLength - 2 * minSymbols;
 
   // if we're not to sleep at all, just use the standard startReceive.
-  if (2 * minSymbols > senderPreambleLength) {
+  if(2 * minSymbols > senderPreambleLength) {
     return(startReceive());
   }
 
-  uint32_t symbolLength_us = ((uint32_t)(10 * 1000) << _sf) / (10 * _bwKhz);
-  uint32_t sleepPeriod_us = symbolLength_us * sleepSymbols;
+  uint32_t symbolLength = ((uint32_t)(10 * 1000) << _sf) / (10 * _bwKhz);
+  uint32_t sleepPeriod = symbolLength * sleepSymbols;
   RADIOLIB_DEBUG_PRINT(F("Auto sleep period: "));
-  RADIOLIB_DEBUG_PRINTLN(sleepPeriod_us);
+  RADIOLIB_DEBUG_PRINTLN(sleepPeriod);
+
   // when the unit detects a preamble, it starts a timer that will timeout if it doesn't receive a header in time.
   // the duration is sleepPeriod + 2 * wakePeriod.
   // The sleepPeriod doesn't take into account shutdown and startup time for the unit (~1ms)
   // We need to ensure that the timout is longer than senderPreambleLength.
   // So we must satisfy: wakePeriod > (preamblePeriod - (sleepPeriod - 1000)) / 2. (A)
   // we also need to ensure the unit is awake to see at least minSymbols. (B)
-  uint32_t wakePeriod_us = max(
-    (symbolLength_us * (senderPreambleLength + 1) - (sleepPeriod_us - 1000)) / 2, // (A)
-    symbolLength_us * (minSymbols + 1)); //(B)
+  uint32_t wakePeriod = max(
+    (symbolLength * (senderPreambleLength + 1) - (sleepPeriod - 1000)) / 2, // (A)
+    symbolLength * (minSymbols + 1)); //(B)
   RADIOLIB_DEBUG_PRINT(F("Auto wake period: "));
-  RADIOLIB_DEBUG_PRINTLN(wakePeriod_us);
+  RADIOLIB_DEBUG_PRINTLN(wakePeriod);
 
   //If our sleep period is shorter than our transition time, just use the standard startReceive
-  if (sleepPeriod_us < _tcxoDelay_us + 1016) {
+  if(sleepPeriod < _tcxoDelay + 1016) {
     return(startReceive());
   }
 
-  return(startReceiveDutyCycle(wakePeriod_us, sleepPeriod_us));
+  return(startReceiveDutyCycle(wakePeriod, sleepPeriod));
 }
 
-int16_t SX126x::startReceiveCommon()
-{
-    // set DIO mapping
+int16_t SX126x::startReceiveCommon() {
+  // set DIO mapping
   int16_t state = setDioIrqParams(SX126X_IRQ_RX_DONE | SX126X_IRQ_TIMEOUT | SX126X_IRQ_CRC_ERR | SX126X_IRQ_HEADER_ERR, SX126X_IRQ_RX_DONE);
   if(state != ERR_NONE) {
     return(state);
@@ -542,6 +538,7 @@ int16_t SX126x::startReceiveCommon()
 
   // clear interrupt flags
   state = clearIrqStatus();
+
   return(state);
 }
 
@@ -1119,7 +1116,7 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   data[2] = (uint8_t)((delayValue >> 8) & 0xFF);
   data[3] = (uint8_t)(delayValue & 0xFF);
 
-  _tcxoDelay_us = delay;
+  _tcxoDelay = delay;
 
   // enable TCXO control on DIO3
   return(SPIwriteCommand(SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4));
