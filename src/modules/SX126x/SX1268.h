@@ -77,7 +77,7 @@ class SX1268: public SX126x {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
+      \brief Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.
 
       \param freq Carrier frequency to be set in MHz.
 
@@ -88,7 +88,7 @@ class SX1268: public SX126x {
     int16_t setFrequency(float freq, bool calibrate = true);
 
     /*!
-      \brief Sets output power. Allowed values are in range from -17 to 22 dBm.
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
 
       \param power Output power to be set in dBm.
 
