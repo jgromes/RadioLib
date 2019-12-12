@@ -315,7 +315,8 @@ int16_t CC1101::setFrequency(float freq) {
     _freq = freq;
   }
 
-  return(state);
+  // Update the TX power accordingly to new freq. (PA values depend on chosen freq)
+  return setOutputPower(_power);
 }
 
 int16_t CC1101::setBitRate(float br) {
@@ -389,6 +390,9 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
 }
 
 int16_t CC1101::setOutputPower(int8_t power) {
+  // Store the value.
+  _power = power;
+
   // round to the known frequency settings
   uint8_t f;
   if(_freq < 374.0) {

@@ -833,6 +833,7 @@ class CC1101: public PhysicalLayer {
     bool _promiscuous;
 
     uint8_t _syncWordLength;
+    int8_t _power;
 
     int16_t config();
     int16_t directMode();
