@@ -655,6 +655,12 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
 }
 
 int16_t CC1101::config() {
+  // Reset the radio. Registers may be dirty from previous usage.
+  SPIsendCommand(CC1101_CMD_RESET);
+
+  // Wait a ridiculous amount of time to be sure radio is ready.
+  delay(150);
+
   // enable automatic frequency synthesizer calibration
   int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
   if(state != ERR_NONE) {
