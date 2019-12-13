@@ -720,8 +720,8 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
     return(ERR_PACKET_TOO_LONG);
   }
 
-  // set to fixed packet length
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 7, 7);
+  // set PKTCTRL0.LENGTH_CONFIG
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
   if (state != ERR_NONE) {
     return(state);
   }
