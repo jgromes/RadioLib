@@ -474,7 +474,8 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   }
 
   // set sync word register
-  _mod->SPIwriteRegisterBurst(CC1101_REG_SYNC1, syncWord, len);
+  state = SPIsetRegValue(CC1101_REG_SYNC1, syncWord[0]);
+  state |= SPIsetRegValue(CC1101_REG_SYNC0, syncWord[1]);
 
   return(ERR_NONE);
 }
@@ -584,12 +585,12 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
-  if (maxErrBits > 1) {
-    return(ERR_INVALID_SYNC_WORD);
+  if (maxErrBits > 1 || (_syncWordLength != 2 && _syncWordLength != 4)) {
+    return (ERR_INVALID_SYNC_WORD);
   }
 
   if (maxErrBits == 0) {
-    if (_syncWordLength == 1) {
+    if (_syncWordLength == 2) {
       // in 16 bit sync word, expect all 16 bits
       return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
     } else {
@@ -599,7 +600,7 @@ int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
   }
 
   if (maxErrBits == 1) {
-    if (_syncWordLength == 1) {
+    if (_syncWordLength == 2) {
       // in 16 bit sync word, expect at least 15 bits
       return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
     } else {
