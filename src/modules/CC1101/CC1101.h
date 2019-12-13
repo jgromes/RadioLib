@@ -831,6 +831,7 @@ class CC1101: public PhysicalLayer {
     uint8_t _packetLengthConfig;
 
     bool _promiscuous;
+    bool _crcOn = true;
 
     uint8_t _syncWordLength;
     int8_t _power;

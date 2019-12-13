@@ -286,8 +286,8 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   standby();
 
   // check CRC
-  if((val & 0b10000000) == 0b00000000) {
-    return(ERR_CRC_MISMATCH);
+   if (_crcOn && (val & 0b10000000) == 0b00000000) {
+    return (ERR_CRC_MISMATCH);
   }
 
   return(ERR_NONE);
@@ -617,6 +617,8 @@ int16_t CC1101::disableSyncWordFiltering() {
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
+  _crcOn = crcOn;
+
   if (crcOn == true) {
     return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON, 2, 2));
   } else {
