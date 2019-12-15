@@ -477,7 +477,7 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   state = SPIsetRegValue(CC1101_REG_SYNC1, syncWord[0]);
   state |= SPIsetRegValue(CC1101_REG_SYNC0, syncWord[1]);
 
-  return(ERR_NONE);
+  return (state);
 }
 
 int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
