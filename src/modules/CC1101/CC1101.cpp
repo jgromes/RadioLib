@@ -585,31 +585,16 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
-  if (maxErrBits > 1 || (_syncWordLength != 2 && _syncWordLength != 4)) {
-    return (ERR_INVALID_SYNC_WORD);
+  switch (maxErrBits){
+    case 0:
+      // in 16 bit sync word, expect all 16 bits.
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
+    case 1:
+      // in 16 bit sync word, expect at least 15 bits.
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
+    default:
+      return (ERR_INVALID_SYNC_WORD);
   }
-
-  if (maxErrBits == 0) {
-    if (_syncWordLength == 2) {
-      // in 16 bit sync word, expect all 16 bits
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
-    } else {
-      // there's no 32 of 32 case, so we resort to 30 of 32 bits required
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
-    }
-  }
-
-  if (maxErrBits == 1) {
-    if (_syncWordLength == 2) {
-      // in 16 bit sync word, expect at least 15 bits
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
-    } else {
-      // in 32 bits sync word (16 + 16), expect 30 of 32 to match
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
-    }
-  }
-
-  return(ERR_UNKNOWN);
 }
 
 int16_t CC1101::disableSyncWordFiltering() {
