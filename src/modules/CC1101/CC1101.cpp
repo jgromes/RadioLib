@@ -286,8 +286,8 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   standby();
 
   // check CRC
-  if((val & 0b10000000) == 0b00000000) {
-    return(ERR_CRC_MISMATCH);
+   if (_crcOn && (val & 0b10000000) == 0b00000000) {
+    return (ERR_CRC_MISMATCH);
   }
 
   return(ERR_NONE);
@@ -474,9 +474,10 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   }
 
   // set sync word register
-  _mod->SPIwriteRegisterBurst(CC1101_REG_SYNC1, syncWord, len);
+  state = SPIsetRegValue(CC1101_REG_SYNC1, syncWord[0]);
+  state |= SPIsetRegValue(CC1101_REG_SYNC0, syncWord[1]);
 
-  return(ERR_NONE);
+  return (state);
 }
 
 int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
@@ -584,31 +585,16 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
-  if (maxErrBits > 1) {
-    return(ERR_INVALID_SYNC_WORD);
+  switch (maxErrBits){
+    case 0:
+      // in 16 bit sync word, expect all 16 bits.
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
+    case 1:
+      // in 16 bit sync word, expect at least 15 bits.
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
+    default:
+      return (ERR_INVALID_SYNC_WORD);
   }
-
-  if (maxErrBits == 0) {
-    if (_syncWordLength == 1) {
-      // in 16 bit sync word, expect all 16 bits
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
-    } else {
-      // there's no 32 of 32 case, so we resort to 30 of 32 bits required
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
-    }
-  }
-
-  if (maxErrBits == 1) {
-    if (_syncWordLength == 1) {
-      // in 16 bit sync word, expect at least 15 bits
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
-    } else {
-      // in 32 bits sync word (16 + 16), expect 30 of 32 to match
-      return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_30_32, 2, 0));
-    }
-  }
-
-  return(ERR_UNKNOWN);
 }
 
 int16_t CC1101::disableSyncWordFiltering() {
@@ -616,6 +602,8 @@ int16_t CC1101::disableSyncWordFiltering() {
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
+  _crcOn = crcOn;
+
   if (crcOn == true) {
     return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_CRC_ON, 2, 2));
   } else {
@@ -654,6 +642,12 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
 }
 
 int16_t CC1101::config() {
+  // Reset the radio. Registers may be dirty from previous usage.
+  SPIsendCommand(CC1101_CMD_RESET);
+
+  // Wait a ridiculous amount of time to be sure radio is ready.
+  delay(150);
+
   // enable automatic frequency synthesizer calibration
   int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
   if(state != ERR_NONE) {
@@ -711,8 +705,8 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
     return(ERR_PACKET_TOO_LONG);
   }
 
-  // set to fixed packet length
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 7, 7);
+  // set PKTCTRL0.LENGTH_CONFIG
+  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
   if (state != ERR_NONE) {
     return(state);
   }
