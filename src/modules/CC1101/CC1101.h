@@ -743,6 +743,15 @@ class CC1101: public PhysicalLayer {
     int16_t disableAddressFiltering();
 
     /*!
+      \brief Enables/disables OOK modulation instead of FSK.
+
+      \param enableOOK Enable (true) or disable (false) OOK.
+
+      \returns \ref status_codes
+    */
+    int16_t setOOK(bool enableOOK);
+
+    /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
 
       \returns Last packet RSSI in dBm.
@@ -825,6 +834,7 @@ class CC1101: public PhysicalLayer {
     float _freq;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
+    uint8_t _modulation;
 
     size_t _packetLength;
     bool _packetLengthQueried;

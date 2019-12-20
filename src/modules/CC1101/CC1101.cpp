@@ -4,6 +4,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_E
   _mod = module;
   _packetLengthQueried = false;
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
+  _modulation = CC1101_MOD_FORMAT_2_FSK;
 
   _syncWordLength = 2;
 }
@@ -449,8 +450,20 @@ int16_t CC1101::setOutputPower(int8_t power) {
       return(ERR_INVALID_OUTPUT_POWER);
   }
 
-  // write raw power setting
-  return(SPIsetRegValue(CC1101_REG_PATABLE, powerRaw));
+  if (_modulation == CC1101_MOD_FORMAT_ASK_OOK){
+    // Amplitude modulation:
+    // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
+    // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
+
+    byte paValues[2] = {0x00, powerRaw};
+    SPIwriteRegisterBurst(CC1101_REG_PATABLE, paValues, 2);
+    return ERR_NONE;
+
+  }else{
+    // Freq modulation:
+    // PA_TABLE[0] is the power to be used when transmitting.
+    return(SPIsetRegValue(CC1101_REG_PATABLE, powerRaw));
+  }
 }
 
 int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
@@ -547,6 +560,34 @@ int16_t CC1101::disableAddressFiltering() {
   // set node address to default (0x00)
   return(SPIsetRegValue(CC1101_REG_ADDR, 0x00));
 }
+
+
+int16_t CC1101::setOOK(bool enableOOK) {
+  // Change modulation
+  if (enableOOK) {
+    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
+  }else{
+    _modulation = CC1101_MOD_FORMAT_2_FSK;
+  }
+  uint8_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, _modulation, 6, 4);
+
+  // Change Front End TX Configuration
+  if (enableOOK){
+    // PA_TABLE[0] is (by default) the power value used when transmitting a "0L".
+    // Set PA_TABLE[1] to be used when transmitting a "1L".
+    state |= SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
+  }else{
+    // Reset FREND0 to default value.
+    state |= SPIsetRegValue(CC1101_REG_FREND0, 0, 2, 0);
+  }
+
+  if (state != ERR_NONE)
+    return state;
+
+  // Update PA_TABLE values according to the new _modulation.
+  return setOutputPower(_power);
+}
+
 
 float CC1101::getRSSI() {
   float rssi;
