@@ -4,7 +4,11 @@
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
 
-#define MORSE_LENGTH                                  52
+//#define MORSE_LENGTH                                  52
+#define MORSE_LENGTH                                  64
+#define DIT                                           0b0
+#define DAH                                           0b1
+#define GUARDBIT                                      0b1
 
 /*!
   \class MorseClient
