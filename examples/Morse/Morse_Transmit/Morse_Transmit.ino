@@ -104,7 +104,7 @@ void loop() {
 
   // floating point number
   // NOTE: When using println(), the transmission will be
-  //       terminated with cross signal (.-.-.).
+  //       terminated with end-of-work signal (...-.-).
   float f = -3.1415;
   morse.println(f, 3);
 
