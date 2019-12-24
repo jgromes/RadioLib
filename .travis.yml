@@ -47,8 +47,8 @@ before_install:
       arduino --install-boards arduino:samd;
     elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
       arduino --install-boards arduino:sam;
-    elif [[ "$BOARD" =~ ":" ]]; then
-      arduino --install-boards ;
+    elif [[ "$BOARD" =~ "SparkFun:apollo3:" ]]; then
+      arduino --install-boards SparkFun:apollo3;
     fi
 
 # create directory to save the library and create symbolic link
