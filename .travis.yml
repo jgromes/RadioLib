@@ -7,7 +7,7 @@ env:
     - BOARD="esp32:esp32:esp32"
     - BOARD="STM32:stm32:GenF3:pnum=BLACKPILL_F303CC"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
-    - BOARD="SparkFun:apollo3:amap3redboard"
+    # - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:samd:arduino_zero_native"
     - BOARD="arduino:sam:arduino_due_x"
     - BOARD="arduino:avr:uno"
