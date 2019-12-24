@@ -61,7 +61,7 @@
 /*
  * The following platforms do not support SoftwareSerial library.
  */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__) || defined(AM_PART_APOLLO3)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
 #endif
 
