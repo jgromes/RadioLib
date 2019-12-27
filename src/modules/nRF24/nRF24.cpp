@@ -8,11 +8,11 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // set module properties
   _mod->SPIreadCommand = NRF24_CMD_READ;
   _mod->SPIwriteCommand = NRF24_CMD_WRITE;
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
 
-  // override pin mode on INT0 (connected to nRF24 CE pin)
-  pinMode(_mod->getInt0(), OUTPUT);
-  digitalWrite(_mod->getInt0(), LOW);
+  // set pin mode on RST (connected to nRF24 CE pin)
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), LOW);
 
   // wait for minimum power-on reset duration
   delay(100);
@@ -72,7 +72,7 @@ int16_t nRF24::standby() {
   // make sure carrier output is disabled
   _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_OFF, 7, 7);
   _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_OFF, 4, 4);
-  digitalWrite(_mod->getInt0(), LOW);
+  digitalWrite(_mod->getRst(), LOW);
 
   // use standby-1 mode
   return(_mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_POWER_UP, 1, 1));
@@ -87,7 +87,7 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // wait until transmission is finished
   uint32_t start = micros();
-  while(digitalRead(_mod->getInt1())) {
+  while(digitalRead(_mod->getIrq())) {
     // check maximum number of retransmits
     if(getStatus(NRF24_MAX_RT)) {
       standby();
@@ -118,7 +118,7 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
 
   // wait for Rx_DataReady or timeout
   uint32_t start = micros();
-  while(digitalRead(_mod->getInt1())) {
+  while(digitalRead(_mod->getIrq())) {
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
     if(micros() - start >= 60000) {
       standby();
@@ -142,7 +142,7 @@ int16_t nRF24::transmitDirect(uint32_t frf) {
   int16_t state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
   state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_ON, 7, 7);
   state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_ON, 4, 4);
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
   return(state);
 }
 
@@ -153,7 +153,7 @@ int16_t nRF24::receiveDirect() {
 }
 
 void nRF24::setIrqAction(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, FALLING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, FALLING);
 }
 
 int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -193,9 +193,9 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIwriteTxPayload(data, len);
 
   // CE high to start transmitting
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
   delayMicroseconds(10);
-  digitalWrite(_mod->getInt0(), LOW);
+  digitalWrite(_mod->getRst(), LOW);
 
   return(state);
 }
@@ -224,7 +224,7 @@ int16_t nRF24::startReceive() {
   SPItransfer(NRF24_CMD_FLUSH_RX);
 
   // CE high to start receiving
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
 
   // wait to enter Rx state
   delayMicroseconds(130);

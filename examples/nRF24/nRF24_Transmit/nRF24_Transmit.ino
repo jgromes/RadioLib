@@ -17,9 +17,9 @@
 #include <RadioLib.h>
 
 // nRF24 has the following connections:
-// NSS pin:   10
-// CE pin:    2
-// IRQ pin:   3
+// CS pin:    10
+// IRQ pin:   2
+// CE pin:    3
 nRF24 nrf = new Module(10, 2, 3);
 
 // or using RadioShield
