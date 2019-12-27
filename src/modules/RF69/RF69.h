@@ -465,6 +465,11 @@ class RF69: public PhysicalLayer {
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
 
     /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+    */
+    void reset();
+
+    /*!
       \brief Blocking binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
 
@@ -581,11 +586,9 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
 
-      \param timeout Enable module-driven timeout. Set to false for listen mode.
-
       \returns \ref status_codes
     */
-    int16_t startReceive(bool timeout = false);
+    int16_t startReceive();
 
     /*!
       \brief Reads data received after calling startReceive method.

@@ -14,7 +14,11 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT,
 
 int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_0);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+
+  // reset the module
+  reset();
 
   // try to find the RF69 chip
   uint8_t i = 0;
@@ -101,15 +105,34 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   return(ERR_NONE);
 }
 
+void RF69::reset() {
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), HIGH);
+  delayMicroseconds(100);
+  Module::digitalWrite(_mod->getRst(), LOW);
+  Module::pinMode(_mod->getRst(), INPUT);
+  delay(10);
+}
+
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
+  // calculate timeout (5ms + 500 % of expected time-on-air)
+  uint32_t timeout = 5000000 + (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 5000000.0);
+
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   if(state != ERR_NONE) {
     return(state);
   }
 
-  // wait for transmission end
-  while(!digitalRead(_mod->getInt0()));
+  // wait for transmission end or timeout
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getIrq())) {
+    if(micros() - start > timeout) {
+      standby();
+      clearIRQFlags();
+      return(ERR_TX_TIMEOUT);
+    }
+  }
 
   // clear interrupt flags
   clearIRQFlags();
@@ -118,15 +141,20 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t RF69::receive(uint8_t* data, size_t len) {
+  // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
+  uint32_t timeout = 500000 + (1.0/(_br*1000.0))*(RF69_MAX_PACKET_LENGTH*400.0);
+
   // start reception
-  int16_t state = startReceive(true);
+  int16_t state = startReceive();
   if(state != ERR_NONE) {
     return(state);
   }
 
   // wait for packet reception or timeout
-  while(!digitalRead(_mod->getInt0())) {
-    if(digitalRead(_mod->getInt1())) {
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getIrq())) {
+    if(micros() - start > timeout) {
+      standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
     }
@@ -208,20 +236,14 @@ int16_t RF69::disableAES() {
   return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_OFF, 0, 0));
 }
 
-int16_t RF69::startReceive(bool timeout) {
+int16_t RF69::startReceive() {
   // set mode to standby
   int16_t state = setMode(RF69_STANDBY);
 
   // set RX timeouts and DIO pin mapping
-  if(timeout) {
-    state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH);
-  } else {
-    state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 6);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START_OFF);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH_OFF);
-  }
+  state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 4);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH);
   if(state != ERR_NONE) {
     return(state);
   }
@@ -238,11 +260,15 @@ int16_t RF69::startReceive(bool timeout) {
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
+  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+    return;
+  }
+  Module::pinMode(_mod->getGpio(), INPUT);
+  attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
 }
 
 int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
