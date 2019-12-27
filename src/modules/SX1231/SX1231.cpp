@@ -6,7 +6,9 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getRst(), OUTPUT);
 
   // try to find the SX1231 chip
   uint8_t i = 0;

@@ -15,9 +15,9 @@
 #include <RadioLib.h>
 
 // SX1231 has the following connections:
-// NSS pin:   10
+// CS pin:    10
 // DIO0 pin:  2
-// DIO1 pin:  3
+// RESET pin: 3
 SX1231 rf = new Module(10, 2, 3);
 
 // or using RadioShield
