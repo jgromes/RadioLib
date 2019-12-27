@@ -7,7 +7,12 @@ SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_CRYSTAL_FREQ, SX127X_DIV_EXPO
 
 int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getGpio(), INPUT);
+
+  // reset the module
+  reset();
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -54,7 +59,11 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
 
 int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint8_t currentLimit, uint16_t preambleLength, bool enableOOK) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+
+  // reset the module
+  reset();
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -145,6 +154,15 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   return(state);
 }
 
+void SX127x::reset() {
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), LOW);
+  delayMicroseconds(100);
+  Module::digitalWrite(_mod->getRst(), HIGH);
+  Module::pinMode(_mod->getRst(), INPUT);
+  delay(5);
+}
+
 int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
@@ -172,7 +190,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // wait for packet transmission or timeout
     start = micros();
-    while(!digitalRead(_mod->getInt0())) {
+    while(!digitalRead(_mod->getIrq())) {
       if(micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_TX_TIMEOUT);
@@ -191,7 +209,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // wait for transmission end or timeout
     start = micros();
-    while(!digitalRead(_mod->getInt0())) {
+    while(!digitalRead(_mod->getIrq())) {
       if(micros() - start > timeout) {
         clearIRQFlags();
         standby();
@@ -226,8 +244,8 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
 
     // wait for packet reception or timeout (100 LoRa symbols)
-    while(!digitalRead(_mod->getInt0())) {
-      if(digitalRead(_mod->getInt1())) {
+    while(!digitalRead(_mod->getIrq())) {
+      if(digitalRead(_mod->getGpio())) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
       }
@@ -245,7 +263,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
 
     // wait for packet reception or timeout
     uint32_t start = micros();
-    while(!digitalRead(_mod->getInt0())) {
+    while(!digitalRead(_mod->getIrq())) {
       if(micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
@@ -281,8 +299,8 @@ int16_t SX127x::scanChannel() {
   }
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getInt0())) {
-    if(digitalRead(_mod->getInt1())) {
+  while(!digitalRead(_mod->getIrq())) {
+    if(digitalRead(_mod->getGpio())) {
       clearIRQFlags();
       return(PREAMBLE_DETECTED);
     }
@@ -411,11 +429,11 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
 }
 
 void SX127x::setDio0Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
 }
 
 void SX127x::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
 }
 
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
