@@ -171,6 +171,8 @@ shutdown	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
+RADIOLIB_PIN_UNUSED	LITERAL1
+
 ERR_NONE	LITERAL1
 ERR_UNKNOWN	LITERAL1
 

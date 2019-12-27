@@ -66,6 +66,11 @@
 #endif
 
 /*!
+  \brief Alias for unused pin.
+*/
+#define RADIOLIB_PIN_UNUSED                           (-1)
+
+/*!
   \defgroup shield_config Shield Configuration
 
   \{
@@ -85,26 +90,6 @@
   \brief Use I2C interface.
 */
 #define RADIOLIB_USE_I2C                              0x02
-
-/*!
-  \brief Do not use any interrupts/GPIOs.
-*/
-#define RADIOLIB_INT_NONE                             0x00
-
-/*!
-  \brief Use interrupt/GPIO 0.
-*/
-#define RADIOLIB_INT_0                                0x01
-
-/*!
-  \brief Use interrupt/GPIO 1.
-*/
-#define RADIOLIB_INT_1                                0x02
-
-/*!
-  \brief Use both interrupts/GPIOs.
-*/
-#define RADIOLIB_INT_BOTH                             0x03
 
 /*!
   \}
