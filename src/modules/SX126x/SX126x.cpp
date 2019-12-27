@@ -72,7 +72,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float
   }
 
   // set publicly accessible settings that are not a part of begin method
-  state = setDio2AsRfSwitch(false);
+  state = setDio2AsRfSwitch(true);
 
   return(state);
 }
