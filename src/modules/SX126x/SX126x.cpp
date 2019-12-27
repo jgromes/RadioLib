@@ -220,6 +220,7 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   while(!digitalRead(_mod->getIrq())) {
     if(micros() - start > timeout) {
       clearIrqStatus();
+      standby();
       return(ERR_TX_TIMEOUT);
     }
   }
@@ -286,6 +287,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     if(micros() - start > timeout) {
       fixImplicitTimeout();
       clearIrqStatus();
+      standby();
       return(ERR_RX_TIMEOUT);
     }
   }
