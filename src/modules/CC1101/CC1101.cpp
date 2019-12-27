@@ -13,7 +13,8 @@ int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_0);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
 
   // try to find the CC1101 chip
   uint8_t i = 0;
@@ -110,10 +111,10 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // wait for transmission start
-  while(!digitalRead(_mod->getInt0()));
+  while(!digitalRead(_mod->getIrq()));
 
   // wait for transmission end
-  while(digitalRead(_mod->getInt0()));
+  while(digitalRead(_mod->getIrq()));
 
   // set mode to standby
   standby();
@@ -132,10 +133,10 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   }
 
   // wait for sync word
-  while(!digitalRead(_mod->getInt0()));
+  while(!digitalRead(_mod->getIrq()));
 
   // wait for packet end
-  while(digitalRead(_mod->getInt0()));
+  while(digitalRead(_mod->getIrq()));
 
   // read packet data
   return(readData(data, len));
@@ -187,11 +188,15 @@ int16_t CC1101::packetMode() {
 }
 
 void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, dir);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, dir);
 }
 
 void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, dir);
+  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+    return;
+  }
+  Module::pinMode(_mod->getGpio(), INPUT);
+  attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, dir);
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -808,9 +813,9 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
-  digitalWrite(_mod->getCs(), LOW);
+  Module::digitalWrite(_mod->getCs(), LOW);
   SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
   SPI.transfer(cmd);
   SPI.endTransaction();
-  digitalWrite(_mod->getCs(), HIGH);
+  Module::digitalWrite(_mod->getCs(), HIGH);
 }

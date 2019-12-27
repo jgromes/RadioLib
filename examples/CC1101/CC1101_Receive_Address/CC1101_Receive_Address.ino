@@ -15,10 +15,11 @@
 #include <RadioLib.h>
 
 // CC1101 has the following connections:
-// NSS pin:   10
+// CS pin:    10
 // GDO0 pin:  2
-// GDO2 pin:  3
-CC1101 cc = new Module(10, 2, 3);
+// RST pin:   unused
+// GDO2 pin:  3 (optional)
+CC1101 cc = new Module(10, 2, RADIOLIB_PIN_UNUSED, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
