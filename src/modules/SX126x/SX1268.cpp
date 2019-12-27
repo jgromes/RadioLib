@@ -4,7 +4,7 @@ SX1268::SX1268(Module* mod) : SX126x(mod) {
 
 }
 
-int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
+int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
   // execute common part
   int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength, tcxoVoltage);
   if(state != ERR_NONE) {

@@ -19,8 +19,9 @@
 // SX1262 has the following connections:
 // NSS pin:   10
 // DIO1 pin:  2
+// NRST pin:  3
 // BUSY pin:  9
-SX1262 fsk = new Module(10, 2, 9);
+SX1262 fsk = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield

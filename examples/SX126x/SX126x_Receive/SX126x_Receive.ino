@@ -23,9 +23,9 @@
 // SX1262 has the following connections:
 // NSS pin:   10
 // DIO1 pin:  2
-// DIO2 pin:  3
+// NRST pin:  3
 // BUSY pin:  9
-SX1262 lora = new Module(10, 2, 9);
+SX1262 lora = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield

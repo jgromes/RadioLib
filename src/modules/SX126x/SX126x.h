@@ -325,8 +325,8 @@
 
 // SX126X SPI register variables
 //SX126X_REG_LORA_SYNC_WORD_MSB + LSB
-#define SX126X_SYNC_WORD_PUBLIC                       0x3444
-#define SX126X_SYNC_WORD_PRIVATE                      0x1424
+#define SX126X_SYNC_WORD_PUBLIC                       0x34        // actually 0x3444  NOTE: The low nibbles in each byte (0x_4_4) are masked out since apparently, they're reserved.
+#define SX126X_SYNC_WORD_PRIVATE                      0x12        // actually 0x1424        You couldn't make this up if you tried.
 
 
 /*!
@@ -361,7 +361,7 @@ class SX126x: public PhysicalLayer {
 
       \param cr LoRa coding rate denominator. Allowed values range from 5 to 8.
 
-      \param syncWord 2-byte LoRa sync word.
+      \param syncWord 1-byte LoRa sync word.
 
       \param currentLimit Current protection limit in mA.
 
@@ -371,7 +371,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -393,6 +393,11 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage);
+
+    /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+    */
+    void reset();
 
     /*!
       \brief Blocking binary transmit method.
@@ -571,7 +576,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint16_t syncWord);
+    int16_t setSyncWord(uint8_t syncWord);
 
     /*!
       \brief Sets current protection limit. Can be set in 0.25 mA steps.
