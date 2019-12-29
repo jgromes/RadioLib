@@ -62,6 +62,8 @@ receiveDirect	KEYWORD2
 packetMode	KEYWORD2
 setDio0Action	KEYWORD2
 setDio1Action	KEYWORD2
+clearDio0Action	KEYWORD2
+clearDio1Action	KEYWORD2
 startTransmit	KEYWORD2
 startReceive	KEYWORD2
 readData	KEYWORD2
@@ -107,7 +109,9 @@ setAmbientTemperature	KEYWORD2
 # CC1101-specific
 getLQI	KEYWORD2
 setGdo0Action	KEYWORD2
-setGdo1Action	KEYWORD2
+setGdo2Action	KEYWORD2
+clearGdo0Action	KEYWORD2
+clearGdo2Action	KEYWORD2
 
 # SX126x-specific
 setTCXO	KEYWORD2

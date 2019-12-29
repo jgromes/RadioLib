@@ -482,6 +482,11 @@ class SX126x: public PhysicalLayer {
     void setDio1Action(void (*func)(void));
 
     /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    void clearDio1Action();
+
+    /*!
       \brief Interrupt-driven binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
 

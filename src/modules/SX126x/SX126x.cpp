@@ -393,6 +393,10 @@ void SX126x::setDio1Action(void (*func)(void)) {
   attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
 }
 
+void SX126x::clearDio1Action() {
+  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+}
+
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
