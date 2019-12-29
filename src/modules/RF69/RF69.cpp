@@ -263,12 +263,23 @@ void RF69::setDio0Action(void (*func)(void)) {
   attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
 }
 
+void RF69::clearDio0Action() {
+  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+}
+
 void RF69::setDio1Action(void (*func)(void)) {
   if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
   attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
+}
+
+void RF69::clearDio1Action() {
+  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+    return;
+  }
+  detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
 }
 
 int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
