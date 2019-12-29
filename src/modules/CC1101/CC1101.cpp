@@ -191,12 +191,23 @@ void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
   attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, dir);
 }
 
+void CC1101::clearGdo0Action() {
+  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+}
+
 void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
   if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
   attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, dir);
+}
+
+void CC1101::clearGdo2Action() {
+  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+    return;
+  }
+  detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {

@@ -602,6 +602,11 @@ class CC1101: public PhysicalLayer {
     void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
 
     /*!
+      \brief Clears interrupt service routine to call when GDO0 activates.
+    */
+    void clearGdo0Action();
+
+    /*!
       \brief Sets interrupt service routine to call when GDO2 activates.
 
       \param func ISR to call.
@@ -609,6 +614,11 @@ class CC1101: public PhysicalLayer {
       \param dir Signal change direction. Defaults to FALLING.
     */
     void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
+
+    /*!
+      \brief Clears interrupt service routine to call when GDO0 activates.
+    */
+    void clearGdo2Action();
 
     /*!
       \brief Interrupt-driven binary transmit method.
