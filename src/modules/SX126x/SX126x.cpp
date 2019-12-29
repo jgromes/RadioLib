@@ -370,8 +370,12 @@ int16_t SX126x::scanChannel() {
   return(ERR_UNKNOWN);
 }
 
-int16_t SX126x::sleep() {
-  uint8_t data[] = {SX126X_SLEEP_START_COLD | SX126X_SLEEP_RTC_OFF};
+int16_t SX126x::sleep(bool retainConfig) {
+  uint8_t sleepMode = SX126X_SLEEP_START_WARM;
+  if(!retainConfig) {
+    sleepMode = SX126X_SLEEP_START_COLD;
+  }
+  uint8_t data[] = {sleepMode | SX126X_SLEEP_RTC_OFF};
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_SLEEP, data, 1, false);
 
   // wait for SX126x to safely enter sleep mode
