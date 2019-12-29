@@ -673,11 +673,21 @@ class SX127x: public PhysicalLayer {
     void setDio0Action(void (*func)(void));
 
     /*!
+      \brief Clears interrupt service routine to call when DIO0 activates.
+    */
+    void clearDio0Action();
+
+    /*!
       \brief Set interrupt service routine function to call when DIO1 activates.
 
       \param func Pointer to interrupt service routine.
     */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    void clearDio1Action();
 
     /*!
       \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.

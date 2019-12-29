@@ -432,8 +432,19 @@ void SX127x::setDio0Action(void (*func)(void)) {
   attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
 }
 
+void SX127x::clearDio0Action() {
+  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+}
+
 void SX127x::setDio1Action(void (*func)(void)) {
   attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
+}
+
+void SX127x::clearDio1Action() {
+  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+    return;
+  }
+  detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
 }
 
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
