@@ -396,8 +396,13 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
+
+      \param verify Whether correct module startup should be verified. When set to true, RadioLib will attempt to verify the module has started correctly
+      by repeatedly issuing setStandby command. Enabled by default.
+
+      \returns \ref status_codes
     */
-    void reset();
+    int16_t reset(bool verify = true);
 
     /*!
       \brief Blocking binary transmit method.

@@ -10,9 +10,6 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
 
-  // reset the module
-  reset();
-
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   _bwKhz = bw;
   _sf = sf;
@@ -25,8 +22,14 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   _preambleLength = preambleLength;
   _tcxoDelay = 0;
 
+  // reset the module and verify startup
+  int16_t state = reset();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // set mode to standby
-  int16_t state = standby();
+  state = standby();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -87,9 +90,6 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
 
-  // reset the module
-  reset();
-
   // initialize configuration variables (will be overwritten during public settings configuration)
   _br = 21333;                                  // 48.0 kbps
   _freqDev = 52428;                             // 50.0 kHz
@@ -100,8 +100,14 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   _preambleLengthFSK = preambleLength;
   _addrComp = SX126X_GFSK_ADDRESS_FILT_OFF;
 
+  // reset the module and verify startup
+  int16_t state = reset();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // set mode to standby
-  int16_t state = standby();
+  state = standby();
   if(state != ERR_NONE) {
     return(state);
   }
@@ -168,13 +174,39 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   return(state);
 }
 
-void SX126x::reset() {
+int16_t SX126x::reset(bool verify) {
+  // run the reset sequence
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
   delay(100);
   Module::digitalWrite(_mod->getRst(), HIGH);
   Module::pinMode(_mod->getRst(), INPUT);
   delay(100);
+
+  // return immediately whe verification is disabled
+  if(!verify) {
+    return(ERR_NONE);
+  }
+
+  // set mode to standby - SX126x often refuses first few commands after reset
+  uint32_t start = millis();
+  while(true) {
+    // try to set mode to standby
+    int16_t state = standby();
+    if(state == ERR_NONE) {
+      // standby command successful
+      return(ERR_NONE);
+    }
+
+    // standby command failed, check timeout and try again
+    if(millis() - start >= 3000) {
+      // timed out, possibly incorrect wiring
+      return(state);
+    }
+
+    // wait a bit to not spam the module
+    delay(10);
+  }
 }
 
 int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -1562,7 +1594,6 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   digitalWrite(_mod->getCs(), LOW);
 
   // ensure BUSY is low (state meachine ready)
-  RADIOLIB_VERBOSE_PRINTLN(F("Wait for BUSY ... "));
   uint32_t start = millis();
   while(digitalRead(_mod->getGpio())) {
     if(millis() - start >= timeout) {
