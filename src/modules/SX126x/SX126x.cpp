@@ -178,10 +178,9 @@ int16_t SX126x::reset(bool verify) {
   // run the reset sequence
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(100);
+  delayMicroseconds(150);
   Module::digitalWrite(_mod->getRst(), HIGH);
   Module::pinMode(_mod->getRst(), INPUT);
-  delay(100);
 
   // return immediately whe verification is disabled
   if(!verify) {
