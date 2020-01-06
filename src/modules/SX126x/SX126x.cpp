@@ -182,7 +182,7 @@ int16_t SX126x::reset(bool verify) {
   Module::digitalWrite(_mod->getRst(), HIGH);
   Module::pinMode(_mod->getRst(), INPUT);
 
-  // return immediately whe verification is disabled
+  // return immediately when verification is disabled
   if(!verify) {
     return(ERR_NONE);
   }
