@@ -23,14 +23,14 @@
 // GDO0 pin:  2
 // RST pin:   unused
 // GDO2 pin:  3 (optional)
-CC1101 cc1 = new Module(10, 2, RADIOLIB_PIN_UNUSED, 3);
+CC1101 cc1 = new Module(10, 2, NC, 3);
 
 // second CC1101 has different connections:
 // CS pin:    9
 // GDO0 pin:  4
 // RST pin:   unused
 // GDO2 pin:  5 (optional)
-CC1101 cc2 = new Module(9, 4, RADIOLIB_PIN_UNUSED, 53);
+CC1101 cc2 = new Module(9, 4, NC, 53);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
