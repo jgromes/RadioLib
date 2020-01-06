@@ -77,7 +77,7 @@
 /*!
   \brief Alias for unused pin, if not supplied by the Arduino core.
 */
-#ifndef NC
+#if !(defined(NC) || defined(ARDUINO_ARCH_STM32))
 #define NC                                            (-1)
 #endif
 
