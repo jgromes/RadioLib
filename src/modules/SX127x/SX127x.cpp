@@ -11,9 +11,6 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
 
-  // reset the module
-  reset();
-
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
@@ -23,8 +20,13 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
     RADIOLIB_DEBUG_PRINTLN(F("Found SX127x!"));
   }
 
+  // set mode to standby
+  int16_t state = standby();
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
   // check active modem
-  int16_t state;
   if(getActiveModem() != SX127X_LORA) {
     // set LoRa mode
     state = setActiveModem(SX127X_LORA);
@@ -1090,6 +1092,10 @@ bool SX127x::findChip(uint8_t ver) {
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
+    // reset the module
+    reset();
+
+    // check version register
     uint8_t version = _mod->SPIreadRegister(SX127X_REG_VERSION);
     if(version == ver) {
       flagFound = true;
