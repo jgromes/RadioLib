@@ -17,13 +17,14 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
 
-  // reset the module
-  reset();
-
   // try to find the RF69 chip
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
+    // reset the module
+    reset();
+
+    // check version register
     uint8_t version = _mod->SPIreadRegister(RF69_REG_VERSION);
     if(version == 0x24) {
       flagFound = true;
