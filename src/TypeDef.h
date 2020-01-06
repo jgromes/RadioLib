@@ -75,9 +75,11 @@
 #endif
 
 /*!
-  \brief Alias for unused pin.
+  \brief Alias for unused pin, if not supplied by the Arduino core.
 */
-#define RADIOLIB_PIN_UNUSED                           (-1)
+#ifndef NC
+#define NC                                            (-1)
+#endif
 
 /*!
   \defgroup shield_config Shield Configuration

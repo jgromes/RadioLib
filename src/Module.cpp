@@ -1,10 +1,10 @@
 #include "Module.h"
 
 Module::Module(int16_t rx, int16_t tx, HardwareSerial* useSer, int16_t rst) {
-  _cs = RADIOLIB_PIN_UNUSED;
+  _cs = NC;
   _rx = rx;
   _tx = tx;
-  _irq = RADIOLIB_PIN_UNUSED;
+  _irq = NC;
   _rst = rst;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
@@ -17,8 +17,8 @@ Module::Module(int16_t rx, int16_t tx, HardwareSerial* useSer, int16_t rst) {
 
 Module::Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
-  _rx = RADIOLIB_PIN_UNUSED;
-  _tx = RADIOLIB_PIN_UNUSED;
+  _rx = NC;
+  _tx = NC;
   _irq = irq;
   _rst = rst;
   _spi = &spi;
@@ -28,7 +28,7 @@ Module::Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings 
 Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
   _rx = gpio;
-  _tx = RADIOLIB_PIN_UNUSED;
+  _tx = NC;
   _irq = irq;
   _rst = rst;
   _spi = &spi;
@@ -205,10 +205,16 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 
   // send SPI register address with access command
   _spi->transfer(reg | cmd);
-  RADIOLIB_VERBOSE_PRINT(reg | cmd, HEX);
-  RADIOLIB_VERBOSE_PRINT('\t');
-  RADIOLIB_VERBOSE_PRINT(reg | cmd, BIN);
-  RADIOLIB_VERBOSE_PRINT('\t');
+  #ifdef RADIOLIB_VERBOSE
+    if(cmd == SPIwriteCommand) {
+      RADIOLIB_VERBOSE_PRINT('W');
+    } else if(cmd == SPIreadCommand) {
+      RADIOLIB_VERBOSE_PRINT('R');
+    }
+    RADIOLIB_VERBOSE_PRINT('\t')
+    RADIOLIB_VERBOSE_PRINT(reg, HEX);
+    RADIOLIB_VERBOSE_PRINT('\t');
+  #endif
 
   // send data or get response
   if(cmd == SPIwriteCommand) {
@@ -216,15 +222,11 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
       _spi->transfer(dataOut[n]);
       RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(dataOut[n], BIN);
-      RADIOLIB_VERBOSE_PRINT('\t');
     }
   } else if (cmd == SPIreadCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       dataIn[n] = _spi->transfer(0x00);
       RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(dataIn[n], BIN);
       RADIOLIB_VERBOSE_PRINT('\t');
     }
   }
@@ -238,13 +240,13 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 }
 
 void Module::pinMode(int16_t pin, uint8_t mode) {
-  if(pin != RADIOLIB_PIN_UNUSED) {
+  if(pin != NC) {
     ::pinMode(pin, mode);
   }
 }
 
 void Module::digitalWrite(int16_t pin, uint8_t value) {
-  if(pin != RADIOLIB_PIN_UNUSED) {
+  if(pin != NC) {
     ::digitalWrite(pin, value);
   }
 }

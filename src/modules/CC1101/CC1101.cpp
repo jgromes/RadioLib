@@ -196,7 +196,7 @@ void CC1101::clearGdo0Action() {
 }
 
 void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
-  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+  if(_mod->getGpio() != NC) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
@@ -204,7 +204,7 @@ void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
 }
 
 void CC1101::clearGdo2Action() {
-  if(_mod->getGpio() != RADIOLIB_PIN_UNUSED) {
+  if(_mod->getGpio() != NC) {
     return;
   }
   detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
