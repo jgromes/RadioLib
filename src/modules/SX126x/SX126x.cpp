@@ -1356,7 +1356,7 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
 
 int16_t SX126x::setHeaderType(uint8_t headerType) {
   // set requested packet mode
-  int16_t state = setPacketParams(_preambleLength, _crcType, len);
+  int16_t state = setPacketParams(_preambleLength, _crcType, 0xFF, headerType);
 
   if(state != ERR_NONE) {
     return(state);
