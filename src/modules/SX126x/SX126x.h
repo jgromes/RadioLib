@@ -789,6 +789,20 @@ class SX126x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
+
+    /*!
+     \brief Set implicit header mode for future reception/transmission.
+
+     \returns \ref status_codes
+   */
+   int16_t implicitHeader();
+
+    /*!
+     \brief Set explicit header mode for future reception/transmission.
+
+     \returns \ref status_codes
+   */
+   int16_t explicitHeader();
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -822,6 +836,7 @@ class SX126x: public PhysicalLayer {
     int16_t setFrequencyRaw(float freq);
     int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setHeaderType(uint8_t headerType)
 
     // fixes to errata
     int16_t fixSensitivity();
