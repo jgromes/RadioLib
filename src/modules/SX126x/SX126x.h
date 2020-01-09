@@ -834,7 +834,7 @@ class SX126x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    uint8_t _bw, _sf, _cr, _ldro, _crcType;
+    uint8_t _bw, _sf, _cr, _ldro, _crcType, _headerType;
     uint16_t _preambleLength;
     float _bwKhz;
 

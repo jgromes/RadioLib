@@ -21,6 +21,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   _crcType = SX126X_LORA_CRC_ON;
   _preambleLength = preambleLength;
   _tcxoDelay = 0;
+  _headerType = SX126X_LORA_HEADER_EXPLICIT;
 
   // reset the module and verify startup
   int16_t state = reset();
