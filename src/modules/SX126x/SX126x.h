@@ -514,7 +514,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startReceive(size_t len, uint32_t timeout = SX126X_RX_TIMEOUT_INF);
+    int16_t startReceive(uint32_t timeout = SX126X_RX_TIMEOUT_INF);
 
     /*!
       \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
@@ -526,7 +526,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycle(size_t len, uint32_t rxPeriod, uint32_t sleepPeriod);
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod);
 
     /*!
       \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
@@ -539,7 +539,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycleAuto(size_t len, uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8);
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8);
 
     /*!
       \brief Reads data received after calling startReceive method.
