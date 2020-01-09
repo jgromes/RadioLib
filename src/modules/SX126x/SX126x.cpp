@@ -1170,6 +1170,14 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
+int16_t implicitHeader() {
+    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT);
+}
+
+int16_t explicitHeader() {
+    return setHeaderType(SX126X_LORA_HEADER_EXPLICIT);
+}
+
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();
