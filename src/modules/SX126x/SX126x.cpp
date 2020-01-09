@@ -1170,8 +1170,8 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-int16_t implicitHeader() {
-    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT);
+int16_t implicitHeader(size_t len) {
+    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len);
 }
 
 int16_t explicitHeader() {
@@ -1354,9 +1354,9 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
-int16_t SX126x::setHeaderType(uint8_t headerType) {
+int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
   // set requested packet mode
-  int16_t state = setPacketParams(_preambleLength, _crcType, 0xFF, headerType);
+  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
 
   if(state != ERR_NONE) {
     return(state);
