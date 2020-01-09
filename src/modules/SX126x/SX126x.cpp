@@ -1346,6 +1346,19 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
+int16_t SX126x::setHeaderType(uint8_t headerType) {
+  // set requested packet mode
+  int16_t state = setPacketParams(_preambleLength, _crcType, len);
+
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // update cached value
+  _headerType = headerType;
+  return(state);
+}
+
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
   // calculate symbol length and enable low data rate optimization, if needed
   if(ldro == 0xFF) {
