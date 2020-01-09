@@ -450,7 +450,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = ERR_NONE;
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
-    state = setPacketParams(_preambleLength, _crcType, len);
+    state = setPacketParams(_preambleLength, _crcType, len, _headerType);
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType, len);
   } else {
@@ -742,7 +742,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     _preambleLength = preambleLength;
-    return(setPacketParams(_preambleLength, _crcType));
+    return(setPacketParams(_preambleLength, _crcType, 0xFF, _headerType));
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
     return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType));
@@ -1047,7 +1047,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
       _crcType = SX126X_LORA_CRC_OFF;
     }
 
-    return(setPacketParams(_preambleLength, _crcType));
+    return(setPacketParams(_preambleLength, _crcType, 0xFF, _headerType));
   }
 
   return(ERR_UNKNOWN);
