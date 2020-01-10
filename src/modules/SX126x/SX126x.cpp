@@ -1187,12 +1187,12 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-void implicitHeader(size_t len) {
+void SX126x::implicitHeader(size_t len) {
     _headerType = SX126X_LORA_HEADER_IMPLICIT;
     _implicitLen = len;
 }
 
-void explicitHeader() {
+void SX126x::explicitHeader() {
     _headerType = SX126X_LORA_HEADER_EXPLICIT;
     _implicitLen = 0xFF;
 }
