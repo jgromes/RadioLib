@@ -22,6 +22,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   _preambleLength = preambleLength;
   _tcxoDelay = 0;
   _headerType = SX126X_LORA_HEADER_EXPLICIT;
+  _implicitLen = 0xFF;
 
   // reset the module and verify startup
   int16_t state = reset();
@@ -1170,12 +1171,14 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-int16_t implicitHeader(size_t len) {
-    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len);
+void implicitHeader(size_t len) {
+    _headerType = SX126X_LORA_HEADER_IMPLICIT;
+    _implicitLen = len;
 }
 
-int16_t explicitHeader() {
-    return setHeaderType(SX126X_LORA_HEADER_EXPLICIT);
+void explicitHeader() {
+    _headerType = SX126X_LORA_HEADER_EXPLICIT;
+    _implicitLen = 0xFF;
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
@@ -1351,19 +1354,6 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
 
   // update cached value
   _packetType = mode;
-  return(state);
-}
-
-int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
-  // set requested packet mode
-  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
-
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  // update cached value
-  _headerType = headerType;
   return(state);
 }
 
