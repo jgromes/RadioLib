@@ -800,7 +800,7 @@ class SX126x: public PhysicalLayer {
     /*!
      \brief Set explicit header mode for future reception/transmission.
 
-     \param len Payload length in bytes. **WILL BE GLOBALLY OVERRIDDEN BY transmit()**
+     \param len Payload length in bytes.
 
      \returns \ref status_codes
    */
