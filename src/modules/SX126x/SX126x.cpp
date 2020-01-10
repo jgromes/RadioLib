@@ -743,7 +743,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     _preambleLength = preambleLength;
-    return(setPacketParams(_preambleLength, _crcType, 0xFF, _headerType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
     return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType));
@@ -1048,7 +1048,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
       _crcType = SX126X_LORA_CRC_OFF;
     }
 
-    return(setPacketParams(_preambleLength, _crcType, 0xFF, _headerType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
   }
 
   return(ERR_UNKNOWN);
