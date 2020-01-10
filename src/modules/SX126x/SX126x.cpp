@@ -1168,7 +1168,7 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
       sfDivisor = 4*(_sf - 2);
     }
     const int8_t bitsPerCrc = 16;
-    const int8_t N_symbol_header = 20;
+    const int8_t N_symbol_header = _headerType == SX126X_LORA_HEADER_EXPLICIT ? 20 : 0;
 
     // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
     int16_t bitCount = (int16_t) 8 * len + _crcType * bitsPerCrc - 4 * _sf  + sfCoeff2 + N_symbol_header;
