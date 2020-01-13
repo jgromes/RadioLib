@@ -600,11 +600,11 @@ int16_t SX126x::startReceiveCommon() {
   state = clearIrqStatus();
 
   // set implicit mode and expected len if applicable
-  if (_headerType == SX126X_LORA_HEADER_IMPLICIT && getPacketType() == SX126X_PACKET_TYPE_LORA) {
-      state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
-      if(state != ERR_NONE) {
-        return(state);
-      }
+  if(_headerType == SX126X_LORA_HEADER_IMPLICIT && getPacketType() == SX126X_PACKET_TYPE_LORA) {
+    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
+    if(state != ERR_NONE) {
+      return(state);
+    }
   }
 
   return(state);
@@ -1179,11 +1179,11 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
-    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len);
+    return(setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len));
 }
 
 int16_t SX126x::explicitHeader() {
-    return setHeaderType(SX126X_LORA_HEADER_EXPLICIT);
+    return(setHeaderType(SX126X_LORA_HEADER_EXPLICIT));
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
@@ -1370,7 +1370,6 @@ int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
 
   // set requested packet mode
   int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
-
   if(state != ERR_NONE) {
     return(state);
   }
