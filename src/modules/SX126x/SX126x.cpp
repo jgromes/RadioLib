@@ -289,15 +289,6 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
     timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
-
-      // set implicit mode and expected len if applicable
-      if (_headerType == SX126X_LORA_HEADER_IMPLICIT) {
-          state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
-          if(state != ERR_NONE) {
-            return(state);
-          }
-      }
-
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
