@@ -795,7 +795,7 @@ class SX126x: public PhysicalLayer {
 
      \returns \ref status_codes
    */
-   void implicitHeader(size_t len);
+   int16_t implicitHeader(size_t len);
 
     /*!
      \brief Set explicit header mode for future reception/transmission.
@@ -804,7 +804,7 @@ class SX126x: public PhysicalLayer {
 
      \returns \ref status_codes
    */
-   void explicitHeader();
+   int16_t explicitHeader();
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
