@@ -789,6 +789,22 @@ class SX126x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
+
+    /*!
+     \brief Set implicit header mode for future reception/transmission.
+
+     \returns \ref status_codes
+   */
+   int16_t implicitHeader(size_t len);
+
+    /*!
+     \brief Set explicit header mode for future reception/transmission.
+
+     \param len Payload length in bytes.
+
+     \returns \ref status_codes
+   */
+   int16_t explicitHeader();
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -810,7 +826,7 @@ class SX126x: public PhysicalLayer {
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
-    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
     int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLength = 0xFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     uint8_t getStatus();
@@ -822,6 +838,7 @@ class SX126x: public PhysicalLayer {
     int16_t setFrequencyRaw(float freq);
     int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     // fixes to errata
     int16_t fixSensitivity();
@@ -834,7 +851,7 @@ class SX126x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    uint8_t _bw, _sf, _cr, _ldro, _crcType;
+    uint8_t _bw, _sf, _cr, _ldro, _crcType, _headerType;
     uint16_t _preambleLength;
     float _bwKhz;
 
@@ -846,6 +863,8 @@ class SX126x: public PhysicalLayer {
     float _dataRate;
 
     uint32_t _tcxoDelay;
+
+    size_t _implicitLen;
 
     int16_t config(uint8_t modem);
 

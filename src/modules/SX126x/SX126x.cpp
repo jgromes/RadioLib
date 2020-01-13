@@ -21,6 +21,8 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   _crcType = SX126X_LORA_CRC_ON;
   _preambleLength = preambleLength;
   _tcxoDelay = 0;
+  _headerType = SX126X_LORA_HEADER_EXPLICIT;
+  _implicitLen = 0xFF;
 
   // reset the module and verify startup
   int16_t state = reset();
@@ -287,7 +289,6 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
     timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
-
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
@@ -449,7 +450,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = ERR_NONE;
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
-    state = setPacketParams(_preambleLength, _crcType, len);
+    state = setPacketParams(_preambleLength, _crcType, len, _headerType);
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType, len);
   } else {
@@ -598,6 +599,14 @@ int16_t SX126x::startReceiveCommon() {
   // clear interrupt flags
   state = clearIrqStatus();
 
+  // set implicit mode and expected len if applicable
+  if(_headerType == SX126X_LORA_HEADER_IMPLICIT && getPacketType() == SX126X_PACKET_TYPE_LORA) {
+    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
+    if(state != ERR_NONE) {
+      return(state);
+    }
+  }
+
   return(state);
 }
 
@@ -741,7 +750,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     _preambleLength = preambleLength;
-    return(setPacketParams(_preambleLength, _crcType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
   } else if(modem == SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
     return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType));
@@ -1046,7 +1055,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
       _crcType = SX126X_LORA_CRC_OFF;
     }
 
-    return(setPacketParams(_preambleLength, _crcType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
   }
 
   return(ERR_UNKNOWN);
@@ -1150,7 +1159,7 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
       sfDivisor = 4*(_sf - 2);
     }
     const int8_t bitsPerCrc = 16;
-    const int8_t N_symbol_header = 20;
+    const int8_t N_symbol_header = _headerType == SX126X_LORA_HEADER_EXPLICIT ? 20 : 0;
 
     // numerator of equation in section 6.1.4 of SX1268 datasheet v1.1 (might not actually be bitcount, but it has len * 8)
     int16_t bitCount = (int16_t) 8 * len + _crcType * bitsPerCrc - 4 * _sf  + sfCoeff2 + N_symbol_header;
@@ -1167,6 +1176,14 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   } else {
     return((len * 8 * _br) / (SX126X_CRYSTAL_FREQ * 32));
   }
+}
+
+int16_t SX126x::implicitHeader(size_t len) {
+    return(setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len));
+}
+
+int16_t SX126x::explicitHeader() {
+    return(setHeaderType(SX126X_LORA_HEADER_EXPLICIT));
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
@@ -1342,6 +1359,25 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
 
   // update cached value
   _packetType = mode;
+  return(state);
+}
+
+int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // update cached value
+  _headerType = headerType;
+  _implicitLen = len;
+
   return(state);
 }
 
