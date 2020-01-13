@@ -11,7 +11,7 @@ int16_t RFM97::setSpreadingFactor(uint8_t sf) {
   }
 
   uint8_t newSpreadingFactor;
-  
+
   // check allowed spreading factor values
   switch(sf) {
     case 6:
@@ -29,7 +29,7 @@ int16_t RFM97::setSpreadingFactor(uint8_t sf) {
     default:
       return(ERR_INVALID_SPREADING_FACTOR);
   }
-  
+
   // set spreading factor and if successful, save the new setting
   int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == ERR_NONE) {
