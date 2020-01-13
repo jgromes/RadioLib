@@ -82,6 +82,11 @@
 #endif
 
 /*!
+  \brief A simple assert macro, will return on error.
+*/
+#define RADIOLIB_ASSERT(STATEVAR) { if(STATEVAR != ERR_NONE) { return(STATEVAR); } }
+
+/*!
   \defgroup shield_config Shield Configuration
 
   \{
