@@ -1179,13 +1179,11 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
 }
 
 void SX126x::implicitHeader(size_t len) {
-    _headerType = SX126X_LORA_HEADER_IMPLICIT;
-    _implicitLen = len;
+    return setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len);
 }
 
 void SX126x::explicitHeader() {
-    _headerType = SX126X_LORA_HEADER_EXPLICIT;
-    _implicitLen = 0xFF;
+    return setHeaderType(SX126X_LORA_HEADER_EXPLICIT);
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
@@ -1361,6 +1359,24 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
 
   // update cached value
   _packetType = mode;
+  return(state);
+}
+
+int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+  // set requested packet mode
+  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
+
+  if(state != ERR_NONE) {
+    return(state);
+  }
+
+  // update cached value
+  _headerType = headerType;
+  _implicitLen = len;
   return(state);
 }
 
