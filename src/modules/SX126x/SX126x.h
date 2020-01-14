@@ -586,9 +586,11 @@ class SX126x: public PhysicalLayer {
 
       \param syncWord LoRa sync word to be set.
 
+      \param controlBits Undocumented control bits, required for compatibility purposes.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncWord);
+    int16_t setSyncWord(uint8_t syncWord, uint8_t controlBits = 0x44);
 
     /*!
       \brief Sets current protection limit. Can be set in 0.25 mA steps.

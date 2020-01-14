@@ -633,14 +633,14 @@ int16_t SX126x::setCodingRate(uint8_t cr) {
   return(setModulationParams(_sf, _bw, _cr));
 }
 
-int16_t SX126x::setSyncWord(uint8_t syncWord) {
+int16_t SX126x::setSyncWord(uint8_t syncWord, uint8_t controlBits) {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
     return(ERR_WRONG_MODEM);
   }
 
   // update register
-  uint8_t data[2] = {(uint8_t)((syncWord & 0xF0) | 0x04), (uint8_t)(((syncWord & 0x0F) << 4) | 0x04)};
+  uint8_t data[2] = {(uint8_t)((syncWord & 0xF0) | ((controlBits & 0xF0) >> 4)), (uint8_t)(((syncWord & 0x0F) << 4) | (controlBits & 0x0F))};
   return(writeRegister(SX126X_REG_LORA_SYNC_WORD_MSB, data, 2));
 }
 
