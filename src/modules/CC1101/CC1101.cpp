@@ -92,10 +92,14 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start
-  while(!digitalRead(_mod->getIrq()));
+  while(!digitalRead(_mod->getIrq())) {
+    yield();
+  }
 
   // wait for transmission end
-  while(digitalRead(_mod->getIrq()));
+  while(digitalRead(_mod->getIrq())) {
+    yield();
+  }
 
   // set mode to standby
   standby();
@@ -112,10 +116,14 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for sync word
-  while(!digitalRead(_mod->getIrq()));
+  while(!digitalRead(_mod->getIrq())) {
+    yield();
+  }
 
   // wait for packet end
-  while(digitalRead(_mod->getIrq()));
+  while(digitalRead(_mod->getIrq())) {
+    yield();
+  }
 
   // read packet data
   return(readData(data, len));
