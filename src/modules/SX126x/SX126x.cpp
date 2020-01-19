@@ -319,7 +319,9 @@ int16_t SX126x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getIrq()));
+  while(!digitalRead(_mod->getIrq())) {
+    yield();
+  }
 
   // check CAD result
   uint16_t cadResult = getIrqStatus();
@@ -417,7 +419,9 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for BUSY to go low (= PA ramp up done)
-  while(digitalRead(_mod->getGpio()));
+  while(digitalRead(_mod->getGpio())) {
+    yield();
+  }
 
   return(state);
 }
@@ -1453,7 +1457,9 @@ int16_t SX126x::config(uint8_t modem) {
 
   // wait for calibration completion
   delay(5);
-  while(digitalRead(_mod->getGpio()));
+  while(digitalRead(_mod->getGpio())) {
+    yield();
+  }
 
   return(ERR_NONE);
 }
