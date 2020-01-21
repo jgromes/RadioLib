@@ -127,6 +127,9 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   state = setWhitening(true, 0x0100);
   RADIOLIB_ASSERT(state);
 
+  state = variablePacketLengthMode(SX126X_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
   state = setDio2AsRfSwitch(false);
 
   return(state);
