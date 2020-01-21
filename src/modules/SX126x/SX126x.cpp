@@ -534,9 +534,10 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 
   // check integrity CRC
   uint16_t irq = getIrqStatus();
+  int16_t crcState = ERR_NONE;
   if((irq & SX126X_IRQ_CRC_ERR) || (irq & SX126X_IRQ_HEADER_ERR)) {
     clearIrqStatus();
-    return(ERR_CRC_MISMATCH);
+    crcState = ERR_CRC_MISMATCH;
   }
 
   // get packet length
@@ -551,6 +552,9 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 
   // clear interrupt flags
   state = clearIrqStatus();
+
+  // check if CRC failed - this is done after reading data to give user the option to keep them
+  RADIOLIB_ASSERT(crcState);
 
   return(state);
 }
