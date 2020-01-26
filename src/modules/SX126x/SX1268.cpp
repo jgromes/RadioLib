@@ -77,6 +77,10 @@ int16_t SX1268::setOutputPower(int8_t power) {
   int16_t state = readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
   RADIOLIB_ASSERT(state);
 
+  // set PA config
+  state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
+  RADIOLIB_ASSERT(state);
+
   // set output power
   // TODO power ramp time configuration
   state = SX126x::setTxParams(power);

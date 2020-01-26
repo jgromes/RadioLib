@@ -5,6 +5,9 @@
 #include "../../Module.h"
 #include "SX126x.h"
 
+//SX126X_CMD_SET_PA_CONFIG
+#define SX126X_PA_CONFIG_SX1262                       0x00
+
 /*!
   \class SX1262
 
