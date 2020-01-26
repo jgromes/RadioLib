@@ -1302,7 +1302,8 @@ int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t 
 }
 
 int16_t SX126x::setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ) {
-  fixInvertedIQ(invertIQ);
+  int16_t state = fixInvertedIQ(invertIQ);
+  RADIOLIB_ASSERT(state);
   uint8_t data[6] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF), headerType, payloadLength, crcType, invertIQ};
   return(SPIwriteCommand(SX126X_CMD_SET_PACKET_PARAMS, data, 6));
 }
