@@ -134,6 +134,9 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   RADIOLIB_ASSERT(state);
 
   state = setDio2AsRfSwitch(false);
+  RADIOLIB_ASSERT(state);
+
+  state = setRegulatorDCDC();
 
   return(state);
 }
