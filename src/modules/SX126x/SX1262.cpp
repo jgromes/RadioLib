@@ -84,12 +84,6 @@ int16_t SX1262::setOutputPower(int8_t power) {
   int16_t state = readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
   RADIOLIB_ASSERT(state);
 
-  // this function sets the optimal PA settings
-  // and adjusts power based on the PA settings chosen
-  // so that output power matches requested power.
-  state = SX126x::setOptimalHiPowerPaConfig(&power);
-  RADIOLIB_ASSERT(state);
-
   // set output power
   // TODO power ramp time configuration
   state = SX126x::setTxParams(power);

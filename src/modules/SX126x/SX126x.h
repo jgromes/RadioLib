@@ -853,7 +853,6 @@ class SX126x: public PhysicalLayer {
 
     int16_t startReceiveCommon();
     int16_t setFrequencyRaw(float freq);
-    int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 

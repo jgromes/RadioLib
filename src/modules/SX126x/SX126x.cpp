@@ -1229,30 +1229,6 @@ int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
   return(SPIwriteCommand(SX126X_CMD_SET_TX_PARAMS, data, 2));
 }
 
-int16_t SX126x::setOptimalHiPowerPaConfig(int8_t * inOutPower) {
-  // set PA config for optimal consumption as described in section 13-21 of SX1268 datasheet v1.1
-  // the final column of Table 13-21 suggests that the value passed in SetTxParams
-  // is actually scaled depending on the parameters of setPaConfig
-  int16_t state;
-  if (*inOutPower >= 21) {
-    state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1262_8, SX126X_PA_CONFIG_HP_MAX/*0x07*/);
-  }
-  else if (*inOutPower >= 18) {
-    state = SX126x::setPaConfig(0x03, SX126X_PA_CONFIG_SX1262_8, 0x05);
-    // datasheet instructs request 22 dBm for 20 dBm actual output power
-    *inOutPower += 2;
-  } else if (*inOutPower >= 15) {
-    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x03);
-    // datasheet instructs request 22 dBm for 17 dBm actual output power
-    *inOutPower += 5;
-  } else {
-    state = SX126x::setPaConfig(0x02, SX126X_PA_CONFIG_SX1262_8, 0x02);
-    // datasheet instructs request 22 dBm for 14 dBm actual output power.
-    *inOutPower += 8;
-  }
-  return state;
-}
-
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
