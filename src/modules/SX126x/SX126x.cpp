@@ -63,6 +63,9 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
 
   // set publicly accessible settings that are not a part of begin method
   state = setDio2AsRfSwitch(true);
+  RADIOLIB_ASSERT(state);
+
+  state = setRegulatorDCDC();
 
   return(state);
 }
@@ -1076,11 +1079,19 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
-    return(setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len));
+  return(setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len));
 }
 
 int16_t SX126x::explicitHeader() {
-    return(setHeaderType(SX126X_LORA_HEADER_EXPLICIT));
+  return(setHeaderType(SX126X_LORA_HEADER_EXPLICIT));
+}
+
+int16_t SX126x::setRegulatorLDO() {
+  return(setRegulatorMode(SX126X_REGULATOR_LDO));
+}
+
+int16_t SX126x::setRegulatorDCDC() {
+  return(setRegulatorMode(SX126X_REGULATOR_DC_DC));
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
@@ -1320,6 +1331,11 @@ int16_t SX126x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddres
   return(SPIwriteCommand(SX126X_CMD_SET_BUFFER_BASE_ADDRESS, data, 2));
 }
 
+int16_t SX126x::setRegulatorMode(uint8_t mode) {
+  uint8_t data[1] = {mode};
+  return(SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1));
+}
+
 uint8_t SX126x::getStatus() {
   uint8_t data = 0;
   SPIreadCommand(SX126X_CMD_GET_STATUS, &data, 1);
@@ -1422,17 +1438,12 @@ int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
 }
 
 int16_t SX126x::config(uint8_t modem) {
-  // set regulator mode
-  uint8_t data[7];
-  data[0] = SX126X_REGULATOR_DC_DC;
-  int16_t state = SPIwriteCommand(SX126X_CMD_SET_REGULATOR_MODE, data, 1);
-  RADIOLIB_ASSERT(state);
-
   // reset buffer base address
-  state = setBufferBaseAddress();
+  int16_t state = setBufferBaseAddress();
   RADIOLIB_ASSERT(state);
 
   // set modem
+  uint8_t data[7];
   data[0] = modem;
   state = SPIwriteCommand(SX126X_CMD_SET_PACKET_TYPE, data, 1);
   RADIOLIB_ASSERT(state);

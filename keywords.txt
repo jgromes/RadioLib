@@ -123,6 +123,8 @@ setSyncBits	KEYWORD2
 setWhitening	KEYWORD2
 startReceiveDutyCycle	KEYWORD2
 startReceiveDutyCycleAuto	KEYWORD2
+setRegulatorLDO	KEYWORD2
+setRegulatorDCDC	KEYWORD2
 
 # ESP8266
 join	KEYWORD2

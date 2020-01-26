@@ -807,6 +807,20 @@ class SX126x: public PhysicalLayer {
      \returns \ref status_codes
    */
    int16_t explicitHeader();
+
+   /*!
+    \brief Set regulator mode to LDO.
+
+    \returns \ref status_codes
+  */
+   int16_t setRegulatorLDO();
+
+   /*!
+    \brief Set regulator mode to DC-DC.
+
+    \returns \ref status_codes
+  */
+   int16_t setRegulatorDCDC();
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -831,6 +845,7 @@ class SX126x: public PhysicalLayer {
     int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
     int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLength = 0xFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
+    int16_t setRegulatorMode(uint8_t mode);
     uint8_t getStatus();
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();
