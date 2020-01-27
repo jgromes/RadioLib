@@ -662,6 +662,11 @@ int16_t SX126x::setSyncWord(uint8_t syncWord, uint8_t controlBits) {
 }
 
 int16_t SX126x::setCurrentLimit(float currentLimit) {
+  // check allowed range
+  if(!((currentLimit >= 0) && (currentLimit <= 140))) {
+    return(ERR_INVALID_CURRENT_LIMIT);
+  }
+
   // calculate raw value
   uint8_t rawLimit = (uint8_t)(currentLimit / 2.5);
 
