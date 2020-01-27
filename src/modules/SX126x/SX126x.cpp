@@ -674,6 +674,15 @@ int16_t SX126x::setCurrentLimit(float currentLimit) {
   return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &rawLimit, 1));
 }
 
+float SX126x::getCurrentLimit() {
+  // get the raw value
+  uint8_t ocp = 0;
+  readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+
+  // return the actual value
+  return((float)ocp * 2.5);
+}
+
 int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {

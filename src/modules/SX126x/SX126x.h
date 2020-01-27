@@ -602,6 +602,13 @@ class SX126x: public PhysicalLayer {
     int16_t setCurrentLimit(float currentLimit);
 
     /*!
+      \brief Reads current protection limit.
+
+      \returns Currently configured overcurrent protection limit in mA.
+    */
+    float getCurrentLimit();
+
+    /*!
       \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
 
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK).
