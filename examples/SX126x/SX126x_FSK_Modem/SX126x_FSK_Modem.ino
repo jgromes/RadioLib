@@ -41,6 +41,7 @@ void setup() {
   // preamble length:             16 bits
   // data shaping:                Gaussian, BT = 0.5
   // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
+  // regulator:                   DC-DC (set to true to use LDO)
   // sync word:                   0x2D  0x01
   // CRC:                         enabled, CRC16 (CCIT)
   int state = fsk.beginFSK();

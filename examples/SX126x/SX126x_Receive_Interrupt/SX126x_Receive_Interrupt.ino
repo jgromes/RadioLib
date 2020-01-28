@@ -46,6 +46,7 @@ void setup() {
   // current limit:               60 mA
   // preamble length:             8 symbols
   // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
+  // regulator:                   DC-DC (set to true to use LDO)
   // CRC:                         enabled
   int state = lora.begin();
   if (state == ERR_NONE) {
@@ -119,7 +120,7 @@ void loop() {
     // you can also read received data as byte array
     /*
       byte byteArr[8];
-      int state = lora.receive(byteArr, 8);
+      int state = lora.readData(byteArr, 8);
     */
 
     if (state == ERR_NONE) {
