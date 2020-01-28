@@ -369,9 +369,11 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
+      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -390,9 +392,11 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
+      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage);
+    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.

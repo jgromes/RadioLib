@@ -4,7 +4,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_CRYSTAL_FREQ, SX126X_DIV_EXPO
   _mod = mod;
 }
 
-int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
+int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -65,12 +65,16 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   state = setDio2AsRfSwitch(true);
   RADIOLIB_ASSERT(state);
 
-  state = setRegulatorDCDC();
+  if (useRegulatorLDO) {
+      state = setRegulatorLDO();
+  } else {
+      state = setRegulatorDCDC();
+  }
 
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -136,7 +140,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   state = setDio2AsRfSwitch(false);
   RADIOLIB_ASSERT(state);
 
-  state = setRegulatorDCDC();
+  if (useRegulatorLDO) {
+      state = setRegulatorLDO();
+  } else {
+      state = setRegulatorDCDC();
+  }
 
   return(state);
 }
