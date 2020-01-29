@@ -95,7 +95,6 @@ void RF69::reset() {
   Module::digitalWrite(_mod->getRst(), HIGH);
   delayMicroseconds(100);
   Module::digitalWrite(_mod->getRst(), LOW);
-  Module::pinMode(_mod->getRst(), INPUT);
   delay(10);
 }
 

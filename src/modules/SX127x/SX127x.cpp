@@ -126,7 +126,6 @@ void SX127x::reset() {
   Module::digitalWrite(_mod->getRst(), LOW);
   delayMicroseconds(100);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  Module::pinMode(_mod->getRst(), INPUT);
   delay(5);
 }
 

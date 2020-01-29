@@ -56,7 +56,6 @@ void XBee::reset() {
   digitalWrite(_mod->getRst(), LOW);
   delayMicroseconds(200);
   digitalWrite(_mod->getRst(), HIGH);
-  pinMode(_mod->getRst(), INPUT);
 }
 
 int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
