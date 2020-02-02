@@ -286,9 +286,11 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     }
   }
 
-  // timeout fix is recommended after any reception with active timeout
-  state = fixImplicitTimeout();
-  RADIOLIB_ASSERT(state);
+  // fix timeout in implicit LoRa mode
+  if(((_headerType == SX126X_LORA_HEADER_IMPLICIT) && (getPacketType() == SX126X_PACKET_TYPE_LORA))) {
+    state = fixImplicitTimeout();
+    RADIOLIB_ASSERT(state);
+  }
 
   // read the received data
   return(readData(data, len));
@@ -1401,6 +1403,11 @@ int16_t SX126x::fixPaClamping() {
 int16_t SX126x::fixImplicitTimeout() {
   // fixes timeout in implicit header mode
   // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.3 for details
+
+  //check if we're in implicit LoRa mode
+  if(!((_headerType == SX126X_LORA_HEADER_IMPLICIT) && (getPacketType() == SX126X_PACKET_TYPE_LORA))) {
+    return(ERR_WRONG_MODEM);
+  }
 
   // stop RTC counter
   uint8_t rtcStop = 0x00;
