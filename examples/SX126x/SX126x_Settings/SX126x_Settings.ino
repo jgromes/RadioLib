@@ -51,7 +51,7 @@ void setup() {
   // bandwidth:                   125.0 kHz
   // spreading factor:            9
   // coding rate:                 7
-  // sync word:                   0x1424 (private network)
+  // sync word:                   0x12 (private network)
   // output power:                14 dBm
   // current limit:               60 mA
   // preamble length:             8 symbols
@@ -76,7 +76,7 @@ void setup() {
   // bandwidth:                   500.0 kHz
   // spreading factor:            6
   // coding rate:                 5
-  // sync word:                   0x3444 (public network)
+  // sync word:                   0x34 (public network)
   // output power:                2 dBm
   // current limit:               50 mA
   // preamble length:             20 symbols
