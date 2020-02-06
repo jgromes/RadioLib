@@ -1051,7 +1051,11 @@ float SX126x::getSNR() {
   // get last packet SNR from packet status
   uint32_t packetStatus = getPacketStatus();
   uint8_t snrPkt = (packetStatus >> 8) & 0xFF;
-  return(snrPkt/4.0);
+  if(snrPkt < 128) {
+    return(snrPkt/4.0);
+  } else {
+    return((snrPkt - 256)/4.0);
+  }
 }
 
 size_t SX126x::getPacketLength(bool update) {
