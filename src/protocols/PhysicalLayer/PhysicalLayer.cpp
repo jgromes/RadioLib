@@ -1,8 +1,7 @@
 #include "PhysicalLayer.h"
 
-PhysicalLayer::PhysicalLayer(float crysFreq, uint8_t divExp, size_t maxPacketLength) {
-  _crystalFreq = crysFreq;
-  _divExponent = divExp;
+PhysicalLayer::PhysicalLayer(float freqStep, size_t maxPacketLength) {
+  _freqStep = freqStep;
   _maxPacketLength = maxPacketLength;
 }
 
@@ -141,10 +140,6 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   return(state);
 }
 
-float PhysicalLayer::getCrystalFreq() {
-  return(_crystalFreq);
-}
-
-uint8_t PhysicalLayer::getDivExponent() {
-  return(_divExponent);
+float PhysicalLayer::getFreqStep() {
+  return(_freqStep);
 }

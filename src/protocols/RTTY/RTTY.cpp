@@ -131,7 +131,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   _bitDuration = (uint32_t)1000000/rate;
 
   // calculate module carrier frequency resolution
-  uint32_t step = round((_phy->getCrystalFreq() * 1000000) / (uint32_t(1) << _phy->getDivExponent()));
+  uint32_t step = round(_phy->getFreqStep());
 
   // check minimum shift value
   if(shift < step / 2) {
@@ -146,7 +146,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   }
 
   // calculate 24-bit frequency
-  _base = (base * (uint32_t(1) << _phy->getDivExponent())) / _phy->getCrystalFreq();
+  _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // set module frequency deviation to 0
   int16_t state = _phy->setFrequencyDeviation(0);

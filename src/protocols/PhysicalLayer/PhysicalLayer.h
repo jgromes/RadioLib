@@ -18,13 +18,11 @@ class PhysicalLayer {
     /*!
       \brief Default constructor.
 
-      \param crysFreq Frequency of crystal oscillator inside the module in MHz.
-
-      \param divExp Exponent of module frequency divider.
+      \param freqStep Frequency step of the synthesizer in Hz.
 
       \param maxPacketLength Maximum length of packet that can be received by the module-
     */
-    PhysicalLayer(float crysFreq, uint8_t divExp, size_t maxPacketLength);
+    PhysicalLayer(float freqStep, size_t maxPacketLength);
 
     // basic methods
 
@@ -193,18 +191,11 @@ class PhysicalLayer {
     virtual int16_t setFrequencyDeviation(float freqDev) = 0;
 
     /*!
-      \brief Gets the module crystal oscillator frequency that was set in constructor.
+      \brief Gets the module frequency step size that was set in constructor.
 
-      \returns Crystal oscillator frequency in MHz.
+      \returns Synthesizer frequency step size in Hz.
     */
-    float getCrystalFreq();
-
-    /*!
-      \brief Gets the module frequency divider exponent that was set in constructor.
-
-      \returns Frequency divider exponent.
-    */
-    uint8_t getDivExponent();
+    float getFreqStep();
 
     /*!
      \brief Query modem for the packet length of received payload.
@@ -218,8 +209,7 @@ class PhysicalLayer {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    float _crystalFreq;
-    uint8_t _divExponent;
+    float _freqStep;
     size_t _maxPacketLength;
 };
 

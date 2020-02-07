@@ -7,9 +7,10 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // CC1101 physical layer properties
+#define CC1101_FREQUENCY_STEP_SIZE                    396.7285156
+#define CC1101_MAX_PACKET_LENGTH                      63
 #define CC1101_CRYSTAL_FREQ                           26.0
 #define CC1101_DIV_EXPONENT                           16
-#define CC1101_MAX_PACKET_LENGTH                      63
 
 // CC1101 SPI commands
 #define CC1101_CMD_READ                               0b10000000

@@ -6,7 +6,7 @@ MorseClient::MorseClient(PhysicalLayer* phy) {
 
 int16_t MorseClient::begin(float base, uint8_t speed) {
   // calculate 24-bit frequency
-  _base = (base * (uint32_t(1) << _phy->getDivExponent())) / _phy->getCrystalFreq();
+  _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // calculate dot length (assumes PARIS as typical word)
   _dotLength = 1200 / speed;

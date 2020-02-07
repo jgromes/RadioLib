@@ -1,6 +1,6 @@
 #include "SX127x.h"
 
-SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_CRYSTAL_FREQ, SX127X_DIV_EXPONENT, SX127X_MAX_PACKET_LENGTH) {
+SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_FREQUENCY_STEP_SIZE, SX127X_MAX_PACKET_LENGTH) {
   _mod = mod;
   _packetLengthQueried = false;
 }

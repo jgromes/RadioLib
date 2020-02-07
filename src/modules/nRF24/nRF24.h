@@ -6,9 +6,8 @@
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
-// nRF24 physical layer properties (dummy only)
-#define NRF24_CRYSTAL_FREQ                            1.0
-#define NRF24_DIV_EXPONENT                            0
+// nRF24 physical layer properties
+#define NRF24_FREQUENCY_STEP_SIZE                     1000000.0
 #define NRF24_MAX_PACKET_LENGTH                       32
 
 // nRF24 SPI commands

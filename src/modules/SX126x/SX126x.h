@@ -7,9 +7,10 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // SX126X physical layer properties
+#define SX126X_FREQUENCY_STEP_SIZE                    0.9536743164
+#define SX126X_MAX_PACKET_LENGTH                      255
 #define SX126X_CRYSTAL_FREQ                           32.0
 #define SX126X_DIV_EXPONENT                           25
-#define SX126X_MAX_PACKET_LENGTH                      255
 
 // SX126X SPI commands
 // operational modes commands

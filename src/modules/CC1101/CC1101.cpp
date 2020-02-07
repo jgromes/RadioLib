@@ -1,6 +1,6 @@
 #include "CC1101.h"
 
-CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_CRYSTAL_FREQ, CC1101_DIV_EXPONENT, CC1101_MAX_PACKET_LENGTH) {
+CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_FREQUENCY_STEP_SIZE, CC1101_MAX_PACKET_LENGTH) {
   _mod = module;
   _packetLengthQueried = false;
   _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;

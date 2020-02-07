@@ -1,6 +1,6 @@
 #include "nRF24.h"
 
-nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_CRYSTAL_FREQ, NRF24_DIV_EXPONENT, NRF24_MAX_PACKET_LENGTH) {
+nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_FREQUENCY_STEP_SIZE, NRF24_MAX_PACKET_LENGTH) {
   _mod = mod;
 }
 
