@@ -439,6 +439,10 @@ int16_t SX1278::setCRC(bool enableCRC) {
   }
 }
 
+uint8_t SX1278::crcOnPayload() {
+  return(_mod->SPIgetRegValue(SX127X_REG_HOP_CHANNEL, 6, 6) >> 6);
+}
+
 int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
