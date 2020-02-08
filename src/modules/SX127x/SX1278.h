@@ -259,6 +259,13 @@ class SX1278: public SX127x {
     */
     int16_t setCRC(bool enableCRC);
 
+	  /*!
+      \brief Check if payload includes CRC and thus CRC is enabled in explicit header mode
+
+      \returns 1 if payload includes CRC and CRC is enabled, otherwise 0
+    */
+	  uint8_t crcOnPayload();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
