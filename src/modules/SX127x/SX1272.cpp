@@ -298,13 +298,13 @@ int16_t SX1272::setDataShapingOOK(uint8_t sh) {
   // set data shaping
   switch(sh) {
     case 0:
-      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_NO_SHAPING, 4, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_NO_SHAPING, 4, 3);
       break;
     case 1:
-      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_OOK_FILTER_BR, 4, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_OOK_FILTER_BR, 4, 3);
       break;
     case 2:
-      state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1272_OOK_FILTER_2BR, 4, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_OOK_FILTER_2BR, 4, 3);
       break;
     default:
       state = ERR_INVALID_DATA_SHAPING;
