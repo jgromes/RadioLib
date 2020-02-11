@@ -12,7 +12,7 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_FREQUENCY_STEP_SIZE, RF69_MAX_PA
   _syncWordLength = 2;
 }
 
-int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);

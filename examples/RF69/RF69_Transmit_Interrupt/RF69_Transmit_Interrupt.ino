@@ -35,8 +35,8 @@ void setup() {
   Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   434.0 MHz
   // bit rate:                            48.0 kbps
-  // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
+  // Rx bandwidth:                        125.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D01
   int state = rf.begin();
@@ -63,7 +63,7 @@ void setup() {
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                       0x78, 0xAB, 0xCD, 0xEF};
-    state = rf.transmit(byteArr, 8);
+    state = rf.startTransmit(byteArr, 8);
   */
 }
 
@@ -121,11 +121,11 @@ void loop() {
     // 256 characters long
     transmissionState = rf.startTransmit("Hello World!");
 
-    // you can also transmit byte array up to 256 bytes long
+    // you can also transmit byte array up to 64 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                         0x78, 0xAB, 0xCD, 0xEF};
-      int state = rf.transmit(byteArr, 8);
+      int state = rf.startTransmit(byteArr, 8);
     */
 
     // we're ready to send more packets,

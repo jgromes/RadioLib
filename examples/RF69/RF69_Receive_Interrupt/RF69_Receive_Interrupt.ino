@@ -29,8 +29,8 @@ void setup() {
   Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   434.0 MHz
   // bit rate:                            48.0 kbps
-  // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
+  // Rx bandwidth:                        125.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D01
   int state = rf.begin();
@@ -104,7 +104,7 @@ void loop() {
     // you can also read received data as byte array
     /*
       byte byteArr[8];
-      int state = lora.receive(byteArr, 8);
+      int state = lora.readData(byteArr, 8);
     */
 
     if (state == ERR_NONE) {
