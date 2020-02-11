@@ -473,6 +473,20 @@ int16_t nRF24::setAutoAck(uint8_t pipeNum, bool autoAckOn){
   }
 }
 
+int16_t nRF24::setDataShaping(float sh) {
+  // nRF24 is unable to set data shaping
+  // this method is implemented only for PhysicalLayer compatibility
+  (void)sh;
+  return(ERR_NONE);
+}
+
+int16_t nRF24::setEncoding(uint8_t encoding) {
+  // nRF24 is unable to set encoding
+  // this method is implemented only for PhysicalLayer compatibility
+  (void)encoding;
+  return(ERR_NONE);
+}
+
 void nRF24::clearIRQ() {
   // clear status bits
   _mod->SPIsetRegValue(NRF24_REG_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT, 6, 4);

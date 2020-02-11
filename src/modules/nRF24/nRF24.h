@@ -440,6 +440,24 @@ class nRF24: public PhysicalLayer {
    */
     int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn = true);
 
+    /*!
+      \brief Dummy data shaping configuration method, to ensure PhysicalLayer compatibility.
+
+      \param sh Ignored.
+
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(float sh);
+
+    /*!
+      \brief Dummy encoding configuration method, to ensure PhysicalLayer compatibility.
+
+      \param sh Ignored.
+
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding);
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
