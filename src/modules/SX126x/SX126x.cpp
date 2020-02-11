@@ -1124,6 +1124,10 @@ int16_t SX126x::setRegulatorDCDC() {
   return(setRegulatorMode(SX126X_REGULATOR_DC_DC));
 }
 
+int16_t SX126x::setEncoding(uint8_t encoding) {
+  return(setWhitening(encoding));
+}
+
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();

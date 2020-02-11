@@ -833,6 +833,16 @@ class SX126x: public PhysicalLayer {
     \returns \ref status_codes
   */
    int16_t setRegulatorDCDC();
+
+   /*!
+     \brief Sets transmission encoding. Available in FSK mode only. Serves only as alias for PhysicalLayer compatibility.
+
+     \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
+
+     \returns \ref status_codes
+   */
+   int16_t setEncoding(uint8_t encoding);
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
