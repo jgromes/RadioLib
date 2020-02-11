@@ -191,6 +191,24 @@ class PhysicalLayer {
     virtual int16_t setFrequencyDeviation(float freqDev) = 0;
 
     /*!
+      \brief Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.
+
+      \param sh Shaping to be set. Set to zero to disable data shaping.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t setDataShaping(float sh) = 0;
+
+    /*!
+      \brief Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.
+
+      \param enc Encoding to be used. Set to zero to for no encoding (NRZ).
+
+      \returns \ref status_codes
+    */
+    virtual int16_t setEncoding(uint8_t encoding) = 0;
+
+    /*!
       \brief Gets the module frequency step size that was set in constructor.
 
       \returns Synthesizer frequency step size in Hz.
