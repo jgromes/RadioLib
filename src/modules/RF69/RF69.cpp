@@ -87,6 +87,14 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
   state = setSyncWord(syncWord, sizeof(syncWord));
   RADIOLIB_ASSERT(state);
 
+  // set default data shaping
+  state = setDataShaping(0);
+  RADIOLIB_ASSERT(state);
+
+  // set default encoding
+  state = setEncoding(0);
+  RADIOLIB_ASSERT(state);
+
   return(ERR_NONE);
 }
 
@@ -115,6 +123,9 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(ERR_TX_TIMEOUT);
     }
   }
+
+  // set mode to standby
+  standby();
 
   // clear interrupt flags
   clearIRQFlags();
@@ -654,6 +665,45 @@ int16_t RF69::setPromiscuousMode(bool promiscuous) {
   }
 
   return(state);
+}
+
+int16_t RF69::setDataShaping(float sh) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set data shaping
+  sh *= 10.0;
+  if(abs(sh - 0.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_NO_SHAPING, 1, 0);
+  } else if(abs(sh - 3.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_3, 1, 0);
+  } else if(abs(sh - 5.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_5, 1, 0);
+  } else if(abs(sh - 10.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_1_0, 1, 0);
+  } else {
+    return(ERR_INVALID_DATA_SHAPING);
+  }
+  return(state);
+}
+
+int16_t RF69::setEncoding(uint8_t encoding) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set encoding
+  switch(encoding) {
+    case 0:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_NONE, 6, 5));
+    case 1:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_MANCHESTER, 6, 5));
+    case 2:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_WHITENING, 6, 5));
+    default:
+      return(ERR_INVALID_ENCODING);
+  }
 }
 
 int16_t RF69::config() {

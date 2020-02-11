@@ -772,6 +772,25 @@ class RF69: public PhysicalLayer {
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
 
+    /*!
+      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
+      Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping.
+
+      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
+
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(float sh);
+
+    /*!
+      \brief Sets transmission encoding.
+
+      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding);
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
