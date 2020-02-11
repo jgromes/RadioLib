@@ -78,6 +78,15 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 
   // configure default preamble lenght
   state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  // set default data shaping
+  state = setDataShaping(0);
+  RADIOLIB_ASSERT(state);
+
+  // set default encoding
+  state = setEncoding(2);
+  RADIOLIB_ASSERT(state);
 
   // flush FIFOs
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
@@ -663,6 +672,47 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   }
 
   return(state);
+}
+
+int16_t CC1101::setDataShaping(float sh) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set data shaping
+  sh *= 10.0;
+  if(abs(sh - 0.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
+  } else if(abs(sh - 5.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_GFSK, 6, 4);
+  } else {
+    return(ERR_INVALID_DATA_SHAPING);
+  }
+  return(state);
+}
+
+int16_t CC1101::setEncoding(uint8_t encoding) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set encoding
+  switch(encoding) {
+    case 0:
+      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      RADIOLIB_ASSERT(state);
+      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+    case 1:
+      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_ON, 3, 3);
+      RADIOLIB_ASSERT(state);
+      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+    case 2:
+      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      RADIOLIB_ASSERT(state);
+      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_ON, 6, 6));
+    default:
+      return(ERR_INVALID_ENCODING);
+  }
 }
 
 int16_t CC1101::config() {
