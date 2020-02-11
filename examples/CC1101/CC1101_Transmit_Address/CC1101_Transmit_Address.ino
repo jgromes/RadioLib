@@ -32,8 +32,8 @@ void setup() {
   Serial.print(F("[CC1101] Initializing ... "));
   // carrier frequency:                   868.0 MHz
   // bit rate:                            4.8 kbps
-  // Rx bandwidth:                        325.0 kHz
   // frequency deviation:                 48.0 kHz
+  // Rx bandwidth:                        325.0 kHz
   // sync word:                           0xD391
   int state = cc.begin();
   if (state == ERR_NONE) {

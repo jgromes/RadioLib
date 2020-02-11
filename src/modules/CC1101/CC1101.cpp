@@ -9,7 +9,7 @@ CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_FREQUENCY_STEP_SIZE, CC110
   _syncWordLength = 2;
 }
 
-int16_t CC1101::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLength) {
+int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLength) {
   // set module properties
   _mod->SPIreadCommand = CC1101_CMD_READ;
   _mod->SPIwriteCommand = CC1101_CMD_WRITE;

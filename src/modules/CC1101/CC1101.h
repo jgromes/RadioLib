@@ -525,9 +525,9 @@ class CC1101: public PhysicalLayer {
 
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
-
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
+
+      \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
 
       \param power Output power in dBm. Defaults to 0 dBm.
 
@@ -535,7 +535,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 868.0, float br = 4.8, float rxBw = 325.0, float freqDev = 48.0, int8_t power = 0, uint8_t preambleLength = 4);
+    int16_t begin(float freq = 868.0, float br = 4.8, float freqDev = 48.0, float rxBw = 325.0, int8_t power = 0, uint8_t preambleLength = 4);
 
     /*!
       \brief Blocking binary transmit method.
