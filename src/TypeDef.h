@@ -540,6 +540,29 @@
 */
 #define ERR_INVALID_RX_PERIOD                         -709
 
+// AX.25-specific status codes
+
+/*!
+  \brief The provided callsign is invalid.
+
+  The specified callsign is longer than 6 ASCII characters.
+*/
+#define ERR_INVALID_CALLSIGN                          -801
+
+/*!
+  \brief The provided repeater configuration is invalid.
+
+  The specified number of repeaters does not match number of repeater IDs or their callsigns.
+*/
+#define ERR_INVALID_NUM_REPEATERS                     -802
+
+/*!
+  \brief One of the provided repeater callsigns is invalid.
+
+  The specified callsign is longer than 6 ASCII characters.
+*/
+#define ERR_INVALID_REPEATER_CALLSIGN                 -803
+
 /*!
   \}
 */

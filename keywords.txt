@@ -39,6 +39,8 @@ HTTPClient	KEYWORD1
 RTTYClient	KEYWORD1
 MorseClient	KEYWORD1
 PagerClient	KEYWORD1
+AX25Client	KEYWORD1
+AX25Frame	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -176,6 +178,12 @@ getNumBytes	KEYWORD2
 sendSMS	KEYWORD2
 shutdown	KEYWORD2
 
+# AX.25
+setRepeaters	KEYWORD2
+setRecvSequence	KEYWORD2
+setSendSequence	KEYWORD2
+sendFrame	KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
@@ -262,3 +270,7 @@ ERR_SPI_CMD_INVALID	LITERAL1
 ERR_SPI_CMD_FAILED	LITERAL1
 ERR_INVALID_SLEEP_PERIOD	LITERAL1
 ERR_INVALID_RX_PERIOD	LITERAL1
+
+ERR_INVALID_CALLSIGN	LITERAL1
+ERR_INVALID_NUM_REPEATERS	LITERAL1
+ERR_INVALID_REPEATER_CALLSIGN	LITERAL1
