@@ -18,6 +18,7 @@
   - PhysicalLayer protocols
     - RTTY (RTTYClient)
     - Morse Code (MorseClient)
+    - AX.25 (AX25Client)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)

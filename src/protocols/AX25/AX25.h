@@ -127,12 +127,34 @@ class AX25Frame {
     uint16_t sendSeqNumber;
 
     #ifndef RADIOLIB_STATIC_ONLY
+      /*!
+        \brief The info field.
+      */
       uint8_t* info;
+
+      /*!
+        \brief Array of repeater callsigns.
+      */
       char** repeaterCallsigns;
+
+      /*!
+        \brief Array of repeater SSIDs.
+      */
       uint8_t* repeaterSSIDs;
     #else
+      /*!
+        \brief The info field.
+      */
       uint8_t info[RADIOLIB_STATIC_ARRAY_SIZE];
+
+      /*!
+        \brief Array of repeater callsigns.
+      */
       char repeaterCallsigns[8][AX25_MAX_CALLSIGN_LEN + 1];
+
+      /*!
+        \brief Array of repeater SSIDs.
+      */
       uint8_t repeaterSSIDs[8];
     #endif
 
