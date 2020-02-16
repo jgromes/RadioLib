@@ -357,14 +357,14 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   for(int8_t e = 3; e >= 0; e--) {
     for(int8_t m = 3; m >= 0; m --) {
       float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
-      if(abs((rxBw * 1000.0) - point) <= 0.001) {
+      if(abs((rxBw * 1000.0) - point) <= 1000) {
         // set Rx channel filter bandwidth
         return(SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
       }
     }
   }
 
-  return(ERR_UNKNOWN);
+  return(ERR_INVALID_RX_BANDWIDTH);
 }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
