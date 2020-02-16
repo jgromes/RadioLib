@@ -792,6 +792,7 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
   RADIOLIB_ASSERT(state);
 
   // update the cached value
+  _packetLength = len;
   _packetLengthConfig = mode;
   return(state);
 }
