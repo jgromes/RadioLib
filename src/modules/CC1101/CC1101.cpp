@@ -321,7 +321,7 @@ int16_t CC1101::setFrequency(float freq) {
   }
 
   // Update the TX power accordingly to new freq. (PA values depend on chosen freq)
-  return setOutputPower(_power);
+  return(setOutputPower(_power));
 }
 
 int16_t CC1101::setBitRate(float br) {
@@ -395,9 +395,6 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
 }
 
 int16_t CC1101::setOutputPower(int8_t power) {
-  // Store the value.
-  _power = power;
-
   // round to the known frequency settings
   uint8_t f;
   if(_freq < 374.0) {
@@ -454,16 +451,19 @@ int16_t CC1101::setOutputPower(int8_t power) {
       return(ERR_INVALID_OUTPUT_POWER);
   }
 
-  if (_modulation == CC1101_MOD_FORMAT_ASK_OOK){
+  // store the value
+  _power = power;
+
+  if(_modulation == CC1101_MOD_FORMAT_ASK_OOK){
     // Amplitude modulation:
     // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
     // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
 
-    byte paValues[2] = {0x00, powerRaw};
+    uint8_t paValues[2] = {0x00, powerRaw};
     SPIwriteRegisterBurst(CC1101_REG_PATABLE, paValues, 2);
-    return ERR_NONE;
+    return(ERR_NONE);
 
-  }else{
+  } else {
     // Freq modulation:
     // PA_TABLE[0] is the power to be used when transmitting.
     return(SPIsetRegValue(CC1101_REG_PATABLE, powerRaw));
@@ -566,6 +566,9 @@ int16_t CC1101::setOOK(bool enableOOK) {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_ASK_OOK, 6, 4);
     RADIOLIB_ASSERT(state);
 
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
+
     // PA_TABLE[0] is (by default) the power value used when transmitting a "0L".
     // Set PA_TABLE[1] to be used when transmitting a "1L".
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
@@ -574,6 +577,9 @@ int16_t CC1101::setOOK(bool enableOOK) {
   } else {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
     RADIOLIB_ASSERT(state);
+
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_2_FSK;
 
     // Reset FREND0 to default value.
     state = SPIsetRegValue(CC1101_REG_FREND0, 0, 2, 0);
