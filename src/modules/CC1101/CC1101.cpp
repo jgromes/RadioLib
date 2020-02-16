@@ -470,7 +470,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
   }
 }
 
-int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
+int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
   if((maxErrBits > 1) || (len != 2)) {
     return(ERR_INVALID_SYNC_WORD);
   }
@@ -485,7 +485,7 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   _syncWordLength = len;
 
   // enable sync word filtering
-  int16_t state = enableSyncWordFiltering(maxErrBits);
+  int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense);
   RADIOLIB_ASSERT(state);
 
   // set sync word register
@@ -495,9 +495,9 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   return(state);
 }
 
-int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
+int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bool requireCarrierSense) {
   uint8_t syncWord[] = { syncH, syncL };
-  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits));
+  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense));
 }
 
 int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
@@ -627,21 +627,24 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
   return(setPacketMode(CC1101_LENGTH_CONFIG_VARIABLE, maxLen));
 }
 
-int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
+int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
   switch (maxErrBits){
     case 0:
       // in 16 bit sync word, expect all 16 bits.
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
+        requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16, 2, 0));
     case 1:
       // in 16 bit sync word, expect at least 15 bits.
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
+        requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16, 2, 0));
     default:
       return (ERR_INVALID_SYNC_WORD);
   }
 }
 
-int16_t CC1101::disableSyncWordFiltering() {
-  return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_NONE, 2, 0));
+int16_t CC1101::disableSyncWordFiltering(bool requireCarrierSense) {
+  return(SPIsetRegValue(CC1101_REG_MDMCFG2,
+    requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE, 2, 0));
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
