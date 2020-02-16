@@ -566,24 +566,24 @@ int16_t CC1101::setOOK(bool enableOOK) {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_ASK_OOK, 6, 4);
     RADIOLIB_ASSERT(state);
 
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
-
     // PA_TABLE[0] is (by default) the power value used when transmitting a "0L".
     // Set PA_TABLE[1] to be used when transmitting a "1L".
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
+
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
     RADIOLIB_ASSERT(state);
 
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_2_FSK;
-
     // Reset FREND0 to default value.
     state = SPIsetRegValue(CC1101_REG_FREND0, 0, 2, 0);
     RADIOLIB_ASSERT(state);
+
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_2_FSK;
   }
 
   // Update PA_TABLE values according to the new _modulation.
