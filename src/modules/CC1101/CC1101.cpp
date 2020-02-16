@@ -124,13 +124,8 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
-  // wait for sync word
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-  }
-
-  // wait for packet end
-  while(digitalRead(_mod->getIrq())) {
+  // wait for rx queue to exceed threshold.
+  while (!digitalRead(_mod->getIrq())) {
     yield();
   }
 
@@ -275,8 +270,9 @@ int16_t CC1101::startReceive() {
   // flush Rx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
 
-  // set GDO0 mapping
-  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  // set GDO0 mapping: Asserted when RX FIFO > 4 bytes.
+  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END);
+  state |= SPIsetRegValue(CC1101_REG_FIFOTHR, CC1101_FIFO_THR_TX_61_RX_4, 3, 0);
   RADIOLIB_ASSERT(state);
 
   // set mode to receive
@@ -288,8 +284,8 @@ int16_t CC1101::startReceive() {
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
   size_t length = len;
-  if(len == CC1101_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  if (len == CC1101_MAX_PACKET_LENGTH) {
+    length = getPacketLength(true);
   }
 
   // check address filtering
@@ -298,31 +294,66 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     SPIreadRegister(CC1101_REG_FIFO);
   }
 
-  // read packet data
-  SPIreadRegisterBurst(CC1101_REG_FIFO, length, data);
+  uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+  uint16_t readBytes = 0;
+  unsigned long lastPop = millis();
 
-  // read RSSI byte
-  _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
+  // keep reading from FIFO until we get all the packet.
+  while (readBytes < length) {
+    if (bytesInFIFO == 0) {
+      if (millis() - lastPop > 5) {
+        // readData was required to read a packet longer than the one received.
+        RADIOLIB_DEBUG_PRINT(F("No data for more than 5mS. Stop here."));
+        break;
+      } else {
+        delay(1);
+        bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+        continue;
+      }
+    }
+
+    // read the minimum between "remaining length" and bytesInFifo
+    uint8_t bytesToRead = min(length - readBytes, bytesInFIFO);
+    SPIreadRegisterBurst(CC1101_REG_FIFO, bytesToRead, &(data[readBytes]));
+    readBytes += bytesToRead;
+    lastPop = millis();
+
+    // Get how many bytes are left in FIFO.
+    bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+  }
+
+  // add terminating null
+  data[readBytes] = 0;
+
+  // check if status bytes are enabled (default: CC1101_APPEND_STATUS_ON)
+  bool isAppendStatus = SPIgetRegValue(CC1101_REG_PKTCTRL1, 2, 2) == CC1101_APPEND_STATUS_ON;
+
+  // If status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
+  if (bytesInFIFO >= 2 && isAppendStatus) {
+    // read RSSI byte
+    _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
 
   // read LQI and CRC byte
   uint8_t val = SPIgetRegValue(CC1101_REG_FIFO);
   _rawLQI = val & 0x7F;
 
-  // add terminating null
-  data[length] = 0;
-
-  // flush Rx FIFO
-  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+    // check CRC
+    if (_crcOn && (val & 0b10000000) == 0b00000000) {
+      return (ERR_CRC_MISMATCH);
+    }
+  }
 
   // clear internal flag so getPacketLength can return the new packet length
   _packetLengthQueried = false;
 
-  // set mode to standby
-  standby();
+  // Flush then standby according to RXOFF_MODE (default: CC1101_RXOFF_IDLE)
+  if (SPIgetRegValue(CC1101_REG_MCSM1, 3, 2) == CC1101_RXOFF_IDLE) {
 
-  // check CRC
-   if (_crcOn && (val & 0b10000000) == 0b00000000) {
-    return (ERR_CRC_MISMATCH);
+    // flush Rx FIFO
+    SPIsendCommand(CC1101_CMD_FLUSH_RX);
+
+    // set mode to standby
+    standby();
   }
 
   return(ERR_NONE);
