@@ -218,24 +218,54 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
   RADIOLIB_ASSERT(state);
 
+  // data put on FIFO.
+  uint8_t dataSent = 0;
+
   // optionally write packet length
   if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
+
+    // enforce variable len limit.
+    if (len > 254) {
+      return (ERR_PACKET_TOO_LONG);
+    }
+
     SPIwriteRegister(CC1101_REG_FIFO, len);
+    dataSent += 1;
   }
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(CC1101_REG_FIFO, addr);
+    dataSent += 1;
   }
 
-  // write packet to FIFO
-  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
+  // fill the FIFO.
+  uint8_t initialWrite = min(len, (CC1101_FIFO_SIZE - dataSent));
+  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, initialWrite);
+  dataSent += initialWrite;
 
   // set mode to transmit
   SPIsendCommand(CC1101_CMD_TX);
 
-  return(state);
+  // keep feeding the FIFO until the packet is over.
+  uint8_t bytesInFIFO;
+  while (dataSent < len) {
+    // get number of bytes in FIFO.
+    bytesInFIFO = SPIgetRegValue(CC1101_REG_TXBYTES, 6, 0);
+
+    // if there's room then put other data.
+    if (bytesInFIFO < CC1101_FIFO_SIZE) {
+      uint8_t bytesToWrite = min(CC1101_FIFO_SIZE - bytesInFIFO, len - dataSent);
+      SPIwriteRegisterBurst(CC1101_REG_FIFO, &data[dataSent], bytesToWrite);
+      dataSent += bytesToWrite;
+    } else {
+      // wait for radio to send some data.
+      delay(1);
+    }
+  }
+
+  return (state);
 }
 
 int16_t CC1101::startReceive() {
@@ -850,4 +880,9 @@ void CC1101::SPIsendCommand(uint8_t cmd) {
   SPI.transfer(cmd);
   SPI.endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
+}
+
+uint8_t CC1101::min(uint8_t a, uint8_t b) {
+  if (a < b) return a;
+  return b;
 }
