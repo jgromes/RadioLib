@@ -709,9 +709,11 @@ class CC1101: public PhysicalLayer {
 
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
 
+      \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0);
+    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
 
     /*!
       \brief Sets 1 or 2 bytes of sync word.
@@ -722,9 +724,11 @@ class CC1101: public PhysicalLayer {
 
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
 
+      \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0);
+    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
 
     /*!
       \brief Sets preamble length.
@@ -808,16 +812,20 @@ class CC1101: public PhysicalLayer {
 
       \param numBits Sync word length in bits.
 
+      \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
+
       \returns \ref status_codes
     */
-    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false);
 
      /*!
       \brief Disable preamble and sync word filtering and generation.
 
+      \param requireCarrierSense Require carrier sense above threshold.
+
       \returns \ref status_codes
     */
-    int16_t disableSyncWordFiltering();
+    int16_t disableSyncWordFiltering(bool requireCarrierSense = false);
 
      /*!
       \brief Enable CRC filtering and generation.

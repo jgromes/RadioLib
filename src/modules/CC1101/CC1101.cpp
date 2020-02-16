@@ -357,14 +357,14 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   for(int8_t e = 3; e >= 0; e--) {
     for(int8_t m = 3; m >= 0; m --) {
       float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
-      if(abs((rxBw * 1000.0) - point) <= 0.001) {
+      if(abs((rxBw * 1000.0) - point) <= 1000) {
         // set Rx channel filter bandwidth
         return(SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
       }
     }
   }
 
-  return(ERR_UNKNOWN);
+  return(ERR_INVALID_RX_BANDWIDTH);
 }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
@@ -470,7 +470,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
   }
 }
 
-int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) {
+int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
   if((maxErrBits > 1) || (len != 2)) {
     return(ERR_INVALID_SYNC_WORD);
   }
@@ -485,7 +485,7 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   _syncWordLength = len;
 
   // enable sync word filtering
-  int16_t state = enableSyncWordFiltering(maxErrBits);
+  int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense);
   RADIOLIB_ASSERT(state);
 
   // set sync word register
@@ -495,9 +495,9 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits) 
   return(state);
 }
 
-int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits) {
+int16_t CC1101::setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits, bool requireCarrierSense) {
   uint8_t syncWord[] = { syncH, syncL };
-  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits));
+  return(setSyncWord(syncWord, sizeof(syncWord), maxErrBits, requireCarrierSense));
 }
 
 int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
@@ -566,24 +566,24 @@ int16_t CC1101::setOOK(bool enableOOK) {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_ASK_OOK, 6, 4);
     RADIOLIB_ASSERT(state);
 
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
-
     // PA_TABLE[0] is (by default) the power value used when transmitting a "0L".
     // Set PA_TABLE[1] to be used when transmitting a "1L".
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
+
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
     RADIOLIB_ASSERT(state);
 
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_2_FSK;
-
     // Reset FREND0 to default value.
     state = SPIsetRegValue(CC1101_REG_FREND0, 0, 2, 0);
     RADIOLIB_ASSERT(state);
+
+    // update current modulation
+    _modulation = CC1101_MOD_FORMAT_2_FSK;
   }
 
   // Update PA_TABLE values according to the new _modulation.
@@ -627,21 +627,24 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
   return(setPacketMode(CC1101_LENGTH_CONFIG_VARIABLE, maxLen));
 }
 
-int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits) {
+int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
   switch (maxErrBits){
     case 0:
       // in 16 bit sync word, expect all 16 bits.
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_16_16, 2, 0));
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
+        requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16, 2, 0));
     case 1:
       // in 16 bit sync word, expect at least 15 bits.
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_15_16, 2, 0));
+      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
+        requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16, 2, 0));
     default:
       return (ERR_INVALID_SYNC_WORD);
   }
 }
 
-int16_t CC1101::disableSyncWordFiltering() {
-  return(SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_SYNC_MODE_NONE, 2, 0));
+int16_t CC1101::disableSyncWordFiltering(bool requireCarrierSense) {
+  return(SPIsetRegValue(CC1101_REG_MDMCFG2,
+    requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE, 2, 0));
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
@@ -792,6 +795,7 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
   RADIOLIB_ASSERT(state);
 
   // update the cached value
+  _packetLength = len;
   _packetLengthConfig = mode;
   return(state);
 }
