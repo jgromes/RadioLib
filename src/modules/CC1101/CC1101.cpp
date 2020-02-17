@@ -236,7 +236,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // fill the FIFO.
-  uint8_t initialWrite = min(len, (CC1101_FIFO_SIZE - dataSent));
+  uint8_t initialWrite = min((uint8_t)len, (uint8_t)(CC1101_FIFO_SIZE - dataSent));
   SPIwriteRegisterBurst(CC1101_REG_FIFO, data, initialWrite);
   dataSent += initialWrite;
 
@@ -244,14 +244,13 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(CC1101_CMD_TX);
 
   // keep feeding the FIFO until the packet is over.
-  uint8_t bytesInFIFO;
   while (dataSent < len) {
     // get number of bytes in FIFO.
-    bytesInFIFO = SPIgetRegValue(CC1101_REG_TXBYTES, 6, 0);
+    uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_TXBYTES, 6, 0);
 
     // if there's room then put other data.
     if (bytesInFIFO < CC1101_FIFO_SIZE) {
-      uint8_t bytesToWrite = min(CC1101_FIFO_SIZE - bytesInFIFO, len - dataSent);
+      uint8_t bytesToWrite = min((uint8_t)(CC1101_FIFO_SIZE - bytesInFIFO), (uint8_t)(len - dataSent));
       SPIwriteRegisterBurst(CC1101_REG_FIFO, &data[dataSent], bytesToWrite);
       dataSent += bytesToWrite;
     } else {
@@ -271,7 +270,7 @@ int16_t CC1101::startReceive() {
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
 
   // set GDO0 mapping: Asserted when RX FIFO > 4 bytes.
-  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END);
+  int16_t state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END);
   state |= SPIsetRegValue(CC1101_REG_FIFOTHR, CC1101_FIFO_THR_TX_61_RX_4, 3, 0);
   RADIOLIB_ASSERT(state);
 
@@ -296,14 +295,14 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
   uint16_t readBytes = 0;
-  unsigned long lastPop = millis();
+  uint32_t lastPop = millis();
 
   // keep reading from FIFO until we get all the packet.
   while (readBytes < length) {
     if (bytesInFIFO == 0) {
       if (millis() - lastPop > 5) {
         // readData was required to read a packet longer than the one received.
-        RADIOLIB_DEBUG_PRINT(F("No data for more than 5mS. Stop here."));
+        RADIOLIB_DEBUG_PRINTLN(F("No data for more than 5mS. Stop here."));
         break;
       } else {
         delay(1);
@@ -313,7 +312,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     }
 
     // read the minimum between "remaining length" and bytesInFifo
-    uint8_t bytesToRead = min(length - readBytes, bytesInFIFO);
+    uint8_t bytesToRead = min((uint8_t)(length - readBytes), bytesInFIFO);
     SPIreadRegisterBurst(CC1101_REG_FIFO, bytesToRead, &(data[readBytes]));
     readBytes += bytesToRead;
     lastPop = millis();
@@ -911,9 +910,4 @@ void CC1101::SPIsendCommand(uint8_t cmd) {
   SPI.transfer(cmd);
   SPI.endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
-}
-
-uint8_t CC1101::min(uint8_t a, uint8_t b) {
-  if (a < b) return a;
-  return b;
 }

@@ -885,8 +885,6 @@ class CC1101: public PhysicalLayer {
     uint8_t _syncWordLength;
     int8_t _power;
 
-    uint8_t min(uint8_t a, uint8_t b);
-
     int16_t config();
     int16_t directMode();
     void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
