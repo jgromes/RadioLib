@@ -599,9 +599,9 @@ class CC1101: public PhysicalLayer {
 
       \param func ISR to call.
 
-      \param dir Signal change direction. Defaults to FALLING.
+      \param dir Signal change direction. Defaults to RISING.
     */
-    void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo0Action(void (*func)(void), uint8_t dir = RISING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
