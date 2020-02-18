@@ -218,9 +218,6 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
   // read packet data
   SPIreadRxPayload(data, length);
 
-  // add terminating null
-  data[length] = 0;
-
   // clear interrupt
   clearIRQ();
 
