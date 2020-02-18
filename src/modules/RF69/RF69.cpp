@@ -326,9 +326,6 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   // read packet data
   _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
 
-  // add terminating null
-  data[length] = 0;
-
   // update RSSI
   lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
 
