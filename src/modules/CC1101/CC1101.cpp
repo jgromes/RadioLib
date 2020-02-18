@@ -278,9 +278,6 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   uint8_t val = SPIgetRegValue(CC1101_REG_FIFO);
   _rawLQI = val & 0x7F;
 
-  // add terminating null
-  data[length] = 0;
-
   // flush Rx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
 
