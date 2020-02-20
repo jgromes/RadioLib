@@ -73,16 +73,13 @@ void Module::init(uint8_t interface) {
 }
 
 void Module::term() {
-  // stop hardware interface
-  switch(interface) {
-    case RADIOLIB_USE_SPI:
-      _spi->end();
-      break;
-    case RADIOLIB_USE_UART:
-      ModuleSerial->end(baudrate, SERIAL_8N1, _rx, _tx);
-      break;
-    case RADIOLIB_USE_I2C:
-      break;
+  // stop hardware interfaces
+  if(_spi != nullptr) {
+    _spi->end();
+  }
+
+  if(ModuleSerial != nullptr) {
+    ModuleSerial->end();
   }
 }
 
