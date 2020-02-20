@@ -73,8 +73,17 @@ void Module::init(uint8_t interface) {
 }
 
 void Module::term() {
-  // stop SPI
-  _spi->end();
+  // stop hardware interface
+  switch(interface) {
+    case RADIOLIB_USE_SPI:
+      _spi->end();
+      break;
+    case RADIOLIB_USE_UART:
+      ModuleSerial->end(baudrate, SERIAL_8N1, _rx, _tx);
+      break;
+    case RADIOLIB_USE_I2C:
+      break;
+  }
 }
 
 void Module::ATemptyBuffer() {
