@@ -42,7 +42,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No CC1101 found!"));
-    SPI.end();
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found CC1101! (match by CC1101_REG_VERSION == 0x14)"));
