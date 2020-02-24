@@ -74,6 +74,10 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
     RADIOLIB_ASSERT(state);
   }
 
+  // enable/disable OOK
+  state = setOOK(enableOOK);
+  RADIOLIB_ASSERT(state);
+
   // set bit rate
   state = SX127x::setBitRate(br);
   RADIOLIB_ASSERT(state);
@@ -101,10 +105,6 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
 
   // disable address filtering
   state = disableAddressFiltering();
-  RADIOLIB_ASSERT(state);
-
-  // enable/disable OOK
-  state = setOOK(enableOOK);
   RADIOLIB_ASSERT(state);
 
   // set default RSSI measurement config
