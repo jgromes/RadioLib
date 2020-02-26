@@ -73,8 +73,14 @@ void Module::init(uint8_t interface) {
 }
 
 void Module::term() {
-  // stop SPI
-  _spi->end();
+  // stop hardware interfaces
+  if(_spi != nullptr) {
+    _spi->end();
+  }
+
+  if(ModuleSerial != nullptr) {
+    ModuleSerial->end();
+  }
 }
 
 void Module::ATemptyBuffer() {

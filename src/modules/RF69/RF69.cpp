@@ -47,7 +47,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No RF69 found!"));
-    SPI.end();
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found RF69! (match by RF69_REG_VERSION == 0x24)"));
@@ -325,9 +325,6 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
   // read packet data
   _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
-
-  // add terminating null
-  data[length] = 0;
 
   // update RSSI
   lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
