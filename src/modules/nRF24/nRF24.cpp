@@ -230,14 +230,9 @@ int16_t nRF24::setFrequency(int16_t freq) {
     return(ERR_INVALID_FREQUENCY);
   }
 
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
   // set frequency
   uint8_t freqRaw = freq - 2400;
-  state = _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
-  return(state);
+  return _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
 }
 
 int16_t nRF24::setDataRate(int16_t dataRate) {
@@ -332,6 +327,7 @@ int16_t nRF24::setTransmitPipe(uint8_t* addr) {
 
   // set Rx pipe 0 address (for ACK)
   _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addr, _addrWidth);
+  state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P0_ON, 0, 0);
 
   return(state);
 }
@@ -442,6 +438,13 @@ size_t nRF24::getPacketLength(bool update) {
 }
 
 int16_t nRF24::setCrcFiltering(bool crcOn) {
+  // Auto Ack needs to be disabled in order to disable CRC.
+  if (!crcOn) {
+    int16_t status = setAutoAck(false);
+    RADIOLIB_ASSERT(status)
+  }
+
+  // Disable CRC
   return _mod->SPIsetRegValue(NRF24_REG_CONFIG, crcOn ? NRF24_CRC_ON : NRF24_CRC_OFF, 3, 3);
 }
 
