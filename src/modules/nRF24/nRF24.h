@@ -393,6 +393,13 @@ class nRF24: public PhysicalLayer {
     int16_t getStatus(uint8_t mask = 0xFF);
 
     /*!
+      \brief Checks if carrier was detected during last RX
+
+      \returns Whatever the carrier was above threshold.
+    */
+    bool isCarrierDetected();
+
+    /*!
       \brief Dummy configuration method, to ensure PhysicalLayer compatibility.
 
       \param freqDev Dummy frequency deviation parameter, no configuration will be changed.
