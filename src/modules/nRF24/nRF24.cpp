@@ -423,6 +423,10 @@ int16_t nRF24::getStatus(uint8_t mask) {
   return(_mod->SPIgetRegValue(NRF24_REG_STATUS) & mask);
 }
 
+bool nRF24::isCarrierDetected() {
+  return(_mod->SPIgetRegValue(NRF24_REG_RPD, 0,0)) == 1;
+}
+
 int16_t nRF24::setFrequencyDeviation(float freqDev) {
   // nRF24 is unable to set frequency deviation
   // this method is implemented only for PhysicalLayer compatibility
