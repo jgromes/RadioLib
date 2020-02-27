@@ -445,7 +445,7 @@ class nRF24: public PhysicalLayer {
 
      \returns \ref status_codes
    */
-    int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn = true);
+    int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn);
 
     /*!
       \brief Dummy data shaping configuration method, to ensure PhysicalLayer compatibility.
