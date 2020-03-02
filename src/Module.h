@@ -27,13 +27,37 @@ class Module {
 
       \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
 
-      \param rst Arduino pin to be used as hardware reset for the module. Defaults to -1 (unused).
+      \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
     */
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    Module(int16_t tx, int16_t rx, HardwareSerial* serial = &Serial1, int16_t rst = -1);
+    Module(int16_t tx, int16_t rx, HardwareSerial* serial = &Serial1, int16_t rst = NC);
 #else
-    Module(int16_t tx, int16_t rx, HardwareSerial* serial = nullptr, int16_t rst = -1);
+    Module(int16_t tx, int16_t rx, HardwareSerial* serial = nullptr, int16_t rst = NC);
 #endif
+
+    /*!
+      \brief SPI-based module constructor. Will use the default SPI interface automatically initialize it.
+
+      \param cs Arduino pin to be used as chip select.
+
+      \param irq Arduino pin to be used as interrupt/GPIO.
+
+      \param rst Arduino pin to be used as hardware reset for the module.
+    */
+    Module(int16_t cs, int16_t irq, int16_t rst);
+
+    /*!
+      \brief Extended SPI-based module constructor. Will use the default SPI interface automatically initialize it.
+
+      \param cs Arduino pin to be used as chip select.
+
+      \param irq Arduino pin to be used as interrupt/GPIO.
+
+      \param rst Arduino pin to be used as hardware reset for the module.
+
+      \param gpio Arduino pin to be used as additional interrupt/GPIO.
+    */
+    Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio);
 
     /*!
       \brief SPI-based module constructor.
@@ -44,11 +68,11 @@ class Module {
 
       \param rst Arduino pin to be used as hardware reset for the module.
 
-      \param spi SPI interface to be used. Defaults to Arduino hardware SPI interface, can also use software SPI implementations.
+      \param spi SPI interface to be used, can also use software SPI implementations.
 
-      \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
+      \param spiSettings SPI interface settings.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
+    Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings spiSettings);
 
     /*!
       \brief Extended SPI-based module constructor.
@@ -61,11 +85,11 @@ class Module {
 
       \param gpio Arduino pin to be used as additional interrupt/GPIO.
 
-      \param spi SPI interface to be used. Defaults to Arduino hardware SPI interface, can also use software SPI implementations.
+      \param spi SPI interface to be used, can also use software SPI implementations.
 
-      \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
+      \param spiSettings SPI interface settings.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
+    Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi, SPISettings spiSettings);
 
     /*!
       \brief Generic module constructor.
@@ -344,6 +368,7 @@ class Module {
     int16_t _irq;
     int16_t _rst;
 
+    bool _initInterface;
     SPIClass* _spi;
     SPISettings _spiSettings;
 
