@@ -241,7 +241,6 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 
   // send SPI register address with access command
   _spi->transfer(reg | cmd);
-  delayMicroseconds(120);
   #ifdef RADIOLIB_VERBOSE
     if(cmd == SPIwriteCommand) {
       RADIOLIB_VERBOSE_PRINT('W');
@@ -257,14 +256,12 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   if(cmd == SPIwriteCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       _spi->transfer(dataOut[n]);
-      delayMicroseconds(120);
       RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
     }
   } else if (cmd == SPIreadCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       dataIn[n] = _spi->transfer(0x00);
-      delayMicroseconds(120);
       RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
     }
