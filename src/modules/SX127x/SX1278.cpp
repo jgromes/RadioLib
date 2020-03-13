@@ -52,6 +52,14 @@ int16_t SX1278::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(state);
 }
 
+void SX1278::reset() {
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), LOW);
+  delayMicroseconds(100);
+  Module::digitalWrite(_mod->getRst(), HIGH);
+  delay(5);
+}
+
 int16_t SX1278::setFrequency(float freq) {
   // check frequency range
   if((freq < 137.0) || (freq > 525.0)) {

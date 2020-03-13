@@ -54,9 +54,6 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
 
-  // reset the module
-  reset();
-
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
@@ -119,14 +116,6 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = variablePacketLengthMode();
 
   return(state);
-}
-
-void SX127x::reset() {
-  Module::pinMode(_mod->getRst(), OUTPUT);
-  Module::digitalWrite(_mod->getRst(), LOW);
-  delayMicroseconds(100);
-  Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(5);
 }
 
 int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {

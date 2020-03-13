@@ -565,9 +565,9 @@ class SX127x: public PhysicalLayer {
     int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
 
     /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin.
+      \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implmentations differ.
     */
-    void reset();
+    virtual void reset() = 0;
 
     /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
