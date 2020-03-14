@@ -38,7 +38,7 @@ void setup() {
   // Rx bandwidth:                125.0 kHz
   // output power:                13 dBm
   // current limit:               100 mA
-  // data shaping:                Gaussian, BT = 0.3
+  // data shaping:                Gaussian, BT = 0.5
   // sync word:                   0x2D  0x01
   // OOK modulation:              disabled
   int state = fsk.beginFSK();

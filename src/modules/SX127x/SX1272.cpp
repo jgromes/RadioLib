@@ -413,6 +413,10 @@ int16_t SX1272::configFSK() {
 
   // set fast PLL hop
   state = _mod->SPIsetRegValue(SX1272_REG_PLL_HOP, SX127X_FAST_HOP_ON, 7, 7);
+  RADIOLIB_ASSERT(state);
+
+  // set Gauss filter BT product to 0.5
+  state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_5, 4, 3);
 
   return(state);
 }
