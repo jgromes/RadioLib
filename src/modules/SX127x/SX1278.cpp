@@ -55,7 +55,7 @@ int16_t SX1278::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 void SX1278::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delayMicroseconds(100);
+  delay(1);
   Module::digitalWrite(_mod->getRst(), HIGH);
   delay(5);
 }

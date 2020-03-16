@@ -54,7 +54,7 @@ int16_t XBee::begin(long speed) {
 void XBee::reset() {
   pinMode(_mod->getRst(), OUTPUT);
   digitalWrite(_mod->getRst(), LOW);
-  delayMicroseconds(200);
+  delay(1);
   digitalWrite(_mod->getRst(), HIGH);
 }
 
@@ -218,7 +218,7 @@ int16_t XBeeSerial::begin(long speed) {
 void XBeeSerial::reset() {
   pinMode(_mod->getRst(), OUTPUT);
   digitalWrite(_mod->getRst(), LOW);
-  delayMicroseconds(200);
+  delay(1);
   digitalWrite(_mod->getRst(), HIGH);
   pinMode(_mod->getRst(), INPUT);
 }

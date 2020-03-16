@@ -172,7 +172,7 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // CE high to start transmitting
   digitalWrite(_mod->getRst(), HIGH);
-  delayMicroseconds(10);
+  delay(1);
   digitalWrite(_mod->getRst(), LOW);
 
   return(state);
@@ -199,7 +199,7 @@ int16_t nRF24::startReceive() {
   digitalWrite(_mod->getRst(), HIGH);
 
   // wait to enter Rx state
-  delayMicroseconds(130);
+  delay(1);
 
   return(state);
 }

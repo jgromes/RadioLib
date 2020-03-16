@@ -101,7 +101,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 void RF69::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delayMicroseconds(100);
+  delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
   delay(10);
 }
