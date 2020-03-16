@@ -153,7 +153,7 @@ int16_t SX126x::reset(bool verify) {
   // run the reset sequence
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delayMicroseconds(150);
+  delay(1);
   Module::digitalWrite(_mod->getRst(), HIGH);
 
   // return immediately when verification is disabled
@@ -364,7 +364,7 @@ int16_t SX126x::sleep(bool retainConfig) {
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_SLEEP, &sleepMode, 1, false);
 
   // wait for SX126x to safely enter sleep mode
-  delayMicroseconds(500);
+  delay(1);
 
   return(state);
 }
