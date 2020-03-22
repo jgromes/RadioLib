@@ -68,7 +68,7 @@ void setup() {
 }
 
 void loop() {
-  // send AX.25 unnumbered infomration frame
+  // send AX.25 unnumbered information frame
   Serial.print(F("[AX.25] Sending UI frame ... "));
   // destination station callsign:     "NJ7P"
   // destination station SSID:         0
