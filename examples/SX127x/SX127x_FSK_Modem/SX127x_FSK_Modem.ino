@@ -97,8 +97,8 @@ void loop() {
   // transmit FSK packet
   int state = fsk.transmit("Hello World!");
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                      0x78, 0xAB, 0xCD, 0xEF};
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                      0x89, 0xAB, 0xCD, 0xEF};
     int state = lora.transmit(byteArr, 8);
   */
   if (state == ERR_NONE) {
@@ -151,7 +151,7 @@ void loop() {
 
   // address filtering can also be disabled
   // NOTE: calling this method will also erase previously set
-  // node and broadcast address
+  //       node and broadcast address
   /*
     state = fsk.disableAddressFiltering();
     if (state != ERR_NONE) {

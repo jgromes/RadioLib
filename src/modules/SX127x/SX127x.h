@@ -480,7 +480,7 @@
 #define SX127X_FLAG_TX_READY                          0b00100000  //  5     5     transmission ready (after PA ramp-up)
 #define SX127X_FLAG_PLL_LOCK                          0b00010000  //  4     4     PLL locked
 #define SX127X_FLAG_RSSI                              0b00001000  //  3     3     RSSI value exceeds RSSI threshold
-#define SX127X_FLAG_TIMEOUT                           0b00000100  //  2     2     timeout occured
+#define SX127X_FLAG_TIMEOUT                           0b00000100  //  2     2     timeout occurred
 #define SX127X_FLAG_PREAMBLE_DETECT                   0b00000010  //  1     1     valid preamble was detected
 #define SX127X_FLAG_SYNC_ADDRESS_MATCH                0b00000001  //  0     0     sync address matched
 
@@ -488,7 +488,7 @@
 #define SX127X_FLAG_FIFO_FULL                         0b10000000  //  7     7     FIFO is full
 #define SX127X_FLAG_FIFO_EMPTY                        0b01000000  //  6     6     FIFO is empty
 #define SX127X_FLAG_FIFO_LEVEL                        0b00100000  //  5     5     number of bytes in FIFO exceeds FIFO_THRESHOLD
-#define SX127X_FLAG_FIFO_OVERRUN                      0b00010000  //  4     4     FIFO overrun occured
+#define SX127X_FLAG_FIFO_OVERRUN                      0b00010000  //  4     4     FIFO overrun occurred
 #define SX127X_FLAG_PACKET_SENT                       0b00001000  //  3     3     packet was successfully sent
 #define SX127X_FLAG_PAYLOAD_READY                     0b00000100  //  2     2     packet was successfully received
 #define SX127X_FLAG_CRC_OK                            0b00000010  //  1     1     CRC check passed
@@ -565,7 +565,7 @@ class SX127x: public PhysicalLayer {
     int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
 
     /*!
-      \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implmentations differ.
+      \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implementations differ.
     */
     virtual void reset() = 0;
 
@@ -662,7 +662,6 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t packetMode();
-
 
     // interrupt methods
 
@@ -880,7 +879,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Sets RSSI measurement configuration in FSK mode.
 
-      \param smoothingSamples Number of samples taken to avergae the RSSI result.
+      \param smoothingSamples Number of samples taken to average the RSSI result.
       numSamples = 2 ^ (1 + smoothingSamples), allowed values are in range 0 (2 samples) - 7 (256 samples)
 
       \param offset Signed RSSI offset that will be automatically compensated. 1 dB per LSB, defaults to 0, allowed values are in range -16 dB to +15 dB.

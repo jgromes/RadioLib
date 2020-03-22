@@ -91,9 +91,6 @@ void setup() {
   // you can also change the settings at runtime
   // and check if the configuration was changed successfully
 
-  // different modules accept different parameters
-  // see https://github.com/jgromes/LoRaLib/wiki/Supported-LoRa-modules
-
   // set carrier frequency to 433.5 MHz
   if (loraSX1278.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
@@ -147,14 +144,14 @@ void setup() {
   }
 
   // set amplifier gain to 1 (accepted range is 1 - 6, where 1 is maximum gain)
-  // NOTE: set value to 0 to enable autmatic gain control
+  // NOTE: set value to 0 to enable automatic gain control
   //       leave at 0 unless you know what you're doing
   if (loraSX1278.setGain(1) == ERR_INVALID_GAIN) {
     Serial.println(F("Selected gain is invalid for this module!"));
     while (true);
   }
 
-  Serial.println(F("All settings succesfully changed!"));
+  Serial.println(F("All settings successfully changed!"));
 }
 
 void loop() {

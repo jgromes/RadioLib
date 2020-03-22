@@ -59,11 +59,11 @@ void loop() {
 
   if (state == PREAMBLE_DETECTED) {
     // LoRa preamble was detected
-    Serial.println(F(" detected preamble!"));
+    Serial.println(F("detected preamble!"));
 
   } else if (state == CHANNEL_FREE) {
     // no preamble was detected, channel is free
-    Serial.println(F(" channel is free!"));
+    Serial.println(F("channel is free!"));
 
   }
 

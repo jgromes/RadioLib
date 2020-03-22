@@ -43,7 +43,7 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // initalize internal variables
+  // initialize internal variables
   _dataRate = 0.0;
 
   return(state);
