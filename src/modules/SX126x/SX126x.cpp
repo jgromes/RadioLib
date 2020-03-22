@@ -310,7 +310,7 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
 }
 
 int16_t SX126x::receiveDirect() {
-  // SX126x is unable to ouput received data directly
+  // SX126x is unable to output received data directly
   return(ERR_UNKNOWN);
 }
 
@@ -486,7 +486,7 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
     senderPreambleLength = _preambleLength;
   }
 
-  // worst case is that the sender starts transmiting when we're just less than minSymbols from going back to sleep.
+  // worst case is that the sender starts transmitting when we're just less than minSymbols from going back to sleep.
   // in this case, we don't catch minSymbols before going to sleep,
   // so we must be awake for at least that long before the sender stops transmitting.
   uint16_t sleepSymbols = senderPreambleLength - 2 * minSymbols;
@@ -504,7 +504,7 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   // when the unit detects a preamble, it starts a timer that will timeout if it doesn't receive a header in time.
   // the duration is sleepPeriod + 2 * wakePeriod.
   // The sleepPeriod doesn't take into account shutdown and startup time for the unit (~1ms)
-  // We need to ensure that the timout is longer than senderPreambleLength.
+  // We need to ensure that the timeout is longer than senderPreambleLength.
   // So we must satisfy: wakePeriod > (preamblePeriod - (sleepPeriod - 1000)) / 2. (A)
   // we also need to ensure the unit is awake to see at least minSymbols. (B)
   uint32_t wakePeriod = max(
@@ -513,7 +513,7 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   RADIOLIB_DEBUG_PRINT(F("Auto wake period: "));
   RADIOLIB_DEBUG_PRINTLN(wakePeriod);
 
-  //If our sleep period is shorter than our transition time, just use the standard startReceive
+  // If our sleep period is shorter than our transition time, just use the standard startReceive
   if(sleepPeriod < _tcxoDelay + 1016) {
     return(startReceive());
   }
@@ -711,7 +711,7 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check alowed frequency deviation values
+  // check allowed frequency deviation values
   if(!(freqDev <= 200.0)) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
@@ -735,7 +735,7 @@ int16_t SX126x::setBitRate(float br) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check alowed bit rate values
+  // check allowed bit rate values
   if(!((br >= 0.6) && (br <= 300.0))) {
     return(ERR_INVALID_BIT_RATE);
   }
@@ -765,7 +765,7 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   }*/
   _rxBwKhz = rxBw;
 
-  // check alowed receiver bandwidth values
+  // check allowed receiver bandwidth values
   if(abs(rxBw - 4.8) <= 0.001) {
     _rxBw = SX126X_GFSK_RX_BW_4_8;
   } else if(abs(rxBw - 5.8) <= 0.001) {
@@ -980,7 +980,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
     return(state);
 
   } else if(modem == SX126X_PACKET_TYPE_LORA) {
-    // LoRa CRC doesn't allow to set CRC polynomial, inital value, or inversion
+    // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
 
     // update packet parameters
     if(len) {
@@ -1526,7 +1526,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   // pull NSS low
   digitalWrite(_mod->getCs(), LOW);
 
-  // ensure BUSY is low (state meachine ready)
+  // ensure BUSY is low (state machine ready)
   uint32_t start = millis();
   while(digitalRead(_mod->getGpio())) {
     if(millis() - start >= timeout) {

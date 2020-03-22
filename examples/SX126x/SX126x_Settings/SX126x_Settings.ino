@@ -76,12 +76,12 @@ void setup() {
   // bandwidth:                   500.0 kHz
   // spreading factor:            6
   // coding rate:                 5
-  // sync word:                   0x34 (public network)
+  // sync word:                   0x34 (public network/LoRaWAN)
   // output power:                2 dBm
   // current limit:               50 mA
   // preamble length:             20 symbols
   // CRC:                         enabled
-  state = loraSX1268.begin(915.0, 500.0, 6, 5, 0x3444, 50, 20);
+  state = loraSX1268.begin(915.0, 500.0, 6, 5, 0x34, 50, 20);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -117,8 +117,8 @@ void setup() {
     while (true);
   }
 
-  // set LoRa sync word to 0x1234
-  if (loraSX1262.setSyncWord(0x1234) != ERR_NONE) {
+  // set LoRa sync word to 0xAB
+  if (loraSX1262.setSyncWord(0xAB) != ERR_NONE) {
     Serial.println(F("Unable to set sync word!"));
     while (true);
   }
