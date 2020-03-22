@@ -137,19 +137,20 @@ bool Module::ATsendData(uint8_t* data, uint32_t len) {
 }
 
 bool Module::ATgetResponse() {
-  String data = "";
+  char data[128];
+  char* dataPtr = data;
   uint32_t start = millis();
-  while (millis() - start < _ATtimeout) {
+  while(millis() - start < _ATtimeout) {
     while(ModuleSerial->available() > 0) {
       char c = ModuleSerial->read();
       RADIOLIB_VERBOSE_PRINT(c);
-      data += c;
+      *dataPtr++ = c;
     }
 
-    if(data.indexOf("OK") != -1) {
+    if(strstr(data, "OK") == 0) {
       RADIOLIB_VERBOSE_PRINTLN();
       return(true);
-    } else if (data.indexOf("ERROR") != -1) {
+    } else if(strstr(data, "ERROR") == 0) {
       RADIOLIB_VERBOSE_PRINTLN();
       return(false);
     }

@@ -172,7 +172,7 @@ class Module {
     /*!
       \brief Get response after sending AT command.
 
-      \returns True if AT response contains the string "OK", false otehrwise.
+      \returns True if AT response contains the string "OK", false otherwise.
     */
     bool ATgetResponse();
 
