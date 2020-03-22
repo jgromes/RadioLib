@@ -428,7 +428,7 @@ class nRF24: public PhysicalLayer {
     int16_t setCrcFiltering(bool crcOn = true);
 
     /*!
-     \brief Enable or disable auto-acknowlede packets on all pipes
+     \brief Enable or disable auto-acknowledge packets on all pipes
 
      \param autoAckOn Enable (true) or disable (false) auto-acks.
 
@@ -437,7 +437,7 @@ class nRF24: public PhysicalLayer {
     int16_t setAutoAck(bool autoAckOn = true);
 
     /*!
-     \brief Enable or disable auto-acknowlede packets on given pipe.
+     \brief Enable or disable auto-acknowledge packets on given pipe.
 
      \param pipeNum Number of pipe to which enable / disable auto-acks.
 
