@@ -76,7 +76,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   state = variablePacketLengthMode();
   RADIOLIB_ASSERT(state);
 
-  // configure default preamble lenght
+  // configure default preamble length
   state = setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
@@ -330,7 +330,7 @@ int16_t CC1101::setBitRate(float br) {
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
 
-  // calculate exponent and mantisa values
+  // calculate exponent and mantissa values
   uint8_t e = 0;
   uint8_t m = 0;
   getExpMant(br * 1000.0, 256, 28, 14, e, m);
@@ -350,7 +350,7 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
 
-  // calculate exponent and mantisa values
+  // calculate exponent and mantissa values
   for(int8_t e = 3; e >= 0; e--) {
     for(int8_t m = 3; m >= 0; m --) {
       float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
@@ -380,7 +380,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
 
-  // calculate exponent and mantisa values
+  // calculate exponent and mantissa values
   uint8_t e = 0;
   uint8_t m = 0;
   getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
@@ -563,8 +563,8 @@ int16_t CC1101::setOOK(bool enableOOK) {
     int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_ASK_OOK, 6, 4);
     RADIOLIB_ASSERT(state);
 
-    // PA_TABLE[0] is (by default) the power value used when transmitting a "0L".
-    // Set PA_TABLE[1] to be used when transmitting a "1L".
+    // PA_TABLE[0] is (by default) the power value used when transmitting a "0".
+    // Set PA_TABLE[1] to be used when transmitting a "1".
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
@@ -627,11 +627,11 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
   switch (maxErrBits){
     case 0:
-      // in 16 bit sync word, expect all 16 bits.
+      // in 16 bit sync word, expect all 16 bits
       return (SPIsetRegValue(CC1101_REG_MDMCFG2,
         requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16, 2, 0));
     case 1:
-      // in 16 bit sync word, expect at least 15 bits.
+      // in 16 bit sync word, expect at least 15 bits
       return (SPIsetRegValue(CC1101_REG_MDMCFG2,
         requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16, 2, 0));
     default:
