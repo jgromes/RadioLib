@@ -53,17 +53,17 @@ void loop() {
 
   // you can also transmit byte array up to 256 bytes long
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
     int state = rf.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(F(" success!"));
+    Serial.println(F("success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
-    Serial.println(F(" too long!"));
+    Serial.println(F("too long!"));
 
   }
 
