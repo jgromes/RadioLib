@@ -308,7 +308,7 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t RF69::readData(uint8_t* data, size_t len) {
-  // set mdoe to standby
+  // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
   // get packet length

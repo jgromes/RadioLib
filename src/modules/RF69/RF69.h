@@ -144,7 +144,7 @@
 #define RF69_LISTEN_RES_IDLE_64_US                    0b01000000  //  7     6     resolution of Listen mode idle time: 64 us
 #define RF69_LISTEN_RES_IDLE_4_1_MS                   0b10000000  //  7     6                                          4.1 ms (default)
 #define RF69_LISTEN_RES_IDLE_262_MS                   0b11000000  //  7     6                                          262 ms
-#define RF69_LISTEN_RES_RX_64_US                      0b00010000  //  5     4     resolution of Listen mode ry time: 64 us (default)
+#define RF69_LISTEN_RES_RX_64_US                      0b00010000  //  5     4     resolution of Listen mode rx time: 64 us (default)
 #define RF69_LISTEN_RES_RX_4_1_MS                     0b00100000  //  5     4                                        4.1 ms
 #define RF69_LISTEN_RES_RX_262_MS                     0b00110000  //  5     4                                        262 ms
 #define RF69_LISTEN_ACCEPT_ABOVE_RSSI_THRESH          0b00000000  //  3     3     packet acceptance criteria: RSSI above threshold
@@ -305,7 +305,7 @@
 #define RF69_IRQ_TX_READY                             0b00100000  //  5     5     Tx mode ready
 #define RF69_IRQ_PLL_LOCK                             0b00010000  //  4     4     PLL is locked
 #define RF69_IRQ_RSSI                                 0b00001000  //  3     3     RSSI value exceeded RssiThreshold
-#define RF69_IRQ_TIMEOUT                              0b00000100  //  2     2     timeout occured
+#define RF69_IRQ_TIMEOUT                              0b00000100  //  2     2     timeout occurred
 #define RF69_IRQ_AUTO_MODE                            0b00000010  //  1     1     entered intermediate mode
 #define RF69_SYNC_ADDRESS_MATCH                       0b00000001  //  0     0     sync address detected
 
@@ -313,7 +313,7 @@
 #define RF69_IRQ_FIFO_FULL                            0b10000000  //  7     7     FIFO is full
 #define RF69_IRQ_FIFO_NOT_EMPTY                       0b01000000  //  6     6     FIFO contains at least 1 byte
 #define RF69_IRQ_FIFO_LEVEL                           0b00100000  //  5     5     FIFO contains more than FifoThreshold bytes
-#define RF69_IRQ_FIFO_OVERRUN                         0b00010000  //  4     4     FIFO overrun occured
+#define RF69_IRQ_FIFO_OVERRUN                         0b00010000  //  4     4     FIFO overrun occurred
 #define RF69_IRQ_PACKET_SENT                          0b00001000  //  3     3     packet was sent
 #define RF69_IRQ_PAYLOAD_READY                        0b00000100  //  2     2     last payload byte received and CRC check passed
 #define RF69_IRQ_CRC_OK                               0b00000010  //  1     1     CRC check passed

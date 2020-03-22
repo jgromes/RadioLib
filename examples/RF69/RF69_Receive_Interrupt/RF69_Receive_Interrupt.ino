@@ -104,7 +104,7 @@ void loop() {
     // you can also read received data as byte array
     /*
       byte byteArr[8];
-      int state = lora.readData(byteArr, 8);
+      int state = rf.readData(byteArr, 8);
     */
 
     if (state == ERR_NONE) {

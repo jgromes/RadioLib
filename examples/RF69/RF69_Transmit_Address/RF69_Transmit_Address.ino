@@ -72,7 +72,7 @@ void setup() {
 
   // address filtering can also be disabled
   // NOTE: calling this method will also erase previously set
-  // node and broadcast address
+  //       node and broadcast address
   /*
     Serial.print(F("[RF69] Disabling address filtering ... "));
     state = rf.disableAddressFiltering();
@@ -105,17 +105,17 @@ void loop() {
 
   // transmit byte array in broadcast mode
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
     int state = rf.transmit(byteArr, 8, 0xFF);
   */
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(F(" success!"));
+    Serial.println(F("success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 64 bytes
-    Serial.println(F(" too long!"));
+    Serial.println(F("too long!"));
 
   } else {
     // some other error occurred

@@ -71,11 +71,11 @@ void loop() {
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(F(" success!"));
+    Serial.println(F("success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 64 bytes
-    Serial.println(F(" too long!"));
+    Serial.println(F("too long!"));
 
   } else {
     // some other error occurred

@@ -58,8 +58,8 @@ void setup() {
   }
 
   // set broadcast address
-  // NOTE: calling this method will autmatically enable
-  // address filtering (node or broadcast address)
+  // NOTE: calling this method will automatically enable
+  //       address filtering (node or broadcast address)
   Serial.print(F("[RF69] Setting broadcast address ... "));
   state = rf.setBroadcastAddress(0xFF);
   if (state == ERR_NONE) {

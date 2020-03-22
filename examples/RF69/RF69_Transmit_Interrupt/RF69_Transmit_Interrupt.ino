@@ -61,8 +61,8 @@ void setup() {
 
   // you can also transmit byte array up to 64 bytes long
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                      0x78, 0xAB, 0xCD, 0xEF};
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                      0x89, 0xAB, 0xCD, 0xEF};
     state = rf.startTransmit(byteArr, 8);
   */
 }
@@ -123,8 +123,8 @@ void loop() {
 
     // you can also transmit byte array up to 64 bytes long
     /*
-      byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                        0x78, 0xAB, 0xCD, 0xEF};
+      byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                        0x89, 0xAB, 0xCD, 0xEF};
       int state = rf.startTransmit(byteArr, 8);
     */
 
