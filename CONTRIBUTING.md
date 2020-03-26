@@ -67,3 +67,44 @@ If you're adding a new method, make sure to add appropriate Doxygen comments, so
 
 6. **Keywords**  
 This is an Arduino library, so it needs to comply with the Arduino library specification. To add a new keyword to the Arduino IDE syntax highlighting, add it to the keywords.txt file. **Use true tabs in keywords.txt! No spaces there!**
+
+7. **Dynamic memory**  
+Sometimes, RadioLib might be used in critical applications where dynamic memory allocation using `new` or `malloc` might cause issues. For such cases, RadioLib provides the option to compile using only static arrays. This means that every dynamically allocated array must have a sufficiently large static counterpart. Naturally, all dynamically allocated memory must be properly de-allocated using `delete` or `free`.
+
+```c++
+// build a temporary buffer
+#ifdef RADIOLIB_STATIC_ONLY
+  uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
+#else
+  uint8_t* data = new uint8_t[length + 1];
+  if(!data) {
+    return(ERR_MEMORY_ALLOCATION_FAILED);
+  }
+#endif
+
+// read the received data
+readData(data, length);
+
+// deallocate temporary buffer
+#ifndef RADIOLIB_STATIC_ONLY
+  delete[] data;
+#endif
+```
+
+8. **God Mode**  
+During development, it can be useful to have access to the low level drivers, such as the SPI commands. These are incredibly powerful, since they will basically let user do anything he wants with the module, outside of the normal level of sanity checks. As such, they are normally protected using C++ access modifiers `private` or `protected`. God mode disables this protection, and so any newly implemented `class` must contain the appropriate macro check:
+
+```c++
+class Module {
+  void publicMethod();
+
+#ifndef RADIOLIB_GODMODE
+  private:
+#endif
+
+  void privateMethod();
+};
+```
+
+9. **No Arduino Strings**  
+Arduino `String` class should never be used internally in the library. The only allowed occurence of Arduino `String` is in public API methods, and only at the top-most layer.
