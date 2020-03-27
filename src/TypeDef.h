@@ -14,10 +14,10 @@
  * RADIOLIB_PIN_MODE - which type should be used for pin modes in functions like pinMode().
  * RADIOLIB_PIN_STATUS - which type should be used for pin values in functions like digitalWrite().
  * RADIOLIB_NC - alias for unused pin, usually the largest possible value of RADIOLIB_PIN_TYPE.
- * RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED - defined if the specific platfrom does not support SoftwareSerial.
- * RADIOLIB_HARDWARE_SERIAL_PORT - which hardware serial port should be used on platfroms taht do not have SoftwareSerial support.
+ * RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED - defined if the specific platform does not support SoftwareSerial.
+ * RADIOLIB_HARDWARE_SERIAL_PORT - which hardware serial port should be used on platform that do not have SoftwareSerial support.
  *
- * In addition, some platforms amy require RadioLib to disable spceific drivers (such as ESP8266).
+ * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  */
 #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
    // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
