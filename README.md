@@ -32,16 +32,17 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231 and CC1101
 
 ### Supported platforms:
-* __AVR__ - tested with hardware on Uno, Mega and Leonardo
+* __Arduino AVR__ - tested with hardware on Uno, Mega and Leonardo
 * __ESP8266__ - tested with hardware on NodeMCU and Wemos D1
 * __ESP32__ - tested with hardware on ESP-WROOM-32
 * __STM32__ - tested with hardware on Nucleo L452RE-P
-* __SAMD__ - Arduino Zero, Arduino MKR boards, M0 Pro etc.
-* __SAM__ - Arduino Due
-* __nRF52__ - Adafruit Bluefruit Feather etc.
+* __Arduino SAMD__ - Arduino Zero, Arduino MKR boards, M0 Pro etc.
+* __Arduino SAM__ - Arduino Due
+* __Adafruit nRF52__ - Adafruit Bluefruit Feather etc.
 * _Intel Curie_ - Arduino 101
-* _megaAVR_ - Arduino Uno WiFi Rev.2 etc.
+* _Arduino megaAVR_ - Arduino Uno WiFi Rev.2 etc.
 * _Apollo3_ - SparkFun Artemis Redboard etc.
+* _Arduino nRF52__ - Arduino Nano 33 BLE
 
 The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platoforms in __bold__ on each git push. Platforms in _italic_ are not tested on each push, but do compile and should be working.
 
