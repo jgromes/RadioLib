@@ -42,7 +42,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * _Intel Curie_ - Arduino 101
 * _Arduino megaAVR_ - Arduino Uno WiFi Rev.2 etc.
 * _Apollo3_ - SparkFun Artemis Redboard etc.
-* _Arduino nRF52__ - Arduino Nano 33 BLE
+* _Arduino nRF52_ - Arduino Nano 33 BLE
 
 The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platoforms in __bold__ on each git push. Platforms in _italic_ are not tested on each push, but do compile and should be working.
 
