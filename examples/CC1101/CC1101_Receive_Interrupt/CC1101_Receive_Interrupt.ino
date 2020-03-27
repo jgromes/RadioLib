@@ -24,7 +24,7 @@
 // GDO0 pin:  2
 // RST pin:   unused
 // GDO2 pin:  3 (optional)
-CC1101 cc = new Module(10, 2, NC, 3);
+CC1101 cc = new Module(5, 2, RADIOLIB_NC, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
@@ -105,22 +105,25 @@ void loop() {
     receivedFlag = false;
 
     // you can read received data as an Arduino String
-    String str;
-    int state = cc.readData(str);
+    //String str;
+    //int state = cc.readData(str);
 
     // you can also read received data as byte array
-    /*
+
       byte byteArr[8];
       int state = cc.readData(byteArr, 8);
-    */
+
 
     if (state == ERR_NONE) {
       // packet was successfully received
       Serial.println(F("[CC1101] Received packet!"));
 
       // print data of the packet
-      Serial.print(F("[CC1101] Data:\t\t"));
-      Serial.println(str);
+      Serial.println(F("[CC1101] Data:\t\t"));
+      //Serial.println(str);
+      for(uint8_t i = 0; i < 8; i++) {
+        Serial.println(byteArr[i], HEX);
+      }
 
       // print RSSI (Received Signal Strength Indicator)
       // of the last received packet

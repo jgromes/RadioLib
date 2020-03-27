@@ -188,7 +188,7 @@ sendFrame	KEYWORD2
 # Constants (LITERAL1)
 #######################################
 
-NC	LITERAL1
+RADIOLIB_NC	LITERAL1
 RADIOLIB_VERSION	LITERAL1
 
 ERR_NONE	LITERAL1
