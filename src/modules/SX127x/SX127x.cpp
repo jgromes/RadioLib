@@ -376,14 +376,14 @@ void SX127x::clearDio0Action() {
 }
 
 void SX127x::setDio1Action(void (*func)(void)) {
-  if(_mod->getGpio() != NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
   attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
 }
 
 void SX127x::clearDio1Action() {
-  if(_mod->getGpio() != NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
   detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));

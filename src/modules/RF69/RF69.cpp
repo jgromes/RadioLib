@@ -251,7 +251,7 @@ void RF69::clearDio0Action() {
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
-  if(_mod->getGpio() != NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
@@ -259,7 +259,7 @@ void RF69::setDio1Action(void (*func)(void)) {
 }
 
 void RF69::clearDio1Action() {
-  if(_mod->getGpio() != NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
   detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));

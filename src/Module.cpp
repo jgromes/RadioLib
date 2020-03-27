@@ -1,9 +1,9 @@
 #include "Module.h"
 
-Module::Module(int16_t cs, int16_t irq, int16_t rst) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst) {
   _cs = cs;
-  _rx = NC;
-  _tx = NC;
+  _rx = RADIOLIB_NC;
+  _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
   _spi = &SPI;
@@ -11,10 +11,10 @@ Module::Module(int16_t cs, int16_t irq, int16_t rst) {
   _initInterface = true;
 }
 
-Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio) {
   _cs = cs;
   _rx = gpio;
-  _tx = NC;
+  _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
   _spi = &SPI;
@@ -22,11 +22,11 @@ Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio) {
   _initInterface = true;
 }
 
-Module::Module(int16_t rx, int16_t tx, HardwareSerial* useSer, int16_t rst) {
-  _cs = NC;
+Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* useSer, RADIOLIB_PIN_TYPE rst) {
+  _cs = RADIOLIB_NC;
   _rx = rx;
   _tx = tx;
-  _irq = NC;
+  _irq = RADIOLIB_NC;
   _rst = rst;
   _initInterface = true;
 
@@ -38,10 +38,10 @@ Module::Module(int16_t rx, int16_t tx, HardwareSerial* useSer, int16_t rst) {
 #endif
 }
 
-Module::Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings spiSettings) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
-  _rx = NC;
-  _tx = NC;
+  _rx = RADIOLIB_NC;
+  _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
   _spi = &spi;
@@ -49,10 +49,10 @@ Module::Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings 
   _initInterface = false;
 }
 
-Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi, SPISettings spiSettings) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
   _rx = gpio;
-  _tx = NC;
+  _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
   _spi = &spi;
@@ -60,7 +60,7 @@ Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi
   _initInterface = false;
 }
 
-Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t rx, int16_t tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* useSer) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* useSer) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
@@ -276,14 +276,21 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   _spi->endTransaction();
 }
 
-void Module::pinMode(int16_t pin, uint8_t mode) {
-  if(pin != NC) {
+void Module::pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode) {
+  if(pin != RADIOLIB_NC) {
     ::pinMode(pin, mode);
   }
 }
 
-void Module::digitalWrite(int16_t pin, uint8_t value) {
-  if(pin != NC) {
+void Module::digitalWrite(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS value) {
+  if(pin != RADIOLIB_NC) {
     ::digitalWrite(pin, value);
   }
+}
+
+RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
+  if(pin != RADIOLIB_NC) {
+    return(::digitalRead(pin));
+  }
+  return(LOW);
 }

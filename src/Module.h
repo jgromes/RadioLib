@@ -30,9 +30,9 @@ class Module {
       \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
     */
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    Module(int16_t tx, int16_t rx, HardwareSerial* serial = &Serial1, int16_t rst = NC);
+    Module(RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
 #else
-    Module(int16_t tx, int16_t rx, HardwareSerial* serial = nullptr, int16_t rst = NC);
+    Module(RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
 #endif
 
     /*!
@@ -44,7 +44,7 @@ class Module {
 
       \param rst Arduino pin to be used as hardware reset for the module.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst);
 
     /*!
       \brief Extended SPI-based module constructor. Will use the default SPI interface automatically initialize it.
@@ -57,7 +57,7 @@ class Module {
 
       \param gpio Arduino pin to be used as additional interrupt/GPIO.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio);
 
     /*!
       \brief SPI-based module constructor.
@@ -72,7 +72,7 @@ class Module {
 
       \param spiSettings SPI interface settings.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings spiSettings);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass& spi, SPISettings spiSettings);
 
     /*!
       \brief Extended SPI-based module constructor.
@@ -89,7 +89,7 @@ class Module {
 
       \param spiSettings SPI interface settings.
     */
-    Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi, SPISettings spiSettings);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings);
 
     /*!
       \brief Generic module constructor.
@@ -111,9 +111,9 @@ class Module {
       \param serial HardwareSerial to be used on ESP32 and SAMD. Defaults to 1
     */
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    Module(int16_t cs, int16_t irq, int16_t rst, int16_t rx, int16_t tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* serial = &Serial1);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT);
 #else
-    Module(int16_t cs, int16_t irq, int16_t rst, int16_t rx, int16_t tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* serial = nullptr);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi = SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* serial = nullptr);
 #endif
 
 
@@ -290,42 +290,42 @@ class Module {
 
       \returns Pin number of SPI chip select configured in the constructor.
     */
-    int16_t getCs() const { return(_cs); }
+    RADIOLIB_PIN_TYPE getCs() const { return(_cs); }
 
     /*!
       \brief Access method to get the pin number of interrupt/GPIO.
 
       \returns Pin number of interrupt/GPIO configured in the constructor.
     */
-    int16_t getIrq() const { return(_irq); }
+    RADIOLIB_PIN_TYPE getIrq() const { return(_irq); }
 
     /*!
       \brief Access method to get the pin number of hardware reset pin.
 
       \returns Pin number of hardware reset pin configured in the constructor.
     */
-    int16_t getRst() const { return(_rst); }
+    RADIOLIB_PIN_TYPE getRst() const { return(_rst); }
 
     /*!
       \brief Access method to get the pin number of second interrupt/GPIO.
 
       \returns Pin number of second interrupt/GPIO configured in the constructor.
     */
-    int16_t getGpio() const { return(_rx); }
+    RADIOLIB_PIN_TYPE getGpio() const { return(_rx); }
 
     /*!
       \brief Access method to get the pin number of UART Rx.
 
       \returns Pin number of UART Rx configured in the constructor.
     */
-    int16_t getRx() const { return(_rx); }
+    RADIOLIB_PIN_TYPE getRx() const { return(_rx); }
 
     /*!
       \brief Access method to get the pin number of UART Rx.
 
       \returns Pin number of UART Rx configured in the constructor.
     */
-    int16_t getTx() const { return(_tx); }
+    RADIOLIB_PIN_TYPE getTx() const { return(_tx); }
 
     /*!
       \brief Access method to get the SPI interface.
@@ -342,31 +342,40 @@ class Module {
     SPISettings getSpiSettings() const { return(_spiSettings); }
 
     /*!
-      \brief Arduino core pinMode override that checks -1 as alias for unused pin.
+      \brief Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.
 
       \param pin Pin to change the mode of.
 
       \param mode Which mode to set.
     */
-    static void pinMode(int16_t pin, uint8_t mode);
+    static void pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode);
 
     /*!
-      \brief Arduino core digitalWrite override that checks -1 as alias for unused pin.
+      \brief Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin.
 
       \param pin Pin to write to.
 
       \param value Whether to set the pin high or low.
     */
-    static void digitalWrite(int16_t pin, uint8_t value);
+    static void digitalWrite(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS value);
+
+    /*!
+      \brief Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin.
+
+      \param pin Pin to read from.
+
+      \returns Pin value.
+    */
+    static RADIOLIB_PIN_STATUS digitalRead(RADIOLIB_PIN_TYPE pin);
 
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    int16_t _cs;
-    int16_t _tx;
-    int16_t _rx;
-    int16_t _irq;
-    int16_t _rst;
+    RADIOLIB_PIN_TYPE _cs;
+    RADIOLIB_PIN_TYPE _tx;
+    RADIOLIB_PIN_TYPE _rx;
+    RADIOLIB_PIN_TYPE _irq;
+    RADIOLIB_PIN_TYPE _rst;
 
     bool _initInterface;
     SPIClass* _spi;

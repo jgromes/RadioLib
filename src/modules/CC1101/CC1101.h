@@ -600,7 +600,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction. Defaults to FALLING.
     */
-    void setGdo0Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo0Action(void (*func)(void), RADIOLIB_PIN_STATUS dir = FALLING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -614,7 +614,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction. Defaults to FALLING.
     */
-    void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo2Action(void (*func)(void), RADIOLIB_PIN_STATUS dir = FALLING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
