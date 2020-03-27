@@ -44,9 +44,9 @@
 #endif
 
 #include "modules/CC1101/CC1101.h"
-#ifndef ESP8266
+//#if !defined(ESP8266) && !defined(ARDUINO_ARDUINO_NANO33BLE)
 #include "modules/ESP8266/ESP8266.h"
-#endif
+//#endif
 #include "modules/HC05/HC05.h"
 #include "modules/JDY08/JDY08.h"
 #include "modules/nRF24/nRF24.h"
@@ -54,6 +54,7 @@
 #include "modules/RFM9x/RFM95.h"
 #include "modules/RFM9x/RFM96.h"
 #include "modules/RFM9x/RFM97.h"
+//#include "modules/Si443x/Si4432.h"
 #include "modules/SX1231/SX1231.h"
 #include "modules/SX126x/SX1261.h"
 #include "modules/SX126x/SX1262.h"
@@ -73,11 +74,11 @@
 #include "protocols/RTTY/RTTY.h"
 
 // transport layer protocols
-#ifndef ESP8266
+//#if !defined(ESP8266) && !defined(ARDUINO_ARDUINO_NANO33BLE)
 #include "protocols/TransportLayer/TransportLayer.h"
 #include "protocols/HTTP/HTTP.h"
 #include "protocols/MQTT/MQTT.h"
-#endif
+//#endif
 
 // only create Radio class when using RadioShield
 #ifdef RADIOLIB_RADIOSHIELD
