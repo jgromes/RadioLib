@@ -11,6 +11,7 @@
     - CC1101
     - SX126x
     - nRF24
+    - Si443x/RFM2x
 */
 
 // include the library
@@ -45,7 +46,7 @@ void setup() {
   int state = fsk.beginFSK();
 
   // when using one of the non-LoRa modules for Morse code
-  // (RF69, CC1101, etc.), use the basic begin() method
+  // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = fsk.begin();
 
   if(state == ERR_NONE) {
