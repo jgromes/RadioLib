@@ -322,10 +322,7 @@ int16_t CC1101::setFrequency(float freq) {
 }
 
 int16_t CC1101::setBitRate(float br) {
-  // check allowed bit rate range
-  if(!((br >= 0.025) && (br <= 600.0))) {
-    return(ERR_INVALID_BIT_RATE);
-  }
+  RADIOLIB_CHECK_RANGE(br, 0.025, 600.0, ERR_INVALID_BIT_RATE);
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
@@ -342,10 +339,7 @@ int16_t CC1101::setBitRate(float br) {
 }
 
 int16_t CC1101::setRxBandwidth(float rxBw) {
-  // check allowed bandwidth range
-  if(!((rxBw >= 58.0) && (rxBw <= 812.0))) {
-    return(ERR_INVALID_RX_BANDWIDTH);
-  }
+  RADIOLIB_CHECK_RANGE(rxBw, 58.0, 812.0, ERR_INVALID_RX_BANDWIDTH);
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
@@ -372,10 +366,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
     return(state);
   }
 
-  // check allowed frequency deviation range
-  if(!((freqDev >= 1.587) && (freqDev <= 380.8))) {
-    return(ERR_INVALID_FREQUENCY_DEVIATION);
-  }
+  RADIOLIB_CHECK_RANGE(freqDev, 1.587, 380.8, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
@@ -535,9 +526,7 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
 
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
-  if(!(numBroadcastAddrs > 0) && (numBroadcastAddrs <= 2)) {
-    return(ERR_INVALID_NUM_BROAD_ADDRS);
-  }
+  RADIOLIB_CHECK_RANGE(numBroadcastAddrs, 1, 2, ERR_INVALID_NUM_BROAD_ADDRS);
 
   // enable address filtering
   int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL1, numBroadcastAddrs + 0x01, 1, 0);
