@@ -225,14 +225,11 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
 }
 
 int16_t nRF24::setFrequency(int16_t freq) {
-  // check allowed range
-  if(!((freq >= 2400) && (freq <= 2525))) {
-    return(ERR_INVALID_FREQUENCY);
-  }
+  RADIOLIB_CHECK_RANGE(freq, 2400, 2525, ERR_INVALID_FREQUENCY);
 
   // set frequency
   uint8_t freqRaw = freq - 2400;
-  return _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
+  return(_mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0));
 }
 
 int16_t nRF24::setDataRate(int16_t dataRate) {
@@ -420,7 +417,7 @@ int16_t nRF24::getStatus(uint8_t mask) {
 }
 
 bool nRF24::isCarrierDetected() {
-  return(_mod->SPIgetRegValue(NRF24_REG_RPD, 0,0)) == 1;
+  return(_mod->SPIgetRegValue(NRF24_REG_RPD, 0, 0) == 1);
 }
 
 int16_t nRF24::setFrequencyDeviation(float freqDev) {
