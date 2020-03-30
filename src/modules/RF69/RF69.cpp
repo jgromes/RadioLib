@@ -359,10 +359,7 @@ int16_t RF69::setFrequency(float freq) {
 }
 
 int16_t RF69::setBitRate(float br) {
-  // check allowed bitrate
-  if((br < 1.2) || (br > 300.0)) {
-    return(ERR_INVALID_BIT_RATE);
-  }
+  RADIOLIB_CHECK_RANGE(br, 1.2, 300.0, ERR_INVALID_BIT_RATE);
 
   // check bitrate-bandwidth ratio
   if(!(br < 2000 * _rxBw)) {
@@ -496,10 +493,7 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
 }
 
 int16_t RF69::setOutputPower(int8_t power) {
-  // check output power range
-  if((power < -18) || (power > 17)) {
-    return(ERR_INVALID_OUTPUT_POWER);
-  }
+  RADIOLIB_CHECK_RANGE(power, -18, 17, ERR_INVALID_OUTPUT_POWER);
 
   // set mode to standby
   setMode(RF69_STANDBY);
