@@ -11,6 +11,7 @@
     - CC1101
     - SX126x
     - nRF24
+    - Si443x/RFM2x
 
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
@@ -48,7 +49,7 @@ void setup() {
   int state = fsk.beginFSK();
 
   // when using one of the non-LoRa modules for RTTY
-  // (RF69, CC1101, etc.), use the basic begin() method
+  // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = fsk.begin();
 
   if(state == ERR_NONE) {
@@ -63,11 +64,12 @@ void setup() {
   // NOTE: RTTY frequency shift will be rounded
   //       to the nearest multiple of frequency step size.
   //       The exact value depends on the module:
-  //         SX127x - 61 Hz
+  //         SX127x/RFM9x - 61 Hz
   //         RF69 - 61 Hz
   //         CC1101 - 397 Hz
   //         SX126x - 1 Hz
   //         nRF24 - 1000000 Hz
+  //         Si443x/RFM2x - 156 Hz
   Serial.print(F("[RTTY] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz
