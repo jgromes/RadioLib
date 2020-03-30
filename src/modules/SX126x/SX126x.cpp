@@ -140,10 +140,10 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   state = setDio2AsRfSwitch(false);
   RADIOLIB_ASSERT(state);
 
-  if (useRegulatorLDO) {
-      state = setRegulatorLDO();
+  if(useRegulatorLDO) {
+    state = setRegulatorLDO();
   } else {
-      state = setRegulatorDCDC();
+    state = setRegulatorDCDC();
   }
 
   return(state);
@@ -580,12 +580,10 @@ int16_t SX126x::setBandwidth(float bw) {
     return(ERR_WRONG_MODEM);
   }
 
-  // ensure byte conversion doesn't overflow:
-  if(!((bw > 0) && (bw < 510))) {
-    return(ERR_INVALID_BANDWIDTH);
-  }
+  // ensure byte conversion doesn't overflow
+  RADIOLIB_CHECK_RANGE(bw, 0.0, 510.0, ERR_INVALID_BANDWIDTH);
 
-  // check alowed bandwidth values
+  // check allowed bandwidth values
   uint8_t bw_div2 = bw / 2 + 0.01;
   switch (bw_div2)  {
     case 3: // 7.8:
@@ -633,10 +631,7 @@ int16_t SX126x::setSpreadingFactor(uint8_t sf) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed spreading factor values
-  if(!((sf >= 5) && (sf <= 12))) {
-    return(ERR_INVALID_SPREADING_FACTOR);
-  }
+  RADIOLIB_CHECK_RANGE(sf, 5, 12, ERR_INVALID_SPREADING_FACTOR);
 
   // update modulation parameters
   _sf = sf;
@@ -649,10 +644,7 @@ int16_t SX126x::setCodingRate(uint8_t cr) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed spreading factor values
-  if(!((cr >= 5) && (cr <= 8))) {
-    return(ERR_INVALID_CODING_RATE);
-  }
+  RADIOLIB_CHECK_RANGE(cr, 5, 8, ERR_INVALID_CODING_RATE);
 
   // update modulation parameters
   _cr = cr - 4;
@@ -711,10 +703,7 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed frequency deviation values
-  if(!(freqDev <= 200.0)) {
-    return(ERR_INVALID_FREQUENCY_DEVIATION);
-  }
+  RADIOLIB_CHECK_RANGE(freqDev, 0.0, 200.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
   uint32_t freqDevRaw = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
@@ -735,10 +724,7 @@ int16_t SX126x::setBitRate(float br) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed bit rate values
-  if(!((br >= 0.6) && (br <= 300.0))) {
-    return(ERR_INVALID_BIT_RATE);
-  }
+  RADIOLIB_CHECK_RANGE(br, 0.6, 300.0, ERR_INVALID_BIT_RATE);
 
   // calculate raw bit rate value
   uint32_t brRaw = (uint32_t)((SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
@@ -1002,12 +988,13 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
   }
 
   int16_t state = ERR_NONE;
-  if(enabled != true) {
+  if(!enabled) {
     // disable whitening
     _whitening = SX126X_GFSK_WHITENING_OFF;
 
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType);
     RADIOLIB_ASSERT(state);
+
   } else {
     // enable whitening
     _whitening = SX126X_GFSK_WHITENING_ON;

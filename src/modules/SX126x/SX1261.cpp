@@ -5,10 +5,7 @@ SX1261::SX1261(Module* mod): SX1262(mod) {
 }
 
 int16_t SX1261::setOutputPower(int8_t power) {
-  // check allowed power range
-  if (!((power >= -17) && (power <= 14))) {
-    return(ERR_INVALID_OUTPUT_POWER);
-  }
+  RADIOLIB_CHECK_RANGE(power, -17, 14, ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
   uint8_t ocp = 0;

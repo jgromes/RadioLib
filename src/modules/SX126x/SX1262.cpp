@@ -39,10 +39,7 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 }
 
 int16_t SX1262::setFrequency(float freq, bool calibrate) {
-  // check frequency range
-  if((freq < 150.0) || (freq > 960.0)) {
-    return(ERR_INVALID_FREQUENCY);
-  }
+  RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, ERR_INVALID_FREQUENCY);
 
   int16_t state = ERR_NONE;
 
@@ -74,10 +71,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 }
 
 int16_t SX1262::setOutputPower(int8_t power) {
-  // check allowed power range
-  if (!((power >= -17) && (power <= 22))) {
-    return(ERR_INVALID_OUTPUT_POWER);
-  }
+  RADIOLIB_CHECK_RANGE(power, -17, 22, ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
   uint8_t ocp = 0;
