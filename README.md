@@ -18,7 +18,9 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __JDY08__ BLE module
 * __nRF24L01__ 2.4 GHz module
 * __RF69__ FSK/OOK radio module
+* __RFM2x__ series FSK modules (RFM22, RM23)
 * __RFM9x__ series LoRa modules (RFM95, RM96, RFM97, RFM98)
+* __Si443x__ series FSK modules (Si4430, Si4431, Si4432)
 * __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
 * __SX126x__ series LoRa modules (SX1261, SX1262, SX1268)
 * __SX1231__ FSK/OOK radio module
@@ -27,9 +29,9 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 ### Supported protocols:
 * __MQTT__ for modules: ESP8266
 * __HTTP__ for modules: ESP8266
-* __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101 and nRF24L01
-* __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101 and nRF24L01
-* __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231 and CC1101
+* __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
+* __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
+* __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 
 ### Supported platforms:
 * __Arduino AVR__ - tested with hardware on Uno, Mega and Leonardo
@@ -44,7 +46,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * _Apollo3_ - SparkFun Artemis Redboard etc.
 * _Arduino nRF52_ - Arduino Nano 33 BLE
 
-The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platoforms in __bold__ on each git push. Platforms in _italic_ are not tested on each push, but do compile and should be working.
+The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms in __bold__ on each git push. Platforms in _italic_ are not tested on each push, but do compile and should be working.
 
 ### In development:
 * __SIM800C__ GSM module

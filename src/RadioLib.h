@@ -11,6 +11,7 @@
   - HC05 Bluetooth module
   - JDY08 BLE module
   - RF69 FSK module
+  - Si443x FSK module
   - SX126x LoRa/FSK module
   - SX127x LoRa/FSK module
   - SX1231 FSK module
@@ -49,9 +50,14 @@
 #include "modules/JDY08/JDY08.h"
 #include "modules/nRF24/nRF24.h"
 #include "modules/RF69/RF69.h"
+#include "modules/RFM2x/RFM22.h"
+#include "modules/RFM2x/RFM23.h"
 #include "modules/RFM9x/RFM95.h"
 #include "modules/RFM9x/RFM96.h"
 #include "modules/RFM9x/RFM97.h"
+#include "modules/Si443x/Si4430.h"
+#include "modules/Si443x/Si4431.h"
+#include "modules/Si443x/Si4432.h"
 #include "modules/SX1231/SX1231.h"
 #include "modules/SX126x/SX1261.h"
 #include "modules/SX126x/SX1262.h"
