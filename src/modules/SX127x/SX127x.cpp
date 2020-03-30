@@ -647,13 +647,9 @@ int16_t SX127x::setBitRate(float br) {
 
   // check allowed bit rate
   if(_ook) {
-    if((br < 1.2) || (br > 32.768)) {
-      return(ERR_INVALID_BIT_RATE);
-    }
+    RADIOLIB_CHECK_RANGE(br, 1.2, 32.768, ERR_INVALID_BIT_RATE);
   } else {
-    if((br < 1.2) || (br > 300.0)) {
-      return(ERR_INVALID_BIT_RATE);
-    }
+    RADIOLIB_CHECK_RANGE(br, 1.2, 300.0, ERR_INVALID_BIT_RATE);
   }
 
   // set mode to STANDBY
@@ -701,10 +697,7 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed bandwidth values
-  if(!((rxBw >= 2.6) && (rxBw <= 250.0))) {
-    return(ERR_INVALID_RX_BANDWIDTH);
-  }
+  RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, ERR_INVALID_RX_BANDWIDTH);
 
   // set mode to STANDBY
   int16_t state = setMode(SX127X_STANDBY);
@@ -738,10 +731,7 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check constraints
-  if((len > 8) || (len < 1)) {
-    return(ERR_INVALID_SYNC_WORD);
-  }
+  RADIOLIB_CHECK_RANGE(len, 1, 8, ERR_INVALID_SYNC_WORD);
 
   // sync word must not contain value 0x00
   for(uint8_t i = 0; i < len; i++) {
@@ -887,9 +877,7 @@ int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
     return(ERR_INVALID_NUM_SAMPLES);
   }
 
-  if(!((offset >= -16) && (offset <= 15))) {
-    return(ERR_INVALID_RSSI_OFFSET);
-  }
+  RADIOLIB_CHECK_RANGE(offset, -16, 15, ERR_INVALID_RSSI_OFFSET);
 
   // set new register values
   state = _mod->SPIsetRegValue(SX127X_REG_RSSI_CONFIG, offset, 7, 3);

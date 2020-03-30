@@ -35,10 +35,7 @@ int16_t SX1279::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 }
 
 int16_t SX1279::setFrequency(float freq) {
-  // check frequency range
-  if((freq < 137.0) || (freq > 960.0)) {
-    return(ERR_INVALID_FREQUENCY);
-  }
+  RADIOLIB_CHECK_RANGE(freq, 137.0, 960.0, ERR_INVALID_FREQUENCY);
 
   // set frequency
   return(SX127x::setFrequencyRaw(freq));

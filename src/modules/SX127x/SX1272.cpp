@@ -66,10 +66,7 @@ void SX1272::reset() {
 }
 
 int16_t SX1272::setFrequency(float freq) {
-  // check frequency range
-  if((freq < 860.0) || (freq > 1020.0)) {
-    return(ERR_INVALID_FREQUENCY);
-  }
+  RADIOLIB_CHECK_RANGE(freq, 860.0, 1020.0, ERR_INVALID_FREQUENCY);
 
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);
