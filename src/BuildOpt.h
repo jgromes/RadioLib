@@ -184,7 +184,7 @@
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges.
 */
-#define RADIOLIB_CHECK_CONSTRAINTS(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
+#define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
 
 
 // version definitions
