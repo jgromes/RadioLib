@@ -31,25 +31,69 @@
 #define SSTV_HEADER_BREAK_LENGTH                      10000
 #define SSTV_HEADER_BIT_LENGTH                        30000
 
-// structure to save data about tone
+/*!
+  \struct tone_t
+
+  \brief Structure to save data about tone.
+*/
 struct tone_t {
+
+  /*!
+    \brief Tone type: GENERIC for sync and porch tones, SCAN_GREEN, SCAN_BLUE and SCAN_RED for scan lines.
+  */
   enum {
     GENERIC = 0,
     SCAN_GREEN,
     SCAN_BLUE,
     SCAN_RED
   } type;
+
+  /*!
+    \brief Length of tone in us, set to 0 for picture scan tones.
+  */
   uint32_t len;
+
+  /*!
+    \brief Frequency of tone in Hz, set to 0 for picture scan tones.
+  */
   uint16_t freq;
 };
 
-// structure to save data about SSTV mode
+/*!
+  \struct SSTVMode_t
+
+  \brief Structure to save data about supported SSTV modes.
+*/
 struct SSTVMode_t {
+
+  /*!
+    \brief Unique VIS code of the SSTV mode.
+  */
   uint8_t visCode;
+
+  /*!
+    \brief Picture width in pixels.
+  */
   uint16_t width;
+
+  /*!
+    \brief Picture height in pixels.
+  */
   uint16_t height;
+
+  /*!
+    \brief Pixel scan length in us.
+  */
   uint16_t scanPixelLen;
+
+  /*!
+    \brief Number of tones in each transmission line. Picture scan data is considered single tone.
+  */
   uint8_t numTones;
+
+  /*!
+    \brief Sequence of tones in each transmission line. This is used to create the correct encoding sequence.
+  */
   tone_t tones[8];
 };
 
@@ -64,6 +108,11 @@ extern const SSTVMode_t PasokonP3;
 extern const SSTVMode_t PasokonP5;
 extern const SSTVMode_t PasokonP7;
 
+/*!
+  \class SSTVClient
+
+  \brief Client for SSTV transmissions.
+*/
 class SSTVClient {
   public:
     /*!

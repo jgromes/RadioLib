@@ -20,6 +20,7 @@
     - RTTY (RTTYClient)
     - Morse Code (MorseClient)
     - AX.25 (AX25Client)
+    - SSTV (SSTVClient)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)
