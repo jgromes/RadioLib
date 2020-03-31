@@ -10,6 +10,7 @@ RadioLib	KEYWORD1
 RadioShield	KEYWORD1
 Module	KEYWORD1
 
+# modules
 CC1101	KEYWORD1
 ESP8266	KEYWORD1
 HC05	KEYWORD1
@@ -39,6 +40,7 @@ SX1279	KEYWORD1
 XBee	KEYWORD1
 XBeeSerial	KEYWORD1
 
+# protocols
 MQTTClient	KEYWORD1
 HTTPClient	KEYWORD1
 RTTYClient	KEYWORD1
@@ -46,6 +48,18 @@ MorseClient	KEYWORD1
 PagerClient	KEYWORD1
 AX25Client	KEYWORD1
 AX25Frame	KEYWORD1
+SSTVClient	KEYWORD1
+
+# SSTV modes
+Scottie1	KEYWORD1
+Scottie2	KEYWORD1
+ScottieDX	KEYWORD1
+Martin1	KEYWORD1
+Martin2	KEYWORD1
+Wrasse	KEYWORD1
+PasokonP3	KEYWORD1
+PasokonP5	KEYWORD1
+PasokonP7	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -189,6 +203,11 @@ setRepeaters	KEYWORD2
 setRecvSequence	KEYWORD2
 setSendSequence	KEYWORD2
 sendFrame	KEYWORD2
+
+# SSTV
+sendHeader	KEYWORD2
+sendLine	KEYWORD2
+getPictureHeight	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

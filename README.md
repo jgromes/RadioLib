@@ -32,6 +32,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
+* __SSTV__ for modules: SX127x, RFM9x, SX126x, RF69 and SX1231
 
 ### Supported platforms:
 * __Arduino AVR__ - tested with hardware on Uno, Mega and Leonardo
