@@ -116,7 +116,7 @@
 
 #else
   // other platforms not covered by the above list - this may or may not work
-  #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
+  #define RADIOLIB_UNKNOWN_PLATFORM
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t

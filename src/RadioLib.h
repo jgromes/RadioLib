@@ -41,8 +41,16 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+// warnings are printed in this file since BuildOpt.h is compiled in multiple places
+
+// check God mode
 #ifdef RADIOLIB_GODMODE
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
+#endif
+
+// check unknown/unsupported platform
+#ifdef RADIOLIB_UNKNOWN_PLATFORM
+  #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
 #endif
 
 #include "modules/CC1101/CC1101.h"
