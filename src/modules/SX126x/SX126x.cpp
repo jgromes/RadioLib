@@ -219,6 +219,7 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // wait for packet transmission or timeout
   uint32_t start = micros();
   while(!digitalRead(_mod->getIrq())) {
+    yield();
     if(micros() - start > timeout) {
       clearIrqStatus();
       standby();
@@ -278,6 +279,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   // wait for packet reception or timeout
   uint32_t start = micros();
   while(!digitalRead(_mod->getIrq())) {
+    yield();
     if(micros() - start > timeout) {
       fixImplicitTimeout();
       clearIrqStatus();
@@ -1516,6 +1518,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   // ensure BUSY is low (state machine ready)
   uint32_t start = millis();
   while(digitalRead(_mod->getGpio())) {
+    yield();
     if(millis() - start >= timeout) {
       return(ERR_SPI_CMD_TIMEOUT);
     }
@@ -1583,6 +1586,7 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     delayMicroseconds(1);
     start = millis();
     while(digitalRead(_mod->getGpio())) {
+      yield();
       if(millis() - start >= timeout) {
         status = SX126X_STATUS_CMD_TIMEOUT;
         break;
