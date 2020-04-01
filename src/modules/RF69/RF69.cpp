@@ -117,6 +117,8 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // wait for transmission end or timeout
   uint32_t start = micros();
   while(!digitalRead(_mod->getIrq())) {
+    yield();
+
     if(micros() - start > timeout) {
       standby();
       clearIRQFlags();
@@ -144,6 +146,8 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   // wait for packet reception or timeout
   uint32_t start = micros();
   while(!digitalRead(_mod->getIrq())) {
+    yield();
+    
     if(micros() - start > timeout) {
       standby();
       clearIRQFlags();
