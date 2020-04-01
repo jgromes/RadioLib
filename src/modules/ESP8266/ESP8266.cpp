@@ -195,6 +195,7 @@ size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
 
   // wait until the required number of bytes is received or until timeout
   while((millis() - start < timeout) && (i < len)) {
+    yield();
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
       RADIOLIB_DEBUG_PRINT(b);
@@ -209,6 +210,7 @@ size_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
   uint32_t start = millis();
   while(_mod->ModuleSerial->available() < (int16_t)minBytes) {
+    yield();
     if(millis() - start >= timeout) {
       return(0);
     }
@@ -219,6 +221,7 @@ size_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   uint8_t i = 0;
   start = millis();
   while(_mod->ModuleSerial->available() > 0) {
+    yield();
     char c = _mod->ModuleSerial->read();
     rawStr[i++] = c;
     if(c == ':') {
