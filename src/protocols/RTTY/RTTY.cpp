@@ -392,13 +392,17 @@ size_t RTTYClient::println(double d, int digits) {
 void RTTYClient::mark() {
   uint32_t start = micros();
   _phy->transmitDirect(_base + _shift);
-  while(micros() - start < _bitDuration);
+  while(micros() - start < _bitDuration) {
+    yield();
+  }
 }
 
 void RTTYClient::space() {
   uint32_t start = micros();
   _phy->transmitDirect(_base);
-  while(micros() - start < _bitDuration);
+  while(micros() - start < _bitDuration) {
+    yield();
+  }
 }
 
 size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
