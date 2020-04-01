@@ -144,6 +144,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     // wait for packet transmission or timeout
     start = micros();
     while(!digitalRead(_mod->getIrq())) {
+      yield();
       if(micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_TX_TIMEOUT);
@@ -161,6 +162,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     // wait for transmission end or timeout
     start = micros();
     while(!digitalRead(_mod->getIrq())) {
+      yield();
       if(micros() - start > timeout) {
         clearIRQFlags();
         standby();
@@ -194,6 +196,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
 
     // wait for packet reception or timeout (100 LoRa symbols)
     while(!digitalRead(_mod->getIrq())) {
+      yield();
       if(digitalRead(_mod->getGpio())) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
@@ -211,6 +214,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     // wait for packet reception or timeout
     uint32_t start = micros();
     while(!digitalRead(_mod->getIrq())) {
+      yield();
       if(micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
@@ -247,6 +251,7 @@ int16_t SX127x::scanChannel() {
 
   // wait for channel activity detected or timeout
   while(!digitalRead(_mod->getIrq())) {
+    yield();
     if(digitalRead(_mod->getGpio())) {
       clearIRQFlags();
       return(PREAMBLE_DETECTED);
