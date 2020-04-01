@@ -405,6 +405,7 @@ int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
   // wait until all response bytes are available (5s timeout)
   uint32_t start = millis();
   while(_mod->ModuleSerial->available() < (int16_t)numBytes) {
+    yield();
     if(millis() - start >= timeout/2) {
       return(ERR_FRAME_MALFORMED);
     }
@@ -456,6 +457,7 @@ uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
   uint32_t start = millis();
   while((size_t)_mod->ModuleSerial->available() < minBytes) {
+    yield();
     if(millis() - start >= timeout) {
       return(0);
     }
@@ -466,6 +468,7 @@ uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
   uint8_t i = 0;
   RADIOLIB_DEBUG_PRINT(F("reading frame length: "));
   while(_mod->ModuleSerial->available() > 0) {
+    yield();
     uint8_t b = _mod->ModuleSerial->read();
     RADIOLIB_DEBUG_PRINT(b, HEX);
     RADIOLIB_DEBUG_PRINT('\t');
