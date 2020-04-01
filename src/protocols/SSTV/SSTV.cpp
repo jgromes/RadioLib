@@ -262,5 +262,7 @@ uint16_t SSTVClient::getPictureHeight() {
 void SSTVClient::tone(float freq, uint32_t len) {
   uint32_t start = micros();
   _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
-  while(micros() - start < len);
+  while(micros() - start < len) {
+    yield();
+  }
 }
