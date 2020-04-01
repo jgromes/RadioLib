@@ -74,6 +74,7 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // wait for transmission end or timeout
   uint32_t start = micros();
   while(digitalRead(_mod->getIrq())) {
+    yield();
     if(micros() - start > timeout) {
       standby();
       clearIRQFlags();
