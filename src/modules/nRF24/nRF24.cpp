@@ -72,6 +72,8 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // wait until transmission is finished
   uint32_t start = micros();
   while(digitalRead(_mod->getIrq())) {
+    yield();
+
     // check maximum number of retransmits
     if(getStatus(NRF24_MAX_RT)) {
       standby();
@@ -101,6 +103,8 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
   // wait for Rx_DataReady or timeout
   uint32_t start = micros();
   while(digitalRead(_mod->getIrq())) {
+    yield();
+    
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
     if(micros() - start >= 60000) {
       standby();
