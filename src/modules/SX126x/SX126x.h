@@ -106,7 +106,7 @@
 
 
 // SX126X SPI command variables
-//SX126X_CMD_SET_SLEEP
+//SX126X_CMD_SET_SLEEP                                                MSB   LSB   DESCRIPTION
 #define SX126X_SLEEP_START_COLD                       0b00000000  //  2     2     sleep mode: cold start, configuration is lost (default)
 #define SX126X_SLEEP_START_WARM                       0b00000100  //  2     2                 warm start, configuration is retained
 #define SX126X_SLEEP_RTC_OFF                          0b00000000  //  0     0     wake on RTC timeout: disabled
@@ -768,7 +768,7 @@ class SX126x: public PhysicalLayer {
     */
     float getSNR();
 
-     /*!
+    /*!
       \brief Query modem for the packet length of received payload.
 
       \param update Update received packet length. Will return cached value when set to false.
@@ -786,7 +786,7 @@ class SX126x: public PhysicalLayer {
    */
    int16_t fixedPacketLengthMode(uint8_t len = SX126X_MAX_PACKET_LENGTH);
 
-    /*!
+   /*!
      \brief Set modem in variable packet length mode. Available in FSK mode only.
 
      \param len Maximum packet length.
@@ -795,7 +795,7 @@ class SX126x: public PhysicalLayer {
    */
    int16_t variablePacketLengthMode(uint8_t maxLen = SX126X_MAX_PACKET_LENGTH);
 
-    /*!
+   /*!
      \brief Get expected time-on-air for a given size of payload
 
      \param len Payload length in bytes.
@@ -804,14 +804,14 @@ class SX126x: public PhysicalLayer {
    */
    uint32_t getTimeOnAir(size_t len);
 
-    /*!
+   /*!
      \brief Set implicit header mode for future reception/transmission.
 
      \returns \ref status_codes
    */
    int16_t implicitHeader(size_t len);
 
-    /*!
+   /*!
      \brief Set explicit header mode for future reception/transmission.
 
      \param len Payload length in bytes.
@@ -821,17 +821,17 @@ class SX126x: public PhysicalLayer {
    int16_t explicitHeader();
 
    /*!
-    \brief Set regulator mode to LDO.
+     \brief Set regulator mode to LDO.
 
-    \returns \ref status_codes
-  */
+     \returns \ref status_codes
+   */
    int16_t setRegulatorLDO();
 
    /*!
-    \brief Set regulator mode to DC-DC.
+     \brief Set regulator mode to DC-DC.
 
-    \returns \ref status_codes
-  */
+     \returns \ref status_codes
+   */
    int16_t setRegulatorDCDC();
 
    /*!
@@ -846,7 +846,7 @@ class SX126x: public PhysicalLayer {
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
-    // SX1276x SPI command implementations
+    // SX126x SPI command implementations
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
     int16_t setCad();
