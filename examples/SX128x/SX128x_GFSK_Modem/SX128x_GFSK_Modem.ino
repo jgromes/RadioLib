@@ -60,7 +60,6 @@ void setup() {
   state = gfsk.setFrequency(2410.5);
   state = gfsk.setBitRate(200);
   state = gfsk.setFrequencyDeviation(100.0);
-  state = gfsk.setRxBandwidth(250.0);
   state = gfsk.setOutputPower(5);
   state = gfsk.setDataShaping(1.0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89};
