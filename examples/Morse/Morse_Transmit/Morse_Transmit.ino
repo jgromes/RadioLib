@@ -12,6 +12,7 @@
     - SX126x
     - nRF24
     - Si443x/RFM2x
+    - SX128x
 */
 
 // include the library
@@ -44,7 +45,7 @@ void setup() {
   // current limit:               100 mA
   // sync word:                   0x2D  0x01
   int state = fsk.beginFSK();
-
+  
   // when using one of the non-LoRa modules for Morse code
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = fsk.begin();
