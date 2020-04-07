@@ -14,6 +14,7 @@
   - Si443x FSK module
   - SX126x LoRa/FSK module
   - SX127x LoRa/FSK module
+  - SX128x LoRa/GFSK/BLE/FLRC module
   - SX1231 FSK module
   - XBee module (S2B)
   - PhysicalLayer protocols
@@ -77,6 +78,9 @@
 #include "modules/SX127x/SX1277.h"
 #include "modules/SX127x/SX1278.h"
 #include "modules/SX127x/SX1279.h"
+#include "modules/SX128x/SX1280.h"
+#include "modules/SX128x/SX1281.h"
+#include "modules/SX128x/SX1282.h"
 #include "modules/XBee/XBee.h"
 
 // physical layer protocols
@@ -110,7 +114,6 @@
   \brief Library control object when using RadioShield.
   Contains two pre-configured "modules", which correspond to the slots on shield.
 */
-
 class Radio {
   public:
 
