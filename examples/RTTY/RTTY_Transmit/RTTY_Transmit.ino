@@ -12,6 +12,7 @@
     - SX126x
     - nRF24
     - Si443x/RFM2x
+    - SX128x
 
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
@@ -70,6 +71,7 @@ void setup() {
   //         SX126x - 1 Hz
   //         nRF24 - 1000000 Hz
   //         Si443x/RFM2x - 156 Hz
+  //         SX128x - 198 Hz
   Serial.print(F("[RTTY] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz
