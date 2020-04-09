@@ -1034,6 +1034,11 @@ int16_t SX128x::config(uint8_t modem) {
   state = SPIwriteCommand(SX128X_CMD_SET_CAD_PARAMS, data, 1);
   RADIOLIB_ASSERT(state);
 
+  // set regulator mode to DC-DC
+  data[0] = SX128X_REGULATOR_DC_DC;
+  state = SPIwriteCommand(SX128X_CMD_SET_REGULATOR_MODE, data, 1);
+  RADIOLIB_ASSERT(state);
+
   return(ERR_NONE);
 }
 

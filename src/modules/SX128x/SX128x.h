@@ -318,6 +318,11 @@
 #define SX128X_IRQ_NONE                               0x0000      //  15    0                       none
 #define SX128X_IRQ_ALL                                0xFFFF      //  15    0                       all
 
+//SX128X_CMD_SET_REGULATOR_MODE
+#define SX128X_REGULATOR_LDO                          0x00        //  7     0     set regulator mode: LDO (default)
+#define SX128X_REGULATOR_DC_DC                        0x01        //  7     0                         DC-DC
+
+
 /*!
   \class SX128x
 
