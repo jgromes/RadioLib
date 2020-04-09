@@ -888,7 +888,7 @@ uint32_t SX128x::getTimeOnAir(size_t len) {
     return(((uint32_t(1) << sf) / _bwKhz) * N_symbol * 1000.0);
 
   } else {
-    return((len * 8) / _brKbps);
+    return(((uint32_t)len * 8 * 1000) / _brKbps);
   }
 
 }
