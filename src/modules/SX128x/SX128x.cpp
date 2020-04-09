@@ -604,7 +604,7 @@ int16_t SX128x::setBitRate(uint16_t br) {
   } else if(br == 2000) {
     _br = SX128X_BLE_GFSK_BR_2_000_BW_2_4;
   } else {
-    return(ERR_INVALID_BIT_RANGE);
+    return(ERR_INVALID_BIT_RATE);
   }
 
   // update modulation parameters
