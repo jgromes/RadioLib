@@ -871,6 +871,7 @@ class CC1101: public PhysicalLayer {
     Module* _mod;
 
     float _freq;
+    float _br;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
     uint8_t _modulation;

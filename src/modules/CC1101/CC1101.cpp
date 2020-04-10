@@ -401,7 +401,12 @@ int16_t CC1101::setBitRate(float br) {
   // set bit rate value
   int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
   state |= SPIsetRegValue(CC1101_REG_MDMCFG3, m);
-  return(state);
+
+  if (state == ERR_NONE) {
+    _br = br;
+  }
+
+  return (state);
 }
 
 int16_t CC1101::setRxBandwidth(float rxBw) {
