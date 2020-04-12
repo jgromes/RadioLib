@@ -114,6 +114,54 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   return(state);
 }
 
+int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, float dataShaping) {
+  // set module properties
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getGpio(), INPUT);
+
+  // initialize BLE modulation variables
+  _brKbps = br;
+  _br = SX128X_BLE_GFSK_BR_0_800_BW_2_4;
+  _modIndexReal = 1.0;
+  _modIndex = SX128X_BLE_GFSK_MOD_IND_1_00;
+  _shaping = SX128X_BLE_GFSK_BT_0_5;
+
+  // initialize BLE packet variables
+  _crcGFSK = SX128X_BLE_CRC_3_BYTE;
+  _whitening = SX128X_GFSK_BLE_WHITENING_ON;
+
+  // reset the module and verify startup
+  int16_t state = reset();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // configure settings not accessible by API
+  state = config(SX128X_PACKET_TYPE_BLE);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setFrequencyDeviation(freqDev);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(dataShaping);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uint16_t preambleLength, float dataShaping) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
@@ -468,7 +516,7 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   if(getPacketType() == SX128X_PACKET_TYPE_RANGING) {
     return(ERR_WRONG_MODEM);
   }
-  
+
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -894,6 +942,17 @@ int16_t SX128x::setWhitening(bool enabled) {
     return(setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening));
   }
   return(setPacketParamsBLE(_connectionState, _crcBLE, _bleTestPayload, _whitening));
+}
+
+int16_t SX128x::setAccessAddress(uint32_t addr) {
+  // check active modem
+  if(getPacketType() != SX128X_PACKET_TYPE_BLE) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // use setSyncWord to set the address
+  uint8_t syncWord[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
+  return(setSyncWord(syncWord, 4));
 }
 
 float SX128x::getRSSI() {

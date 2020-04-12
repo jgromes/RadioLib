@@ -385,6 +385,23 @@ class SX128x: public PhysicalLayer {
     int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16, float dataShaping = 0.5);
 
     /*!
+      \brief Initialization method for BLE modem.
+
+      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
+
+      \param br BLE bit rate in kbps. Defaults to 800 kbps.
+
+      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 400.0 kHz.
+
+      \param power Output power in dBm. Defaults to 10 dBm.
+
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+
+      \returns \ref status_codes
+    */
+    int16_t beginBLE(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, float dataShaping = 0.5);
+
+    /*!
       \brief Initialization method for FLRC modem.
 
       \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
@@ -653,6 +670,15 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setWhitening(bool enabled);
+
+    /*!
+      \brief Sets BLE access address.
+
+      \param addr BLE access address.
+
+      \returns \ref status_codes
+    */
+    int16_t setAccessAddress(uint32_t addr);
 
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.

@@ -216,6 +216,7 @@ getPictureHeight	KEYWORD2
 beginGFSK	KEYWORD2
 beginFLRC	KEYWORD2
 beginBLE	KEYWORD2
+setAccessAddress	KEYWORD2
 range	KEYWORD2
 startRanging	KEYWORD2
 getRangingResult	KEYWORD2
