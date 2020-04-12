@@ -1,11 +1,11 @@
 /*
-   RadioLib SX128x GFSK Modem Example
+   RadioLib SX128x FLRC Modem Example
 
-   This example shows how to use GFSK modem in SX128x chips.
+   This example shows how to use FLRC modem in SX128x chips.
 
    NOTE: The sketch below is just a guide on how to use
-         GFSK modem, so this code should not be run directly!
-         Instead, modify the other examples to use GFSK
+         FLRC modem, so this code should not be run directly!
+         Instead, modify the other examples to use FLRC
          modem and use the appropriate configuration
          methods.
 
@@ -21,11 +21,11 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1280 gfsk = new Module(10, 2, 3, 9);
+SX1280 flrc = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1280 lora = RadioShield.ModuleA;
+//SX1280 flrc = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -33,14 +33,14 @@ void setup() {
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
   // carrier frequency:           2400.0 MHz
-  // bit rate:                    800 kbps
-  // frequency deviation:         400.0 kHz
+  // bit rate:                    650 kbps
+  // coding rate:                 3
   // output power:                10 dBm
   // preamble length:             16 bits
   // data shaping:                Gaussian, BT = 0.5
-  // sync word:                   0x2D  0x01
-  // CRC:                         enabled, CRC16 (CCIT)
-  int state = gfsk.beginGFSK();
+  // sync word:                   0x2D  0x01  0x4B  0x1D
+  // CRC:                         enabled
+  int state = flrc.beginFLRC();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -49,20 +49,20 @@ void setup() {
     while (true);
   }
 
-  // if needed, you can switch between LoRa and FSK modes
+  // if needed, you can switch between LoRa and FLRC modes
   //
-  // gfsk.begin()       start LoRa mode (and disable GFSK)
-  // lora.beginGFSK()   start GFSK mode (and disable LoRa)
+  // flrc.begin()       start LoRa mode (and disable FLRC)
+  // lora.beginFLRC()   start FLRC mode (and disable LoRa)
 
   // the following settings can also
   // be modified at run-time
-  state = gfsk.setFrequency(2410.5);
-  state = gfsk.setBitRate(200);
-  state = gfsk.setFrequencyDeviation(100.0);
-  state = gfsk.setOutputPower(5);
-  state = gfsk.setDataShaping(1.0);
-  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89};
-  state = gfsk.setSyncWord(syncWord, 5);
+  state = flrc.setFrequency(2410.5);
+  state = flrc.setBitRate(200);
+  state = flrc.setCodingRate(2);
+  state = flrc.setOutputPower(5);
+  state = flrc.setDataShaping(1.0);
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67};
+  state = flrc.setSyncWord(syncWord, 4);
   if (state != ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
@@ -73,15 +73,15 @@ void setup() {
 }
 
 void loop() {
-  // GFSK modem can use the same transmit/receive methods
+  // FLRC modem can use the same transmit/receive methods
   // as the LoRa modem, even their interrupt-driven versions
 
-  // transmit GFSK packet
-  int state = gfsk.transmit("Hello World!");
+  // transmit FLRC packet
+  int state = flrc.transmit("Hello World!");
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                       0x89, 0xAB, 0xCD, 0xEF};
-    int state = gfsk.transmit(byteArr, 8);
+    int state = flrc.transmit(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1280] Packet transmitted successfully!"));
@@ -96,10 +96,10 @@ void loop() {
 
   // receive GFSK packet
   String str;
-  state = gfsk.receive(str);
+  state = flrc.receive(str);
   /*
     byte byteArr[8];
-    int state = gfsk.receive(byteArr, 8);
+    int state = flrc.receive(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1280] Received packet!"));

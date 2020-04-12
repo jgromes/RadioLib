@@ -114,6 +114,64 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   return(state);
 }
 
+int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uint16_t preambleLength, float dataShaping) {
+  // set module properties
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getGpio(), INPUT);
+
+  // initialize FLRC modulation variables
+  _brKbps = br;
+  _br = SX128X_FLRC_BR_0_650_BW_0_6;
+  _crFLRC = SX128X_FLRC_CR_3_4;
+  _shaping = SX128X_FLRC_BT_0_5;
+
+  // initialize FLRC packet variables
+  _preambleLengthGFSK = preambleLength;
+  _syncWordLen = 2;
+  _syncWordMatch = SX128X_GFSK_FLRC_SYNC_WORD_1;
+  _crcGFSK = SX128X_GFSK_FLRC_CRC_2_BYTE;
+  _whitening = SX128X_GFSK_BLE_WHITENING_OFF;
+
+  // reset the module and verify startup
+  int16_t state = reset();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // configure settings not accessible by API
+  state = config(SX128X_PACKET_TYPE_FLRC);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setCodingRate(cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(dataShaping);
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = { 0x2D, 0x01, 0x4B, 0x1D};
+  state = setSyncWord(sync, 4);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX128x::reset(bool verify) {
   // run the reset sequence - same as SX126x, as SX128x docs don't seem to mention this
   Module::pinMode(_mod->getRst(), OUTPUT);
@@ -336,7 +394,7 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   uint8_t modem = getPacketType();
   if(modem == SX128X_PACKET_TYPE_LORA) {
     state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, len, _crcLoRa);
-  } else if(modem == SX128X_PACKET_TYPE_GFSK) {
+  } else if((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_FLRC)) {
     state = setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening, len);
   } else {
     return(ERR_WRONG_MODEM);
@@ -406,6 +464,11 @@ int16_t SX128x::startReceive(uint16_t timeout) {
 }
 
 int16_t SX128x::readData(uint8_t* data, size_t len) {
+  // check active modem
+  if(getPacketType() == SX128X_PACKET_TYPE_RANGING) {
+    return(ERR_WRONG_MODEM);
+  }
+  
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -511,19 +574,29 @@ int16_t SX128x::setSpreadingFactor(uint8_t sf) {
 int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
   // check active modem
   uint8_t modem = getPacketType();
-  if(!((modem == SX128X_PACKET_TYPE_LORA) || (modem == SX128X_PACKET_TYPE_RANGING))) {
-    return(ERR_WRONG_MODEM);
+
+  // LoRa/ranging
+  if((modem == SX128X_PACKET_TYPE_LORA) || (modem == SX128X_PACKET_TYPE_RANGING)) {
+    RADIOLIB_CHECK_RANGE(cr, 5, 8, ERR_INVALID_CODING_RATE);
+
+    // update modulation parameters
+    if(longInterleaving && (modem == SX128X_PACKET_TYPE_LORA)) {
+      _cr = cr;
+    } else {
+      _cr = cr - 4;
+    }
+    return(setModulationParams(_sf, _bw, _cr));
+
+  // FLRC
+  } else if(modem == SX128X_PACKET_TYPE_FLRC) {
+    RADIOLIB_CHECK_RANGE(cr, 2, 4, ERR_INVALID_CODING_RATE);
+
+    // update modulation parameters
+    _crFLRC = (cr - 2) * 2;
+    return(setModulationParams(_br, _crFLRC, _shaping));
   }
 
-  RADIOLIB_CHECK_RANGE(cr, 5, 8, ERR_INVALID_CODING_RATE);
-
-  // update modulation parameters
-  if(longInterleaving && (modem == SX128X_PACKET_TYPE_LORA)) {
-    _cr = cr;
-  } else {
-    _cr = cr - 4;
-  }
-  return(setModulationParams(_sf, _bw, _cr));
+  return(ERR_WRONG_MODEM);
 }
 
 int16_t SX128x::setOutputPower(int8_t power) {
@@ -583,33 +656,58 @@ int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
 int16_t SX128x::setBitRate(uint16_t br) {
   // check active modem
   uint8_t modem = getPacketType();
-  if(!((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE))) {
-    return(ERR_WRONG_MODEM);
+
+  // GFSK/BLE
+  if((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE)) {
+    if(br == 125) {
+      _br = SX128X_BLE_GFSK_BR_0_125_BW_0_3;
+    } else if(br == 250) {
+      _br = SX128X_BLE_GFSK_BR_0_250_BW_0_6;
+    } else if(br == 400) {
+      _br = SX128X_BLE_GFSK_BR_0_400_BW_1_2;
+    } else if(br == 500) {
+      _br = SX128X_BLE_GFSK_BR_0_500_BW_1_2;
+    } else if(br == 800) {
+      _br = SX128X_BLE_GFSK_BR_0_800_BW_2_4;
+    } else if(br == 1000) {
+      _br = SX128X_BLE_GFSK_BR_1_000_BW_2_4;
+    } else if(br == 1600) {
+      _br = SX128X_BLE_GFSK_BR_1_600_BW_2_4;
+    } else if(br == 2000) {
+      _br = SX128X_BLE_GFSK_BR_2_000_BW_2_4;
+    } else {
+      return(ERR_INVALID_BIT_RATE);
+    }
+
+    // update modulation parameters
+    _brKbps = br;
+    return(setModulationParams(_br, _modIndex, _shaping));
+
+  // FLRC
+  } else if(modem == SX128X_PACKET_TYPE_FLRC) {
+    if(br == 260) {
+      _br = SX128X_FLRC_BR_0_260_BW_0_3;
+    } else if(br == 325) {
+      _br = SX128X_FLRC_BR_0_325_BW_0_3;
+    } else if(br == 520) {
+      _br = SX128X_FLRC_BR_0_520_BW_0_6;
+    } else if(br == 650) {
+      _br = SX128X_FLRC_BR_0_650_BW_0_6;
+    } else if(br == 1000) {
+      _br = SX128X_FLRC_BR_1_000_BW_1_2;
+    } else if(br == 1300) {
+      _br = SX128X_FLRC_BR_1_300_BW_1_2;
+    } else {
+      return(ERR_INVALID_BIT_RATE);
+    }
+
+    // update modulation parameters
+    _brKbps = br;
+    return(setModulationParams(_br, _crFLRC, _shaping));
+
   }
 
-  if(br == 125) {
-    _br = SX128X_BLE_GFSK_BR_0_125_BW_0_3;
-  } else if(br == 250) {
-    _br = SX128X_BLE_GFSK_BR_0_250_BW_0_6;
-  } else if(br == 400) {
-    _br = SX128X_BLE_GFSK_BR_0_400_BW_1_2;
-  } else if(br == 500) {
-    _br = SX128X_BLE_GFSK_BR_0_500_BW_1_2;
-  } else if(br == 800) {
-    _br = SX128X_BLE_GFSK_BR_0_800_BW_2_4;
-  } else if(br == 1000) {
-    _br = SX128X_BLE_GFSK_BR_1_000_BW_2_4;
-  } else if(br == 1600) {
-    _br = SX128X_BLE_GFSK_BR_1_600_BW_2_4;
-  } else if(br == 2000) {
-    _br = SX128X_BLE_GFSK_BR_2_000_BW_2_4;
-  } else {
-    return(ERR_INVALID_BIT_RATE);
-  }
-
-  // update modulation parameters
-  _brKbps = br;
-  return(setModulationParams(_br, _modIndex, _shaping));
+  return(ERR_WRONG_MODEM);
 }
 
 int16_t SX128x::setFrequencyDeviation(float freqDev) {
@@ -642,7 +740,7 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
 int16_t SX128x::setDataShaping(float dataShaping) {
   // check active modem
   uint8_t modem = getPacketType();
-  if(!((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE))) {
+  if(!((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE) || (modem == SX128X_PACKET_TYPE_FLRC))) {
     return(ERR_WRONG_MODEM);
   }
 
@@ -659,7 +757,11 @@ int16_t SX128x::setDataShaping(float dataShaping) {
   }
 
   // update modulation parameters
-  return(setModulationParams(_br, _modIndex, _shaping));
+  if((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE)) {
+    return(setModulationParams(_br, _modIndex, _shaping));
+  } else {
+    return(setModulationParams(_br, _crFLRC, _shaping));
+  }
 }
 
 int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
@@ -669,8 +771,25 @@ int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
     return(ERR_WRONG_MODEM);
   }
 
-  if(len > 5) {
-    return(ERR_INVALID_SYNC_WORD);
+  if(modem == SX128X_PACKET_TYPE_GFSK) {
+    // GFSK can use up to 5 bytes as sync word
+    if(len > 5) {
+      return(ERR_INVALID_SYNC_WORD);
+    }
+
+    // calculate sync word length parameter value
+    if(len > 0) {
+      _syncWordLen = (len - 1)*2;
+    }
+
+  } else {
+    // FLRC requires 32-bit sync word
+    if(!((len == 0) || (len == 4))) {
+      return(ERR_INVALID_SYNC_WORD);
+    }
+
+    // save sync word length parameter value
+    _syncWordLen = len;
   }
 
   // reverse sync word byte order
@@ -684,7 +803,6 @@ int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
   RADIOLIB_ASSERT(state);
 
   // update packet parameters
-  _syncWordLen = len;
   if(_syncWordLen == 0) {
     _syncWordMatch = SX128X_GFSK_FLRC_SYNC_WORD_OFF;
   } else {

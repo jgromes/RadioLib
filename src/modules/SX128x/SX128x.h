@@ -385,6 +385,25 @@ class SX128x: public PhysicalLayer {
     int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16, float dataShaping = 0.5);
 
     /*!
+      \brief Initialization method for FLRC modem.
+
+      \param freq Carrier frequency in MHz. Defaults to 2400.0 MHz.
+
+      \param br FLRC bit rate in kbps. Defaults to 650 kbps.
+
+      \param cr FLRC coding rate. Defaults to 3 (coding rate 3/4).
+
+      \param power Output power in dBm. Defaults to 10 dBm.
+
+      \parma preambleLength FLRC preamble length in bits. Defaults to 16 bits.
+
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+
+      \returns \ref status_codes
+    */
+    int16_t beginFLRC(float freq = 2400.0, uint16_t br = 650, uint8_t cr = 3, int8_t power = 10, uint16_t preambleLength = 16, float dataShaping = 0.5);
+
+    /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
 
       \param verify Whether correct module startup should be verified. When set to true, RadioLib will attempt to verify the module has started correctly
@@ -576,9 +595,9 @@ class SX128x: public PhysicalLayer {
     int16_t setPreambleLength(uint32_t preambleLength);
 
     /*!
-      \brief Sets FSK bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps.
+      \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).
 
-      \param br FSK bit rate to be set in kbps.
+      \param br FSK/FLRC bit rate to be set in kbps.
 
       \returns \ref status_codes
     */
@@ -603,7 +622,7 @@ class SX128x: public PhysicalLayer {
     int16_t setDataShaping(float dataShaping);
 
     /*!
-      \brief Sets sync word in the form of array of up to 8 bytes.
+      \brief Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long
 
       \param syncWord Sync word to be set.
 
@@ -736,6 +755,9 @@ class SX128x: public PhysicalLayer {
     uint16_t _brKbps;
     uint8_t _br, _modIndex, _shaping;
     uint8_t _preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening;
+
+    // cached FLRC parameters
+    uint8_t _crFLRC;
 
     // cached BLE parameters
     uint8_t _connectionState, _crcBLE, _bleTestPayload;

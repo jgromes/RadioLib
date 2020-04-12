@@ -214,6 +214,11 @@ getPictureHeight	KEYWORD2
 
 # SX128x
 beginGFSK	KEYWORD2
+beginFLRC	KEYWORD2
+beginBLE	KEYWORD2
+range	KEYWORD2
+startRanging	KEYWORD2
+getRangingResult	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
