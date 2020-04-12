@@ -480,6 +480,13 @@
 */
 #define ERR_INVALID_REPEATER_CALLSIGN                 -803
 
+// SX128x-specific status codes
+
+/*!
+  \brief Timed out waiting for ranging exchange finish.
+*/
+#define ERR_RANGING_TIMEOUT                           -901
+
 /*!
   \}
 */

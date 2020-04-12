@@ -322,6 +322,10 @@
 #define SX128X_REGULATOR_LDO                          0x00        //  7     0     set regulator mode: LDO (default)
 #define SX128X_REGULATOR_DC_DC                        0x01        //  7     0                         DC-DC
 
+//SX128X_CMD_SET_RANGING_ROLE
+#define SX128X_RANGING_ROLE_MASTER                    0x01        //  7     0     ranging role: master
+#define SX128X_RANGING_ROLE_SLAVE                     0x00        //  7     0                   slave
+
 
 /*!
   \class SX128x
@@ -740,6 +744,13 @@ class SX128x: public PhysicalLayer {
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
+    Module* _mod;
+    
+    // cached LoRa parameters
+    float _bwKhz;
+    uint8_t _bw, _sf, _cr;
+    uint8_t _preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa;
+
     // SX128x SPI command implementations
     uint8_t getStatus();
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
@@ -760,21 +771,16 @@ class SX128x: public PhysicalLayer {
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX128X_IRQ_NONE, uint16_t dio3Mask = SX128X_IRQ_NONE);
     uint16_t getIrqStatus();
     int16_t clearIrqStatus(uint16_t clearIrqParams = SX128X_IRQ_ALL);
+    int16_t setRangingRole(uint8_t role);
+    int16_t setPacketType(uint8_t type);
 
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    Module* _mod;
-
     // common parameters
     uint8_t _pwr;
-
-    // cached LoRa parameters
-    float _bwKhz;
-    uint8_t _bw, _sf, _cr;
-    uint8_t _preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa;
 
     // cached GFSK parameters
     float _modIndexReal;

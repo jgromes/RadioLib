@@ -1182,6 +1182,16 @@ int16_t SX128x::clearIrqStatus(uint16_t clearIrqParams) {
   return(SPIwriteCommand(SX128X_CMD_CLEAR_IRQ_STATUS, data, 2));
 }
 
+int16_t SX128x::setRangingRole(uint8_t role) {
+  uint8_t data[] = { role };
+  return(SPIwriteCommand(SX128X_CMD_SET_RANGING_ROLE, data, 1));
+}
+
+int16_t SX128x::setPacketType(uint8_t type) {
+  uint8_t data[] = { type };
+  return(SPIwriteCommand(SX128X_CMD_SET_PACKET_TYPE, data, 1));
+}
+
 int16_t SX128x::setHeaderType(uint8_t headerType, size_t len) {
   // check active modem
   uint8_t modem = getPacketType();
