@@ -22,6 +22,7 @@
     - Morse Code (MorseClient)
     - AX.25 (AX25Client)
     - SSTV (SSTVClient)
+    - Hellschreiber (HellClient)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)
