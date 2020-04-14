@@ -20,9 +20,9 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       _chipRevision = version;
     } else {
       #ifdef RADIOLIB_DEBUG
-        RADIOLIB_DEBUG_PRINT(F("SX127x not found! ("));
+        RADIOLIB_DEBUG_PRINT(F("SX1231 not found! ("));
         RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SX127X_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
 
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
