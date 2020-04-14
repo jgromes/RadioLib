@@ -86,6 +86,7 @@
 // physical layer protocols
 #include "protocols/PhysicalLayer/PhysicalLayer.h"
 #include "protocols/AX25/AX25.h"
+#include "protocols/Hellschreiber/Hellschreiber.h"
 #include "protocols/Morse/Morse.h"
 #include "protocols/RTTY/RTTY.h"
 #include "protocols/SSTV/SSTV.h"

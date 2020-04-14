@@ -52,6 +52,7 @@ PagerClient	KEYWORD1
 AX25Client	KEYWORD1
 AX25Frame	KEYWORD1
 SSTVClient	KEYWORD1
+HellClient	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
@@ -220,6 +221,9 @@ setAccessAddress	KEYWORD2
 range	KEYWORD2
 startRanging	KEYWORD2
 getRangingResult	KEYWORD2
+
+# Hellschreiber
+printGlyph	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

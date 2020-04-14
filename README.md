@@ -6,8 +6,8 @@
 
 ## See the [Wiki](https://github.com/jgromes/RadioLib/wiki) for further information. See the [GitHub Pages](https://jgromes.github.io/RadioLib) for detailed and up-to-date API reference.
 
-RadioLib allows its users to integrate all sorts of different wireless communication modules into a single consistent system.
-Want to add a Bluetooth interface to your ZigBee network? Sure thing! Need to connect LoRa network to the Internet with a GSM module? RadioLib has got your back!
+RadioLib allows its users to integrate all sorts of different wireless communication modules, protocols and even digital modes into a single consistent system.
+Want to add a Bluetooth interface to your LoRa network? Sure thing! Do you just want to go really old-school and play around with radio teletype, slow-scan TV, or even Hellschreiber using nothing but a cheap radio module? Why not!
 
 RadioLib was originally created as a driver for [__RadioShield__](https://github.com/jgromes/RadioShield), but it can be used to control as many different wireless modules as you like - or at least as many as your Arduino can handle!
 
@@ -27,13 +27,14 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX1231__ FSK/OOK radio module
 * __XBee__ modules (S2B)
 
-### Supported protocols:
+### Supported protocols and digital modes:
 * __MQTT__ for modules: ESP8266
 * __HTTP__ for modules: ESP8266
-* __RTTY__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
-* __Morse Code__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
-* __SSTV__ for modules: SX127x, RFM9x, SX126x, RF69 and SX1231
+* [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) for modules: SX127x, RFM9x, SX126x, RF69 and SX1231
+* [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 
 ### Supported platforms:
 * __Arduino AVR__ - tested with hardware on Uno, Mega and Leonardo
