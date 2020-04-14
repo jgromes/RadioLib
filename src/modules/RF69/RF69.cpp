@@ -147,7 +147,7 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   uint32_t start = micros();
   while(!digitalRead(_mod->getIrq())) {
     yield();
-    
+
     if(micros() - start > timeout) {
       standby();
       clearIRQFlags();
@@ -329,9 +329,6 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
   // read packet data
   _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
-
-  // update RSSI
-  lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
 
   // clear internal flag so getPacketLength can return the new packet length
   _packetLengthQueried = false;
@@ -699,6 +696,10 @@ int16_t RF69::setEncoding(uint8_t encoding) {
     default:
       return(ERR_INVALID_ENCODING);
   }
+}
+
+float RF69::getRSSI() {
+  return(-1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0));
 }
 
 int16_t RF69::config() {

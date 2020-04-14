@@ -441,11 +441,6 @@ class RF69: public PhysicalLayer {
     */
     RF69(Module* module);
 
-    /*!
-      \brief RSSI value of the last received packet.
-    */
-    float lastPacketRSSI;
-
     // basic methods
 
     /*!
@@ -790,6 +785,13 @@ class RF69: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setEncoding(uint8_t encoding);
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+
+      \returns Last packet RSSI in dBm.
+    */
+    float getRSSI();
 
 #ifndef RADIOLIB_GODMODE
   protected:

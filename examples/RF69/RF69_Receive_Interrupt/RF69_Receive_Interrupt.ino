@@ -112,8 +112,14 @@ void loop() {
       Serial.println(F("[RF69] Received packet!"));
 
       // print data of the packet
-      Serial.print(F("[RF69] Data:\t\t\t"));
+      Serial.print(F("[RF69] Data:\t\t"));
       Serial.println(str);
+
+      // print RSSI (Received Signal Strength Indicator)
+      // of the last received packet
+      Serial.print(F("[RF69] RSSI:\t\t"));
+      Serial.print(rf.getRSSI());
+      Serial.println(F(" dBm"));
 
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed

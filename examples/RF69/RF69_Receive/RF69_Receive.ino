@@ -68,6 +68,12 @@ void loop() {
     Serial.print(F("[RF69] Data:\t\t"));
     Serial.println(str);
 
+    // print RSSI (Received Signal Strength Indicator)
+    // of the last received packet
+    Serial.print(F("[RF69] RSSI:\t\t"));
+    Serial.print(rf.getRSSI());
+    Serial.println(F(" dBm"));
+
   } else if (state == ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));
