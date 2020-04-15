@@ -29,27 +29,34 @@ before_install:
   - sudo iptables -A OUTPUT -o lo -j ACCEPT
   - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
-  # install 3rd party boards
-  - |
-    additionalUrls="boardsmanager.additional.urls=\
-    http://arduino.esp8266.com/stable/package_esp8266com_index.json,\
-    https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json,\
-    https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json,\
-    https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json";
-    arduino --pref "$additionalUrls" --save-prefs 2>&1;
-  - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+  # check every board in matrix and install 3rd aprty definitions
+  - if [[ "$BOARD" =~ "arduino:avr:uno" ]]; then
+      export BUILD_EXAMPLES=true
+    elif [[ "$BOARD" =~ "arduino:avr:mega" ]]; then
+    elif [[ "$BOARD" =~ "arduino:avr:leonardo" ]]; then
+    elif [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+      arduino --pref "http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs 2>&1;
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
     elif [[ "$BOARD" =~ "esp32:esp32:" ]]; then
+      arduino --pref "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" --save-prefs 2>&1;
       arduino --install-boards esp32:esp32;
     elif [[ "$BOARD" =~ "STM32:stm32:" ]]; then
+      arduino --pref "https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" --save-prefs 2>&1;
       arduino --install-boards STM32:stm32;
     elif [[ "$BOARD" =~ "arduino:samd:" ]]; then
+      arduino --pref "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json" --save-prefs 2>&1;
       arduino --install-boards arduino:samd;
     elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
       arduino --install-boards arduino:sam;
     elif [[ "$BOARD" =~ "SparkFun:apollo3:" ]]; then
+      arduino --pref "https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json" --save-prefs 2>&1;
       arduino --install-boards SparkFun:apollo3;
+    fi
+
+  # check if this release commit (or forced build) and if so, build for every board
+  - if [[ "$TRAVIS_COMMIT_MESSAGE" =~ "Bump version to" ] || [ "$TRAVIS_COMMIT_MESSAGE" =~ "TRAVIS_FORCE_BUILD" ]]; then
+      export BUILD_EXAMPLES=true
     fi
 
 # create directory to save the library and create symbolic link
@@ -65,23 +72,27 @@ branches:
 script:
   # build all example sketches
   - |
-    for example in $(find $PWD/examples -name '*.ino' | sort); do
-      # check whether to skip this sketch
-      if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
-        # skip sketch
-        echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
-      else
-        # build sketch
-        echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-        arduino --verify --board $BOARD $example;
-        if [ $? -ne 0 ]; then
-          echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
-          exit 1;
+    if [ "$BUILD_EXAMPLES" = true ] ; then
+      for example in $(find $PWD/examples -name '*.ino' | sort); do
+        # check whether to skip this sketch
+        if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
+          # skip sketch
+          echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
         else
-          echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+          # build sketch
+          echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+          arduino --verify --board $BOARD $example;
+          if [ $? -ne 0 ]; then
+            echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+            exit 1;
+          else
+            echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+          fi
         fi
-      fi
-    done
+      done
+    else
+      echo -e "\n\033[1;33mExample build skipped for $BOARD\033[0m";
+    fi
 
   # generate Doxygen documentation (only for Arduino UNO)
   - if [ $BOARD = "arduino:avr:uno" ]; then
