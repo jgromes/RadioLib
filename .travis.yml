@@ -12,9 +12,9 @@ env:
     - BOARD="STM32:stm32:GenF3:pnum=BLACKPILL_F303CC"
     - BOARD="arduino:samd:arduino_zero_native"
     - BOARD="arduino:sam:arduino_due_x"
-    - BOARD="adafruit:nrf52:feather52832"
+    - BOARD="adafruit:nrf52:feather52832:softdevice=s132v6,debug=l0"
     - BOARD="Intel:arc32:arduino_101"
-    - BOARD="arduino:megaavr:uno2018"
+    - BOARD="arduino:megaavr:uno2018:mode=on"
     - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:mbed:nano33ble"
 
@@ -88,6 +88,7 @@ before_install:
     elif [[ "$BOARD" =~ "arduino:mbed:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --install-boards arduino:mbed;
+      export SKIP_PAT='(HTTP|MQTT).*ino';
 
     fi
 
