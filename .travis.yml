@@ -12,7 +12,11 @@ env:
     - BOARD="STM32:stm32:GenF3:pnum=BLACKPILL_F303CC"
     - BOARD="arduino:samd:arduino_zero_native"
     - BOARD="arduino:sam:arduino_due_x"
-    # - BOARD="SparkFun:apollo3:amap3redboard"
+    - BOARD="adafruit:nrf52:feather52832"
+    - BOARD="Intel:arc32:arduino_101"
+    - BOARD="arduino:megaavr:uno2018"
+    - BOARD="SparkFun:apollo3:amap3redboard"
+    - BOARD="arduino:mbed:nano33ble"
 
 before_install:
   # install Arduino IDE
@@ -29,36 +33,62 @@ before_install:
   - sudo iptables -A OUTPUT -o lo -j ACCEPT
   - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
-  # check every board in matrix and install 3rd aprty definitions
+  # check every board in matrix and install 3rd party definitions
   - if [[ "$BOARD" =~ "arduino:avr:uno" ]]; then
       export BUILD_EXAMPLES=true;
+
     elif [[ "$BOARD" =~ "arduino:avr:mega" ]]; then
       export BUILD_EXAMPLES=false;
+
     elif [[ "$BOARD" =~ "arduino:avr:leonardo" ]]; then
       export BUILD_EXAMPLES=false;
+
     elif [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json" --save-prefs 2>&1;
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
+
     elif [[ "$BOARD" =~ "esp32:esp32:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" --save-prefs 2>&1;
       arduino --install-boards esp32:esp32;
+
     elif [[ "$BOARD" =~ "STM32:stm32:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json" --save-prefs 2>&1;
       arduino --install-boards STM32:stm32;
+
     elif [[ "$BOARD" =~ "arduino:samd:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --install-boards arduino:samd;
+
     elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --install-boards arduino:sam;
+
+    elif [[ "$BOARD" =~ "adafruit:nrf52:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --pref "boardsmanager.additional.urls=https://www.adafruit.com/package_adafruit_index.json" --save-prefs 2>&1;
+      arduino --install-boards adafruit:nrf52;
+
+    elif [[ "$BOARD" =~ "Intel:arc32:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --install-boards Intel:arc32;
+
+    elif [[ "$BOARD" =~ "arduino:megaavr:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --install-boards arduino:megaavr;
+
     elif [[ "$BOARD" =~ "SparkFun:apollo3:" ]]; then
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json" --save-prefs 2>&1;
       arduino --install-boards SparkFun:apollo3;
+
+    elif [[ "$BOARD" =~ "arduino:mbed:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --install-boards arduino:mbed;
+
     fi
 
   # check if this release commit (or forced build) and if so, build for every board
