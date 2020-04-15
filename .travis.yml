@@ -31,7 +31,7 @@ before_install:
 
   # check every board in matrix and install 3rd aprty definitions
   - if [[ "$BOARD" =~ "arduino:avr:uno" ]]; then
-      export BUILD_EXAMPLES=true
+      export BUILD_EXAMPLES=true;
     elif [[ "$BOARD" =~ "arduino:avr:mega" ]]; then
     elif [[ "$BOARD" =~ "arduino:avr:leonardo" ]]; then
     elif [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
@@ -56,7 +56,7 @@ before_install:
 
   # check if this release commit (or forced build) and if so, build for every board
   - if [[ "$TRAVIS_COMMIT_MESSAGE" =~ "Bump version to" ] || [ "$TRAVIS_COMMIT_MESSAGE" =~ "TRAVIS_FORCE_BUILD" ]]; then
-      export BUILD_EXAMPLES=true
+      export BUILD_EXAMPLES=true;
     fi
 
 # create directory to save the library and create symbolic link
