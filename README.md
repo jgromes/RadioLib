@@ -44,12 +44,12 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __Arduino SAMD__ - Arduino Zero, Arduino MKR boards, M0 Pro etc.
 * __Arduino SAM__ - Arduino Due
 * __Adafruit nRF52__ - Adafruit Bluefruit Feather etc.
-* _Intel Curie_ - Arduino 101
-* _Arduino megaAVR_ - Arduino Uno WiFi Rev.2 etc.
-* _Apollo3_ - SparkFun Artemis Redboard etc.
-* _Arduino nRF52_ - Arduino Nano 33 BLE
+* __Intel Curie__ - Arduino 101
+* __Arduino megaAVR__ - Arduino Uno WiFi Rev.2 etc.
+* __Apollo3__ - SparkFun Artemis Redboard etc.
+* __Arduino nRF52__ - Arduino Nano 33 BLE
 
-The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms in __bold__ on each git push. Platforms in _italic_ are not tested on each push, but do compile and should be working.
+The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms prior to releasing new version.
 
 ### In development:
 * __SIM800C__ GSM module
