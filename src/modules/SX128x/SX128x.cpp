@@ -950,9 +950,9 @@ int16_t SX128x::setAccessAddress(uint32_t addr) {
     return(ERR_WRONG_MODEM);
   }
 
-  // use setSyncWord to set the address
-  uint8_t syncWord[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
-  return(setSyncWord(syncWord, 4));
+  // set the address
+  uint8_t addrBuff[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
+  return(SX128x::writeRegister(SX128X_REG_ACCESS_ADDRESS_BYTE_3, addrBuff, 4));
 }
 
 float SX128x::getRSSI() {
