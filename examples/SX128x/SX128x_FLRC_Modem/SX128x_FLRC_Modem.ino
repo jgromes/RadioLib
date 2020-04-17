@@ -57,7 +57,7 @@ void setup() {
   // the following settings can also
   // be modified at run-time
   state = flrc.setFrequency(2410.5);
-  state = flrc.setBitRate(200);
+  state = flrc.setBitRate(520);
   state = flrc.setCodingRate(2);
   state = flrc.setOutputPower(5);
   state = flrc.setDataShaping(1.0);
