@@ -58,7 +58,7 @@ void setup() {
   // the following settings can also
   // be modified at run-time
   state = ble.setFrequency(2410.5);
-  state = ble.setBitRate(200);
+  state = ble.setBitRate(250);
   state = ble.setFrequencyDeviation(100.0);
   state = ble.setOutputPower(5);
   state = ble.setDataShaping(1.0);
@@ -90,7 +90,7 @@ void loop() {
   } else if (state == ERR_TX_TIMEOUT) {
     Serial.println(F("[SX1280] Timed out while transmitting!"));
   } else {
-    Serial.println(F("[SX1280] Failed to transmit packet, code "));
+    Serial.print(F("[SX1280] Failed to transmit packet, code "));
     Serial.println(state);
   }
 
