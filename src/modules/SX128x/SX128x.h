@@ -442,7 +442,7 @@ class SX128x: public PhysicalLayer {
 
       \param len Number of bytes to send.
 
-      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+      \param addr Address to send the data to. Unsupported, compatibility only.
 
       \returns \ref status_codes
     */
@@ -531,7 +531,7 @@ class SX128x: public PhysicalLayer {
 
       \param len Number of bytes to send.
 
-      \param addr Address to send the data to. Will only be added if address filtering was enabled.
+      \param addr Address to send the data to. Unsupported, compatibility only.
 
       \returns \ref status_codes
     */
@@ -745,7 +745,7 @@ class SX128x: public PhysicalLayer {
   protected:
 #endif
     Module* _mod;
-    
+
     // cached LoRa parameters
     float _bwKhz;
     uint8_t _bw, _sf, _cr;

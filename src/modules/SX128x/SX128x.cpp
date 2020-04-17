@@ -444,6 +444,8 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, len, _crcLoRa);
   } else if((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_FLRC)) {
     state = setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening, len);
+  } else if(modem == SX128X_PACKET_TYPE_BLE) {
+    state = setPacketParamsBLE(_connectionState, _crcBLE, _bleTestPayload, _whitening);
   } else {
     return(ERR_WRONG_MODEM);
   }
@@ -458,8 +460,14 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // write packet to buffer
-  state = writeBuffer(data, len);
-  RADIOLIB_ASSERT(state);
+  if(modem == SX128X_PACKET_TYPE_BLE) {
+    // first 2 bytes of BLE payload are PDU header
+    state = writeBuffer(data, len, 2);
+    RADIOLIB_ASSERT(state);
+  } else {
+    state = writeBuffer(data, len);
+    RADIOLIB_ASSERT(state);
+  }
 
   // set DIO mapping
   state = setDioIrqParams(SX128X_IRQ_TX_DONE | SX128X_IRQ_RX_TX_TIMEOUT, SX128X_IRQ_TX_DONE);
