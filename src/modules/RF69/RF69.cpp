@@ -239,9 +239,12 @@ int16_t RF69::startReceive() {
   clearIRQFlags();
 
   // set mode to receive
-  state = _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
+  state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON | RF69_OCP_TRIM);
+  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
   state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_NORMAL);
-  state |= setMode(RF69_RX);
+  RADIOLIB_ASSERT(state);
+
+  state = setMode(RF69_RX);
 
   return(state);
 }
@@ -303,10 +306,16 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // write packet to FIFO
   _mod->SPIwriteRegisterBurst(RF69_REG_FIFO, data, len);
 
+  // enable +20 dBm operation
+  if(_power > 17) {
+    state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_OFF | 0x0F);
+    state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_20_DBM);
+    state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
+    RADIOLIB_ASSERT(state);
+  }
+
   // set mode to transmit
-  state = _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_20_DBM);
-  state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
-  state |= setMode(RF69_TX);
+  state = setMode(RF69_TX);
 
   return(state);
 }
@@ -493,20 +502,39 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
   return(state);
 }
 
-int16_t RF69::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -18, 17, ERR_INVALID_OUTPUT_POWER);
+int16_t RF69::setOutputPower(int8_t power, bool highPower) {
+  if(highPower) {
+    RADIOLIB_CHECK_RANGE(power, -2, 20, ERR_INVALID_OUTPUT_POWER);
+  } else {
+    RADIOLIB_CHECK_RANGE(power, -18, 13, ERR_INVALID_OUTPUT_POWER);
+  }
 
   // set mode to standby
   setMode(RF69_STANDBY);
 
   // set output power
   int16_t state;
-  if(power > 13) {
-    // requested output power is higher than 13 dBm, enable PA2 + PA1 on PA_BOOST
-    state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | (power + 14), 7, 0);
+  if(highPower) {
+    // check if both PA1 and PA2 are needed
+    if(power <= 10) {
+      // -2 to 13 dBm, PA1 is enough
+      state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_OFF | (power + 18), 7, 0);
+    } else if(power <= 17) {
+      // 13 to 17 dBm, both PAs required
+      state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | (power + 14), 7, 0);
+    } else {
+      // 18 - 20 dBm, both PAs and hig power settings required
+      state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_OFF | RF69_PA1_ON | RF69_PA2_ON | (power + 11), 7, 0);
+    }
+
   } else {
-    // requested output power is lower than 13 dBm, enable PA0 on RFIO
+    // low power module, use only PA0
     state = _mod->SPIsetRegValue(RF69_REG_PA_LEVEL, RF69_PA0_ON | RF69_PA1_OFF | RF69_PA2_OFF | (power + 18), 7, 0);
+  }
+
+  // cache the power value
+  if(state == ERR_NONE) {
+    _power = power;
   }
 
   return(state);

@@ -188,7 +188,7 @@
 
 // RF69_REG_OCP
 #define RF69_OCP_OFF                                  0b00000000  //  4     4     PA overload current protection disabled
-#define RF69_OCP_ON                                   0b00100000  //  4     4     PA overload current protection enabled
+#define RF69_OCP_ON                                   0b00010000  //  4     4     PA overload current protection enabled
 #define RF69_OCP_TRIM                                 0b00001010  //  3     0     OCP current: I_max(OCP_TRIM = 0b1010) = 95 mA
 
 // RF69_REG_LNA
@@ -646,13 +646,15 @@ class RF69: public PhysicalLayer {
     int16_t setFrequencyDeviation(float freqDev);
 
     /*!
-      \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
+      \brief Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
 
       \param power Output power to be set in dBm.
 
+      \param highPower Set to true when using modules high power port (RF69H/HC/HCW). Defaults to false (models without high power port - RF69C/CW).
+
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t power, bool highPower = false);
 
     /*!
       \brief Sets sync word. Up to 8 bytes can be set as sync word.
@@ -801,6 +803,7 @@ class RF69: public PhysicalLayer {
     float _br;
     float _rxBw;
     int16_t _tempOffset;
+    int8_t _power;
 
     size_t _packetLength;
     bool _packetLengthQueried;

@@ -52,6 +52,23 @@ void setup() {
   // when packet transmission is finished
   rf.setDio0Action(setFlag);
 
+  // NOTE: some RF69 modules use high power output,
+  //       those are usually marked RF69H(C/CW).
+  //       To configure RadioLib for these modules,
+  //       you must call setOutputPower() with
+  //       second argument set to true.
+  /*
+    Serial.print(F("[RF69] Setting high power module ... "));
+    state = rf.setOutputPower(20, true);
+    if (state == ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while (true);
+    }
+  */
+
   // start transmitting the first packet
   Serial.print(F("[RF69] Sending first packet ... "));
 
