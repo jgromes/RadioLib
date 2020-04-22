@@ -4,6 +4,7 @@ env:
   matrix:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
+    - BOARD="stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz"
     - BOARD="arduino:avr:uno"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="arduino:avr:leonardo"
@@ -17,7 +18,6 @@ env:
     - BOARD="arduino:megaavr:uno2018:mode=on"
     - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:mbed:nano33ble"
-    - BOARD="stm32duino:STM32F1:mapleMini"
     #- BOARD="stm32duino:STM32F4:discovery_f407"
 
 addons:
