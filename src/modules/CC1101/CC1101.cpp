@@ -179,7 +179,7 @@ int16_t CC1101::packetMode() {
   return(state);
 }
 
-void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_PIN_STATUS dir) {
+void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
   attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, dir);
 }
 
@@ -187,7 +187,7 @@ void CC1101::clearGdo0Action() {
   detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
 }
 
-void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_PIN_STATUS dir) {
+void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
   if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
