@@ -17,10 +17,13 @@ env:
     - BOARD="arduino:megaavr:uno2018:mode=on"
     - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:mbed:nano33ble"
+    - BOARD="stm32duino:STM32F1:mapleMini"
+    #- BOARD="stm32duino:STM32F4:discovery_f407"
 
 addons:
   apt:
     packages:
+      # required for Adafruit nRF52 (adafruit-nrfutil package)
       - python3
       - python3-pip
       - python3-setuptools
@@ -97,6 +100,16 @@ before_install:
       export BUILD_EXAMPLES=false;
       arduino --install-boards arduino:mbed;
       export SKIP_PAT='(HTTP|MQTT).*ino';
+
+    elif [[ "$BOARD" =~ "stm32duino:STM32F1:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --pref "boardsmanager.additional.urls=http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1;
+      arduino --install-boards stm32duino:STM32F1;
+
+    elif [[ "$BOARD" =~ "stm32duino:STM32F4:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --pref "boardsmanager.additional.urls=http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1;
+      arduino --install-boards stm32duino:STM32F4;
 
     fi
 

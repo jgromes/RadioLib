@@ -138,6 +138,17 @@
   // Nano 33 BLE uses mbed libraries, which already contain ESP8266 driver
   #define _RADIOLIB_ESP8266_H
 
+#elif defined(__STM32F4__) || defined(__STM32F1__)
+  // Arduino STM32 core by Roger Clark (https://github.com/rogerclarkmelbourne/Arduino_STM32)
+  #define RADIOLIB_PLATFORM                           "STM32duino (unofficial)"
+  #define RADIOLIB_PIN_TYPE                           uint8_t
+  #define RADIOLIB_PIN_MODE                           WiringPinMode
+  #define RADIOLIB_PIN_STATUS                         uint8_t
+  #define RADIOLIB_INTERRUPT_STATUS                   ExtIntTriggerMode
+  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
 #else
   // other platforms not covered by the above list - this may or may not work
   #define RADIOLIB_PLATFORM                           "Unknown"
