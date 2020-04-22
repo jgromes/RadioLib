@@ -10,6 +10,7 @@
 /*
  * Platform-specific configuration.
  *
+ * RADIOLIB_PLATFORM - platform name, used in debugging to quickly check the correct platform is detected,
  * RADIOLIB_PIN_TYPE - which type should be used for pin numbers in functions like digitalRead().
  * RADIOLIB_PIN_MODE - which type should be used for pin modes in functions like pinMode().
  * RADIOLIB_PIN_STATUS - which type should be used for pin values in functions like digitalWrite().
@@ -22,6 +23,7 @@
  */
 #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
    // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
+   #define RADIOLIB_PLATFORM                          "Arduino AVR"
    #define RADIOLIB_PIN_TYPE                          uint8_t
    #define RADIOLIB_PIN_MODE                          uint8_t
    #define RADIOLIB_PIN_STATUS                        uint8_t
@@ -30,6 +32,7 @@
 
 #elif defined(ESP8266)
    // ESP8266 boards
+   #define RADIOLIB_PLATFORM                          "ESP8266"
    #define RADIOLIB_PIN_TYPE                          uint8_t
    #define RADIOLIB_PIN_MODE                          uint8_t
    #define RADIOLIB_PIN_STATUS                        uint8_t
@@ -41,6 +44,7 @@
 
 #elif defined(ESP32)
   // ESP32 boards
+  #define RADIOLIB_PLATFORM                           "ESP32"
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
@@ -50,7 +54,8 @@
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
 #elif defined(ARDUINO_ARCH_STM32)
-  // STM32duino boards
+  // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
+  #define RADIOLIB_PLATFORM                           "Arduino STM32 (official)"
   #define RADIOLIB_PIN_TYPE                           uint32_t
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
@@ -61,6 +66,7 @@
 
 #elif defined(SAMD_SERIES)
   // Arduino SAMD boards - Zero, MKR, etc.
+  #define RADIOLIB_PLATFORM                           "Arduino SAMD"
   #define RADIOLIB_PIN_TYPE                           uint32_t
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
@@ -71,6 +77,7 @@
 
 #elif defined(__SAM3X8E__)
   // Arduino Due
+  #define RADIOLIB_PLATFORM                           "Arduino Due"
   #define RADIOLIB_PIN_TYPE                           uint32_t
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
@@ -81,6 +88,7 @@
 
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
   // Adafruit nRF52 boards
+  #define RADIOLIB_PLATFORM                           "Adafruit nRF52"
   #define RADIOLIB_PIN_TYPE                           uint32_t
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
@@ -89,6 +97,7 @@
 
 #elif defined(ARDUINO_ARC32_TOOLS)
   // Intel Curie
+  #define RADIOLIB_PLATFORM                           "Intel Curie"
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
@@ -97,6 +106,7 @@
 
 #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
   // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
+  #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           PinMode
   #define RADIOLIB_PIN_STATUS                         PinStatus
@@ -105,6 +115,7 @@
 
 #elif defined(AM_PART_APOLLO3)
   // Sparkfun Artemis boards
+  #define RADIOLIB_PLATFORM                           "Sparkfun Artemis"
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
@@ -115,6 +126,7 @@
 
 #elif defined(ARDUINO_ARDUINO_NANO33BLE)
   // Arduino Nano 33 BLE
+  #define RADIOLIB_PLATFORM                           "Arduino Nano 33 BLE"
   #define RADIOLIB_PIN_TYPE                           pin_size_t
   #define RADIOLIB_PIN_MODE                           PinMode
   #define RADIOLIB_PIN_STATUS                         PinStatus
@@ -128,6 +140,7 @@
 
 #else
   // other platforms not covered by the above list - this may or may not work
+  #define RADIOLIB_PLATFORM                           "Unknown"
   #define RADIOLIB_UNKNOWN_PLATFORM
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t

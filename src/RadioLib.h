@@ -50,6 +50,11 @@
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
 #endif
 
+// print debug info
+#ifdef RADIOLIB_DEBUG
+  #pragma message "RADIOLIB_PLATFORM: " RADIOLIB_PLATFORM
+#endif
+
 // check unknown/unsupported platform
 #ifdef RADIOLIB_UNKNOWN_PLATFORM
   #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
