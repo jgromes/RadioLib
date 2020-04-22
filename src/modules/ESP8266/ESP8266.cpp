@@ -83,9 +83,9 @@ int16_t ESP8266::join(const char* ssid, const char* password) {
 
 int16_t ESP8266::openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive) {
   char portStr[6];
-  itoa(port, portStr, 10);
+  sprintf(portStr, "%d", port);
   char tcpKeepAliveStr[6];
-  itoa(tcpKeepAlive, tcpKeepAliveStr, 10);
+  sprintf(tcpKeepAliveStr, "%d", tcpKeepAlive);
 
   // build AT command
   const char* atStr = "AT+CIPSTART=\"";
@@ -132,7 +132,7 @@ int16_t ESP8266::closeTransportConnection() {
 int16_t ESP8266::send(const char* data) {
   // build AT command
   char lenStr[8];
-  itoa(strlen(data), lenStr, 10);
+  sprintf(lenStr, "%d", strlen(data));
   const char* atStr = "AT+CIPSEND=";
   #ifdef RADIOLIB_STATIC_ONLY
     char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -162,7 +162,7 @@ int16_t ESP8266::send(const char* data) {
 int16_t ESP8266::send(uint8_t* data, uint32_t len) {
   // build AT command
   char lenStr[8];
-  itoa(len, lenStr, 10);
+  sprintf(lenStr, "%lu", len);
   const char atStr[] = "AT+CIPSEND=";
   #ifdef RADIOLIB_STATIC_ONLY
     char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
