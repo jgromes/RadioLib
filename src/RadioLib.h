@@ -91,6 +91,7 @@
 
 // physical layer protocols
 #include "protocols/PhysicalLayer/PhysicalLayer.h"
+#include "protocols/AFSK/AFSK.h"
 #include "protocols/AX25/AX25.h"
 #include "protocols/Hellschreiber/Hellschreiber.h"
 #include "protocols/Morse/Morse.h"

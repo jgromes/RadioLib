@@ -53,6 +53,7 @@ AX25Client	KEYWORD1
 AX25Frame	KEYWORD1
 SSTVClient	KEYWORD1
 HellClient	KEYWORD1
+AFSKClient	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
@@ -224,6 +225,10 @@ getRangingResult	KEYWORD2
 
 # Hellschreiber
 printGlyph	KEYWORD2
+
+# AFSK
+tone	KEYWORD2
+noTone	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
