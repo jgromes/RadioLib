@@ -3,6 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 #define HELL_FONT_WIDTH                               7
 #define HELL_FONT_HEIGHT                              7
@@ -85,18 +86,25 @@ static const uint8_t HellFont[64][HELL_FONT_WIDTH - 2] PROGMEM = {
 class HellClient {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
     HellClient(PhysicalLayer* phy);
+
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    HellClient(AFSKClient* audio);
 
     // basic methods
 
     /*!
       \brief Initialization method.
 
-      \param base Base RF frequency to be used in MHz.
+      \param base Base RF frequency to be used in MHz (in 2-FSK mode), or the tone frequency in Hz (in AFSK mode).
 
       \param rate Baud rate to be used during transmission. Defaults to 122.5 ("Feld Hell")
     */
@@ -140,12 +148,16 @@ class HellClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    AFSKClient* _audio;
 
-    uint32_t _base;
+    uint32_t _base, _baseHz;
     uint32_t _pixelDuration;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
+
+    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
+    int16_t standby();
 };
 
 #endif

@@ -2,17 +2,27 @@
 
 HellClient::HellClient(PhysicalLayer* phy) {
   _phy = phy;
+  _audio = nullptr;
+}
+
+HellClient::HellClient(AFSKClient* audio) {
+  _phy = audio->_phy;
+  _audio = audio;
 }
 
 int16_t HellClient::begin(float base, float rate) {
   // calculate 24-bit frequency
+  _baseHz = base;
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // calculate "pixel" duration
   _pixelDuration = 1000000.0/rate;
 
-  // set module frequency deviation to 0
-  int16_t state = _phy->setFrequencyDeviation(0);
+  // set module frequency deviation to 0 if using FSK
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->setFrequencyDeviation(0);
+  }
 
   return(state);
 }
@@ -23,16 +33,16 @@ size_t HellClient::printGlyph(uint8_t* buff) {
     for(int8_t i = HELL_FONT_HEIGHT - 1; i >= 0; i--) {
         uint32_t start = micros();
         if(buff[i] & mask) {
-          _phy->transmitDirect(_base);
+          transmitDirect(_base, _baseHz);
         } else {
-          _phy->standby();
+          standby();
         }
         while(micros() - start < _pixelDuration);
     }
   }
 
   // make sure transmitter is off
-  _phy->standby();
+  standby();
 
   return(1);
 }
@@ -268,4 +278,20 @@ size_t HellClient::printFloat(double number, uint8_t digits)  {
   }
 
   return n;
+}
+
+int16_t HellClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
+  if(_audio != nullptr) {
+    return(_audio->tone(freqHz));
+  } else {
+    return(_phy->transmitDirect(freq));
+  }
+}
+
+int16_t HellClient::standby() {
+  if(_audio != nullptr) {
+    return(_audio->noTone());
+  } else {
+    return(_phy->standby());
+  }
 }
