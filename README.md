@@ -28,13 +28,20 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __XBee__ modules (S2B)
 
 ### Supported protocols and digital modes:
-* __MQTT__ for modules: ESP8266
-* __HTTP__ for modules: ESP8266
-* __AX.25__ for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
-* [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
-* [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
-* [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) for modules: SX127x, RFM9x, SX126x, RF69 and SX1231
-* [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) for modules: SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* __MQTT__ for modules:  
+ESP8266
+* __HTTP__ for modules:  
+ESP8266
+* __AX.25__ using 2-FSK or AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
+* [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) using 2-FSK or AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) using 2-FSK or AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
+* [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 
 ### Supported platforms:
 * __Arduino__  
@@ -66,6 +73,7 @@ The list above is by no means exhaustive. Most of RadioLib code is independent o
 ### In development:
 * __SIM800C__ GSM module
 * __LoRaWAN__ protocol for SX127x, RFM9x and SX126x modules
+* __APRS__ protocol for all the modules that can transmit AX.25
 * ___and more!___
 
 ## Frequently Asked Questions
