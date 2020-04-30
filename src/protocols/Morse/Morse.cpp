@@ -2,17 +2,27 @@
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
   _phy = phy;
+  _audio = nullptr;
+}
+
+MorseClient::MorseClient(AFSKClient* audio) {
+  _phy = audio->_phy;
+  _audio = audio;
 }
 
 int16_t MorseClient::begin(float base, uint8_t speed) {
   // calculate 24-bit frequency
+  _baseHz = base;
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // calculate dot length (assumes PARIS as typical word)
   _dotLength = 1200 / speed;
 
-  // set module frequency deviation to 0
-  int16_t state = _phy->setFrequencyDeviation(0);
+  // set module frequency deviation to 0 if using FSK
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->setFrequencyDeviation(0);
+  }
 
   return(state);
 }
@@ -46,7 +56,7 @@ size_t MorseClient::write(uint8_t b) {
   // inter-word pause (space)
   if(b == ' ') {
     RADIOLIB_DEBUG_PRINTLN(F("space"));
-    _phy->standby();
+    standby();
     delay(4 * _dotLength);
     return(1);
   }
@@ -65,16 +75,16 @@ size_t MorseClient::write(uint8_t b) {
     // send dot or dash
     if (code & MORSE_DASH) {
       RADIOLIB_DEBUG_PRINT('-');
-      _phy->transmitDirect(_base);
+      transmitDirect(_base, _baseHz);
       delay(3 * _dotLength);
     } else {
       RADIOLIB_DEBUG_PRINT('.');
-      _phy->transmitDirect(_base);
+      transmitDirect(_base, _baseHz);
       delay(_dotLength);
     }
 
     // symbol space
-    _phy->standby();
+    standby();
     delay(_dotLength);
 
     // move onto the next bit
@@ -82,7 +92,7 @@ size_t MorseClient::write(uint8_t b) {
   }
 
   // letter space
-  _phy->standby();
+  standby();
   delay(2 * _dotLength);
   RADIOLIB_DEBUG_PRINTLN();
 
@@ -282,4 +292,20 @@ size_t MorseClient::printFloat(double number, uint8_t digits)  {
   }
 
   return n;
+}
+
+int16_t MorseClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
+  if(_audio != nullptr) {
+    return(_audio->tone(freqHz));
+  } else {
+    return(_phy->transmitDirect(freq));
+  }
+}
+
+int16_t MorseClient::standby() {
+  if(_audio != nullptr) {
+    return(_audio->noTone());
+  } else {
+    return(_phy->standby());
+  }
 }
