@@ -18,7 +18,7 @@ env:
     - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:mbed:nano33ble"
     - BOARD="stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz"
-    #- BOARD="stm32duino:STM32F4:discovery_f407"
+    - BOARD="stm32duino:STM32F4:discovery_f407:usb_cfg=usb_serial"
 
 addons:
   apt:
