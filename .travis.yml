@@ -107,8 +107,9 @@ before_install:
       arduino --install-boards stm32duino:STM32F1;
 
     elif [[ "$BOARD" =~ "stm32duino:STM32F4:" ]]; then
-      export BUILD_EXAMPLES=false;
+      export BUILD_EXAMPLES=true;
       arduino --pref "boardsmanager.additional.urls=http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1;
+      arduino --install-boards stm32duino:STM32F1;
       arduino --install-boards stm32duino:STM32F4;
 
     fi
