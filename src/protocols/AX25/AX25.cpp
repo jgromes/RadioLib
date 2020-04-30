@@ -112,6 +112,12 @@ void AX25Frame::setSendSequence(uint8_t seqNumber) {
 
 AX25Client::AX25Client(PhysicalLayer* phy) {
   _phy = phy;
+  _audio = nullptr;
+}
+
+AX25Client::AX25Client(AFSKClient* audio) {
+  _phy = audio->_phy;
+  _audio = audio;
 }
 
 int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t preambleLen) {
@@ -130,11 +136,14 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   // save preamble length
   _preambleLen = preambleLen;
 
-  // disable physical layer data shaping and set encoding to NRZ
-  int16_t state = _phy->setDataShaping(0.0);
-  RADIOLIB_ASSERT(state);
+  // set module frequency deviation to 0 if using FSK
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->setFrequencyDeviation(0);
+    RADIOLIB_ASSERT(state);
 
-  state = _phy->setEncoding(0);
+    state = _phy->setEncoding(0);
+  }
   return(state);
 }
 
@@ -154,7 +163,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   if(strlen(frame->destCallsign) > AX25_MAX_CALLSIGN_LEN) {
     return(ERR_INVALID_CALLSIGN);
   }
-  
+
   // check repeater configuration
   #ifndef RADIOLIB_STATIC_ONLY
     if(!(((frame->repeaterCallsigns == NULL) && (frame->repeaterSSIDs == NULL) && (frame->numRepeaters == 0)) ||
@@ -333,7 +342,32 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   }
 
   // transmit
-  int16_t state = _phy->transmit(stuffedFrameBuff, stuffedFrameBuffLen);
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->transmit(stuffedFrameBuff, stuffedFrameBuffLen);
+  } else {
+    _phy->transmitDirect();
+
+    // iterate over all bytes in the buffer
+    for(uint32_t i = 0; i < stuffedFrameBuffLen; i++) {
+
+      // check each bit
+      for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
+        uint32_t start = micros();
+        if(stuffedFrameBuff[i] & mask) {
+          _audio->tone(AX25_AFSK_MARK, false);
+        } else {
+          _audio->tone(AX25_AFSK_SPACE, false);
+        }
+        while(micros() - start < 833) {
+          yield();
+        }
+      }
+
+    }
+
+    _audio->noTone();
+  }
 
   // deallocate memory
   #ifndef RADIOLIB_STATIC_ONLY

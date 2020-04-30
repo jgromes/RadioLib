@@ -3,6 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 // macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
 #define SET_BIT_IN_ARRAY(A, k)                        ( A[(k/8)] |= (1 << (k%8)) )
@@ -68,6 +69,13 @@
 #define AX25_PID_NET_ROM                              0xCF
 #define AX25_PID_NO_LAYER_3                           0xF0
 #define AX25_PID_ESCAPE_CHARACTER                     0xFF
+
+// AFSK tones in Hz
+#define AX25_AFSK_MARK                                1200
+#define AX25_AFSK_SPACE                               2200
+
+// tone duration in us (for 1200 baud AFSK)
+#define AX25_AFSK_TONE_DURATION                       833
 
 /*!
   \class AX25Frame
@@ -254,11 +262,18 @@ class AX25Frame {
 class AX25Client {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
     AX25Client(PhysicalLayer* phy);
+
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    AX25Client(AFSKClient* audio);
 
     // basic methods
 
@@ -301,6 +316,7 @@ class AX25Client {
   private:
 #endif
     PhysicalLayer* _phy;
+    AFSKClient* _audio;
 
     char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1];
     uint8_t _srcSSID;

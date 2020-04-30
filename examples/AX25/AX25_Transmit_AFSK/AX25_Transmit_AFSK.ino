@@ -1,15 +1,16 @@
 /*
-   RadioLib AX.25 Transmit Example
+   RadioLib AX.25 Transmit AFSK Example
 
    This example sends AX.25 messages using
-   SX1278's FSK modem.
+   SX1278's FSK modem. The data is modulated
+   as AFSK at 1200 baud using Bell 202 tones.
 
-   Other modules that can be used for AX.25:
+   Other modules that can be used for AX.25
+   with AFSK modulation:
     - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
-    - SX126x
     - nRF24
     - Si443x/RFM2x
 
@@ -31,8 +32,12 @@ SX1278 fsk = new Module(10, 2, 9, 3);
 // https://github.com/jgromes/RadioShield
 //SX1278 fsk = RadioShield.ModuleA;
 
-// create AX.25 client instance using the FSK module
-AX25Client ax25(&fsk);
+// create AFSK client instance using the FSK module
+// pin 5 is connected to SX1278 DIO2
+AFSKClient audio(&fsk, 5);
+
+// create AX.25 client instance using the AFSK instance
+AX25Client ax25(&audio);
 
 void setup() {
   Serial.begin(9600);
@@ -40,9 +45,12 @@ void setup() {
   // initialize SX1278
   Serial.print(F("[SX1278] Initializing ... "));
   // carrier frequency:           434.0 MHz
-  // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
-  // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
-  int state = fsk.beginFSK(434.0, 1.2, 0.5);
+  // bit rate:                    48.0 kbps
+  // frequency deviation:         50.0 kHz
+  // Rx bandwidth:                125.0 kHz
+  // output power:                13 dBm
+  // current limit:               100 mA
+  int state = fsk.beginFSK(434.0);
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101,, Si4432 etc.), use the basic begin() method

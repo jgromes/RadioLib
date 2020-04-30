@@ -19,6 +19,9 @@
    Frames shown in this example are not
    exhaustive; all possible AX.25 frames
    should be supported.
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
