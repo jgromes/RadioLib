@@ -3,6 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 #define ITA2_FIGS                                     0x1B
 #define ITA2_LTRS                                     0x1F
@@ -84,18 +85,25 @@ class ITA2String {
 class RTTYClient {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
     RTTYClient(PhysicalLayer* phy);
+
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    RTTYClient(AFSKClient* audio);
 
     // basic methods
 
     /*!
       \brief Initialization method.
 
-      \param base Base (space) RF frequency to be used in MHz.
+      \param base Base (space) frequency to be used in MHz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode)
 
       \param shift Frequency shift between mark and space in Hz.
 
@@ -147,10 +155,11 @@ class RTTYClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    AFSKClient* _audio;
 
     uint8_t _encoding;
-    uint32_t _base;
-    uint32_t _shift;
+    uint32_t _base, _baseHz;
+    uint32_t _shift, _shiftHz;
     uint32_t _bitDuration;
     uint8_t _dataBits;
     uint8_t _stopBits;
@@ -160,6 +169,9 @@ class RTTYClient {
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
+
+    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
+    int16_t standby();
 };
 
 #endif

@@ -106,12 +106,20 @@ uint16_t ITA2String::getBits(char c) {
 
 RTTYClient::RTTYClient(PhysicalLayer* phy) {
   _phy = phy;
+  _audio = nullptr;
+}
+
+RTTYClient::RTTYClient(AFSKClient* audio) {
+  _phy = audio->_phy;
+  _audio = audio;
 }
 
 int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
   // save configuration
   _encoding = encoding;
   _stopBits = stopBits;
+  _baseHz = base;
+  _shiftHz = shift;
 
   switch(encoding) {
     case ASCII:
@@ -148,15 +156,17 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   // calculate 24-bit frequency
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
-  // set module frequency deviation to 0
-  int16_t state = _phy->setFrequencyDeviation(0);
+  // set module frequency deviation to 0 if using FSK
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->setFrequencyDeviation(0);
+  }
 
   return(state);
 }
 
 void RTTYClient::idle() {
-  _phy->transmitDirect();
-
+  transmitDirect();
   mark();
 }
 
@@ -190,7 +200,7 @@ size_t RTTYClient::write(uint8_t b) {
     mark();
   }
 
-  _phy->standby();
+  standby();
 
   return(1);
 }
@@ -391,7 +401,7 @@ size_t RTTYClient::println(double d, int digits) {
 
 void RTTYClient::mark() {
   uint32_t start = micros();
-  _phy->transmitDirect(_base + _shift);
+  transmitDirect(_base + _shift, _baseHz + _shiftHz);
   while(micros() - start < _bitDuration) {
     yield();
   }
@@ -399,7 +409,7 @@ void RTTYClient::mark() {
 
 void RTTYClient::space() {
   uint32_t start = micros();
-  _phy->transmitDirect(_base);
+  transmitDirect(_base, _baseHz);
   while(micros() - start < _bitDuration) {
     yield();
   }
@@ -504,4 +514,20 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   }
 
   return n;
+}
+
+int16_t RTTYClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
+  if(_audio != nullptr) {
+    return(_audio->tone(freqHz));
+  } else {
+    return(_phy->transmitDirect(freq));
+  }
+}
+
+int16_t RTTYClient::standby() {
+  if(_audio != nullptr) {
+    return(_audio->noTone());
+  } else {
+    return(_phy->standby());
+  }
 }
