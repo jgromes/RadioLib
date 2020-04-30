@@ -5,7 +5,6 @@ env:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
     - BOARD="arduino:avr:uno"
-    - BOARD="stm32duino:STM32F4:generic_f407v:usb_cfg=usb_serial,upload_method=STLinkMethod"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="arduino:avr:leonardo"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
@@ -105,11 +104,6 @@ before_install:
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1;
       arduino --install-boards stm32duino:STM32F1;
-
-    elif [[ "$BOARD" =~ "stm32duino:STM32F4:" ]]; then
-      export BUILD_EXAMPLES=true;
-      arduino --pref "boardsmanager.additional.urls=http://dan.drown.org/stm32duino/package_STM32duino_index.json" --save-prefs 2>&1;
-      arduino --install-boards stm32duino:STM32F4;
 
     fi
 
