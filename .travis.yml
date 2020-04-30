@@ -5,7 +5,7 @@ env:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
     - BOARD="arduino:avr:uno"
-    - BOARD="stm32duino:STM32F4:generic_f407v:usb_cfg=usb_serial"
+    - BOARD="stm32duino:STM32F4:generic_f407v:usb_cfg=usb_serial,upload_method=STLinkMethod"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="arduino:avr:leonardo"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
