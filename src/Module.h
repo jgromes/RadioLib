@@ -368,6 +368,22 @@ class Module {
     */
     static RADIOLIB_PIN_STATUS digitalRead(RADIOLIB_PIN_TYPE pin);
 
+    /*!
+      \brief Arduino core tone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone.
+
+      \param pin Pin to write to.
+
+      \param value Frequency to output.
+    */
+    static void tone(RADIOLIB_PIN_TYPE pin, uint16_t value);
+
+    /*!
+      \brief Arduino core noTone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone.
+
+      \param pin Pin to write to.
+    */
+    static void noTone(RADIOLIB_PIN_TYPE pin);
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif

@@ -294,3 +294,19 @@ RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
   }
   return(LOW);
 }
+
+void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
+  #ifndef RADIOLIB_TONE_UNSUPPORTED
+  if(pin != RADIOLIB_NC) {
+    ::tone(pin, value);
+  }
+  #endif
+}
+
+void Module::noTone(RADIOLIB_PIN_TYPE pin) {
+  #ifndef RADIOLIB_TONE_UNSUPPORTED
+  if(pin != RADIOLIB_NC) {
+    ::noTone(pin);
+  }
+  #endif
+}

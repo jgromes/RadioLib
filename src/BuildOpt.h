@@ -18,6 +18,7 @@
  * RADIOLIB_NC - alias for unused pin, usually the largest possible value of RADIOLIB_PIN_TYPE.
  * RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED - defined if the specific platform does not support SoftwareSerial.
  * RADIOLIB_HARDWARE_SERIAL_PORT - which hardware serial port should be used on platform that do not have SoftwareSerial support.
+ * RADIOLIB_TONE_UNSUPPORTED - some platforms do not have tone()/noTone(), which is required for AFSK.
  *
  * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  */
@@ -52,6 +53,7 @@
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif defined(ARDUINO_ARCH_STM32)
   // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
@@ -85,6 +87,7 @@
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
   // Adafruit nRF52 boards
@@ -123,6 +126,7 @@
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif defined(ARDUINO_ARDUINO_NANO33BLE)
   // Arduino Nano 33 BLE
@@ -148,6 +152,7 @@
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_TONE_UNSUPPORTED
 
 #else
   // other platforms not covered by the above list - this may or may not work
