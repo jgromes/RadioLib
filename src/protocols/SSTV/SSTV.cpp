@@ -155,6 +155,21 @@ const SSTVMode_t PasokonP7 {
 
 SSTVClient::SSTVClient(PhysicalLayer* phy) {
   _phy = phy;
+  _audio = nullptr;
+}
+
+SSTVClient::SSTVClient(AFSKClient* audio) {
+  _phy = audio->_phy;
+  _audio = audio;
+}
+
+int16_t SSTVClient::begin(SSTVMode_t mode, float correction) {
+  if(_audio == nullptr) {
+    // this initialization method can only be used in AFSK mode
+    return(ERR_WRONG_MODEM);
+  }
+
+  return(begin(0, mode, correction));
 }
 
 int16_t SSTVClient::begin(float base, SSTVMode_t mode, float correction) {
@@ -170,19 +185,24 @@ int16_t SSTVClient::begin(float base, SSTVMode_t mode, float correction) {
   // calculate 24-bit frequency
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
-  // set module frequency deviation to 0
-  int16_t state = _phy->setFrequencyDeviation(0);
+  // set module frequency deviation to 0 if using FSK
+  int16_t state = ERR_NONE;
+  if(_audio == nullptr) {
+    state = _phy->setFrequencyDeviation(0);
+  }
 
   return(state);
 }
 
 void SSTVClient::idle() {
+  _phy->transmitDirect();
   tone(SSTV_TONE_LEADER);
 }
 
 void SSTVClient::sendHeader() {
   // save first header flag for Scottie modes
   _firstLine = true;
+  _phy->transmitDirect();
 
   // send the first part of header (leader-break-leader)
   tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
@@ -261,7 +281,11 @@ uint16_t SSTVClient::getPictureHeight() {
 
 void SSTVClient::tone(float freq, uint32_t len) {
   uint32_t start = micros();
-  _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
+  if(_audio != nullptr) {
+    _audio->tone(freq, false);
+  } else {
+    _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
+  }
   while(micros() - start < len) {
     yield();
   }

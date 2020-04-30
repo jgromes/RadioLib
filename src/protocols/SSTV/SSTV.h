@@ -3,6 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 // the following implementation is based on information from
 // http://www.barberdsp.com/downloads/Dayton%20Paper.pdf
@@ -116,22 +117,44 @@ extern const SSTVMode_t PasokonP7;
 class SSTVClient {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
     SSTVClient(PhysicalLayer* phy);
 
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    SSTVClient(AFSKClient* phy);
+
     // basic methods
 
     /*!
-      \brief Initialization method.
+      \brief Initialization method for 2-FSK.
 
-      \param base Base RF frequency to be used in MHz. In USB modulation, this corresponds to "0 Hz tone".
+      \param base Base "0 Hz tone" RF frequency to be used in MHz.
 
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
+
+      \param correction Timing correction factor, used to adjust the length of timing pulses. Less than 1.0 leads to shorter timing pulses, defaults to 1.0 (no correction).
+
+      \returns \ref status_codes
     */
     int16_t begin(float base, SSTVMode_t mode, float correction = 1.0);
+
+    /*!
+      \brief Initialization method for AFSK.
+
+      \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
+
+      \param correction Timing correction factor, used to adjust the length of timing pulses. Less than 1.0 leads to shorter timing pulses, defaults to 1.0 (no correction).
+
+      \returns \ref status_codes
+    */
+    int16_t begin(SSTVMode_t mode, float correction = 1.0);
 
     /*!
       \brief Sends out tone at 1900 Hz.
@@ -161,6 +184,7 @@ class SSTVClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    AFSKClient* _audio;
 
     uint32_t _base;
     SSTVMode_t _mode;
