@@ -30,7 +30,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0021 / 0x0022 / 0x0023"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
