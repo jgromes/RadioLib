@@ -551,7 +551,7 @@ bool Si443x::findChip() {
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(SI443X_DEVICE_VERSION, HEX);
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
