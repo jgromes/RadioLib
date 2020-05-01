@@ -35,7 +35,7 @@ int16_t XBee::begin(long speed) {
       RADIOLIB_DEBUG_PRINTLN(state);
       RADIOLIB_DEBUG_PRINTLN(F("Resetting ..."));
       reset();
-      delay(1000);
+      delay(10);
       _mod->ATemptyBuffer();
       i++;
     }
