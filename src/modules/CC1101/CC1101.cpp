@@ -35,7 +35,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0014"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
