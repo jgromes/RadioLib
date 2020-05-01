@@ -52,7 +52,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
   #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif defined(ARDUINO_ARCH_STM32)
@@ -64,7 +64,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
 
 #elif defined(SAMD_SERIES)
   // Arduino SAMD boards - Zero, MKR, etc.
@@ -75,7 +75,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
 
 #elif defined(__SAM3X8E__)
   // Arduino Due
@@ -86,7 +86,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
   #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
@@ -97,6 +97,7 @@
   #define RADIOLIB_PIN_STATUS                         uint32_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
+  #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
 
 #elif defined(ARDUINO_ARC32_TOOLS)
   // Intel Curie
@@ -125,7 +126,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
   #define RADIOLIB_TONE_UNSUPPORTED
 
 #elif defined(ARDUINO_ARDUINO_NANO33BLE)
@@ -137,7 +138,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
 
   // Nano 33 BLE uses mbed libraries, which already contain ESP8266 driver
   #define _RADIOLIB_ESP8266_H
@@ -151,7 +152,7 @@
   #define RADIOLIB_INTERRUPT_STATUS                   ExtIntTriggerMode
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+  #define RADIOLIB_HARDWARE_SERIAL_PORT               &Serial1
   #define RADIOLIB_TONE_UNSUPPORTED
 
 #else
