@@ -1009,7 +1009,7 @@ float SX128x::getSNR() {
 
 size_t SX128x::getPacketLength(bool update) {
   (void)update;
-  uint8_t rxBufStatus[2];
+  uint8_t rxBufStatus[2] = {0, 0};
   SPIreadCommand(SX128X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
   return((size_t)rxBufStatus[0]);
 }
