@@ -40,7 +40,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
