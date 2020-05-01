@@ -35,7 +35,7 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
 }
 
 int16_t RFM96::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 433.0, 470.0, ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 410.0, 525.0, ERR_INVALID_FREQUENCY);
 
   // set frequency
   return(SX127x::setFrequencyRaw(freq));
