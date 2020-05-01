@@ -131,7 +131,7 @@ int16_t ESP8266::closeTransportConnection() {
 
 int16_t ESP8266::send(const char* data) {
   // build AT command
-  char lenStr[8];
+  char lenStr[12];
   sprintf(lenStr, "%d", strlen(data));
   const char* atStr = "AT+CIPSEND=";
   #ifdef RADIOLIB_STATIC_ONLY
