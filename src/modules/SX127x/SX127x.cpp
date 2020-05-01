@@ -998,7 +998,7 @@ bool SX127x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(ver, HEX);
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
