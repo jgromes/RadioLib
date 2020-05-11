@@ -180,11 +180,11 @@ int16_t CC1101::packetMode() {
 }
 
 void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, dir);
+  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
 }
 
 void CC1101::clearGdo0Action() {
-  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
@@ -192,14 +192,14 @@ void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
-  attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, dir);
+  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
 }
 
 void CC1101::clearGdo2Action() {
   if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
+  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
