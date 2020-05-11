@@ -50,7 +50,7 @@ void setup() {
   // Rx bandwidth:                125.0 kHz
   // output power:                13 dBm
   // current limit:               100 mA
-  int state = fsk.beginFSK(434.0);
+  int state = fsk.beginFSK();
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101,, Si4432 etc.), use the basic begin() method
