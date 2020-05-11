@@ -23,25 +23,27 @@
  * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  */
 #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
-   // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
-   #define RADIOLIB_PLATFORM                          "Arduino AVR"
-   #define RADIOLIB_PIN_TYPE                          uint8_t
-   #define RADIOLIB_PIN_MODE                          uint8_t
-   #define RADIOLIB_PIN_STATUS                        uint8_t
-   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-   #define RADIOLIB_NC                                (0xFF)
+  // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
+  #define RADIOLIB_PLATFORM                           "Arduino AVR"
+  #define RADIOLIB_PIN_TYPE                           uint8_t
+  #define RADIOLIB_PIN_MODE                           uint8_t
+  #define RADIOLIB_PIN_STATUS                         uint8_t
+  #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+  #define RADIOLIB_NC                                 (0xFF)
 
 #elif defined(ESP8266)
-   // ESP8266 boards
-   #define RADIOLIB_PLATFORM                          "ESP8266"
-   #define RADIOLIB_PIN_TYPE                          uint8_t
-   #define RADIOLIB_PIN_MODE                          uint8_t
-   #define RADIOLIB_PIN_STATUS                        uint8_t
-   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-   #define RADIOLIB_NC                                (0xFF)
+  // ESP8266 boards
+  #define RADIOLIB_PLATFORM                           "ESP8266"
+  #define RADIOLIB_PIN_TYPE                           uint8_t
+  #define RADIOLIB_PIN_MODE                           uint8_t
+  #define RADIOLIB_PIN_STATUS                         uint8_t
+  #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+  #define RADIOLIB_NC                                 (0xFF)
 
-   // RadioLib has ESPS8266 driver, this must be disabled to use ESP8266 as platform
-   #define _RADIOLIB_ESP8266_H
+  // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
+  #define _RADIOLIB_ESP8266_H
 
 #elif defined(ESP32)
   // ESP32 boards
@@ -50,6 +52,7 @@
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -62,6 +65,7 @@
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(digitalPinToPinName(p))
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -73,6 +77,7 @@
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -84,6 +89,7 @@
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -96,6 +102,7 @@
   #define RADIOLIB_PIN_MODE                           uint32_t
   #define RADIOLIB_PIN_STATUS                         uint32_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFFFFFFFF)
 
 #elif defined(ARDUINO_ARC32_TOOLS)
@@ -105,6 +112,7 @@
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
 
 #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
@@ -114,6 +122,7 @@
   #define RADIOLIB_PIN_MODE                           PinMode
   #define RADIOLIB_PIN_STATUS                         PinStatus
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
 
 #elif defined(AM_PART_APOLLO3)
@@ -123,6 +132,7 @@
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -135,6 +145,7 @@
   #define RADIOLIB_PIN_MODE                           PinMode
   #define RADIOLIB_PIN_STATUS                         PinStatus
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -149,6 +160,7 @@
   #define RADIOLIB_PIN_MODE                           WiringPinMode
   #define RADIOLIB_PIN_STATUS                         uint8_t
   #define RADIOLIB_INTERRUPT_STATUS                   ExtIntTriggerMode
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
@@ -162,6 +174,7 @@
   #define RADIOLIB_PIN_MODE                           uint8_t
   #define RADIOLIB_PIN_STATUS                         uint8_t
   #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
 
 #endif
@@ -213,7 +226,7 @@
  * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
  */
 
-//#define RADIOLIB_STATIC_ONLY
+#define RADIOLIB_STATIC_ONLY
 
 // set the size of static arrays to use
 #define RADIOLIB_STATIC_ARRAY_SIZE   256
