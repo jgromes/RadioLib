@@ -421,11 +421,11 @@ int16_t SX128x::standby(uint8_t mode) {
 }
 
 void SX128x::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
+  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void SX128x::clearDio1Action() {
-  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
+  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
