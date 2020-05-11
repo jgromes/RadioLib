@@ -104,7 +104,7 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
   uint32_t start = micros();
   while(digitalRead(_mod->getIrq())) {
     yield();
-    
+
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
     if(micros() - start >= 60000) {
       standby();
@@ -139,7 +139,7 @@ int16_t nRF24::receiveDirect() {
 }
 
 void nRF24::setIrqAction(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, FALLING);
+  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
 }
 
 int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
