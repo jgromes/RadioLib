@@ -84,8 +84,8 @@
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
   #elif defined(SAMD_SERIES)
-    // Arduino SAMD boards - Zero, MKR, etc.
-    #define RADIOLIB_PLATFORM                           "Arduino SAMD"
+    // Arduino SAMD (Zero, MKR, etc.) and Adafruit SAMD boards (M0 and M4)
+    #define RADIOLIB_PLATFORM                           "Arduino/Adafruit SAMD"
     #define RADIOLIB_PIN_TYPE                           uint32_t
     #define RADIOLIB_PIN_MODE                           uint32_t
     #define RADIOLIB_PIN_STATUS                         uint32_t

@@ -52,6 +52,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
   * [__SAMD__](https://github.com/arduino/ArduinoCore-samd) - Arduino Zero, MKR boards, M0 Pro etc.
 
 * __Adafruit__
+  * [__SAMD__](https://github.com/adafruit/ArduinoCore-samd) - Adafruit Feather M0 and M4 boards (Feather, Metro, Gemma, Trinket etc.)
   * [__nRF52__](https://github.com/adafruit/Adafruit_nRF52_Arduino) - Adafruit Feather nRF528x, Bluefruit and CLUE
 
 * __Espressif__
