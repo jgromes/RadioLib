@@ -992,7 +992,7 @@ bool SX127x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SX127X_REG_VERSION == "));
 
-        char buffHex[5];
+        char buffHex[12];
         sprintf(buffHex, "0x%02X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
