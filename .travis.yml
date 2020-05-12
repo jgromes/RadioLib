@@ -107,7 +107,7 @@ before_install:
       arduino --install-boards stm32duino:STM32F1;
 
     elif [[ "$BOARD" =~ "adafruit:samd:" ]]; then
-      export BUILD_EXAMPLES=true;
+      export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=https://www.adafruit.com/package_adafruit_index.json" --save-prefs 2>&1;
       arduino --install-boards adafruit:samd;
 
