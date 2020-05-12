@@ -26,7 +26,11 @@
  * Users may also specify their own configuration by defining all of the platform-specific parameters
  * and macro RADIOLIB_CUSTOM_PLATFORM prior to including the main library file (RadioLib.h).
  */
-#if !defined(RADIOLIB_CUSTOM_PLATFORM)
+#if defined(RADIOLIB_CUSTOM_PLATFORM)
+  #if !defined(RADIOLIB_PLATFORM)
+    #define RADIOLIB_PLATFORM                             "Custom"
+  #endif
+#else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
     // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
     #define RADIOLIB_PLATFORM                           "Arduino AVR"
@@ -36,6 +40,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
   #elif defined(ESP8266)
     // ESP8266 boards
@@ -46,6 +51,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
     // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
     #define _RADIOLIB_ESP8266_H
@@ -59,6 +65,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -72,6 +79,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(digitalPinToPinName(p))
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -84,6 +92,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -96,6 +105,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -109,6 +119,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
   #elif defined(ARDUINO_ARC32_TOOLS)
     // Intel Curie
@@ -119,6 +130,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
   #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
     // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
@@ -129,6 +141,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
   #elif defined(AM_PART_APOLLO3)
     // Sparkfun Artemis boards
@@ -139,6 +152,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -152,6 +166,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -167,6 +182,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   ExtIntTriggerMode
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -181,6 +197,7 @@
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
 
   #endif
 #endif
