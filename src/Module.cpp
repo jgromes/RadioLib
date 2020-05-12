@@ -6,7 +6,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
-  _spi = &SPI;
+  _spi = &RADIOLIB_DEFAULT_SPI;
   _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
 }
@@ -17,7 +17,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _tx = RADIOLIB_NC;
   _irq = irq;
   _rst = rst;
-  _spi = &SPI;
+  _spi = &RADIOLIB_DEFAULT_SPI;
   _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
 }
