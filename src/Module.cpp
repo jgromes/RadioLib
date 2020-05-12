@@ -103,7 +103,11 @@ void Module::init(uint8_t interface) {
 }
 
 void Module::term() {
-  // stop hardware interfaces
+  // stop hardware interfaces (if they were initialized by the library)
+  if(!_initInterface) {
+    return;
+  }
+
   if(_spi != nullptr) {
     _spi->end();
   }
