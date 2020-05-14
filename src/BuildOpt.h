@@ -249,7 +249,7 @@
  * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
  */
 
-#define RADIOLIB_STATIC_ONLY
+//#define RADIOLIB_STATIC_ONLY
 
 // set the size of static arrays to use
 #define RADIOLIB_STATIC_ARRAY_SIZE   256
