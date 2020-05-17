@@ -102,17 +102,17 @@ void Module::init(uint8_t interface) {
   }
 }
 
-void Module::term() {
+void Module::term(uint8_t interface) {
   // stop hardware interfaces (if they were initialized by the library)
   if(!_initInterface) {
     return;
   }
 
-  if(_spi != nullptr) {
+  if((interface == RADIOLIB_USE_SPI) && (_spi != nullptr)) {
     _spi->end();
   }
 
-  if(ModuleSerial != nullptr) {
+  if(((interface == RADIOLIB_USE_UART) && ModuleSerial != nullptr)) {
     ModuleSerial->end();
   }
 }

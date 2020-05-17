@@ -159,8 +159,10 @@ class Module {
 
     /*!
       \brief Terminate low-level module control.
+
+      \param interface Interface to be terminated. See \ref shield_config for details.
     */
-    void term();
+    void term(uint8_t interface);
 
     // AT methods
 
