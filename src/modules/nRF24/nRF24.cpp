@@ -21,7 +21,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   int16_t val = _mod->SPIgetRegValue(NRF24_REG_SETUP_AW);
   if(!((val >= 0) && (val <= 3))) {
     RADIOLIB_DEBUG_PRINTLN(F("No nRF24 found!"));
-    _mod->term();
+    _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   }
 
