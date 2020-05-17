@@ -16,7 +16,7 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw) {
   // try to find the Si443x chip
   if(!Si443x::findChip()) {
     RADIOLIB_DEBUG_PRINTLN(F("No Si443x found!"));
-    _mod->term();
+    _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found Si443x!"));
