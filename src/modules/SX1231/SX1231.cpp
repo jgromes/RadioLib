@@ -37,7 +37,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX1231 found!"));
-    _mod->term();
+    _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found SX1231!"));
