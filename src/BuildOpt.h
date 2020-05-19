@@ -252,7 +252,9 @@
 //#define RADIOLIB_STATIC_ONLY
 
 // set the size of static arrays to use
+#if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
 #define RADIOLIB_STATIC_ARRAY_SIZE   256
+#endif
 
 /*!
   \brief A simple assert macro, will return on error.
