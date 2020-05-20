@@ -7,7 +7,8 @@
 #include "../SX127x/SX1278.h"
 
 // SX127X_REG_VERSION
-#define RFM95_CHIP_VERSION                            0x11
+#define RFM9X_CHIP_VERSION_OFFICIAL                   0x11
+#define RFM9X_CHIP_VERSION_UNOFFICIAL                 0x12  // according to datasheet, only 0x11 should be possible, but some modules seem to have 0x12
 
 /*!
   \class RFM95
