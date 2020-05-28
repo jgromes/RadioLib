@@ -897,6 +897,22 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding);
 
+    /*!
+      \brief Reads currently active IRQ flags, can be used to check which event caused an interrupt.
+      In LoRa mode, this is the content of SX127X_REG_IRQ_FLAGS register.
+      In FSK mode, this is the contents of SX127X_REG_IRQ_FLAGS_2 (MSB) and SX127X_REG_IRQ_FLAGS_1 (LSB) registers.
+
+      \returns IRQ flags.
+    */
+    uint16_t getIRQFlags();
+
+    /*!
+      \brief Reads modem status. Only available in LoRa mode.
+
+      \returns Modem status.
+    */
+    uint8_t getModemStatus();
+
     #ifdef RADIOLIB_DEBUG
       void regDump();
     #endif

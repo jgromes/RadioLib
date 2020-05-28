@@ -124,6 +124,8 @@ disableSyncWordFiltering  KEYWORD2
 setPromiscuous  KEYWORD2
 setRSSIConfig	KEYWORD2
 setEncoding	KEYWORD2
+getIRQFlags	KEYWORD2
+getModemStatus	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2

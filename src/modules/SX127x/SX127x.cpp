@@ -909,6 +909,31 @@ int16_t SX127x::setEncoding(uint8_t encoding) {
   }
 }
 
+uint16_t SX127x::getIRQFlags() {
+  // check active modem
+  if(getActiveModem() == SX127X_LORA) {
+    // LoRa, just 8-bit value
+    return((uint16_t)_mod->SPIreadRegister(SX127X_REG_IRQ_FLAGS));
+
+  } else {
+    // FSK, the IRQ flags are 16 bits in total
+    uint16_t flags = ((uint16_t)_mod->SPIreadRegister(SX127X_REG_IRQ_FLAGS_2)) << 8;
+    flags |= (uint16_t)_mod->SPIreadRegister(SX127X_REG_IRQ_FLAGS_1);
+    return(flags);
+  }
+
+}
+
+uint8_t SX127x::getModemStatus() {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(0x00);
+  }
+
+  // read the register
+  return(_mod->SPIreadRegister(SX127X_REG_MODEM_STAT));
+}
+
 int16_t SX127x::config() {
   // turn off frequency hopping
   int16_t state = _mod->SPIsetRegValue(SX127X_REG_HOP_PERIOD, SX127X_HOP_PERIOD_OFF);
