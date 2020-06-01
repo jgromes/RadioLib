@@ -459,8 +459,8 @@
 #define SX127X_TEMP_THRESHOLD_10_DEG_C                0b00000010  //  2     1                                   10 deg. C (default)
 #define SX127X_TEMP_THRESHOLD_15_DEG_C                0b00000100  //  2     1                                   15 deg. C
 #define SX127X_TEMP_THRESHOLD_20_DEG_C                0b00000110  //  2     1                                   20 deg. C
-#define SX127X_TEMP_MONITOR_OFF                       0b00000000  //  0     0     temperature monitoring disabled (default)
-#define SX127X_TEMP_MONITOR_ON                        0b00000001  //  0     0     temperature monitoring enabled
+#define SX127X_TEMP_MONITOR_ON                        0b00000000  //  0     0     temperature monitoring enabled (default)
+#define SX127X_TEMP_MONITOR_OFF                       0b00000001  //  0     0     temperature monitoring disabled
 
 // SX127X_REG_LOW_BAT
 #define SX127X_LOW_BAT_OFF                            0b00000000  //  3     3     low battery detector disabled
@@ -912,6 +912,13 @@ class SX127x: public PhysicalLayer {
       \returns Modem status.
     */
     uint8_t getModemStatus();
+
+    /*!
+      \brief Reads uncalibrated temperature value.
+
+      \returns Uncalibrated temperature sensor reading.
+    */
+    int8_t getTempRaw();
 
     #ifdef RADIOLIB_DEBUG
       void regDump();

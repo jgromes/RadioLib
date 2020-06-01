@@ -934,6 +934,58 @@ uint8_t SX127x::getModemStatus() {
   return(_mod->SPIreadRegister(SX127X_REG_MODEM_STAT));
 }
 
+int8_t SX127x::getTempRaw() {
+  int8_t temp = 0;
+  uint8_t previousOpMode;
+  uint8_t ival;
+
+  // save current Op Mode
+  previousOpMode = _mod->SPIgetRegValue(SX127X_REG_OP_MODE);
+
+  // check if we need to step out of LoRa mode first
+  if ((previousOpMode & SX127X_LORA) == SX127X_LORA) {
+    _mod->SPIsetRegValue(SX127X_REG_OP_MODE, (SX127X_LORA | SX127X_SLEEP));
+  }
+
+  // put device in FSK sleep
+  _mod->SPIsetRegValue(SX127X_REG_OP_MODE, (SX127X_FSK_OOK | SX127X_SLEEP));
+
+  // put device in FSK RxSynth
+  _mod->SPIsetRegValue(SX127X_REG_OP_MODE, (SX127X_FSK_OOK | SX127X_FSRX));
+
+  // enable temperature reading
+  _mod->SPIsetRegValue(SX127X_REG_IMAGE_CAL, SX127X_TEMP_MONITOR_ON, 0, 0);
+
+  // wait
+  delayMicroseconds(200);
+
+  // disable temperature reading
+  _mod->SPIsetRegValue(SX127X_REG_IMAGE_CAL, SX127X_TEMP_MONITOR_OFF, 0, 0);
+
+  // put device in FSK sleep
+  _mod->SPIsetRegValue(SX127X_REG_OP_MODE, (SX127X_FSK_OOK | SX127X_SLEEP));
+
+  // read temperature
+  ival = _mod->SPIgetRegValue(SX127X_REG_TEMP);
+
+  // convert very raw value
+  if ((ival & 0x80) == 0x80) {
+    temp = 255 - ival;
+  } else {
+    temp = -1 * ival;
+  }
+
+  // check if we need to step back into LoRa mode
+  if ((previousOpMode & SX127X_LORA) == SX127X_LORA) {
+    _mod->SPIsetRegValue(SX127X_REG_OP_MODE, (SX127X_LORA | SX127X_SLEEP));
+  }
+
+  // reload previous Op Mode
+  _mod->SPIsetRegValue(SX127X_REG_OP_MODE, previousOpMode);
+
+  return(temp);
+}
+
 int16_t SX127x::config() {
   // turn off frequency hopping
   int16_t state = _mod->SPIsetRegValue(SX127X_REG_HOP_PERIOD, SX127X_HOP_PERIOD_OFF);
