@@ -126,6 +126,7 @@ setRSSIConfig	KEYWORD2
 setEncoding	KEYWORD2
 getIRQFlags	KEYWORD2
 getModemStatus	KEYWORD2
+getTempRaw	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2
