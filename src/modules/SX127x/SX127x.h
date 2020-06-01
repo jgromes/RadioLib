@@ -914,7 +914,8 @@ class SX127x: public PhysicalLayer {
     uint8_t getModemStatus();
 
     /*!
-      \brief Reads uncalibrated temperature value.
+      \brief Reads uncalibrated temperature value. This function will change operating mode
+      and should not be called during Tx, Rx or CAD.
 
       \returns Uncalibrated temperature sensor reading.
     */
