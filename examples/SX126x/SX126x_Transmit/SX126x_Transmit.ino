@@ -51,6 +51,16 @@ void setup() {
     Serial.println(state);
     while (true);
   }
+
+  // some modules have an external RF switch
+  // controlled via two pins (RX enable, TX enable)
+  // to enable automatic control of the switch,
+  // call the following method
+  // RX enable:   4
+  // TX enable:   5
+  /*
+    lora.setRfSwitchPins(4, 5);
+  */
 }
 
 void loop() {

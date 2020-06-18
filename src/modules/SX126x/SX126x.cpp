@@ -435,6 +435,9 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   state = fixSensitivity();
   RADIOLIB_ASSERT(state);
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
+
   // start transmission
   state = setTx(SX126X_TX_TIMEOUT_NONE);
   RADIOLIB_ASSERT(state);
@@ -450,6 +453,9 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 int16_t SX126x::startReceive(uint32_t timeout) {
   int16_t state = startReceiveCommon();
   RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
 
   // set mode to receive
   state = setRx(timeout);
@@ -1115,6 +1121,10 @@ int16_t SX126x::setRegulatorDCDC() {
 
 int16_t SX126x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
+}
+
+void SX126x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
