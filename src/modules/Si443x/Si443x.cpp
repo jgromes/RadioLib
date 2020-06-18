@@ -222,6 +222,9 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // write packet to FIFO
   _mod->SPIwriteRegisterBurst(SI443X_REG_FIFO_ACCESS, data, len);
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
+
   // set mode to transmit
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON);
 
@@ -245,6 +248,9 @@ int16_t Si443x::startReceive() {
 
   // clear interrupt flags
   clearIRQFlags();
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(false);
 
   // set mode to receive
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON);
@@ -502,6 +508,10 @@ int16_t Si443x::setDataShaping(float sh) {
     // TODO implement fiter configuration - docs claim this should be possible, but seems undocumented
     return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_GFSK, 1, 0));
   }
+}
+
+void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 int16_t Si443x::setFrequencyRaw(float newFreq) {
