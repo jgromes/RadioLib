@@ -368,6 +368,9 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     }
   }
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(false);
+
   // set mode to receive
   return(setMode(mode));
 }
@@ -421,6 +424,9 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     // write packet to FIFO
     _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
 
+    // set RF switch (if present)
+    _mod->setRfSwitchState(true);
+
     // start transmission
     state |= setMode(SX127X_TX);
     RADIOLIB_ASSERT(state);
@@ -450,6 +456,9 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // write packet to FIFO
     _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
+
+    // set RF switch (if present)
+    _mod->setRfSwitchState(true);
 
     // start transmission
     state |= setMode(SX127X_TX);
@@ -932,6 +941,10 @@ uint8_t SX127x::getModemStatus() {
 
   // read the register
   return(_mod->SPIreadRegister(SX127X_REG_MODEM_STAT));
+}
+
+void SX127x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 int8_t SX127x::getTempRaw() {
