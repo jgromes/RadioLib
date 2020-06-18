@@ -238,6 +238,9 @@ int16_t RF69::startReceive() {
   // clear interrupt flags
   clearIRQFlags();
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(false);
+
   // set mode to receive
   state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON | RF69_OCP_TRIM);
   state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA1, RF69_PA1_NORMAL);
@@ -313,6 +316,9 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state |= _mod->SPIsetRegValue(RF69_REG_TEST_PA2, RF69_PA2_20_DBM);
     RADIOLIB_ASSERT(state);
   }
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
 
   // set mode to transmit
   state = setMode(RF69_TX);
@@ -728,6 +734,10 @@ int16_t RF69::setEncoding(uint8_t encoding) {
 
 float RF69::getRSSI() {
   return(-1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0));
+}
+
+void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 int16_t RF69::config() {
