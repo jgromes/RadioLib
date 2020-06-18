@@ -232,6 +232,9 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // write packet to FIFO
   SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
+
   // set mode to transmit
   SPIsendCommand(CC1101_CMD_TX);
 
@@ -248,6 +251,9 @@ int16_t CC1101::startReceive() {
   // set GDO0 mapping
   int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
   RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(false);
 
   // set mode to receive
   SPIsendCommand(CC1101_CMD_RX);
@@ -708,6 +714,10 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
     default:
       return(ERR_INVALID_ENCODING);
   }
+}
+
+void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 int16_t CC1101::config() {
