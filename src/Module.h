@@ -386,6 +386,23 @@ class Module {
     */
     static void noTone(RADIOLIB_PIN_TYPE pin);
 
+    /*!
+      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
+      When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
+
+      \param rxEn RX enable pin.
+
+      \param txEn TX enable pin.
+    */
+    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+
+    /*!
+      \brief Set RF switch state.
+
+      \param tx True to set RF switch to Tx, false to set switch to Rx.
+    */
+    void setRfSwitchState(bool tx);
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
@@ -398,6 +415,9 @@ class Module {
     bool _initInterface;
     SPIClass* _spi;
     SPISettings _spiSettings;
+
+    bool _useRfSwitch = false;
+    RADIOLIB_PIN_TYPE _rxEn, _txEn;
 
     uint32_t _ATtimeout = 15000;
 };

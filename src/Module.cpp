@@ -314,3 +314,27 @@ void Module::noTone(RADIOLIB_PIN_TYPE pin) {
   }
   #endif
 }
+
+void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _useRfSwitch = true;
+  _rxEn = rxEn;
+  _txEn = txEn;
+  Module::pinMode(rxEn, OUTPUT);
+  Module::pinMode(txEn, OUTPUT);
+}
+
+void Module::setRfSwitchState(bool tx) {
+  // check RF switch control is enabled
+  if(!_useRfSwitch) {
+    return;
+  }
+
+  // set pins
+  if(tx) {
+    Module::digitalWrite(_rxEn, LOW);
+    Module::digitalWrite(_txEn, HIGH);
+  } else {
+    Module::digitalWrite(_rxEn, HIGH);
+    Module::digitalWrite(_txEn, LOW);
+  }
+}
