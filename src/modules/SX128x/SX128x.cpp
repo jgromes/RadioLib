@@ -477,6 +477,9 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   state = clearIrqStatus();
   RADIOLIB_ASSERT(state);
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(true);
+
   // start transmission
   state = setTx(SX128X_TX_TIMEOUT_NONE);
   RADIOLIB_ASSERT(state);
@@ -512,6 +515,9 @@ int16_t SX128x::startReceive(uint16_t timeout) {
     state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa);
     RADIOLIB_ASSERT(state);
   }
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(false);
 
   // set mode to receive
   state = setRx(timeout);
@@ -1088,6 +1094,10 @@ int16_t SX128x::explicitHeader() {
 
 int16_t SX128x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
+}
+
+void SX128x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+  _mod->setRfSwitchPins(rxEn, txEn);
 }
 
 uint8_t SX128x::getStatus() {
