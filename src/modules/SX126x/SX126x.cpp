@@ -455,7 +455,7 @@ int16_t SX126x::startReceive(uint32_t timeout) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(true);
+  _mod->setRfSwitchState(false);
 
   // set mode to receive
   state = setRx(timeout);
