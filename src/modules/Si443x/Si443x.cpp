@@ -114,6 +114,9 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
 }
 
 int16_t Si443x::sleep() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   // disable wakeup timer interrupt
   int16_t state = _mod->SPIsetRegValue(SI443X_REG_INTERRUPT_ENABLE_1, 0x00);
   RADIOLIB_ASSERT(state);
@@ -127,10 +130,16 @@ int16_t Si443x::sleep() {
 }
 
 int16_t Si443x::standby() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   return(_mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_XTAL_ON, 7, 0, 10));
 }
 
 int16_t Si443x::transmitDirect(uint32_t frf) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
+
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
     // convert the 24-bit frequency to the format accepted by the module
@@ -170,6 +179,9 @@ int16_t Si443x::transmitDirect(uint32_t frf) {
 }
 
 int16_t Si443x::receiveDirect() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
   // activate direct mode
   int16_t state = directMode();
   RADIOLIB_ASSERT(state);
@@ -223,7 +235,7 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   _mod->SPIwriteRegisterBurst(SI443X_REG_FIFO_ACCESS, data, len);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(true);
+  _mod->setRfSwitchState(LOW, HIGH);
 
   // set mode to transmit
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON);
@@ -250,7 +262,7 @@ int16_t Si443x::startReceive() {
   clearIRQFlags();
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(false);
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // set mode to receive
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON);
