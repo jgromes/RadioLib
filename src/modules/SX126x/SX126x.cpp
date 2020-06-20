@@ -300,6 +300,9 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::transmitDirect(uint32_t frf) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
+
   // user requested to start transmitting immediately (required for RTTY)
   int16_t state = ERR_NONE;
   if(frf != 0) {
@@ -313,6 +316,9 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
 }
 
 int16_t SX126x::receiveDirect() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
   // SX126x is unable to output received data directly
   return(ERR_UNKNOWN);
 }
@@ -326,6 +332,9 @@ int16_t SX126x::scanChannel() {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // set DIO pin mapping
   state = setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE);
@@ -360,6 +369,9 @@ int16_t SX126x::scanChannel() {
 }
 
 int16_t SX126x::sleep(bool retainConfig) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   uint8_t sleepMode = SX126X_SLEEP_START_WARM | SX126X_SLEEP_RTC_OFF;
   if(!retainConfig) {
     sleepMode = SX126X_SLEEP_START_COLD | SX126X_SLEEP_RTC_OFF;
@@ -377,6 +389,9 @@ int16_t SX126x::standby() {
 }
 
 int16_t SX126x::standby(uint8_t mode) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   uint8_t data[] = {mode};
   return(SPIwriteCommand(SX126X_CMD_SET_STANDBY, data, 1));
 }
@@ -436,7 +451,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(true);
+  _mod->setRfSwitchState(LOW, HIGH);
 
   // start transmission
   state = setTx(SX126X_TX_TIMEOUT_NONE);
@@ -455,7 +470,7 @@ int16_t SX126x::startReceive(uint32_t timeout) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(false);
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // set mode to receive
   state = setRx(timeout);
