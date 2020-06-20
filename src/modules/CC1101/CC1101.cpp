@@ -139,11 +139,18 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
 }
 
 int16_t CC1101::standby() {
+  // set idle mode
   SPIsendCommand(CC1101_CMD_IDLE);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
   return(ERR_NONE);
 }
 
 int16_t CC1101::transmitDirect(uint32_t frf) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
+
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
     SPIwriteRegister(CC1101_REG_FREQ2, (frf & 0xFF0000) >> 16);
@@ -163,6 +170,9 @@ int16_t CC1101::transmitDirect(uint32_t frf) {
 }
 
 int16_t CC1101::receiveDirect() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
   // activate direct mode
   int16_t state = directMode();
   RADIOLIB_ASSERT(state);
@@ -233,7 +243,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(true);
+  _mod->setRfSwitchState(LOW, HIGH);
 
   // set mode to transmit
   SPIsendCommand(CC1101_CMD_TX);
@@ -253,7 +263,7 @@ int16_t CC1101::startReceive() {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(false);
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // set mode to receive
   SPIsendCommand(CC1101_CMD_RX);
