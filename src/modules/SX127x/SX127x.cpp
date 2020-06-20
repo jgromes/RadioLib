@@ -245,6 +245,9 @@ int16_t SX127x::scanChannel() {
   // clear interrupt flags
   clearIRQFlags();
 
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
   // set mode to CAD
   state = setMode(SX127X_CAD);
   RADIOLIB_ASSERT(state);
@@ -265,11 +268,17 @@ int16_t SX127x::scanChannel() {
 }
 
 int16_t SX127x::sleep() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   // set mode to sleep
   return(setMode(SX127X_SLEEP));
 }
 
 int16_t SX127x::standby() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, LOW);
+
   // set mode to standby
   return(setMode(SX127X_STANDBY));
 }
@@ -279,6 +288,9 @@ int16_t SX127x::transmitDirect(uint32_t FRF) {
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
   }
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
 
   // user requested to start transmitting immediately (required for RTTY)
   if(FRF != 0) {
@@ -302,6 +314,9 @@ int16_t SX127x::receiveDirect() {
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
   }
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // activate direct mode
   int16_t state = directMode();
@@ -369,7 +384,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   }
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(false);
+  _mod->setRfSwitchState(HIGH, LOW);
 
   // set mode to receive
   return(setMode(mode));
@@ -421,18 +436,6 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_TX_BASE_ADDR, SX127X_FIFO_TX_BASE_ADDR_MAX);
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_TX_BASE_ADDR_MAX);
 
-    // write packet to FIFO
-    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
-
-    // set RF switch (if present)
-    _mod->setRfSwitchState(true);
-
-    // start transmission
-    state |= setMode(SX127X_TX);
-    RADIOLIB_ASSERT(state);
-
-    return(ERR_NONE);
-
   } else if(modem == SX127X_FSK_OOK) {
     // check packet length
     if(len >= SX127X_MAX_PACKET_LENGTH_FSK) {
@@ -453,21 +456,19 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     if((filter == SX127X_ADDRESS_FILTERING_NODE) || (filter == SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
       _mod->SPIwriteRegister(SX127X_REG_FIFO, addr);
     }
-
-    // write packet to FIFO
-    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
-
-    // set RF switch (if present)
-    _mod->setRfSwitchState(true);
-
-    // start transmission
-    state |= setMode(SX127X_TX);
-    RADIOLIB_ASSERT(state);
-
-    return(ERR_NONE);
   }
 
-  return(ERR_UNKNOWN);
+  // write packet to FIFO
+  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
+
+  // start transmission
+  state |= setMode(SX127X_TX);
+  RADIOLIB_ASSERT(state);
+
+  return(ERR_NONE);
 }
 
 int16_t SX127x::readData(uint8_t* data, size_t len) {
