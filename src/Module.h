@@ -399,9 +399,11 @@ class Module {
     /*!
       \brief Set RF switch state.
 
-      \param tx True to set RF switch to Tx, false to set switch to Rx.
+      \param rxPinState Pin state to set on Tx enable pin (usually high to transmit).
+
+      \param txPinState  Pin state to set on Rx enable pin (usually high to receive).
     */
-    void setRfSwitchState(bool tx);
+    void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState);
 
 #ifndef RADIOLIB_GODMODE
   private:

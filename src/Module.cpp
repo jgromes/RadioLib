@@ -323,18 +323,13 @@ void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   Module::pinMode(txEn, OUTPUT);
 }
 
-void Module::setRfSwitchState(bool tx) {
+void Module::setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState) {
   // check RF switch control is enabled
   if(!_useRfSwitch) {
     return;
   }
 
   // set pins
-  if(tx) {
-    Module::digitalWrite(_rxEn, LOW);
-    Module::digitalWrite(_txEn, HIGH);
-  } else {
-    Module::digitalWrite(_rxEn, HIGH);
-    Module::digitalWrite(_txEn, LOW);
-  }
+  Module::digitalWrite(_rxEn, rxPinState);
+  Module::digitalWrite(_txEn, txPinState);
 }
