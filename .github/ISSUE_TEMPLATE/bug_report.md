@@ -24,6 +24,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional info (please complete):**
  - MCU: [e.g. Arduino Uno, ESP8266 etc.]
+ - Link to Arduino core: [e.g. https://github.com/stm32duino/Arduino_Core_STM32 when using official STM32 core. See readme for links to all supported cores]
  - Wireless module type [e.g. CC1101, SX1268, etc.]
  - Arduino IDE version  [e.g. 1.8.5]
  - Library version [e.g. 3.0.0]
