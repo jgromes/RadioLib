@@ -80,7 +80,7 @@ The list above is by no means exhaustive. Most of RadioLib code is independent o
 ## Frequently Asked Questions
 
 ### Where should I start?
-First of all, take a look at the [examples](https://github.com/jgromes/RadioLib/tree/master/examples) and the [Wiki](https://github.com/jgromes/RadioLib/wiki) - especially the [Basics](https://github.com/jgromes/RadioLib/wiki/Basics) page. There's a lot of useful information over there. Also, you should check out [RadioShield](https://github.com/jgromes/RadioShield) - open source Arduino shield that will allow you to easily connect any two wireless modules supported by RadioLib!
+First of all, take a look at the [examples](https://github.com/jgromes/RadioLib/tree/master/examples) and the [Wiki](https://github.com/jgromes/RadioLib/wiki) - especially the [Basics](https://github.com/jgromes/RadioLib/wiki/Basics) page. There's a lot of useful information over there. If something isn't working as expected, try searching the [issues](https://github.com/jgromes/RadioLib/issues/).
 
 ### Help, my module isn't working!
 The fastest way to get help is by creating an [issue](https://github.com/jgromes/RadioLib/issues/new?assignees=&labels=&template=bug_report.md&title=) using the appropriate template. It is also highly recommended to try running the examples first - their functionality is tested from time to time and they should work. Finally, RadioLib is still under development, which means that sometimes, backwards-incompatible changes might be introduced. Though these are kept at minimum, sometimes it is unavoidable. You can check the [release changelog](https://github.com/jgromes/RadioLib/releases) to find out if there's been such a major change recently.
