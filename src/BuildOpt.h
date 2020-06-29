@@ -23,13 +23,34 @@
  *
  * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  *
- * Users may also specify their own configuration by defining all of the platform-specific parameters
- * and macro RADIOLIB_CUSTOM_PLATFORM prior to including the main library file (RadioLib.h).
+ * Users may also specify their own configuration by uncommenting the RADIOLIB_CUSTOM_PLATFORM,
+ * and then specifying all platform parameters in the section below. This will override automatic
+ * platform detection.
  */
+
+// uncomment to enable custom platform definition
+#define RADIOLIB_CUSTOM_PLATFORM
+
 #if defined(RADIOLIB_CUSTOM_PLATFORM)
-  #if !defined(RADIOLIB_PLATFORM)
-    #define RADIOLIB_PLATFORM                             "Custom"
-  #endif
+  // name for your platform
+  #define RADIOLIB_PLATFORM                             "Custom"
+
+  // the following parameters must always be defined
+  #define RADIOLIB_PIN_TYPE                           uint8_t
+  #define RADIOLIB_PIN_MODE                           uint8_t
+  #define RADIOLIB_PIN_STATUS                         uint8_t
+  #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_DEFAULT_SPI                        SPI
+
+  // the following must be defined if the Arduino core does not support SoftwareSerial library
+  //#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+  //#define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+  // the following must be defined if the Arduino core does not support tone function
+  //#define RADIOLIB_TONE_UNSUPPORTED
+
 #else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
     // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
