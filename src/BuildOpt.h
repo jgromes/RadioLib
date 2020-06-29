@@ -29,7 +29,7 @@
  */
 
 // uncomment to enable custom platform definition
-#define RADIOLIB_CUSTOM_PLATFORM
+//#define RADIOLIB_CUSTOM_PLATFORM
 
 #if defined(RADIOLIB_CUSTOM_PLATFORM)
   // name for your platform
