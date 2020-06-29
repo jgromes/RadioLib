@@ -216,7 +216,7 @@
 // set which Serial port should be used for debug output
 #define RADIOLIB_DEBUG_PORT   Serial
 
-#ifdef RADIOLIB_DEBUG
+#if defined(RADIOLIB_DEBUG)
   #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
   #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
 #else
@@ -224,7 +224,7 @@
   #define RADIOLIB_DEBUG_PRINTLN(...) {}
 #endif
 
-#ifdef RADIOLIB_VERBOSE
+#if defined(RADIOLIB_VERBOSE)
   #define RADIOLIB_VERBOSE_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
   #define RADIOLIB_VERBOSE_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
 #else
