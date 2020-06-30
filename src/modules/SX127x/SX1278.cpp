@@ -1,4 +1,5 @@
 #include "SX1278.h"
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX1278::SX1278(Module* mod) : SX127x(mod) {
 
@@ -495,3 +496,5 @@ int16_t SX1278::configFSK() {
 
   return(state);
 }
+
+#endif

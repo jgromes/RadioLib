@@ -1,4 +1,5 @@
 #include "SX127x.h"
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_FREQUENCY_STEP_SIZE, SX127X_MAX_PACKET_LENGTH) {
   _mod = mod;
@@ -1134,27 +1135,4 @@ void SX127x::clearFIFO(size_t count) {
   }
 }
 
-#ifdef RADIOLIB_DEBUG
-void SX127x::regDump() {
-  RADIOLIB_DEBUG_PRINTLN();
-  RADIOLIB_DEBUG_PRINTLN(F("ADDR\tVALUE"));
-  for(uint16_t addr = 0x01; addr <= 0x70; addr++) {
-    if(addr <= 0x0F) {
-      RADIOLIB_DEBUG_PRINT(F("0x0"));
-    } else {
-      RADIOLIB_DEBUG_PRINT(F("0x"));
-    }
-    RADIOLIB_DEBUG_PRINT(addr, HEX);
-    RADIOLIB_DEBUG_PRINT('\t');
-    uint8_t val = _mod->SPIreadRegister(addr);
-    if(val <= 0x0F) {
-      RADIOLIB_DEBUG_PRINT(F("0x0"));
-    } else {
-      RADIOLIB_DEBUG_PRINT(F("0x"));
-    }
-    RADIOLIB_DEBUG_PRINTLN(val, HEX);
-
-    delay(50);
-  }
-}
 #endif

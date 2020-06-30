@@ -1,4 +1,5 @@
 #include "SX1276.h"
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX1276::SX1276(Module* mod) : SX1278(mod) {
 
@@ -103,3 +104,5 @@ int16_t SX1276::setFrequency(float freq) {
   // set frequency
   return(SX127x::setFrequencyRaw(freq));
 }
+
+#endif

@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_SX1273_H
+#if !defined(_RADIOLIB_SX1273_H) && !defined(RADIOLIB_EXCLUDE_SX127X)
 #define _RADIOLIB_SX1273_H
 
 #include "../../TypeDef.h"

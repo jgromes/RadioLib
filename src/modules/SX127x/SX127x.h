@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_SX127X_H
+#if !defined(_RADIOLIB_SX127X_H) && !defined(RADIOLIB_EXCLUDE_SX127X)
 #define _RADIOLIB_SX127X_H
 
 #include "../../TypeDef.h"
@@ -930,10 +930,6 @@ class SX127x: public PhysicalLayer {
       \param txEn TX enable pin.
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
-
-    #ifdef RADIOLIB_DEBUG
-      void regDump();
-    #endif
 
 #ifndef RADIOLIB_GODMODE
   protected:

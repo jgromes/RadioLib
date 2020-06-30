@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_SX1278_H
+#if !defined(_RADIOLIB_SX1278_H) && !defined(RADIOLIB_EXCLUDE_SX127X)
 #define _RADIOLIB_SX1278_H
 
 #include "../../TypeDef.h"
@@ -169,7 +169,7 @@ class SX1278: public SX127x {
       \brief Reset method. Will reset the chip to the default state using RST pin.
     */
     void reset();
-    
+
     // configuration methods
 
     /*!
