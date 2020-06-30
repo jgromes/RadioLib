@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_RFM22_H
+#if !defined(_RADIOLIB_RFM22_H) && !defined(RADIOLIB_EXCLUDE_SI443X)
 #define _RADIOLIB_RFM22_H
 
 #include "../../TypeDef.h"
