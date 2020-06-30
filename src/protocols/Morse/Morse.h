@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_MORSE_H
+#if !defined(_RADIOLIB_MORSE_H) && !defined(RADIOLIB_EXCLUDE_MORSE)
 #define _RADIOLIB_MORSE_H
 
 #include "../../TypeDef.h"
@@ -95,12 +95,14 @@ class MorseClient {
     */
     MorseClient(PhysicalLayer* phy);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Constructor for AFSK mode.
 
       \param audio Pointer to the AFSK instance providing audio.
     */
     MorseClient(AFSKClient* audio);
+    #endif
 
     // basic methods
 
@@ -153,7 +155,11 @@ class MorseClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    #else
+    void* _audio;
+    #endif
 
     uint32_t _base, _baseHz;
     uint16_t _dotLength;

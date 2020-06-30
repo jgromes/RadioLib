@@ -1,14 +1,17 @@
 #include "Morse.h"
+#if !defined(RADIOLIB_EXCLUDE_MORSE)
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
   _phy = phy;
   _audio = nullptr;
 }
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 MorseClient::MorseClient(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
 }
+#endif
 
 int16_t MorseClient::begin(float base, uint8_t speed) {
   // calculate 24-bit frequency
@@ -309,3 +312,5 @@ int16_t MorseClient::standby() {
     return(_phy->standby());
   }
 }
+
+#endif
