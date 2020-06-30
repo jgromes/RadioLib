@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_SI4431_H
+#if !defined(_RADIOLIB_SI4431_H) && !defined(RADIOLIB_EXCLUDE_SI443X)
 #define _RADIOLIB_SI4431_H
 
 #include "../../TypeDef.h"

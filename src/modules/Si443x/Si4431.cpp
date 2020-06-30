@@ -1,4 +1,5 @@
 #include "Si4431.h"
+#if !defined(RADIOLIB_EXCLUDE_SI443X)
 
 Si4431::Si4431(Module* mod) : Si4432(mod) {
 
@@ -25,3 +26,5 @@ int16_t Si4431::setOutputPower(int8_t power) {
   // set output power
   return(_mod->SPIsetRegValue(SI443X_REG_TX_POWER, (uint8_t)((power + 8) / 3), 2, 0));
 }
+
+#endif

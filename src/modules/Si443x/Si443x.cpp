@@ -1,4 +1,5 @@
 #include "Si443x.h"
+#if !defined(RADIOLIB_EXCLUDE_SI443X)
 
 Si443x::Si443x(Module* mod) : PhysicalLayer(SI443X_FREQUENCY_STEP_SIZE, SI443X_MAX_PACKET_LENGTH) {
   _mod = mod;
@@ -689,3 +690,5 @@ int16_t Si443x::directMode() {
   state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_NONE, 1, 0);
   return(state);
 }
+
+#endif
