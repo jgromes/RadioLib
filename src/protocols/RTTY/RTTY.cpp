@@ -1,4 +1,5 @@
 #include "RTTY.h"
+#if !defined(RADIOLIB_EXCLUDE_RTTY)
 
 ITA2String::ITA2String(char c) {
   _len = 1;
@@ -109,10 +110,12 @@ RTTYClient::RTTYClient(PhysicalLayer* phy) {
   _audio = nullptr;
 }
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 RTTYClient::RTTYClient(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
 }
+#endif
 
 int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding, uint8_t stopBits) {
   // save configuration
@@ -531,3 +534,5 @@ int16_t RTTYClient::standby() {
     return(_phy->standby());
   }
 }
+
+#endif

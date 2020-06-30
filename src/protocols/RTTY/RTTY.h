@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_RTTY_H
+#if !defined(_RADIOLIB_RTTY_H) && !defined(RADIOLIB_EXCLUDE_RTTY)
 #define _RADIOLIB_RTTY_H
 
 #include "../../TypeDef.h"
@@ -91,12 +91,14 @@ class RTTYClient {
     */
     RTTYClient(PhysicalLayer* phy);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Constructor for AFSK mode.
 
       \param audio Pointer to the AFSK instance providing audio.
     */
     RTTYClient(AFSKClient* audio);
+    #endif
 
     // basic methods
 
@@ -155,7 +157,11 @@ class RTTYClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    #else
+    void* _audio;
+    #endif
 
     uint8_t _encoding;
     uint32_t _base, _baseHz;
