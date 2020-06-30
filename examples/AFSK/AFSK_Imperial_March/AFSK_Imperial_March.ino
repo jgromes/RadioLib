@@ -28,7 +28,7 @@
 SX1278 fsk = new Module(10, 2, 9, 3);
 
 // create AFSK client instance using the FSK module
-// this requires connection to the module direct 
+// this requires connection to the module direct
 // input pin, here connected to Arduino pin 5
 // SX127x/RFM9x:  DIO2
 // RF69:          DIO2
@@ -65,12 +65,12 @@ void setup() {
 
 void loop() {
   Serial.print(F("[AFSK] Executing Order 66 ... "));
-  
+
   // calculate whole note duration
   int wholenote = (60000 * 4) / 120;
 
   // iterate over the melody
-  for(int note = 0; note < sizeof(melody) / sizeof(melody[0]); note += 2) {
+  for(unsigned int note = 0; note < sizeof(melody) / sizeof(melody[0]); note += 2) {
     // calculate the duration of each note
     int noteDuration = 0;
     int divider = melody[note + 1];
@@ -89,7 +89,7 @@ void loop() {
     audio.noTone();
     delay(noteDuration*0.1);
   }
-  
+
   Serial.println(F("done!"));
 
   // wait for a second
