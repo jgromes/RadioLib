@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_HELLSCHREIBER_H
+#if !defined(_RADIOLIB_HELLSCHREIBER_H) && !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
 #define _RADIOLIB_HELLSCHREIBER_H
 
 #include "../../TypeDef.h"
@@ -92,12 +92,14 @@ class HellClient {
     */
     HellClient(PhysicalLayer* phy);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Constructor for AFSK mode.
 
       \param audio Pointer to the AFSK instance providing audio.
     */
     HellClient(AFSKClient* audio);
+    #endif
 
     // basic methods
 
@@ -148,7 +150,11 @@ class HellClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    #else
+    void* _audio;
+    #endif
 
     uint32_t _base, _baseHz;
     uint32_t _pixelDuration;

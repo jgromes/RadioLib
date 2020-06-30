@@ -1,14 +1,17 @@
 #include "Hellschreiber.h"
+#if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
 
 HellClient::HellClient(PhysicalLayer* phy) {
   _phy = phy;
   _audio = nullptr;
 }
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 HellClient::HellClient(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
 }
+#endif
 
 int16_t HellClient::begin(float base, float rate) {
   // calculate 24-bit frequency
@@ -295,3 +298,5 @@ int16_t HellClient::standby() {
     return(_phy->standby());
   }
 }
+
+#endif
