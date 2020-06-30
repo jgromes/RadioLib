@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_HTTP_H
+#if !defined(_RADIOLIB_HTTP_H) && !defined(RADIOLIB_EXCLUDE_HTTP)
 #define _RADIOLIB_HTTP_H
 
 #include "../../TypeDef.h"

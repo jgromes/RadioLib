@@ -1,4 +1,5 @@
 #include "HTTP.h"
+#if !defined(RADIOLIB_EXCLUDE_HTTP)
 
 HTTPClient::HTTPClient(TransportLayer* tl, uint16_t port) {
   _tl = tl;
@@ -216,3 +217,5 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
   statusStr[3] = 0x00;
   return(atoi(statusStr));
 }
+
+#endif
