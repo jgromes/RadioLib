@@ -1,4 +1,5 @@
 #include "XBee.h"
+#if !defined(RADIOLIB_EXCLUDE_XBEE)
 
 XBee::XBee(Module* mod) {
   _mod = mod;
@@ -481,3 +482,5 @@ uint16_t XBee::getNumBytes(uint32_t timeout, size_t minBytes) {
 
   return((resp[1] << 8) | resp[2]);
 }
+
+#endif

@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_XBEE_H
+#if !defined(_RADIOLIB_XBEE_H) && !defined(RADIOLIB_EXCLUDE_XBEE)
 #define _RADIOLIB_XBEE_H
 
 #include "../../ISerial.h"
