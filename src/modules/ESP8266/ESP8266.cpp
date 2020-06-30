@@ -1,5 +1,5 @@
-#if !defined(ESP8266) && !defined(ARDUINO_ARDUINO_NANO33BLE)
 #include "ESP8266.h"
+#if !defined(RADIOLIB_EXCLUDE_ESP8266)
 
 ESP8266::ESP8266(Module* module) {
   _mod = module;
