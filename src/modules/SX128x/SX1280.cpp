@@ -1,4 +1,5 @@
 #include "SX1280.h"
+#if !defined(RADIOLIB_EXCLUDE_SX128X)
 
 SX1280::SX1280(Module* mod) : SX1281(mod) {
 
@@ -111,3 +112,5 @@ float SX1280::getRangingResult() {
   memcpy(&raw, data, sizeof(uint32_t));
   return((float)raw * (150.0/(4.096 * _bwKhz)));
 }
+
+#endif

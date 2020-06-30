@@ -1,4 +1,5 @@
 #include "SX128x.h"
+#if !defined(RADIOLIB_EXCLUDE_SX128X)
 
 SX128x::SX128x(Module* mod) : PhysicalLayer(SX128X_FREQUENCY_STEP_SIZE, SX128X_MAX_PACKET_LENGTH) {
   _mod = mod;
@@ -1431,3 +1432,5 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       return(ERR_NONE);
   }
 }
+
+#endif
