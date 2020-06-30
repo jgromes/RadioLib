@@ -1,4 +1,5 @@
 #include "nRF24.h"
+#if !defined(RADIOLIB_EXCLUDE_NRF24)
 
 nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_FREQUENCY_STEP_SIZE, NRF24_MAX_PACKET_LENGTH) {
   _mod = mod;
@@ -568,3 +569,5 @@ void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* data
   spi->endTransaction();
   digitalWrite(_mod->getCs(), HIGH);
 }
+
+#endif

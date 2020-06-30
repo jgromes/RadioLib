@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_NRF24_H
+#if !defined(_RADIOLIB_NRF24_H) && !defined(RADIOLIB_EXCLUDE_NRF24)
 #define _RADIOLIB_NRF24_H
 
 #include "../../Module.h"
