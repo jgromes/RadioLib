@@ -1,4 +1,5 @@
 #include "RF69.h"
+#if !defined(RADIOLIB_EXCLUDE_RF69)
 
 RF69::RF69(Module* module) : PhysicalLayer(RF69_FREQUENCY_STEP_SIZE, RF69_MAX_PACKET_LENGTH)  {
   _mod = module;
@@ -342,7 +343,7 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
-  
+
   // get packet length
   size_t length = len;
   if(len == RF69_MAX_PACKET_LENGTH) {
@@ -836,3 +837,5 @@ void RF69::clearIRQFlags() {
   _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_1, 0b11111111);
   _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_2, 0b11111111);
 }
+
+#endif

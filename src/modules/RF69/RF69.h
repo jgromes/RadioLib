@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_RF69_H
+#if !defined(_RADIOLIB_RF69_H) && !defined(RADIOLIB_EXCLUDE_RF69)
 #define _RADIOLIB_RF69_H
 
 #include "../../TypeDef.h"
