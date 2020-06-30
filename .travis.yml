@@ -5,7 +5,6 @@ env:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
     - BOARD="arduino:avr:uno"
-    - BOARD="arduino-beta:mbed:envie_m4"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="arduino:avr:leonardo"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
@@ -20,6 +19,7 @@ env:
     - BOARD="arduino:mbed:nano33ble"
     - BOARD="stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz"
     - BOARD="adafruit:samd:adafruit_feather_m0:usbstack=arduino,debug=off"
+    - BOARD="arduino-beta:mbed:envie_m4"
 
 addons:
   apt:
