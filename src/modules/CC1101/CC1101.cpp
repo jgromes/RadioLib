@@ -1,4 +1,5 @@
 #include "CC1101.h"
+#if !defined(RADIOLIB_EXCLUDE_CC1101)
 
 CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_FREQUENCY_STEP_SIZE, CC1101_MAX_PACKET_LENGTH) {
   _mod = module;
@@ -857,3 +858,5 @@ void CC1101::SPIsendCommand(uint8_t cmd) {
   SPI.endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
 }
+
+#endif

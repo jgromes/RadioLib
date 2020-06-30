@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_CC1101_H
+#if !defined(_RADIOLIB_CC1101_H) && !defined(RADIOLIB_EXCLUDE_CC1101)
 #define _RADIOLIB_CC1101_H
 
 #include "../../TypeDef.h"
