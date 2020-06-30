@@ -1,4 +1,5 @@
 #include "RFM96.h"
+#if !defined(RADIOLIB_EXCLUDE_RFM9X)
 
 RFM96::RFM96(Module* mod) : SX1278(mod) {
 
@@ -47,3 +48,5 @@ int16_t RFM96::setFrequency(float freq) {
   // set frequency
   return(SX127x::setFrequencyRaw(freq));
 }
+
+#endif
