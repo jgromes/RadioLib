@@ -1,4 +1,5 @@
 #include "MQTT.h"
+#if !defined(RADIOLIB_EXCLUDE_MQTT)
 
 MQTTClient::MQTTClient(TransportLayer* tl, uint16_t port) {
   _tl = tl;
@@ -469,3 +470,5 @@ uint32_t MQTTClient::decodeLength(uint8_t* encoded) {
   } while((encoded[i] & 128) != 0);
   return len;
 }
+
+#endif

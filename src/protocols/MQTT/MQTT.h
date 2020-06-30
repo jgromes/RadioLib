@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_MQTT_H
+#if !defined(_RADIOLIB_MQTT_H) && !defined(RADIOLIB_EXCLUDE_MQTT)
 #define _RADIOLIB_MQTT_H
 
 #include "../../TypeDef.h"
