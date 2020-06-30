@@ -1,4 +1,5 @@
 #include "AFSK.h"
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 
 AFSKClient::AFSKClient(PhysicalLayer* phy, RADIOLIB_PIN_TYPE pin) {
   _phy = phy;
@@ -23,3 +24,5 @@ int16_t AFSKClient::noTone() {
   Module::noTone(_pin);
   return(_phy->standby());
 }
+
+#endif

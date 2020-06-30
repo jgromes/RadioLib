@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_AFSK_H
+#if !defined(_RADIOLIB_AFSK_H) && !defined(RADIOLIB_EXCLUDE_AFSK)
 #define _RADIOLIB_AFSK_H
 
 #include "../../TypeDef.h"
