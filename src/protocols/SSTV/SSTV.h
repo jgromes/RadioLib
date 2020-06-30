@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_SSTV_H
+#if !defined(_RADIOLIB_SSTV_H) && !defined(RADIOLIB_EXCLUDE_SSTV)
 #define _RADIOLIB_SSTV_H
 
 #include "../../TypeDef.h"
@@ -123,12 +123,14 @@ class SSTVClient {
     */
     SSTVClient(PhysicalLayer* phy);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Constructor for AFSK mode.
 
       \param audio Pointer to the AFSK instance providing audio.
     */
     SSTVClient(AFSKClient* phy);
+    #endif
 
     // basic methods
 
@@ -184,7 +186,11 @@ class SSTVClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    #else
+    void* _audio;
+    #endif
 
     uint32_t _base;
     SSTVMode_t _mode;

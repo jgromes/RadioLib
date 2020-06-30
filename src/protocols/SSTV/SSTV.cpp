@@ -1,4 +1,5 @@
 #include "SSTV.h"
+#if !defined(RADIOLIB_EXCLUDE_SSTV)
 
 const SSTVMode_t Scottie1 {
   .visCode = SSTV_SCOTTIE_1,
@@ -158,10 +159,12 @@ SSTVClient::SSTVClient(PhysicalLayer* phy) {
   _audio = nullptr;
 }
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 SSTVClient::SSTVClient(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
 }
+#endif
 
 int16_t SSTVClient::begin(SSTVMode_t mode, float correction) {
   if(_audio == nullptr) {
@@ -290,3 +293,5 @@ void SSTVClient::tone(float freq, uint32_t len) {
     yield();
   }
 }
+
+#endif
