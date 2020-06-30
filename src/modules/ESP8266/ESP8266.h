@@ -1,6 +1,7 @@
-#if !defined(_RADIOLIB_ESP8266_H) && !defined(RADIOLIB_EXCLUDE_ESP8266)
+#if !defined(_RADIOLIB_ESP8266_H) && !defined(RADIOLIB_EXCLUDE_ESP8266) && !defined(ESP8266)
 #define _RADIOLIB_ESP8266_H
 
+#include "../../TypeDef.h"
 #include "../../Module.h"
 
 #include "../../protocols/TransportLayer/TransportLayer.h"

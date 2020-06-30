@@ -1,5 +1,5 @@
 #include "ESP8266.h"
-#if !defined(RADIOLIB_EXCLUDE_ESP8266)
+#if !defined(RADIOLIB_EXCLUDE_ESP8266) && !defined(ESP8266)
 
 ESP8266::ESP8266(Module* module) {
   _mod = module;
