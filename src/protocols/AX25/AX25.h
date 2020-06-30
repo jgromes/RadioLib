@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_AX25_H
+#if !defined(_RADIOLIB_AX25_H) && !defined(RADIOLIB_EXCLUDE_AX25)
 #define _RADIOLIB_AX25_H
 
 #include "../../TypeDef.h"
@@ -268,12 +268,14 @@ class AX25Client {
     */
     AX25Client(PhysicalLayer* phy);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Constructor for AFSK mode.
 
       \param audio Pointer to the AFSK instance providing audio.
     */
     AX25Client(AFSKClient* audio);
+    #endif
 
     // basic methods
 
@@ -316,7 +318,11 @@ class AX25Client {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    #else
+    void* _audio;
+    #endif
 
     char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1];
     uint8_t _srcSSID;

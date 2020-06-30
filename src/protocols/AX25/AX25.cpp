@@ -1,4 +1,5 @@
 #include "AX25.h"
+#if !defined(RADIOLIB_EXCLUDE_AX25)
 
 AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control)
 : AX25Frame(destCallsign, destSSID, srcCallsign, srcSSID, control, 0, NULL, 0) {
@@ -115,10 +116,12 @@ AX25Client::AX25Client(PhysicalLayer* phy) {
   _audio = nullptr;
 }
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 AX25Client::AX25Client(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
 }
+#endif
 
 int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t preambleLen) {
   // set source SSID
@@ -414,3 +417,5 @@ uint16_t AX25Client::flipBits16(uint16_t i) {
   i = (i & 0xAAAA) >> 1 | (i & 0x5555) << 1;
   return i;
 }
+
+#endif
