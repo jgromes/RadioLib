@@ -1,4 +1,5 @@
 #include "SX1262.h"
+#if !defined(RADIOLIB_EXCLUDE_SX126X)
 
 SX1262::SX1262(Module* mod) : SX126x(mod) {
 
@@ -90,3 +91,5 @@ int16_t SX1262::setOutputPower(int8_t power) {
   // restore OCP configuration
   return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
+
+#endif
