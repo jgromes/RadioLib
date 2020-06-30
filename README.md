@@ -46,7 +46,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 ### Supported platforms:
 * __Arduino__  
   * [__AVR__](https://github.com/arduino/ArduinoCore-avr) - Arduino Uno, Mega, Leonardo, Pro Mini, Nano etc.
-  * [__mbed__](https://github.com/arduino/ArduinoCore-nRF528x-mbedos) - Arduino Nano 33 BLE
+  * [__mbed__](https://github.com/arduino/ArduinoCore-mbed) - Arduino Nano 33 BLE and Arduino Portenta H7
   * [__megaAVR__](https://github.com/arduino/ArduinoCore-megaavr) - Arduino Uno WiFi Rev.2 and Nano Every
   * [__SAM__](https://github.com/arduino/ArduinoCore-sam) - Arduino Due
   * [__SAMD__](https://github.com/arduino/ArduinoCore-samd) - Arduino Zero, MKR boards, M0 Pro etc.

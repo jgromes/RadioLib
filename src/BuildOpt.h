@@ -33,7 +33,7 @@
 
 #if defined(RADIOLIB_CUSTOM_PLATFORM)
   // name for your platform
-  #define RADIOLIB_PLATFORM                             "Custom"
+  #define RADIOLIB_PLATFORM                           "Custom"
 
   // the following parameters must always be defined
   #define RADIOLIB_PIN_TYPE                           uint8_t
@@ -50,6 +50,10 @@
 
   // the following must be defined if the Arduino core does not support tone function
   //#define RADIOLIB_TONE_UNSUPPORTED
+
+  // some of RadioLib drivers may be excluded, to prevent collisions with platform (or to speed up build process)
+  // for example, to exclude ESP8266 driver:
+  //RADIOLIB_EXCLUDE_ESP8266
 
 #else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
@@ -75,7 +79,7 @@
     #define RADIOLIB_DEFAULT_SPI                        SPI
 
     // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
-    #define _RADIOLIB_ESP8266_H
+    #define RADIOLIB_EXCLUDE_ESP8266
 
   #elif defined(ESP32)
     // ESP32 boards
@@ -192,7 +196,23 @@
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
     // Nano 33 BLE uses mbed libraries, which already contain ESP8266 driver
-    #define _RADIOLIB_ESP8266_H
+    #define RADIOLIB_EXCLUDE_ESP8266
+
+  #elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4)
+    // Arduino Portenta H7
+    #define RADIOLIB_PLATFORM                           "Portenta H7"
+    #define RADIOLIB_PIN_TYPE                           pin_size_t
+    #define RADIOLIB_PIN_MODE                           PinMode
+    #define RADIOLIB_PIN_STATUS                         PinStatus
+    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+    #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+    // Arduino Portenta H7 uses mbed libraries, which already contain ESP8266 driver
+    #define RADIOLIB_EXCLUDE_ESP8266
 
   #elif defined(__STM32F4__) || defined(__STM32F1__)
     // Arduino STM32 core by Roger Clark (https://github.com/rogerclarkmelbourne/Arduino_STM32)

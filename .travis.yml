@@ -5,6 +5,7 @@ env:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
     - BOARD="arduino:avr:uno"
+    - BOARD="arduino-beta:mbed:envie_m4"
     - BOARD="arduino:avr:mega:cpu=atmega2560"
     - BOARD="arduino:avr:leonardo"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
@@ -110,6 +111,11 @@ before_install:
       export BUILD_EXAMPLES=false;
       arduino --pref "boardsmanager.additional.urls=https://www.adafruit.com/package_adafruit_index.json" --save-prefs 2>&1;
       arduino --install-boards adafruit:samd;
+
+    elif [[ "$BOARD" =~ "arduino-beta:mbed:" ]]; then
+      export BUILD_EXAMPLES=false;
+      arduino --install-boards arduino-beta:mbed;
+      export SKIP_PAT='(HTTP|MQTT).*ino';
 
     fi
 
