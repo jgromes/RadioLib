@@ -33,6 +33,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // set mode to standby
   state = standby();
   RADIOLIB_ASSERT(state);
+
   // set frequency
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
@@ -47,6 +48,15 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
 
   // set address width
   state = setAddressWidth(addrWidth);
+  RADIOLIB_ASSERT(state);
+
+  // set CRC
+  state = setCrcFiltering(true);
+  RADIOLIB_ASSERT(state);
+
+  // set auto-ACK on all pipes
+  state = setAutoAck(true);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
