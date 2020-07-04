@@ -96,7 +96,6 @@ int16_t MQTTClient::connect(const char* host, const char* clientId, const char* 
     packet[pos++] = (passwordLen & 0xFF00) >> 8;;
     packet[pos++] = passwordLen & 0x00FF;
     memcpy(packet + pos, password, passwordLen);
-    pos += passwordLen;
   }
 
   // create TCP connection
@@ -198,7 +197,6 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
   // payload
   // message
   memcpy(packet + pos, message, messageLen);
-  pos += messageLen;
 
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
@@ -314,7 +312,6 @@ int16_t MQTTClient::unsubscribe(const char* topicFilter) {
   packet[pos++] = (topicFilterLen & 0xFF00) >> 8;;
   packet[pos++] = topicFilterLen & 0x00FF;
   memcpy(packet + pos, topicFilter, topicFilterLen);
-  pos += topicFilterLen;
 
   // send MQTT packet
   int16_t state = _tl->send(packet, 1 + encodedBytes + remainingLength);
