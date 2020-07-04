@@ -51,9 +51,33 @@
   // the following must be defined if the Arduino core does not support tone function
   //#define RADIOLIB_TONE_UNSUPPORTED
 
-  // some of RadioLib drivers may be excluded, to prevent collisions with platform (or to speed up build process)
-  // for example, to exclude ESP8266 driver:
+  // some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
+  // the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
+  // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
+  //       while keeping SX1231 (because RF69 is the base class for SX1231). The dependeny is always uni-directional,
+  //       so excluding SX1231 and keeping RF69 is valid.
+  //#define RADIOLIB_EXCLUDE_CC1101
   //#define RADIOLIB_EXCLUDE_ESP8266
+  //#define RADIOLIB_EXCLUDE_HC05
+  //#define RADIOLIB_EXCLUDE_JDY08
+  //#define RADIOLIB_EXCLUDE_NRF24
+  //#define RADIOLIB_EXCLUDE_RF69
+  //#define RADIOLIB_EXCLUDE_SX1231     // dependent on RADIOLIB_EXCLUDE_RF69
+  //#define RADIOLIB_EXCLUDE_SI443X
+  //#define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
+  //#define RADIOLIB_EXCLUDE_SX127X
+  //#define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
+  //#define RADIOLIB_EXCLUDE_SX126X
+  //#define RADIOLIB_EXCLUDE_SX128X
+  //#define RADIOLIB_EXCLUDE_XBEE
+  #define RADIOLIB_EXCLUDE_AFSK
+  //#define RADIOLIB_EXCLUDE_AX25
+  //#define RADIOLIB_EXCLUDE_HELLSCHREIBER
+  //#define RADIOLIB_EXCLUDE_HTTP
+  //#define RADIOLIB_EXCLUDE_MORSE
+  //#define RADIOLIB_EXCLUDE_MQTT
+  //#define RADIOLIB_EXCLUDE_RTTY
+  //#define RADIOLIB_EXCLUDE_SSTV
 
 #else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
