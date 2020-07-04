@@ -47,8 +47,8 @@ void setup() {
   // initialize SX1278
   Serial.print(F("[SX1278] Initializing ... "));
   // carrier frequency:           434.0 MHz
-  // bit rate:                    1.2 kbps (1200 baud AFSK AX.25)
-  // frequency deviation:         0.5 kHz  (1200 baud AFSK AX.25)
+  // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
+  // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
   int state = fsk.beginFSK(434.0, 1.2, 0.5);
 
   // when using one of the non-LoRa modules for AX.25
