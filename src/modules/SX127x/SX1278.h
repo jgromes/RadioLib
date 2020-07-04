@@ -168,7 +168,7 @@ class SX1278: public SX127x {
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
     */
-    void reset();
+    void reset() override;
 
     // configuration methods
 
@@ -235,7 +235,7 @@ class SX1278: public SX127x {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(float sh) override;
 
     /*!
       \brief Sets filter cutoff frequency that will be used for data shaping.

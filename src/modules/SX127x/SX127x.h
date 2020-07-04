@@ -602,7 +602,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -614,7 +614,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Performs scan for valid %LoRa preamble in the current channel.
@@ -636,17 +636,17 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data).
       While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
 
-      \param FRF 24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.
+      \param frf 24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t FRF = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Enables direct reception mode on pins DIO1 (clock) and DIO2 (data).
@@ -654,7 +654,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Disables direct mode and enables packet mode, allowing the module to receive packets. Can only be activated in FSK mode.
@@ -700,7 +700,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
@@ -722,7 +722,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
 
     // configuration methods
@@ -775,7 +775,7 @@ class SX127x: public PhysicalLayer {
 
       \returns Last packet data rate in bps (bits per second).
     */
-    float getDataRate();
+    float getDataRate() const;
 
     /*!
       \brief Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.
@@ -793,7 +793,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
@@ -856,7 +856,7 @@ class SX127x: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
     /*!
      \brief Set modem in fixed packet length mode. Available in FSK mode only.
@@ -895,7 +895,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
 
     /*!
       \brief Reads currently active IRQ flags, can be used to check which event caused an interrupt.
@@ -936,13 +936,13 @@ class SX127x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    float _freq;
-    float _bw;
-    uint8_t _sf;
-    uint8_t _cr;
-    float _br;
-    float _rxBw;
-    bool _ook;
+    float _freq = 0;
+    float _bw = 0;
+    uint8_t _sf = 0;
+    uint8_t _cr = 0;
+    float _br = 0;
+    float _rxBw = 0;
+    bool _ook = false;
 
     int16_t setFrequencyRaw(float newFreq);
     int16_t config();
@@ -954,10 +954,10 @@ class SX127x: public PhysicalLayer {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    float _dataRate;
-    size_t _packetLength;
-    bool _packetLengthQueried; // FSK packet length is the first byte in FIFO, length can only be queried once
-    uint8_t _packetLengthConfig;
+    float _dataRate = 0;
+    size_t _packetLength = 0;
+    bool _packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
+    uint8_t _packetLengthConfig = SX127X_PACKET_VARIABLE;
 
     bool findChip(uint8_t ver);
     int16_t setMode(uint8_t mode);

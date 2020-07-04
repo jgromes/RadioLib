@@ -3,7 +3,6 @@
 
 SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_FREQUENCY_STEP_SIZE, SX127X_MAX_PACKET_LENGTH) {
   _mod = mod;
-  _packetLengthQueried = false;
 }
 
 int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength) {
@@ -122,6 +121,7 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
 int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
 
   int16_t modem = getActiveModem();
   uint32_t start = 0;
@@ -188,6 +188,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 int16_t SX127x::receive(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
 
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
@@ -284,7 +285,7 @@ int16_t SX127x::standby() {
   return(setMode(SX127X_STANDBY));
 }
 
-int16_t SX127x::transmitDirect(uint32_t FRF) {
+int16_t SX127x::transmitDirect(uint32_t frf) {
   // check modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
@@ -294,10 +295,10 @@ int16_t SX127x::transmitDirect(uint32_t FRF) {
   _mod->setRfSwitchState(LOW, HIGH);
 
   // user requested to start transmitting immediately (required for RTTY)
-  if(FRF != 0) {
-    _mod->SPIwriteRegister(SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
-    _mod->SPIwriteRegister(SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
-    _mod->SPIwriteRegister(SX127X_REG_FRF_LSB, FRF & 0x0000FF);
+  if(frf != 0) {
+    _mod->SPIwriteRegister(SX127X_REG_FRF_MSB, (frf & 0xFF0000) >> 16);
+    _mod->SPIwriteRegister(SX127X_REG_FRF_MID, (frf & 0x00FF00) >> 8);
+    _mod->SPIwriteRegister(SX127X_REG_FRF_LSB, frf & 0x0000FF);
 
     return(setMode(SX127X_TX));
   }
@@ -352,11 +353,12 @@ int16_t SX127x::packetMode() {
 int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
 
   int16_t modem = getActiveModem();
   if(modem == SX127X_LORA) {
     // set DIO pin mapping
-    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
+    state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_RX_DONE | SX127X_DIO1_RX_TIMEOUT, 7, 4);
 
     // set expected packet length for SF6
     if(_sf == 6) {
@@ -373,7 +375,8 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
 
   } else if(modem == SX127X_FSK_OOK) {
     // set DIO pin mapping
-    state |= _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
+    state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
+    RADIOLIB_ASSERT(state);
 
     // clear interrupt flags
     clearIRQFlags();
@@ -651,7 +654,7 @@ float SX127x::getSNR() {
   return(rawSNR / 4.0);
 }
 
-float SX127x::getDataRate() {
+float SX127x::getDataRate() const {
   return(_dataRate);
 }
 
