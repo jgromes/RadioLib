@@ -9,6 +9,9 @@
     - transmit pipe on transmitter must match receive pipe
       on receiver
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#nrf24
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -20,22 +23,18 @@
 // CS pin:    10
 // IRQ pin:   2
 // CE pin:    3
-nRF24 nrf = new Module(10, 2, 3);
+nRF24 radio = new Module(10, 2, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//nRF24 nrf = RadioShield.ModuleA;
+//nRF24 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
-  // initialize nRF24
+  // initialize nRF24 with default settings
   Serial.print(F("[nRF24] Initializing ... "));
-  // carrier frequency:           2400 MHz
-  // data rate:                   1000 kbps
-  // output power:                -12 dBm
-  // address width:               5 bytes
-  int state = nrf.begin();
+  int state = radio.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,7 +49,7 @@ void setup() {
   //       methods (5 by default)
   Serial.print(F("[nRF24] Setting address for receive pipe 0 ... "));
   byte addr[] = {0x01, 0x23, 0x45, 0x67, 0x89};
-  state = nrf.setReceivePipe(0, addr);
+  state = radio.setReceivePipe(0, addr);
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -68,12 +67,12 @@ void loop() {
   //       See example ReceiveInterrupt for details
   //       on non-blocking reception method.
   String str;
-  int state = nrf.receive(str);
+  int state = radio.receive(str);
 
   // you can also receive data as byte array
   /*
     byte byteArr[8];
-    int state = nrf.receive(byteArr, 8);
+    int state = radio.receive(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
