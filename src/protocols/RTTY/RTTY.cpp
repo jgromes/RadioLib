@@ -235,7 +235,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
 
   size_t n = 0;
   if(_encoding == ITA2) {
-    ITA2String ita2 = str;
+    ITA2String ita2 = ITA2String(str);
     n = RTTYClient::print(ita2);
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, len);
@@ -256,7 +256,7 @@ size_t RTTYClient::print(ITA2String& ita2) {
 size_t RTTYClient::print(const String& str) {
   size_t n = 0;
   if(_encoding == ITA2) {
-    ITA2String ita2 = str.c_str();
+    ITA2String ita2 = ITA2String(str.c_str());
     n = RTTYClient::print(ita2);
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str.c_str(), str.length());
@@ -267,7 +267,7 @@ size_t RTTYClient::print(const String& str) {
 size_t RTTYClient::print(const char str[]) {
   size_t n = 0;
   if(_encoding == ITA2) {
-    ITA2String ita2 = str;
+    ITA2String ita2 = ITA2String(str);
     n = RTTYClient::print(ita2);
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, strlen(str));
@@ -278,7 +278,7 @@ size_t RTTYClient::print(const char str[]) {
 size_t RTTYClient::print(char c) {
   size_t n = 0;
   if(_encoding == ITA2) {
-    ITA2String ita2 = c;
+    ITA2String ita2 = ITA2String(c);
     n = RTTYClient::print(ita2);
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write(c);
@@ -328,7 +328,7 @@ size_t RTTYClient::print(double n, int digits) {
 size_t RTTYClient::println(void) {
   size_t n = 0;
   if(_encoding == ITA2) {
-    ITA2String lf = "\r\n";
+    ITA2String lf = ITA2String("\r\n");
     n = RTTYClient::print(lf);
   } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
     n = RTTYClient::write("\r\n");
@@ -437,7 +437,7 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
 
   size_t l = 0;
   if(_encoding == ITA2) {
-    ITA2String ita2 = str;
+    ITA2String ita2 = ITA2String(str);
     uint8_t* arr = ita2.byteArr();
     l = RTTYClient::write(arr, ita2.length());
     delete[] arr;
@@ -461,7 +461,7 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
 
   if(code[0] != 0x00) {
     if(_encoding == ITA2) {
-      ITA2String ita2 = code;
+      ITA2String ita2 = ITA2String(code);
       uint8_t* arr = ita2.byteArr();
       n = RTTYClient::write(arr, ita2.length());
       delete[] arr;
@@ -474,7 +474,7 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   // Handle negative numbers
   if (number < 0.0) {
     if(_encoding == ITA2) {
-      ITA2String ita2 = "-";
+      ITA2String ita2 = ITA2String("-");
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;
@@ -499,7 +499,7 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   // Print the decimal point, but only if there are digits beyond
   if(digits > 0) {
     if(_encoding == ITA2) {
-      ITA2String ita2 = ".";
+      ITA2String ita2 = ITA2String(".");
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;

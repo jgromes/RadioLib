@@ -29,14 +29,14 @@ class ITA2String {
 
       \param c ASCII-encoded character to encode as ITA2.
     */
-    ITA2String(char c);
+    explicit ITA2String(char c);
 
     /*!
       \brief Default string constructor.
 
       \param str ASCII-encoded string to encode as ITA2.
     */
-    ITA2String(const char* str);
+    explicit ITA2String(const char* str);
 
     /*!
       \brief Default destructor.
@@ -69,7 +69,7 @@ class ITA2String {
     size_t _len;
     size_t _ita2Len;
 
-    uint16_t getBits(char c);
+    static uint16_t getBits(char c);
 };
 
 // supported encoding schemes
@@ -89,7 +89,7 @@ class RTTYClient {
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    RTTYClient(PhysicalLayer* phy);
+    explicit RTTYClient(PhysicalLayer* phy);
 
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
@@ -97,7 +97,7 @@ class RTTYClient {
 
       \param audio Pointer to the AFSK instance providing audio.
     */
-    RTTYClient(AFSKClient* audio);
+    explicit RTTYClient(AFSKClient* audio);
     #endif
 
     // basic methods
@@ -143,7 +143,7 @@ class RTTYClient {
     size_t println(void);
     size_t println(__FlashStringHelper*);
     size_t println(ITA2String &);
-    size_t println(const String &s);
+    size_t println(const String &);
     size_t println(const char[]);
     size_t println(char);
     size_t println(unsigned char, int = DEC);
@@ -163,12 +163,12 @@ class RTTYClient {
     void* _audio;
     #endif
 
-    uint8_t _encoding;
-    uint32_t _base, _baseHz;
-    uint32_t _shift, _shiftHz;
-    uint32_t _bitDuration;
-    uint8_t _dataBits;
-    uint8_t _stopBits;
+    uint8_t _encoding = ASCII;
+    uint32_t _base = 0, _baseHz = 0;
+    uint32_t _shift = 0, _shiftHz = 0;
+    uint32_t _bitDuration = 0;
+    uint8_t _dataBits = 0;
+    uint8_t _stopBits = 0;
 
     void mark();
     void space();
