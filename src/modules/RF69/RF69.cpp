@@ -3,14 +3,6 @@
 
 RF69::RF69(Module* module) : PhysicalLayer(RF69_FREQUENCY_STEP_SIZE, RF69_MAX_PACKET_LENGTH)  {
   _mod = module;
-  _tempOffset = 0;
-
-  _packetLengthQueried = false;
-  _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
-
-  _promiscuous = false;
-
-  _syncWordLength = 2;
 }
 
 int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power) {
@@ -245,6 +237,7 @@ int16_t RF69::disableAES() {
 int16_t RF69::startReceive() {
   // set mode to standby
   int16_t state = setMode(RF69_STANDBY);
+  RADIOLIB_ASSERT(state);
 
   // set RX timeouts and DIO pin mapping
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 4);
@@ -805,13 +798,13 @@ int16_t RF69::config() {
 
   // set Rx timeouts
   state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
-  state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
   RADIOLIB_ASSERT(state);
 
   // enable improved fading margin
   state = _mod->SPIsetRegValue(RF69_REG_TEST_DAGC, RF69_CONTINUOUS_DAGC_LOW_BETA_OFF, 7, 0);
 
-  return(ERR_NONE);
+  return(state);
 }
 
 int16_t RF69::setPacketMode(uint8_t mode, uint8_t len) {

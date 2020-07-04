@@ -477,7 +477,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -489,7 +489,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Sets the module to sleep mode.
@@ -503,7 +503,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -512,14 +512,14 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Starts direct mode reception.
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
@@ -587,7 +587,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
@@ -605,7 +605,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -643,7 +643,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
@@ -715,7 +715,7 @@ class RF69: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
     /*!
       \brief Set modem in fixed packet length mode.
@@ -777,7 +777,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(float sh) override;
 
     /*!
       \brief Sets transmission encoding.
@@ -786,7 +786,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
 
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
@@ -810,18 +810,18 @@ class RF69: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    float _br;
-    float _rxBw;
-    int16_t _tempOffset;
-    int8_t _power;
+    float _br = 0;
+    float _rxBw = 0;
+    int16_t _tempOffset = 0;
+    int8_t _power = 0;
 
-    size_t _packetLength;
-    bool _packetLengthQueried;
-    uint8_t _packetLengthConfig;
+    size_t _packetLength = 0;
+    bool _packetLengthQueried = false;
+    uint8_t _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;
 
-    bool _promiscuous;
+    bool _promiscuous = false;
 
-    uint8_t _syncWordLength;
+    uint8_t _syncWordLength = 2;
 
     int16_t config();
     int16_t directMode();
