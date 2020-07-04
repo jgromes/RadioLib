@@ -48,12 +48,12 @@ class ESP8266: public TransportLayer {
     int16_t join(const char* ssid, const char* password);
 
     // transport layer methods (implementations of purely virtual methods in TransportLayer class)
-    int16_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0);
-    int16_t closeTransportConnection();
-    int16_t send(const char* data);
-    int16_t send(uint8_t* data, uint32_t len);
-    size_t receive(uint8_t* data, size_t len, uint32_t timeout = 10000);
-    size_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10);
+    int16_t openTransportConnection(const char* host, const char* protocol, uint16_t port, uint16_t tcpKeepAlive = 0) override;
+    int16_t closeTransportConnection() override;
+    int16_t send(const char* data) override;
+    int16_t send(uint8_t* data, uint32_t len) override;
+    size_t receive(uint8_t* data, size_t len, uint32_t timeout = 10000) override;
+    size_t getNumBytes(uint32_t timeout = 10000, size_t minBytes = 10) override;
 
 #ifndef RADIOLIB_GODMODE
   private:
