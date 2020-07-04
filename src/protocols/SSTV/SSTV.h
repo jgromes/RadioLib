@@ -180,7 +180,7 @@ class SSTVClient {
 
       \returns Picture height of the currently configured SSTV mode in pixels.
     */
-    uint16_t getPictureHeight() const { return(_mode.height); };
+    uint16_t getPictureHeight() const;
 
 #ifndef RADIOLIB_GODMODE
   private:

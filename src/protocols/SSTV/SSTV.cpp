@@ -278,6 +278,10 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
   }
 }
 
+uint16_t SSTVClient::getPictureHeight() const {
+  return(_mode.height);
+}
+
 void SSTVClient::tone(float freq, uint32_t len) {
   uint32_t start = micros();
   if(_audio != nullptr) {
