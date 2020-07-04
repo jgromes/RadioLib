@@ -549,7 +549,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -561,14 +561,14 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Sets the module to standby mode.
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -577,14 +577,14 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Starts direct mode reception.
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
@@ -633,7 +633,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
@@ -651,7 +651,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -689,7 +689,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
@@ -771,14 +771,14 @@ class CC1101: public PhysicalLayer {
 
       \returns Last packet RSSI in dBm.
     */
-    float getRSSI();
+    float getRSSI() const;
 
     /*!
       \brief Gets LQI (Link Quality Indicator) of the last received packet.
 
       \returns Last packet LQI (lower is better).
     */
-    uint8_t getLQI();
+   uint8_t getLQI() const;
 
      /*!
       \brief Query modem for the packet length of received payload.
@@ -787,7 +787,7 @@ class CC1101: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
      /*!
       \brief Set modem in fixed packet length mode.
@@ -853,7 +853,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(float sh) override;
 
     /*!
       \brief Sets transmission encoding.
@@ -862,7 +862,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
 
     /*!
       \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
@@ -879,24 +879,24 @@ class CC1101: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    float _freq;
-    uint8_t _rawRSSI;
-    uint8_t _rawLQI;
-    uint8_t _modulation;
+    float _freq = 0;
+    uint8_t _rawRSSI = 0;
+    uint8_t _rawLQI = 0;
+    uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;
 
-    size_t _packetLength;
-    bool _packetLengthQueried;
-    uint8_t _packetLengthConfig;
+    size_t _packetLength = 0;
+    bool _packetLengthQueried = false;
+    uint8_t _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 
-    bool _promiscuous;
+    bool _promiscuous = false;
     bool _crcOn = true;
 
-    uint8_t _syncWordLength;
-    int8_t _power;
+    uint8_t _syncWordLength = 2;
+    int8_t _power = 0;
 
     int16_t config();
     int16_t directMode();
-    void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
+    static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
     // SPI read overrides to set bit for burst write and status registers access

@@ -3,11 +3,6 @@
 
 CC1101::CC1101(Module* module) : PhysicalLayer(CC1101_FREQUENCY_STEP_SIZE, CC1101_MAX_PACKET_LENGTH) {
   _mod = module;
-  _packetLengthQueried = false;
-  _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
-  _modulation = CC1101_MOD_FORMAT_2_FSK;
-
-  _syncWordLength = 2;
 }
 
 int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLength) {
@@ -598,7 +593,7 @@ int16_t CC1101::setOOK(bool enableOOK) {
 }
 
 
-float CC1101::getRSSI() {
+float CC1101::getRSSI() const {
   float rssi;
   if(_rawRSSI >= 128) {
     rssi = (((float)_rawRSSI - 256.0)/2.0) - 74.0;
@@ -608,7 +603,7 @@ float CC1101::getRSSI() {
   return(rssi);
 }
 
-uint8_t CC1101::getLQI() {
+uint8_t CC1101::getLQI() const {
   return(_rawLQI);
 }
 
