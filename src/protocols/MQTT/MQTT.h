@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_MQTT_H) && !defined(RADIOLIB_EXCLUDE_MQTT)
+#if !defined(_RADIOLIB_MQTT_H)
 #define _RADIOLIB_MQTT_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_MQTT)
+
 #include "../TransportLayer/TransportLayer.h"
 
 // MQTT packet types
@@ -138,5 +141,7 @@ class MQTTClient {
     static size_t encodeLength(uint32_t len, uint8_t* encoded);
     static uint32_t decodeLength(uint8_t* encoded);
 };
+
+#endif
 
 #endif
