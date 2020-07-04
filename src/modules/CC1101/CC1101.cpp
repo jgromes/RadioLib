@@ -89,6 +89,10 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   state = setEncoding(2);
   RADIOLIB_ASSERT(state);
 
+  // set default sync word
+  state = setSyncWord(0xD3, 0x91, 0, false);
+  RADIOLIB_ASSERT(state);
+
   // flush FIFOs
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
   SPIsendCommand(CC1101_CMD_FLUSH_TX);
