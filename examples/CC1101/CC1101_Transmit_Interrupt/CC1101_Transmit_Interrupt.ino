@@ -8,6 +8,9 @@
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -20,11 +23,11 @@
 // GDO0 pin:  2
 // RST pin:   unused
 // GDO2 pin:  3 (optional)
-CC1101 cc = new Module(10, 2, RADIOLIB_NC, 3);
+CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//CC1101 cc = RadioShield.ModuleA;
+//CC1101 radio = RadioShield.ModuleA;
 
 // save transmission state between loops
 int transmissionState = ERR_NONE;
@@ -34,12 +37,7 @@ void setup() {
 
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
-  // carrier frequency:                   868.0 MHz
-  // bit rate:                            4.8 kbps
-  // frequency deviation:                 48.0 kHz
-  // Rx bandwidth:                        325.0 kHz
-  // sync word:                           0xD391
-  int state = cc.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,20 +48,20 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  cc.setGdo0Action(setFlag);
+  radio.setGdo0Action(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[CC1101] Sending first packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 64 characters long
-  transmissionState = cc.startTransmit("Hello World!");
+  transmissionState = radio.startTransmit("Hello World!");
 
   // you can also transmit byte array up to 64 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                       0x78, 0xAB, 0xCD, 0xEF};
-    state = cc.startTransmit(byteArr, 8);
+    state = radio.startTransmit(byteArr, 8);
   */
 }
 
@@ -119,13 +117,13 @@ void loop() {
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
-    transmissionState = cc.startTransmit("Hello World!");
+    transmissionState = radio.startTransmit("Hello World!");
 
     // you can also transmit byte array up to 256 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
-      int state = cc.startTransmit(byteArr, 8);
+      int state = radio.startTransmit(byteArr, 8);
     */
 
     // we're ready to send more packets,

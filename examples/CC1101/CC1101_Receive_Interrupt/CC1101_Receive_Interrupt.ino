@@ -12,8 +12,11 @@
     - frequency deviation
     - sync word
 
-    For full API reference, see the GitHub Pages
-    https://jgromes.github.io/RadioLib/
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+
+   For full API reference, see the GitHub Pages
+   https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -24,23 +27,18 @@
 // GDO0 pin:  2
 // RST pin:   unused
 // GDO2 pin:  3 (optional)
-CC1101 cc = new Module(10, 2, RADIOLIB_NC, 3);
+CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//CC1101 cc = RadioShield.ModuleA;
+//CC1101 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
-  // carrier frequency:                   868.0 MHz
-  // bit rate:                            4.8 kbps
-  // frequency deviation:                 48.0 kHz
-  // Rx bandwidth:                        325.0 kHz
-  // sync word:                           0xD391
-  int state = cc.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -51,11 +49,11 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  cc.setGdo0Action(setFlag);
+  radio.setGdo0Action(setFlag);
 
   // start listening for packets
   Serial.print(F("[CC1101] Starting to listen ... "));
-  state = cc.startReceive();
+  state = radio.startReceive();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -67,11 +65,11 @@ void setup() {
   // if needed, 'listen' mode can be disabled by calling
   // any of the following methods:
   //
-  // cc.standby()
-  // cc.sleep()
-  // cc.transmit();
-  // cc.receive();
-  // cc.readData();
+  // radio.standby()
+  // radio.sleep()
+  // radio.transmit();
+  // radio.receive();
+  // radio.readData();
 }
 
 // flag to indicate that a packet was received
@@ -106,12 +104,12 @@ void loop() {
 
     // you can read received data as an Arduino String
     String str;
-    int state = cc.readData(str);
+    int state = radio.readData(str);
 
     // you can also read received data as byte array
     /*
       byte byteArr[8];
-      int state = cc.readData(byteArr, 8);
+      int state = radio.readData(byteArr, 8);
     */
 
     if (state == ERR_NONE) {
@@ -125,13 +123,13 @@ void loop() {
       // print RSSI (Received Signal Strength Indicator)
       // of the last received packet
       Serial.print(F("[CC1101] RSSI:\t\t"));
-      Serial.print(cc.getRSSI());
+      Serial.print(radio.getRSSI());
       Serial.println(F(" dBm"));
 
       // print LQI (Link Quality Indicator)
       // of the last received packet, lower is better
       Serial.print(F("[CC1101] LQI:\t\t"));
-      Serial.println(cc.getLQI());
+      Serial.println(radio.getLQI());
 
     } else if (state == ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
@@ -145,7 +143,7 @@ void loop() {
     }
 
     // put module back to listen mode
-    cc.startReceive();
+    radio.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine
