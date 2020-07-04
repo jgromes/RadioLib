@@ -3,9 +3,6 @@
 
 XBee::XBee(Module* mod) {
   _mod = mod;
-  _frameID = 0x01;
-  _frameLength = 0;
-  _frameHeaderProcessed = false;
 }
 
 int16_t XBee::begin(long speed) {
@@ -97,9 +94,9 @@ size_t XBee::available() {
     return(0);
   }
 
-  uint8_t header[3];
   if(!_frameHeaderProcessed) {
     // read frame header
+    uint8_t header[3];
     for(uint8_t i = 0; i < 3; i++) {
       header[i] = _mod->ModuleSerial->read();
     }
