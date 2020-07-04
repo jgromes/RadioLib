@@ -164,11 +164,11 @@ class PhysicalLayer {
       \brief Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class.
       While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
 
-      \param FRF 24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.
+      \param frf 24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.
 
       \returns \ref status_codes
     */
-    virtual int16_t transmitDirect(uint32_t FRF = 0) = 0;
+    virtual int16_t transmitDirect(uint32_t frf = 0) = 0;
 
     /*!
       \brief Enables direct reception mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class.
@@ -213,7 +213,7 @@ class PhysicalLayer {
 
       \returns Synthesizer frequency step size in Hz.
     */
-    float getFreqStep();
+    float getFreqStep() const;
 
     /*!
      \brief Query modem for the packet length of received payload.
