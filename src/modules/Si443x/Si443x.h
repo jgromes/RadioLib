@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SI443X_H) && !defined(RADIOLIB_EXCLUDE_SI443X)
+#if !defined(_RADIOLIB_SI443X_H)
 #define _RADIOLIB_SI443X_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SI443X)
+
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
@@ -792,5 +795,7 @@ class Si443x: public PhysicalLayer {
     int16_t updateClockRecovery();
     int16_t directMode();
 };
+
+#endif
 
 #endif

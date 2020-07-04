@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SI4432_H) && !defined(RADIOLIB_EXCLUDE_SI443X)
+#if !defined(_RADIOLIB_SI4432_H)
 #define _RADIOLIB_SI4432_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SI443X)
+
 #include "../../Module.h"
 #include "Si443x.h"
 
@@ -70,5 +73,7 @@ class Si4432: public Si443x {
   private:
 #endif
 };
+
+#endif
 
 #endif
