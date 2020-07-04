@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SX1281_H) && !defined(RADIOLIB_EXCLUDE_SX128X)
+#if !defined(_RADIOLIB_SX1281_H)
 #define _RADIOLIB_SX1281_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX128X)
+
 #include "../../Module.h"
 #include "SX128x.h"
 
@@ -24,5 +27,7 @@ class SX1281: public SX128x {
 #endif
 
 };
+
+#endif
 
 #endif
