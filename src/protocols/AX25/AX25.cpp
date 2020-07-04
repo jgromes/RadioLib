@@ -266,6 +266,9 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     uint8_t stuffedFrameBuff[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
 
+  // initialize buffer to all zeros
+  memset(stuffedFrameBuff, 0x00, _preambleLen + 1 + (6*frameBuffLen)/5 + 2);
+
   // stuff bits (skip preamble and both flags)
   uint16_t stuffedFrameBuffLenBits = 8*(_preambleLen + 1);
   uint8_t count = 0;
