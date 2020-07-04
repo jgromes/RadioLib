@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_RFM96_H) && !defined(RADIOLIB_EXCLUDE_RFM9X)
+#if !defined(_RADIOLIB_RFM96_H)
 #define _RADIOLIB_RFM96_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_RFM9X)
+
 #include "../../Module.h"
 #include "../SX127x/SX127x.h"
 #include "../SX127x/SX1278.h"
@@ -80,5 +83,7 @@ class RFM96: public SX1278 {
   \brief Only exists as alias for RFM96, since there seems to be no difference between %RFM96 and %RFM98 modules.
 */
 using RFM98 = RFM96;
+
+#endif
 
 #endif

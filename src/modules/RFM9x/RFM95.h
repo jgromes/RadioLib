@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_RFM95_H) && !defined(RADIOLIB_EXCLUDE_RFM9X)
+#if !defined(_RADIOLIB_RFM95_H)
 #define _RADIOLIB_RFM95_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_RFM9X)
+
 #include "../../Module.h"
 #include "../SX127x/SX127x.h"
 #include "../SX127x/SX1278.h"
@@ -73,5 +76,7 @@ class RFM95: public SX1278 {
 #endif
 
 };
+
+#endif
 
 #endif
