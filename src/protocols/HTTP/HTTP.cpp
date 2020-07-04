@@ -142,7 +142,7 @@ int16_t HTTPClient::post(const char* url, const char* content, String& response,
 
   // build the POST request
   char contentLengthStr[12];
-  sprintf(contentLengthStr, "%d", strlen(content));
+  sprintf(contentLengthStr, "%u", (uint16_t)strlen(content));
   char* request = new char[strlen(endpoint) + strlen(host) + strlen(contentType) + strlen(contentLengthStr) + strlen(content) + 64 + 1];
   strcpy(request, "POST ");
   strcat(request, endpoint);
