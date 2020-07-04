@@ -1,5 +1,5 @@
 #include "SX1231.h"
-#if !defined(RADIOLIB_EXCLUDE_RF69)
+#if !defined(RADIOLIB_EXCLUDE_SX1231)
 
 SX1231::SX1231(Module* mod) : RF69(mod) {
 

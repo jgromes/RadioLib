@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SX1231_H) && !defined(RADIOLIB_EXCLUDE_RF69)
+#if !defined(_RADIOLIB_SX1231_H)
 #define _RADIOLIB_SX1231_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX1231)
+
 #include "../../Module.h"
 #include "../RF69/RF69.h"
 
@@ -51,5 +54,7 @@ class SX1231: public RF69  {
 #endif
     uint8_t _chipRevision = 0;
 };
+
+#endif
 
 #endif
