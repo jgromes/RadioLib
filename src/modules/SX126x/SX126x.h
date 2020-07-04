@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SX126X_H) && !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !defined(_RADIOLIB_SX126X_H)
 #define _RADIOLIB_SX126X_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX126X)
+
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
@@ -923,5 +926,7 @@ class SX126x: public PhysicalLayer {
     int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
     int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout = 5000);
 };
+
+#endif
 
 #endif
