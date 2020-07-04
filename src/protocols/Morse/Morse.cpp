@@ -3,7 +3,9 @@
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
   _phy = phy;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   _audio = nullptr;
+  #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
@@ -23,9 +25,11 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
 
   // set module frequency deviation to 0 if using FSK
   int16_t state = ERR_NONE;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio == nullptr) {
     state = _phy->setFrequencyDeviation(0);
   }
+  #endif
 
   return(state);
 }
@@ -298,19 +302,21 @@ size_t MorseClient::printFloat(double number, uint8_t digits)  {
 }
 
 int16_t MorseClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     return(_audio->tone(freqHz));
-  } else {
-    return(_phy->transmitDirect(freq));
   }
+  #endif
+  return(_phy->transmitDirect(freq));
 }
 
 int16_t MorseClient::standby() {
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     return(_audio->noTone());
-  } else {
-    return(_phy->standby());
   }
+  #endif
+  return(_phy->standby());
 }
 
 #endif

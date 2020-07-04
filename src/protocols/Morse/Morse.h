@@ -157,8 +157,6 @@ class MorseClient {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
-    #else
-    void* _audio;
     #endif
 
     uint32_t _base = 0, _baseHz = 0;
