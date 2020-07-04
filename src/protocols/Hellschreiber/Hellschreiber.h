@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_HELLSCHREIBER_H) && !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
+#if !defined(_RADIOLIB_HELLSCHREIBER_H)
 #define _RADIOLIB_HELLSCHREIBER_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
@@ -152,8 +155,6 @@ class HellClient {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
-    #else
-    void* _audio;
     #endif
 
     uint32_t _base = 0, _baseHz = 0;
@@ -165,5 +166,7 @@ class HellClient {
     int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
     int16_t standby();
 };
+
+#endif
 
 #endif
