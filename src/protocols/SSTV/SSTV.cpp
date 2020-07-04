@@ -156,7 +156,9 @@ const SSTVMode_t PasokonP7 {
 
 SSTVClient::SSTVClient(PhysicalLayer* phy) {
   _phy = phy;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   _audio = nullptr;
+  #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
@@ -166,6 +168,7 @@ SSTVClient::SSTVClient(AFSKClient* audio) {
 }
 #endif
 
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
 int16_t SSTVClient::begin(const SSTVMode_t& mode, float correction) {
   if(_audio == nullptr) {
     // this initialization method can only be used in AFSK mode
@@ -174,6 +177,7 @@ int16_t SSTVClient::begin(const SSTVMode_t& mode, float correction) {
 
   return(begin(0, mode, correction));
 }
+#endif
 
 int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) {
   // save mode
@@ -190,9 +194,11 @@ int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) 
 
   // set module frequency deviation to 0 if using FSK
   int16_t state = ERR_NONE;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio == nullptr) {
     state = _phy->setFrequencyDeviation(0);
   }
+  #endif
 
   return(state);
 }
@@ -284,11 +290,15 @@ uint16_t SSTVClient::getPictureHeight() const {
 
 void SSTVClient::tone(float freq, uint32_t len) {
   uint32_t start = micros();
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     _audio->tone(freq, false);
   } else {
     _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
   }
+  #else
+  _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
+  #endif
   while(micros() - start < len) {
     yield();
   }

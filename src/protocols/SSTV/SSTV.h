@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SSTV_H) && !defined(RADIOLIB_EXCLUDE_SSTV)
+#if !defined(_RADIOLIB_SSTV_H)
 #define _RADIOLIB_SSTV_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SSTV)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
@@ -147,6 +150,7 @@ class SSTVClient {
     */
     int16_t begin(float base, const SSTVMode_t& mode, float correction = 1.0);
 
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
       \brief Initialization method for AFSK.
 
@@ -157,6 +161,7 @@ class SSTVClient {
       \returns \ref status_codes
     */
     int16_t begin(const SSTVMode_t& mode, float correction = 1.0);
+    #endif
 
     /*!
       \brief Sends out tone at 1900 Hz.
@@ -188,8 +193,6 @@ class SSTVClient {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
-    #else
-    void* _audio;
     #endif
 
     uint32_t _base = 0;
@@ -198,5 +201,7 @@ class SSTVClient {
 
     void tone(float freq, uint32_t len = 0);
 };
+
+#endif
 
 #endif
