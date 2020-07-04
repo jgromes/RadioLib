@@ -49,7 +49,7 @@ class SX1231: public RF69  {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    uint8_t _chipRevision;
+    uint8_t _chipRevision = 0;
 };
 
 #endif
