@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_RTTY_H) && !defined(RADIOLIB_EXCLUDE_RTTY)
+#if !defined(_RADIOLIB_RTTY_H)
 #define _RADIOLIB_RTTY_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_RTTY)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
@@ -159,8 +162,6 @@ class RTTYClient {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
-    #else
-    void* _audio;
     #endif
 
     uint8_t _encoding = ASCII;
@@ -179,5 +180,7 @@ class RTTYClient {
     int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
     int16_t standby();
 };
+
+#endif
 
 #endif
