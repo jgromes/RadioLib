@@ -136,7 +136,7 @@ class HellClient {
 
     size_t println(void);
     size_t println(__FlashStringHelper*);
-    size_t println(const String &s);
+    size_t println(const String &);
     size_t println(const char[]);
     size_t println(char);
     size_t println(unsigned char, int = DEC);
@@ -156,8 +156,8 @@ class HellClient {
     void* _audio;
     #endif
 
-    uint32_t _base, _baseHz;
-    uint32_t _pixelDuration;
+    uint32_t _base = 0, _baseHz = 0;
+    uint32_t _pixelDuration = 0;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);

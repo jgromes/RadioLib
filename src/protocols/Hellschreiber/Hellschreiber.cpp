@@ -153,7 +153,8 @@ size_t HellClient::print(double n, int digits) {
 }
 
 size_t HellClient::println(void) {
-  return(0);
+  // Hellschreiber has no concept of "line ending", print one space instead
+  return(HellClient::print(' '));
 }
 
 size_t HellClient::println(__FlashStringHelper* fstr) {
