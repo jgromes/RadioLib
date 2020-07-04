@@ -96,7 +96,11 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
   state = setEncoding(0);
   RADIOLIB_ASSERT(state);
 
-  return(ERR_NONE);
+  // set CRC on by default
+  state = setCrcFiltering(true);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
 }
 
 void RF69::reset() {
