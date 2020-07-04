@@ -54,7 +54,7 @@
   // some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
   // the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
   // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
-  //       while keeping SX1231 (because RF69 is the base class for SX1231). The dependeny is always uni-directional,
+  //       while keeping SX1231 (because RF69 is the base class for SX1231). The dependency is always uni-directional,
   //       so excluding SX1231 and keeping RF69 is valid.
   //#define RADIOLIB_EXCLUDE_CC1101
   //#define RADIOLIB_EXCLUDE_ESP8266
