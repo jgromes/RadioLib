@@ -7,6 +7,9 @@
 
    Other modules from Si443x/RFM2x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -18,24 +21,18 @@
 // nSEL pin:  10
 // nIRQ pin:  2
 // SDN pin:   9
-Si4432 fsk = new Module(10, 2, 9);
+Si4432 radio = new Module(10, 2, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//Si4432 fsk = RadioShield.ModuleA;
+//Si4432 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize Si4432 with default settings
   Serial.print(F("[Si4432] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bit rate:                    48.0 kbps
-  // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                225.1 kHz
-  // output power:                11 dBm
-  // sync word:                   0x2D  0x01
-  int state = fsk.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -46,11 +43,11 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  fsk.setIrqAction(setFlag);
+  radio.setIrqAction(setFlag);
 
   // start listening for packets
   Serial.print(F("[Si4432] Starting to listen ... "));
-  state = fsk.startReceive();
+  state = radio.startReceive();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -62,11 +59,11 @@ void setup() {
   // if needed, 'listen' mode can be disabled by calling
   // any of the following methods:
   //
-  // fsk.standby()
-  // fsk.sleep()
-  // fsk.transmit();
-  // fsk.receive();
-  // fsk.readData();
+  // radio.standby()
+  // radio.sleep()
+  // radio.transmit();
+  // radio.receive();
+  // radio.readData();
 }
 
 // flag to indicate that a packet was received
@@ -101,12 +98,12 @@ void loop() {
 
     // you can read received data as an Arduino String
     String str;
-    int state = fsk.readData(str);
+    int state = radio.readData(str);
 
     // you can also read received data as byte array
     /*
       byte byteArr[8];
-      int state = fsk.readData(byteArr, 8);
+      int state = radio.readData(byteArr, 8);
     */
 
     if (state == ERR_NONE) {
@@ -129,7 +126,7 @@ void loop() {
     }
 
     // put module back to listen mode
-    fsk.startReceive();
+    radio.startReceive();
 
     // we're ready to receive more packets,
     // enable interrupt service routine

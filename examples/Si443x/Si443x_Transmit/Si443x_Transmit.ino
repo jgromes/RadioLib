@@ -9,6 +9,9 @@
 
    Other modules from Si443x/RFM2x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -20,24 +23,18 @@
 // nSEL pin:  10
 // nIRQ pin:  2
 // SDN pin:   9
-Si4432 fsk = new Module(10, 2, 9);
+Si4432 radio = new Module(10, 2, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//Si4432 fsk = RadioShield.ModuleA;
+//Si4432 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize Si4432 with default settings
   Serial.print(F("[Si4432] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bit rate:                    48.0 kbps
-  // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                225.1 kHz
-  // output power:                11 dBm
-  // sync word:                   0x2D  0x01
-  int state = fsk.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -55,12 +52,12 @@ void loop() {
   // NOTE: transmit() is a blocking method!
   //       See example Si443x_Transmit_Interrupt for details
   //       on non-blocking transmission method.
-  int state = fsk.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
 
   // you can also transmit byte array up to 64 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-    int state = fsk.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
