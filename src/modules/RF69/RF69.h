@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_RF69_H) && !defined(RADIOLIB_EXCLUDE_RF69)
+#if !defined(_RADIOLIB_RF69_H)
 #define _RADIOLIB_RF69_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_RF69)
+
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
@@ -833,5 +836,7 @@ class RF69: public PhysicalLayer {
     int16_t setMode(uint8_t mode);
     void clearIRQFlags();
 };
+
+#endif
 
 #endif
