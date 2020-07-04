@@ -1,9 +1,11 @@
-#if !defined(_RADIOLIB_HTTP_H) && !defined(RADIOLIB_EXCLUDE_HTTP)
+#if !defined(_RADIOLIB_HTTP_H)
 #define _RADIOLIB_HTTP_H
 
 #include "../../TypeDef.h"
-#include "../TransportLayer/TransportLayer.h"
 
+#if !defined(RADIOLIB_EXCLUDE_HTTP)
+
+#include "../TransportLayer/TransportLayer.h"
 
 /*!
   \class HTTPClient
@@ -65,5 +67,7 @@ class HTTPClient {
 
     uint16_t _port;
 };
+
+#endif
 
 #endif
