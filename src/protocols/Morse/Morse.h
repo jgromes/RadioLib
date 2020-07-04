@@ -93,7 +93,7 @@ class MorseClient {
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    MorseClient(PhysicalLayer* phy);
+    explicit MorseClient(PhysicalLayer* phy);
 
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
@@ -101,7 +101,7 @@ class MorseClient {
 
       \param audio Pointer to the AFSK instance providing audio.
     */
-    MorseClient(AFSKClient* audio);
+    explicit MorseClient(AFSKClient* audio);
     #endif
 
     // basic methods
@@ -141,7 +141,7 @@ class MorseClient {
 
     size_t println(void);
     size_t println(__FlashStringHelper*);
-    size_t println(const String &s);
+    size_t println(const String &);
     size_t println(const char[]);
     size_t println(char);
     size_t println(unsigned char, int = DEC);
@@ -161,8 +161,8 @@ class MorseClient {
     void* _audio;
     #endif
 
-    uint32_t _base, _baseHz;
-    uint16_t _dotLength;
+    uint32_t _base = 0, _baseHz = 0;
+    uint16_t _dotLength = 0;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
