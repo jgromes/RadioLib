@@ -8,6 +8,9 @@
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -19,11 +22,11 @@
 // CS pin:    10
 // DIO0 pin:  2
 // RESET pin: 3
-RF69 rf = new Module(10, 2, 3);
+RF69 radio = new Module(10, 2, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//RF69 rf = RadioShield.ModuleA;
+//RF69 radio = RadioShield.ModuleA;
 
 // save transmission state between loops
 int transmissionState = ERR_NONE;
@@ -33,13 +36,7 @@ void setup() {
 
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bit rate:                            48.0 kbps
-  // frequency deviation:                 50.0 kHz
-  // Rx bandwidth:                        125.0 kHz
-  // output power:                        13 dBm
-  // sync word:                           0x2D01
-  int state = rf.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,7 +47,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  rf.setDio0Action(setFlag);
+  radio.setDio0Action(setFlag);
 
   // NOTE: some RF69 modules use high power output,
   //       those are usually marked RF69H(C/CW).
@@ -59,7 +56,7 @@ void setup() {
   //       second argument set to true.
   /*
     Serial.print(F("[RF69] Setting high power module ... "));
-    state = rf.setOutputPower(20, true);
+    state = radio.setOutputPower(20, true);
     if (state == ERR_NONE) {
       Serial.println(F("success!"));
     } else {
@@ -74,13 +71,13 @@ void setup() {
 
   // you can transmit C-string or Arduino string up to
   // 64 characters long
-  transmissionState = rf.startTransmit("Hello World!");
+  transmissionState = radio.startTransmit("Hello World!");
 
   // you can also transmit byte array up to 64 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                       0x89, 0xAB, 0xCD, 0xEF};
-    state = rf.startTransmit(byteArr, 8);
+    state = radio.startTransmit(byteArr, 8);
   */
 }
 
@@ -136,13 +133,13 @@ void loop() {
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
-    transmissionState = rf.startTransmit("Hello World!");
+    transmissionState = radio.startTransmit("Hello World!");
 
     // you can also transmit byte array up to 64 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
-      int state = rf.startTransmit(byteArr, 8);
+      int state = radio.startTransmit(byteArr, 8);
     */
 
     // we're ready to send more packets,

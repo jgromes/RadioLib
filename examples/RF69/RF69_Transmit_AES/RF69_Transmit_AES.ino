@@ -5,6 +5,9 @@
    Packets are encrypted using hardware AES.
    NOTE: When using address filtering, the address byte is NOT encrypted!
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -16,24 +19,18 @@
 // CS pin:    10
 // DIO0 pin:  2
 // RESET pin: 3
-RF69 rf = new Module(10, 2, 3);
+RF69 radio = new Module(10, 2, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//RF69 rf = RadioShield.ModuleA;
+//RF69 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bit rate:                            48.0 kbps
-  // frequency deviation:                 50.0 kHz
-  // Rx bandwidth:                        125.0 kHz
-  // output power:                        13 dBm
-  // sync word:                           0x2D01
-  int state = rf.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -46,14 +43,14 @@ void setup() {
   // NOTE: the key must be exactly 16 bytes long!
   uint8_t key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
                    0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F};
-  rf.setAESKey(key);
+  radio.setAESKey(key);
 
   // enable AES encryption
-  rf.enableAES();
+  radio.enableAES();
 
   // AES encryption can also be disabled
   /*
-    rf.disableAES();
+    radio.disableAES();
   */
 }
 
@@ -61,12 +58,12 @@ void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 64 characters long
-  int state = rf.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
 
   // you can also transmit byte array up to 64 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-    int state = rf.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
