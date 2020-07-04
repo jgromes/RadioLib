@@ -39,7 +39,7 @@ SX1272 radio2 = new Module(9, 4, 5, 6);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1276 loraSX1276 = RadioShield.ModuleB;
+//SX1276 radio3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
