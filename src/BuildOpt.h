@@ -53,7 +53,7 @@
 
   // some of RadioLib drivers may be excluded, to prevent collisions with platform (or to speed up build process)
   // for example, to exclude ESP8266 driver:
-  //RADIOLIB_EXCLUDE_ESP8266
+  //#define RADIOLIB_EXCLUDE_ESP8266
 
 #else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
