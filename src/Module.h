@@ -21,18 +21,18 @@ class Module {
     /*!
       \brief UART-based module constructor.
 
-      \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
-
       \param rx Arduino pin to be used as Rx pin for SoftwareSerial communication.
+
+      \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
 
       \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
 
       \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
     */
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    Module(RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+    Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
 #else
-    Module(RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+    Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
 #endif
 
     /*!
@@ -408,18 +408,18 @@ class Module {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    RADIOLIB_PIN_TYPE _cs;
-    RADIOLIB_PIN_TYPE _tx;
-    RADIOLIB_PIN_TYPE _rx;
-    RADIOLIB_PIN_TYPE _irq;
-    RADIOLIB_PIN_TYPE _rst;
+    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _tx = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _rx = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;
 
-    bool _initInterface;
-    SPIClass* _spi;
+    bool _initInterface = false;
+    SPIClass* _spi = NULL;
     SPISettings _spiSettings;
 
     bool _useRfSwitch = false;
-    RADIOLIB_PIN_TYPE _rxEn, _txEn;
+    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC, _txEn = RADIOLIB_NC;
 
     uint32_t _ATtimeout = 15000;
 };

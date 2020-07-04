@@ -9,6 +9,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _spi = &RADIOLIB_DEFAULT_SPI;
   _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
+  ModuleSerial = NULL;
 }
 
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio) {
@@ -20,9 +21,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _spi = &RADIOLIB_DEFAULT_SPI;
   _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
+  ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* useSer, RADIOLIB_PIN_TYPE rst) {
+Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst) {
   _cs = RADIOLIB_NC;
   _rx = rx;
   _tx = tx;
@@ -31,10 +33,10 @@ Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* useSe
   _initInterface = true;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  ModuleSerial = useSer;
+  ModuleSerial = serial;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
-  (void)useSer;
+  (void)serial;
 #endif
 }
 
@@ -47,6 +49,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _spi = &spi;
   _spiSettings = spiSettings;
   _initInterface = false;
+  ModuleSerial = NULL;
 }
 
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings) {
@@ -58,9 +61,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _spi = &spi;
   _spiSettings = spiSettings;
   _initInterface = false;
+  ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* useSer) {
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* serial) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
@@ -71,10 +75,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _initInterface = false;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  ModuleSerial = useSer;
+  ModuleSerial = serial;
 #else
   ModuleSerial = new SoftwareSerial(_rx, _tx);
-  (void)useSer;
+  (void)serial;
 #endif
 }
 
@@ -259,16 +263,20 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
 
   // send data or get response
   if(cmd == SPIwriteCommand) {
-    for(size_t n = 0; n < numBytes; n++) {
-      _spi->transfer(dataOut[n]);
-      RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
+    if(dataOut != NULL) {
+      for(size_t n = 0; n < numBytes; n++) {
+        _spi->transfer(dataOut[n]);
+        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
     }
   } else if (cmd == SPIreadCommand) {
-    for(size_t n = 0; n < numBytes; n++) {
-      dataIn[n] = _spi->transfer(0x00);
-      RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
+    if(dataIn != NULL) {
+      for(size_t n = 0; n < numBytes; n++) {
+        dataIn[n] = _spi->transfer(0x00);
+        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
     }
   }
   RADIOLIB_VERBOSE_PRINTLN();

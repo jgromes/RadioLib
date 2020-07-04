@@ -15,7 +15,7 @@
 */
 class ISerial {
   public:
-    ISerial(Module* mod);
+    explicit ISerial(Module* mod);
 
     void begin(long);
     bool listen();
