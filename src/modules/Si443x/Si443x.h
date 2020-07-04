@@ -597,7 +597,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Binary receive method. Will attempt to receive arbitrary binary data up to 64 bytes long.
@@ -609,7 +609,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Sets the module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
@@ -624,7 +624,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Enables direct transmission mode. While in direct mode, the module will not be able to transmit or receive packets.
@@ -633,14 +633,14 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Enables direct reception mode. While in direct mode, the module will not be able to transmit or receive packets.
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Disables direct mode and enables packet mode, allowing the module to receive packets.
@@ -674,7 +674,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. IRQ will be activated when full valid packet is received.
@@ -692,7 +692,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -712,7 +712,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values range from 2.6 to 620.7 kHz.
@@ -739,7 +739,7 @@ class Si443x: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
     /*!
       \brief Sets transmission encoding. Only available in FSK mode.
@@ -748,7 +748,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
 
     /*!
       \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
@@ -758,7 +758,7 @@ class Si443x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(float sh) override;
 
     /*!
       \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
@@ -775,11 +775,11 @@ class Si443x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    float _br;
-    float _freqDev;
+    float _br = 0;
+    float _freqDev = 0;
 
-    size_t _packetLength;
-    bool _packetLengthQueried;
+    size_t _packetLength = 0;
+    bool _packetLengthQueried = false;
 
     int16_t setFrequencyRaw(float newFreq);
 

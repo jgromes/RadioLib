@@ -3,8 +3,6 @@
 
 Si443x::Si443x(Module* mod) : PhysicalLayer(SI443X_FREQUENCY_STEP_SIZE, SI443X_MAX_PACKET_LENGTH) {
   _mod = mod;
-
-  _packetLengthQueried = false;
 }
 
 int16_t Si443x::begin(float br, float freqDev, float rxBw) {
@@ -622,15 +620,15 @@ int16_t Si443x::updateClockRecovery() {
   uint8_t rxOsr_int = (uint8_t)rxOsr;
   uint8_t rxOsr_dec = 0;
   float rxOsr_temp = rxOsr;
-  if(rxOsr_temp - rxOsr_int >= 0.5) {
+  if((rxOsr_temp - rxOsr_int) >= 0.5) {
     rxOsr_dec |= 0x04;
     rxOsr_temp -= 0.5;
   }
-  if(rxOsr_temp - rxOsr_int >= 0.25) {
+  if((rxOsr_temp - rxOsr_int) >= 0.25) {
     rxOsr_dec |= 0x02;
     rxOsr_temp -= 0.25;
   }
-  if(rxOsr_temp - rxOsr_int >= 0.125) {
+  if((rxOsr_temp - rxOsr_int) >= 0.125) {
     rxOsr_dec |= 0x01;
     rxOsr_temp -= 0.125;
   }
