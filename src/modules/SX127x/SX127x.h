@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SX127X_H) && !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !defined(_RADIOLIB_SX127X_H)
 #define _RADIOLIB_SX127X_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
+
 #include "../../Module.h"
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
@@ -965,5 +968,7 @@ class SX127x: public PhysicalLayer {
     void clearIRQFlags();
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
 };
+
+#endif
 
 #endif

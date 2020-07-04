@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_SX1273_H) && !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !defined(_RADIOLIB_SX1273_H)
 #define _RADIOLIB_SX1273_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
+
 #include "SX1272.h"
 
 /*!
@@ -67,5 +70,7 @@ class SX1273: public SX1272 {
 #endif
 
 };
+
+#endif
 
 #endif
