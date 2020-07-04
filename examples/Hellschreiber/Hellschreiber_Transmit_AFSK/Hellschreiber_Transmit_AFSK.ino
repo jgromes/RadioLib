@@ -13,6 +13,9 @@
     - CC1101
     - Si443x/RFM2x
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -25,15 +28,15 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 fsk = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1278 fsk = RadioShield.ModuleA;
+//SX1278 radio = RadioShield.ModuleA;
 
 // create AFSK client instance using the FSK module
 // pin 5 is connected to SX1278 DIO2
-AFSKClient audio(&fsk, 5);
+AFSKClient audio(&radio, 5);
 
 // create Hellschreiber client instance using the AFSK instance
 HellClient hell(&audio);
@@ -41,19 +44,13 @@ HellClient hell(&audio);
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278
+  // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bit rate:                    48.0 kbps
-  // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                125.0 kHz
-  // output power:                13 dBm
-  // current limit:               100 mA
-  int state = fsk.beginFSK();
+  int state = radio.beginFSK();
 
   // when using one of the non-LoRa modules for Morse code
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
-  // int state = fsk.begin();
+  // int state = radio.begin();
 
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -111,7 +108,7 @@ void loop() {
   float f = -3.1415;
   hell.println(f, 3);
 
-  // custom glyph - must be a 7 byte array of rows 7 pixels long 
+  // custom glyph - must be a 7 byte array of rows 7 pixels long
   uint8_t customGlyph[] = { 0b0000000, 0b0010100, 0b0010100, 0b0000000, 0b0100010, 0b0011100, 0b0000000 };
   hell.printGlyph(customGlyph);
 
