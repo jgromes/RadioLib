@@ -7,6 +7,9 @@
          interface. Please see RF69 examples for examples on AES,
          address filtering, interrupts and settings.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -18,24 +21,18 @@
 // CS pin:    10
 // DIO0 pin:  2
 // RESET pin: 3
-SX1231 rf = new Module(10, 2, 3);
+SX1231 radio = new Module(10, 2, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1231 rf = RadioShield.ModuleA;
+//SX1231 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1231 with default settings
   Serial.print(F("[SX1231] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bit rate:                            48.0 kbps
-  // Rx bandwidth:                        125.0 kHz
-  // frequency deviation:                 50.0 kHz
-  // output power:                        13 dBm
-  // sync word:                           0x2D01
-  int state = rf.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -49,12 +46,12 @@ void loop() {
   Serial.print(F("[SX1231] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 256 characters long
-  int state = rf.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-    int state = rf.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
