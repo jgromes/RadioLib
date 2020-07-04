@@ -1,35 +1,39 @@
 #include "Module.h"
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst) {
-  _cs = cs;
-  _rx = RADIOLIB_NC;
-  _tx = RADIOLIB_NC;
-  _irq = irq;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst):
+  _cs(cs),
+  _irq(irq),
+  _rst(rst),
+  _rx(RADIOLIB_NC),
+  _tx(RADIOLIB_NC),
+  _spiSettings(SPISettings(2000000, MSBFIRST, SPI_MODE0))
+{
   _spi = &RADIOLIB_DEFAULT_SPI;
-  _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
   ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio) {
-  _cs = cs;
-  _rx = gpio;
-  _tx = RADIOLIB_NC;
-  _irq = irq;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio):
+  _cs(cs),
+  _irq(irq),
+  _rst(rst),
+  _rx(gpio),
+  _tx(RADIOLIB_NC),
+  _spiSettings(SPISettings(2000000, MSBFIRST, SPI_MODE0))
+{
   _spi = &RADIOLIB_DEFAULT_SPI;
-  _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
   _initInterface = true;
   ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst) {
-  _cs = RADIOLIB_NC;
-  _rx = rx;
-  _tx = tx;
-  _irq = RADIOLIB_NC;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst):
+  _cs(RADIOLIB_NC),
+  _irq(RADIOLIB_NC),
+  _rst(rst),
+  _rx(rx),
+  _tx(tx),
+  _spiSettings(SPISettings(2000000, MSBFIRST, SPI_MODE0))
+{
   _initInterface = true;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
@@ -40,38 +44,41 @@ Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* seria
 #endif
 }
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass& spi, SPISettings spiSettings) {
-  _cs = cs;
-  _rx = RADIOLIB_NC;
-  _tx = RADIOLIB_NC;
-  _irq = irq;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass& spi, SPISettings spiSettings):
+  _cs(cs),
+  _irq(irq),
+  _rst(rst),
+  _rx(RADIOLIB_NC),
+  _tx(RADIOLIB_NC),
+  _spiSettings(spiSettings)
+{
   _spi = &spi;
-  _spiSettings = spiSettings;
   _initInterface = false;
   ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings) {
-  _cs = cs;
-  _rx = gpio;
-  _tx = RADIOLIB_NC;
-  _irq = irq;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings):
+  _cs(cs),
+  _irq(irq),
+  _rst(rst),
+  _rx(gpio),
+  _tx(RADIOLIB_NC),
+  _spiSettings(spiSettings)
+{
   _spi = &spi;
-  _spiSettings = spiSettings;
   _initInterface = false;
   ModuleSerial = NULL;
 }
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* serial) {
-  _cs = cs;
-  _rx = rx;
-  _tx = tx;
-  _irq = irq;
-  _rst = rst;
+Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* serial):
+  _cs(cs),
+  _irq(irq),
+  _rst(rst),
+  _rx(rx),
+  _tx(tx),
+  _spiSettings(spiSettings)
+{
   _spi = &spi;
-  _spiSettings = spiSettings;
   _initInterface = false;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED

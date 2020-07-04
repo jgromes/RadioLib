@@ -409,14 +409,15 @@ class Module {
   private:
 #endif
     RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _tx = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _rx = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _rx = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _tx = RADIOLIB_NC;
+
+    SPISettings _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
 
     bool _initInterface = false;
     SPIClass* _spi = NULL;
-    SPISettings _spiSettings;
 
     bool _useRfSwitch = false;
     RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC, _txEn = RADIOLIB_NC;
