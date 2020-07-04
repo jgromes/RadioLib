@@ -87,23 +87,23 @@ void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // transmit C-string or Arduino string to node with address 0x02
-  int state = rf.transmit("Hello World!", 0x02);
+  int state = radio.transmit("Hello World!", 0x02);
 
   // transmit byte array to node with address 0x02
   /*
   byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-  int state = rf.transmit(byteArr, 8, 0x02);
+  int state = radio.transmit(byteArr, 8, 0x02);
   */
 
   // transmit C-string or Arduino string in broadcast mode
   /*
-    int state = rf.transmit("Hello World!", 0xFF);
+    int state = radio.transmit("Hello World!", 0xFF);
   */
 
   // transmit byte array in broadcast mode
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-    int state = rf.transmit(byteArr, 8, 0xFF);
+    int state = radio.transmit(byteArr, 8, 0xFF);
   */
 
   if (state == ERR_NONE) {
