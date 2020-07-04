@@ -421,7 +421,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -433,7 +433,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -450,7 +450,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
@@ -473,7 +473,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Sets the module to standby mode.
@@ -510,7 +510,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
@@ -555,7 +555,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -629,7 +629,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets FSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
@@ -656,7 +656,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(float sh) override;
 
     /*!
       \brief Sets FSK sync word in the form of array of up to 8 bytes.
@@ -752,7 +752,7 @@ class SX126x: public PhysicalLayer {
 
       \returns Effective data rate in bps.
     */
-    float getDataRate();
+    float getDataRate() const;
 
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
@@ -775,7 +775,7 @@ class SX126x: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
     /*!
      \brief Set modem in fixed packet length mode. Available in FSK mode only.
@@ -841,7 +841,7 @@ class SX126x: public PhysicalLayer {
 
      \returns \ref status_codes
    */
-   int16_t setEncoding(uint8_t encoding);
+   int16_t setEncoding(uint8_t encoding) override;
 
    /*!
      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
@@ -899,20 +899,20 @@ class SX126x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    uint8_t _bw, _sf, _cr, _ldro, _crcType, _headerType;
-    uint16_t _preambleLength;
-    float _bwKhz;
+    uint8_t _bw = 0, _sf = 0, _cr = 0, _ldro = 0, _crcType = 0, _headerType = 0;
+    uint16_t _preambleLength = 0;
+    float _bwKhz = 0;
 
-    uint32_t _br, _freqDev;
-    uint8_t _rxBw, _pulseShape, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType;
-    uint16_t _preambleLengthFSK;
-    float _rxBwKhz;
+    uint32_t _br = 0, _freqDev = 0;
+    uint8_t _rxBw = 0, _pulseShape = 0, _crcTypeFSK = 0, _syncWordLength = 0, _addrComp = 0, _whitening = 0, _packetType = 0;
+    uint16_t _preambleLengthFSK = 0;
+    float _rxBwKhz = 0;
 
-    float _dataRate;
+    float _dataRate = 0;
 
-    uint32_t _tcxoDelay;
+    uint32_t _tcxoDelay = 0;
 
-    size_t _implicitLen;
+    size_t _implicitLen = 0;
 
     int16_t config(uint8_t modem);
 

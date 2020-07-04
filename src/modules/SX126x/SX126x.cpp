@@ -1042,7 +1042,7 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
   return(state);
 }
 
-float SX126x::getDataRate() {
+float SX126x::getDataRate() const {
   return(_dataRate);
 }
 

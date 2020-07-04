@@ -44,8 +44,6 @@ int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 int16_t SX1268::setFrequency(float freq, bool calibrate) {
   RADIOLIB_CHECK_RANGE(freq, 410.0, 810.0, ERR_INVALID_FREQUENCY);
 
-  int16_t state = ERR_NONE;
-
   // calibrate image
   if(calibrate) {
     uint8_t data[2];
@@ -59,7 +57,7 @@ int16_t SX1268::setFrequency(float freq, bool calibrate) {
       data[0] = SX126X_CAL_IMG_430_MHZ_1;
       data[1] = SX126X_CAL_IMG_430_MHZ_2;
     }
-    state = SX126x::calibrateImage(data);
+    int16_t state = SX126x::calibrateImage(data);
     RADIOLIB_ASSERT(state);
   }
 
