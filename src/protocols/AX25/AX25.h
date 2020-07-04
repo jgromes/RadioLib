@@ -266,7 +266,7 @@ class AX25Client {
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    AX25Client(PhysicalLayer* phy);
+    explicit AX25Client(PhysicalLayer* phy);
 
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
@@ -274,7 +274,7 @@ class AX25Client {
 
       \param audio Pointer to the AFSK instance providing audio.
     */
-    AX25Client(AFSKClient* audio);
+    explicit AX25Client(AFSKClient* audio);
     #endif
 
     // basic methods
@@ -324,13 +324,13 @@ class AX25Client {
     void* _audio;
     #endif
 
-    char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1];
-    uint8_t _srcSSID;
-    uint16_t _preambleLen;
+    char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
+    uint8_t _srcSSID = 0;
+    uint16_t _preambleLen = 0;
 
-    uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
-    uint8_t flipBits(uint8_t b);
-    uint16_t flipBits16(uint16_t i);
+    static uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
+    static uint8_t flipBits(uint8_t b);
+    static uint16_t flipBits16(uint16_t i);
 };
 
 #endif

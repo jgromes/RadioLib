@@ -74,8 +74,7 @@ int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs
   }
 
   // check repeater configuration
-  if(!(((repeaterCallsigns == NULL) && (repeaterSSIDs == NULL) && (numRepeaters == 0)) ||
-       ((repeaterCallsigns != NULL) && (repeaterSSIDs != NULL) && (numRepeaters != 0)))) {
+  if((repeaterCallsigns == NULL) || (repeaterSSIDs == NULL)) {
     return(ERR_INVALID_NUM_REPEATERS);
   }
   for(uint16_t i = 0; i < numRepeaters; i++) {
@@ -390,8 +389,8 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   https://creativecommons.org/licenses/by-sa/4.0/
 */
 uint16_t AX25Client::getFrameCheckSequence(uint8_t* buff, size_t len) {
-  uint8_t outBit = 0;
-  uint16_t mask = 0x0000;
+  uint8_t outBit;
+  uint16_t mask;
   uint16_t shiftReg = CRC_CCITT_INIT;
 
   for(size_t i = 0; i < len; i++) {
