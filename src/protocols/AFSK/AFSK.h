@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_AFSK_H) && !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !defined(_RADIOLIB_AFSK_H)
 #define _RADIOLIB_AFSK_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
+
 #include "../../Module.h"
 
 #include "../PhysicalLayer/PhysicalLayer.h"
@@ -53,5 +56,7 @@ class AFSKClient  {
     friend class SSTVClient;
     friend class AX25Client;
 };
+
+#endif
 
 #endif
