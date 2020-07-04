@@ -446,7 +446,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -458,7 +458,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -467,7 +467,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as %SX128x series does not support direct mode reception.
@@ -475,7 +475,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
@@ -498,7 +498,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Sets the module to standby mode.
@@ -535,7 +535,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
@@ -555,7 +555,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -631,7 +631,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are  0.5 and 1.0. Set to 0 to disable shaping.
@@ -640,7 +640,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float dataShaping);
+    int16_t setDataShaping(float dataShaping) override;
 
     /*!
       \brief Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long
@@ -705,7 +705,7 @@ class SX128x: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
     /*!
       \brief Get expected time-on-air for a given size of payload.
@@ -739,7 +739,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
 
     /*!
       \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
@@ -757,9 +757,9 @@ class SX128x: public PhysicalLayer {
     Module* _mod;
 
     // cached LoRa parameters
-    float _bwKhz;
-    uint8_t _bw, _sf, _cr;
-    uint8_t _preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa;
+    float _bwKhz = 0;
+    uint8_t _bw = 0, _sf = 0, _cr = 0;
+    uint8_t _preambleLengthLoRa = 0, _headerType = 0, _payloadLen = 0, _crcLoRa = 0;
 
     // SX128x SPI command implementations
     uint8_t getStatus();
@@ -790,19 +790,19 @@ class SX128x: public PhysicalLayer {
   private:
 #endif
     // common parameters
-    uint8_t _pwr;
+    uint8_t _pwr = 0;
 
     // cached GFSK parameters
-    float _modIndexReal;
-    uint16_t _brKbps;
-    uint8_t _br, _modIndex, _shaping;
-    uint8_t _preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening;
+    float _modIndexReal = 0;
+    uint16_t _brKbps = 0;
+    uint8_t _br = 0, _modIndex = 0, _shaping = 0;
+    uint8_t _preambleLengthGFSK = 0, _syncWordLen = 0, _syncWordMatch = 0, _crcGFSK = 0, _whitening = 0;
 
     // cached FLRC parameters
-    uint8_t _crFLRC;
+    uint8_t _crFLRC = 0;
 
     // cached BLE parameters
-    uint8_t _connectionState, _crcBLE, _bleTestPayload;
+    uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;
 
     int16_t config(uint8_t modem);
 

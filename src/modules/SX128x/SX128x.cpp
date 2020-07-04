@@ -894,7 +894,7 @@ int16_t SX128x::setCRC(uint8_t len, uint32_t initial, uint16_t polynomial) {
   // check active modem
   uint8_t modem = getPacketType();
 
-  int16_t state = ERR_NONE;
+  int16_t state;
   if((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_FLRC)) {
     // update packet parameters
     if(modem == SX128X_PACKET_TYPE_GFSK) {
