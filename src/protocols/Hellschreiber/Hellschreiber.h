@@ -90,7 +90,7 @@ class HellClient {
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    HellClient(PhysicalLayer* phy);
+    explicit HellClient(PhysicalLayer* phy);
 
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
@@ -98,7 +98,7 @@ class HellClient {
 
       \param audio Pointer to the AFSK instance providing audio.
     */
-    HellClient(AFSKClient* audio);
+    explicit HellClient(AFSKClient* audio);
     #endif
 
     // basic methods
