@@ -6,6 +6,9 @@
 
    Other modules from SX128x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -18,25 +21,18 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1280 lora = new Module(10, 2, 3, 9);
+SX1280 radio = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1280 lora = RadioShield.ModuleA;
+//SX1280 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
-  // carrier frequency:           2400.0 MHz
-  // bandwidth:                   812.5 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // output power:                10 dBm
-  // preamble length:             12 symbols
-  // CRC:                         enabled
-  int state = lora.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,7 +46,7 @@ void loop() {
   Serial.print(F("[SX1280] Scanning channel for LoRa transmission ... "));
 
   // start scanning current channel
-  int state = lora.scanChannel();
+  int state = radio.scanChannel();
 
   if (state == LORA_DETECTED) {
     // LoRa preamble was detected

@@ -9,6 +9,9 @@
 
    Other modules from SX128x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -21,11 +24,11 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1280 lora = new Module(10, 2, 3, 9);
+SX1280 radio = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1280 lora = RadioShield.ModuleA;
+//SX1280 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -39,7 +42,7 @@ void setup() {
   // output power:                10 dBm
   // preamble length:             12 symbols
   // CRC:                         enabled
-  int state = lora.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -55,7 +58,7 @@ void setup() {
   // RX enable:   4
   // TX enable:   5
   /*
-    lora.setRfSwitchPins(4, 5);
+    radio.setRfSwitchPins(4, 5);
   */
 }
 
@@ -67,12 +70,12 @@ void loop() {
   // NOTE: transmit() is a blocking method!
   //       See example SX128x_Transmit_Interrupt for details
   //       on non-blocking transmission method.
-  int state = lora.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-    int state = lora.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {

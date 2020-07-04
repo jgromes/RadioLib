@@ -14,6 +14,9 @@
 
    Other modules from SX128x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -26,32 +29,25 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1280 loraSX1280 = new Module(10, 2, 3, 9);
+SX1280 radio1 = new Module(10, 2, 3, 9);
 
 // SX1280 has the following connections:
 // NSS pin:   8
 // DIO1 pin:  4
 // NRST pin:  5
 // BUSY pin:  6
-SX1281 loraSX1281 = new Module(8, 4, 5, 6);
+SX1281 radio2 = new Module(8, 4, 5, 6);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1282 loraSX1282 = RadioShield.ModuleB;
+//SX1282 radio3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
-  // carrier frequency:           2400.0 MHz
-  // bandwidth:                   812.5 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // output power:                10 dBm
-  // preamble length:             12 symbols
-  // CRC:                         enabled
-  int state = loraSX1280.begin();
+  int state = radio1.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -71,8 +67,7 @@ void setup() {
   // coding rate:                 5
   // output power:                2 dBm
   // preamble length:             20 symbols
-  // CRC:                         enabled
-  state = loraSX1281.begin(2450.0, 1625.0, 7, 5, 2, 20);
+  state = radio2.begin(2450.0, 1625.0, 7, 5, 2, 20);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -85,43 +80,43 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 2410.5 MHz
-  if (loraSX1280.setFrequency(2410.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(2410.5) == ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bandwidth to 203.125 kHz
-  if (loraSX1280.setBandwidth(203.125) == ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(203.125) == ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set spreading factor to 10
-  if (loraSX1280.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
+  if (radio1.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
     Serial.println(F("Selected spreading factor is invalid for this module!"));
     while (true);
   }
 
   // set coding rate to 6
-  if (loraSX1280.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
+  if (radio1.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
     Serial.println(F("Selected coding rate is invalid for this module!"));
     while (true);
   }
 
   // set output power to -2 dBm
-  if (loraSX1280.setOutputPower(-2) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(-2) == ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("Selected output power is invalid for this module!"));
     while (true);
   }
 
   // set LoRa preamble length to 16 symbols (accepted range is 2 - 65535)
-  if (loraSX1280.setPreambleLength(16) == ERR_INVALID_PREAMBLE_LENGTH) {
+  if (radio1.setPreambleLength(16) == ERR_INVALID_PREAMBLE_LENGTH) {
     Serial.println(F("Selected preamble length is invalid for this module!"));
     while (true);
   }
 
   // disable CRC
-  if (loraSX1280.setCRC(false) == ERR_INVALID_CRC_CONFIGURATION) {
+  if (radio1.setCRC(false) == ERR_INVALID_CRC_CONFIGURATION) {
     Serial.println(F("Selected CRC is invalid for this module!"));
     while (true);
   }

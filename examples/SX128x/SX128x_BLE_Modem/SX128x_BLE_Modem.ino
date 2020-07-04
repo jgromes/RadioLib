@@ -11,6 +11,9 @@
          modem and use the appropriate configuration
          methods.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---ble-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -23,25 +26,18 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1280 ble = new Module(10, 2, 3, 9);
+SX1280 radio = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1280 ble = RadioShield.ModuleA;
+//SX1280 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
-  // carrier frequency:           2400.0 MHz
-  // bit rate:                    800 kbps
-  // frequency deviation:         400.0 kHz
-  // output power:                10 dBm
-  // preamble length:             16 bits
-  // data shaping:                Gaussian, BT = 0.5
-  // CRC:                         enabled, CRC16 (CCIT)
-  int state = ble.beginBLE();
+  int state = radio.beginBLE();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -50,19 +46,19 @@ void setup() {
     while (true);
   }
 
-  // if needed, you can switch between LoRa and FSK modes
+  // if needed, you can switch between any of the modems
   //
-  // ble.begin()       start LoRa mode (and disable BLE)
-  // lora.beginBLE()   start BLE mode (and disable LoRa)
+  // radio.begin()      start LoRa modem (and disable BLE)
+  // radio.beginBLE()   start BLE modem (and disable LoRa)
 
   // the following settings can also
   // be modified at run-time
-  state = ble.setFrequency(2410.5);
-  state = ble.setBitRate(250);
-  state = ble.setFrequencyDeviation(100.0);
-  state = ble.setOutputPower(5);
-  state = ble.setDataShaping(1.0);
-  state = ble.setAccessAddress(0x12345678);
+  state = radio.setFrequency(2410.5);
+  state = radio.setBitRate(250);
+  state = radio.setFrequencyDeviation(100.0);
+  state = radio.setOutputPower(5);
+  state = radio.setDataShaping(1.0);
+  state = radio.setAccessAddress(0x12345678);
   if (state != ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
@@ -77,11 +73,11 @@ void loop() {
   // as the LoRa modem, even their interrupt-driven versions
 
   // transmit BLE packet
-  int state = ble.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                       0x89, 0xAB, 0xCD, 0xEF};
-    int state = ble.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1280] Packet transmitted successfully!"));
@@ -96,10 +92,10 @@ void loop() {
 
   // receive BLE packet
   String str;
-  state = ble.receive(str);
+  state = radio.receive(str);
   /*
     byte byteArr[8];
-    int state = ble.receive(byteArr, 8);
+    int state = radio.receive(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1280] Received packet!"));
