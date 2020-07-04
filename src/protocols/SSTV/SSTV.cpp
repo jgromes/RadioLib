@@ -166,7 +166,7 @@ SSTVClient::SSTVClient(AFSKClient* audio) {
 }
 #endif
 
-int16_t SSTVClient::begin(SSTVMode_t mode, float correction) {
+int16_t SSTVClient::begin(const SSTVMode_t& mode, float correction) {
   if(_audio == nullptr) {
     // this initialization method can only be used in AFSK mode
     return(ERR_WRONG_MODEM);
@@ -175,7 +175,7 @@ int16_t SSTVClient::begin(SSTVMode_t mode, float correction) {
   return(begin(0, mode, correction));
 }
 
-int16_t SSTVClient::begin(float base, SSTVMode_t mode, float correction) {
+int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) {
   // save mode
   _mode = mode;
 
@@ -276,10 +276,6 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
       }
     }
   }
-}
-
-uint16_t SSTVClient::getPictureHeight() {
-  return(_mode.height);
 }
 
 void SSTVClient::tone(float freq, uint32_t len) {
