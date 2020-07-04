@@ -1,7 +1,10 @@
-#if !defined(_RADIOLIB_AX25_H) && !defined(RADIOLIB_EXCLUDE_AX25)
+#if !defined(_RADIOLIB_AX25_H)
 #define _RADIOLIB_AX25_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_AX25)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
@@ -320,8 +323,6 @@ class AX25Client {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
-    #else
-    void* _audio;
     #endif
 
     char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
@@ -332,5 +333,7 @@ class AX25Client {
     static uint8_t flipBits(uint8_t b);
     static uint16_t flipBits16(uint16_t i);
 };
+
+#endif
 
 #endif

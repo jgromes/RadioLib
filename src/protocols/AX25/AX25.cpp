@@ -112,7 +112,9 @@ void AX25Frame::setSendSequence(uint8_t seqNumber) {
 
 AX25Client::AX25Client(PhysicalLayer* phy) {
   _phy = phy;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   _audio = nullptr;
+  #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
@@ -140,12 +142,14 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
 
   // set module frequency deviation to 0 if using FSK
   int16_t state = ERR_NONE;
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio == nullptr) {
     state = _phy->setFrequencyDeviation(0);
     RADIOLIB_ASSERT(state);
 
     state = _phy->setEncoding(0);
   }
+  #endif
   return(state);
 }
 
@@ -348,9 +352,8 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // transmit
   int16_t state = ERR_NONE;
-  if(_audio == nullptr) {
-    state = _phy->transmit(stuffedFrameBuff, stuffedFrameBuffLen);
-  } else {
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  if(_audio != nullptr) {
     _phy->transmitDirect();
 
     // iterate over all bytes in the buffer
@@ -372,7 +375,13 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     }
 
     _audio->noTone();
+
+  } else {
+  #endif
+    state = _phy->transmit(stuffedFrameBuff, stuffedFrameBuffLen);
+  #if !defined(RADIOLIB_EXCLUDE_AFSK)
   }
+  #endif
 
   // deallocate memory
   #ifndef RADIOLIB_STATIC_ONLY
