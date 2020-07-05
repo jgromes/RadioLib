@@ -136,7 +136,7 @@ class Module {
     /*!
       \brief Line feed to be used when sending AT commands. Defaults to CR+LF.
     */
-    const char* AtLineFeed = "\r\n";
+    char AtLineFeed[3] = "\r\n";
 
     /*!
       \brief Basic SPI read command. Defaults to 0x00.
