@@ -7,7 +7,8 @@ JDY08::JDY08(Module* mod) : ISerial(mod) {
 
 void JDY08::begin(long speed) {
   // set module properties
-  _mod->AtLineFeed = "";
+  char lf[3] = "";
+  memcpy(_mod->AtLineFeed, lf, strlen(lf));
   _mod->baudrate = speed;
   _mod->init(RADIOLIB_USE_UART);
 }
