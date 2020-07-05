@@ -1,9 +1,8 @@
 #include "AFSK.h"
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 
-AFSKClient::AFSKClient(PhysicalLayer* phy, RADIOLIB_PIN_TYPE pin) {
+AFSKClient::AFSKClient(PhysicalLayer* phy, RADIOLIB_PIN_TYPE pin): _pin(pin) {
   _phy = phy;
-  _pin = pin;
 }
 
 int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
