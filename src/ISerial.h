@@ -18,16 +18,20 @@ class ISerial {
     explicit ISerial(Module* mod);
 
     void begin(long);
-    bool listen();
     void end();
-    bool isListening();
-    bool stopListening();
-    bool overflow();
     int peek();
     size_t write(uint8_t);
     int read();
     int available();
     void flush();
+
+    // SoftwareSerial-only methods
+    #if !defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
+    bool listen();
+    bool isListening();
+    bool stopListening();
+    bool overflow();
+    #endif
 
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);

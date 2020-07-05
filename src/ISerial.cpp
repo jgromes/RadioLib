@@ -8,41 +8,10 @@ void ISerial::begin(long speed) {
   _mod->ModuleSerial->begin(speed);
 }
 
-bool ISerial::listen() {
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  return true;
-#else
-  return(_mod->ModuleSerial->listen());
-#endif
-}
-
 void ISerial::end() {
   _mod->ModuleSerial->end();
 }
 
-bool ISerial::isListening() {
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  return true;
-#else
-  return(_mod->ModuleSerial->isListening());
-#endif
-}
-
-bool ISerial::stopListening() {
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  return true;
-#else
-  return(_mod->ModuleSerial->stopListening());
-#endif
-}
-
-bool ISerial::overflow() {
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  return false;
-#else
-  return(_mod->ModuleSerial->overflow());
-#endif
-}
 
 int ISerial::peek() {
   return(_mod->ModuleSerial->peek());
@@ -63,6 +32,25 @@ int ISerial::available() {
 void ISerial::flush() {
   _mod->ModuleSerial->flush();
 }
+
+// SoftwareSerial-only methods
+#if !defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
+bool ISerial::listen() {
+  return(_mod->ModuleSerial->listen());
+}
+
+bool ISerial::isListening() {
+  return(_mod->ModuleSerial->isListening());
+}
+
+bool ISerial::stopListening() {
+  return(_mod->ModuleSerial->stopListening());
+}
+
+bool ISerial::overflow() {
+  return(_mod->ModuleSerial->overflow());
+}
+#endif
 
 size_t ISerial::print(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->print(ifsh));
