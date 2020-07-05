@@ -116,6 +116,19 @@ class Module {
     Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass& spi = RADIOLIB_DEFAULT_SPI, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial* serial = nullptr);
 #endif
 
+    /*!
+      \brief Copy constructor.
+
+      \param mod Module instance to copy.
+    */
+    Module(const Module& mod);
+
+    /*!
+      \brief Overload for assignment operator.
+
+      \param frame rvalue Module.
+    */
+    Module& operator=(const Module& mod);
 
     // public member variables
 

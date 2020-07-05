@@ -89,6 +89,27 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
 #endif
 }
 
+Module::Module(const Module& mod) {
+  *this = mod;
+}
+
+Module& Module::operator=(const Module& mod) {
+  this->ModuleSerial = mod.ModuleSerial;
+  this->baudrate = mod.baudrate;
+  memcpy(this->AtLineFeed, mod.AtLineFeed, strlen(mod.AtLineFeed));
+  this->SPIreadCommand = mod.SPIreadCommand;
+  this->SPIwriteCommand = mod.SPIwriteCommand;
+  this->_cs = mod.getCs();
+  this->_irq = mod.getIrq();
+  this->_rst = mod.getRst();
+  this->_rx = mod.getRx();
+  this->_tx = mod.getTx();
+  this->_spiSettings = mod.getSpiSettings();
+  this->_spi = mod.getSpi();
+
+  return(*this);
+}
+
 void Module::init(uint8_t interface) {
   // select interface
   switch(interface) {
@@ -198,7 +219,7 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   // check register value each millisecond until check interval is reached
   // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
   uint32_t start = micros();
-  uint8_t readValue = 0;
+  uint8_t readValue;
   while(micros() - start < (checkInterval * 1000)) {
     readValue = SPIreadRegister(reg);
     if(readValue == newValue) {
