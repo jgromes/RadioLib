@@ -225,9 +225,23 @@ class AX25Frame {
     AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, uint8_t* info, uint16_t infoLen);
 
     /*!
+      \brief Copy constructor.
+
+      \param frame AX25Frame instance to copy.
+    */
+    AX25Frame(const AX25Frame& frame);
+
+    /*!
       \brief Default destructor.
     */
     ~AX25Frame();
+
+    /*!
+      \brief Overload for assignment operator.
+
+      \param frame rvalue AX25Frame.
+    */
+    AX25Frame& operator=(const AX25Frame& frame);
 
     /*!
       \brief Method to set the repeater callsigns and SSIDs.

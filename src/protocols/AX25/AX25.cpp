@@ -49,6 +49,10 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
   }
 }
 
+AX25Frame::AX25Frame(const AX25Frame& frame) {
+  *this = frame;
+}
+
 AX25Frame::~AX25Frame() {
   #ifndef RADIOLIB_STATIC_ONLY
     // deallocate info field
@@ -65,6 +69,41 @@ AX25Frame::~AX25Frame() {
       delete[] this->repeaterSSIDs;
     }
   #endif
+}
+
+AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
+  // destination callsign/SSID
+  memcpy(this->destCallsign, frame.destCallsign, strlen(frame.destCallsign));
+  this->destCallsign[strlen(frame.destCallsign)] = '\0';
+  this->destSSID = frame.destSSID;
+
+  // source callsign/SSID
+  memcpy(this->srcCallsign, frame.srcCallsign, strlen(frame.srcCallsign));
+  this->srcCallsign[strlen(frame.srcCallsign)] = '\0';
+  this->srcSSID = frame.srcSSID;
+
+  // repeaters
+  this->numRepeaters = frame.numRepeaters;
+  for(uint8_t i = 0; i < this->numRepeaters; i++) {
+    memcpy(this->repeaterCallsigns[i], frame.repeaterCallsigns[i], strlen(frame.repeaterCallsigns[i]));
+  }
+  memcpy(this->repeaterSSIDs, frame.repeaterSSIDs, this->numRepeaters);
+
+  // control field
+  this->control = frame.control;
+
+  // sequence numbers
+  this->rcvSeqNumber = frame.rcvSeqNumber;
+  this->sendSeqNumber = frame.sendSeqNumber;
+
+  // PID field
+  this->protocolID = frame.protocolID;
+
+  // info field
+  this->infoLen = frame.infoLen;
+  memcpy(this->info, frame.info, this->infoLen);
+
+  return(*this);
 }
 
 int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs, uint8_t numRepeaters) {
