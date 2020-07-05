@@ -7,7 +7,8 @@ ESP8266::ESP8266(Module* module) {
 
 int16_t ESP8266::begin(long speed) {
   // set module properties
-  _mod->AtLineFeed = "\r\n";
+  char lf[3] = "\r\n";
+  memcpy(_mod->AtLineFeed, lf, strlen(lf));
   _mod->baudrate = speed;
   _mod->init(RADIOLIB_USE_UART);
 
@@ -89,13 +90,13 @@ int16_t ESP8266::openTransportConnection(const char* host, const char* protocol,
 
   // build AT command
   const char* atStr = "AT+CIPSTART=\"";
-  uint8_t cmdLen = strlen(atStr) + strlen(protocol) + strlen(host) + strlen(portStr) + 5;
-  if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
-	  cmdLen += strlen(tcpKeepAliveStr) + 1;
-  }
   #ifdef RADIOLIB_STATIC_ONLY
     char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
+    uint8_t cmdLen = strlen(atStr) + strlen(protocol) + strlen(host) + strlen(portStr) + 5;
+    if((strcmp(protocol, "TCP") == 0) && (tcpKeepAlive > 0)) {
+  	  cmdLen += strlen(tcpKeepAliveStr) + 1;
+    }
     char* cmd = new char[cmdLen + 1];
   #endif
   strcpy(cmd, atStr);
