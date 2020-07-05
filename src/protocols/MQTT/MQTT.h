@@ -139,7 +139,7 @@ class MQTTClient {
     uint16_t _packetId;
 
     static size_t encodeLength(uint32_t len, uint8_t* encoded);
-    static uint32_t decodeLength(uint8_t* encoded);
+    static uint32_t decodeLength(uint8_t* encoded, uint8_t& numBytes);
 };
 
 #endif
