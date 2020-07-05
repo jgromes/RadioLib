@@ -3,6 +3,7 @@
 
 XBee::XBee(Module* mod) {
   _mod = mod;
+  _packetData[0] = '\0';
 }
 
 int16_t XBee::begin(long speed) {
@@ -182,7 +183,8 @@ XBeeSerial::XBeeSerial(Module* mod) : ISerial(mod) {
 
 int16_t XBeeSerial::begin(long speed) {
   // set module properties
-  _mod->AtLineFeed = "\r";
+  char lf[3] = "\r";
+  memcpy(_mod->AtLineFeed, lf, strlen(lf));
   _mod->baudrate = speed;
   _mod->init(RADIOLIB_USE_UART);
 
