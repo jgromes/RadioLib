@@ -630,7 +630,6 @@ int16_t Si443x::updateClockRecovery() {
   }
   if((rxOsr_temp - rxOsr_int) >= 0.125) {
     rxOsr_dec |= 0x01;
-    rxOsr_temp -= 0.125;
   }
   uint16_t rxOsr_fixed = ((uint16_t)rxOsr_int << 3) | ((uint16_t)rxOsr_dec);
 
