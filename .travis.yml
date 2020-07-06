@@ -1,6 +1,6 @@
 env:
   global:
-    - ARDUINO_IDE_VERSION="1.8.9"
+    - ARDUINO_IDE_VERSION="1.8.13"
   matrix:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
@@ -146,7 +146,7 @@ script:
         else
           # build sketch
           echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-          arduino --verify --board $BOARD $example;
+          arduino --verify --warnings=all --board $BOARD $example;
           if [ $? -ne 0 ]; then
             echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
             exit 1;
