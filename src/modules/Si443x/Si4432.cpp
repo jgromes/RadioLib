@@ -5,9 +5,9 @@ Si4432::Si4432(Module* mod) : Si443x(mod) {
 
 }
 
-int16_t Si4432::begin(float freq, float br, float freqDev, float rxBw, int8_t power) {
+int16_t Si4432::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // execute common part
-  int16_t state = Si443x::begin(br, freqDev, rxBw);
+  int16_t state = Si443x::begin(br, freqDev, rxBw, preambleLen);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings

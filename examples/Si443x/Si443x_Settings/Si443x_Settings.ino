@@ -58,7 +58,8 @@ void setup() {
   // frequency deviation:         60.0 kHz
   // Rx bandwidth:                335.5 kHz
   // output power:                17 dBm
-  state = radio2.begin(868.0, 200.0, 60.0, 335.5, 17);
+  // preamble length:             32 bits
+  state = radio2.begin(868.0, 200.0, 60.0, 335.5, 17, 32);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {

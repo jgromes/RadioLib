@@ -5,7 +5,7 @@ Si443x::Si443x(Module* mod) : PhysicalLayer(SI443X_FREQUENCY_STEP_SIZE, SI443X_M
   _mod = mod;
 }
 
-int16_t Si443x::begin(float br, float freqDev, float rxBw) {
+int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -38,7 +38,10 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw) {
   state = setRxBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  uint8_t syncWord[] = {0x2D, 0x01};
+  state = setPreambleLength(preambleLen);
+  RADIOLIB_ASSERT(state);
+
+  uint8_t syncWord[] = {0x12, 0xAD};
   state = setSyncWord(syncWord, sizeof(syncWord));
   RADIOLIB_ASSERT(state);
 
@@ -475,6 +478,22 @@ int16_t Si443x::setSyncWord(uint8_t* syncWord, size_t len) {
   _mod->SPIwriteRegisterBurst(SI443X_REG_SYNC_WORD_3, syncWord, len);
 
   return(state);
+}
+
+int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
+  // Si443x configures preamble length in bytes
+  if(preambleLen % 8 != 0) {
+    return(ERR_INVALID_PREAMBLE_LENGTH);
+  }
+
+  // set default preamble length
+  uint8_t preLenBytes = preambleLen / 8;
+  int16_t state = _mod->SPIsetRegValue(SI443X_REG_PREAMBLE_LENGTH, preLenBytes);
+  RADIOLIB_ASSERT(state);
+
+  // set default preamble detection threshold to 50% of preamble length (in units of 4 bits)
+  uint8_t preThreshold = preambleLen / 4;
+  return(_mod->SPIsetRegValue(SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 4, 3, 7));
 }
 
 size_t Si443x::getPacketLength(bool update) {

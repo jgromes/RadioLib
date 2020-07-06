@@ -579,9 +579,11 @@ class Si443x: public PhysicalLayer {
 
       \param rxBw Receiver bandwidth in kHz.
 
+      \param preambleLen Preamble Length in bits.
+
       \returns \ref status_codes
     */
-    int16_t begin(float br, float freqDev, float rxBw);
+    int16_t begin(float br, float freqDev, float rxBw, uint8_t preambleLen);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using SDN pin.
@@ -734,6 +736,15 @@ class Si443x: public PhysicalLayer {
       \param len Sync word length in bytes.
     */
     int16_t setSyncWord(uint8_t* syncWord, size_t len);
+
+    /*!
+      \brief Sets preamble length.
+
+      \param preambleLen Preamble length to be set (in bits).
+
+      \returns \ref status_codes
+    */
+    int16_t setPreambleLength(uint8_t preambleLen);
 
      /*!
       \brief Query modem for the packet length of received payload.
