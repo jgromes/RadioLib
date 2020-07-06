@@ -193,16 +193,16 @@ class PhysicalLayer {
     /*!
       \brief Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.
 
-      \param sh Shaping to be set. Set to zero to disable data shaping.
+      \param sh Shaping to be set. See \ref config_shaping for possible values.
 
       \returns \ref status_codes
     */
-    virtual int16_t setDataShaping(float sh) = 0;
+    virtual int16_t setDataShaping(uint8_t sh) = 0;
 
     /*!
       \brief Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.
 
-      \param enc Encoding to be used. Set to zero to for no encoding (NRZ).
+      \param enc Encoding to be used. See \ref config_encoding for possible values.
 
       \returns \ref status_codes
     */
