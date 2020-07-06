@@ -847,18 +847,18 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
-      Allowed value is 0.5. Set to 0 to disable data shaping.
+      Allowed value is RADIOLIB_SHAPING_0_5. Set to RADIOLIB_SHAPING_NONE to disable data shaping.
 
-      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
+      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping.
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh) override;
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
-      \brief Sets transmission encoding.
+      \brief Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ and RADIOLIB_ENCODING_WHITENING.
 
-      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+      \param encoding Encoding to be used.
 
       \returns \ref status_codes
     */
