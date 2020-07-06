@@ -5,7 +5,7 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(SX126X_FREQUENCY_STEP_SIZE, SX126X_M
   _mod = mod;
 }
 
-int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -56,13 +56,13 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   state = setSyncWord(syncWord);
   RADIOLIB_ASSERT(state);
 
-  state = setCurrentLimit(currentLimit);
-  RADIOLIB_ASSERT(state);
-
   state = setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
+  state = setCurrentLimit(60.0);
+  RADIOLIB_ASSERT(state);
+
   state = setDio2AsRfSwitch(true);
   RADIOLIB_ASSERT(state);
 

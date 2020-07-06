@@ -367,8 +367,6 @@ class SX126x: public PhysicalLayer {
 
       \param syncWord 1-byte LoRa sync word.
 
-      \param currentLimit Current protection limit in mA.
-
       \param preambleLength LoRa preamble length in symbols. Allowed values range from 1 to 65535.
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
@@ -377,7 +375,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Initialization method for FSK modem.

@@ -70,9 +70,8 @@ void setup() {
   // coding rate:                 5
   // sync word:                   0x34 (public network/LoRaWAN)
   // output power:                2 dBm
-  // current limit:               50 mA
   // preamble length:             20 symbols
-  state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 50, 20);
+  state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 20);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
