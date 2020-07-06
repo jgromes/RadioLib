@@ -489,7 +489,7 @@ int16_t nRF24::setAutoAck(uint8_t pipeNum, bool autoAckOn){
   }
 }
 
-int16_t nRF24::setDataShaping(float sh) {
+int16_t nRF24::setDataShaping(uint8_t sh) {
   // nRF24 is unable to set data shaping
   // this method is implemented only for PhysicalLayer compatibility
   (void)sh;

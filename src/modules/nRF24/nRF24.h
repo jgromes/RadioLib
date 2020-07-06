@@ -453,7 +453,7 @@ class nRF24: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh) override;
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
       \brief Dummy encoding configuration method, to ensure PhysicalLayer compatibility.
