@@ -385,11 +385,9 @@ class SX128x: public PhysicalLayer {
 
       \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to RADIOLIB_SHAPING_0_5.
-
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
+    int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16);
 
     /*!
       \brief Initialization method for BLE modem.

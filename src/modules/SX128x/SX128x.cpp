@@ -56,7 +56,7 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power
   return(state);
 }
 
-int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, uint16_t preambleLength, uint8_t dataShaping) {
+int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, uint16_t preambleLength) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -104,12 +104,15 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   state = setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
-  state = setDataShaping(dataShaping);
+  state = setDataShaping(RADIOLIB_SHAPING_0_5);
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
-  uint8_t sync[] = { 0x2D, 0x01 };
+  uint8_t sync[] = { 0x12, 0xAD };
   state = setSyncWord(sync, 2);
+  RADIOLIB_ASSERT(state);
+
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
   RADIOLIB_ASSERT(state);
 
   return(state);

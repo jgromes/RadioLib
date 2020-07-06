@@ -55,7 +55,7 @@ void setup() {
   state = radio.setBitRate(200);
   state = radio.setFrequencyDeviation(100.0);
   state = radio.setOutputPower(5);
-  state = radio.setDataShaping(1.0);
+  state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89};
   state = radio.setSyncWord(syncWord, 5);
   if (state != ERR_NONE) {
