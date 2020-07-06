@@ -160,10 +160,10 @@ int16_t ESP8266::send(const char* data) {
   return(ERR_NONE);
 }
 
-int16_t ESP8266::send(uint8_t* data, uint32_t len) {
+int16_t ESP8266::send(uint8_t* data, size_t len) {
   // build AT command
   char lenStr[8];
-  sprintf(lenStr, "%lu", len);
+  sprintf(lenStr, "%u", (uint16_t)len);
   const char atStr[] = "AT+CIPSEND=";
   #ifdef RADIOLIB_STATIC_ONLY
     char cmd[RADIOLIB_STATIC_ARRAY_SIZE];
