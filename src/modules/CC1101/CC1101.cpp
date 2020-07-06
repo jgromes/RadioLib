@@ -77,15 +77,15 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   RADIOLIB_ASSERT(state);
 
   // set default data shaping
-  state = setDataShaping(0);
+  state = setDataShaping(RADIOLIB_ENCODING_NRZ);
   RADIOLIB_ASSERT(state);
 
   // set default encoding
-  state = setEncoding(2);
+  state = setEncoding(RADIOLIB_SHAPING_NONE);
   RADIOLIB_ASSERT(state);
 
   // set default sync word
-  state = setSyncWord(0xD3, 0x91, 0, false);
+  state = setSyncWord(0x12, 0xAD, 0, false);
   RADIOLIB_ASSERT(state);
 
   // flush FIFOs
@@ -508,28 +508,28 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
   // check allowed values
   uint8_t value;
   switch(preambleLength){
-    case 2:
+    case 16:
       value = CC1101_NUM_PREAMBLE_2;
       break;
-    case 3:
+    case 24:
       value = CC1101_NUM_PREAMBLE_3;
       break;
-    case 4:
+    case 32:
       value = CC1101_NUM_PREAMBLE_4;
       break;
-    case 6:
+    case 48:
       value = CC1101_NUM_PREAMBLE_6;
       break;
-    case 8:
+    case 64:
       value = CC1101_NUM_PREAMBLE_8;
       break;
-    case 12:
+    case 96:
       value = CC1101_NUM_PREAMBLE_12;
       break;
-    case 16:
+    case 128:
       value = CC1101_NUM_PREAMBLE_16;
       break;
-    case 24:
+    case 192:
       value = CC1101_NUM_PREAMBLE_24;
       break;
     default:

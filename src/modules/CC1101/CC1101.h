@@ -521,21 +521,21 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Initialization method.
 
-      \param freq Carrier frequency in MHz. Defaults to 868.0 MHz.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
 
-      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
+      \param br Bit rate to be used in kbps. Defaults to 48.0 kbps.
 
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
 
-      \param power Output power in dBm. Defaults to 0 dBm.
+      \param power Output power in dBm. Defaults to 10 dBm.
 
-      \param preambleLength Preamble Length in bytes. Defaults to 4 bytes.
+      \param preambleLength Preamble Length in bits. Defaults to 16 bits.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 868.0, float br = 4.8, float freqDev = 48.0, float rxBw = 325.0, int8_t power = 0, uint8_t preambleLength = 4);
+    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 48.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLength = 16);
 
     /*!
       \brief Blocking binary transmit method.
@@ -733,7 +733,7 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Sets preamble length.
 
-      \param preambleLength Preamble length to be set (in bytes), allowed values: 2, 3, 4, 6, 8, 12, 16, 24
+      \param preambleLength Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
 
       \returns \ref status_codes
     */
