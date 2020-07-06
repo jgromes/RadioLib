@@ -75,7 +75,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -119,27 +119,10 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   state = setRxBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  state = setCurrentLimit(currentLimit);
-  RADIOLIB_ASSERT(state);
-
-  state = setDataShaping(dataShaping);
+  state = setCurrentLimit(60.0);
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
-  RADIOLIB_ASSERT(state);
-
-  // set publicly accessible settings that are not a part of begin method
-  uint8_t sync[] = {0x2D, 0x01};
-  state = setSyncWord(sync, 2);
-  RADIOLIB_ASSERT(state);
-
-  state = setWhitening(true, 0x01FF);
-  RADIOLIB_ASSERT(state);
-
-  state = variablePacketLengthMode(SX126X_MAX_PACKET_LENGTH);
-  RADIOLIB_ASSERT(state);
-
-  state = setDio2AsRfSwitch(false);
   RADIOLIB_ASSERT(state);
 
   if(useRegulatorLDO) {
@@ -147,6 +130,27 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit
   } else {
     state = setRegulatorDCDC();
   }
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = {0x12, 0xAD};
+  state = setSyncWord(sync, 2);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
+  RADIOLIB_ASSERT(state);
+
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
+  RADIOLIB_ASSERT(state);
+
+  state = variablePacketLengthMode(SX126X_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(2);
+  RADIOLIB_ASSERT(state);
+
+  state = setDio2AsRfSwitch(false);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
