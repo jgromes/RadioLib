@@ -385,11 +385,11 @@ class SX128x: public PhysicalLayer {
 
       \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to RADIOLIB_SHAPING_0_5.
 
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16, float dataShaping = 0.5);
+    int16_t beginGFSK(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
 
     /*!
       \brief Initialization method for BLE modem.
@@ -406,7 +406,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t beginBLE(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, float dataShaping = 0.5);
+    int16_t beginBLE(float freq = 2400.0, uint16_t br = 800, float freqDev = 400.0, int8_t power = 10, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
 
     /*!
       \brief Initialization method for FLRC modem.
@@ -425,7 +425,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t beginFLRC(float freq = 2400.0, uint16_t br = 650, uint8_t cr = 3, int8_t power = 10, uint16_t preambleLength = 16, float dataShaping = 0.5);
+    int16_t beginFLRC(float freq = 2400.0, uint16_t br = 650, uint8_t cr = 3, int8_t power = 10, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -637,13 +637,14 @@ class SX128x: public PhysicalLayer {
     int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
-      \brief Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are  0.5 and 1.0. Set to 0 to disable shaping.
+      \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
+      Allowed values are RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.
 
       \param sh Time-bandwidth product of Gaussian filter to be set.
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float dataShaping) override;
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
       \brief Sets FSK/FLRC sync word in the form of array of up to 5 bytes (FSK). For FLRC modem, the sync word must be exactly 4 bytes long

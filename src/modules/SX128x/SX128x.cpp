@@ -56,7 +56,7 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power
   return(state);
 }
 
-int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, uint16_t preambleLength, float dataShaping) {
+int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, uint16_t preambleLength, uint8_t dataShaping) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -115,7 +115,7 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   return(state);
 }
 
-int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, float dataShaping) {
+int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, uint8_t dataShaping) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -163,7 +163,7 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, f
   return(state);
 }
 
-int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uint16_t preambleLength, float dataShaping) {
+int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uint16_t preambleLength, uint8_t dataShaping) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -815,23 +815,26 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
   return(setModulationParams(_br, _modIndex, _shaping));
 }
 
-int16_t SX128x::setDataShaping(float dataShaping) {
+int16_t SX128x::setDataShaping(uint8_t sh) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == SX128X_PACKET_TYPE_GFSK) || (modem == SX128X_PACKET_TYPE_BLE) || (modem == SX128X_PACKET_TYPE_FLRC))) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed values
-  dataShaping *= 10.0;
-  if(abs(dataShaping - 0.0) <= 0.001) {
-    _shaping = SX128X_BLE_GFSK_BT_OFF;
-  } else if(abs(dataShaping - 5.0) <= 0.001) {
-    _shaping = SX128X_BLE_GFSK_BT_0_5;
-  } else if(abs(dataShaping - 10.0) <= 0.001) {
-    _shaping = SX128X_BLE_GFSK_BT_1_0;
-  } else {
-    return(ERR_INVALID_DATA_SHAPING);
+  // set data shaping
+  switch(sh) {
+    case RADIOLIB_SHAPING_NONE:
+      _shaping = SX128X_BLE_GFSK_BT_OFF;
+      break;
+    case RADIOLIB_SHAPING_0_5:
+      _shaping = SX128X_BLE_GFSK_BT_0_5;
+      break;
+    case RADIOLIB_SHAPING_1_0:
+      _shaping = SX128X_BLE_GFSK_BT_1_0;
+      break;
+    default:
+      return(ERR_INVALID_DATA_SHAPING);
   }
 
   // update modulation parameters
