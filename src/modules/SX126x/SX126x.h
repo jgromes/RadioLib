@@ -400,7 +400,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -653,13 +653,15 @@ class SX126x: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
 
     /*!
-      \brief Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are 0.3, 0.5, 0.7 and 1.0. Set to 0 to disable shaping.
+      \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
+      Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
+      Set to RADIOLIB_SHAPING_NONE to disable data shaping.
 
       \param sh Time-bandwidth product of Gaussian filter to be set.
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh) override;
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
       \brief Sets FSK sync word in the form of array of up to 8 bytes.

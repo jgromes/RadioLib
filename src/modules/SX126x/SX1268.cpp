@@ -23,7 +23,7 @@ int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
   int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping, tcxoVoltage, useRegulatorLDO);
   RADIOLIB_ASSERT(state);

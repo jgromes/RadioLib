@@ -75,7 +75,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float 
   return(state);
 }
 
-int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, uint8_t dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -826,26 +826,31 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   return(setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev));
 }
 
-int16_t SX126x::setDataShaping(float sh) {
+int16_t SX126x::setDataShaping(uint8_t sh) {
   // check active modem
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
   }
 
-  // check allowed values
-  sh *= 10.0;
-  if(abs(sh - 0.0) <= 0.001) {
-    _pulseShape = SX126X_GFSK_FILTER_NONE;
-  } else if(abs(sh - 3.0) <= 0.001) {
-    _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_3;
-  } else if(abs(sh - 5.0) <= 0.001) {
-    _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_5;
-  } else if(abs(sh - 7.0) <= 0.001) {
-    _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_7;
-  } else if(abs(sh - 10.0) <= 0.001) {
-    _pulseShape = SX126X_GFSK_FILTER_GAUSS_1;
-  } else {
-    return(ERR_INVALID_DATA_SHAPING);
+  // set data shaping
+  switch(sh) {
+    case RADIOLIB_SHAPING_NONE:
+      _pulseShape = SX126X_GFSK_FILTER_NONE;
+      break;
+    case RADIOLIB_SHAPING_0_3:
+      _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_3;
+      break;
+    case RADIOLIB_SHAPING_0_5:
+      _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_5;
+      break;
+    case RADIOLIB_SHAPING_0_7:
+      _pulseShape = SX126X_GFSK_FILTER_GAUSS_0_7;
+      break;
+    case RADIOLIB_SHAPING_1_0:
+      _pulseShape = SX126X_GFSK_FILTER_GAUSS_1;
+      break;
+    default:
+      return(ERR_INVALID_DATA_SHAPING);
   }
 
   // update modulation parameters

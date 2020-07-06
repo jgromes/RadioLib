@@ -69,13 +69,13 @@ class SX1268: public SX126x {
 
       \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
-      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
+      \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to RADIOLIB_SHAPING_0_5.
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 16, float dataShaping = 0.5, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 14, float currentLimit = 60.0, uint16_t preambleLength = 16, uint8_t dataShaping = RADIOLIB_SHAPING_0_5, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
     // configuration methods
 
