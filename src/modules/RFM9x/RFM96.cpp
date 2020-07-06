@@ -5,12 +5,12 @@ RFM96::RFM96(Module* mod) : SX1278(mod) {
 
 }
 
-int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint8_t currentLimit, uint16_t preambleLength, uint8_t gain) {
+int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(RFM9X_CHIP_VERSION_OFFICIAL, syncWord, currentLimit, preambleLength);
+  int16_t state = SX127x::begin(RFM9X_CHIP_VERSION_OFFICIAL, syncWord, preambleLength);
   if(state == ERR_CHIP_NOT_FOUND) {
     // SX127X_REG_VERSION might be set 0x12
-    state = SX127x::begin(RFM9X_CHIP_VERSION_UNOFFICIAL, syncWord, currentLimit, preambleLength);
+    state = SX127x::begin(RFM9X_CHIP_VERSION_UNOFFICIAL, syncWord, preambleLength);
     RADIOLIB_ASSERT(state);
   } else if(state != ERR_NONE) {
     // some other error
@@ -38,6 +38,7 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
   RADIOLIB_ASSERT(state);
 
   state = setGain(gain);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
