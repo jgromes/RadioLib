@@ -51,14 +51,17 @@ before_install:
     if [[ "$BOARD" =~ "arduino:avr:uno" ]]; then
       export BUILD_EXAMPLES=true;
       arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
 
     elif [[ "$BOARD" =~ "arduino:avr:mega" ]]; then
       export BUILD_EXAMPLES=false;
       arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
 
     elif [[ "$BOARD" =~ "arduino:avr:leonardo" ]]; then
       export BUILD_EXAMPLES=false;
       arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
 
     elif [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       export BUILD_EXAMPLES=false;
