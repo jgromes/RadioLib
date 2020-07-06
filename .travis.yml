@@ -44,6 +44,7 @@ before_install:
   # - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
   - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+  - export PATH=$PATH:$PWD/bin
 
   # check every board in matrix and install 3rd party definitions
   - |
