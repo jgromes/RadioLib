@@ -457,11 +457,13 @@ class RF69: public PhysicalLayer {
 
       \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
 
-      \param power Output power in dBm. Defaults to 13 dBm.
+      \param power Output power in dBm. Defaults to 10 dBm.
+
+      \param preambleLen Preamble Length in bits. Defaults to 16 bits.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13);
+    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -669,6 +671,15 @@ class RF69: public PhysicalLayer {
       \param maxErrBits Maximum allowed number of bit errors in received sync word. Defaults to 0.
     */
     int16_t setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits = 0);
+
+    /*!
+      \brief Sets preamble length.
+
+      \param preambleLen Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
+
+      \returns \ref status_codes
+    */
+    int16_t setPreambleLength(uint8_t preambleLen);
 
     /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.

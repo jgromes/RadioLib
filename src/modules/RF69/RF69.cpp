@@ -5,7 +5,7 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_FREQUENCY_STEP_SIZE, RF69_MAX_PA
   _mod = module;
 }
 
-int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power) {
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -71,21 +71,25 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
   state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
+  // configure default preamble length
+  state = setPreambleLength(preambleLen);
+  RADIOLIB_ASSERT(state);
+
   // set default packet length mode
   state = variablePacketLengthMode();
   RADIOLIB_ASSERT(state);
 
-  // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
-  uint8_t syncWord[] = {0x2D, 0x01};
+  // set default sync word
+  uint8_t syncWord[] = {0x12, 0xAD};
   state = setSyncWord(syncWord, sizeof(syncWord));
   RADIOLIB_ASSERT(state);
 
   // set default data shaping
-  state = setDataShaping(0);
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
   RADIOLIB_ASSERT(state);
 
   // set default encoding
-  state = setEncoding(0);
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
   RADIOLIB_ASSERT(state);
 
   // set CRC on by default
@@ -578,6 +582,17 @@ int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // set sync word register
   _mod->SPIwriteRegisterBurst(RF69_REG_SYNC_VALUE_1, syncWord, len);
   return(ERR_NONE);
+}
+
+int16_t RF69::setPreambleLength(uint8_t preambleLen) {
+  // RF69 configures preamble length in bytes
+  if(preambleLen % 8 != 0) {
+    return(ERR_INVALID_PREAMBLE_LENGTH);
+  }
+
+  uint8_t preLenBytes = preambleLen / 8;
+  _mod->SPIwriteRegister(RF69_REG_PREAMBLE_MSB, 0x00);
+  return(_mod->SPIsetRegValue(RF69_REG_PREAMBLE_LSB, preLenBytes));
 }
 
 int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
