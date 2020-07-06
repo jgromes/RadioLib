@@ -57,7 +57,7 @@ void setup() {
   state = radio.setRxBandwidth(250.0);
   state = radio.setOutputPower(10.0);
   state = radio.setCurrentLimit(100);
-  state = radio.setDataShaping(0.5);
+  state = radio.setDataShaping(RADIOLIB_SHAPING_0_5);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
   state = radio.setSyncWord(syncWord, 8);

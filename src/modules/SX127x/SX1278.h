@@ -157,16 +157,13 @@ class SX1278: public SX127x {
 
       \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
 
-      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA.
-      Set to 0 to disable OCP (not recommended).
-
       \param preambleLength Length of FSK preamble in bits.
 
       \param enableOOK Use OOK modulation instead of FSK.
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13, uint8_t currentLimit = 100,  uint16_t preambleLength = 16, bool enableOOK = false);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
