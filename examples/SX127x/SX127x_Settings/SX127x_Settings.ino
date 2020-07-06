@@ -70,10 +70,9 @@ void setup() {
   // coding rate:                 5
   // sync word:                   0x14
   // output power:                2 dBm
-  // current limit:               50 mA
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
-  state = radio2.begin(915.0, 500.0, 6, 5, 0x14, 2);
+  state = radio2.begin(915.0, 500.0, 6, 5, 0x14, 2, 20, 1);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {

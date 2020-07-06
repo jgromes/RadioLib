@@ -559,13 +559,11 @@ class SX127x: public PhysicalLayer {
 
       \param syncWord %LoRa sync word.
 
-      \param currentLimit Trim value for OCP (over current protection) in mA.
-
       \param preambleLength Length of %LoRa transmission preamble in symbols.
 
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
+    int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implementations differ.

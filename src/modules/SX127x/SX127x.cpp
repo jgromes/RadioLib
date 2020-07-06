@@ -5,7 +5,7 @@ SX127x::SX127x(Module* mod) : PhysicalLayer(SX127X_FREQUENCY_STEP_SIZE, SX127X_M
   _mod = mod;
 }
 
-int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength) {
+int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -36,7 +36,7 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimi
   RADIOLIB_ASSERT(state);
 
   // set over current protection
-  state = SX127x::setCurrentLimit(currentLimit);
+  state = SX127x::setCurrentLimit(60);
   RADIOLIB_ASSERT(state);
 
   // set preamble length
