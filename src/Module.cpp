@@ -336,6 +336,7 @@ RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
 }
 
 void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
+  // TODO add tone support for platforms without tone()
   #ifndef RADIOLIB_TONE_UNSUPPORTED
   if(pin != RADIOLIB_NC) {
     ::tone(pin, value);
@@ -344,6 +345,7 @@ void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
 }
 
 void Module::noTone(RADIOLIB_PIN_TYPE pin) {
+  // TODO add tone support for platforms without noTone()
   #ifndef RADIOLIB_TONE_UNSUPPORTED
   if(pin != RADIOLIB_NC) {
     ::noTone(pin);
