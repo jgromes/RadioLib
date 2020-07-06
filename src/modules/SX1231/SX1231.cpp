@@ -5,7 +5,7 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -67,6 +67,10 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   // configure default TX output power
   state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  // configure default preamble length
+  state = setPreambleLength(preambleLen);
   RADIOLIB_ASSERT(state);
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
