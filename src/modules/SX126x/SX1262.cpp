@@ -7,7 +7,7 @@ SX1262::SX1262(Module* mod) : SX126x(mod) {
 
 int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
-  int16_t state = SX126x::begin(bw, sf, cr, syncWord, tcxoVoltage, useRegulatorLDO);
+  int16_t state = SX126x::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
