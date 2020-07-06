@@ -56,7 +56,7 @@ class TransportLayer {
 
       \returns \ref status_codes
     */
-    virtual int16_t send(uint8_t* data, uint32_t len) = 0;
+    virtual int16_t send(uint8_t* data, size_t len) = 0;
 
     /*!
       \brief Receive data.
