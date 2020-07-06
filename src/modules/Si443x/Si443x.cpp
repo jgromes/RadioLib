@@ -495,29 +495,33 @@ int16_t Si443x::setEncoding(uint8_t encoding) {
   // set encoding
   // TODO - add inverted Manchester?
   switch(encoding) {
-    case 0:
+    case RADIOLIB_ENCODING_NRZ:
       return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_OFF, 2, 0));
-    case 1:
+    case RADIOLIB_ENCODING_MANCHESTER:
       return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_ON | SI443X_WHITENING_OFF, 2, 0));
-    case 2:
+    case RADIOLIB_ENCODING_WHITENING:
       return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_ON, 2, 0));
     default:
       return(ERR_INVALID_ENCODING);
   }
 }
 
-int16_t Si443x::setDataShaping(float sh) {
+int16_t Si443x::setDataShaping(uint8_t sh) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  if(sh == 0.0) {
-    // set modulation to FSK
-    return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_FSK, 1, 0));
-  } else {
-    // set modulation to GFSK
-    // TODO implement fiter configuration - docs claim this should be possible, but seems undocumented
-    return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_GFSK, 1, 0));
+  // set data shaping
+  switch(sh) {
+    case RADIOLIB_SHAPING_NONE:
+      return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_OFF, 2, 0));
+    case RADIOLIB_SHAPING_0_3:
+    case RADIOLIB_SHAPING_0_5:
+    case RADIOLIB_SHAPING_1_0:
+      // TODO implement fiter configuration - docs claim this should be possible, but seems undocumented
+      return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_ON, 2, 0));
+    default:
+      return(ERR_INVALID_ENCODING);
   }
 }
 
