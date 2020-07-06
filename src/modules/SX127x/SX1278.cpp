@@ -329,7 +329,7 @@ int16_t SX1278::setGain(uint8_t gain) {
   return(state);
 }
 
-int16_t SX1278::setDataShaping(float sh) {
+int16_t SX1278::setDataShaping(uint8_t sh) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
@@ -342,21 +342,21 @@ int16_t SX1278::setDataShaping(float sh) {
 
   // set mode to standby
   int16_t state = SX127x::standby();
+  RADIOLIB_ASSERT(state);
 
   // set data shaping
-  sh *= 10.0;
-  if(abs(sh - 0.0) <= 0.001) {
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_NO_SHAPING, 6, 5);
-  } else if(abs(sh - 3.0) <= 0.001) {
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_0_3, 6, 5);
-  } else if(abs(sh - 5.0) <= 0.001) {
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_0_5, 6, 5);
-  } else if(abs(sh - 10.0) <= 0.001) {
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_1_0, 6, 5);
-  } else {
-    return(ERR_INVALID_DATA_SHAPING);
+  switch(sh) {
+    case RADIOLIB_SHAPING_NONE:
+      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_NO_SHAPING, 6, 5));
+    case RADIOLIB_SHAPING_0_3:
+      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_0_3, 6, 5));
+    case RADIOLIB_SHAPING_0_5:
+      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_0_5, 6, 5));
+    case RADIOLIB_SHAPING_1_0:
+      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_1_0, 6, 5));
+    default:
+      return(ERR_INVALID_DATA_SHAPING);
   }
-  return(state);
 }
 
 int16_t SX1278::setDataShapingOOK(uint8_t sh) {

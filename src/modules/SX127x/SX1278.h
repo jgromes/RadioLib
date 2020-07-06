@@ -231,14 +231,14 @@ class SX1278: public SX127x {
     int16_t setGain(uint8_t gain);
 
     /*!
-      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
-      Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping. Only available in FSK mode with FSK modulation.
+      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation.
+      Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.
 
       \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh) override;
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
       \brief Sets filter cutoff frequency that will be used for data shaping.

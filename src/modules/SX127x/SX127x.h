@@ -893,8 +893,9 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Sets transmission encoding. Only available in FSK mode.
+       Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING.
 
-      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+      \param encoding Encoding to be used.
 
       \returns \ref status_codes
     */
