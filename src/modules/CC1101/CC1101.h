@@ -535,7 +535,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 48.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLength = 16);
+    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 48.0, float rxBw = 135.0, int8_t power = 10, uint8_t preambleLength = 16);
 
     /*!
       \brief Blocking binary transmit method.
