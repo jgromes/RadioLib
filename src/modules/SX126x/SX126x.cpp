@@ -650,7 +650,7 @@ int16_t SX126x::setBandwidth(float bw) {
 
   // update modulation parameters
   _bwKhz = bw;
-  return(setModulationParams(_sf, _bw, _cr));
+  return(setModulationParams(_sf, _bw, _cr, _ldro));
 }
 
 int16_t SX126x::setSpreadingFactor(uint8_t sf) {
@@ -663,7 +663,7 @@ int16_t SX126x::setSpreadingFactor(uint8_t sf) {
 
   // update modulation parameters
   _sf = sf;
-  return(setModulationParams(_sf, _bw, _cr));
+  return(setModulationParams(_sf, _bw, _cr, _ldro));
 }
 
 int16_t SX126x::setCodingRate(uint8_t cr) {
@@ -676,7 +676,7 @@ int16_t SX126x::setCodingRate(uint8_t cr) {
 
   // update modulation parameters
   _cr = cr - 4;
-  return(setModulationParams(_sf, _bw, _cr));
+  return(setModulationParams(_sf, _bw, _cr, _ldro));
 }
 
 int16_t SX126x::setSyncWord(uint8_t syncWord, uint8_t controlBits) {
@@ -1152,6 +1152,27 @@ void SX126x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+int16_t SX126x::forceLDRO(bool enable) {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // update modulation parameters
+  _ldroAuto = false;
+  _ldro = (uint8_t)enable;
+  return(setModulationParams(_sf, _bw, _cr, _ldro));
+}
+
+int16_t SX126x::autoLDRO() {
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  _ldroAuto = true;
+  return(ERR_NONE);
+}
+
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();
@@ -1316,8 +1337,8 @@ int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
 }
 
 int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
-  // calculate symbol length and enable low data rate optimization, if needed
-  if(ldro == 0xFF) {
+  // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
+  if(_ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << _sf) / (float)_bwKhz;
     RADIOLIB_DEBUG_PRINT("Symbol length: ");
     RADIOLIB_DEBUG_PRINT(symbolLength);

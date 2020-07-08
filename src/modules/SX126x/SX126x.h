@@ -852,6 +852,24 @@ class SX126x: public PhysicalLayer {
    */
    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
+   /*!
+     \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
+     the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX1278::autoLDRO()
+
+     \param enable Force LDRO to be always enabled (true) or disabled (false).
+
+     \returns \ref status_codes
+   */
+   int16_t forceLDRO(bool enable);
+
+   /*!
+     \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
+     when symbol length exceeds 16 ms.
+
+     \returns \ref status_codes
+   */
+   int16_t autoLDRO();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -871,7 +889,7 @@ class SX126x: public PhysicalLayer {
     int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
-    int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
+    int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
     int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
     int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLength = 0xFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16);
@@ -901,6 +919,7 @@ class SX126x: public PhysicalLayer {
     uint8_t _bw = 0, _sf = 0, _cr = 0, _ldro = 0, _crcType = 0, _headerType = 0;
     uint16_t _preambleLength = 0;
     float _bwKhz = 0;
+    bool _ldroAuto = true;
 
     uint32_t _br = 0, _freqDev = 0;
     uint8_t _rxBw = 0, _pulseShape = 0, _crcTypeFSK = 0, _syncWordLength = 0, _addrComp = 0, _whitening = 0, _packetType = 0;
