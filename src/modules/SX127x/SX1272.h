@@ -253,6 +253,24 @@ class SX1272: public SX127x {
     */
     int16_t setCRC(bool enableCRC);
 
+    /*!
+      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
+      the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX1278::autoLDRO()
+
+      \param enable Force LDRO to be always enabled (true) or disabled (false).
+
+      \returns \ref status_codes
+    */
+    int16_t forceLDRO(bool enable);
+
+    /*!
+      \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
+      when symbol length exceeds 16 ms.
+
+      \returns \ref status_codes
+    */
+    int16_t autoLDRO();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -265,6 +283,8 @@ class SX1272: public SX127x {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
+    bool _ldroAuto = true;
+    bool _ldroEnabled = false;
 
 };
 

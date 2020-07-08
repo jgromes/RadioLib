@@ -106,15 +106,17 @@ int16_t SX1272::setBandwidth(float bw) {
   if(state == ERR_NONE) {
     SX127x::_bw = bw;
 
-    // calculate symbol length and set low data rate optimization, if needed
-    float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
-    RADIOLIB_DEBUG_PRINT("Symbol length: ");
-    RADIOLIB_DEBUG_PRINT(symbolLength);
-    RADIOLIB_DEBUG_PRINTLN(" ms");
-    if(symbolLength >= 16.0) {
-      state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
-    } else {
-      state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
+    // calculate symbol length and set low data rate optimization, if auto-configuration is enabled
+    if(_ldroAuto) {
+      float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
+      RADIOLIB_DEBUG_PRINT("Symbol length: ");
+      RADIOLIB_DEBUG_PRINT(symbolLength);
+      RADIOLIB_DEBUG_PRINTLN(" ms");
+      if(symbolLength >= 16.0) {
+        state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
+      } else {
+        state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
+      }
     }
   }
   return(state);
@@ -160,15 +162,17 @@ int16_t SX1272::setSpreadingFactor(uint8_t sf) {
   if(state == ERR_NONE) {
     SX127x::_sf = sf;
 
-    // calculate symbol length and set low data rate optimization, if needed
+    // calculate symbol length and set low data rate optimization, if auto-configuration is enabled
+    if(_ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << SX127x::_sf) / (float)SX127x::_bw;
-    RADIOLIB_DEBUG_PRINT("Symbol length: ");
-    RADIOLIB_DEBUG_PRINT(symbolLength);
-    RADIOLIB_DEBUG_PRINTLN(" ms");
-    if(symbolLength >= 16.0) {
-      state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
-    } else {
-      state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
+      RADIOLIB_DEBUG_PRINT("Symbol length: ");
+      RADIOLIB_DEBUG_PRINT(symbolLength);
+      RADIOLIB_DEBUG_PRINTLN(" ms");
+      if(symbolLength >= 16.0) {
+        state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
+      } else {
+        state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
+      }
     }
   }
   return(state);
@@ -371,6 +375,29 @@ int16_t SX1272::setCRC(bool enableCRC) {
     }
   }
 }
+
+int16_t SX1272::forceLDRO(bool enable) {
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  _ldroAuto = false;
+  if(enable) {
+    return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_ON, 0, 0));
+  } else {
+    return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0));
+  }
+}
+
+int16_t SX1272::autoLDRO() {
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  _ldroAuto = true;
+  return(ERR_NONE);
+}
+
 
 int16_t SX1272::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
