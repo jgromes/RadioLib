@@ -391,7 +391,7 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
 }
 
 int16_t XBee::readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout) {
-  // TODO: modemStatus frames may be sent at any time, interfering with frame parsing. Add check to make sure this does not happen.
+  /// \todo modemStatus frames may be sent at any time, interfering with frame parsing. Add check to make sure this does not happen.
 
   // get number of bytes in response (must be enough to read the length field
   uint16_t numBytes = getNumBytes(timeout/2, 3);
