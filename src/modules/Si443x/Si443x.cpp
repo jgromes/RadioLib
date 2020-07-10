@@ -145,7 +145,7 @@ int16_t Si443x::transmitDirect(uint32_t frf) {
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
     // convert the 24-bit frequency to the format accepted by the module
-    // TODO integers only
+    /// \todo integers only
     float newFreq = frf / 6400.0;
 
     // check high/low band
@@ -227,10 +227,10 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   clearIRQFlags();
 
   // set packet length
-  // TODO variable packet length
+  /// \todo variable packet length
   _mod->SPIwriteRegister(SI443X_REG_TRANSMIT_PACKET_LENGTH, len);
 
-  // TODO use header as address field?
+  /// \todo use header as address field?
   (void)addr;
 
   // write packet to FIFO
@@ -497,7 +497,7 @@ int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
 }
 
 size_t Si443x::getPacketLength(bool update) {
-  // TODO variable length mode
+  /// \todo variable length mode
   if(!_packetLengthQueried && update) {
     _packetLength = _mod->SPIreadRegister(SI443X_REG_RECEIVED_PACKET_LENGTH);
     _packetLengthQueried = true;
@@ -512,7 +512,7 @@ int16_t Si443x::setEncoding(uint8_t encoding) {
   RADIOLIB_ASSERT(state);
 
   // set encoding
-  // TODO - add inverted Manchester?
+  /// \todo - add inverted Manchester?
   switch(encoding) {
     case RADIOLIB_ENCODING_NRZ:
       return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_OFF, 2, 0));
@@ -537,7 +537,7 @@ int16_t Si443x::setDataShaping(uint8_t sh) {
     case RADIOLIB_SHAPING_0_3:
     case RADIOLIB_SHAPING_0_5:
     case RADIOLIB_SHAPING_1_0:
-      // TODO implement fiter configuration - docs claim this should be possible, but seems undocumented
+      /// \todo implement fiter configuration - docs claim this should be possible, but seems undocumented
       return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, SI443X_MANCHESTER_INVERTED_OFF | SI443X_MANCHESTER_OFF | SI443X_WHITENING_ON, 2, 0));
     default:
       return(ERR_INVALID_ENCODING);
