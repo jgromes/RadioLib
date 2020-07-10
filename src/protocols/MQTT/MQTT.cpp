@@ -205,7 +205,7 @@ int16_t MQTTClient::publish(const char* topic, const char* message) {
   #endif
   return(state);
 
-  //TODO: implement QoS > 0 and PUBACK response checking
+  /// \todo implement QoS > 0 and PUBACK response checking
 }
 
 int16_t MQTTClient::subscribe(const char* topicFilter) {
@@ -410,7 +410,6 @@ int16_t MQTTClient::check(void (*func)(const char*, const char*)) {
   uint8_t* dataIn = new uint8_t[numBytes];
   _tl->receive(dataIn, numBytes);
   if(dataIn[0] == MQTT_PUBLISH << 4) {
-    // TODO: properly decode remaining length
     uint8_t remLenFieldLen = 0;
     uint32_t remainingLength = decodeLength(dataIn + 1, remLenFieldLen);
 
