@@ -18,7 +18,7 @@ int16_t SX1261::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // set output power
-  // TODO power ramp time configuration
+  /// \todo power ramp time configuration
   state = SX126x::setTxParams(power);
   RADIOLIB_ASSERT(state);
 

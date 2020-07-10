@@ -23,7 +23,7 @@ int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength,float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
   int16_t state = SX126x::beginFSK(br, freqDev, rxBw, preambleLength, tcxoVoltage, useRegulatorLDO);
   RADIOLIB_ASSERT(state);
@@ -41,6 +41,7 @@ int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(state);
 }
 
+/// \todo integers only (all modules - frequency, data rate, bandwidth etc.)
 int16_t SX1268::setFrequency(float freq, bool calibrate) {
   RADIOLIB_CHECK_RANGE(freq, 410.0, 810.0, ERR_INVALID_FREQUENCY);
 
@@ -78,7 +79,7 @@ int16_t SX1268::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // set output power
-  // TODO power ramp time configuration
+  /// \todo power ramp time configuration
   state = SX126x::setTxParams(power);
   RADIOLIB_ASSERT(state);
 
