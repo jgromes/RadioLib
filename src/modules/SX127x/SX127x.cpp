@@ -680,7 +680,7 @@ int16_t SX127x::setBitRate(float br) {
   state = _mod->SPIsetRegValue(SX127X_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
   state |= _mod->SPIsetRegValue(SX127X_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
 
-  // TODO fractional part of bit rate setting (not in OOK)
+  /// \todo fractional part of bit rate setting (not in OOK)
   if(state == ERR_NONE) {
     SX127x::_br = br;
   }
