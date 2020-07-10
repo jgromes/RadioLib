@@ -9,8 +9,6 @@
 #include "SX128x.h"
 #include "SX1280.h"
 
-// TODO implement advanced ranging
-
 /*!
   \class SX1282
 

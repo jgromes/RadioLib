@@ -890,7 +890,7 @@ int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
   if(_syncWordLen == 0) {
     _syncWordMatch = SX128X_GFSK_FLRC_SYNC_WORD_OFF;
   } else {
-    // TODO add support for multiple sync words
+    /// \todo add support for multiple sync words
     _syncWordMatch = SX128X_GFSK_FLRC_SYNC_WORD_1;
   }
   return(setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening));
@@ -1093,7 +1093,7 @@ uint32_t SX128x::getTimeOnAir(size_t len) {
 
     } else {
       // long interleaving - abandon hope all ye who enter here
-      // TODO implement this mess - SX1280 datasheet v3.0 section 7.4.4.2
+      /// \todo implement this mess - SX1280 datasheet v3.0 section 7.4.4.2
 
     }
 
