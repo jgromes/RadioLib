@@ -411,7 +411,6 @@ class nRF24: public PhysicalLayer {
     */
     size_t getPacketLength(bool update = true);
 
-
     /*!
      \brief Enable CRC filtering and generation.
 
