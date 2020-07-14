@@ -240,22 +240,11 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
 }
 
 int16_t nRF24::setFrequency(int16_t freq) {
-<<<<<<< HEAD
-  // check allowed range
-  if(!((freq >= 2400) && (freq <= 2525))) {
-    return(ERR_INVALID_FREQUENCY);
-  }
-
-  // set frequency
-  uint8_t freqRaw = freq - 2400;
-  return _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
-=======
   RADIOLIB_CHECK_RANGE(freq, 2400, 2525, ERR_INVALID_FREQUENCY);
 
   // set frequency
   uint8_t freqRaw = freq - 2400;
   return(_mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0));
->>>>>>> upstream/master
 }
 
 int16_t nRF24::setDataRate(int16_t dataRate) {

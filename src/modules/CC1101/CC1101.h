@@ -880,18 +880,10 @@ class CC1101: public PhysicalLayer {
 #endif
     Module* _mod;
 
-<<<<<<< HEAD
-    float _freq;
-    float _br;
-    uint8_t _rawRSSI;
-    uint8_t _rawLQI;
-    uint8_t _modulation;
-=======
     float _freq = 0;
     uint8_t _rawRSSI = 0;
     uint8_t _rawLQI = 0;
     uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;
->>>>>>> upstream/master
 
     size_t _packetLength = 0;
     bool _packetLengthQueried = false;
