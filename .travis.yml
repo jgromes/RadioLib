@@ -1,49 +1,145 @@
 env:
   global:
-    - ARDUINO_IDE_VERSION="1.8.9"
   matrix:
     # see https://github.com/arduino/Arduino/blob/master/build/shared/manpage.adoc#options
     # and https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification#boardstxt
+    - BOARD="arduino:avr:uno"
+    - BOARD="arduino:avr:mega:cpu=atmega2560"
+    - BOARD="arduino:avr:leonardo"
+    - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
     - BOARD="esp32:esp32:esp32"
     - BOARD="STM32:stm32:GenF3:pnum=BLACKPILL_F303CC"
-    - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
-    # - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:samd:arduino_zero_native"
     - BOARD="arduino:sam:arduino_due_x"
-    - BOARD="arduino:avr:uno"
-    - BOARD="arduino:avr:leonardo"
-    - BOARD="arduino:avr:mega:cpu=atmega2560"
+    - BOARD="adafruit:nrf52:feather52832:softdevice=s132v6,debug=l0"
+    - BOARD="Intel:arc32:arduino_101"
+    - BOARD="arduino:megaavr:uno2018:mode=on"
+    - BOARD="SparkFun:apollo3:amap3redboard"
+    - BOARD="arduino:mbed:nano33ble"
+    - BOARD="stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz"
+    - BOARD="adafruit:samd:adafruit_feather_m0:usbstack=arduino,debug=off"
+    - BOARD="arduino-beta:mbed:envie_m4"
+
+addons:
+  apt:
+    packages:
+      # required for Adafruit nRF52 (adafruit-nrfutil package)
+      - python3
+      - python3-pip
+      - python3-setuptools
 
 before_install:
-  # install Arduino IDE
-  - wget https://downloads.arduino.cc/arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
-  - tar xf arduino-$ARDUINO_IDE_VERSION-linux64.tar.xz
-  - mv arduino-$ARDUINO_IDE_VERSION $HOME/arduino-ide
-  - export PATH=$PATH:$HOME/arduino-ide
+  # install Arduino CLI
+  - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+  - export PATH=$PATH:$PWD/bin
 
-  # firewall Arduino IDE noise (https://github.com/per1234/arduino-ci-script/issues/1#issuecomment-504158113)
-  - sudo iptables -P INPUT DROP
-  - sudo iptables -P FORWARD DROP
-  - sudo iptables -P OUTPUT ACCEPT
-  - sudo iptables -A INPUT -i lo -j ACCEPT
-  - sudo iptables -A OUTPUT -o lo -j ACCEPT
-  - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  # check every board in matrix and install 3rd party definitions
+  - |
+    if [[ "$BOARD" =~ "arduino:avr:uno" ]]; then
+      export BUILD_EXAMPLES=true;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
 
-  # install 3rd party boards
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json,https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json,https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json" --save-prefs 2>&1
-  - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
-      arduino --install-boards esp8266:esp8266;
+    elif [[ "$BOARD" =~ "arduino:avr:mega" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
+
+    elif [[ "$BOARD" =~ "arduino:avr:leonardo" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:avr;
+
+    elif [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json;
+      arduino-cli core install esp8266:esp8266 --additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json;
       export SKIP_PAT='(HTTP|MQTT).*ino';
+
     elif [[ "$BOARD" =~ "esp32:esp32:" ]]; then
-      arduino --install-boards esp32:esp32;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json;
+      arduino-cli core install esp32:esp32 --additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json;
+
     elif [[ "$BOARD" =~ "STM32:stm32:" ]]; then
-      arduino --install-boards STM32:stm32;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json;
+      arduino-cli core install STM32:stm32 --additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json;
+
     elif [[ "$BOARD" =~ "arduino:samd:" ]]; then
-      arduino --install-boards arduino:samd;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:samd;
+
     elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
-      arduino --install-boards arduino:sam;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:sam;
+
+    elif [[ "$BOARD" =~ "adafruit:nrf52:" ]]; then
+      pip3 install --user adafruit-nrfutil;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls https://www.adafruit.com/package_adafruit_index.json;
+      arduino-cli core install adafruit:nrf52 --additional-urls https://www.adafruit.com/package_adafruit_index.json;
+
+    elif [[ "$BOARD" =~ "Intel:arc32:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install Intel:arc32;
+
+    elif [[ "$BOARD" =~ "arduino:megaavr:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:megaavr;
+
     elif [[ "$BOARD" =~ "SparkFun:apollo3:" ]]; then
-      arduino --install-boards SparkFun:apollo3;
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=none;
+      arduino-cli core update-index --additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json;
+      arduino-cli core install SparkFun:apollo3 --additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json;
+
+    elif [[ "$BOARD" =~ "arduino:mbed:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino:mbed;
+      export SKIP_PAT='(HTTP|MQTT).*ino';
+
+    elif [[ "$BOARD" =~ "stm32duino:STM32F1:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json;
+      arduino-cli core install stm32duino:STM32F1 --additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json;
+
+    elif [[ "$BOARD" =~ "adafruit:samd:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index --additional-urls https://www.adafruit.com/package_adafruit_index.json
+      arduino-cli core install adafruit:samd --additional-urls https://www.adafruit.com/package_adafruit_index.json
+
+    elif [[ "$BOARD" =~ "arduino-beta:mbed:" ]]; then
+      export BUILD_EXAMPLES=false;
+      export WARNINGS=all;
+      arduino-cli core update-index;
+      arduino-cli core install arduino-beta:mbed;
+      export SKIP_PAT='(HTTP|MQTT).*ino';
+
+    fi
+
+  # check if this release commit (or forced build) and if so, build for every board
+  - if [[ "$TRAVIS_COMMIT_MESSAGE" =~ "Bump version to" || "$TRAVIS_COMMIT_MESSAGE" =~ "TRAVIS_FORCE_BUILD" ]]; then
+      export BUILD_EXAMPLES=true;
     fi
 
 # create directory to save the library and create symbolic link
@@ -59,23 +155,27 @@ branches:
 script:
   # build all example sketches
   - |
-    for example in $(find $PWD/examples -name '*.ino' | sort); do
-      # check whether to skip this sketch
-      if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
-        # skip sketch
-        echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
-      else
-        # build sketch
-        echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-        arduino --verify --board $BOARD $example;
-        if [ $? -ne 0 ]; then
-          echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
-          exit 1;
+    if [ ! -z "$BUILD_EXAMPLES" ] && [ "$BUILD_EXAMPLES" = true ] ; then
+      for example in $(find $PWD/examples -name '*.ino' | sort); do
+        # check whether to skip this sketch
+        if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
+          # skip sketch
+          echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
         else
-          echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+          # build sketch
+          echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+          arduino-cli compile --fqbn $BOARD $example --warnings=$WARNINGS
+          if [ $? -ne 0 ]; then
+            echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+            exit 1;
+          else
+            echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+          fi
         fi
-      fi
-    done
+      done
+    else
+      echo -e "\n\033[1;33mExample builds skipped for $BOARD\033[0m";
+    fi
 
   # generate Doxygen documentation (only for Arduino UNO)
   - if [ $BOARD = "arduino:avr:uno" ]; then

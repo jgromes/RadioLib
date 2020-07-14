@@ -11,14 +11,18 @@
   - HC05 Bluetooth module
   - JDY08 BLE module
   - RF69 FSK module
+  - Si443x FSK module
   - SX126x LoRa/FSK module
   - SX127x LoRa/FSK module
+  - SX128x LoRa/GFSK/BLE/FLRC module
   - SX1231 FSK module
   - XBee module (S2B)
   - PhysicalLayer protocols
     - RTTY (RTTYClient)
     - Morse Code (MorseClient)
     - AX.25 (AX25Client)
+    - SSTV (SSTVClient)
+    - Hellschreiber (HellClient)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)
@@ -39,21 +43,37 @@
 #include "TypeDef.h"
 #include "Module.h"
 
+// warnings are printed in this file since BuildOpt.h is compiled in multiple places
+
+// check God mode
 #ifdef RADIOLIB_GODMODE
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
 #endif
 
-#include "modules/CC1101/CC1101.h"
-#ifndef ESP8266
-#include "modules/ESP8266/ESP8266.h"
+// print debug info
+#ifdef RADIOLIB_DEBUG
+  #pragma message "RADIOLIB_PLATFORM: " RADIOLIB_PLATFORM
 #endif
+
+// check unknown/unsupported platform
+#ifdef RADIOLIB_UNKNOWN_PLATFORM
+  #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
+#endif
+
+#include "modules/CC1101/CC1101.h"
+#include "modules/ESP8266/ESP8266.h"
 #include "modules/HC05/HC05.h"
 #include "modules/JDY08/JDY08.h"
 #include "modules/nRF24/nRF24.h"
 #include "modules/RF69/RF69.h"
+#include "modules/RFM2x/RFM22.h"
+#include "modules/RFM2x/RFM23.h"
 #include "modules/RFM9x/RFM95.h"
 #include "modules/RFM9x/RFM96.h"
 #include "modules/RFM9x/RFM97.h"
+#include "modules/Si443x/Si4430.h"
+#include "modules/Si443x/Si4431.h"
+#include "modules/Si443x/Si4432.h"
 #include "modules/SX1231/SX1231.h"
 #include "modules/SX126x/SX1261.h"
 #include "modules/SX126x/SX1262.h"
@@ -64,20 +84,24 @@
 #include "modules/SX127x/SX1277.h"
 #include "modules/SX127x/SX1278.h"
 #include "modules/SX127x/SX1279.h"
+#include "modules/SX128x/SX1280.h"
+#include "modules/SX128x/SX1281.h"
+#include "modules/SX128x/SX1282.h"
 #include "modules/XBee/XBee.h"
 
 // physical layer protocols
 #include "protocols/PhysicalLayer/PhysicalLayer.h"
+#include "protocols/AFSK/AFSK.h"
 #include "protocols/AX25/AX25.h"
+#include "protocols/Hellschreiber/Hellschreiber.h"
 #include "protocols/Morse/Morse.h"
 #include "protocols/RTTY/RTTY.h"
+#include "protocols/SSTV/SSTV.h"
 
 // transport layer protocols
-#ifndef ESP8266
 #include "protocols/TransportLayer/TransportLayer.h"
 #include "protocols/HTTP/HTTP.h"
 #include "protocols/MQTT/MQTT.h"
-#endif
 
 // only create Radio class when using RadioShield
 #ifdef RADIOLIB_RADIOSHIELD
@@ -98,7 +122,6 @@
   \brief Library control object when using RadioShield.
   Contains two pre-configured "modules", which correspond to the slots on shield.
 */
-
 class Radio {
   public:
 

@@ -1,8 +1,12 @@
-#ifndef _RADIOLIB_RTTY_H
+#if !defined(_RADIOLIB_RTTY_H)
 #define _RADIOLIB_RTTY_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_RTTY)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 #define ITA2_FIGS                                     0x1B
 #define ITA2_LTRS                                     0x1F
@@ -28,14 +32,14 @@ class ITA2String {
 
       \param c ASCII-encoded character to encode as ITA2.
     */
-    ITA2String(char c);
+    explicit ITA2String(char c);
 
     /*!
       \brief Default string constructor.
 
       \param str ASCII-encoded string to encode as ITA2.
     */
-    ITA2String(const char* str);
+    explicit ITA2String(const char* str);
 
     /*!
       \brief Default destructor.
@@ -68,7 +72,7 @@ class ITA2String {
     size_t _len;
     size_t _ita2Len;
 
-    uint16_t getBits(char c);
+    static uint16_t getBits(char c);
 };
 
 // supported encoding schemes
@@ -84,18 +88,27 @@ class ITA2String {
 class RTTYClient {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    RTTYClient(PhysicalLayer* phy);
+    explicit RTTYClient(PhysicalLayer* phy);
+
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    explicit RTTYClient(AFSKClient* audio);
+    #endif
 
     // basic methods
 
     /*!
       \brief Initialization method.
 
-      \param base Base (space) RF frequency to be used in MHz.
+      \param base Base (space) frequency to be used in MHz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode)
 
       \param shift Frequency shift between mark and space in Hz.
 
@@ -133,7 +146,7 @@ class RTTYClient {
     size_t println(void);
     size_t println(__FlashStringHelper*);
     size_t println(ITA2String &);
-    size_t println(const String &s);
+    size_t println(const String &);
     size_t println(const char[]);
     size_t println(char);
     size_t println(unsigned char, int = DEC);
@@ -147,19 +160,27 @@ class RTTYClient {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    AFSKClient* _audio;
+    #endif
 
-    uint8_t _encoding;
-    uint32_t _base;
-    uint32_t _shift;
-    uint32_t _bitDuration;
-    uint8_t _dataBits;
-    uint8_t _stopBits;
+    uint8_t _encoding = ASCII;
+    uint32_t _base = 0, _baseHz = 0;
+    uint32_t _shift = 0, _shiftHz = 0;
+    uint32_t _bitDuration = 0;
+    uint8_t _dataBits = 0;
+    uint8_t _stopBits = 0;
 
     void mark();
     void space();
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
+
+    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
+    int16_t standby();
 };
+
+#endif
 
 #endif

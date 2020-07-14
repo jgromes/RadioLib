@@ -11,6 +11,9 @@
     - output power during transmission
     - sync word
 
+    For default module settings, see the wiki page
+    https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+
     For full API reference, see the GitHub Pages
     https://jgromes.github.io/RadioLib/
 */
@@ -23,30 +26,25 @@
 // GDO0 pin:  2
 // RST pin:   unused
 // GDO2 pin:  3 (optional)
-CC1101 cc1 = new Module(10, 2, NC, 3);
+CC1101 radio1 = new Module(10, 2, RADIOLIB_NC, 3);
 
 // second CC1101 has different connections:
 // CS pin:    9
 // GDO0 pin:  4
 // RST pin:   unused
 // GDO2 pin:  5 (optional)
-CC1101 cc2 = new Module(9, 4, NC, 53);
+CC1101 radio2 = new Module(9, 4, RADIOLIB_NC, 53);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//CC1101 cc3 = RadioShield.ModuleB;
+//CC1101 radio3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
-  // carrier frequency:                   868.0 MHz
-  // bit rate:                            4.8 kbps
-  // frequency deviation:                 48.0 kHz
-  // Rx bandwidth:                        325.0 kHz
-  // sync word:                           0xD391
-  int state = cc1.begin();
+  int state = radio1.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -61,8 +59,9 @@ void setup() {
   // bit rate:                            32.0 kbps
   // frequency deviation:                 60.0 kHz
   // Rx bandwidth:                        250.0 kHz
-  // sync word:                           0xD391
-  state = cc2.begin(434.0, 32.0, 60.0, 250.0);
+  // output power:                        7 dBm
+  // preamble length:                     32 bits
+  state = radio2.begin(434.0, 32.0, 60.0, 250.0, 7, 32);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -75,13 +74,13 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (cc1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
     Serial.println(F("[CC1101] Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bit rate to 100.0 kbps
-  state = cc1.setBitRate(100.0);
+  state = radio1.setBitRate(100.0);
   if (state == ERR_INVALID_BIT_RATE) {
     Serial.println(F("[CC1101] Selected bit rate is invalid for this module!"));
     while (true);
@@ -92,25 +91,25 @@ void setup() {
   }
 
   // set receiver bandwidth to 250.0 kHz
-  if (cc1.setRxBandwidth(250.0) == ERR_INVALID_RX_BANDWIDTH) {
+  if (radio1.setRxBandwidth(250.0) == ERR_INVALID_RX_BANDWIDTH) {
     Serial.println(F("[CC1101] Selected receiver bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set allowed frequency deviation to 10.0 kHz
-  if (cc1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
+  if (radio1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
     Serial.println(F("[CC1101] Selected frequency deviation is invalid for this module!"));
     while (true);
   }
 
   // set output power to 5 dBm
-  if (cc1.setOutputPower(5) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(5) == ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("[CC1101] Selected output power is invalid for this module!"));
     while (true);
   }
 
   // 2 bytes can be set as sync word
-  if (cc1.setSyncWord(0x01, 0x23) == ERR_INVALID_SYNC_WORD) {
+  if (radio1.setSyncWord(0x01, 0x23) == ERR_INVALID_SYNC_WORD) {
     Serial.println(F("[CC1101] Selected sync word is invalid for this module!"));
     while (true);
   }

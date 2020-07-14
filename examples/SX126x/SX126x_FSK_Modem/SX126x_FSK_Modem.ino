@@ -9,6 +9,9 @@
          modem and use the appropriate configuration
          methods.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---fsk-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -21,30 +24,18 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1262 fsk = new Module(10, 2, 3, 9);
+SX1262 radio = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1262 fsk = RadioShield.ModuleA;
+//SX1262 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1262 FSK modem with default settings
   Serial.print(F("[SX1262] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bit rate:                    48.0 kbps
-  // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                156.2 kHz
-  // output power:                14 dBm
-  // current limit:               60.0 mA
-  // preamble length:             16 bits
-  // data shaping:                Gaussian, BT = 0.5
-  // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
-  // regulator:                   DC-DC (set to true to use LDO)
-  // sync word:                   0x2D  0x01
-  // CRC:                         enabled, CRC16 (CCIT)
-  int state = fsk.beginFSK();
+  int state = radio.beginFSK();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -55,21 +46,21 @@ void setup() {
 
   // if needed, you can switch between LoRa and FSK modes
   //
-  // lora.begin()       start LoRa mode (and disable FSK)
-  // lora.beginFSK()    start FSK mode (and disable LoRa)
+  // radio.begin()       start LoRa mode (and disable FSK)
+  // radio.beginFSK()    start FSK mode (and disable LoRa)
 
   // the following settings can also
   // be modified at run-time
-  state = fsk.setFrequency(433.5);
-  state = fsk.setBitRate(100.0);
-  state = fsk.setFrequencyDeviation(10.0);
-  state = fsk.setRxBandwidth(250.0);
-  state = fsk.setOutputPower(10.0);
-  state = fsk.setCurrentLimit(100.0);
-  state = fsk.setDataShaping(1.0);
+  state = radio.setFrequency(433.5);
+  state = radio.setBitRate(100.0);
+  state = radio.setFrequencyDeviation(10.0);
+  state = radio.setRxBandwidth(250.0);
+  state = radio.setOutputPower(10.0);
+  state = radio.setCurrentLimit(100.0);
+  state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
-  state = fsk.setSyncWord(syncWord, 8);
+  state = radio.setSyncWord(syncWord, 8);
   if (state != ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
@@ -78,15 +69,15 @@ void setup() {
 
   // FSK modem on SX126x can handle the sync word setting in bits, not just
   // whole bytes. The value used is left-justified.
-  // This makes same result as fsk.setSyncWord(syncWord, 8):
-  state = fsk.setSyncBits(syncWord, 64);
+  // This makes same result as radio.setSyncWord(syncWord, 8):
+  state = radio.setSyncBits(syncWord, 64);
   // This will use 0x012 as sync word (12 bits only):
-  state = fsk.setSyncBits(syncWord, 12);
+  state = radio.setSyncBits(syncWord, 12);
 
   // FSK modem allows advanced CRC configuration
   // Default is CCIT CRC16 (2 bytes, initial 0x1D0F, polynomial 0x1021, inverted)
   // Set CRC to IBM CRC (2 bytes, initial 0xFFFF, polynomial 0x8005, non-inverted)
-  state = fsk.setCRC(2, 0xFFFF, 0x8005, false);
+  state = radio.setCRC(2, 0xFFFF, 0x8005, false);
   // set CRC length to 0 to disable CRC
 
   #warning "This sketch is just an API guide! Read the note at line 6."
@@ -97,11 +88,11 @@ void loop() {
   // as the LoRa modem, even their interrupt-driven versions
 
   // transmit FSK packet
-  int state = fsk.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                      0x78, 0xAB, 0xCD, 0xEF};
-    int state = lora.transmit(byteArr, 8);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                      0x89, 0xAB, 0xCD, 0xEF};
+    int state = radio.transmit(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1262] Packet transmitted successfully!"));
@@ -116,10 +107,10 @@ void loop() {
 
   // receive FSK packet
   String str;
-  state = fsk.receive(str);
+  state = radio.receive(str);
   /*
     byte byteArr[8];
-    int state = lora.receive(byteArr, 8);
+    int state = radio.receive(byteArr, 8);
   */
   if (state == ERR_NONE) {
     Serial.println(F("[SX1262] Received packet!"));
@@ -139,13 +130,13 @@ void loop() {
   // to transmit packet to a particular address,
   // use the following methods:
   //
-  // fsk.transmit("Hello World!", address);
-  // fsk.startTransmit("Hello World!", address);
+  // radio.transmit("Hello World!", address);
+  // radio.startTransmit("Hello World!", address);
 
   // set node address to 0x02
-  state = fsk.setNodeAddress(0x02);
+  state = radio.setNodeAddress(0x02);
   // set broadcast address to 0xFF
-  state = fsk.setBroadcastAddress(0xFF);
+  state = radio.setBroadcastAddress(0xFF);
   if (state != ERR_NONE) {
     Serial.println(F("[SX1262] Unable to set address filter, code "));
     Serial.println(state);
@@ -155,7 +146,7 @@ void loop() {
   // NOTE: calling this method will also erase previously set
   //       node and broadcast address
   /*
-    state = fsk.disableAddressFiltering();
+    state = radio.disableAddressFiltering();
     if (state != ERR_NONE) {
       Serial.println(F("Unable to remove address filter, code "));
     }

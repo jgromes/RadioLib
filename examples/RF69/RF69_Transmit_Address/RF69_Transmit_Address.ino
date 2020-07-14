@@ -7,6 +7,9 @@
    automatically filter out any packets that do not contain
    either node address or broadcast address.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -18,24 +21,18 @@
 // CS pin:    10
 // DIO0 pin:  2
 // RESET pin: 3
-RF69 rf = new Module(10, 2, 3);
+RF69 radio = new Module(10, 2, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//RF69 rf = RadioShield.ModuleA;
+//RF69 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bit rate:                            48.0 kbps
-  // frequency deviation:                 50.0 kHz
-  // Rx bandwidth:                        125.0 kHz
-  // output power:                        13 dBm
-  // sync word:                           0x2D01
-  int state = rf.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -48,7 +45,7 @@ void setup() {
   // NOTE: calling this method will automatically enable
   // address filtering (node address only)
   Serial.print(F("[RF69] Setting node address ... "));
-  state = rf.setNodeAddress(0x01);
+  state = radio.setNodeAddress(0x01);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -61,7 +58,7 @@ void setup() {
   // NOTE: calling this method will automatically enable
   // address filtering (node or broadcast address)
   Serial.print(F("[RF69] Setting broadcast address ... "));
-  state = rf.setBroadcastAddress(0xFF);
+  state = radio.setBroadcastAddress(0xFF);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -72,10 +69,10 @@ void setup() {
 
   // address filtering can also be disabled
   // NOTE: calling this method will also erase previously set
-  // node and broadcast address
+  //       node and broadcast address
   /*
     Serial.print(F("[RF69] Disabling address filtering ... "));
-    state = rf.disableAddressFiltering();
+    state = radio.disableAddressFiltering();
     if(state == ERR_NONE) {
       Serial.println(F("success!"));
     } else {
@@ -90,32 +87,32 @@ void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // transmit C-string or Arduino string to node with address 0x02
-  int state = rf.transmit("Hello World!", 0x02);
+  int state = radio.transmit("Hello World!", 0x02);
 
   // transmit byte array to node with address 0x02
   /*
   byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-  int state = rf.transmit(byteArr, 8, 0x02);
+  int state = radio.transmit(byteArr, 8, 0x02);
   */
 
   // transmit C-string or Arduino string in broadcast mode
   /*
-    int state = rf.transmit("Hello World!", 0xFF);
+    int state = radio.transmit("Hello World!", 0xFF);
   */
 
   // transmit byte array in broadcast mode
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-    int state = rf.transmit(byteArr, 8, 0xFF);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
+    int state = radio.transmit(byteArr, 8, 0xFF);
   */
 
   if (state == ERR_NONE) {
     // the packet was successfully transmitted
-    Serial.println(F(" success!"));
+    Serial.println(F("success!"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 64 bytes
-    Serial.println(F(" too long!"));
+    Serial.println(F("too long!"));
 
   } else {
     // some other error occurred

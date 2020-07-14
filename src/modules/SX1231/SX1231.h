@@ -1,7 +1,10 @@
-#ifndef _RADIOLIB_SX1231_H
+#if !defined(_RADIOLIB_SX1231_H)
 #define _RADIOLIB_SX1231_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_SX1231)
+
 #include "../../Module.h"
 #include "../RF69/RF69.h"
 
@@ -40,16 +43,20 @@ class SX1231: public RF69  {
 
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 50.0 kHz.
 
-      \param power Output power in dBm. Defaults to 13 dBm.
+      \param power Output power in dBm. Defaults to 10 dBm.
+
+      \param preambleLen Preamble Length in bits. Defaults to 16 bits.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
+    int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 10, uint8_t preambleLen = 16);
 
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
-    uint8_t _chipRevision;
+    uint8_t _chipRevision = 0;
 };
+
+#endif
 
 #endif

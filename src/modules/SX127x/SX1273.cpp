@@ -1,12 +1,13 @@
 #include "SX1273.h"
+#if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX1273::SX1273(Module* mod) : SX1272(mod) {
 
 }
 
-int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint8_t currentLimit, uint16_t preambleLength, uint8_t gain) {
+int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, currentLimit, preambleLength);
+  int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
@@ -35,6 +36,7 @@ int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   RADIOLIB_ASSERT(state);
 
   state = setGain(gain);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
@@ -68,3 +70,5 @@ int16_t SX1273::setSpreadingFactor(uint8_t sf) {
 
   return(state);
 }
+
+#endif

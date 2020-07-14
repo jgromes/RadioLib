@@ -1,8 +1,12 @@
-#ifndef _RADIOLIB_AX25_H
+#if !defined(_RADIOLIB_AX25_H)
 #define _RADIOLIB_AX25_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_AX25)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../AFSK/AFSK.h"
 
 // macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
 #define SET_BIT_IN_ARRAY(A, k)                        ( A[(k/8)] |= (1 << (k%8)) )
@@ -68,6 +72,13 @@
 #define AX25_PID_NET_ROM                              0xCF
 #define AX25_PID_NO_LAYER_3                           0xF0
 #define AX25_PID_ESCAPE_CHARACTER                     0xFF
+
+// AFSK tones in Hz
+#define AX25_AFSK_MARK                                1200
+#define AX25_AFSK_SPACE                               2200
+
+// tone duration in us (for 1200 baud AFSK)
+#define AX25_AFSK_TONE_DURATION                       833
 
 /*!
   \class AX25Frame
@@ -214,9 +225,23 @@ class AX25Frame {
     AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, uint8_t* info, uint16_t infoLen);
 
     /*!
+      \brief Copy constructor.
+
+      \param frame AX25Frame instance to copy.
+    */
+    AX25Frame(const AX25Frame& frame);
+
+    /*!
       \brief Default destructor.
     */
     ~AX25Frame();
+
+    /*!
+      \brief Overload for assignment operator.
+
+      \param frame rvalue AX25Frame.
+    */
+    AX25Frame& operator=(const AX25Frame& frame);
 
     /*!
       \brief Method to set the repeater callsigns and SSIDs.
@@ -254,11 +279,20 @@ class AX25Frame {
 class AX25Client {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for 2-FSK mode.
 
       \param phy Pointer to the wireless module providing PhysicalLayer communication.
     */
-    AX25Client(PhysicalLayer* phy);
+    explicit AX25Client(PhysicalLayer* phy);
+
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    /*!
+      \brief Constructor for AFSK mode.
+
+      \param audio Pointer to the AFSK instance providing audio.
+    */
+    explicit AX25Client(AFSKClient* audio);
+    #endif
 
     // basic methods
 
@@ -301,14 +335,19 @@ class AX25Client {
   private:
 #endif
     PhysicalLayer* _phy;
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    AFSKClient* _audio;
+    #endif
 
-    char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1];
-    uint8_t _srcSSID;
-    uint16_t _preambleLen;
+    char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
+    uint8_t _srcSSID = 0;
+    uint16_t _preambleLen = 0;
 
-    uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
-    uint8_t flipBits(uint8_t b);
-    uint16_t flipBits16(uint16_t i);
+    static uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
+    static uint8_t flipBits(uint8_t b);
+    static uint16_t flipBits16(uint16_t i);
 };
+
+#endif
 
 #endif

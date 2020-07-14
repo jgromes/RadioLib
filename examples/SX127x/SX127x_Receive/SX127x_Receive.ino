@@ -13,6 +13,9 @@
 
    Other modules from SX127x/RFM9x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -25,27 +28,18 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 lora = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1278 lora = RadioShield.ModuleA;
+//SX1278 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bandwidth:                   125.0 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // sync word:                   0x12
-  // output power:                17 dBm
-  // current limit:               100 mA
-  // preamble length:             8 symbols
-  // amplifier gain:              0 (automatic gain control)
-  int state = lora.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -63,12 +57,12 @@ void loop() {
   //       See example ReceiveInterrupt for details
   //       on non-blocking reception method.
   String str;
-  int state = lora.receive(str);
+  int state = radio.receive(str);
 
   // you can also receive data as byte array
   /*
     byte byteArr[8];
-    int state = lora.receive(byteArr, 8);
+    int state = radio.receive(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
@@ -82,19 +76,19 @@ void loop() {
     // print the RSSI (Received Signal Strength Indicator)
     // of the last received packet
     Serial.print(F("[SX1278] RSSI:\t\t\t"));
-    Serial.print(lora.getRSSI());
+    Serial.print(radio.getRSSI());
     Serial.println(F(" dBm"));
 
     // print the SNR (Signal-to-Noise Ratio)
     // of the last received packet
     Serial.print(F("[SX1278] SNR:\t\t\t"));
-    Serial.print(lora.getSNR());
+    Serial.print(radio.getSNR());
     Serial.println(F(" dB"));
 
     // print frequency error
     // of the last received packet
     Serial.print(F("[SX1278] Frequency error:\t"));
-    Serial.print(lora.getFrequencyError());
+    Serial.print(radio.getFrequencyError());
     Serial.println(F(" Hz"));
 
   } else if (state == ERR_RX_TIMEOUT) {

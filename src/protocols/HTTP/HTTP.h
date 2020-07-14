@@ -1,9 +1,11 @@
-#ifndef _RADIOLIB_HTTP_H
+#if !defined(_RADIOLIB_HTTP_H)
 #define _RADIOLIB_HTTP_H
 
 #include "../../TypeDef.h"
-#include "../TransportLayer/TransportLayer.h"
 
+#if !defined(RADIOLIB_EXCLUDE_HTTP)
+
+#include "../TransportLayer/TransportLayer.h"
 
 /*!
   \class HTTPClient
@@ -19,7 +21,7 @@ class HTTPClient {
 
       \param port Port to be used for HTTP. Defaults to 80.
     */
-    HTTPClient(TransportLayer* tl, uint16_t port = 80);
+    explicit HTTPClient(TransportLayer* tl, uint16_t port = 80);
 
     /*!
       \brief Sends HTTP GET request.
@@ -65,5 +67,7 @@ class HTTPClient {
 
     uint16_t _port;
 };
+
+#endif
 
 #endif

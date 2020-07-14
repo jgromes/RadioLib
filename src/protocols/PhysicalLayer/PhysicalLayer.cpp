@@ -140,6 +140,6 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   return(state);
 }
 
-float PhysicalLayer::getFreqStep() {
+float PhysicalLayer::getFreqStep() const {
   return(_freqStep);
 }

@@ -10,6 +10,9 @@
 
    Other modules from SX127x/RFM9x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -22,11 +25,11 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 lora = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1278 lora = RadioShield.ModuleA;
+//SX1278 radio = RadioShield.ModuleA;
 
 // save transmission state between loops
 int transmissionState = ERR_NONE;
@@ -36,16 +39,7 @@ void setup() {
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bandwidth:                           125.0 kHz
-  // spreading factor:                    9
-  // coding rate:                         7
-  // sync word:                           0x12
-  // output power:                        17 dBm
-  // current limit:                       100 mA
-  // preamble length:                     8 symbols
-  // amplifier gain:                      0 (automatic gain control)
-  int state = lora.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -56,20 +50,20 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  lora.setDio0Action(setFlag);
+  radio.setDio0Action(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[SX1278] Sending first packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
-  transmissionState = lora.startTransmit("Hello World!");
+  transmissionState = radio.startTransmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
   /*
-    byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                      0x78, 0xAB, 0xCD, 0xEF};
-    state = lora.transmit(byteArr, 8);
+    byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                      0x89, 0xAB, 0xCD, 0xEF};
+    state = radio.startTransmit(byteArr, 8);
   */
 }
 
@@ -125,13 +119,13 @@ void loop() {
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
-    transmissionState = lora.startTransmit("Hello World!");
+    transmissionState = radio.startTransmit("Hello World!");
 
     // you can also transmit byte array up to 256 bytes long
     /*
-      byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
-                        0x78, 0xAB, 0xCD, 0xEF};
-      int state = lora.transmit(byteArr, 8);
+      byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
+                        0x89, 0xAB, 0xCD, 0xEF};
+      int state = radio.startTransmit(byteArr, 8);
     */
 
     // we're ready to send more packets,

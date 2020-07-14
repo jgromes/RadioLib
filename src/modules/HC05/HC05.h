@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_HC05_H
+#if !defined(_RADIOLIB_HC05_H) && !defined(RADIOLIB_EXCLUDE_HC05)
 #define _RADIOLIB_HC05_H
 
 #include "../../ISerial.h"

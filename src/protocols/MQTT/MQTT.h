@@ -1,7 +1,10 @@
-#ifndef _RADIOLIB_MQTT_H
+#if !defined(_RADIOLIB_MQTT_H)
 #define _RADIOLIB_MQTT_H
 
 #include "../../TypeDef.h"
+
+#if !defined(RADIOLIB_EXCLUDE_MQTT)
+
 #include "../TransportLayer/TransportLayer.h"
 
 // MQTT packet types
@@ -39,7 +42,7 @@ class MQTTClient {
 
       \param tl Pointer to the wireless module providing TransportLayer communication.
     */
-    MQTTClient(TransportLayer* tl, uint16_t port = 1883);
+    explicit MQTTClient(TransportLayer* tl, uint16_t port = 1883);
 
     // basic methods
 
@@ -135,8 +138,10 @@ class MQTTClient {
     uint16_t _port;
     uint16_t _packetId;
 
-    size_t encodeLength(uint32_t len, uint8_t* encoded);
-    uint32_t decodeLength(uint8_t* encoded);
+    static size_t encodeLength(uint32_t len, uint8_t* encoded);
+    static uint32_t decodeLength(uint8_t* encoded, uint8_t& numBytes);
 };
+
+#endif
 
 #endif

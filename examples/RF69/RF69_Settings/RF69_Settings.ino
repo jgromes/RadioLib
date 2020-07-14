@@ -11,6 +11,9 @@
     - output power during transmission
     - sync word
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -22,30 +25,24 @@
 // CS pin:    10
 // DIO0 pin:  2
 // RESET pin: 3
-RF69 rf1 = new Module(10, 2, 3);
+RF69 radio1 = new Module(10, 2, 3);
 
 // second CC1101 has different connections:
 // CS pin:    9
 // DIO0 pin:  4
 // RESET pin: 5
-RF69 rf2 = new Module(9, 4, 5);
+RF69 radio2 = new Module(9, 4, 5);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//RF69 rf3 = RadioShield.ModuleB;
+//RF69 radio3 = RadioShield.ModuleB;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
-  // carrier frequency:                   434.0 MHz
-  // bit rate:                            48.0 kbps
-  // frequency deviation:                 50.0 kHz
-  // Rx bandwidth:                        125.0 kHz
-  // output power:                        13 dBm
-  // sync word:                           0x2D01
-  int state = rf1.begin();
+  int state = radio1.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -61,8 +58,8 @@ void setup() {
   // frequency deviation:                 60.0 kHz
   // Rx bandwidth:                        250.0 kHz
   // output power:                        17 dBm
-  // sync word:                           0x2D01
-  state = rf2.begin(868.0, 300.0, 60.0, 250.0, 17);
+  // preamble length:                     32 bits
+  state = radio2.begin(868.0, 300.0, 60.0, 250.0, 17, 32);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -75,13 +72,13 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (rf1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
     Serial.println(F("[RF69] Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bit rate to 100.0 kbps
-  state = rf1.setBitRate(100.0);
+  state = radio1.setBitRate(100.0);
   if (state == ERR_INVALID_BIT_RATE) {
     Serial.println(F("[RF69] Selected bit rate is invalid for this module!"));
     while (true);
@@ -92,7 +89,7 @@ void setup() {
   }
 
   // set receiver bandwidth to 250.0 kHz
-  state = rf1.setRxBandwidth(250.0);
+  state = radio1.setRxBandwidth(250.0);
   if (state == ERR_INVALID_RX_BANDWIDTH) {
     Serial.println(F("[RF69] Selected receiver bandwidth is invalid for this module!"));
     while (true);
@@ -103,13 +100,13 @@ void setup() {
   }
 
   // set allowed frequency deviation to 10.0 kHz
-  if (rf1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
+  if (radio1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
     Serial.println(F("[RF69] Selected frequency deviation is invalid for this module!"));
     while (true);
   }
 
   // set output power to 2 dBm
-  if (rf1.setOutputPower(2) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(2) == ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("[RF69] Selected output power is invalid for this module!"));
     while (true);
   }
@@ -118,7 +115,7 @@ void setup() {
   // NOTE: sync word must not contain any zero bytes
   // set sync word to 0x0123456789ABCDEF
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89, 0xAB, 0xCD, 0xEF};
-  if (rf1.setSyncWord(syncWord, 8) == ERR_INVALID_SYNC_WORD) {
+  if (radio1.setSyncWord(syncWord, 8) == ERR_INVALID_SYNC_WORD) {
     Serial.println(F("[RF69] Selected sync word is invalid for this module!"));
     while (true);
   }
@@ -128,13 +125,13 @@ void setup() {
   // RF69 can also measure temperature (roughly)
   // to get correct temperature measurements, the sensor must be calibrated
   // at ambient temperature
-  rf1.setAmbientTemperature(25); // replace 25 with your ambient temperature
+  radio1.setAmbientTemperature(25); // replace 25 with your ambient temperature
 }
 
 void loop() {
   // measure temperature
   Serial.print(F("[RF69] Measured temperature: "));
-  Serial.print(rf1.getTemperature());
+  Serial.print(radio1.getTemperature());
   Serial.println(F(" deg C"));
 
   // wait 100 ms before the next measurement

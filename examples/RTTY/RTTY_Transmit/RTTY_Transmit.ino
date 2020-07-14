@@ -11,6 +11,11 @@
     - CC1101
     - SX126x
     - nRF24
+    - Si443x/RFM2x
+    - SX128x
+
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
@@ -24,32 +29,25 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 fsk = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1278 fsk = RadioShield.ModuleA;
+//SX1278 radio = RadioShield.ModuleA;
 
 // create RTTY client instance using the FSK module
-RTTYClient rtty(&fsk);
+RTTYClient rtty(&radio);
 
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278
+  // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bit rate:                    48.0 kbps
-  // frequency deviation:         50.0 kHz
-  // Rx bandwidth:                125.0 kHz
-  // output power:                13 dBm
-  // current limit:               100 mA
-  // sync word:                   0x2D  0x01
-  int state = fsk.beginFSK();
+  int state = radio.beginFSK();
 
   // when using one of the non-LoRa modules for RTTY
-  // (RF69, CC1101, etc.), use the basic begin() method
-  // int state = fsk.begin();
+  // (RF69, CC1101, Si4432 etc.), use the basic begin() method
+  // int state = radio.begin();
 
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
@@ -63,11 +61,13 @@ void setup() {
   // NOTE: RTTY frequency shift will be rounded
   //       to the nearest multiple of frequency step size.
   //       The exact value depends on the module:
-  //         SX127x - 61 Hz
+  //         SX127x/RFM9x - 61 Hz
   //         RF69 - 61 Hz
   //         CC1101 - 397 Hz
   //         SX126x - 1 Hz
   //         nRF24 - 1000000 Hz
+  //         Si443x/RFM2x - 156 Hz
+  //         SX128x - 198 Hz
   Serial.print(F("[RTTY] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
   // frequency shift:             183 Hz

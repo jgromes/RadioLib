@@ -1,10 +1,11 @@
 #include "SX1231.h"
+#if !defined(RADIOLIB_EXCLUDE_SX1231)
 
 SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -20,9 +21,9 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       _chipRevision = version;
     } else {
       #ifdef RADIOLIB_DEBUG
-        RADIOLIB_DEBUG_PRINT(F("SX127x not found! ("));
+        RADIOLIB_DEBUG_PRINT(F("SX1231 not found! ("));
         RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SX127X_REG_VERSION == "));
+        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
 
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
@@ -30,14 +31,14 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0021 / 0x0022 / 0x0023"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(1000);
+      delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX1231 found!"));
-    _mod->term();
+    _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found SX1231!"));
@@ -68,6 +69,10 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
+  // configure default preamble length
+  state = setPreambleLength(preambleLen);
+  RADIOLIB_ASSERT(state);
+
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
   uint8_t syncWord[] = {0x2D, 0x01};
   state = setSyncWord(syncWord, 2);
@@ -92,3 +97,5 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   return(ERR_NONE);
 }
+
+#endif

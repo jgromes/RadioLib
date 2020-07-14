@@ -9,6 +9,9 @@
 
    Other modules from SX126x family can also be used.
 
+   For default module settings, see the wiki page
+   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+
    For full API reference, see the GitHub Pages
    https://jgromes.github.io/RadioLib/
 */
@@ -21,29 +24,18 @@
 // DIO1 pin:  2
 // NRST pin:  3
 // BUSY pin:  9
-SX1262 lora = new Module(10, 2, 3, 9);
+SX1262 radio = new Module(10, 2, 3, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1262 lora = RadioShield.ModuleA;
+//SX1262 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
 
   // initialize SX1262 with default settings
   Serial.print(F("[SX1262] Initializing ... "));
-  // carrier frequency:           434.0 MHz
-  // bandwidth:                   125.0 kHz
-  // spreading factor:            9
-  // coding rate:                 7
-  // sync word:                   0x12 (private network)
-  // output power:                14 dBm
-  // current limit:               60 mA
-  // preamble length:             8 symbols
-  // TCXO voltage:                1.6 V (set to 0 to not use TCXO)
-  // regulator:                   DC-DC (set to true to use LDO)
-  // CRC:                         enabled
-  int state = lora.begin();
+  int state = radio.begin();
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -51,6 +43,16 @@ void setup() {
     Serial.println(state);
     while (true);
   }
+
+  // some modules have an external RF switch
+  // controlled via two pins (RX enable, TX enable)
+  // to enable automatic control of the switch,
+  // call the following method
+  // RX enable:   4
+  // TX enable:   5
+  /*
+    radio.setRfSwitchPins(4, 5);
+  */
 }
 
 void loop() {
@@ -61,12 +63,12 @@ void loop() {
   // NOTE: transmit() is a blocking method!
   //       See example SX126x_Transmit_Interrupt for details
   //       on non-blocking transmission method.
-  int state = lora.transmit("Hello World!");
+  int state = radio.transmit("Hello World!");
 
   // you can also transmit byte array up to 256 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56, 0x78, 0xAB, 0xCD, 0xEF};
-    int state = lora.transmit(byteArr, 8);
+    int state = radio.transmit(byteArr, 8);
   */
 
   if (state == ERR_NONE) {
@@ -75,7 +77,7 @@ void loop() {
 
     // print measured data rate
     Serial.print(F("[SX1262] Datarate:\t"));
-    Serial.print(lora.getDataRate());
+    Serial.print(radio.getDataRate());
     Serial.println(F(" bps"));
 
   } else if (state == ERR_PACKET_TOO_LONG) {

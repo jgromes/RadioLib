@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_CC1101_H
+#if !defined(_RADIOLIB_CC1101_H) && !defined(RADIOLIB_EXCLUDE_CC1101)
 #define _RADIOLIB_CC1101_H
 
 #include "../../TypeDef.h"
@@ -522,21 +522,21 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Initialization method.
 
-      \param freq Carrier frequency in MHz. Defaults to 868.0 MHz.
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
 
-      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
+      \param br Bit rate to be used in kbps. Defaults to 48.0 kbps.
 
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 325.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
 
-      \param power Output power in dBm. Defaults to 0 dBm.
+      \param power Output power in dBm. Defaults to 10 dBm.
 
-      \param preambleLength Preamble Length in bytes. Defaults to 4 bytes.
+      \param preambleLength Preamble Length in bits. Defaults to 16 bits.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 868.0, float br = 4.8, float freqDev = 48.0, float rxBw = 325.0, int8_t power = 0, uint8_t preambleLength = 4);
+    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 48.0, float rxBw = 135.0, int8_t power = 10, uint8_t preambleLength = 16);
 
     /*!
       \brief Blocking binary transmit method.
@@ -550,7 +550,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -562,14 +562,14 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(uint8_t* data, size_t len);
+    int16_t receive(uint8_t* data, size_t len) override;
 
     /*!
       \brief Sets the module to standby mode.
 
       \returns \ref status_codes
     */
-    int16_t standby();
+    int16_t standby() override;
 
     /*!
       \brief Starts direct mode transmission.
@@ -578,14 +578,14 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
 
     /*!
       \brief Starts direct mode reception.
 
       \returns \ref status_codes
     */
-    int16_t receiveDirect();
+    int16_t receiveDirect() override;
 
     /*!
       \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
@@ -601,7 +601,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction. Defaults to RISING.
     */
-    void setGdo0Action(void (*func)(void), uint8_t dir = RISING);
+    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = FALLING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -615,7 +615,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction. Defaults to FALLING.
     */
-    void setGdo2Action(void (*func)(void), uint8_t dir = FALLING);
+    void setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = FALLING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -634,7 +634,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
@@ -652,7 +652,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(uint8_t* data, size_t len);
+    int16_t readData(uint8_t* data, size_t len) override;
 
     // configuration methods
 
@@ -690,7 +690,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequencyDeviation(float freqDev);
+    int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
       \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
@@ -734,7 +734,7 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Sets preamble length.
 
-      \param preambleLength Preamble length to be set (in bytes), allowed values: 2, 3, 4, 6, 8, 12, 16, 24
+      \param preambleLength Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
 
       \returns \ref status_codes
     */
@@ -772,14 +772,14 @@ class CC1101: public PhysicalLayer {
 
       \returns Last packet RSSI in dBm.
     */
-    float getRSSI();
+    float getRSSI() const;
 
     /*!
       \brief Gets LQI (Link Quality Indicator) of the last received packet.
 
       \returns Last packet LQI (lower is better).
     */
-    uint8_t getLQI();
+   uint8_t getLQI() const;
 
      /*!
       \brief Query modem for the packet length of received payload.
@@ -788,7 +788,7 @@ class CC1101: public PhysicalLayer {
 
       \returns Length of last received packet in bytes.
     */
-    size_t getPacketLength(bool update = true);
+    size_t getPacketLength(bool update = true) override;
 
      /*!
       \brief Set modem in fixed packet length mode.
@@ -848,47 +848,64 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
-      Allowed value is 0.5. Set to 0 to disable data shaping.
+      Allowed value is RADIOLIB_SHAPING_0_5. Set to RADIOLIB_SHAPING_NONE to disable data shaping.
 
-      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
+      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping.
 
       \returns \ref status_codes
     */
-    int16_t setDataShaping(float sh);
+    int16_t setDataShaping(uint8_t sh) override;
 
     /*!
-      \brief Sets transmission encoding.
+      \brief Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ and RADIOLIB_ENCODING_WHITENING.
 
-      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+      \param encoding Encoding to be used.
 
       \returns \ref status_codes
     */
-    int16_t setEncoding(uint8_t encoding);
+    int16_t setEncoding(uint8_t encoding) override;
+
+    /*!
+      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
+      When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
+
+      \param rxEn RX enable pin.
+
+      \param txEn TX enable pin.
+    */
+    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
     Module* _mod;
 
+<<<<<<< HEAD
     float _freq;
     float _br;
     uint8_t _rawRSSI;
     uint8_t _rawLQI;
     uint8_t _modulation;
+=======
+    float _freq = 0;
+    uint8_t _rawRSSI = 0;
+    uint8_t _rawLQI = 0;
+    uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;
+>>>>>>> upstream/master
 
-    size_t _packetLength;
-    bool _packetLengthQueried;
-    uint8_t _packetLengthConfig;
+    size_t _packetLength = 0;
+    bool _packetLengthQueried = false;
+    uint8_t _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;
 
-    bool _promiscuous;
+    bool _promiscuous = false;
     bool _crcOn = true;
 
-    uint8_t _syncWordLength;
-    int8_t _power;
+    uint8_t _syncWordLength = 2;
+    int8_t _power = 0;
 
     int16_t config();
     int16_t directMode();
-    void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
+    static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
     // SPI read overrides to set bit for burst write and status registers access

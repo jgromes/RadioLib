@@ -1,90 +1,7 @@
 #ifndef _RADIOLIB_TYPES_H
 #define _RADIOLIB_TYPES_H
 
-#if ARDUINO >= 100
-  #include "Arduino.h"
-#else
-  #error "Unsupported Arduino version (< 1.0.0)"
-#endif
-
-// version definitions
-#define RADIOLIB_VERSION_MAJOR  (0x03)
-#define RADIOLIB_VERSION_MINOR  (0x03)
-#define RADIOLIB_VERSION_PATCH  (0x01)
-#define RADIOLIB_VERSION_EXTRA  (0x00)
-
-#define RADIOLIB_VERSION ((RADIOLIB_VERSION_MAJOR << 24) | (RADIOLIB_VERSION_MAJOR << 16) | (RADIOLIB_VERSION_MAJOR << 8) | (RADIOLIB_VERSION_EXTRA))
-
-/*
- * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
- * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
- */
-
-//#define RADIOLIB_STATIC_ONLY
-
-// set the size of static arrays to use
-#define RADIOLIB_STATIC_ARRAY_SIZE   256
-
-/*
- * Uncomment to enable debug output.
- * Warning: Debug output will slow down the whole system significantly.
- *          Also, it will result in larger compiled binary.
- * Levels: debug - only main info
- *         verbose - full transcript of all SPI/UART communication
- */
-
-//#define RADIOLIB_DEBUG
-//#define RADIOLIB_VERBOSE
-
-// set which Serial port should be used for debug output
-#define RADIOLIB_DEBUG_PORT   Serial
-
-#ifdef RADIOLIB_DEBUG
-  #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
-  #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
-#else
-  #define RADIOLIB_DEBUG_PRINT(...) {}
-  #define RADIOLIB_DEBUG_PRINTLN(...) {}
-#endif
-
-#ifdef RADIOLIB_VERBOSE
-  #define RADIOLIB_VERBOSE_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
-  #define RADIOLIB_VERBOSE_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
-#else
-  #define RADIOLIB_VERBOSE_PRINT(...) {}
-  #define RADIOLIB_VERBOSE_PRINTLN(...) {}
-#endif
-
-/*
- * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
- * Warning: Come on, it's called GOD mode - obviously only use this if you know what you're doing.
- *          Failure to heed the above warning may result in bricked module.
- */
-//#define RADIOLIB_GODMODE
-
-/*
- * Uncomment to enable pre-defined modules when using RadioShield.
- */
-//#define RADIOLIB_RADIOSHIELD
-
-/*
- * The following platforms do not support SoftwareSerial library.
- */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__) || defined(AM_PART_APOLLO3)
-  #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-#endif
-
-/*!
-  \brief Alias for unused pin, if not supplied by the Arduino core.
-*/
-#if !(defined(NC) || defined(ARDUINO_ARCH_STM32))
-#define NC                                            (-1)
-#endif
-
-/*!
-  \brief A simple assert macro, will return on error.
-*/
-#define RADIOLIB_ASSERT(STATEVAR) { if(STATEVAR != ERR_NONE) { return(STATEVAR); } }
+#include "BuildOpt.h"
 
 /*!
   \defgroup shield_config Shield Configuration
@@ -166,6 +83,66 @@
   \brief Both RTS and CTS.
 */
 #define RADIOLIB_UART_FLOW_BOTH                       0x03
+
+/*!
+  \}
+*/
+
+/*!
+  \defgroup config_shaping Data shaping filter values aliases.
+
+  \{
+*/
+
+/*!
+  \brief No shaping.
+*/
+#define RADIOLIB_SHAPING_NONE                         0x00
+
+/*!
+  \brief Gaussin shaping filter, BT = 0.3
+*/
+#define RADIOLIB_SHAPING_0_3                          0x01
+
+/*!
+  \brief Gaussin shaping filter, BT = 0.5
+*/
+#define RADIOLIB_SHAPING_0_5                          0x02
+
+/*!
+  \brief Gaussin shaping filter, BT = 0.7
+*/
+#define RADIOLIB_SHAPING_0_7                          0x03
+
+/*!
+  \brief Gaussin shaping filter, BT = 1.0
+*/
+#define RADIOLIB_SHAPING_1_0                          0x04
+
+/*!
+  \}
+*/
+
+/*!
+  \defgroup config_encoding Encoding type aliases.
+
+  \{
+*/
+
+/*!
+  \brief Non-return to zero - no encoding.
+*/
+#define RADIOLIB_ENCODING_NRZ                         0x00
+
+/*!
+  \brief Manchester encoding.
+*/
+#define RADIOLIB_ENCODING_MANCHESTER                  0x01
+
+/*!
+  \brief Whitening.
+*/
+#define RADIOLIB_ENCODING_WHITENING                   0x02
 
 /*!
   \}
@@ -562,6 +539,13 @@
   The specified callsign is longer than 6 ASCII characters.
 */
 #define ERR_INVALID_REPEATER_CALLSIGN                 -803
+
+// SX128x-specific status codes
+
+/*!
+  \brief Timed out waiting for ranging exchange finish.
+*/
+#define ERR_RANGING_TIMEOUT                           -901
 
 /*!
   \}
