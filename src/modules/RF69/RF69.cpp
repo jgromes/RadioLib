@@ -1,6 +1,6 @@
 #include "RF69.h"
 
-RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT, RF69_MAX_PACKET_LENGTH)  {
+RF69::RF69(Module* module) : PhysicalLayer(RF69_FREQUENCY_STEP_SIZE, RF69_MAX_PACKET_LENGTH)  {
   _mod = module;
   _tempOffset = 0;
 
@@ -12,14 +12,19 @@ RF69::RF69(Module* module) : PhysicalLayer(RF69_CRYSTAL_FREQ, RF69_DIV_EXPONENT,
   _syncWordLength = 2;
 }
 
-int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_0);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
 
   // try to find the RF69 chip
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
+    // reset the module
+    reset();
+
+    // check version register
     uint8_t version = _mod->SPIreadRegister(RF69_REG_VERSION);
     if(version == 0x24) {
       flagFound = true;
@@ -42,7 +47,7 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No RF69 found!"));
-    SPI.end();
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found RF69! (match by RF69_REG_VERSION == 0x24)"));
@@ -50,66 +55,77 @@ int16_t RF69::begin(float freq, float br, float rxBw, float freqDev, int8_t powe
 
   // configure settings not accessible by API
   int16_t state = config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setFrequency(freq);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure bitrate
   _rxBw = 125.0;
   state = setBitRate(br);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
   state = setRxBandwidth(rxBw);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
   state = setFrequencyDeviation(freqDev);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default TX output power
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set default packet length mode
   state = variablePacketLengthMode();
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
   uint8_t syncWord[] = {0x2D, 0x01};
   state = setSyncWord(syncWord, sizeof(syncWord));
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
+
+  // set default data shaping
+  state = setDataShaping(0);
+  RADIOLIB_ASSERT(state);
+
+  // set default encoding
+  state = setEncoding(0);
+  RADIOLIB_ASSERT(state);
 
   return(ERR_NONE);
 }
 
+void RF69::reset() {
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), HIGH);
+  delayMicroseconds(100);
+  Module::digitalWrite(_mod->getRst(), LOW);
+  delay(10);
+}
+
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
+  // calculate timeout (5ms + 500 % of expected time-on-air)
+  uint32_t timeout = 5000000 + (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 5000000.0);
+
   // start transmission
   int16_t state = startTransmit(data, len, addr);
-  if(state != ERR_NONE) {
-    return(state);
+  RADIOLIB_ASSERT(state);
+
+  // wait for transmission end or timeout
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getIrq())) {
+    if(micros() - start > timeout) {
+      standby();
+      clearIRQFlags();
+      return(ERR_TX_TIMEOUT);
+    }
   }
 
-  // wait for transmission end
-  while(!digitalRead(_mod->getInt0()));
+  // set mode to standby
+  standby();
 
   // clear interrupt flags
   clearIRQFlags();
@@ -118,15 +134,18 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t RF69::receive(uint8_t* data, size_t len) {
+  // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
+  uint32_t timeout = 500000 + (1.0/(_br*1000.0))*(RF69_MAX_PACKET_LENGTH*400.0);
+
   // start reception
-  int16_t state = startReceive(true);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  int16_t state = startReceive();
+  RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  while(!digitalRead(_mod->getInt0())) {
-    if(digitalRead(_mod->getInt1())) {
+  uint32_t start = micros();
+  while(!digitalRead(_mod->getIrq())) {
+    if(micros() - start > timeout) {
+      standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
     }
@@ -158,9 +177,7 @@ int16_t RF69::transmitDirect(uint32_t frf) {
 
   // activate direct mode
   int16_t state = directMode();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // start transmitting
   return(setMode(RF69_TX));
@@ -169,9 +186,7 @@ int16_t RF69::transmitDirect(uint32_t frf) {
 int16_t RF69::receiveDirect() {
   // activate direct mode
   int16_t state = directMode();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // start receiving
   return(setMode(RF69_RX));
@@ -180,16 +195,14 @@ int16_t RF69::receiveDirect() {
 int16_t RF69::directMode() {
   // set mode to standby
   int16_t state = setMode(RF69_STANDBY);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set DIO mapping
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO1_CONT_DCLK | RF69_DIO2_CONT_DATA, 5, 2);
+  RADIOLIB_ASSERT(state);
 
   // set continuous mode
-  state |= _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5);
-  return(state);
+  return(_mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
 }
 
 int16_t RF69::packetMode() {
@@ -208,23 +221,15 @@ int16_t RF69::disableAES() {
   return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AES_OFF, 0, 0));
 }
 
-int16_t RF69::startReceive(bool timeout) {
+int16_t RF69::startReceive() {
   // set mode to standby
   int16_t state = setMode(RF69_STANDBY);
 
   // set RX timeouts and DIO pin mapping
-  if(timeout) {
-    state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY | RF69_DIO1_PACK_TIMEOUT, 7, 4);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH);
-  } else {
-    state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 6);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START_OFF);
-    state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH_OFF);
-  }
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PAYLOAD_READY, 7, 4);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START);
+  state |= _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH);
+  RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
   clearIRQFlags();
@@ -238,11 +243,26 @@ int16_t RF69::startReceive(bool timeout) {
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt0()), func, RISING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, RISING);
+}
+
+void RF69::clearDio0Action() {
+  detachInterrupt(digitalPinToInterrupt(_mod->getIrq()));
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, RISING);
+  if(_mod->getGpio() != NC) {
+    return;
+  }
+  Module::pinMode(_mod->getGpio(), INPUT);
+  attachInterrupt(digitalPinToInterrupt(_mod->getGpio()), func, RISING);
+}
+
+void RF69::clearDio1Action() {
+  if(_mod->getGpio() != NC) {
+    return;
+  }
+  detachInterrupt(digitalPinToInterrupt(_mod->getGpio()));
 }
 
 int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -253,12 +273,11 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // set mode to standby
   int16_t state = setMode(RF69_STANDBY);
+  RADIOLIB_ASSERT(state);
 
   // set DIO pin mapping
-  state |= _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PACKET_SENT, 7, 6);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_1, RF69_DIO0_PACK_PACKET_SENT, 7, 6);
+  RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
   clearIRQFlags();
@@ -291,10 +310,7 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 int16_t RF69::readData(uint8_t* data, size_t len) {
   // set mdoe to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
+  RADIOLIB_ASSERT(state);
   // get packet length
   size_t length = len;
   if(len == RF69_MAX_PACKET_LENGTH) {
@@ -309,9 +325,6 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
   // read packet data
   _mod->SPIreadRegisterBurst(RF69_REG_FIFO, length, data);
-
-  // add terminating null
-  data[length] = 0;
 
   // update RSSI
   lastPacketRSSI = -1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0);
@@ -520,9 +533,7 @@ int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   _syncWordLength = len;
 
   int16_t state = enableSyncWordFiltering(maxErrBits);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set sync word register
   _mod->SPIwriteRegisterBurst(RF69_REG_SYNC_VALUE_1, syncWord, len);
@@ -532,9 +543,7 @@ int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
 int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
   // enable address filtering (node only)
   int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE, 2, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set node address
   return(_mod->SPIsetRegValue(RF69_REG_NODE_ADRS, nodeAddr));
@@ -543,9 +552,7 @@ int16_t RF69::setNodeAddress(uint8_t nodeAddr) {
 int16_t RF69::setBroadcastAddress(uint8_t broadAddr) {
   // enable address filtering (node + broadcast)
   int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_NODE_BROADCAST, 2, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set broadcast address
   return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, broadAddr));
@@ -554,15 +561,11 @@ int16_t RF69::setBroadcastAddress(uint8_t broadAddr) {
 int16_t RF69::disableAddressFiltering() {
   // disable address filtering
   int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_ADDRESS_FILTERING_OFF, 2, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set node address to default (0x00)
   state = _mod->SPIsetRegValue(RF69_REG_NODE_ADRS, 0x00);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set broadcast address to default (0x00)
   return(_mod->SPIsetRegValue(RF69_REG_BROADCAST_ADRS, 0x00));
@@ -612,27 +615,17 @@ int16_t RF69::variablePacketLengthMode(uint8_t maxLen) {
 
 int16_t RF69::enableSyncWordFiltering(uint8_t maxErrBits) {
   // enable sync word recognition
-  int16_t state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (_syncWordLength - 1) << 3 | maxErrBits, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
-  return(state);
+  return(_mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_ON | RF69_FIFO_FILL_CONDITION_SYNC | (_syncWordLength - 1) << 3 | maxErrBits, 7, 0));
 }
 
 int16_t RF69::disableSyncWordFiltering() {
   // disable preamble detection and generation
   int16_t state = _mod->SPIsetRegValue(RF69_REG_PREAMBLE_LSB, 0, 7, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_PREAMBLE_MSB, 0, 7, 0);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // disable sync word detection and generation
   state = _mod->SPIsetRegValue(RF69_REG_SYNC_CONFIG, RF69_SYNC_OFF | RF69_FIFO_FILL_CONDITION, 7, 6);
-  if (state != ERR_NONE) {
-    return(state);
-  }
 
   return(state);
 }
@@ -655,18 +648,14 @@ int16_t RF69::setPromiscuousMode(bool promiscuous) {
   if (promiscuous == true) {
     // disable preamble and sync word filtering and insertion
     state = disableSyncWordFiltering();
-    if (state != ERR_NONE) {
-      return(state);
-    }
+    RADIOLIB_ASSERT(state);
 
     // disable CRC filtering
     state = setCrcFiltering(false);
   } else {
     // enable preamble and sync word filtering and insertion
     state = enableSyncWordFiltering();
-    if (state != ERR_NONE) {
-      return(state);
-    }
+    RADIOLIB_ASSERT(state);
 
     // enable CRC filtering
     state = setCrcFiltering(true);
@@ -675,81 +664,97 @@ int16_t RF69::setPromiscuousMode(bool promiscuous) {
   return(state);
 }
 
+int16_t RF69::setDataShaping(float sh) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set data shaping
+  sh *= 10.0;
+  if(abs(sh - 0.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_NO_SHAPING, 1, 0);
+  } else if(abs(sh - 3.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_3, 1, 0);
+  } else if(abs(sh - 5.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_5, 1, 0);
+  } else if(abs(sh - 10.0) <= 0.001) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_1_0, 1, 0);
+  } else {
+    return(ERR_INVALID_DATA_SHAPING);
+  }
+  return(state);
+}
+
+int16_t RF69::setEncoding(uint8_t encoding) {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set encoding
+  switch(encoding) {
+    case 0:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_NONE, 6, 5));
+    case 1:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_MANCHESTER, 6, 5));
+    case 2:
+      return(_mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_DC_FREE_WHITENING, 6, 5));
+    default:
+      return(ERR_INVALID_ENCODING);
+  }
+}
+
 int16_t RF69::config() {
   int16_t state = ERR_NONE;
 
   // set mode to STANDBY
   state = setMode(RF69_STANDBY);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set operation modes
   state = _mod->SPIsetRegValue(RF69_REG_OP_MODE, RF69_SEQUENCER_ON | RF69_LISTEN_OFF, 7, 6);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable over-current protection
   state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON, 4, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set data mode, modulation type and shaping
   state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_PACKET_MODE | RF69_FSK, 6, 3);
   state |= _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK_GAUSSIAN_0_3, 1, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set RSSI threshold
   state = _mod->SPIsetRegValue(RF69_REG_RSSI_THRESH, RF69_RSSI_THRESHOLD, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // reset FIFO flag
   _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_2, RF69_IRQ_FIFO_OVERRUN);
 
   // disable ClkOut on DIO5
   state = _mod->SPIsetRegValue(RF69_REG_DIO_MAPPING_2, RF69_CLK_OUT_OFF, 2, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set packet configuration and disable encryption
   state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, RF69_PACKET_FORMAT_VARIABLE | RF69_DC_FREE_NONE | RF69_CRC_ON | RF69_CRC_AUTOCLEAR_ON | RF69_ADDRESS_FILTERING_OFF, 7, 1);
   state |= _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_INTER_PACKET_RX_DELAY, 7, 4);
   state |= _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_2, RF69_AUTO_RX_RESTART_ON | RF69_AES_OFF, 1, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set payload length
   state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, RF69_PAYLOAD_LENGTH, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set FIFO threshold
   state = _mod->SPIsetRegValue(RF69_REG_FIFO_THRESH, RF69_TX_START_CONDITION_FIFO_NOT_EMPTY | RF69_FIFO_THRESHOLD, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set Rx timeouts
   state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_1, RF69_TIMEOUT_RX_START, 7, 0);
   state = _mod->SPIsetRegValue(RF69_REG_RX_TIMEOUT_2, RF69_TIMEOUT_RSSI_THRESH, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable improved fading margin
   state = _mod->SPIsetRegValue(RF69_REG_TEST_DAGC, RF69_CONTINUOUS_DAGC_LOW_BETA_OFF, 7, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
 
   return(ERR_NONE);
 }
@@ -762,15 +767,11 @@ int16_t RF69::setPacketMode(uint8_t mode, uint8_t len) {
 
   // set to fixed packet length
   int16_t state = _mod->SPIsetRegValue(RF69_REG_PACKET_CONFIG_1, mode, 7, 7);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set length to register
   state = _mod->SPIsetRegValue(RF69_REG_PAYLOAD_LENGTH, len);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // update the cached value
   _packetLengthConfig = mode;

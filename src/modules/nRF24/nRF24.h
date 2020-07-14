@@ -6,9 +6,8 @@
 
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
-// nRF24 physical layer properties (dummy only)
-#define NRF24_CRYSTAL_FREQ                            1.0
-#define NRF24_DIV_EXPONENT                            0
+// nRF24 physical layer properties
+#define NRF24_FREQUENCY_STEP_SIZE                     1000000.0
 #define NRF24_MAX_PACKET_LENGTH                       32
 
 // nRF24 SPI commands
@@ -128,7 +127,7 @@
 // NRF24_REG_STATUS
 #define NRF24_RX_DR                                   0b01000000  //  6     6     Rx data ready
 #define NRF24_TX_DS                                   0b00100000  //  5     5     Tx data sent
-#define NRF24_MAX_RT                                  0b00010000  //  4     4     maximum number of rentransmits reached (must be cleared to continue)
+#define NRF24_MAX_RT                                  0b00010000  //  4     4     maximum number of retransmits reached (must be cleared to continue)
 #define NRF24_RX_FIFO_EMPTY                           0b00001110  //  3     1     Rx FIFO is empty
 #define NRF24_RX_P_NO                                 0b00000000  //  3     1     number of data pipe that received data
 #define NRF24_TX_FIFO_FULL                            0b00000001  //  0     0     Tx FIFO is full
@@ -394,6 +393,13 @@ class nRF24: public PhysicalLayer {
     int16_t getStatus(uint8_t mask = 0xFF);
 
     /*!
+      \brief Checks if carrier was detected during last RX
+
+      \returns Whatever the carrier was above threshold.
+    */
+    bool isCarrierDetected();
+
+    /*!
       \brief Dummy configuration method, to ensure PhysicalLayer compatibility.
 
       \param freqDev Dummy frequency deviation parameter, no configuration will be changed.
@@ -438,7 +444,25 @@ class nRF24: public PhysicalLayer {
 
      \returns \ref status_codes
    */
-    int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn = true);
+    int16_t setAutoAck(uint8_t pipeNum, bool autoAckOn);
+
+    /*!
+      \brief Dummy data shaping configuration method, to ensure PhysicalLayer compatibility.
+
+      \param sh Ignored.
+
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(float sh);
+
+    /*!
+      \brief Dummy encoding configuration method, to ensure PhysicalLayer compatibility.
+
+      \param sh Ignored.
+
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding);
 
 #ifndef RADIOLIB_GODMODE
   private:

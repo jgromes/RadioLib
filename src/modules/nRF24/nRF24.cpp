@@ -1,6 +1,6 @@
 #include "nRF24.h"
 
-nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_CRYSTAL_FREQ, NRF24_DIV_EXPONENT, NRF24_MAX_PACKET_LENGTH) {
+nRF24::nRF24(Module* mod) : PhysicalLayer(NRF24_FREQUENCY_STEP_SIZE, NRF24_MAX_PACKET_LENGTH) {
   _mod = mod;
 }
 
@@ -8,11 +8,11 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // set module properties
   _mod->SPIreadCommand = NRF24_CMD_READ;
   _mod->SPIwriteCommand = NRF24_CMD_WRITE;
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
 
-  // override pin mode on INT0 (connected to nRF24 CE pin)
-  pinMode(_mod->getInt0(), OUTPUT);
-  digitalWrite(_mod->getInt0(), LOW);
+  // set pin mode on RST (connected to nRF24 CE pin)
+  Module::pinMode(_mod->getRst(), OUTPUT);
+  Module::digitalWrite(_mod->getRst(), LOW);
 
   // wait for minimum power-on reset duration
   delay(100);
@@ -27,39 +27,25 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
 
   // configure settings inaccessible by public API
   int16_t state = config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set mode to standby
   state = standby();
-  if(state != ERR_NONE) {
-    return(state);
-  }
-
+  RADIOLIB_ASSERT(state);
   // set frequency
   state = setFrequency(freq);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set data rate
   state = setDataRate(dataRate);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set output power
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set address width
   state = setAddressWidth(addrWidth);
-  if(state != ERR_NONE) {
-    return(state);
-  }
 
   return(state);
 }
@@ -72,7 +58,7 @@ int16_t nRF24::standby() {
   // make sure carrier output is disabled
   _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_OFF, 7, 7);
   _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_OFF, 4, 4);
-  digitalWrite(_mod->getInt0(), LOW);
+  digitalWrite(_mod->getRst(), LOW);
 
   // use standby-1 mode
   return(_mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_POWER_UP, 1, 1));
@@ -81,13 +67,11 @@ int16_t nRF24::standby() {
 int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // start transmission
   int16_t state = startTransmit(data, len, addr);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // wait until transmission is finished
   uint32_t start = micros();
-  while(digitalRead(_mod->getInt1())) {
+  while(digitalRead(_mod->getIrq())) {
     // check maximum number of retransmits
     if(getStatus(NRF24_MAX_RT)) {
       standby();
@@ -112,13 +96,11 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
 int16_t nRF24::receive(uint8_t* data, size_t len) {
   // start reception
   int16_t state = startReceive();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // wait for Rx_DataReady or timeout
   uint32_t start = micros();
-  while(digitalRead(_mod->getInt1())) {
+  while(digitalRead(_mod->getIrq())) {
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
     if(micros() - start >= 60000) {
       standby();
@@ -142,7 +124,7 @@ int16_t nRF24::transmitDirect(uint32_t frf) {
   int16_t state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
   state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_CONT_WAVE_ON, 7, 7);
   state |= _mod->SPIsetRegValue(NRF24_REG_RF_SETUP, NRF24_PLL_LOCK_ON, 4, 4);
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
   return(state);
 }
 
@@ -153,7 +135,7 @@ int16_t nRF24::receiveDirect() {
 }
 
 void nRF24::setIrqAction(void (*func)(void)) {
-  attachInterrupt(digitalPinToInterrupt(_mod->getInt1()), func, FALLING);
+  attachInterrupt(digitalPinToInterrupt(_mod->getIrq()), func, FALLING);
 }
 
 int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -167,9 +149,7 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable primary Tx mode
   state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PTX, 0, 0);
@@ -179,9 +159,7 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // enable Tx_DataSent interrupt
   state |= _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_MASK_TX_DS_IRQ_ON, 5, 5);
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // flush Tx FIFO
   SPItransfer(NRF24_CMD_FLUSH_TX);
@@ -193,9 +171,9 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIwriteTxPayload(data, len);
 
   // CE high to start transmitting
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
   delayMicroseconds(10);
-  digitalWrite(_mod->getInt0(), LOW);
+  digitalWrite(_mod->getRst(), LOW);
 
   return(state);
 }
@@ -203,28 +181,22 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 int16_t nRF24::startReceive() {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable primary Rx mode
   state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_PRX, 0, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable Rx_DataReady interrupt
   clearIRQ();
-  state |= _mod->SPIsetRegValue(NRF24_REG_CONFIG,  NRF24_MASK_RX_DR_IRQ_ON, 6, 6);
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  state = _mod->SPIsetRegValue(NRF24_REG_CONFIG,  NRF24_MASK_RX_DR_IRQ_ON, 6, 6);
+  RADIOLIB_ASSERT(state);
 
   // flush Rx FIFO
   SPItransfer(NRF24_CMD_FLUSH_RX);
 
   // CE high to start receiving
-  digitalWrite(_mod->getInt0(), HIGH);
+  digitalWrite(_mod->getRst(), HIGH);
 
   // wait to enter Rx state
   delayMicroseconds(130);
@@ -235,9 +207,7 @@ int16_t nRF24::startReceive() {
 int16_t nRF24::readData(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // get packet length
   size_t length = len;
@@ -247,9 +217,6 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
 
   // read packet data
   SPIreadRxPayload(data, length);
-
-  // add terminating null
-  data[length] = 0;
 
   // clear interrupt
   clearIRQ();
@@ -263,24 +230,15 @@ int16_t nRF24::setFrequency(int16_t freq) {
     return(ERR_INVALID_FREQUENCY);
   }
 
-  // set mode to standby
-  int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
-
   // set frequency
   uint8_t freqRaw = freq - 2400;
-  state = _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
-  return(state);
+  return _mod->SPIsetRegValue(NRF24_REG_RF_CH, freqRaw, 6, 0);
 }
 
 int16_t nRF24::setDataRate(int16_t dataRate) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set data rate
   if(dataRate == 250) {
@@ -302,9 +260,7 @@ int16_t nRF24::setDataRate(int16_t dataRate) {
 int16_t nRF24::setOutputPower(int8_t power) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // check allowed values
   uint8_t powerRaw = 0;
@@ -333,9 +289,7 @@ int16_t nRF24::setOutputPower(int8_t power) {
 int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set address width
   switch(addrWidth) {
@@ -366,15 +320,14 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
 int16_t nRF24::setTransmitPipe(uint8_t* addr) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set transmit address
   _mod->SPIwriteRegisterBurst(NRF24_REG_TX_ADDR, addr, _addrWidth);
 
   // set Rx pipe 0 address (for ACK)
   _mod->SPIwriteRegisterBurst(NRF24_REG_RX_ADDR_P0, addr, _addrWidth);
+  state |= _mod->SPIsetRegValue(NRF24_REG_EN_RXADDR, NRF24_P0_ON, 0, 0);
 
   return(state);
 }
@@ -382,9 +335,7 @@ int16_t nRF24::setTransmitPipe(uint8_t* addr) {
 int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t* addr) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // write full pipe 0 - 1 address and enable the pipe
   switch(pipeNum) {
@@ -406,9 +357,7 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t* addr) {
 int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t addrByte) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // write unique pipe 2 - 5 address and enable the pipe
   switch(pipeNum) {
@@ -438,9 +387,7 @@ int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t addrByte) {
 int16_t nRF24::disablePipe(uint8_t pipeNum) {
   // set mode to standby
   int16_t state = standby();
-  if(state != ERR_NONE) {
-     return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   switch(pipeNum) {
     case 0:
@@ -472,6 +419,10 @@ int16_t nRF24::getStatus(uint8_t mask) {
   return(_mod->SPIgetRegValue(NRF24_REG_STATUS) & mask);
 }
 
+bool nRF24::isCarrierDetected() {
+  return(_mod->SPIgetRegValue(NRF24_REG_RPD, 0,0)) == 1;
+}
+
 int16_t nRF24::setFrequencyDeviation(float freqDev) {
   // nRF24 is unable to set frequency deviation
   // this method is implemented only for PhysicalLayer compatibility
@@ -487,6 +438,13 @@ size_t nRF24::getPacketLength(bool update) {
 }
 
 int16_t nRF24::setCrcFiltering(bool crcOn) {
+  // Auto Ack needs to be disabled in order to disable CRC.
+  if (!crcOn) {
+    int16_t status = setAutoAck(false);
+    RADIOLIB_ASSERT(status)
+  }
+
+  // Disable CRC
   return _mod->SPIsetRegValue(NRF24_REG_CONFIG, crcOn ? NRF24_CRC_ON : NRF24_CRC_OFF, 3, 3);
 }
 
@@ -519,6 +477,20 @@ int16_t nRF24::setAutoAck(uint8_t pipeNum, bool autoAckOn){
   }
 }
 
+int16_t nRF24::setDataShaping(float sh) {
+  // nRF24 is unable to set data shaping
+  // this method is implemented only for PhysicalLayer compatibility
+  (void)sh;
+  return(ERR_NONE);
+}
+
+int16_t nRF24::setEncoding(uint8_t encoding) {
+  // nRF24 is unable to set encoding
+  // this method is implemented only for PhysicalLayer compatibility
+  (void)encoding;
+  return(ERR_NONE);
+}
+
 void nRF24::clearIRQ() {
   // clear status bits
   _mod->SPIsetRegValue(NRF24_REG_STATUS, NRF24_RX_DR | NRF24_TX_DS | NRF24_MAX_RT, 6, 4);
@@ -530,27 +502,18 @@ void nRF24::clearIRQ() {
 int16_t nRF24::config() {
   // enable 16-bit CRC
   int16_t state = _mod->SPIsetRegValue(NRF24_REG_CONFIG, NRF24_CRC_ON | NRF24_CRC_16, 3, 2);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set 15 retries and delay 1500 (5*250) us
   _mod->SPIsetRegValue(NRF24_REG_SETUP_RETR, (5 << 4) | 5);
-  if(state != ERR_NONE) {
-    return(state);
-  }
 
   // set features: dynamic payload on, payload with ACK packets off, dynamic ACK off
   state = _mod->SPIsetRegValue(NRF24_REG_FEATURE, NRF24_DPL_ON | NRF24_ACK_PAY_OFF | NRF24_DYN_ACK_OFF, 2, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // enable dynamic payloads
   state = _mod->SPIsetRegValue(NRF24_REG_DYNPD, NRF24_DPL_ALL_ON, 5, 0);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // reset IRQ
   clearIRQ();

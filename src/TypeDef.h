@@ -1,10 +1,19 @@
 #ifndef _RADIOLIB_TYPES_H
 #define _RADIOLIB_TYPES_H
+
 #if ARDUINO >= 100
   #include "Arduino.h"
 #else
   #error "Unsupported Arduino version (< 1.0.0)"
 #endif
+
+// version definitions
+#define RADIOLIB_VERSION_MAJOR  (0x03)
+#define RADIOLIB_VERSION_MINOR  (0x03)
+#define RADIOLIB_VERSION_PATCH  (0x01)
+#define RADIOLIB_VERSION_EXTRA  (0x00)
+
+#define RADIOLIB_VERSION ((RADIOLIB_VERSION_MAJOR << 24) | (RADIOLIB_VERSION_MAJOR << 16) | (RADIOLIB_VERSION_MAJOR << 8) | (RADIOLIB_VERSION_EXTRA))
 
 /*
  * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
@@ -61,9 +70,21 @@
 /*
  * The following platforms do not support SoftwareSerial library.
  */
-#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__)
+#if defined(ESP32) || defined(SAMD_SERIES) || defined(ARDUINO_ARCH_STM32) || defined(__SAM3X8E__) || defined(AM_PART_APOLLO3)
   #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
 #endif
+
+/*!
+  \brief Alias for unused pin, if not supplied by the Arduino core.
+*/
+#if !(defined(NC) || defined(ARDUINO_ARCH_STM32))
+#define NC                                            (-1)
+#endif
+
+/*!
+  \brief A simple assert macro, will return on error.
+*/
+#define RADIOLIB_ASSERT(STATEVAR) { if(STATEVAR != ERR_NONE) { return(STATEVAR); } }
 
 /*!
   \defgroup shield_config Shield Configuration
@@ -85,26 +106,6 @@
   \brief Use I2C interface.
 */
 #define RADIOLIB_USE_I2C                              0x02
-
-/*!
-  \brief Do not use any interrupts/GPIOs.
-*/
-#define RADIOLIB_INT_NONE                             0x00
-
-/*!
-  \brief Use interrupt/GPIO 0.
-*/
-#define RADIOLIB_INT_0                                0x01
-
-/*!
-  \brief Use interrupt/GPIO 1.
-*/
-#define RADIOLIB_INT_1                                0x02
-
-/*!
-  \brief Use both interrupts/GPIOs.
-*/
-#define RADIOLIB_INT_BOTH                             0x03
 
 /*!
   \}
@@ -538,6 +539,29 @@
   The specified Rx period is shorter or longer than the hardware can handle.
 */
 #define ERR_INVALID_RX_PERIOD                         -709
+
+// AX.25-specific status codes
+
+/*!
+  \brief The provided callsign is invalid.
+
+  The specified callsign is longer than 6 ASCII characters.
+*/
+#define ERR_INVALID_CALLSIGN                          -801
+
+/*!
+  \brief The provided repeater configuration is invalid.
+
+  The specified number of repeaters does not match number of repeater IDs or their callsigns.
+*/
+#define ERR_INVALID_NUM_REPEATERS                     -802
+
+/*!
+  \brief One of the provided repeater callsigns is invalid.
+
+  The specified callsign is longer than 6 ASCII characters.
+*/
+#define ERR_INVALID_REPEATER_CALLSIGN                 -803
 
 /*!
   \}

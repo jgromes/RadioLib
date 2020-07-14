@@ -7,9 +7,10 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // SX126X physical layer properties
+#define SX126X_FREQUENCY_STEP_SIZE                    0.9536743164
+#define SX126X_MAX_PACKET_LENGTH                      255
 #define SX126X_CRYSTAL_FREQ                           32.0
 #define SX126X_DIV_EXPONENT                           25
-#define SX126X_MAX_PACKET_LENGTH                      255
 
 // SX126X SPI commands
 // operational modes commands
@@ -325,8 +326,8 @@
 
 // SX126X SPI register variables
 //SX126X_REG_LORA_SYNC_WORD_MSB + LSB
-#define SX126X_SYNC_WORD_PUBLIC                       0x3444
-#define SX126X_SYNC_WORD_PRIVATE                      0x1424
+#define SX126X_SYNC_WORD_PUBLIC                       0x34        // actually 0x3444  NOTE: The low nibbles in each byte (0x_4_4) are masked out since apparently, they're reserved.
+#define SX126X_SYNC_WORD_PRIVATE                      0x12        // actually 0x1424        You couldn't make this up if you tried.
 
 
 /*!
@@ -361,7 +362,7 @@ class SX126x: public PhysicalLayer {
 
       \param cr LoRa coding rate denominator. Allowed values range from 5 to 8.
 
-      \param syncWord 2-byte LoRa sync word.
+      \param syncWord 1-byte LoRa sync word.
 
       \param currentLimit Current protection limit in mA.
 
@@ -369,9 +370,11 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
+      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -390,9 +393,21 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
+      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+
       \returns \ref status_codes
     */
-    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage);
+    int16_t beginFSK(float br, float freqDev, float rxBw, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO = false);
+
+    /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+
+      \param verify Whether correct module startup should be verified. When set to true, RadioLib will attempt to verify the module has started correctly
+      by repeatedly issuing setStandby command. Enabled by default.
+
+      \returns \ref status_codes
+    */
+    int16_t reset(bool verify = true);
 
     /*!
       \brief Blocking binary transmit method.
@@ -447,9 +462,11 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets the module to sleep mode.
 
+      \param retainConfig Set to true to retain configuration of the currently active modem ("warm start") or to false to discard current configuration ("cold start"). Defaults to true.
+
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep(bool retainConfig = true);
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
@@ -475,6 +492,11 @@ class SX126x: public PhysicalLayer {
       \param func ISR to call.
     */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    void clearDio1Action();
 
     /*!
       \brief Interrupt-driven binary transmit method.
@@ -569,9 +591,11 @@ class SX126x: public PhysicalLayer {
 
       \param syncWord LoRa sync word to be set.
 
+      \param controlBits Undocumented control bits, required for compatibility purposes.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint16_t syncWord);
+    int16_t setSyncWord(uint8_t syncWord, uint8_t controlBits = 0x44);
 
     /*!
       \brief Sets current protection limit. Can be set in 0.25 mA steps.
@@ -581,6 +605,13 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setCurrentLimit(float currentLimit);
+
+    /*!
+      \brief Reads current protection limit.
+
+      \returns Currently configured overcurrent protection limit in mA.
+    */
+    float getCurrentLimit();
 
     /*!
       \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
@@ -772,6 +803,46 @@ class SX126x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
+
+    /*!
+     \brief Set implicit header mode for future reception/transmission.
+
+     \returns \ref status_codes
+   */
+   int16_t implicitHeader(size_t len);
+
+    /*!
+     \brief Set explicit header mode for future reception/transmission.
+
+     \param len Payload length in bytes.
+
+     \returns \ref status_codes
+   */
+   int16_t explicitHeader();
+
+   /*!
+    \brief Set regulator mode to LDO.
+
+    \returns \ref status_codes
+  */
+   int16_t setRegulatorLDO();
+
+   /*!
+    \brief Set regulator mode to DC-DC.
+
+    \returns \ref status_codes
+  */
+   int16_t setRegulatorDCDC();
+
+   /*!
+     \brief Sets transmission encoding. Available in FSK mode only. Serves only as alias for PhysicalLayer compatibility.
+
+     \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
+
+     \returns \ref status_codes
+   */
+   int16_t setEncoding(uint8_t encoding);
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
@@ -793,9 +864,10 @@ class SX126x: public PhysicalLayer {
     int16_t setTxParams(uint8_t power, uint8_t rampTime = SX126X_PA_RAMP_200U);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro = 0xFF);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
-    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength = 0xFF, uint8_t headerType = SX126X_LORA_HEADER_EXPLICIT, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
+    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ = SX126X_LORA_IQ_STANDARD);
     int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType = SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLength = 0xFF, uint8_t preambleDetectorLength = SX126X_GFSK_PREAMBLE_DETECT_16);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
+    int16_t setRegulatorMode(uint8_t mode);
     uint8_t getStatus();
     uint32_t getPacketStatus();
     uint16_t getDeviceErrors();
@@ -803,8 +875,8 @@ class SX126x: public PhysicalLayer {
 
     int16_t startReceiveCommon();
     int16_t setFrequencyRaw(float freq);
-    int16_t setOptimalHiPowerPaConfig(int8_t* inOutPower);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     // fixes to errata
     int16_t fixSensitivity();
@@ -817,7 +889,7 @@ class SX126x: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    uint8_t _bw, _sf, _cr, _ldro, _crcType;
+    uint8_t _bw, _sf, _cr, _ldro, _crcType, _headerType;
     uint16_t _preambleLength;
     float _bwKhz;
 
@@ -829,6 +901,8 @@ class SX126x: public PhysicalLayer {
     float _dataRate;
 
     uint32_t _tcxoDelay;
+
+    size_t _implicitLen;
 
     int16_t config(uint8_t modem);
 

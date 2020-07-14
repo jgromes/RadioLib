@@ -19,15 +19,15 @@
 #include <RadioLib.h>
 
 // RF69 has the following connections:
-// NSS pin:   10
+// CS pin:    10
 // DIO0 pin:  2
-// DIO1 pin:  3
+// RESET pin: 3
 RF69 rf1 = new Module(10, 2, 3);
 
 // second CC1101 has different connections:
-// NSS pin:   9
+// CS pin:    9
 // DIO0 pin:  4
-// DIO1 pin:  5
+// RESET pin: 5
 RF69 rf2 = new Module(9, 4, 5);
 
 // or using RadioShield
@@ -41,8 +41,8 @@ void setup() {
   Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   434.0 MHz
   // bit rate:                            48.0 kbps
-  // Rx bandwidth:                        125.0 kHz
   // frequency deviation:                 50.0 kHz
+  // Rx bandwidth:                        125.0 kHz
   // output power:                        13 dBm
   // sync word:                           0x2D01
   int state = rf1.begin();
@@ -58,11 +58,11 @@ void setup() {
   Serial.print(F("[RF69] Initializing ... "));
   // carrier frequency:                   868.0 MHz
   // bit rate:                            300.0 kbps
-  // Rx bandwidth:                        250.0 kHz
   // frequency deviation:                 60.0 kHz
+  // Rx bandwidth:                        250.0 kHz
   // output power:                        17 dBm
   // sync word:                           0x2D01
-  state = rf2.begin(868.0, 300.0, 250.0, 60.0, 17);
+  state = rf2.begin(868.0, 300.0, 60.0, 250.0, 17);
   if (state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {

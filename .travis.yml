@@ -7,6 +7,7 @@ env:
     - BOARD="esp32:esp32:esp32"
     - BOARD="STM32:stm32:GenF3:pnum=BLACKPILL_F303CC"
     - BOARD="esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
+    # - BOARD="SparkFun:apollo3:amap3redboard"
     - BOARD="arduino:samd:arduino_zero_native"
     - BOARD="arduino:sam:arduino_due_x"
     - BOARD="arduino:avr:uno"
@@ -29,7 +30,7 @@ before_install:
   - sudo iptables -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
   # install 3rd party boards
-  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json,https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json" --save-prefs 2>&1
+  - arduino --pref "boardsmanager.additional.urls=http://arduino.esp8266.com/stable/package_esp8266com_index.json,https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json,https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json,https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json" --save-prefs 2>&1
   - if [[ "$BOARD" =~ "esp8266:esp8266:" ]]; then
       arduino --install-boards esp8266:esp8266;
       export SKIP_PAT='(HTTP|MQTT).*ino';
@@ -41,6 +42,8 @@ before_install:
       arduino --install-boards arduino:samd;
     elif [[ "$BOARD" =~ "arduino:sam:" ]]; then
       arduino --install-boards arduino:sam;
+    elif [[ "$BOARD" =~ "SparkFun:apollo3:" ]]; then
+      arduino --install-boards SparkFun:apollo3;
     fi
 
 # create directory to save the library and create symbolic link

@@ -16,10 +16,11 @@
 #include <RadioLib.h>
 
 // CC1101 has the following connections:
-// NSS pin:   10
+// CS pin:    10
 // GDO0 pin:  2
-// GDO2 pin:  3
-CC1101 cc = new Module(10, 2, 3);
+// RST pin:   unused
+// GDO2 pin:  3 (optional)
+CC1101 cc = new Module(10, 2, NC, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
@@ -35,8 +36,8 @@ void setup() {
   Serial.print(F("[CC1101] Initializing ... "));
   // carrier frequency:                   868.0 MHz
   // bit rate:                            4.8 kbps
-  // Rx bandwidth:                        325.0 kHz
   // frequency deviation:                 48.0 kHz
+  // Rx bandwidth:                        325.0 kHz
   // sync word:                           0xD391
   int state = cc.begin();
   if (state == ERR_NONE) {
@@ -62,7 +63,7 @@ void setup() {
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                       0x78, 0xAB, 0xCD, 0xEF};
-    state = cc.transmit(byteArr, 8);
+    state = cc.startTransmit(byteArr, 8);
   */
 }
 
@@ -124,7 +125,7 @@ void loop() {
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x56,
                         0x78, 0xAB, 0xCD, 0xEF};
-      int state = cc.transmit(byteArr, 8);
+      int state = cc.startTransmit(byteArr, 8);
     */
 
     // we're ready to send more packets,

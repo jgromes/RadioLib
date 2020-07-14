@@ -1,11 +1,11 @@
 #include "Module.h"
 
-Module::Module(int rx, int tx, HardwareSerial* useSer) {
-  _cs = -1;
+Module::Module(int16_t rx, int16_t tx, HardwareSerial* useSer, int16_t rst) {
+  _cs = NC;
   _rx = rx;
   _tx = tx;
-  _int0 = -1;
-  _int1 = -1;
+  _irq = NC;
+  _rst = rst;
 
 #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
   ModuleSerial = useSer;
@@ -15,22 +15,32 @@ Module::Module(int rx, int tx, HardwareSerial* useSer) {
 #endif
 }
 
-Module::Module(int cs, int int0, int int1, SPIClass& spi, SPISettings spiSettings) {
+Module::Module(int16_t cs, int16_t irq, int16_t rst, SPIClass& spi, SPISettings spiSettings) {
   _cs = cs;
-  _rx = -1;
-  _tx = -1;
-  _int0 = int0;
-  _int1 = int1;
+  _rx = NC;
+  _tx = NC;
+  _irq = irq;
+  _rst = rst;
   _spi = &spi;
   _spiSettings = spiSettings;
 }
 
-Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* useSer) {
+Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t gpio, SPIClass& spi, SPISettings spiSettings) {
+  _cs = cs;
+  _rx = gpio;
+  _tx = NC;
+  _irq = irq;
+  _rst = rst;
+  _spi = &spi;
+  _spiSettings = spiSettings;
+}
+
+Module::Module(int16_t cs, int16_t irq, int16_t rst, int16_t rx, int16_t tx, SPIClass& spi, SPISettings spiSettings, HardwareSerial* useSer) {
   _cs = cs;
   _rx = rx;
   _tx = tx;
-  _int0 = int0;
-  _int1 = int1;
+  _irq = irq;
+  _rst = rst;
   _spi = &spi;
   _spiSettings = spiSettings;
 
@@ -42,22 +52,12 @@ Module::Module(int cs, int int0, int int1, int rx, int tx, SPIClass& spi, SPISet
 #endif
 }
 
-Module::Module(int cs, int int0, int int1, int int2, SPIClass& spi, SPISettings spiSettings) {
-  _cs = cs;
-  _rx = int2;
-  _tx = -1;
-  _int0 = int0;
-  _int1 = int1;
-  _spi = &spi;
-  _spiSettings = spiSettings;
-}
-
-void Module::init(uint8_t interface, uint8_t gpio) {
+void Module::init(uint8_t interface) {
   // select interface
   switch(interface) {
     case RADIOLIB_USE_SPI:
-      setPin(_cs, OUTPUT);
-      digitalWrite(_cs, HIGH);
+      Module::pinMode(_cs, OUTPUT);
+      Module::digitalWrite(_cs, HIGH);
       _spi->begin();
       break;
     case RADIOLIB_USE_UART:
@@ -70,27 +70,17 @@ void Module::init(uint8_t interface, uint8_t gpio) {
     case RADIOLIB_USE_I2C:
       break;
   }
-
-  // select GPIO
-  switch(gpio) {
-    case RADIOLIB_INT_NONE:
-      break;
-    case RADIOLIB_INT_0:
-      setPin(_int0, INPUT);
-      break;
-    case RADIOLIB_INT_1:
-      setPin(_int1, INPUT);
-      break;
-    case RADIOLIB_INT_BOTH:
-      setPin(_int0, INPUT);
-      setPin(_int1, INPUT);
-      break;
-  }
 }
 
 void Module::term() {
-  // stop SPI
-  _spi->end();
+  // stop hardware interfaces
+  if(_spi != nullptr) {
+    _spi->end();
+  }
+
+  if(ModuleSerial != nullptr) {
+    ModuleSerial->end();
+  }
 }
 
 void Module::ATemptyBuffer() {
@@ -217,14 +207,20 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   _spi->beginTransaction(_spiSettings);
 
   // pull CS low
-  digitalWrite(_cs, LOW);
+  Module::digitalWrite(_cs, LOW);
 
   // send SPI register address with access command
   _spi->transfer(reg | cmd);
-  RADIOLIB_VERBOSE_PRINT(reg | cmd, HEX);
-  RADIOLIB_VERBOSE_PRINT('\t');
-  RADIOLIB_VERBOSE_PRINT(reg | cmd, BIN);
-  RADIOLIB_VERBOSE_PRINT('\t');
+  #ifdef RADIOLIB_VERBOSE
+    if(cmd == SPIwriteCommand) {
+      RADIOLIB_VERBOSE_PRINT('W');
+    } else if(cmd == SPIreadCommand) {
+      RADIOLIB_VERBOSE_PRINT('R');
+    }
+    RADIOLIB_VERBOSE_PRINT('\t')
+    RADIOLIB_VERBOSE_PRINT(reg, HEX);
+    RADIOLIB_VERBOSE_PRINT('\t');
+  #endif
 
   // send data or get response
   if(cmd == SPIwriteCommand) {
@@ -232,29 +228,31 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
       _spi->transfer(dataOut[n]);
       RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(dataOut[n], BIN);
-      RADIOLIB_VERBOSE_PRINT('\t');
     }
   } else if (cmd == SPIreadCommand) {
     for(size_t n = 0; n < numBytes; n++) {
       dataIn[n] = _spi->transfer(0x00);
       RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(dataIn[n], BIN);
-      RADIOLIB_VERBOSE_PRINT('\t');
     }
   }
   RADIOLIB_VERBOSE_PRINTLN();
 
   // release CS
-  digitalWrite(_cs, HIGH);
+  Module::digitalWrite(_cs, HIGH);
 
   // end SPI transaction
   _spi->endTransaction();
 }
 
-void Module::setPin(int16_t pin, uint8_t mode) {
-  if(pin != -1) {
-    pinMode(pin, mode);
+void Module::pinMode(int16_t pin, uint8_t mode) {
+  if(pin != NC) {
+    ::pinMode(pin, mode);
+  }
+}
+
+void Module::digitalWrite(int16_t pin, uint8_t value) {
+  if(pin != NC) {
+    ::digitalWrite(pin, value);
   }
 }

@@ -4,53 +4,35 @@ SX1268::SX1268(Module* mod) : SX126x(mod) {
 
 }
 
-int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint16_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength, float tcxoVoltage) {
+int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, float currentLimit, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
-  int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength, tcxoVoltage);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  int16_t state = SX126x::begin(bw, sf, cr, syncWord, currentLimit, preambleLength, tcxoVoltage, useRegulatorLDO);
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setFrequency(freq);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
-  if (state != ERR_NONE) {
-    return state;
-  }
 
   return(state);
 }
-int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage) {
+int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, float currentLimit, uint16_t preambleLength, float dataShaping, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
-  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping, tcxoVoltage);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  int16_t state = SX126x::beginFSK(br, freqDev, rxBw, currentLimit, preambleLength, dataShaping, tcxoVoltage, useRegulatorLDO);
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setFrequency(freq);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
-  if (state != ERR_NONE) {
-    return state;
-  }
 
   return(state);
 }
@@ -77,9 +59,7 @@ int16_t SX1268::setFrequency(float freq, bool calibrate) {
       data[1] = SX126X_CAL_IMG_430_MHZ_2;
     }
     state = SX126x::calibrateImage(data);
-    if(state != ERR_NONE) {
-      return(state);
-    }
+    RADIOLIB_ASSERT(state);
   }
 
   // set frequency
@@ -95,23 +75,17 @@ int16_t SX1268::setOutputPower(int8_t power) {
   // get current OCP configuration
   uint8_t ocp = 0;
   int16_t state = readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
-  // enable optimal PA - this changes the value of power.
-  state = SX126x::setOptimalHiPowerPaConfig(&power);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  // set PA config
+  state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
+  RADIOLIB_ASSERT(state);
 
   // set output power
   // TODO power ramp time configuration
   state = SX126x::setTxParams(power);
-  if (state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // restore OCP configuration
-  return writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }

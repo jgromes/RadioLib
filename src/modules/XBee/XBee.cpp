@@ -10,7 +10,7 @@ XBee::XBee(Module* mod) {
 int16_t XBee::begin(long speed) {
   // set module properties
   _mod->baudrate = speed;
-  _mod->init(RADIOLIB_USE_UART, RADIOLIB_INT_1);
+  _mod->init(RADIOLIB_USE_UART);
 
   // reset module
   reset();
@@ -52,11 +52,10 @@ int16_t XBee::begin(long speed) {
 }
 
 void XBee::reset() {
-  pinMode(_mod->getInt1(), OUTPUT);
-  digitalWrite(_mod->getInt1(), LOW);
+  pinMode(_mod->getRst(), OUTPUT);
+  digitalWrite(_mod->getRst(), LOW);
   delayMicroseconds(200);
-  digitalWrite(_mod->getInt1(), HIGH);
-  pinMode(_mod->getInt1(), INPUT);
+  digitalWrite(_mod->getRst(), HIGH);
 }
 
 int16_t XBee::transmit(uint8_t* dest, const char* payload, uint8_t radius) {
@@ -173,9 +172,7 @@ int16_t XBee::setPanId(uint8_t* panId) {
 
   // get response code
   int16_t state = readApiFrame(frameID, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // confirm changes
   return(confirmChanges());
@@ -189,7 +186,10 @@ int16_t XBeeSerial::begin(long speed) {
   // set module properties
   _mod->AtLineFeed = "\r";
   _mod->baudrate = speed;
-  _mod->init(RADIOLIB_USE_UART, RADIOLIB_INT_NONE);
+  _mod->init(RADIOLIB_USE_UART);
+
+  // reset module
+  reset();
 
   // empty UART buffer (garbage data)
   _mod->ATemptyBuffer();
@@ -216,11 +216,11 @@ int16_t XBeeSerial::begin(long speed) {
 }
 
 void XBeeSerial::reset() {
-  pinMode(_mod->getInt1(), OUTPUT);
-  digitalWrite(_mod->getInt1(), LOW);
+  pinMode(_mod->getRst(), OUTPUT);
+  digitalWrite(_mod->getRst(), LOW);
   delayMicroseconds(200);
-  digitalWrite(_mod->getInt1(), HIGH);
-  pinMode(_mod->getInt1(), INPUT);
+  digitalWrite(_mod->getRst(), HIGH);
+  pinMode(_mod->getRst(), INPUT);
 }
 
 int16_t XBeeSerial::setDestinationAddress(const char* destinationAddressHigh, const char* destinationAddressLow) {
@@ -340,9 +340,7 @@ int16_t XBee::confirmChanges() {
 
   // get response code
   int16_t state = readApiFrame(frameID, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // apply changes
   frameID = _frameID++;
@@ -350,9 +348,6 @@ int16_t XBee::confirmChanges() {
 
   // get response code
   state = readApiFrame(frameID, 4);
-  if(state != ERR_NONE) {
-    return(state);
-  }
 
   return(state);
 }

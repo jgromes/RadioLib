@@ -7,10 +7,11 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // SX127x physical layer properties
-#define SX127X_CRYSTAL_FREQ                           32.0
-#define SX127X_DIV_EXPONENT                           19
+#define SX127X_FREQUENCY_STEP_SIZE                    61.03515625
 #define SX127X_MAX_PACKET_LENGTH                      255
 #define SX127X_MAX_PACKET_LENGTH_FSK                  64
+#define SX127X_CRYSTAL_FREQ                           32.0
+#define SX127X_DIV_EXPONENT                           19
 
 // SX127x series common LoRa registers
 #define SX127X_REG_FIFO                               0x00
@@ -564,6 +565,11 @@ class SX127x: public PhysicalLayer {
     int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint8_t currentLimit, uint16_t preambleLength);
 
     /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+    */
+    void reset();
+
+    /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
 
       \param chipVersion Value in SPI version register. Used to verify the connection and hardware version.
@@ -668,11 +674,21 @@ class SX127x: public PhysicalLayer {
     void setDio0Action(void (*func)(void));
 
     /*!
+      \brief Clears interrupt service routine to call when DIO0 activates.
+    */
+    void clearDio0Action();
+
+    /*!
       \brief Set interrupt service routine function to call when DIO1 activates.
 
       \param func Pointer to interrupt service routine.
     */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    void clearDio1Action();
 
     /*!
       \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.

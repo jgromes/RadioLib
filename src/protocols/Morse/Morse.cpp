@@ -1,80 +1,12 @@
 #include "Morse.h"
 
-// structure to save data about character Morse code
-/*!
-  \cond RADIOLIB_DOXYGEN_HIDDEN
-*/
-struct Morse_t {
-  char c;                                             // ASCII character
-  char m[7];                                          // Morse code representation
-};
-/*!
-  \endcond
-*/
-
-// array of all Morse code characters
-const Morse_t MorseTable[MORSE_LENGTH] PROGMEM = {
-  {'A', ".-"},
-  {'B',"-..."},
-  {'C', "-.-."},
-  {'D',"-.."},
-  {'E',"."},
-  {'F',"..-."},
-  {'G',"--."},
-  {'H',"...."},
-  {'I',".."},
-  {'J',".---"},
-  {'K',"-.-"},
-  {'L',".-.."},
-  {'M',"--"},
-  {'N',"-."},
-  {'O',"---"},
-  {'P',".--."},
-  {'Q',"--.-"},
-  {'R',".-."},
-  {'S',"..."},
-  {'T',"-"},
-  {'U',"..-"},
-  {'V',"...-"},
-  {'W',".--"},
-  {'X',"-..-"},
-  {'Y',"-.--"},
-  {'Z',"--.."},
-  {'1',".----"},
-  {'2',"..---"},
-  {'3',"...--"},
-  {'4',"....-"},
-  {'5',"....."},
-  {'6',"-...."},
-  {'7',"--..."},
-  {'8',"---.."},
-  {'9',"----."},
-  {'0',"-----"},
-  {'.',".-.-.-"},
-  {',',"--..--"},
-  {':',"---..."},
-  {'?',"..--.."},
-  {'\'',".----."},
-  {'-',"-....-"},
-  {'/',"-..-."},
-  {'(',"-.--."},
-  {')',"-.--.-"},
-  {'\"',".-..-."},
-  {'=',"-...-"},
-  {'+',".-.-."},
-  {'@',".--.-."},
-  {' ',"_"},                               // space is used to separate words
-  {0x01,"-.-.-"},                          // ASCII SOH (start of heading) is used as alias for start signal
-  {0x02,".-.-."}                           // ASCII EOT (end of transmission) is used as alias for stop signal
-};
-
 MorseClient::MorseClient(PhysicalLayer* phy) {
   _phy = phy;
 }
 
 int16_t MorseClient::begin(float base, uint8_t speed) {
   // calculate 24-bit frequency
-  _base = (base * (uint32_t(1) << _phy->getDivExponent())) / _phy->getCrystalFreq();
+  _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // calculate dot length (assumes PARIS as typical word)
   _dotLength = 1200 / speed;
@@ -86,7 +18,7 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
 }
 
 size_t MorseClient::startSignal() {
-  return(MorseClient::write(0x01));
+  return(MorseClient::write('_'));
 }
 
 size_t MorseClient::write(const char* str) {
@@ -106,52 +38,55 @@ size_t MorseClient::write(uint8_t* buff, size_t len) {
 }
 
 size_t MorseClient::write(uint8_t b) {
-  // find the correct Morse code in array
-  Morse_t mc;
-  bool found = false;
-  for(uint8_t pos = 0; pos < MORSE_LENGTH; pos++) {
-    memcpy_P(&mc, &MorseTable[pos], sizeof(Morse_t));
-    if(mc.c == toupper(b)) {
-      found = true;
-      break;
-    }
+  // check unprintable ASCII characters and boundaries
+  if((b < ' ') || (b == 0x60) || (b > 'z')) {
+    return(0);
   }
 
-  // check if the requested code was found in the array
-  if(found) {
-    RADIOLIB_DEBUG_PRINT(mc.c);
-    RADIOLIB_DEBUG_PRINT('\t');
-    RADIOLIB_DEBUG_PRINTLN(mc.m);
-
-    // iterate over Morse code representation and output appropriate tones
-    for(uint8_t i = 0; i < strlen(mc.m); i++) {
-      switch(mc.m[i]) {
-        case '.':
-          _phy->transmitDirect(_base);
-          delay(_dotLength);
-          break;
-        case '-':
-          _phy->transmitDirect(_base);
-          delay(_dotLength * 3);
-          break;
-        case '_':
-          // do nothing (word space)
-          break;
-      }
-
-      // symbol space
-      _phy->standby();
-      delay(_dotLength);
-    }
-
-    // letter space
-    RADIOLIB_DEBUG_PRINTLN();
-    delay(_dotLength * 3);
-
+  // inter-word pause (space)
+  if(b == ' ') {
+    RADIOLIB_DEBUG_PRINTLN(F("space"));
+    _phy->standby();
+    delay(4 * _dotLength);
     return(1);
   }
 
-  return(0);
+  // get morse code from lookup table
+  uint8_t code = pgm_read_byte(&MorseTable[(uint8_t)(toupper(b) - 32)]);
+
+  // check unsupported characters
+  if(code == MORSE_UNSUPORTED) {
+    return(0);
+  }
+
+  // iterate through codeword until guard bit is reached
+  while(code > MORSE_GUARDBIT) {
+
+    // send dot or dash
+    if (code & MORSE_DASH) {
+      RADIOLIB_DEBUG_PRINT('-');
+      _phy->transmitDirect(_base);
+      delay(3 * _dotLength);
+    } else {
+      RADIOLIB_DEBUG_PRINT('.');
+      _phy->transmitDirect(_base);
+      delay(_dotLength);
+    }
+
+    // symbol space
+    _phy->standby();
+    delay(_dotLength);
+
+    // move onto the next bit
+    code >>= 1;
+  }
+
+  // letter space
+  _phy->standby();
+  delay(2 * _dotLength);
+  RADIOLIB_DEBUG_PRINTLN();
+
+  return(1);
 }
 
 size_t MorseClient::print(__FlashStringHelper* fstr) {
@@ -219,7 +154,7 @@ size_t MorseClient::print(double n, int digits) {
 }
 
 size_t MorseClient::println(void) {
-  return(MorseClient::write(0x02));
+  return(MorseClient::write('^'));
 }
 
 size_t MorseClient::println(__FlashStringHelper* fstr) {

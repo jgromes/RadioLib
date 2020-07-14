@@ -23,14 +23,16 @@
 // SX1278 has the following connections:
 // NSS pin:   10
 // DIO0 pin:  2
+// RESET pin: 9
 // DIO1 pin:  3
-SX1278 loraSX1278 = new Module(10, 2, 3);
+SX1278 loraSX1278 = new Module(10, 2, 9, 3);
 
 // SX1272 has different connections:
 // NSS pin:   9
 // DIO0 pin:  4
-// DIO1 pin:  5
-SX1272 loraSX1272 = new Module(9, 4, 5);
+// RESET pin: 5
+// DIO1 pin:  6
+SX1272 loraSX1272 = new Module(9, 4, 5, 6);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield

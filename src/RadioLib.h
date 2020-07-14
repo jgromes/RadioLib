@@ -18,6 +18,7 @@
   - PhysicalLayer protocols
     - RTTY (RTTYClient)
     - Morse Code (MorseClient)
+    - AX.25 (AX25Client)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)
@@ -67,6 +68,7 @@
 
 // physical layer protocols
 #include "protocols/PhysicalLayer/PhysicalLayer.h"
+#include "protocols/AX25/AX25.h"
 #include "protocols/Morse/Morse.h"
 #include "protocols/RTTY/RTTY.h"
 

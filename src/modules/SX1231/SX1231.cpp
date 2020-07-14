@@ -6,7 +6,9 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI, RADIOLIB_INT_BOTH);
+  _mod->init(RADIOLIB_USE_SPI);
+  Module::pinMode(_mod->getIrq(), INPUT);
+  Module::pinMode(_mod->getRst(), OUTPUT);
 
   // try to find the SX1231 chip
   uint8_t i = 0;
@@ -35,7 +37,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX1231 found!"));
-    SPI.end();
+    _mod->term();
     return(ERR_CHIP_NOT_FOUND);
   } else {
     RADIOLIB_DEBUG_PRINTLN(F("Found SX1231!"));
@@ -43,47 +45,33 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   // configure settings not accessible by API
   int16_t state = config();
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setFrequency(freq);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure bitrate
   _rxBw = 125.0;
   state = setBitRate(br);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default RX bandwidth
   state = setRxBandwidth(rxBw);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default frequency deviation
   state = setFrequencyDeviation(freqDev);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // configure default TX output power
   state = setOutputPower(power);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // default sync word values 0x2D01 is the same as the default in LowPowerLab RFM69 library
   uint8_t syncWord[] = {0x2D, 0x01};
   state = setSyncWord(syncWord, 2);
-  if(state != ERR_NONE) {
-    return(state);
-  }
+  RADIOLIB_ASSERT(state);
 
   // set default packet length mode
   state = variablePacketLengthMode();
@@ -95,15 +83,11 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   if(_chipRevision == SX1231_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
     state = _mod->SPIsetRegValue(SX1231_REG_TEST_OOK, SX1231_OOK_DELTA_THRESHOLD);
-    if(state != ERR_NONE) {
-      return(state);
-    }
+    RADIOLIB_ASSERT(state);
 
     // enable OCP with 95 mA limit
     state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON | RF69_OCP_TRIM, 4, 0);
-    if(state != ERR_NONE) {
-      return(state);
-    }
+    RADIOLIB_ASSERT(state);
   }
 
   return(ERR_NONE);

@@ -7,9 +7,10 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // RF69 physical layer properties
+#define RF69_FREQUENCY_STEP_SIZE                      61.03515625
+#define RF69_MAX_PACKET_LENGTH                        64
 #define RF69_CRYSTAL_FREQ                             32.0
 #define RF69_DIV_EXPONENT                             19
-#define RF69_MAX_PACKET_LENGTH                        64
 
 // RF69 register map
 #define RF69_REG_FIFO                                 0x00
@@ -454,15 +455,20 @@ class RF69: public PhysicalLayer {
 
       \param br Bit rate to be used in kbps. Defaults to 48.0 kbps.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
-
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 50.0 kHz.
+
+      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
 
       \param power Output power in dBm. Defaults to 13 dBm.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 13);
+    int16_t begin(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 125.0, int8_t power = 13);
+
+    /*!
+      \brief Reset method. Will reset the chip to the default state using RST pin.
+    */
+    void reset();
 
     /*!
       \brief Blocking binary transmit method.
@@ -558,11 +564,21 @@ class RF69: public PhysicalLayer {
     void setDio0Action(void (*func)(void));
 
     /*!
+      \brief Clears interrupt service routine to call when DIO0 activates.
+    */
+    void clearDio0Action();
+
+    /*!
       \brief Sets interrupt service routine to call when DIO1 activates.
 
       \param func ISR to call.
     */
     void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    void clearDio1Action();
 
     /*!
       \brief Interrupt-driven binary transmit method.
@@ -581,11 +597,9 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
 
-      \param timeout Enable module-driven timeout. Set to false for listen mode.
-
       \returns \ref status_codes
     */
-    int16_t startReceive(bool timeout = false);
+    int16_t startReceive();
 
     /*!
       \brief Reads data received after calling startReceive method.
@@ -757,6 +771,25 @@ class RF69: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
+
+    /*!
+      \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.
+      Allowed values are 0.3, 0.5 or 1.0. Set to 0 to disable data shaping.
+
+      \param sh Gaussian shaping bandwidth-time product that will be used for data shaping
+
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(float sh);
+
+    /*!
+      \brief Sets transmission encoding.
+
+      \param encoding Encoding to be used. Set to 0 for NRZ, 1 for Manchester and 2 for whitening.
+
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding);
 
 #ifndef RADIOLIB_GODMODE
   protected:
