@@ -386,63 +386,64 @@ int16_t Si443x::setRxBandwidth(float rxBw) {
     filterSet = ((rxBw - 60.286)/10.7000 + 0.5);
 
   // this is the "Lord help thee who tread 'ere" section - no way to approximate this mess
-  } else if(rxBw == 142.8) {
+  /// \todo float tolerance equality as macro?
+  } else if(abs(rxBw - 142.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 4;
-  } else if(rxBw == 167.8) {
+  } else if(abs(rxBw - 167.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 5;
-  } else if(rxBw == 181.1) {
+  } else if(abs(rxBw - 181.1) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 6;
-  } else if(rxBw == 191.5) {
+  } else if(abs(rxBw - 191.5) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 15;
-  } else if(rxBw == 225.1) {
+  } else if(abs(rxBw - 225.1) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 1;
-  } else if(rxBw == 248.8) {
+  } else if(abs(rxBw - 248.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 2;
-  } else if(rxBw == 269.3) {
+  } else if(abs(rxBw - 269.3) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 3;
-  } else if(rxBw == 284.8) {
+  } else if(abs(rxBw - 284.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 4;
-  } else if(rxBw == 335.5) {
+  } else if(abs(rxBw -335.5) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 8;
-  } else if(rxBw == 391.8) {
+  } else if(abs(rxBw - 391.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 9;
-  } else if(rxBw == 420.2) {
+  } else if(abs(rxBw - 420.2) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 10;
-  } else if(rxBw == 468.4) {
+  } else if(abs(rxBw - 468.4) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 11;
-  } else if(rxBw == 518.8) {
+  } else if(abs(rxBw - 518.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 12;
-  } else if(rxBw == 577.0) {
+  } else if(abs(rxBw - 577.0) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 13;
-  } else if(rxBw == 620.7) {
+  } else if(abs(rxBw - 620.7) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 14;
