@@ -403,14 +403,14 @@ void SX127x::clearDio0Action() {
 }
 
 void SX127x::setDio1Action(void (*func)(void)) {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
   attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
 }
 
 void SX127x::clearDio1Action() {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
   detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
