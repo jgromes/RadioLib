@@ -792,6 +792,7 @@ class Si443x: public PhysicalLayer {
 
     float _br = 0;
     float _freqDev = 0;
+    float _freq = 0;
 
     size_t _packetLength = 0;
     bool _packetLengthQueried = false;
