@@ -527,7 +527,7 @@ class CC1101: public PhysicalLayer {
 
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
