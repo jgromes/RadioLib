@@ -144,6 +144,7 @@ setGdo0Action	KEYWORD2
 setGdo2Action	KEYWORD2
 clearGdo0Action	KEYWORD2
 clearGdo2Action	KEYWORD2
+setCrcFiltering	KEYWORD2
 
 # SX126x-specific
 setTCXO	KEYWORD2
