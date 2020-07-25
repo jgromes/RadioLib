@@ -853,10 +853,12 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
+  SPIClass* spi = _mod->getSpi();
+  SPISettings spiSettings = _mod->getSpiSettings();
   Module::digitalWrite(_mod->getCs(), LOW);
-  SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(cmd);
-  SPI.endTransaction();
+  spi->beginTransaction(spiSettings);
+  spi->transfer(cmd);
+  spi->endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
 }
 
