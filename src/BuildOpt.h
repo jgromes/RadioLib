@@ -10,13 +10,16 @@
 /*
  * Platform-specific configuration.
  *
- * RADIOLIB_PLATFORM - platform name, used in debugging to quickly check the correct platform is detected,
+ * RADIOLIB_PLATFORM - platform name, used in debugging to quickly check the correct platform is detected.
  * RADIOLIB_PIN_TYPE - which type should be used for pin numbers in functions like digitalRead().
  * RADIOLIB_PIN_MODE - which type should be used for pin modes in functions like pinMode().
  * RADIOLIB_PIN_STATUS - which type should be used for pin values in functions like digitalWrite().
- * RADIOLIB_DIGITAL_PIN_TO_INTERRUPT - function to be used to convert digital pin number to interrupt pin number.
  * RADIOLIB_INTERRUPT_STATUS - which type should be used for pin changes in functions like attachInterrupt().
+ * RADIOLIB_DIGITAL_PIN_TO_INTERRUPT - function/macro to be used to convert digital pin number to interrupt pin number.
  * RADIOLIB_NC - alias for unused pin, usually the largest possible value of RADIOLIB_PIN_TYPE.
+ * RADIOLIB_DEFAULT_SPI - default SPIClass instance to use.
+ * RADIOLIB_PROGMEM - macro to place variable into program storage (usually Flash).
+ * RADIOLIB_PROGMEM_READ_BYTE -  function/macro to read variables saved in program storage (usually Flash).
  * RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED - defined if the specific platform does not support SoftwareSerial.
  * RADIOLIB_HARDWARE_SERIAL_PORT - which hardware serial port should be used on platform that do not have SoftwareSerial support.
  * RADIOLIB_TONE_UNSUPPORTED - some platforms do not have tone()/noTone(), which is required for AFSK.
@@ -43,6 +46,8 @@
   #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
   #define RADIOLIB_NC                                 (0xFF)
   #define RADIOLIB_DEFAULT_SPI                        SPI
+  #define RADIOLIB_PROGMEM                            PROGMEM
+  #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   // the following must be defined if the Arduino core does not support SoftwareSerial library
   //#define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
@@ -90,6 +95,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #elif defined(ESP8266)
     // ESP8266 boards
@@ -101,6 +108,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
     // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
     #define RADIOLIB_EXCLUDE_ESP8266
@@ -115,6 +124,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -129,6 +140,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(digitalPinToPinName(p))
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -142,6 +155,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -155,6 +170,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -169,6 +186,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #elif defined(ARDUINO_ARC32_TOOLS)
     // Intel Curie
@@ -180,6 +199,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
     // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
@@ -191,6 +212,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #elif defined(AM_PART_APOLLO3)
     // Sparkfun Artemis boards
@@ -202,6 +225,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -216,6 +241,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -232,6 +259,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
@@ -248,6 +277,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_TONE_UNSUPPORTED
@@ -263,6 +294,8 @@
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #endif
 #endif
