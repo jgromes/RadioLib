@@ -66,9 +66,9 @@ int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t
 void SX1272::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(5);
+  Module::delay(5);
 }
 
 int16_t SX1272::setFrequency(float freq) {

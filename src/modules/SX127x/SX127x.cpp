@@ -143,10 +143,10 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet transmission or timeout
-    start = micros();
-    while(!digitalRead(_mod->getIrq())) {
-      yield();
-      if(micros() - start > timeout) {
+    start = Module::micros();
+    while(!Module::digitalRead(_mod->getIrq())) {
+      Module::yield();
+      if(Module::micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_TX_TIMEOUT);
       }
@@ -161,10 +161,10 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     RADIOLIB_ASSERT(state);
 
     // wait for transmission end or timeout
-    start = micros();
-    while(!digitalRead(_mod->getIrq())) {
-      yield();
-      if(micros() - start > timeout) {
+    start = Module::micros();
+    while(!Module::digitalRead(_mod->getIrq())) {
+      Module::yield();
+      if(Module::micros() - start > timeout) {
         clearIRQFlags();
         standby();
         return(ERR_TX_TIMEOUT);
@@ -175,7 +175,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // update data rate
-  uint32_t elapsed = micros() - start;
+  uint32_t elapsed = Module::micros() - start;
   _dataRate = (len*8.0)/((float)elapsed/1000000.0);
 
   // clear interrupt flags
@@ -197,9 +197,9 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet reception or timeout (100 LoRa symbols)
-    while(!digitalRead(_mod->getIrq())) {
-      yield();
-      if(digitalRead(_mod->getGpio())) {
+    while(!Module::digitalRead(_mod->getIrq())) {
+      Module::yield();
+      if(Module::digitalRead(_mod->getGpio())) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
       }
@@ -214,10 +214,10 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet reception or timeout
-    uint32_t start = micros();
-    while(!digitalRead(_mod->getIrq())) {
-      yield();
-      if(micros() - start > timeout) {
+    uint32_t start = Module::micros();
+    while(!Module::digitalRead(_mod->getIrq())) {
+      Module::yield();
+      if(Module::micros() - start > timeout) {
         clearIRQFlags();
         return(ERR_RX_TIMEOUT);
       }
@@ -255,9 +255,9 @@ int16_t SX127x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(digitalRead(_mod->getGpio())) {
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::digitalRead(_mod->getGpio())) {
       clearIRQFlags();
       return(PREAMBLE_DETECTED);
     }
@@ -395,25 +395,25 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
 }
 
 void SX127x::setDio0Action(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void SX127x::clearDio0Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void SX127x::setDio1Action(void (*func)(void)) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
 }
 
 void SX127x::clearDio1Action() {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -975,7 +975,7 @@ int8_t SX127x::getTempRaw() {
   _mod->SPIsetRegValue(SX127X_REG_IMAGE_CAL, SX127X_TEMP_MONITOR_ON, 0, 0);
 
   // wait
-  delayMicroseconds(200);
+  Module::delayMicroseconds(200);
 
   // disable temperature reading
   _mod->SPIsetRegValue(SX127X_REG_IMAGE_CAL, SX127X_TEMP_MONITOR_OFF, 0, 0);
@@ -1093,7 +1093,7 @@ bool SX127x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(ver, HEX);
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
