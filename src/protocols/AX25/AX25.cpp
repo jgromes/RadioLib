@@ -400,14 +400,14 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
       // check each bit
       for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-        uint32_t start = micros();
+        uint32_t start = Module::micros();
         if(stuffedFrameBuff[i] & mask) {
           _audio->tone(AX25_AFSK_MARK, false);
         } else {
           _audio->tone(AX25_AFSK_SPACE, false);
         }
-        while(micros() - start < 833) {
-          yield();
+        while(Module::micros() - start < 833) {
+          Module::yield();
         }
       }
 
