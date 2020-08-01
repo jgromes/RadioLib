@@ -33,7 +33,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
@@ -102,9 +102,9 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 void RF69::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(10);
+  Module::delay(10);
 }
 
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -116,11 +116,11 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
 
-    if(micros() - start > timeout) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_TX_TIMEOUT);
@@ -145,11 +145,11 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
 
-    if(micros() - start > timeout) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
@@ -267,11 +267,11 @@ int16_t RF69::startReceive() {
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void RF69::clearDio0Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
@@ -279,14 +279,14 @@ void RF69::setDio1Action(void (*func)(void)) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
 }
 
 void RF69::clearDio1Action() {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -640,7 +640,7 @@ int16_t RF69::getTemperature() {
   // wait until measurement is finished
   while(_mod->SPIgetRegValue(RF69_REG_TEMP_1, 2, 2) == RF69_TEMP_MEAS_RUNNING) {
     // check every 10 us
-    delay(10);
+    Module::delay(10);
   }
   int8_t rawTemp = _mod->SPIgetRegValue(RF69_REG_TEMP_2);
 
