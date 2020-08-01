@@ -175,8 +175,8 @@ bool Module::ATsendData(uint8_t* data, uint32_t len) {
 bool Module::ATgetResponse() {
   char data[128];
   char* dataPtr = data;
-  uint32_t start = millis();
-  while(millis() - start < _ATtimeout) {
+  uint32_t start = Module::millis();
+  while(Module::millis() - start < _ATtimeout) {
     while(ModuleSerial->available() > 0) {
       char c = ModuleSerial->read();
       RADIOLIB_VERBOSE_PRINT(c);
@@ -218,9 +218,9 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
 
   // check register value each millisecond until check interval is reached
   // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
-  uint32_t start = micros();
+  uint32_t start = Module::micros();
   uint8_t readValue;
-  while(micros() - start < (checkInterval * 1000)) {
+  while(Module::micros() - start < (checkInterval * 1000)) {
     readValue = SPIreadRegister(reg);
     if(readValue == newValue) {
       // check passed, we can stop the loop
@@ -336,7 +336,7 @@ RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
 }
 
 void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
-  /// \todo Add tone support for platforms without tone()
+  // TODO add tone support for platforms without tone()
   #ifndef RADIOLIB_TONE_UNSUPPORTED
   if(pin != RADIOLIB_NC) {
     ::tone(pin, value);
@@ -345,12 +345,40 @@ void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
 }
 
 void Module::noTone(RADIOLIB_PIN_TYPE pin) {
-  /// \todo Add tone support for platforms without tone()
+  // TODO add tone support for platforms without noTone()
   #ifndef RADIOLIB_TONE_UNSUPPORTED
   if(pin != RADIOLIB_NC) {
     ::noTone(pin);
   }
   #endif
+}
+
+void Module::attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, void (*userFunc)(void), RADIOLIB_INTERRUPT_STATUS mode) {
+  ::attachInterrupt(interruptNum, userFunc, mode);
+}
+
+void Module::detachInterrupt(RADIOLIB_PIN_TYPE interruptNum) {
+  ::detachInterrupt(interruptNum);
+}
+
+void Module::yield() {
+  ::yield();
+}
+
+void Module::delay(uint32_t ms) {
+  ::delay(ms);
+}
+
+void Module::delayMicroseconds(uint32_t us) {
+  ::delayMicroseconds(us);
+}
+
+uint32_t Module::millis() {
+  return(::millis());
+}
+
+uint32_t Module::micros() {
+  return(::micros());
 }
 
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
