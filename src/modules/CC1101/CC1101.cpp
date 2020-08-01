@@ -31,7 +31,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0014"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
@@ -101,13 +101,13 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // wait for transmission end
-  while(digitalRead(_mod->getIrq())) {
-    yield();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // set mode to standby
@@ -125,13 +125,13 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for sync word
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // wait for packet end
-  while(digitalRead(_mod->getIrq())) {
-    yield();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // read packet data
@@ -190,26 +190,26 @@ int16_t CC1101::packetMode() {
 }
 
 void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
 }
 
 void CC1101::clearGdo0Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  if(_mod->getGpio() == RADIOLIB_NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
 }
 
 void CC1101::clearGdo2Action() {
-  if(_mod->getGpio() == RADIOLIB_NC) {
+  if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -737,7 +737,7 @@ int16_t CC1101::config() {
   SPIsendCommand(CC1101_CMD_RESET);
 
   // Wait a ridiculous amount of time to be sure radio is ready.
-  delay(150);
+  Module::delay(150);
 
   // enable automatic frequency synthesizer calibration
   int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
@@ -853,11 +853,20 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
+  // get pointer to used SPI interface and the settings
   SPIClass* spi = _mod->getSpi();
   SPISettings spiSettings = _mod->getSpiSettings();
+
+  // pull NSS low
   Module::digitalWrite(_mod->getCs(), LOW);
+
+  // start transfer
   spi->beginTransaction(spiSettings);
+
+  // send the command byte
   spi->transfer(cmd);
+
+  // stop transfer
   spi->endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
 }
