@@ -10,7 +10,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   size_t len = 0;
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   while(true) {
-    char c = pgm_read_byte(p++);
+    char c = RADIOLIB_PROGMEM_READ_BYTE(p++);
     len++;
     if(c == '\0') {
       break;
@@ -27,7 +27,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
   for(size_t i = 0; i < len; i++) {
-    str[i] = pgm_read_byte(p + i);
+    str[i] = RADIOLIB_PROGMEM_READ_BYTE(p + i);
   }
 
   // transmit string
