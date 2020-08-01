@@ -205,7 +205,7 @@ int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) 
 
 void SSTVClient::idle() {
   _phy->transmitDirect();
-  tone(SSTV_TONE_LEADER);
+  this->tone(SSTV_TONE_LEADER);
 }
 
 void SSTVClient::sendHeader() {
@@ -214,35 +214,35 @@ void SSTVClient::sendHeader() {
   _phy->transmitDirect();
 
   // send the first part of header (leader-break-leader)
-  tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
-  tone(SSTV_TONE_BREAK, SSTV_HEADER_BREAK_LENGTH);
-  tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
+  this->tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
+  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BREAK_LENGTH);
+  this->tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
 
   // VIS start bit
-  tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
+  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
 
   // VIS code
   uint8_t parityCount = 0;
   for(uint8_t mask = 0x01; mask < 0x80; mask <<= 1) {
     if(_mode.visCode & mask) {
-      tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
+      this->tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
       parityCount++;
     } else {
-      tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
+      this->tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
     }
   }
 
   // VIS parity
   if(parityCount % 2 == 0) {
     // even parity
-    tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
+    this->tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
   } else {
     // odd parity
-    tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
+    this->tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
   }
 
   // VIS stop bit
-  tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
+  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
 }
 
 void SSTVClient::sendLine(uint32_t* imgLine) {
@@ -251,14 +251,14 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
     _firstLine = false;
 
     // send start sync tone
-    tone(SSTV_TONE_BREAK, 9000);
+    this->tone(SSTV_TONE_BREAK, 9000);
   }
 
   // send all tones in sequence
   for(uint8_t i = 0; i < _mode.numTones; i++) {
     if((_mode.tones[i].type == tone_t::GENERIC) && (_mode.tones[i].len > 0)) {
       // sync/porch tones
-      tone(_mode.tones[i].freq, _mode.tones[i].len);
+      this->tone(_mode.tones[i].freq, _mode.tones[i].len);
     } else {
       // scan lines
       for(uint16_t j = 0; j < _mode.width; j++) {
@@ -278,7 +278,7 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
           case(tone_t::GENERIC):
             break;
         }
-        tone(SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), _mode.scanPixelLen);
+        this->tone(SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), _mode.scanPixelLen);
       }
     }
   }
@@ -289,7 +289,7 @@ uint16_t SSTVClient::getPictureHeight() const {
 }
 
 void SSTVClient::tone(float freq, uint32_t len) {
-  uint32_t start = micros();
+  uint32_t start = Module::micros();
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     _audio->tone(freq, false);
@@ -299,8 +299,8 @@ void SSTVClient::tone(float freq, uint32_t len) {
   #else
   _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
   #endif
-  while(micros() - start < len) {
-    yield();
+  while(Module::micros() - start < len) {
+    Module::yield();
   }
 }
 
