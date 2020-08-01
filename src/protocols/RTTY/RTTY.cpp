@@ -91,11 +91,11 @@ uint16_t ITA2String::getBits(char c) {
   // search ITA2 table
   uint16_t code = 0x0000;
   for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
-    if(pgm_read_byte(&ITA2Table[i][0]) == c) {
+    if(RADIOLIB_PROGMEM_READ_BYTE(&ITA2Table[i][0]) == c) {
       // character is in letter shift
       code = (ITA2_LTRS << 5) | i;
       break;
-    } else if(pgm_read_byte(&ITA2Table[i][1]) == c) {
+    } else if(RADIOLIB_PROGMEM_READ_BYTE(&ITA2Table[i][1]) == c) {
       // character is in figures shift
       code = (ITA2_FIGS << 5) | i;
       break;
@@ -217,7 +217,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   size_t len = 0;
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   while(true) {
-    char c = pgm_read_byte(p++);
+    char c = RADIOLIB_PROGMEM_READ_BYTE(p++);
     len++;
     if(c == '\0') {
       break;
@@ -234,7 +234,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
   for(size_t i = 0; i < len; i++) {
-    str[i] = pgm_read_byte(p + i);
+    str[i] = RADIOLIB_PROGMEM_READ_BYTE(p + i);
   }
 
   size_t n = 0;
@@ -407,18 +407,18 @@ size_t RTTYClient::println(double d, int digits) {
 }
 
 void RTTYClient::mark() {
-  uint32_t start = micros();
+  uint32_t start = Module::micros();
   transmitDirect(_base + _shift, _baseHz + _shiftHz);
-  while(micros() - start < _bitDuration) {
-    yield();
+  while(Module::micros() - start < _bitDuration) {
+    Module::yield();
   }
 }
 
 void RTTYClient::space() {
-  uint32_t start = micros();
+  uint32_t start = Module::micros();
   transmitDirect(_base, _baseHz);
-  while(micros() - start < _bitDuration) {
-    yield();
+  while(Module::micros() - start < _bitDuration) {
+    Module::yield();
   }
 }
 
