@@ -11,10 +11,10 @@ int16_t SX1280::range(bool master, uint32_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait until ranging is finished
-  uint32_t start = millis();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(millis() - start > 10000) {
+  uint32_t start = Module::millis();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::millis() - start > 10000) {
       clearIrqStatus();
       standby();
       return(ERR_RANGING_TIMEOUT);
