@@ -60,9 +60,9 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
 void Si443x::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(100);
+  Module::delay(100);
 }
 
 int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -74,10 +74,10 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = micros();
-  while(digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_TX_TIMEOUT);
@@ -107,9 +107,9 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(digitalRead(_mod->getIrq())) {
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
@@ -204,11 +204,11 @@ int16_t Si443x::packetMode() {
 }
 
 void Si443x::setIrqAction(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
 }
 
 void Si443x::clearIrqAction() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -601,7 +601,7 @@ bool Si443x::findChip() {
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(SI443X_DEVICE_VERSION, HEX);
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
