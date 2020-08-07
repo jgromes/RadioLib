@@ -453,7 +453,9 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     clearIRQFlags();
 
     // set packet length
-    _mod->SPIwriteRegister(SX127X_REG_FIFO, len);
+    if (_packetLengthConfig == SX127X_PACKET_VARIABLE) {
+      _mod->SPIwriteRegister(SX127X_REG_FIFO, len);
+    }
 
     // check address filtering
     uint8_t filter = _mod->SPIgetRegValue(SX127X_REG_PACKET_CONFIG_1, 2, 1);
@@ -865,7 +867,11 @@ size_t SX127x::getPacketLength(bool update) {
   } else if(modem == SX127X_FSK_OOK) {
     // get packet length
     if(!_packetLengthQueried && update) {
-      _packetLength = _mod->SPIreadRegister(SX127X_REG_FIFO);
+      if (_packetLengthConfig == SX127X_PACKET_VARIABLE) {
+        _packetLength = _mod->SPIreadRegister(SX127X_REG_FIFO);
+      } else {
+        _packetLength = _mod->SPIreadRegister(SX127X_REG_PAYLOAD_LENGTH_FSK);
+      }
       _packetLengthQueried = true;
     }
   }
