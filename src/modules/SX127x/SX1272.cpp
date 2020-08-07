@@ -273,7 +273,7 @@ int16_t SX1272::setDataShaping(uint8_t sh) {
   }
 
   // check modulation
-  if(!SX127x::_ook) {
+  if(SX127x::_ook) {
     return(ERR_INVALID_MODULATION);
   }
 
