@@ -21,6 +21,7 @@ jobs:
           - STM32:stm32:GenF3:pnum=BLACKPILL_F303CC
           - arduino:samd:arduino_zero_native
           - arduino:sam:arduino_due_x
+          - adafruit:nrf52:feather52832:softdevice=s132v6,debug=l0
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -49,16 +50,22 @@ jobs:
         env:
           warnings: 'all'
         run: |
-          if [[ "${{ contains(matrix.board, 'esp8266') }}" == "true" ]]; then
+          if [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
             echo "::set-output name=skip-path::(HTTP|MQTT).*ino"
           
-          elif [[ "${{ contains(matrix.board, 'esp32') }}" == "true" ]]; then
+          elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             python -m pip install pyserial
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
           
-          elif [[ "${{ contains(matrix.board, 'STM32') }}" == "true" ]]; then
+          elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then
             echo "::set-output name=index-url::--additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip python3-setuptools
+            pip3 install --user adafruit-nrfutil
+            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
           
           fi
       
@@ -77,7 +84,7 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ "${{ steps.prep.outputs.skip-path }}" ]]; then
+            if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ '${{ steps.prep.outputs.skip-path }}' ]]; then
               # skip sketch
               echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-path }})\033[0m";
             else
@@ -98,8 +105,8 @@ jobs:
     steps:
       - name: Install Doxygen
         run: |
-          sudo apt-get update;
-          sudo apt-get install -y doxygen;
+          sudo apt-get update
+          sudo apt-get install -y doxygen
         
       - uses: actions/checkout@v2
       
