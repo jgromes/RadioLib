@@ -56,7 +56,7 @@ jobs:
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
         run: |
-          arduino-cli core update-index ${{ steps.prep.outputs.index-url }}
+          arduino-cli core update-index ${{ format('{0}', steps.prep.outputs.index-url) }}
           arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs._0, steps.split.outputs._1) }}
       
       - name: Checkout repository
