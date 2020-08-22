@@ -42,7 +42,7 @@ jobs:
         id: split
         with:
           msg: ${{ matrix.board }}
-          separator: ':'
+          seperator: ':'
       
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
