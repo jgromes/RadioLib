@@ -22,6 +22,13 @@ jobs:
           - arduino:samd:arduino_zero_native
           - arduino:sam:arduino_due_x
           # - adafruit:nrf52:feather52832:softdevice=s132v6,debug=l0
+          - Intel:arc32:arduino_101
+          - arduino:megaavr:uno2018:mode=on
+          - SparkFun:apollo3:amap3redboard
+          - arduino:mbed:nano33ble
+          - stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz
+          - adafruit:samd:adafruit_feather_m0:usbstack=arduino,debug=off
+          - arduino-beta:mbed:envie_m4
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -47,13 +54,15 @@ jobs:
       - name: Prepare platform-specific settings
         if: ${{ env.run-build == 'true' }}
         id: prep
-        env:
-          warnings: 'all'
         run: |
-          echo "::set-output name=skip-path::''"
+          # common settings - skip nothing, all warnings
+          echo "::set-output name=skip-pattern::''"
+          echo "::set-output name=warnings::'all'"
+          
+          # platform-dependent settings - board index URLs, skip paterns etc.
           if [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
-            echo "::set-output name=skip-path::(HTTP|MQTT).*ino"
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
           
           elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             python -m pip install pyserial
@@ -69,6 +78,22 @@ jobs:
             pip3 install --user adafruit-nrfutil
             echo "::add-path::~/.local/bin"
             echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json"
+            echo "::set-output name=warnings::'none'"
+          
+          elif [[ "${{ contains(matrix.board, 'arduino:mbed') }}" == "true" ]]; then
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
+          
+          elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
+            echo "::set-output name=index-url::--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
+            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'arduino-beta:mbed') }}" == "true" ]]; then
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
           
           fi
       
@@ -87,13 +112,13 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z '${{ steps.prep.outputs.skip-path }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-path }} ]]; then
+            if [ ! -z '${{ steps.prep.outputs.skip-pattern }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-pattern }} ]]; then
               # skip sketch
-              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-path }})\033[0m";
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-pattern }})\033[0m";
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ steps.prep.env.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
