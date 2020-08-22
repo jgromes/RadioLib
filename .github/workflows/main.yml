@@ -44,12 +44,12 @@ jobs:
           warnings: 'all'
         run: |
           if [[ "${{ contains(matrix.board, 'esp8266') }}" == "true" ]]; then
-            echo "::set-output name=skip-path::'HTTP|MQTT).*ino'"
-            echo "::set-output name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
+            echo "::set-output name=skip-path::HTTP|MQTT).*ino"
+            echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
          
           else
-            echo "::set-output name=skip-path::''"
-            echo "::set-output name=index-url::''"
+            echo "::set-output name=skip-path::"
+            echo "::set-output name=index-url::"
           
           fi
       
