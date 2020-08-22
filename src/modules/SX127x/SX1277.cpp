@@ -36,6 +36,28 @@ int16_t SX1277::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
+int16_t SX1277::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
+  // execute common part
+  int16_t state = SX127x::beginFSK(SX1278_CHIP_VERSION, br, freqDev, rxBw, preambleLength, enableOOK);
+  RADIOLIB_ASSERT(state);
+
+  // configure settings not accessible by API
+  state = configFSK();
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX1277::setFrequency(float freq) {
   RADIOLIB_CHECK_RANGE(freq, 137.0, 1020.0, ERR_INVALID_FREQUENCY);
 
