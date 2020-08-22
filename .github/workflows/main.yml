@@ -48,7 +48,7 @@ jobs:
         if: ${{ env.run-build == 'true' }}
         run: |
           arduino-cli core update-index
-          arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs_0, steps.split.outputs_1) }}
+          arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs._0, steps.split.outputs._1) }}
       
       - name: Checkout repository
         if: ${{ env.run-build == 'true' }}
