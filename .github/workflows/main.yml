@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
     env:
-      run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format({0}, matrix.board)) }}
+      run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.board)) }}
 
     steps:
       - name: Install arduino-cli
