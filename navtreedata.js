@@ -23,7 +23,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
-"class_module.html#ad1aadc2b52eea2bf9d26591091eec3f1",
+"class_module.html#adb22d89bc5f532f1d056d9a9f3a6589c",
 "class_s_x1273.html#ad0387b22d6dcc876bc5f85174714149b",
 "functions.html"
 ];

@@ -10,7 +10,7 @@ var class_s_x126x =
     [ "fixedPacketLengthMode", "class_s_x126x.html#aa768ce757a0f7ee66cdd72cab7a855fa", null ],
     [ "forceLDRO", "class_s_x126x.html#a420c23bb1861646e29f44c0f4c646ee8", null ],
     [ "getCurrentLimit", "class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab", null ],
-    [ "getDataRate", "class_s_x126x.html#a247211d5d88d501effc4c886adccaec5", null ],
+    [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],
     [ "getRSSI", "class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925", null ],
     [ "getSNR", "class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca", null ],
