@@ -11,7 +11,10 @@ jobs:
   Build:
     strategy:
       matrix:
-        board: ['arduino:avr:uno', 'arduino:avr:mega:cpu=atmega2560', 'arduino:samd:arduino_zero_native']
+        board: 
+          - arduino:avr:uno
+          - arduino:avr:mega:cpu=atmega2560
+          - arduino:samd:arduino_zero_native
         include:
           - board: 'arduino:avr:uno'
             platform: 'arduino:avr'
@@ -34,11 +37,18 @@ jobs:
           echo "::add-path::~/.local/bin"
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
       
+      - name: Get platform name
+        uses: jungwinter/split@v1
+        id: split
+        with:
+          msg: ${{ matrix.board }}
+          separator: ':'
+      
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
         run: |
           arduino-cli core update-index
-          arduino-cli core install ${{ matrix.platform }}
+          arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs_0, steps.split.outputs_1) }}
       
       - name: Checkout repository
         if: ${{ env.run-build == 'true' }}
