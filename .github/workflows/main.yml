@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-      - run: |
+        run: |
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
           export PATH=$PATH:$PWD/bin
           arduino-cli core update-index;
@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Build all examples
-      - run: |
+        run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
             if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
@@ -44,14 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Doxygen
-      - run: |
+        run: |
           sudo apt-get update;
           sudo apt-get install -y doxygen;
         
       - uses: actions/checkout@v2
       
       - name: Generate docs
-      - run: doxygen Doxyfile
+        run: doxygen Doxyfile
         
       - uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
