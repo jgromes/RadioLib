@@ -25,14 +25,6 @@ class ISerial {
     int available();
     void flush();
 
-    // SoftwareSerial-only methods
-    #if !defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
-    bool listen();
-    bool isListening();
-    bool stopListening();
-    bool overflow();
-    #endif
-
     size_t print(const __FlashStringHelper *);
     size_t print(const String &);
     size_t print(const char[]);

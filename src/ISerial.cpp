@@ -33,25 +33,6 @@ void ISerial::flush() {
   _mod->ModuleSerial->flush();
 }
 
-// SoftwareSerial-only methods
-#if !defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
-bool ISerial::listen() {
-  return(_mod->ModuleSerial->listen());
-}
-
-bool ISerial::isListening() {
-  return(_mod->ModuleSerial->isListening());
-}
-
-bool ISerial::stopListening() {
-  return(_mod->ModuleSerial->stopListening());
-}
-
-bool ISerial::overflow() {
-  return(_mod->ModuleSerial->overflow());
-}
-#endif
-
 size_t ISerial::print(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->print(ifsh));
 }
