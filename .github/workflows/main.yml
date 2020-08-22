@@ -17,6 +17,10 @@ jobs:
           - arduino:avr:leonardo
           - esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
           - arduino:samd:arduino_zero_native
+          - esp32:esp32:esp32
+          - STM32:stm32:GenF3:pnum=BLACKPILL_F303CC
+          - arduino:samd:arduino_zero_native
+          - arduino:sam:arduino_due_x
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -44,12 +48,14 @@ jobs:
           warnings: 'all'
         run: |
           if [[ "${{ contains(matrix.board, 'esp8266') }}" == "true" ]]; then
-            echo "::set-output name=skip-path::HTTP|MQTT).*ino"
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
-         
-          else
-            echo "::set-output name=skip-path::"
-            echo "::set-output name=index-url::"
+            echo "::set-output name=skip-path::(HTTP|MQTT).*ino"
+          
+          elif [[ "${{ contains(matrix.board, 'esp32') }}" == "true" ]]; then
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'esp32') }}" == "true" ]]; then
+            echo "::set-output name=index-url::--additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
           
           fi
       
