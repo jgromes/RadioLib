@@ -24,25 +24,25 @@ jobs:
     
     steps:
       - name: Install arduino-cli
-        if: ${{ run-build }}
+        if: ${{ env.run-build }}
         run: |
           mkdir -p ~/.local/bin
           echo "::add-path::~/.local/bin"
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
       
       - name: Install platform
-        if: ${{ run-build }}
+        if: ${{ env.run-build }}
         run: |
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.platform }}
           echo "::set-env name=WARNINGS::all"
       
       - name: Checkout
-        if: ${{ run-build }}
+        if: ${{ env.run-build }}
         uses: actions/checkout@v2
       
       - name: Build all examples
-        if: ${{ run-build }}
+        if: ${{ env.run-build }}
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
