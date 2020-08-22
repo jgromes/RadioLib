@@ -86,7 +86,7 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ ${{ format("{0}", steps.prep.outputs.skip-path) }} ]]; then
+            if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ ${{ format('"{0}"', steps.prep.outputs.skip-path) }} ]]; then
               # skip sketch
               echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-path }})\033[0m";
             else
