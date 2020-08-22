@@ -13,10 +13,13 @@ jobs:
     steps:
       - name: Install dependencies
         run: |
-          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+          mkdir -p ~/.local/bin
+          echo "::add-path::~/.local/bin"
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
           export PATH=$PATH:$PWD/bin
           arduino-cli core update-index;
           arduino-cli core install arduino:avr;
+          export WARNINGS=all;
       
       - uses: actions/checkout@v2
       
