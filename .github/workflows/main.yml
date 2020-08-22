@@ -11,14 +11,14 @@ jobs:
   Build:
     strategy:
       matrix:
-        platform: ['arduino:avr', 'arduino:samd']
+        board: ['arduino:avr:uno', 'arduino:avr:mega:cpu=atmega2560', 'arduino:samd:arduino_zero_native']
         include:
-          - platform: 'arduino:avr'
-            board: 'arduino:avr:uno'
-          - platform: 'arduino:avr'
-            board: 'arduino:avr:mega:cpu=atmega2560'
-          - platform: 'arduino:samd'
-            board: 'arduino:samd:arduino_zero_native'
+          - board: 'arduino:avr:uno'
+            platform: 'arduino:avr'
+          - board: 'arduino:avr:mega:cpu=atmega2560'
+            platform: 'arduino:avr'
+          - board: 'arduino:samd:arduino_zero_native'
+            platform: 'arduino:samd'
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
