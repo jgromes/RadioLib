@@ -17,10 +17,6 @@ jobs:
           - arduino:avr:leonardo
           - esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
           - arduino:samd:arduino_zero_native
-        include:
-          - board: esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
-            index-url: http://arduino.esp8266.com/stable/package_esp8266com_index.json
-            skip-path: (HTTP|MQTT).*ino
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -49,7 +45,7 @@ jobs:
           skip-path: ''
           index-url: ''
         run: |
-          if [[ ${{ contains(matrix.board, 'esp8266') }} =~ 'true' ]]; then
+          if [[ "${{ contains(matrix.board, 'esp8266') }}" =~ "true" ]]; then
             echo "::set-env name=skip-path::'HTTP|MQTT).*ino'"
             echo "::set-env name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
           fi
