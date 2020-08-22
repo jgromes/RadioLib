@@ -66,7 +66,6 @@ jobs:
             sudo apt-get install -y python3 python3-pip python3-setuptools
             pip3 install wheel
             pip3 install --user adafruit-nrfutil
-            echo "::add-path::~/.local/bin/adafruit-nrfutil"
             echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
           
           fi
@@ -84,6 +83,10 @@ jobs:
       - name: Build examples
         if: ${{ env.run-build == 'true' }}
         run: |
+          if [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
+            echo "::add-path::~/.local/bin/adafruit-nrfutil"
+          fi
+          
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
             if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ '${{ steps.prep.outputs.skip-path }}' ]]; then
