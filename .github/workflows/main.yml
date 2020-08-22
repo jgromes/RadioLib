@@ -53,7 +53,7 @@ jobs:
           echo "::set-output name=skip-path::''"
           if [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
-            echo "::set-output name=skip-path::'(HTTP|MQTT).*ino'"
+            echo "::set-output name=skip-path::(HTTP|MQTT).*ino"
           
           elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             python -m pip install pyserial
@@ -87,7 +87,7 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z ${{ steps.prep.outputs.skip-path }} ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-path }} ]]; then
+            if [ ! -z '${{ steps.prep.outputs.skip-path }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-path }} ]]; then
               # skip sketch
               echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-path }})\033[0m";
             else
