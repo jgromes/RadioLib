@@ -26,7 +26,6 @@ jobs:
     name: ${{ matrix.board }}
     env:
       run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_FORCE_BUILD') || contains(github.event.head_commit.message, 'Bump version to') }}
-      warnings: 'all'
     
     steps:
       - name: Install arduino-cli
@@ -46,6 +45,7 @@ jobs:
       - name: Prepare platform-specific settings
         id: prep
         env:
+          warnings: 'all'
           skip-path: ''
           index-url: ''
         run: |
@@ -57,7 +57,7 @@ jobs:
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
         run: |
-          arduino-cli core update-index ${{ prep.env.index-url }}
+          arduino-cli core update-index ${{ steps.prep.env.index-url }}
           arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs._0, steps.split.outputs._1) }}
       
       - name: Checkout repository
@@ -69,13 +69,13 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z "${{ prep.env.skip-path }}" ] && [[ ${example} =~ ${{ prep.env.skip-path }} ]]; then
+            if [ ! -z "${{ steps.prep.env.skip-path }}" ] && [[ ${example} =~ ${{ steps.prep.env.skip-path }} ]]; then
               # skip sketch
-              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ prep.env.skip-path }})\033[0m";
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.env.skip-path }})\033[0m";
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ env.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ steps.prep.env.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
