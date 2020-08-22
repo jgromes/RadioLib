@@ -11,16 +11,20 @@ jobs:
   Build:
     strategy:
       matrix:
-        platform: ["arduino:avr", "arduino:samd"]
+        platform: ['arduino:avr', 'arduino:samd']
         include:
-          - platform: "arduino:avr"
-            board: "arduino:avr:uno"
-          - platform: "arduino:samd"
-            board: "arduino:samd:arduino_zero_native"
+          - platform: 'arduino:avr'
+            board: 'arduino:avr:uno'
+          - platform: 'arduino:avr'
+            board: 'arduino:avr:mega:cpu=atmega2560'
+          - platform: 'arduino:samd'
+            board: 'arduino:samd:arduino_zero_native'
     
     runs-on: ubuntu-latest
+    name: ${{ matrix.board }}
     env:
       run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_FORCE_BUILD') || contains(github.event.head_commit.message, 'Bump version to') }}
+      warnings: 'all'
     
     steps:
       - name: Install arduino-cli
@@ -35,13 +39,12 @@ jobs:
         run: |
           arduino-cli core update-index
           arduino-cli core install ${{ matrix.platform }}
-          echo "::set-env name=WARNINGS::all"
       
-      - name: Checkout
+      - name: Checkout repository
         if: ${{ env.run-build == 'true' }}
         uses: actions/checkout@v2
       
-      - name: Build all examples
+      - name: Build examples
         if: ${{ env.run-build == 'true' }}
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
@@ -52,7 +55,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=$WARNINGS
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ env.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
