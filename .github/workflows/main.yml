@@ -21,7 +21,7 @@ jobs:
           - STM32:stm32:GenF3
           - arduino:samd:arduino_zero_native
           - arduino:sam:arduino_due_x
-          # - adafruit:nrf52:feather52832
+          - adafruit:nrf52:feather52832
           - Intel:arc32:arduino_101
           - arduino:megaavr:uno2018
           - SparkFun:apollo3:amap3redboard
@@ -38,7 +38,7 @@ jobs:
     steps:
       - name: Install arduino-cli
         if: ${{ env.run-build == 'true' }}
-        run: 
+        run:
           |
           mkdir -p ~/.local/bin
           echo "::add-path::~/.local/bin"
@@ -55,7 +55,7 @@ jobs:
       - name: Prepare platform-specific settings
         if: ${{ env.run-build == 'true' }}
         id: prep
-        run: 
+        run:
           |
           # common settings - no extra options, skip nothing, all warnings
           echo "::set-output name=options::"
@@ -65,7 +65,7 @@ jobs:
           # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
           if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
             echo "::set-output name=options:::cpu=atmega2560"
-          
+
           elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
@@ -84,10 +84,10 @@ jobs:
             sudo apt-get install -y python3 python3-pip python3-setuptools
             pip3 install wheel
             pip3 install --user adafruit-nrfutil
-            echo "::add-path::~/.local/bin"
+            echo "::add-path::/home/runner/.local/bin"
             echo "::set-output name=options:::softdevice=s132v6,debug=l0"
             echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
-          
+
           elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
             echo "::set-output name=options:::mode=on"
 
@@ -113,7 +113,7 @@ jobs:
 
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
-        run: 
+        run:
           |
           arduino-cli core update-index ${{ format('{0}', steps.prep.outputs.index-url) }}
           arduino-cli core install ${{ format('{0}:{1} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url) }}
@@ -124,7 +124,7 @@ jobs:
 
       - name: Build examples
         if: ${{ env.run-build == 'true' }}
-        run: 
+        run:
           |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
