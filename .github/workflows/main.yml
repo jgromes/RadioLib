@@ -42,12 +42,15 @@ jobs:
         id: prep
         env:
           warnings: 'all'
-          skip-path: ''
-          index-url: ''
         run: |
           if [[ "${{ contains(matrix.board, 'esp8266') }}" == "true" ]]; then
             echo "::set-env name=skip-path::'HTTP|MQTT).*ino'"
             echo "::set-env name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
+         
+          else
+            echo "::set-env name=skip-path::''"
+            echo "::set-env name=index-url::''"
+          
           fi
       
       - name: Install platform
