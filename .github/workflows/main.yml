@@ -16,7 +16,6 @@ jobs:
           mkdir -p ~/.local/bin
           echo "::add-path::~/.local/bin"
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
-          export PATH=$PATH:$PWD/bin
       
       - name: Install board
         run: |
@@ -37,7 +36,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --fqbn $BOARD $example --warnings=$WARNINGS
+              arduino-cli compile --libraries $PWD/src/RadioLib.h --fqbn $BOARD $example --warnings=$WARNINGS
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
