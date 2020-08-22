@@ -15,7 +15,7 @@ jobs:
           - arduino:avr:uno
           - arduino:avr:mega:cpu=atmega2560
           - arduino:avr:leonardo
-          - esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
+          - esp8266:esp8266:generic
           - arduino:samd:arduino_zero_native
           - esp32:esp32:esp32
           - STM32:stm32:GenF3:pnum=BLACKPILL_F303CC
@@ -38,7 +38,8 @@ jobs:
     steps:
       - name: Install arduino-cli
         if: ${{ env.run-build == 'true' }}
-        run: |
+        run: 
+          |
           mkdir -p ~/.local/bin
           echo "::add-path::~/.local/bin"
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
@@ -54,13 +55,16 @@ jobs:
       - name: Prepare platform-specific settings
         if: ${{ env.run-build == 'true' }}
         id: prep
-        run: |
-          # common settings - skip nothing, all warnings
+        run: 
+          |
+          # common settings - no extra options, skip nothing, all warnings
+          echo "::set-output name=options::"
           echo "::set-output name=skip-pattern::''"
           echo "::set-output name=warnings::'all'"
 
           # platform-dependent settings - board index URLs, skip paterns etc.
           if [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
+            echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
             echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
@@ -99,7 +103,8 @@ jobs:
 
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
-        run: |
+        run: 
+          |
           arduino-cli core update-index ${{ format('{0}', steps.prep.outputs.index-url) }}
           arduino-cli core install ${{ format('{0}:{1} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url) }}
 
@@ -109,7 +114,8 @@ jobs:
 
       - name: Build examples
         if: ${{ env.run-build == 'true' }}
-        run: |
+        run: 
+          |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
             if [ ! -z '${{ steps.prep.outputs.skip-pattern }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-pattern }} ]]; then
@@ -118,7 +124,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=${{ steps.prep.outputs.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }}${{ steps.prep.outputs.options }} $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
