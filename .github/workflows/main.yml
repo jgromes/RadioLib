@@ -36,6 +36,7 @@ jobs:
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
       
       - name: Get platform name
+        if: ${{ env.run-build == 'true' }}
         uses: jungwinter/split@v1
         id: split
         with:
@@ -43,6 +44,7 @@ jobs:
           seperator: ':'
       
       - name: Prepare platform-specific settings
+        if: ${{ env.run-build == 'true' }}
         id: prep
         env:
           warnings: 'all'
