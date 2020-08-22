@@ -22,8 +22,8 @@ jobs:
         run: |
           arduino-cli core update-index
           arduino-cli core install arduino:avr
-          export BOARD="arduino:avr:uno"
-          export WARNINGS=all
+          echo "::set-env name=BOARD::arduino:avr:uno"
+          echo "::set-env name=WARNINGS::all"
       
       - uses: actions/checkout@v2
       
