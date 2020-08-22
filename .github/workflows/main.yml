@@ -13,21 +13,21 @@ jobs:
       matrix:
         board:
           - arduino:avr:uno
-          - arduino:avr:mega:cpu=atmega2560
+          - arduino:avr:mega
           - arduino:avr:leonardo
           - esp8266:esp8266:generic
           - arduino:samd:arduino_zero_native
           - esp32:esp32:esp32
-          - STM32:stm32:GenF3:pnum=BLACKPILL_F303CC
+          - STM32:stm32:GenF3
           - arduino:samd:arduino_zero_native
           - arduino:sam:arduino_due_x
-          # - adafruit:nrf52:feather52832:softdevice=s132v6,debug=l0
+          # - adafruit:nrf52:feather52832
           - Intel:arc32:arduino_101
-          - arduino:megaavr:uno2018:mode=on
+          - arduino:megaavr:uno2018
           - SparkFun:apollo3:amap3redboard
           - arduino:mbed:nano33ble
-          - stm32duino:STM32F1:mapleMini:bootloader_version=original,cpu_speed=speed_72mhz
-          - adafruit:samd:adafruit_feather_m0:usbstack=arduino,debug=off
+          - stm32duino:STM32F1:mapleMini
+          - adafruit:samd:adafruit_feather_m0
           - arduino-beta:mbed:envie_m4
 
     runs-on: ubuntu-latest
@@ -62,8 +62,11 @@ jobs:
           echo "::set-output name=skip-pattern::''"
           echo "::set-output name=warnings::'all'"
 
-          # platform-dependent settings - board index URLs, skip paterns etc.
-          if [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
+          # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
+          if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
+            echo "::set-output name=options:::cpu=atmega2560"
+          
+          elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
             echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
@@ -73,6 +76,7 @@ jobs:
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
 
           elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then
+            echo "::set-output name=options:::pnum=BLACKPILL_F303CC"
             echo "::set-output name=index-url::--additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
 
           elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
@@ -81,7 +85,11 @@ jobs:
             pip3 install wheel
             pip3 install --user adafruit-nrfutil
             echo "::add-path::~/.local/bin"
+            echo "::set-output name=options:::softdevice=s132v6,debug=l0"
             echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+          
+          elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
+            echo "::set-output name=options:::mode=on"
 
           elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json"
@@ -91,9 +99,11 @@ jobs:
             echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
           elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
+            echo "::set-output name=options:::bootloader_version=original,cpu_speed=speed_72mhz"
             echo "::set-output name=index-url::--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json"
 
           elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
+            echo "::set-output name=options:::usbstack=arduino,debug=off"
             echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
 
           elif [[ "${{ contains(matrix.board, 'arduino-beta:mbed') }}" == "true" ]]; then
