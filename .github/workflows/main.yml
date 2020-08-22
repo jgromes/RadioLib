@@ -14,14 +14,13 @@ jobs:
         board: 
           - arduino:avr:uno
           - arduino:avr:mega:cpu=atmega2560
+          - arduino:avr:leonardo
+          - esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
           - arduino:samd:arduino_zero_native
         include:
-          - board: 'arduino:avr:uno'
-            platform: 'arduino:avr'
-          - board: 'arduino:avr:mega:cpu=atmega2560'
-            platform: 'arduino:avr'
-          - board: 'arduino:samd:arduino_zero_native'
-            platform: 'arduino:samd'
+          - board: esp8266:esp8266:generic:xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K
+            index-url: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+            skip-path: (HTTP|MQTT).*ino
     
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -44,10 +43,21 @@ jobs:
           msg: ${{ matrix.board }}
           seperator: ':'
       
+      - name: Prepare platform-specific settings
+        id: prep
+        env:
+          skip-path: ''
+          index-url: ''
+        run: |
+          if [[ ${{ contains(matrix.board, 'esp8266') }} =~ 'true' ]]; then
+            echo "::set-env name=skip-path::'HTTP|MQTT).*ino'"
+            echo "::set-env name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
+          fi
+      
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
         run: |
-          arduino-cli core update-index
+          arduino-cli core update-index ${{ prep.env.index-url }}
           arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs._0, steps.split.outputs._1) }}
       
       - name: Checkout repository
@@ -59,9 +69,9 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
+            if [ ! -z "${{ prep.env.skip-path }}" ] && [[ ${example} =~ ${{ prep.env.skip-path }} ]]; then
               # skip sketch
-              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ prep.env.skip-path }})\033[0m";
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
