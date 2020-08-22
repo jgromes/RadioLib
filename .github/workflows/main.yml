@@ -36,7 +36,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries $PWD/src/RadioLib.h --fqbn $BOARD $example --warnings=$WARNINGS
+              arduino-cli compile --libraries $PWD --fqbn $BOARD $example --warnings=$WARNINGS
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
