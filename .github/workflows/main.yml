@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  Arduino-Uno:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+      - run: |
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+          export PATH=$PATH:$PWD/bin
+          arduino-cli core update-index;
+          arduino-cli core install arduino:avr;
+      
+      - uses: actions/checkout@v2
+      
+      - name: Build all examples
+      - run: |
+          for example in $(find $PWD/examples -name '*.ino' | sort); do
+            # check whether to skip this sketch
+            if [ ! -z "$SKIP_PAT" ] && [[ ${example} =~ $SKIP_PAT ]]; then
+              # skip sketch
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with $SKIP_PAT)\033[0m";
+            else
+              # build sketch
+              echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+              arduino-cli compile --fqbn $BOARD $example --warnings=$WARNINGS
+              if [ $? -ne 0 ]; then
+                echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+                exit 1;
+              else
+                echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+              fi
+            fi
+          done
+  
+  Doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Doxygen
+      - run: |
+          sudo apt-get update;
+          sudo apt-get install -y doxygen;
+        
+      - uses: actions/checkout@v2
+      
+      - name: Generate docs
+      - run: doxygen Doxyfile
+        
+      - uses: JamesIves/github-pages-deploy-action@releases/v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: docs/html
