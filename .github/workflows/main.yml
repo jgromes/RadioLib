@@ -44,19 +44,19 @@ jobs:
           warnings: 'all'
         run: |
           if [[ "${{ contains(matrix.board, 'esp8266') }}" == "true" ]]; then
-            echo "::set-env name=skip-path::'HTTP|MQTT).*ino'"
-            echo "::set-env name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
+            echo "::set-output name=skip-path::'HTTP|MQTT).*ino'"
+            echo "::set-output name=index-url::'--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json'"
          
           else
-            echo "::set-env name=skip-path::''"
-            echo "::set-env name=index-url::''"
+            echo "::set-output name=skip-path::''"
+            echo "::set-output name=index-url::''"
           
           fi
       
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
         run: |
-          arduino-cli core update-index ${{ steps.prep.env.index-url }}
+          arduino-cli core update-index ${{ steps.prep.outputs.index-url }}
           arduino-cli core install ${{ format('{0}:{1}', steps.split.outputs._0, steps.split.outputs._1) }}
       
       - name: Checkout repository
@@ -68,9 +68,9 @@ jobs:
         run: |
           for example in $(find $PWD/examples -name '*.ino' | sort); do
             # check whether to skip this sketch
-            if [ ! -z "${{ steps.prep.env.skip-path }}" ] && [[ ${example} =~ "${{ steps.prep.env.skip-path }}" ]]; then
+            if [ ! -z "${{ steps.prep.outputs.skip-path }}" ] && [[ ${example} =~ "${{ steps.prep.outputs.skip-path }}" ]]; then
               # skip sketch
-              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.env.skip-path }})\033[0m";
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-path }})\033[0m";
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
