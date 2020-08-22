@@ -8,8 +8,18 @@ on:
 
 jobs:
 
-  Arduino-Uno:
+  Build:
+    strategy:
+      matrix:
+        platform: ["arduino:avr", "arduino:samd"]
+        include:
+          - platform: "arduino:avr"
+            board: "arduino:avr:uno"
+          - platform: "arduino:samd"
+            board: "arduino:samd:arduino_zero_native"
+    
     runs-on: ubuntu-latest
+    
     steps:
       - name: Install arduino-cli
         run: |
@@ -17,14 +27,14 @@ jobs:
           echo "::add-path::~/.local/bin"
           curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
       
-      - name: Install board
+      - name: Install platform
         run: |
           arduino-cli core update-index
-          arduino-cli core install arduino:avr
-          echo "::set-env name=BOARD::arduino:avr:uno"
+          arduino-cli core install ${{ matrix.platform }}
           echo "::set-env name=WARNINGS::all"
       
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       
       - name: Build all examples
         run: |
@@ -36,7 +46,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn $BOARD $example --warnings=$WARNINGS
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }} $example --warnings=$WARNINGS
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
