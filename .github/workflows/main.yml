@@ -20,7 +20,7 @@ jobs:
     
     runs-on: ubuntu-latest
     env:
-      run-build: ${{ (matrix.board == 'arduino:avr:uno') || "contains(github.event.head_commit.message, 'CI_FORCE_BUILD'" || "contains(github.event.head_commit.message, 'Bump version to'" }}
+      run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_FORCE_BUILD' || contains(github.event.head_commit.message, 'Bump version to' }}
     
     steps:
       - name: Install arduino-cli
