@@ -54,6 +54,7 @@ jobs:
             echo "::set-output name=skip-path::(HTTP|MQTT).*ino"
           
           elif [[ "${{ contains(matrix.board, 'esp32') }}" == "true" ]]; then
+            python -m pip install pyserial
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
           
           elif [[ "${{ contains(matrix.board, 'STM32') }}" == "true" ]]; then
