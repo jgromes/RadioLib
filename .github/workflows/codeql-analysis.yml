@@ -50,20 +50,9 @@ jobs:
         arduino-cli core update-index
         arduino-cli core install arduino:avr
      
-    - name: Build examples
+    - name: Build example
       run:
-        |
-        for example in $(find $PWD/examples -name '*.ino' | sort); do
-          # build sketch
-          echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-          arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $example --warnings=all
-          if [ $? -ne 0 ]; then
-            echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
-            exit 1;
-          else
-            echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
-          fi
-        done
+        arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $PWD/examples/SX126x_Transmit/SX126x_Transmit.ino --warnings=all
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
