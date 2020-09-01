@@ -4,10 +4,7 @@ on:
   push:
     branches: [master]
   pull_request:
-    # The branches below must be a subset of the branches above
     branches: [master]
-  schedule:
-    - cron: '0 8 * * 0'
 
 jobs:
   analyze:
@@ -17,11 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Override automatic language detection by changing the below list
-        # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
         language: ['cpp']
-        # Learn more...
-        # https://docs.github.com/en/github/finding-security-vulnerabilities-and-errors-in-your-code/configuring-code-scanning#overriding-automatic-language-detection
 
     steps:
     - name: Checkout repository
@@ -41,22 +34,31 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
          languages: ${{ matrix.language }}
-
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v1
-
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 https://git.io/JvXDl
-
-    # ✏️ If the Autobuild fails above, remove it and uncomment the following three lines
-    #    and modify them (or add more) to build your code if your project
-    #    uses a compiled language
-
-    #- run: |
-    #   make bootstrap
-    #   make release
+    
+    - name: Setup arduino-cli
+      run:
+        |
+        mkdir -p ~/.local/bin
+        echo "::add-path::~/.local/bin"
+        curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
+        arduino-cli core update-index
+        arduino-cli core install arduino:avr
+     
+    - name: Build examples
+      if: ${{ env.run-build == 'true' }}
+      run:
+        |
+        for example in $(find $PWD/examples -name '*.ino' | sort); do
+          # build sketch
+          echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+          arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $example --warnings=all
+          if [ $? -ne 0 ]; then
+            echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+            exit 1;
+          else
+            echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+          fi
+        done
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
