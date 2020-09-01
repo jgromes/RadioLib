@@ -35,17 +35,22 @@ jobs:
       with:
          languages: ${{ matrix.language }}
     
-    - name: Setup arduino-cli
+    - name: Install arduino-cli
       run:
         |
         mkdir -p ~/.local/bin
         echo "::add-path::~/.local/bin"
         curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
+        
+        
+    
+    - name: Install platform
+      run:
+        |
         arduino-cli core update-index
         arduino-cli core install arduino:avr
      
     - name: Build examples
-      if: ${{ env.run-build == 'true' }}
       run:
         |
         for example in $(find $PWD/examples -name '*.ino' | sort); do
