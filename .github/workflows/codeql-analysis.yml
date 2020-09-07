@@ -47,6 +47,10 @@ jobs:
         |
         arduino-cli core update-index
         arduino-cli core install arduino:avr
+    
+    - name: Static link
+      run:
+        |
         # static link fix from https://github.com/github/securitylab/discussions/171
         for i in ~/.arduino*/packages/arduino/tools/avr-gcc/*/bin/*; do 
           mv "$i" "$i.real";
