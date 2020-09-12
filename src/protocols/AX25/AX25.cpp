@@ -234,7 +234,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // set destination callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
   memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-  for(uint8_t i = 0; i < strlen(frame->destCallsign); i++) {
+  for(size_t i = 0; i < strlen(frame->destCallsign); i++) {
     *(frameBuffPtr + i) = frame->destCallsign[i] << 1;
   }
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -244,7 +244,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // set source callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
   memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-  for(uint8_t i = 0; i < strlen(frame->srcCallsign); i++) {
+  for(size_t i = 0; i < strlen(frame->srcCallsign); i++) {
     *(frameBuffPtr + i) = frame->srcCallsign[i] << 1;
   }
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -255,7 +255,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
     memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-    for(uint8_t j = 0; j < strlen(frame->repeaterCallsigns[i]); j++) {
+    for(size_t j = 0; j < strlen(frame->repeaterCallsigns[i]); j++) {
       *(frameBuffPtr + j) = frame->repeaterCallsigns[i][j] << 1;
     }
     frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -314,7 +314,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // stuff bits (skip preamble and both flags)
   uint16_t stuffedFrameBuffLenBits = 8*(_preambleLen + 1);
   uint8_t count = 0;
-  for(uint16_t i = 0; i < frameBuffLen + 2; i++) {
+  for(size_t i = 0; i < frameBuffLen + 2; i++) {
     for(int8_t shift = 7; shift >= 0; shift--) {
       uint16_t stuffedFrameBuffPos = stuffedFrameBuffLenBits + 7 - 2*(stuffedFrameBuffLenBits%8);
       if((frameBuff[i] >> shift) & 0x01) {
