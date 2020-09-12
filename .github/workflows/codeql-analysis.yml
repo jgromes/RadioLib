@@ -54,7 +54,7 @@ jobs:
         # static link fix from https://github.com/github/securitylab/discussions/171
         for i in ~/.arduino*/packages/arduino/tools/avr-gcc/*/bin/*; do 
           mv "$i" "$i.real";
-          printf '#!/usr/bin/sh\nexec "'"$i"'.real" ${1+"$@"}\n' > "$i";
+          printf '#!/bin/bash\nexec "'"$i"'.real" ${1+"$@"}\n' > "$i";
           chmod +x "$i"; 
         done
      
