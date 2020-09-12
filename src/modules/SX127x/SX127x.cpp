@@ -755,7 +755,7 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   RADIOLIB_CHECK_RANGE(len, 1, 8, ERR_INVALID_SYNC_WORD);
 
   // sync word must not contain value 0x00
-  for(uint8_t i = 0; i < len; i++) {
+  for(size_t i = 0; i < len; i++) {
     if(syncWord[i] == 0x00) {
       return(ERR_INVALID_SYNC_WORD);
     }
