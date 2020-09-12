@@ -374,13 +374,13 @@ void XBee::sendApiFrame(uint8_t type, uint8_t id, uint8_t* data, uint16_t length
 
   // calculate the checksum
   uint8_t checksum = 0;
-  for(uint16_t i = 3; i < frameLength - 1; i++) {
+  for(size_t i = 3; i < frameLength - 1; i++) {
     checksum += frame[i];
   }
   frame[5 + length] = 0xFF - checksum;
 
   // send the frame
-  for(uint16_t i = 0; i < frameLength; i++) {
+  for(size_t i = 0; i < frameLength; i++) {
     _mod->ModuleSerial->write(frame[i]);
   }
 
