@@ -406,7 +406,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
         } else {
           _audio->tone(AX25_AFSK_SPACE, false);
         }
-        while(Module::micros() - start < 833) {
+        while(Module::micros() - start < AX25_AFSK_TONE_DURATION) {
           Module::yield();
         }
       }
