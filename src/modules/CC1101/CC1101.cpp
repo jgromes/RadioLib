@@ -554,7 +554,7 @@ int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
 
 int16_t CC1101::disableAddressFiltering() {
   // disable address filtering
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_ADR_CHK_NONE, 1, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_ADR_CHK_NONE, 1, 0);
   RADIOLIB_ASSERT(state);
 
   // set node address to default (0x00)
@@ -610,9 +610,9 @@ uint8_t CC1101::getLQI() const {
 size_t CC1101::getPacketLength(bool update) {
   if(!_packetLengthQueried && update) {
     if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
-      _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+      _packetLength = SPIreadRegister(CC1101_REG_FIFO);
     } else {
-      _packetLength = _mod->SPIreadRegister(CC1101_REG_PKTLEN);
+      _packetLength = SPIreadRegister(CC1101_REG_PKTLEN);
     }
 
     _packetLengthQueried = true;
@@ -693,10 +693,10 @@ int16_t CC1101::setDataShaping(uint8_t sh) {
   // set data shaping
   switch(sh) {
     case RADIOLIB_SHAPING_NONE:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
       break;
     case RADIOLIB_SHAPING_0_5:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_GFSK, 6, 4);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_GFSK, 6, 4);
       break;
     default:
       return(ERR_INVALID_DATA_SHAPING);
@@ -712,17 +712,17 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
   // set encoding
   switch(encoding) {
     case RADIOLIB_ENCODING_NRZ:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
     case RADIOLIB_ENCODING_MANCHESTER:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_ON, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_ON, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
     case RADIOLIB_ENCODING_WHITENING:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_ON, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_ON, 6, 6));
     default:
       return(ERR_INVALID_ENCODING);
   }
@@ -730,6 +730,25 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
 
 void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
+}
+
+uint8_t CC1101::random() {
+  // set mode to Rx
+  SPIsendCommand(CC1101_CMD_RX);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((SPIreadRegister(CC1101_REG_RSSI) & 0x01) << i);
+  }
+
+  // set mode to standby
+  SPIsendCommand(CC1101_CMD_IDLE);
+  
+  return(randByte);
 }
 
 int16_t CC1101::config() {
@@ -795,11 +814,11 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
   }
 
   // set PKTCTRL0.LENGTH_CONFIG
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
   RADIOLIB_ASSERT(state);
 
   // set length to register
-  state = _mod->SPIsetRegValue(CC1101_REG_PKTLEN, len);
+  state = SPIsetRegValue(CC1101_REG_PKTLEN, len);
   RADIOLIB_ASSERT(state);
 
   // update the cached value
