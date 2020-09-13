@@ -464,6 +464,13 @@ class nRF24: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding) override;
 
+    /*!
+     \brief Dummy random method, to ensure PhysicalLayer compatibility.
+
+     \returns Always returns 0.
+   */
+    uint8_t random();
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
