@@ -143,3 +143,27 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 float PhysicalLayer::getFreqStep() const {
   return(_freqStep);
 }
+
+int32_t PhysicalLayer::random(int32_t max) {
+  if(max == 0) {
+    return(0);
+  }
+
+  // get random bytes from the radio
+  uint8_t randBuff[4];
+  for(uint8_t i = 0; i < 4; i++) {
+    randBuff[i] = random();
+  }
+
+  // create 32-bit TRNG number
+  int32_t randNum = ((int32_t)randBuff[0] << 24) | ((int32_t)randBuff[1] << 16) | ((int32_t)randBuff[2] << 8) | ((int32_t)randBuff[3]);
+  return(randNum % max);
+}
+
+int32_t PhysicalLayer::random(int32_t min, int32_t max) {
+  if(min >= max) {
+    return(min);
+  }
+
+  return(PhysicalLayer::random(max - min) + min);
+}
