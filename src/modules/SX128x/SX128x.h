@@ -753,6 +753,13 @@ class SX128x: public PhysicalLayer {
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
+    /*!
+     \brief Dummy random method, to ensure PhysicalLayer compatibility.
+
+     \returns Always returns 0.
+   */
+    uint8_t random();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
