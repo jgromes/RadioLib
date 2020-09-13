@@ -854,7 +854,7 @@ class SX126x: public PhysicalLayer {
 
    /*!
      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
-     the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX1278::autoLDRO()
+     the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX126x::autoLDRO()
 
      \param enable Force LDRO to be always enabled (true) or disabled (false).
 
@@ -869,6 +869,13 @@ class SX126x: public PhysicalLayer {
      \returns \ref status_codes
    */
    int16_t autoLDRO();
+
+   /*!
+    \brief Get one truly random byte from RSSI noise.
+
+    \returns TRNG byte.
+  */
+   uint8_t random();
 
 #ifndef RADIOLIB_GODMODE
   protected:

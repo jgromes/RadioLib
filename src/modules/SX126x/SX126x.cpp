@@ -1173,6 +1173,27 @@ int16_t SX126x::autoLDRO() {
   return(ERR_NONE);
 }
 
+uint8_t SX126x::random() {
+  // set mode to Rx
+  setRx(SX126X_RX_TIMEOUT_INF);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    uint8_t val = 0x00;
+    readRegister(SX126X_REG_RANDOM_NUMBER_0, &val, sizeof(uint8_t));
+    randByte |= ((val & 0x01) << i);
+  }
+
+  // set mode to standby
+  standby();
+
+  return(randByte);
+}
+
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();
