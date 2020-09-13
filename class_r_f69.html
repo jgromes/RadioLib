@@ -238,6 +238,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aada7c48828b950cdfd260594d502b03d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#aada7c48828b950cdfd260594d502b03d">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
 <tr class="memdesc:aada7c48828b950cdfd260594d502b03d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="#aada7c48828b950cdfd260594d502b03d">More...</a><br /></td></tr>
 <tr class="separator:aada7c48828b950cdfd260594d502b03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54cd7be92e166659b50bd6ed4433db4c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a54cd7be92e166659b50bd6ed4433db4c">random</a> ()</td></tr>
+<tr class="memdesc:a54cd7be92e166659b50bd6ed4433db4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="#a54cd7be92e166659b50bd6ed4433db4c">More...</a><br /></td></tr>
+<tr class="separator:a54cd7be92e166659b50bd6ed4433db4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:a5e02457f1d519cf81b1590a182321c62 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">PhysicalLayer</a> (float freqStep, size_t maxPacketLength)</td></tr>
 <tr class="memdesc:a5e02457f1d519cf81b1590a182321c62 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">More...</a><br /></td></tr>
@@ -266,6 +269,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
+<tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
+<tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a76113e10481743094a1cd0280692b0a9">random</a> (int32_t min, int32_t max)</td></tr>
+<tr class="memdesc:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range min - max.  <a href="class_physical_layer.html#a76113e10481743094a1cd0280692b0a9">More...</a><br /></td></tr>
+<tr class="separator:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Control class for RF69 module. Also serves as base class for <a class="el" href="class_s_x1231.html" title="Control class for SX1231 module. Overrides some methods from RF69 due to different register values...">SX1231</a>. </p>
@@ -571,6 +580,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Measures temperature. </p>
 <dl class="section return"><dt>Returns</dt><dd>Measured temperature in degrees Celsius. </dd></dl>
+
+</div>
+</div>
+<a id="a54cd7be92e166659b50bd6ed4433db4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54cd7be92e166659b50bd6ed4433db4c">&#9670;&nbsp;</a></span>random()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t RF69::random </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get one truly random byte from RSSI noise. </p>
+<dl class="section return"><dt>Returns</dt><dd>TRNG byte. </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a5bf5bac5b015aa9312025255ca503d4f">PhysicalLayer</a>.</p>
 
 </div>
 </div>

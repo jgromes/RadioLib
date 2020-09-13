@@ -185,8 +185,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bd6046e068ef63e3f2b6bead48e02a7"><td class="memItemLeft" align="right" valign="top">virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7">getPacketLength</a> (bool update=true)=0</td></tr>
-<tr class="memdesc:a0bd6046e068ef63e3f2b6bead48e02a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="#a0bd6046e068ef63e3f2b6bead48e02a7">More...</a><br /></td></tr>
+<tr class="memdesc:a0bd6046e068ef63e3f2b6bead48e02a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload. Must be implemented in module class.  <a href="#a0bd6046e068ef63e3f2b6bead48e02a7">More...</a><br /></td></tr>
 <tr class="separator:a0bd6046e068ef63e3f2b6bead48e02a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd9171bd71aa80fb86113b612c42de53"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
+<tr class="memdesc:acd9171bd71aa80fb86113b612c42de53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
+<tr class="separator:acd9171bd71aa80fb86113b612c42de53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76113e10481743094a1cd0280692b0a9"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a76113e10481743094a1cd0280692b0a9">random</a> (int32_t min, int32_t max)</td></tr>
+<tr class="memdesc:a76113e10481743094a1cd0280692b0a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range min - max.  <a href="#a76113e10481743094a1cd0280692b0a9">More...</a><br /></td></tr>
+<tr class="separator:a76113e10481743094a1cd0280692b0a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bf5bac5b015aa9312025255ca503d4f"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5bf5bac5b015aa9312025255ca503d4f">random</a> ()=0</td></tr>
+<tr class="memdesc:a5bf5bac5b015aa9312025255ca503d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise. Must be implemented in module class.  <a href="#a5bf5bac5b015aa9312025255ca503d4f">More...</a><br /></td></tr>
+<tr class="separator:a5bf5bac5b015aa9312025255ca503d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
@@ -273,7 +282,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Query modem for the packet length of received payload. </p>
+<p>Query modem for the packet length of received payload. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
@@ -283,6 +292,101 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Length of last received packet in bytes. </dd></dl>
 
 <p>Implemented in <a class="el" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">SX127x</a>, <a class="el" href="class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0">CC1101</a>, <a class="el" href="class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987">SX126x</a>, <a class="el" href="class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10">Si443x</a>, <a class="el" href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">RF69</a>, <a class="el" href="class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735">SX128x</a>, and <a class="el" href="classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b">nRF24</a>.</p>
+
+</div>
+</div>
+<a id="acd9171bd71aa80fb86113b612c42de53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd9171bd71aa80fb86113b612c42de53">&#9670;&nbsp;</a></span>random() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t PhysicalLayer::random </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>max</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get truly random number in range 0 - max. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Random number. </dd></dl>
+
+</div>
+</div>
+<a id="a76113e10481743094a1cd0280692b0a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76113e10481743094a1cd0280692b0a9">&#9670;&nbsp;</a></span>random() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t PhysicalLayer::random </td>
+          <td>(</td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int32_t&#160;</td>
+          <td class="paramname"><em>max</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get truly random number in range min - max. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min</td><td>The minimum value of the random number (inclusive).</td></tr>
+    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Random number. </dd></dl>
+
+</div>
+</div>
+<a id="a5bf5bac5b015aa9312025255ca503d4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bf5bac5b015aa9312025255ca503d4f">&#9670;&nbsp;</a></span>random() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual uint8_t PhysicalLayer::random </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get one truly random byte from RSSI noise. Must be implemented in module class. </p>
+<dl class="section return"><dt>Returns</dt><dd>TRNG byte. </dd></dl>
+
+<p>Implemented in <a class="el" href="class_s_x127x.html#a6a03da620f9fb532c879900ba05732de">SX127x</a>, <a class="el" href="class_c_c1101.html#aeea507b71f1a3dfab5be4c3a1606b8fd">CC1101</a>, <a class="el" href="class_s_x126x.html#a3dd88861454d8b6e742470dee04961be">SX126x</a>, <a class="el" href="class_r_f69.html#a54cd7be92e166659b50bd6ed4433db4c">RF69</a>, <a class="el" href="class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df">Si443x</a>, <a class="el" href="class_s_x128x.html#a1cefaf76d47ee71d143fc073333a9d82">SX128x</a>, and <a class="el" href="classn_r_f24.html#aeb98b92de42dec7c703888c62e061c3c">nRF24</a>.</p>
 
 </div>
 </div>

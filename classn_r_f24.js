@@ -6,6 +6,7 @@ var classn_r_f24 =
     [ "getPacketLength", "classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b", null ],
     [ "getStatus", "classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9", null ],
     [ "isCarrierDetected", "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37", null ],
+    [ "random", "classn_r_f24.html#aeb98b92de42dec7c703888c62e061c3c", null ],
     [ "readData", "classn_r_f24.html#a410fb78acb4ed358818c132687b8857a", null ],
     [ "receive", "classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac", null ],
     [ "receiveDirect", "classn_r_f24.html#a415d86947742e981bfcf7f2371f8605c", null ],

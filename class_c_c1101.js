@@ -12,6 +12,7 @@ var class_c_c1101 =
     [ "getPacketLength", "class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0", null ],
     [ "getRSSI", "class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551", null ],
     [ "packetMode", "class_c_c1101.html#a38f6978c757b0dd73e3ef98164a735a2", null ],
+    [ "random", "class_c_c1101.html#aeea507b71f1a3dfab5be4c3a1606b8fd", null ],
     [ "readData", "class_c_c1101.html#a8c79975a7bbe8a37f8214ecd1f69ba22", null ],
     [ "receive", "class_c_c1101.html#aedc1067d0334bb69ed5316146014097d", null ],
     [ "receiveDirect", "class_c_c1101.html#ab053c185330519d58f364790108d29ac", null ],

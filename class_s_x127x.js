@@ -15,6 +15,7 @@ var class_s_x127x =
     [ "getSNR", "class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb", null ],
     [ "getTempRaw", "class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1", null ],
     [ "packetMode", "class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1", null ],
+    [ "random", "class_s_x127x.html#a6a03da620f9fb532c879900ba05732de", null ],
     [ "readData", "class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745", null ],
     [ "receive", "class_s_x127x.html#adfe0d3f033a23ec2f3c2a407285d357c", null ],
     [ "receiveDirect", "class_s_x127x.html#aa7ac558d537c6364c4bc82c8f33e398f", null ],

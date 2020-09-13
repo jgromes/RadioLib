@@ -5,6 +5,7 @@ var class_si443x =
     [ "clearIrqAction", "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109", null ],
     [ "getPacketLength", "class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10", null ],
     [ "packetMode", "class_si443x.html#a616eb24c4b11c5d39caaade160be8092", null ],
+    [ "random", "class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df", null ],
     [ "readData", "class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e", null ],
     [ "receive", "class_si443x.html#aabca3ba8eda212938febab1df2e764b4", null ],
     [ "receiveDirect", "class_si443x.html#a178b471527813a608c04db7d3c9648d6", null ],
