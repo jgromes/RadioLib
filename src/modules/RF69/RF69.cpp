@@ -764,6 +764,25 @@ void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t RF69::random() {
+  // set mode to Rx
+  setMode(RF69_RX);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((_mod->SPIreadRegister(RF69_REG_RSSI_VALUE) & 0x01) << i);
+  }
+
+  // set mode to standby
+  setMode(RF69_STANDBY);
+
+  return(randByte);
+}
+
 int16_t RF69::config() {
   int16_t state = ERR_NONE;
 
