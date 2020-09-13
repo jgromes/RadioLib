@@ -553,6 +553,25 @@ void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t Si443x::random() {
+  // set mode to Rx
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((_mod->SPIreadRegister(SI443X_REG_RSSI) & 0x01) << i);
+  }
+
+  // set mode to standby
+  standby();
+
+  return(randByte);
+}
+
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
