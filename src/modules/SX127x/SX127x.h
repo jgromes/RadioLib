@@ -931,6 +931,13 @@ class SX127x: public PhysicalLayer {
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
+    /*!
+     \brief Get one truly random byte from RSSI noise.
+
+     \returns TRNG byte.
+   */
+    uint8_t random();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif

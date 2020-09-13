@@ -958,6 +958,31 @@ void SX127x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t SX127x::random() {
+  // check active modem
+  uint8_t rssiValueReg = SX127X_REG_RSSI_WIDEBAND;
+  if(getActiveModem() == SX127X_FSK_OOK) {
+    rssiValueReg = SX127X_REG_RSSI_VALUE_FSK;
+  }
+
+  // set mode to Rx
+  setMode(SX127X_RX);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((_mod->SPIreadRegister(rssiValueReg) & 0x01) << i);
+  }
+
+  // set mode to standby
+  setMode(SX127X_STANDBY);
+
+  return(randByte);
+}
+
 int8_t SX127x::getTempRaw() {
   int8_t temp = 0;
   uint8_t previousOpMode;
