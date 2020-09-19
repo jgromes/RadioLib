@@ -17,7 +17,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     uint8_t version = SPIreadRegister(CC1101_REG_VERSION);
-    if(version == 0x14) {
+    if((version == CC1101_VERSION_CURRENT) || (version == CC1101_VERSION_LEGACY)) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
@@ -747,7 +747,7 @@ uint8_t CC1101::random() {
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
-  
+
   return(randByte);
 }
 

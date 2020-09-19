@@ -455,7 +455,8 @@
 #define CC1101_PARTNUM                                0x00
 
 // CC1101_REG_VERSION
-#define CC1101_VERSION                                0x14
+#define CC1101_VERSION_CURRENT                        0x14
+#define CC1101_VERSION_LEGACY                         0x04
 
 // CC1101_REG_MARCSTATE
 #define CC1101_MARC_STATE_SLEEP                       0x00        //  4     0     main radio control state: sleep
