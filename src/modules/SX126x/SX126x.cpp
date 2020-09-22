@@ -1203,6 +1203,11 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
     clearDeviceErrors();
   }
 
+  // check 0 V disable
+  if(abs(voltage - 0.0) <= 0.001) {
+    return(reset(true));
+  }
+
   // check alowed voltage values
   uint8_t data[4];
   if(abs(voltage - 1.6) <= 0.001) {

@@ -733,9 +733,12 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
 
-      \param TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V
+      \param TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V. Set to 0 to disable TCXO.
+      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
 
       \param TCXO timeout in us. Defaults to 5000 us.
+
+      \returns \ref status_codes
     */
     int16_t setTCXO(float voltage, uint32_t delay = 5000);
 
