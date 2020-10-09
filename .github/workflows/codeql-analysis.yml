@@ -34,30 +34,30 @@ jobs:
       uses: github/codeql-action/init@v1
       with:
          languages: ${{ matrix.language }}
-    
+
     - name: Install arduino-cli
       run:
         |
         mkdir -p ~/.local/bin
-        echo "::add-path::~/.local/bin"
+        echo "~/.local/bin" >> $GITHUB_PATH
         curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
-        
+
     - name: Install platform
       run:
         |
         arduino-cli core update-index
         arduino-cli core install arduino:avr
-    
+
     - name: Static link
       run:
         |
         # static link fix from https://github.com/github/securitylab/discussions/171
-        for i in ~/.arduino*/packages/arduino/tools/avr-gcc/*/bin/*; do 
+        for i in ~/.arduino*/packages/arduino/tools/avr-gcc/*/bin/*; do
           mv "$i" "$i.real";
           printf '#!/bin/bash\nexec "'"$i"'.real" ${1+"$@"}\n' > "$i";
-          chmod +x "$i"; 
+          chmod +x "$i";
         done
-     
+
     - name: Build example
       run:
         arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $PWD/examples/SX126x/SX126x_Transmit/SX126x_Transmit.ino --warnings=all
