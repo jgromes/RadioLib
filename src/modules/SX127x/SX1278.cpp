@@ -356,13 +356,13 @@ int16_t SX1278::setDataShaping(uint8_t sh) {
   // set data shaping
   switch(sh) {
     case RADIOLIB_SHAPING_NONE:
-      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_NO_SHAPING, 6, 5));
+      return(_mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_NO_SHAPING, 6, 5));
     case RADIOLIB_SHAPING_0_3:
-      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_0_3, 6, 5));
+      return(_mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_0_3, 6, 5));
     case RADIOLIB_SHAPING_0_5:
-      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_0_5, 6, 5));
+      return(_mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_0_5, 6, 5));
     case RADIOLIB_SHAPING_1_0:
-      return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1278_FSK_GAUSSIAN_1_0, 6, 5));
+      return(_mod->SPIsetRegValue(SX127X_REG_PA_RAMP, SX1278_FSK_GAUSSIAN_1_0, 6, 5));
     default:
       return(ERR_INVALID_DATA_SHAPING);
   }
