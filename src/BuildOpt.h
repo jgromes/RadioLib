@@ -229,7 +229,6 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
-    #define RADIOLIB_TONE_UNSUPPORTED
 
   #elif defined(ARDUINO_ARDUINO_NANO33BLE)
     // Arduino Nano 33 BLE
@@ -281,7 +280,6 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
-    #define RADIOLIB_TONE_UNSUPPORTED
 
   #else
     // other platforms not covered by the above list - this may or may not work
