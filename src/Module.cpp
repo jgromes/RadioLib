@@ -336,20 +336,36 @@ RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
 }
 
 void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
-  // TODO add tone support for platforms without tone()
-  #ifndef RADIOLIB_TONE_UNSUPPORTED
-  if(pin != RADIOLIB_NC) {
-    ::tone(pin, value);
+  if(pin == RADIOLIB_NC) {
+    return;
   }
+
+  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
+    ::tone(pin, value);
+  #else
+    #if defined(ESP32)
+      // ESP32 - emulate tone() via LED driver on channel 15
+      if(ledcRead(15)) {
+        return;
+      }
+      ledcAttachPin(pin, 15);
+      ledcWriteTone(15, value);
+    #endif
   #endif
 }
 
 void Module::noTone(RADIOLIB_PIN_TYPE pin) {
-  // TODO add tone support for platforms without noTone()
-  #ifndef RADIOLIB_TONE_UNSUPPORTED
-  if(pin != RADIOLIB_NC) {
-    ::noTone(pin);
+  if(pin == RADIOLIB_NC) {
+    return;
   }
+
+  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
+    ::noTone(pin);
+  #else
+  #if defined(ESP32)
+    ledcDetachPin(pin);
+    ledcWrite(15, 0);
+  #endif
   #endif
 }
 
