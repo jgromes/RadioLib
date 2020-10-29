@@ -344,12 +344,9 @@ void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value) {
     ::tone(pin, value);
   #else
     #if defined(ESP32)
-      // ESP32 - emulate tone() via LED driver on channel 15
-      if(ledcRead(15)) {
-        return;
-      }
-      ledcAttachPin(pin, 15);
-      ledcWriteTone(15, value);
+      // ESP32 tone() emulation
+      ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
+      ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, value);
     #endif
   #endif
 }
@@ -364,7 +361,7 @@ void Module::noTone(RADIOLIB_PIN_TYPE pin) {
   #else
   #if defined(ESP32)
     ledcDetachPin(pin);
-    ledcWrite(15, 0);
+    ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
   #endif
   #endif
 }

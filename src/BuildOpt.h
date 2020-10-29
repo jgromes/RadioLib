@@ -128,7 +128,10 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+    // ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
     #define RADIOLIB_TONE_UNSUPPORTED
+    #define RADIOLIB_TONE_ESP32_CHANNEL                 (1)
 
   #elif defined(ARDUINO_ARCH_STM32)
     // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
