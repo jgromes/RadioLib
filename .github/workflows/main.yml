@@ -16,7 +16,7 @@ jobs:
           - arduino:avr:mega
           - arduino:avr:leonardo
           - arduino:mbed:nano33ble
-          - arduino-beta:mbed:envie_m4
+          #- arduino-beta:mbed:envie_m4
           - arduino:megaavr:uno2018
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
