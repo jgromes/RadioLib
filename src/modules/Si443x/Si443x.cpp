@@ -342,7 +342,7 @@ int16_t Si443x::setFrequencyDeviation(float freqDev) {
     if(state == ERR_NONE) {
       _freqDev = freqDev;
     }
-
+    return(state);
   }
 
   RADIOLIB_CHECK_RANGE(freqDev, 0.625, 320.0, ERR_INVALID_FREQUENCY_DEVIATION);
