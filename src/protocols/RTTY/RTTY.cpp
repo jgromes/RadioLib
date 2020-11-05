@@ -173,7 +173,6 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
 }
 
 void RTTYClient::idle() {
-  transmitDirect();
   mark();
 }
 
