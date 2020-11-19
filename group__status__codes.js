@@ -42,6 +42,7 @@ var group__status__codes =
     [ "ERR_INVALID_SPREADING_FACTOR", "group__status__codes.html#ga8d2622e3d347809a5b8b13b90e789121", null ],
     [ "ERR_INVALID_SYNC_WORD", "group__status__codes.html#gaa70935907871709286cfef58d1074a51", null ],
     [ "ERR_INVALID_TCXO_VOLTAGE", "group__status__codes.html#gad46a0a43a686f8057b2516dcee2ac935", null ],
+    [ "ERR_LORA_HEADER_DAMAGED", "group__status__codes.html#gae4108bebce0009bdbca68c645b3207ff", null ],
     [ "ERR_MEMORY_ALLOCATION_FAILED", "group__status__codes.html#ga10c401bcff17771aaa3814569598e5a2", null ],
     [ "ERR_MQTT_CONN_BAD_USERNAME_PASSWORD", "group__status__codes.html#gabd7da172470aea37cd7b5d0300b89ad8", null ],
     [ "ERR_MQTT_CONN_ID_REJECTED", "group__status__codes.html#ga3c1be62b28b6ec25da16643bfe2e6fba", null ],

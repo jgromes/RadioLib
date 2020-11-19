@@ -44,6 +44,7 @@ var searchData=
   ['err_5finvalid_5fspreading_5ffactor',['ERR_INVALID_SPREADING_FACTOR',['../group__status__codes.html#ga8d2622e3d347809a5b8b13b90e789121',1,'TypeDef.h']]],
   ['err_5finvalid_5fsync_5fword',['ERR_INVALID_SYNC_WORD',['../group__status__codes.html#gaa70935907871709286cfef58d1074a51',1,'TypeDef.h']]],
   ['err_5finvalid_5ftcxo_5fvoltage',['ERR_INVALID_TCXO_VOLTAGE',['../group__status__codes.html#gad46a0a43a686f8057b2516dcee2ac935',1,'TypeDef.h']]],
+  ['err_5flora_5fheader_5fdamaged',['ERR_LORA_HEADER_DAMAGED',['../group__status__codes.html#gae4108bebce0009bdbca68c645b3207ff',1,'TypeDef.h']]],
   ['err_5fmemory_5fallocation_5ffailed',['ERR_MEMORY_ALLOCATION_FAILED',['../group__status__codes.html#ga10c401bcff17771aaa3814569598e5a2',1,'TypeDef.h']]],
   ['err_5fmqtt_5fconn_5fbad_5fusername_5fpassword',['ERR_MQTT_CONN_BAD_USERNAME_PASSWORD',['../group__status__codes.html#gabd7da172470aea37cd7b5d0300b89ad8',1,'TypeDef.h']]],
   ['err_5fmqtt_5fconn_5fid_5frejected',['ERR_MQTT_CONN_ID_REJECTED',['../group__status__codes.html#ga3c1be62b28b6ec25da16643bfe2e6fba',1,'TypeDef.h']]],
