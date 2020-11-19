@@ -439,6 +439,7 @@ float SX1278::getRSSI() {
 int16_t SX1278::setCRC(bool enableCRC) {
   if(getActiveModem() == SX127X_LORA) {
     // set LoRa CRC
+    SX127x::_crcEnabled = enableCRC;
     if(enableCRC) {
       return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1278_RX_CRC_MODE_ON, 2, 2));
     } else {

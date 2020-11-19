@@ -283,6 +283,11 @@
 */
 #define ERR_INVALID_ENCODING                          -23
 
+/*!
+  \brief LoRa packet header has been damaged.
+*/
+#define ERR_LORA_HEADER_DAMAGED                        -24
+
 // RF69-specific status codes
 
 /*!

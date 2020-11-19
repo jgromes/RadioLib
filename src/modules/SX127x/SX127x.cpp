@@ -490,11 +490,18 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
       length = getPacketLength();
     }
 
-    // check integrity CRC
+    // check packet header integrity
+    if(_crcEnabled && (_mod->SPIgetRegValue(SX127X_REG_HOP_CHANNEL, 6, 6)) == 0) {
+      // CRC is disabled according to packet header and enabled according to user
+      // most likely damaged packet header
+      clearIRQFlags();
+      return(ERR_LORA_HEADER_DAMAGED);
+    }
+
+    // check payload CRC
     if(_mod->SPIgetRegValue(SX127X_REG_IRQ_FLAGS, 5, 5) == SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
       // clear interrupt flags
       clearIRQFlags();
-
       return(ERR_CRC_MISMATCH);
     }
 

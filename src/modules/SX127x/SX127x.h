@@ -950,6 +950,7 @@ class SX127x: public PhysicalLayer {
     float _br = 0;
     float _rxBw = 0;
     bool _ook = false;
+    bool _crcEnabled = false;
 
     int16_t setFrequencyRaw(float newFreq);
     int16_t config();
