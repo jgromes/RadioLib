@@ -990,6 +990,10 @@ uint8_t SX127x::random() {
   return(randByte);
 }
 
+int16_t SX127x::getChipVersion() {
+  return(_mod->SPIgetRegValue(SX127X_REG_VERSION));
+}
+
 int8_t SX127x::getTempRaw() {
   int8_t temp = 0;
   uint8_t previousOpMode;
@@ -1116,7 +1120,7 @@ bool SX127x::findChip(uint8_t ver) {
     reset();
 
     // check version register
-    uint8_t version = _mod->SPIreadRegister(SX127X_REG_VERSION);
+    int16_t version = getChipVersion();
     if(version == ver) {
       flagFound = true;
     } else {
@@ -1126,7 +1130,7 @@ bool SX127x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SX127X_REG_VERSION == "));
 
         char buffHex[12];
-        sprintf(buffHex, "0x%02X", version);
+        sprintf(buffHex, "0x%04X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(ver, HEX);

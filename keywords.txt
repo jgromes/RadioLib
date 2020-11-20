@@ -130,6 +130,7 @@ getTempRaw	KEYWORD2
 setRfSwitchPins	KEYWORD2
 forceLDRO	KEYWORD2
 autoLDRO	KEYWORD2
+getChipVersion	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2

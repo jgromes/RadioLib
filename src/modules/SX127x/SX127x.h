@@ -938,6 +938,13 @@ class SX127x: public PhysicalLayer {
    */
     uint8_t random();
 
+    /*!
+     \brief Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if SX127x is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
