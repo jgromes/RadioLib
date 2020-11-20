@@ -18,8 +18,8 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
     reset();
 
     // check version register
-    uint8_t version = _mod->SPIreadRegister(RF69_REG_VERSION);
-    if(version == 0x24) {
+    int16_t version = getChipVersion();
+    if(version == RF69_CHIP_VERSION) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
@@ -781,6 +781,10 @@ uint8_t RF69::random() {
   setMode(RF69_STANDBY);
 
   return(randByte);
+}
+
+int16_t RF69::getChipVersion() {
+  return(_mod->SPIgetRegValue(RF69_REG_VERSION));
 }
 
 int16_t RF69::config() {

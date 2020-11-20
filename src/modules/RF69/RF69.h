@@ -162,6 +162,9 @@
 // RF69_REG_LISTEN_3
 #define RF69_LISTEN_COEF_RX                           0x20        //  7     0     duration of Rx phase in Listen mode
 
+// RF69_REG_VERSION
+#define RF69_CHIP_VERSION                             0x24        //  7     0
+
 // RF69_REG_PA_LEVEL
 #define RF69_PA0_OFF                                  0b00000000  //  7     7     PA0 disabled
 #define RF69_PA0_ON                                   0b10000000  //  7     7     PA0 enabled (default)
@@ -826,6 +829,13 @@ class RF69: public PhysicalLayer {
      \returns TRNG byte.
    */
     uint8_t random();
+
+    /*!
+     \brief Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if SX127x is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
 
 #ifndef RADIOLIB_GODMODE
   protected:
