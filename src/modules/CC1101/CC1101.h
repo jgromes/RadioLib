@@ -882,6 +882,13 @@ class CC1101: public PhysicalLayer {
    */
     uint8_t random();
 
+    /*!
+     \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if CC1101 is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif

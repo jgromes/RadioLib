@@ -16,7 +16,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
-    uint8_t version = SPIreadRegister(CC1101_REG_VERSION);
+    int16_t version = getChipVersion();
     if((version == CC1101_VERSION_CURRENT) || (version == CC1101_VERSION_LEGACY)) {
       flagFound = true;
     } else {
@@ -28,7 +28,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x0014"));
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x0004/0x0014"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
       Module::delay(10);
@@ -749,6 +749,11 @@ uint8_t CC1101::random() {
   SPIsendCommand(CC1101_CMD_IDLE);
 
   return(randByte);
+}
+
+
+int16_t CC1101::getChipVersion() {
+  return(_mod->SPIgetRegValue(CC1101_REG_VERSION));
 }
 
 int16_t CC1101::config() {
