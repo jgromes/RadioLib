@@ -572,6 +572,10 @@ uint8_t Si443x::random() {
   return(randByte);
 }
 
+int16_t Si443x::getChipVersion() {
+  return(_mod->SPIgetRegValue(SI443X_REG_DEVICE_VERSION));
+}
+
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
@@ -605,7 +609,7 @@ bool Si443x::findChip() {
     reset();
 
     // check version register
-    uint8_t version = _mod->SPIreadRegister(SI443X_REG_DEVICE_VERSION);
+    int16_t version = getChipVersion();
     if(version == SI443X_DEVICE_VERSION) {
       flagFound = true;
     } else {
@@ -614,8 +618,8 @@ bool Si443x::findChip() {
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SI443X_REG_DEVICE_VERSION == "));
 
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
+        char buffHex[12];
+        sprintf(buffHex, "0x%04X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(SI443X_DEVICE_VERSION, HEX);

@@ -792,6 +792,13 @@ class Si443x: public PhysicalLayer {
    */
     uint8_t random();
 
+    /*!
+     \brief Read version SPI register. Should return SI443X_DEVICE_VERSION (0x06) if Si443x is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
