@@ -15,7 +15,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
-    uint8_t version = _mod->SPIreadRegister(RF69_REG_VERSION);
+    int16_t version = getChipVersion();
     if((version == 0x21) || (version == 0x22) || (version == 0x23)) {
       flagFound = true;
       _chipRevision = version;
@@ -25,7 +25,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
 
-        char buffHex[7];
+        char buffHex[12];
         sprintf(buffHex, "0x%04X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0021 / 0x0022 / 0x0023"));
