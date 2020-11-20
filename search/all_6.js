@@ -1,6 +1,7 @@
 var searchData=
 [
   ['get',['get',['../class_h_t_t_p_client.html#abc505d06d29fdc774d27c163e0be7ff8',1,'HTTPClient::get(String &amp;url, String &amp;response)'],['../class_h_t_t_p_client.html#a7ae493bf7db12ca2201cd6cead54c64f',1,'HTTPClient::get(const char *url, String &amp;response)']]],
+  ['getchipversion',['getChipVersion',['../class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705',1,'CC1101::getChipVersion()'],['../class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638',1,'RF69::getChipVersion()'],['../class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3',1,'Si443x::getChipVersion()'],['../class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd',1,'SX127x::getChipVersion()']]],
   ['getcs',['getCs',['../class_module.html#ae53e355a77f2b7ce6473c62ac5f37334',1,'Module']]],
   ['getcurrentlimit',['getCurrentLimit',['../class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab',1,'SX126x']]],
   ['getdatarate',['getDataRate',['../class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9',1,'SX126x::getDataRate()'],['../class_s_x127x.html#adc25b685de0859b799488bf7729350b6',1,'SX127x::getDataRate()']]],

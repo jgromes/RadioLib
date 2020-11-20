@@ -10,6 +10,7 @@ var class_r_f69 =
     [ "enableAES", "class_r_f69.html#a1fd4609f419d8b0213ee39b05dd40b69", null ],
     [ "enableSyncWordFiltering", "class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417", null ],
     [ "fixedPacketLengthMode", "class_r_f69.html#a4c9dcbd7e44bc5e46d9f10ae276a0c5f", null ],
+    [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
     [ "getPacketLength", "class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1", null ],
     [ "getRSSI", "class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7", null ],
     [ "getTemperature", "class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853", null ],

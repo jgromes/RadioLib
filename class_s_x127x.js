@@ -7,6 +7,7 @@ var class_s_x127x =
     [ "clearDio1Action", "class_s_x127x.html#a9b6532a25e1730973ac08146008adca5", null ],
     [ "disableAddressFiltering", "class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5", null ],
     [ "fixedPacketLengthMode", "class_s_x127x.html#aaf8ce9f09d0f46a76a5e251786b6de7f", null ],
+    [ "getChipVersion", "class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd", null ],
     [ "getDataRate", "class_s_x127x.html#adc25b685de0859b799488bf7729350b6", null ],
     [ "getFrequencyError", "class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362", null ],
     [ "getIRQFlags", "class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d", null ],

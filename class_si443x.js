@@ -3,6 +3,7 @@ var class_si443x =
     [ "Si443x", "class_si443x.html#ae7cfff2efebfa01c8a50a5cbbe8775b9", null ],
     [ "begin", "class_si443x.html#a453eda5436dc4dfe0dad676dc3977752", null ],
     [ "clearIrqAction", "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109", null ],
+    [ "getChipVersion", "class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3", null ],
     [ "getPacketLength", "class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10", null ],
     [ "packetMode", "class_si443x.html#a616eb24c4b11c5d39caaade160be8092", null ],
     [ "random", "class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df", null ],

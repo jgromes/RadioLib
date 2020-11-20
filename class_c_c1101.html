@@ -224,6 +224,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aeea507b71f1a3dfab5be4c3a1606b8fd"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aeea507b71f1a3dfab5be4c3a1606b8fd">random</a> ()</td></tr>
 <tr class="memdesc:aeea507b71f1a3dfab5be4c3a1606b8fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="#aeea507b71f1a3dfab5be4c3a1606b8fd">More...</a><br /></td></tr>
 <tr class="separator:aeea507b71f1a3dfab5be4c3a1606b8fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a4c6e622dffd2788d8ac52d708b0705"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705">getChipVersion</a> ()</td></tr>
+<tr class="memdesc:a2a4c6e622dffd2788d8ac52d708b0705"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module. ">CC1101</a> is connected and working.  <a href="#a2a4c6e622dffd2788d8ac52d708b0705">More...</a><br /></td></tr>
+<tr class="separator:a2a4c6e622dffd2788d8ac52d708b0705"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:a5e02457f1d519cf81b1590a182321c62 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">PhysicalLayer</a> (float freqStep, size_t maxPacketLength)</td></tr>
 <tr class="memdesc:a5e02457f1d519cf81b1590a182321c62 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">More...</a><br /></td></tr>
@@ -464,6 +467,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2a4c6e622dffd2788d8ac52d708b0705"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a4c6e622dffd2788d8ac52d708b0705">&#9670;&nbsp;</a></span>getChipVersion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::getChipVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module. ">CC1101</a> is connected and working. </p>
+<dl class="section return"><dt>Returns</dt><dd>Version register contents or <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

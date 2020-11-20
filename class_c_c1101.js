@@ -8,6 +8,7 @@ var class_c_c1101 =
     [ "disableSyncWordFiltering", "class_c_c1101.html#a4f2dc4176b62a0636636088e31b8e85b", null ],
     [ "enableSyncWordFiltering", "class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4", null ],
     [ "fixedPacketLengthMode", "class_c_c1101.html#a9335f1d5ccab7aab2357449002203810", null ],
+    [ "getChipVersion", "class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705", null ],
     [ "getLQI", "class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb", null ],
     [ "getPacketLength", "class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0", null ],
     [ "getRSSI", "class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551", null ],
