@@ -369,6 +369,7 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
+/*
 int16_t CC1101::setOOK(bool enableOOK) {
   // Change modulation
   if(enableOOK) {
@@ -387,6 +388,7 @@ int16_t CC1101::setOOK(bool enableOOK) {
 
   return(setOutputPower(_power));
 }
+*/
 
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range

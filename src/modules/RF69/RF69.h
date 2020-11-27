@@ -621,7 +621,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setOOK(bool enableOOK);
+    //int16_t setOOK(bool enableOOK);
 
     /*!
       \brief Sets carrier frequency. Allowed values are in bands 290.0 to 340.0 MHz, 431.0 to 510.0 MHz and 862.0 to 1020.0 MHz.

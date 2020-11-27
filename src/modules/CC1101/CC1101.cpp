@@ -660,7 +660,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
   return(setOutputPower(_power));
 }
 
-
 float CC1101::getRSSI() const {
   float rssi;
   if(_rawRSSI >= 128) {
