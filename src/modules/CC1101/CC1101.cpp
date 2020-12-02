@@ -749,6 +749,8 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
     state = setCrcFiltering(true);
   }
 
+  _promiscuous = promiscuous;
+  
   return(state);
 }
 
