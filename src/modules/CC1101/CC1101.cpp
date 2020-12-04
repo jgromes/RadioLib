@@ -641,7 +641,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
-
     // update current modulation
     _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {

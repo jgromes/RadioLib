@@ -369,26 +369,18 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-/*
-int16_t CC1101::setOOK(bool enableOOK) {
+int16_t RF69::setOOK(bool enableOOK) {
   // Change modulation
   if(enableOOK) {
     int16_t state = SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3);
     RADIOLIB_ASSERT(state);
-
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {
     int16_t state = SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3);
     RADIOLIB_ASSERT(state);
-
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_2_FSK;
   }
 
   return(setOutputPower(_power));
 }
-*/
 
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
