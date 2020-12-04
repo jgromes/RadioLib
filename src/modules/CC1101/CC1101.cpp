@@ -641,7 +641,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
-
     // update current modulation
     _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {
@@ -659,7 +658,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
   // Update PA_TABLE values according to the new _modulation.
   return(setOutputPower(_power));
 }
-
 
 float CC1101::getRSSI() const {
   float rssi;
@@ -750,6 +748,8 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
     state = setCrcFiltering(true);
   }
 
+  _promiscuous = promiscuous;
+  
   return(state);
 }
 
