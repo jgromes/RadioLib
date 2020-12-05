@@ -10,6 +10,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   _bwKhz = bw;
@@ -80,6 +81,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // initialize configuration variables (will be overwritten during public settings configuration)
   _br = 21333;                                  // 48.0 kbps
