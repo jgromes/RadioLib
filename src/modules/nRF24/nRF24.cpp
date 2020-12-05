@@ -25,6 +25,7 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   }
+  RADIOLIB_DEBUG_PRINTLN(F("M\tnRF24"));
 
   // configure settings inaccessible by public API
   int16_t state = config();
