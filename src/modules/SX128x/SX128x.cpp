@@ -10,6 +10,7 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize LoRa modulation variables
   _bwKhz = bw;
@@ -61,6 +62,7 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize GFSK modulation variables
   _brKbps = br;
@@ -123,6 +125,7 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, u
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize BLE modulation variables
   _brKbps = br;
@@ -171,6 +174,7 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uin
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize FLRC modulation variables
   _brKbps = br;
