@@ -43,7 +43,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found RF69! (match by RF69_REG_VERSION == 0x24)"));
+    RADIOLIB_DEBUG_PRINTLN(F("M\tRF69"));
   }
 
   // configure settings not accessible by API
