@@ -3,6 +3,15 @@ from pathlib import Path
 from argparse import RawTextHelpFormatter
 
 
+'''
+TODO list:
+  1. Parse macro values (the names of bits in all registers in header file)
+  2. Failed SPI write handling
+  3. SX126x/SX128x handling
+  4. AT handling
+'''
+
+
 def get_macro_name(value, macros):
     for macro in macros:
         if macro[1] == value:
