@@ -18,7 +18,7 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found Si443x!"));
+    RADIOLIB_DEBUG_PRINTLN(F("M\tSi443x"));
   }
 
   // clear POR interrupt
@@ -609,7 +609,7 @@ bool Si443x::findChip() {
     reset();
 
     // check version register
-    int16_t version = getChipVersion();
+    uint8_t version = _mod->SPIreadRegister(SI443X_REG_DEVICE_VERSION);
     if(version == SI443X_DEVICE_VERSION) {
       flagFound = true;
     } else {
@@ -618,8 +618,8 @@ bool Si443x::findChip() {
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) SI443X_REG_DEVICE_VERSION == "));
 
-        char buffHex[12];
-        sprintf(buffHex, "0x%04X", version);
+        char buffHex[5];
+        sprintf(buffHex, "0x%02X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(SI443X_DEVICE_VERSION, HEX);
