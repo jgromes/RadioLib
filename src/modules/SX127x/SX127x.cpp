@@ -16,9 +16,8 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
     RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
-  } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found SX127x!"));
   }
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX127x"));
 
   // set mode to standby
   int16_t state = standby();
@@ -59,9 +58,8 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
     RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
-  } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found SX127x!"));
   }
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX127x"));
 
   // check currently active modem
   int16_t state;
