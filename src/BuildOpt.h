@@ -85,7 +85,7 @@
   //#define RADIOLIB_EXCLUDE_SSTV
 
 #else
-  #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY))
+  #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(ARDUINO_ARCH_MEGAAVR))
     // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
     #define RADIOLIB_PLATFORM                           "Arduino AVR"
     #define RADIOLIB_PIN_TYPE                           uint8_t
@@ -283,6 +283,19 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+  #elif defined(ARDUINO_ARCH_MEGAAVR)
+    // MegaCoreX by MCUdude (https://github.com/MCUdude/MegaCoreX)
+    #define RADIOLIB_PLATFORM                           "MegaCoreX"
+    #define RADIOLIB_PIN_TYPE                           uint8_t
+    #define RADIOLIB_PIN_MODE                           uint8_t
+    #define RADIOLIB_PIN_STATUS                         uint8_t
+    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+    #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
   #else
     // other platforms not covered by the above list - this may or may not work

@@ -33,9 +33,11 @@ void ISerial::flush() {
   _mod->ModuleSerial->flush();
 }
 
+#ifndef ARDUINO_ARCH_MEGAAVR
 size_t ISerial::print(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->print(ifsh));
 }
+#endif
 
 size_t ISerial::print(const String &s) {
   return(_mod->ModuleSerial->print(s));
@@ -77,9 +79,11 @@ size_t ISerial::print(const Printable& x) {
   return(_mod->ModuleSerial->print(x));
 }
 
+#ifndef ARDUINO_ARCH_MEGAAVR
 size_t ISerial::println(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->println(ifsh));
 }
+#endif
 
 size_t ISerial::println(const String &s) {
   return(_mod->ModuleSerial->println(s));
