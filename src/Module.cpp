@@ -219,7 +219,7 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   // check register value each millisecond until check interval is reached
   // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
   uint32_t start = Module::micros();
-  uint8_t readValue;
+  uint8_t readValue = 0x00;
   while(Module::micros() - start < (checkInterval * 1000)) {
     readValue = SPIreadRegister(reg);
     if(readValue == newValue) {
