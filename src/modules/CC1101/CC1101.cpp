@@ -630,23 +630,20 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
-  switch (maxErrBits){
+  switch(maxErrBits){
     case 0:
       // in 16 bit sync word, expect all 16 bits
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
-        requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16, 2, 0));
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16), 2, 0));
     case 1:
       // in 16 bit sync word, expect at least 15 bits
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
-        requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16, 2, 0));
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16), 2, 0));
     default:
-      return (ERR_INVALID_SYNC_WORD);
+      return(ERR_INVALID_SYNC_WORD);
   }
 }
 
 int16_t CC1101::disableSyncWordFiltering(bool requireCarrierSense) {
-  return(SPIsetRegValue(CC1101_REG_MDMCFG2,
-    requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE, 2, 0));
+  return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE), 2, 0));
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
