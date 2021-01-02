@@ -393,7 +393,6 @@
 */
 #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
 
-
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  (0x04)
 #define RADIOLIB_VERSION_MINOR  (0x01)
