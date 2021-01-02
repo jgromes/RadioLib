@@ -148,9 +148,24 @@
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
+  #elif defined(ARDUINO_ARCH_SAMD)
+    // Arduino SAMD (Zero, MKR, etc.)
+    #define RADIOLIB_PLATFORM                           "Arduino SAMD"
+    #define RADIOLIB_PIN_TYPE                           pin_size_t
+    #define RADIOLIB_PIN_MODE                           PinMode
+    #define RADIOLIB_PIN_STATUS                         PinStatus
+    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+    #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
   #elif defined(SAMD_SERIES)
-    // Arduino SAMD (Zero, MKR, etc.) and Adafruit SAMD boards (M0 and M4)
-    #define RADIOLIB_PLATFORM                           "Arduino/Adafruit SAMD"
+    // Adafruit SAMD boards (M0 and M4)
+    #define RADIOLIB_PLATFORM                           "Adafruit SAMD"
     #define RADIOLIB_PIN_TYPE                           uint32_t
     #define RADIOLIB_PIN_MODE                           uint32_t
     #define RADIOLIB_PIN_STATUS                         uint32_t
