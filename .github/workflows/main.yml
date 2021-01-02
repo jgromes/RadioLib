@@ -20,7 +20,6 @@ jobs:
           - arduino:megaavr:uno2018
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
-          - arduino:samd:arduino_zero_native
           - adafruit:samd:adafruit_feather_m0
           - adafruit:nrf52:feather52832
           - esp32:esp32:esp32
