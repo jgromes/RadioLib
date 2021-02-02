@@ -63,7 +63,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
   * [__Curie__](https://github.com/arduino/ArduinoCore-arc32) - Arduino 101
 
 * __SparkFun__
-  * [__Apollo3__](https://github.com/sparkfun/Arduino_Apollo3) - Sparkfun Artemis Redboard
+  * [__Apollo3__](https://github.com/sparkfun/Arduino_Apollo3) - Sparkfun Artemis Redboard, SparkFun LoRa Thing Plus - expLoRaBLE
 
 * __ST Microelectronics__
   * [__STM32__ (official core)](https://github.com/stm32duino/Arduino_Core_STM32) - STM32 Nucleo, Discovery, Maple, BluePill, BlackPill etc.
