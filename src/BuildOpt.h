@@ -312,6 +312,43 @@
     #define RADIOLIB_PROGMEM                            PROGMEM
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
+  #elif defined(ARDUINO_LoRa_THING_PLUS_expLoRaBLE)
+    // SparkFun LoRa Thing Plus - expLoRaBLE
+    #define RADIOLIB_PLATFORM                           "SparkFun LoRa Thing Plus expLoRaBLE"
+    #define RADIOLIB_PIN_TYPE                           pin_size_t
+    #define RADIOLIB_PIN_MODE                           Arduino_PinMode
+    #define RADIOLIB_PIN_STATUS                         PinStatus
+    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+    #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI1
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)    
+    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1    
+    #define RADIOLIB_EXCLUDE_CC1101
+    #define RADIOLIB_EXCLUDE_ESP8266
+    #define RADIOLIB_EXCLUDE_HC05
+    #define RADIOLIB_EXCLUDE_JDY08
+    #define RADIOLIB_EXCLUDE_NRF24
+    #define RADIOLIB_EXCLUDE_RF69
+    #define RADIOLIB_EXCLUDE_SX1231     // dependent on RADIOLIB_EXCLUDE_RF69
+    #define RADIOLIB_EXCLUDE_SI443X
+    #define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
+    #define RADIOLIB_EXCLUDE_SX127X
+    #define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
+    //#define RADIOLIB_EXCLUDE_SX126X
+    #define RADIOLIB_EXCLUDE_SX128X
+    #define RADIOLIB_EXCLUDE_XBEE
+    #define RADIOLIB_EXCLUDE_AFSK
+    #define RADIOLIB_EXCLUDE_AX25
+    #define RADIOLIB_EXCLUDE_HELLSCHREIBER
+    #define RADIOLIB_EXCLUDE_HTTP
+    #define RADIOLIB_EXCLUDE_MORSE
+    #define RADIOLIB_EXCLUDE_MQTT
+    #define RADIOLIB_EXCLUDE_RTTY
+    #define RADIOLIB_EXCLUDE_SSTV    
+
   #else
     // other platforms not covered by the above list - this may or may not work
     #define RADIOLIB_PLATFORM                           "Unknown"
