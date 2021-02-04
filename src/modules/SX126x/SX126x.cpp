@@ -1130,11 +1130,11 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-uint8_t SX126x::getRSSIInst() {
+float SX126x::getRSSIInst() {
   uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
   SPIreadCommand(SX126X_CMD_GET_RSSI_INST, data, 3);
 
-  return data[0];
+  return (float)data[0] / (-2.0);
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
