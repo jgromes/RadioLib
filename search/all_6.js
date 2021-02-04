@@ -19,6 +19,7 @@ var searchData=
   ['getpictureheight',['getPictureHeight',['../class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d',1,'SSTVClient']]],
   ['getrangingresult',['getRangingResult',['../class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f',1,'SX1280']]],
   ['getrssi',['getRSSI',['../class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551',1,'CC1101::getRSSI()'],['../class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7',1,'RF69::getRSSI()'],['../class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925',1,'SX126x::getRSSI()'],['../class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92',1,'SX1272::getRSSI()'],['../class_s_x1278.html#a0b1fe4d0b1acfa454d7bab59cdf319fe',1,'SX1278::getRSSI()'],['../class_s_x128x.html#a94d3003277925e2dc3372548b3311008',1,'SX128x::getRSSI()']]],
+  ['getrssiinst',['getRSSIInst',['../class_s_x126x.html#ae36664f9c605a8fe74b2f357e0ec3323',1,'SX126x']]],
   ['getrst',['getRst',['../class_module.html#ae352c7a7b997fc1b17189c1312a8347f',1,'Module']]],
   ['getrx',['getRx',['../class_module.html#a5d66f76c11ac91a35a3a1d9647aa6f6d',1,'Module']]],
   ['getsnr',['getSNR',['../class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca',1,'SX126x::getSNR()'],['../class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb',1,'SX127x::getSNR()'],['../class_s_x128x.html#a89ebf1f4f227cd35c0799c06d5d9c1d2',1,'SX128x::getSNR()']]],

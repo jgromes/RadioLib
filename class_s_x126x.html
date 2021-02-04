@@ -246,6 +246,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7e342ddbef84cf845bef8f4448b8da10"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10">getTimeOnAir</a> (size_t len)</td></tr>
 <tr class="memdesc:a7e342ddbef84cf845bef8f4448b8da10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="#a7e342ddbef84cf845bef8f4448b8da10">More...</a><br /></td></tr>
 <tr class="separator:a7e342ddbef84cf845bef8f4448b8da10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae36664f9c605a8fe74b2f357e0ec3323"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae36664f9c605a8fe74b2f357e0ec3323">getRSSIInst</a> ()</td></tr>
+<tr class="memdesc:ae36664f9c605a8fe74b2f357e0ec3323"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation.  <a href="#ae36664f9c605a8fe74b2f357e0ec3323">More...</a><br /></td></tr>
+<tr class="separator:ae36664f9c605a8fe74b2f357e0ec3323"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec09cba71494bd927ad1da786606ca6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adec09cba71494bd927ad1da786606ca6">implicitHeader</a> (size_t len)</td></tr>
 <tr class="memdesc:adec09cba71494bd927ad1da786606ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <a href="#adec09cba71494bd927ad1da786606ca6">More...</a><br /></td></tr>
 <tr class="separator:adec09cba71494bd927ad1da786606ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -691,6 +694,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. </p>
 <dl class="section return"><dt>Returns</dt><dd>RSSI of the last received packet in dBm. </dd></dl>
+
+</div>
+</div>
+<a id="ae36664f9c605a8fe74b2f357e0ec3323"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae36664f9c605a8fe74b2f357e0ec3323">&#9670;&nbsp;</a></span>getRSSIInst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SX126x::getRSSIInst </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation. </p>
+<dl class="section return"><dt>Returns</dt><dd>Instantaneous RSSI value in dBm, in steps of 0.5dBm </dd></dl>
 
 </div>
 </div>

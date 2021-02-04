@@ -13,6 +13,7 @@ var class_s_x126x =
     [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],
     [ "getRSSI", "class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925", null ],
+    [ "getRSSIInst", "class_s_x126x.html#ae36664f9c605a8fe74b2f357e0ec3323", null ],
     [ "getSNR", "class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca", null ],
     [ "getTimeOnAir", "class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10", null ],
     [ "implicitHeader", "class_s_x126x.html#adec09cba71494bd927ad1da786606ca6", null ],

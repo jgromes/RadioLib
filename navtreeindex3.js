@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"dir_79690749eba542503bb1a9a3dbb495e1.html":[4,0,0,1],
 "dir_7b8feacc70eb38d5fd56f060c649a59c.html":[4,0,0,0,13],
 "dir_8d5439df06ea2679013aa8390703d116.html":[4,0,0,0,4],
 "dir_a6b6d785787649e9a3efd5036a39108c.html":[4,0,0,1,5],
@@ -21,8 +22,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[3,3,0,3],
 "functions_e.html":[3,3,0,4],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1,0],
 "functions_func.html":[3,3,1],
+"functions_func.html":[3,3,1,0],
 "functions_func_0x7e.html":[3,3,1,22],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
@@ -162,8 +163,8 @@ var NAVTREEINDEX3 =
 "group__uart__config.html#gad418f0922126e27279d1a374fc63e036":[2,1,8],
 "group__uart__config.html#gae077d53c5c120a989b1f285f183f1b78":[2,1,3],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,4,0],
 "pages.html":[],
