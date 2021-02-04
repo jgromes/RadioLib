@@ -807,6 +807,13 @@ class SX126x: public PhysicalLayer {
    uint32_t getTimeOnAir(size_t len);
 
    /*!
+     \brief Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation.
+
+     \returns Instantaneous RSSI value in dBm, in steps of 0.5dBm
+   */
+   float getRSSIInst();
+
+   /*!
      \brief Set implicit header mode for future reception/transmission.
 
      \returns \ref status_codes
