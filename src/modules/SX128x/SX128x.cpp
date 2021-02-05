@@ -1429,7 +1429,7 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     // some faster platforms require a short delay here
     // not sure why, but it seems that long enough SPI transaction
     // (e.g. setPacketParams for GFSK) will fail without it
-    #if defined(ARDUINO_ARCH_STM32) || defined(SAMD_SERIES)
+    #if defined(RADIOLIB_SPI_SLOWDOWN)
       Module::delay(1);
     #endif
   #endif
