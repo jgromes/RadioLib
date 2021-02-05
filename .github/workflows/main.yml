@@ -26,7 +26,7 @@ jobs:
           - esp32:esp32:esp32
           - esp8266:esp8266:generic
           - Intel:arc32:arduino_101
-          - SparkFun:apollo3:amap3redboard
+          - SparkFun:apollo3:sfe_artemis
           - STM32:stm32:GenF3
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
