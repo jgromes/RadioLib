@@ -40,6 +40,7 @@ RTTYClient rtty(&radio);
 
 void setup() {
   Serial.begin(9600);
+  while(!Serial);
 
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));

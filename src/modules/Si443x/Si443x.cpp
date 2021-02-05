@@ -267,11 +267,14 @@ int16_t Si443x::startReceive() {
   _mod->setRfSwitchState(HIGH, LOW);
 
   // set interrupt mapping
-  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
+  //_mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
+  //_mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_VALID_PACKET_RECEIVED_ENABLED | SI443X_CRC_ERROR_ENABLED);
   _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
 
   // set mode to receive
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
 
   return(state);
 }
@@ -572,10 +575,6 @@ uint8_t Si443x::random() {
   return(randByte);
 }
 
-int16_t Si443x::getChipVersion() {
-  return(_mod->SPIgetRegValue(SI443X_REG_DEVICE_VERSION));
-}
-
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
@@ -597,6 +596,7 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
   state = _mod->SPIsetRegValue(SI443X_REG_FREQUENCY_BAND_SELECT, bandSelect | freqBand, 5, 0);
   state |= _mod->SPIsetRegValue(SI443X_REG_NOM_CARRIER_FREQUENCY_1, (uint8_t)((freqCarrier & 0xFF00) >> 8));
   state |= _mod->SPIsetRegValue(SI443X_REG_NOM_CARRIER_FREQUENCY_0, (uint8_t)(freqCarrier & 0xFF));
+  //state |= _mod->SPIsetRegValue(SI443X_REG_AFC_LIMITER, 80);
 
   return(state);
 }
@@ -647,10 +647,17 @@ int16_t Si443x::config() {
 
   // disable packet header
   state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_2, SI443X_SYNC_WORD_TIMEOUT_ON | SI443X_HEADER_LENGTH_HEADER_NONE, 7, 4);
+  //state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_2, SI443X_HEADER_LENGTH_HEADER_3210 | SI443X_FIXED_PACKET_LENGTH_OFF | SI443X_SYNC_LENGTH_SYNC_32, 6, 1);
   RADIOLIB_ASSERT(state);
 
   // disable packet header checking
   state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_1, SI443X_BROADCAST_ADDR_CHECK_NONE | SI443X_RECEIVED_HEADER_CHECK_NONE);
+  //state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_1, SI443X_BROADCAST_ADDR_CHECK_BYTE3 | SI443X_RECEIVED_HEADER_CHECK_BYTE3);
+  RADIOLIB_ASSERT(state);
+
+  state = _mod->SPIsetRegValue(SI443X_REG_GPIO0_CONFIG, 0x12);
+  RADIOLIB_ASSERT(state);
+  state = _mod->SPIsetRegValue(SI443X_REG_GPIO1_CONFIG, 0x15);
   RADIOLIB_ASSERT(state);
 
   return(state);
