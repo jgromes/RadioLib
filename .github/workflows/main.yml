@@ -110,6 +110,7 @@ jobs:
             # SparkFun Apollo
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json"
             echo "::set-output name=warnings::'none'"
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
           elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then
             # STM32 (official core)
