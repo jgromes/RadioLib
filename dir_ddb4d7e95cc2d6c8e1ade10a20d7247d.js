@@ -1,6 +1,5 @@
 var dir_ddb4d7e95cc2d6c8e1ade10a20d7247d =
 [
-    [ "AX5243", "dir_0997ba31a8bc8318687bbe61e93c7a67.html", "dir_0997ba31a8bc8318687bbe61e93c7a67" ],
     [ "CC1101", "dir_e824c1032eaf58988755f8ba9735594b.html", "dir_e824c1032eaf58988755f8ba9735594b" ],
     [ "ESP8266", "dir_ec8372b468150f98f42c73cf97f51298.html", "dir_ec8372b468150f98f42c73cf97f51298" ],
     [ "HC05", "dir_66baa0cb3ce3b01929266fe63d8714ed.html", "dir_66baa0cb3ce3b01929266fe63d8714ed" ],
