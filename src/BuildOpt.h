@@ -233,12 +233,12 @@
     #define RADIOLIB_PROGMEM                            PROGMEM
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
-  #elif defined(AM_PART_APOLLO3)
-    // Sparkfun Artemis boards
-    #define RADIOLIB_PLATFORM                           "Sparkfun Artemis"
-    #define RADIOLIB_PIN_TYPE                           uint8_t
-    #define RADIOLIB_PIN_MODE                           uint8_t
-    #define RADIOLIB_PIN_STATUS                         uint8_t
+  #elif defined(ARDUINO_ARCH_APOLLO3)
+    // Sparkfun Apollo3 boards
+    #define RADIOLIB_PLATFORM                           "Sparkfun Apollo3"
+    #define RADIOLIB_PIN_TYPE                           pin_size_t
+    #define RADIOLIB_PIN_MODE                           Arduino_PinMode
+    #define RADIOLIB_PIN_STATUS                         PinStatus
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
     #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFF)
@@ -247,6 +247,9 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+    // Apollo3 uses mbed libraries, which already contain ESP8266 driver
+    #define RADIOLIB_EXCLUDE_ESP8266
 
   #elif defined(ARDUINO_ARDUINO_NANO33BLE)
     // Arduino Nano 33 BLE
