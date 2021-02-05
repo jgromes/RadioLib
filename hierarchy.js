@@ -15,6 +15,7 @@ var hierarchy =
     [ "MorseClient", "class_morse_client.html", null ],
     [ "MQTTClient", "class_m_q_t_t_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
+      [ "AX5243", "class_a_x5243.html", null ],
       [ "CC1101", "class_c_c1101.html", null ],
       [ "nRF24", "classn_r_f24.html", null ],
       [ "RF69", "class_r_f69.html", [
