@@ -148,6 +148,9 @@
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
+    // slow down SX126x/8x SPI on this platform
+    #define RADIOLIB_SPI_SLOWDOWN
+
   #elif defined(SAMD_SERIES)
     // Adafruit SAMD boards (M0 and M4)
     #define RADIOLIB_PLATFORM                           "Adafruit SAMD"
@@ -162,6 +165,9 @@
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
     #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+
+    // slow down SX126x/8x SPI on this platform
+    #define RADIOLIB_SPI_SLOWDOWN
 
   #elif defined(ARDUINO_ARCH_SAMD)
     // Arduino SAMD (Zero, MKR, etc.)
@@ -250,6 +256,9 @@
 
     // Apollo3 uses mbed libraries, which already contain ESP8266 driver
     #define RADIOLIB_EXCLUDE_ESP8266
+
+    // slow down SX126x/8x SPI on this platform
+    #define RADIOLIB_SPI_SLOWDOWN
 
   #elif defined(ARDUINO_ARDUINO_NANO33BLE)
     // Arduino Nano 33 BLE
