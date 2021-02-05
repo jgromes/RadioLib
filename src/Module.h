@@ -86,9 +86,9 @@ class Module {
 
       \param spi SPI interface to be used, can also use software SPI implementations.
 
-      \param spiSettings SPI interface settings.
+      \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
     */
-    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
 
     /*!
       \brief Generic module constructor.
