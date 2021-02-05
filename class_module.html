@@ -109,9 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac65f3d9e022b3284134ced1c20bcff09"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac65f3d9e022b3284134ced1c20bcff09">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass &amp;spi, SPISettings spiSettings)</td></tr>
 <tr class="memdesc:ac65f3d9e022b3284134ced1c20bcff09"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI-based module constructor.  <a href="#ac65f3d9e022b3284134ced1c20bcff09">More...</a><br /></td></tr>
 <tr class="separator:ac65f3d9e022b3284134ced1c20bcff09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af67217bf4771f4becb0f89b2a90054c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af67217bf4771f4becb0f89b2a90054c4">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass &amp;spi, SPISettings spiSettings)</td></tr>
-<tr class="memdesc:af67217bf4771f4becb0f89b2a90054c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended SPI-based module constructor.  <a href="#af67217bf4771f4becb0f89b2a90054c4">More...</a><br /></td></tr>
-<tr class="separator:af67217bf4771f4becb0f89b2a90054c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d99944916b750dc1c69890f370680e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a53d99944916b750dc1c69890f370680e">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass &amp;spi, SPISettings spiSettings=SPISettings(2000000, MSBFIRST, SPI_MODE0))</td></tr>
+<tr class="memdesc:a53d99944916b750dc1c69890f370680e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extended SPI-based module constructor.  <a href="#a53d99944916b750dc1c69890f370680e">More...</a><br /></td></tr>
+<tr class="separator:a53d99944916b750dc1c69890f370680e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56456ade4eeffa2c566a6fc3fd098276"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a56456ade4eeffa2c566a6fc3fd098276">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, SPIClass &amp;spi=RADIOLIB_DEFAULT_SPI, SPISettings spiSettings=SPISettings(2000000, MSBFIRST, SPI_MODE0), HardwareSerial *serial=nullptr)</td></tr>
 <tr class="memdesc:a56456ade4eeffa2c566a6fc3fd098276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generic module constructor.  <a href="#a56456ade4eeffa2c566a6fc3fd098276">More...</a><br /></td></tr>
 <tr class="separator:a56456ade4eeffa2c566a6fc3fd098276"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -464,8 +464,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="af67217bf4771f4becb0f89b2a90054c4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af67217bf4771f4becb0f89b2a90054c4">&#9670;&nbsp;</a></span>Module() <span class="overload">[5/7]</span></h2>
+<a id="a53d99944916b750dc1c69890f370680e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53d99944916b750dc1c69890f370680e">&#9670;&nbsp;</a></span>Module() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,7 +504,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">SPISettings&#160;</td>
-          <td class="paramname"><em>spiSettings</em>&#160;</td>
+          <td class="paramname"><em>spiSettings</em> = <code>SPISettings(2000000,&#160;MSBFIRST,&#160;SPI_MODE0)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -522,7 +522,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
     <tr><td class="paramname">rst</td><td>Arduino pin to be used as hardware reset for the module.</td></tr>
     <tr><td class="paramname">gpio</td><td>Arduino pin to be used as additional interrupt/GPIO.</td></tr>
     <tr><td class="paramname">spi</td><td>SPI interface to be used, can also use software SPI implementations.</td></tr>
-    <tr><td class="paramname">spiSettings</td><td>SPI interface settings. </td></tr>
+    <tr><td class="paramname">spiSettings</td><td>SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0. </td></tr>
   </table>
   </dd>
 </dl>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_module.html#ad1aadc2b52eea2bf9d26591091eec3f1":[3,0,11,8],
 "class_module.html#ad5767216ba9340ae6d86915b12e89bd6":[3,0,11,7],
 "class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4":[3,0,11,23],
 "class_module.html#adb22d89bc5f532f1d056d9a9f3a6589c":[3,0,11,19],
@@ -11,7 +12,6 @@ var NAVTREEINDEX1 =
 "class_module.html#aeb4c7447372d56a7cae6db91994aacfc":[3,0,11,12],
 "class_module.html#aefd955f1cd6d588b2cc229db87cb2121":[3,0,11,27],
 "class_module.html#af0569f6930da7bee761eeca8158aed3a":[3,0,11,30],
-"class_module.html#af67217bf4771f4becb0f89b2a90054c4":[3,0,11,4],
 "class_morse_client.html":[3,0,12],
 "class_morse_client.html#a051cba718c88b0d25a0f6f6dbfeb1e46":[3,0,12,3],
 "class_morse_client.html#a1125d874d18a507b2e77675b687cce0f":[3,0,12,6],

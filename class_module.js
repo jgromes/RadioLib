@@ -4,7 +4,7 @@ var class_module =
     [ "Module", "class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38", null ],
     [ "Module", "class_module.html#ae8709b81f592a23ebd72ba3fd8066b0f", null ],
     [ "Module", "class_module.html#ac65f3d9e022b3284134ced1c20bcff09", null ],
-    [ "Module", "class_module.html#af67217bf4771f4becb0f89b2a90054c4", null ],
+    [ "Module", "class_module.html#a53d99944916b750dc1c69890f370680e", null ],
     [ "Module", "class_module.html#a56456ade4eeffa2c566a6fc3fd098276", null ],
     [ "Module", "class_module.html#a919baf2e46c357ebfcdbc1025b6c551e", null ],
     [ "ATemptyBuffer", "class_module.html#ad5767216ba9340ae6d86915b12e89bd6", null ],
