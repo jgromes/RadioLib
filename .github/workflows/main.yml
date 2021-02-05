@@ -108,7 +108,7 @@ jobs:
 
           elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
             # SparkFun Apollo
-            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json"
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Boards/master/IDE_Board_Manager/package_sparkfun_index.json"
             echo "::set-output name=warnings::'none'"
 
           elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then

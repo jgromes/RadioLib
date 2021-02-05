@@ -23,8 +23,7 @@
 // nSEL pin:  10
 // nIRQ pin:  2
 // SDN pin:   9
-//Si4432 radio = new Module(5, 26, 25);
-Si4432 radio = new Module(D8, D2, D0);
+Si4432 radio = new Module(10, 2, 9);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
