@@ -19,10 +19,6 @@ int16_t RFM95::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX1278"));
   RADIOLIB_DEBUG_PRINTLN(F("M\tRFM95"));
 
-  // configure settings not accessible by API
-  state = config();
-  RADIOLIB_ASSERT(state);
-
   // configure publicly accessible settings
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);

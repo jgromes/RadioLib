@@ -23,6 +23,10 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
+  // configure settings not accessible by API
+  state = config();
+  RADIOLIB_ASSERT(state);
+
   // check active modem
   if(getActiveModem() != SX127X_LORA) {
     // set LoRa mode
@@ -61,8 +65,15 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   }
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX127x"));
 
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // configure settings not accessible by API
+  state = configFSK();
+  RADIOLIB_ASSERT(state);
+
   // check currently active modem
-  int16_t state;
   if(getActiveModem() != SX127X_FSK_OOK) {
     // set FSK mode
     state = setActiveModem(SX127X_FSK_OOK);
@@ -1059,7 +1070,7 @@ int16_t SX127x::configFSK() {
   _mod->SPIwriteRegister(SX127X_REG_IRQ_FLAGS_2, SX127X_FLAG_FIFO_OVERRUN);
 
   // set packet configuration
-  state = _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_PACKET_VARIABLE | SX127X_DC_FREE_WHITENING | SX127X_CRC_ON | SX127X_CRC_AUTOCLEAR_ON | SX127X_ADDRESS_FILTERING_OFF | SX127X_CRC_WHITENING_TYPE_CCITT, 7, 0);
+  state = _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_PACKET_VARIABLE | SX127X_DC_FREE_NONE | SX127X_CRC_ON | SX127X_CRC_AUTOCLEAR_ON | SX127X_ADDRESS_FILTERING_OFF | SX127X_CRC_WHITENING_TYPE_CCITT, 7, 0);
   state |= _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_2, SX127X_DATA_MODE_PACKET | SX127X_IO_HOME_OFF, 6, 5);
   RADIOLIB_ASSERT(state);
 
@@ -1078,10 +1089,8 @@ int16_t SX127x::configFSK() {
   state |= _mod->SPIsetRegValue(SX127X_REG_RX_TIMEOUT_3, SX127X_TIMEOUT_SIGNAL_SYNC_OFF);
   RADIOLIB_ASSERT(state);
 
-  // enable preamble detector and set preamble length
+  // enable preamble detector
   state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_DETECT, SX127X_PREAMBLE_DETECTOR_ON | SX127X_PREAMBLE_DETECTOR_2_BYTE | SX127X_PREAMBLE_DETECTOR_TOL);
-  state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB_FSK, SX127X_PREAMBLE_SIZE_MSB);
-  state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB_FSK, SX127X_PREAMBLE_SIZE_LSB);
 
   return(state);
 }
