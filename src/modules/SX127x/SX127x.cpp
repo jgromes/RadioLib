@@ -599,9 +599,10 @@ int16_t SX127x::setPreambleLength(uint16_t preambleLength) {
     return(state);
 
   } else if(modem == SX127X_FSK_OOK) {
-    // set preamble length
-    state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB_FSK, (uint8_t)((preambleLength >> 8) & 0xFF));
-    state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB_FSK, (uint8_t)(preambleLength & 0xFF));
+    // set preamble length (in bytes)
+    uint16_t numBytes = preambleLength / 8;
+    state = _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_MSB_FSK, (uint8_t)((numBytes >> 8) & 0xFF));
+    state |= _mod->SPIsetRegValue(SX127X_REG_PREAMBLE_LSB_FSK, (uint8_t)(numBytes & 0xFF));
     return(state);
   }
 

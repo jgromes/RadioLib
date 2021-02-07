@@ -745,9 +745,9 @@ class SX127x: public PhysicalLayer {
     int16_t setCurrentLimit(uint8_t currentLimit);
 
     /*!
-      \brief Sets %LoRa preamble length. Allowed values range from 6 to 65535. Only available in %LoRa mode.
+      \brief Sets %LoRa or FSK preamble length. Allowed values range from 6 to 65535 in %LoRa mode or 0 to 65535 in FSK mode.
 
-      \param preambleLength Preamble length to be set (in symbols).
+      \param preambleLength Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).
 
       \returns \ref status_codes
     */
