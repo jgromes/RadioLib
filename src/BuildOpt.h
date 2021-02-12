@@ -390,6 +390,13 @@
 
 //#define RADIOLIB_STATIC_ONLY
 
+/*
+ * Uncomment to enable "paranoid" SPI mode
+ * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
+ * This improves reliablility, but slightly slows down communication.
+ */
+#define RADIOLIB_SPI_PARANOID
+
 // set the size of static arrays to use
 #if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
 #define RADIOLIB_STATIC_ARRAY_SIZE   256

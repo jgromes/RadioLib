@@ -216,39 +216,43 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   uint8_t newValue = (currentValue & ~mask) | (value & mask);
   SPIwriteRegister(reg, newValue);
 
-  // check register value each millisecond until check interval is reached
-  // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
-  uint32_t start = Module::micros();
-  uint8_t readValue = 0x00;
-  while(Module::micros() - start < (checkInterval * 1000)) {
-    readValue = SPIreadRegister(reg);
-    if(readValue == newValue) {
-      // check passed, we can stop the loop
-      return(ERR_NONE);
+  #if defined(RADIOLIB_SPI_PARANOID)
+    // check register value each millisecond until check interval is reached
+    // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
+    uint32_t start = Module::micros();
+    uint8_t readValue = 0x00;
+    while(Module::micros() - start < (checkInterval * 1000)) {
+      readValue = SPIreadRegister(reg);
+      if(readValue == newValue) {
+        // check passed, we can stop the loop
+        return(ERR_NONE);
+      }
     }
-  }
 
-  // check failed, print debug info
-  RADIOLIB_DEBUG_PRINTLN();
-  RADIOLIB_DEBUG_PRINT(F("address:\t0x"));
-  RADIOLIB_DEBUG_PRINTLN(reg, HEX);
-  RADIOLIB_DEBUG_PRINT(F("bits:\t\t"));
-  RADIOLIB_DEBUG_PRINT(msb);
-  RADIOLIB_DEBUG_PRINT(' ');
-  RADIOLIB_DEBUG_PRINTLN(lsb);
-  RADIOLIB_DEBUG_PRINT(F("value:\t\t0b"));
-  RADIOLIB_DEBUG_PRINTLN(value, BIN);
-  RADIOLIB_DEBUG_PRINT(F("current:\t0b"));
-  RADIOLIB_DEBUG_PRINTLN(currentValue, BIN);
-  RADIOLIB_DEBUG_PRINT(F("mask:\t\t0b"));
-  RADIOLIB_DEBUG_PRINTLN(mask, BIN);
-  RADIOLIB_DEBUG_PRINT(F("new:\t\t0b"));
-  RADIOLIB_DEBUG_PRINTLN(newValue, BIN);
-  RADIOLIB_DEBUG_PRINT(F("read:\t\t0b"));
-  RADIOLIB_DEBUG_PRINTLN(readValue, BIN);
-  RADIOLIB_DEBUG_PRINTLN();
+    // check failed, print debug info
+    RADIOLIB_DEBUG_PRINTLN();
+    RADIOLIB_DEBUG_PRINT(F("address:\t0x"));
+    RADIOLIB_DEBUG_PRINTLN(reg, HEX);
+    RADIOLIB_DEBUG_PRINT(F("bits:\t\t"));
+    RADIOLIB_DEBUG_PRINT(msb);
+    RADIOLIB_DEBUG_PRINT(' ');
+    RADIOLIB_DEBUG_PRINTLN(lsb);
+    RADIOLIB_DEBUG_PRINT(F("value:\t\t0b"));
+    RADIOLIB_DEBUG_PRINTLN(value, BIN);
+    RADIOLIB_DEBUG_PRINT(F("current:\t0b"));
+    RADIOLIB_DEBUG_PRINTLN(currentValue, BIN);
+    RADIOLIB_DEBUG_PRINT(F("mask:\t\t0b"));
+    RADIOLIB_DEBUG_PRINTLN(mask, BIN);
+    RADIOLIB_DEBUG_PRINT(F("new:\t\t0b"));
+    RADIOLIB_DEBUG_PRINTLN(newValue, BIN);
+    RADIOLIB_DEBUG_PRINT(F("read:\t\t0b"));
+    RADIOLIB_DEBUG_PRINTLN(readValue, BIN);
+    RADIOLIB_DEBUG_PRINTLN();
 
-  return(ERR_SPI_WRITE_FAILED);
+    return(ERR_SPI_WRITE_FAILED);
+  #else
+    return(ERR_NONE);
+  #endif
 }
 
 void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {
