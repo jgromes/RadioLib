@@ -412,14 +412,13 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
 }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
-  // set frequency deviation to lowest available setting (required for RTTY)
-  if(freqDev == 0.0) {
-    int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, 0, 6, 4);
-    state |= SPIsetRegValue(CC1101_REG_DEVIATN, 0, 2, 0);
-    return(state);
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 1.587;
   }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 1.587, 380.8, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 1.587, 380.8, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
@@ -427,7 +426,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // calculate exponent and mantissa values
   uint8_t e = 0;
   uint8_t m = 0;
-  getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
+  getExpMant(newFreqDev * 1000.0, 8, 17, 7, e, m);
 
   // set frequency deviation value
   int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
