@@ -58,6 +58,17 @@ void setup() {
     Serial.println(state);
     while(true);
   }
+
+  // initialize AFSK client
+  Serial.print(F("[AFSK] Initializing ... "));
+  state = audio.begin();
+  if(state == ERR_NONE) {
+    Serial.println(F("success!"));
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while(true);
+  }
 }
 
 void loop() {
