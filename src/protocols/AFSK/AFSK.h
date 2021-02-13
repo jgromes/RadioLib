@@ -26,6 +26,13 @@ class AFSKClient  {
     AFSKClient(PhysicalLayer* phy, RADIOLIB_PIN_TYPE pin);
 
     /*!
+      \brief Initialization method.
+
+      \returns \ref status_codes
+    */
+    int16_t begin();
+
+    /*!
       \brief Start transmitting audio tone.
 
       \param freq Frequency of the tone in Hz.
