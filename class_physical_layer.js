@@ -15,6 +15,7 @@ var class_physical_layer =
     [ "setEncoding", "class_physical_layer.html#a7d3419227d201d6912b77784636d437d", null ],
     [ "setFrequencyDeviation", "class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b", null ],
     [ "standby", "class_physical_layer.html#a0e77da761a2cbb5c9535df0bdea993f9", null ],
+    [ "startDirect", "class_physical_layer.html#a88a10657bd2215a11a2331f937414b55", null ],
     [ "startTransmit", "class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_physical_layer.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_physical_layer.html#a41a1de0ebffe7b65de6fd8cceb9a5123", null ],

@@ -1,6 +1,7 @@
 var class_a_f_s_k_client =
 [
     [ "AFSKClient", "class_a_f_s_k_client.html#acfe53917bcba7f79611e01865c42fefd", null ],
+    [ "begin", "class_a_f_s_k_client.html#a30b86bb7cd087b3bc3c45a011ba266c3", null ],
     [ "noTone", "class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1", null ],
     [ "tone", "class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33", null ],
     [ "AX25Client", "class_a_f_s_k_client.html#a0012621c1414f4c7573e961b57884a5b", null ],
