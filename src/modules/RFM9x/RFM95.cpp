@@ -20,10 +20,10 @@ int16_t RFM95::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
   RADIOLIB_DEBUG_PRINTLN(F("M\tRFM95"));
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
   state = setSpreadingFactor(sf);
