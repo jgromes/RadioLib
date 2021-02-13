@@ -732,11 +732,17 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
   }
+  
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 0.0, 200.0, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint32_t freqDevRaw = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
+  uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // check modulation parameters
   /*if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
