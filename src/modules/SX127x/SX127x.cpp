@@ -708,8 +708,14 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
     return(ERR_WRONG_MODEM);
   }
 
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
+
   // check frequency deviation range
-  if(!((freqDev + _br/2.0 <= 250.0) && (freqDev <= 200.0))) {
+  if(!((newFreqDev + _br/2.0 <= 250.0) && (freqDev <= 200.0))) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
@@ -719,7 +725,7 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
 
   // set allowed frequency deviation
   uint32_t base = 1;
-  uint32_t FDEV = (freqDev * (base << 19)) / 32000;
+  uint32_t FDEV = (newFreqDev * (base << 19)) / 32000;
   state = _mod->SPIsetRegValue(SX127X_REG_FDEV_MSB, (FDEV & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(SX127X_REG_FDEV_LSB, FDEV & 0x00FF, 7, 0);
   return(state);
