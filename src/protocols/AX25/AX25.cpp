@@ -179,17 +179,8 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   // save preamble length
   _preambleLen = preambleLen;
 
-  // set module frequency deviation to 0 if using FSK
-  int16_t state = ERR_NONE;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio == nullptr) {
-    state = _phy->setFrequencyDeviation(0);
-    RADIOLIB_ASSERT(state);
-
-    state = _phy->setEncoding(0);
-  }
-  #endif
-  return(state);
+  // configure for direct mode
+  return(_phy->startDirect());
 }
 
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
