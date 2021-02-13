@@ -24,15 +24,8 @@ int16_t HellClient::begin(float base, float rate) {
   // calculate "pixel" duration
   _pixelDuration = 1000000.0/rate;
 
-  // set module frequency deviation to 0 if using FSK
-  int16_t state = ERR_NONE;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio == nullptr) {
-    state = _phy->setFrequencyDeviation(0);
-  }
-  #endif
-
-  return(state);
+  // configure for direct mode
+  return(_phy->startDirect());
 }
 
 size_t HellClient::printGlyph(uint8_t* buff) {
