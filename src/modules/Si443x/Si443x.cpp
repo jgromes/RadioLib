@@ -334,28 +334,23 @@ int16_t Si443x::setBitRate(float br) {
 }
 
 int16_t Si443x::setFrequencyDeviation(float freqDev) {
-  // set frequency deviation to lowest available setting (required for RTTY)
-  if(freqDev == 0.0) {
-    int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, 0x00, 2, 2);
-    _mod->SPIwriteRegister(SI443X_REG_FREQUENCY_DEVIATION, 0x00);
-
-    if(state == ERR_NONE) {
-      _freqDev = freqDev;
-    }
-    return(state);
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.625;
   }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 0.625, 320.0, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.625, 320.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint16_t fdev = (uint16_t)(freqDev / 0.625);
+  uint16_t fdev = (uint16_t)(newFreqDev / 0.625);
 
   // update registers
   int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, (uint8_t)((fdev & 0x0100) >> 6), 2, 2);
   _mod->SPIwriteRegister(SI443X_REG_FREQUENCY_DEVIATION, (uint8_t)(fdev & 0xFF));
 
   if(state == ERR_NONE) {
-    _freqDev = freqDev;
+    _freqDev = newFreqDev;
   }
 
   return(state);
