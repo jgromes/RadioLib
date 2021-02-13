@@ -69,10 +69,6 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  // configure settings not accessible by API
-  state = configFSK();
-  RADIOLIB_ASSERT(state);
-
   // check currently active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     // set FSK mode

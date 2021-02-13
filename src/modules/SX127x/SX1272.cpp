@@ -42,6 +42,10 @@ int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t
   int16_t state = SX127x::beginFSK(SX1272_CHIP_VERSION, br, rxBw, freqDev, preambleLength, enableOOK);
   RADIOLIB_ASSERT(state);
 
+  // configure settings not accessible by API
+  state = configFSK();
+  RADIOLIB_ASSERT(state);
+
   // configure publicly accessible settings
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
@@ -436,11 +440,6 @@ int16_t SX1272::configFSK() {
 
   // set fast PLL hop
   state = _mod->SPIsetRegValue(SX1272_REG_PLL_HOP, SX127X_FAST_HOP_ON, 7, 7);
-  RADIOLIB_ASSERT(state);
-
-  // set Gauss filter BT product to 0.5
-  state = _mod->SPIsetRegValue(SX127X_REG_OP_MODE, SX1272_FSK_GAUSSIAN_0_5, 4, 3);
-
   return(state);
 }
 
