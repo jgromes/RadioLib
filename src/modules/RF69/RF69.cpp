@@ -505,8 +505,14 @@ int16_t RF69::setRxBandwidth(float rxBw) {
 }
 
 int16_t RF69::setFrequencyDeviation(float freqDev) {
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
+
   // check frequency deviation range
-  if(!((freqDev + _br/2 <= 500))) {
+  if(!((newFreqDev + _br/2 <= 500))) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
@@ -515,7 +521,7 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation from carrier frequency
   uint32_t base = 1;
-  uint32_t fdev = (freqDev * (base << 19)) / 32000;
+  uint32_t fdev = (newFreqDev * (base << 19)) / 32000;
   int16_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
 
