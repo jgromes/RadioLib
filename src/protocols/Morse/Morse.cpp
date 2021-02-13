@@ -23,15 +23,8 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
   // calculate dot length (assumes PARIS as typical word)
   _dotLength = 1200 / speed;
 
-  // set module frequency deviation to 0 if using FSK
-  int16_t state = ERR_NONE;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio == nullptr) {
-    state = _phy->setFrequencyDeviation(0);
-  }
-  #endif
-
-  return(state);
+  // configure for direct mode
+  return(_phy->startDirect());
 }
 
 size_t MorseClient::startSignal() {
