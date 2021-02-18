@@ -117,7 +117,11 @@ int16_t SX1277::setFrequency(float freq) {
   }
 
   // set frequency and if successful, save the new setting
-  return(SX127x::setFrequencyRaw(freq));
+  int16_t state = SX127x::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
 }
 
 int16_t SX1277::setSpreadingFactor(uint8_t sf) {

@@ -116,8 +116,12 @@ int16_t SX1276::setFrequency(float freq) {
     }
   }
 
-  // set frequency
-  return(SX127x::setFrequencyRaw(freq));
+  // set frequency and if successful, save the new setting
+  int16_t state = SX127x::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
 }
 
 #endif
