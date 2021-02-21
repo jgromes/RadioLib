@@ -70,5 +70,5 @@ var searchData=
   ['err_5furl_5fmalformed',['ERR_URL_MALFORMED',['../group__status__codes.html#gac4980128c06104656146109af0a944e4',1,'TypeDef.h']]],
   ['err_5fwrong_5fmodem',['ERR_WRONG_MODEM',['../group__status__codes.html#ga8ec3e01efb503b4e32c59ea0a6566714',1,'TypeDef.h']]],
   ['esp8266',['ESP8266',['../class_e_s_p8266.html',1,'ESP8266'],['../class_e_s_p8266.html#ac0adb20130a378b8b99fcb9101823636',1,'ESP8266::ESP8266()']]],
-  ['explicitheader',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]]
+  ['explicitheader',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]]
 ];

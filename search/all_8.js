@@ -1,7 +1,7 @@
 var searchData=
 [
   ['idle',['idle',['../class_r_t_t_y_client.html#ac477e65ea756e56bb9043d778a51b4bc',1,'RTTYClient::idle()'],['../class_s_s_t_v_client.html#a0126ac04934f589b8cb04a038c342044',1,'SSTVClient::idle()']]],
-  ['implicitheader',['implicitHeader',['../class_s_x126x.html#adec09cba71494bd927ad1da786606ca6',1,'SX126x::implicitHeader()'],['../class_s_x128x.html#ac69cc622020419cb3393eac5cc88915b',1,'SX128x::implicitHeader()']]],
+  ['implicitheader',['implicitHeader',['../class_s_x126x.html#adec09cba71494bd927ad1da786606ca6',1,'SX126x::implicitHeader()'],['../class_s_x1272.html#a4ee36122f8aca42b27a8412e0c362dd3',1,'SX1272::implicitHeader()'],['../class_s_x1278.html#a47f5ac7dd6587b86c5f2c2b16336612e',1,'SX1278::implicitHeader()'],['../class_s_x128x.html#ac69cc622020419cb3393eac5cc88915b',1,'SX128x::implicitHeader()']]],
   ['info',['info',['../class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988',1,'AX25Frame']]],
   ['infolen',['infoLen',['../class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41',1,'AX25Frame']]],
   ['init',['init',['../class_module.html#adb22d89bc5f532f1d056d9a9f3a6589c',1,'Module']]],
