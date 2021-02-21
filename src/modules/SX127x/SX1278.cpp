@@ -473,6 +473,14 @@ int16_t SX1278::autoLDRO() {
   return(ERR_NONE);
 }
 
+int16_t SX1278::implicitHeader(size_t len) {
+  return(setHeaderType(SX1278_HEADER_IMPL_MODE, len));
+}
+
+int16_t SX1278::explicitHeader() {
+  return(setHeaderType(SX1278_HEADER_EXPL_MODE));
+}
+
 int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
@@ -507,6 +515,26 @@ int16_t SX1278::setCodingRateRaw(uint8_t newCodingRate) {
 
   // write register
   state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, newCodingRate, 3, 1);
+  return(state);
+}
+
+int16_t SX1278::setHeaderType(uint8_t headerType, size_t len) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  int16_t state = _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_1, headerType, 0, 0);
+  RADIOLIB_ASSERT(state);
+
+  // set length to register
+  state = _mod->SPIsetRegValue(SX127X_REG_PAYLOAD_LENGTH, len);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  _packetLength = len;
+
   return(state);
 }
 

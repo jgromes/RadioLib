@@ -879,8 +879,8 @@ size_t SX127x::getPacketLength(bool update) {
       return(_mod->SPIreadRegister(SX127X_REG_RX_NB_BYTES));
 
     } else {
-      // return the maximum value for SF6
-      return(SX127X_MAX_PACKET_LENGTH);
+      // return the cached value for SF6
+      return(_packetLength);
     }
 
   } else if(modem == SX127X_FSK_OOK) {

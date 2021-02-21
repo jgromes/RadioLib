@@ -38,7 +38,7 @@
 // SX1278_REG_LNA
 #define SX1278_LNA_BOOST_LF_OFF                       0b00000000  //  4     3     default LNA current
 
-// SX1278_REG_MODEM_CONFIG_1
+// SX127X_REG_MODEM_CONFIG_1
 #define SX1278_BW_7_80_KHZ                            0b00000000  //  7     4     bandwidth:  7.80 kHz
 #define SX1278_BW_10_40_KHZ                           0b00010000  //  7     4                 10.40 kHz
 #define SX1278_BW_15_60_KHZ                           0b00100000  //  7     4                 15.60 kHz
@@ -56,7 +56,7 @@
 #define SX1278_HEADER_EXPL_MODE                       0b00000000  //  0     0     explicit header mode
 #define SX1278_HEADER_IMPL_MODE                       0b00000001  //  0     0     implicit header mode
 
-// SX1278_REG_MODEM_CONFIG_2
+// SX127X_REG_MODEM_CONFIG_2
 #define SX1278_RX_CRC_MODE_OFF                        0b00000000  //  2     2     CRC disabled
 #define SX1278_RX_CRC_MODE_ON                         0b00000100  //  2     2     CRC enabled
 
@@ -279,12 +279,29 @@ class SX1278: public SX127x {
     */
     int16_t autoLDRO();
 
+    /*!
+      \brief Set implicit header mode for future reception/transmission.
+
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
+
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
+
+      \param len Payload length in bytes.
+
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
     int16_t setBandwidthRaw(uint8_t newBandwidth);
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
+    int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
 

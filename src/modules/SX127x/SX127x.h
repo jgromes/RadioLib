@@ -958,6 +958,7 @@ class SX127x: public PhysicalLayer {
     float _rxBw = 0;
     bool _ook = false;
     bool _crcEnabled = false;
+    size_t _packetLength = 0;
 
     int16_t setFrequencyRaw(float newFreq);
     int16_t config();
@@ -970,7 +971,6 @@ class SX127x: public PhysicalLayer {
   private:
 #endif
     float _dataRate = 0;
-    size_t _packetLength = 0;
     bool _packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t _packetLengthConfig = SX127X_PACKET_VARIABLE;
 

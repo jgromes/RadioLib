@@ -27,7 +27,7 @@
 #define SX1272_FRF_MID                                0xC0        //  7     0         where F(XOSC) = 32 MHz
 #define SX1272_FRF_LSB                                0x00        //  7     0               FRF = 3 byte value of FRF registers
 
-// SX1272_REG_MODEM_CONFIG_1
+// SX127X_REG_MODEM_CONFIG_1
 #define SX1272_BW_125_00_KHZ                          0b00000000  //  7     6     bandwidth:  125 kHz
 #define SX1272_BW_250_00_KHZ                          0b01000000  //  7     6                 250 kHz
 #define SX1272_BW_500_00_KHZ                          0b10000000  //  7     6                 500 kHz
@@ -42,7 +42,7 @@
 #define SX1272_LOW_DATA_RATE_OPT_OFF                  0b00000000  //  0     0     low data rate optimization disabled
 #define SX1272_LOW_DATA_RATE_OPT_ON                   0b00000001  //  0     0     low data rate optimization enabled, mandatory for SF 11 and 12 with BW 125 kHz
 
-// SX1272_REG_MODEM_CONFIG_2
+// SX127X_REG_MODEM_CONFIG_2
 #define SX1272_AGC_AUTO_OFF                           0b00000000  //  2     2     LNA gain set by REG_LNA
 #define SX1272_AGC_AUTO_ON                            0b00000100  //  2     2     LNA gain set by internal AGC loop
 
@@ -271,12 +271,29 @@ class SX1272: public SX127x {
     */
     int16_t autoLDRO();
 
+    /*!
+      \brief Set implicit header mode for future reception/transmission.
+
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
+
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
+
+      \param len Payload length in bytes.
+
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
+
 #ifndef RADIOLIB_GODMODE
   protected:
 #endif
     int16_t setBandwidthRaw(uint8_t newBandwidth);
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
+    int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
 
