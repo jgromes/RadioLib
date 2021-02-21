@@ -380,8 +380,18 @@
  * Uncomment to enable "paranoid" SPI mode
  * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
  * This improves reliablility, but slightly slows down communication.
+ * Note: Enabled by default.
  */
 #define RADIOLIB_SPI_PARANOID
+
+/*
+ * Uncomment to enable parameter range checking
+ * RadioLib will check provided parameters (such as frequency) against limits determined by the device manufacturer.
+ * It is highly advised to keep this macro defined, removing it will allow invalid values to be set,
+ * possibly leading to bricked module and/or program crashing.
+ * Note: Enabled by default.
+ */
+#define RADIOLIB_CHECK_RANGE
 
 /*
  * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
@@ -399,7 +409,6 @@
  * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
  * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
  */
-
 //#define RADIOLIB_STATIC_ONLY
 
 // set the size of static arrays to use
@@ -413,9 +422,13 @@
 #define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != ERR_NONE) { return(STATEVAR); } }
 
 /*!
-  \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges.
+  \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges. Requires RADIOLIB_CHECK_RANGE to be enabled
 */
+#if defined(RADIOLIB_CHECK_RANGE)
 #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
+#else
+#define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}
+#endif
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  (0x04)
