@@ -771,7 +771,7 @@ class RF69: public PhysicalLayer {
      /*!
       \brief Enable CRC filtering and generation.
 
-      \param crcOn Set or unset promiscuous mode.
+      \param crcOn Set or unset CRC filtering.
 
       \returns \ref status_codes
     */
