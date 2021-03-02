@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_BUILD_OPTIONS_H
+#if !defined(_RADIOLIB_BUILD_OPTIONS_H)
 #define _RADIOLIB_BUILD_OPTIONS_H
 
 #if ARDUINO >= 100
@@ -391,7 +391,7 @@
  * possibly leading to bricked module and/or program crashing.
  * Note: Enabled by default.
  */
-#define RADIOLIB_CHECK_RANGE
+#define RADIOLIB_CHECK_PARAMS
 
 /*
  * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
@@ -424,7 +424,7 @@
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges. Requires RADIOLIB_CHECK_RANGE to be enabled
 */
-#if defined(RADIOLIB_CHECK_RANGE)
+#if defined(RADIOLIB_CHECK_PARAMS)
 #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
 #else
 #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}
