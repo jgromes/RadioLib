@@ -15,6 +15,7 @@ var class_s_x127x =
     [ "getPacketLength", "class_s_x127x.html#a462fa74275e67c296328a01f361892d5", null ],
     [ "getSNR", "class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb", null ],
     [ "getTempRaw", "class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1", null ],
+    [ "invertIQ", "class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04", null ],
     [ "packetMode", "class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1", null ],
     [ "random", "class_s_x127x.html#a6a03da620f9fb532c879900ba05732de", null ],
     [ "readData", "class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745", null ],
