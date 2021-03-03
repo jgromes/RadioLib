@@ -538,6 +538,22 @@ int16_t SX1278::setHeaderType(uint8_t headerType, size_t len) {
   return(state);
 }
 
+int16_t SX1278::invertIQ(bool invertIQ) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state;
+  if(invertIQ) {
+    state = _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_REG_INVERT_IQ_ON, 6, 6);
+  } else {
+    state = _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_REG_INVERT_IQ_OFF, 6, 6);
+  }
+
+  return(state);
+}
+
 int16_t SX1278::configFSK() {
   // configure common registers
   int16_t state = SX127x::configFSK();

@@ -66,6 +66,10 @@
 #define SX1278_AGC_AUTO_OFF                           0b00000000  //  2     2     LNA gain set by REG_LNA
 #define SX1278_AGC_AUTO_ON                            0b00000100  //  2     2     LNA gain set by internal AGC loop
 
+// SX127X_REG_INVERT_IQ
+#define SX127X_REG_INVERT_IQ_ON                       0b01000000  //  6     6     I and Q signals are inverted    
+#define SX127X_REG_INVERT_IQ_OFF                      0b00000000  //  6     6     normal mode
+
 // SX127X_REG_VERSION
 #define SX1278_CHIP_VERSION                           0x12
 
@@ -294,6 +298,15 @@ class SX1278: public SX127x {
       \returns \ref status_codes
     */
     int16_t explicitHeader();
+
+    /*!
+      \brief Enables/disables Invert the LoRa I and Q signals.
+
+      \param invertIQ Enable (true) or disable (false) LoRa I and Q signals.
+
+      \returns \ref status_codes
+    */
+    int16_t invertIQ(bool invertIQ);
 
 #ifndef RADIOLIB_GODMODE
   protected:
