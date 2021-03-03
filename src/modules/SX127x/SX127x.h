@@ -59,6 +59,7 @@
 #define SX127X_REG_INVERT_IQ                          0x33
 #define SX127X_REG_DETECTION_THRESHOLD                0x37
 #define SX127X_REG_SYNC_WORD                          0x39
+#define SX127X_REG_INVERT_IQ2                         0x3B
 #define SX127X_REG_DIO_MAPPING_1                      0x40
 #define SX127X_REG_DIO_MAPPING_2                      0x41
 #define SX127X_REG_VERSION                            0x42
@@ -122,6 +123,12 @@
 #define SX127X_DETECT_OPTIMIZE_SF_6                   0b00000101  //  2     0     SF6 detection optimization
 #define SX127X_DETECT_OPTIMIZE_SF_7_12                0b00000011  //  2     0     SF7 to SF12 detection optimization
 
+// SX127X_REG_INVERT_IQ
+#define SX127X_INVERT_IQ_RXPATH_ON                    0b01000000  //  6     6     I and Q signals are inverted    
+#define SX127X_INVERT_IQ_RXPATH_OFF                   0b00000000  //  6     6     normal mode
+#define SX127X_INVERT_IQ_TXPATH_ON                    0b00000001  //  0     0     I and Q signals are inverted    
+#define SX127X_INVERT_IQ_TXPATH_OFF                   0b00000000  //  0     0     normal mode
+
 // SX127X_REG_DETECTION_THRESHOLD
 #define SX127X_DETECTION_THRESHOLD_SF_6               0b00001100  //  7     0     SF6 detection threshold
 #define SX127X_DETECTION_THRESHOLD_SF_7_12            0b00001010  //  7     0     SF7 to SF12 detection threshold
@@ -171,6 +178,10 @@
 // SX127X_REG_SYNC_WORD
 #define SX127X_SYNC_WORD                              0x12        //  7     0     default LoRa sync word
 #define SX127X_SYNC_WORD_LORAWAN                      0x34        //  7     0     sync word reserved for LoRaWAN networks
+
+// SX127X_REG_INVERT_IQ2
+#define SX127X_IQ2_ENABLE                             0x19        //  7     0     enable optimize for inverted IQ
+#define SX127X_IQ2_DISABLE                            0x1D        //  7     0     reset optimize for inverted IQ
 
 // SX127x series common FSK registers
 // NOTE: FSK register names that are conflicting with LoRa registers are marked with "_FSK" suffix
@@ -944,6 +955,15 @@ class SX127x: public PhysicalLayer {
      \returns Version register contents or \ref status_codes
    */
     int16_t getChipVersion();
+
+    /*!
+      \brief Enables/disables Invert the LoRa I and Q signals.
+
+      \param invertIQ Enable (true) or disable (false) LoRa I and Q signals.
+
+      \returns \ref status_codes
+    */
+    int16_t invertIQ(bool invertIQ);
 
 #ifndef RADIOLIB_GODMODE
   protected:
