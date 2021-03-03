@@ -1190,4 +1190,24 @@ void SX127x::clearFIFO(size_t count) {
   }
 }
 
+int16_t SX127x::invertIQ(bool invertIQ) {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state;
+  if(invertIQ) {
+    state = _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_INVERT_IQ_RXPATH_ON, 6, 6);
+    state |= _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_INVERT_IQ_TXPATH_ON, 0, 0);
+    state |= _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ2, SX127X_IQ2_ENABLE);
+  } else {
+    state = _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_INVERT_IQ_RXPATH_OFF, 6, 6);
+    state |= _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ, SX127X_INVERT_IQ_TXPATH_OFF, 0, 0);
+    state |= _mod->SPIsetRegValue(SX127X_REG_INVERT_IQ2, SX127X_IQ2_DISABLE);
+  }
+
+  return(state);
+}
+
 #endif
