@@ -38,7 +38,7 @@ class RFM97: public RFM95 {
     */
     int16_t setSpreadingFactor(uint8_t sf);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 
