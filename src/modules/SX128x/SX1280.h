@@ -52,7 +52,7 @@ class SX1280: public SX1281 {
     */
     float getRangingResult();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 

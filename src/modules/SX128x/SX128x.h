@@ -760,10 +760,14 @@ class SX128x: public PhysicalLayer {
    */
     uint8_t random();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
     Module* _mod;
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
 
     // cached LoRa parameters
     float _bwKhz = 0;
@@ -795,7 +799,18 @@ class SX128x: public PhysicalLayer {
 
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+  private:
+#endif
+
+    // common low-level SPI interface
+    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
+    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout = 5000);
+
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     // common parameters
@@ -814,13 +829,6 @@ class SX128x: public PhysicalLayer {
     uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;
 
     int16_t config(uint8_t modem);
-
-    // common low-level SPI interface
-    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout = 5000);
 };
 
 #endif

@@ -23,7 +23,7 @@ class SX1282: public SX1280 {
     */
     SX1282(Module* mod);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 
