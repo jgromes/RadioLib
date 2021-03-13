@@ -51,7 +51,7 @@ class SX1231: public RF69  {
     */
     int16_t begin(float freq = 434.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 10, uint8_t preambleLen = 16);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     uint8_t _chipRevision = 0;
