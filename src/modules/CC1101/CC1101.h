@@ -889,10 +889,24 @@ class CC1101: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
-#ifndef RADIOLIB_GODMODE
-  private:
-#endif
-    Module* _mod;
+  #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+    protected:
+  #endif
+      Module* _mod;
+
+      // SPI read overrides to set bit for burst write and status registers access
+      int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+      int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
+      void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
+      uint8_t SPIreadRegister(uint8_t reg);
+      void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
+      void SPIwriteRegister(uint8_t reg, uint8_t data);
+
+      void SPIsendCommand(uint8_t cmd);
+
+  #if !defined(RADIOLIB_GODMODE)
+    protected:
+  #endif
 
     float _freq = 0;
     float _br = 0;
@@ -914,16 +928,6 @@ class CC1101: public PhysicalLayer {
     int16_t directMode();
     static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-
-    // SPI read overrides to set bit for burst write and status registers access
-    int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
-    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
-    void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
-    uint8_t SPIreadRegister(uint8_t reg);
-    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
-    void SPIwriteRegister(uint8_t reg, uint8_t data);
-
-    void SPIsendCommand(uint8_t cmd);
 };
 
 #endif
