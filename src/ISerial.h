@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_ISERIAL_H
+#if !defined(_RADIOLIB_ISERIAL_H)
 #define _RADIOLIB_ISERIAL_H
 
 #include "Module.h"
@@ -20,7 +20,7 @@ class ISerial {
     int available();
     void flush();
 
-    #ifndef ARDUINO_ARCH_MEGAAVR
+    #if !defined(ARDUINO_ARCH_MEGAAVR)
     size_t print(const __FlashStringHelper *);
     #endif
     size_t print(const String &);
@@ -34,7 +34,7 @@ class ISerial {
     size_t print(double, int = 2);
     size_t print(const Printable&);
 
-    #ifndef ARDUINO_ARCH_MEGAAVR
+    #if !defined(ARDUINO_ARCH_MEGAAVR)
     size_t println(const __FlashStringHelper *);
     #endif
     size_t println(const String &s);
@@ -49,7 +49,7 @@ class ISerial {
     size_t println(const Printable&);
     size_t println(void);
 
-#ifndef RADIOLIB_GODMODE
+#if !(defined(RADIOLIB_LOW_LEVEL) || defined(RADIOLIB_GODMODE))
   protected:
 #endif
     Module* _mod;

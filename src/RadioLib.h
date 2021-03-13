@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_H
+#if !defined(_RADIOLIB_H)
 #define _RADIOLIB_H
 
 /*!

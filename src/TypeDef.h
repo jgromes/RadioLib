@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_TYPES_H
+#if !defined(_RADIOLIB_TYPES_H)
 #define _RADIOLIB_TYPES_H
 
 #include "BuildOpt.h"
