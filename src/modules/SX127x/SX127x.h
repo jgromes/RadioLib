@@ -124,9 +124,9 @@
 #define SX127X_DETECT_OPTIMIZE_SF_7_12                0b00000011  //  2     0     SF7 to SF12 detection optimization
 
 // SX127X_REG_INVERT_IQ
-#define SX127X_INVERT_IQ_RXPATH_ON                    0b01000000  //  6     6     I and Q signals are inverted    
+#define SX127X_INVERT_IQ_RXPATH_ON                    0b01000000  //  6     6     I and Q signals are inverted
 #define SX127X_INVERT_IQ_RXPATH_OFF                   0b00000000  //  6     6     normal mode
-#define SX127X_INVERT_IQ_TXPATH_ON                    0b00000001  //  0     0     I and Q signals are inverted    
+#define SX127X_INVERT_IQ_TXPATH_ON                    0b00000001  //  0     0     I and Q signals are inverted
 #define SX127X_INVERT_IQ_TXPATH_OFF                   0b00000000  //  0     0     normal mode
 
 // SX127X_REG_DETECTION_THRESHOLD
@@ -965,10 +965,14 @@ class SX127x: public PhysicalLayer {
     */
     int16_t invertIQ(bool invertIQ);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
     Module* _mod;
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
 
     float _freq = 0;
     float _bw = 0;
@@ -987,7 +991,7 @@ class SX127x: public PhysicalLayer {
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     float _dataRate = 0;

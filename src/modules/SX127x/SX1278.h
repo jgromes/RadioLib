@@ -295,7 +295,7 @@ class SX1278: public SX127x {
     */
     int16_t explicitHeader();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
     int16_t setBandwidthRaw(uint8_t newBandwidth);
@@ -305,7 +305,7 @@ class SX1278: public SX127x {
 
     int16_t configFSK();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     bool _ldroAuto = true;

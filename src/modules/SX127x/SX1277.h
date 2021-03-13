@@ -93,7 +93,7 @@ class SX1277: public SX1278 {
     */
     int16_t setSpreadingFactor(uint8_t sf);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 

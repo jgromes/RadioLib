@@ -84,7 +84,7 @@ class SX1279: public SX1278 {
     */
     int16_t setFrequency(float freq);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 
