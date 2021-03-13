@@ -837,10 +837,14 @@ class RF69: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
     Module* _mod;
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
 
     float _br = 0;
     float _rxBw = 0;
@@ -859,7 +863,7 @@ class RF69: public PhysicalLayer {
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     int16_t setMode(uint8_t mode);
