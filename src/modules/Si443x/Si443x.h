@@ -799,10 +799,14 @@ class Si443x: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
     Module* _mod;
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
 
     float _br = 0;
     float _freqDev = 0;
@@ -813,7 +817,7 @@ class Si443x: public PhysicalLayer {
 
     int16_t setFrequencyRaw(float newFreq);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     bool findChip();
