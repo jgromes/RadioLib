@@ -333,22 +333,26 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    uint8_t <a class="code" href="classn_r_f24.html#aeb98b92de42dec7c703888c62e061c3c">random</a>();</div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160; </div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    uint8_t _addrWidth = 0;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;    <span class="keywordtype">void</span> clearIRQ();</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160; </div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;    <span class="keywordtype">void</span> SPIreadRxPayload(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordtype">void</span> SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    <span class="keywordtype">void</span> SPItransfer(uint8_t cmd, <span class="keywordtype">bool</span> write = <span class="keyword">false</span>, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);</div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;};</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordtype">void</span> SPIreadRxPayload(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;    <span class="keywordtype">void</span> SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <span class="keywordtype">void</span> SPItransfer(uint8_t cmd, <span class="keywordtype">bool</span> write = <span class="keyword">false</span>, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);</div>
+<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    uint8_t _addrWidth = 0;</div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="keywordtype">void</span> clearIRQ();</div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;};</div>
+<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160; </div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassn_r_f24_html_a239e94511d9ee67ad3d64a49a5c4d7ac"><div class="ttname"><a href="classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac">nRF24::receive</a></div><div class="ttdeci">int16_t receive(uint8_t *data, size_t len) override</div><div class="ttdoc">Blocking binary receive method. Overloads for string-based transmissions are implemented in PhysicalL...</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:111</div></div>

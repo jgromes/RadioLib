@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('_x_bee_8h_source.html',''); initResiza
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    int16_t <a class="code" href="class_x_bee_serial.html#ad429a47dc445765d2dec7ff64b922306">setPanId</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* panId);</div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">bool</span> enterCmdMode();</div>
@@ -166,31 +166,36 @@ $(document).ready(function(){initNavTree('_x_bee_8h_source.html',''); initResiza
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
 <div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    int16_t <a class="code" href="class_x_bee.html#a88745c61a1dc2d1139c34d6cc385d35b">setPanId</a>(uint8_t* panId);</div>
 <div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    uint8_t _frameID = 0x01;</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">size_t</span> _frameLength = 0;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">bool</span> _frameHeaderProcessed = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">    #ifdef RADIOLIB_STATIC_ONLY</span></div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;      <span class="keywordtype">char</span> _packetData[RADIOLIB_STATIC_ARRAY_SIZE];</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;      <span class="keywordtype">char</span>* _packetData = <span class="keyword">new</span> <span class="keywordtype">char</span>[0];</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    uint8_t _packetSource[8] = {0, 0, 0, 0, 0, 0, 0, 0};</div>
-<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    int16_t confirmChanges();</div>
-<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
-<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keywordtype">void</span> sendApiFrame(uint8_t type, uint8_t <span class="keywordtype">id</span>, <span class="keyword">const</span> <span class="keywordtype">char</span>* data);</div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keywordtype">void</span> sendApiFrame(uint8_t type, uint8_t <span class="keywordtype">id</span>, uint8_t* data, uint16_t length);</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    int16_t readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout = 5000);</div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160; </div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    uint16_t getNumBytes(uint32_t timeout = 10000, <span class="keywordtype">size_t</span> minBytes = 10);</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;};</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    uint8_t _frameID = 0x01;</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;    <span class="keywordtype">size_t</span> _frameLength = 0;</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">bool</span> _frameHeaderProcessed = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">    #ifdef RADIOLIB_STATIC_ONLY</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;      <span class="keywordtype">char</span> _packetData[RADIOLIB_STATIC_ARRAY_SIZE];</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;      <span class="keywordtype">char</span>* _packetData = <span class="keyword">new</span> <span class="keywordtype">char</span>[0];</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    uint8_t _packetSource[8] = {0, 0, 0, 0, 0, 0, 0, 0};</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    int16_t confirmChanges();</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">void</span> sendApiFrame(uint8_t type, uint8_t <span class="keywordtype">id</span>, <span class="keyword">const</span> <span class="keywordtype">char</span>* data);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">void</span> sendApiFrame(uint8_t type, uint8_t <span class="keywordtype">id</span>, uint8_t* data, uint16_t length);</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    int16_t readApiFrame(uint8_t frameID, uint8_t codePos, uint16_t timeout = 5000);</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    uint16_t getNumBytes(uint32_t timeout = 10000, <span class="keywordtype">size_t</span> minBytes = 10);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;};</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160; </div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_x_bee_serial_html_ad429a47dc445765d2dec7ff64b922306"><div class="ttname"><a href="class_x_bee_serial.html#ad429a47dc445765d2dec7ff64b922306">XBeeSerial::setPanId</a></div><div class="ttdeci">int16_t setPanId(const char *panId)</div><div class="ttdoc">Sets PAN (Personal Area Network) ID. Both XBees must be in the same PAN in order to use transparent m...</div><div class="ttdef"><b>Definition:</b> XBee.cpp:276</div></div>

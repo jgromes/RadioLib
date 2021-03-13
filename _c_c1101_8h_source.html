@@ -679,44 +679,48 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160; </div>
 <div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    int16_t <a class="code" href="class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705">getChipVersion</a>();</div>
 <div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;<span class="preprocessor">  #if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;<span class="preprocessor">  #endif</span></div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;      <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160; </div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    uint8_t _rawRSSI = 0;</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    uint8_t _rawLQI = 0;</div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160; </div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    uint8_t _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;      <span class="comment">// SPI read overrides to set bit for burst write and status registers access</span></div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;      int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;      int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;      <span class="keywordtype">void</span> SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;      uint8_t SPIreadRegister(uint8_t reg);</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;      <span class="keywordtype">void</span> SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;      <span class="keywordtype">void</span> SPIwriteRegister(uint8_t reg, uint8_t data);</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160; </div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;      <span class="keywordtype">void</span> SPIsendCommand(uint8_t cmd);</div>
 <div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;    <span class="keywordtype">bool</span> _promiscuous = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <span class="keywordtype">bool</span> _crcOn = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160; </div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    uint8_t _syncWordLength = 2;</div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    int8_t _power = 0;</div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160; </div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    int16_t directMode();</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> getExpMant(<span class="keywordtype">float</span> target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t&amp; exp, uint8_t&amp; mant);</div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    <span class="comment">// SPI read overrides to set bit for burst write and status registers access</span></div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);</div>
-<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);</div>
-<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="keywordtype">void</span> SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);</div>
-<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    uint8_t SPIreadRegister(uint8_t reg);</div>
-<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    <span class="keywordtype">void</span> SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    <span class="keywordtype">void</span> SPIwriteRegister(uint8_t reg, uint8_t data);</div>
-<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160; </div>
-<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;    <span class="keywordtype">void</span> SPIsendCommand(uint8_t cmd);</div>
-<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;};</div>
-<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160; </div>
-<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;<span class="preprocessor">  #if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;<span class="preprocessor">  #endif</span></div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160; </div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    uint8_t _rawRSSI = 0;</div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    uint8_t _rawLQI = 0;</div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160; </div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    uint8_t _packetLengthConfig = CC1101_LENGTH_CONFIG_VARIABLE;</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="keywordtype">bool</span> _promiscuous = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    <span class="keywordtype">bool</span> _crcOn = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160; </div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    uint8_t _syncWordLength = 2;</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;    int8_t _power = 0;</div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160; </div>
+<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;    int16_t directMode();</div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> getExpMant(<span class="keywordtype">float</span> target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t&amp; exp, uint8_t&amp; mant);</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;};</div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160; </div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_physical_layer_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:8</div></div>

@@ -514,72 +514,80 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160; </div>
 <div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    uint8_t <a class="code" href="class_s_x128x.html#a1cefaf76d47ee71d143fc073333a9d82">random</a>();</div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160; </div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
 <div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160; </div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0;</div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    uint8_t _preambleLengthLoRa = 0, _headerType = 0, _payloadLen = 0, _crcLoRa = 0;</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160; </div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    <span class="comment">// SX128x SPI command implementations</span></div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    uint8_t getStatus();</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    int16_t readBuffer(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    int16_t setTx(uint16_t periodBaseCount = SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = SX128X_PERIOD_BASE_15_625_US);</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = SX128X_PERIOD_BASE_15_625_US);</div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    int16_t setCad();</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    uint8_t getPacketType();</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    int16_t setRfFrequency(uint32_t frf);</div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;    int16_t setTxParams(uint8_t power, uint8_t rampTime = SX128X_PA_RAMP_10_US);</div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    int16_t setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_t modParam3);</div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    int16_t setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncWordLen, uint8_t syncWordMatch, uint8_t crcLen, uint8_t whitening, uint8_t payloadLen = 0xFF, uint8_t headerType = SX128X_GFSK_FLRC_PACKET_VARIABLE);</div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    int16_t setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bleTestPayload, uint8_t whitening);</div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    int16_t setPacketParamsLoRa(uint8_t preambleLen, uint8_t headerType, uint8_t payloadLen, uint8_t crc, uint8_t invertIQ = SX128X_LORA_IQ_STANDARD);</div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX128X_IRQ_NONE, uint16_t dio3Mask = SX128X_IRQ_NONE);</div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    uint16_t getIrqStatus();</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    int16_t clearIrqStatus(uint16_t clearIrqParams = SX128X_IRQ_ALL);</div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    int16_t setRangingRole(uint8_t role);</div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    int16_t setPacketType(uint8_t type);</div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160; </div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="comment">// common parameters</span></div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;    uint8_t _pwr = 0;</div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160; </div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keywordtype">float</span> _modIndexReal = 0;</div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    uint16_t _brKbps = 0;</div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    uint8_t _br = 0, _modIndex = 0, _shaping = 0;</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    uint8_t _preambleLengthGFSK = 0, _syncWordLen = 0, _syncWordMatch = 0, _crcGFSK = 0, _whitening = 0;</div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160; </div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <span class="comment">// cached FLRC parameters</span></div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    uint8_t _crFLRC = 0;</div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0;</div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;    uint8_t _preambleLengthLoRa = 0, _headerType = 0, _payloadLen = 0, _crcLoRa = 0;</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160; </div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    <span class="comment">// SX128x SPI command implementations</span></div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;    uint8_t getStatus();</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    int16_t readBuffer(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    int16_t setTx(uint16_t periodBaseCount = SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = SX128X_PERIOD_BASE_15_625_US);</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = SX128X_PERIOD_BASE_15_625_US);</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    int16_t setCad();</div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    uint8_t getPacketType();</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    int16_t setRfFrequency(uint32_t frf);</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    int16_t setTxParams(uint8_t power, uint8_t rampTime = SX128X_PA_RAMP_10_US);</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);</div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;    int16_t setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_t modParam3);</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    int16_t setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncWordLen, uint8_t syncWordMatch, uint8_t crcLen, uint8_t whitening, uint8_t payloadLen = 0xFF, uint8_t headerType = SX128X_GFSK_FLRC_PACKET_VARIABLE);</div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    int16_t setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bleTestPayload, uint8_t whitening);</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    int16_t setPacketParamsLoRa(uint8_t preambleLen, uint8_t headerType, uint8_t payloadLen, uint8_t crc, uint8_t invertIQ = SX128X_LORA_IQ_STANDARD);</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = SX128X_IRQ_NONE, uint16_t dio3Mask = SX128X_IRQ_NONE);</div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    uint16_t getIrqStatus();</div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    int16_t clearIrqStatus(uint16_t clearIrqParams = SX128X_IRQ_ALL);</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    int16_t setRangingRole(uint8_t role);</div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    int16_t setPacketType(uint8_t type);</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160; </div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160; </div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, <span class="keywordtype">bool</span> write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy, uint32_t timeout = 5000);</div>
 <div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160; </div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <span class="comment">// cached BLE parameters</span></div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    int16_t config(uint8_t modem);</div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160; </div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, <span class="keywordtype">bool</span> write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy, uint32_t timeout = 5000);</div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;};</div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    <span class="comment">// common parameters</span></div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    uint8_t _pwr = 0;</div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160; </div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    <span class="keywordtype">float</span> _modIndexReal = 0;</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    uint16_t _brKbps = 0;</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    uint8_t _br = 0, _modIndex = 0, _shaping = 0;</div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    uint8_t _preambleLengthGFSK = 0, _syncWordLen = 0, _syncWordMatch = 0, _crcGFSK = 0, _whitening = 0;</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    <span class="comment">// cached FLRC parameters</span></div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    uint8_t _crFLRC = 0;</div>
 <div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160; </div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    <span class="comment">// cached BLE parameters</span></div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160; </div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    int16_t config(uint8_t modem);</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;};</div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160; </div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_s_x128x_html_a316340d7ba2a6e7cb5742e3ff21e728c"><div class="ttname"><a href="class_s_x128x.html#a316340d7ba2a6e7cb5742e3ff21e728c">SX128x::beginBLE</a></div><div class="ttdeci">int16_t beginBLE(float freq=2400.0, uint16_t br=800, float freqDev=400.0, int8_t power=10, uint8_t dataShaping=RADIOLIB_SHAPING_0_5)</div><div class="ttdoc">Initialization method for BLE modem.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:123</div></div>

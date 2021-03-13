@@ -588,40 +588,44 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;    int16_t fixImplicitTimeout();</div>
 <div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;    int16_t fixInvertedIQ(uint8_t iqConfig);</div>
 <div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160; </div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160; </div>
-<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0, _ldro = 0, _crcType = 0, _headerType = 0;</div>
-<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;    uint16_t _preambleLength = 0;</div>
-<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
-<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    <span class="keywordtype">bool</span> _ldroAuto = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160; </div>
-<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;    uint32_t _br = 0, _freqDev = 0;</div>
-<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    uint8_t _rxBw = 0, _pulseShape = 0, _crcTypeFSK = 0, _syncWordLength = 0, _addrComp = 0, _whitening = 0, _packetType = 0;</div>
-<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;    uint16_t _preambleLengthFSK = 0;</div>
-<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;    <span class="keywordtype">float</span> _rxBwKhz = 0;</div>
-<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160; </div>
-<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;    <span class="keywordtype">float</span> _dataRate = 0;</div>
-<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160; </div>
-<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    uint32_t _tcxoDelay = 0;</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160; </div>
-<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;    <span class="keywordtype">size_t</span> _implicitLen = 0;</div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, <span class="keywordtype">bool</span> write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy, uint32_t timeout = 5000);</div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160; </div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160; </div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0, _ldro = 0, _crcType = 0, _headerType = 0;</div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    uint16_t _preambleLength = 0;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;    <span class="keywordtype">bool</span> _ldroAuto = <span class="keyword">true</span>;</div>
 <div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160; </div>
-<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    int16_t config(uint8_t modem);</div>
-<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160; </div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
-<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, <span class="keywordtype">bool</span> write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, <span class="keywordtype">bool</span> waitForBusy, uint32_t timeout = 5000);</div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;};</div>
-<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160; </div>
-<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160; </div>
-<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    uint32_t _br = 0, _freqDev = 0;</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;    uint8_t _rxBw = 0, _pulseShape = 0, _crcTypeFSK = 0, _syncWordLength = 0, _addrComp = 0, _whitening = 0, _packetType = 0;</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    uint16_t _preambleLengthFSK = 0;</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    <span class="keywordtype">float</span> _rxBwKhz = 0;</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160; </div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    <span class="keywordtype">float</span> _dataRate = 0;</div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160; </div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    uint32_t _tcxoDelay = 0;</div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160; </div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    <span class="keywordtype">size_t</span> _implicitLen = 0;</div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160; </div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    int16_t config(uint8_t modem);</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;};</div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160; </div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160; </div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_physical_layer_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:8</div></div>
