@@ -432,21 +432,30 @@ float SX1278::getRSSI() {
   }
 }
 
-int16_t SX1278::setCRC(bool enableCRC) {
+int16_t SX1278::setCRC(bool enable, bool mode) {
   if(getActiveModem() == SX127X_LORA) {
     // set LoRa CRC
-    SX127x::_crcEnabled = enableCRC;
-    if(enableCRC) {
+    SX127x::_crcEnabled = enable;
+    if(enable) {
       return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1278_RX_CRC_MODE_ON, 2, 2));
     } else {
       return(_mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1278_RX_CRC_MODE_OFF, 2, 2));
     }
   } else {
     // set FSK CRC
-    if(enableCRC) {
-      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_ON, 4, 4));
+    int16_t state = ERR_NONE;
+    if(enable) {
+      state = _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_ON, 4, 4);
     } else {
-      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_OFF, 4, 4));
+      state = _mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_OFF, 4, 4);
+    }
+    RADIOLIB_ASSERT(state);
+
+    // set FSK CRC mode
+    if(mode) {
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_WHITENING_TYPE_IBM, 0, 0));
+    } else {
+      return(_mod->SPIsetRegValue(SX127X_REG_PACKET_CONFIG_1, SX127X_CRC_WHITENING_TYPE_CCITT, 0, 0));
     }
   }
 }

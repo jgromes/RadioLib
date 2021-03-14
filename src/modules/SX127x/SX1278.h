@@ -255,11 +255,13 @@ class SX1278: public SX127x {
     /*!
       \brief Enables/disables CRC check of received packets.
 
-      \param enableCRC Enable (true) or disable (false) CRC.
+      \param enable Enable (true) or disable (false) CRC.
+
+      \param mode Set CRC mode to SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false) or SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.
 
       \returns \ref status_codes
     */
-    int16_t setCRC(bool enableCRC);
+    int16_t setCRC(bool enable, bool mode = false);
 
     /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
