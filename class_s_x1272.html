@@ -148,9 +148,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af5a7dee50a1a7d8261bc62bb869cda92"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92">getRSSI</a> ()</td></tr>
 <tr class="memdesc:af5a7dee50a1a7d8261bc62bb869cda92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.  <a href="class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92">More...</a><br /></td></tr>
 <tr class="separator:af5a7dee50a1a7d8261bc62bb869cda92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a57abb0bc9f474452ffb828b13d1efb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a5a57abb0bc9f474452ffb828b13d1efb">setCRC</a> (bool enableCRC)</td></tr>
-<tr class="memdesc:a5a57abb0bc9f474452ffb828b13d1efb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <a href="class_s_x1272.html#a5a57abb0bc9f474452ffb828b13d1efb">More...</a><br /></td></tr>
-<tr class="separator:a5a57abb0bc9f474452ffb828b13d1efb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd912314a977f92c464d36d862329ffc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#abd912314a977f92c464d36d862329ffc">setCRC</a> (bool enable, bool mode=false)</td></tr>
+<tr class="memdesc:abd912314a977f92c464d36d862329ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <a href="class_s_x1272.html#abd912314a977f92c464d36d862329ffc">More...</a><br /></td></tr>
+<tr class="separator:abd912314a977f92c464d36d862329ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4aaf9d61310fa7b4fce413ae53d30ac0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0">forceLDRO</a> (bool enable)</td></tr>
 <tr class="memdesc:a4aaf9d61310fa7b4fce413ae53d30ac0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call <a class="el" href="class_s_x1278.html#ae02adcde8c2978c0d1b157729dd5df1e" title="Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method,...">SX1278::autoLDRO()</a>  <a href="class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0">More...</a><br /></td></tr>
 <tr class="separator:a4aaf9d61310fa7b4fce413ae53d30ac0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -720,8 +720,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a5a57abb0bc9f474452ffb828b13d1efb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5a57abb0bc9f474452ffb828b13d1efb">&#9670;&nbsp;</a></span>setCRC()</h2>
+<a id="abd912314a977f92c464d36d862329ffc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd912314a977f92c464d36d862329ffc">&#9670;&nbsp;</a></span>setCRC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -730,8 +730,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX1272::setCRC </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enableCRC</em></td><td>)</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>mode</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -739,7 +749,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables/disables CRC check of received packets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enableCRC</td><td>Enable (true) or disable (false) CRC.</td></tr>
+    <tr><td class="paramname">enable</td><td>Enable (true) or disable (false) CRC.</td></tr>
+    <tr><td class="paramname">mode</td><td>Set CRC mode to SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false) or SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.</td></tr>
   </table>
   </dd>
 </dl>

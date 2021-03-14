@@ -11,7 +11,7 @@ var class_s_x1278 =
     [ "reset", "class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad", null ],
     [ "setBandwidth", "class_s_x1278.html#a46c27ed1ebaae4e3ed8afe3ae6941dd6", null ],
     [ "setCodingRate", "class_s_x1278.html#a834f26a0bd3fc8a03fa7e68aa4daf9e1", null ],
-    [ "setCRC", "class_s_x1278.html#adf0b0d628c7f7479f19c153732363462", null ],
+    [ "setCRC", "class_s_x1278.html#ac0be7586b8e40355bbd29d78ae9941d1", null ],
     [ "setDataShaping", "class_s_x1278.html#afb740a4925b64d83d5edca10d93f0563", null ],
     [ "setDataShapingOOK", "class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4", null ],
     [ "setFrequency", "class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4", null ],

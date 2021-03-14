@@ -247,7 +247,7 @@ var NAVTREEINDEX3 =
 "group__uart__config.html#gad418f0922126e27279d1a374fc63e036":[2,1,8],
 "group__uart__config.html#gae077d53c5c120a989b1f285f183f1b78":[2,1,3],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2]
 };
