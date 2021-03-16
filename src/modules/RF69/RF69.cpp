@@ -369,6 +369,21 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
+int16_t RF69::setOOK(bool enableOOK) {
+    // set OOK and if successful, save the new setting
+    int16_t state = ERR_NONE;
+    if(enableOOK) {
+        state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3, 5);
+    } else {
+        state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3, 5);
+    }
+    if(state == ERR_NONE) {
+        _ook = enableOOK;
+    }
+
+    return(state);
+}
+
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
   if(!(((freq > 290.0) && (freq < 340.0)) ||

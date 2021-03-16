@@ -735,6 +735,15 @@ class RF69: public PhysicalLayer {
     size_t getPacketLength(bool update = true) override;
 
     /*!
+      \brief Enables/disables OOK modulation instead of FSK.
+
+      \param enableOOK Enable (true) or disable (false) OOK.
+
+      \returns \ref status_codes
+    */
+    int16_t setOOK(bool enableOOK);
+
+    /*!
       \brief Set modem in fixed packet length mode.
 
       \param len Packet length.
@@ -848,6 +857,7 @@ class RF69: public PhysicalLayer {
 
     float _br = 0;
     float _rxBw = 0;
+    bool _ook = false;
     int16_t _tempOffset = 0;
     int8_t _power = 0;
 
