@@ -868,6 +868,15 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setOokThresholdType(uint8_t type);
 
+    /*!
+      \brief Fixed threshold for the Data Slicer in OOK mode
+             Floor threshold for the Data Slicer in OOK when Peak mode is used
+
+      \param value (in DB)
+
+      \returns \ref status_codes
+    */
+    int16_t setOokFixedOrFloorThreshold(short int value);
 
      /*!
       \brief Query modem for the packet length of received payload.
