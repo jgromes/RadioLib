@@ -5,6 +5,9 @@
 *.tags
 *.tags1
 
+# Jetbrain IDEs
+.idea
+
 # Debug decoder
 extras/decoder/log.txt
 extras/decoder/out.txt
