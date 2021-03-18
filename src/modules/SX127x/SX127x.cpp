@@ -860,6 +860,18 @@ int16_t SX127x::setOokFixedOrFloorThreshold(short int value) {
   return(state);
 }
 
+int16_t SX127x::setOokPeakThresholdDecrement(short int value) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state = ERR_NONE;
+  state = _mod->SPIsetRegValue(SX127X_REG_OOK_AVG, value, 7, 5, 5);
+
+  return(state);
+}
+
 
 
 int16_t SX127x::setOOK(bool enableOOK) {
