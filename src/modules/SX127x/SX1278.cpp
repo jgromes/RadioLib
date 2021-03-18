@@ -315,8 +315,10 @@ int16_t SX1278::setOutputPower(int8_t power) {
 }
 
 int16_t SX1278::setGain(uint8_t gain) {
+    int16_t modem = getActiveModem();
+
   // check active modem
-  if(getActiveModem() != SX127X_LORA) {
+  if(modem != SX127X_LORA && modem != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
   }
 
@@ -328,14 +330,27 @@ int16_t SX1278::setGain(uint8_t gain) {
   // set mode to standby
   int16_t state = SX127x::standby();
 
-  // set gain
-  if(gain == 0) {
-    // gain set to 0, enable AGC loop
-    state |= _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_AGC_AUTO_ON, 2, 2);
-  } else {
-    state |= _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_AGC_AUTO_OFF, 2, 2);
-    state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+  if(modem == SX127X_LORA){
+    // set gain
+    if(gain == 0) {
+      // gain set to 0, enable AGC loop
+      state |= _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_AGC_AUTO_ON, 2, 2);
+    } else {
+      state |= _mod->SPIsetRegValue(SX1278_REG_MODEM_CONFIG_3, SX1278_AGC_AUTO_OFF, 2, 2);
+      state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+    }
   }
+  else if(modem == SX127X_FSK_OOK) {
+    // set gain
+    if(gain == 0) {
+      // gain set to 0, enable AGC loop
+      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
+    } else {
+      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+    }
+  }
+  
   return(state);
 }
 
