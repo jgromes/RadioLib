@@ -416,7 +416,7 @@ int16_t SX1278::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
-float SX1278::getRSSI() {
+float SX1278::getRSSI(bool skip_activation) {
   if(getActiveModem() == SX127X_LORA) {
     // for LoRa, get RSSI of the last packet
     float lastPacketRSSI;
@@ -439,13 +439,15 @@ float SX1278::getRSSI() {
 
   } else {
     // enable listen mode
-    startReceive();
+    if(!skip_activation)
+      startReceive();
 
     // read the value for FSK
     float rssi = (float)_mod->SPIgetRegValue(SX127X_REG_RSSI_VALUE_FSK) / -2.0;
 
     // set mode back to standby
-    standby();
+    if(!skip_activation)
+      standby();
 
     // return the value
     return(rssi);
