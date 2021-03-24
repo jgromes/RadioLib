@@ -777,6 +777,13 @@ int16_t RF69::setEncoding(uint8_t encoding) {
   }
 }
 
+int16_t RF69::setLnaTestBoost(bool value) {
+  if(value)
+    return(_mod->SPIsetRegValue(RF69_REG_TEST_LNA, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+
+  return(_mod->SPIsetRegValue(RF69_TEST_LNA_BOOST_NORMAL, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+}
+
 float RF69::getRSSI() {
   return(-1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0));
 }

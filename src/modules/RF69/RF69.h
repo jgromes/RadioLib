@@ -91,6 +91,7 @@
 #define RF69_REG_AES_KEY_16                           0x4D
 #define RF69_REG_TEMP_1                               0x4E
 #define RF69_REG_TEMP_2                               0x4F
+#define RF69_REG_TEST_LNA                             0x58
 #define RF69_REG_TEST_PA1                             0x5A
 #define RF69_REG_TEST_PA2                             0x5C
 #define RF69_REG_TEST_DAGC                            0x6F
@@ -408,6 +409,10 @@
 #define RF69_AUTO_RX_RESTART_ON                       0b00000010  //  1     1     auto Rx restart enabled (default)
 #define RF69_AES_OFF                                  0b00000000  //  0     0     AES encryption disabled (default)
 #define RF69_AES_ON                                   0b00000001  //  0     0     AES encryption enabled, payload size limited to 66 bytes
+
+// RF69_REG_TEST_LNA
+#define RF69_TEST_LNA_BOOST_NORMAL                    0x1B        //  7     0
+#define RF69_TEST_LNA_BOOST_HIGH                      0x2D        //  7     0
 
 // RF69_REG_TEMP_1
 #define RF69_TEMP_MEAS_START                          0b00001000  //  3     3     trigger temperature measurement
@@ -814,6 +819,15 @@ class RF69: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setEncoding(uint8_t encoding) override;
+
+    /*!
+    \brief enable/disable LNA Boost mode (disabled by default
+
+    \param value true to enable, false to disable
+
+    \returns \ref status_codes
+    */
+    int16_t setLnaTestBoost(bool value);
 
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
