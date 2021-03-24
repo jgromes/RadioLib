@@ -881,7 +881,7 @@ class SX127x: public PhysicalLayer {
       \brief Fixed threshold for the Data Slicer in OOK mode
              Floor threshold for the Data Slicer in OOK when Peak mode is used
 
-      \param value (in DB)
+      \param value calculation is (128 - value/2)
 
       \returns \ref status_codes
     */
