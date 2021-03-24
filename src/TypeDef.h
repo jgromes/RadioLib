@@ -325,6 +325,11 @@
 */
 #define ERR_INVALID_MODULATION                        -107
 
+/*!
+  \brief Supplied Peak type is invalid.
+*/
+#define ERR_INVALID_OOK_RSSI_PEAK_TYPE                -108
+
 // ESP8266 status codes
 
 /*!

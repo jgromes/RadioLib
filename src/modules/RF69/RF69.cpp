@@ -384,6 +384,16 @@ int16_t RF69::setOOK(bool enableOOK) {
     return(state);
 }
 
+int16_t RF69::setOokThresholdType(uint8_t type) {
+  if(type != RF69_OOK_THRESH_FIXED && type != RF69_OOK_THRESH_PEAK && RF69_OOK_THRESH_AVERAGE)
+    return ERR_INVALID_OOK_RSSI_PEAK_TYPE;
+
+  int16_t state = ERR_NONE;
+  state = _mod->SPIsetRegValue(RF69_REG_OOK_PEAK, type, 7, 3, 5);
+
+  return(state);
+}
+
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
   if(!(((freq > 290.0) && (freq < 340.0)) ||

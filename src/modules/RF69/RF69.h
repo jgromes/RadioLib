@@ -749,6 +749,14 @@ class RF69: public PhysicalLayer {
     int16_t setOOK(bool enableOOK);
 
     /*!
+      \brief Selects the type of threshold in the OOK data slicer
+
+      \param type RF69_OOK_THRESH_FIXED RF69_OOK_THRESH_PEAK(default) RF69_OOK_THRESH_AVERAGE
+      \returns \ref status_codes
+    */
+    int16_t setOokThresholdType(uint8_t type);
+
+    /*!
       \brief Set modem in fixed packet length mode.
 
       \param len Packet length.
