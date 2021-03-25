@@ -848,7 +848,7 @@ int16_t SX127x::setOokThresholdType(uint8_t type) {
   return(state);
 }
 
-int16_t SX127x::setOokFixedOrFloorThreshold(short int value) {
+int16_t SX127x::setOokFixedOrFloorThreshold(uint8_t value) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);
@@ -860,7 +860,7 @@ int16_t SX127x::setOokFixedOrFloorThreshold(short int value) {
   return(state);
 }
 
-int16_t SX127x::setOokPeakThresholdDecrement(short int value) {
+int16_t SX127x::setOokPeakThresholdDecrement(uint8_t value) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
     return(ERR_WRONG_MODEM);

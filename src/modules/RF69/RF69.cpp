@@ -385,7 +385,7 @@ int16_t RF69::setOOK(bool enableOOK) {
 }
 
 int16_t RF69::setOokThresholdType(uint8_t type) {
-  if(type != RF69_OOK_THRESH_FIXED && type != RF69_OOK_THRESH_PEAK && RF69_OOK_THRESH_AVERAGE)
+  if(type != RF69_OOK_THRESH_FIXED && type != RF69_OOK_THRESH_PEAK && type != RF69_OOK_THRESH_AVERAGE)
     return ERR_INVALID_OOK_RSSI_PEAK_TYPE;
 
   int16_t state = ERR_NONE;
@@ -788,8 +788,9 @@ int16_t RF69::setEncoding(uint8_t encoding) {
 }
 
 int16_t RF69::setLnaTestBoost(bool value) {
-  if(value)
-    return(_mod->SPIsetRegValue(RF69_REG_TEST_LNA, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+  if(value) {
+    return (_mod->SPIsetRegValue(RF69_REG_TEST_LNA, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+  }
 
   return(_mod->SPIsetRegValue(RF69_TEST_LNA_BOOST_NORMAL, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
 }

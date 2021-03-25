@@ -315,12 +315,7 @@ int16_t SX1278::setOutputPower(int8_t power) {
 }
 
 int16_t SX1278::setGain(uint8_t gain) {
-    int16_t modem = getActiveModem();
-
-  // check active modem
-  if(modem != SX127X_LORA && modem != SX127X_FSK_OOK) {
-    return(ERR_WRONG_MODEM);
-  }
+  int16_t modem = getActiveModem();
 
   // check allowed range
   if(gain > 6) {

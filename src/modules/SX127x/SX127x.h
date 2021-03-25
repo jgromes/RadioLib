@@ -875,7 +875,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setOokPeakThresholdDecrement(short int value);
+    int16_t setOokPeakThresholdDecrement(uint8_t value);
 
     /*!
       \brief Fixed threshold for the Data Slicer in OOK mode
@@ -885,7 +885,7 @@ class SX127x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setOokFixedOrFloorThreshold(short int value);
+    int16_t setOokFixedOrFloorThreshold(uint8_t value);
 
      /*!
       \brief Query modem for the packet length of received payload.
