@@ -145,9 +145,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3a377445cb4b8fd41781a3210a819a47"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47">setDataShapingOOK</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:a3a377445cb4b8fd41781a3210a819a47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping. Only available in FSK mode with OOK modulation.  <a href="class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47">More...</a><br /></td></tr>
 <tr class="separator:a3a377445cb4b8fd41781a3210a819a47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5a7dee50a1a7d8261bc62bb869cda92"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92">getRSSI</a> ()</td></tr>
-<tr class="memdesc:af5a7dee50a1a7d8261bc62bb869cda92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.  <a href="class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92">More...</a><br /></td></tr>
-<tr class="separator:af5a7dee50a1a7d8261bc62bb869cda92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6eea7824fc2cde16a6132bccdc038bb4"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a6eea7824fc2cde16a6132bccdc038bb4">getRSSI</a> (bool skip_activation=false)</td></tr>
+<tr class="memdesc:a6eea7824fc2cde16a6132bccdc038bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.  <a href="class_s_x1272.html#a6eea7824fc2cde16a6132bccdc038bb4">More...</a><br /></td></tr>
+<tr class="separator:a6eea7824fc2cde16a6132bccdc038bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd912314a977f92c464d36d862329ffc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#abd912314a977f92c464d36d862329ffc">setCRC</a> (bool enable, bool mode=false)</td></tr>
 <tr class="memdesc:abd912314a977f92c464d36d862329ffc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <a href="class_s_x1272.html#abd912314a977f92c464d36d862329ffc">More...</a><br /></td></tr>
 <tr class="separator:abd912314a977f92c464d36d862329ffc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -262,6 +262,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee">setOOK</a> (bool enableOOK)</td></tr>
 <tr class="memdesc:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <a href="class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee">More...</a><br /></td></tr>
 <tr class="separator:a24ef0af19a6b8954f956a3c3ad4286ee inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a8b93142202167270db109d18b743c744">setOokThresholdType</a> (uint8_t type)</td></tr>
+<tr class="memdesc:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the type of threshold in the OOK data slicer.  <a href="class_s_x127x.html#a8b93142202167270db109d18b743c744">More...</a><br /></td></tr>
+<tr class="separator:a8b93142202167270db109d18b743c744 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2f43d70b5f94e49e09b4c9f082f46d inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d">setOokPeakThresholdDecrement</a> (uint8_t value)</td></tr>
+<tr class="memdesc:aac2f43d70b5f94e49e09b4c9f082f46d inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Period of decrement of the RSSI threshold in the OOK demodulator.  <a href="class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d">More...</a><br /></td></tr>
+<tr class="separator:aac2f43d70b5f94e49e09b4c9f082f46d inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17ff4e4e0afaebed727648e1400be538 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">setOokFixedOrFloorThreshold</a> (uint8_t value)</td></tr>
+<tr class="memdesc:a17ff4e4e0afaebed727648e1400be538 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed threshold for the Data Slicer in OOK mode Floor threshold for the Data Slicer in OOK when Peak mode is used.  <a href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">More...</a><br /></td></tr>
+<tr class="separator:a17ff4e4e0afaebed727648e1400be538 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a462fa74275e67c296328a01f361892d5 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:a462fa74275e67c296328a01f361892d5 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">More...</a><br /></td></tr>
 <tr class="separator:a462fa74275e67c296328a01f361892d5 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -625,8 +634,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="af5a7dee50a1a7d8261bc62bb869cda92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5a7dee50a1a7d8261bc62bb869cda92">&#9670;&nbsp;</a></span>getRSSI()</h2>
+<a id="a6eea7824fc2cde16a6132bccdc038bb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eea7824fc2cde16a6132bccdc038bb4">&#9670;&nbsp;</a></span>getRSSI()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -634,13 +643,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">float SX1272::getRSSI </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>skip_activation</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">skip_activation</td><td>in OOK/FSK mode this function will put receiver in receive mode and then in standby. Make it TRUE if you don't want this behaviour.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>Last packet RSSI for LoRa modem, or current RSSI level for FSK modem. </dd></dl>
 
 </div>

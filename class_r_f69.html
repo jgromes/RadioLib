@@ -210,6 +210,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a86a080086c0228d23e2cb77d2b1915c1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:a86a080086c0228d23e2cb77d2b1915c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">More...</a><br /></td></tr>
 <tr class="separator:a86a080086c0228d23e2cb77d2b1915c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">setOOK</a> (bool enableOOK)</td></tr>
+<tr class="memdesc:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <a href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">More...</a><br /></td></tr>
+<tr class="separator:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a219a046c10ddcc0a787ad19346ecad6a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">setOokThresholdType</a> (uint8_t type)</td></tr>
+<tr class="memdesc:a219a046c10ddcc0a787ad19346ecad6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the type of threshold in the OOK data slicer.  <a href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">More...</a><br /></td></tr>
+<tr class="separator:a219a046c10ddcc0a787ad19346ecad6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c9dcbd7e44bc5e46d9f10ae276a0c5f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a4c9dcbd7e44bc5e46d9f10ae276a0c5f">fixedPacketLengthMode</a> (uint8_t len=RF69_MAX_PACKET_LENGTH)</td></tr>
 <tr class="memdesc:a4c9dcbd7e44bc5e46d9f10ae276a0c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode.  <a href="class_r_f69.html#a4c9dcbd7e44bc5e46d9f10ae276a0c5f">More...</a><br /></td></tr>
 <tr class="separator:a4c9dcbd7e44bc5e46d9f10ae276a0c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -234,6 +240,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aae828ce8dda16da4e54d2f18b1fb8af2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#aae828ce8dda16da4e54d2f18b1fb8af2">setEncoding</a> (uint8_t encoding) override</td></tr>
 <tr class="memdesc:aae828ce8dda16da4e54d2f18b1fb8af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING.  <a href="class_r_f69.html#aae828ce8dda16da4e54d2f18b1fb8af2">More...</a><br /></td></tr>
 <tr class="separator:aae828ce8dda16da4e54d2f18b1fb8af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa14dbfd82cd75b9759d4d78bdb05c194"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#aa14dbfd82cd75b9759d4d78bdb05c194">setLnaTestBoost</a> (bool value)</td></tr>
+<tr class="memdesc:aa14dbfd82cd75b9759d4d78bdb05c194"><td class="mdescLeft">&#160;</td><td class="mdescRight">enable/disable LNA Boost mode (disabled by default  <a href="class_r_f69.html#aa14dbfd82cd75b9759d4d78bdb05c194">More...</a><br /></td></tr>
+<tr class="separator:aa14dbfd82cd75b9759d4d78bdb05c194"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7">getRSSI</a> ()</td></tr>
 <tr class="memdesc:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7">More...</a><br /></td></tr>
 <tr class="separator:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1219,6 +1228,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="aa14dbfd82cd75b9759d4d78bdb05c194"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa14dbfd82cd75b9759d4d78bdb05c194">&#9670;&nbsp;</a></span>setLnaTestBoost()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setLnaTestBoost </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>enable/disable LNA Boost mode (disabled by default </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>true to enable, false to disable</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ab9c217d5ece259950780a05c6e41f75c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab9c217d5ece259950780a05c6e41f75c">&#9670;&nbsp;</a></span>setNodeAddress()</h2>
 
@@ -1239,6 +1275,60 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">nodeAddr</td><td>Node address to be set.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9c2f94a1c3c8a4f3fd2c5785217bee0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c2f94a1c3c8a4f3fd2c5785217bee0a">&#9670;&nbsp;</a></span>setOOK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setOOK </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enableOOK</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables/disables OOK modulation instead of FSK. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enableOOK</td><td>Enable (true) or disable (false) OOK.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a219a046c10ddcc0a787ad19346ecad6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a219a046c10ddcc0a787ad19346ecad6a">&#9670;&nbsp;</a></span>setOokThresholdType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setOokThresholdType </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Selects the type of threshold in the OOK data slicer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">type</td><td>RF69_OOK_THRESH_FIXED RF69_OOK_THRESH_PEAK(default) RF69_OOK_THRESH_AVERAGE </td></tr>
   </table>
   </dd>
 </dl>

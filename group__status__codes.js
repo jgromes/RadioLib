@@ -30,6 +30,7 @@ var group__status__codes =
     [ "ERR_INVALID_NUM_BROAD_ADDRS", "group__status__codes.html#ga975011f5b371bfc864c36e65f2b26a24", null ],
     [ "ERR_INVALID_NUM_REPEATERS", "group__status__codes.html#ga67d0525915e7e4dc6f5d13199d5e37ae", null ],
     [ "ERR_INVALID_NUM_SAMPLES", "group__status__codes.html#gabb4c168ec8dd99c2b853d589af455884", null ],
+    [ "ERR_INVALID_OOK_RSSI_PEAK_TYPE", "group__status__codes.html#gacd4ead53ff1363d12e2f2c3ebdf2caae", null ],
     [ "ERR_INVALID_OUTPUT_POWER", "group__status__codes.html#ga5f16976086bbc9bf66c77719ccf0f277", null ],
     [ "ERR_INVALID_PIPE_NUMBER", "group__status__codes.html#ga819f4587f681d62d96babf3f51a0268e", null ],
     [ "ERR_INVALID_PREAMBLE_LENGTH", "group__status__codes.html#ga267654efbc717258ff5ac95c10e180f1", null ],

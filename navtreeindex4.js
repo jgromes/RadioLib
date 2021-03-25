@@ -1,5 +1,12 @@
 var NAVTREEINDEX4 =
 {
+"group__uart__config.html#gab526b0043d5cec8d83ee4ea164698548":[2,1,1],
+"group__uart__config.html#gad418f0922126e27279d1a374fc63e036":[2,1,8],
+"group__uart__config.html#gae077d53c5c120a989b1f285f183f1b78":[2,1,3],
+"hierarchy.html":[3,2],
+"index.html":[0],
+"index.html":[],
+"modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,4,0],
 "pages.html":[],
 "struct_s_s_t_v_mode__t.html":[3,0,29],

@@ -6,7 +6,7 @@ var class_s_x1278 =
     [ "beginFSK", "class_s_x1278.html#a33dc718c83c233a1f93d6bdf2ec31783", null ],
     [ "explicitHeader", "class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1", null ],
     [ "forceLDRO", "class_s_x1278.html#a6d6398c4d4fde302d6d4752708bce856", null ],
-    [ "getRSSI", "class_s_x1278.html#a0b1fe4d0b1acfa454d7bab59cdf319fe", null ],
+    [ "getRSSI", "class_s_x1278.html#a1e294e37fef14e82ff264aafc12636ca", null ],
     [ "implicitHeader", "class_s_x1278.html#a47f5ac7dd6587b86c5f2c2b16336612e", null ],
     [ "reset", "class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad", null ],
     [ "setBandwidth", "class_s_x1278.html#a46c27ed1ebaae4e3ed8afe3ae6941dd6", null ],
