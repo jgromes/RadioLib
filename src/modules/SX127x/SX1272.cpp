@@ -330,7 +330,7 @@ int16_t SX1272::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
-float SX1272::getRSSI() {
+float SX1272::getRSSI(bool skip_activation) {
   if(getActiveModem() == SX127X_LORA) {
     // RSSI calculation uses different constant for low-frequency and high-frequency ports
     float lastPacketRSSI = -139 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);

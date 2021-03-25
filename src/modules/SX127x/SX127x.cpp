@@ -836,6 +836,44 @@ int16_t SX127x::disableAddressFiltering() {
   return(_mod->SPIsetRegValue(SX127X_REG_BROADCAST_ADRS, 0x00));
 }
 
+int16_t SX127x::setOokThresholdType(uint8_t type) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state = ERR_NONE;
+  state = _mod->SPIsetRegValue(SX127X_REG_OOK_PEAK, type, 4, 3, 5);
+
+  return(state);
+}
+
+int16_t SX127x::setOokFixedOrFloorThreshold(uint8_t value) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state = ERR_NONE;
+  state = _mod->SPIsetRegValue(SX127X_REG_OOK_FIX, value, 7, 0, 5);
+
+  return(state);
+}
+
+int16_t SX127x::setOokPeakThresholdDecrement(uint8_t value) {
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  int16_t state = ERR_NONE;
+  state = _mod->SPIsetRegValue(SX127X_REG_OOK_AVG, value, 7, 5, 5);
+
+  return(state);
+}
+
+
+
 int16_t SX127x::setOOK(bool enableOOK) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {

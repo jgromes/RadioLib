@@ -132,6 +132,9 @@ forceLDRO	KEYWORD2
 autoLDRO	KEYWORD2
 getChipVersion	KEYWORD2
 invertIQ    KEYWORD2
+setOokThresholdType	KEYWORD2
+setOokPeakThresholdDecrement	KEYWORD2
+setOokFixedOrFloorThreshold	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2
@@ -139,6 +142,7 @@ enableAES	KEYWORD2
 disableAES	KEYWORD2
 getTemperature	KEYWORD2
 setAmbientTemperature	KEYWORD2
+setLnaTestBoost KEYWORD2
 
 # CC1101-specific
 getLQI	KEYWORD2

@@ -859,6 +859,34 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setOOK(bool enableOOK);
 
+    /*!
+      \brief Selects the type of threshold in the OOK data slicer
+
+      \param type SX127X_OOK_THRESH_FIXED, SX127X_OOK_THRESH_PEAK(default), SX127X_OOK_THRESH_AVERAGE
+
+      \returns \ref status_codes
+    */
+    int16_t setOokThresholdType(uint8_t type);
+
+    /*!
+      \brief Period of decrement of the RSSI threshold in the OOK demodulator
+
+      \param value use defines SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP
+
+      \returns \ref status_codes
+    */
+    int16_t setOokPeakThresholdDecrement(uint8_t value);
+
+    /*!
+      \brief Fixed threshold for the Data Slicer in OOK mode
+             Floor threshold for the Data Slicer in OOK when Peak mode is used
+
+      \param value calculation is (128 - value/2)
+
+      \returns \ref status_codes
+    */
+    int16_t setOokFixedOrFloorThreshold(uint8_t value);
+
      /*!
       \brief Query modem for the packet length of received payload.
 
