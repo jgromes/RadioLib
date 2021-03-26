@@ -751,7 +751,8 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Selects the type of threshold in the OOK data slicer
 
-      \param type RF69_OOK_THRESH_FIXED RF69_OOK_THRESH_PEAK(default) RF69_OOK_THRESH_AVERAGE
+      \param type Threshold type: RF69_OOK_THRESH_PEAK(default), RF69_OOK_THRESH_FIXED or RF69_OOK_THRESH_AVERAGE
+
       \returns \ref status_codes
     */
     int16_t setOokThresholdType(uint8_t type);
@@ -829,9 +830,9 @@ class RF69: public PhysicalLayer {
     int16_t setEncoding(uint8_t encoding) override;
 
     /*!
-    \brief enable/disable LNA Boost mode (disabled by default
+    \brief Enable/disable LNA Boost mode (disabled by default).
 
-    \param value true to enable, false to disable
+    \param value True to enable, false to disable.
 
     \returns \ref status_codes
     */

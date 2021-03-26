@@ -370,28 +370,25 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 }
 
 int16_t RF69::setOOK(bool enableOOK) {
-    // set OOK and if successful, save the new setting
-    int16_t state = ERR_NONE;
-    if(enableOOK) {
-        state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3, 5);
-    } else {
-        state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3, 5);
-    }
-    if(state == ERR_NONE) {
-        _ook = enableOOK;
-    }
+  // set OOK and if successful, save the new setting
+  int16_t state = ERR_NONE;
+  if(enableOOK) {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3, 5);
+  } else {
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3, 5);
+  }
+  if(state == ERR_NONE) {
+    _ook = enableOOK;
+  }
 
-    return(state);
+  return(state);
 }
 
 int16_t RF69::setOokThresholdType(uint8_t type) {
-  if(type != RF69_OOK_THRESH_FIXED && type != RF69_OOK_THRESH_PEAK && type != RF69_OOK_THRESH_AVERAGE)
-    return ERR_INVALID_OOK_RSSI_PEAK_TYPE;
-
-  int16_t state = ERR_NONE;
-  state = _mod->SPIsetRegValue(RF69_REG_OOK_PEAK, type, 7, 3, 5);
-
-  return(state);
+  if((type != RF69_OOK_THRESH_FIXED) && (type != RF69_OOK_THRESH_PEAK) && (type != RF69_OOK_THRESH_AVERAGE)) {
+    return(ERR_INVALID_OOK_RSSI_PEAK_TYPE);
+  }
+  return(_mod->SPIsetRegValue(RF69_REG_OOK_PEAK, type, 7, 3, 5));
 }
 
 int16_t RF69::setFrequency(float freq) {
