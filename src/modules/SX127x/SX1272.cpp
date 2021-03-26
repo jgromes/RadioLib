@@ -243,11 +243,6 @@ int16_t SX1272::setOutputPower(int8_t power) {
 }
 
 int16_t SX1272::setGain(uint8_t gain) {
-  // check active modem
-  if(getActiveModem() != SX127X_LORA) {
-    return(ERR_WRONG_MODEM);
-  }
-
   // check allowed range
   if(gain > 6) {
     return(ERR_INVALID_GAIN);
@@ -256,14 +251,30 @@ int16_t SX1272::setGain(uint8_t gain) {
   // set mode to standby
   int16_t state = SX127x::standby();
 
-  // set gain
-  if(gain == 0) {
-    // gain set to 0, enable AGC loop
-    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_ON, 2, 2);
-  } else {
-    state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
-    state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+  // get modem
+  int16_t modem = getActiveModem();
+  if(modem == SX127X_LORA){
+    // set gain
+    if(gain == 0) {
+      // gain set to 0, enable AGC loop
+      state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_ON, 2, 2);
+    } else {
+      state |= _mod->SPIsetRegValue(SX127X_REG_MODEM_CONFIG_2, SX1272_AGC_AUTO_OFF, 2, 2);
+      state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+    }
+
+  } else if(modem == SX127X_FSK_OOK) {
+    // set gain
+    if(gain == 0) {
+      // gain set to 0, enable AGC loop
+      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
+    } else {
+      state |= _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, SX127X_AGC_AUTO_ON, 3, 3);
+      state |= _mod->SPIsetRegValue(SX127X_REG_LNA, (gain << 5) | SX127X_LNA_BOOST_ON);
+    }
+
   }
+
   return(state);
 }
 
@@ -330,7 +341,7 @@ int16_t SX1272::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
-float SX1272::getRSSI(bool skip_activation) {
+float SX1272::getRSSI(bool skipReceive) {
   if(getActiveModem() == SX127X_LORA) {
     // RSSI calculation uses different constant for low-frequency and high-frequency ports
     float lastPacketRSSI = -139 + _mod->SPIgetRegValue(SX127X_REG_PKT_RSSI_VALUE);
@@ -346,13 +357,17 @@ float SX1272::getRSSI(bool skip_activation) {
 
   } else {
     // enable listen mode
-    startReceive();
+    if(!skipReceive) {
+      startReceive();
+    }
 
     // read the value for FSK
     float rssi = (float)_mod->SPIgetRegValue(SX127X_REG_RSSI_VALUE_FSK) / -2.0;
 
     // set mode back to standby
-    standby();
+    if(!skipReceive) {
+      standby();
+    }
 
     // return the value
     return(rssi);

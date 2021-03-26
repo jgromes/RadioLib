@@ -248,11 +248,11 @@ class SX1278: public SX127x {
     /*!
       \brief Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.
 
-      \param skip_activation in OOK/FSK mode this function will put receiver in receive mode and then in standby. Make it TRUE if you don't want this behaviour.
+      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FKS/OOK mode.
 
       \returns Last packet RSSI for LoRa modem, or current RSSI level for FSK modem.
     */
-    float getRSSI(bool skip_activation=false);
+    float getRSSI(bool skipReceive = false);
 
     /*!
       \brief Enables/disables CRC check of received packets.
