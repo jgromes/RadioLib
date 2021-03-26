@@ -18,7 +18,7 @@ var searchData=
   ['getpacketsource_457',['getPacketSource',['../class_x_bee.html#abcffe611d9a823d66a8a2c12720ff70b',1,'XBee']]],
   ['getpictureheight_458',['getPictureHeight',['../class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d',1,'SSTVClient']]],
   ['getrangingresult_459',['getRangingResult',['../class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f',1,'SX1280']]],
-  ['getrssi_460',['getRSSI',['../class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551',1,'CC1101::getRSSI()'],['../class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7',1,'RF69::getRSSI()'],['../class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925',1,'SX126x::getRSSI()'],['../class_s_x1272.html#a6eea7824fc2cde16a6132bccdc038bb4',1,'SX1272::getRSSI()'],['../class_s_x1278.html#a1e294e37fef14e82ff264aafc12636ca',1,'SX1278::getRSSI()'],['../class_s_x128x.html#a94d3003277925e2dc3372548b3311008',1,'SX128x::getRSSI()']]],
+  ['getrssi_460',['getRSSI',['../class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551',1,'CC1101::getRSSI()'],['../class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7',1,'RF69::getRSSI()'],['../class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925',1,'SX126x::getRSSI()'],['../class_s_x1272.html#a0d8e68cf913422535dc43cbdf73a3f10',1,'SX1272::getRSSI()'],['../class_s_x1278.html#ae52d84fa301309a4a4294312571fc3b8',1,'SX1278::getRSSI()'],['../class_s_x128x.html#a94d3003277925e2dc3372548b3311008',1,'SX128x::getRSSI()']]],
   ['getrssiinst_461',['getRSSIInst',['../class_s_x126x.html#ae36664f9c605a8fe74b2f357e0ec3323',1,'SX126x']]],
   ['getrst_462',['getRst',['../class_module.html#ae352c7a7b997fc1b17189c1312a8347f',1,'Module']]],
   ['getrx_463',['getRx',['../class_module.html#a5d66f76c11ac91a35a3a1d9647aa6f6d',1,'Module']]],
