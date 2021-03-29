@@ -388,6 +388,10 @@ int16_t RF69::setOokThresholdType(uint8_t type) {
   return(_mod->SPIsetRegValue(RF69_REG_OOK_PEAK, type, 7, 3, 5));
 }
 
+int16_t RF69::setOokFixedThreshold(uint8_t value) {
+  return(_mod->SPIsetRegValue(RF69_REG_OOK_FIX, value, 7, 0, 5));
+}
+
 int16_t RF69::setFrequency(float freq) {
   // check allowed frequency range
   if(!(((freq > 290.0) && (freq < 340.0)) ||

@@ -758,6 +758,15 @@ class RF69: public PhysicalLayer {
     int16_t setOokThresholdType(uint8_t type);
 
     /*!
+      \brief Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.
+
+      \param value Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RF69_OOK_THRESH_FIXED.
+
+      \returns \ref status_codes
+    */
+    int16_t setOokFixedThreshold(uint8_t value);
+
+    /*!
       \brief Set modem in fixed packet length mode.
 
       \param len Packet length.

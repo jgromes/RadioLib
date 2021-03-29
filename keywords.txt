@@ -154,7 +154,8 @@ enableAES	KEYWORD2
 disableAES	KEYWORD2
 getTemperature	KEYWORD2
 setAmbientTemperature	KEYWORD2
-setLnaTestBoost KEYWORD2
+setLnaTestBoost	KEYWORD2
+setOokFixedThreshold	KEYWORD2
 
 # CC1101-specific
 getLQI	KEYWORD2
