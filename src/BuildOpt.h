@@ -405,7 +405,7 @@
  * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as "god mode lite"
  * Warning: RadioLib won't stop you from writing invalid stuff into your device, so it's quite easy to brick your module with this.
  */
-//#define RADIOLIB_LOW_LEVEL
+#define RADIOLIB_LOW_LEVEL
 
 /*
  * Uncomment to enable pre-defined modules when using RadioShield.
