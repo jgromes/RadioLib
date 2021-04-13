@@ -910,7 +910,7 @@ void RF69::clearIRQFlags() {
   _mod->SPIwriteRegister(RF69_REG_IRQ_FLAGS_2, 0b11111111);
 }
 
-int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2) {
+int16_t RF69::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2) {
   return (_mod->SPIsetRegValue(reg, value, msb, lsb, checkInterval));
 }
 
