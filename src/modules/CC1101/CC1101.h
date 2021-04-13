@@ -602,7 +602,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction. Defaults to RISING.
     */
-    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = FALLING);
+    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = RISING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -846,6 +846,13 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
+
+     /*!
+      \brief Get whether the modem is in promiscuous mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
+
+      \returns Whether the modem is in promiscuous mode
+    */
+    bool getPromiscuousMode();
 
     /*!
       \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.

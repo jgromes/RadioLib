@@ -269,7 +269,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
 
     // enforce variable len limit.
-    if (len > 254) {
+    if (len > CC1101_MAX_PACKET_LENGTH - 1) {
       return (ERR_PACKET_TOO_LONG);
     }
 
@@ -307,6 +307,12 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
       dataSent += bytesToWrite;
     } else {
       // wait for radio to send some data.
+      /*
+        * Does this work for all rates? If 1 ms is longer than the 1ms delay
+        * then the entire FIFO will be transmitted during that delay.
+        * 
+        * TODO: drop this delay(1) or come up with a better solution:
+      */
       delay(1);
     }
   }
@@ -349,7 +355,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   }
 
   uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
-  uint16_t readBytes = 0;
+  size_t readBytes = 0;
   uint32_t lastPop = millis();
 
   // keep reading from FIFO until we get all the packet.
@@ -360,6 +366,12 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
         RADIOLIB_DEBUG_PRINTLN(F("No data for more than 5mS. Stop here."));
         break;
       } else {
+        /*
+         * Does this work for all rates? If 1 ms is longer than the 1ms delay
+         * then the entire FIFO will be transmitted during that delay.
+         * 
+         * TODO: drop this delay(1) or come up with a better solution:
+        */
         delay(1);
         bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
         continue;
@@ -392,7 +404,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   _rawLQI = val & 0x7F;
 
     // check CRC
-    if (_crcOn && (val & 0b10000000) == 0b00000000) {
+    if (_crcOn && (val & CC1101_CRC_OK) == CC1101_CRC_ERROR) {
       return (ERR_CRC_MISMATCH);
     }
   }
@@ -784,6 +796,10 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   _promiscuous = promiscuous;
   
   return(state);
+}
+
+bool CC1101::getPromiscuousMode() {
+  return (_promiscuous);
 }
 
 int16_t CC1101::setDataShaping(uint8_t sh) {
