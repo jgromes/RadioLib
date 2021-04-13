@@ -9,6 +9,7 @@ int16_t Si4431::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   // execute common part
   int16_t state = Si443x::begin(br, freqDev, rxBw, preambleLen);
   RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSi4431"));
 
   // configure publicly accessible settings
   state = setFrequency(freq);

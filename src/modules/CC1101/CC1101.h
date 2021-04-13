@@ -456,7 +456,8 @@
 #define CC1101_PARTNUM                                0x00
 
 // CC1101_REG_VERSION
-#define CC1101_VERSION                                0x14
+#define CC1101_VERSION_CURRENT                        0x14
+#define CC1101_VERSION_LEGACY                         0x04
 
 // CC1101_REG_MARCSTATE
 #define CC1101_MARC_STATE_SLEEP                       0x00        //  4     0     main radio control state: sleep
@@ -528,7 +529,7 @@ class CC1101: public PhysicalLayer {
 
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.
 
-      \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
@@ -875,12 +876,41 @@ class CC1101: public PhysicalLayer {
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
-#ifndef RADIOLIB_GODMODE
-  private:
-#endif
-    Module* _mod;
+    /*!
+     \brief Get one truly random byte from RSSI noise.
+
+     \returns TRNG byte.
+   */
+    uint8_t random();
+
+    /*!
+     \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if CC1101 is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
+
+  #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+    protected:
+  #endif
+      Module* _mod;
+
+      // SPI read overrides to set bit for burst write and status registers access
+      int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+      int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
+      void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
+      uint8_t SPIreadRegister(uint8_t reg);
+      void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
+      void SPIwriteRegister(uint8_t reg, uint8_t data);
+
+      void SPIsendCommand(uint8_t cmd);
+
+  #if !defined(RADIOLIB_GODMODE)
+    protected:
+  #endif
 
     float _freq = 0;
+    float _br = 0;
     uint8_t _rawRSSI = 0;
     uint8_t _rawLQI = 0;
     uint8_t _modulation = CC1101_MOD_FORMAT_2_FSK;
@@ -899,16 +929,6 @@ class CC1101: public PhysicalLayer {
     int16_t directMode();
     static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-
-    // SPI read overrides to set bit for burst write and status registers access
-    int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
-    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
-    void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
-    uint8_t SPIreadRegister(uint8_t reg);
-    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
-    void SPIwriteRegister(uint8_t reg, uint8_t data);
-
-    void SPIsendCommand(uint8_t cmd);
 };
 
 #endif

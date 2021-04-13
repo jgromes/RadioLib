@@ -1,12 +1,7 @@
-#ifndef _RADIOLIB_ISERIAL_H
+#if !defined(_RADIOLIB_ISERIAL_H)
 #define _RADIOLIB_ISERIAL_H
 
 #include "Module.h"
-
-#include <stdio.h>
-
-#include "WString.h"
-#include "Printable.h"
 
 /*!
   \class ISerial
@@ -25,15 +20,9 @@ class ISerial {
     int available();
     void flush();
 
-    // SoftwareSerial-only methods
-    #if !defined(RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED)
-    bool listen();
-    bool isListening();
-    bool stopListening();
-    bool overflow();
-    #endif
-
+    #if !defined(ARDUINO_ARCH_MEGAAVR)
     size_t print(const __FlashStringHelper *);
+    #endif
     size_t print(const String &);
     size_t print(const char[]);
     size_t print(char);
@@ -45,7 +34,9 @@ class ISerial {
     size_t print(double, int = 2);
     size_t print(const Printable&);
 
+    #if !defined(ARDUINO_ARCH_MEGAAVR)
     size_t println(const __FlashStringHelper *);
+    #endif
     size_t println(const String &s);
     size_t println(const char[]);
     size_t println(char);
@@ -58,7 +49,7 @@ class ISerial {
     size_t println(const Printable&);
     size_t println(void);
 
-#ifndef RADIOLIB_GODMODE
+#if !(defined(RADIOLIB_LOW_LEVEL) || defined(RADIOLIB_GODMODE))
   protected:
 #endif
     Module* _mod;

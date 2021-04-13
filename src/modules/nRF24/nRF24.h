@@ -464,19 +464,30 @@ class nRF24: public PhysicalLayer {
     */
     int16_t setEncoding(uint8_t encoding) override;
 
-#ifndef RADIOLIB_GODMODE
-  private:
+    /*!
+     \brief Dummy random method, to ensure PhysicalLayer compatibility.
+
+     \returns Always returns 0.
+   */
+    uint8_t random();
+
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+  protected:
 #endif
     Module* _mod;
+
+    void SPIreadRxPayload(uint8_t* data, uint8_t numBytes);
+    void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
+    void SPItransfer(uint8_t cmd, bool write = false, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
 
     uint8_t _addrWidth = 0;
 
     int16_t config();
     void clearIRQ();
-
-    void SPIreadRxPayload(uint8_t* data, uint8_t numBytes);
-    void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
-    void SPItransfer(uint8_t cmd, bool write = false, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);
 };
 
 #endif

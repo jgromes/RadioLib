@@ -4,7 +4,6 @@
 #include "TypeDef.h"
 
 #include <SPI.h>
-//#include <Wire.h>
 #ifndef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
 #include <SoftwareSerial.h>
 #endif
@@ -87,9 +86,9 @@ class Module {
 
       \param spi SPI interface to be used, can also use software SPI implementations.
 
-      \param spiSettings SPI interface settings.
+      \param spiSettings SPI interface settings. Defaults to 2 MHz clock, MSB first, mode 0.
     */
-    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings);
+    Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0));
 
     /*!
       \brief Generic module constructor.
@@ -357,6 +356,27 @@ class Module {
     SPISettings getSpiSettings() const { return(_spiSettings); }
 
     /*!
+      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
+      When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
+
+      \param rxEn RX enable pin.
+
+      \param txEn TX enable pin.
+    */
+    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+
+    /*!
+      \brief Set RF switch state.
+
+      \param rxPinState Pin state to set on Tx enable pin (usually high to transmit).
+
+      \param txPinState  Pin state to set on Rx enable pin (usually high to receive).
+    */
+    void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState);
+
+    // Arduino core overrides
+
+    /*!
       \brief Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.
 
       \param pin Pin to change the mode of.
@@ -400,23 +420,51 @@ class Module {
     static void noTone(RADIOLIB_PIN_TYPE pin);
 
     /*!
-      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
-      When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
+      \brief Arduino core attachInterrupt override.
 
-      \param rxEn RX enable pin.
+      \param interruptNum Interrupt number.
 
-      \param txEn TX enable pin.
+      \param userFunc Interrupt service routine.
+
+      \param mode Pin hcange direction.
     */
-    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    static void attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, void (*userFunc)(void), RADIOLIB_INTERRUPT_STATUS mode);
 
     /*!
-      \brief Set RF switch state.
+      \brief Arduino core detachInterrupt override.
 
-      \param rxPinState Pin state to set on Tx enable pin (usually high to transmit).
-
-      \param txPinState  Pin state to set on Rx enable pin (usually high to receive).
+      \param interruptNum Interrupt number.
     */
-    void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState);
+    static void detachInterrupt(RADIOLIB_PIN_TYPE interruptNum);
+
+    /*!
+      \brief Arduino core yield override.
+    */
+    static void yield();
+
+    /*!
+      \brief Arduino core delay override.
+
+      \param ms Delay length in milliseconds.
+    */
+    static void delay(uint32_t ms);
+
+    /*!
+      \brief Arduino core delayMicroseconds override.
+
+      \param us Delay length in microseconds.
+    */
+    static void delayMicroseconds(uint32_t us);
+
+    /*!
+      \brief Arduino core millis override.
+    */
+    static uint32_t millis();
+
+    /*!
+      \brief Arduino core micros override.
+    */
+    static uint32_t micros();
 
 #ifndef RADIOLIB_GODMODE
   private:

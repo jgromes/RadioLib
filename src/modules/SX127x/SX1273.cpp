@@ -10,20 +10,16 @@ int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // configure settings not accessible by API
-  state = config();
-  RADIOLIB_ASSERT(state);
-
   // mitigation of receiver spurious response
   // see SX1272/73 Errata, section 2.2 for details
   state = _mod->SPIsetRegValue(0x31, 0b10000000, 7, 7);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
   state = setSpreadingFactor(sf);

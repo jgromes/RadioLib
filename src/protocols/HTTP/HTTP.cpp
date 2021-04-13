@@ -64,8 +64,6 @@ int16_t HTTPClient::get(const char* url, String& response) {
     return(state);
   }
 
-  //delay(1000);
-
   // get the response length
   size_t numBytes = _tl->getNumBytes();
   if(numBytes == 0) {

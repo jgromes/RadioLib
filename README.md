@@ -1,4 +1,4 @@
-# RadioLib [![Build Status](https://travis-ci.org/jgromes/RadioLib.svg?branch=master)](https://travis-ci.org/jgromes/RadioLib)
+# RadioLib ![Build Status](https://github.com/jgromes/RadioLib/workflows/CI/badge.svg)
 
 ### _One radio library to rule them all!_
 
@@ -69,6 +69,9 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
   * [__STM32__ (official core)](https://github.com/stm32duino/Arduino_Core_STM32) - STM32 Nucleo, Discovery, Maple, BluePill, BlackPill etc.
   * [__STM32__ (unofficial core)](https://github.com/rogerclarkmelbourne/Arduino_STM32) - STM32F1 and STM32F4-based boards
 
+* __MCUdude__
+  * [__MegaCoreX__](https://github.com/MCUdude/MegaCoreX) - megaAVR-0 series (ATmega4809, ATmega3209 etc.)
+
 The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms prior to releasing new version.
 
 ### In development:
@@ -83,7 +86,7 @@ The list above is by no means exhaustive. Most of RadioLib code is independent o
 First of all, take a look at the [examples](https://github.com/jgromes/RadioLib/tree/master/examples) and the [Wiki](https://github.com/jgromes/RadioLib/wiki) - especially the [Basics](https://github.com/jgromes/RadioLib/wiki/Basics) page. There's a lot of useful information over there. If something isn't working as expected, try searching the [issues](https://github.com/jgromes/RadioLib/issues/).
 
 ### Help, my module isn't working!
-The fastest way to get help is by creating an [issue](https://github.com/jgromes/RadioLib/issues/new?assignees=&labels=&template=bug_report.md&title=) using the appropriate template. It is also highly recommended to try running the examples first - their functionality is tested from time to time and they should work. Finally, RadioLib is still under development, which means that sometimes, backwards-incompatible changes might be introduced. Though these are kept at minimum, sometimes it is unavoidable. You can check the [release changelog](https://github.com/jgromes/RadioLib/releases) to find out if there's been such a major change recently.
+The fastest way to get help is by creating an [issue](https://github.com/jgromes/RadioLib/issues/new/choose) using the appropriate template. It is also highly recommended to try running the examples first - their functionality is tested from time to time and they should work. Finally, RadioLib is still under development, which means that sometimes, backwards-incompatible changes might be introduced. Though these are kept at minimum, sometimes it is unavoidable. You can check the [release changelog](https://github.com/jgromes/RadioLib/releases) to find out if there's been such a major change recently.
 
 ### RadioLib doesn't support my module! What should I do?
 Start by creating new issue (if it doesn't exist yet). If you have some experience with Arduino and C/C++ in general, you can try to add the support yourself! Use the template files in `/extras/` folder to get started. This is by far the fastest way to implement new modules into RadioLib, since I can't be working on everything all the time. If you don't trust your programming skills enough to have a go at it yourself, don't worry. I will try to implement all requested modules, but it will take me a while.

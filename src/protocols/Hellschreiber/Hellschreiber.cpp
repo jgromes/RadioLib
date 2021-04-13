@@ -24,28 +24,21 @@ int16_t HellClient::begin(float base, float rate) {
   // calculate "pixel" duration
   _pixelDuration = 1000000.0/rate;
 
-  // set module frequency deviation to 0 if using FSK
-  int16_t state = ERR_NONE;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio == nullptr) {
-    state = _phy->setFrequencyDeviation(0);
-  }
-  #endif
-
-  return(state);
+  // configure for direct mode
+  return(_phy->startDirect());
 }
 
 size_t HellClient::printGlyph(uint8_t* buff) {
   // print the character
   for(uint8_t mask = 0x40; mask >= 0x01; mask >>= 1) {
     for(int8_t i = HELL_FONT_HEIGHT - 1; i >= 0; i--) {
-        uint32_t start = micros();
+        uint32_t start = Module::micros();
         if(buff[i] & mask) {
           transmitDirect(_base, _baseHz);
         } else {
           standby();
         }
-        while(micros() - start < _pixelDuration);
+        while(Module::micros() - start < _pixelDuration);
     }
   }
 
@@ -85,7 +78,7 @@ size_t HellClient::write(uint8_t b) {
   uint8_t buff[HELL_FONT_WIDTH];
   buff[0] = 0x00;
   for(uint8_t i = 0; i < HELL_FONT_WIDTH - 2; i++) {
-    buff[i + 1] = pgm_read_byte(&HellFont[pos][i]);
+    buff[i + 1] = RADIOLIB_PROGMEM_READ_BYTE(&HellFont[pos][i]);
   }
   buff[HELL_FONT_WIDTH - 1] = 0x00;
 
@@ -97,7 +90,7 @@ size_t HellClient::print(__FlashStringHelper* fstr) {
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   size_t n = 0;
   while(true) {
-    char c = pgm_read_byte(p++);
+    char c = RADIOLIB_PROGMEM_READ_BYTE(p++);
     if(c == '\0') {
       break;
     }

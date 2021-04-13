@@ -1,0 +1,162 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    strategy:
+      matrix:
+        board:
+          - arduino:avr:uno
+          - arduino:avr:mega
+          - arduino:avr:leonardo
+          - arduino:mbed:nano33ble
+          - arduino:mbed:envie_m4
+          - arduino:megaavr:uno2018
+          - arduino:sam:arduino_due_x
+          - arduino:samd:arduino_zero_native
+          - adafruit:samd:adafruit_feather_m0
+          - adafruit:nrf52:feather52832
+          - esp32:esp32:esp32
+          - esp8266:esp8266:generic
+          - Intel:arc32:arduino_101
+          - SparkFun:apollo3:sfe_artemis
+          - STM32:stm32:GenF3
+          - stm32duino:STM32F1:mapleMini
+          - MegaCoreX:megaavr:4809
+
+    runs-on: ubuntu-latest
+    name: ${{ matrix.board }}
+    env:
+      run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.board)) }}
+
+    steps:
+      - name: Install arduino-cli
+        if: ${{ env.run-build == 'true' }}
+        run:
+          |
+          mkdir -p ~/.local/bin
+          echo "~/.local/bin" >> $GITHUB_PATH
+          curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
+
+      - name: Get platform name
+        if: ${{ env.run-build == 'true' }}
+        uses: jungwinter/split@v1
+        id: split
+        with:
+          msg: ${{ matrix.board }}
+          seperator: ':'
+
+      - name: Prepare platform-specific settings
+        if: ${{ env.run-build == 'true' }}
+        id: prep
+        run:
+          |
+          # common settings - no extra options, skip nothing, all warnings
+          echo "::set-output name=options::"
+          echo "::set-output name=skip-pattern::''"
+          echo "::set-output name=warnings::'all'"
+
+          # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
+          if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
+            # Arduino Mega
+            echo "::set-output name=options:::cpu=atmega2560"
+
+          elif [[ "${{ contains(matrix.board, 'arduino:mbed') }}" == "true" ]]; then
+            # Arduino Nano 33 BLE
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
+
+          elif [[ "${{ contains(matrix.board, 'arduino-beta:mbed') }}" == "true" ]]; then
+            # Arduino Portenta H7
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
+
+          elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
+            # Arduino Uno WiFi
+            echo "::set-output name=options:::mode=on"
+
+          elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
+            # Adafruit SAMD
+            echo "::set-output name=options:::usbstack=arduino,debug=off"
+            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
+            # Adafruit Feather nRF52
+            sudo apt-get update
+            sudo apt-get install -y python3 python3-pip python3-setuptools
+            pip3 install wheel
+            pip3 install --user adafruit-nrfutil
+            echo "/home/runner/.local/bin" >> $GITHUB_PATH
+            echo "::set-output name=options:::softdevice=s132v6,debug=l0"
+            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
+            # ESP32
+            python -m pip install pyserial
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
+            # ESP8266
+            echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
+            echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
+
+          elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
+            # SparkFun Apollo
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json"
+            echo "::set-output name=warnings::'none'"
+            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
+
+          elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then
+            # STM32 (official core)
+            echo "::set-output name=options:::pnum=BLACKPILL_F303CC"
+            echo "::set-output name=index-url::--additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
+            # STM32 (unofficial core)
+            echo "::set-output name=options:::bootloader_version=original,cpu_speed=speed_72mhz"
+            echo "::set-output name=index-url::--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'MegaCoreX:megaavr') }}" == "true" ]]; then
+            # MegaCoreX
+            echo "::set-output name=index-url::--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json"
+
+          fi
+
+      - name: Install platform
+        if: ${{ env.run-build == 'true' }}
+        run:
+          |
+          arduino-cli core update-index ${{ format('{0}', steps.prep.outputs.index-url) }}
+          arduino-cli core install ${{ format('{0}:{1} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url) }}
+
+      - name: Checkout repository
+        if: ${{ env.run-build == 'true' }}
+        uses: actions/checkout@v2
+
+      - name: Build examples
+        if: ${{ env.run-build == 'true' }}
+        run:
+          |
+          for example in $(find $PWD/examples -name '*.ino' | sort); do
+            # check whether to skip this sketch
+            if [ ! -z '${{ steps.prep.outputs.skip-pattern }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-pattern }} ]]; then
+              # skip sketch
+              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-pattern }})\033[0m";
+            else
+              # build sketch
+              echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }}${{ steps.prep.outputs.options }} $example --warnings=${{ steps.prep.outputs.warnings }}
+              if [ $? -ne 0 ]; then
+                echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
+                exit 1;
+              else
+                echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
+              fi
+            fi
+          done

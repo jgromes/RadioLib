@@ -18,7 +18,7 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found Si443x!"));
+    RADIOLIB_DEBUG_PRINTLN(F("M\tSi443x"));
   }
 
   // clear POR interrupt
@@ -60,9 +60,9 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
 void Si443x::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(100);
+  Module::delay(100);
 }
 
 int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -74,21 +74,26 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = micros();
-  while(digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_TX_TIMEOUT);
     }
   }
 
-  // set mode to standby
-  state = standby();
-
   // clear interrupt flags
   clearIRQFlags();
+
+  // set mode to standby
+  standby();
+
+  // the next transmission will timeout without the following
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
+  _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_TX_DATA_SOURCE_FIFO, 5, 4);
+  state = setFrequencyRaw(_freq);
 
   return(state);
 }
@@ -102,9 +107,9 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(digitalRead(_mod->getIrq())) {
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
@@ -135,7 +140,8 @@ int16_t Si443x::standby() {
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, LOW);
 
-  return(_mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_XTAL_ON, 7, 0, 10));
+  //return(_mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_XTAL_ON, 7, 0, 10));
+  return(ERR_NONE);
 }
 
 int16_t Si443x::transmitDirect(uint32_t frf) {
@@ -166,7 +172,7 @@ int16_t Si443x::transmitDirect(uint32_t frf) {
 
     // start direct transmission
     directMode();
-    _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON);
+    _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON | SI443X_XTAL_ON);
 
     return(ERR_NONE);
   }
@@ -176,7 +182,7 @@ int16_t Si443x::transmitDirect(uint32_t frf) {
   RADIOLIB_ASSERT(state);
 
   // start transmitting
-  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON);
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON | SI443X_XTAL_ON);
   return(state);
 }
 
@@ -189,7 +195,7 @@ int16_t Si443x::receiveDirect() {
   RADIOLIB_ASSERT(state);
 
   // start receiving
-  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON);
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
   return(state);
 }
 
@@ -198,11 +204,11 @@ int16_t Si443x::packetMode() {
 }
 
 void Si443x::setIrqAction(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
 }
 
 void Si443x::clearIrqAction() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -218,10 +224,6 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // clear Tx FIFO
   _mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_2, SI443X_TX_FIFO_RESET, 0, 0);
   _mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_2, SI443X_TX_FIFO_CLEAR, 0, 0);
-
-  // set interrupt mapping
-  state = _mod->SPIsetRegValue(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
-  RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
   clearIRQFlags();
@@ -239,8 +241,12 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);
 
+  // set interrupt mapping
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
+
   // set mode to transmit
-  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON);
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_TX_ON | SI443X_XTAL_ON);
 
   return(state);
 }
@@ -254,20 +260,18 @@ int16_t Si443x::startReceive() {
   _mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_2, SI443X_RX_FIFO_RESET, 1, 1);
   _mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_2, SI443X_RX_FIFO_CLEAR, 1, 1);
 
-  // set interrupt mapping
-  state = _mod->SPIsetRegValue(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_VALID_PACKET_RECEIVED_ENABLED, SI443X_CRC_ERROR_ENABLED);
-  RADIOLIB_ASSERT(state);
-  state = _mod->SPIsetRegValue(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
-  RADIOLIB_ASSERT(state);
-
   // clear interrupt flags
   clearIRQFlags();
 
   // set RF switch (if present)
   _mod->setRfSwitchState(HIGH, LOW);
 
+  // set interrupt mapping
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
+
   // set mode to receive
-  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON);
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
 
   return(state);
 }
@@ -330,28 +334,23 @@ int16_t Si443x::setBitRate(float br) {
 }
 
 int16_t Si443x::setFrequencyDeviation(float freqDev) {
-  // set frequency deviation to lowest available setting (required for RTTY)
-  if(freqDev == 0.0) {
-    int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, 0x00, 2, 2);
-    _mod->SPIwriteRegister(SI443X_REG_FREQUENCY_DEVIATION, 0x00);
-
-    if(state == ERR_NONE) {
-      _freqDev = freqDev;
-    }
-
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.625;
   }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 0.625, 320.0, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.625, 320.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint16_t fdev = (uint16_t)(freqDev / 0.625);
+  uint16_t fdev = (uint16_t)(newFreqDev / 0.625);
 
   // update registers
   int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, (uint8_t)((fdev & 0x0100) >> 6), 2, 2);
   _mod->SPIwriteRegister(SI443X_REG_FREQUENCY_DEVIATION, (uint8_t)(fdev & 0xFF));
 
   if(state == ERR_NONE) {
-    _freqDev = freqDev;
+    _freqDev = newFreqDev;
   }
 
   return(state);
@@ -386,63 +385,64 @@ int16_t Si443x::setRxBandwidth(float rxBw) {
     filterSet = ((rxBw - 60.286)/10.7000 + 0.5);
 
   // this is the "Lord help thee who tread 'ere" section - no way to approximate this mess
-  } else if(rxBw == 142.8) {
+  /// \todo float tolerance equality as macro?
+  } else if(abs(rxBw - 142.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 4;
-  } else if(rxBw == 167.8) {
+  } else if(abs(rxBw - 167.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 5;
-  } else if(rxBw == 181.1) {
+  } else if(abs(rxBw - 181.1) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 1;
     filterSet = 6;
-  } else if(rxBw == 191.5) {
+  } else if(abs(rxBw - 191.5) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 15;
-  } else if(rxBw == 225.1) {
+  } else if(abs(rxBw - 225.1) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 1;
-  } else if(rxBw == 248.8) {
+  } else if(abs(rxBw - 248.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 2;
-  } else if(rxBw == 269.3) {
+  } else if(abs(rxBw - 269.3) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 3;
-  } else if(rxBw == 284.8) {
+  } else if(abs(rxBw - 284.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 4;
-  } else if(rxBw == 335.5) {
+  } else if(abs(rxBw -335.5) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 8;
-  } else if(rxBw == 391.8) {
+  } else if(abs(rxBw - 391.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 9;
-  } else if(rxBw == 420.2) {
+  } else if(abs(rxBw - 420.2) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 10;
-  } else if(rxBw == 468.4) {
+  } else if(abs(rxBw - 468.4) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 11;
-  } else if(rxBw == 518.8) {
+  } else if(abs(rxBw - 518.8) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 12;
-  } else if(rxBw == 577.0) {
+  } else if(abs(rxBw - 577.0) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 13;
-  } else if(rxBw == 620.7) {
+  } else if(abs(rxBw - 620.7) <= 0.001) {
     bypass = SI443X_BYPASS_DEC_BY_3_ON;
     decRate = 0;
     filterSet = 14;
@@ -493,7 +493,7 @@ int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
 
   // set default preamble detection threshold to 50% of preamble length (in units of 4 bits)
   uint8_t preThreshold = preambleLen / 4;
-  return(_mod->SPIsetRegValue(SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 4, 3, 7));
+  return(_mod->SPIsetRegValue(SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 4, 7, 3));
 }
 
 size_t Si443x::getPacketLength(bool update) {
@@ -548,6 +548,29 @@ void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t Si443x::random() {
+  // set mode to Rx
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((_mod->SPIreadRegister(SI443X_REG_RSSI) & 0x01) << i);
+  }
+
+  // set mode to standby
+  standby();
+
+  return(randByte);
+}
+
+int16_t Si443x::getChipVersion() {
+  return(_mod->SPIgetRegValue(SI443X_REG_DEVICE_VERSION));
+}
+
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
@@ -556,6 +579,7 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
   // check high/low band
   uint8_t bandSelect = SI443X_BAND_SELECT_LOW;
   uint8_t freqBand = (newFreq / 10) - 24;
+  _freq = newFreq;
   if(newFreq >= 480.0) {
     bandSelect = SI443X_BAND_SELECT_HIGH;
     freqBand = (newFreq / 20) - 24;
@@ -595,7 +619,7 @@ bool Si443x::findChip() {
         RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
         RADIOLIB_DEBUG_PRINTLN(SI443X_DEVICE_VERSION, HEX);
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
@@ -604,8 +628,8 @@ bool Si443x::findChip() {
 }
 
 void Si443x::clearIRQFlags() {
-  _mod->SPIreadRegister(SI443X_REG_INTERRUPT_STATUS_1);
-  _mod->SPIreadRegister(SI443X_REG_INTERRUPT_STATUS_2);
+  uint8_t buff[2];
+  _mod->SPIreadRegisterBurst(SI443X_REG_INTERRUPT_STATUS_1, 2, buff);
 }
 
 int16_t Si443x::config() {
@@ -614,8 +638,7 @@ int16_t Si443x::config() {
   RADIOLIB_ASSERT(state);
 
   // disable POR and chip ready interrupts
-  state = _mod->SPIsetRegValue(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
-  RADIOLIB_ASSERT(state);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
 
   // disable packet header
   state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_2, SI443X_SYNC_WORD_TIMEOUT_ON | SI443X_HEADER_LENGTH_HEADER_NONE, 7, 4);

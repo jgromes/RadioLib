@@ -16,16 +16,14 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
     // some other error
     return(state);
   }
-
-  // configure settings not accessible by API
-  state = config();
-  RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX1278"));
+  RADIOLIB_DEBUG_PRINTLN(F("M\tRFM96"));
 
   // configure publicly accessible settings
-  state = setFrequency(freq);
+  state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
+  state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
   state = setSpreadingFactor(sf);
@@ -46,8 +44,12 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
 int16_t RFM96::setFrequency(float freq) {
   RADIOLIB_CHECK_RANGE(freq, 410.0, 525.0, ERR_INVALID_FREQUENCY);
 
-  // set frequency
-  return(SX127x::setFrequencyRaw(freq));
+  // set frequency and if successful, save the new setting
+  int16_t state = SX127x::setFrequencyRaw(freq);
+  if(state == ERR_NONE) {
+    SX127x::_freq = freq;
+  }
+  return(state);
 }
 
 #endif

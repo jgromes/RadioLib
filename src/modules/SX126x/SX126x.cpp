@@ -10,6 +10,7 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   _bwKhz = bw;
@@ -80,6 +81,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // initialize configuration variables (will be overwritten during public settings configuration)
   _br = 21333;                                  // 48.0 kbps
@@ -159,7 +161,7 @@ int16_t SX126x::reset(bool verify) {
   // run the reset sequence
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), HIGH);
 
   // return immediately when verification is disabled
@@ -168,7 +170,7 @@ int16_t SX126x::reset(bool verify) {
   }
 
   // set mode to standby - SX126x often refuses first few commands after reset
-  uint32_t start = millis();
+  uint32_t start = Module::millis();
   while(true) {
     // try to set mode to standby
     int16_t state = standby();
@@ -178,13 +180,13 @@ int16_t SX126x::reset(bool verify) {
     }
 
     // standby command failed, check timeout and try again
-    if(millis() - start >= 3000) {
+    if(Module::millis() - start >= 3000) {
       // timed out, possibly incorrect wiring
       return(state);
     }
 
     // wait a bit to not spam the module
-    delay(10);
+    Module::delay(10);
   }
 }
 
@@ -223,16 +225,16 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       clearIrqStatus();
       standby();
       return(ERR_TX_TIMEOUT);
     }
   }
-  uint32_t elapsed = micros() - start;
+  uint32_t elapsed = Module::micros() - start;
 
   // update data rate
   _dataRate = (len*8.0)/((float)elapsed/1000000.0);
@@ -283,10 +285,10 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       fixImplicitTimeout();
       clearIrqStatus();
       standby();
@@ -354,8 +356,8 @@ int16_t SX126x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // check CAD result
@@ -384,7 +386,7 @@ int16_t SX126x::sleep(bool retainConfig) {
   int16_t state = SPIwriteCommand(SX126X_CMD_SET_SLEEP, &sleepMode, 1, false);
 
   // wait for SX126x to safely enter sleep mode
-  delay(1);
+  Module::delay(1);
 
   return(state);
 }
@@ -402,11 +404,11 @@ int16_t SX126x::standby(uint8_t mode) {
 }
 
 void SX126x::setDio1Action(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void SX126x::clearDio1Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -463,8 +465,8 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for BUSY to go low (= PA ramp up done)
-  while(digitalRead(_mod->getGpio())) {
-    yield();
+  while(Module::digitalRead(_mod->getGpio())) {
+    Module::yield();
   }
 
   return(state);
@@ -730,11 +732,17 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
   }
+  
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 0.0, 200.0, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint32_t freqDevRaw = (uint32_t)(((freqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
+  uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // check modulation parameters
   /*if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
@@ -1128,6 +1136,13 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
+float SX126x::getRSSIInst() {
+  uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
+  SPIreadCommand(SX126X_CMD_GET_RSSI_INST, data, 3);
+
+  return (float)data[0] / (-2.0);
+}
+
 int16_t SX126x::implicitHeader(size_t len) {
   return(setHeaderType(SX126X_LORA_HEADER_IMPLICIT, len));
 }
@@ -1173,6 +1188,27 @@ int16_t SX126x::autoLDRO() {
   return(ERR_NONE);
 }
 
+uint8_t SX126x::random() {
+  // set mode to Rx
+  setRx(SX126X_RX_TIMEOUT_INF);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    uint8_t val = 0x00;
+    readRegister(SX126X_REG_RANDOM_NUMBER_0, &val, sizeof(uint8_t));
+    randByte |= ((val & 0x01) << i);
+  }
+
+  // set mode to standby
+  standby();
+
+  return(randByte);
+}
+
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby
   standby();
@@ -1180,6 +1216,11 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // check SX126X_XOSC_START_ERR flag and clear it
   if(getDeviceErrors() & SX126X_XOSC_START_ERR) {
     clearDeviceErrors();
+  }
+
+  // check 0 V disable
+  if(abs(voltage - 0.0) <= 0.001) {
+    return(reset(true));
   }
 
   // check alowed voltage values
@@ -1531,9 +1572,9 @@ int16_t SX126x::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // wait for calibration completion
-  delay(5);
-  while(digitalRead(_mod->getGpio())) {
-    yield();
+  Module::delay(5);
+  while(Module::digitalRead(_mod->getGpio())) {
+    Module::yield();
   }
 
   return(ERR_NONE);
@@ -1565,14 +1606,14 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   #endif
 
   // pull NSS low
-  digitalWrite(_mod->getCs(), LOW);
+  Module::digitalWrite(_mod->getCs(), LOW);
 
   // ensure BUSY is low (state machine ready)
-  uint32_t start = millis();
-  while(digitalRead(_mod->getGpio())) {
-    yield();
-    if(millis() - start >= timeout) {
-      digitalWrite(_mod->getCs(), HIGH);
+  uint32_t start = Module::millis();
+  while(Module::digitalRead(_mod->getGpio())) {
+    Module::yield();
+    if(Module::millis() - start >= timeout) {
+      Module::digitalWrite(_mod->getCs(), HIGH);
       return(ERR_SPI_CMD_TIMEOUT);
     }
   }
@@ -1632,15 +1673,15 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
 
   // stop transfer
   spi->endTransaction();
-  digitalWrite(_mod->getCs(), HIGH);
+  Module::digitalWrite(_mod->getCs(), HIGH);
 
   // wait for BUSY to go high and then low
   if(waitForBusy) {
-    delayMicroseconds(1);
-    start = millis();
-    while(digitalRead(_mod->getGpio())) {
-      yield();
-      if(millis() - start >= timeout) {
+    Module::delayMicroseconds(1);
+    start = Module::millis();
+    while(Module::digitalRead(_mod->getGpio())) {
+      Module::yield();
+      if(Module::millis() - start >= timeout) {
         status = SX126X_STATUS_CMD_TIMEOUT;
         break;
       }
@@ -1689,8 +1730,8 @@ int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     // some faster platforms require a short delay here
     // not sure why, but it seems that long enough SPI transaction
     // (e.g. setPacketParams for GFSK) will fail without it
-    #if defined(ARDUINO_ARCH_STM32) || defined(SAMD_SERIES)
-      delay(1);
+    #if defined(RADIOLIB_SPI_SLOWDOWN)
+      Module::delay(1);
     #endif
   #endif
 

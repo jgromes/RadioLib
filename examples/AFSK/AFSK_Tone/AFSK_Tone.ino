@@ -46,9 +46,20 @@ void setup() {
   int state = radio.beginFSK();
 
   // when using one of the non-LoRa modules for AFSK
-  // (RF69, CC1101,, Si4432 etc.), use the basic begin() method
+  // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = radio.begin();
 
+  if(state == ERR_NONE) {
+    Serial.println(F("success!"));
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while(true);
+  }
+
+  // initialize AFSK client
+  Serial.print(F("[AFSK] Initializing ... "));
+  state = audio.begin();
   if(state == ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -61,12 +72,14 @@ void setup() {
 void loop() {
   // AFSKClient can be used to transmit tones,
   // same as Arduino tone() function
-
+  
   // 400 Hz tone
+  Serial.print(F("[AFSK] 400 Hz tone ... "));
   audio.tone(400);
   delay(1000);
 
   // silence
+  Serial.println(F("done!"));
   audio.noTone();
   delay(1000);
 

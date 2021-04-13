@@ -179,17 +179,8 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   // save preamble length
   _preambleLen = preambleLen;
 
-  // set module frequency deviation to 0 if using FSK
-  int16_t state = ERR_NONE;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio == nullptr) {
-    state = _phy->setFrequencyDeviation(0);
-    RADIOLIB_ASSERT(state);
-
-    state = _phy->setEncoding(0);
-  }
-  #endif
-  return(state);
+  // configure for direct mode
+  return(_phy->startDirect());
 }
 
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
@@ -234,7 +225,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // set destination callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
   memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-  for(uint8_t i = 0; i < strlen(frame->destCallsign); i++) {
+  for(size_t i = 0; i < strlen(frame->destCallsign); i++) {
     *(frameBuffPtr + i) = frame->destCallsign[i] << 1;
   }
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -244,7 +235,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // set source callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
   memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-  for(uint8_t i = 0; i < strlen(frame->srcCallsign); i++) {
+  for(size_t i = 0; i < strlen(frame->srcCallsign); i++) {
     *(frameBuffPtr + i) = frame->srcCallsign[i] << 1;
   }
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -255,7 +246,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
     memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
-    for(uint8_t j = 0; j < strlen(frame->repeaterCallsigns[i]); j++) {
+    for(size_t j = 0; j < strlen(frame->repeaterCallsigns[i]); j++) {
       *(frameBuffPtr + j) = frame->repeaterCallsigns[i][j] << 1;
     }
     frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
@@ -314,7 +305,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // stuff bits (skip preamble and both flags)
   uint16_t stuffedFrameBuffLenBits = 8*(_preambleLen + 1);
   uint8_t count = 0;
-  for(uint16_t i = 0; i < frameBuffLen + 2; i++) {
+  for(size_t i = 0; i < frameBuffLen + 2; i++) {
     for(int8_t shift = 7; shift >= 0; shift--) {
       uint16_t stuffedFrameBuffPos = stuffedFrameBuffLenBits + 7 - 2*(stuffedFrameBuffLenBits%8);
       if((frameBuff[i] >> shift) & 0x01) {
@@ -400,14 +391,14 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
       // check each bit
       for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-        uint32_t start = micros();
+        uint32_t start = Module::micros();
         if(stuffedFrameBuff[i] & mask) {
           _audio->tone(AX25_AFSK_MARK, false);
         } else {
           _audio->tone(AX25_AFSK_SPACE, false);
         }
-        while(micros() - start < 833) {
-          yield();
+        while(Module::micros() - start < AX25_AFSK_TONE_DURATION) {
+          Module::yield();
         }
       }
 

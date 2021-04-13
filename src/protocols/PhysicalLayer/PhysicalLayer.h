@@ -216,13 +216,47 @@ class PhysicalLayer {
     float getFreqStep() const;
 
     /*!
-     \brief Query modem for the packet length of received payload.
+     \brief Query modem for the packet length of received payload. Must be implemented in module class.
 
      \param update Update received packet length. Will return cached value when set to false.
 
      \returns Length of last received packet in bytes.
    */
    virtual size_t getPacketLength(bool update = true) = 0;
+
+   /*!
+    \brief Get truly random number in range 0 - max.
+
+    \param max The maximum value of the random number (non-inclusive).
+
+    \returns Random number.
+   */
+   int32_t random(int32_t max);
+
+   /*!
+    \brief Get truly random number in range min - max.
+
+    \param min The minimum value of the random number (inclusive).
+
+    \param max The maximum value of the random number (non-inclusive).
+
+    \returns Random number.
+   */
+   int32_t random(int32_t min, int32_t max);
+
+   /*!
+    \brief Get one truly random byte from RSSI noise. Must be implemented in module class.
+
+    \returns TRNG byte.
+  */
+   virtual uint8_t random() = 0;
+
+   /*!
+     \brief Configure module parameters for direct modes. Must be called prior to "ham" modes like RTTY or AX.25. Only available in FSK mode.
+
+     \returns \ref status_codes
+   */
+   int16_t startDirect();
 
 #ifndef RADIOLIB_GODMODE
   private:

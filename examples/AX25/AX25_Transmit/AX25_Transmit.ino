@@ -44,8 +44,7 @@ void setup() {
   Serial.print(F("[SX1278] Initializing ... "));
   // carrier frequency:           434.0 MHz
   // bit rate:                    1.2 kbps (1200 baud 2-FSK AX.25)
-  // frequency deviation:         0.5 kHz  (1200 baud 2-FSK AX.25)
-  int state = radio.beginFSK(434.0, 1.2, 0.5);
+  int state = radio.beginFSK(434.0, 1.2);
 
   // when using one of the non-LoRa modules for AX.25
   // (RF69, CC1101,, Si4432 etc.), use the basic begin() method

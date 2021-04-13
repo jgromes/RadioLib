@@ -14,7 +14,7 @@
 //                        - Morse code representation is saved LSb first, using additional bit as guard
 //                        - position in array corresponds ASCII code minus MORSE_ASCII_OFFSET
 //                        - ASCII characters marked MORSE_UNSUPORTED do not have ITU-R M.1677-1 equivalent
-static const uint8_t MorseTable[] PROGMEM = {
+static const uint8_t MorseTable[] RADIOLIB_PROGMEM = {
     0b00,                   // space
     0b110101,               // ! (unsupported)
     0b1010010,              // "

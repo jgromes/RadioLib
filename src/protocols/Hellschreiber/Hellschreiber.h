@@ -14,7 +14,7 @@
 // font definition: characters are stored in rows,
 //                  least significant byte of each character is the first row
 //                  Hellschreiber use 7x7 characters, but this simplified font uses only 5x5 - the extra bytes aren't stored
-static const uint8_t HellFont[64][HELL_FONT_WIDTH - 2] PROGMEM = {
+static const uint8_t HellFont[64][HELL_FONT_WIDTH - 2] RADIOLIB_PROGMEM = {
   { 0b0000000, 0b0000000, 0b0000000, 0b0000000, 0b0000000 },  // space
   { 0b0001000, 0b0001000, 0b0001000, 0b0000000, 0b0001000 },  // !
   { 0b0010100, 0b0010100, 0b0000000, 0b0000000, 0b0000000 },  // "

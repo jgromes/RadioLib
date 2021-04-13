@@ -785,20 +785,39 @@ class Si443x: public PhysicalLayer {
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
-#ifndef RADIOLIB_GODMODE
+    /*!
+     \brief Get one truly random byte from RSSI noise.
+
+     \returns TRNG byte.
+   */
+    uint8_t random();
+
+    /*!
+     \brief Read version SPI register. Should return SI443X_DEVICE_VERSION (0x06) if Si443x is connected and working.
+
+     \returns Version register contents or \ref status_codes
+   */
+    int16_t getChipVersion();
+
+#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
     Module* _mod;
 
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
+
     float _br = 0;
     float _freqDev = 0;
+    float _freq = 0;
 
     size_t _packetLength = 0;
     bool _packetLengthQueried = false;
 
     int16_t setFrequencyRaw(float newFreq);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     bool findChip();

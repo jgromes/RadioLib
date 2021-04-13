@@ -58,11 +58,11 @@ class Si4431: public Si4432 {
     int16_t setOutputPower(int8_t power);
 
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
 };

@@ -10,6 +10,7 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize LoRa modulation variables
   _bwKhz = bw;
@@ -61,6 +62,7 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize GFSK modulation variables
   _brKbps = br;
@@ -123,6 +125,7 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, u
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize BLE modulation variables
   _brKbps = br;
@@ -171,6 +174,7 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uin
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
   Module::pinMode(_mod->getGpio(), INPUT);
+  RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize FLRC modulation variables
   _brKbps = br;
@@ -228,7 +232,7 @@ int16_t SX128x::reset(bool verify) {
   // run the reset sequence - same as SX126x, as SX128x docs don't seem to mention this
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), HIGH);
 
   // return immediately when verification is disabled
@@ -237,7 +241,7 @@ int16_t SX128x::reset(bool verify) {
   }
 
   // set mode to standby
-  uint32_t start = millis();
+  uint32_t start = Module::millis();
   while(true) {
     // try to set mode to standby
     int16_t state = standby();
@@ -247,13 +251,13 @@ int16_t SX128x::reset(bool verify) {
     }
 
     // standby command failed, check timeout and try again
-    if(millis() - start >= 3000) {
+    if(Module::millis() - start >= 3000) {
       // timed out, possibly incorrect wiring
       return(state);
     }
 
     // wait a bit to not spam the module
-    delay(10);
+    Module::delay(10);
   }
 }
 
@@ -285,10 +289,10 @@ int16_t SX128x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       clearIrqStatus();
       standby();
       return(ERR_TX_TIMEOUT);
@@ -329,10 +333,10 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
-    if(micros() - start > timeout) {
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+    if(Module::micros() - start > timeout) {
       clearIrqStatus();
       standby();
       return(ERR_RX_TIMEOUT);
@@ -392,8 +396,8 @@ int16_t SX128x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
   }
 
   // check CAD result
@@ -422,7 +426,7 @@ int16_t SX128x::sleep(bool retainConfig) {
   int16_t state = SPIwriteCommand(SX128X_CMD_SET_SLEEP, &sleepConfig, 1, false);
 
   // wait for SX128x to safely enter sleep mode
-  delay(1);
+  Module::delay(1);
 
   return(state);
 }
@@ -440,11 +444,11 @@ int16_t SX128x::standby(uint8_t mode) {
 }
 
 void SX128x::setDio1Action(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void SX128x::clearDio1Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -504,8 +508,8 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for BUSY to go low (= PA ramp up done)
-  while(digitalRead(_mod->getGpio())) {
-    yield();
+  while(Module::digitalRead(_mod->getGpio())) {
+    Module::yield();
   }
 
   return(state);
@@ -798,17 +802,23 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
     return(ERR_WRONG_MODEM);
   }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 0.0, 3200.0, ERR_INVALID_FREQUENCY_DEVIATION);
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 62.5;
+  }
+
+  RADIOLIB_CHECK_RANGE(newFreqDev, 62.5, 1000.0, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // override for the lowest possible frequency deviation - required for some PhysicalLayer protocols
-  if(freqDev == 0.0) {
+  if(newFreqDev == 0.0) {
     _modIndex = SX128X_BLE_GFSK_MOD_IND_0_35;
     _br = SX128X_BLE_GFSK_BR_0_125_BW_0_3;
     return(setModulationParams(_br, _modIndex, _shaping));
   }
 
   // update modulation parameters
-  uint8_t modIndex = (uint8_t)((8.0 * (freqDev / (float)_brKbps)) - 1.0);
+  uint8_t modIndex = (uint8_t)((8.0 * (newFreqDev / (float)_brKbps)) - 1.0);
   if(modIndex > SX128X_BLE_GFSK_MOD_IND_4_00) {
     return(ERR_INVALID_MODULATION_PARAMETERS);
   }
@@ -1122,6 +1132,12 @@ void SX128x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t SX128x::random() {
+  // it's unclear whether SX128x can measure RSSI while not receiving a packet
+  // this method is implemented only for PhysicalLayer compatibility
+  return(0);
+}
+
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;
   SPIreadCommand(SX128X_CMD_GET_STATUS, &data, 1);
@@ -1295,17 +1311,17 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
   #endif
 
   // ensure BUSY is low (state machine ready)
-  uint32_t start = millis();
-  while(digitalRead(_mod->getGpio())) {
-    yield();
-    if(millis() - start >= timeout) {
-      digitalWrite(_mod->getCs(), HIGH);
+  uint32_t start = Module::millis();
+  while(Module::digitalRead(_mod->getGpio())) {
+    Module::yield();
+    if(Module::millis() - start >= timeout) {
+      Module::digitalWrite(_mod->getCs(), HIGH);
       return(ERR_SPI_CMD_TIMEOUT);
     }
   }
 
   // pull NSS low
-  digitalWrite(_mod->getCs(), LOW);
+  Module::digitalWrite(_mod->getCs(), LOW);
 
   // start transfer
   spi->beginTransaction(spiSettings);
@@ -1362,15 +1378,15 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
 
   // stop transfer
   spi->endTransaction();
-  digitalWrite(_mod->getCs(), HIGH);
+  Module::digitalWrite(_mod->getCs(), HIGH);
 
   // wait for BUSY to go high and then low
   if(waitForBusy) {
-    delayMicroseconds(1);
-    start = millis();
-    while(digitalRead(_mod->getGpio())) {
-      yield();
-      if(millis() - start >= timeout) {
+    Module::delayMicroseconds(1);
+    start = Module::millis();
+    while(Module::digitalRead(_mod->getGpio())) {
+      Module::yield();
+      if(Module::millis() - start >= timeout) {
         status = SX128X_STATUS_CMD_TIMEOUT;
         break;
       }
@@ -1419,8 +1435,8 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
     // some faster platforms require a short delay here
     // not sure why, but it seems that long enough SPI transaction
     // (e.g. setPacketParams for GFSK) will fail without it
-    #if defined(ARDUINO_ARCH_STM32) || defined(SAMD_SERIES)
-      delay(1);
+    #if defined(RADIOLIB_SPI_SLOWDOWN)
+      Module::delay(1);
     #endif
   #endif
 

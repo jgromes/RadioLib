@@ -38,7 +38,7 @@
 // SX1278_REG_LNA
 #define SX1278_LNA_BOOST_LF_OFF                       0b00000000  //  4     3     default LNA current
 
-// SX1278_REG_MODEM_CONFIG_1
+// SX127X_REG_MODEM_CONFIG_1
 #define SX1278_BW_7_80_KHZ                            0b00000000  //  7     4     bandwidth:  7.80 kHz
 #define SX1278_BW_10_40_KHZ                           0b00010000  //  7     4                 10.40 kHz
 #define SX1278_BW_15_60_KHZ                           0b00100000  //  7     4                 15.60 kHz
@@ -56,7 +56,7 @@
 #define SX1278_HEADER_EXPL_MODE                       0b00000000  //  0     0     explicit header mode
 #define SX1278_HEADER_IMPL_MODE                       0b00000001  //  0     0     implicit header mode
 
-// SX1278_REG_MODEM_CONFIG_2
+// SX127X_REG_MODEM_CONFIG_2
 #define SX1278_RX_CRC_MODE_OFF                        0b00000000  //  2     2     CRC disabled
 #define SX1278_RX_CRC_MODE_ON                         0b00000100  //  2     2     CRC enabled
 
@@ -248,18 +248,22 @@ class SX1278: public SX127x {
     /*!
       \brief Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.
 
+      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FKS/OOK mode.
+
       \returns Last packet RSSI for LoRa modem, or current RSSI level for FSK modem.
     */
-    float getRSSI();
+    float getRSSI(bool skipReceive = false);
 
     /*!
       \brief Enables/disables CRC check of received packets.
 
-      \param enableCRC Enable (true) or disable (false) CRC.
+      \param enable Enable (true) or disable (false) CRC.
+
+      \param mode Set CRC mode to SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false) or SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.
 
       \returns \ref status_codes
     */
-    int16_t setCRC(bool enableCRC);
+    int16_t setCRC(bool enable, bool mode = false);
 
     /*!
       \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
@@ -279,16 +283,33 @@ class SX1278: public SX127x {
     */
     int16_t autoLDRO();
 
-#ifndef RADIOLIB_GODMODE
+    /*!
+      \brief Set implicit header mode for future reception/transmission.
+
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
+
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
+
+      \param len Payload length in bytes.
+
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
+
+#if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
     int16_t setBandwidthRaw(uint8_t newBandwidth);
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
+    int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     bool _ldroAuto = true;

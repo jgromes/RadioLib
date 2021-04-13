@@ -30,13 +30,13 @@ int16_t ESP8266::reset() {
   }
 
   // wait for the module to start
-  delay(2000);
+  Module::delay(2000);
 
   // test AT setup
-  uint32_t start = millis();
-  while (millis() - start < 3000) {
+  uint32_t start = Module::millis();
+  while (Module::millis() - start < 3000) {
     if(!_mod->ATsendCommand("AT")) {
-      delay(100);
+      Module::delay(100);
     } else {
       return(ERR_NONE);
     }
@@ -192,11 +192,11 @@ int16_t ESP8266::send(uint8_t* data, size_t len) {
 
 size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
   size_t i = 0;
-  uint32_t start = millis();
+  uint32_t start = Module::millis();
 
   // wait until the required number of bytes is received or until timeout
-  while((millis() - start < timeout) && (i < len)) {
-    yield();
+  while((Module::millis() - start < timeout) && (i < len)) {
+    Module::yield();
     while(_mod->ModuleSerial->available() > 0) {
       uint8_t b = _mod->ModuleSerial->read();
       RADIOLIB_DEBUG_PRINT(b);
@@ -209,10 +209,10 @@ size_t ESP8266::receive(uint8_t* data, size_t len, uint32_t timeout) {
 
 size_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   // wait for available data
-  uint32_t start = millis();
+  uint32_t start = Module::millis();
   while(_mod->ModuleSerial->available() < (int16_t)minBytes) {
-    yield();
-    if(millis() - start >= timeout) {
+    Module::yield();
+    if(Module::millis() - start >= timeout) {
       return(0);
     }
   }
@@ -220,16 +220,16 @@ size_t ESP8266::getNumBytes(uint32_t timeout, size_t minBytes) {
   // read response
   char rawStr[20];
   uint8_t i = 0;
-  start = millis();
+  start = Module::millis();
   while(_mod->ModuleSerial->available() > 0) {
-    yield();
+    Module::yield();
     char c = _mod->ModuleSerial->read();
     rawStr[i++] = c;
     if(c == ':') {
       rawStr[i++] = 0;
       break;
     }
-    if(millis() - start >= timeout) {
+    if(Module::millis() - start >= timeout) {
       rawStr[i++] = 0;
       break;
     }

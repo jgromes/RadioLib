@@ -18,8 +18,8 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
     reset();
 
     // check version register
-    uint8_t version = _mod->SPIreadRegister(RF69_REG_VERSION);
-    if(version == 0x24) {
+    int16_t version = getChipVersion();
+    if(version == RF69_CHIP_VERSION) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
@@ -33,7 +33,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
@@ -43,7 +43,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found RF69! (match by RF69_REG_VERSION == 0x24)"));
+    RADIOLIB_DEBUG_PRINTLN(F("M\tRF69"));
   }
 
   // configure settings not accessible by API
@@ -102,9 +102,9 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 void RF69::reset() {
   Module::pinMode(_mod->getRst(), OUTPUT);
   Module::digitalWrite(_mod->getRst(), HIGH);
-  delay(1);
+  Module::delay(1);
   Module::digitalWrite(_mod->getRst(), LOW);
-  delay(10);
+  Module::delay(10);
 }
 
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -116,11 +116,11 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
 
-    if(micros() - start > timeout) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_TX_TIMEOUT);
@@ -145,11 +145,11 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = micros();
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
 
-    if(micros() - start > timeout) {
+    if(Module::micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(ERR_RX_TIMEOUT);
@@ -267,26 +267,26 @@ int16_t RF69::startReceive() {
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
 void RF69::clearDio0Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
 }
 
 void RF69::clearDio1Action() {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -369,23 +369,26 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   return(ERR_NONE);
 }
 
-int16_t CC1101::setOOK(bool enableOOK) {
-  // Change modulation
+int16_t RF69::setOOK(bool enableOOK) {
+  // set OOK and if successful, save the new setting
+  int16_t state = ERR_NONE;
   if(enableOOK) {
-    int16_t state = SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3);
-    RADIOLIB_ASSERT(state);
-
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_ASK_OOK;
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_OOK, 4, 3, 5);
   } else {
-    int16_t state = SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3);
-    RADIOLIB_ASSERT(state);
-
-    // update current modulation
-    _modulation = CC1101_MOD_FORMAT_2_FSK;
+    state = _mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_FSK, 4, 3, 5);
+  }
+  if(state == ERR_NONE) {
+    _ook = enableOOK;
   }
 
-  return(setOutputPower(_power));
+  return(state);
+}
+
+int16_t RF69::setOokThresholdType(uint8_t type) {
+  if((type != RF69_OOK_THRESH_FIXED) && (type != RF69_OOK_THRESH_PEAK) && (type != RF69_OOK_THRESH_AVERAGE)) {
+    return(ERR_INVALID_OOK_RSSI_PEAK_TYPE);
+  }
+  return(_mod->SPIsetRegValue(RF69_REG_OOK_PEAK, type, 7, 3, 5));
 }
 
 int16_t RF69::setFrequency(float freq) {
@@ -401,11 +404,10 @@ int16_t RF69::setFrequency(float freq) {
 
   //set carrier frequency
   uint32_t FRF = (freq * (uint32_t(1) << RF69_DIV_EXPONENT)) / RF69_CRYSTAL_FREQ;
-  int16_t state = _mod->SPIsetRegValue(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16, 7, 0);
-  state |= _mod->SPIsetRegValue(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8, 7, 0);
-  state |= _mod->SPIsetRegValue(RF69_REG_FRF_LSB, FRF & 0x0000FF, 7, 0);
-
-  return(state);
+  _mod->SPIwriteRegister(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
+  _mod->SPIwriteRegister(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
+  _mod->SPIwriteRegister(RF69_REG_FRF_LSB, FRF & 0x0000FF);
+  return(ERR_NONE);
 }
 
 int16_t RF69::setBitRate(float br) {
@@ -525,8 +527,14 @@ int16_t RF69::setRxBandwidth(float rxBw) {
 }
 
 int16_t RF69::setFrequencyDeviation(float freqDev) {
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
+
   // check frequency deviation range
-  if(!((freqDev + _br/2 <= 500))) {
+  if(!((newFreqDev + _br/2 <= 500))) {
     return(ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
@@ -535,7 +543,7 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation from carrier frequency
   uint32_t base = 1;
-  uint32_t fdev = (freqDev * (base << 19)) / 32000;
+  uint32_t fdev = (newFreqDev * (base << 19)) / 32000;
   int16_t state = _mod->SPIsetRegValue(RF69_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(RF69_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
 
@@ -659,7 +667,7 @@ int16_t RF69::getTemperature() {
   // wait until measurement is finished
   while(_mod->SPIgetRegValue(RF69_REG_TEMP_1, 2, 2) == RF69_TEMP_MEAS_RUNNING) {
     // check every 10 us
-    delay(10);
+    Module::delay(10);
   }
   int8_t rawTemp = _mod->SPIgetRegValue(RF69_REG_TEMP_2);
 
@@ -776,12 +784,43 @@ int16_t RF69::setEncoding(uint8_t encoding) {
   }
 }
 
+int16_t RF69::setLnaTestBoost(bool value) {
+  if(value) {
+    return (_mod->SPIsetRegValue(RF69_REG_TEST_LNA, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+  }
+
+  return(_mod->SPIsetRegValue(RF69_TEST_LNA_BOOST_NORMAL, RF69_TEST_LNA_BOOST_HIGH, 7, 0));
+}
+
 float RF69::getRSSI() {
   return(-1.0 * (_mod->SPIgetRegValue(RF69_REG_RSSI_VALUE)/2.0));
 }
 
 void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
+}
+
+uint8_t RF69::random() {
+  // set mode to Rx
+  setMode(RF69_RX);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((_mod->SPIreadRegister(RF69_REG_RSSI_VALUE) & 0x01) << i);
+  }
+
+  // set mode to standby
+  setMode(RF69_STANDBY);
+
+  return(randByte);
+}
+
+int16_t RF69::getChipVersion() {
+  return(_mod->SPIgetRegValue(RF69_REG_VERSION));
 }
 
 int16_t RF69::config() {

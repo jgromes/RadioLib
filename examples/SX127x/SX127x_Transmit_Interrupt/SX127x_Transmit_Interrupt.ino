@@ -111,6 +111,11 @@ void loop() {
 
     }
 
+    // NOTE: in FSK mode, SX127x will not automatically
+    //       turn transmitter off after sending a packet
+    //       set mode to standby to ensure we don't jam others
+    //radio.standby()
+
     // wait a second before transmitting again
     delay(1000);
 

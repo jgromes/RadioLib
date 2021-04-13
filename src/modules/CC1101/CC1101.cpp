@@ -16,8 +16,8 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
-    uint8_t version = SPIreadRegister(CC1101_REG_VERSION);
-    if(version == 0x14) {
+    int16_t version = getChipVersion();
+    if((version == CC1101_VERSION_CURRENT) || (version == CC1101_VERSION_LEGACY)) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
@@ -28,10 +28,10 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
         char buffHex[7];
         sprintf(buffHex, "0x%04X", version);
         RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x0014"));
+        RADIOLIB_DEBUG_PRINT(F(", expected 0x0004/0x0014"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      delay(10);
+      Module::delay(10);
       i++;
     }
   }
@@ -41,7 +41,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
     _mod->term(RADIOLIB_USE_SPI);
     return(ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("Found CC1101! (match by CC1101_REG_VERSION == 0x14)"));
+    RADIOLIB_DEBUG_PRINTLN(F("M\tCC1101"));
   }
 
   // configure settings not accessible by API
@@ -96,18 +96,35 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 }
 
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
+  // calculate timeout (5ms + 500 % of expected time-on-air)
+  uint32_t timeout = 5000000 + (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 5000000.0);
+
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
-  // wait for transmission start
-  while(!digitalRead(_mod->getIrq())) {
-    yield();
+  // wait for transmission start or timeout
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+
+    if(Module::micros() - start > timeout) {
+      standby();
+      SPIsendCommand(CC1101_CMD_FLUSH_TX);
+      return(ERR_TX_TIMEOUT);
+    }
   }
 
-  // wait for transmission end
-  while(digitalRead(_mod->getIrq())) {
-    yield();
+  // wait for transmission end or timeout
+  start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+
+    if(Module::micros() - start > timeout) {
+      standby();
+      SPIsendCommand(CC1101_CMD_FLUSH_TX);
+      return(ERR_TX_TIMEOUT);
+    }
   }
 
   // set mode to standby
@@ -120,13 +137,35 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t CC1101::receive(uint8_t* data, size_t len) {
+  // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
+  uint32_t timeout = 500000 + (1.0/(_br*1000.0))*(CC1101_MAX_PACKET_LENGTH*400.0);
+
   // start reception
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
-  // wait for rx queue to exceed threshold.
-  while (!digitalRead(_mod->getIrq())) {
-    yield();
+  // wait for sync word or timeout
+  uint32_t start = Module::micros();
+  while(!Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+
+    if(Module::micros() - start > timeout) {
+      standby();
+      SPIsendCommand(CC1101_CMD_FLUSH_TX);
+      return(ERR_RX_TIMEOUT);
+    }
+  }
+
+  // wait for packet end or timeout
+  start = Module::micros();
+  while(Module::digitalRead(_mod->getIrq())) {
+    Module::yield();
+
+    if(Module::micros() - start > timeout) {
+      standby();
+      SPIsendCommand(CC1101_CMD_FLUSH_TX);
+      return(ERR_RX_TIMEOUT);
+    }
   }
 
   // read packet data
@@ -185,11 +224,11 @@ int16_t CC1101::packetMode() {
 }
 
 void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
 }
 
 void CC1101::clearGdo0Action() {
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
 void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
@@ -197,14 +236,14 @@ void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
     return;
   }
   Module::pinMode(_mod->getGpio(), INPUT);
-  attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
 }
 
 void CC1101::clearGdo2Action() {
   if(_mod->getGpio() != RADIOLIB_NC) {
     return;
   }
-  detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -414,12 +453,10 @@ int16_t CC1101::setBitRate(float br) {
   // set bit rate value
   int16_t state = SPIsetRegValue(CC1101_REG_MDMCFG4, e, 3, 0);
   state |= SPIsetRegValue(CC1101_REG_MDMCFG3, m);
-
-  if (state == ERR_NONE) {
-    _br = br;
+  if(state == ERR_NONE) {
+    CC1101::_br = br;
   }
-
-  return (state);
+  return(state);
 }
 
 int16_t CC1101::setRxBandwidth(float rxBw) {
@@ -443,14 +480,13 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
 }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
-  // set frequency deviation to lowest available setting (required for RTTY)
-  if(freqDev == 0.0) {
-    int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, 0, 6, 4);
-    state |= SPIsetRegValue(CC1101_REG_DEVIATN, 0, 2, 0);
-    return(state);
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 1.587;
   }
 
-  RADIOLIB_CHECK_RANGE(freqDev, 1.587, 380.8, ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 1.587, 380.8, ERR_INVALID_FREQUENCY_DEVIATION);
 
   // set mode to standby
   SPIsendCommand(CC1101_CMD_IDLE);
@@ -458,7 +494,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // calculate exponent and mantissa values
   uint8_t e = 0;
   uint8_t m = 0;
-  getExpMant(freqDev * 1000.0, 8, 17, 7, e, m);
+  getExpMant(newFreqDev * 1000.0, 8, 17, 7, e, m);
 
   // set frequency deviation value
   int16_t state = SPIsetRegValue(CC1101_REG_DEVIATN, (e << 4), 6, 4);
@@ -622,7 +658,7 @@ int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
 
 int16_t CC1101::disableAddressFiltering() {
   // disable address filtering
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_ADR_CHK_NONE, 1, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL1, CC1101_ADR_CHK_NONE, 1, 0);
   RADIOLIB_ASSERT(state);
 
   // set node address to default (0x00)
@@ -678,9 +714,9 @@ uint8_t CC1101::getLQI() const {
 size_t CC1101::getPacketLength(bool update) {
   if(!_packetLengthQueried && update) {
     if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
-      _packetLength = _mod->SPIreadRegister(CC1101_REG_FIFO);
+      _packetLength = SPIreadRegister(CC1101_REG_FIFO);
     } else {
-      _packetLength = _mod->SPIreadRegister(CC1101_REG_PKTLEN);
+      _packetLength = SPIreadRegister(CC1101_REG_PKTLEN);
     }
 
     _packetLengthQueried = true;
@@ -698,23 +734,20 @@ int16_t CC1101::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 int16_t CC1101::enableSyncWordFiltering(uint8_t maxErrBits, bool requireCarrierSense) {
-  switch (maxErrBits){
+  switch(maxErrBits){
     case 0:
       // in 16 bit sync word, expect all 16 bits
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
-        requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16, 2, 0));
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_16_16_THR : CC1101_SYNC_MODE_16_16), 2, 0));
     case 1:
       // in 16 bit sync word, expect at least 15 bits
-      return (SPIsetRegValue(CC1101_REG_MDMCFG2,
-        requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16, 2, 0));
+      return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_15_16_THR : CC1101_SYNC_MODE_15_16), 2, 0));
     default:
-      return (ERR_INVALID_SYNC_WORD);
+      return(ERR_INVALID_SYNC_WORD);
   }
 }
 
 int16_t CC1101::disableSyncWordFiltering(bool requireCarrierSense) {
-  return(SPIsetRegValue(CC1101_REG_MDMCFG2,
-    requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE, 2, 0));
+  return(SPIsetRegValue(CC1101_REG_MDMCFG2, (requireCarrierSense ? CC1101_SYNC_MODE_NONE_THR : CC1101_SYNC_MODE_NONE), 2, 0));
 }
 
 int16_t CC1101::setCrcFiltering(bool crcOn) {
@@ -761,10 +794,10 @@ int16_t CC1101::setDataShaping(uint8_t sh) {
   // set data shaping
   switch(sh) {
     case RADIOLIB_SHAPING_NONE:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_2_FSK, 6, 4);
       break;
     case RADIOLIB_SHAPING_0_5:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_GFSK, 6, 4);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MOD_FORMAT_GFSK, 6, 4);
       break;
     default:
       return(ERR_INVALID_DATA_SHAPING);
@@ -780,17 +813,17 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
   // set encoding
   switch(encoding) {
     case RADIOLIB_ENCODING_NRZ:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
     case RADIOLIB_ENCODING_MANCHESTER:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_ON, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_ON, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_OFF, 6, 6));
     case RADIOLIB_ENCODING_WHITENING:
-      state = _mod->SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
+      state = SPIsetRegValue(CC1101_REG_MDMCFG2, CC1101_MANCHESTER_EN_OFF, 3, 3);
       RADIOLIB_ASSERT(state);
-      return(_mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_ON, 6, 6));
+      return(SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_WHITE_DATA_ON, 6, 6));
     default:
       return(ERR_INVALID_ENCODING);
   }
@@ -800,12 +833,36 @@ void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+uint8_t CC1101::random() {
+  // set mode to Rx
+  SPIsendCommand(CC1101_CMD_RX);
+
+  // wait a bit for the RSSI reading to stabilise
+  Module::delay(10);
+
+  // read RSSI value 8 times, always keep just the least significant bit
+  uint8_t randByte = 0x00;
+  for(uint8_t i = 0; i < 8; i++) {
+    randByte |= ((SPIreadRegister(CC1101_REG_RSSI) & 0x01) << i);
+  }
+
+  // set mode to standby
+  SPIsendCommand(CC1101_CMD_IDLE);
+
+  return(randByte);
+}
+
+
+int16_t CC1101::getChipVersion() {
+  return(SPIgetRegValue(CC1101_REG_VERSION));
+}
+
 int16_t CC1101::config() {
   // Reset the radio. Registers may be dirty from previous usage.
   SPIsendCommand(CC1101_CMD_RESET);
 
   // Wait a ridiculous amount of time to be sure radio is ready.
-  delay(150);
+  Module::delay(150);
 
   // enable automatic frequency synthesizer calibration
   int16_t state = SPIsetRegValue(CC1101_REG_MCSM0, CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
@@ -863,11 +920,11 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
   }
 
   // set PKTCTRL0.LENGTH_CONFIG
-  int16_t state = _mod->SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
+  int16_t state = SPIsetRegValue(CC1101_REG_PKTCTRL0, mode, 1, 0);
   RADIOLIB_ASSERT(state);
 
   // set length to register
-  state = _mod->SPIsetRegValue(CC1101_REG_PKTLEN, len);
+  state = SPIsetRegValue(CC1101_REG_PKTLEN, len);
   RADIOLIB_ASSERT(state);
 
   // update the cached value
@@ -921,10 +978,21 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
+  // get pointer to used SPI interface and the settings
+  SPIClass* spi = _mod->getSpi();
+  SPISettings spiSettings = _mod->getSpiSettings();
+
+  // pull NSS low
   Module::digitalWrite(_mod->getCs(), LOW);
-  SPI.beginTransaction(SPISettings(2000000, MSBFIRST, SPI_MODE0));
-  SPI.transfer(cmd);
-  SPI.endTransaction();
+
+  // start transfer
+  spi->beginTransaction(spiSettings);
+
+  // send the command byte
+  spi->transfer(cmd);
+
+  // stop transfer
+  spi->endTransaction();
   Module::digitalWrite(_mod->getCs(), HIGH);
 }
 
