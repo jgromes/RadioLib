@@ -3,12 +3,14 @@
 
 ITA2String::ITA2String(char c) {
   _len = 1;
+  _str = new char[1];
   _str[0] = c;
   _ita2Len = 0;
 }
 
 ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
+  _str = new char[_len];
   strcpy(_str, str);
   _ita2Len = 0;
 }

@@ -67,7 +67,7 @@ class ITA2String {
     #ifdef RADIOLIB_STATIC_ONLY
       char _str[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
-      char* _str = new char[1];
+      char* _str;
     #endif
     size_t _len;
     size_t _ita2Len;
