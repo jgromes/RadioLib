@@ -92,7 +92,11 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setAFCBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  state = _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, 0x1E);//TODO
+  //sets AFC&AGC trigger to RSSI and preamble detect
+  state = SX127x::setAFCAGCTrigger(SX127X_RX_TRIGGER_BOTH);
+  RADIOLIB_ASSERT(state);
+
+  state = SX127x::setAFC(true);
   RADIOLIB_ASSERT(state);
 
   // set receiver bandwidth
@@ -768,19 +772,38 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
 }
 
 int16_t SX127x::setAFCBandwidth(float rxBw){
-    // check active modem
-    if(getActiveModem() != SX127X_FSK_OOK){
-        return(ERR_WRONG_MODEM);
-    }
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK){
+      return(ERR_WRONG_MODEM);
+  }
 
-    RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, ERR_INVALID_RX_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, ERR_INVALID_RX_BANDWIDTH);
 
-    // set mode to STANDBY
-    int16_t state = setMode(SX127X_STANDBY);
-    RADIOLIB_ASSERT(state);
+  // set mode to STANDBY
+  int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
 
-    // set AFC bandwidth
-    return(_mod->SPIsetRegValue(SX127X_REG_AFC_BW, calculateBWManExp(rxBw), 4, 0));
+  // set AFC bandwidth
+  return(_mod->SPIsetRegValue(SX127X_REG_AFC_BW, calculateBWManExp(rxBw), 4, 0));
+}
+
+int16_t SX127x::setAFC(bool isEnabled){
+  // check active modem
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  //set AFC auto on/off
+  return(_mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, isEnabled ? SX127X_AFC_AUTO_ON : SX127X_AFC_AUTO_OFF, 4, 4));
+}
+
+int16_t SX127x::setAFCAGCTrigger(uint8_t trigger){
+  if(getActiveModem() != SX127X_FSK_OOK) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  //set AFC&AGC trigger
+  return(_mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, trigger, 2, 0));
 }
 
 int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {

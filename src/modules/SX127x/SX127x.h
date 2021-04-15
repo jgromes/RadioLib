@@ -824,6 +824,24 @@ class SX127x: public PhysicalLayer {
     int16_t setAFCBandwidth(float afcBw);
 
     /*!
+      \brief Enables or disables FSK automatic frequency correction(AFC)
+
+      \param isEnabled AFC enabled or disabled
+
+      \return \ref status_codes
+    */
+    int16_t setAFC(bool isEnabled);
+
+    /*!
+      \brief Controls trigger of AFC and AGC
+
+      \param trigger one from SX127X_RX_TRIGGER_NONE, SX127X_RX_TRIGGER_RSSI_INTERRUPT, SX127X_RX_TRIGGER_PREAMBLE_DETECT, SX127X_RX_TRIGGER_BOTH
+
+      \return \ref status_codes
+    */
+    int16_t setAFCAGCTrigger(uint8_t trigger);
+
+    /*!
       \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.
 
       \param syncWord Sync word array.
