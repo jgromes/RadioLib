@@ -26,7 +26,7 @@ var class_module =
     [ "SPIgetRegValue", "class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4", null ],
     [ "SPIreadRegister", "class_module.html#a1d1a279cc7e1ab92e30c29c4dcca26a3", null ],
     [ "SPIreadRegisterBurst", "class_module.html#a6fa5239d73379e4140f5c4f513b1b8d2", null ],
-    [ "SPIsetRegValue", "class_module.html#a87ca265fa2d1fe7c251b4230ef6bd6ca", null ],
+    [ "SPIsetRegValue", "class_module.html#a1286d7fd9673cbfab945c26b2585a129", null ],
     [ "SPItransfer", "class_module.html#aefd955f1cd6d588b2cc229db87cb2121", null ],
     [ "SPIwriteRegister", "class_module.html#ab814614ddd34b57f5a612a20f5fe4c57", null ],
     [ "SPIwriteRegisterBurst", "class_module.html#a9d77a08070cbd48fd4ece62a739333e9", null ],

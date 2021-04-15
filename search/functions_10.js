@@ -65,7 +65,7 @@ var searchData=
   ['spigetregvalue_573',['SPIgetRegValue',['../class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4',1,'Module']]],
   ['spireadregister_574',['SPIreadRegister',['../class_module.html#a1d1a279cc7e1ab92e30c29c4dcca26a3',1,'Module']]],
   ['spireadregisterburst_575',['SPIreadRegisterBurst',['../class_module.html#a6fa5239d73379e4140f5c4f513b1b8d2',1,'Module']]],
-  ['spisetregvalue_576',['SPIsetRegValue',['../class_module.html#a87ca265fa2d1fe7c251b4230ef6bd6ca',1,'Module']]],
+  ['spisetregvalue_576',['SPIsetRegValue',['../class_module.html#a1286d7fd9673cbfab945c26b2585a129',1,'Module']]],
   ['spitransfer_577',['SPItransfer',['../class_module.html#aefd955f1cd6d588b2cc229db87cb2121',1,'Module']]],
   ['spiwriteregister_578',['SPIwriteRegister',['../class_module.html#ab814614ddd34b57f5a612a20f5fe4c57',1,'Module']]],
   ['spiwriteregisterburst_579',['SPIwriteRegisterBurst',['../class_module.html#a9d77a08070cbd48fd4ece62a739333e9',1,'Module']]],

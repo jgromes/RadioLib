@@ -45,7 +45,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
-"class_module.html#a680dd2e80255cab30cbe9773bf20b390",
+"class_module.html#a623aee6405b330b7c935013ff3d01100",
 "class_s_x126x.html#aab18364237ddac0c56aeaf63f08cf009",
 "class_si443x.html#ade08c79074c7e4414d34eefa25cee168",
 "group__uart__config.html#gab526b0043d5cec8d83ee4ea164698548"

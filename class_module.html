@@ -145,9 +145,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad7ca9ae5a22cdacdf9437ca9cd37c9b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4">SPIgetRegValue</a> (uint8_t reg, uint8_t msb=7, uint8_t lsb=0)</td></tr>
 <tr class="memdesc:ad7ca9ae5a22cdacdf9437ca9cd37c9b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI read method that automatically masks unused bits. This method is the preferred SPI read mechanism.  <a href="class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4">More...</a><br /></td></tr>
 <tr class="separator:ad7ca9ae5a22cdacdf9437ca9cd37c9b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87ca265fa2d1fe7c251b4230ef6bd6ca"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a87ca265fa2d1fe7c251b4230ef6bd6ca">SPIsetRegValue</a> (uint8_t reg, uint8_t value, uint8_t msb=7, uint8_t lsb=0, uint8_t checkInterval=2)</td></tr>
-<tr class="memdesc:a87ca265fa2d1fe7c251b4230ef6bd6ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.  <a href="class_module.html#a87ca265fa2d1fe7c251b4230ef6bd6ca">More...</a><br /></td></tr>
-<tr class="separator:a87ca265fa2d1fe7c251b4230ef6bd6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1286d7fd9673cbfab945c26b2585a129"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a1286d7fd9673cbfab945c26b2585a129">SPIsetRegValue</a> (uint8_t reg, uint8_t value, uint8_t msb=7, uint8_t lsb=0, uint8_t checkInterval=2, uint8_t checkMask=0xFF)</td></tr>
+<tr class="memdesc:a1286d7fd9673cbfab945c26b2585a129"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.  <a href="class_module.html#a1286d7fd9673cbfab945c26b2585a129">More...</a><br /></td></tr>
+<tr class="separator:a1286d7fd9673cbfab945c26b2585a129"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fa5239d73379e4140f5c4f513b1b8d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a6fa5239d73379e4140f5c4f513b1b8d2">SPIreadRegisterBurst</a> (uint8_t reg, uint8_t numBytes, uint8_t *inBytes)</td></tr>
 <tr class="memdesc:a6fa5239d73379e4140f5c4f513b1b8d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI burst read method.  <a href="class_module.html#a6fa5239d73379e4140f5c4f513b1b8d2">More...</a><br /></td></tr>
 <tr class="separator:a6fa5239d73379e4140f5c4f513b1b8d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1501,8 +1501,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a87ca265fa2d1fe7c251b4230ef6bd6ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87ca265fa2d1fe7c251b4230ef6bd6ca">&#9670;&nbsp;</a></span>SPIsetRegValue()</h2>
+<a id="a1286d7fd9673cbfab945c26b2585a129"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1286d7fd9673cbfab945c26b2585a129">&#9670;&nbsp;</a></span>SPIsetRegValue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1535,7 +1535,13 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>checkInterval</em> = <code>2</code>&#160;</td>
+          <td class="paramname"><em>checkInterval</em> = <code>2</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>checkMask</em> = <code>0xFF</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1553,6 +1559,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
     <tr><td class="paramname">msb</td><td>Most significant bit of the register variable. Bits above this one will not be affected by the write operation.</td></tr>
     <tr><td class="paramname">lsb</td><td>Least significant bit of the register variable. Bits below this one will not be affected by the write operation.</td></tr>
     <tr><td class="paramname">checkInterval</td><td>Number of milliseconds between register writing and verification reading. Some registers need up to 10ms to process the change.</td></tr>
+    <tr><td class="paramname">checkMask</td><td>Mask of bits to check, only bits set to 1 will be verified.</td></tr>
   </table>
   </dd>
 </dl>
