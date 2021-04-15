@@ -84,8 +84,8 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setBitRate(br);
   RADIOLIB_ASSERT(state);
 
-  // set receiver bandwidth
-  state = SX127x::setRxBandwidth(rxBw);
+  // set frequency deviation
+  state = SX127x::setFrequencyDeviation(freqDev);
   RADIOLIB_ASSERT(state);
 
   //set AFC bandwidth
@@ -1219,7 +1219,7 @@ bool SX127x::findChip(uint8_t ver) {
 }
 
 int16_t SX127x::setMode(uint8_t mode) {
-  return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, mode, 2, 0, 5));
+  return(_mod->SPIsetRegValue(SX127X_REG_OP_MODE, mode, 2, 0, 2));
 }
 
 int16_t SX127x::getActiveModem() {

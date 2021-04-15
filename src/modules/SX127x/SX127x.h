@@ -1020,7 +1020,7 @@ class SX127x: public PhysicalLayer {
     int16_t invertIQ(bool invertIQ);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
-protected:
+  protected:
 #endif
     Module* _mod;
 
