@@ -774,6 +774,13 @@ class SX127x: public PhysicalLayer {
     float getFrequencyError(bool autoCorrect = false);
 
     /*!
+      \brief Gets current AFC error.
+
+      \returns Frequency offset from RF in Hz if AFC is enabled and triggered, zero otherwise.
+    */
+    float getAFCError();
+
+    /*!
       \brief Gets signal-to-noise ratio of the latest received packet.
 
       \returns Last packet signal-to-noise ratio (SNR).

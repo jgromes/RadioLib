@@ -669,6 +669,22 @@ float SX127x::getFrequencyError(bool autoCorrect) {
   return(ERR_UNKNOWN);
 }
 
+float SX127x::getAFCError()
+{
+  // check active modem
+  int16_t modem = getActiveModem();
+  if(modem != SX127X_FSK_OOK) {
+    return 0;
+  }
+
+  // get raw frequency error
+  int16_t raw = (uint16_t)_mod->SPIgetRegValue(SX127X_REG_AFC_MSB) << 8;
+  raw |= _mod->SPIgetRegValue(SX127X_REG_AFC_LSB);
+
+  uint32_t base = 1;
+  return raw * (32000000.0 / (float)(base << 19));
+}
+
 float SX127x::getSNR() {
   // check active modem
   if(getActiveModem() != SX127X_LORA) {
