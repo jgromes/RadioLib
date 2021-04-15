@@ -815,6 +815,15 @@ class SX127x: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
 
     /*!
+      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
+
+      \param rxBw Receiver AFC bandwidth to be set (in kHz).
+
+      \returns \ref status_codes
+    */
+    int16_t setAFCBandwidth(float afcBw);
+
+    /*!
       \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.
 
       \param syncWord Sync word array.
@@ -993,7 +1002,7 @@ class SX127x: public PhysicalLayer {
     int16_t invertIQ(bool invertIQ);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
-  protected:
+protected:
 #endif
     Module* _mod;
 
@@ -1006,7 +1015,6 @@ class SX127x: public PhysicalLayer {
     uint8_t _sf = 0;
     uint8_t _cr = 0;
     float _br = 0;
-    float _rxBw = 0;
     bool _ook = false;
     bool _crcEnabled = false;
     size_t _packetLength = 0;
@@ -1030,6 +1038,14 @@ class SX127x: public PhysicalLayer {
     int16_t setActiveModem(uint8_t modem);
     void clearIRQFlags();
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
+    /**
+     * @brief Calculate exponent and mantissa values for receiver bandwidth and AFC
+     *
+     * \param bandwidth bandwidth to be set (in kHz).
+     *
+     * \returns bandwidth in manitsa and exponent format
+     */
+    uint8_t calculateBWManExp(float bandwidth) const;
 };
 
 #endif

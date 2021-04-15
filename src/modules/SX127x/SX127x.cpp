@@ -84,8 +84,15 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setBitRate(br);
   RADIOLIB_ASSERT(state);
 
-  // set frequency deviation
-  state = SX127x::setFrequencyDeviation(freqDev);
+  // set receiver bandwidth
+  state = SX127x::setRxBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+
+  //set AFC bandwidth
+  state = SX127x::setAFCBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+
+  state = _mod->SPIsetRegValue(SX127X_REG_RX_CONFIG, 0x1E);//TODO
   RADIOLIB_ASSERT(state);
 
   // set receiver bandwidth
@@ -731,6 +738,19 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
   return(state);
 }
 
+uint8_t SX127x::calculateBWManExp(float bandwidth) const
+{
+  for(uint8_t e = 7; e >= 1; e--) {
+    for(int8_t m = 2; m >= 0; m--) {
+      float point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
+      if(abs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+        return((m << 3) | e);
+      }
+    }
+  }
+  return 0;
+}
+
 int16_t SX127x::setRxBandwidth(float rxBw) {
   // check active modem
   if(getActiveModem() != SX127X_FSK_OOK) {
@@ -743,26 +763,24 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
   int16_t state = setMode(SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
 
-  // calculate exponent and mantissa values
-  for(uint8_t e = 7; e >= 1; e--) {
-    for(int8_t m = 2; m >= 0; m--) {
-      float point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
-      if(abs(rxBw - ((point / 1000.0) + 0.05)) <= 0.5) {
-        // set Rx bandwidth during AFC
-        state = _mod->SPIsetRegValue(SX127X_REG_AFC_BW, (m << 3) | e, 4, 0);
-        RADIOLIB_ASSERT(state);
+  // set Rx bandwidth
+  return(_mod->SPIsetRegValue(SX127X_REG_RX_BW, calculateBWManExp(rxBw), 4, 0));
+}
 
-        // set Rx bandwidth
-        state = _mod->SPIsetRegValue(SX127X_REG_RX_BW, (m << 3) | e, 4, 0);
-        if(state == ERR_NONE) {
-          SX127x::_rxBw = rxBw;
-        }
-
-        return(state);
-      }
+int16_t SX127x::setAFCBandwidth(float rxBw){
+    // check active modem
+    if(getActiveModem() != SX127X_FSK_OOK){
+        return(ERR_WRONG_MODEM);
     }
-  }
-  return(ERR_UNKNOWN);
+
+    RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, ERR_INVALID_RX_BANDWIDTH);
+
+    // set mode to STANDBY
+    int16_t state = setMode(SX127X_STANDBY);
+    RADIOLIB_ASSERT(state);
+
+    // set AFC bandwidth
+    return(_mod->SPIsetRegValue(SX127X_REG_AFC_BW, calculateBWManExp(rxBw), 4, 0));
 }
 
 int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
