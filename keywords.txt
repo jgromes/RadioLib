@@ -104,10 +104,14 @@ setPreambleLength	KEYWORD2
 setGain	KEYWORD2
 getFrequencyError	KEYWORD2
 getRSSI	KEYWORD2
+getAFCError	KEYWORD2
 getSNR	KEYWORD2
 getDataRate	KEYWORD2
 setBitRate	KEYWORD2
 setRxBandwidth	KEYWORD2
+setAFCBandwidth	KEYWORD2
+setAFC		KEYWORD2
+setAFCAGCTrigger	KEYWORD2
 setFrequencyDeviation	KEYWORD2
 setNodeAddress	KEYWORD2
 setBroadcastAddress	KEYWORD2

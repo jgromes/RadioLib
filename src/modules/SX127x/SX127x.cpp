@@ -678,8 +678,8 @@ float SX127x::getAFCError()
   }
 
   // get raw frequency error
-  int16_t raw = (uint16_t)_mod->SPIgetRegValue(SX127X_REG_AFC_MSB) << 8;
-  raw |= _mod->SPIgetRegValue(SX127X_REG_AFC_LSB);
+  int16_t raw = (uint16_t)_mod->SPIreadRegister(SX127X_REG_AFC_MSB) << 8;
+  raw |= _mod->SPIreadRegister(SX127X_REG_AFC_LSB);
 
   uint32_t base = 1;
   return raw * (32000000.0 / (float)(base << 19));
@@ -758,7 +758,7 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
   return(state);
 }
 
-uint8_t SX127x::calculateBWManExp(float bandwidth) const
+uint8_t SX127x::calculateBWManExp(float bandwidth)
 {
   for(uint8_t e = 7; e >= 1; e--) {
     for(int8_t m = 2; m >= 0; m--) {

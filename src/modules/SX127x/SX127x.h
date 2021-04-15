@@ -1070,7 +1070,7 @@ class SX127x: public PhysicalLayer {
      *
      * \returns bandwidth in manitsa and exponent format
      */
-    uint8_t calculateBWManExp(float bandwidth) const;
+    static uint8_t calculateBWManExp(float bandwidth);
 };
 
 #endif
