@@ -156,6 +156,8 @@ getTemperature	KEYWORD2
 setAmbientTemperature	KEYWORD2
 setLnaTestBoost	KEYWORD2
 setOokFixedThreshold	KEYWORD2
+enableContinuousModeBitSync KEYWORD2
+disableContinuousModeBitSync KEYWORD2
 
 # CC1101-specific
 getLQI	KEYWORD2
