@@ -767,6 +767,15 @@ class RF69: public PhysicalLayer {
     int16_t setOokFixedThreshold(uint8_t value);
 
     /*!
+      \brief Period of decrement of the RSSI threshold in the OOK demodulator.
+
+      \param value Use defines RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP
+
+      \returns \ref status_codes
+    */
+    int16_t setOokPeakThresholdDecrement(uint8_t value);
+
+    /*!
       \brief Set modem in fixed packet length mode.
 
       \param len Packet length.
