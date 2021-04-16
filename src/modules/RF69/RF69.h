@@ -809,6 +809,20 @@ class RF69: public PhysicalLayer {
     */
     int16_t disableSyncWordFiltering();
 
+    /*!
+      \brief Enable Bit synchronization in continuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t enableContinuousModeBitSync();
+
+    /*!
+      \brief Disable Bit synchronization in continuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t disableContinuousModeBitSync();
+
      /*!
       \brief Enable CRC filtering and generation.
 
