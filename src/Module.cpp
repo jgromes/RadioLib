@@ -206,7 +206,7 @@ int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
   return(maskedValue);
 }
 
-int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval) {
+int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval, uint8_t checkMask) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(ERR_INVALID_BIT_RANGE);
   }
@@ -223,7 +223,7 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
     uint8_t readValue = 0x00;
     while(Module::micros() - start < (checkInterval * 1000)) {
       readValue = SPIreadRegister(reg);
-      if(readValue == newValue) {
+      if((readValue & checkMask) == (newValue & checkMask)) {
         // check passed, we can stop the loop
         return(ERR_NONE);
       }

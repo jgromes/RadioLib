@@ -10,7 +10,7 @@ ITA2String::ITA2String(char c) {
 
 ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
-  _str = new char[_len];
+  _str = new char[_len + 1];
   strcpy(_str, str);
   _ita2Len = 0;
 }
