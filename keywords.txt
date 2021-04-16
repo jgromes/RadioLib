@@ -147,6 +147,8 @@ setOokFixedOrFloorThreshold	KEYWORD2
 setDirectSyncWord	KEYWORD2
 setDirectAction	KEYWORD2
 readBit	KEYWORD2
+enableBitSync	KEYWORD2
+disableBitSync	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2
@@ -156,8 +158,8 @@ getTemperature	KEYWORD2
 setAmbientTemperature	KEYWORD2
 setLnaTestBoost	KEYWORD2
 setOokFixedThreshold	KEYWORD2
-enableContinuousModeBitSync KEYWORD2
-disableContinuousModeBitSync KEYWORD2
+enableContinuousModeBitSync	KEYWORD2
+disableContinuousModeBitSync	KEYWORD2
 
 # CC1101-specific
 getLQI	KEYWORD2

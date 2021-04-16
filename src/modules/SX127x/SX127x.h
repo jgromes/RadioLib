@@ -927,6 +927,20 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setOokFixedOrFloorThreshold(uint8_t value);
 
+    /*!
+    \brief Enable Bit synchronizer.
+
+    \returns \ref status_codes
+    */
+    int16_t enableBitSync();
+
+    /*!
+      \brief Disable Bit synchronizer (not allowed in Packet mode).
+
+      \returns \ref status_codes
+    */
+    int16_t disableBitSync();
+
      /*!
       \brief Query modem for the packet length of received payload.
 
