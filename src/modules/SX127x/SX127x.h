@@ -921,7 +921,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.
 
-      \param value The actual value used by teh data slicer is (128 - value/2).
+      \param value The actual value is devided by 2 because (0.5db step). ie: value=12 means 6dB
 
       \returns \ref status_codes
     */
