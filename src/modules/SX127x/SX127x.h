@@ -774,6 +774,13 @@ class SX127x: public PhysicalLayer {
     float getFrequencyError(bool autoCorrect = false);
 
     /*!
+      \brief Gets current AFC error.
+
+      \returns Frequency offset from RF in Hz if AFC is enabled and triggered, zero otherwise.
+    */
+    float getAFCError();
+
+    /*!
       \brief Gets signal-to-noise ratio of the latest received packet.
 
       \returns Last packet signal-to-noise ratio (SNR).
@@ -813,6 +820,33 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setRxBandwidth(float rxBw);
+
+    /*!
+      \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
+
+      \param rxBw Receiver AFC bandwidth to be set (in kHz).
+
+      \returns \ref status_codes
+    */
+    int16_t setAFCBandwidth(float afcBw);
+
+    /*!
+      \brief Enables or disables FSK automatic frequency correction(AFC)
+
+      \param isEnabled AFC enabled or disabled
+
+      \return \ref status_codes
+    */
+    int16_t setAFC(bool isEnabled);
+
+    /*!
+      \brief Controls trigger of AFC and AGC
+
+      \param trigger one from SX127X_RX_TRIGGER_NONE, SX127X_RX_TRIGGER_RSSI_INTERRUPT, SX127X_RX_TRIGGER_PREAMBLE_DETECT, SX127X_RX_TRIGGER_BOTH
+
+      \return \ref status_codes
+    */
+    int16_t setAFCAGCTrigger(uint8_t trigger);
 
     /*!
       \brief Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.
@@ -1006,7 +1040,6 @@ class SX127x: public PhysicalLayer {
     uint8_t _sf = 0;
     uint8_t _cr = 0;
     float _br = 0;
-    float _rxBw = 0;
     bool _ook = false;
     bool _crcEnabled = false;
     size_t _packetLength = 0;
@@ -1030,6 +1063,14 @@ class SX127x: public PhysicalLayer {
     int16_t setActiveModem(uint8_t modem);
     void clearIRQFlags();
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
+    /**
+     * @brief Calculate exponent and mantissa values for receiver bandwidth and AFC
+     *
+     * \param bandwidth bandwidth to be set (in kHz).
+     *
+     * \returns bandwidth in manitsa and exponent format
+     */
+    static uint8_t calculateBWManExp(float bandwidth);
 };
 
 #endif
