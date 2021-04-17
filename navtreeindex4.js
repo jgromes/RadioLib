@@ -1,5 +1,9 @@
 var NAVTREEINDEX4 =
 {
+"group__uart__config.html#ga65930f2e5d365bb0e778b62b2840715f":[2,1,9],
+"group__uart__config.html#ga8b65a960ee0f2aa0192ade54b78057d9":[2,1,2],
+"group__uart__config.html#ga939e120f07199ce8e21ed2e22d200dab":[2,1,0],
+"group__uart__config.html#gaab1a378c99156fb89223c0b389bbe1db":[2,1,6],
 "group__uart__config.html#gab526b0043d5cec8d83ee4ea164698548":[2,1,1],
 "group__uart__config.html#gad418f0922126e27279d1a374fc63e036":[2,1,8],
 "group__uart__config.html#gae077d53c5c120a989b1f285f183f1b78":[2,1,3],
