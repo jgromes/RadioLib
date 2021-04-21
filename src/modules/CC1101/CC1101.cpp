@@ -311,9 +311,9 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
         * Does this work for all rates? If 1 ms is longer than the 1ms delay
         * then the entire FIFO will be transmitted during that delay.
         * 
-        * TODO: drop this delay(1) or come up with a better solution:
+        * TODO: test this on real hardware
       */
-      delay(1);
+     delayMicroseconds(250);
     }
   }
 
@@ -387,9 +387,6 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     // Get how many bytes are left in FIFO.
     bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
   }
-
-  // add terminating null
-  data[readBytes] = 0;
 
   // check if status bytes are enabled (default: CC1101_APPEND_STATUS_ON)
   bool isAppendStatus = SPIgetRegValue(CC1101_REG_PKTCTRL1, 2, 2) == CC1101_APPEND_STATUS_ON;
