@@ -874,13 +874,6 @@ class RF69: public PhysicalLayer {
 #endif
     Module* _mod;
 
-    /*!
-      \brief Proxy to _mod->SPIsetRegValue (to avoid exposing _mod)
-
-      \returns \ref status code
-    */
-    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
-
 #if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
