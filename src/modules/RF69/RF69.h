@@ -878,6 +878,7 @@ class RF69: public PhysicalLayer {
   protected:
 #endif
 
+    float _freq = 0;
     float _br = 0;
     float _rxBw = 0;
     bool _ook = false;

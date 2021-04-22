@@ -262,19 +262,32 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
   RADIOLIB_ASSERT(state);
 
+  // data put on FIFO.
+  uint8_t dataSent = 0;
+
   // optionally write packet length
   if (_packetLengthConfig == CC1101_LENGTH_CONFIG_VARIABLE) {
+
+    // enforce variable len limit.
+    if (len > CC1101_MAX_PACKET_LENGTH - 1) {
+      return (ERR_PACKET_TOO_LONG);
+    }
+
     SPIwriteRegister(CC1101_REG_FIFO, len);
+    dataSent += 1;
   }
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(CC1101_REG_FIFO, addr);
+    dataSent += 1;
   }
 
-  // write packet to FIFO
-  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, len);
+  // fill the FIFO.
+  uint8_t initialWrite = min((uint8_t)len, (uint8_t)(CC1101_FIFO_SIZE - dataSent));
+  SPIwriteRegisterBurst(CC1101_REG_FIFO, data, initialWrite);
+  dataSent += initialWrite;
 
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);
@@ -282,7 +295,29 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to transmit
   SPIsendCommand(CC1101_CMD_TX);
 
-  return(state);
+  // keep feeding the FIFO until the packet is over.
+  while (dataSent < len) {
+    // get number of bytes in FIFO.
+    uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_TXBYTES, 6, 0);
+
+    // if there's room then put other data.
+    if (bytesInFIFO < CC1101_FIFO_SIZE) {
+      uint8_t bytesToWrite = min((uint8_t)(CC1101_FIFO_SIZE - bytesInFIFO), (uint8_t)(len - dataSent));
+      SPIwriteRegisterBurst(CC1101_REG_FIFO, &data[dataSent], bytesToWrite);
+      dataSent += bytesToWrite;
+    } else {
+      // wait for radio to send some data.
+      /*
+        * Does this work for all rates? If 1 ms is longer than the 1ms delay
+        * then the entire FIFO will be transmitted during that delay.
+        * 
+        * TODO: test this on real hardware
+      */
+     delayMicroseconds(250);
+    }
+  }
+
+  return (state);
 }
 
 int16_t CC1101::startReceive() {
@@ -292,8 +327,9 @@ int16_t CC1101::startReceive() {
   // flush Rx FIFO
   SPIsendCommand(CC1101_CMD_FLUSH_RX);
 
-  // set GDO0 mapping
-  int state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  // set GDO0 mapping: Asserted when RX FIFO > 4 bytes.
+  int16_t state = SPIsetRegValue(CC1101_REG_IOCFG0, CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END);
+  state |= SPIsetRegValue(CC1101_REG_FIFOTHR, CC1101_FIFO_THR_TX_61_RX_4, 3, 0);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
@@ -308,8 +344,8 @@ int16_t CC1101::startReceive() {
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
   size_t length = len;
-  if(len == CC1101_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  if (len == CC1101_MAX_PACKET_LENGTH) {
+    length = getPacketLength(true);
   }
 
   // check address filtering
@@ -318,28 +354,69 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     SPIreadRegister(CC1101_REG_FIFO);
   }
 
-  // read packet data
-  SPIreadRegisterBurst(CC1101_REG_FIFO, length, data);
+  uint8_t bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+  size_t readBytes = 0;
+  uint32_t lastPop = millis();
 
-  // read RSSI byte
-  _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
+  // keep reading from FIFO until we get all the packet.
+  while (readBytes < length) {
+    if (bytesInFIFO == 0) {
+      if (millis() - lastPop > 5) {
+        // readData was required to read a packet longer than the one received.
+        RADIOLIB_DEBUG_PRINTLN(F("No data for more than 5mS. Stop here."));
+        break;
+      } else {
+        /*
+         * Does this work for all rates? If 1 ms is longer than the 1ms delay
+         * then the entire FIFO will be transmitted during that delay.
+         * 
+         * TODO: drop this delay(1) or come up with a better solution:
+        */
+        delay(1);
+        bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+        continue;
+      }
+    }
+
+    // read the minimum between "remaining length" and bytesInFifo
+    uint8_t bytesToRead = min((uint8_t)(length - readBytes), bytesInFIFO);
+    SPIreadRegisterBurst(CC1101_REG_FIFO, bytesToRead, &(data[readBytes]));
+    readBytes += bytesToRead;
+    lastPop = millis();
+
+    // Get how many bytes are left in FIFO.
+    bytesInFIFO = SPIgetRegValue(CC1101_REG_RXBYTES, 6, 0);
+  }
+
+  // check if status bytes are enabled (default: CC1101_APPEND_STATUS_ON)
+  bool isAppendStatus = SPIgetRegValue(CC1101_REG_PKTCTRL1, 2, 2) == CC1101_APPEND_STATUS_ON;
+
+  // If status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
+  if (bytesInFIFO >= 2 && isAppendStatus) {
+    // read RSSI byte
+    _rawRSSI = SPIgetRegValue(CC1101_REG_FIFO);
 
   // read LQI and CRC byte
   uint8_t val = SPIgetRegValue(CC1101_REG_FIFO);
   _rawLQI = val & 0x7F;
 
-  // flush Rx FIFO
-  SPIsendCommand(CC1101_CMD_FLUSH_RX);
+    // check CRC
+    if (_crcOn && (val & CC1101_CRC_OK) == CC1101_CRC_ERROR) {
+      return (ERR_CRC_MISMATCH);
+    }
+  }
 
   // clear internal flag so getPacketLength can return the new packet length
   _packetLengthQueried = false;
 
-  // set mode to standby
-  standby();
+  // Flush then standby according to RXOFF_MODE (default: CC1101_RXOFF_IDLE)
+  if (SPIgetRegValue(CC1101_REG_MCSM1, 3, 2) == CC1101_RXOFF_IDLE) {
 
-  // check CRC
-   if (_crcOn && (val & 0b10000000) == 0b00000000) {
-    return (ERR_CRC_MISMATCH);
+    // flush Rx FIFO
+    SPIsendCommand(CC1101_CMD_FLUSH_RX);
+
+    // set mode to standby
+    standby();
   }
 
   return(ERR_NONE);
@@ -609,7 +686,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
     state = SPIsetRegValue(CC1101_REG_FREND0, 1, 2, 0);
     RADIOLIB_ASSERT(state);
 
-
     // update current modulation
     _modulation = CC1101_MOD_FORMAT_ASK_OOK;
   } else {
@@ -627,7 +703,6 @@ int16_t CC1101::setOOK(bool enableOOK) {
   // Update PA_TABLE values according to the new _modulation.
   return(setOutputPower(_power));
 }
-
 
 float CC1101::getRSSI() const {
   float rssi;
@@ -715,7 +790,13 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
     state = setCrcFiltering(true);
   }
 
+  _promiscuous = promiscuous;
+  
   return(state);
+}
+
+bool CC1101::getPromiscuousMode() {
+  return (_promiscuous);
 }
 
 int16_t CC1101::setDataShaping(uint8_t sh) {

@@ -8,9 +8,10 @@
 
 // CC1101 physical layer properties
 #define CC1101_FREQUENCY_STEP_SIZE                    396.7285156
-#define CC1101_MAX_PACKET_LENGTH                      63
+#define CC1101_MAX_PACKET_LENGTH                      255
 #define CC1101_CRYSTAL_FREQ                           26.0
 #define CC1101_DIV_EXPONENT                           16
+#define CC1101_FIFO_SIZE                              64
 
 // CC1101 SPI commands
 #define CC1101_CMD_READ                               0b10000000
@@ -168,7 +169,7 @@
 #define CC1101_RX_ATTEN_6_DB                          0b00010000  //  5     4                     6 dB
 #define CC1101_RX_ATTEN_12_DB                         0b00100000  //  5     4                     12 dB
 #define CC1101_RX_ATTEN_18_DB                         0b00110000  //  5     4                     18 dB
-#define CC1101_FIFO_THR                               0b00000111  //  5     4     Rx FIFO threshold [bytes] = CC1101_FIFO_THR * 4; Tx FIFO threshold [bytes] = 65 - (CC1101_FIFO_THR * 4)
+#define CC1101_FIFO_THR_TX_61_RX_4                    0b00000000  //  3     0     TX fifo threshold: 61, RX fifo threshold: 4
 
 // CC1101_REG_SYNC1
 #define CC1101_SYNC_WORD_MSB                          0xD3        //  7     0     sync word MSB
@@ -599,9 +600,9 @@ class CC1101: public PhysicalLayer {
 
       \param func ISR to call.
 
-      \param dir Signal change direction. Defaults to FALLING.
+      \param dir Signal change direction. Defaults to RISING.
     */
-    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = FALLING);
+    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = RISING);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -845,6 +846,13 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPromiscuousMode(bool promiscuous = true);
+
+     /*!
+      \brief Get whether the modem is in promiscuous mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
+
+      \returns Whether the modem is in promiscuous mode
+    */
+    bool getPromiscuousMode();
 
     /*!
       \brief Sets Gaussian filter bandwidth-time product that will be used for data shaping.

@@ -11,3 +11,6 @@
 # Debug decoder
 extras/decoder/log.txt
 extras/decoder/out.txt
+
+# PlatformIO
+.pio*

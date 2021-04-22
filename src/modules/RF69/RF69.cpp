@@ -407,6 +407,9 @@ int16_t RF69::setFrequency(float freq) {
   _mod->SPIwriteRegister(RF69_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   _mod->SPIwriteRegister(RF69_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
   _mod->SPIwriteRegister(RF69_REG_FRF_LSB, FRF & 0x0000FF);
+
+  _freq = freq;
+
   return(ERR_NONE);
 }
 
