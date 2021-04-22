@@ -131,9 +131,9 @@ Public Member Functions</h2></td></tr>
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a38f6978c757b0dd73e3ef98164a735a2">packetMode</a> ()</td></tr>
 <tr class="memdesc:a38f6978c757b0dd73e3ef98164a735a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions. <br /></td></tr>
 <tr class="separator:a38f6978c757b0dd73e3ef98164a735a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dfd6a57cdbb3196ad021b152b0c65ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a6dfd6a57cdbb3196ad021b152b0c65ed">setGdo0Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=FALLING)</td></tr>
-<tr class="memdesc:a6dfd6a57cdbb3196ad021b152b0c65ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when GDO0 activates.  <a href="class_c_c1101.html#a6dfd6a57cdbb3196ad021b152b0c65ed">More...</a><br /></td></tr>
-<tr class="separator:a6dfd6a57cdbb3196ad021b152b0c65ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae60ea5cacfb1543fcecde5bfac16361a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ae60ea5cacfb1543fcecde5bfac16361a">setGdo0Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=RISING)</td></tr>
+<tr class="memdesc:ae60ea5cacfb1543fcecde5bfac16361a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when GDO0 activates.  <a href="class_c_c1101.html#ae60ea5cacfb1543fcecde5bfac16361a">More...</a><br /></td></tr>
+<tr class="separator:ae60ea5cacfb1543fcecde5bfac16361a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5e6b3745f80cf61e1ced33303311df8"><td class="memItemLeft" align="right" valign="top"><a id="ab5e6b3745f80cf61e1ced33303311df8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab5e6b3745f80cf61e1ced33303311df8">clearGdo0Action</a> ()</td></tr>
 <tr class="memdesc:ab5e6b3745f80cf61e1ced33303311df8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when GDO0 activates. <br /></td></tr>
@@ -214,6 +214,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a2911d49d1c293542f7a374c9af60df0e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a2911d49d1c293542f7a374c9af60df0e">setPromiscuousMode</a> (bool promiscuous=true)</td></tr>
 <tr class="memdesc:a2911d49d1c293542f7a374c9af60df0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_c_c1101.html#a2911d49d1c293542f7a374c9af60df0e">More...</a><br /></td></tr>
 <tr class="separator:a2911d49d1c293542f7a374c9af60df0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeea78919ec14d940cda0f213e4fdced6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6">getPromiscuousMode</a> ()</td></tr>
+<tr class="memdesc:aeea78919ec14d940cda0f213e4fdced6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether the modem is in promiscuous mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6">More...</a><br /></td></tr>
+<tr class="separator:aeea78919ec14d940cda0f213e4fdced6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf96e77f25b7e256891601bef04f35a6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6">setDataShaping</a> (uint8_t sh) override</td></tr>
 <tr class="memdesc:adf96e77f25b7e256891601bef04f35a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Allowed value is RADIOLIB_SHAPING_0_5. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6">More...</a><br /></td></tr>
 <tr class="separator:adf96e77f25b7e256891601bef04f35a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,6 +585,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>Length of last received packet in bytes. </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aeea78919ec14d940cda0f213e4fdced6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeea78919ec14d940cda0f213e4fdced6">&#9670;&nbsp;</a></span>getPromiscuousMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool CC1101::getPromiscuousMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get whether the modem is in promiscuous mode: no packet filtering (e.g., no preamble, sync word, address, CRC). </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether the modem is in promiscuous mode </dd></dl>
 
 </div>
 </div>
@@ -1049,8 +1072,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a6dfd6a57cdbb3196ad021b152b0c65ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6dfd6a57cdbb3196ad021b152b0c65ed">&#9670;&nbsp;</a></span>setGdo0Action()</h2>
+<a id="ae60ea5cacfb1543fcecde5bfac16361a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae60ea5cacfb1543fcecde5bfac16361a">&#9670;&nbsp;</a></span>setGdo0Action()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1065,7 +1088,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
-          <td class="paramname"><em>dir</em> = <code>FALLING</code>&#160;</td>
+          <td class="paramname"><em>dir</em> = <code>RISING</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1079,7 +1102,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>ISR to call.</td></tr>
-    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to FALLING. </td></tr>
+    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to RISING. </td></tr>
   </table>
   </dd>
 </dl>
