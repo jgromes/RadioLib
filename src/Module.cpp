@@ -374,6 +374,10 @@ void Module::attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, void (*userFunc)(vo
   ::attachInterrupt(interruptNum, userFunc, mode);
 }
 
+void Module::attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, std::function<void(void)> userFunc, RADIOLIB_INTERRUPT_STATUS mode) {
+  ::attachInterrupt(interruptNum, userFunc, mode);
+}
+
 void Module::detachInterrupt(RADIOLIB_PIN_TYPE interruptNum) {
   ::detachInterrupt(interruptNum);
 }

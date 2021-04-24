@@ -2,6 +2,9 @@
 #define _RADIOLIB_MODULE_H
 
 #include "TypeDef.h"
+#include <functional>
+#include <FunctionalInterrupt.h>
+
 
 #include <SPI.h>
 #ifndef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
@@ -432,6 +435,7 @@ class Module {
     */
     static void attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, void (*userFunc)(void), RADIOLIB_INTERRUPT_STATUS mode);
 
+    static void attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, std::function<void(void)> userFunc, RADIOLIB_INTERRUPT_STATUS mode);
     /*!
       \brief Arduino core detachInterrupt override.
 

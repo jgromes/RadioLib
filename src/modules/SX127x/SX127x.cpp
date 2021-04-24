@@ -414,6 +414,10 @@ void SX127x::setDio0Action(void (*func)(void)) {
   Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
 
+void SX127x::setDio0Action(std::function<void(void)> func) {
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+}
+
 void SX127x::clearDio0Action() {
   Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }

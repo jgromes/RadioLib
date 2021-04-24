@@ -1,6 +1,7 @@
 #if !defined(_RADIOLIB_SX127X_H)
 #define _RADIOLIB_SX127X_H
 
+#include <functional>
 #include "../../TypeDef.h"
 
 #if !defined(RADIOLIB_EXCLUDE_SX127X)
@@ -681,6 +682,9 @@ class SX127x: public PhysicalLayer {
       \param func Pointer to interrupt service routine.
     */
     void setDio0Action(void (*func)(void));
+
+
+    void setDio0Action(std::function<void(void)> func);
 
     /*!
       \brief Clears interrupt service routine to call when DIO0 activates.
