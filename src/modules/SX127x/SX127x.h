@@ -941,7 +941,7 @@ class SX127x: public PhysicalLayer {
     */
     int16_t disableBitSync();
 
-     /*!
+    /*!
       \brief Query modem for the packet length of received payload.
 
       \param update Update received packet length. Will return cached value when set to false.
