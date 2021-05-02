@@ -306,9 +306,6 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // clear interrupt flags
   clearIRQFlags();
 
-  // set packet length
-  _mod->SPIwriteRegister(RF69_REG_FIFO, len);
-
   // optionally write packet length
   if (_packetLengthConfig == RF69_PACKET_FORMAT_VARIABLE) {
     _mod->SPIwriteRegister(RF69_REG_FIFO, len);
