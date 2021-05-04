@@ -310,7 +310,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
       /*
         * Does this work for all rates? If 1 ms is longer than the 1ms delay
         * then the entire FIFO will be transmitted during that delay.
-        * 
+        *
         * TODO: test this on real hardware
       */
      delayMicroseconds(250);
@@ -369,7 +369,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
         /*
          * Does this work for all rates? If 1 ms is longer than the 1ms delay
          * then the entire FIFO will be transmitted during that delay.
-         * 
+         *
          * TODO: drop this delay(1) or come up with a better solution:
         */
         delay(1);
@@ -478,7 +478,7 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   for(int8_t e = 3; e >= 0; e--) {
     for(int8_t m = 3; m >= 0; m --) {
       float point = (CC1101_CRYSTAL_FREQ * 1000000.0)/(8 * (m + 4) * ((uint32_t)1 << e));
-      if(abs((rxBw * 1000.0) - point) <= 1000) {
+      if(fabs(rxBw * 1000.0) - point) <= 1000) {
         // set Rx channel filter bandwidth
         return(SPIsetRegValue(CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
       }
@@ -791,7 +791,7 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   }
 
   _promiscuous = promiscuous;
-  
+
   return(state);
 }
 
