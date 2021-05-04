@@ -570,6 +570,17 @@ int16_t SX126x::startReceiveCommon() {
     RADIOLIB_ASSERT(state);
   }
 
+  // restore original packet length
+  int16_t state = ERR_NONE;
+  uint8_t modem = getPacketType();
+  if(modem == SX126X_PACKET_TYPE_LORA) {
+    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
+  } else if(modem == SX126X_PACKET_TYPE_GFSK) {
+    state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType);
+  } else {
+    return(ERR_UNKNOWN);
+  }
+
   return(state);
 }
 
@@ -732,7 +743,7 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   if(getPacketType() != SX126X_PACKET_TYPE_GFSK) {
     return(ERR_WRONG_MODEM);
   }
-  
+
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
   if(freqDev < 0.0) {
