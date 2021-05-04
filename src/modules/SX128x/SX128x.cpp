@@ -605,13 +605,13 @@ int16_t SX128x::setBandwidth(float bw) {
     return(ERR_WRONG_MODEM);
   }
 
-  if(abs(bw - 203.125) <= 0.001) {
+  if(fabs(bw - 203.125) <= 0.001) {
     _bw = SX128X_LORA_BW_203_125;
-  } else if(abs(bw - 406.25) <= 0.001) {
+  } else if(fabs(bw - 406.25) <= 0.001) {
     _bw = SX128X_LORA_BW_406_25;
-  } else if(abs(bw - 812.5) <= 0.001) {
+  } else if(fabs(bw - 812.5) <= 0.001) {
     _bw = SX128X_LORA_BW_812_50;
-  } else if(abs(bw - 1625.0) <= 0.001) {
+  } else if(fabs(bw - 1625.0) <= 0.001) {
     _bw = SX128X_LORA_BW_1625_00;
   } else {
     return(ERR_INVALID_BANDWIDTH);
