@@ -92,11 +92,11 @@ int16_t SX1272::setBandwidth(float bw) {
   uint8_t newBandwidth;
 
   // check allowed bandwidth values
-  if(abs(bw - 125.0) <= 0.001) {
+  if(fabs(bw - 125.0) <= 0.001) {
     newBandwidth = SX1272_BW_125_00_KHZ;
-  } else if(abs(bw - 250.0) <= 0.001) {
+  } else if(fabs(bw - 250.0) <= 0.001) {
     newBandwidth = SX1272_BW_250_00_KHZ;
-  } else if(abs(bw - 500.0) <= 0.001) {
+  } else if(fabs(bw - 500.0) <= 0.001) {
     newBandwidth = SX1272_BW_500_00_KHZ;
   } else {
     return(ERR_INVALID_BANDWIDTH);

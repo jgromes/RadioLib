@@ -763,7 +763,7 @@ uint8_t SX127x::calculateBWManExp(float bandwidth)
   for(uint8_t e = 7; e >= 1; e--) {
     for(int8_t m = 2; m >= 0; m--) {
       float point = (SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
-      if(abs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+      if(fabs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
         return((m << 3) | e);
       }
     }
