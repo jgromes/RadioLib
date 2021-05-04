@@ -571,7 +571,6 @@ int16_t SX126x::startReceiveCommon() {
   }
 
   // restore original packet length
-  int16_t state = ERR_NONE;
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
     state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
