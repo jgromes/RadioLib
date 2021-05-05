@@ -564,12 +564,6 @@ int16_t SX126x::startReceiveCommon() {
   // clear interrupt flags
   state = clearIrqStatus();
 
-  // set implicit mode and expected len if applicable
-  if(_headerType == SX126X_LORA_HEADER_IMPLICIT && getPacketType() == SX126X_PACKET_TYPE_LORA) {
-    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
-    RADIOLIB_ASSERT(state);
-  }
-
   // restore original packet length
   uint8_t modem = getPacketType();
   if(modem == SX126X_PACKET_TYPE_LORA) {
