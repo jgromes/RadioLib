@@ -85,6 +85,7 @@ int16_t SX1280::startRanging(bool master, uint32_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set calibration values
+  uint8_t index = (_sf >> 4) - 5;
   static const uint16_t calTable[3][6] = {
     { 10299, 10271, 10244, 10242, 10230, 10246 },
     { 11486, 11474, 11453, 11426, 11417, 11401 },
@@ -93,13 +94,13 @@ int16_t SX1280::startRanging(bool master, uint32_t addr) {
   uint16_t val = 0;
   switch(_bw) {
     case(SX128X_LORA_BW_406_25):
-      val = calTable[0][_sf];
+      val = calTable[0][index];
       break;
     case(SX128X_LORA_BW_812_50):
-      val = calTable[1][_sf];
+      val = calTable[1][index];
       break;
     case(SX128X_LORA_BW_1625_00):
-      val = calTable[2][_sf];
+      val = calTable[2][index];
       break;
     default:
       return(ERR_INVALID_BANDWIDTH);
