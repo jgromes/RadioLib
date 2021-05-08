@@ -118,6 +118,7 @@
 
     // RadioLib has ESP8266 driver, this must be disabled to use ESP8266 as platform
     #define RADIOLIB_EXCLUDE_ESP8266
+    #define RADIOLIB_EXCLUDE_HTTP
 
   #elif defined(ESP32)
     // ESP32 boards
