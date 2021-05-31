@@ -63,7 +63,7 @@ void setup() {
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.beginFSK();
 
-  // when using one of the non-LoRa modules for RTTY
+  // when using one of the non-LoRa modules for FSK4
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = radio.begin();
 
