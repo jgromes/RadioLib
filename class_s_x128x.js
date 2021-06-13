@@ -1,7 +1,7 @@
 var class_s_x128x =
 [
     [ "SX128x", "class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7", null ],
-    [ "begin", "class_s_x128x.html#a520bb5a5daa1fee6c0d6704fa929cf35", null ],
+    [ "begin", "class_s_x128x.html#a7927beac8c610dffd06cf95242706f39", null ],
     [ "beginBLE", "class_s_x128x.html#a316340d7ba2a6e7cb5742e3ff21e728c", null ],
     [ "beginFLRC", "class_s_x128x.html#ac7df67afbb0b1a88daf5ec50f3d65660", null ],
     [ "beginGFSK", "class_s_x128x.html#a8dd8ce38bc9d0d8dbd711b373e864e93", null ],
@@ -37,6 +37,7 @@ var class_s_x128x =
     [ "setRfSwitchPins", "class_s_x128x.html#a5f11803b3430bc059321b443f407e78b", null ],
     [ "setSpreadingFactor", "class_s_x128x.html#ae435f57132f76f4283abb870176acf54", null ],
     [ "setSyncWord", "class_s_x128x.html#a0efa595867624a54153d693d16f9f731", null ],
+    [ "setSyncWord", "class_s_x128x.html#a1bef6b6f3058be6b1681c78334342bc1", null ],
     [ "setWhitening", "class_s_x128x.html#a8b3eea268f21bf911b6eaf37c5eb0b5f", null ],
     [ "sleep", "class_s_x128x.html#a1d15e13e15b060ddbbe84257d5fcb66f", null ],
     [ "standby", "class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45", null ],
