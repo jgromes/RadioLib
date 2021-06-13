@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['nrf24_370',['nRF24',['../classn_r_f24.html',1,'']]]
+  ['module_369',['Module',['../class_module.html',1,'']]],
+  ['morseclient_370',['MorseClient',['../class_morse_client.html',1,'']]],
+  ['mqttclient_371',['MQTTClient',['../class_m_q_t_t_client.html',1,'']]]
 ];
