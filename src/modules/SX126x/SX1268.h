@@ -101,6 +101,13 @@ class SX1268: public SX126x {
 
 };
 
+/*!
+  \class LLCC68
+
+  \brief Only exists as alias for SX1268, since there seems to be no difference between %SX1268 and %LLCC68 modules.
+*/
+using LLCC68 = SX1268;
+
 #endif
 
 #endif
