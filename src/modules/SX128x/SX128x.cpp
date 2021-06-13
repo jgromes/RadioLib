@@ -5,7 +5,7 @@ SX128x::SX128x(Module* mod) : PhysicalLayer(SX128X_FREQUENCY_STEP_SIZE, SX128X_M
   _mod = mod;
 }
 
-int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power, uint16_t preambleLength) {
+int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength) {
   // set module properties
   _mod->init(RADIOLIB_USE_SPI);
   Module::pinMode(_mod->getIrq(), INPUT);
@@ -46,6 +46,9 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, int8_t power
   RADIOLIB_ASSERT(state);
 
   state = setCodingRate(cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setSyncWord(syncWord);
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
@@ -904,6 +907,17 @@ int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
     _syncWordMatch = SX128X_GFSK_FLRC_SYNC_WORD_1;
   }
   return(setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening));
+}
+
+int16_t SX128x::setSyncWord(uint8_t syncWord, uint8_t controlBits) {
+  // check active modem
+  if(getPacketType() != SX128X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // update register
+  uint8_t data[2] = {(uint8_t)((syncWord & 0xF0) | ((controlBits & 0xF0) >> 4)), (uint8_t)(((syncWord & 0x0F) << 4) | (controlBits & 0x0F))};
+  return(writeRegister(SX128X_REG_LORA_SYNC_WORD_MSB, data, 2));
 }
 
 int16_t SX128x::setCRC(uint8_t len, uint32_t initial, uint16_t polynomial) {

@@ -375,13 +375,15 @@ class SX128x: public PhysicalLayer {
 
       \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
 
+      \param syncWord 2-byte LoRa sync word. Defaults to SX128X_SYNC_WORD_PRIVATE (0x12).
+
       \param power Output power in dBm. Defaults to 10 dBm.
 
       \param preambleLength LoRa preamble length in symbols. Defaults to 12 symbols.
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 2400.0, float bw = 812.5, uint8_t sf = 9, uint8_t cr = 7, int8_t power = 10, uint16_t preambleLength = 12);
+    int16_t begin(float freq = 2400.0, float bw = 812.5, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX128X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 12);
 
     /*!
       \brief Initialization method for GFSK modem.
@@ -665,6 +667,17 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+
+    /*!
+      \brief Sets LoRa sync word.
+
+      \param syncWord LoRa sync word to be set.
+
+      \param controlBits Undocumented control bits, required for compatibility purposes.
+
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t syncWord, uint8_t controlBits = 0x44);
 
     /*!
       \brief Sets CRC configuration.
