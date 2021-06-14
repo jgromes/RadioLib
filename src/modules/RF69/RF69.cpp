@@ -819,6 +819,14 @@ uint8_t RF69::random() {
   return(randByte);
 }
 
+void RF69::setDirectAction(void (*func)(void)) {
+  setDio1Action(func);
+}
+
+void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
+  updateDirectBuffer((uint8_t)digitalRead(pin));
+}
+
 int16_t RF69::getChipVersion() {
   return(_mod->SPIgetRegValue(RF69_REG_VERSION));
 }
