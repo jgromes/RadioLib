@@ -865,9 +865,16 @@ uint8_t CC1101::random() {
   return(randByte);
 }
 
-
 int16_t CC1101::getChipVersion() {
   return(SPIgetRegValue(CC1101_REG_VERSION));
+}
+
+void CC1101::setDirectAction(void (*func)(void)) {
+  setGdo2Action(func);
+}
+
+void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
+  updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
 int16_t CC1101::config() {
