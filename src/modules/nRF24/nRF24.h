@@ -471,6 +471,20 @@ class nRF24: public PhysicalLayer {
    */
     uint8_t random();
 
+    /*!
+      \brief Dummy method, to ensure PhysicalLayer compatibility.
+
+      \param func Ignored.
+    */
+    void setDirectAction(void (*func)(void));
+
+    /*!
+      \brief Dummy method, to ensure PhysicalLayer compatibility.
+
+      \param pin Ignored.
+    */
+    void readBit(RADIOLIB_PIN_TYPE pin);
+
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
