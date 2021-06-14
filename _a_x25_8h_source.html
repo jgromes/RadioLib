@@ -255,13 +255,11 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    uint16_t _preambleLen = 0;</div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keyword">static</span> uint16_t getFrameCheckSequence(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;    <span class="keyword">static</span> uint8_t flipBits(uint8_t b);</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keyword">static</span> uint16_t flipBits16(uint16_t i);</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;};</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;};</div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_a_x25_frame_html_a75e8ad33c2540ede5bb130050f6ffc41"><div class="ttname"><a href="class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41">AX25Frame::infoLen</a></div><div class="ttdeci">uint16_t infoLen</div><div class="ttdoc">Number of bytes in the information field.</div><div class="ttdef"><b>Definition:</b> AX25.h:128</div></div>
@@ -278,7 +276,7 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="ttc" id="aclass_a_x25_frame_html_a5b63c6b6f69e0ac47ba9230ad39c6830"><div class="ttname"><a href="class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830">AX25Frame::repeaterSSIDs</a></div><div class="ttdeci">uint8_t * repeaterSSIDs</div><div class="ttdoc">Array of repeater SSIDs.</div><div class="ttdef"><b>Definition:</b> AX25.h:154</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_af62935e56dc24bca5d2e2aeb932b63f8"><div class="ttname"><a href="class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8">AX25Frame::destSSID</a></div><div class="ttdeci">uint8_t destSSID</div><div class="ttdoc">SSID of the destination station.</div><div class="ttdef"><b>Definition:</b> AX25.h:98</div></div>
 <div class="ttc" id="aclass_a_x25_client_html_a985790943f3f3e06a2dfdd36977d0b98"><div class="ttname"><a href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">AX25Client::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, const char *destCallsign, uint8_t destSSID=0x00)</div><div class="ttdoc">Transmit unnumbered information (UI) frame.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:186</div></div>
-<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:13</div></div>
+<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a5b196079b539dc417ca65dd4ad622f8f"><div class="ttname"><a href="class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f">AX25Frame::control</a></div><div class="ttdeci">uint8_t control</div><div class="ttdoc">The control field.</div><div class="ttdef"><b>Definition:</b> AX25.h:118</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_adce5294af25f09df752997d33ac0e87f"><div class="ttname"><a href="class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f">AX25Frame::rcvSeqNumber</a></div><div class="ttdeci">uint8_t rcvSeqNumber</div><div class="ttdoc">Receive sequence number.</div><div class="ttdef"><b>Definition:</b> AX25.h:133</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a78e72871e3a9370675318876f4a4b432"><div class="ttname"><a href="class_a_x25_frame.html#a78e72871e3a9370675318876f4a4b432">AX25Frame::destCallsign</a></div><div class="ttdeci">char destCallsign[AX25_MAX_CALLSIGN_LEN+1]</div><div class="ttdoc">Callsign of the destination station.</div><div class="ttdef"><b>Definition:</b> AX25.h:93</div></div>

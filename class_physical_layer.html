@@ -201,6 +201,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a88a10657bd2215a11a2331f937414b55"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a> ()</td></tr>
 <tr class="memdesc:a88a10657bd2215a11a2331f937414b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure module parameters for direct modes. Must be called prior to "ham" modes like RTTY or AX.25. Only available in FSK mode.  <a href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">More...</a><br /></td></tr>
 <tr class="separator:a88a10657bd2215a11a2331f937414b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e378fe136a498ea485a9c10f5e15aab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">setDirectSyncWord</a> (uint32_t syncWord, uint8_t len)</td></tr>
+<tr class="memdesc:a8e378fe136a498ea485a9c10f5e15aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word to be used to determine start of packet in direct reception mode.  <a href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">More...</a><br /></td></tr>
+<tr class="separator:a8e378fe136a498ea485a9c10f5e15aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab76fe7d3e0f453a807b205161c980086"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086">setDirectAction</a> (void(*func)(void))=0</td></tr>
+<tr class="memdesc:ab76fe7d3e0f453a807b205161c980086"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode. Must be implemented in module class.  <a href="class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086">More...</a><br /></td></tr>
+<tr class="separator:ab76fe7d3e0f453a807b205161c980086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ac05c26d08c763388451b0359cb2b1f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6ac05c26d08c763388451b0359cb2b1f">readBit</a> (uint8_t pin)=0</td></tr>
+<tr class="memdesc:a6ac05c26d08c763388451b0359cb2b1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode. Must be implemented in module class.  <a href="class_physical_layer.html#a6ac05c26d08c763388451b0359cb2b1f">More...</a><br /></td></tr>
+<tr class="separator:a6ac05c26d08c763388451b0359cb2b1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab57182d32646861ef0d865e2740d6b26"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">available</a> ()</td></tr>
+<tr class="memdesc:ab57182d32646861ef0d865e2740d6b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of direct mode bytes currently available in buffer.  <a href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">More...</a><br /></td></tr>
+<tr class="separator:ab57182d32646861ef0d865e2740d6b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a929662904e9af2611e098dc13b91c977"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a> ()</td></tr>
+<tr class="memdesc:a929662904e9af2611e098dc13b91c977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">More...</a><br /></td></tr>
+<tr class="separator:a929662904e9af2611e098dc13b91c977"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
@@ -235,7 +250,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freqStep</td><td>Frequency step of the synthesizer in Hz.</td></tr>
-    <tr><td class="paramname">maxPacketLength</td><td>Maximum length of packet that can be received by the module- </td></tr>
+    <tr><td class="paramname">maxPacketLength</td><td>Maximum length of packet that can be received by the module. </td></tr>
   </table>
   </dd>
 </dl>
@@ -243,6 +258,26 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab57182d32646861ef0d865e2740d6b26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab57182d32646861ef0d865e2740d6b26">&#9670;&nbsp;</a></span>available()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::available </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the number of direct mode bytes currently available in buffer. </p>
+<dl class="section return"><dt>Returns</dt><dd>Number of available bytes. </dd></dl>
+
+</div>
+</div>
 <a id="a977e5236693960bb1c79090a201e9e1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a977e5236693960bb1c79090a201e9e1c">&#9670;&nbsp;</a></span>getFreqStep()</h2>
 
@@ -392,6 +427,62 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Random number. </dd></dl>
+
+</div>
+</div>
+<a id="a929662904e9af2611e098dc13b91c977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a929662904e9af2611e098dc13b91c977">&#9670;&nbsp;</a></span>read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t PhysicalLayer::read </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get data from direct mode buffer. </p>
+<dl class="section return"><dt>Returns</dt><dd>Byte from direct mode buffer. </dd></dl>
+
+</div>
+</div>
+<a id="a6ac05c26d08c763388451b0359cb2b1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ac05c26d08c763388451b0359cb2b1f">&#9670;&nbsp;</a></span>readBit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void PhysicalLayer::readBit </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function to read and process data bit in direct reception mode. Must be implemented in module class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin on which to read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_s_x127x.html#ae1e58e9c92557dd0334646a3a4759bbd">SX127x</a>.</p>
 
 </div>
 </div>
@@ -631,6 +722,80 @@ Public Member Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implemented in <a class="el" href="class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6">CC1101</a>, <a class="el" href="class_r_f69.html#a42b99e437454e92c6932c3b7acc1fc4a">RF69</a>, <a class="el" href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">Si443x</a>, <a class="el" href="class_s_x126x.html#a1d8f4deb555844b24c2426dd86e69676">SX126x</a>, <a class="el" href="class_s_x128x.html#a99491c705e88dddc820f884b778f1660">SX128x</a>, <a class="el" href="classn_r_f24.html#a0db248d2bcdb4ca2b401e8e638442916">nRF24</a>, <a class="el" href="class_s_x1278.html#afb740a4925b64d83d5edca10d93f0563">SX1278</a>, and <a class="el" href="class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea">SX1272</a>.</p>
+
+</div>
+</div>
+<a id="ab76fe7d3e0f453a807b205161c980086"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab76fe7d3e0f453a807b205161c980086">&#9670;&nbsp;</a></span>setDirectAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void PhysicalLayer::setDirectAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set interrupt service routine function to call when data bit is receveid in direct mode. Must be implemented in module class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">SX127x</a>.</p>
+
+</div>
+</div>
+<a id="a8e378fe136a498ea485a9c10f5e15aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e378fe136a498ea485a9c10f5e15aab">&#9670;&nbsp;</a></span>setDirectSyncWord()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::setDirectSyncWord </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>syncWord</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set sync word to be used to determine start of packet in direct reception mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">syncWord</td><td>Sync word bits.</td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length in bits.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

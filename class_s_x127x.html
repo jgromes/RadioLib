@@ -274,6 +274,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a> (bool invertIQ)</td></tr>
 <tr class="memdesc:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables Invert the LoRa I and Q signals.  <a href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">More...</a><br /></td></tr>
 <tr class="separator:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3f409359eafa5988e8e4c2948735238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:aa3f409359eafa5988e8e4c2948735238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">More...</a><br /></td></tr>
+<tr class="separator:aa3f409359eafa5988e8e4c2948735238"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1e58e9c92557dd0334646a3a4759bbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae1e58e9c92557dd0334646a3a4759bbd">readBit</a> (uint8_t pin)</td></tr>
+<tr class="memdesc:ae1e58e9c92557dd0334646a3a4759bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_s_x127x.html#ae1e58e9c92557dd0334646a3a4759bbd">More...</a><br /></td></tr>
+<tr class="separator:ae1e58e9c92557dd0334646a3a4759bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab139a34e03a6fd5a781cd54da21d308f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab139a34e03a6fd5a781cd54da21d308f">transmit</a> (__FlashStringHelper *fstr, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ab139a34e03a6fd5a781cd54da21d308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino Flash String transmit method.  <a href="class_s_x127x.html#ab139a34e03a6fd5a781cd54da21d308f">More...</a><br /></td></tr>
 <tr class="separator:ab139a34e03a6fd5a781cd54da21d308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -347,6 +353,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a> ()</td></tr>
 <tr class="memdesc:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure module parameters for direct modes. Must be called prior to "ham" modes like RTTY or AX.25. Only available in FSK mode.  <a href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">More...</a><br /></td></tr>
 <tr class="separator:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e378fe136a498ea485a9c10f5e15aab inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">setDirectSyncWord</a> (uint32_t syncWord, uint8_t len)</td></tr>
+<tr class="memdesc:a8e378fe136a498ea485a9c10f5e15aab inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word to be used to determine start of packet in direct reception mode.  <a href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">More...</a><br /></td></tr>
+<tr class="separator:a8e378fe136a498ea485a9c10f5e15aab inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab57182d32646861ef0d865e2740d6b26 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">available</a> ()</td></tr>
+<tr class="memdesc:ab57182d32646861ef0d865e2740d6b26 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of direct mode bytes currently available in buffer.  <a href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">More...</a><br /></td></tr>
+<tr class="separator:ab57182d32646861ef0d865e2740d6b26 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a929662904e9af2611e098dc13b91c977 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a> ()</td></tr>
+<tr class="memdesc:a929662904e9af2611e098dc13b91c977 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">More...</a><br /></td></tr>
+<tr class="separator:a929662904e9af2611e098dc13b91c977 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> series. All derived classes for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> (e.g. <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> or <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
@@ -817,6 +832,42 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ae1e58e9c92557dd0334646a3a4759bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1e58e9c92557dd0334646a3a4759bbd">&#9670;&nbsp;</a></span>readBit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX127x::readBit </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>pin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function to read and process data bit in direct reception mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin on which to read. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a6ac05c26d08c763388451b0359cb2b1f">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="ae8eed0e888a7c8742e89d2b850977de2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8eed0e888a7c8742e89d2b850977de2">&#9670;&nbsp;</a></span>readData() <span class="overload">[1/3]</span></h2>
 
@@ -1271,6 +1322,42 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="aa3f409359eafa5988e8e4c2948735238"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3f409359eafa5988e8e4c2948735238">&#9670;&nbsp;</a></span>setDirectAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX127x::setDirectAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set interrupt service routine function to call when data bit is receveid in direct mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086">PhysicalLayer</a>.</p>
 
 </div>
 </div>
