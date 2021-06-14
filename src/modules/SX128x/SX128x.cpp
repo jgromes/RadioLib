@@ -1152,6 +1152,18 @@ uint8_t SX128x::random() {
   return(0);
 }
 
+void SX126x::setDirectAction(void (*func)(void)) {
+  // SX128x is unable to perform direct mode reception
+  // this method is implemented only for PhysicalLayer compatibility
+  return(0);
+}
+
+void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
+  // SX128x is unable to perform direct mode reception
+  // this method is implemented only for PhysicalLayer compatibility
+  return(0);
+}
+
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;
   SPIreadCommand(SX128X_CMD_GET_STATUS, &data, 1);
