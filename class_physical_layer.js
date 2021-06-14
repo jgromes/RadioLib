@@ -8,7 +8,7 @@ var class_physical_layer =
     [ "random", "class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53", null ],
     [ "random", "class_physical_layer.html#a76113e10481743094a1cd0280692b0a9", null ],
     [ "read", "class_physical_layer.html#a929662904e9af2611e098dc13b91c977", null ],
-    [ "readBit", "class_physical_layer.html#a6ac05c26d08c763388451b0359cb2b1f", null ],
+    [ "readBit", "class_physical_layer.html#a9b720e7776ad7ea805932578907b0058", null ],
     [ "readData", "class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_physical_layer.html#ae8b6c756eb4b92855433ca389d73c632", null ],
     [ "receive", "class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36", null ],

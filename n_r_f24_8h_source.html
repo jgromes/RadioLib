@@ -333,26 +333,30 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;    uint8_t <a class="code" href="classn_r_f24.html#aeb98b92de42dec7c703888c62e061c3c">random</a>();</div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160; </div>
-<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordtype">void</span> SPIreadRxPayload(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;    <span class="keywordtype">void</span> SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <span class="keywordtype">void</span> SPItransfer(uint8_t cmd, <span class="keywordtype">bool</span> write = <span class="keyword">false</span>, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);</div>
-<div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
-<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;    uint8_t _addrWidth = 0;</div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="keywordtype">void</span> clearIRQ();</div>
-<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;};</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classn_r_f24.html#a3da63a447659f92153654d31a5d2854c">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classn_r_f24.html#a2db0cd487b03f937afc0bc2e3eccb6f6">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
+<div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160; </div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;    <span class="keywordtype">void</span> SPIreadRxPayload(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;    <span class="keywordtype">void</span> SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    <span class="keywordtype">void</span> SPItransfer(uint8_t cmd, <span class="keywordtype">bool</span> write = <span class="keyword">false</span>, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);</div>
+<div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160; </div>
+<div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00500"></a><span class="lineno">  500</span>&#160; </div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;    uint8_t _addrWidth = 0;</div>
+<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160; </div>
+<div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160;    <span class="keywordtype">void</span> clearIRQ();</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;};</div>
+<div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160; </div>
+<div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassn_r_f24_html_a239e94511d9ee67ad3d64a49a5c4d7ac"><div class="ttname"><a href="classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac">nRF24::receive</a></div><div class="ttdeci">int16_t receive(uint8_t *data, size_t len) override</div><div class="ttdoc">Blocking binary receive method. Overloads for string-based transmissions are implemented in PhysicalL...</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:111</div></div>
@@ -363,6 +367,7 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="ttc" id="aclassn_r_f24_html_a23ea1749c21863ebc5bd3a2b08d64f3b"><div class="ttname"><a href="classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b">nRF24::getPacketLength</a></div><div class="ttdeci">size_t getPacketLength(bool update=true) override</div><div class="ttdoc">Query modem for the packet length of received payload.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:447</div></div>
 <div class="ttc" id="aclassn_r_f24_html_aa0e1f2dddf810213410a420205bbd8af"><div class="ttname"><a href="classn_r_f24.html#aa0e1f2dddf810213410a420205bbd8af">nRF24::setTransmitPipe</a></div><div class="ttdeci">int16_t setTransmitPipe(uint8_t *addr)</div><div class="ttdoc">Sets address of transmit pipe. The address width must be the same as the same as the configured in se...</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:334</div></div>
 <div class="ttc" id="aclass_physical_layer_html_ae8eed0e888a7c8742e89d2b850977de2"><div class="ttname"><a href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">PhysicalLayer::readData</a></div><div class="ttdeci">int16_t readData(String &amp;str, size_t len=0)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:59</div></div>
+<div class="ttc" id="aclassn_r_f24_html_a2db0cd487b03f937afc0bc2e3eccb6f6"><div class="ttname"><a href="classn_r_f24.html#a2db0cd487b03f937afc0bc2e3eccb6f6">nRF24::readBit</a></div><div class="ttdeci">void readBit(RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:520</div></div>
 <div class="ttc" id="aclassn_r_f24_html_abf9323748b1a850e6ddc6f6d48f4cfb3"><div class="ttname"><a href="classn_r_f24.html#abf9323748b1a850e6ddc6f6d48f4cfb3">nRF24::setIrqAction</a></div><div class="ttdeci">void setIrqAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when IRQ activates.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:154</div></div>
 <div class="ttc" id="aclassn_r_f24_html_a42fdc828b49f2b8e15457189bd57d917"><div class="ttname"><a href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">nRF24::startTransmit</a></div><div class="ttdeci">int16_t startTransmit(uint8_t *data, size_t len, uint8_t addr) override</div><div class="ttdoc">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted....</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:158</div></div>
 <div class="ttc" id="aclassn_r_f24_html_aeb98b92de42dec7c703888c62e061c3c"><div class="ttname"><a href="classn_r_f24.html#aeb98b92de42dec7c703888c62e061c3c">nRF24::random</a></div><div class="ttdeci">uint8_t random()</div><div class="ttdoc">Dummy random method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:508</div></div>
@@ -371,6 +376,7 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="ttc" id="aclassn_r_f24_html_a5170284f0a5535de7d00216d450b87a4"><div class="ttname"><a href="classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4">nRF24::setFrequencyDeviation</a></div><div class="ttdeci">int16_t setFrequencyDeviation(float freqDev) override</div><div class="ttdoc">Dummy configuration method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:440</div></div>
 <div class="ttc" id="aclassn_r_f24_html_af4f443da5d90e032e5f2f65420515f9c"><div class="ttname"><a href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">nRF24::startReceive</a></div><div class="ttdeci">int16_t startReceive()</div><div class="ttdoc">Interrupt-driven receive method. IRQ will be activated when full packet is received.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:198</div></div>
 <div class="ttc" id="aclassn_r_f24_html_a583d505bd3a638ecc5576dd2dd95f044"><div class="ttname"><a href="classn_r_f24.html#a583d505bd3a638ecc5576dd2dd95f044">nRF24::transmit</a></div><div class="ttdeci">int16_t transmit(uint8_t *data, size_t len, uint8_t addr) override</div><div class="ttdoc">Blocking binary transmit method. Overloads for string-based transmissions are implemented in Physical...</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:80</div></div>
+<div class="ttc" id="aclassn_r_f24_html_a3da63a447659f92153654d31a5d2854c"><div class="ttname"><a href="classn_r_f24.html#a3da63a447659f92153654d31a5d2854c">nRF24::setDirectAction</a></div><div class="ttdeci">void setDirectAction(void(*func)(void))</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:514</div></div>
 <div class="ttc" id="aclassn_r_f24_html_a415d86947742e981bfcf7f2371f8605c"><div class="ttname"><a href="classn_r_f24.html#a415d86947742e981bfcf7f2371f8605c">nRF24::receiveDirect</a></div><div class="ttdeci">int16_t receiveDirect() override</div><div class="ttdoc">Dummy direct mode reception method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:148</div></div>
 <div class="ttc" id="aclassn_r_f24_html_a4dd39e5c0efee1f0c2a14f729eb4426a"><div class="ttname"><a href="classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a">nRF24::disablePipe</a></div><div class="ttdeci">int16_t disablePipe(uint8_t pipeNum)</div><div class="ttdoc">Disables specified receive pipe.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:401</div></div>
 <div class="ttc" id="aclassn_r_f24_html_ab12de8d953c2384c5fff09b4abf65d1e"><div class="ttname"><a href="classn_r_f24.html#ab12de8d953c2384c5fff09b4abf65d1e">nRF24::nRF24</a></div><div class="ttdeci">nRF24(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> nRF24.cpp:4</div></div>

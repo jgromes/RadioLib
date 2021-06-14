@@ -19,7 +19,7 @@ var class_s_x127x =
     [ "invertIQ", "class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04", null ],
     [ "packetMode", "class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1", null ],
     [ "random", "class_s_x127x.html#a6a03da620f9fb532c879900ba05732de", null ],
-    [ "readBit", "class_s_x127x.html#ae1e58e9c92557dd0334646a3a4759bbd", null ],
+    [ "readBit", "class_s_x127x.html#a071442611a32154e8b3db7981f242a53", null ],
     [ "readData", "class_s_x127x.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745", null ],
     [ "readData", "class_s_x127x.html#ae8b6c756eb4b92855433ca389d73c632", null ],

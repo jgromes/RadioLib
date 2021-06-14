@@ -634,44 +634,48 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160; </div>
 <div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638">getChipVersion</a>();</div>
 <div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160; </div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160; </div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160; </div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="keywordtype">float</span> _rxBw = 0;</div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keywordtype">bool</span> _ook = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    int16_t _tempOffset = 0;</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    int8_t _power = 0;</div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160; </div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    uint8_t _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    <span class="keywordtype">bool</span> _promiscuous = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160; </div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;    uint8_t _syncWordLength = 2;</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160; </div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    int16_t directMode();</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160; </div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    int16_t setMode(uint8_t mode);</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;};</div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160; </div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_r_f69.html#a7fd34332bec08828080b1b4a0f8c6e28">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160; </div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160; </div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160; </div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160; </div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    <span class="keywordtype">float</span> _rxBw = 0;</div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    <span class="keywordtype">bool</span> _ook = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    int16_t _tempOffset = 0;</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    int8_t _power = 0;</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    uint8_t _packetLengthConfig = RF69_PACKET_FORMAT_VARIABLE;</div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160; </div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;    <span class="keywordtype">bool</span> _promiscuous = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160; </div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    uint8_t _syncWordLength = 2;</div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160; </div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    int16_t directMode();</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160; </div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    int16_t setMode(uint8_t mode);</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;};</div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160; </div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_r_f69_html_ac205bc487833dc4eae4bb0069c0c4d1e"><div class="ttname"><a href="class_r_f69.html#ac205bc487833dc4eae4bb0069c0c4d1e">RF69::setCrcFiltering</a></div><div class="ttdeci">int16_t setCrcFiltering(bool crcOn=true)</div><div class="ttdoc">Enable CRC filtering and generation.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:715</div></div>
@@ -709,12 +713,14 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="ttc" id="aclass_r_f69_html_adb9fbfedf95f34ac537815870b98a9be"><div class="ttname"><a href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">RF69::setFrequencyDeviation</a></div><div class="ttdeci">int16_t setFrequencyDeviation(float freqDev) override</div><div class="ttdoc">Sets frequency deviation.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:529</div></div>
 <div class="ttc" id="aclass_r_f69_html_a5996fc1751e7542baafa0d6c0a6c78ee"><div class="ttname"><a href="class_r_f69.html#a5996fc1751e7542baafa0d6c0a6c78ee">RF69::disableAddressFiltering</a></div><div class="ttdeci">int16_t disableAddressFiltering()</div><div class="ttdoc">Disables address filtering. Calling this method will also erase previously set addresses.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:643</div></div>
 <div class="ttc" id="aclass_r_f69_html_a26667d50ec845c28e17236c69c886561"><div class="ttname"><a href="class_r_f69.html#a26667d50ec845c28e17236c69c886561">RF69::setSyncWord</a></div><div class="ttdeci">int16_t setSyncWord(uint8_t *syncWord, size_t len, uint8_t maxErrBits=0)</div><div class="ttdoc">Sets sync word. Up to 8 bytes can be set as sync word.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:591</div></div>
+<div class="ttc" id="aclass_r_f69_html_a0ca79ae99c3e0c9d7c097a7acefd6faa"><div class="ttname"><a href="class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa">RF69::readBit</a></div><div class="ttdeci">void readBit(RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Function to read and process data bit in direct reception mode.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:826</div></div>
 <div class="ttc" id="aclass_r_f69_html_a400bb57d2353b57c29cf41a6d9497c80"><div class="ttname"><a href="class_r_f69.html#a400bb57d2353b57c29cf41a6d9497c80">RF69::disableSyncWordFiltering</a></div><div class="ttdeci">int16_t disableSyncWordFiltering()</div><div class="ttdoc">Disable preamble and sync word filtering and generation.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:703</div></div>
 <div class="ttc" id="aclass_r_f69_html_ac4fc3f2b178ef08caec3a9f548f44cd7"><div class="ttname"><a href="class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7">RF69::getRSSI</a></div><div class="ttdeci">float getRSSI()</div><div class="ttdoc">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:795</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 <div class="ttc" id="aclass_physical_layer_html_afb1b090348d9091bfa3a0b5ba3d85b36"><div class="ttname"><a href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">PhysicalLayer::receive</a></div><div class="ttdeci">int16_t receive(String &amp;str, size_t len=0)</div><div class="ttdoc">Arduino String receive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:100</div></div>
 <div class="ttc" id="aclass_r_f69_html_aae828ce8dda16da4e54d2f18b1fb8af2"><div class="ttname"><a href="class_r_f69.html#aae828ce8dda16da4e54d2f18b1fb8af2">RF69::setEncoding</a></div><div class="ttdeci">int16_t setEncoding(uint8_t encoding) override</div><div class="ttdoc">Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER an...</div><div class="ttdef"><b>Definition:</b> RF69.cpp:769</div></div>
 <div class="ttc" id="aclass_r_f69_html_abe5b378d7cc274fd8b75881e7d604bf3"><div class="ttname"><a href="class_r_f69.html#abe5b378d7cc274fd8b75881e7d604bf3">RF69::setAESKey</a></div><div class="ttdeci">void setAESKey(uint8_t *key)</div><div class="ttdoc">Sets AES key.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:229</div></div>
+<div class="ttc" id="aclass_r_f69_html_a7fd34332bec08828080b1b4a0f8c6e28"><div class="ttname"><a href="class_r_f69.html#a7fd34332bec08828080b1b4a0f8c6e28">RF69::setDirectAction</a></div><div class="ttdeci">void setDirectAction(void(*func)(void))</div><div class="ttdoc">Set interrupt service routine function to call when data bit is receveid in direct mode.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:822</div></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level SPI/UART/I2C methods to control the wireless module....</div><div class="ttdef"><b>Definition:</b> Module.h:17</div></div>
 <div class="ttc" id="aclass_r_f69_html_a222682569338abb49d6952430b6eebdd"><div class="ttname"><a href="class_r_f69.html#a222682569338abb49d6952430b6eebdd">RF69::transmitDirect</a></div><div class="ttdeci">int16_t transmitDirect(uint32_t frf=0) override</div><div class="ttdoc">Starts direct mode transmission.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:179</div></div>
 <div class="ttc" id="aclass_r_f69_html_a998ddd21fc152d835c6f1b8d31b02fcc"><div class="ttname"><a href="class_r_f69.html#a998ddd21fc152d835c6f1b8d31b02fcc">RF69::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power, bool highPower=false)</div><div class="ttdoc">Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to ...</div><div class="ttdef"><b>Definition:</b> RF69.cpp:553</div></div>
@@ -722,7 +728,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="ttc" id="aclass_r_f69_html_ac37d9ddee2adcc8876a182b8ebc3e703"><div class="ttname"><a href="class_r_f69.html#ac37d9ddee2adcc8876a182b8ebc3e703">RF69::setAmbientTemperature</a></div><div class="ttdeci">void setAmbientTemperature(int16_t tempAmbient)</div><div class="ttdoc">Sets ambient temperature. Required to correct values from on-board temperature sensor.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:656</div></div>
 <div class="ttc" id="aclass_r_f69_html_a219a046c10ddcc0a787ad19346ecad6a"><div class="ttname"><a href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">RF69::setOokThresholdType</a></div><div class="ttdeci">int16_t setOokThresholdType(uint8_t type)</div><div class="ttdoc">Selects the type of threshold in the OOK data slicer.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:384</div></div>
 <div class="ttc" id="aclass_r_f69_html_a472a04041551cb38d2223fb34f71d8eb"><div class="ttname"><a href="class_r_f69.html#a472a04041551cb38d2223fb34f71d8eb">RF69::sleep</a></div><div class="ttdeci">int16_t sleep()</div><div class="ttdoc">Sets the module to sleep mode.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:163</div></div>
-<div class="ttc" id="aclass_r_f69_html_a0c30202b2d52eb32f43066bc0f938638"><div class="ttname"><a href="class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638">RF69::getChipVersion</a></div><div class="ttdeci">int16_t getChipVersion()</div><div class="ttdoc">Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if SX127x is connected and working.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:822</div></div>
+<div class="ttc" id="aclass_r_f69_html_a0c30202b2d52eb32f43066bc0f938638"><div class="ttname"><a href="class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638">RF69::getChipVersion</a></div><div class="ttdeci">int16_t getChipVersion()</div><div class="ttdoc">Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if SX127x is connected and working.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:830</div></div>
 <div class="ttc" id="aclass_r_f69_html_a643a711bcb4b7771a7ab1f457e61a417"><div class="ttname"><a href="class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417">RF69::enableSyncWordFiltering</a></div><div class="ttdeci">int16_t enableSyncWordFiltering(uint8_t maxErrBits=0)</div><div class="ttdoc">Enable sync word filtering and generation.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:698</div></div>
 <div class="ttc" id="aclass_r_f69_html_af62ebde1ea34a394b9781a21ae348c39"><div class="ttname"><a href="class_r_f69.html#af62ebde1ea34a394b9781a21ae348c39">RF69::variablePacketLengthMode</a></div><div class="ttdeci">int16_t variablePacketLengthMode(uint8_t maxLen=RF69_MAX_PACKET_LENGTH)</div><div class="ttdoc">Set modem in variable packet length mode.</div><div class="ttdef"><b>Definition:</b> RF69.cpp:694</div></div>
 <div class="ttc" id="aclass_r_f69_html_a855dc194947b095b821ec1524ba6814c"><div class="ttname"><a href="class_r_f69.html#a855dc194947b095b821ec1524ba6814c">RF69::startTransmit</a></div><div class="ttdeci">int16_t startTransmit(uint8_t *data, size_t len, uint8_t addr=0) override</div><div class="ttdoc">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in ...</div><div class="ttdef"><b>Definition:</b> RF69.cpp:292</div></div>
