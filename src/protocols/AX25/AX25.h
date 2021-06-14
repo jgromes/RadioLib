@@ -344,8 +344,6 @@ class AX25Client {
     uint16_t _preambleLen = 0;
 
     static uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
-    static uint8_t flipBits(uint8_t b);
-    static uint16_t flipBits16(uint16_t i);
 };
 
 #endif

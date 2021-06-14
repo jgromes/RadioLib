@@ -468,6 +468,16 @@ class Module {
     */
     static uint32_t micros();
 
+    /*!
+      \brief Function to reflect bits within a byte.
+    */
+    static uint8_t flipBits(uint8_t b);
+
+    /*!
+      \brief Function to reflect bits within an integer.
+    */
+    static uint16_t flipBits16(uint16_t i);
+
 #ifndef RADIOLIB_GODMODE
   private:
 #endif

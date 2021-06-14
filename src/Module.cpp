@@ -398,6 +398,21 @@ uint32_t Module::micros() {
   return(::micros());
 }
 
+uint8_t Module::flipBits(uint8_t b) {
+  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
+  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
+  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
+  return b;
+}
+
+uint16_t Module::flipBits16(uint16_t i) {
+  i = (i & 0xFF00) >> 8 | (i & 0x00FF) << 8;
+  i = (i & 0xF0F0) >> 4 | (i & 0x0F0F) << 4;
+  i = (i & 0xCCCC) >> 2 | (i & 0x3333) << 2;
+  i = (i & 0xAAAA) >> 1 | (i & 0x5555) << 1;
+  return i;
+}
+
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _useRfSwitch = true;
   _rxEn = rxEn;

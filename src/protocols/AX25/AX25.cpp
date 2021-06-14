@@ -283,7 +283,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // flip bit order
   for(size_t i = 0; i < frameBuffLen; i++) {
-    frameBuff[i] = flipBits(frameBuff[i]);
+    frameBuff[i] = Module::flipBits(frameBuff[i]);
   }
 
   // calculate FCS
@@ -441,22 +441,7 @@ uint16_t AX25Client::getFrameCheckSequence(uint8_t* buff, size_t len) {
     }
   }
 
-  return(flipBits16(~shiftReg));
-}
-
-uint8_t AX25Client::flipBits(uint8_t b) {
-  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-  return b;
-}
-
-uint16_t AX25Client::flipBits16(uint16_t i) {
-  i = (i & 0xFF00) >> 8 | (i & 0x00FF) << 8;
-  i = (i & 0xF0F0) >> 4 | (i & 0x0F0F) << 4;
-  i = (i & 0xCCCC) >> 2 | (i & 0x3333) << 2;
-  i = (i & 0xAAAA) >> 1 | (i & 0x5555) << 1;
-  return i;
+  return(Module::flipBits16(~shiftReg));
 }
 
 #endif
