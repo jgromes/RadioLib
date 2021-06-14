@@ -16,6 +16,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __ESP8266__ WiFi module
 * __HC05__ Bluetooth module
 * __JDY08__ BLE module
+* __LLCC68__ LoRa module
 * __nRF24L01__ 2.4 GHz module
 * __RF69__ FSK/OOK radio module
 * __RFM2x__ series FSK modules (RFM22, RM23)
