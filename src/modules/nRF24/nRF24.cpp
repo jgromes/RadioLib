@@ -514,13 +514,13 @@ uint8_t nRF24::random() {
 void nRF24::setDirectAction(void (*func)(void)) {
   // nRF24 is unable to perform direct mode actions
   // this method is implemented only for PhysicalLayer compatibility
-  return(0);
+  (void)func;
 }
 
 void nRF24::readBit(RADIOLIB_PIN_TYPE pin) {
   // nRF24 is unable to perform direct mode actions
   // this method is implemented only for PhysicalLayer compatibility
-  return(0);
+  (void)pin;
 }
 
 void nRF24::clearIRQ() {
