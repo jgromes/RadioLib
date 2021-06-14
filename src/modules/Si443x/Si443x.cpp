@@ -571,6 +571,14 @@ int16_t Si443x::getChipVersion() {
   return(_mod->SPIgetRegValue(SI443X_REG_DEVICE_VERSION));
 }
 
+void Si443x::setDirectAction(void (*func)(void)) {
+  setIrqAction(func);
+}
+
+void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
+  updateDirectBuffer((uint8_t)digitalRead(pin));
+}
+
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
