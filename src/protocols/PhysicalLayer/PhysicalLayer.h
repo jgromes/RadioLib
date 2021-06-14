@@ -282,7 +282,7 @@ class PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    virtual void readBit(uint8_t pin) = 0;
+    virtual void readBit(RADIOLIB_PIN_TYPE pin) = 0;
 
     /*!
       \brief Get the number of direct mode bytes currently available in buffer.
