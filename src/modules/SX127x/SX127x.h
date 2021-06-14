@@ -1038,7 +1038,7 @@ class SX127x: public PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    void readBit(uint8_t pin);
+    void readBit(RADIOLIB_PIN_TYPE pin);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:

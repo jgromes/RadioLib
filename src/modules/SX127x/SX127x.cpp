@@ -1300,7 +1300,7 @@ void SX127x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
 
-void SX127x::readBit(uint8_t pin) {
+void SX127x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
