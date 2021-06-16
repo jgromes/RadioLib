@@ -870,7 +870,7 @@ int16_t CC1101::getChipVersion() {
 }
 
 void CC1101::setDirectAction(void (*func)(void)) {
-  setGdo2Action(func);
+  setGdo0Action(func);
 }
 
 void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
