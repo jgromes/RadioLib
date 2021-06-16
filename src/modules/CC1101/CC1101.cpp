@@ -904,6 +904,7 @@ int16_t CC1101::directMode() {
 
   // set continuous mode
   state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  state |= SPIsetRegValue(CC1101_REG_PKTCTRL0, CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
   return(state);
 }
 
