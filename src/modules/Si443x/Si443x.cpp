@@ -140,8 +140,7 @@ int16_t Si443x::standby() {
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, LOW);
 
-  //return(_mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_XTAL_ON, 7, 0, 10));
-  return(ERR_NONE);
+  return(_mod->SPIsetRegValue(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_XTAL_ON, 7, 0, 10));
 }
 
 int16_t Si443x::transmitDirect(uint32_t frf) {
