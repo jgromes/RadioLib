@@ -199,6 +199,9 @@ int16_t Si443x::receiveDirect() {
 }
 
 int16_t Si443x::packetMode() {
+  int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_FSK, 1, 0);
+  RADIOLIB_ASSERT(state);
+
   return(_mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_TX_DATA_SOURCE_FIFO, 5, 4));
 }
 
