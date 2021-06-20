@@ -269,7 +269,7 @@ int16_t Si443x::startReceive() {
   _mod->setRfSwitchState(HIGH, LOW);
 
   // set interrupt mapping
-  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_PACKET_SENT_ENABLED);
+  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_1, SI443X_VALID_PACKET_RECEIVED_ENABLED | SI443X_CRC_ERROR_ENABLED);
   _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
 
   // set mode to receive
