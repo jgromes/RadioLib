@@ -4,6 +4,7 @@ var dir_ddb4d7e95cc2d6c8e1ade10a20d7247d =
     [ "ESP8266", "dir_ec8372b468150f98f42c73cf97f51298.html", "dir_ec8372b468150f98f42c73cf97f51298" ],
     [ "HC05", "dir_66baa0cb3ce3b01929266fe63d8714ed.html", "dir_66baa0cb3ce3b01929266fe63d8714ed" ],
     [ "JDY08", "dir_31c953e8b112b915d208fa745d66f12e.html", "dir_31c953e8b112b915d208fa745d66f12e" ],
+    [ "LLCC68", "dir_17a0c4358d096e2caf9f04fe2ab66c1d.html", "dir_17a0c4358d096e2caf9f04fe2ab66c1d" ],
     [ "nRF24", "dir_8d5439df06ea2679013aa8390703d116.html", "dir_8d5439df06ea2679013aa8390703d116" ],
     [ "RF69", "dir_3a277ada553fbb989028f9b071a02542.html", "dir_3a277ada553fbb989028f9b071a02542" ],
     [ "RFM2x", "dir_1496c164e9c77875dd570f4157f3157f.html", "dir_1496c164e9c77875dd570f4157f3157f" ],

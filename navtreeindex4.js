@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"group__status__codes.html#gabd7da172470aea37cd7b5d0300b89ad8":[2,4,45],
+"group__status__codes.html#gac1fec2f7cf44d57a670a90d49de224dd":[2,4,6],
+"group__status__codes.html#gac4980128c06104656146109af0a944e4":[2,4,66],
+"group__status__codes.html#gac852eedc5c168b511bbc83abce3123e7":[2,4,39],
+"group__status__codes.html#gac9ca6ac94f8a11579c418e63943c056d":[2,4,36],
 "group__status__codes.html#gaccd2c15a0a2372183a64c7796fa3207f":[2,4,48],
 "group__status__codes.html#gacd4ead53ff1363d12e2f2c3ebdf2caae":[2,4,30],
 "group__status__codes.html#gacfda389267c561c2ab2ac5c368954d0c":[2,4,68],
@@ -30,10 +35,10 @@ var NAVTREEINDEX4 =
 "group__uart__config.html#gad418f0922126e27279d1a374fc63e036":[2,1,8],
 "group__uart__config.html#gae077d53c5c120a989b1f285f183f1b78":[2,1,3],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[2],
-"n_r_f24_8h_source.html":[4,0,0,0,4,0],
+"n_r_f24_8h_source.html":[4,0,0,0,5,0],
 "pages.html":[],
 "struct_s_s_t_v_mode__t.html":[3,0,30],
 "struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad":[3,0,30,3],

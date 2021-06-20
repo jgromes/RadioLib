@@ -11,7 +11,7 @@ var annotated_dup =
     [ "ISerial", "class_i_serial.html", "class_i_serial" ],
     [ "ITA2String", "class_i_t_a2_string.html", "class_i_t_a2_string" ],
     [ "JDY08", "class_j_d_y08.html", "class_j_d_y08" ],
-    [ "LLCC68", "class_l_l_c_c68.html", null ],
+    [ "LLCC68", "class_l_l_c_c68.html", "class_l_l_c_c68" ],
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],
     [ "MQTTClient", "class_m_q_t_t_client.html", "class_m_q_t_t_client" ],
