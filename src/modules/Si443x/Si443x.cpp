@@ -586,10 +586,12 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
   // check high/low band
   uint8_t bandSelect = SI443X_BAND_SELECT_LOW;
   uint8_t freqBand = (newFreq / 10) - 24;
+  uint8_t afcLimiter = 80;
   _freq = newFreq;
   if(newFreq >= 480.0) {
     bandSelect = SI443X_BAND_SELECT_HIGH;
     freqBand = (newFreq / 20) - 24;
+    afcLimiter = 40;
   }
 
   // calculate register values
@@ -599,6 +601,7 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
   state = _mod->SPIsetRegValue(SI443X_REG_FREQUENCY_BAND_SELECT, bandSelect | freqBand, 5, 0);
   state |= _mod->SPIsetRegValue(SI443X_REG_NOM_CARRIER_FREQUENCY_1, (uint8_t)((freqCarrier & 0xFF00) >> 8));
   state |= _mod->SPIsetRegValue(SI443X_REG_NOM_CARRIER_FREQUENCY_0, (uint8_t)(freqCarrier & 0xFF));
+  state |= _mod->SPIsetRegValue(SI443X_REG_AFC_LIMITER, afcLimiter);
 
   return(state);
 }
@@ -646,6 +649,10 @@ int16_t Si443x::config() {
 
   // disable POR and chip ready interrupts
   _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
+
+  // enable AGC
+  state = _mod->SPIsetRegValue(SI443X_REG_AGC_OVERRIDE_1, SI443X_AGC_GAIN_INCREASE_ON | SI443X_AGC_ON, 6, 5);
+  RADIOLIB_ASSERT(state);
 
   // disable packet header
   state = _mod->SPIsetRegValue(SI443X_REG_HEADER_CONTROL_2, SI443X_SYNC_WORD_TIMEOUT_ON | SI443X_HEADER_LENGTH_HEADER_NONE, 7, 4);
