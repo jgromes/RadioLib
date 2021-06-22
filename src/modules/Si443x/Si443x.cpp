@@ -747,6 +747,12 @@ int16_t Si443x::directMode() {
   int16_t state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_TX_DATA_SOURCE_GPIO, 5, 4);
   RADIOLIB_ASSERT(state);
 
+  state = _mod->SPIsetRegValue(SI443X_REG_GPIO1_CONFIG, SI443X_GPIOX_TX_RX_DATA_CLK_OUT, 4, 0);
+  RADIOLIB_ASSERT(state);
+
+  state = _mod->SPIsetRegValue(SI443X_REG_GPIO2_CONFIG, SI443X_GPIOX_TX_DATA_IN, 4, 0);
+  RADIOLIB_ASSERT(state);
+
   state = _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_MODULATION_NONE, 1, 0);
   return(state);
 }
