@@ -1058,7 +1058,7 @@ void SX127x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-uint8_t SX127x::random() {
+uint8_t SX127x::randomByte() {
   // check active modem
   uint8_t rssiValueReg = SX127X_REG_RSSI_WIDEBAND;
   if(getActiveModem() == SX127X_FSK_OOK) {
