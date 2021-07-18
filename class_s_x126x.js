@@ -17,7 +17,7 @@ var class_s_x126x =
     [ "getSNR", "class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca", null ],
     [ "getTimeOnAir", "class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10", null ],
     [ "implicitHeader", "class_s_x126x.html#adec09cba71494bd927ad1da786606ca6", null ],
-    [ "random", "class_s_x126x.html#a3dd88861454d8b6e742470dee04961be", null ],
+    [ "randomByte", "class_s_x126x.html#a819bb3ced0f184a63cbfbef408a68561", null ],
     [ "readBit", "class_s_x126x.html#aff80db65e546934980feac7e6c81dd80", null ],
     [ "readData", "class_s_x126x.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2", null ],

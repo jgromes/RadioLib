@@ -183,9 +183,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae365087803b88b29932b5c793edff1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ae365087803b88b29932b5c793edff1d4">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
 <tr class="memdesc:ae365087803b88b29932b5c793edff1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="class_si443x.html#ae365087803b88b29932b5c793edff1d4">More...</a><br /></td></tr>
 <tr class="separator:ae365087803b88b29932b5c793edff1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad371b44fc0c4ddd3ed39e2595e85b5df"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df">random</a> ()</td></tr>
-<tr class="memdesc:ad371b44fc0c4ddd3ed39e2595e85b5df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df">More...</a><br /></td></tr>
-<tr class="separator:ad371b44fc0c4ddd3ed39e2595e85b5df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74848176d435227e601c86ff37b0edbe"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">randomByte</a> ()</td></tr>
+<tr class="memdesc:a74848176d435227e601c86ff37b0edbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">More...</a><br /></td></tr>
+<tr class="separator:a74848176d435227e601c86ff37b0edbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55252bda74e8c67636a8c1fa0e9f58d3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">getChipVersion</a> ()</td></tr>
 <tr class="memdesc:a55252bda74e8c67636a8c1fa0e9f58d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return SI443X_DEVICE_VERSION (0x06) if <a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> is connected and working.  <a href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">More...</a><br /></td></tr>
 <tr class="separator:a55252bda74e8c67636a8c1fa0e9f58d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -435,8 +435,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad371b44fc0c4ddd3ed39e2595e85b5df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad371b44fc0c4ddd3ed39e2595e85b5df">&#9670;&nbsp;</a></span>random()</h2>
+<a id="a74848176d435227e601c86ff37b0edbe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74848176d435227e601c86ff37b0edbe">&#9670;&nbsp;</a></span>randomByte()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,7 +445,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">uint8_t Si443x::random </td>
+          <td class="memname">uint8_t Si443x::randomByte </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -461,7 +461,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Get one truly random byte from RSSI noise. </p>
 <dl class="section return"><dt>Returns</dt><dd>TRNG byte. </dd></dl>
 
-<p>Implements <a class="el" href="class_physical_layer.html#a5bf5bac5b015aa9312025255ca503d4f">PhysicalLayer</a>.</p>
+<p>Implements <a class="el" href="class_physical_layer.html#a34543b885aa57ade08a4c659991e523e">PhysicalLayer</a>.</p>
 
 </div>
 </div>

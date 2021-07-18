@@ -46,7 +46,7 @@ var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
 "class_module.html#a1d1a279cc7e1ab92e30c29c4dcca26a3",
-"class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f",
+"class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71",
 "class_si443x.html#a1382fc3b68f447e381613e6670747128",
 "group__status__codes.html#gabd7da172470aea37cd7b5d0300b89ad8"
 ];

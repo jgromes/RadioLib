@@ -6,7 +6,7 @@ var class_si443x =
     [ "getChipVersion", "class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3", null ],
     [ "getPacketLength", "class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10", null ],
     [ "packetMode", "class_si443x.html#a616eb24c4b11c5d39caaade160be8092", null ],
-    [ "random", "class_si443x.html#ad371b44fc0c4ddd3ed39e2595e85b5df", null ],
+    [ "randomByte", "class_si443x.html#a74848176d435227e601c86ff37b0edbe", null ],
     [ "readBit", "class_si443x.html#a45d3ffcb312c34a2f6391be6d609d7b7", null ],
     [ "readData", "class_si443x.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e", null ],

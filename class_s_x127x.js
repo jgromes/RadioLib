@@ -18,7 +18,7 @@ var class_s_x127x =
     [ "getTempRaw", "class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1", null ],
     [ "invertIQ", "class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04", null ],
     [ "packetMode", "class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1", null ],
-    [ "random", "class_s_x127x.html#a6a03da620f9fb532c879900ba05732de", null ],
+    [ "randomByte", "class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450", null ],
     [ "readBit", "class_s_x127x.html#a071442611a32154e8b3db7981f242a53", null ],
     [ "readData", "class_s_x127x.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745", null ],

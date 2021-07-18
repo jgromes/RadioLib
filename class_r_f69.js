@@ -15,7 +15,7 @@ var class_r_f69 =
     [ "getRSSI", "class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7", null ],
     [ "getTemperature", "class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853", null ],
     [ "packetMode", "class_r_f69.html#a6a67dd698b3cc6afcaf18c3710ad5f0f", null ],
-    [ "random", "class_r_f69.html#a54cd7be92e166659b50bd6ed4433db4c", null ],
+    [ "randomByte", "class_r_f69.html#a2023f0f22aad00a702bdf598c2154043", null ],
     [ "readBit", "class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa", null ],
     [ "readData", "class_r_f69.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_r_f69.html#a3983b66c83818b4082805bcafc712f00", null ],

@@ -14,7 +14,7 @@ var class_c_c1101 =
     [ "getPromiscuousMode", "class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6", null ],
     [ "getRSSI", "class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551", null ],
     [ "packetMode", "class_c_c1101.html#a38f6978c757b0dd73e3ef98164a735a2", null ],
-    [ "random", "class_c_c1101.html#aeea507b71f1a3dfab5be4c3a1606b8fd", null ],
+    [ "randomByte", "class_c_c1101.html#a7ecf49d530ea7c29dd755f56db17d833", null ],
     [ "readBit", "class_c_c1101.html#a5cebec89fc0fa0f5ccbce28c6ce7d2dc", null ],
     [ "readData", "class_c_c1101.html#ae8eed0e888a7c8742e89d2b850977de2", null ],
     [ "readData", "class_c_c1101.html#a8c79975a7bbe8a37f8214ecd1f69ba22", null ],
