@@ -790,7 +790,7 @@ class Si443x: public PhysicalLayer {
 
      \returns TRNG byte.
    */
-    uint8_t random();
+    uint8_t randomByte();
 
     /*!
      \brief Read version SPI register. Should return SI443X_DEVICE_VERSION (0x06) if Si443x is connected and working.

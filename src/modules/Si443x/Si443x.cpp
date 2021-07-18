@@ -550,7 +550,7 @@ void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-uint8_t Si443x::random() {
+uint8_t Si443x::randomByte() {
   // set mode to Rx
   _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_RX_ON | SI443X_XTAL_ON);
 
