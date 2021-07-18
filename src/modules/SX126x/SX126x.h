@@ -885,7 +885,7 @@ class SX126x: public PhysicalLayer {
 
     \returns TRNG byte.
   */
-   uint8_t random();
+   uint8_t randomByte();
 
    /*!
      \brief Dummy method, to ensure PhysicalLayer compatibility.

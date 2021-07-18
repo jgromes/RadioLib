@@ -1192,7 +1192,7 @@ int16_t SX126x::autoLDRO() {
   return(ERR_NONE);
 }
 
-uint8_t SX126x::random() {
+uint8_t SX126x::randomByte() {
   // set mode to Rx
   setRx(SX126X_RX_TIMEOUT_INF);
 
