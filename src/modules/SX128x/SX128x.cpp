@@ -1146,7 +1146,7 @@ void SX128x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-uint8_t SX128x::random() {
+uint8_t SX128x::randomByte() {
   // it's unclear whether SX128x can measure RSSI while not receiving a packet
   // this method is implemented only for PhysicalLayer compatibility
   return(0);

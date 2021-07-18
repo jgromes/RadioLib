@@ -782,7 +782,7 @@ class SX128x: public PhysicalLayer {
 
      \returns Always returns 0.
    */
-    uint8_t random();
+    uint8_t randomByte();
 
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
