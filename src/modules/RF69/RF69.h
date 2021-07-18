@@ -860,7 +860,7 @@ class RF69: public PhysicalLayer {
 
      \returns TRNG byte.
    */
-    uint8_t random();
+    uint8_t randomByte();
 
     /*!
      \brief Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if SX127x is connected and working.

@@ -800,7 +800,7 @@ void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-uint8_t RF69::random() {
+uint8_t RF69::randomByte() {
   // set mode to Rx
   setMode(RF69_RX);
 
