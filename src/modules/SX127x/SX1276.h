@@ -54,7 +54,7 @@ class SX1276: public SX1278 {
     /*!
       \brief FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
 
-      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
+      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 1020.0 MHz.
 
       \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
 
