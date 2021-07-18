@@ -159,6 +159,10 @@ int32_t PhysicalLayer::random(int32_t max) {
 
   // create 32-bit TRNG number
   int32_t randNum = ((int32_t)randBuff[0] << 24) | ((int32_t)randBuff[1] << 16) | ((int32_t)randBuff[2] << 8) | ((int32_t)randBuff[3]);
+  if(randNum < 0) {
+    randNum *= -1;
+  }
+  RADIOLIB_DEBUG_PRINTLN(randNum);
   return(randNum % max);
 }
 
