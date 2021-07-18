@@ -154,7 +154,7 @@ int32_t PhysicalLayer::random(int32_t max) {
   // get random bytes from the radio
   uint8_t randBuff[4];
   for(uint8_t i = 0; i < 4; i++) {
-    randBuff[i] = random();
+    randBuff[i] = randomByte();
   }
 
   // create 32-bit TRNG number

@@ -250,7 +250,7 @@ class PhysicalLayer {
 
       \returns TRNG byte.
     */
-    virtual uint8_t random() = 0;
+    virtual uint8_t randomByte() = 0;
 
     /*!
       \brief Configure module parameters for direct modes. Must be called prior to "ham" modes like RTTY or AX.25. Only available in FSK mode.
