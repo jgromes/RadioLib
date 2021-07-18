@@ -846,9 +846,10 @@ void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-uint8_t CC1101::random() {
+uint8_t CC1101::randomByte() {
   // set mode to Rx
   SPIsendCommand(CC1101_CMD_RX);
+  RADIOLIB_DEBUG_PRINTLN("random");
 
   // wait a bit for the RSSI reading to stabilise
   Module::delay(10);

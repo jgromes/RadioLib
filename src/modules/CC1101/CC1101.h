@@ -888,7 +888,7 @@ class CC1101: public PhysicalLayer {
 
      \returns TRNG byte.
    */
-    uint8_t random();
+    uint8_t randomByte();
 
     /*!
      \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if CC1101 is connected and working.
