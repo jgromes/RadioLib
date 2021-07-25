@@ -21,6 +21,9 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
     RADIOLIB_DEBUG_PRINTLN(F("M\tSi443x"));
   }
 
+  // reset the device
+  _mod->SPIwriteRegister(SI443X_REG_OP_FUNC_CONTROL_1, SI443X_SOFTWARE_RESET);
+
   // clear POR interrupt
   clearIRQFlags();
 
