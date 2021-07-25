@@ -93,11 +93,6 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   standby();
 
-  // the next transmission will timeout without the following
-  _mod->SPIwriteRegister(SI443X_REG_INTERRUPT_ENABLE_2, 0x00);
-  _mod->SPIsetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_2, SI443X_TX_DATA_SOURCE_FIFO, 5, 4);
-  state = setFrequencyRaw(_freq);
-
   return(state);
 }
 
@@ -486,19 +481,19 @@ int16_t Si443x::setSyncWord(uint8_t* syncWord, size_t len) {
 }
 
 int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
-  // Si443x configures preamble length in bytes
-  if(preambleLen % 8 != 0) {
+  // Si443x configures preamble length in 4-bit nibbles
+  if(preambleLen % 4 != 0) {
     return(ERR_INVALID_PREAMBLE_LENGTH);
   }
 
   // set default preamble length
-  uint8_t preLenBytes = preambleLen / 8;
-  int16_t state = _mod->SPIsetRegValue(SI443X_REG_PREAMBLE_LENGTH, preLenBytes);
+  uint8_t preLenNibbles = preambleLen / 4;
+  int16_t state = _mod->SPIsetRegValue(SI443X_REG_PREAMBLE_LENGTH, preLenNibbles);
   RADIOLIB_ASSERT(state);
 
-  // set default preamble detection threshold to 50% of preamble length (in units of 4 bits)
-  uint8_t preThreshold = preambleLen / 4;
-  return(_mod->SPIsetRegValue(SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 4, 7, 3));
+  // set default preamble detection threshold to 5/8 of preamble length (in units of 4 bits)
+  uint8_t preThreshold = 5*preLenNibbles / 8;
+  return(_mod->SPIsetRegValue(SI443X_REG_PREAMBLE_DET_CONTROL, preThreshold << 3, 7, 3));
 }
 
 size_t Si443x::getPacketLength(bool update) {
