@@ -677,40 +677,24 @@ int16_t Si443x::updateClockRecovery() {
   uint8_t manch = _mod->SPIgetRegValue(SI443X_REG_MODULATION_MODE_CONTROL_1, 1, 1) >> 1;
 
   // calculate oversampling ratio, NCO offset and clock recovery gain
-  float rxOsr = ((float)(500 * (1 + 2*bypass))) / (((float)((uint16_t)(1) << decRate)) * _br * ((float)(1 + manch)));
+  int8_t ndecExp = (int8_t)decRate - 3;
+  float ndec = 0;
+  if(ndecExp > 0) {
+    ndec = (uint16_t)1 << ndecExp;
+  } else {
+    ndecExp *= -1;
+    ndec = 1.0/(float)((uint16_t)1 << ndecExp);
+  }
+  float rxOsr = ((float)(500 * (1 + 2*bypass))) / (ndec * _br * ((float)(1 + manch)));
   uint32_t ncoOff = (_br * (1 + manch) * ((uint32_t)(1) << (20 + decRate))) / (500 * (1 + 2*bypass));
   uint16_t crGain = 2 + (((float)(65536.0 * (1 + manch)) * _br) / (rxOsr * (_freqDev / 0.625)));
-
-  // convert oversampling ratio from float to fixed point
-  uint8_t rxOsr_int = (uint8_t)rxOsr;
-  uint8_t rxOsr_dec = 0;
-  float rxOsr_temp = rxOsr;
-  if((rxOsr_temp - rxOsr_int) >= 0.5) {
-    rxOsr_dec |= 0x04;
-    rxOsr_temp -= 0.5;
-  }
-  if((rxOsr_temp - rxOsr_int) >= 0.25) {
-    rxOsr_dec |= 0x02;
-    rxOsr_temp -= 0.25;
-  }
-  if((rxOsr_temp - rxOsr_int) >= 0.125) {
-    rxOsr_dec |= 0x01;
-  }
-  uint16_t rxOsr_fixed = ((uint16_t)rxOsr_int << 3) | ((uint16_t)rxOsr_dec);
+  uint16_t rxOsr_fixed = (uint16_t)rxOsr;
 
   // print that whole mess
   RADIOLIB_DEBUG_PRINTLN(bypass, HEX);
   RADIOLIB_DEBUG_PRINTLN(decRate, HEX);
   RADIOLIB_DEBUG_PRINTLN(manch, HEX);
   RADIOLIB_DEBUG_PRINT(rxOsr, 3);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINT(rxOsr_int);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINT(rxOsr_int, HEX);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINT(rxOsr_dec);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINT(rxOsr_dec, HEX);
   RADIOLIB_DEBUG_PRINT('\t');
   RADIOLIB_DEBUG_PRINT(rxOsr_fixed);
   RADIOLIB_DEBUG_PRINT('\t');
