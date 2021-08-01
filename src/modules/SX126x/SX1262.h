@@ -27,7 +27,7 @@ class SX1262: public SX126x {
 
     // basic methods
 
-    /*!
+	/*!
       \brief Initialization method for LoRa modem.
 
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -44,13 +44,11 @@ class SX1262: public SX126x {
 
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
 
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, bool useRegulatorLDO = false);
 
-    /*!
+	/*!
       \brief Initialization method for FSK modem.
 
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
@@ -65,13 +63,11 @@ class SX1262: public SX126x {
 
       \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
-
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, bool useRegulatorLDO = false);
 
     // configuration methods
 
@@ -94,6 +90,18 @@ class SX1262: public SX126x {
       \returns \ref status_codes
     */
     int16_t setOutputPower(int8_t power);
+	
+	/*!
+      \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration. - Stub for SX1262
+
+      \param TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V. Set to 0 to disable TCXO.
+      NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).
+
+      \param TCXO timeout in us. Defaults to 5000 us.
+
+      \returns \ref status_codes
+    */
+    int16_t setTCXO(float voltage, uint32_t delay = 5000);
 
 #if !defined(RADIOLIB_GODMODE)
   private:
