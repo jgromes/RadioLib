@@ -17,7 +17,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     int16_t version = getChipVersion();
-    if((version == CC1101_VERSION_CURRENT) || (version == CC1101_VERSION_LEGACY)) {
+    if((version == CC1101_VERSION_CURRENT) || (version == CC1101_VERSION_LEGACY) || (version == CC1101_VERSION_CLONE)) {
       flagFound = true;
     } else {
       #ifdef RADIOLIB_DEBUG
