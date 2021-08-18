@@ -77,6 +77,10 @@ void loop() {
     Serial.print(F("[CC1101] LQI:\t\t"));
     Serial.println(radio.getLQI());
 
+  } else if (state == ERR_RX_TIMEOUT) {
+    // timeout occurred while waiting for a packet
+    Serial.println(F("timeout!"));
+
   } else if (state == ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));

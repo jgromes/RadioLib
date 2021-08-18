@@ -144,21 +144,9 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
-  // wait for sync word or timeout
+  // wait for packet or timeout
   uint32_t start = Module::micros();
   while(!Module::digitalRead(_mod->getIrq())) {
-    Module::yield();
-
-    if(Module::micros() - start > timeout) {
-      standby();
-      SPIsendCommand(CC1101_CMD_FLUSH_TX);
-      return(ERR_RX_TIMEOUT);
-    }
-  }
-
-  // wait for packet end or timeout
-  start = Module::micros();
-  while(Module::digitalRead(_mod->getIrq())) {
     Module::yield();
 
     if(Module::micros() - start > timeout) {
