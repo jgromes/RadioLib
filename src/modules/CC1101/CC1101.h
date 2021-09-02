@@ -947,10 +947,14 @@ class CC1101: public PhysicalLayer {
     uint8_t _syncWordLength = 2;
     int8_t _power = 0;
 
+    void (*gdo0action)(void)  = nullptr;
+    RADIOLIB_INTERRUPT_STATUS gdo0dir;
+
     int16_t config();
     int16_t directMode();
     static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    void reattachGdo0Interrupt();
 };
 
 #endif

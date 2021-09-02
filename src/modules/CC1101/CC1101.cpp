@@ -95,11 +95,25 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   return(state);
 }
 
+void CC1101::reattachGdo0Interrupt()
+{
+    if (gdo0action != nullptr)
+        Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), gdo0action, gdo0dir);
+}
+
+static void handleTxInterrupt(void)
+{
+    return;
+}
+
+
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
   uint32_t timeout = 5000000 + (uint32_t)((((float)(len * 8)) / (_br * 1000.0)) * 5000000.0);
 
-  // start transmission
+    Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), handleTxInterrupt, gdo0dir);
+
+    // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
@@ -109,7 +123,8 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
     Module::yield();
 
     if(Module::micros() - start > timeout) {
-      standby();
+        reattachGdo0Interrupt();
+        standby();
       SPIsendCommand(CC1101_CMD_FLUSH_TX);
       return(ERR_TX_TIMEOUT);
     }
@@ -121,12 +136,14 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
     Module::yield();
 
     if(Module::micros() - start > timeout) {
+        reattachGdo0Interrupt();
       standby();
       SPIsendCommand(CC1101_CMD_FLUSH_TX);
       return(ERR_TX_TIMEOUT);
     }
   }
 
+    reattachGdo0Interrupt();
   // set mode to standby
   standby();
 
@@ -212,10 +229,13 @@ int16_t CC1101::packetMode() {
 }
 
 void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
+    gdo0action = func;
+    gdo0dir = dir;
+  Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), gdo0action, gdo0dir);
 }
 
 void CC1101::clearGdo0Action() {
+    gdo0action = nullptr;
   Module::detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
