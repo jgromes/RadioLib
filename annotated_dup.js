@@ -25,6 +25,7 @@ var annotated_dup =
     [ "RFM97", "class_r_f_m97.html", "class_r_f_m97" ],
     [ "RFM98", "class_r_f_m98.html", null ],
     [ "RTTYClient", "class_r_t_t_y_client.html", "class_r_t_t_y_client" ],
+    [ "SerialModule", "class_serial_module.html", "class_serial_module" ],
     [ "Si4430", "class_si4430.html", "class_si4430" ],
     [ "Si4431", "class_si4431.html", "class_si4431" ],
     [ "Si4432", "class_si4432.html", "class_si4432" ],

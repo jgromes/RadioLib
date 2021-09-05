@@ -86,22 +86,29 @@ $(document).ready(function(){initNavTree('class_module.html',''); initResizable(
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_module-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Module Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Implements all common low-level SPI/UART/I2C methods to control the wireless module. Every module class contains one private instance of this class.  
+<p>Implements all common low-level SPI/UART methods to control the wireless module. Every module class contains one private instance of this class.  
  <a href="class_module.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_module_8h_source.html">Module.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Module:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_module.png" usemap="#Module_map" alt=""/>
+  <map id="Module_map" name="Module_map">
+<area href="class_serial_module.html" title="Extension of Module class for UART-based modules, only exists to distinguish the UART constructor." alt="SerialModule" shape="rect" coords="0,56,87,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5ea76bc25ef979ec1ff90c032e476004"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a5ea76bc25ef979ec1ff90c032e476004">Module</a> (RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial *serial=nullptr, RADIOLIB_PIN_TYPE rst=RADIOLIB_NC)</td></tr>
-<tr class="memdesc:a5ea76bc25ef979ec1ff90c032e476004"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART-based module constructor.  <a href="class_module.html#a5ea76bc25ef979ec1ff90c032e476004">More...</a><br /></td></tr>
-<tr class="separator:a5ea76bc25ef979ec1ff90c032e476004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06b2e1f1eb9e07a280e55f517f2fab38"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst)</td></tr>
 <tr class="memdesc:a06b2e1f1eb9e07a280e55f517f2fab38"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI-based module constructor. Will use the default SPI interface automatically initialize it.  <a href="class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38">More...</a><br /></td></tr>
 <tr class="separator:a06b2e1f1eb9e07a280e55f517f2fab38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,63 +273,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ae89764d15e8df5694a6aec0e18f72d3f">SPIwriteCommand</a> = 0b10000000</td></tr>
 <tr class="memdesc:ae89764d15e8df5694a6aec0e18f72d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic SPI write command. Defaults to 0x80. <br /></td></tr>
 <tr class="separator:ae89764d15e8df5694a6aec0e18f72d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a5d5cccbb54f87aeffd144ecc5261511c"><td class="memItemLeft" align="right" valign="top"><a id="a5d5cccbb54f87aeffd144ecc5261511c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SerialModule</b></td></tr>
+<tr class="separator:a5d5cccbb54f87aeffd144ecc5261511c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Implements all common low-level SPI/UART/I2C methods to control the wireless module. Every module class contains one private instance of this class. </p>
+<div class="textblock"><p>Implements all common low-level SPI/UART methods to control the wireless module. Every module class contains one private instance of this class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5ea76bc25ef979ec1ff90c032e476004"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5ea76bc25ef979ec1ff90c032e476004">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/7]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Module::Module </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>rx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>tx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">HardwareSerial *&#160;</td>
-          <td class="paramname"><em>serial</em> = <code>nullptr</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>rst</em> = <code>RADIOLIB_NC</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>UART-based module constructor. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">rx</td><td>Arduino pin to be used as Rx pin for SoftwareSerial communication.</td></tr>
-    <tr><td class="paramname">tx</td><td>Arduino pin to be used as Tx pin for SoftwareSerial communication.</td></tr>
-    <tr><td class="paramname">serial</td><td>HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.</td></tr>
-    <tr><td class="paramname">rst</td><td>Arduino pin to be used as hardware reset for the module. Defaults to NC (unused). </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a06b2e1f1eb9e07a280e55f517f2fab38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06b2e1f1eb9e07a280e55f517f2fab38">&#9670;&nbsp;</a></span>Module() <span class="overload">[2/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a06b2e1f1eb9e07a280e55f517f2fab38">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +328,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <a id="ae8709b81f592a23ebd72ba3fd8066b0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8709b81f592a23ebd72ba3fd8066b0f">&#9670;&nbsp;</a></span>Module() <span class="overload">[3/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8709b81f592a23ebd72ba3fd8066b0f">&#9670;&nbsp;</a></span>Module() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -417,7 +379,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <a id="ac65f3d9e022b3284134ced1c20bcff09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac65f3d9e022b3284134ced1c20bcff09">&#9670;&nbsp;</a></span>Module() <span class="overload">[4/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac65f3d9e022b3284134ced1c20bcff09">&#9670;&nbsp;</a></span>Module() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -475,7 +437,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <a id="a53d99944916b750dc1c69890f370680e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53d99944916b750dc1c69890f370680e">&#9670;&nbsp;</a></span>Module() <span class="overload">[5/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a53d99944916b750dc1c69890f370680e">&#9670;&nbsp;</a></span>Module() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +502,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <a id="a56456ade4eeffa2c566a6fc3fd098276"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56456ade4eeffa2c566a6fc3fd098276">&#9670;&nbsp;</a></span>Module() <span class="overload">[6/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a56456ade4eeffa2c566a6fc3fd098276">&#9670;&nbsp;</a></span>Module() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,7 +581,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <a id="a919baf2e46c357ebfcdbc1025b6c551e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a919baf2e46c357ebfcdbc1025b6c551e">&#9670;&nbsp;</a></span>Module() <span class="overload">[7/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a919baf2e46c357ebfcdbc1025b6c551e">&#9670;&nbsp;</a></span>Module() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,7 +599,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Copy constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td><a class="el" href="class_module.html" title="Implements all common low-level SPI/UART/I2C methods to control the wireless module....">Module</a> instance to copy. </td></tr>
+    <tr><td class="paramname">mod</td><td><a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a> instance to copy. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1267,7 +1229,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Overload for assignment operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frame</td><td>rvalue <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART/I2C methods to control the wireless module....">Module</a>. </td></tr>
+    <tr><td class="paramname">frame</td><td>rvalue <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a>. </td></tr>
   </table>
   </dd>
 </dl>

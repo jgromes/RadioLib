@@ -11,7 +11,9 @@ var hierarchy =
       [ "XBeeSerial", "class_x_bee_serial.html", null ]
     ] ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
-    [ "Module", "class_module.html", null ],
+    [ "Module", "class_module.html", [
+      [ "SerialModule", "class_serial_module.html", null ]
+    ] ],
     [ "MorseClient", "class_morse_client.html", null ],
     [ "MQTTClient", "class_m_q_t_t_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [

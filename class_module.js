@@ -1,6 +1,5 @@
 var class_module =
 [
-    [ "Module", "class_module.html#a5ea76bc25ef979ec1ff90c032e476004", null ],
     [ "Module", "class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38", null ],
     [ "Module", "class_module.html#ae8709b81f592a23ebd72ba3fd8066b0f", null ],
     [ "Module", "class_module.html#ac65f3d9e022b3284134ced1c20bcff09", null ],
@@ -31,6 +30,7 @@ var class_module =
     [ "SPIwriteRegister", "class_module.html#ab814614ddd34b57f5a612a20f5fe4c57", null ],
     [ "SPIwriteRegisterBurst", "class_module.html#a9d77a08070cbd48fd4ece62a739333e9", null ],
     [ "term", "class_module.html#af0569f6930da7bee761eeca8158aed3a", null ],
+    [ "SerialModule", "class_module.html#a5d5cccbb54f87aeffd144ecc5261511c", null ],
     [ "AtLineFeed", "class_module.html#a9d8ab2ff353bad5d0e7568d300a48ba0", null ],
     [ "baudrate", "class_module.html#a128ead3f3198e3b06d39a128a5d6c777", null ],
     [ "ModuleSerial", "class_module.html#a99556decb983f682b98220ae5434b004", null ],
