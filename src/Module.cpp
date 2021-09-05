@@ -1,5 +1,18 @@
 #include "Module.h"
 
+SerialModule::SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst):
+  Module(RADIOLIB_NC, RADIOLIB_NC, (RADIOLIB_PIN_TYPE)rst, (RADIOLIB_PIN_TYPE)rx, (RADIOLIB_PIN_TYPE)tx, RADIOLIB_DEFAULT_SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), NULL)
+{
+  _initInterface = true;
+
+#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+  ModuleSerial = serial;
+#else
+  ModuleSerial = new SoftwareSerial(rx, tx);
+  (void)serial;
+#endif
+}
+
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst):
   _cs(cs),
   _irq(irq),
@@ -24,24 +37,6 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   _spi = &RADIOLIB_DEFAULT_SPI;
   _initInterface = true;
   ModuleSerial = NULL;
-}
-
-Module::Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst):
-  _cs(RADIOLIB_NC),
-  _irq(RADIOLIB_NC),
-  _rst(rst),
-  _rx(rx),
-  _tx(tx),
-  _spiSettings(SPISettings(2000000, MSBFIRST, SPI_MODE0))
-{
-  _initInterface = true;
-
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-  ModuleSerial = serial;
-#else
-  ModuleSerial = new SoftwareSerial(_rx, _tx);
-  (void)serial;
-#endif
 }
 
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, SPIClass& spi, SPISettings spiSettings):

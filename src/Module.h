@@ -11,29 +11,11 @@
 /*!
   \class Module
 
-  \brief Implements all common low-level SPI/UART/I2C methods to control the wireless module.
+  \brief Implements all common low-level SPI/UART methods to control the wireless module.
   Every module class contains one private instance of this class.
 */
 class Module {
   public:
-
-    /*!
-      \brief UART-based module constructor.
-
-      \param rx Arduino pin to be used as Rx pin for SoftwareSerial communication.
-
-      \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
-
-      \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
-
-      \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
-    */
-#ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-    Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
-#else
-    Module(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
-#endif
-
     /*!
       \brief SPI-based module constructor. Will use the default SPI interface automatically initialize it.
 
@@ -481,21 +463,55 @@ class Module {
 #ifndef RADIOLIB_GODMODE
   private:
 #endif
+    // allow SerialModule class to access private members
+    friend class SerialModule;
+
+    // whether RadioLib should automatically initalize selected SPI or UART interface
+    bool _initInterface = false;
+
+    // pins
     RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _rx = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _tx = RADIOLIB_NC;
 
+    // SPI settings
     SPISettings _spiSettings = SPISettings(2000000, MSBFIRST, SPI_MODE0);
-
-    bool _initInterface = false;
     SPIClass* _spi = NULL;
 
+    // RF switch presence and pins
     bool _useRfSwitch = false;
-    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC, _txEn = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;
 
+    // AT command timeout in milliseconds
     uint32_t _ATtimeout = 15000;
+};
+
+/*!
+  \class SerialModule
+
+  \brief Extension of Module class for UART-based modules, only exists to distinguish the UART constructor.
+*/
+class SerialModule: public Module {
+  public:
+    /*!
+      \brief UART-based module constructor.
+
+      \param rx Arduino pin to be used as Rx pin for SoftwareSerial communication.
+
+      \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
+
+      \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
+
+      \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
+    */
+    #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+    #else
+        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+    #endif
 };
 
 #endif

@@ -9,6 +9,7 @@
 RadioLib	KEYWORD1
 RadioShield	KEYWORD1
 Module	KEYWORD1
+SerialModule	KEYWORD1
 
 # modules
 CC1101	KEYWORD1
