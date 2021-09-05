@@ -230,6 +230,7 @@ setRepeaters	KEYWORD2
 setRecvSequence	KEYWORD2
 setSendSequence	KEYWORD2
 sendFrame	KEYWORD2
+setCorrection	KEYWORD2
 
 # SSTV
 sendHeader	KEYWORD2

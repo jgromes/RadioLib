@@ -292,6 +292,17 @@ class AX25Client {
       \param audio Pointer to the AFSK instance providing audio.
     */
     explicit AX25Client(AFSKClient* audio);
+
+    /*!
+      \brief Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones.
+
+      \param mark Positive or negative correction offset for mark audio frequency in Hz.
+
+      \param space Positive or negative correction offset for space audio frequency in Hz.
+
+      \returns \ref status_codes
+    */
+    int16_t setCorrection(int16_t mark, int16_t space);
     #endif
 
     // basic methods
@@ -337,6 +348,8 @@ class AX25Client {
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
+    uint32_t _afskMark;
+    uint32_t _afskSpace;
     #endif
 
     char _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};

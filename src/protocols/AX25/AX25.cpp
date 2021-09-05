@@ -160,6 +160,14 @@ AX25Client::AX25Client(PhysicalLayer* phy) {
 AX25Client::AX25Client(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
+  _afskMark = AX25_AFSK_MARK;
+  _afskSpace = AX25_AFSK_SPACE;
+}
+
+int16_t AX25Client::setCorrection(int16_t mark, int16_t space) {
+  _afskMark = AX25_AFSK_MARK + mark;
+  _afskSpace = AX25_AFSK_SPACE + space;
+  return(ERR_NONE);
 }
 #endif
 
@@ -393,9 +401,9 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
       for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
         uint32_t start = Module::micros();
         if(stuffedFrameBuff[i] & mask) {
-          _audio->tone(AX25_AFSK_MARK, false);
+          _audio->tone(_afskMark, false);
         } else {
-          _audio->tone(AX25_AFSK_SPACE, false);
+          _audio->tone(_afskSpace, false);
         }
         while(Module::micros() - start < AX25_AFSK_TONE_DURATION) {
           Module::yield();

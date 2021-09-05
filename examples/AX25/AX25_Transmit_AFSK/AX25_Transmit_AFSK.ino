@@ -74,6 +74,22 @@ void setup() {
     Serial.println(state);
     while(true);
   }
+
+  // Sometimes, it may be required to adjust audio
+  // frequencies to match the expected 1200/2200 Hz tones.
+  // The following method will offset mark frequency by
+  // 100 Hz up and space frequency by 100 Hz down
+  /*
+    Serial.print(F("[AX.25] Setting correction ... "));
+    state = ax25.setCorrection(100, -100);
+    if(state == ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
+    }
+  */
 }
 
 void loop() {
