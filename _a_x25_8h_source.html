@@ -232,34 +232,38 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
 <div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
 <div class="line"><a name="l00294"></a><span class="lineno">  294</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">AX25Client</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
-<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00296"></a><span class="lineno">  296</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">begin</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* srcCallsign, uint8_t srcSSID = 0x00, uint8_t preambleLen = 8);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160; </div>
-<div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, <span class="keyword">const</span> <span class="keywordtype">char</span>* destCallsign, uint8_t destSSID = 0x00);</div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160; </div>
-<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6">sendFrame</a>(<a class="code" href="class_a_x25_frame.html">AX25Frame</a>* frame);</div>
-<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
-<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00336"></a><span class="lineno">  336</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
-<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160; </div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordtype">char</span> _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    uint8_t _srcSSID = 0;</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;    uint16_t _preambleLen = 0;</div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;    <span class="keyword">static</span> uint16_t getFrameCheckSequence(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;};</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00295"></a><span class="lineno">  295</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#aa6a10784d59428a4d5c13067ba6af69c">setCorrection</a>(int16_t mark, int16_t space);</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160; </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">begin</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* srcCallsign, uint8_t srcSSID = 0x00, uint8_t preambleLen = 8);</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, <span class="keyword">const</span> <span class="keywordtype">char</span>* destCallsign, uint8_t destSSID = 0x00);</div>
+<div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6">sendFrame</a>(<a class="code" href="class_a_x25_frame.html">AX25Frame</a>* frame);</div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;    uint32_t _afskMark;</div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    uint32_t _afskSpace;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordtype">char</span> _srcCallsign[AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    uint8_t _srcSSID = 0;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    uint16_t _preambleLen = 0;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160; </div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    <span class="keyword">static</span> uint16_t getFrameCheckSequence(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;};</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160; </div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_a_x25_frame_html_a75e8ad33c2540ede5bb130050f6ffc41"><div class="ttname"><a href="class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41">AX25Frame::infoLen</a></div><div class="ttdeci">uint16_t infoLen</div><div class="ttdoc">Number of bytes in the information field.</div><div class="ttdef"><b>Definition:</b> AX25.h:128</div></div>
@@ -269,13 +273,14 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:17</div></div>
 <div class="ttc" id="aclass_a_x25_client_html"><div class="ttname"><a href="class_a_x25_client.html">AX25Client</a></div><div class="ttdoc">Client for AX25 communication.</div><div class="ttdef"><b>Definition:</b> AX25.h:279</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_aa82f006b84b71b9c5d036a4946a65988"><div class="ttname"><a href="class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988">AX25Frame::info</a></div><div class="ttdeci">uint8_t * info</div><div class="ttdoc">The info field.</div><div class="ttdef"><b>Definition:</b> AX25.h:144</div></div>
-<div class="ttc" id="aclass_a_x25_client_html_a38be2b9385e4804339b3e4b57b90c2ca"><div class="ttname"><a href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">AX25Client::begin</a></div><div class="ttdeci">int16_t begin(const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preambleLen=8)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:166</div></div>
+<div class="ttc" id="aclass_a_x25_client_html_a38be2b9385e4804339b3e4b57b90c2ca"><div class="ttname"><a href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">AX25Client::begin</a></div><div class="ttdeci">int16_t begin(const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preambleLen=8)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:174</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a7f2d9f4f1ba29d0fd9f9f3f2cf03f797"><div class="ttname"><a href="class_a_x25_frame.html#a7f2d9f4f1ba29d0fd9f9f3f2cf03f797">AX25Frame::setRepeaters</a></div><div class="ttdeci">int16_t setRepeaters(char **repeaterCallsigns, uint8_t *repeaterSSIDs, uint8_t numRepeaters)</div><div class="ttdoc">Method to set the repeater callsigns and SSIDs.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:109</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a4696a8eede8bac85f0ee6de6fee79ea8"><div class="ttname"><a href="class_a_x25_frame.html#a4696a8eede8bac85f0ee6de6fee79ea8">AX25Frame::setRecvSequence</a></div><div class="ttdeci">void setRecvSequence(uint8_t seqNumber)</div><div class="ttdoc">Method to set receive sequence number.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:144</div></div>
 <div class="ttc" id="aclass_a_x25_client_html_ab074563d4d22a42d5ea9ad1693d6f373"><div class="ttname"><a href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">AX25Client::AX25Client</a></div><div class="ttdeci">AX25Client(PhysicalLayer *phy)</div><div class="ttdoc">Constructor for 2-FSK mode.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:152</div></div>
+<div class="ttc" id="aclass_a_x25_client_html_aa6a10784d59428a4d5c13067ba6af69c"><div class="ttname"><a href="class_a_x25_client.html#aa6a10784d59428a4d5c13067ba6af69c">AX25Client::setCorrection</a></div><div class="ttdeci">int16_t setCorrection(int16_t mark, int16_t space)</div><div class="ttdoc">Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the...</div><div class="ttdef"><b>Definition:</b> AX25.cpp:167</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a5b63c6b6f69e0ac47ba9230ad39c6830"><div class="ttname"><a href="class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830">AX25Frame::repeaterSSIDs</a></div><div class="ttdeci">uint8_t * repeaterSSIDs</div><div class="ttdoc">Array of repeater SSIDs.</div><div class="ttdef"><b>Definition:</b> AX25.h:154</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_af62935e56dc24bca5d2e2aeb932b63f8"><div class="ttname"><a href="class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8">AX25Frame::destSSID</a></div><div class="ttdeci">uint8_t destSSID</div><div class="ttdoc">SSID of the destination station.</div><div class="ttdef"><b>Definition:</b> AX25.h:98</div></div>
-<div class="ttc" id="aclass_a_x25_client_html_a985790943f3f3e06a2dfdd36977d0b98"><div class="ttname"><a href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">AX25Client::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, const char *destCallsign, uint8_t destSSID=0x00)</div><div class="ttdoc">Transmit unnumbered information (UI) frame.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:186</div></div>
+<div class="ttc" id="aclass_a_x25_client_html_a985790943f3f3e06a2dfdd36977d0b98"><div class="ttname"><a href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">AX25Client::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, const char *destCallsign, uint8_t destSSID=0x00)</div><div class="ttdoc">Transmit unnumbered information (UI) frame.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:194</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a5b196079b539dc417ca65dd4ad622f8f"><div class="ttname"><a href="class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f">AX25Frame::control</a></div><div class="ttdeci">uint8_t control</div><div class="ttdoc">The control field.</div><div class="ttdef"><b>Definition:</b> AX25.h:118</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_adce5294af25f09df752997d33ac0e87f"><div class="ttname"><a href="class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f">AX25Frame::rcvSeqNumber</a></div><div class="ttdeci">uint8_t rcvSeqNumber</div><div class="ttdoc">Receive sequence number.</div><div class="ttdef"><b>Definition:</b> AX25.h:133</div></div>
@@ -287,7 +292,7 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="ttc" id="aclass_a_x25_frame_html_a138d97d90a371bef7ebd86cce1cc4979"><div class="ttname"><a href="class_a_x25_frame.html#a138d97d90a371bef7ebd86cce1cc4979">AX25Frame::AX25Frame</a></div><div class="ttdeci">AX25Frame(const char *destCallsign, uint8_t destSSID, const char *srcCallsign, uint8_t srcSSID, uint8_t control)</div><div class="ttdoc">Overloaded constructor, for frames without info field.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:4</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a52e7e5f6f48c3e62544721d2a5e00640"><div class="ttname"><a href="class_a_x25_frame.html#a52e7e5f6f48c3e62544721d2a5e00640">AX25Frame::operator=</a></div><div class="ttdeci">AX25Frame &amp; operator=(const AX25Frame &amp;frame)</div><div class="ttdoc">Overload for assignment operator.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:74</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_ad27453a838ba90f917a1a9853358bb9a"><div class="ttname"><a href="class_a_x25_frame.html#ad27453a838ba90f917a1a9853358bb9a">AX25Frame::numRepeaters</a></div><div class="ttdeci">uint8_t numRepeaters</div><div class="ttdoc">Number of repeaters to be used.</div><div class="ttdef"><b>Definition:</b> AX25.h:113</div></div>
-<div class="ttc" id="aclass_a_x25_client_html_a341db993853c6817a8f6c7087ead0ba6"><div class="ttname"><a href="class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6">AX25Client::sendFrame</a></div><div class="ttdeci">int16_t sendFrame(AX25Frame *frame)</div><div class="ttdoc">Transmit arbitrary AX.25 frame.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:197</div></div>
+<div class="ttc" id="aclass_a_x25_client_html_a341db993853c6817a8f6c7087ead0ba6"><div class="ttname"><a href="class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6">AX25Client::sendFrame</a></div><div class="ttdeci">int16_t sendFrame(AX25Frame *frame)</div><div class="ttdoc">Transmit arbitrary AX.25 frame.</div><div class="ttdef"><b>Definition:</b> AX25.cpp:205</div></div>
 <div class="ttc" id="aclass_a_x25_frame_html_a29eb08c9e72bbaced8d37dcb2343ee94"><div class="ttname"><a href="class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94">AX25Frame::repeaterCallsigns</a></div><div class="ttdeci">char ** repeaterCallsigns</div><div class="ttdoc">Array of repeater callsigns.</div><div class="ttdef"><b>Definition:</b> AX25.h:149</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

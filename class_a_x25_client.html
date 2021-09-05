@@ -103,6 +103,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a6e81e629817cdf1b377e4b4f7e4d6520">AX25Client</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
 <tr class="memdesc:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <a href="class_a_x25_client.html#a6e81e629817cdf1b377e4b4f7e4d6520">More...</a><br /></td></tr>
 <tr class="separator:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6a10784d59428a4d5c13067ba6af69c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#aa6a10784d59428a4d5c13067ba6af69c">setCorrection</a> (int16_t mark, int16_t space)</td></tr>
+<tr class="memdesc:aa6a10784d59428a4d5c13067ba6af69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones.  <a href="class_a_x25_client.html#aa6a10784d59428a4d5c13067ba6af69c">More...</a><br /></td></tr>
+<tr class="separator:aa6a10784d59428a4d5c13067ba6af69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">begin</a> (const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preambleLen=8)</td></tr>
 <tr class="memdesc:a38be2b9385e4804339b3e4b57b90c2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">More...</a><br /></td></tr>
 <tr class="separator:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,6 +253,44 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frame</td><td>Frame to be sent.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa6a10784d59428a4d5c13067ba6af69c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6a10784d59428a4d5c13067ba6af69c">&#9670;&nbsp;</a></span>setCorrection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t AX25Client::setCorrection </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>mark</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>space</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mark</td><td>Positive or negative correction offset for mark audio frequency in Hz.</td></tr>
+    <tr><td class="paramname">space</td><td>Positive or negative correction offset for space audio frequency in Hz.</td></tr>
   </table>
   </dd>
 </dl>
