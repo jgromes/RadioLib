@@ -15,7 +15,7 @@
 // HC05 has the following connections:
 // TX pin: 9
 // RX pin: 8
-HC05 bluetooth = new Module(9, 8);
+HC05 bluetooth = new SerialModule(9, 8);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
