@@ -14,7 +14,7 @@
 // JDY08 has the following connections:
 // TX pin: 9
 // RX pin: 8
-JDY08 ble = new Module(9, 8);
+JDY08 ble = new SerialModule(9, 8);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
