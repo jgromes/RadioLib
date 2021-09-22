@@ -308,6 +308,7 @@ class SX1278: public SX127x {
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
+    void errataFix(bool rx);
 
 #if !defined(RADIOLIB_GODMODE)
   private:

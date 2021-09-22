@@ -10,11 +10,6 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // mitigation of receiver spurious response
-  // see SX1272/73 Errata, section 2.2 for details
-  state = _mod->SPIsetRegValue(0x31, 0b10000000, 7, 7);
-  RADIOLIB_ASSERT(state);
-
   // configure publicly accessible settings
   state = setBandwidth(bw);
   RADIOLIB_ASSERT(state);
@@ -497,6 +492,14 @@ int16_t SX1272::configFSK() {
   // set fast PLL hop
   state = _mod->SPIsetRegValue(SX1272_REG_PLL_HOP, SX127X_FAST_HOP_ON, 7, 7);
   return(state);
+}
+
+void SX1272::errataFix(bool rx) {
+  (void)rx;
+
+  // mitigation of receiver spurious response
+  // see SX1272/73 Errata, section 2.2 for details
+  _mod->SPIsetRegValue(0x31, 0b10000000, 7, 7);
 }
 
 #endif
