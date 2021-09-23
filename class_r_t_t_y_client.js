@@ -27,6 +27,7 @@ var class_r_t_t_y_client =
     [ "println", "class_r_t_t_y_client.html#a56981a884b5d76d820493dddb7d605ec", null ],
     [ "println", "class_r_t_t_y_client.html#a4cdfebbf555f3e02e650df8eef2386b8", null ],
     [ "println", "class_r_t_t_y_client.html#ac5d60281fe24f0724ffd727034d2851d", null ],
+    [ "standby", "class_r_t_t_y_client.html#a928dd206749d68b8ce450e14c24b9f22", null ],
     [ "write", "class_r_t_t_y_client.html#a094aa9c3506c0620d01e9c5e04a60e3e", null ],
     [ "write", "class_r_t_t_y_client.html#a49169d8cf3b4121f6930a9c70e3dc9dc", null ],
     [ "write", "class_r_t_t_y_client.html#a077a21423deee0393cead0b3a239691f", null ]
