@@ -127,6 +127,13 @@ class RTTYClient {
     */
     void idle();
 
+    /*!
+      \brief Stops transmitting.
+
+      \returns \ref status_codes
+    */
+    int16_t standby();
+
     size_t write(const char* str);
     size_t write(uint8_t* buff, size_t len);
     size_t write(uint8_t b);
@@ -178,7 +185,6 @@ class RTTYClient {
     size_t printFloat(double, uint8_t);
 
     int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
-    int16_t standby();
 };
 
 #endif

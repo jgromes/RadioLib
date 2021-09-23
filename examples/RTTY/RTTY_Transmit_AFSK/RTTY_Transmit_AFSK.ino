@@ -123,6 +123,9 @@ void loop() {
   float f = -3.1415;
   rtty.println(f, 3);
 
+  // turn the transmitter off
+  rtty.standby();
+
   Serial.println(F("done!"));
 
   // wait for a second before transmitting again

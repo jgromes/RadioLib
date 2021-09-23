@@ -202,8 +202,6 @@ size_t RTTYClient::write(uint8_t b) {
     mark();
   }
 
-  standby();
-
   return(1);
 }
 
