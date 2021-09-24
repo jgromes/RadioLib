@@ -2,6 +2,7 @@ var dir_79690749eba542503bb1a9a3dbb495e1 =
 [
     [ "AFSK", "dir_70c194bd40717a4946dbd8bc35f09b17.html", "dir_70c194bd40717a4946dbd8bc35f09b17" ],
     [ "AX25", "dir_2d04440730a0443b949b3f3ffedccfc3.html", "dir_2d04440730a0443b949b3f3ffedccfc3" ],
+    [ "FSK4", "dir_daa71c65dcbe444af3aedb7a2ef08741.html", "dir_daa71c65dcbe444af3aedb7a2ef08741" ],
     [ "Hellschreiber", "dir_c14921ab4918e015c91d11c846a1924a.html", "dir_c14921ab4918e015c91d11c846a1924a" ],
     [ "HTTP", "dir_47c60a953c7c148861b9fe25d51850eb.html", "dir_47c60a953c7c148861b9fe25d51850eb" ],
     [ "Morse", "dir_d916eb25599dc82f14db514c97a6ae6d.html", "dir_d916eb25599dc82f14db514c97a6ae6d" ],

@@ -5,6 +5,7 @@ var annotated_dup =
     [ "AX25Frame", "class_a_x25_frame.html", "class_a_x25_frame" ],
     [ "CC1101", "class_c_c1101.html", "class_c_c1101" ],
     [ "ESP8266", "class_e_s_p8266.html", "class_e_s_p8266" ],
+    [ "FSK4Client", "class_f_s_k4_client.html", "class_f_s_k4_client" ],
     [ "HC05", "class_h_c05.html", "class_h_c05" ],
     [ "HellClient", "class_hell_client.html", "class_hell_client" ],
     [ "HTTPClient", "class_h_t_t_p_client.html", "class_h_t_t_p_client" ],

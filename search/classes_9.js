@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['physicallayer_382',['PhysicalLayer',['../class_physical_layer.html',1,'']]]
+  ['nrf24_383',['nRF24',['../classn_r_f24.html',1,'']]]
 ];

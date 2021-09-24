@@ -3,6 +3,7 @@ var hierarchy =
     [ "AFSKClient", "class_a_f_s_k_client.html", null ],
     [ "AX25Client", "class_a_x25_client.html", null ],
     [ "AX25Frame", "class_a_x25_frame.html", null ],
+    [ "FSK4Client", "class_f_s_k4_client.html", null ],
     [ "HellClient", "class_hell_client.html", null ],
     [ "HTTPClient", "class_h_t_t_p_client.html", null ],
     [ "ISerial", "class_i_serial.html", [
