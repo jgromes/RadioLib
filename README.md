@@ -73,6 +73,9 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * __MCUdude__
   * [__MegaCoreX__](https://github.com/MCUdude/MegaCoreX) - megaAVR-0 series (ATmega4809, ATmega3209 etc.)
 
+* __Raspberry Pi__
+  * [__RP2040__](https://github.com/arduino/ArduinoCore-mbed) - Raspberry Pi Pico and Arduino Nano RP2040 Connect
+
 The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms prior to releasing new version.
 
 ### In development:

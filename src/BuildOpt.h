@@ -330,6 +330,22 @@
     #define RADIOLIB_PROGMEM                            PROGMEM
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
 
+  #elif defined(ARDUINO_ARCH_RP2040)
+    // Raspberry Pi Pico
+    #define RADIOLIB_PLATFORM                           "Raspberry Pi Pico"
+    #define RADIOLIB_PIN_TYPE                           pin_size_t
+    #define RADIOLIB_PIN_MODE                           PinMode
+    #define RADIOLIB_PIN_STATUS                         PinStatus
+    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+    #define RADIOLIB_NC                                 (0xFF)
+    #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_PROGMEM                            PROGMEM
+    #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
+    #define RADIOLIB_EXCLUDE_ESP8266
+
   #else
     // other platforms not covered by the above list - this may or may not work
     #define RADIOLIB_PLATFORM                           "Unknown"
