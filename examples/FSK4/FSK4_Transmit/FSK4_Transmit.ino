@@ -1,14 +1,13 @@
 /*
    RadioLib FSK4 Transmit Example
 
-   This example sends an example FSK-4 'Horus Binary' message using SX1278's
-   FSK modem.
+   This example sends an example FSK-4 'Horus Binary' message
+   using SX1278's FSK modem.
 
-   This signal can be demodulated using a SSB demodulator (SDR or otherwise), and
-   horusdemodlib: https://github.com/projecthorus/horusdemodlib/wiki
+   This signal can be demodulated using a SSB demodulator (SDR or otherwise),
+   and horusdemodlib: https://github.com/projecthorus/horusdemodlib/wiki
 
    Other modules that can be used for FSK4:
-   (Untested, but work with RTTY to are likely to work here too)
     - SX127x/RFM9x
     - RF69
     - SX1231
@@ -39,22 +38,24 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // https://github.com/jgromes/RadioShield
 //SX1278 radio = RadioShield.ModuleA;
 
-// create FAK4 client instance using the FSK module
+// create FSK4 client instance using the FSK module
 FSK4Client fsk4(&radio);
 
-// A 'canned' encoded Horus Binary telemetry packet.
-// Refer here for packet format information: 
+// An encoded Horus Binary telemetry packet.
+// Refer here for packet format information:
 // https://github.com/projecthorus/horusdemodlib/wiki/2---Modem-Details#horus-binary-v1-mode-4-fsk
-// After demodulation, deinterleaving, and descrambling, this results in a packet: 00000001172D0000000000000000D20463010AFF2780
-// This decodes to the Habitat-compatible telemetry string: $$4FSKTEST,0,01:23:45,0.00000,0.00000,1234,99,1,10,5.00*ABCD
-uint8_t sample_packet[] = {
-    0x45, 0x24, 0x24, 0x48, 0x2F, 0x12, 0x16, 0x08, 0x15, 0xC1,
-    0x49, 0xB2, 0x06, 0xFC, 0x92, 0xEB, 0x93, 0xD7, 0xEE, 0x5D,
-    0x35, 0xA0, 0x91, 0xDA, 0x8D, 0x5F, 0x85, 0x6B, 0x63, 0x03,
-    0x6B, 0x60, 0xEA, 0xFE, 0x55, 0x9D, 0xF1, 0xAB, 0xE5, 0x5E,
-    0xDB, 0x7C, 0xDB, 0x21, 0x5A, 0x19
+// After demodulation, deinterleaving, and descrambling, this results in a packet:
+// 00000001172D0000000000000000D20463010AFF2780
+// This decodes to the Habitat-compatible telemetry string:
+// $$4FSKTEST,0,01:23:45,0.00000,0.00000,1234,99,1,10,5.00*ABCD
+int horusPacketLen = 45;
+byte horusPacket[] = {
+  0x45, 0x24, 0x24, 0x48, 0x2F, 0x12, 0x16, 0x08, 0x15, 0xC1,
+  0x49, 0xB2, 0x06, 0xFC, 0x92, 0xEB, 0x93, 0xD7, 0xEE, 0x5D,
+  0x35, 0xA0, 0x91, 0xDA, 0x8D, 0x5F, 0x85, 0x6B, 0x63, 0x03,
+  0x6B, 0x60, 0xEA, 0xFE, 0x55, 0x9D, 0xF1, 0xAB, 0xE5, 0x5E,
+  0xDB, 0x7C, 0xDB, 0x21, 0x5A, 0x19
 };
-uint8_t sample_packet_len = 45;
 
 void setup() {
   Serial.begin(9600);
@@ -88,7 +89,7 @@ void setup() {
   //         SX128x - 198 Hz
   Serial.print(F("[FSK4] Initializing ... "));
   // low ("space") frequency:     434.0 MHz
-  // frequency shift:             270 Hz (actually results in a shift of 244 Hz)
+  // frequency shift:             270 Hz
   // baud rate:                   100 baud
   state = fsk4.begin(434.0, 270, 100);
   if(state == ERR_NONE) {
@@ -98,7 +99,6 @@ void setup() {
     Serial.println(state);
     while(true);
   }
-
 }
 
 void loop() {
@@ -108,15 +108,18 @@ void loop() {
   fsk4.idle();
   delay(1000);
 
-  // FSK4Client supports the write(uint8_t b) and write(uint8_t* buff, size_t len) method.
-  // We use the write(uint8_t b) method to send a few bytes of preamble to allow the demodulator
-  // to lock on to the signal.
-  fsk4.write(0x1B); fsk4.write(0x1B); fsk4.write(0x1B); fsk4.write(0x1B);
-  fsk4.write(0x1B); fsk4.write(0x1B); fsk4.write(0x1B); fsk4.write(0x1B);
+  // FSK4Client supports binary write methods
 
-  // We then send the encoded packet.
-  fsk4.write(sample_packet, sample_packet_len);
+  // send some bytes as a preamble
+  for(int i = 0; i < 8; i++) {
+    fsk4.write(0x1B);
+  }
+
+  // now send the encoded packet
+  fsk4.write(horusPacket, horusPacketLen);
 
   Serial.println(F("done!"));
 
+  // wait for a second before transmitting again
+  delay(1000);
 }
