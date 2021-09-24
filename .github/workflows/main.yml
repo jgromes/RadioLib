@@ -30,6 +30,7 @@ jobs:
           - STM32:stm32:GenF3
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
+          - arduino:mbed_rp2040:pico
 
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
