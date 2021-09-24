@@ -923,7 +923,7 @@ void CC1101::getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8
 	}
 }
 
-int16_t CC1101::setPacketMode(uint8_t mode, uint8_t len) {
+int16_t CC1101::setPacketMode(uint8_t mode, uint16_t len) {
   // check length
   if (len > CC1101_MAX_PACKET_LENGTH) {
     return(ERR_PACKET_TOO_LONG);
