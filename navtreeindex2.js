@@ -237,7 +237,7 @@ var NAVTREEINDEX2 =
 "class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236":[3,0,47,30],
 "class_s_x128x.html#aff7d86352c98771595375e17d19a2a97":[3,0,47,20],
 "class_serial_module.html":[3,0,25],
-"class_serial_module.html#af40d6673000ae141af0004f8ba7b496f":[3,0,25,0],
+"class_serial_module.html#a753631600e2070c57ed74e9eb296ce19":[3,0,25,0],
 "class_si4430.html":[3,0,26],
 "class_si4430.html#a025a31861d1511090168e416140d0343":[3,0,26,2],
 "class_si4430.html#a8e17e67d0d3dd9b478be964be8647ca7":[3,0,26,1],

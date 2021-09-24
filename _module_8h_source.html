@@ -248,9 +248,9 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00497"></a><span class="lineno"><a class="line" href="class_serial_module.html">  497</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_serial_module.html">SerialModule</a>: <span class="keyword">public</span> <a class="code" href="class_module.html">Module</a> {</div>
 <div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00510"></a><span class="lineno">  510</span>&#160;<span class="preprocessor">    #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED</span></div>
-<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <a class="code" href="class_serial_module.html">SerialModule</a>(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = &amp;RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);</div>
+<div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;        <a class="code" href="class_serial_module.html">SerialModule</a>(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC, HardwareSerial* serial = &amp;RADIOLIB_HARDWARE_SERIAL_PORT);</div>
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <a class="code" href="class_serial_module.html">SerialModule</a>(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = <span class="keyword">nullptr</span>, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);</div>
+<div class="line"><a name="l00513"></a><span class="lineno">  513</span>&#160;        <a class="code" href="class_serial_module.html">SerialModule</a>(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC, HardwareSerial* serial = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;};</div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160; </div>

@@ -106,9 +106,9 @@ Inheritance diagram for SerialModule:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af40d6673000ae141af0004f8ba7b496f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_module.html#af40d6673000ae141af0004f8ba7b496f">SerialModule</a> (RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial *serial=nullptr, RADIOLIB_PIN_TYPE rst=RADIOLIB_NC)</td></tr>
-<tr class="memdesc:af40d6673000ae141af0004f8ba7b496f"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART-based module constructor.  <a href="class_serial_module.html#af40d6673000ae141af0004f8ba7b496f">More...</a><br /></td></tr>
-<tr class="separator:af40d6673000ae141af0004f8ba7b496f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a753631600e2070c57ed74e9eb296ce19"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_serial_module.html#a753631600e2070c57ed74e9eb296ce19">SerialModule</a> (RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst=RADIOLIB_NC, HardwareSerial *serial=nullptr)</td></tr>
+<tr class="memdesc:a753631600e2070c57ed74e9eb296ce19"><td class="mdescLeft">&#160;</td><td class="mdescRight">UART-based module constructor.  <a href="class_serial_module.html#a753631600e2070c57ed74e9eb296ce19">More...</a><br /></td></tr>
+<tr class="separator:a753631600e2070c57ed74e9eb296ce19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_module"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_module')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_module.html">Module</a></td></tr>
 <tr class="memitem:a06b2e1f1eb9e07a280e55f517f2fab38 inherit pub_methods_class_module"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst)</td></tr>
 <tr class="memdesc:a06b2e1f1eb9e07a280e55f517f2fab38 inherit pub_methods_class_module"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI-based module constructor. Will use the default SPI interface automatically initialize it.  <a href="class_module.html#a06b2e1f1eb9e07a280e55f517f2fab38">More...</a><br /></td></tr>
@@ -277,8 +277,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Extension of <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a> class for UART-based modules, only exists to distinguish the UART constructor. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af40d6673000ae141af0004f8ba7b496f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af40d6673000ae141af0004f8ba7b496f">&#9670;&nbsp;</a></span>SerialModule()</h2>
+<a id="a753631600e2070c57ed74e9eb296ce19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a753631600e2070c57ed74e9eb296ce19">&#9670;&nbsp;</a></span>SerialModule()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -298,14 +298,14 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">HardwareSerial *&#160;</td>
-          <td class="paramname"><em>serial</em> = <code>nullptr</code>, </td>
+          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramname"><em>rst</em> = <code>RADIOLIB_NC</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>rst</em> = <code>RADIOLIB_NC</code>&#160;</td>
+          <td class="paramtype">HardwareSerial *&#160;</td>
+          <td class="paramname"><em>serial</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -320,8 +320,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">rx</td><td>Arduino pin to be used as Rx pin for SoftwareSerial communication.</td></tr>
     <tr><td class="paramname">tx</td><td>Arduino pin to be used as Tx pin for SoftwareSerial communication.</td></tr>
-    <tr><td class="paramname">serial</td><td>HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.</td></tr>
-    <tr><td class="paramname">rst</td><td>Arduino pin to be used as hardware reset for the module. Defaults to NC (unused). </td></tr>
+    <tr><td class="paramname">rst</td><td>Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).</td></tr>
+    <tr><td class="paramname">serial</td><td>HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1. </td></tr>
   </table>
   </dd>
 </dl>

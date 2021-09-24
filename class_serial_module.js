@@ -1,4 +1,4 @@
 var class_serial_module =
 [
-    [ "SerialModule", "class_serial_module.html#af40d6673000ae141af0004f8ba7b496f", null ]
+    [ "SerialModule", "class_serial_module.html#a753631600e2070c57ed74e9eb296ce19", null ]
 ];

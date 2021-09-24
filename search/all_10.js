@@ -7,7 +7,7 @@ var searchData=
   ['sendheader_240',['sendHeader',['../class_s_s_t_v_client.html#a30741de183c81492402187b9d6d8c11e',1,'SSTVClient']]],
   ['sendline_241',['sendLine',['../class_s_s_t_v_client.html#a772bfc68ac0a5f723c1031138dc27bd0',1,'SSTVClient']]],
   ['sendseqnumber_242',['sendSeqNumber',['../class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2',1,'AX25Frame']]],
-  ['serialmodule_243',['SerialModule',['../class_serial_module.html',1,'SerialModule'],['../class_serial_module.html#af40d6673000ae141af0004f8ba7b496f',1,'SerialModule::SerialModule()']]],
+  ['serialmodule_243',['SerialModule',['../class_serial_module.html',1,'SerialModule'],['../class_serial_module.html#a753631600e2070c57ed74e9eb296ce19',1,'SerialModule::SerialModule()']]],
   ['setaccessaddress_244',['setAccessAddress',['../class_s_x128x.html#a9346490a6c56edcff2e12ae0369a8df5',1,'SX128x']]],
   ['setaddresswidth_245',['setAddressWidth',['../classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4',1,'nRF24']]],
   ['setaeskey_246',['setAESKey',['../class_r_f69.html#abe5b378d7cc274fd8b75881e7d604bf3',1,'RF69']]],
