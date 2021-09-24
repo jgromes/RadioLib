@@ -8,7 +8,6 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
-
 /*!
   \class FSK4Client
 
@@ -29,7 +28,7 @@ class FSK4Client {
 
       \param audio Pointer to the AFSK instance providing audio.
     */
-    //explicit FSK4Client(AFSKClient* audio);
+    explicit FSK4Client(AFSKClient* audio);
     #endif
 
     // basic methods

@@ -1,8 +1,6 @@
 #include "FSK4.h"
 #if !defined(RADIOLIB_EXCLUDE_FSK4)
 
-
-
 FSK4Client::FSK4Client(PhysicalLayer* phy) {
   _phy = phy;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
@@ -10,18 +8,17 @@ FSK4Client::FSK4Client(PhysicalLayer* phy) {
   #endif
 }
 
-//#if !defined(RADIOLIB_EXCLUDE_AFSK)
-// FSK4Client::FSK4Client(AFSKClient* audio) {
-//   _phy = audio->_phy;
-//   _audio = audio;
-// }
-//#endif
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
+ FSK4Client::FSK4Client(AFSKClient* audio) {
+   _phy = audio->_phy;
+   _audio = audio;
+ }
+#endif
 
 int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
   // save configuration
   _baseHz = base;
   _shiftHz = shift;
-
 
   // calculate duration of 1 bit
   _bitDuration = (uint32_t)1000000/rate;
@@ -74,18 +71,17 @@ size_t FSK4Client::write(uint8_t* buff, size_t len) {
 }
 
 size_t FSK4Client::write(uint8_t b) {
+  // send symbols MSB first
+  for(uint8_t i = 0; i < 4; i++) {
+    // Extract 4FSK symbol (2 bits)
+    uint8_t symbol = (b & 0xC0) >> 6;
 
-    int k;
-    // Send symbols MSB first.
-    for (k=0;k<4;k++)
-    {
-        // Extract 4FSK symbol (2 bits)
-        uint8_t symbol = (b & 0xC0) >> 6;
-        // Modulate
-        FSK4Client::tone(symbol);
-        // Shift to next symbol.
-        b = b << 2;
-    }
+    // Modulate
+    FSK4Client::tone(symbol);
+    
+    // Shift to next symbol
+    b = b << 2;
+  }
 
   return(1);
 }
