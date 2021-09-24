@@ -536,7 +536,7 @@ void SX1278::errataFix(bool rx) {
   // see SX1276/77/78 Errata, section 2.3 for details
 
   // figure out what we need to set
-  uint8_t fixedRegs[3];
+  uint8_t fixedRegs[3] = { 0x00, 0x00, 0x00 };
   float rxFreq = _freq;
   if(fabs(_bw - 7.8) <= 0.001) {
     fixedRegs[0] = 0b0000000;
@@ -584,6 +584,8 @@ void SX1278::errataFix(bool rx) {
     fixedRegs[0] = 0b1000000;
     fixedRegs[1] = _mod->SPIreadRegister(0x2F);
     fixedRegs[2] = _mod->SPIreadRegister(0x30);
+  } else {
+    return;
   }
 
   // first, go to standby
