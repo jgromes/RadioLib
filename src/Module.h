@@ -503,14 +503,14 @@ class SerialModule: public Module {
 
       \param tx Arduino pin to be used as Tx pin for SoftwareSerial communication.
 
-      \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
-
       \param rst Arduino pin to be used as hardware reset for the module. Defaults to NC (unused).
+
+      \param serial HardwareSerial to be used on platforms that do not support SoftwareSerial. Defaults to Serial1.
     */
     #ifdef RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
-        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC, HardwareSerial* serial = &RADIOLIB_HARDWARE_SERIAL_PORT);
     #else
-        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial = nullptr, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC);
+        SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst = RADIOLIB_NC, HardwareSerial* serial = nullptr);
     #endif
 };
 

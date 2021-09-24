@@ -1,6 +1,6 @@
 #include "Module.h"
 
-SerialModule::SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, HardwareSerial* serial, RADIOLIB_PIN_TYPE rst):
+SerialModule::SerialModule(RADIOLIB_PIN_TYPE rx, RADIOLIB_PIN_TYPE tx, RADIOLIB_PIN_TYPE rst, HardwareSerial* serial):
   Module(RADIOLIB_NC, RADIOLIB_NC, (RADIOLIB_PIN_TYPE)rst, (RADIOLIB_PIN_TYPE)rx, (RADIOLIB_PIN_TYPE)tx, RADIOLIB_DEFAULT_SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), NULL)
 {
   _initInterface = true;
