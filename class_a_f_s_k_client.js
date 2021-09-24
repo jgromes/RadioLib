@@ -5,6 +5,7 @@ var class_a_f_s_k_client =
     [ "noTone", "class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1", null ],
     [ "tone", "class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33", null ],
     [ "AX25Client", "class_a_f_s_k_client.html#a0012621c1414f4c7573e961b57884a5b", null ],
+    [ "FSK4Client", "class_a_f_s_k_client.html#ac0313fe86041eb37d290019203e095d3", null ],
     [ "HellClient", "class_a_f_s_k_client.html#afeb005bab389f137def61f1acc3714d3", null ],
     [ "MorseClient", "class_a_f_s_k_client.html#ae5c5757c553100373984a416b6c3690a", null ],
     [ "RTTYClient", "class_a_f_s_k_client.html#a018393f703a257e39cd263cccf4ffad5", null ],
