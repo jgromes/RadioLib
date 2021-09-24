@@ -62,6 +62,7 @@ class AFSKClient  {
     friend class HellClient;
     friend class SSTVClient;
     friend class AX25Client;
+    friend class FSK4Client;
 };
 
 #endif
