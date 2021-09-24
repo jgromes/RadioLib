@@ -23,6 +23,7 @@
     - AX.25 (AX25Client)
     - SSTV (SSTVClient)
     - Hellschreiber (HellClient)
+    - 4-FSK (FSK4Client)
   - TransportLayer protocols
     - HTTP (HTTPClient)
     - MQTT (MQTTClient)
