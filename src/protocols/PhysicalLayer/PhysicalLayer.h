@@ -264,7 +264,7 @@ class PhysicalLayer {
 
       \param syncWord Sync word bits.
 
-      \param len Sync word length in bits.
+      \param len Sync word length in bits. Set to zero to disable sync word matching.
 
       \returns \ref status_codes
     */
@@ -313,6 +313,7 @@ class PhysicalLayer {
     uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];
     uint32_t _syncBuffer;
     uint32_t _directSyncWord;
+    uint8_t _directSyncWordLen;
     uint32_t _directSyncWordMask;
     bool _gotSync;
 };

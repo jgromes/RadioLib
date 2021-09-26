@@ -193,18 +193,27 @@ int16_t PhysicalLayer::available() {
 }
 
 uint8_t PhysicalLayer::read() {
-  _gotSync = false;
-  _syncBuffer = 0;
+  if(_directSyncWordLen > 0) {
+    _gotSync = false;
+    _syncBuffer = 0;
+  }
   _bufferWritePos--;
   return(_buffer[_bufferReadPos++]);
 }
 
 int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
-  if((len > 32) || (len == 0)) {
+  if(len > 32) {
     return(ERR_INVALID_SYNC_WORD);
   }
   _directSyncWordMask = 0xFFFFFFFF >> (32 - len);
+  _directSyncWordLen = len;
   _directSyncWord = syncWord;
+
+  // override sync word matching when length is set to 0
+  if(_directSyncWordLen == 0) {
+    _gotSync = true;
+  }
+
   return(ERR_NONE);
 }
 
