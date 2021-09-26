@@ -92,7 +92,7 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setAFCBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  //sets AFC&AGC trigger to RSSI and preamble detect
+  // sets AFC&AGC trigger to RSSI and preamble detect
   state = SX127x::setAFCAGCTrigger(SX127X_RX_TRIGGER_BOTH);
   RADIOLIB_ASSERT(state);
 
@@ -357,6 +357,10 @@ int16_t SX127x::directMode() {
 
   // set DIO mapping
   state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO1_CONT_DCLK | SX127X_DIO2_CONT_DATA, 5, 2);
+  RADIOLIB_ASSERT(state);
+
+  // enable receiver startup without preamble or RSSI
+  state = SX127x::setAFCAGCTrigger(SX127X_RX_TRIGGER_NONE);
   RADIOLIB_ASSERT(state);
 
   // set continuous mode
