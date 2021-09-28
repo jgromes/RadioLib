@@ -126,7 +126,7 @@ int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs
   #ifndef RADIOLIB_STATIC_ONLY
     this->repeaterCallsigns = new char*[numRepeaters];
     for(uint8_t i = 0; i < numRepeaters; i++) {
-      this->repeaterCallsigns[i] = new char[strlen(repeaterCallsigns[i])];
+      this->repeaterCallsigns[i] = new char[strlen(repeaterCallsigns[i]) + 1];
     }
     this->repeaterSSIDs = new uint8_t[numRepeaters];
   #endif
@@ -135,6 +135,7 @@ int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs
   this->numRepeaters = numRepeaters;
   for(uint8_t i = 0; i < numRepeaters; i++) {
     memcpy(this->repeaterCallsigns[i], repeaterCallsigns[i], strlen(repeaterCallsigns[i]));
+    this->repeaterCallsigns[i][strlen(repeaterCallsigns[i])] = '\0';
   }
   memcpy(this->repeaterSSIDs, repeaterSSIDs, numRepeaters);
 
@@ -249,7 +250,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
 
   // set source SSID
-  *(frameBuffPtr++) = AX25_SSID_COMMAND_SOURCE | AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_END;
+  *(frameBuffPtr++) = AX25_SSID_COMMAND_SOURCE | AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
@@ -262,7 +263,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   }
 
   // set HDLC extension end bit
-  *frameBuffPtr |= AX25_SSID_HDLC_EXTENSION_END;
+  *(frameBuffPtr - 1) |= AX25_SSID_HDLC_EXTENSION_END;
 
   // set sequence numbers of the frames that have it
   uint8_t controlField = frame->control;
