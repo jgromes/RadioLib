@@ -198,13 +198,15 @@ class SX1272: public SX127x {
     int16_t setCodingRate(uint8_t cr);
 
     /*!
-      \brief Sets transmission output power. Allowed values range from 2 to 17 dBm.
+      \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
 
       \param power Transmission output power in dBm.
 
+      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST.
+
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t power, bool useRfo = false);
 
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.

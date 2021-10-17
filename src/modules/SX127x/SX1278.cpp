@@ -222,32 +222,51 @@ int16_t SX1278::setCodingRate(uint8_t cr) {
   return(state);
 }
 
-int16_t SX1278::setOutputPower(int8_t power) {
+int16_t SX1278::setOutputPower(int8_t power, bool useRfo = false) {
   // check allowed power range
-  if(!(((power >= -3) && (power <= 17)) || (power == 20))) {
-    return(ERR_INVALID_OUTPUT_POWER);
+  if(useRfo) {
+    // RFO output
+    RADIOLIB_CHECK_RANGE(power, -3, 15, ERR_INVALID_OUTPUT_POWER);
+  } else {
+    // PA_BOOST output, check high-power operation
+    if(power != 20) {
+      RADIOLIB_CHECK_RANGE(power, 2, 17, ERR_INVALID_OUTPUT_POWER);
+    }
   }
 
   // set mode to standby
   int16_t state = SX127x::standby();
 
-  // set output power
-  if(power < 2) {
-    // power is less than 2 dBm, enable PA on RFO
+  if(useRfo) {
+    uint8_t paCfg = 0;
+    if(power < 0) {
+      // low power mode RFO output
+      paCfg = SX1278_LOW_POWER | (power + 3);
+    } else {
+      // high power mode RFO output
+      paCfg = SX1278_MAX_POWER | power;
+    }
+
     state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_RFO, 7, 7);
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_LOW_POWER | (power + 3), 6, 0);
+    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, paCfg, 6, 0);
     state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
-  } else if(power <= 17) {
-    // power is 2 - 17 dBm, enable PA1 + PA2 on PA_BOOST
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power - 2), 6, 0);
-    state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
-  } else if(power == 20) {
-    // power is 20 dBm, enable PA1 + PA2 on PA_BOOST and enable high power mode
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
-    state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power - 5), 6, 0);
-    state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
+
+  } else {
+    if(power != 20) {
+      // power is 2 - 17 dBm, enable PA1 + PA2 on PA_BOOST
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | (power - 2), 6, 0);
+      state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_OFF, 2, 0);
+
+    } else {
+      // power is 20 dBm, enable PA1 + PA2 on PA_BOOST and enable high power control
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX127X_PA_SELECT_BOOST, 7, 7);
+      state |= _mod->SPIsetRegValue(SX127X_REG_PA_CONFIG, SX1278_MAX_POWER | 0x0F, 6, 0);
+      state |= _mod->SPIsetRegValue(SX1278_REG_PA_DAC, SX127X_PA_BOOST_ON, 2, 0);
+
+    }
   }
+
   return(state);
 }
 
