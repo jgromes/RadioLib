@@ -16,6 +16,6 @@ var class_s_x1278 =
     [ "setDataShapingOOK", "class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4", null ],
     [ "setFrequency", "class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4", null ],
     [ "setGain", "class_s_x1278.html#aa57b713988cfa224a6db2ff325052931", null ],
-    [ "setOutputPower", "class_s_x1278.html#a8eeac64472fa70ed5e51f35d581f37ea", null ],
+    [ "setOutputPower", "class_s_x1278.html#a7fe05d0751714577f70da4290b7ced88", null ],
     [ "setSpreadingFactor", "class_s_x1278.html#af70c22fe38bc3b944070ccbc083fed08", null ]
 ];

@@ -133,9 +133,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a960913438feccad4c1913a9222384a5f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a960913438feccad4c1913a9222384a5f">setCodingRate</a> (uint8_t cr)</td></tr>
 <tr class="memdesc:a960913438feccad4c1913a9222384a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in LoRa mode.  <a href="class_s_x1272.html#a960913438feccad4c1913a9222384a5f">More...</a><br /></td></tr>
 <tr class="separator:a960913438feccad4c1913a9222384a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3596f303714509f552d98321bdfce5c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae3596f303714509f552d98321bdfce5c">setOutputPower</a> (int8_t power)</td></tr>
-<tr class="memdesc:ae3596f303714509f552d98321bdfce5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from 2 to 17 dBm.  <a href="class_s_x1272.html#ae3596f303714509f552d98321bdfce5c">More...</a><br /></td></tr>
-<tr class="separator:ae3596f303714509f552d98321bdfce5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6677a04aa0c2f3bbde2509786b6a66de"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a6677a04aa0c2f3bbde2509786b6a66de">setOutputPower</a> (int8_t power, bool useRfo=false)</td></tr>
+<tr class="memdesc:a6677a04aa0c2f3bbde2509786b6a66de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).  <a href="class_s_x1272.html#a6677a04aa0c2f3bbde2509786b6a66de">More...</a><br /></td></tr>
+<tr class="separator:a6677a04aa0c2f3bbde2509786b6a66de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c57ad5e8496dc28cd3ba9852809852"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">setGain</a> (uint8_t gain)</td></tr>
 <tr class="memdesc:ae1c57ad5e8496dc28cd3ba9852809852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). Only available in LoRa mode.  <a href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">More...</a><br /></td></tr>
 <tr class="separator:ae1c57ad5e8496dc28cd3ba9852809852"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -919,8 +919,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae3596f303714509f552d98321bdfce5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae3596f303714509f552d98321bdfce5c">&#9670;&nbsp;</a></span>setOutputPower()</h2>
+<a id="a6677a04aa0c2f3bbde2509786b6a66de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6677a04aa0c2f3bbde2509786b6a66de">&#9670;&nbsp;</a></span>setOutputPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -929,16 +929,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX1272::setOutputPower </td>
           <td>(</td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>power</em></td><td>)</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useRfo</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Sets transmission output power. Allowed values range from 2 to 17 dBm. </p>
+<p>Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Transmission output power in dBm.</td></tr>
+    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST.</td></tr>
   </table>
   </dd>
 </dl>
