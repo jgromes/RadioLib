@@ -411,6 +411,20 @@
 #define RADIOLIB_CHECK_PARAMS
 
 /*
+ * Uncomment to enable SX127x errata fix
+ * Warning: SX127x errata fix has been reported to cause issues with LoRa bandwidths lower than 62.5 kHz.
+ *          It should only be enabled if you really are observing some errata-related issue.
+ * Note: Disabled by default.
+ */
+//#define RADIOLIB_FIX_ERRATA_SX127X
+
+#if defined(RADIOLIB_FIX_ERRATA_SX127X)
+  #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }
+#else
+  #define RADIOLIB_ERRATA_SX127X(...) {}
+#endif
+
+/*
  * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
  * Warning: Come on, it's called GOD mode - obviously only use this if you know what you're doing.
  *          Failure to heed the above warning may result in bricked module.

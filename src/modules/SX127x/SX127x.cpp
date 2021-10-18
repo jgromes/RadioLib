@@ -324,7 +324,7 @@ int16_t SX127x::transmitDirect(uint32_t frf) {
   RADIOLIB_ASSERT(state);
 
   // apply fixes to errata
-  errataFix(false);
+  RADIOLIB_ERRATA_SX127X(false);
 
   // start transmitting
   return(setMode(SX127X_TX));
@@ -344,7 +344,7 @@ int16_t SX127x::receiveDirect() {
   RADIOLIB_ASSERT(state);
 
   // apply fixes to errata
-  errataFix(true);
+  RADIOLIB_ERRATA_SX127X(true);
 
   // start receiving
   return(setMode(SX127X_RX));
@@ -392,7 +392,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     }
 
     // apply fixes to errata
-    errataFix(true);
+    RADIOLIB_ERRATA_SX127X(true);
 
     // clear interrupt flags
     clearIRQFlags();
@@ -460,7 +460,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_TX_DONE, 7, 6);
 
     // apply fixes to errata
-    errataFix(false);
+    RADIOLIB_ERRATA_SX127X(false);
 
     // clear interrupt flags
     clearIRQFlags();
