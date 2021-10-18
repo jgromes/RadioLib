@@ -222,7 +222,7 @@ int16_t SX1278::setCodingRate(uint8_t cr) {
   return(state);
 }
 
-int16_t SX1278::setOutputPower(int8_t power, bool useRfo = false) {
+int16_t SX1278::setOutputPower(int8_t power, bool useRfo) {
   // check allowed power range
   if(useRfo) {
     // RFO output

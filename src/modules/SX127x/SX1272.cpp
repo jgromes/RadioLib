@@ -208,7 +208,7 @@ int16_t SX1272::setCodingRate(uint8_t cr) {
   return(state);
 }
 
-int16_t SX1272::setOutputPower(int8_t power, bool useRfo = false) {
+int16_t SX1272::setOutputPower(int8_t power, bool useRfo) {
   // check allowed power range
   if(useRfo) {
     RADIOLIB_CHECK_RANGE(power, -1, 14, ERR_INVALID_OUTPUT_POWER);
@@ -241,7 +241,7 @@ int16_t SX1272::setOutputPower(int8_t power, bool useRfo = false) {
     }
 
   }
-  
+
   return(state);
 }
 
