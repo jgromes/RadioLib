@@ -31,6 +31,7 @@ jobs:
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
           - arduino:mbed_rp2040:pico
+          - CubeCell:CubeCell:CubeCell-Board
 
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -126,6 +127,10 @@ jobs:
           elif [[ "${{ contains(matrix.board, 'MegaCoreX:megaavr') }}" == "true" ]]; then
             # MegaCoreX
             echo "::set-output name=index-url::--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'CubeCell:CubeCell') }}" == "true" ]]; then
+            # MegaCoreX
+            echo "::set-output name=index-url::--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json"
 
           fi
 
