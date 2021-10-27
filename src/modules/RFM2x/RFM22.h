@@ -14,7 +14,7 @@
 
   \brief Only exists as alias for Si4432, since there seems to be no difference between %RFM22 and %Si4432 modules.
 */
-using RFM22 = Si4432;
+RADIOLIB_TYPE_ALIAS(Si4432, RFM22);
 
 #endif
 
