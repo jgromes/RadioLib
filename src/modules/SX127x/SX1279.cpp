@@ -48,8 +48,13 @@ int16_t SX1279::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
-  state = setDataShaping(RADIOLIB_SHAPING_NONE);
-  RADIOLIB_ASSERT(state);
+  if(enableOOK) {
+    state = setDataShapingOOK(RADIOLIB_SHAPING_NONE);
+    RADIOLIB_ASSERT(state);
+  } else {
+    state = setDataShaping(RADIOLIB_SHAPING_NONE);
+    RADIOLIB_ASSERT(state);
+  }
 
   return(state);
 }
