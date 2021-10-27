@@ -241,6 +241,7 @@
     #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_PROGMEM                            PROGMEM
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+    #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
   #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
     // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
