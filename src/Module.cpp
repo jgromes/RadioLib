@@ -124,8 +124,6 @@ void Module::init(uint8_t interface) {
 #endif
       }
       break;
-    case RADIOLIB_USE_I2C:
-      break;
   }
 }
 

@@ -20,11 +20,6 @@
 #define RADIOLIB_USE_UART                             0x01
 
 /*!
-  \brief Use I2C interface.
-*/
-#define RADIOLIB_USE_I2C                              0x02
-
-/*!
   \}
 */
 
