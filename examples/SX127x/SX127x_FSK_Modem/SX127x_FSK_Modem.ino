@@ -175,8 +175,8 @@ void loop() {
     Serial.println(state);
   }
 
-  // tone() function is not available on ESP32 and Arduino Due
-  #if !defined(ESP32) && !defined(_VARIANT_ARDUINO_DUE_X_)
+  // tone() function is not available on ESP32, Arduino Due and CubeCell
+  #if !defined(ESP32) && !defined(_VARIANT_ARDUINO_DUE_X_) && !defined(__ASR6501__)
   // transmit FM tone at 1000 Hz for 1 second
   // (DIO2 is connected to Arduino pin 4)
   tone(4, 1000);
