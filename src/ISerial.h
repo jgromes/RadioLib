@@ -13,7 +13,9 @@ class ISerial {
     explicit ISerial(Module* mod);
 
     void begin(long);
+    #if !defined(__ASR6501__)
     void end();
+    #endif
     int peek();
     size_t write(uint8_t);
     int read();

@@ -139,9 +139,11 @@ void Module::term(uint8_t interface) {
     _spi->end();
   }
 
+  #if !defined(__ASR6501__)
   if(((interface == RADIOLIB_USE_UART) && ModuleSerial != nullptr)) {
     ModuleSerial->end();
   }
+  #endif
 }
 
 void Module::ATemptyBuffer() {
@@ -374,7 +376,9 @@ void Module::detachInterrupt(RADIOLIB_PIN_TYPE interruptNum) {
 }
 
 void Module::yield() {
+  #if !defined(__ASR6501__)
   ::yield();
+  #endif
 }
 
 void Module::delay(uint32_t ms) {

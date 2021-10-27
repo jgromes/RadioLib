@@ -8,10 +8,11 @@ void ISerial::begin(long speed) {
   _mod->ModuleSerial->begin(speed);
 }
 
+#if !defined(__ASR6501__)
 void ISerial::end() {
   _mod->ModuleSerial->end();
 }
-
+#endif
 
 int ISerial::peek() {
   return(_mod->ModuleSerial->peek());
@@ -33,7 +34,7 @@ void ISerial::flush() {
   _mod->ModuleSerial->flush();
 }
 
-#ifndef ARDUINO_ARCH_MEGAAVR
+#if !defined(ARDUINO_ARCH_MEGAAVR)
 size_t ISerial::print(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->print(ifsh));
 }
@@ -79,7 +80,7 @@ size_t ISerial::print(const Printable& x) {
   return(_mod->ModuleSerial->print(x));
 }
 
-#ifndef ARDUINO_ARCH_MEGAAVR
+#if !defined(ARDUINO_ARCH_MEGAAVR)
 size_t ISerial::println(const __FlashStringHelper *ifsh) {
   return(_mod->ModuleSerial->println(ifsh));
 }
