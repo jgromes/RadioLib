@@ -79,7 +79,7 @@ class RFM96: public SX1278 {
 
   \brief Only exists as alias for RFM96, since there seems to be no difference between %RFM96 and %RFM98 modules.
 */
-using RFM98 = RFM96;
+RADIOLIB_TYPE_ALIAS(RFM96, RFM98);
 
 #endif
 
