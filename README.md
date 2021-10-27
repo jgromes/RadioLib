@@ -76,10 +76,13 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * __Raspberry Pi__
   * [__RP2040__](https://github.com/arduino/ArduinoCore-mbed) - Raspberry Pi Pico and Arduino Nano RP2040 Connect
 
+* __Heltec__
+  * [__CubeCell__](https://github.com/HelTecAutomation/CubeCell-Arduino) - ASR650X series (CubeCell-Board, CubeCell-Capsule, CubeCell-Module etc.)
+
 The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms prior to releasing new version.
 
 ### In development:
-* __SIM800C__ GSM module
+* __AX5243__ FSK module
 * __LoRaWAN__ protocol for SX127x, RFM9x and SX126x modules
 * __APRS__ protocol for all the modules that can transmit AX.25
 * ___and more!___
