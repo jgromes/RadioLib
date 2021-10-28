@@ -554,6 +554,20 @@ class SX126x: public PhysicalLayer {
     */
     int16_t readData(uint8_t* data, size_t len) override;
 
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout.
+
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan();
+
+    /*!
+      \brief Read the channel scan result
+
+      \returns \ref status_codes
+    */
+    int16_t getChannelScanResult();
+
     // configuration methods
 
     /*!

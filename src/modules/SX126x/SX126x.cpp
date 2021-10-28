@@ -331,28 +331,8 @@ int16_t SX126x::receiveDirect() {
 }
 
 int16_t SX126x::scanChannel() {
-  // check active modem
-  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
-    return(ERR_WRONG_MODEM);
-  }
-
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
-
-  // set DIO pin mapping
-  state = setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE);
-  RADIOLIB_ASSERT(state);
-
-  // clear interrupt flags
-  state = clearIrqStatus();
-  RADIOLIB_ASSERT(state);
-
   // set mode to CAD
-  state = setCad();
+  int state = startChannelScan();
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -361,18 +341,7 @@ int16_t SX126x::scanChannel() {
   }
 
   // check CAD result
-  uint16_t cadResult = getIrqStatus();
-  if(cadResult & SX126X_IRQ_CAD_DETECTED) {
-    // detected some LoRa activity
-    clearIrqStatus();
-    return(LORA_DETECTED);
-  } else if(cadResult & SX126X_IRQ_CAD_DONE) {
-    // channel is free
-    clearIrqStatus();
-    return(CHANNEL_FREE);
-  }
-
-  return(ERR_UNKNOWN);
+  return(getChannelScanResult());
 }
 
 int16_t SX126x::sleep(bool retainConfig) {
@@ -606,6 +575,53 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(crcState);
 
   return(state);
+}
+
+int16_t SX126x::startChannelScan() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
+  // set DIO pin mapping
+  state = setDioIrqParams(SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE, SX126X_IRQ_CAD_DETECTED | SX126X_IRQ_CAD_DONE);
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to CAD
+  state = setCad();
+  return(state);
+}
+
+int16_t SX126x::getChannelScanResult() {
+  // check active modem
+  if(getPacketType() != SX126X_PACKET_TYPE_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // check CAD result
+  uint16_t cadResult = getIrqStatus();
+  if(cadResult & SX126X_IRQ_CAD_DETECTED) {
+    // detected some LoRa activity
+    clearIrqStatus();
+    return(LORA_DETECTED);
+  } else if(cadResult & SX126X_IRQ_CAD_DONE) {
+    // channel is free
+    clearIrqStatus();
+    return(CHANNEL_FREE);
+  }
+
+  return(ERR_UNKNOWN);
 }
 
 int16_t SX126x::setBandwidth(float bw) {
