@@ -734,6 +734,13 @@ class SX127x: public PhysicalLayer {
     */
     int16_t readData(uint8_t* data, size_t len) override;
 
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected.
+      DIO1 will be activated if there's no preamble detected before timeout.
+
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan();
 
     // configuration methods
 
@@ -1085,7 +1092,7 @@ class SX127x: public PhysicalLayer {
      * \returns bandwidth in manitsa and exponent format
      */
     static uint8_t calculateBWManExp(float bandwidth);
-    
+
     virtual void errataFix(bool rx) = 0;
 };
 

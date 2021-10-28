@@ -96,6 +96,8 @@ clearDio1Action	KEYWORD2
 startTransmit	KEYWORD2
 startReceive	KEYWORD2
 readData	KEYWORD2
+startChannelScan	KEYWORD2
+getChannelScanResult	KEYWORD2
 setBandwidth	KEYWORD2
 setSpreadingFactor	KEYWORD2
 setCodingRate	KEYWORD2

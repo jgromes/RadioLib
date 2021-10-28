@@ -247,27 +247,8 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
 }
 
 int16_t SX127x::scanChannel() {
-  // check active modem
-  if(getActiveModem() != SX127X_LORA) {
-    return(ERR_WRONG_MODEM);
-  }
-
-  // set mode to standby
-  int16_t state = setMode(SX127X_STANDBY);
-  RADIOLIB_ASSERT(state);
-
-  // set DIO pin mapping
-  state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_CAD_DONE | SX127X_DIO1_CAD_DETECTED, 7, 4);
-  RADIOLIB_ASSERT(state);
-
-  // clear interrupt flags
-  clearIRQFlags();
-
-  // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
-
-  // set mode to CAD
-  state = setMode(SX127X_CAD);
+  // start CAD
+  int16_t state = startChannelScan();
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -564,6 +545,31 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   clearIRQFlags();
 
   return(ERR_NONE);
+}
+
+int16_t SX127x::startChannelScan() {
+  // check active modem
+  if(getActiveModem() != SX127X_LORA) {
+    return(ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  int16_t state = setMode(SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
+
+  // set DIO pin mapping
+  state = _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_CAD_DONE | SX127X_DIO1_CAD_DETECTED, 7, 4);
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  clearIRQFlags();
+
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
+  // set mode to CAD
+  state = setMode(SX127X_CAD);
+  return(state);
 }
 
 int16_t SX127x::setSyncWord(uint8_t syncWord) {
