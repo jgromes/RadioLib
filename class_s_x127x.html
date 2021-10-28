@@ -175,6 +175,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abfc840e8d6fe5e222f0143be17876745"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:abfc840e8d6fe5e222f0143be17876745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method. This method reads len characters.  <a href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">More...</a><br /></td></tr>
 <tr class="separator:abfc840e8d6fe5e222f0143be17876745"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d4631691c16d6ecf38815dc4e59a059"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059">startChannelScan</a> ()</td></tr>
+<tr class="memdesc:a1d4631691c16d6ecf38815dc4e59a059"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected. DIO1 will be activated if there's no preamble detected before timeout.  <a href="class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059">More...</a><br /></td></tr>
+<tr class="separator:a1d4631691c16d6ecf38815dc4e59a059"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c7f4584352a12390594395d9c29bde"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">setSyncWord</a> (uint8_t syncWord)</td></tr>
 <tr class="memdesc:ac5c7f4584352a12390594395d9c29bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word. Only available in LoRa mode.  <a href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">More...</a><br /></td></tr>
 <tr class="separator:ac5c7f4584352a12390594395d9c29bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1811,6 +1814,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a0e77da761a2cbb5c9535df0bdea993f9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1d4631691c16d6ecf38815dc4e59a059"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d4631691c16d6ecf38815dc4e59a059">&#9670;&nbsp;</a></span>startChannelScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::startChannelScan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected. DIO1 will be activated if there's no preamble detected before timeout. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

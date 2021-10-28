@@ -168,6 +168,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3350cbfab628956c1a456383ac7bb2b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a3350cbfab628956c1a456383ac7bb2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method.  <a href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">More...</a><br /></td></tr>
 <tr class="separator:a3350cbfab628956c1a456383ac7bb2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a716aab163aebbe36599dc7e530c92"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a37a716aab163aebbe36599dc7e530c92">startChannelScan</a> ()</td></tr>
+<tr class="memdesc:a37a716aab163aebbe36599dc7e530c92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout.  <a href="class_s_x126x.html#a37a716aab163aebbe36599dc7e530c92">More...</a><br /></td></tr>
+<tr class="separator:a37a716aab163aebbe36599dc7e530c92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f">getChannelScanResult</a> ()</td></tr>
+<tr class="memdesc:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <a href="class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f">More...</a><br /></td></tr>
+<tr class="separator:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f60df59c80241d98ce078c0417a7f08"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a2f60df59c80241d98ce078c0417a7f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.  <a href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">More...</a><br /></td></tr>
 <tr class="separator:a2f60df59c80241d98ce078c0417a7f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -650,6 +656,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="abf1c3d6fa419a1e3ef11db63d3f46f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf1c3d6fa419a1e3ef11db63d3f46f8f">&#9670;&nbsp;</a></span>getChannelScanResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::getChannelScanResult </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read the channel scan result. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
@@ -2010,6 +2036,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a37a716aab163aebbe36599dc7e530c92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37a716aab163aebbe36599dc7e530c92">&#9670;&nbsp;</a></span>startChannelScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::startChannelScan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
