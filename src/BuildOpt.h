@@ -364,7 +364,7 @@
     #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
     #define RADIOLIB_EXCLUDE_ESP8266
 
-  #elif defined(__ASR6501__)
+  #elif defined(__ASR6501__) || defined(ARDUINO_ARCH_ASR650X) || defined(DARDUINO_ARCH_ASR6601)
     // CubeCell
     #define RADIOLIB_PLATFORM                           "CubeCell"
     #define RADIOLIB_PIN_TYPE                           uint8_t
@@ -376,6 +376,8 @@
     #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_PROGMEM                            PROGMEM
     #define RADIOLIB_PROGMEM_READ_BYTE(addr)            pgm_read_byte(addr)
+    #define RADIOLIB_SOFTWARE_SERIAL_UNSUPPORTED
+    #define RADIOLIB_HARDWARE_SERIAL_PORT               Serial1
 
     // CubeCell doesn't seem to define nullptr, let's do something like that now
     #define nullptr                                     NULL
@@ -388,6 +390,12 @@
 
     // ... and it also has no tone(). This platform was designed by an idiot.
     #define RADIOLIB_TONE_UNSUPPORTED
+
+    // ... AND as the (hopefully) final nail in the coffin, IT F*CKING DEFINES YIELD() AS A MACRO THAT DOES NOTHING!!!
+    #define RADIOLIB_YIELD_UNSUPPORTED
+    #if defined(yield)
+    #undef yield
+    #endif
 
   #else
     // other platforms not covered by the above list - this may or may not work
@@ -415,7 +423,7 @@
  *         verbose - full transcript of all SPI/UART communication
  */
 
-//#define RADIOLIB_DEBUG
+#define RADIOLIB_DEBUG
 //#define RADIOLIB_VERBOSE
 
 // set which Serial port should be used for debug output

@@ -374,7 +374,7 @@ void Module::detachInterrupt(RADIOLIB_PIN_TYPE interruptNum) {
 }
 
 void Module::yield() {
-  #if !defined(__ASR6501__)
+  #if !defined(RADIOLIB_YIELD_UNSUPPORTED)
   ::yield();
   #endif
 }
