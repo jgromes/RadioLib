@@ -250,7 +250,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
 
   // set source SSID
-  *(frameBuffPtr++) = AX25_SSID_COMMAND_SOURCE | AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
+  *(frameBuffPtr++) = AX25_SSID_RESPONSE_SOURCE | AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
