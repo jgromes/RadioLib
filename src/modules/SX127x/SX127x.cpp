@@ -472,6 +472,15 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_TX_BASE_ADDR, SX127X_FIFO_TX_BASE_ADDR_MAX);
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_TX_BASE_ADDR_MAX);
 
+    // write packet to FIFO
+    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
+
+    // set RF switch (if present)
+    _mod->setRfSwitchState(LOW, HIGH);
+
+    // start transmission
+    state |= setMode(SX127X_TX);
+
   } else if(modem == SX127X_FSK_OOK) {
     // check packet length
     if(len >= SX127X_MAX_PACKET_LENGTH_FSK) {
@@ -494,16 +503,29 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     if((filter == SX127X_ADDRESS_FILTERING_NODE) || (filter == SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
       _mod->SPIwriteRegister(SX127X_REG_FIFO, addr);
     }
+    
+    // Pre-load the FIFO with message before entering TX mode
+    uint8_t* ind = data;
+    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, ind, min(len, 64));
+    ind += min(len, 64);
+
+    // set RF switch (if present) and start transmitting
+    _mod->setRfSwitchState(LOW, HIGH);
+    state |= setMode(SX127X_TX);
+
+    // Re-fill the FIFO on-the-fly as bytes are transmitted
+    while (ind < data + len) {
+      uint16_t flags = getIRQFlags();
+      bool fifo_full = flags >> 15;
+
+      // If FIFO not full, write another byte
+      if (!fifo_full) {
+        _mod->SPIwriteRegister(SX127X_REG_FIFO, *ind);
+        ind++;
+      }
+    }
   }
 
-  // write packet to FIFO
-  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
-
-  // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
-
-  // start transmission
-  state |= setMode(SX127X_TX);
   RADIOLIB_ASSERT(state);
 
   return(ERR_NONE);
