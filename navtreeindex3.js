@@ -1,5 +1,11 @@
 var NAVTREEINDEX3 =
 {
+"class_s_x128x.html#af81565ee82ef9a7de9c5663c745f4ef7":[3,0,48,53],
+"class_s_x128x.html#afb1b090348d9091bfa3a0b5ba3d85b36":[3,0,48,17],
+"class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236":[3,0,48,30],
+"class_s_x128x.html#aff7d86352c98771595375e17d19a2a97":[3,0,48,20],
+"class_serial_module.html":[3,0,26],
+"class_serial_module.html#a753631600e2070c57ed74e9eb296ce19":[3,0,26,0],
 "class_si4430.html":[3,0,27],
 "class_si4430.html#a025a31861d1511090168e416140d0343":[3,0,27,2],
 "class_si4430.html#a8e17e67d0d3dd9b478be964be8647ca7":[3,0,27,1],
@@ -152,15 +158,15 @@ var NAVTREEINDEX3 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,13],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,12],
 "files.html":[4,0],
-"functions.html":[3,3,0,0],
 "functions.html":[3,3,0],
+"functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
 "functions_e.html":[3,3,0,4],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1,0],
 "functions_func.html":[3,3,1],
+"functions_func.html":[3,3,1,0],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -243,11 +249,5 @@ var NAVTREEINDEX3 =
 "group__status__codes.html#ga5a373a7e054a6c8e7a5198e23439157d":[2,4,52],
 "group__status__codes.html#ga5bbfeb0ed4631a9a1f37b62d13818340":[2,4,69],
 "group__status__codes.html#ga5f16976086bbc9bf66c77719ccf0f277":[2,4,31],
-"group__status__codes.html#ga60d04c865fd58d86758894edca38bf30":[2,4,64],
-"group__status__codes.html#ga6581323ae6a4f0bfe38e5a087c5a6f36":[2,4,0],
-"group__status__codes.html#ga66ac4a39ab53bd83f36ba49ea2a88e2c":[2,4,3],
-"group__status__codes.html#ga67d0525915e7e4dc6f5d13199d5e37ae":[2,4,28],
-"group__status__codes.html#ga764f561222124ffd6620356e21cf7afd":[2,4,65],
-"group__status__codes.html#ga819f4587f681d62d96babf3f51a0268e":[2,4,32],
-"group__status__codes.html#ga81f8c801d5a34b8000dd127002092299":[2,4,5]
+"group__status__codes.html#ga60d04c865fd58d86758894edca38bf30":[2,4,64]
 };

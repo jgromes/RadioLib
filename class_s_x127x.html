@@ -241,6 +241,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a17ff4e4e0afaebed727648e1400be538"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">setOokFixedOrFloorThreshold</a> (uint8_t value)</td></tr>
 <tr class="memdesc:a17ff4e4e0afaebed727648e1400be538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.  <a href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">More...</a><br /></td></tr>
 <tr class="separator:a17ff4e4e0afaebed727648e1400be538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">enableBitSync</a> ()</td></tr>
+<tr class="memdesc:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Bit synchronizer.  <a href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">More...</a><br /></td></tr>
+<tr class="separator:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8025b05b8f4f2f2abb4cd803b06e2ebd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd">disableBitSync</a> ()</td></tr>
+<tr class="memdesc:a8025b05b8f4f2f2abb4cd803b06e2ebd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disable Bit synchronizer (not allowed in Packet mode).  <a href="class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd">More...</a><br /></td></tr>
+<tr class="separator:a8025b05b8f4f2f2abb4cd803b06e2ebd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a462fa74275e67c296328a01f361892d5"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:a462fa74275e67c296328a01f361892d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">More...</a><br /></td></tr>
 <tr class="separator:a462fa74275e67c296328a01f361892d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -523,6 +529,46 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div><div class="memdoc">
 
 <p>Disables FSK address filtering. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8025b05b8f4f2f2abb4cd803b06e2ebd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8025b05b8f4f2f2abb4cd803b06e2ebd">&#9670;&nbsp;</a></span>disableBitSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::disableBitSync </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disable Bit synchronizer (not allowed in Packet mode). </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1921e1d9fc1d888d2e73bb732e7db7aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1921e1d9fc1d888d2e73bb732e7db7aa">&#9670;&nbsp;</a></span>enableBitSync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::enableBitSync </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable Bit synchronizer. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
@@ -1511,7 +1557,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>The actual value used by teh data slicer is (128 - value/2).</td></tr>
+    <tr><td class="paramname">value</td><td>The actual value is devided by 2 because (0.5db step). ie: value=12 means 6dB</td></tr>
   </table>
   </dd>
 </dl>

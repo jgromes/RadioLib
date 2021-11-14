@@ -6,6 +6,8 @@ var class_s_x127x =
     [ "clearDio0Action", "class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823", null ],
     [ "clearDio1Action", "class_s_x127x.html#a9b6532a25e1730973ac08146008adca5", null ],
     [ "disableAddressFiltering", "class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5", null ],
+    [ "disableBitSync", "class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd", null ],
+    [ "enableBitSync", "class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa", null ],
     [ "fixedPacketLengthMode", "class_s_x127x.html#aaf8ce9f09d0f46a76a5e251786b6de7f", null ],
     [ "getAFCError", "class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544", null ],
     [ "getChipVersion", "class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd", null ],
