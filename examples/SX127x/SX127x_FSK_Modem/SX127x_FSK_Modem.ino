@@ -175,15 +175,17 @@ void loop() {
     Serial.println(state);
   }
 
-  // transmit FM tone at 1000 Hz for 1 second
+  // transmit FM tone at 1000 Hz for 1 second, then 500 Hz for 1 second
   // (DIO2 is connected to Arduino pin 4)
   // Note: tone() function is not available on ESP32, Arduino Due and CubeCell
   //       on these platforms, the following will do nothing
-  Module::tone(4, 1000);
+  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
+  tone(4, 1000);
   delay(1000);
-  // transmit FM note at 500 Hz for 1 second
-  Module::tone(4, 500);
+  tone(4, 500);
   delay(1000);
+  noTone(4);
+  #endif
 
   // NOTE: after calling transmitDirect(), SX127x will start
   // transmitting immediately! This signal can jam other
