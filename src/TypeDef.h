@@ -12,27 +12,27 @@
 /*!
   \brief No shaping.
 */
-#define RADIOLIB_SHAPING_NONE                         (0x00)
+#define RADIOLIB_SHAPING_NONE                                   (0x00)
 
 /*!
   \brief Gaussin shaping filter, BT = 0.3
 */
-#define RADIOLIB_SHAPING_0_3                          (0x01)
+#define RADIOLIB_SHAPING_0_3                                    (0x01)
 
 /*!
   \brief Gaussin shaping filter, BT = 0.5
 */
-#define RADIOLIB_SHAPING_0_5                          (0x02)
+#define RADIOLIB_SHAPING_0_5                                    (0x02)
 
 /*!
   \brief Gaussin shaping filter, BT = 0.7
 */
-#define RADIOLIB_SHAPING_0_7                          (0x03)
+#define RADIOLIB_SHAPING_0_7                                    (0x03)
 
 /*!
   \brief Gaussin shaping filter, BT = 1.0
 */
-#define RADIOLIB_SHAPING_1_0                          (0x04)
+#define RADIOLIB_SHAPING_1_0                                    (0x04)
 
 /*!
   \}
@@ -47,17 +47,17 @@
 /*!
   \brief Non-return to zero - no encoding.
 */
-#define RADIOLIB_ENCODING_NRZ                         (0x00)
+#define RADIOLIB_ENCODING_NRZ                                   (0x00)
 
 /*!
   \brief Manchester encoding.
 */
-#define RADIOLIB_ENCODING_MANCHESTER                  (0x01)
+#define RADIOLIB_ENCODING_MANCHESTER                            (0x01)
 
 /*!
   \brief Whitening.
 */
-#define RADIOLIB_ENCODING_WHITENING                   (0x02)
+#define RADIOLIB_ENCODING_WHITENING                             (0x02)
 
 /*!
   \}
