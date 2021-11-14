@@ -13,9 +13,6 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 
 ### Supported modules:
 * __CC1101__ FSK radio module
-* __ESP8266__ WiFi module
-* __HC05__ Bluetooth module
-* __JDY08__ BLE module
 * __LLCC68__ LoRa module
 * __nRF24L01__ 2.4 GHz module
 * __RF69__ FSK/OOK radio module
@@ -26,13 +23,8 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
 * __SX128x__ series LoRa/GFSK/BLE/FLRC modules (SX1280, SX1281, SX1282)
 * __SX1231__ FSK/OOK radio module
-* __XBee__ modules (S2B)
 
 ### Supported protocols and digital modes:
-* __MQTT__ for modules:  
-ESP8266
-* __HTTP__ for modules:  
-ESP8266
 * __AX.25__ using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
