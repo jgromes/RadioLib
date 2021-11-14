@@ -753,7 +753,7 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Selects the type of threshold in the OOK data slicer
 
-      \param type Threshold type: RF69_OOK_THRESH_PEAK(default), RF69_OOK_THRESH_FIXED or RF69_OOK_THRESH_AVERAGE
+      \param type Threshold type: RADIOLIB_RF69_OOK_THRESH_PEAK(default), RADIOLIB_RF69_OOK_THRESH_FIXED or RADIOLIB_RF69_OOK_THRESH_AVERAGE
 
       \returns \ref status_codes
     */
@@ -762,7 +762,7 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.
 
-      \param value Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RF69_OOK_THRESH_FIXED.
+      \param value Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RADIOLIB_RF69_OOK_THRESH_FIXED.
 
       \returns \ref status_codes
     */
@@ -771,7 +771,7 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Period of decrement of the RSSI threshold in the OOK demodulator.
 
-      \param value Use defines RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP
+      \param value Use defines RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP
 
       \returns \ref status_codes
     */

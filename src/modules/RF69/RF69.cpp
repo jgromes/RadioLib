@@ -393,11 +393,11 @@ int16_t RF69::setOokThresholdType(uint8_t type) {
 }
 
 int16_t RF69::setOokFixedThreshold(uint8_t value) {
-  return(_mod->SPIsetRegValue(RF69_REG_OOK_FIX, value, 7, 0, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_OOK_FIX, value, 7, 0, 5));
 }
 
 int16_t RF69::setOokPeakThresholdDecrement(uint8_t value) {
-  return(_mod->SPIsetRegValue(RF69_REG_OOK_PEAK, value, 2, 0, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_OOK_PEAK, value, 2, 0, 5));
 }
 
 int16_t RF69::setFrequency(float freq) {
@@ -725,11 +725,11 @@ int16_t RF69::disableSyncWordFiltering() {
 }
 
 int16_t RF69::enableContinuousModeBitSync() {
-  return(_mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
 }
 
 int16_t RF69::disableContinuousModeBitSync() {
-  return(_mod->SPIsetRegValue(RF69_REG_DATA_MODUL, RF69_CONTINUOUS_MODE, 6, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE, 6, 5));
 }
 
 int16_t RF69::setCrcFiltering(bool crcOn) {
