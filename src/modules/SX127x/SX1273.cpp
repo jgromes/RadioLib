@@ -7,7 +7,7 @@ SX1273::SX1273(Module* mod) : SX1272(mod) {
 
 int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(SX1272_CHIP_VERSION, syncWord, preambleLength);
+  int16_t state = SX127x::begin(RADIOLIB_SX1272_CHIP_VERSION, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -38,24 +38,24 @@ int16_t SX1273::setSpreadingFactor(uint8_t sf) {
   // check allowed spreading factor values
   switch(sf) {
     case 6:
-      newSpreadingFactor = SX127X_SF_6;
+      newSpreadingFactor = RADIOLIB_SX127X_SF_6;
       break;
     case 7:
-      newSpreadingFactor = SX127X_SF_7;
+      newSpreadingFactor = RADIOLIB_SX127X_SF_7;
       break;
     case 8:
-      newSpreadingFactor = SX127X_SF_8;
+      newSpreadingFactor = RADIOLIB_SX127X_SF_8;
       break;
     case 9:
-      newSpreadingFactor = SX127X_SF_9;
+      newSpreadingFactor = RADIOLIB_SX127X_SF_9;
       break;
     default:
-      return(ERR_INVALID_SPREADING_FACTOR);
+      return(RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
   }
 
   // set spreading factor and if successful, save the new setting
   int16_t state = setSpreadingFactorRaw(newSpreadingFactor);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     SX127x::_sf = sf;
   }
 

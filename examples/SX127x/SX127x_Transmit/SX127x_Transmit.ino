@@ -24,7 +24,7 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 radio = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(5, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
@@ -36,7 +36,7 @@ void setup() {
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -71,7 +71,7 @@ void loop() {
     int state = radio.transmit(byteArr, 8);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F(" success!"));
 
@@ -80,11 +80,11 @@ void loop() {
     Serial.print(radio.getDataRate());
     Serial.println(F(" bps"));
 
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 256 bytes
     Serial.println(F("too long!"));
 
-  } else if (state == ERR_TX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
     // timeout occurred while transmitting packet
     Serial.println(F("timeout!"));
 

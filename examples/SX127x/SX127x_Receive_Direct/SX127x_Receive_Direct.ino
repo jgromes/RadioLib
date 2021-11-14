@@ -34,7 +34,7 @@ void setup() {
   // initialize SX1278 with FSK modem at 9600 bps
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.beginFSK(434.0, 9.6, 20.0);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));

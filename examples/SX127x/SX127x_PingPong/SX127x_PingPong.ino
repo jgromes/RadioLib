@@ -27,7 +27,7 @@ SX1278 radio = new Module(10, 2, 9, 3);
 //SX1278 radio = RadioShield.ModuleA;
 
 // save transmission states between loops
-int transmissionState = ERR_NONE;
+int transmissionState = RADIOLIB_ERR_NONE;
 
 // flag to indicate transmission or reception state
 bool transmitFlag = false;
@@ -58,7 +58,7 @@ void setup() {
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -79,7 +79,7 @@ void setup() {
     // start listening for LoRa packets on this node
     Serial.print(F("[SX1278] Starting to listen ... "));
     state = radio.startReceive();
-    if (state == ERR_NONE) {
+    if (state == RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
       Serial.print(F("failed, code "));
@@ -102,7 +102,7 @@ void loop() {
     if(transmitFlag) {
       // the previous operation was transmission, listen for response
       // print the result
-      if (transmissionState == ERR_NONE) {
+      if (transmissionState == RADIOLIB_ERR_NONE) {
         // packet was successfully sent
         Serial.println(F("transmission finished!"));
   
@@ -122,7 +122,7 @@ void loop() {
       String str;
       int state = radio.readData(str);
 
-      if (state == ERR_NONE) {
+      if (state == RADIOLIB_ERR_NONE) {
         // packet was successfully received
         Serial.println(F("[SX1278] Received packet!"));
       
