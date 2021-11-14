@@ -8,13 +8,13 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
-#define HELL_FONT_WIDTH                               7
-#define HELL_FONT_HEIGHT                              7
+#define RADIOLIB_HELL_FONT_WIDTH                                7
+#define RADIOLIB_HELL_FONT_HEIGHT                               7
 
 // font definition: characters are stored in rows,
 //                  least significant byte of each character is the first row
 //                  Hellschreiber use 7x7 characters, but this simplified font uses only 5x5 - the extra bytes aren't stored
-static const uint8_t HellFont[64][HELL_FONT_WIDTH - 2] RADIOLIB_PROGMEM = {
+static const uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLATILE = {
   { 0b0000000, 0b0000000, 0b0000000, 0b0000000, 0b0000000 },  // space
   { 0b0001000, 0b0001000, 0b0001000, 0b0000000, 0b0001000 },  // !
   { 0b0010100, 0b0010100, 0b0000000, 0b0000000, 0b0000000 },  // "
@@ -149,7 +149,7 @@ class HellClient {
     size_t println(unsigned long, int = DEC);
     size_t println(double, int = 2);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* _phy;
