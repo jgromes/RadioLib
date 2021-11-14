@@ -760,6 +760,24 @@ class RF69: public PhysicalLayer {
     int16_t setOokThresholdType(uint8_t type);
 
     /*!
+      \brief Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.
+
+      \param value Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RF69_OOK_THRESH_FIXED.
+
+      \returns \ref status_codes
+    */
+    int16_t setOokFixedThreshold(uint8_t value);
+
+    /*!
+      \brief Period of decrement of the RSSI threshold in the OOK demodulator.
+
+      \param value Use defines RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP
+
+      \returns \ref status_codes
+    */
+    int16_t setOokPeakThresholdDecrement(uint8_t value);
+
+    /*!
       \brief Set modem in fixed packet length mode.
 
       \param len Packet length.
@@ -792,6 +810,20 @@ class RF69: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t disableSyncWordFiltering();
+
+    /*!
+      \brief Enable Bit synchronization in continuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t enableContinuousModeBitSync();
+
+    /*!
+      \brief Disable Bit synchronization in continuous mode.
+
+      \returns \ref status_codes
+    */
+    int16_t disableContinuousModeBitSync();
 
      /*!
       \brief Enable CRC filtering and generation.
