@@ -306,7 +306,7 @@
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, pin_size_t pinNumber, PinMode pinMode)
     #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, pin_size_t pinNumber, PinStatus status)
-    #define RADIOLIB_CB_ARGS_DIGITAL_READ               (int, digitalRead, pin_size_t pinNumber)
+    #define RADIOLIB_CB_ARGS_DIGITAL_READ               (PinStatus, digitalRead, pin_size_t pinNumber)
     #define RADIOLIB_CB_ARGS_TONE                       (void, tone, unsigned char outputPin, unsigned int frequency, unsigned long duration)
     #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t outputPin)
     #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, pin_size_t pin, voidFuncPtr callback, PinStatus mode)
