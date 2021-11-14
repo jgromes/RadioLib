@@ -2,7 +2,7 @@
 #if !defined(RADIOLIB_EXCLUDE_SSTV)
 
 const SSTVMode_t Scottie1 {
-  .visCode = SSTV_SCOTTIE_1,
+  .visCode = RADIOLIB_SSTV_SCOTTIE_1,
   .width = 320,
   .height = 256,
   .scanPixelLen = 432,
@@ -19,7 +19,7 @@ const SSTVMode_t Scottie1 {
 };
 
 const SSTVMode_t Scottie2 {
-  .visCode = SSTV_SCOTTIE_2,
+  .visCode = RADIOLIB_SSTV_SCOTTIE_2,
   .width = 320,
   .height = 256,
   .scanPixelLen = 275,
@@ -36,7 +36,7 @@ const SSTVMode_t Scottie2 {
 };
 
 const SSTVMode_t ScottieDX {
-  .visCode = SSTV_SCOTTIE_DX,
+  .visCode = RADIOLIB_SSTV_SCOTTIE_DX,
   .width = 320,
   .height = 256,
   .scanPixelLen = 1080,
@@ -53,7 +53,7 @@ const SSTVMode_t ScottieDX {
 };
 
 const SSTVMode_t Martin1 {
-  .visCode = SSTV_MARTIN_1,
+  .visCode = RADIOLIB_SSTV_MARTIN_1,
   .width = 320,
   .height = 256,
   .scanPixelLen = 458,
@@ -71,7 +71,7 @@ const SSTVMode_t Martin1 {
 };
 
 const SSTVMode_t Martin2 {
-  .visCode = SSTV_MARTIN_2,
+  .visCode = RADIOLIB_SSTV_MARTIN_2,
   .width = 320,
   .height = 256,
   .scanPixelLen = 229,
@@ -89,7 +89,7 @@ const SSTVMode_t Martin2 {
 };
 
 const SSTVMode_t Wrasse {
-  .visCode = SSTV_WRASSE_SC2_180,
+  .visCode = RADIOLIB_SSTV_WRASSE_SC2_180,
   .width = 320,
   .height = 256,
   .scanPixelLen = 734,
@@ -104,7 +104,7 @@ const SSTVMode_t Wrasse {
 };
 
 const SSTVMode_t PasokonP3 {
-  .visCode = SSTV_PASOKON_P3,
+  .visCode = RADIOLIB_SSTV_PASOKON_P3,
   .width = 640,
   .height = 496,
   .scanPixelLen = 208,
@@ -121,7 +121,7 @@ const SSTVMode_t PasokonP3 {
 };
 
 const SSTVMode_t PasokonP5 {
-  .visCode = SSTV_PASOKON_P5,
+  .visCode = RADIOLIB_SSTV_PASOKON_P5,
   .width = 640,
   .height = 496,
   .scanPixelLen = 312,
@@ -138,7 +138,7 @@ const SSTVMode_t PasokonP5 {
 };
 
 const SSTVMode_t PasokonP7 {
-  .visCode = SSTV_PASOKON_P7,
+  .visCode = RADIOLIB_SSTV_PASOKON_P7,
   .width = 640,
   .height = 496,
   .scanPixelLen = 417,
@@ -172,7 +172,7 @@ SSTVClient::SSTVClient(AFSKClient* audio) {
 int16_t SSTVClient::begin(const SSTVMode_t& mode, float correction) {
   if(_audio == nullptr) {
     // this initialization method can only be used in AFSK mode
-    return(ERR_WRONG_MODEM);
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   return(begin(0, mode, correction));
@@ -198,7 +198,7 @@ int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) 
 
 void SSTVClient::idle() {
   _phy->transmitDirect();
-  this->tone(SSTV_TONE_LEADER);
+  this->tone(RADIOLIB_SSTV_TONE_LEADER);
 }
 
 void SSTVClient::sendHeader() {
@@ -207,44 +207,44 @@ void SSTVClient::sendHeader() {
   _phy->transmitDirect();
 
   // send the first part of header (leader-break-leader)
-  this->tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
-  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BREAK_LENGTH);
-  this->tone(SSTV_TONE_LEADER, SSTV_HEADER_LEADER_LENGTH);
+  this->tone(RADIOLIB_SSTV_TONE_LEADER, RADIOLIB_SSTV_HEADER_LEADER_LENGTH);
+  this->tone(RADIOLIB_SSTV_TONE_BREAK, RADIOLIB_SSTV_HEADER_BREAK_LENGTH);
+  this->tone(RADIOLIB_SSTV_TONE_LEADER, RADIOLIB_SSTV_HEADER_LEADER_LENGTH);
 
   // VIS start bit
-  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
+  this->tone(RADIOLIB_SSTV_TONE_BREAK, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
 
   // VIS code
   uint8_t parityCount = 0;
   for(uint8_t mask = 0x01; mask < 0x80; mask <<= 1) {
     if(_mode.visCode & mask) {
-      this->tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
+      this->tone(RADIOLIB_SSTV_TONE_VIS_1, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
       parityCount++;
     } else {
-      this->tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
+      this->tone(RADIOLIB_SSTV_TONE_VIS_0, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
     }
   }
 
   // VIS parity
   if(parityCount % 2 == 0) {
     // even parity
-    this->tone(SSTV_TONE_VIS_0, SSTV_HEADER_BIT_LENGTH);
+    this->tone(RADIOLIB_SSTV_TONE_VIS_0, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
   } else {
     // odd parity
-    this->tone(SSTV_TONE_VIS_1, SSTV_HEADER_BIT_LENGTH);
+    this->tone(RADIOLIB_SSTV_TONE_VIS_1, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
   }
 
   // VIS stop bit
-  this->tone(SSTV_TONE_BREAK, SSTV_HEADER_BIT_LENGTH);
+  this->tone(RADIOLIB_SSTV_TONE_BREAK, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
 }
 
 void SSTVClient::sendLine(uint32_t* imgLine) {
   // check first line flag in Scottie modes
-  if(_firstLine && ((_mode.visCode == SSTV_SCOTTIE_1) || (_mode.visCode == SSTV_SCOTTIE_2) || (_mode.visCode == SSTV_SCOTTIE_DX))) {
+  if(_firstLine && ((_mode.visCode == RADIOLIB_SSTV_SCOTTIE_1) || (_mode.visCode == RADIOLIB_SSTV_SCOTTIE_2) || (_mode.visCode == RADIOLIB_SSTV_SCOTTIE_DX))) {
     _firstLine = false;
 
     // send start sync tone
-    this->tone(SSTV_TONE_BREAK, 9000);
+    this->tone(RADIOLIB_SSTV_TONE_BREAK, 9000);
   }
 
   // send all tones in sequence
@@ -271,7 +271,7 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
           case(tone_t::GENERIC):
             break;
         }
-        this->tone(SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), _mode.scanPixelLen);
+        this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), _mode.scanPixelLen);
       }
     }
   }
@@ -282,7 +282,8 @@ uint16_t SSTVClient::getPictureHeight() const {
 }
 
 void SSTVClient::tone(float freq, uint32_t len) {
-  uint32_t start = Module::micros();
+  Module* mod = _phy->getMod();
+  uint32_t start = mod->micros();
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     _audio->tone(freq, false);
@@ -292,8 +293,8 @@ void SSTVClient::tone(float freq, uint32_t len) {
   #else
   _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
   #endif
-  while(Module::micros() - start < len) {
-    Module::yield();
+  while(mod->micros() - start < len) {
+    mod->yield();
   }
 }
 
