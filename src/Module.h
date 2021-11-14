@@ -3,7 +3,9 @@
 
 #include "TypeDef.h"
 
-#include <SPI.h>
+#if defined(RADIOLIB_BUILD_ARDUINO)
+  #include <SPI.h>
+#endif
 
 /*!
   \class Module
