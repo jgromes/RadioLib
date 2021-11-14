@@ -1,4 +1,4 @@
-#ifndef _RADIOLIB_PHYSICAL_LAYER_H
+#if !defined(_RADIOLIB_PHYSICAL_LAYER_H)
 #define _RADIOLIB_PHYSICAL_LAYER_H
 
 #include "../../TypeDef.h"
@@ -298,10 +298,12 @@ class PhysicalLayer {
     */
     uint8_t read();
 
+    virtual Module* getMod() = 0;
+
   protected:
     void updateDirectBuffer(uint8_t bit);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     float _freqStep;

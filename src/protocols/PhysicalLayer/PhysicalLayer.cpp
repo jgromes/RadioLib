@@ -12,7 +12,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   size_t len = 0;
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   while(true) {
-    char c = RADIOLIB_PROGMEM_READ_BYTE(p++);
+    char c = RADIOLIB_NONVOLATILE_READ_BYTE(p++);
     len++;
     if(c == '\0') {
       break;
@@ -20,7 +20,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   }
 
   // dynamically allocate memory
-  #ifdef RADIOLIB_STATIC_ONLY
+  #if defined(RADIOLIB_STATIC_ONLY)
     char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
@@ -29,12 +29,12 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
   for(size_t i = 0; i < len; i++) {
-    str[i] = RADIOLIB_PROGMEM_READ_BYTE(p + i);
+    str[i] = RADIOLIB_NONVOLATILE_READ_BYTE(p + i);
   }
 
   // transmit string
   int16_t state = transmit(str, addr);
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] str;
   #endif
   return(state);
@@ -57,7 +57,7 @@ int16_t PhysicalLayer::startTransmit(const char* str, uint8_t addr) {
 }
 
 int16_t PhysicalLayer::readData(String& str, size_t len) {
-  int16_t state = ERR_NONE;
+  int16_t state = RADIOLIB_ERR_NONE;
 
   // read the number of actually received bytes
   size_t length = getPacketLength();
@@ -69,19 +69,19 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  #ifdef RADIOLIB_STATIC_ONLY
+  #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
     if(!data) {
-      return(ERR_MEMORY_ALLOCATION_FAILED);
+      return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
     }
   #endif
 
   // read the received data
   state = readData(data, length);
 
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     // add null terminator
     data[length] = 0;
 
@@ -90,7 +90,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] data;
   #endif
 
@@ -98,7 +98,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 }
 
 int16_t PhysicalLayer::receive(String& str, size_t len) {
-  int16_t state = ERR_NONE;
+  int16_t state = RADIOLIB_ERR_NONE;
 
   // user can override the length of data to read
   size_t length = len;
@@ -109,19 +109,19 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  #ifdef RADIOLIB_STATIC_ONLY
+  #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
     if(!data) {
-      return(ERR_MEMORY_ALLOCATION_FAILED);
+      return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
     }
   #endif
 
   // attempt packet reception
   state = receive(data, length);
 
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     // read the number of actually received bytes (for unknown packets)
     if(len == 0) {
       length = getPacketLength(false);
@@ -135,7 +135,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] data;
   #endif
 
@@ -203,7 +203,7 @@ uint8_t PhysicalLayer::read() {
 
 int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
   if(len > 32) {
-    return(ERR_INVALID_SYNC_WORD);
+    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
   _directSyncWordMask = 0xFFFFFFFF >> (32 - len);
   _directSyncWordLen = len;
@@ -214,7 +214,7 @@ int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
     _gotSync = true;
   }
 
-  return(ERR_NONE);
+  return(RADIOLIB_ERR_NONE);
 }
 
 void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
