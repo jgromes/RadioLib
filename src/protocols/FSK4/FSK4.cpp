@@ -28,7 +28,7 @@ int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
 
   // check minimum shift value
   if(shift < step / 2) {
-    return(ERR_INVALID_RTTY_SHIFT);
+    return(RADIOLIB_ERR_INVALID_RTTY_SHIFT);
   }
 
   // round shift to multiples of frequency step size
@@ -78,7 +78,7 @@ size_t FSK4Client::write(uint8_t b) {
 
     // Modulate
     FSK4Client::tone(symbol);
-    
+
     // Shift to next symbol
     b = b << 2;
   }
@@ -87,10 +87,11 @@ size_t FSK4Client::write(uint8_t b) {
 }
 
 void FSK4Client::tone(uint8_t i) {
-  uint32_t start = Module::micros();
+  Module* mod = _phy->getMod();
+  uint32_t start = mod->micros();
   transmitDirect(_base + _tones[i], _baseHz + _tonesHz[i]);
-  while(Module::micros() - start < _bitDuration) {
-    Module::yield();
+  while(mod->micros() - start < _bitDuration) {
+    mod->yield();
   }
 }
 

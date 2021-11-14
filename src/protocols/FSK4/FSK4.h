@@ -56,7 +56,7 @@ class FSK4Client {
     size_t write(uint8_t b);
 
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* _phy;
