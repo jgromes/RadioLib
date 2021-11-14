@@ -914,7 +914,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Period of decrement of the RSSI threshold in the OOK demodulator.
 
-      \param value Use defines SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP
+      \param value Use defines RADIOLIB_SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP
 
       \returns \ref status_codes
     */
@@ -923,7 +923,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.
 
-      \param value The actual value is devided by 2 because (0.5db step). ie: value=12 means 6dB
+      \param value Threshold level in steps of 0.5 dB.
 
       \returns \ref status_codes
     */

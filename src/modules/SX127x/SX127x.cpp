@@ -944,11 +944,11 @@ int16_t SX127x::setOokPeakThresholdDecrement(uint8_t value) {
 }
 
 int16_t SX127x::enableBitSync() {
-  return(_mod->SPIsetRegValue(SX127X_REG_OOK_PEAK, SX127X_BIT_SYNC_ON, 5, 5, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_PEAK, RADIOLIB_SX127X_BIT_SYNC_ON, 5, 5, 5));
 }
 
 int16_t SX127x::disableBitSync() {
-  return(_mod->SPIsetRegValue(SX127X_REG_OOK_PEAK, SX127X_BIT_SYNC_OFF, 5, 5, 5));
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_PEAK, RADIOLIB_SX127X_BIT_SYNC_OFF, 5, 5, 5));
 }
 
 int16_t SX127x::setOOK(bool enableOOK) {
