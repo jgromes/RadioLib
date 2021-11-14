@@ -35,7 +35,7 @@ void setup() {
   // initialize RF69 with default settings
   Serial.print(F("[RF69] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -57,7 +57,7 @@ void loop() {
     int state = radio.receive(byteArr, 8);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
@@ -71,11 +71,11 @@ void loop() {
     Serial.print(radio.getRSSI());
     Serial.println(F(" dBm"));
 
-  } else if (state == ERR_RX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));
 
-  } else if (state == ERR_CRC_MISMATCH) {
+  } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));
 
