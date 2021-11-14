@@ -58,7 +58,7 @@ void setup() {
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = radio.begin();
 
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -72,7 +72,7 @@ void setup() {
   // source station SSID:         0
   // preamble length:             8 bytes
   state = ax25.begin("N7LEM");
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -97,7 +97,7 @@ void loop() {
   // send the frame
   Serial.print(F("[AX.25] Sending UI frame ... "));
   int state = ax25.sendFrame(&frameUI);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
@@ -125,7 +125,7 @@ void loop() {
   // send the frame
   Serial.print(F("[AX.25] Sending RR frame ... "));
   state = ax25.sendFrame(&frameRR);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
@@ -159,7 +159,7 @@ void loop() {
   // send the frame
   Serial.print(F("[AX.25] Sending I frame ... "));
   state = ax25.sendFrame(&frameI);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
