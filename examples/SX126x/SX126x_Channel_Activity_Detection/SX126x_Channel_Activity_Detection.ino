@@ -35,7 +35,7 @@ void setup() {
   // initialize SX1262 with default settings
   Serial.print(F("[SX1262] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -50,11 +50,11 @@ void loop() {
   // start scanning current channel
   int state = radio.scanChannel();
 
-  if (state == LORA_DETECTED) {
+  if (state == RADIOLIB_LORA_DETECTED) {
     // LoRa preamble was detected
     Serial.println(F("detected!"));
 
-  } else if (state == CHANNEL_FREE) {
+  } else if (state == RADIOLIB_CHANNEL_FREE) {
     // no preamble was detected, channel is free
     Serial.println(F("channel is free!"));
 

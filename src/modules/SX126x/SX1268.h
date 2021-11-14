@@ -8,8 +8,8 @@
 #include "../../Module.h"
 #include "SX126x.h"
 
-//SX126X_CMD_SET_PA_CONFIG
-#define SX126X_PA_CONFIG_SX1268                       0x00
+//RADIOLIB_SX126X_CMD_SET_PA_CONFIG
+#define RADIOLIB_SX126X_PA_CONFIG_SX1268                       0x00
 
 /*!
   \class SX1268
@@ -38,7 +38,7 @@ class SX1268: public SX126x {
 
       \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
 
-      \param syncWord 2-byte LoRa sync word. Defaults to SX126X_SYNC_WORD_PRIVATE (0x12).
+      \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12).
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
@@ -48,7 +48,7 @@ class SX1268: public SX126x {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
     /*!
       \brief Initialization method for FSK modem.
