@@ -30,7 +30,7 @@ Si4432 radio = new Module(10, 2, 9);
 //Si4432 radio = RadioShield.ModuleA;
 
 // save transmission state between loops
-int transmissionState = ERR_NONE;
+int transmissionState = RADIOLIB_ERR_NONE;
 
 void setup() {
   Serial.begin(9600);
@@ -38,7 +38,7 @@ void setup() {
   // initialize Si4432 with default settings
   Serial.print(F("[Si4432] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -95,7 +95,7 @@ void loop() {
     // reset flag
     transmittedFlag = false;
 
-    if (transmissionState == ERR_NONE) {
+    if (transmissionState == RADIOLIB_ERR_NONE) {
       // packet was successfully sent
       Serial.println(F("transmission finished!"));
 

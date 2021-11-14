@@ -22,17 +22,17 @@ int16_t Si4430::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 }
 
 int16_t Si4430::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 900.0, 960.0, ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 900.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency
   return(Si443x::setFrequencyRaw(freq));
 }
 
 int16_t Si4430::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -8, 13, ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, -8, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
-  return(_mod->SPIsetRegValue(SI443X_REG_TX_POWER, (uint8_t)((power + 8) / 3), 2, 0));
+  return(_mod->SPIsetRegValue(RADIOLIB_SI443X_REG_TX_POWER, (uint8_t)((power + 8) / 3), 2, 0));
 }
 
 #endif

@@ -22,10 +22,10 @@ int16_t Si4431::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 }
 
 int16_t Si4431::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -8, 13, ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, -8, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
-  return(_mod->SPIsetRegValue(SI443X_REG_TX_POWER, (uint8_t)((power + 8) / 3), 2, 0));
+  return(_mod->SPIsetRegValue(RADIOLIB_SI443X_REG_TX_POWER, (uint8_t)((power + 8) / 3), 2, 0));
 }
 
 #endif
