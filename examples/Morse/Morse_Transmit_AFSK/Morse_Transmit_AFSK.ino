@@ -52,7 +52,7 @@ void setup() {
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = radio.begin();
 
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -65,7 +65,7 @@ void setup() {
   // AFSK tone frequency:         400 MHz
   // speed:                       20 words per minute
   state = morse.begin(400);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
