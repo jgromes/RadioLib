@@ -34,7 +34,7 @@ void setup() {
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -51,7 +51,7 @@ void setup() {
   //       0xFF will be used.
   Serial.print(F("[CC1101] Setting node address ... "));
   state = radio.setNodeAddress(0x01, 1);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -65,7 +65,7 @@ void setup() {
   /*
     Serial.print(F("[CC1101] Disabling address filtering ... "));
     state == radio.disableAddressFiltering();
-    if(state == ERR_NONE) {
+    if(state == RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
       Serial.print(F("failed, code "));
@@ -88,7 +88,7 @@ void loop() {
     int state = radio.receive(byteArr, 8);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
@@ -107,7 +107,7 @@ void loop() {
     Serial.print(F("[CC1101] LQI:\t\t"));
     Serial.println(radio.getLQI());
 
-  } else if (state == ERR_CRC_MISMATCH) {
+  } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
     // packet was received, but is malformed
     Serial.println(F("CRC error!"));
 
