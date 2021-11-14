@@ -17,6 +17,6 @@ int16_t <module_name>::begin() {
   /*
     "begin" method SHOULD implement some sort of mechanism to verify the connection between Arduino and the module.
 
-    For example, sending AT command for UART modules, or reading a version register for SPI/I2C modules
+    For example, reading a version register
   */
 }

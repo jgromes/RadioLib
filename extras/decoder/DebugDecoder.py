@@ -8,7 +8,6 @@ TODO list:
   1. Parse macro values (the names of bits in all registers in header file)
   2. Failed SPI write handling
   3. SX126x/SX128x handling
-  4. AT handling
 '''
 
 
