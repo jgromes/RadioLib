@@ -10,8 +10,8 @@
 #include "../SX127x/SX1278.h"
 
 // SX127X_REG_VERSION
-#define RFM9X_CHIP_VERSION_OFFICIAL                   0x11
-#define RFM9X_CHIP_VERSION_UNOFFICIAL                 0x12  // according to datasheet, only 0x11 should be possible, but some modules seem to have 0x12
+#define RADIOLIB_RFM9X_CHIP_VERSION_OFFICIAL                   0x11
+#define RADIOLIB_RFM9X_CHIP_VERSION_UNOFFICIAL                 0x12  // according to datasheet, only 0x11 should be possible, but some modules seem to have 0x12
 
 /*!
   \class RFM95
@@ -55,7 +55,7 @@ class RFM95: public SX1278 {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
+    int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
 
     // configuration methods
 

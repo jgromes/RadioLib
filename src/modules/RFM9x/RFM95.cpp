@@ -7,12 +7,12 @@ RFM95::RFM95(Module* mod) : SX1278(mod) {
 
 int16_t RFM95::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(RFM9X_CHIP_VERSION_OFFICIAL, syncWord, preambleLength);
-  if(state == ERR_CHIP_NOT_FOUND) {
+  int16_t state = SX127x::begin(RADIOLIB_RFM9X_CHIP_VERSION_OFFICIAL, syncWord, preambleLength);
+  if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // SX127X_REG_VERSION might be set 0x12
-    state = SX127x::begin(RFM9X_CHIP_VERSION_UNOFFICIAL, syncWord, preambleLength);
+    state = SX127x::begin(RADIOLIB_RFM9X_CHIP_VERSION_UNOFFICIAL, syncWord, preambleLength);
     RADIOLIB_ASSERT(state);
-  } else if(state != ERR_NONE) {
+  } else if(state != RADIOLIB_ERR_NONE) {
     // some other error
     return(state);
   }
@@ -41,11 +41,11 @@ int16_t RFM95::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
 }
 
 int16_t RFM95::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 862.0, 1020.0, ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 862.0, 1020.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     SX127x::_freq = freq;
   }
   return(state);
