@@ -8,7 +8,7 @@
 /*!
   \class Module
 
-  \brief Implements all common low-level SPI/UART methods to control the wireless module.
+  \brief Implements all common low-level methods to control the wireless module.
   Every module class contains one private instance of this class.
 */
 class Module {

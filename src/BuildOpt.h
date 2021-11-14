@@ -754,7 +754,7 @@
  * Warning: Debug output will slow down the whole system significantly.
  *          Also, it will result in larger compiled binary.
  * Levels: debug - only main info
- *         verbose - full transcript of all SPI/UART communication
+ *         verbose - full transcript of all SPI communication
  */
 #if !defined(RADIOLIB_DEBUG)
   //#define RADIOLIB_DEBUG
