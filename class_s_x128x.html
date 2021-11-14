@@ -112,9 +112,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ccbf51f8304f1041c8eef182be547a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7">SX128x</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a9ccbf51f8304f1041c8eef182be547a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7">More...</a><br /></td></tr>
 <tr class="separator:a9ccbf51f8304f1041c8eef182be547a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7927beac8c610dffd06cf95242706f39"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a7927beac8c610dffd06cf95242706f39">begin</a> (float freq=2400.0, float bw=812.5, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=SX128X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=12)</td></tr>
-<tr class="memdesc:a7927beac8c610dffd06cf95242706f39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_s_x128x.html#a7927beac8c610dffd06cf95242706f39">More...</a><br /></td></tr>
-<tr class="separator:a7927beac8c610dffd06cf95242706f39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69ee7379f4b79abf626df186b2db6441"><td class="memItemLeft" align="right" valign="top"><a id="a69ee7379f4b79abf626df186b2db6441"></a>
+<a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
+<tr class="separator:a69ee7379f4b79abf626df186b2db6441"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbd0d1a48051ccd35f4a89c9b8d05bdf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#acbd0d1a48051ccd35f4a89c9b8d05bdf">begin</a> (float freq=2400.0, float bw=812.5, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX128X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=12)</td></tr>
+<tr class="memdesc:acbd0d1a48051ccd35f4a89c9b8d05bdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_s_x128x.html#acbd0d1a48051ccd35f4a89c9b8d05bdf">More...</a><br /></td></tr>
+<tr class="separator:acbd0d1a48051ccd35f4a89c9b8d05bdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dd8ce38bc9d0d8dbd711b373e864e93"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a8dd8ce38bc9d0d8dbd711b373e864e93">beginGFSK</a> (float freq=2400.0, uint16_t br=800, float freqDev=400.0, int8_t power=10, uint16_t preambleLength=16)</td></tr>
 <tr class="memdesc:a8dd8ce38bc9d0d8dbd711b373e864e93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for GFSK modem.  <a href="class_s_x128x.html#a8dd8ce38bc9d0d8dbd711b373e864e93">More...</a><br /></td></tr>
 <tr class="separator:a8dd8ce38bc9d0d8dbd711b373e864e93"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -137,7 +140,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a53892566b0259d348158efe3c3c3601a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode transmission.  <a href="class_s_x128x.html#a53892566b0259d348158efe3c3c3601a">More...</a><br /></td></tr>
 <tr class="separator:a53892566b0259d348158efe3c3c3601a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff7d86352c98771595375e17d19a2a97"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#aff7d86352c98771595375e17d19a2a97">receiveDirect</a> () override</td></tr>
-<tr class="memdesc:aff7d86352c98771595375e17d19a2a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode reception. Only implemented for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, as SX128x series does not support direct mode reception. Will always return ERR_UNKNOWN.  <a href="class_s_x128x.html#aff7d86352c98771595375e17d19a2a97">More...</a><br /></td></tr>
+<tr class="memdesc:aff7d86352c98771595375e17d19a2a97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode reception. Only implemented for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, as SX128x series does not support direct mode reception. Will always return RADIOLIB_ERR_UNKNOWN.  <a href="class_s_x128x.html#aff7d86352c98771595375e17d19a2a97">More...</a><br /></td></tr>
 <tr class="separator:aff7d86352c98771595375e17d19a2a97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89cc916f5cd5cdfbd331bb15f8a3d5cb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb">scanChannel</a> ()</td></tr>
 <tr class="memdesc:a89cc916f5cd5cdfbd331bb15f8a3d5cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <a href="class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb">More...</a><br /></td></tr>
@@ -161,9 +164,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aef221e7d463c5228ce00ed6934512848"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:aef221e7d463c5228ce00ed6934512848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">More...</a><br /></td></tr>
 <tr class="separator:aef221e7d463c5228ce00ed6934512848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8171d2f3de53156526580ca4fe4d647d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a8171d2f3de53156526580ca4fe4d647d">startReceive</a> (uint16_t timeout=SX128X_RX_TIMEOUT_INF)</td></tr>
-<tr class="memdesc:a8171d2f3de53156526580ca4fe4d647d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#a8171d2f3de53156526580ca4fe4d647d">More...</a><br /></td></tr>
-<tr class="separator:a8171d2f3de53156526580ca4fe4d647d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad59ee052d8ab1f250245a14039fc8b66"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF)</td></tr>
+<tr class="memdesc:ad59ee052d8ab1f250245a14039fc8b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">More...</a><br /></td></tr>
+<tr class="separator:ad59ee052d8ab1f250245a14039fc8b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94bca43258b09217fb476a2d8db784bb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a94bca43258b09217fb476a2d8db784bb">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a94bca43258b09217fb476a2d8db784bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method.  <a href="class_s_x128x.html#a94bca43258b09217fb476a2d8db784bb">More...</a><br /></td></tr>
 <tr class="separator:a94bca43258b09217fb476a2d8db784bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -344,7 +347,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a> that will be used to communicate with the radio. </td></tr>
+    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> that will be used to communicate with the radio. </td></tr>
   </table>
   </dd>
 </dl>
@@ -352,8 +355,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7927beac8c610dffd06cf95242706f39"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7927beac8c610dffd06cf95242706f39">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="acbd0d1a48051ccd35f4a89c9b8d05bdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbd0d1a48051ccd35f4a89c9b8d05bdf">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -386,7 +389,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>syncWord</em> = <code>SX128X_SYNC_WORD_PRIVATE</code>, </td>
+          <td class="paramname"><em>syncWord</em> = <code>RADIOLIB_SX128X_SYNC_WORD_PRIVATE</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -415,7 +418,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">bw</td><td>LoRa bandwidth in kHz. Defaults to 812.5 kHz.</td></tr>
     <tr><td class="paramname">sf</td><td>LoRa spreading factor. Defaults to 9.</td></tr>
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).</td></tr>
-    <tr><td class="paramname">syncWord</td><td>2-byte LoRa sync word. Defaults to SX128X_SYNC_WORD_PRIVATE (0x12).</td></tr>
+    <tr><td class="paramname">syncWord</td><td>2-byte LoRa sync word. Defaults to RADIOLIB_SX128X_SYNC_WORD_PRIVATE (0x12).</td></tr>
     <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm.</td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Defaults to 12 symbols.</td></tr>
   </table>
@@ -1047,7 +1050,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Starts direct mode reception. Only implemented for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, as SX128x series does not support direct mode reception. Will always return ERR_UNKNOWN. </p>
+<p>Starts direct mode reception. Only implemented for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, as SX128x series does not support direct mode reception. Will always return RADIOLIB_ERR_UNKNOWN. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a46b22145b33e97cf6065ed826799b6b4">PhysicalLayer</a>.</p>
@@ -1763,7 +1766,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the module to standby mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to SX128X_STANDBY_RC (13 MHz RC oscillator) or SX128X_STANDBY_XOSC (52 MHz external crystal oscillator).</td></tr>
+    <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to RADIOLIB_SX128X_STANDBY_RC (13 MHz RC oscillator) or RADIOLIB_SX128X_STANDBY_XOSC (52 MHz external crystal oscillator).</td></tr>
   </table>
   </dd>
 </dl>
@@ -1771,8 +1774,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a8171d2f3de53156526580ca4fe4d647d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8171d2f3de53156526580ca4fe4d647d">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="ad59ee052d8ab1f250245a14039fc8b66"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad59ee052d8ab1f250245a14039fc8b66">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1781,7 +1784,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX128x::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>SX128X_RX_TIMEOUT_INF</code></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX128X_RX_TIMEOUT_INF</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1790,7 +1793,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method. DIO1 will be activated when full packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to SX128X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to SX128X_RX_TIMEOUT_NONE for no timeout (Rx single mode).</td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX128X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX128X_RX_TIMEOUT_NONE for no timeout (Rx single mode).</td></tr>
   </table>
   </dd>
 </dl>

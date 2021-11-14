@@ -86,8 +86,8 @@ $(document).ready(function(){initNavTree('_s_s_t_v_8h_source.html',''); initResi
 <div class="title">SSTV.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_SSTV_H)</span></div>
-<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_SSTV_H</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_RADIOLIB_SSTV_H)</span></div>
+<div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_RADIOLIB_SSTV_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
@@ -100,28 +100,28 @@ $(document).ready(function(){initNavTree('_s_s_t_v_8h_source.html',''); initResi
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="comment">// http://www.barberdsp.com/downloads/Dayton%20Paper.pdf</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// VIS codes</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define SSTV_SCOTTIE_1                                60</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define SSTV_SCOTTIE_2                                56</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define SSTV_SCOTTIE_DX                               76</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define SSTV_MARTIN_1                                 44</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define SSTV_MARTIN_2                                 40</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define SSTV_WRASSE_SC2_180                           55</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define SSTV_PASOKON_P3                               113</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define SSTV_PASOKON_P5                               114</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define SSTV_PASOKON_P7                               115</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_SCOTTIE_1                                 60</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_SCOTTIE_2                                 56</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_SCOTTIE_DX                                76</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_MARTIN_1                                  44</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_MARTIN_2                                  40</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_WRASSE_SC2_180                            55</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_PASOKON_P3                                113</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_PASOKON_P5                                114</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_PASOKON_P7                                115</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="comment">// SSTV tones in Hz</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define SSTV_TONE_LEADER                              1900</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define SSTV_TONE_BREAK                               1200</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define SSTV_TONE_VIS_1                               1100</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define SSTV_TONE_VIS_0                               1300</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define SSTV_TONE_BRIGHTNESS_MIN                      1500</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define SSTV_TONE_BRIGHTNESS_MAX                      2300</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_LEADER                               1900</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_BREAK                                1200</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_VIS_1                                1100</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_VIS_0                                1300</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN                       1500</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_TONE_BRIGHTNESS_MAX                       2300</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// calibration header timing in us</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define SSTV_HEADER_LEADER_LENGTH                     300000</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define SSTV_HEADER_BREAK_LENGTH                      10000</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define SSTV_HEADER_BIT_LENGTH                        30000</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_HEADER_LEADER_LENGTH                      300000</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_HEADER_BREAK_LENGTH                       10000</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_HEADER_BIT_LENGTH                         30000</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structtone__t.html">   43</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtone__t.html">tone_t</a> {</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('_s_s_t_v_8h_source.html',''); initResi
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
 <div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    uint16_t <a class="code" href="class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d">getPictureHeight</a>() <span class="keyword">const</span>;</div>
 <div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160; </div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>

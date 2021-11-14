@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['iserial_382',['ISerial',['../class_i_serial.html',1,'']]],
-  ['ita2string_383',['ITA2String',['../class_i_t_a2_string.html',1,'']]]
+  ['llcc68_311',['LLCC68',['../class_l_l_c_c68.html',1,'']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['width_367',['width',['../struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40',1,'SSTVMode_t']]]
+  ['_7eax25frame_302',['~AX25Frame',['../class_a_x25_frame.html#ab84a13f720ada37aee6201a560d9dc5a',1,'AX25Frame']]],
+  ['_7eita2string_303',['~ITA2String',['../class_i_t_a2_string.html#afde24c931997581878953660192e09a2',1,'ITA2String']]]
 ];

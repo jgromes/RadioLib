@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['jdy08_516',['JDY08',['../class_j_d_y08.html#a9e2895c29cbbb30bc49aa2b3b9d2c4d6',1,'JDY08']]],
-  ['join_517',['join',['../class_e_s_p8266.html#abb39d205464bc4789c87120564258432',1,'ESP8266']]]
+  ['length_421',['length',['../class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e',1,'ITA2String']]],
+  ['llcc68_422',['LLCC68',['../class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261',1,'LLCC68']]]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['baudrate_666',['baudrate',['../class_module.html#a128ead3f3198e3b06d39a128a5d6c777',1,'Module']]]
+  ['destcallsign_557',['destCallsign',['../class_a_x25_frame.html#a7fe9805148e2dd46d163cd989473dbff',1,'AX25Frame']]],
+  ['destssid_558',['destSSID',['../class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8',1,'AX25Frame']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['destcallsign_668',['destCallsign',['../class_a_x25_frame.html#a78e72871e3a9370675318876f4a4b432',1,'AX25Frame']]],
-  ['destssid_669',['destSSID',['../class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8',1,'AX25Frame']]]
+  ['height_560',['height',['../struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031',1,'SSTVMode_t']]]
 ];

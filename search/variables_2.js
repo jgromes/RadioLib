@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['control_667',['control',['../class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f',1,'AX25Frame']]]
+  ['freq_559',['freq',['../structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf',1,'tone_t']]]
 ];

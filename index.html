@@ -89,15 +89,12 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <div class="textblock"><p>Universal wireless communication library for Arduino.</p>
 <dl class="section user"><dt>Currently Supported Wireless Modules and Protocols</dt><dd><ul>
 <li><a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> FSK module</li>
-<li><a class="el" href="class_h_c05.html" title="Control class for HC05 module. Most methods supported by this module are implemented in ISerial inter...">HC05</a> Bluetooth module</li>
-<li><a class="el" href="class_j_d_y08.html" title="Control class for JDY08 module. Most methods supported by this module are implemented in ISerial inte...">JDY08</a> BLE module</li>
 <li><a class="el" href="class_r_f69.html" title="Control class for RF69 module. Also serves as base class for SX1231.">RF69</a> FSK module</li>
 <li><a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> FSK module</li>
 <li><a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a> LoRa/FSK module</li>
 <li><a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> LoRa/FSK module</li>
 <li><a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> LoRa/GFSK/BLE/FLRC module</li>
 <li><a class="el" href="class_s_x1231.html" title="Control class for SX1231 module. Overrides some methods from RF69 due to different register values.">SX1231</a> FSK module</li>
-<li><a class="el" href="class_x_bee.html" title="Control class for XBee modules.">XBee</a> module (S2B)</li>
 <li><a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> protocols<ul>
 <li>RTTY (<a class="el" href="class_r_t_t_y_client.html" title="Client for RTTY communication. The public interface is the same as Arduino Serial.">RTTYClient</a>)</li>
 <li>Morse Code (<a class="el" href="class_morse_client.html" title="Client for Morse Code communication. The public interface is the same as Arduino Serial.">MorseClient</a>)</li>
@@ -107,11 +104,6 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 <li>4-FSK (<a class="el" href="class_f_s_k4_client.html" title="Client for FSK-4 communication. The public interface is the same as Arduino Serial.">FSK4Client</a>)</li>
 </ul>
 </li>
-<li><a class="el" href="class_transport_layer.html" title="Provides common interface for protocols that run on modules with Internet connectivity,...">TransportLayer</a> protocols<ul>
-<li>HTTP (<a class="el" href="class_h_t_t_p_client.html" title="Client for simple HTTP communication.">HTTPClient</a>)</li>
-<li>MQTT (<a class="el" href="class_m_q_t_t_client.html" title="Client for simple MQTT communication.">MQTTClient</a>)</li>
-</ul>
-</li>
 </ul>
 </dd></dl>
 <dl class="section user"><dt>Quick Links</dt><dd>Documentation for most common methods can be found in its reference page (see the list above).<br  />
@@ -119,7 +111,6 @@ Some methods (mainly configuration) are also overridden in derived classes, such
 <a class="el" href="group__status__codes.html">Status Codes</a> have their own page.<br  />
 Some modules implement methods of one or more compatibility layers, loosely based on the ISO/OSI model:<ul>
 <li><a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> - FSK and LoRa radio modules</li>
-<li><a class="el" href="class_transport_layer.html" title="Provides common interface for protocols that run on modules with Internet connectivity,...">TransportLayer</a> - Modules with Internet connectivity</li>
 </ul>
 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a href="https://github.com/jgromes/RadioLib">https://github.com/jgromes/RadioLib</a></dd></dl>

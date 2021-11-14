@@ -7,9 +7,10 @@ var class_c_c1101 =
     [ "disableAddressFiltering", "class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883", null ],
     [ "disableSyncWordFiltering", "class_c_c1101.html#a4f2dc4176b62a0636636088e31b8e85b", null ],
     [ "enableSyncWordFiltering", "class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4", null ],
-    [ "fixedPacketLengthMode", "class_c_c1101.html#a9335f1d5ccab7aab2357449002203810", null ],
+    [ "fixedPacketLengthMode", "class_c_c1101.html#ad25ad96cddf62273bffd601384d22275", null ],
     [ "getChipVersion", "class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705", null ],
     [ "getLQI", "class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb", null ],
+    [ "getMod", "class_c_c1101.html#ad47b3b7bd67159638ff9afcfe002fc66", null ],
     [ "getPacketLength", "class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0", null ],
     [ "getPromiscuousMode", "class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6", null ],
     [ "getRSSI", "class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551", null ],
@@ -53,5 +54,5 @@ var class_c_c1101 =
     [ "transmit", "class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4", null ],
     [ "transmit", "class_c_c1101.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
     [ "transmitDirect", "class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46", null ],
-    [ "variablePacketLengthMode", "class_c_c1101.html#a881122ec3457c5f95760859f8e0297c7", null ]
+    [ "variablePacketLengthMode", "class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f", null ]
 ];

@@ -5,18 +5,9 @@ var hierarchy =
     [ "AX25Frame", "class_a_x25_frame.html", null ],
     [ "FSK4Client", "class_f_s_k4_client.html", null ],
     [ "HellClient", "class_hell_client.html", null ],
-    [ "HTTPClient", "class_h_t_t_p_client.html", null ],
-    [ "ISerial", "class_i_serial.html", [
-      [ "HC05", "class_h_c05.html", null ],
-      [ "JDY08", "class_j_d_y08.html", null ],
-      [ "XBeeSerial", "class_x_bee_serial.html", null ]
-    ] ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
-    [ "Module", "class_module.html", [
-      [ "SerialModule", "class_serial_module.html", null ]
-    ] ],
+    [ "Module", "class_module.html", null ],
     [ "MorseClient", "class_morse_client.html", null ],
-    [ "MQTTClient", "class_m_q_t_t_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
       [ "nRF24", "classn_r_f24.html", null ],
@@ -64,9 +55,5 @@ var hierarchy =
     [ "RTTYClient", "class_r_t_t_y_client.html", null ],
     [ "SSTVClient", "class_s_s_t_v_client.html", null ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", null ],
-    [ "tone_t", "structtone__t.html", null ],
-    [ "TransportLayer", "class_transport_layer.html", [
-      [ "ESP8266", "class_e_s_p8266.html", null ]
-    ] ],
-    [ "XBee", "class_x_bee.html", null ]
+    [ "tone_t", "structtone__t.html", null ]
 ];

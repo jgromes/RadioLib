@@ -134,6 +134,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7cfff2efebfa01c8a50a5cbbe8775b9 inherit pub_methods_class_si443x"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ae7cfff2efebfa01c8a50a5cbbe8775b9">Si443x</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:ae7cfff2efebfa01c8a50a5cbbe8775b9 inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_si443x.html#ae7cfff2efebfa01c8a50a5cbbe8775b9">More...</a><br /></td></tr>
 <tr class="separator:ae7cfff2efebfa01c8a50a5cbbe8775b9 inherit pub_methods_class_si443x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427f24f614f04e87094354047bf1bf00 inherit pub_methods_class_si443x"><td class="memItemLeft" align="right" valign="top"><a id="a427f24f614f04e87094354047bf1bf00"></a>
+<a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
+<tr class="separator:a427f24f614f04e87094354047bf1bf00 inherit pub_methods_class_si443x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a453eda5436dc4dfe0dad676dc3977752 inherit pub_methods_class_si443x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a453eda5436dc4dfe0dad676dc3977752">begin</a> (float br, float freqDev, float rxBw, uint8_t preambleLen)</td></tr>
 <tr class="memdesc:a453eda5436dc4dfe0dad676dc3977752 inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_si443x.html#a453eda5436dc4dfe0dad676dc3977752">More...</a><br /></td></tr>
 <tr class="separator:a453eda5436dc4dfe0dad676dc3977752 inherit pub_methods_class_si443x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,7 +212,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a74848176d435227e601c86ff37b0edbe inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">More...</a><br /></td></tr>
 <tr class="separator:a74848176d435227e601c86ff37b0edbe inherit pub_methods_class_si443x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55252bda74e8c67636a8c1fa0e9f58d3 inherit pub_methods_class_si443x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">getChipVersion</a> ()</td></tr>
-<tr class="memdesc:a55252bda74e8c67636a8c1fa0e9f58d3 inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return SI443X_DEVICE_VERSION (0x06) if <a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> is connected and working.  <a href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">More...</a><br /></td></tr>
+<tr class="memdesc:a55252bda74e8c67636a8c1fa0e9f58d3 inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return RADIOLIB_SI443X_DEVICE_VERSION (0x06) if <a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> is connected and working.  <a href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">More...</a><br /></td></tr>
 <tr class="separator:a55252bda74e8c67636a8c1fa0e9f58d3 inherit pub_methods_class_si443x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55fae20e81755c8b014d080741d61913 inherit pub_methods_class_si443x"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a55fae20e81755c8b014d080741d61913">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a55fae20e81755c8b014d080741d61913 inherit pub_methods_class_si443x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_si443x.html#a55fae20e81755c8b014d080741d61913">More...</a><br /></td></tr>
@@ -319,7 +322,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a> that will be used to communicate with the radio chip. </td></tr>
+    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> that will be used to communicate with the radio chip. </td></tr>
   </table>
   </dd>
 </dl>

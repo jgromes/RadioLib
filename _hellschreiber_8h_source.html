@@ -96,13 +96,13 @@ $(document).ready(function(){initNavTree('_hellschreiber_8h_source.html',''); in
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../PhysicalLayer/PhysicalLayer.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../AFSK/AFSK.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define HELL_FONT_WIDTH                               7</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define HELL_FONT_HEIGHT                              7</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define RADIOLIB_HELL_FONT_WIDTH                                7</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_HELL_FONT_HEIGHT                               7</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// font definition: characters are stored in rows,</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//                  least significant byte of each character is the first row</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//                  Hellschreiber use 7x7 characters, but this simplified font uses only 5x5 - the extra bytes aren&#39;t stored</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t HellFont[64][HELL_FONT_WIDTH - 2] RADIOLIB_PROGMEM = {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLATILE = {</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;  { 0b0000000, 0b0000000, 0b0000000, 0b0000000, 0b0000000 },  <span class="comment">// space</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;  { 0b0001000, 0b0001000, 0b0001000, 0b0000000, 0b0001000 },  <span class="comment">// !</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  { 0b0010100, 0b0010100, 0b0000000, 0b0000000, 0b0000000 },  <span class="comment">// &quot;</span></div>
@@ -211,7 +211,7 @@ $(document).ready(function(){initNavTree('_hellschreiber_8h_source.html',''); in
 <div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
 <div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">double</span>, <span class="keywordtype">int</span> = 2);</div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#ifndef RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>

@@ -10,7 +10,7 @@ var class_a_x25_frame =
     [ "setRepeaters", "class_a_x25_frame.html#a7f2d9f4f1ba29d0fd9f9f3f2cf03f797", null ],
     [ "setSendSequence", "class_a_x25_frame.html#a026e9b96fa69018590fcf6842df8be70", null ],
     [ "control", "class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f", null ],
-    [ "destCallsign", "class_a_x25_frame.html#a78e72871e3a9370675318876f4a4b432", null ],
+    [ "destCallsign", "class_a_x25_frame.html#a7fe9805148e2dd46d163cd989473dbff", null ],
     [ "destSSID", "class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8", null ],
     [ "info", "class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988", null ],
     [ "infoLen", "class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41", null ],
@@ -20,6 +20,6 @@ var class_a_x25_frame =
     [ "repeaterCallsigns", "class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94", null ],
     [ "repeaterSSIDs", "class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830", null ],
     [ "sendSeqNumber", "class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2", null ],
-    [ "srcCallsign", "class_a_x25_frame.html#ab76eaa8445e7953059a46bb78082dd5a", null ],
+    [ "srcCallsign", "class_a_x25_frame.html#a38f7fb6a4a6344b5892c3a3cdf26c585", null ],
     [ "srcSSID", "class_a_x25_frame.html#a50c63276facf8126f0f8555b1fc6b2c9", null ]
 ];

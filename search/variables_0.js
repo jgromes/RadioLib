@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['atlinefeed_665',['AtLineFeed',['../class_module.html#a9d8ab2ff353bad5d0e7568d300a48ba0',1,'Module']]]
+  ['control_556',['control',['../class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f',1,'AX25Frame']]]
 ];

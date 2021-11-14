@@ -96,15 +96,15 @@ $(document).ready(function(){initNavTree('_s_x1231_8h_source.html',''); initResi
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../RF69/RF69.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define SX1231_CHIP_REVISION_2_A                      0x21</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define SX1231_CHIP_REVISION_2_B                      0x22</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define SX1231_CHIP_REVISION_2_C                      0x23</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define RADIOLIB_SX1231_CHIP_REVISION_2_A                      0x21</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_SX1231_CHIP_REVISION_2_B                      0x22</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define RADIOLIB_SX1231_CHIP_REVISION_2_C                      0x23</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//SX1231 specific register map</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define SX1231_REG_TEST_OOK                           0x6E</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define RADIOLIB_SX1231_REG_TEST_OOK                           0x6E</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//SX1231_REG_TEST_OOK</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define SX1231_OOK_DELTA_THRESHOLD                    0x0C</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#define RADIOLIB_SX1231_OOK_DELTA_THRESHOLD                    0x0C</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
 <div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_s_x1231.html">   26</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s_x1231.html">SX1231</a>: <span class="keyword">public</span> <a class="code" href="class_r_f69.html">RF69</a>  {</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;  <span class="keyword">public</span>:</div>
@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('_s_x1231_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x1231_html"><div class="ttname"><a href="class_s_x1231.html">SX1231</a></div><div class="ttdoc">Control class for SX1231 module. Overrides some methods from RF69 due to different register values.</div><div class="ttdef"><b>Definition:</b> SX1231.h:26</div></div>
 <div class="ttc" id="aclass_r_f69_html"><div class="ttname"><a href="class_r_f69.html">RF69</a></div><div class="ttdoc">Control class for RF69 module. Also serves as base class for SX1231.</div><div class="ttdef"><b>Definition:</b> RF69.h:440</div></div>
 <div class="ttc" id="aclass_s_x1231_html_a20d6eb4b8f18fb7f8d02967937ec6f8e"><div class="ttname"><a href="class_s_x1231.html#a20d6eb4b8f18fb7f8d02967937ec6f8e">SX1231::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float br=48.0, float rxBw=125.0, float freqDev=50.0, int8_t power=10, uint8_t preambleLen=16)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> SX1231.cpp:8</div></div>
-<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...</div><div class="ttdef"><b>Definition:</b> Module.h:17</div></div>
+<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:16</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

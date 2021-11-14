@@ -7,11 +7,12 @@ var class_s_x126x =
     [ "clearDio1Action", "class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd", null ],
     [ "disableAddressFiltering", "class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2", null ],
     [ "explicitHeader", "class_s_x126x.html#a3765f534418d4e0540c179621c019138", null ],
-    [ "fixedPacketLengthMode", "class_s_x126x.html#aa768ce757a0f7ee66cdd72cab7a855fa", null ],
+    [ "fixedPacketLengthMode", "class_s_x126x.html#abc3a4f9213b2a7052e97c2e3a0bf45a5", null ],
     [ "forceLDRO", "class_s_x126x.html#a420c23bb1861646e29f44c0f4c646ee8", null ],
     [ "getChannelScanResult", "class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f", null ],
     [ "getCurrentLimit", "class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab", null ],
     [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
+    [ "getMod", "class_s_x126x.html#aae1af90432c457e5bf8f8f362295399b", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],
     [ "getRSSI", "class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925", null ],
     [ "getRSSIInst", "class_s_x126x.html#ae36664f9c605a8fe74b2f357e0ec3323", null ],
@@ -57,7 +58,7 @@ var class_s_x126x =
     [ "standby", "class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71", null ],
     [ "standby", "class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd", null ],
     [ "startChannelScan", "class_s_x126x.html#a37a716aab163aebbe36599dc7e530c92", null ],
-    [ "startReceive", "class_s_x126x.html#a5052dc09f4b10ee22e169129f368685f", null ],
+    [ "startReceive", "class_s_x126x.html#aeb92dc9d2e2a2b3a3a5ff2856528d497", null ],
     [ "startReceiveDutyCycle", "class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136", null ],
     [ "startReceiveDutyCycleAuto", "class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f", null ],
     [ "startTransmit", "class_s_x126x.html#a923654706eff5118ef6e84214e837f27", null ],
@@ -70,5 +71,5 @@ var class_s_x126x =
     [ "transmit", "class_s_x126x.html#aab18364237ddac0c56aeaf63f08cf009", null ],
     [ "transmit", "class_s_x126x.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
     [ "transmitDirect", "class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b", null ],
-    [ "variablePacketLengthMode", "class_s_x126x.html#aa11ab2c6f4488daf2ece93288e05c504", null ]
+    [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ]
 ];

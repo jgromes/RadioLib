@@ -11,8 +11,9 @@ var class_r_f69 =
     [ "enableAES", "class_r_f69.html#a1fd4609f419d8b0213ee39b05dd40b69", null ],
     [ "enableContinuousModeBitSync", "class_r_f69.html#a7e2201b5bc389a68765400b70439f3f0", null ],
     [ "enableSyncWordFiltering", "class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417", null ],
-    [ "fixedPacketLengthMode", "class_r_f69.html#a4c9dcbd7e44bc5e46d9f10ae276a0c5f", null ],
+    [ "fixedPacketLengthMode", "class_r_f69.html#a0de2a07f264839cda945faebf7319e0e", null ],
     [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
+    [ "getMod", "class_r_f69.html#afd3a98c6ff75e1036c9ba6d5423851df", null ],
     [ "getPacketLength", "class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1", null ],
     [ "getRSSI", "class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7", null ],
     [ "getTemperature", "class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853", null ],
@@ -64,5 +65,5 @@ var class_r_f69 =
     [ "transmit", "class_r_f69.html#a09ba80f60ee7974011a4b4f6c18c6847", null ],
     [ "transmit", "class_r_f69.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
     [ "transmitDirect", "class_r_f69.html#a222682569338abb49d6952430b6eebdd", null ],
-    [ "variablePacketLengthMode", "class_r_f69.html#af62ebde1ea34a394b9781a21ae348c39", null ]
+    [ "variablePacketLengthMode", "class_r_f69.html#af434c67aabe02258ee6696a59973617b", null ]
 ];

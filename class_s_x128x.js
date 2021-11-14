@@ -1,12 +1,13 @@
 var class_s_x128x =
 [
     [ "SX128x", "class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7", null ],
-    [ "begin", "class_s_x128x.html#a7927beac8c610dffd06cf95242706f39", null ],
+    [ "begin", "class_s_x128x.html#acbd0d1a48051ccd35f4a89c9b8d05bdf", null ],
     [ "beginBLE", "class_s_x128x.html#a316340d7ba2a6e7cb5742e3ff21e728c", null ],
     [ "beginFLRC", "class_s_x128x.html#ac7df67afbb0b1a88daf5ec50f3d65660", null ],
     [ "beginGFSK", "class_s_x128x.html#a8dd8ce38bc9d0d8dbd711b373e864e93", null ],
     [ "clearDio1Action", "class_s_x128x.html#ab8a3fe8e2843fa039ef369668f1a423f", null ],
     [ "explicitHeader", "class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d", null ],
+    [ "getMod", "class_s_x128x.html#a69ee7379f4b79abf626df186b2db6441", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],
     [ "getRSSI", "class_s_x128x.html#a94d3003277925e2dc3372548b3311008", null ],
     [ "getSNR", "class_s_x128x.html#a89ebf1f4f227cd35c0799c06d5d9c1d2", null ],
@@ -44,7 +45,7 @@ var class_s_x128x =
     [ "sleep", "class_s_x128x.html#a1d15e13e15b060ddbbe84257d5fcb66f", null ],
     [ "standby", "class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45", null ],
     [ "standby", "class_s_x128x.html#aa11ba80f0cebb3e6927c775ad5f96b4e", null ],
-    [ "startReceive", "class_s_x128x.html#a8171d2f3de53156526580ca4fe4d647d", null ],
+    [ "startReceive", "class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66", null ],
     [ "startTransmit", "class_s_x128x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_s_x128x.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_s_x128x.html#aef221e7d463c5228ce00ed6934512848", null ],

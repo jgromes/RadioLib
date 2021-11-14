@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['rcvseqnumber_679',['rcvSeqNumber',['../class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f',1,'AX25Frame']]],
-  ['repeatercallsigns_680',['repeaterCallsigns',['../class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94',1,'AX25Frame']]],
-  ['repeaterssids_681',['repeaterSSIDs',['../class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830',1,'AX25Frame']]]
+  ['viscode_578',['visCode',['../struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820',1,'SSTVMode_t']]]
 ];

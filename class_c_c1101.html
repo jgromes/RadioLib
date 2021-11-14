@@ -109,6 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6807e4254c4b55fa8d393b2bf8f2db3e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e">CC1101</a> (<a class="el" href="class_module.html">Module</a> *module)</td></tr>
 <tr class="memdesc:a6807e4254c4b55fa8d393b2bf8f2db3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e">More...</a><br /></td></tr>
 <tr class="separator:a6807e4254c4b55fa8d393b2bf8f2db3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memItemLeft" align="right" valign="top"><a id="ad47b3b7bd67159638ff9afcfe002fc66"></a>
+<a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
+<tr class="separator:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#adcf6b5c4e1a066d6b9be326a9ee04284">begin</a> (float freq=434.0, float br=48.0, float freqDev=48.0, float rxBw=135.0, int8_t power=10, uint8_t preambleLength=16)</td></tr>
 <tr class="memdesc:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_c_c1101.html#adcf6b5c4e1a066d6b9be326a9ee04284">More...</a><br /></td></tr>
 <tr class="separator:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,12 +199,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a122281f6a915b77ee9dafc9926e731a0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:a122281f6a915b77ee9dafc9926e731a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0">More...</a><br /></td></tr>
 <tr class="separator:a122281f6a915b77ee9dafc9926e731a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9335f1d5ccab7aab2357449002203810"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a9335f1d5ccab7aab2357449002203810">fixedPacketLengthMode</a> (uint8_t len=CC1101_MAX_PACKET_LENGTH)</td></tr>
-<tr class="memdesc:a9335f1d5ccab7aab2357449002203810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode.  <a href="class_c_c1101.html#a9335f1d5ccab7aab2357449002203810">More...</a><br /></td></tr>
-<tr class="separator:a9335f1d5ccab7aab2357449002203810"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a881122ec3457c5f95760859f8e0297c7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a881122ec3457c5f95760859f8e0297c7">variablePacketLengthMode</a> (uint8_t maxLen=CC1101_MAX_PACKET_LENGTH)</td></tr>
-<tr class="memdesc:a881122ec3457c5f95760859f8e0297c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode.  <a href="class_c_c1101.html#a881122ec3457c5f95760859f8e0297c7">More...</a><br /></td></tr>
-<tr class="separator:a881122ec3457c5f95760859f8e0297c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad25ad96cddf62273bffd601384d22275"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ad25ad96cddf62273bffd601384d22275">fixedPacketLengthMode</a> (uint8_t len=RADIOLIB_CC1101_MAX_PACKET_LENGTH)</td></tr>
+<tr class="memdesc:ad25ad96cddf62273bffd601384d22275"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode.  <a href="class_c_c1101.html#ad25ad96cddf62273bffd601384d22275">More...</a><br /></td></tr>
+<tr class="separator:ad25ad96cddf62273bffd601384d22275"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50b9e73d2d82a4cd03841f465825b73f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f">variablePacketLengthMode</a> (uint8_t maxLen=RADIOLIB_CC1101_MAX_PACKET_LENGTH)</td></tr>
+<tr class="memdesc:a50b9e73d2d82a4cd03841f465825b73f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode.  <a href="class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f">More...</a><br /></td></tr>
+<tr class="separator:a50b9e73d2d82a4cd03841f465825b73f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6fe55d0217bf5218865198ef8d6fdab4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4">enableSyncWordFiltering</a> (uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a6fe55d0217bf5218865198ef8d6fdab4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable sync word filtering and generation.  <a href="class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4">More...</a><br /></td></tr>
 <tr class="separator:a6fe55d0217bf5218865198ef8d6fdab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -340,7 +343,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level SPI/UART methods to control the wireless module. Every module class c...">Module</a> that will be used to communicate with the radio. </td></tr>
+    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> that will be used to communicate with the radio. </td></tr>
   </table>
   </dd>
 </dl>
@@ -499,8 +502,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a9335f1d5ccab7aab2357449002203810"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9335f1d5ccab7aab2357449002203810">&#9670;&nbsp;</a></span>fixedPacketLengthMode()</h2>
+<a id="ad25ad96cddf62273bffd601384d22275"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad25ad96cddf62273bffd601384d22275">&#9670;&nbsp;</a></span>fixedPacketLengthMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -509,7 +512,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t CC1101::fixedPacketLengthMode </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>len</em> = <code>CC1101_MAX_PACKET_LENGTH</code></td><td>)</td>
+          <td class="paramname"><em>len</em> = <code>RADIOLIB_CC1101_MAX_PACKET_LENGTH</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1914,8 +1917,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a881122ec3457c5f95760859f8e0297c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a881122ec3457c5f95760859f8e0297c7">&#9670;&nbsp;</a></span>variablePacketLengthMode()</h2>
+<a id="a50b9e73d2d82a4cd03841f465825b73f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50b9e73d2d82a4cd03841f465825b73f">&#9670;&nbsp;</a></span>variablePacketLengthMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1924,7 +1927,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t CC1101::variablePacketLengthMode </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>maxLen</em> = <code>CC1101_MAX_PACKET_LENGTH</code></td><td>)</td>
+          <td class="paramname"><em>maxLen</em> = <code>RADIOLIB_CC1101_MAX_PACKET_LENGTH</code></td><td>)</td>
           <td></td>
         </tr>
       </table>

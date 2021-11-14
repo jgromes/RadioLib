@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['protocolid_678',['protocolID',['../class_a_x25_frame.html#aa8895fea37220c82f68bd320331595c8',1,'AX25Frame']]]
+  ['tones_576',['tones',['../struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad',1,'SSTVMode_t']]],
+  ['type_577',['type',['../structtone__t.html#ac8717b06ffa53eebe2aaf16f19747d40',1,'tone_t']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['len_172',['len',['../structtone__t.html#a3b0421dd255c7c59552741957a6224ed',1,'tone_t']]],
-  ['length_173',['length',['../class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e',1,'ITA2String']]],
-  ['llcc68_174',['LLCC68',['../class_l_l_c_c68.html',1,'LLCC68'],['../class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261',1,'LLCC68::LLCC68()']]],
-  ['lora_5fdetected_175',['LORA_DETECTED',['../group__status__codes.html#gacfda389267c561c2ab2ac5c368954d0c',1,'TypeDef.h']]]
+  ['micros_86',['micros',['../class_module.html#af3f51e517a825949891ad29e30fd3f59',1,'Module']]],
+  ['millis_87',['millis',['../class_module.html#a216dd0c6ce140857f2b003ab8d89fbac',1,'Module']]],
+  ['module_88',['Module',['../class_module.html',1,'Module'],['../class_module.html#a1101d49f597f756141fc9de88a504f21',1,'Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio=RADIOLIB_NC)'],['../class_module.html#a919baf2e46c357ebfcdbc1025b6c551e',1,'Module::Module(const Module &amp;mod)']]],
+  ['morseclient_89',['MorseClient',['../class_morse_client.html',1,'MorseClient'],['../class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a',1,'MorseClient::MorseClient(PhysicalLayer *phy)'],['../class_morse_client.html#aa5c8ec6823388877b7acfa0deab689a2',1,'MorseClient::MorseClient(AFSKClient *audio)']]]
 ];

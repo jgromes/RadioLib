@@ -8,12 +8,13 @@ var class_s_x127x =
     [ "disableAddressFiltering", "class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5", null ],
     [ "disableBitSync", "class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd", null ],
     [ "enableBitSync", "class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa", null ],
-    [ "fixedPacketLengthMode", "class_s_x127x.html#aaf8ce9f09d0f46a76a5e251786b6de7f", null ],
+    [ "fixedPacketLengthMode", "class_s_x127x.html#a6fb42d9cd518e9f6408a40753c0be359", null ],
     [ "getAFCError", "class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544", null ],
     [ "getChipVersion", "class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd", null ],
     [ "getDataRate", "class_s_x127x.html#adc25b685de0859b799488bf7729350b6", null ],
     [ "getFrequencyError", "class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362", null ],
     [ "getIRQFlags", "class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d", null ],
+    [ "getMod", "class_s_x127x.html#a4c27736905cf848a67d6cbc92df823b8", null ],
     [ "getModemStatus", "class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc", null ],
     [ "getPacketLength", "class_s_x127x.html#a462fa74275e67c296328a01f361892d5", null ],
     [ "getSNR", "class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb", null ],
@@ -56,7 +57,7 @@ var class_s_x127x =
     [ "sleep", "class_s_x127x.html#a44501ec8f8ac6084467b94516b1337df", null ],
     [ "standby", "class_s_x127x.html#a760b8c5103128f122fbe489c6529ce41", null ],
     [ "startChannelScan", "class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059", null ],
-    [ "startReceive", "class_s_x127x.html#afe8456d0f9abbce4d743f256f3e1e6c6", null ],
+    [ "startReceive", "class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d", null ],
     [ "startTransmit", "class_s_x127x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_s_x127x.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_s_x127x.html#adc2f1379573b7a7b5ee8125ea3752083", null ],
@@ -67,5 +68,5 @@ var class_s_x127x =
     [ "transmit", "class_s_x127x.html#a9c4ea3285922bf01cebd2c8a706d9a29", null ],
     [ "transmit", "class_s_x127x.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
     [ "transmitDirect", "class_s_x127x.html#aefeeb9f7192e11a75b5dfb1ab8488e84", null ],
-    [ "variablePacketLengthMode", "class_s_x127x.html#a9f753c0857e7b8b4b9f7f6e91c77f0fd", null ]
+    [ "variablePacketLengthMode", "class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c", null ]
 ];
