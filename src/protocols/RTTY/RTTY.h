@@ -8,17 +8,17 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 
-#define ITA2_FIGS                                     0x1B
-#define ITA2_LTRS                                     0x1F
-#define ITA2_LENGTH                                   32
+#define RADIOLIB_ITA2_FIGS                                      0x1B
+#define RADIOLIB_ITA2_LTRS                                      0x1F
+#define RADIOLIB_ITA2_LENGTH                                    32
 
 // ITA2 character table: - position in array corresponds to 5-bit ITA2 code
 //                       - characters to the left are in letters shift, characters to the right in figures shift
 //                       - characters marked 0x7F do not have ASCII equivalent
-static const char ITA2Table[ITA2_LENGTH][2] RADIOLIB_PROGMEM = {{'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, {'A', '-'}, {' ', ' '}, {'S', '\''}, {'I', '8'}, {'U', '7'},
-                                                                {'\r', '\r'}, {'D', 0x05}, {'R', '4'}, {'J', '\a'}, {'N', ','}, {'F', '!'}, {'C', ':'}, {'K', '('},
-                                                                {'T', '5'}, {'Z', '+'}, {'L', ')'}, {'W', '2'}, {'H', 0x7F}, {'Y', '6'}, {'P', '0'}, {'Q', '1'},
-                                                                {'O', '9'}, {'B', '?'}, {'G', '&'}, {0x7F, 0x7F}, {'M', '.'}, {'X', '/'}, {'V', ';'}, {0x7F, 0x7F}};
+static const char ITA2Table[RADIOLIB_ITA2_LENGTH][2] RADIOLIB_NONVOLATILE = {{'\0', '\0'}, {'E', '3'}, {'\n', '\n'}, {'A', '-'}, {' ', ' '}, {'S', '\''}, {'I', '8'}, {'U', '7'},
+                                                                             {'\r', '\r'}, {'D', 0x05}, {'R', '4'}, {'J', '\a'}, {'N', ','}, {'F', '!'}, {'C', ':'}, {'K', '('},
+                                                                             {'T', '5'}, {'Z', '+'}, {'L', ')'}, {'W', '2'}, {'H', 0x7F}, {'Y', '6'}, {'P', '0'}, {'Q', '1'},
+                                                                             {'O', '9'}, {'B', '?'}, {'G', '&'}, {0x7F, 0x7F}, {'M', '.'}, {'X', '/'}, {'V', ';'}, {0x7F, 0x7F}};
 
 /*!
   \class ITA2String
@@ -61,10 +61,10 @@ class ITA2String {
     */
     uint8_t* byteArr();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
-    #ifdef RADIOLIB_STATIC_ONLY
+    #if defined(RADIOLIB_STATIC_ONLY)
       char _str[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
       char* _str;
@@ -76,9 +76,9 @@ class ITA2String {
 };
 
 // supported encoding schemes
-#define ASCII                                         0
-#define ASCII_EXTENDED                                1
-#define ITA2                                          2
+#define RADIOLIB_ASCII                                          0
+#define RADIOLIB_ASCII_EXTENDED                                 1
+#define RADIOLIB_ITA2                                           2
 
 /*!
   \class RTTYClient
@@ -120,7 +120,7 @@ class RTTYClient {
 
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding = ASCII, uint8_t stopBits = 1);
+    int16_t begin(float base, uint32_t shift, uint16_t rate, uint8_t encoding = RADIOLIB_ASCII, uint8_t stopBits = 1);
 
     /*!
       \brief Send out idle condition (RF tone at mark frequency).
@@ -163,7 +163,7 @@ class RTTYClient {
     size_t println(unsigned long, int = DEC);
     size_t println(double, int = 2);
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* _phy;
@@ -171,7 +171,7 @@ class RTTYClient {
     AFSKClient* _audio;
     #endif
 
-    uint8_t _encoding = ASCII;
+    uint8_t _encoding = RADIOLIB_ASCII;
     uint32_t _base = 0, _baseHz = 0;
     uint32_t _shift = 0, _shiftHz = 0;
     uint32_t _bitDuration = 0;
