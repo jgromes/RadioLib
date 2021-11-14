@@ -35,7 +35,7 @@ void setup() {
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -57,14 +57,14 @@ void loop() {
     int state = radio.range(false, 0x12345678);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // ranging finished successfully
     Serial.println(F("success!"));
     Serial.print(F("[SX1280] Distance:\t\t\t"));
     Serial.print(radio.getRangingResult());
     Serial.println(F(" meters"));
 
-  } else if (state == ERR_RANGING_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RANGING_TIMEOUT) {
     // timed out waiting for ranging packet
     Serial.println(F("timed out!"));
 

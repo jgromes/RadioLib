@@ -48,7 +48,7 @@ void setup() {
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
   int state = radio1.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -68,7 +68,7 @@ void setup() {
   // output power:                2 dBm
   // preamble length:             20 symbols
   state = radio2.begin(2450.0, 1625.0, 7, 5, 2, 20);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -80,43 +80,43 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 2410.5 MHz
-  if (radio1.setFrequency(2410.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(2410.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bandwidth to 203.125 kHz
-  if (radio1.setBandwidth(203.125) == ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set spreading factor to 10
-  if (radio1.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
+  if (radio1.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
     Serial.println(F("Selected spreading factor is invalid for this module!"));
     while (true);
   }
 
   // set coding rate to 6
-  if (radio1.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
+  if (radio1.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE) {
     Serial.println(F("Selected coding rate is invalid for this module!"));
     while (true);
   }
 
   // set output power to -2 dBm
-  if (radio1.setOutputPower(-2) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(-2) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("Selected output power is invalid for this module!"));
     while (true);
   }
 
   // set LoRa preamble length to 16 symbols (accepted range is 2 - 65535)
-  if (radio1.setPreambleLength(16) == ERR_INVALID_PREAMBLE_LENGTH) {
+  if (radio1.setPreambleLength(16) == RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH) {
     Serial.println(F("Selected preamble length is invalid for this module!"));
     while (true);
   }
 
   // disable CRC
-  if (radio1.setCRC(false) == ERR_INVALID_CRC_CONFIGURATION) {
+  if (radio1.setCRC(false) == RADIOLIB_ERR_INVALID_CRC_CONFIGURATION) {
     Serial.println(F("Selected CRC is invalid for this module!"));
     while (true);
   }
