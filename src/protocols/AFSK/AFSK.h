@@ -50,7 +50,7 @@ class AFSKClient  {
     */
     int16_t noTone();
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* _phy;

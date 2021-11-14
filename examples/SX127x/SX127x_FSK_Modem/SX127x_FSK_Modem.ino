@@ -36,7 +36,7 @@ void setup() {
   // initialize SX1278 FSK modem with default settings
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.beginFSK();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -61,7 +61,7 @@ void setup() {
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
   state = radio.setSyncWord(syncWord, 8);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
     while (true);
@@ -74,7 +74,7 @@ void setup() {
   //       setDataShapingOOK() to set the correct shaping!
   state = radio.setOOK(true);
   state = radio.setDataShapingOOK(1);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to change modulation, code "));
     Serial.println(state);
     while (true);
@@ -95,11 +95,11 @@ void loop() {
                       0x89, 0xAB, 0xCD, 0xEF};
     int state = radio.transmit(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Packet transmitted successfully!"));
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     Serial.println(F("[SX1278] Packet too long!"));
-  } else if (state == ERR_TX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
     Serial.println(F("[SX1278] Timed out while transmitting!"));
   } else {
     Serial.println(F("[SX1278] Failed to transmit packet, code "));
@@ -113,11 +113,11 @@ void loop() {
     byte byteArr[8];
     int state = radio.receive(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Received packet!"));
     Serial.print(F("[SX1278] Data:\t"));
     Serial.println(str);
-  } else if (state == ERR_RX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     Serial.println(F("[SX1278] Timed out while waiting for packet!"));
   } else {
     Serial.println(F("[SX1278] Failed to receive packet, code "));
@@ -138,7 +138,7 @@ void loop() {
   state = radio.setNodeAddress(0x02);
   // set broadcast address to 0xFF
   state = radio.setBroadcastAddress(0xFF);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Unable to set address filter, code "));
     Serial.println(state);
   }
@@ -148,7 +148,7 @@ void loop() {
   //       node and broadcast address
   /*
     state = radio.disableAddressFiltering();
-    if (state != ERR_NONE) {
+    if (state != RADIOLIB_ERR_NONE) {
       Serial.println(F("Unable to remove address filter, code "));
     }
   */
@@ -159,7 +159,7 @@ void loop() {
 
   // activate direct mode transmitter
   state = radio.transmitDirect();
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Unable to start direct transmission mode, code "));
     Serial.println(state);
   }
@@ -170,20 +170,22 @@ void loop() {
   // it is recommended to set data shaping to 0
   // (no shaping) when transmitting audio
   state = radio.setDataShaping(0.0);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Unable to set data shaping, code "));
     Serial.println(state);
   }
 
-  // transmit FM tone at 1000 Hz for 1 second
+  // transmit FM tone at 1000 Hz for 1 second, then 500 Hz for 1 second
   // (DIO2 is connected to Arduino pin 4)
   // Note: tone() function is not available on ESP32, Arduino Due and CubeCell
   //       on these platforms, the following will do nothing
-  Module::tone(4, 1000);
+  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
+  tone(4, 1000);
   delay(1000);
-  // transmit FM note at 500 Hz for 1 second
-  Module::tone(4, 500);
+  tone(4, 500);
   delay(1000);
+  noTone(4);
+  #endif
 
   // NOTE: after calling transmitDirect(), SX127x will start
   // transmitting immediately! This signal can jam other
@@ -193,7 +195,7 @@ void loop() {
   // direct mode transmissions can also be received
   // as bit stream on DIO1 (data) and DIO2 (clock)
   state = radio.receiveDirect();
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1278] Unable to start direct reception mode, code "));
     Serial.println(state);
   }

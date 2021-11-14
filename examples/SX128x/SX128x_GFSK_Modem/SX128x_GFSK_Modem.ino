@@ -36,7 +36,7 @@ void setup() {
   // initialize SX1280 with default settings
   Serial.print(F("[SX1280] Initializing ... "));
   int state = radio.beginGFSK();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -58,7 +58,7 @@ void setup() {
   state = radio.setDataShaping(RADIOLIB_SHAPING_1_0);
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67, 0x89};
   state = radio.setSyncWord(syncWord, 5);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
     while (true);
@@ -78,11 +78,11 @@ void loop() {
                       0x89, 0xAB, 0xCD, 0xEF};
     int state = radio.transmit(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1280] Packet transmitted successfully!"));
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     Serial.println(F("[SX1280] Packet too long!"));
-  } else if (state == ERR_TX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
     Serial.println(F("[SX1280] Timed out while transmitting!"));
   } else {
     Serial.println(F("[SX1280] Failed to transmit packet, code "));
@@ -96,11 +96,11 @@ void loop() {
     byte byteArr[8];
     int state = radio.receive(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1280] Received packet!"));
     Serial.print(F("[SX1280] Data:\t"));
     Serial.println(str);
-  } else if (state == ERR_RX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     Serial.println(F("[SX1280] Timed out while waiting for packet!"));
   } else {
     Serial.print(F("[SX1280] Failed to receive packet, code "));

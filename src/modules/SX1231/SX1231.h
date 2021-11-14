@@ -8,15 +8,15 @@
 #include "../../Module.h"
 #include "../RF69/RF69.h"
 
-#define SX1231_CHIP_REVISION_2_A                      0x21
-#define SX1231_CHIP_REVISION_2_B                      0x22
-#define SX1231_CHIP_REVISION_2_C                      0x23
+#define RADIOLIB_SX1231_CHIP_REVISION_2_A                      0x21
+#define RADIOLIB_SX1231_CHIP_REVISION_2_B                      0x22
+#define RADIOLIB_SX1231_CHIP_REVISION_2_C                      0x23
 
 //SX1231 specific register map
-#define SX1231_REG_TEST_OOK                           0x6E
+#define RADIOLIB_SX1231_REG_TEST_OOK                           0x6E
 
 //SX1231_REG_TEST_OOK
-#define SX1231_OOK_DELTA_THRESHOLD                    0x0C
+#define RADIOLIB_SX1231_OOK_DELTA_THRESHOLD                    0x0C
 
 /*!
   \class SX1231

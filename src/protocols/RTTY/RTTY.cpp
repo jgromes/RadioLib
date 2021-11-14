@@ -16,7 +16,7 @@ ITA2String::ITA2String(const char* str) {
 }
 
 ITA2String::~ITA2String() {
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] _str;
   #endif
 }
@@ -35,7 +35,7 @@ size_t ITA2String::length() {
 
 uint8_t* ITA2String::byteArr() {
   // create temporary array 2x the string length (figures may be 3 bytes)
-  #ifdef RADIOLIB_STATIC_ONLY
+  #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t temp[RADIOLIB_STATIC_ARRAY_SIZE*2 + 1];
   #else
     uint8_t* temp = new uint8_t[_len*2 + 1];
@@ -48,11 +48,11 @@ uint8_t* ITA2String::byteArr() {
     uint8_t shift = (code >> 5) & 0b11111;
     uint8_t character = code & 0b11111;
     // check if the code is letter or figure
-    if(shift == ITA2_FIGS) {
+    if(shift == RADIOLIB_ITA2_FIGS) {
       // check if this is the first figure in sequence
       if(!flagFigure) {
         flagFigure = true;
-        temp[arrayLen++] = ITA2_FIGS;
+        temp[arrayLen++] = RADIOLIB_ITA2_FIGS;
       }
 
       // add the character code
@@ -62,14 +62,14 @@ uint8_t* ITA2String::byteArr() {
       if(i < (_len - 1)) {
         uint16_t nextCode = getBits(_str[i+1]);
         uint8_t nextShift = (nextCode >> 5) & 0b11111;
-        if(nextShift == ITA2_LTRS) {
+        if(nextShift == RADIOLIB_ITA2_LTRS) {
           // next character is a letter, terminate figure shift
-          temp[arrayLen++] = ITA2_LTRS;
+          temp[arrayLen++] = RADIOLIB_ITA2_LTRS;
           flagFigure = false;
         }
       } else {
         // reached the end of the message, terminate figure shift
-        temp[arrayLen++] = ITA2_LTRS;
+        temp[arrayLen++] = RADIOLIB_ITA2_LTRS;
         flagFigure = false;
       }
     } else {
@@ -82,7 +82,7 @@ uint8_t* ITA2String::byteArr() {
 
   uint8_t* arr = new uint8_t[arrayLen];
   memcpy(arr, temp, arrayLen);
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] temp;
   #endif
 
@@ -92,14 +92,14 @@ uint8_t* ITA2String::byteArr() {
 uint16_t ITA2String::getBits(char c) {
   // search ITA2 table
   uint16_t code = 0x0000;
-  for(uint8_t i = 0; i < ITA2_LENGTH; i++) {
-    if(RADIOLIB_PROGMEM_READ_BYTE(&ITA2Table[i][0]) == c) {
+  for(uint8_t i = 0; i < RADIOLIB_ITA2_LENGTH; i++) {
+    if(RADIOLIB_NONVOLATILE_READ_BYTE(&ITA2Table[i][0]) == c) {
       // character is in letter shift
-      code = (ITA2_LTRS << 5) | i;
+      code = (RADIOLIB_ITA2_LTRS << 5) | i;
       break;
-    } else if(RADIOLIB_PROGMEM_READ_BYTE(&ITA2Table[i][1]) == c) {
+    } else if(RADIOLIB_NONVOLATILE_READ_BYTE(&ITA2Table[i][1]) == c) {
       // character is in figures shift
-      code = (ITA2_FIGS << 5) | i;
+      code = (RADIOLIB_ITA2_FIGS << 5) | i;
       break;
     }
   }
@@ -129,17 +129,17 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
   _shiftHz = shift;
 
   switch(encoding) {
-    case ASCII:
+    case RADIOLIB_ASCII:
       _dataBits = 7;
       break;
-    case ASCII_EXTENDED:
+    case RADIOLIB_ASCII_EXTENDED:
       _dataBits = 8;
       break;
-    case ITA2:
+    case RADIOLIB_ITA2:
       _dataBits = 5;
       break;
     default:
-      return(ERR_UNSUPPORTED_ENCODING);
+      return(RADIOLIB_ERR_UNSUPPORTED_ENCODING);
   }
 
   // calculate duration of 1 bit
@@ -150,7 +150,7 @@ int16_t RTTYClient::begin(float base, uint32_t shift, uint16_t rate, uint8_t enc
 
   // check minimum shift value
   if(shift < step / 2) {
-    return(ERR_INVALID_RTTY_SHIFT);
+    return(RADIOLIB_ERR_INVALID_RTTY_SHIFT);
   }
 
   // round shift to multiples of frequency step size
@@ -210,7 +210,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   size_t len = 0;
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   while(true) {
-    char c = RADIOLIB_PROGMEM_READ_BYTE(p++);
+    char c = RADIOLIB_NONVOLATILE_READ_BYTE(p++);
     len++;
     if(c == '\0') {
       break;
@@ -218,7 +218,7 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   }
 
   // dynamically allocate memory
-  #ifdef RADIOLIB_STATIC_ONLY
+  #if defined(RADIOLIB_STATIC_ONLY)
     char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
@@ -227,17 +227,17 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   // copy string from flash
   p = reinterpret_cast<PGM_P>(fstr);
   for(size_t i = 0; i < len; i++) {
-    str[i] = RADIOLIB_PROGMEM_READ_BYTE(p + i);
+    str[i] = RADIOLIB_NONVOLATILE_READ_BYTE(p + i);
   }
 
   size_t n = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(str);
     n = RTTYClient::print(ita2);
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, len);
   }
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] str;
   #endif
   return(n);
@@ -252,10 +252,10 @@ size_t RTTYClient::print(ITA2String& ita2) {
 
 size_t RTTYClient::print(const String& str) {
   size_t n = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(str.c_str());
     n = RTTYClient::print(ita2);
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str.c_str(), str.length());
   }
   return(n);
@@ -263,10 +263,10 @@ size_t RTTYClient::print(const String& str) {
 
 size_t RTTYClient::print(const char str[]) {
   size_t n = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(str);
     n = RTTYClient::print(ita2);
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str, strlen(str));
   }
   return(n);
@@ -274,10 +274,10 @@ size_t RTTYClient::print(const char str[]) {
 
 size_t RTTYClient::print(char c) {
   size_t n = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(c);
     n = RTTYClient::print(ita2);
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write(c);
   }
   return(n);
@@ -324,10 +324,10 @@ size_t RTTYClient::print(double n, int digits) {
 
 size_t RTTYClient::println(void) {
   size_t n = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String lf = ITA2String("\r\n");
     n = RTTYClient::print(lf);
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write("\r\n");
   }
   return(n);
@@ -400,18 +400,20 @@ size_t RTTYClient::println(double d, int digits) {
 }
 
 void RTTYClient::mark() {
-  uint32_t start = Module::micros();
+  Module* mod = _phy->getMod();
+  uint32_t start = mod->micros();
   transmitDirect(_base + _shift, _baseHz + _shiftHz);
-  while(Module::micros() - start < _bitDuration) {
-    Module::yield();
+  while(mod->micros() - start < _bitDuration) {
+    mod->yield();
   }
 }
 
 void RTTYClient::space() {
-  uint32_t start = Module::micros();
+  Module* mod = _phy->getMod();
+  uint32_t start = mod->micros();
   transmitDirect(_base, _baseHz);
-  while(Module::micros() - start < _bitDuration) {
-    Module::yield();
+  while(mod->micros() - start < _bitDuration) {
+    mod->yield();
   }
 }
 
@@ -433,12 +435,12 @@ size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
   } while(n);
 
   size_t l = 0;
-  if(_encoding == ITA2) {
+  if(_encoding == RADIOLIB_ITA2) {
     ITA2String ita2 = ITA2String(str);
     uint8_t* arr = ita2.byteArr();
     l = RTTYClient::write(arr, ita2.length());
     delete[] arr;
-  } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+  } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     l = RTTYClient::write(str);
   }
 
@@ -456,25 +458,25 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
   if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
 
   if(code[0] != 0x00) {
-    if(_encoding == ITA2) {
+    if(_encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String(code);
       uint8_t* arr = ita2.byteArr();
       n = RTTYClient::write(arr, ita2.length());
       delete[] arr;
       return(n);
-    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+    } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
       return(RTTYClient::write(code));
     }
   }
 
   // Handle negative numbers
   if (number < 0.0) {
-    if(_encoding == ITA2) {
+    if(_encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String("-");
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;
-    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+    } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
       n += RTTYClient::print('-');
     }
     number = -number;
@@ -494,12 +496,12 @@ size_t RTTYClient::printFloat(double number, uint8_t digits)  {
 
   // Print the decimal point, but only if there are digits beyond
   if(digits > 0) {
-    if(_encoding == ITA2) {
+    if(_encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String(".");
       uint8_t* arr = ita2.byteArr();
       n += RTTYClient::write(arr, ita2.length());
       delete[] arr;
-    } else if((_encoding == ASCII) || (_encoding == ASCII_EXTENDED)) {
+    } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
       n += RTTYClient::print('.');
     }
   }

@@ -47,7 +47,7 @@ void setup() {
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio1.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -73,7 +73,7 @@ void setup() {
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
   state = radio2.begin(915.0, 500.0, 6, 5, 0x14, 2, 20, 1);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -85,32 +85,32 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bandwidth to 250 kHz
-  if (radio1.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(250.0) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set spreading factor to 10
-  if (radio1.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
+  if (radio1.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
     Serial.println(F("Selected spreading factor is invalid for this module!"));
     while (true);
   }
 
   // set coding rate to 6
-  if (radio1.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
+  if (radio1.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE) {
     Serial.println(F("Selected coding rate is invalid for this module!"));
     while (true);
   }
 
   // set LoRa sync word to 0x14
   // NOTE: value 0x34 is reserved for LoRaWAN networks and should not be used
-  if (radio1.setSyncWord(0x14) != ERR_NONE) {
+  if (radio1.setSyncWord(0x14) != RADIOLIB_ERR_NONE) {
     Serial.println(F("Unable to set sync word!"));
     while (true);
   }
@@ -118,20 +118,20 @@ void setup() {
   // set output power to 10 dBm (accepted range is -3 - 17 dBm)
   // NOTE: 20 dBm value allows high power operation, but transmission
   //       duty cycle MUST NOT exceed 1%
-  if (radio1.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(10) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("Selected output power is invalid for this module!"));
     while (true);
   }
 
   // set over current protection limit to 80 mA (accepted range is 45 - 240 mA)
   // NOTE: set value to 0 to disable overcurrent protection
-  if (radio1.setCurrentLimit(80) == ERR_INVALID_CURRENT_LIMIT) {
+  if (radio1.setCurrentLimit(80) == RADIOLIB_ERR_INVALID_CURRENT_LIMIT) {
     Serial.println(F("Selected current limit is invalid for this module!"));
     while (true);
   }
 
   // set LoRa preamble length to 15 symbols (accepted range is 6 - 65535)
-  if (radio1.setPreambleLength(15) == ERR_INVALID_PREAMBLE_LENGTH) {
+  if (radio1.setPreambleLength(15) == RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH) {
     Serial.println(F("Selected preamble length is invalid for this module!"));
     while (true);
   }
@@ -139,7 +139,7 @@ void setup() {
   // set amplifier gain to 1 (accepted range is 1 - 6, where 1 is maximum gain)
   // NOTE: set value to 0 to enable automatic gain control
   //       leave at 0 unless you know what you're doing
-  if (radio1.setGain(1) == ERR_INVALID_GAIN) {
+  if (radio1.setGain(1) == RADIOLIB_ERR_INVALID_GAIN) {
     Serial.println(F("Selected gain is invalid for this module!"));
     while (true);
   }

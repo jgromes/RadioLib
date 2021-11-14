@@ -43,20 +43,20 @@ int16_t SX1268::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 
 /// \todo integers only (all modules - frequency, data rate, bandwidth etc.)
 int16_t SX1268::setFrequency(float freq, bool calibrate) {
-  RADIOLIB_CHECK_RANGE(freq, 410.0, 810.0, ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 410.0, 810.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // calibrate image
   if(calibrate) {
     uint8_t data[2];
     if(freq > 770.0) {
-      data[0] = SX126X_CAL_IMG_779_MHZ_1;
-      data[1] = SX126X_CAL_IMG_779_MHZ_2;
+      data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
     } else if(freq > 460.0) {
-      data[0] = SX126X_CAL_IMG_470_MHZ_1;
-      data[1] = SX126X_CAL_IMG_470_MHZ_2;
+      data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
     } else {
-      data[0] = SX126X_CAL_IMG_430_MHZ_1;
-      data[1] = SX126X_CAL_IMG_430_MHZ_2;
+      data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
     }
     int16_t state = SX126x::calibrateImage(data);
     RADIOLIB_ASSERT(state);
@@ -67,15 +67,15 @@ int16_t SX1268::setFrequency(float freq, bool calibrate) {
 }
 
 int16_t SX1268::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -9, 22, ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
   uint8_t ocp = 0;
-  int16_t state = readRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
   RADIOLIB_ASSERT(state);
 
   // set PA config
-  state = SX126x::setPaConfig(0x04, SX126X_PA_CONFIG_SX1268);
+  state = SX126x::setPaConfig(0x04, RADIOLIB_SX126X_PA_CONFIG_SX1268);
   RADIOLIB_ASSERT(state);
 
   // set output power
@@ -84,7 +84,7 @@ int16_t SX1268::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // restore OCP configuration
-  return(writeRegister(SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
+  return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
 #endif

@@ -58,7 +58,7 @@ void setup() {
   // (RF69, CC1101, Si4432 etc.), use the basic begin() method
   // int state = radio.begin();
 
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -72,7 +72,7 @@ void setup() {
   // source station SSID:         0
   // preamble length:             8 bytes
   state = ax25.begin("N7LEM");
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -90,14 +90,14 @@ void loop() {
   // control field:                    UI, P/F not used, unnumbered frame
   // protocol identifier:              no layer 3 protocol implemented
   // information field:                "Hello World!"
-  AX25Frame frameUI("NJ7P", 0, "N7LEM", 0, AX25_CONTROL_U_UNNUMBERED_INFORMATION |
-                    AX25_CONTROL_POLL_FINAL_DISABLED | AX25_CONTROL_UNNUMBERED_FRAME,
-                    AX25_PID_NO_LAYER_3, "Hello World (unnumbered)!");
+  AX25Frame frameUI("NJ7P", 0, "N7LEM", 0, RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
+                    RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
+                    RADIOLIB_AX25_PID_NO_LAYER_3, "Hello World (unnumbered)!");
 
   // send the frame
   Serial.print(F("[AX.25] Sending UI frame ... "));
   int state = ax25.sendFrame(&frameUI);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
@@ -116,8 +116,8 @@ void loop() {
   // source station callsign:          "N7LEM"
   // source station SSID:              0
   // control field:                    RR, P/F not used, supervisory frame
-  AX25Frame frameRR("NJ7P", 0, "N7LEM", 0, AX25_CONTROL_S_RECEIVE_READY |
-                    AX25_CONTROL_POLL_FINAL_DISABLED | AX25_CONTROL_SUPERVISORY_FRAME);
+  AX25Frame frameRR("NJ7P", 0, "N7LEM", 0, RADIOLIB_AX25_CONTROL_S_RECEIVE_READY |
+                    RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_SUPERVISORY_FRAME);
 
   // set receive sequence number (0 - 7)
   frameRR.setRecvSequence(0);
@@ -125,7 +125,7 @@ void loop() {
   // send the frame
   Serial.print(F("[AX.25] Sending RR frame ... "));
   state = ax25.sendFrame(&frameRR);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
@@ -146,8 +146,8 @@ void loop() {
   // control field:                    P/F not used, information frame
   // protocol identifier:              no layer 3 protocol implemented
   // information field:                "Hello World (numbered)!"
-  AX25Frame frameI("NJ7P", 0, "N7LEM", 0, AX25_CONTROL_POLL_FINAL_DISABLED |
-                   AX25_CONTROL_INFORMATION_FRAME, AX25_PID_NO_LAYER_3,
+  AX25Frame frameI("NJ7P", 0, "N7LEM", 0, RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED |
+                   RADIOLIB_AX25_CONTROL_INFORMATION_FRAME, RADIOLIB_AX25_PID_NO_LAYER_3,
                    "Hello World (numbered)!");
 
   // set receive sequence number (0 - 7)
@@ -159,7 +159,7 @@ void loop() {
   // send the frame
   Serial.print(F("[AX.25] Sending I frame ... "));
   state = ax25.sendFrame(&frameI);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 

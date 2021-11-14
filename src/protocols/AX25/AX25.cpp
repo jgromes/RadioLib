@@ -24,7 +24,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
 
   // set repeaters
   this->numRepeaters = 0;
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     this->repeaterCallsigns = NULL;
     this->repeaterSSIDs = NULL;
   #endif
@@ -42,7 +42,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
   // info field
   this->infoLen = infoLen;
   if(infoLen > 0) {
-    #ifndef RADIOLIB_STATIC_ONLY
+    #if !defined(RADIOLIB_STATIC_ONLY)
       this->info = new uint8_t[infoLen];
     #endif
     memcpy(this->info, info, infoLen);
@@ -54,7 +54,7 @@ AX25Frame::AX25Frame(const AX25Frame& frame) {
 }
 
 AX25Frame::~AX25Frame() {
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     // deallocate info field
     if(infoLen > 0) {
       delete[] this->info;
@@ -109,21 +109,21 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
 int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs, uint8_t numRepeaters) {
   // check number of repeaters
   if((numRepeaters < 1) || (numRepeaters > 8)) {
-    return(ERR_INVALID_NUM_REPEATERS);
+    return(RADIOLIB_ERR_INVALID_NUM_REPEATERS);
   }
 
   // check repeater configuration
   if((repeaterCallsigns == NULL) || (repeaterSSIDs == NULL)) {
-    return(ERR_INVALID_NUM_REPEATERS);
+    return(RADIOLIB_ERR_INVALID_NUM_REPEATERS);
   }
   for(uint16_t i = 0; i < numRepeaters; i++) {
-    if(strlen(repeaterCallsigns[i]) > AX25_MAX_CALLSIGN_LEN) {
-      return(ERR_INVALID_REPEATER_CALLSIGN);
+    if(strlen(repeaterCallsigns[i]) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+      return(RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN);
     }
   }
 
   // create buffers
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     this->repeaterCallsigns = new char*[numRepeaters];
     for(uint8_t i = 0; i < numRepeaters; i++) {
       this->repeaterCallsigns[i] = new char[strlen(repeaterCallsigns[i]) + 1];
@@ -139,7 +139,7 @@ int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs
   }
   memcpy(this->repeaterSSIDs, repeaterSSIDs, numRepeaters);
 
-  return(ERR_NONE);
+  return(RADIOLIB_ERR_NONE);
 }
 
 void AX25Frame::setRecvSequence(uint8_t seqNumber) {
@@ -161,14 +161,14 @@ AX25Client::AX25Client(PhysicalLayer* phy) {
 AX25Client::AX25Client(AFSKClient* audio) {
   _phy = audio->_phy;
   _audio = audio;
-  _afskMark = AX25_AFSK_MARK;
-  _afskSpace = AX25_AFSK_SPACE;
+  _afskMark = RADIOLIB_AX25_AFSK_MARK;
+  _afskSpace = RADIOLIB_AX25_AFSK_SPACE;
 }
 
 int16_t AX25Client::setCorrection(int16_t mark, int16_t space) {
-  _afskMark = AX25_AFSK_MARK + mark;
-  _afskSpace = AX25_AFSK_SPACE + space;
-  return(ERR_NONE);
+  _afskMark = RADIOLIB_AX25_AFSK_MARK + mark;
+  _afskSpace = RADIOLIB_AX25_AFSK_SPACE + space;
+  return(RADIOLIB_ERR_NONE);
 }
 #endif
 
@@ -177,8 +177,8 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   _srcSSID = srcSSID;
 
   // check source callsign length (6 characters max)
-  if(strlen(srcCallsign) > AX25_MAX_CALLSIGN_LEN) {
-    return(ERR_INVALID_CALLSIGN);
+  if(strlen(srcCallsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
 
   // copy callsign
@@ -194,10 +194,10 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
 
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
   // create control field
-  uint8_t controlField = AX25_CONTROL_U_UNNUMBERED_INFORMATION | AX25_CONTROL_POLL_FINAL_DISABLED | AX25_CONTROL_UNNUMBERED_FRAME;
+  uint8_t controlField = RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION | RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME;
 
   // build the frame
-  AX25Frame frame(destCallsign, destSSID, _srcCallsign, _srcSSID, controlField, AX25_PID_NO_LAYER_3, (uint8_t*)str, strlen(str));
+  AX25Frame frame(destCallsign, destSSID, _srcCallsign, _srcSSID, controlField, RADIOLIB_AX25_PID_NO_LAYER_3, (uint8_t*)str, strlen(str));
 
   // send Unnumbered Information frame
   return(sendFrame(&frame));
@@ -205,27 +205,27 @@ int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t 
 
 int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // check destination callsign length (6 characters max)
-  if(strlen(frame->destCallsign) > AX25_MAX_CALLSIGN_LEN) {
-    return(ERR_INVALID_CALLSIGN);
+  if(strlen(frame->destCallsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
 
   // check repeater configuration
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     if(!(((frame->repeaterCallsigns == NULL) && (frame->repeaterSSIDs == NULL) && (frame->numRepeaters == 0)) ||
          ((frame->repeaterCallsigns != NULL) && (frame->repeaterSSIDs != NULL) && (frame->numRepeaters != 0)))) {
-      return(ERR_INVALID_NUM_REPEATERS);
+      return(RADIOLIB_ERR_INVALID_NUM_REPEATERS);
     }
     for(uint16_t i = 0; i < frame->numRepeaters; i++) {
-      if(strlen(frame->repeaterCallsigns[i]) > AX25_MAX_CALLSIGN_LEN) {
-        return(ERR_INVALID_REPEATER_CALLSIGN);
+      if(strlen(frame->repeaterCallsigns[i]) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+        return(RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN);
       }
     }
   #endif
 
   // calculate frame length without FCS (destination address, source address, repeater addresses, control, PID, info)
-  size_t frameBuffLen = ((2 + frame->numRepeaters)*(AX25_MAX_CALLSIGN_LEN + 1)) + 1 + 1 + frame->infoLen;
+  size_t frameBuffLen = ((2 + frame->numRepeaters)*(RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1)) + 1 + 1 + frame->infoLen;
   // create frame buffer without preamble, start or stop flags
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     uint8_t* frameBuff = new uint8_t[frameBuffLen + 2];
   #else
     uint8_t frameBuff[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -233,37 +233,37 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   uint8_t* frameBuffPtr = frameBuff;
 
   // set destination callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
-  memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
+  memset(frameBuffPtr, ' ' << 1, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
   for(size_t i = 0; i < strlen(frame->destCallsign); i++) {
     *(frameBuffPtr + i) = frame->destCallsign[i] << 1;
   }
-  frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
+  frameBuffPtr += RADIOLIB_AX25_MAX_CALLSIGN_LEN;
 
   // set destination SSID
-  *(frameBuffPtr++) = AX25_SSID_COMMAND_DEST | AX25_SSID_RESERVED_BITS | (frame->destSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
+  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_COMMAND_DEST | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->destSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set source callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
-  memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
+  memset(frameBuffPtr, ' ' << 1, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
   for(size_t i = 0; i < strlen(frame->srcCallsign); i++) {
     *(frameBuffPtr + i) = frame->srcCallsign[i] << 1;
   }
-  frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
+  frameBuffPtr += RADIOLIB_AX25_MAX_CALLSIGN_LEN;
 
   // set source SSID
-  *(frameBuffPtr++) = AX25_SSID_RESPONSE_SOURCE | AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
+  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_RESPONSE_SOURCE | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
-    memset(frameBuffPtr, ' ' << 1, AX25_MAX_CALLSIGN_LEN);
+    memset(frameBuffPtr, ' ' << 1, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
     for(size_t j = 0; j < strlen(frame->repeaterCallsigns[i]); j++) {
       *(frameBuffPtr + j) = frame->repeaterCallsigns[i][j] << 1;
     }
-    frameBuffPtr += AX25_MAX_CALLSIGN_LEN;
-    *(frameBuffPtr++) = AX25_SSID_HAS_NOT_BEEN_REPEATED | AX25_SSID_RESERVED_BITS | (frame->repeaterSSIDs[i] & 0x0F) << 1 | AX25_SSID_HDLC_EXTENSION_CONTINUE;
+    frameBuffPtr += RADIOLIB_AX25_MAX_CALLSIGN_LEN;
+    *(frameBuffPtr++) = RADIOLIB_AX25_SSID_HAS_NOT_BEEN_REPEATED | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->repeaterSSIDs[i] & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
   }
 
   // set HDLC extension end bit
-  *(frameBuffPtr - 1) |= AX25_SSID_HDLC_EXTENSION_END;
+  *(frameBuffPtr - 1) |= RADIOLIB_AX25_SSID_HDLC_EXTENSION_END;
 
   // set sequence numbers of the frames that have it
   uint8_t controlField = frame->control;
@@ -301,7 +301,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   *(frameBuffPtr++) = (uint8_t)(fcs & 0xFF);
 
   // prepare buffer for the final frame (stuffed, with added preamble + flags and NRZI-encoded)
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     // worst-case scenario: sequence of 1s, will have 120% of the original length, stuffed frame also includes both flags
     uint8_t* stuffedFrameBuff = new uint8_t[_preambleLen + 1 + (6*frameBuffLen)/5 + 2];
   #else
@@ -345,13 +345,13 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   }
 
   // deallocate memory
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] frameBuff;
   #endif
 
   // set preamble bytes and start flag field
   for(uint16_t i = 0; i < _preambleLen + 1; i++) {
-    stuffedFrameBuff[i] = AX25_FLAG;
+    stuffedFrameBuff[i] = RADIOLIB_AX25_FLAG;
   }
 
   // get stuffed frame length in bytes
@@ -361,10 +361,10 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // set end flag field (may be split into two bytes due to misalignment caused by extra stuffing bits)
   if(trailingLen != 0) {
     stuffedFrameBuffLen++;
-    stuffedFrameBuff[stuffedFrameBuffLen - 2] = AX25_FLAG >> trailingLen;
-    stuffedFrameBuff[stuffedFrameBuffLen - 1] = AX25_FLAG << (8 - trailingLen);
+    stuffedFrameBuff[stuffedFrameBuffLen - 2] = RADIOLIB_AX25_FLAG >> trailingLen;
+    stuffedFrameBuff[stuffedFrameBuffLen - 1] = RADIOLIB_AX25_FLAG << (8 - trailingLen);
   } else {
-    stuffedFrameBuff[stuffedFrameBuffLen - 1] = AX25_FLAG;
+    stuffedFrameBuff[stuffedFrameBuffLen - 1] = RADIOLIB_AX25_FLAG;
   }
 
   // convert to NRZI
@@ -390,9 +390,10 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   }
 
   // transmit
-  int16_t state = ERR_NONE;
+  int16_t state = RADIOLIB_ERR_NONE;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
+    Module* mod = _phy->getMod();
     _phy->transmitDirect();
 
     // iterate over all bytes in the buffer
@@ -400,14 +401,14 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
       // check each bit
       for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-        uint32_t start = Module::micros();
+        uint32_t start = mod->micros();
         if(stuffedFrameBuff[i] & mask) {
           _audio->tone(_afskMark, false);
         } else {
           _audio->tone(_afskSpace, false);
         }
-        while(Module::micros() - start < AX25_AFSK_TONE_DURATION) {
-          Module::yield();
+        while(mod->micros() - start < RADIOLIB_AX25_AFSK_TONE_DURATION) {
+          mod->yield();
         }
       }
 
@@ -423,7 +424,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   #endif
 
   // deallocate memory
-  #ifndef RADIOLIB_STATIC_ONLY
+  #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] stuffedFrameBuff;
   #endif
 

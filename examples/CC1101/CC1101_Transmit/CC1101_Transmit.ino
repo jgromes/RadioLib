@@ -34,7 +34,7 @@ void setup() {
   // initialize CC1101 with default settings
   Serial.print(F("[CC1101] Initializing ... "));
   int state = radio.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -55,11 +55,11 @@ void loop() {
     int state = radio.transmit(byteArr, 8);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 64 bytes
     Serial.println(F("too long!"));
 

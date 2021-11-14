@@ -51,7 +51,7 @@ void setup() {
   // initialize SX1268 with default settings
   Serial.print(F("[SX1262] Initializing ... "));
   int state = radio1.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -72,7 +72,7 @@ void setup() {
   // output power:                2 dBm
   // preamble length:             20 symbols
   state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 20);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -84,56 +84,56 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bandwidth to 250 kHz
-  if (radio1.setBandwidth(250.0) == ERR_INVALID_BANDWIDTH) {
+  if (radio1.setBandwidth(250.0) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set spreading factor to 10
-  if (radio1.setSpreadingFactor(10) == ERR_INVALID_SPREADING_FACTOR) {
+  if (radio1.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
     Serial.println(F("Selected spreading factor is invalid for this module!"));
     while (true);
   }
 
   // set coding rate to 6
-  if (radio1.setCodingRate(6) == ERR_INVALID_CODING_RATE) {
+  if (radio1.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE) {
     Serial.println(F("Selected coding rate is invalid for this module!"));
     while (true);
   }
 
   // set LoRa sync word to 0xAB
-  if (radio1.setSyncWord(0xAB) != ERR_NONE) {
+  if (radio1.setSyncWord(0xAB) != RADIOLIB_ERR_NONE) {
     Serial.println(F("Unable to set sync word!"));
     while (true);
   }
 
   // set output power to 10 dBm (accepted range is -17 - 22 dBm)
-  if (radio1.setOutputPower(10) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(10) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("Selected output power is invalid for this module!"));
     while (true);
   }
 
   // set over current protection limit to 80 mA (accepted range is 45 - 240 mA)
   // NOTE: set value to 0 to disable overcurrent protection
-  if (radio1.setCurrentLimit(80) == ERR_INVALID_CURRENT_LIMIT) {
+  if (radio1.setCurrentLimit(80) == RADIOLIB_ERR_INVALID_CURRENT_LIMIT) {
     Serial.println(F("Selected current limit is invalid for this module!"));
     while (true);
   }
 
   // set LoRa preamble length to 15 symbols (accepted range is 0 - 65535)
-  if (radio1.setPreambleLength(15) == ERR_INVALID_PREAMBLE_LENGTH) {
+  if (radio1.setPreambleLength(15) == RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH) {
     Serial.println(F("Selected preamble length is invalid for this module!"));
     while (true);
   }
 
   // disable CRC
-  if (radio1.setCRC(false) == ERR_INVALID_CRC_CONFIGURATION) {
+  if (radio1.setCRC(false) == RADIOLIB_ERR_INVALID_CRC_CONFIGURATION) {
     Serial.println(F("Selected CRC is invalid for this module!"));
     while (true);
   }
@@ -141,7 +141,7 @@ void setup() {
   // Some SX126x modules have TCXO (temperature compensated crystal
   // oscillator). To configure TCXO reference voltage,
   // the following method can be used.
-  if (radio1.setTCXO(2.4) == ERR_INVALID_TCXO_VOLTAGE) {
+  if (radio1.setTCXO(2.4) == RADIOLIB_ERR_INVALID_TCXO_VOLTAGE) {
     Serial.println(F("Selected TCXO voltage is invalid for this module!"));
     while (true);
   }
@@ -150,7 +150,7 @@ void setup() {
   // this feature, the following method can be used.
   // NOTE: As long as DIO2 is configured to control RF switch,
   //       it can't be used as interrupt pin!
-  if (radio1.setDio2AsRfSwitch() != ERR_NONE) {
+  if (radio1.setDio2AsRfSwitch() != RADIOLIB_ERR_NONE) {
     Serial.println(F("Failed to set DIO2 as RF switch!"));
     while (true);
   }

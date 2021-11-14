@@ -35,7 +35,7 @@ void setup() {
   // initialize nRF24 with default settings
   Serial.print(F("[nRF24] Initializing ... "));
   int state = radio.begin();
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -50,7 +50,7 @@ void setup() {
   Serial.print(F("[nRF24] Setting address for receive pipe 0 ... "));
   byte addr[] = {0x01, 0x23, 0x45, 0x67, 0x89};
   state = radio.setReceivePipe(0, addr);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -75,7 +75,7 @@ void loop() {
     int state = radio.receive(byteArr, 8);
   */
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // packet was successfully received
     Serial.println(F("success!"));
 
@@ -83,7 +83,7 @@ void loop() {
     Serial.print(F("[nRF24] Data:\t\t"));
     Serial.println(str);
 
-  } else if (state == ERR_RX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));
 

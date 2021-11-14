@@ -91,7 +91,7 @@ void setup() {
   // initialize SX1278 with default settings
   Serial.print(F("[SX1278] Initializing ... "));
   int state = radio.beginFSK();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -117,7 +117,7 @@ void setup() {
   //       (lower number = shorter pulses).
   //       The value is usually around 0.95 (95%).
   state = sstv.begin(434.0, Wrasse, 0.95);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));

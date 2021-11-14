@@ -2,20 +2,17 @@
 
 ### _One radio library to rule them all!_
 
-## Universal wireless communication library for Arduino
+## Universal wireless communication library for embedded devices
 
 ## See the [Wiki](https://github.com/jgromes/RadioLib/wiki) for further information. See the [GitHub Pages](https://jgromes.github.io/RadioLib) for detailed and up-to-date API reference.
 
 RadioLib allows its users to integrate all sorts of different wireless communication modules, protocols and even digital modes into a single consistent system.
 Want to add a Bluetooth interface to your LoRa network? Sure thing! Do you just want to go really old-school and play around with radio teletype, slow-scan TV, or even Hellschreiber using nothing but a cheap radio module? Why not!
 
-RadioLib was originally created as a driver for [__RadioShield__](https://github.com/jgromes/RadioShield), but it can be used to control as many different wireless modules as you like - or at least as many as your Arduino can handle!
+RadioLib was originally created as a driver for [__RadioShield__](https://github.com/jgromes/RadioShield), but it can be used to control as many different wireless modules as you like - or at least as many as your microcontroller can handle!
 
 ### Supported modules:
 * __CC1101__ FSK radio module
-* __ESP8266__ WiFi module
-* __HC05__ Bluetooth module
-* __JDY08__ BLE module
 * __LLCC68__ LoRa module
 * __nRF24L01__ 2.4 GHz module
 * __RF69__ FSK/OOK radio module
@@ -26,13 +23,8 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
 * __SX128x__ series LoRa/GFSK/BLE/FLRC modules (SX1280, SX1281, SX1282)
 * __SX1231__ FSK/OOK radio module
-* __XBee__ modules (S2B)
 
 ### Supported protocols and digital modes:
-* __MQTT__ for modules:  
-ESP8266
-* __HTTP__ for modules:  
-ESP8266
 * __AX.25__ using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
@@ -44,7 +36,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 
-### Supported platforms:
+### Supported Arduino platforms:
 * __Arduino__  
   * [__AVR__](https://github.com/arduino/ArduinoCore-avr) - Arduino Uno, Mega, Leonardo, Pro Mini, Nano etc.
   * [__mbed__](https://github.com/arduino/ArduinoCore-mbed) - Arduino Nano 33 BLE and Arduino Portenta H7
@@ -79,7 +71,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * __Heltec__
   * [__CubeCell__](https://github.com/HelTecAutomation/CubeCell-Arduino) - ASR650X series (CubeCell-Board, CubeCell-Capsule, CubeCell-Module etc.)
 
-The list above is by no means exhaustive. Most of RadioLib code is independent of the used platform, so as long as your board is running some Arduino-compatible core, RadioLib should work. Compilation of all examples is tested for all platforms prior to releasing new version.
+The list above is by no means exhaustive - RadioLib code is independent of the used platform! Compilation of all examples is tested for all platforms officially supported prior to releasing new version.
 
 ### In development:
 * __AX5243__ FSK module
@@ -96,4 +88,4 @@ First of all, take a look at the [examples](https://github.com/jgromes/RadioLib/
 The fastest way to get help is by creating an [issue](https://github.com/jgromes/RadioLib/issues/new/choose) using the appropriate template. It is also highly recommended to try running the examples first - their functionality is tested from time to time and they should work. Finally, RadioLib is still under development, which means that sometimes, backwards-incompatible changes might be introduced. Though these are kept at minimum, sometimes it is unavoidable. You can check the [release changelog](https://github.com/jgromes/RadioLib/releases) to find out if there's been such a major change recently.
 
 ### RadioLib doesn't support my module! What should I do?
-Start by creating new issue (if it doesn't exist yet). If you have some experience with Arduino and C/C++ in general, you can try to add the support yourself! Use the template files in `/extras/` folder to get started. This is by far the fastest way to implement new modules into RadioLib, since I can't be working on everything all the time. If you don't trust your programming skills enough to have a go at it yourself, don't worry. I will try to implement all requested modules, but it will take me a while.
+Start by creating new issue (if it doesn't exist yet). If you have some experience with microcontrollers and C/C++ in general, you can try to add the support yourself! Use the template files in `/extras/` folder to get started. This is by far the fastest way to implement new modules into RadioLib, since I can't be working on everything all the time. If you don't trust your programming skills enough to have a go at it yourself, don't worry. I will try to implement all requested modules, but it will take me a while.

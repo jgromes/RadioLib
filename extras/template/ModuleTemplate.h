@@ -13,7 +13,7 @@
 */
 
 #if !defined(_RADIOLIB_<module_name>_H) && !defined(RADIOLIB_EXCLUDE_<module_name>)
-#ifndef _RADIOLIB_<module_name>_H
+#if !defined(_RADIOLIB_<module_name>_H)
 #define _RADIOLIB_<module_name>_H
 
 /*
@@ -22,16 +22,6 @@
 */
 #include "../../Module.h"
 #include "../../TypeDef.h"
-
-/*
-  Only use the following include if the module implements methods for OSI transport layer control.
-  This concerns only modules similar to e.g. ESP8266.
-
-  In this case, your class MUST implement all virtual methods of TransportLayer class.
-  You also MUST provide crystal oscillator frequency and frequency configuration divisor step resolution
-  to the TransportLayer constructor.
-*/
-//#include "../../protocols/PhysicalLayer/TransportLayer.h"
 
 /*
   Only use the following include if the module implements methods for OSI physical layer control.
@@ -43,7 +33,7 @@
 
 /*
   Register map
-  Definition of SPI/I2C register map SHOULD be placed here. The register map SHOULD have two parts:
+  Definition of SPI register map SHOULD be placed here. The register map SHOULD have two parts:
 
   1 - Address map: only defines register names and addresses. Register names MUST match names in
       official documentation (datasheets etc.).
@@ -52,11 +42,11 @@
 
   See RF69 and SX127x header files for examples of register maps.
 */
-// <module_name> register map                         | spaces up to this point
-#define <module_name>_REG_<register_name>             0x00
+// <module_name> register map                                   | spaces up to this point
+#define RADIOLIB_<module_name>_REG_<register_name>              0x00
 
-// <module_name>_REG_<register_name>                                  MSB   LSB   DESCRIPTION
-#define <module_name>_<register_variable>             0b00000000  //  7     0     <description>
+// <module_name>_REG_<register_name>                                            MSB   LSB   DESCRIPTION
+#define RADIOLIB_<module_name>_<register_variable>              0b00000000  //  7     0     <description>
 
 
 /*
@@ -64,10 +54,8 @@
 
   The module class MAY inherit from the following classes:
 
-  1 - ISerial: Interface for Arduino Serial class, intended as a thin wrapper for modules that directly take
-      Serial input (e.g. HC-05).
-  2 - TransportLayer: In case the module implements methods for OSI transport layer control (e.g. ESP8266).
-  3 - PhysicalLayer: In case the module implements methods for OSI physical layer control (e.g. SX127x).
+  1 - PhysicalLayer: In case the module implements methods for OSI physical layer control (e.g. SX127x).
+  2 - Common class: In case the module further specifies some more generic class (e.g. SX127x/SX1278)
 */
 class <module_name> {
   public:
@@ -90,7 +78,7 @@ class <module_name> {
       All implemented methods SHOULD return the status as int16_t type.
     */
 
-#ifndef RADIOLIB_GODMODE
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     /*

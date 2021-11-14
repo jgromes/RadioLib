@@ -35,7 +35,7 @@ void setup() {
   // initialize nRF24 with default settings
   Serial.print(F("[nRF24] Initializing ... "));
   int state = radio.begin();
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -50,7 +50,7 @@ void setup() {
   byte addr[] = {0x01, 0x23, 0x45, 0x67, 0x89};
   Serial.print(F("[nRF24] Setting transmit pipe ... "));
   state = radio.setTransmitPipe(addr);
-  if(state == ERR_NONE) {
+  if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -66,20 +66,20 @@ void loop() {
   // 32 characters long
   int state = radio.transmit("Hello World!");
 
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
     Serial.println(F("success!"));
 
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     // the supplied packet was longer than 32 bytes
     Serial.println(F("too long!"));
 
-  } else if (state == ERR_ACK_NOT_RECEIVED) {
+  } else if (state == RADIOLIB_ERR_ACK_NOT_RECEIVED) {
     // acknowledge from destination module
     // was not received within 15 retries
     Serial.println(F("ACK not received!"));
 
-  } else if (state == ERR_TX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
     // timed out while transmitting
     Serial.println(F("timeout!"));
 

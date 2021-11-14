@@ -52,7 +52,7 @@ It is very easy to write code that machine can read. It is much harder to write 
 // build a temporary buffer (first block)
 uint8_t* data = new uint8_t[len + 1];
 if(!data) {
-  return(ERR_MEMORY_ALLOCATION_FAILED);
+  return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
 }
 
 // read the received data (second block)
@@ -73,12 +73,12 @@ Sometimes, RadioLib might be used in critical applications where dynamic memory 
 
 ```c++
 // build a temporary buffer
-#ifdef RADIOLIB_STATIC_ONLY
+#if defined(RADIOLIB_STATIC_ONLY)
   uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
 #else
   uint8_t* data = new uint8_t[length + 1];
   if(!data) {
-    return(ERR_MEMORY_ALLOCATION_FAILED);
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
 #endif
 
@@ -86,7 +86,7 @@ Sometimes, RadioLib might be used in critical applications where dynamic memory 
 readData(data, length);
 
 // deallocate temporary buffer
-#ifndef RADIOLIB_STATIC_ONLY
+#if !defined(RADIOLIB_STATIC_ONLY)
   delete[] data;
 #endif
 ```
@@ -98,7 +98,7 @@ During development, it can be useful to have access to the low level drivers, su
 class Module {
   void publicMethod();
 
-#ifndef RADIOLIB_GODMODE
+#if defined(RADIOLIB_GODMODE)
   private:
 #endif
 

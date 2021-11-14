@@ -7,9 +7,9 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLen) {
   // set module properties
-  _mod->init(RADIOLIB_USE_SPI);
-  Module::pinMode(_mod->getIrq(), INPUT);
-  Module::pinMode(_mod->getRst(), OUTPUT);
+  _mod->init();
+  _mod->pinMode(_mod->getIrq(), INPUT);
+  _mod->pinMode(_mod->getRst(), OUTPUT);
 
   // try to find the SX1231 chip
   uint8_t i = 0;
@@ -20,7 +20,7 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
       flagFound = true;
       _chipRevision = version;
     } else {
-      #ifdef RADIOLIB_DEBUG
+      #if defined(RADIOLIB_DEBUG)
         RADIOLIB_DEBUG_PRINT(F("SX1231 not found! ("));
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RF69_REG_VERSION == "));
@@ -31,15 +31,15 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
         RADIOLIB_DEBUG_PRINT(F(", expected 0x0021 / 0x0022 / 0x0023"));
         RADIOLIB_DEBUG_PRINTLN();
       #endif
-      Module::delay(10);
+      _mod->delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN(F("No SX1231 found!"));
-    _mod->term(RADIOLIB_USE_SPI);
-    return(ERR_CHIP_NOT_FOUND);
+    _mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX1231"));
 
@@ -80,22 +80,22 @@ int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t po
 
   // set default packet length mode
   state = variablePacketLengthMode();
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     return(state);
   }
 
   // SX1231 V2a only
-  if(_chipRevision == SX1231_CHIP_REVISION_2_A) {
+  if(_chipRevision == RADIOLIB_SX1231_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
-    state = _mod->SPIsetRegValue(SX1231_REG_TEST_OOK, SX1231_OOK_DELTA_THRESHOLD);
+    state = _mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
     RADIOLIB_ASSERT(state);
 
     // enable OCP with 95 mA limit
-    state = _mod->SPIsetRegValue(RF69_REG_OCP, RF69_OCP_ON | RF69_OCP_TRIM, 4, 0);
+    state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM, 4, 0);
     RADIOLIB_ASSERT(state);
   }
 
-  return(ERR_NONE);
+  return(RADIOLIB_ERR_NONE);
 }
 
 #endif

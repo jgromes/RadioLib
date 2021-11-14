@@ -11,7 +11,7 @@ int16_t AFSKClient::begin() {
 
 int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
   if(freq == 0) {
-    return(ERR_INVALID_FREQUENCY);
+    return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
 
   if(autoStart) {
@@ -19,12 +19,14 @@ int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
     RADIOLIB_ASSERT(state);
   }
 
-  Module::tone(_pin, freq);
-  return(ERR_NONE);
+  Module* mod = _phy->getMod();
+  mod->tone(_pin, freq);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t AFSKClient::noTone() {
-  Module::noTone(_pin);
+  Module* mod = _phy->getMod();
+  mod->noTone(_pin);
   return(_phy->standby());
 }
 

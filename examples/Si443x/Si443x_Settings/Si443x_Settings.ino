@@ -43,7 +43,7 @@ void setup() {
   // initialize Si4432 with default settings
   Serial.print(F("[Si4432] Initializing ... "));
   int state = radio1.begin();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -60,7 +60,7 @@ void setup() {
   // output power:                17 dBm
   // preamble length:             32 bits
   state = radio2.begin(868.0, 200.0, 60.0, 335.5, 17, 32);
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -72,17 +72,17 @@ void setup() {
   // and check if the configuration was changed successfully
 
   // set carrier frequency to 433.5 MHz
-  if (radio1.setFrequency(433.5) == ERR_INVALID_FREQUENCY) {
+  if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("[Si4432] Selected frequency is invalid for this module!"));
     while (true);
   }
 
   // set bit rate to 100.0 kbps
   state = radio1.setBitRate(100.0);
-  if (state == ERR_INVALID_BIT_RATE) {
+  if (state == RADIOLIB_ERR_INVALID_BIT_RATE) {
     Serial.println(F("[Si4432] Selected bit rate is invalid for this module!"));
     while (true);
-  } else if (state == ERR_INVALID_BIT_RATE_BW_RATIO) {
+  } else if (state == RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO) {
     Serial.println(F("[Si4432] Selected bit rate to bandwidth ratio is invalid!"));
     Serial.println(F("[Si4432] Increase receiver bandwidth to set this bit rate."));
     while (true);
@@ -90,19 +90,19 @@ void setup() {
 
   // set receiver bandwidth to 284.8 kHz
   state = radio1.setRxBandwidth(284.8);
-  if (state == ERR_INVALID_RX_BANDWIDTH) {
+  if (state == RADIOLIB_ERR_INVALID_RX_BANDWIDTH) {
     Serial.println(F("[Si4432] Selected receiver bandwidth is invalid for this module!"));
     while (true);
   }
 
   // set frequency deviation to 10.0 kHz
-  if (radio1.setFrequencyDeviation(10.0) == ERR_INVALID_FREQUENCY_DEVIATION) {
+  if (radio1.setFrequencyDeviation(10.0) == RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION) {
     Serial.println(F("[Si4432] Selected frequency deviation is invalid for this module!"));
     while (true);
   }
 
   // set output power to 2 dBm
-  if (radio1.setOutputPower(2) == ERR_INVALID_OUTPUT_POWER) {
+  if (radio1.setOutputPower(2) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("[Si4432] Selected output power is invalid for this module!"));
     while (true);
   }
@@ -110,7 +110,7 @@ void setup() {
   // up to 4 bytes can be set as sync word
   // set sync word to 0x01234567
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67};
-  if (radio1.setSyncWord(syncWord, 4) == ERR_INVALID_SYNC_WORD) {
+  if (radio1.setSyncWord(syncWord, 4) == RADIOLIB_ERR_INVALID_SYNC_WORD) {
     Serial.println(F("[Si4432] Selected sync word is invalid for this module!"));
     while (true);
   }

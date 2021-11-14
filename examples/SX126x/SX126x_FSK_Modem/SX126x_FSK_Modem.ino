@@ -36,7 +36,7 @@ void setup() {
   // initialize SX1262 FSK modem with default settings
   Serial.print(F("[SX1262] Initializing ... "));
   int state = radio.beginFSK();
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
@@ -61,7 +61,7 @@ void setup() {
   uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
   state = radio.setSyncWord(syncWord, 8);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
     while (true);
@@ -94,11 +94,11 @@ void loop() {
                       0x89, 0xAB, 0xCD, 0xEF};
     int state = radio.transmit(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1262] Packet transmitted successfully!"));
-  } else if (state == ERR_PACKET_TOO_LONG) {
+  } else if (state == RADIOLIB_ERR_PACKET_TOO_LONG) {
     Serial.println(F("[SX1262] Packet too long!"));
-  } else if (state == ERR_TX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_TX_TIMEOUT) {
     Serial.println(F("[SX1262] Timed out while transmitting!"));
   } else {
     Serial.println(F("[SX1262] Failed to transmit packet, code "));
@@ -112,11 +112,11 @@ void loop() {
     byte byteArr[8];
     int state = radio.receive(byteArr, 8);
   */
-  if (state == ERR_NONE) {
+  if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1262] Received packet!"));
     Serial.print(F("[SX1262] Data:\t"));
     Serial.println(str);
-  } else if (state == ERR_RX_TIMEOUT) {
+  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     Serial.println(F("[SX1262] Timed out while waiting for packet!"));
   } else {
     Serial.println(F("[SX1262] Failed to receive packet, code "));
@@ -137,7 +137,7 @@ void loop() {
   state = radio.setNodeAddress(0x02);
   // set broadcast address to 0xFF
   state = radio.setBroadcastAddress(0xFF);
-  if (state != ERR_NONE) {
+  if (state != RADIOLIB_ERR_NONE) {
     Serial.println(F("[SX1262] Unable to set address filter, code "));
     Serial.println(state);
   }
@@ -147,7 +147,7 @@ void loop() {
   //       node and broadcast address
   /*
     state = radio.disableAddressFiltering();
-    if (state != ERR_NONE) {
+    if (state != RADIOLIB_ERR_NONE) {
       Serial.println(F("Unable to remove address filter, code "));
     }
   */
