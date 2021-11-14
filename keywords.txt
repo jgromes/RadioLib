@@ -9,7 +9,6 @@
 RadioLib	KEYWORD1
 RadioShield	KEYWORD1
 Module	KEYWORD1
-SerialModule	KEYWORD1
 
 # modules
 CC1101	KEYWORD1
@@ -43,7 +42,6 @@ SX1282	KEYWORD1
 # protocols
 RTTYClient	KEYWORD1
 MorseClient	KEYWORD1
-PagerClient	KEYWORD1
 AX25Client	KEYWORD1
 AX25Frame	KEYWORD1
 SSTVClient	KEYWORD1
