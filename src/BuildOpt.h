@@ -819,7 +819,7 @@
  * Warning: Come on, it's called GOD mode - obviously only use this if you know what you're doing.
  *          Failure to heed the above warning may result in bricked module.
  */
-#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
+#if !defined(RADIOLIB_GODMODE)
   //#define RADIOLIB_GODMODE
 #endif
 
@@ -828,7 +828,7 @@
  * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as "god mode lite"
  * Warning: RadioLib won't stop you from writing invalid stuff into your device, so it's quite easy to brick your module with this.
  */
-#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
+#if !defined(RADIOLIB_LOW_LEVEL)
   //#define RADIOLIB_LOW_LEVEL
 #endif
 
@@ -843,7 +843,7 @@
  * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
  * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
  */
-#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
+#if !defined(RADIOLIB_STATIC_ONLY)
   //#define RADIOLIB_STATIC_ONLY
 #endif
 
