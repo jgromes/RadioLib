@@ -3,14 +3,18 @@
 
 ITA2String::ITA2String(char c) {
   _len = 1;
+  #if !defined(RADIOLIB_STATIC_ONLY)
   _str = new char[1];
+  #endif
   _str[0] = c;
   _ita2Len = 0;
 }
 
 ITA2String::ITA2String(const char* str) {
   _len = strlen(str);
+  #if !defined(RADIOLIB_STATIC_ONLY)
   _str = new char[_len + 1];
+  #endif
   strcpy(_str, str);
   _ita2Len = 0;
 }
