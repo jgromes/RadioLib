@@ -835,7 +835,7 @@
 /*
  * Uncomment to enable pre-defined modules when using RadioShield.
  */
-#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
+#if !defined(RADIOLIB_RADIOSHIELD)
   //#define RADIOLIB_RADIOSHIELD
 #endif
 

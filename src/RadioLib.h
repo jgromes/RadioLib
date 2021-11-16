@@ -94,14 +94,14 @@
 #if defined(RADIOLIB_RADIOSHIELD)
 
 // RadioShield pin definitions
-#define RADIOSHIELD_CS_A   10
-#define RADIOSHIELD_RX_A   9
-#define RADIOSHIELD_TX_A   8
-#define RADIOSHIELD_CS_B   5
-#define RADIOSHIELD_RX_B   7
-#define RADIOSHIELD_TX_B   6
-#define RADIOSHIELD_INT_0  2
-#define RADIOSHIELD_INT_1  3
+#define RADIOSHIELD_CS_A    10
+#define RADIOSHIELD_IRQ_A   2
+#define RADIOSHIELD_RST_A   9
+#define RADIOSHIELD_GPIO_A  8
+#define RADIOSHIELD_CS_B    5
+#define RADIOSHIELD_IRQ_B   3
+#define RADIOSHIELD_RST_B   7
+#define RADIOSHIELD_GPIO_B  6
 
 /*!
   \class Radio
@@ -119,8 +119,8 @@ class Radio {
       \brief Default constructor. Only used to set ModuleA and ModuleB configuration.
     */
     Radio() {
-      ModuleA = new Module(RADIOSHIELD_CS_A, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_A, RADIOSHIELD_TX_A, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), nullptr);
-      ModuleB = new Module(RADIOSHIELD_CS_B, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_B, RADIOSHIELD_TX_B, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), nullptr);
+      ModuleA = new Module(RADIOSHIELD_CS_A, RADIOSHIELD_IRQ_A, RADIOSHIELD_RST_A, RADIOSHIELD_GPIO_A);
+      ModuleB = new Module(RADIOSHIELD_CS_B, RADIOSHIELD_IRQ_B, RADIOSHIELD_RST_B, RADIOSHIELD_GPIO_B);
     }
 
 #if defined(RADIOLIB_GODMODE)
