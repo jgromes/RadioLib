@@ -907,7 +907,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="comment"> * Warning: Come on, it&#39;s called GOD mode - obviously only use this if you know what you&#39;re doing.</span></div>
 <div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="comment"> *          Failure to heed the above warning may result in bricked module.</span></div>
 <div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
 <div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;  <span class="comment">//#define RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
@@ -916,7 +916,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment"> * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as &quot;god mode lite&quot;</span></div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment"> * Warning: RadioLib won&#39;t stop you from writing invalid stuff into your device, so it&#39;s quite easy to brick your module with this.</span></div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_LOW_LEVEL)</span></div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;  <span class="comment">//#define RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
@@ -931,7 +931,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="comment"> * Uncomment to enable static-only memory management: no dynamic allocation will be performed.</span></div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="comment"> * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.</span></div>
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_STATIC_ONLY)</span></div>
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;  <span class="comment">//#define RADIOLIB_STATIC_ONLY</span></div>
 <div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160; </div>
