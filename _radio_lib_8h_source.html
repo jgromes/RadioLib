@@ -149,14 +149,14 @@ $(document).ready(function(){initNavTree('_radio_lib_8h_source.html',''); initRe
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_RADIOSHIELD)</span></div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="comment">// RadioShield pin definitions</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#define RADIOSHIELD_CS_A   10</span></div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#define RADIOSHIELD_RX_A   9</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#define RADIOSHIELD_TX_A   8</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#define RADIOSHIELD_CS_B   5</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#define RADIOSHIELD_RX_B   7</span></div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#define RADIOSHIELD_TX_B   6</span></div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#define RADIOSHIELD_INT_0  2</span></div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#define RADIOSHIELD_INT_1  3</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="preprocessor">#define RADIOSHIELD_CS_A    10</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#define RADIOSHIELD_IRQ_A   2</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#define RADIOSHIELD_RST_A   9</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#define RADIOSHIELD_GPIO_A  8</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#define RADIOSHIELD_CS_B    5</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">#define RADIOSHIELD_IRQ_B   3</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#define RADIOSHIELD_RST_B   7</span></div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#define RADIOSHIELD_GPIO_B  6</span></div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keyword">class </span>Radio {</div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;  <span class="keyword">public</span>:</div>
@@ -165,8 +165,8 @@ $(document).ready(function(){initNavTree('_radio_lib_8h_source.html',''); initRe
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <a class="code" href="class_module.html">Module</a>* ModuleB;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    Radio() {</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      ModuleA = <span class="keyword">new</span> <a class="code" href="class_module.html">Module</a>(RADIOSHIELD_CS_A, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_A, RADIOSHIELD_TX_A, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      ModuleB = <span class="keyword">new</span> <a class="code" href="class_module.html">Module</a>(RADIOSHIELD_CS_B, RADIOSHIELD_INT_0, RADIOSHIELD_INT_1, RADIOSHIELD_RX_B, RADIOSHIELD_TX_B, SPI, SPISettings(2000000, MSBFIRST, SPI_MODE0), <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      ModuleA = <span class="keyword">new</span> <a class="code" href="class_module.html">Module</a>(RADIOSHIELD_CS_A, RADIOSHIELD_IRQ_A, RADIOSHIELD_RST_A, RADIOSHIELD_GPIO_A);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;      ModuleB = <span class="keyword">new</span> <a class="code" href="class_module.html">Module</a>(RADIOSHIELD_CS_B, RADIOSHIELD_IRQ_B, RADIOSHIELD_RST_B, RADIOSHIELD_GPIO_B);</div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;    }</div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_GODMODE)</span></div>
