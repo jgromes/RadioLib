@@ -231,9 +231,10 @@ int16_t nRF24::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // get packet length
-  size_t length = len;
-  if(len == RADIOLIB_NRF24_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  size_t length = getPacketLength();
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    length = len;
   }
 
   // read packet data
