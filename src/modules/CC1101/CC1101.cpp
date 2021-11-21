@@ -335,9 +335,10 @@ int16_t CC1101::startReceive() {
 
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
-  size_t length = len;
-  if (len == RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
-    length = getPacketLength(true);
+  size_t length = getPacketLength();
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    length = len;
   }
 
   // check address filtering
