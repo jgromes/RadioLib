@@ -285,13 +285,21 @@ int16_t Si443x::readData(uint8_t* data, size_t len) {
   clearIRQFlags();
 
   // get packet length
-  size_t length = len;
-  if(len == RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  size_t length = getPacketLength();
+  size_t dumpLen = 0;
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    dumpLen = length - len;
+    length = len;
   }
 
   // read packet data
   _mod->SPIreadRegisterBurst(RADIOLIB_SI443X_REG_FIFO_ACCESS, length, data);
+
+  // dump the bytes that weren't requested
+  if(dumpLen != 0) {
+    clearFIFO(dumpLen);
+  }
 
   // clear internal flag so getPacketLength can return the new packet length
   _packetLengthQueried = false;
@@ -645,6 +653,13 @@ bool Si443x::findChip() {
 void Si443x::clearIRQFlags() {
   uint8_t buff[2];
   _mod->SPIreadRegisterBurst(RADIOLIB_SI443X_REG_INTERRUPT_STATUS_1, 2, buff);
+}
+
+void Si443x::clearFIFO(size_t count) {
+  while(count) {
+    _mod->SPIreadRegister(RADIOLIB_SI443X_REG_FIFO_ACCESS);
+    count--;
+  }
 }
 
 int16_t Si443x::config() {
