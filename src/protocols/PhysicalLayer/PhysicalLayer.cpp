@@ -103,11 +103,6 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   // user can override the length of data to read
   size_t length = len;
 
-  if(len == 0) {
-    // unknown packet length, set to maximum
-    length = _maxPacketLength;
-  }
-
   // build a temporary buffer
   #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
