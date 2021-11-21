@@ -573,9 +573,10 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   }
 
   // get packet length
-  size_t length = len;
-  if(len == RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  size_t length = getPacketLength();
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    length = len;
   }
 
   // read packet data
