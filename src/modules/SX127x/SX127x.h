@@ -730,7 +730,8 @@ class SX127x: public PhysicalLayer {
 
       \param data Pointer to array to save the received binary data.
 
-      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param len Number of bytes that will be read. When set to 0, the packet length will be retreived automatically.
+      When more bytes than received are requested, only the number of bytes requested will be returned.
 
       \returns \ref status_codes
     */

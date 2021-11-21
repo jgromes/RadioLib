@@ -496,17 +496,20 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t SX127x::readData(uint8_t* data, size_t len) {
   int16_t modem = getActiveModem();
-  size_t length = len;
 
   // put module to standby
   standby();
 
-  if(modem == RADIOLIB_SX127X_LORA) {
-    // len set to maximum indicates unknown packet length, read the number of actually received bytes
-    if(len == RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
-      length = getPacketLength();
-    }
+  // get packet length
+  size_t length = getPacketLength();
+  size_t dumpLen = 0;
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    dumpLen = length - len;
+    length = len;
+  }
 
+  if(modem == RADIOLIB_SX127X_LORA) {
     // check packet header integrity
     if(_crcEnabled && (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6)) == 0) {
       // CRC is disabled according to packet header and enabled according to user
@@ -523,9 +526,6 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
     }
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // read packet length (always required in FSK)
-    length = getPacketLength();
-
     // check address filtering
     uint8_t filter = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 2, 1);
     if((filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE) || (filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
@@ -536,10 +536,9 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   // read packet data
   _mod->SPIreadRegisterBurst(RADIOLIB_SX127X_REG_FIFO, length, data);
 
-  // dump bytes that weren't requested
-  size_t packetLength = getPacketLength();
-  if(packetLength > length) {
-    clearFIFO(packetLength - length);
+  // dump the bytes that weren't requested
+  if(dumpLen != 0) {
+    clearFIFO(dumpLen);
   }
 
   // clear internal flag so getPacketLength can return the new packet length
