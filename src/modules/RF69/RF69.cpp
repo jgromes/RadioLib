@@ -347,9 +347,12 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // get packet length
-  size_t length = len;
-  if(len == RADIOLIB_RF69_MAX_PACKET_LENGTH) {
-    length = getPacketLength();
+  size_t length = getPacketLength();
+  size_t dumpLen = 0;
+  if((len != 0) && (len < length)) {
+    // user requested less data than we got, only return what was requested
+    dumpLen = length - len;
+    length = len;
   }
 
   // check address filtering
@@ -360,6 +363,11 @@ int16_t RF69::readData(uint8_t* data, size_t len) {
 
   // read packet data
   _mod->SPIreadRegisterBurst(RADIOLIB_RF69_REG_FIFO, length, data);
+
+  // dump the bytes that weren't requested
+  if(dumpLen != 0) {
+    clearFIFO(dumpLen);
+  }
 
   // clear internal flag so getPacketLength can return the new packet length
   _packetLengthQueried = false;
@@ -933,6 +941,13 @@ int16_t RF69::setMode(uint8_t mode) {
 void RF69::clearIRQFlags() {
   _mod->SPIwriteRegister(RADIOLIB_RF69_REG_IRQ_FLAGS_1, 0b11111111);
   _mod->SPIwriteRegister(RADIOLIB_RF69_REG_IRQ_FLAGS_2, 0b11111111);
+}
+
+void RF69::clearFIFO(size_t count) {
+  while(count) {
+    _mod->SPIreadRegister(RADIOLIB_RF69_REG_FIFO);
+    count--;
+  }
 }
 
 #endif
