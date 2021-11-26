@@ -415,6 +415,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     }
 
     _audio->noTone();
+    _phy->standby();
 
   } else {
   #endif
