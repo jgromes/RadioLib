@@ -27,6 +27,7 @@
  * RADIOLIB_NONVOLATILE_READ_BYTE - function/macro to read variables saved in program storage (usually Flash).
  * RADIOLIB_TYPE_ALIAS - construct to create an alias for a type, usually vai the `using` keyword.
  * RADIOLIB_TONE_UNSUPPORTED - some platforms do not have tone()/noTone(), which is required for AFSK.
+ * RADIOLIB_BUILTIN_MODULE - some platforms have a builtin radio module on fixed pins, this macro is used to specify that pinout.
  *
  * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  *
@@ -698,6 +699,10 @@
     #define RADIOLIB_CB_ARGS_SPI_TRANSFER               (uint8_t, SPItransfer, uint8_t b)
     #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)
     #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)
+
+    // provide an easy access to the on-board module
+    #include "board-config.h"
+    #define RADIOLIB_BUILTIN_MODULE                      RADIO_NSS, RADIO_DIO_1, RADIO_RESET, RADIO_BUSY
 
     // CubeCell doesn't seem to define nullptr, let's do something like that now
     #define nullptr                                     NULL

@@ -26,6 +26,9 @@ SX1262 radio = new Module(10, 2, 3, 9);
 // https://github.com/jgromes/RadioShield
 //SX1262 radio = RadioShield.ModuleA;
 
+// or using CubeCell
+//SX1262 radio = new Module(RADIOLIB_ONBOARD_MODULE);
+
 // save transmission states between loops
 int transmissionState = RADIOLIB_ERR_NONE;
 
@@ -105,17 +108,17 @@ void loop() {
       if (transmissionState == RADIOLIB_ERR_NONE) {
         // packet was successfully sent
         Serial.println(F("transmission finished!"));
-  
+
       } else {
         Serial.print(F("failed, code "));
         Serial.println(transmissionState);
-  
+
       }
 
       // listen for response
       radio.startReceive();
       transmitFlag = false;
-      
+
     } else {
       // the previous operation was reception
       // print data and send another packet
@@ -125,21 +128,21 @@ void loop() {
       if (state == RADIOLIB_ERR_NONE) {
         // packet was successfully received
         Serial.println(F("[SX1262] Received packet!"));
-      
+
         // print data of the packet
         Serial.print(F("[SX1262] Data:\t\t"));
         Serial.println(str);
-  
+
         // print RSSI (Received Signal Strength Indicator)
         Serial.print(F("[SX1262] RSSI:\t\t"));
         Serial.print(radio.getRSSI());
         Serial.println(F(" dBm"));
-  
+
         // print SNR (Signal-to-Noise Ratio)
         Serial.print(F("[SX1262] SNR:\t\t"));
         Serial.print(radio.getSNR());
         Serial.println(F(" dB"));
-  
+
       }
 
       // wait a second before transmitting again
@@ -154,6 +157,6 @@ void loop() {
     // we're ready to process more packets,
     // enable interrupt service routine
     enableInterrupt = true;
-    
+
   }
 }

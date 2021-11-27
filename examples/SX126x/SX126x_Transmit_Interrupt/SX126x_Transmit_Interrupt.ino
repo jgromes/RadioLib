@@ -31,6 +31,9 @@ SX1262 radio = new Module(10, 2, 3, 9);
 // https://github.com/jgromes/RadioShield
 //SX1262 radio = RadioShield.ModuleA;
 
+// or using CubeCell
+//SX1262 radio = new Module(RADIOLIB_ONBOARD_MODULE);
+
 // save transmission state between loops
 int transmissionState = RADIOLIB_ERR_NONE;
 
