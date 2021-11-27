@@ -55,9 +55,9 @@ class SX1268: public SX126x {
 
       \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
 
-      \param br FSK bit rate in kbps. Defaults to 48.0 kbps.
+      \param br FSK bit rate in kbps. Defaults to 4.8 kbps.
 
-      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 50.0 kHz.
+      \param freqDev Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.
 
       \param rxBw Receiver bandwidth in kHz. Defaults to 156.2 kHz.
 
@@ -71,7 +71,7 @@ class SX1268: public SX126x {
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 48.0, float freqDev = 50.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
 
     // configuration methods
 
