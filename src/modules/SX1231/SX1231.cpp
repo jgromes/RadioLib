@@ -5,7 +5,7 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 }
 
-int16_t SX1231::begin(float freq, float br, float rxBw, float freqDev, int8_t power, uint8_t preambleLen) {
+int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
