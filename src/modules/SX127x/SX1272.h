@@ -152,7 +152,7 @@ class SX1272: public SX127x {
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 915.0, float br = 48.0, float rxBw = 125.0, float freqDev = 50.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
+    int16_t beginFSK(float freq = 915.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.

@@ -32,9 +32,9 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   return(state);
 }
 
-int16_t SX1272::beginFSK(float freq, float br, float rxBw, float freqDev, int8_t power, uint16_t preambleLength, bool enableOOK) {
+int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
   // execute common part
-  int16_t state = SX127x::beginFSK(RADIOLIB_SX1272_CHIP_VERSION, br, rxBw, freqDev, preambleLength, enableOOK);
+  int16_t state = SX127x::beginFSK(RADIOLIB_SX1272_CHIP_VERSION, br, freqDev, rxBw, preambleLength, enableOOK);
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
