@@ -115,9 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ceab9913d102c2fd657a1a91afaf9cc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a9ceab9913d102c2fd657a1a91afaf9cc">begin</a> (float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a9ceab9913d102c2fd657a1a91afaf9cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_s_x1262.html#a9ceab9913d102c2fd657a1a91afaf9cc">More...</a><br /></td></tr>
 <tr class="separator:a9ceab9913d102c2fd657a1a91afaf9cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1da6cc500564bc257031527cc54c80b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#ac1da6cc500564bc257031527cc54c80b">beginFSK</a> (float freq=434.0, float br=48.0, float freqDev=50.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
-<tr class="memdesc:ac1da6cc500564bc257031527cc54c80b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_s_x1262.html#ac1da6cc500564bc257031527cc54c80b">More...</a><br /></td></tr>
-<tr class="separator:ac1da6cc500564bc257031527cc54c80b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85dadad94eb55ea62a9626a2602e3bde"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a85dadad94eb55ea62a9626a2602e3bde">beginFSK</a> (float freq=434.0, float br=4.8, float freqDev=0.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a85dadad94eb55ea62a9626a2602e3bde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_s_x1262.html#a85dadad94eb55ea62a9626a2602e3bde">More...</a><br /></td></tr>
+<tr class="separator:a85dadad94eb55ea62a9626a2602e3bde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e72da22fa1fc2d87186107a3285e846"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a7e72da22fa1fc2d87186107a3285e846">setFrequency</a> (float freq, bool calibrate=true)</td></tr>
 <tr class="memdesc:a7e72da22fa1fc2d87186107a3285e846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a7e72da22fa1fc2d87186107a3285e846">More...</a><br /></td></tr>
 <tr class="separator:a7e72da22fa1fc2d87186107a3285e846"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -505,8 +505,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ac1da6cc500564bc257031527cc54c80b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1da6cc500564bc257031527cc54c80b">&#9670;&nbsp;</a></span>beginFSK()</h2>
+<a id="a85dadad94eb55ea62a9626a2602e3bde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85dadad94eb55ea62a9626a2602e3bde">&#9670;&nbsp;</a></span>beginFSK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -521,13 +521,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em> = <code>48.0</code>, </td>
+          <td class="paramname"><em>br</em> = <code>4.8</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqDev</em> = <code>50.0</code>, </td>
+          <td class="paramname"><em>freqDev</em> = <code>0.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -571,8 +571,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz.</td></tr>
-    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Defaults to 48.0 kbps.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. Defaults to 50.0 kHz.</td></tr>
+    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Defaults to 4.8 kbps.</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. Defaults to 5.0 kHz.</td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 156.2 kHz.</td></tr>
     <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm.</td></tr>
   </table>

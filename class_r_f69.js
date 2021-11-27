@@ -1,7 +1,7 @@
 var class_r_f69 =
 [
     [ "RF69", "class_r_f69.html#afbc84d4f91502bcbe12ddda2fde51448", null ],
-    [ "begin", "class_r_f69.html#a4d0dea965aba1017a660c9478ec57560", null ],
+    [ "begin", "class_r_f69.html#a35944b24d27a1ac98c1034cfcdb816cd", null ],
     [ "clearDio0Action", "class_r_f69.html#a9721d2a3ed9fa8dd878575d71d5a4942", null ],
     [ "clearDio1Action", "class_r_f69.html#ade1f9a7a603d712c480ed5e9a8d1bf51", null ],
     [ "disableAddressFiltering", "class_r_f69.html#a5996fc1751e7542baafa0d6c0a6c78ee", null ],

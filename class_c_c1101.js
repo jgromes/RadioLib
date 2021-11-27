@@ -1,7 +1,7 @@
 var class_c_c1101 =
 [
     [ "CC1101", "class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e", null ],
-    [ "begin", "class_c_c1101.html#adcf6b5c4e1a066d6b9be326a9ee04284", null ],
+    [ "begin", "class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593", null ],
     [ "clearGdo0Action", "class_c_c1101.html#ab5e6b3745f80cf61e1ced33303311df8", null ],
     [ "clearGdo2Action", "class_c_c1101.html#ac7a8b1fe7d08dc6db20cf1569b0d37b4", null ],
     [ "disableAddressFiltering", "class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883", null ],

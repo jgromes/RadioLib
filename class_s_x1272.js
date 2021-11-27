@@ -3,7 +3,7 @@ var class_s_x1272 =
     [ "SX1272", "class_s_x1272.html#a9ffe467a6baaeaa079e02c3f1f43f626", null ],
     [ "autoLDRO", "class_s_x1272.html#abb4bbfe8acc6026c833d267d78417b63", null ],
     [ "begin", "class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9", null ],
-    [ "beginFSK", "class_s_x1272.html#a2ee9fb48eeaf41876de00d3774be78cf", null ],
+    [ "beginFSK", "class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260", null ],
     [ "explicitHeader", "class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7", null ],
     [ "forceLDRO", "class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0", null ],
     [ "getRSSI", "class_s_x1272.html#a0d8e68cf913422535dc43cbdf73a3f10", null ],

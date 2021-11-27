@@ -112,9 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memItemLeft" align="right" valign="top"><a id="ad47b3b7bd67159638ff9afcfe002fc66"></a>
 <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
 <tr class="separator:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#adcf6b5c4e1a066d6b9be326a9ee04284">begin</a> (float freq=434.0, float br=48.0, float freqDev=48.0, float rxBw=135.0, int8_t power=10, uint8_t preambleLength=16)</td></tr>
-<tr class="memdesc:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_c_c1101.html#adcf6b5c4e1a066d6b9be326a9ee04284">More...</a><br /></td></tr>
-<tr class="separator:adcf6b5c4e1a066d6b9be326a9ee04284"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b40fd5505fec6bad5986f67a5062593"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=135.0, int8_t power=10, uint8_t preambleLength=16)</td></tr>
+<tr class="memdesc:a3b40fd5505fec6bad5986f67a5062593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593">More...</a><br /></td></tr>
+<tr class="separator:a3b40fd5505fec6bad5986f67a5062593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb99a9200b21829b50e3fc3878573f4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4">transmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a7cb99a9200b21829b50e3fc3878573f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4">More...</a><br /></td></tr>
 <tr class="separator:a7cb99a9200b21829b50e3fc3878573f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -351,8 +351,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adcf6b5c4e1a066d6b9be326a9ee04284"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adcf6b5c4e1a066d6b9be326a9ee04284">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a3b40fd5505fec6bad5986f67a5062593"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b40fd5505fec6bad5986f67a5062593">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,13 +367,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em> = <code>48.0</code>, </td>
+          <td class="paramname"><em>br</em> = <code>4.8</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqDev</em> = <code>48.0</code>, </td>
+          <td class="paramname"><em>freqDev</em> = <code>5.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -405,8 +405,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz.</td></tr>
-    <tr><td class="paramname">br</td><td>Bit rate to be used in kbps. Defaults to 48.0 kbps.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz Defaults to 48.0 kHz.</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be used in kbps. Defaults to 4.8 kbps.</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.</td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 135.0 kHz.</td></tr>
     <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm.</td></tr>
     <tr><td class="paramname">preambleLength</td><td>Preamble Length in bits. Defaults to 16 bits.</td></tr>

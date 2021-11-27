@@ -114,9 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9">begin</a> (float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0)</td></tr>
 <tr class="memdesc:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <a href="class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9">More...</a><br /></td></tr>
 <tr class="separator:ae7562fe74e7d97bf9cc52b5d63f608f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ee9fb48eeaf41876de00d3774be78cf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a2ee9fb48eeaf41876de00d3774be78cf">beginFSK</a> (float freq=915.0, float br=48.0, float rxBw=125.0, float freqDev=50.0, int8_t power=10, uint16_t preambleLength=16, bool enableOOK=false)</td></tr>
-<tr class="memdesc:a2ee9fb48eeaf41876de00d3774be78cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <a href="class_s_x1272.html#a2ee9fb48eeaf41876de00d3774be78cf">More...</a><br /></td></tr>
-<tr class="separator:a2ee9fb48eeaf41876de00d3774be78cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83b80377ec3b7a4a4dd663409f2f6260"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260">beginFSK</a> (float freq=915.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint16_t preambleLength=16, bool enableOOK=false)</td></tr>
+<tr class="memdesc:a83b80377ec3b7a4a4dd663409f2f6260"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <a href="class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260">More...</a><br /></td></tr>
+<tr class="separator:a83b80377ec3b7a4a4dd663409f2f6260"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0978cc9ecbb7b9d3a017c133506e57ac"><td class="memItemLeft" align="right" valign="top"><a id="a0978cc9ecbb7b9d3a017c133506e57ac"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac">reset</a> () override</td></tr>
 <tr class="memdesc:a0978cc9ecbb7b9d3a017c133506e57ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. <br /></td></tr>
@@ -547,8 +547,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a2ee9fb48eeaf41876de00d3774be78cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ee9fb48eeaf41876de00d3774be78cf">&#9670;&nbsp;</a></span>beginFSK()</h2>
+<a id="a83b80377ec3b7a4a4dd663409f2f6260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a83b80377ec3b7a4a4dd663409f2f6260">&#9670;&nbsp;</a></span>beginFSK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -563,19 +563,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em> = <code>48.0</code>, </td>
+          <td class="paramname"><em>br</em> = <code>4.8</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqDev</em> = <code>5.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>rxBw</em> = <code>125.0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqDev</em> = <code>50.0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
