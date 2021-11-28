@@ -35,6 +35,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_RX_PERIOD", "group__status__codes.html#ga4b30b822814dc8d49d3f3229011c8aff", null ],
     [ "RADIOLIB_ERR_INVALID_SLEEP_PERIOD", "group__status__codes.html#ga0066a30650888853a622413a579d891c", null ],
     [ "RADIOLIB_ERR_INVALID_SPREADING_FACTOR", "group__status__codes.html#ga0e196b0ec8efd606cd60592f88b626e8", null ],
+    [ "RADIOLIB_ERR_INVALID_SYMBOL", "group__status__codes.html#ga7f9712de2117b89215410fc18776dc84", null ],
     [ "RADIOLIB_ERR_INVALID_SYNC_WORD", "group__status__codes.html#ga5584a219fcb1a8e1789142b18a3a511e", null ],
     [ "RADIOLIB_ERR_INVALID_TCXO_VOLTAGE", "group__status__codes.html#ga691e968e9f057a6cecb37a5dd5d8bd68", null ],
     [ "RADIOLIB_ERR_LORA_HEADER_DAMAGED", "group__status__codes.html#gab152891bb13f6f70e6631820904e9d90", null ],

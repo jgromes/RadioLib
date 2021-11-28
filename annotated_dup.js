@@ -1,6 +1,7 @@
 var annotated_dup =
 [
     [ "AFSKClient", "class_a_f_s_k_client.html", "class_a_f_s_k_client" ],
+    [ "APRSClient", "class_a_p_r_s_client.html", "class_a_p_r_s_client" ],
     [ "AX25Client", "class_a_x25_client.html", "class_a_x25_client" ],
     [ "AX25Frame", "class_a_x25_frame.html", "class_a_x25_frame" ],
     [ "CC1101", "class_c_c1101.html", "class_c_c1101" ],
