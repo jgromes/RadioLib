@@ -240,7 +240,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   frameBuffPtr += RADIOLIB_AX25_MAX_CALLSIGN_LEN;
 
   // set destination SSID
-  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_COMMAND_DEST | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->destSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
+  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_RESPONSE_DEST | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->destSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set source callsign - all address field bytes are shifted by one bit to make room for HDLC address extension bit
   memset(frameBuffPtr, ' ' << 1, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
@@ -250,7 +250,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   frameBuffPtr += RADIOLIB_AX25_MAX_CALLSIGN_LEN;
 
   // set source SSID
-  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_RESPONSE_SOURCE | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
+  *(frameBuffPtr++) = RADIOLIB_AX25_SSID_COMMAND_SOURCE | RADIOLIB_AX25_SSID_RESERVED_BITS | (frame->srcSSID & 0x0F) << 1 | RADIOLIB_AX25_SSID_HDLC_EXTENSION_CONTINUE;
 
   // set repeater callsigns
   for(uint16_t i = 0; i < frame->numRepeaters; i++) {
@@ -361,12 +361,12 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // set end flag field (may be split into two bytes due to misalignment caused by extra stuffing bits)
   if(trailingLen != 0) {
     stuffedFrameBuffLen++;
-    stuffedFrameBuff[stuffedFrameBuffLen - 2] = RADIOLIB_AX25_FLAG >> trailingLen;
+    stuffedFrameBuff[stuffedFrameBuffLen - 2] |= RADIOLIB_AX25_FLAG >> trailingLen;
     stuffedFrameBuff[stuffedFrameBuffLen - 1] = RADIOLIB_AX25_FLAG << (8 - trailingLen);
   } else {
     stuffedFrameBuff[stuffedFrameBuffLen - 1] = RADIOLIB_AX25_FLAG;
   }
-
+  
   // convert to NRZI
   for(size_t i = _preambleLen + 1; i < stuffedFrameBuffLen*8; i++) {
     size_t currBitPos = i + 7 - 2*(i%8);
