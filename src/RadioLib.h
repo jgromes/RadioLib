@@ -21,6 +21,7 @@
     - SSTV (SSTVClient)
     - Hellschreiber (HellClient)
     - 4-FSK (FSK4Client)
+    - APRS (APRSClient)
 
   \par Quick Links
   Documentation for most common methods can be found in its reference page (see the list above).\n
@@ -89,6 +90,7 @@
 #include "protocols/RTTY/RTTY.h"
 #include "protocols/SSTV/SSTV.h"
 #include "protocols/FSK4/FSK4.h"
+#include "protocols/APRS/APRS.h"
 
 // only create Radio class when using RadioShield
 #if defined(RADIOLIB_RADIOSHIELD)

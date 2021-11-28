@@ -245,6 +245,13 @@
 */
 #define RADIOLIB_ERR_INVALID_OOK_RSSI_PEAK_TYPE                (-108)
 
+// APRS status codes
+
+/*!
+  \brief Supplied APRS symbol is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_SYMBOL                            (-201)
+
 // RTTY status codes
 
 /*!

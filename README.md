@@ -35,6 +35,8 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:  
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 
 ### Supported Arduino platforms:
 * __Arduino__  
@@ -76,7 +78,6 @@ The list above is by no means exhaustive - RadioLib code is independent of the u
 ### In development:
 * __AX5243__ FSK module
 * __LoRaWAN__ protocol for SX127x, RFM9x and SX126x modules
-* __APRS__ protocol for all the modules that can transmit AX.25
 * ___and more!___
 
 ## Frequently Asked Questions

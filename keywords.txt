@@ -48,6 +48,7 @@ SSTVClient	KEYWORD1
 HellClient	KEYWORD1
 AFSKClient	KEYWORD1
 FSK4Client	KEYWORD1
+APRSClient	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
@@ -216,6 +217,9 @@ printGlyph	KEYWORD2
 # AFSK
 tone	KEYWORD2
 noTone	KEYWORD2
+
+# APRS
+sendPosition	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
