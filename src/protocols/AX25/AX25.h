@@ -342,7 +342,7 @@ class AX25Client {
     */
     int16_t sendFrame(AX25Frame* frame);
 
-#if !defined(ADIOLIB_GODMODE)
+#if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* _phy;
