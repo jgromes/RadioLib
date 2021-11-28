@@ -345,6 +345,8 @@ class AX25Client {
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
+    friend class APRSClient;
+
     PhysicalLayer* _phy;
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     AFSKClient* _audio;
@@ -357,6 +359,9 @@ class AX25Client {
     uint16_t _preambleLen = 0;
 
     static uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
+
+    void getCallsign(char* buff);
+    uint8_t getSSID();
 };
 
 #endif

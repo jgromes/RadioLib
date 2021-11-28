@@ -366,7 +366,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   } else {
     stuffedFrameBuff[stuffedFrameBuffLen - 1] = RADIOLIB_AX25_FLAG;
   }
-  
+
   // convert to NRZI
   for(size_t i = _preambleLen + 1; i < stuffedFrameBuffLen*8; i++) {
     size_t currBitPos = i + 7 - 2*(i%8);
@@ -429,6 +429,14 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   #endif
 
   return(state);
+}
+
+void AX25Client::getCallsign(char* buff) {
+  strncpy(buff, _srcCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+}
+
+uint8_t AX25Client::getSSID() {
+  return(_srcSSID);
 }
 
 /*
