@@ -107,7 +107,12 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
-    uint8_t* data = new uint8_t[length + 1];
+    uint8_t* data = NULL;
+    if(length == 0) {
+      data = new uint8_t[_maxPacketLength + 1];
+    } else {
+      data = new uint8_t[length + 1];
+    }
     if(!data) {
       return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
     }
