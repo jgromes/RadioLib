@@ -12,7 +12,7 @@
 // SX127x physical layer properties
 #define SX127X_FREQUENCY_STEP_SIZE                    61.03515625
 #define SX127X_MAX_PACKET_LENGTH                      255
-#define SX127X_MAX_PACKET_LENGTH_FSK                  255
+#define SX127X_MAX_PACKET_LENGTH_FSK                  64
 #define SX127X_CRYSTAL_FREQ                           32.0
 #define SX127X_DIV_EXPONENT                           19
 
@@ -601,7 +601,7 @@ class SX127x: public PhysicalLayer {
     int16_t beginFSK(uint8_t chipVersion, float br, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK);
 
     /*!
-      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long.
+      \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
       For overloads to transmit Arduino String or C-string, see PhysicalLayer::transmit.
 
       \param data Binary data that will be transmitted.
