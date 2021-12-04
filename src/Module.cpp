@@ -1,6 +1,13 @@
 #include "Module.h"
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
+
+// we need this to emulate tone() on mbed Arduino boards
+#if defined(ARDUINO_ARDUINO_NANO33BLE)
+#include "mbed.h"
+mbed::PwmOut *pwmPin = NULL;
+#endif
+
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio):
   _cs(cs),
   _irq(irq),
@@ -271,8 +278,17 @@ void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value, uint32_t duration) {
   }
     #if defined(ESP32)
       // ESP32 tone() emulation
+      (void)duration;
       ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
       ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, value);
+    #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
+      // better tone for mbed OS boards
+      (void)duration;
+      if(!pwmPin) {
+        pwmPin = new mbed::PwmOut(digitalPinToPinName(pin));
+      }
+      pwmPin->period(1.0 / value);
+      pwmPin->write(0.5);
     #else
       (void)value;
       (void)duration;
@@ -298,6 +314,10 @@ void Module::noTone(RADIOLIB_PIN_TYPE pin) {
       // ESP32 tone() emulation
       ledcDetachPin(pin);
       ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
+    #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
+      // better tone for mbed OS boards
+      (void)pin;
+      pwmPin->suspend();
     #endif
   #endif
 }

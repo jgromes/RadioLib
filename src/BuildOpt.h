@@ -512,6 +512,10 @@
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
+    // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
+    #define RADIOLIB_TONE_UNSUPPORTED
+    #define RADIOLIB_MBED_TONE_OVERRIDE
+
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, pin_size_t pin, PinMode mode)
     #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, pin_size_t pin, PinStatus val)
@@ -545,6 +549,10 @@
     #define RADIOLIB_NONVOLATILE                        PROGMEM
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+
+    // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
+    #define RADIOLIB_TONE_UNSUPPORTED
+    #define RADIOLIB_MBED_TONE_OVERRIDE
 
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, pin_size_t pin, PinMode mode)
@@ -647,6 +655,10 @@
     #define RADIOLIB_NONVOLATILE                        PROGMEM
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+
+    // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
+    #define RADIOLIB_TONE_UNSUPPORTED
+    #define RADIOLIB_MBED_TONE_OVERRIDE
 
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, pin_size_t pin, PinMode mode)
