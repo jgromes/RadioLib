@@ -446,6 +446,19 @@ void SX127x::clearDio1Action() {
 }
 
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+  
+  // if in FSK/OOK mode and trying to send a packet larger than can fit in the
+  // FIFO, error out. For packets larger than FIFO, the startTransmit overload
+  // with a counter outparam must be used.
+  if (getActiveModem() == SX127X_FSK_OOK && len >= SX127X_FIFO_CAPACITY) {
+    return ERR_PACKET_TOO_LONG;
+  }
+
+  // call the "full" startTransmit overload
+  return startTransmit(data, len, 0, addr);
+}
+
+int16_t SX127x::startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
 
@@ -472,10 +485,26 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_TX_BASE_ADDR, SX127X_FIFO_TX_BASE_ADDR_MAX);
     state |= _mod->SPIsetRegValue(SX127X_REG_FIFO_ADDR_PTR, SX127X_FIFO_TX_BASE_ADDR_MAX);
 
+    // set the counter to the length written to FIFO
+    counter = len;
+
+    // write packet to FIFO
+    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
+
   } else if(modem == SX127X_FSK_OOK) {
     // check packet length
     if(len >= SX127X_MAX_PACKET_LENGTH_FSK) {
       return(ERR_PACKET_TOO_LONG);
+    }
+
+    // if packet is too large to fit in the FIFO at once, attach the fifo-refill ISR to DIO1. If no
+    // ISR has been defined by the user, error out.
+    else if (len >= SX127X_FIFO_CAPACITY) {
+      if (_fifoThresholdISR == NULL) {
+        return ERR_PACKET_TOO_LONG;
+      } else {
+        Module::attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), _fifoThresholdISR, RISING);
+      }
     }
 
     // set DIO mapping
@@ -494,10 +523,13 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     if((filter == SX127X_ADDRESS_FILTERING_NODE) || (filter == SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
       _mod->SPIwriteRegister(SX127X_REG_FIFO, addr);
     }
-  }
 
-  // write packet to FIFO
-  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, len);
+    // set the byte counter to the length to be written to FIFO
+    counter = min(len, SX127X_FIFO_CAPACITY - 1);
+
+    // write packet to FIFO
+    _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, data, counter);
+  }
 
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);
@@ -507,6 +539,41 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   return(ERR_NONE);
+}
+
+void SX127x::setFifoThresholdAction(void (*func)(void)) {
+  _fifoThresholdISR = func;
+}
+
+int SX127x::fifoAppend(uint8_t* buff, size_t remaining) {
+  // check modem
+  if (getActiveModem() != SX127X_FSK_OOK) {
+    return ERR_WRONG_MODEM;
+  }
+
+  // figure out how much to write
+  uint8_t fifoThresh = _mod->SPIreadRegister(SX127X_FIFO_THRESH) & 0x3F;
+  uint8_t toWrite = min(remaining, SX127X_FIFO_CAPACITY - fifoThresh);
+
+  // write to the register
+  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, buff, toWrite);
+  return toWrite;
+}
+
+int SX127x::fifoGet(uint8_t* buff, size_t available) {
+  // check modem
+  if (getActiveModem() != SX127X_FSK_OOK) {
+    return ERR_WRONG_MODEM;
+  }
+
+  // figure out how many bytes to read in
+  uint8_t fifoThresh = _mod->SPIreadRegister(SX127X_FIFO_THRESH) & 0x3F;
+  uint8_t toRead = min(available, fifoThresh);
+
+  // write to the register
+  _mod->SPIreadRegisterBurst(SX127X_REG_FIFO, toRead, buff);
+  return toRead;
+
 }
 
 int16_t SX127x::readData(uint8_t* data, size_t len) {
@@ -1001,6 +1068,18 @@ int16_t SX127x::fixedPacketLengthMode(uint8_t len) {
 
 int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
   return(SX127x::setPacketMode(SX127X_PACKET_VARIABLE, maxLen));
+}
+
+int16_t SX127x::setFifoThreshold(uint8_t cap) {
+  // check active modem
+  if (getActiveModem() != SX127X_FSK_OOK) {
+    return ERR_WRONG_MODEM;
+  } else if (cap > 63) {
+    return ERR_PACKET_TOO_LONG;
+  }
+
+  // write the 6 LSbits to the register
+  return _mod->SPIsetRegValue(SX127X_REG_FIFO_THRESH, cap & 0x3F);
 }
 
 int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {

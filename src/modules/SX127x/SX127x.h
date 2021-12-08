@@ -12,7 +12,8 @@
 // SX127x physical layer properties
 #define SX127X_FREQUENCY_STEP_SIZE                    61.03515625
 #define SX127X_MAX_PACKET_LENGTH                      255
-#define SX127X_MAX_PACKET_LENGTH_FSK                  64
+#define SX127X_MAX_PACKET_LENGTH_FSK                  255
+#define SX127X_FIFO_CAPACITY                          64
 #define SX127X_CRYSTAL_FREQ                           32.0
 #define SX127X_DIV_EXPONENT                           19
 
@@ -713,6 +714,16 @@ class SX127x: public PhysicalLayer {
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
+      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 255 bytes using FSK modem.
+      \param data Binary data that will be transmitted.
+      \param len Length of binary data to transmit (in bytes).
+      \param[out] counter Reference to a variable to track the number of sent bytes in
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+      \returns \ref status_codes
+    */
+    int16_t startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t addr = 0) override;
+
+    /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
 
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
@@ -948,6 +959,15 @@ class SX127x: public PhysicalLayer {
    int16_t variablePacketLengthMode(uint8_t maxLen = SX127X_MAX_PACKET_LENGTH_FSK);
 
     /*!
+      \brief Set the level at which the FIFO Threshold interrupt triggers
+      \param cap A capacity 0-63 for the FIFO buffer.
+    */
+    int16_t setFifoThreshold(uint8_t cap = 16);
+    void setFifoThresholdAction(void (*func)(void)) override;
+    int fifoAppend(uint8_t* buff, size_t remaining) override;
+    int fifoGet(uint8_t* buff, size_t remaining) override;
+
+    /*!
       \brief Sets RSSI measurement configuration in FSK mode.
 
       \param smoothingSamples Number of samples taken to average the RSSI result.
@@ -1071,6 +1091,7 @@ class SX127x: public PhysicalLayer {
     float _dataRate = 0;
     bool _packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t _packetLengthConfig = SX127X_PACKET_VARIABLE;
+    void (*_fifoThresholdISR)(void) = NULL;
 
     bool findChip(uint8_t ver);
     int16_t setMode(uint8_t mode);

@@ -140,6 +140,43 @@ class PhysicalLayer {
     virtual int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) = 0;
 
     /*!
+      \brief Interrupt-driven binary transmit method.
+      \param data Binary data that will be transmitted.
+      \param len Length of binary data to transmit (in bytes).
+      \param[out] counter Reference to a variable to track the number of bytes sent in.
+      \param addr Node address to transmit the packet to. Only used in FSK mode.
+    */
+    virtual int16_t startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t add = 0) = 0;
+
+    /*!
+      \brief Set the ISR routine to execute when the FIFO falls below the threshold.
+
+      This interrupt will only be called when transmitting a message larger than the FIFO capacity.
+
+      \param func Pointer to an Interrupt Service Routine. `NULL` will clear action.
+    */
+    virtual void setFifoThresholdAction(void (*func)(void)) = 0;
+
+    /*!
+      \brief Append more data into the FIFO Buffer
+
+      This is used for stream-based transmissions.
+
+      \param buff A pointer to the start of the data to append
+      \param remaining A pointer to a counter variable
+      \return Number of bytes consumed from `buff`, or error code.
+    */
+    virtual int16_t fifoAppend(uint8_t* buff, size_t remaining) = 0;
+
+    /*!
+      \brief Read data from the FIFO buffer.
+      \param buff the buffer to read data into
+      \param available the maximum number of bytes available in `buff`
+      \return Number of bytes read in from FIFO, or error code.
+    */
+    virtual int16_t fifoGet(uint8_t* buff, size_t available) = 0;
+
+    /*!
       \brief Reads data that was received after calling startReceive method.
 
       \param str Address of Arduino String to save the received data.
