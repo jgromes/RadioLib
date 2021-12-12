@@ -57,6 +57,28 @@ class RFM95: public SX1278 {
     */
     int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
 
+    /*!
+      \brief FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
+
+      \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
+
+      \param br Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.
+
+      \param freqDev Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz.
+      Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 <= 250 kHz is always met.
+
+      \param rxBw Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz.
+
+      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
+
+      \param preambleLength Length of FSK preamble in bits.
+
+      \param enableOOK Use OOK modulation instead of FSK.
+
+      \returns \ref status_codes
+    */
+    int16_t beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK);
+
     // configuration methods
 
     /*!
