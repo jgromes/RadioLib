@@ -1,5 +1,7 @@
 var NAVTREEINDEX3 =
 {
+"class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66":[3,0,24,21],
+"class_si443x.html#a801b51059e61f93d4e01ae6ba8eb0726":[3,0,24,22],
 "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109":[3,0,24,2],
 "class_si443x.html#a923654706eff5118ef6e84214e837f27":[3,0,24,30],
 "class_si443x.html#aabca3ba8eda212938febab1df2e764b4":[3,0,24,13],
@@ -88,8 +90,8 @@ var NAVTREEINDEX3 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,10],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,9],
 "files.html":[4,0],
-"functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
+"functions.html":[3,3,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],

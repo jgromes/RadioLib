@@ -115,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5c37eaf6ae8c558a9a623157dd9f894a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_m95.html#a5c37eaf6ae8c558a9a623157dd9f894a">begin</a> (float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0)</td></tr>
 <tr class="memdesc:a5c37eaf6ae8c558a9a623157dd9f894a"><td class="mdescLeft">&#160;</td><td class="mdescRight">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <a href="class_r_f_m95.html#a5c37eaf6ae8c558a9a623157dd9f894a">More...</a><br /></td></tr>
 <tr class="separator:a5c37eaf6ae8c558a9a623157dd9f894a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a878cb6f8df95b3bdfa4553384a43e974"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_m95.html#a878cb6f8df95b3bdfa4553384a43e974">beginFSK</a> (float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK)</td></tr>
+<tr class="memdesc:a878cb6f8df95b3bdfa4553384a43e974"><td class="mdescLeft">&#160;</td><td class="mdescRight">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.  <a href="class_r_f_m95.html#a878cb6f8df95b3bdfa4553384a43e974">More...</a><br /></td></tr>
+<tr class="separator:a878cb6f8df95b3bdfa4553384a43e974"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9dbe60f998ddc661282ebf454dba0f87"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_m95.html#a9dbe60f998ddc661282ebf454dba0f87">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:a9dbe60f998ddc661282ebf454dba0f87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 868.0 MHz to 915.0 MHz.  <a href="class_r_f_m95.html#a9dbe60f998ddc661282ebf454dba0f87">More...</a><br /></td></tr>
 <tr class="separator:a9dbe60f998ddc661282ebf454dba0f87"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -531,6 +534,79 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm.</td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535.</td></tr>
     <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a878cb6f8df95b3bdfa4553384a43e974"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a878cb6f8df95b3bdfa4553384a43e974">&#9670;&nbsp;</a></span>beginFSK()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RFM95::beginFSK </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freq</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>br</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqDev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>rxBw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>preambleLength</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enableOOK</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz. Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 &lt;= 250 kHz is always met.</td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz.</td></tr>
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm.</td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits.</td></tr>
+    <tr><td class="paramname">enableOOK</td><td>Use OOK modulation instead of FSK.</td></tr>
   </table>
   </dd>
 </dl>

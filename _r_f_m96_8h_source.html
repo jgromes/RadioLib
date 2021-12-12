@@ -112,21 +112,23 @@ $(document).ready(function(){initNavTree('_r_f_m96_8h_source.html',''); initResi
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    int16_t <a class="code" href="class_r_f_m96.html#aef1588799e5855cb464259e8ce2d865b">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    int16_t <a class="code" href="class_r_f_m96.html#ae2be63ae8365648098b84cc86475fb84">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;};</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;RADIOLIB_TYPE_ALIAS(<a class="code" href="class_r_f_m96.html">RFM96</a>, <a class="code" href="class_r_f_m98.html">RFM98</a>);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    int16_t <a class="code" href="class_r_f_m96.html#ae92d6950e533f2501be22c3923681a86">beginFSK</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">float</span> br, <span class="keywordtype">float</span> freqDev, <span class="keywordtype">float</span> rxBw, int8_t power, uint16_t preambleLength, <span class="keywordtype">bool</span> enableOOK);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="comment">// configuration methods</span></div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    int16_t <a class="code" href="class_r_f_m96.html#ae2be63ae8365648098b84cc86475fb84">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;RADIOLIB_TYPE_ALIAS(<a class="code" href="class_r_f_m96.html">RFM96</a>, <a class="code" href="class_r_f_m98.html">RFM98</a>);</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_r_f_m96_html_aef1588799e5855cb464259e8ce2d865b"><div class="ttname"><a href="class_r_f_m96.html#aef1588799e5855cb464259e8ce2d865b">RFM96::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0)</div><div class="ttdoc">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the ...</div><div class="ttdef"><b>Definition:</b> RFM96.cpp:8</div></div>
@@ -134,6 +136,7 @@ $(document).ready(function(){initNavTree('_r_f_m96_8h_source.html',''); initResi
 <div class="ttc" id="aclass_r_f_m96_html"><div class="ttname"><a href="class_r_f_m96.html">RFM96</a></div><div class="ttdoc">Derived class for RFM96 modules. Overrides some methods from SX1278 due to different parameter ranges...</div><div class="ttdef"><b>Definition:</b> RFM96.h:21</div></div>
 <div class="ttc" id="aclass_s_x1278_html"><div class="ttname"><a href="class_s_x1278.html">SX1278</a></div><div class="ttdoc">Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...</div><div class="ttdef"><b>Definition:</b> SX1278.h:104</div></div>
 <div class="ttc" id="aclass_r_f_m96_html_ad139e35a7465bf7ad83aef85998b4e7a"><div class="ttname"><a href="class_r_f_m96.html#ad139e35a7465bf7ad83aef85998b4e7a">RFM96::RFM96</a></div><div class="ttdeci">RFM96(Module *mod)</div><div class="ttdoc">Default constructor. Called from Arduino sketch when creating new LoRa instance.</div><div class="ttdef"><b>Definition:</b> RFM96.cpp:4</div></div>
+<div class="ttc" id="aclass_r_f_m96_html_ae92d6950e533f2501be22c3923681a86"><div class="ttname"><a href="class_r_f_m96.html#ae92d6950e533f2501be22c3923681a86">RFM96::beginFSK</a></div><div class="ttdeci">int16_t beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK)</div><div class="ttdoc">FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the m...</div><div class="ttdef"><b>Definition:</b> RFM96.cpp:44</div></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:16</div></div>
 <div class="ttc" id="aclass_r_f_m98_html"><div class="ttname"><a href="class_r_f_m98.html">RFM98</a></div><div class="ttdoc">Only exists as alias for RFM96, since there seems to be no difference between RFM96 and RFM98 modules...</div></div>
 <!-- start footer part -->
