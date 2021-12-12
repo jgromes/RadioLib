@@ -96,8 +96,13 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setAFCBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  // set AFC&AGC trigger to RSSI
-  state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
+  // set AFC&AGC trigger to RSSI (in OOK) or both (in FSK)
+  if(enableOOK) {
+    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
+  } else {
+    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_BOTH);
+  }
+
   RADIOLIB_ASSERT(state);
 
   // enable AFC
@@ -961,8 +966,10 @@ int16_t SX127x::setOOK(bool enableOOK) {
   int16_t state = RADIOLIB_ERR_NONE;
   if(enableOOK) {
     state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, RADIOLIB_SX127X_MODULATION_OOK, 6, 5, 5);
+    state |= SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
   } else {
     state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, RADIOLIB_SX127X_MODULATION_FSK, 6, 5, 5);
+    state |= SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_BOTH);
   }
   if(state == RADIOLIB_ERR_NONE) {
     _ook = enableOOK;
