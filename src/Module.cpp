@@ -3,7 +3,7 @@
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
 // we need this to emulate tone() on mbed Arduino boards
-#if defined(ARDUINO_ARDUINO_NANO33BLE)
+#if defined(RADIOLIB_MBED_TONE_OVERRIDE)
 #include "mbed.h"
 mbed::PwmOut *pwmPin = NULL;
 #endif
