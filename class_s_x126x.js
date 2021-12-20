@@ -2,7 +2,7 @@ var class_s_x126x =
 [
     [ "SX126x", "class_s_x126x.html#aaca5a8fa8a3e634dd1b5b4c2bb5058d8", null ],
     [ "autoLDRO", "class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c", null ],
-    [ "begin", "class_s_x126x.html#a1b97488c6887df2e0291bba1b852605e", null ],
+    [ "begin", "class_s_x126x.html#a936a40038e05740a528f2b53f8e17010", null ],
     [ "beginFSK", "class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c", null ],
     [ "clearDio1Action", "class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd", null ],
     [ "disableAddressFiltering", "class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2", null ],

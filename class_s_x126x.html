@@ -116,9 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae1af90432c457e5bf8f8f362295399b"><td class="memItemLeft" align="right" valign="top"><a id="aae1af90432c457e5bf8f8f362295399b"></a>
 <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
 <tr class="separator:aae1af90432c457e5bf8f8f362295399b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b97488c6887df2e0291bba1b852605e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1b97488c6887df2e0291bba1b852605e">begin</a> (float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
-<tr class="memdesc:a1b97488c6887df2e0291bba1b852605e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_s_x126x.html#a1b97488c6887df2e0291bba1b852605e">More...</a><br /></td></tr>
-<tr class="separator:a1b97488c6887df2e0291bba1b852605e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a936a40038e05740a528f2b53f8e17010"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a936a40038e05740a528f2b53f8e17010">begin</a> (uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a936a40038e05740a528f2b53f8e17010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_s_x126x.html#a936a40038e05740a528f2b53f8e17010">More...</a><br /></td></tr>
+<tr class="separator:a936a40038e05740a528f2b53f8e17010"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e500e5b6044ccab8f6b19af4ffa917c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c">beginFSK</a> (float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a2e500e5b6044ccab8f6b19af4ffa917c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c">More...</a><br /></td></tr>
 <tr class="separator:a2e500e5b6044ccab8f6b19af4ffa917c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -424,8 +424,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a1b97488c6887df2e0291bba1b852605e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b97488c6887df2e0291bba1b852605e">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a936a40038e05740a528f2b53f8e17010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a936a40038e05740a528f2b53f8e17010">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,18 +433,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t SX126x::begin </td>
           <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>bw</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>sf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>cr</em>, </td>
         </tr>
@@ -483,8 +471,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method for LoRa modem. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bw</td><td>LoRa bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.</td></tr>
-    <tr><td class="paramname">sf</td><td>LoRa spreading factor. Allowed values are in range 5 to 12.</td></tr>
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 5 to 8.</td></tr>
     <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word.</td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Allowed values range from 1 to 65535.</td></tr>

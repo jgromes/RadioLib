@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_si443x.html#a782748025e19ec6e597293afb6570bff":[3,0,24,37],
 "class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66":[3,0,24,21],
 "class_si443x.html#a801b51059e61f93d4e01ae6ba8eb0726":[3,0,24,22],
 "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109":[3,0,24,2],
@@ -97,8 +98,8 @@ var NAVTREEINDEX3 =
 "functions_d.html":[3,3,0,3],
 "functions_e.html":[3,3,0,4],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1],
 "functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -200,8 +201,8 @@ var NAVTREEINDEX3 =
 "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607":[2,2,4],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,2,1],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
