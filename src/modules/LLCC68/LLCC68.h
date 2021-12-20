@@ -22,6 +22,29 @@ class LLCC68: public SX1262 {
     */
     LLCC68(Module* mod);
 
+    /*!
+      \brief Initialization method for LoRa modem.
+
+      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+
+      \param bw LoRa bandwidth in kHz. Defaults to 125.0 kHz.
+
+      \param sf LoRa spreading factor. Defaults to 9.
+
+      \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
+
+      \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12).
+
+      \param power Output power in dBm. Defaults to 10 dBm.
+
+      \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
+
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
+      \returns \ref status_codes
+    */
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+
     // configuration methods
 
     /*!
