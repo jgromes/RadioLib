@@ -9,7 +9,7 @@ Module* SX126x::getMod() {
   return(_mod);
 }
 
-int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
@@ -17,8 +17,9 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
-  _bwKhz = bw;
-  _sf = sf;
+  // set the defaults, this will get overwritten later anyway
+  _bwKhz = 125.0;
+  _sf = 9;
 
   // initialize configuration variables (will be overwritten during public settings configuration)
   _bw = RADIOLIB_SX126X_LORA_BW_125_0;
@@ -49,12 +50,6 @@ int16_t SX126x::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   }
 
   // configure publicly accessible settings
-  state = setSpreadingFactor(sf);
-  RADIOLIB_ASSERT(state);
-
-  state = setBandwidth(bw);
-  RADIOLIB_ASSERT(state);
-
   state = setCodingRate(cr);
   RADIOLIB_ASSERT(state);
 

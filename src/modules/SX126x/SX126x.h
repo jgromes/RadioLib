@@ -361,10 +361,6 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Initialization method for LoRa modem.
 
-      \param bw LoRa bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.
-
-      \param sf LoRa spreading factor. Allowed values are in range 5 to 12.
-
       \param cr LoRa coding rate denominator. Allowed values range from 5 to 8.
 
       \param syncWord 1-byte LoRa sync word.
@@ -377,7 +373,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Initialization method for FSK modem.
