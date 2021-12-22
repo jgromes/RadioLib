@@ -14,12 +14,12 @@ int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
+  state = setBandwidth(bw);
+  RADIOLIB_ASSERT(state);
+
   state = setSpreadingFactor(sf);
   RADIOLIB_ASSERT(state);
 
-  state = setBandwidth(bw);
-  RADIOLIB_ASSERT(state);
-  
   state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
