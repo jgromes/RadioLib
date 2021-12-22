@@ -244,6 +244,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a17ff4e4e0afaebed727648e1400be538"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">setOokFixedOrFloorThreshold</a> (uint8_t value)</td></tr>
 <tr class="memdesc:a17ff4e4e0afaebed727648e1400be538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used.  <a href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">More...</a><br /></td></tr>
 <tr class="separator:a17ff4e4e0afaebed727648e1400be538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48ca43e6aad02815fa1507f0f0831c54"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54">setOokPeakThresholdStep</a> (uint8_t value)</td></tr>
+<tr class="memdesc:a48ca43e6aad02815fa1507f0f0831c54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of each decrement of the RSSI threshold in the OOK demodulator.  <a href="class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54">More...</a><br /></td></tr>
+<tr class="separator:a48ca43e6aad02815fa1507f0f0831c54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">enableBitSync</a> ()</td></tr>
 <tr class="memdesc:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable Bit synchronizer.  <a href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">More...</a><br /></td></tr>
 <tr class="separator:a1921e1d9fc1d888d2e73bb732e7db7aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1588,6 +1591,34 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">value</td><td>Use defines RADIOLIB_SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a48ca43e6aad02815fa1507f0f0831c54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48ca43e6aad02815fa1507f0f0831c54">&#9670;&nbsp;</a></span>setOokPeakThresholdStep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::setOokPeakThresholdStep </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Size of each decrement of the RSSI threshold in the OOK demodulator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">value</td><td>Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB <br  />
+</td></tr>
   </table>
   </dd>
 </dl>
