@@ -930,6 +930,15 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setOokFixedOrFloorThreshold(uint8_t value);
 
+      /*!
+      \brief Size of each decrement of the RSSI threshold in the OOK demodulator.
+
+      \param value Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB  
+
+      \returns \ref status_codes
+    */
+    int16_t setOokPeakThresholdStep(uint8_t value);  
+  
     /*!
     \brief Enable Bit synchronizer.
 

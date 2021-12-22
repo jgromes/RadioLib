@@ -948,6 +948,14 @@ int16_t SX127x::setOokPeakThresholdDecrement(uint8_t value) {
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_AVG, value, 7, 5, 5));
 }
 
+int16_t SX127x::setOokPeakThresholdStep(uint8_t value) {
+  // check active modem
+  if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_PEAK, value, 2, 0, 5));
+}
+
 int16_t SX127x::enableBitSync() {
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OOK_PEAK, RADIOLIB_SX127X_BIT_SYNC_ON, 5, 5, 5));
 }
