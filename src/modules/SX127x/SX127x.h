@@ -791,7 +791,7 @@ class SX127x: public PhysicalLayer {
     float getAFCError();
 
     /*!
-      \brief Gets signal-to-noise ratio of the latest received packet.
+      \brief Gets signal-to-noise ratio of the latest received packet. Only available in LoRa mode.
 
       \returns Last packet signal-to-noise ratio (SNR).
     */
