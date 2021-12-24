@@ -870,6 +870,7 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER, and RADIOLIB_ENCODING_WHITENING.
+      Note that encoding on CC1101 is applied to the entire stream including preamble, sync word, and CRC.
 
       \param encoding Encoding to be used.
 
