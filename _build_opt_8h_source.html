@@ -822,208 +822,262 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;<span class="preprocessor">    #undef yield</span></div>
 <div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="preprocessor">  #else</span></div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="comment">// other Arduino platforms not covered by the above list - this may or may not work</span></div>
-<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="preprocessor">    #define RADIOLIB_PLATFORM                           &quot;Unknown Arduino&quot;</span></div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;<span class="preprocessor">    #define RADIOLIB_UNKNOWN_PLATFORM</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_TYPE                           uint8_t</span></div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_MODE                           uint8_t</span></div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_STATUS                         uint8_t</span></div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="preprocessor">    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS</span></div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="preprocessor">    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)</span></div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="preprocessor">    #define RADIOLIB_NC                                 (0xFF)</span></div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI                        SPI</span></div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)</span></div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE                        PROGMEM</span></div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)</span></div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="preprocessor">    #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;</span></div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160; </div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="comment">// Arduino API callbacks</span></div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint8_t pin, uint8_t mode)</span></div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, uint8_t pin, uint8_t value)</span></div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_READ               (int, digitalRead, uint8_t pin)</span></div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_TONE                       (void, tone, uint8_t _pin, unsigned int frequency, unsigned long duration)</span></div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t _pin)</span></div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint8_t interruptNum, void (*userFunc)(void), int mode)</span></div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DETACH_INTERRUPT           (void, detachInterrupt, uint8_t interruptNum)</span></div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_YIELD                      (void, yield, void)</span></div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY                      (void, delay, unsigned long ms)</span></div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY_MICROSECONDS         (void, delayMicroseconds, unsigned int us)</span></div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MILLIS                     (unsigned long, millis, void)</span></div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MICROS                     (unsigned long, micros, void)</span></div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN                  (void, SPIbegin, void)</span></div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION      (void, SPIbeginTransaction, void)</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_TRANSFER               (uint8_t, SPItransfer, uint8_t b)</span></div>
-<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)</span></div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)</span></div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160; </div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="preprocessor">  #endif</span></div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160; </div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;  <span class="comment">// generic non-Arduino platform</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;<span class="preprocessor">  #define RADIOLIB_PLATFORM                           &quot;Generic&quot;</span></div>
-<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160; </div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;  <span class="comment">// platform properties may be defined here, or somewhere else in the build system</span></div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160; </div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160; </div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="comment"> * Uncomment to enable debug output.</span></div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;<span class="comment"> * Warning: Debug output will slow down the whole system significantly.</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="comment"> *          Also, it will result in larger compiled binary.</span></div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="comment"> * Levels: debug - only main info</span></div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;<span class="comment"> *         verbose - full transcript of all SPI communication</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_DEBUG)</span></div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;  <span class="comment">//#define RADIOLIB_DEBUG</span></div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_VERBOSE)</span></div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;  <span class="comment">//#define RADIOLIB_VERBOSE</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160; </div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="comment">// set which output port should be used for debug output</span></div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="comment">// may be Serial port (on Arduino) or file like stdout or stderr (on generic platforms)</span></div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_DEBUG_PORT)</span></div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PORT   Serial</span></div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;<span class="comment"> * Uncomment to enable &quot;paranoid&quot; SPI mode</span></div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;<span class="comment"> * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.</span></div>
-<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;<span class="comment"> * This improves reliablility, but slightly slows down communication.</span></div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;<span class="comment"> * Note: Enabled by default.</span></div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_SPI_PARANOID)</span></div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;<span class="preprocessor">  #define RADIOLIB_SPI_PARANOID</span></div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160; </div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="comment"> * Uncomment to enable parameter range checking</span></div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="comment"> * RadioLib will check provided parameters (such as frequency) against limits determined by the device manufacturer.</span></div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="comment"> * It is highly advised to keep this macro defined, removing it will allow invalid values to be set,</span></div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="comment"> * possibly leading to bricked module and/or program crashing.</span></div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;<span class="comment"> * Note: Enabled by default.</span></div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_CHECK_PARAMS)</span></div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_PARAMS</span></div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;<span class="comment"> * Uncomment to enable SX127x errata fix</span></div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="comment"> * Warning: SX127x errata fix has been reported to cause issues with LoRa bandwidths lower than 62.5 kHz.</span></div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="comment"> *          It should only be enabled if you really are observing some errata-related issue.</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="comment"> * Note: Disabled by default.</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;  <span class="comment">//#define RADIOLIB_FIX_ERRATA_SX127X</span></div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160; </div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="comment"> * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.</span></div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;<span class="comment"> * Warning: Come on, it&#39;s called GOD mode - obviously only use this if you know what you&#39;re doing.</span></div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="comment"> *          Failure to heed the above warning may result in bricked module.</span></div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;  <span class="comment">//#define RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160; </div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="comment"> * Uncomment to enable low-level hardware access</span></div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;<span class="comment"> * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as &quot;god mode lite&quot;</span></div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="comment"> * Warning: RadioLib won&#39;t stop you from writing invalid stuff into your device, so it&#39;s quite easy to brick your module with this.</span></div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;  <span class="comment">//#define RADIOLIB_LOW_LEVEL</span></div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160; </div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="comment"> * Uncomment to enable pre-defined modules when using RadioShield.</span></div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_RADIOSHIELD)</span></div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;  <span class="comment">//#define RADIOLIB_RADIOSHIELD</span></div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;<span class="comment"> * Uncomment to enable static-only memory management: no dynamic allocation will be performed.</span></div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;<span class="comment"> * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.</span></div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;<span class="preprocessor">#elif defined(RASPI)</span></div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    <span class="comment">// RaspiDuino framework (https://github.com/me-no-dev/RasPiArduino)</span></div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;<span class="preprocessor">    #define RADIOLIB_PLATFORM                           &quot;RasPiArduino&quot;</span></div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_TYPE                           uint8_t</span></div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_MODE                           uint8_t</span></div>
+<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_STATUS                         uint8_t</span></div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;<span class="preprocessor">    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;<span class="preprocessor">    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)</span></div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;<span class="preprocessor">    #define RADIOLIB_NC                                 (0xFF)</span></div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI                        SPI</span></div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)</span></div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE                        PROGMEM</span></div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)</span></div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="preprocessor">    #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;</span></div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="comment">// Arduino API callbacks</span></div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint8_t pin, uint8_t mode)</span></div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, uint8_t pin, uint8_t value)</span></div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_READ               (int, digitalRead, uint8_t pin)</span></div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_TONE                       (void, tone, uint8_t _pin, unsigned int frequency, unsigned long duration)</span></div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t _pin)</span></div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint8_t interruptNum, void (*userFunc)(void), int mode)</span></div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DETACH_INTERRUPT           (void, detachInterrupt, uint8_t interruptNum)</span></div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_YIELD                      (void, yield, void)</span></div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY                      (void, delay, uint32_t ms)</span></div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY_MICROSECONDS         (void, delayMicroseconds, unsigned int us)</span></div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MILLIS                     (unsigned long, millis, void)</span></div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MICROS                     (unsigned long, micros, void)</span></div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN                  (void, SPIbegin, void)</span></div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION      (void, SPIbeginTransaction, void)</span></div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_TRANSFER               (uint8_t, SPItransfer, uint8_t b)</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)</span></div>
+<div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)</span></div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160; </div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <span class="comment">// let&#39;s start off easy - no tone on this platform, that can happen</span></div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;<span class="preprocessor">    #define RADIOLIB_TONE_UNSUPPORTED</span></div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160; </div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    <span class="comment">// hmm, no yield either - weird on something like Raspberry PI, but sure, we can handle it</span></div>
+<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160;<span class="preprocessor">    #define RADIOLIB_YIELD_UNSUPPORTED</span></div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160; </div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    <span class="comment">// aight, getting to the juicy stuff - PGM_P seems missing, that&#39;s the first time</span></div>
+<div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160;<span class="preprocessor">    #define PGM_P                                       const char *</span></div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160; </div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    <span class="comment">// ... and for the grand finale, we have millis() and micros() DEFINED AS MACROS!</span></div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;<span class="preprocessor">    #if defined(millis)</span></div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;<span class="preprocessor">    #undef millis</span></div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> millis() { <span class="keywordflow">return</span>((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)(STCV / 1000)); };</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160; </div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;<span class="preprocessor">    #if defined(micros)</span></div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;<span class="preprocessor">    #undef micros</span></div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="keyword">inline</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> micros() { <span class="keywordflow">return</span>((<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>)(STCV)); };</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;<span class="preprocessor">  #else</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    <span class="comment">// other Arduino platforms not covered by the above list - this may or may not work</span></div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;<span class="preprocessor">    #define RADIOLIB_PLATFORM                           &quot;Unknown Arduino&quot;</span></div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;<span class="preprocessor">    #define RADIOLIB_UNKNOWN_PLATFORM</span></div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_TYPE                           uint8_t</span></div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_MODE                           uint8_t</span></div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="preprocessor">    #define RADIOLIB_PIN_STATUS                         uint8_t</span></div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;<span class="preprocessor">    #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS</span></div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="preprocessor">    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)</span></div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">    #define RADIOLIB_NC                                 (0xFF)</span></div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI                        SPI</span></div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)</span></div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE                        PROGMEM</span></div>
+<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)</span></div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;<span class="preprocessor">    #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;</span></div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160; </div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <span class="comment">// Arduino API callbacks</span></div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint8_t pin, uint8_t mode)</span></div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, uint8_t pin, uint8_t value)</span></div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DIGITAL_READ               (int, digitalRead, uint8_t pin)</span></div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_TONE                       (void, tone, uint8_t _pin, unsigned int frequency, unsigned long duration)</span></div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t _pin)</span></div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint8_t interruptNum, void (*userFunc)(void), int mode)</span></div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DETACH_INTERRUPT           (void, detachInterrupt, uint8_t interruptNum)</span></div>
+<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_YIELD                      (void, yield, void)</span></div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY                      (void, delay, unsigned long ms)</span></div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_DELAY_MICROSECONDS         (void, delayMicroseconds, unsigned int us)</span></div>
+<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MILLIS                     (unsigned long, millis, void)</span></div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_MICROS                     (unsigned long, micros, void)</span></div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN                  (void, SPIbegin, void)</span></div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION      (void, SPIbeginTransaction, void)</span></div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_TRANSFER               (uint8_t, SPItransfer, uint8_t b)</span></div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)</span></div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;<span class="preprocessor">    #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)</span></div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160; </div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;<span class="preprocessor">  #endif</span></div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160; </div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;  <span class="comment">// generic non-Arduino platform</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;<span class="preprocessor">  #define RADIOLIB_PLATFORM                           &quot;Generic&quot;</span></div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;  <span class="comment">// platform properties may be defined here, or somewhere else in the build system</span></div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;<span class="comment"> * Uncomment to enable debug output.</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;<span class="comment"> * Warning: Debug output will slow down the whole system significantly.</span></div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;<span class="comment"> *          Also, it will result in larger compiled binary.</span></div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="comment"> * Levels: debug - only main info</span></div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;<span class="comment"> *         verbose - full transcript of all SPI communication</span></div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_DEBUG)</span></div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;  <span class="comment">//#define RADIOLIB_DEBUG</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_VERBOSE)</span></div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;  <span class="comment">//#define RADIOLIB_VERBOSE</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;<span class="comment">// set which output port should be used for debug output</span></div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;<span class="comment">// may be Serial port (on Arduino) or file like stdout or stderr (on generic platforms)</span></div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_DEBUG_PORT)</span></div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PORT   Serial</span></div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;<span class="comment"> * Uncomment to enable &quot;paranoid&quot; SPI mode</span></div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="comment"> * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.</span></div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;<span class="comment"> * This improves reliablility, but slightly slows down communication.</span></div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;<span class="comment"> * Note: Enabled by default.</span></div>
 <div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_STATIC_ONLY)</span></div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;  <span class="comment">//#define RADIOLIB_STATIC_ONLY</span></div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_SPI_PARANOID)</span></div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;<span class="preprocessor">  #define RADIOLIB_SPI_PARANOID</span></div>
 <div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160; </div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;<span class="comment">// set the size of static arrays to use</span></div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_STATIC_ARRAY_SIZE)</span></div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;<span class="preprocessor">  #define RADIOLIB_STATIC_ARRAY_SIZE   (256)</span></div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160; </div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_DEBUG)</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="preprocessor">  #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }</span></div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }</span></div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;<span class="preprocessor">  #else</span></div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINT)</span></div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINT(...) { frintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }</span></div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINTLN)</span></div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINTLN(...)  { printf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ &quot;\n&quot;); }</span></div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;<span class="preprocessor">  #endif</span></div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINT(...) {}</span></div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINTLN(...) {}</span></div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160; </div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_VERBOSE)</span></div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINT(...) RADIOLIB_DEBUG_PRINT(__VA_ARGS__)</span></div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN(__VA_ARGS__)</span></div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINT(...) {}</span></div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINTLN(...) {}</span></div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;<span class="comment"> * Uncomment to enable parameter range checking</span></div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;<span class="comment"> * RadioLib will check provided parameters (such as frequency) against limits determined by the device manufacturer.</span></div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;<span class="comment"> * It is highly advised to keep this macro defined, removing it will allow invalid values to be set,</span></div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;<span class="comment"> * possibly leading to bricked module and/or program crashing.</span></div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;<span class="comment"> * Note: Enabled by default.</span></div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_CHECK_PARAMS)</span></div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_PARAMS</span></div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160; </div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;<span class="comment"> * Uncomment to enable SX127x errata fix</span></div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;<span class="comment"> * Warning: SX127x errata fix has been reported to cause issues with LoRa bandwidths lower than 62.5 kHz.</span></div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;<span class="comment"> *          It should only be enabled if you really are observing some errata-related issue.</span></div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;<span class="comment"> * Note: Disabled by default.</span></div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;  <span class="comment">//#define RADIOLIB_FIX_ERRATA_SX127X</span></div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160; </div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;<span class="comment"> * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.</span></div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;<span class="comment"> * Warning: Come on, it&#39;s called GOD mode - obviously only use this if you know what you&#39;re doing.</span></div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="comment"> *          Failure to heed the above warning may result in bricked module.</span></div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;  <span class="comment">//#define RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160; </div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;<span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }</span></div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;<span class="comment"> * Macros that create callback for the hardware abstraction layer.</span></div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;<span class="comment"> *</span></div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;<span class="comment"> * This is the most evil thing I have ever created. I am deeply sorry to anyone currently reading this text.</span></div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;<span class="comment"> * Come one, come all and witness the horror:</span></div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;<span class="comment"> * Variadics, forced expansions, inlined function, string concatenation, and it even messes up access specifiers.</span></div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;<span class="comment"> * Uncomment to enable low-level hardware access</span></div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;<span class="comment"> * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as &quot;god mode lite&quot;</span></div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;<span class="comment"> * Warning: RadioLib won&#39;t stop you from writing invalid stuff into your device, so it&#39;s quite easy to brick your module with this.</span></div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;  <span class="comment">//#define RADIOLIB_LOW_LEVEL</span></div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160; </div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;<span class="comment"> * Uncomment to enable pre-defined modules when using RadioShield.</span></div>
 <div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;<span class="comment"> */</span></div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;<span class="preprocessor">#define RADIOLIB_FIRST(arg, ...) arg</span></div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;<span class="preprocessor">#define RADIOLIB_REST(arg, ...) __VA_ARGS__</span></div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;<span class="preprocessor">#define RADIOLIB_EXP(...) __VA_ARGS__</span></div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_RADIOSHIELD)</span></div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;  <span class="comment">//#define RADIOLIB_RADIOSHIELD</span></div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160; </div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, FUNC, ...) public: typedef RET (*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;</span></div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, __VA_ARGS__)</span></div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK(CB) RADIOLIB_GENERATE_CALLBACK_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))</span></div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160; </div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, FUNC, ...) public: typedef RET (Module::*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;</span></div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, __VA_ARGS__)</span></div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI(CB) RADIOLIB_GENERATE_CALLBACK_SPI_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))</span></div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="comment"> * Uncomment to enable static-only memory management: no dynamic allocation will be performed.</span></div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;<span class="comment"> * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.</span></div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_STATIC_ONLY)</span></div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;  <span class="comment">//#define RADIOLIB_STATIC_ONLY</span></div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
-<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_CHECK_PARAMS)</span></div>
-<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) &gt;= (MIN)) &amp;&amp; ((VAR) &lt;= (MAX)))) { return(ERR); } }</span></div>
-<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}</span></div>
-<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160; </div>
-<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;<span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }</span></div>
-<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;<span class="preprocessor">#else</span></div>
-<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;<span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) {}</span></div>
-<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160; </div>
-<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;<span class="comment">// version definitions</span></div>
-<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_MAJOR  (0x05)</span></div>
-<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_MINOR  (0x01)</span></div>
-<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_PATCH  (0x00)</span></div>
-<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_EXTRA  (0x00)</span></div>
-<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160; </div>
-<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION ((RADIOLIB_VERSION_MAJOR &lt;&lt; 24) | (RADIOLIB_VERSION_MINOR &lt;&lt; 16) | (RADIOLIB_VERSION_PATCH &lt;&lt; 8) | (RADIOLIB_VERSION_EXTRA))</span></div>
-<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160; </div>
-<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;<span class="comment">// set the size of static arrays to use</span></div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_STATIC_ARRAY_SIZE)</span></div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;<span class="preprocessor">  #define RADIOLIB_STATIC_ARRAY_SIZE   (256)</span></div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160; </div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_DEBUG)</span></div>
+<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;<span class="preprocessor">  #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }</span></div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }</span></div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;<span class="preprocessor">  #else</span></div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINT)</span></div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINT(...) { frintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }</span></div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINTLN)</span></div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINTLN(...)  { printf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ &quot;\n&quot;); }</span></div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;<span class="preprocessor">  #endif</span></div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINT(...) {}</span></div>
+<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINTLN(...) {}</span></div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160; </div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_VERBOSE)</span></div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINT(...) RADIOLIB_DEBUG_PRINT(__VA_ARGS__)</span></div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN(__VA_ARGS__)</span></div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINT(...) {}</span></div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;<span class="preprocessor">  #define RADIOLIB_VERBOSE_PRINTLN(...) {}</span></div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160; </div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;<span class="preprocessor">#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }</span></div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160; </div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;<span class="comment">/*</span></div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;<span class="comment"> * Macros that create callback for the hardware abstraction layer.</span></div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;<span class="comment"> *</span></div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;<span class="comment"> * This is the most evil thing I have ever created. I am deeply sorry to anyone currently reading this text.</span></div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;<span class="comment"> * Come one, come all and witness the horror:</span></div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;<span class="comment"> * Variadics, forced expansions, inlined function, string concatenation, and it even messes up access specifiers.</span></div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;<span class="comment"> */</span></div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;<span class="preprocessor">#define RADIOLIB_FIRST(arg, ...) arg</span></div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;<span class="preprocessor">#define RADIOLIB_REST(arg, ...) __VA_ARGS__</span></div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;<span class="preprocessor">#define RADIOLIB_EXP(...) __VA_ARGS__</span></div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160; </div>
+<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, FUNC, ...) public: typedef RET (*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;</span></div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, __VA_ARGS__)</span></div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK(CB) RADIOLIB_GENERATE_CALLBACK_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))</span></div>
+<div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160; </div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, FUNC, ...) public: typedef RET (Module::*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;</span></div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, __VA_ARGS__)</span></div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160;<span class="preprocessor">#define RADIOLIB_GENERATE_CALLBACK_SPI(CB) RADIOLIB_GENERATE_CALLBACK_SPI_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))</span></div>
+<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160; </div>
+<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_CHECK_PARAMS)</span></div>
+<div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) &gt;= (MIN)) &amp;&amp; ((VAR) &lt;= (MAX)))) { return(ERR); } }</span></div>
+<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;<span class="preprocessor">  #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}</span></div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160; </div>
+<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_FIX_ERRATA_SX127X)</span></div>
+<div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160;<span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }</span></div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;<span class="preprocessor">#else</span></div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;<span class="preprocessor">  #define RADIOLIB_ERRATA_SX127X(...) {}</span></div>
+<div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160; </div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;<span class="comment">// version definitions</span></div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_MAJOR  (0x05)</span></div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_MINOR  (0x01)</span></div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_PATCH  (0x00)</span></div>
+<div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION_EXTRA  (0x00)</span></div>
+<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160; </div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;<span class="preprocessor">#define RADIOLIB_VERSION ((RADIOLIB_VERSION_MAJOR &lt;&lt; 24) | (RADIOLIB_VERSION_MINOR &lt;&lt; 16) | (RADIOLIB_VERSION_PATCH &lt;&lt; 8) | (RADIOLIB_VERSION_EXTRA))</span></div>
+<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160; </div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
