@@ -142,6 +142,10 @@ setDirectAction	KEYWORD2
 readBit	KEYWORD2
 enableBitSync	KEYWORD2
 disableBitSync	KEYWORD2
+setFHSSHoppingPeriod	KEYWORD2
+getFHSSHoppingPeriod	KEYWORD2
+getFHSSChannel	KEYWORD2
+clearFHSSInt	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2

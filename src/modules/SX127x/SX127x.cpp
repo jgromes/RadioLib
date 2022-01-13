@@ -375,7 +375,10 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
     // set DIO pin mapping
-    state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_RX_DONE | RADIOLIB_SX127X_DIO1_RX_TIMEOUT, 7, 4);
+    if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF)
+      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_RX_DONE | RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL, 7, 4);
+    else
+      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_RX_DONE | RADIOLIB_SX127X_DIO1_RX_TIMEOUT, 7, 4);
 
     // set expected packet length for SF6
     if(_sf == 6) {
@@ -448,7 +451,10 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     }
 
     // set DIO mapping
-    _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE, 7, 6);
+    if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF)
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE | RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL, 7, 4);
+    else
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE, 7, 6);
 
     // apply fixes to errata
     RADIOLIB_ERRATA_SX127X(false);
@@ -987,8 +993,11 @@ int16_t SX127x::setOOK(bool enableOOK) {
 }
 
 int16_t SX127x::setFrequencyRaw(float newFreq) {
-  // set mode to standby
-  int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
+  int16_t state = RADIOLIB_ERR_NONE;
+  
+  // set mode to standby if not FHSS
+  if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) == RADIOLIB_SX127X_HOP_PERIOD_OFF)
+    state = setMode(RADIOLIB_SX127X_STANDBY);
 
   // calculate register values
   uint32_t FRF = (newFreq * (uint32_t(1) << RADIOLIB_SX127X_DIV_EXPONENT)) / RADIOLIB_SX127X_CRYSTAL_FREQ;
