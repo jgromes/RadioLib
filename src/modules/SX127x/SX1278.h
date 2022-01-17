@@ -302,6 +302,34 @@ class SX1278: public SX127x {
     */
     int16_t explicitHeader();
 
+    /*!
+      \brief Sets the hopping period and enables FHSS
+
+      \param freqHoppingPeriod Integer multiple of symbol periods between hops
+
+      \returns \ref status_codes
+    */
+    int16_t setFHSSHoppingPeriod(uint8_t freqHoppingPeriod);
+
+        /*!
+      \brief Gets FHSS hopping period
+
+      \returns 8 bit period
+    */
+    uint8_t getFHSSHoppingPeriod(void);
+
+    /*!
+      \brief Gets the FHSS channel in use
+
+      \returns 6 bit channel number
+    */
+    uint8_t getFHSSChannel(void);
+
+    /*!
+      \brief Clear the FHSS interrupt
+    */
+    void clearFHSSInt(void);
+
 #if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
