@@ -1367,4 +1367,25 @@ void SX127x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
+int16_t SX127x::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
+  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD, freqHoppingPeriod));
+}
+
+uint8_t SX127x::getFHSSHoppingPeriod(void) {
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD)); 
+}
+
+uint8_t SX127x::getFHSSChannel(void) {
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0)); 
+}
+
+void SX127x::clearFHSSInt(void) {
+  int16_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_LORA) {
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
+  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    return; //These are not the interrupts you are looking for
+  }  
+}
+
 #endif

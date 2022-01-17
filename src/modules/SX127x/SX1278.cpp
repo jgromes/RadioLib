@@ -623,25 +623,4 @@ void SX1278::errataFix(bool rx) {
   _mod->SPIsetRegValue(0x30, fixedRegs[2]);
 }
 
-int16_t SX1278::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
-  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD, freqHoppingPeriod));
-}
-
-uint8_t SX1278::getFHSSHoppingPeriod(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD)); 
-}
-
-uint8_t SX1278::getFHSSChannel(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0)); 
-}
-
-void SX1278::clearFHSSInt(void) {
-  int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_LORA) {
-    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    return; //These are not the interrupts you are looking for
-  }  
-}
-
 #endif

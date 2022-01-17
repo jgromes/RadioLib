@@ -100,24 +100,4 @@ int16_t SX1277::setSpreadingFactor(uint8_t sf) {
   return(state);
 }
 
-int16_t SX1277::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
-  return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD, freqHoppingPeriod));
-}
-
-uint8_t SX1277::getFHSSHoppingPeriod(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD)); 
-}
-
-uint8_t SX1277::getFHSSChannel(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0)); 
-}
-
-void SX1277::clearFHSSInt(void) {
-  int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_LORA) {
-    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    return; //These are not the interrupts you are looking for
-  }  
-}
 #endif
