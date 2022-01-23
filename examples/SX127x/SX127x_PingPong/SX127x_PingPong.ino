@@ -48,7 +48,7 @@ void setFlag(void) {
     return;
   }
 
-  // we sent aor received  packet, set the flag
+  // we sent or received  packet, set the flag
   operationDone = true;
 }
 
@@ -105,17 +105,17 @@ void loop() {
       if (transmissionState == RADIOLIB_ERR_NONE) {
         // packet was successfully sent
         Serial.println(F("transmission finished!"));
-  
+
       } else {
         Serial.print(F("failed, code "));
         Serial.println(transmissionState);
-  
+
       }
 
       // listen for response
       radio.startReceive();
       transmitFlag = false;
-      
+
     } else {
       // the previous operation was reception
       // print data and send another packet
@@ -125,21 +125,21 @@ void loop() {
       if (state == RADIOLIB_ERR_NONE) {
         // packet was successfully received
         Serial.println(F("[SX1278] Received packet!"));
-      
+
         // print data of the packet
         Serial.print(F("[SX1278] Data:\t\t"));
         Serial.println(str);
-  
+
         // print RSSI (Received Signal Strength Indicator)
         Serial.print(F("[SX1278] RSSI:\t\t"));
         Serial.print(radio.getRSSI());
         Serial.println(F(" dBm"));
-  
+
         // print SNR (Signal-to-Noise Ratio)
         Serial.print(F("[SX1278] SNR:\t\t"));
         Serial.print(radio.getSNR());
         Serial.println(F(" dB"));
-  
+
       }
 
       // wait a second before transmitting again
@@ -154,6 +154,6 @@ void loop() {
     // we're ready to process more packets,
     // enable interrupt service routine
     enableInterrupt = true;
-    
+
   }
 }
