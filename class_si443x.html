@@ -198,6 +198,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a45d3ffcb312c34a2f6391be6d609d7b7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a45d3ffcb312c34a2f6391be6d609d7b7">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
 <tr class="memdesc:a45d3ffcb312c34a2f6391be6d609d7b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_si443x.html#a45d3ffcb312c34a2f6391be6d609d7b7">More...</a><br /></td></tr>
 <tr class="separator:a45d3ffcb312c34a2f6391be6d609d7b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2b3a961a99d9e8f3a7ead6e8b69e858"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ad2b3a961a99d9e8f3a7ead6e8b69e858">fixedPacketLengthMode</a> (uint8_t len=RADIOLIB_SI443X_MAX_PACKET_LENGTH)</td></tr>
+<tr class="memdesc:ad2b3a961a99d9e8f3a7ead6e8b69e858"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in fixed packet length mode.  <a href="class_si443x.html#ad2b3a961a99d9e8f3a7ead6e8b69e858">More...</a><br /></td></tr>
+<tr class="separator:ad2b3a961a99d9e8f3a7ead6e8b69e858"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcca8ab4a1229efb5e7c6b09e564a48a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a">variablePacketLengthMode</a> (uint8_t maxLen=RADIOLIB_SI443X_MAX_PACKET_LENGTH)</td></tr>
+<tr class="memdesc:abcca8ab4a1229efb5e7c6b09e564a48a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode.  <a href="class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a">More...</a><br /></td></tr>
+<tr class="separator:abcca8ab4a1229efb5e7c6b09e564a48a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab139a34e03a6fd5a781cd54da21d308f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ab139a34e03a6fd5a781cd54da21d308f">transmit</a> (__FlashStringHelper *fstr, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ab139a34e03a6fd5a781cd54da21d308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino Flash String transmit method.  <a href="class_si443x.html#ab139a34e03a6fd5a781cd54da21d308f">More...</a><br /></td></tr>
 <tr class="separator:ab139a34e03a6fd5a781cd54da21d308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,6 +366,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ad2b3a961a99d9e8f3a7ead6e8b69e858"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2b3a961a99d9e8f3a7ead6e8b69e858">&#9670;&nbsp;</a></span>fixedPacketLengthMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Si443x::fixedPacketLengthMode </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em> = <code>RADIOLIB_SI443X_MAX_PACKET_LENGTH</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set modem in fixed packet length mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Packet length.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a55252bda74e8c67636a8c1fa0e9f58d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a55252bda74e8c67636a8c1fa0e9f58d3">&#9670;&nbsp;</a></span>getChipVersion()</h2>
 
@@ -412,7 +445,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Length of last received packet in bytes. </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>variable length mode </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>variable length mode </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7">PhysicalLayer</a>.</p>
 
@@ -785,7 +818,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000007">Todo:</a></b></dt><dd>implement fiter configuration - docs claim this should be possible, but seems undocumented </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd>implement fiter configuration - docs claim this should be possible, but seems undocumented </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">PhysicalLayer</a>.</p>
 
@@ -859,7 +892,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000006">Todo:</a></b></dt><dd><ul>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd><ul>
 <li>add inverted Manchester? </li>
 </ul>
 </dd></dl>
@@ -1019,7 +1052,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>float tolerance equality as macro? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>float tolerance equality as macro? </dd></dl>
 
 </div>
 </div>
@@ -1228,8 +1261,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>variable packet length </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>use header as address field? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>use header as address field? </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a41a1de0ebffe7b65de6fd8cceb9a5123">PhysicalLayer</a>.</p>
 
@@ -1447,6 +1479,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>integers only </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a4b04eb6155b06d8ef400131c647d54e7">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="abcca8ab4a1229efb5e7c6b09e564a48a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcca8ab4a1229efb5e7c6b09e564a48a">&#9670;&nbsp;</a></span>variablePacketLengthMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Si443x::variablePacketLengthMode </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>maxLen</em> = <code>RADIOLIB_SI443X_MAX_PACKET_LENGTH</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set modem in variable packet length mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Maximum packet length.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

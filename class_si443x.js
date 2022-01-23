@@ -3,6 +3,7 @@ var class_si443x =
     [ "Si443x", "class_si443x.html#ae7cfff2efebfa01c8a50a5cbbe8775b9", null ],
     [ "begin", "class_si443x.html#a453eda5436dc4dfe0dad676dc3977752", null ],
     [ "clearIrqAction", "class_si443x.html#a8d019f58551346c3f3bd8b72d2486109", null ],
+    [ "fixedPacketLengthMode", "class_si443x.html#ad2b3a961a99d9e8f3a7ead6e8b69e858", null ],
     [ "getChipVersion", "class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3", null ],
     [ "getMod", "class_si443x.html#a427f24f614f04e87094354047bf1bf00", null ],
     [ "getPacketLength", "class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10", null ],
@@ -39,5 +40,6 @@ var class_si443x =
     [ "transmit", "class_si443x.html#aeb62c5a521aafc1e0525c58e9364482b", null ],
     [ "transmit", "class_si443x.html#a782748025e19ec6e597293afb6570bff", null ],
     [ "transmit", "class_si443x.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
-    [ "transmitDirect", "class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99", null ]
+    [ "transmitDirect", "class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99", null ],
+    [ "variablePacketLengthMode", "class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a", null ]
 ];
