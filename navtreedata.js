@@ -47,7 +47,7 @@ var NAVTREEINDEX =
 "_a_f_s_k_8h_source.html",
 "class_morse_client.html#a178726e7279d49d873c715371d558751",
 "class_s_x126x.html#ac594fbb30c5010658c970a64654c7162",
-"class_si443x.html#a74848176d435227e601c86ff37b0edbe"
+"class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

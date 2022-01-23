@@ -295,6 +295,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a071442611a32154e8b3db7981f242a53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
 <tr class="memdesc:a071442611a32154e8b3db7981f242a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">More...</a><br /></td></tr>
 <tr class="separator:a071442611a32154e8b3db7981f242a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f04a7e883057908df18f06c7f74c7e1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">setFHSSHoppingPeriod</a> (uint8_t freqHoppingPeriod)</td></tr>
+<tr class="memdesc:a7f04a7e883057908df18f06c7f74c7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the hopping period and enables FHSS.  <a href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">More...</a><br /></td></tr>
+<tr class="separator:a7f04a7e883057908df18f06c7f74c7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7600b8b0aac4d8a5e962d631145b617"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617">getFHSSHoppingPeriod</a> (void)</td></tr>
+<tr class="memdesc:ad7600b8b0aac4d8a5e962d631145b617"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets FHSS hopping period.  <a href="class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617">More...</a><br /></td></tr>
+<tr class="separator:ad7600b8b0aac4d8a5e962d631145b617"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56340d1bdc69b3efc64636be39445a9c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c">getFHSSChannel</a> (void)</td></tr>
+<tr class="memdesc:a56340d1bdc69b3efc64636be39445a9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the FHSS channel in use.  <a href="class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c">More...</a><br /></td></tr>
+<tr class="separator:a56340d1bdc69b3efc64636be39445a9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41089d9e5b45217d3e31ac22b5326b66"><td class="memItemLeft" align="right" valign="top"><a id="a41089d9e5b45217d3e31ac22b5326b66"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66">clearFHSSInt</a> (void)</td></tr>
+<tr class="memdesc:a41089d9e5b45217d3e31ac22b5326b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the FHSS interrupt. <br /></td></tr>
+<tr class="separator:a41089d9e5b45217d3e31ac22b5326b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab139a34e03a6fd5a781cd54da21d308f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab139a34e03a6fd5a781cd54da21d308f">transmit</a> (__FlashStringHelper *fstr, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ab139a34e03a6fd5a781cd54da21d308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino Flash String transmit method.  <a href="class_s_x127x.html#ab139a34e03a6fd5a781cd54da21d308f">More...</a><br /></td></tr>
 <tr class="separator:ab139a34e03a6fd5a781cd54da21d308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -663,6 +676,48 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Get data rate of the latest transmitted packet. </p>
 <dl class="section return"><dt>Returns</dt><dd>Last packet data rate in bps (bits per second). </dd></dl>
+
+</div>
+</div>
+<a id="a56340d1bdc69b3efc64636be39445a9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56340d1bdc69b3efc64636be39445a9c">&#9670;&nbsp;</a></span>getFHSSChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SX127x::getFHSSChannel </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets the FHSS channel in use. </p>
+<dl class="section return"><dt>Returns</dt><dd>6 bit channel number </dd></dl>
+
+</div>
+</div>
+<a id="ad7600b8b0aac4d8a5e962d631145b617"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7600b8b0aac4d8a5e962d631145b617">&#9670;&nbsp;</a></span>getFHSSHoppingPeriod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t SX127x::getFHSSHoppingPeriod </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets FHSS hopping period. </p>
+<dl class="section return"><dt>Returns</dt><dd>8 bit period </dd></dl>
 
 </div>
 </div>
@@ -1450,6 +1505,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a7d3419227d201d6912b77784636d437d">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a7f04a7e883057908df18f06c7f74c7e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f04a7e883057908df18f06c7f74c7e1">&#9670;&nbsp;</a></span>setFHSSHoppingPeriod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::setFHSSHoppingPeriod </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>freqHoppingPeriod</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the hopping period and enables FHSS. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freqHoppingPeriod</td><td>Integer multiple of symbol periods between hops</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
