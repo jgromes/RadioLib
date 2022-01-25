@@ -147,7 +147,7 @@ getFHSSHoppingPeriod	KEYWORD2
 getFHSSChannel	KEYWORD2
 clearFHSSInt	KEYWORD2
 randomByte	KEYWORD2
-getPacketLength
+getPacketLength	KEYWORD2
 
 
 # RF69-specific
