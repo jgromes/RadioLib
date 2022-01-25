@@ -816,6 +816,24 @@ class Si443x: public PhysicalLayer {
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
 
+    /*!
+     \brief Set modem in fixed packet length mode.
+
+     \param len Packet length.
+
+     \returns \ref status_codes
+   */
+   int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
+
+    /*!
+     \brief Set modem in variable packet length mode.
+
+     \param len Maximum packet length.
+
+     \returns \ref status_codes
+   */
+   int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
+
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
@@ -831,8 +849,10 @@ class Si443x: public PhysicalLayer {
 
     size_t _packetLength = 0;
     bool _packetLengthQueried = false;
+    uint8_t _packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;
 
     int16_t setFrequencyRaw(float newFreq);
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 
 #if !defined(RADIOLIB_GODMODE)
   private:

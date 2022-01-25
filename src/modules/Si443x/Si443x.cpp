@@ -61,6 +61,8 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
   state = setEncoding(0);
   RADIOLIB_ASSERT(state);
 
+  state = variablePacketLengthMode();
+
   return(state);
 }
 
@@ -233,8 +235,9 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   clearIRQFlags();
 
   // set packet length
-  /// \todo variable packet length
-  _mod->SPIwriteRegister(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH, len);
+  if (_packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_OFF) {
+    _mod->SPIwriteRegister(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH, len);
+  }
 
   /// \todo use header as address field?
   (void)addr;
@@ -591,6 +594,14 @@ void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
+int16_t Si443x::fixedPacketLengthMode(uint8_t len) {
+  return(Si443x::setPacketMode(RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON, len));
+}
+
+int16_t Si443x::variablePacketLengthMode(uint8_t maxLen) {
+  return(Si443x::setPacketMode(RADIOLIB_SI443X_FIXED_PACKET_LENGTH_OFF, maxLen));
+}
+
 int16_t Si443x::setFrequencyRaw(float newFreq) {
   // set mode to standby
   int16_t state = standby();
@@ -616,6 +627,25 @@ int16_t Si443x::setFrequencyRaw(float newFreq) {
   state |= _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_NOM_CARRIER_FREQUENCY_0, (uint8_t)(freqCarrier & 0xFF));
   state |= _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_AFC_LIMITER, afcLimiter);
 
+  return(state);
+}
+
+int16_t Si443x::setPacketMode(uint8_t mode, uint8_t len) {
+  // check packet length
+  if (len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+  }
+
+  // set to fixed packet length
+  int16_t state = _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_HEADER_CONTROL_2, mode, 3, 3);
+  RADIOLIB_ASSERT(state);
+
+  // set length to register
+  state = _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH, len);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  _packetLengthConfig = mode;
   return(state);
 }
 
