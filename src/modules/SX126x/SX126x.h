@@ -827,7 +827,7 @@ class SX126x: public PhysicalLayer {
    float getRSSIInst();
 
    /*!
-     \brief Set implicit header mode for future reception/transmission. Required for spreading factor 6.
+     \brief Set implicit header mode for future reception/transmission.
 
      \param len Payload length in bytes.
 
