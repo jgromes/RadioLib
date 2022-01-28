@@ -224,7 +224,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:adf96e77f25b7e256891601bef04f35a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Allowed value is RADIOLIB_SHAPING_0_5. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6">More...</a><br /></td></tr>
 <tr class="separator:adf96e77f25b7e256891601bef04f35a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4b98eb6af33d006306bb7514ed216ea"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab4b98eb6af33d006306bb7514ed216ea">setEncoding</a> (uint8_t encoding) override</td></tr>
-<tr class="memdesc:ab4b98eb6af33d006306bb7514ed216ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ and RADIOLIB_ENCODING_WHITENING.  <a href="class_c_c1101.html#ab4b98eb6af33d006306bb7514ed216ea">More...</a><br /></td></tr>
+<tr class="memdesc:ab4b98eb6af33d006306bb7514ed216ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER, and RADIOLIB_ENCODING_WHITENING. Note that encoding on <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> is applied to the entire stream including preamble, sync word, and CRC.  <a href="class_c_c1101.html#ab4b98eb6af33d006306bb7514ed216ea">More...</a><br /></td></tr>
 <tr class="separator:ab4b98eb6af33d006306bb7514ed216ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45ab4e3f4f9db367185333d36ba21ed2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a45ab4e3f4f9db367185333d36ba21ed2">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
 <tr class="memdesc:a45ab4e3f4f9db367185333d36ba21ed2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="class_c_c1101.html#a45ab4e3f4f9db367185333d36ba21ed2">More...</a><br /></td></tr>
@@ -1085,7 +1085,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ and RADIOLIB_ENCODING_WHITENING. </p>
+<p>Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER, and RADIOLIB_ENCODING_WHITENING. Note that encoding on <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> is applied to the entire stream including preamble, sync word, and CRC. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">encoding</td><td>Encoding to be used.</td></tr>
