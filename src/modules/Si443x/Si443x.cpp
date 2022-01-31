@@ -512,9 +512,12 @@ int16_t Si443x::setPreambleLength(uint8_t preambleLen) {
 }
 
 size_t Si443x::getPacketLength(bool update) {
-  /// \todo variable length mode
   if(!_packetLengthQueried && update) {
-    _packetLength = _mod->SPIreadRegister(RADIOLIB_SI443X_REG_RECEIVED_PACKET_LENGTH);
+    if (_packetLengthConfig == RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON) {
+      _packetLength = _mod->SPIreadRegister(RADIOLIB_SI443X_REG_TRANSMIT_PACKET_LENGTH);
+    } else {
+      _packetLength = _mod->SPIreadRegister(RADIOLIB_SI443X_REG_RECEIVED_PACKET_LENGTH);
+    }
     _packetLengthQueried = true;
   }
 
