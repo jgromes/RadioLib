@@ -869,7 +869,8 @@ class CC1101: public PhysicalLayer {
     int16_t setDataShaping(uint8_t sh) override;
 
     /*!
-      \brief Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ and RADIOLIB_ENCODING_WHITENING.
+      \brief Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER, and RADIOLIB_ENCODING_WHITENING.
+      Note that encoding on CC1101 is applied to the entire stream including preamble, sync word, and CRC.
 
       \param encoding Encoding to be used.
 

@@ -829,14 +829,14 @@ class SX126x: public PhysicalLayer {
    /*!
      \brief Set implicit header mode for future reception/transmission.
 
+     \param len Payload length in bytes.
+
      \returns \ref status_codes
    */
    int16_t implicitHeader(size_t len);
 
    /*!
      \brief Set explicit header mode for future reception/transmission.
-
-     \param len Payload length in bytes.
 
      \returns \ref status_codes
    */
