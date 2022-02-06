@@ -115,7 +115,8 @@ void setup() {
 
   // start transmitting the first packet
   Serial.print(F("[SX1278] Sending first packet ... "));
-  transmissionState = radio.startTransmit(longPacket + packetCounter);
+  String packet = longPacket + packetCounter;
+  transmissionState = radio.startTransmit(packet);
 }
 
 void loop() {
@@ -156,7 +157,8 @@ void loop() {
 
     // send another packet
     Serial.print(F("[SX1278] Sending another packet ... "));
-    transmissionState = radio.startTransmit(longPacket + packetCounter);
+    String packet = longPacket + packetCounter;
+    transmissionState = radio.startTransmit(packet);
   }
 
   // check if we need to do another frequency hop
