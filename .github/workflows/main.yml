@@ -21,7 +21,7 @@ jobs:
           - arduino:megaavr:uno2018
           - arduino:sam:arduino_due_x
           - arduino:samd:arduino_zero_native
-          #- adafruit:samd:adafruit_feather_m0
+          - adafruit:samd:adafruit_feather_m0
           - adafruit:nrf52:feather52832
           - esp32:esp32:esp32
           - esp8266:esp8266:generic
@@ -85,7 +85,7 @@ jobs:
           elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
             # Adafruit SAMD
             echo "::set-output name=options:::usbstack=arduino,debug=off"
-            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+            echo "::set-output name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
 
           elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
             # Adafruit Feather nRF52
@@ -95,7 +95,7 @@ jobs:
             pip3 install --user adafruit-nrfutil
             echo "/home/runner/.local/bin" >> $GITHUB_PATH
             echo "::set-output name=options:::softdevice=s132v6,debug=l0"
-            echo "::set-output name=index-url::--additional-urls https://www.adafruit.com/package_adafruit_index.json"
+            echo "::set-output name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
 
           elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             # ESP32
