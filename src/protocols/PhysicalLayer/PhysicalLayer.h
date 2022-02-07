@@ -143,10 +143,11 @@ class PhysicalLayer {
       \brief Interrupt-driven binary transmit method.
       \param data Binary data that will be transmitted.
       \param len Length of binary data to transmit (in bytes).
-      \param[out] counter Reference to a variable to track the number of bytes sent in.
+      \param counter Reference to a counter variable to track the number of
+          bytes read from `data` into the FIFO
       \param addr Node address to transmit the packet to. Only used in FSK mode.
     */
-    virtual int16_t startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t add = 0) = 0;
+    virtual int16_t startTransmit(uint8_t* data, size_t len, size_t& counter, uint8_t addr = 0) = 0;
 
     /*!
       \brief Set the ISR routine to execute when the FIFO falls below the threshold.
@@ -157,16 +158,19 @@ class PhysicalLayer {
     */
     virtual void setFifoThresholdAction(void (*func)(void)) = 0;
 
-    /*!
-      \brief Append more data into the FIFO Buffer
-
-      This is used for stream-based transmissions.
-
-      \param buff A pointer to the start of the data to append
-      \param remaining A pointer to a counter variable
-      \return Number of bytes consumed from `buff`, or error code.
-    */
-    virtual int16_t fifoAppend(uint8_t* buff, size_t remaining) = 0;
+    /**
+     * \brief Append more data into the FIFO buffer
+     * \param buff Pointer to the start of the message buffer
+     * \param len The length of the message buffer
+     * \param counter A reference to a persistent counter variable
+     * \return int 
+     * 
+     * `buff` and `len` should be the same values used when calling
+     * startTransmit(), and `counter` should be a reference to a variable which
+     * persists for the duration of the transmission (i.e. not local to the
+     * interrupt).
+     */
+    virtual int16_t fifoAppend(uint8_t* buff, size_t msg_len, size_t& counter) = 0;
 
     /*!
       \brief Read data from the FIFO buffer.

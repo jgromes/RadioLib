@@ -714,14 +714,16 @@ class SX127x: public PhysicalLayer {
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
-      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 255 bytes using FSK modem.
+      \brief Interrupt-driven binary transmit method. Will start transmitting
+          arbitrary binary data up to 255 bytes long using %LoRa or FSK modem.
       \param data Binary data that will be transmitted.
       \param len Length of binary data to transmit (in bytes).
-      \param[out] counter Reference to a variable to track the number of sent bytes in
+      \param counter Reference to a counter variable to track the number of
+          bytes read from `data` into the FIFO
       \param addr Node address to transmit the packet to. Only used in FSK mode.
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t addr = 0) override;
+    int16_t startTransmit(uint8_t* data, size_t len, size_t& counter, uint8_t addr = 0) override;
 
     /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
@@ -964,7 +966,19 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setFifoThreshold(uint8_t cap = 16);
     void setFifoThresholdAction(void (*func)(void)) override;
-    int fifoAppend(uint8_t* buff, size_t remaining) override;
+
+    /**
+     * \brief Append additional data into the FIFO buffer
+     * \param buff Pointer to the start of the message buffer
+     * \param len The length of the message buffer
+     * \param counter A reference to a persistent counter variable
+     * \return int 
+     * 
+     * `buff` and `len` should be the same values used when calling
+     * startTransmit(), and `counter` should be a reference to a variable which
+     * persists for the duration of the transmission.
+     */
+    int fifoAppend(uint8_t* buff, size_t len, size_t& counter) override;
     int fifoGet(uint8_t* buff, size_t remaining) override;
 
     /*!

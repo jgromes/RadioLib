@@ -19,7 +19,7 @@
 // DIO0 pin:  51
 // RESET pin: 22
 // DIO1 pin:  52
-SX1276 radio = new Module(8, 51, 22, 52);
+SX1276 radio = new Module(8, 51, 22, 18);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
@@ -33,10 +33,14 @@ size_t msg_counter;
 
 // this interrupt is called whenever the FIFO buffer falls below a certain threshold
 void fifoRefill() {
-  msg_counter += radio.fifoAppend(
-    (uint8_t*)msg + msg_counter,    // start of message, offset by # of bytes already sent
-    msg_length - msg_counter        // # of bytes left to send
+  radio.fifoAppend(
+    (uint8_t*)msg,    // start of message, offset by # of bytes already sent
+    msg_length,       // # of bytes left to send
+    msg_counter
   );
+  Serial.print("ISR ");
+  Serial.print(msg_counter);
+  Serial.println();
 }
 
 void setup() {
@@ -44,6 +48,10 @@ void setup() {
 
   // RF switch for my board
   pinMode(47, OUTPUT);
+  digitalWrite(47, LOW);
+
+  // Set interrupt as input
+  pinMode(18, INPUT);
 
   // initialize SX1278 FSK modem with default settings
   Serial.print(F("[SX1276] Initializing ... "));
@@ -57,7 +65,7 @@ void setup() {
   }
 
   // Set config options
-  radio.setDataShaping(RADIOLIB_SHAPING_NONE);
+  radio.setDataShaping(RADIOLIB_SHAPING_NONEg);
   radio.setSyncWord(syncWord, sizeof(syncWord));
   radio.setEncoding(RADIOLIB_ENCODING_WHITENING);
   radio.setCRC(true);
@@ -76,8 +84,7 @@ void loop() {
 
   // start transmission of message
   msg_length = strlen(msg);
-  radio.startTransmit((uint8_t*)msg, msg_length, msg_counter);
-  while (msg_counter != msg_length);
-
-  Serial.println("[SX1276] Done transmitting");
+  Serial.println("[SX1276] Starting transmission...\n\t");
+  int stat = radio.startTransmit((uint8_t*)msg, msg_length, msg_counter, 0);
+  delay(2000);
 }

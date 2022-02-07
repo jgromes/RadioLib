@@ -455,10 +455,11 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // call the "full" startTransmit overload
-  return startTransmit(data, len, 0, addr);
+  size_t _t;
+  return startTransmit(data, len, _t, addr);
 }
 
-int16_t SX127x::startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8_t addr) {
+int16_t SX127x::startTransmit(uint8_t* data, size_t len, size_t& counter, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(SX127X_STANDBY);
 
@@ -508,7 +509,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, size_t&& counter, uint8
     }
 
     // set DIO mapping
-    _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PACKET_SENT, 7, 6);
+    _mod->SPIsetRegValue(SX127X_REG_DIO_MAPPING_1, SX127X_DIO0_PACK_PACKET_SENT, 5, 4);
 
     // clear interrupt flags
     clearIRQFlags();
@@ -545,7 +546,7 @@ void SX127x::setFifoThresholdAction(void (*func)(void)) {
   _fifoThresholdISR = func;
 }
 
-int SX127x::fifoAppend(uint8_t* buff, size_t remaining) {
+int SX127x::fifoAppend(uint8_t* buff, size_t msg_len, size_t& counter) {
   // check modem
   if (getActiveModem() != SX127X_FSK_OOK) {
     return ERR_WRONG_MODEM;
@@ -553,10 +554,10 @@ int SX127x::fifoAppend(uint8_t* buff, size_t remaining) {
 
   // figure out how much to write
   uint8_t fifoThresh = _mod->SPIreadRegister(SX127X_FIFO_THRESH) & 0x3F;
-  uint8_t toWrite = min(remaining, SX127X_FIFO_CAPACITY - fifoThresh);
+  uint8_t toWrite = min(msg_len - counter, SX127X_FIFO_CAPACITY - fifoThresh);
 
   // write to the register
-  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, buff, toWrite);
+  _mod->SPIwriteRegisterBurst(SX127X_REG_FIFO, buff + counter, toWrite);
   return toWrite;
 }
 
