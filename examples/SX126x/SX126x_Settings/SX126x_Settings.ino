@@ -46,7 +46,7 @@ SX1268 radio2 = new Module(8, 4, 5, 6);
 //SX1261 radio3 = RadioShield.ModuleB;
 
 // or using CubeCell
-//SX1262 radio = new Module(RADIOLIB_ONBOARD_MODULE);
+//SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
 
 void setup() {
   Serial.begin(9600);
