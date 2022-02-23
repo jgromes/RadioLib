@@ -728,6 +728,13 @@ class SX128x: public PhysicalLayer {
     float getSNR();
 
     /*!
+      \brief Gets frequency error of the latest received packet.
+
+      \returns Frequency error in Hz.
+    */
+    double getFrequencyError();
+
+    /*!
       \brief Query modem for the packet length of received payload.
 
       \param update Update received packet length. Will return cached value when set to false.
