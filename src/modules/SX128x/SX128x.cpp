@@ -1020,6 +1020,21 @@ int16_t SX128x::setAccessAddress(uint32_t addr) {
   return(SX128x::writeRegister(RADIOLIB_SX128X_REG_ACCESS_ADDRESS_BYTE_3, addrBuff, 4));
 }
 
+int16_t SX128x::setHighSensitivityMode(bool hsm) {
+    // update register
+    uint8_t RxGain = 0;
+    int16_t state = readRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
+    RADIOLIB_ASSERT(state);
+    if (hsm) {
+        RxGain |= 0xC0; // Set bits 6 and 7
+    } else {
+        RxGain &= ~0xC0; // Unset bits 6 and 7
+    }
+    state = writeRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
+    RADIOLIB_ASSERT(state);
+    return(0);
+}
+
 float SX128x::getRSSI() {
   // get packet status
   uint8_t packetStatus[5];

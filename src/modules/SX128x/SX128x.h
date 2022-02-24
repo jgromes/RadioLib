@@ -713,6 +713,15 @@ class SX128x: public PhysicalLayer {
     */
     int16_t setAccessAddress(uint32_t addr);
 
+/*!
+  \brief Enables or disables receiver high sensitivity mode.
+
+  \param True to enable and false to disable.
+
+  \returns 0
+*/
+    int16_t setHighSensitivityMode(bool hsm = false);
+
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
 
