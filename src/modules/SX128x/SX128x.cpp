@@ -1057,7 +1057,7 @@ int16_t SX128x::setGainControl(uint8_t gain) {
         ManualGainSetting |= 0x01; // Set bit 0 to 1 (Enable Automatic Gain Control)
         LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
         LNAGainValue |= 0x0A; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
-        LNAGainControl = 0x4D; // Set bit 7 to 0 (Enable Automatic Gain Control)
+        LNAGainControl &= ~0x80; // Set bit 7 to 0 (Enable Automatic Gain Control)
     }
     state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
     RADIOLIB_ASSERT(state);

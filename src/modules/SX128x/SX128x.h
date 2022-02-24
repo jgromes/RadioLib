@@ -713,13 +713,13 @@ class SX128x: public PhysicalLayer {
     */
     int16_t setAccessAddress(uint32_t addr);
 
-/*!
-  \brief Enables or disables receiver high sensitivity mode.
+    /*!
+      \brief Enables or disables receiver high sensitivity mode.
 
-  \param True to enable and false to disable.
+      \param True to enable and false to disable.
 
-  \returns 0
-*/
+      \returns 0
+    */
     int16_t setHighSensitivityMode(bool hsm = false);
 
     /*!
@@ -727,7 +727,7 @@ class SX128x: public PhysicalLayer {
 
       \param Gain 0 automatic gain; 1 minimum gain to 13 maximum gain.
 
-      \returns \ref status_codes
+      \returns 0
     */
     int16_t setGainControl(uint8_t gain = 0);
 
