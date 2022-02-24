@@ -723,6 +723,15 @@ class SX128x: public PhysicalLayer {
     int16_t setHighSensitivityMode(bool hsm = false);
 
     /*!
+      \brief Enables or disables receiver manual gain control.
+
+      \param Gain 0 automatic gain; 1 minimum gain to 13 maximum gain.
+
+      \returns \ref status_codes
+    */
+    int16_t setGainControl(uint8_t gain = 0);
+
+    /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
 
       \returns RSSI of the last received packet in dBm.

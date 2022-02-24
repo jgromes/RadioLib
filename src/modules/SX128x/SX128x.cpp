@@ -1035,6 +1035,39 @@ int16_t SX128x::setHighSensitivityMode(bool hsm) {
     return(0);
 }
 
+int16_t SX128x::setGainControl(uint8_t gain) {
+    // update registers
+    uint8_t ManualGainSetting = 0;
+    int16_t state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
+    RADIOLIB_ASSERT(state);
+    uint8_t LNAGainValue = 0;
+    state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
+    RADIOLIB_ASSERT(state);
+    uint8_t LNAGainControl = 0;
+    state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
+    RADIOLIB_ASSERT(state);
+    if (gain > 0 && gain < 14) {
+        // Set manual gain
+        ManualGainSetting &= ~0x01; // Set bit 0 to 0 (Enable Manual Gain Control)
+        LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
+        LNAGainValue |= gain; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
+        LNAGainControl |= 0x80; // Set bit 7 to 1 (Enable Manual Gain Control)
+    } else {
+        // Set automatic gain if 0 or out of range
+        ManualGainSetting |= 0x01; // Set bit 0 to 1 (Enable Automatic Gain Control)
+        LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
+        LNAGainValue |= 0x0A; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
+        LNAGainControl = 0x4D; // Set bit 7 to 0 (Enable Automatic Gain Control)
+    }
+    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
+    RADIOLIB_ASSERT(state);
+    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
+    RADIOLIB_ASSERT(state);
+    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
+    RADIOLIB_ASSERT(state);
+    return(0);
+}
+
 float SX128x::getRSSI() {
   // get packet status
   uint8_t packetStatus[5];
