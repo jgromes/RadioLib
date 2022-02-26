@@ -96,6 +96,9 @@ void setFlagTimeout(void) {
 // is detected within timeout period
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
 void setFlagDetected(void) {
   // check if the interrupt is enabled
   if(!enableInterrupt) {
