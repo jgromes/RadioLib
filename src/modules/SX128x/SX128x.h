@@ -750,7 +750,7 @@ class SX128x: public PhysicalLayer {
 
       \returns Frequency error in Hz.
     */
-    double getFrequencyError();
+    float getFrequencyError();
 
     /*!
       \brief Query modem for the packet length of received payload.
