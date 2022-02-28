@@ -208,6 +208,41 @@ int16_t CC1101::receiveDirect() {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t CC1101::transmitDirectAsync(uint32_t frf) {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(LOW, HIGH);
+
+  // user requested to start transmitting immediately (required for RTTY)
+  if(frf != 0) {
+    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ2, (frf & 0xFF0000) >> 16);
+    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ1, (frf & 0x00FF00) >> 8);
+    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ0, frf & 0x0000FF);
+
+    SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
+  }
+
+  // activate asynchronous direct mode
+  int16_t state = asyncDirectMode();
+  RADIOLIB_ASSERT(state);
+
+  // start transmitting
+  SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
+  return(state);
+}
+
+int16_t CC1101::receiveDirectAsync() {
+  // set RF switch (if present)
+  _mod->setRfSwitchState(HIGH, LOW);
+
+  // activate asynchronous direct mode
+  int16_t state = asyncDirectMode();
+  RADIOLIB_ASSERT(state);
+
+  // start receiving
+  SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
+  return(ERR_NONE);
+}
+
 int16_t CC1101::packetMode() {
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, RADIOLIB_CC1101_CRC_AUTOFLUSH_OFF | RADIOLIB_CC1101_APPEND_STATUS_ON | RADIOLIB_CC1101_ADR_CHK_NONE, 3, 0);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_WHITE_DATA_OFF | RADIOLIB_CC1101_PKT_FORMAT_NORMAL, 6, 4);
@@ -898,6 +933,19 @@ int16_t CC1101::directMode() {
 
   // set continuous mode
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
+  return(state);
+}
+
+int16_t CC1101::asyncDirectMode() {
+  // set mode to standby
+  SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
+
+  // set GDO0 mapping
+  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_DATA_ASYNC , 5, 0);
+
+  // set asynchronous continuous mode
+  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_ASYNCHRONOUS, 5, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
   return(state);
 }

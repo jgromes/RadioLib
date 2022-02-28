@@ -592,6 +592,22 @@ class CC1101: public PhysicalLayer {
     int16_t receiveDirect() override;
 
     /*!
+      \brief Starts asynchronous direct mode transmission.
+
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+
+      \returns \ref status_codes
+    */
+    int16_t transmitDirectAsync(uint32_t frf = 0);
+
+    /*!
+      \brief Starts asynchronous direct mode reception.
+
+      \returns \ref status_codes
+    */
+    int16_t receiveDirectAsync();
+
+    /*!
       \brief Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions.
     */
     int16_t packetMode();
@@ -953,6 +969,7 @@ class CC1101: public PhysicalLayer {
 
     int16_t config();
     int16_t directMode();
+    int16_t asyncDirectMode();
     static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint16_t len);
 };
