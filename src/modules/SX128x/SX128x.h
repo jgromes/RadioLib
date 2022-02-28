@@ -725,7 +725,7 @@ class SX128x: public PhysicalLayer {
     /*!
       \brief Enables or disables receiver manual gain control.
 
-      \param Gain 0 automatic gain; 1 minimum gain to 13 maximum gain.
+      \param gain Use 0 for automatic gain, 1 for minimum gain and up to 13 for maximum gain.
 
       \returns 0
     */

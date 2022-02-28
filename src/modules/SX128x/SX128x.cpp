@@ -1021,51 +1021,56 @@ int16_t SX128x::setAccessAddress(uint32_t addr) {
 }
 
 int16_t SX128x::setHighSensitivityMode(bool hsm) {
-    // update register
-    uint8_t RxGain = 0;
-    int16_t state = readRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
-    RADIOLIB_ASSERT(state);
-    if (hsm) {
-        RxGain |= 0xC0; // Set bits 6 and 7
-    } else {
-        RxGain &= ~0xC0; // Unset bits 6 and 7
-    }
-    state = writeRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
-    RADIOLIB_ASSERT(state);
-    return(0);
+  // read the current registers
+  uint8_t RxGain = 0;
+  int16_t state = readRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
+  RADIOLIB_ASSERT(state);
+
+  if(hsm) {
+    RxGain |= 0xC0; // Set bits 6 and 7
+  } else {
+    RxGain &= ~0xC0; // Unset bits 6 and 7
+  }
+
+  // update all values
+  state = writeRegister(RADIOLIB_SX128X_REG_GAIN_MODE, &RxGain, 1);
+  return(state);
 }
 
 int16_t SX128x::setGainControl(uint8_t gain) {
-    // update registers
-    uint8_t ManualGainSetting = 0;
-    int16_t state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
-    RADIOLIB_ASSERT(state);
-    uint8_t LNAGainValue = 0;
-    state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
-    RADIOLIB_ASSERT(state);
-    uint8_t LNAGainControl = 0;
-    state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
-    RADIOLIB_ASSERT(state);
-    if (gain > 0 && gain < 14) {
-        // Set manual gain
-        ManualGainSetting &= ~0x01; // Set bit 0 to 0 (Enable Manual Gain Control)
-        LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
-        LNAGainValue |= gain; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
-        LNAGainControl |= 0x80; // Set bit 7 to 1 (Enable Manual Gain Control)
-    } else {
-        // Set automatic gain if 0 or out of range
-        ManualGainSetting |= 0x01; // Set bit 0 to 1 (Enable Automatic Gain Control)
-        LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
-        LNAGainValue |= 0x0A; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
-        LNAGainControl &= ~0x80; // Set bit 7 to 0 (Enable Automatic Gain Control)
-    }
-    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
-    RADIOLIB_ASSERT(state);
-    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
-    RADIOLIB_ASSERT(state);
-    state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
-    RADIOLIB_ASSERT(state);
-    return(0);
+  // read the current registers
+  uint8_t ManualGainSetting = 0;
+  int16_t state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
+  RADIOLIB_ASSERT(state);
+  uint8_t LNAGainValue = 0;
+  state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
+  RADIOLIB_ASSERT(state);
+  uint8_t LNAGainControl = 0;
+  state = readRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
+  RADIOLIB_ASSERT(state);
+
+  // set the gain
+  if (gain > 0 && gain < 14) {
+    // Set manual gain
+    ManualGainSetting &= ~0x01; // Set bit 0 to 0 (Enable Manual Gain Control)
+    LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
+    LNAGainValue |= gain; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
+    LNAGainControl |= 0x80; // Set bit 7 to 1 (Enable Manual Gain Control)
+  } else {
+    // Set automatic gain if 0 or out of range
+    ManualGainSetting |= 0x01; // Set bit 0 to 1 (Enable Automatic Gain Control)
+    LNAGainValue &= 0xF0; // Bits 0, 1, 2 and 3 to 0
+    LNAGainValue |= 0x0A; // Set bits 0, 1, 2 and 3 to Manual Gain Setting (1-13)
+    LNAGainControl &= ~0x80; // Set bit 7 to 0 (Enable Automatic Gain Control)
+  }
+
+  // update all values
+  state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_2, &ManualGainSetting, 1);
+  RADIOLIB_ASSERT(state);
+  state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_SETTING, &LNAGainValue, 1);
+  RADIOLIB_ASSERT(state);
+  state = writeRegister(RADIOLIB_SX128X_REG_MANUAL_GAIN_CONTROL_ENABLE_1, &LNAGainControl, 1);
+  return(state);
 }
 
 float SX128x::getRSSI() {
@@ -1113,36 +1118,36 @@ float SX128x::getSNR() {
 }
 
 float SX128x::getFrequencyError() {
-    // check active modem
-    uint8_t modem = getPacketType();
-    if (!((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING))) {
-        return (0.0);
-    }
+  // check active modem
+  uint8_t modem = getPacketType();
+  if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING))) {
+    return(0.0);
+  }
 
-    uint8_t efeRaw[3] = {0};
-    // read the raw frequency error register values
-    int16_t state = readRegister(RADIOLIB_SX128X_REG_FEI_MSB, &efeRaw[0], 1);
-    RADIOLIB_ASSERT(state);
-    state = readRegister(RADIOLIB_SX128X_REG_FEI_MID, &efeRaw[1], 1);
-    RADIOLIB_ASSERT(state);
-    state = readRegister(RADIOLIB_SX128X_REG_FEI_LSB, &efeRaw[2], 1);
-    RADIOLIB_ASSERT(state);
-    uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
-    efe &= 0x0FFFFF;
+  // read the raw frequency error register values
+  uint8_t efeRaw[3] = {0};
+  int16_t state = readRegister(RADIOLIB_SX128X_REG_FEI_MSB, &efeRaw[0], 1);
+  RADIOLIB_ASSERT(state);
+  state = readRegister(RADIOLIB_SX128X_REG_FEI_MID, &efeRaw[1], 1);
+  RADIOLIB_ASSERT(state);
+  state = readRegister(RADIOLIB_SX128X_REG_FEI_LSB, &efeRaw[2], 1);
+  RADIOLIB_ASSERT(state);
+  uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
+  efe &= 0x0FFFFF;
 
-    float error;
+  float error = 0;
 
-    // check the first bit
-    if (efe & 0x80000) {
-        // frequency error is negative
-        efe |= (uint32_t) 0xFFF00000;
-        efe = ~efe + 1;
-        error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz) * -1.0;
-    } else {
-        error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz);
-    }
+  // check the first bit
+  if (efe & 0x80000) {
+    // frequency error is negative
+    efe |= (uint32_t) 0xFFF00000;
+    efe = ~efe + 1;
+    error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz) * -1.0;
+  } else {
+    error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz);
+  }
 
-    return (error);
+  return(error);
 }
 
 size_t SX128x::getPacketLength(bool update) {
