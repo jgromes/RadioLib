@@ -9,7 +9,7 @@ var searchData=
   ['getfhsschannel_56',['getFHSSChannel',['../class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c',1,'SX127x']]],
   ['getfhsshoppingperiod_57',['getFHSSHoppingPeriod',['../class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617',1,'SX127x']]],
   ['getfreqstep_58',['getFreqStep',['../class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c',1,'PhysicalLayer']]],
-  ['getfrequencyerror_59',['getFrequencyError',['../class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362',1,'SX127x']]],
+  ['getfrequencyerror_59',['getFrequencyError',['../class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362',1,'SX127x::getFrequencyError()'],['../class_s_x128x.html#a2b424000856a9dc212f571d0e8890635',1,'SX128x::getFrequencyError()']]],
   ['getgpio_60',['getGpio',['../class_module.html#aeb4c7447372d56a7cae6db91994aacfc',1,'Module']]],
   ['getirq_61',['getIrq',['../class_module.html#a8c7f17a63b67117d953f1ba990b17f80',1,'Module']]],
   ['getirqflags_62',['getIRQFlags',['../class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d',1,'SX127x']]],

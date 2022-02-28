@@ -1,5 +1,8 @@
 var NAVTREEINDEX3 =
 {
+"class_si443x.html#a492b2d057dd803c3884fa1adc8e22534":[3,0,24,36],
+"class_si443x.html#a4ed0da298c2418db4a88a19ef8938e0a":[3,0,24,27],
+"class_si443x.html#a51e6b7c677e82042224798114f311175":[3,0,24,26],
 "class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3":[3,0,24,4],
 "class_si443x.html#a55fae20e81755c8b014d080741d61913":[3,0,24,20],
 "class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99":[3,0,24,40],
@@ -98,8 +101,8 @@ var NAVTREEINDEX3 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,10],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,9],
 "files.html":[4,0],
-"functions.html":[3,3,0,0],
 "functions.html":[3,3,0],
+"functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -208,8 +211,8 @@ var NAVTREEINDEX3 =
 "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607":[2,2,4],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,2,1],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
