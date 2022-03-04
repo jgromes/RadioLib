@@ -174,6 +174,14 @@ int16_t CC1101::standby() {
 }
 
 int16_t CC1101::transmitDirect(uint32_t frf) {
+  return transmitDirect(true, frf);
+}
+
+int16_t CC1101::transmitDirectAsync(uint32_t frf) {
+  return transmitDirect(false, frf);
+}
+
+int16_t CC1101::transmitDirect(bool sync, uint32_t frf) {
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);
 
@@ -187,7 +195,7 @@ int16_t CC1101::transmitDirect(uint32_t frf) {
   }
 
   // activate direct mode
-  int16_t state = directMode();
+  int16_t state = directMode(sync);
   RADIOLIB_ASSERT(state);
 
   // start transmitting
@@ -196,51 +204,24 @@ int16_t CC1101::transmitDirect(uint32_t frf) {
 }
 
 int16_t CC1101::receiveDirect() {
+  return receiveDirect(true);
+}
+
+int16_t CC1101::receiveDirectAsync() {
+  return receiveDirect(false);
+}
+
+int16_t CC1101::receiveDirect(bool sync) {
   // set RF switch (if present)
   _mod->setRfSwitchState(HIGH, LOW);
 
   // activate direct mode
-  int16_t state = directMode();
+  int16_t state = directMode(sync);
   RADIOLIB_ASSERT(state);
 
   // start receiving
   SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
   return(RADIOLIB_ERR_NONE);
-}
-
-int16_t CC1101::transmitDirectAsync(uint32_t frf) {
-  // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
-
-  // user requested to start transmitting immediately (required for RTTY)
-  if(frf != 0) {
-    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ2, (frf & 0xFF0000) >> 16);
-    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ1, (frf & 0x00FF00) >> 8);
-    SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ0, frf & 0x0000FF);
-
-    SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
-  }
-
-  // activate asynchronous direct mode
-  int16_t state = asyncDirectMode();
-  RADIOLIB_ASSERT(state);
-
-  // start transmitting
-  SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
-  return(state);
-}
-
-int16_t CC1101::receiveDirectAsync() {
-  // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
-
-  // activate asynchronous direct mode
-  int16_t state = asyncDirectMode();
-  RADIOLIB_ASSERT(state);
-
-  // start receiving
-  SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
-  return(ERR_NONE);
 }
 
 int16_t CC1101::packetMode() {
@@ -923,29 +904,27 @@ int16_t CC1101::config() {
   return(state);
 }
 
-int16_t CC1101::directMode() {
+int16_t CC1101::directMode(bool sync) {
   // set mode to standby
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
-  // set GDO0 and GDO2 mapping
-  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
+  int16_t state = 0;
+  if (sync) {
+    // set GDO0 and GDO2 mapping
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
 
-  // set continuous mode
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
-  return(state);
-}
+  	// set continuous mode
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  }
+  else {
+    // set GDO0 mapping
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_DATA_ASYNC , 5, 0);
 
-int16_t CC1101::asyncDirectMode() {
-  // set mode to standby
-  SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
+    // set asynchronous continuous mode
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_ASYNCHRONOUS, 5, 4);
+  }
 
-  // set GDO0 mapping
-  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_DATA_ASYNC , 5, 0);
-
-  // set asynchronous continuous mode
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_ASYNCHRONOUS, 5, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
   return(state);
 }
