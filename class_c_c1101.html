@@ -130,6 +130,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab053c185330519d58f364790108d29ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">receiveDirect</a> () override</td></tr>
 <tr class="memdesc:ab053c185330519d58f364790108d29ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode reception.  <a href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">More...</a><br /></td></tr>
 <tr class="separator:ab053c185330519d58f364790108d29ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef7c152858537a40e71cf133962cb893"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aef7c152858537a40e71cf133962cb893">transmitDirectAsync</a> (uint32_t frf=0)</td></tr>
+<tr class="memdesc:aef7c152858537a40e71cf133962cb893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts asynchronous direct mode transmission.  <a href="class_c_c1101.html#aef7c152858537a40e71cf133962cb893">More...</a><br /></td></tr>
+<tr class="separator:aef7c152858537a40e71cf133962cb893"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec1ff1312d2caaae7e3e0389268fca2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2">receiveDirectAsync</a> ()</td></tr>
+<tr class="memdesc:a9ec1ff1312d2caaae7e3e0389268fca2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts asynchronous direct mode reception.  <a href="class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2">More...</a><br /></td></tr>
+<tr class="separator:a9ec1ff1312d2caaae7e3e0389268fca2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38f6978c757b0dd73e3ef98164a735a2"><td class="memItemLeft" align="right" valign="top"><a id="a38f6978c757b0dd73e3ef98164a735a2"></a>
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a38f6978c757b0dd73e3ef98164a735a2">packetMode</a> ()</td></tr>
 <tr class="memdesc:a38f6978c757b0dd73e3ef98164a735a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops direct mode. It is required to call this method to switch from direct transmissions to packet-based transmissions. <br /></td></tr>
@@ -931,6 +937,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a46b22145b33e97cf6065ed826799b6b4">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a9ec1ff1312d2caaae7e3e0389268fca2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ec1ff1312d2caaae7e3e0389268fca2">&#9670;&nbsp;</a></span>receiveDirectAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::receiveDirectAsync </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starts asynchronous direct mode reception. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -1914,6 +1940,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#a4b04eb6155b06d8ef400131c647d54e7">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aef7c152858537a40e71cf133962cb893"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef7c152858537a40e71cf133962cb893">&#9670;&nbsp;</a></span>transmitDirectAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::transmitDirectAsync </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>frf</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Starts asynchronous direct mode transmission. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

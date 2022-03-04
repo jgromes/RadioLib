@@ -24,6 +24,7 @@ var class_c_c1101 =
     [ "receive", "class_c_c1101.html#aedc1067d0334bb69ed5316146014097d", null ],
     [ "receive", "class_c_c1101.html#a2ad4c6a8ac267f8ac590260414ffcda3", null ],
     [ "receiveDirect", "class_c_c1101.html#ab053c185330519d58f364790108d29ac", null ],
+    [ "receiveDirectAsync", "class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2", null ],
     [ "setBitRate", "class_c_c1101.html#aa53427cabcda0778f287ed1d850bbe37", null ],
     [ "setCrcFiltering", "class_c_c1101.html#aafac40359c4a1bb01aae12da6b03be26", null ],
     [ "setDataShaping", "class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6", null ],
@@ -54,5 +55,6 @@ var class_c_c1101 =
     [ "transmit", "class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4", null ],
     [ "transmit", "class_c_c1101.html#af81565ee82ef9a7de9c5663c745f4ef7", null ],
     [ "transmitDirect", "class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46", null ],
+    [ "transmitDirectAsync", "class_c_c1101.html#aef7c152858537a40e71cf133962cb893", null ],
     [ "variablePacketLengthMode", "class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f", null ]
 ];
