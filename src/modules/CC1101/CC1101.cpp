@@ -174,6 +174,14 @@ int16_t CC1101::standby() {
 }
 
 int16_t CC1101::transmitDirect(uint32_t frf) {
+  return transmitDirect(true, frf);
+}
+
+int16_t CC1101::transmitDirectAsync(uint32_t frf) {
+  return transmitDirect(false, frf);
+}
+
+int16_t CC1101::transmitDirect(bool sync, uint32_t frf) {
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);
 
@@ -187,7 +195,7 @@ int16_t CC1101::transmitDirect(uint32_t frf) {
   }
 
   // activate direct mode
-  int16_t state = directMode();
+  int16_t state = directMode(sync);
   RADIOLIB_ASSERT(state);
 
   // start transmitting
@@ -196,11 +204,19 @@ int16_t CC1101::transmitDirect(uint32_t frf) {
 }
 
 int16_t CC1101::receiveDirect() {
+  return receiveDirect(true);
+}
+
+int16_t CC1101::receiveDirectAsync() {
+  return receiveDirect(false);
+}
+
+int16_t CC1101::receiveDirect(bool sync) {
   // set RF switch (if present)
   _mod->setRfSwitchState(HIGH, LOW);
 
   // activate direct mode
-  int16_t state = directMode();
+  int16_t state = directMode(sync);
   RADIOLIB_ASSERT(state);
 
   // start receiving
@@ -888,16 +904,27 @@ int16_t CC1101::config() {
   return(state);
 }
 
-int16_t CC1101::directMode() {
+int16_t CC1101::directMode(bool sync) {
   // set mode to standby
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
-  // set GDO0 and GDO2 mapping
-  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
+  int16_t state = 0;
+  if (sync) {
+    // set GDO0 and GDO2 mapping
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
 
-  // set continuous mode
-  state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  	// set continuous mode
+  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+  }
+  else {
+    // set GDO0 mapping
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_DATA_ASYNC , 5, 0);
+
+    // set asynchronous continuous mode
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_ASYNCHRONOUS, 5, 4);
+  }
+
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
   return(state);
 }
