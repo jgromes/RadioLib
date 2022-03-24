@@ -81,11 +81,11 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   RADIOLIB_ASSERT(state);
 
   // set default data shaping
-  state = setDataShaping(RADIOLIB_ENCODING_NRZ);
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
   RADIOLIB_ASSERT(state);
 
   // set default encoding
-  state = setEncoding(RADIOLIB_SHAPING_NONE);
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
   RADIOLIB_ASSERT(state);
 
   // set default sync word
