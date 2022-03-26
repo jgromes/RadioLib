@@ -464,7 +464,7 @@ int16_t RF69::setRxBandwidth(float rxBw) {
   // calculate exponent and mantissa values for receiver bandwidth
   for(int8_t e = 7; e >= 0; e--) {
     for(int8_t m = 2; m >= 0; m--) {
-      float point = (RADIOLIB_RF69_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
+      float point = (RADIOLIB_RF69_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + (_ook ? 3 : 2))));
       if(fabs(rxBw - (point / 1000.0)) <= 0.1) {
         // set Rx bandwidth
         state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, (m << 3) | e, 4, 0);
