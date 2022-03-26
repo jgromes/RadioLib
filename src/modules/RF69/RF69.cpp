@@ -223,7 +223,11 @@ int16_t RF69::directMode() {
   RADIOLIB_ASSERT(state);
 
   // set continuous mode
-  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
+  if(_bitSync) {
+    return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
+  } else {
+    return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE, 6, 5));
+  }
 }
 
 int16_t RF69::packetMode() {
@@ -666,11 +670,21 @@ int16_t RF69::disableSyncWordFiltering() {
 }
 
 int16_t RF69::enableContinuousModeBitSync() {
-  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5));
+  int16_t state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE_WITH_SYNC, 6, 5);
+  if(state == RADIOLIB_ERR_NONE) {
+    _bitSync = true;
+  }
+
+  return(state);
 }
 
 int16_t RF69::disableContinuousModeBitSync() {
-  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE, 6, 5));
+  int16_t state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_CONTINUOUS_MODE, 6, 5);
+  if(state == RADIOLIB_ERR_NONE) {
+    _bitSync = false;
+  }
+
+  return(state);
 }
 
 int16_t RF69::setCrcFiltering(bool crcOn) {

@@ -942,6 +942,8 @@ class RF69: public PhysicalLayer {
 
     uint8_t _syncWordLength = 2;
 
+    bool _bitSync = true;
+
     int16_t config();
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
