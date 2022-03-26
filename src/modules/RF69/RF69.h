@@ -473,7 +473,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
+    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16, bool enableOOK = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
