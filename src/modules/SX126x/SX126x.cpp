@@ -18,11 +18,11 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   // set the defaults, this will get overwritten later anyway
-  _bwKhz = 125.0;
+  _bwKhz = 500.0;
   _sf = 9;
 
   // initialize configuration variables (will be overwritten during public settings configuration)
-  _bw = RADIOLIB_SX126X_LORA_BW_125_0;
+  _bw = RADIOLIB_SX126X_LORA_BW_500_0;  // initialized to 500 kHz, since lower valeus will interfere with LLCC68
   _cr = RADIOLIB_SX126X_LORA_CR_4_7;
   _ldro = 0x00;
   _crcType = RADIOLIB_SX126X_LORA_CRC_ON;
@@ -1424,7 +1424,8 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   } else {
     _ldro = ldro;
   }
-
+  // 500/9/8  - 0x09 0x04 0x03 0x00 - SF9, BW125, 4/8
+  // 500/11/8 - 0x0B 0x04 0x03 0x00 - SF11 BW125, 4/7
   uint8_t data[4] = {sf, bw, cr, _ldro};
   return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 4));
 }
