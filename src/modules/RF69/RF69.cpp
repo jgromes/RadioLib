@@ -9,7 +9,7 @@ Module* RF69::getMod() {
   return(_mod);
 }
 
-int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen, bool enableOOK) {
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
@@ -52,10 +52,6 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 
   // configure settings not accessible by API
   int16_t state = config();
-  RADIOLIB_ASSERT(state);
-
-  // enable/disable OOK
-  state = setOOK(enableOOK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -394,9 +390,13 @@ int16_t RF69::setOOK(bool enableOOK) {
   } else {
     state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_FSK, 4, 3, 5);
   }
+
   if(state == RADIOLIB_ERR_NONE) {
     _ook = enableOOK;
   }
+
+  // call setRxBandwidth again, since register values differ based on OOK mode being enabled
+  state |= setRxBandwidth(_rxBw);
 
   return(state);
 }

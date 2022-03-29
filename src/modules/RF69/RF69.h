@@ -473,7 +473,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16, bool enableOOK = false);
+    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -744,6 +744,7 @@ class RF69: public PhysicalLayer {
 
     /*!
       \brief Enables/disables OOK modulation instead of FSK.
+       Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled
 
       \param enableOOK Enable (true) or disable (false) OOK.
 
