@@ -214,7 +214,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a86a080086c0228d23e2cb77d2b1915c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">More...</a><br /></td></tr>
 <tr class="separator:a86a080086c0228d23e2cb77d2b1915c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">setOOK</a> (bool enableOOK)</td></tr>
-<tr class="memdesc:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <a href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">More...</a><br /></td></tr>
+<tr class="memdesc:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK. Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled.  <a href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">More...</a><br /></td></tr>
 <tr class="separator:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a219a046c10ddcc0a787ad19346ecad6a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">setOokThresholdType</a> (uint8_t type)</td></tr>
 <tr class="memdesc:a219a046c10ddcc0a787ad19346ecad6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the type of threshold in the OOK data slicer.  <a href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">More...</a><br /></td></tr>
@@ -1440,7 +1440,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Enables/disables OOK modulation instead of FSK. </p>
+<p>Enables/disables OOK modulation instead of FSK. Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enableOOK</td><td>Enable (true) or disable (false) OOK.</td></tr>
