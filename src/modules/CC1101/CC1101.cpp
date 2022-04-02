@@ -375,12 +375,6 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
         RADIOLIB_DEBUG_PRINTLN(F("No data for more than 5mS. Stop here."));
         break;
       } else {
-        /*
-         * Does this work for all rates? If 1 ms is longer than the 1ms delay
-         * then the entire FIFO will be transmitted during that delay.
-         *
-         * TODO: drop this delay(1) or come up with a better solution:
-        */
         delay(1);
         bytesInFIFO = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
         continue;
@@ -400,17 +394,21 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   // check if status bytes are enabled (default: RADIOLIB_CC1101_APPEND_STATUS_ON)
   bool isAppendStatus = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 2, 2) == RADIOLIB_CC1101_APPEND_STATUS_ON;
 
+  // for some reason, we need this delay here to get the correct status bytes
+  delay(3);
+
   // If status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
-  if (bytesInFIFO >= 2 && isAppendStatus) {
+  if (isAppendStatus) {
     // read RSSI byte
     _rawRSSI = SPIgetRegValue(RADIOLIB_CC1101_REG_FIFO);
 
-  // read LQI and CRC byte
-  uint8_t val = SPIgetRegValue(RADIOLIB_CC1101_REG_FIFO);
-  _rawLQI = val & 0x7F;
+    // read LQI and CRC byte
+    uint8_t val = SPIgetRegValue(RADIOLIB_CC1101_REG_FIFO);
+    _rawLQI = val & 0x7F;
 
     // check CRC
     if (_crcOn && (val & RADIOLIB_CC1101_CRC_OK) == RADIOLIB_CC1101_CRC_ERROR) {
+      _packetLengthQueried = false;
       return (RADIOLIB_ERR_CRC_MISMATCH);
     }
   }
