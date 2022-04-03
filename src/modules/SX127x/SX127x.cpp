@@ -96,17 +96,12 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setAFCBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  // set AFC&AGC trigger to RSSI (in OOK) or both (in FSK)
-  if(enableOOK) {
-    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
-  } else {
-    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_BOTH);
-  }
-
+  // set AFC&AGC trigger to RSSI (both in OOK and FSK)
+  state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
   RADIOLIB_ASSERT(state);
 
   // enable AFC
-  state = SX127x::setAFC(true);
+  state = SX127x::setAFC(false);
   RADIOLIB_ASSERT(state);
 
   // set receiver bandwidth
@@ -998,7 +993,7 @@ int16_t SX127x::setOOK(bool enableOOK) {
 
 int16_t SX127x::setFrequencyRaw(float newFreq) {
   int16_t state = RADIOLIB_ERR_NONE;
-  
+
   // set mode to standby if not FHSS
   if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) == RADIOLIB_SX127X_HOP_PERIOD_OFF) {
     state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -1372,11 +1367,11 @@ int16_t SX127x::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
 }
 
 uint8_t SX127x::getFHSSHoppingPeriod(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD)); 
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD));
 }
 
 uint8_t SX127x::getFHSSChannel(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0)); 
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0));
 }
 
 void SX127x::clearFHSSInt(void) {
@@ -1385,7 +1380,7 @@ void SX127x::clearFHSSInt(void) {
     _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     return; //These are not the interrupts you are looking for
-  }  
+  }
 }
 
 #endif
