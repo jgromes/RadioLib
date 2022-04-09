@@ -168,6 +168,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a6b50cb78f02a3d93939437eb48489d3f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f">startReceiveDutyCycleAuto</a> (uint16_t senderPreambleLength=0, uint16_t minSymbols=8)</td></tr>
 <tr class="memdesc:a6b50cb78f02a3d93939437eb48489d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.  <a href="class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f">More...</a><br /></td></tr>
 <tr class="separator:a6b50cb78f02a3d93939437eb48489d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a9b090eddcb811ee19b595debfab1df"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df">getIrqStatus</a> ()</td></tr>
+<tr class="memdesc:a9a9b090eddcb811ee19b595debfab1df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df">More...</a><br /></td></tr>
+<tr class="separator:a9a9b090eddcb811ee19b595debfab1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3350cbfab628956c1a456383ac7bb2b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a3350cbfab628956c1a456383ac7bb2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method.  <a href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">More...</a><br /></td></tr>
 <tr class="separator:a3350cbfab628956c1a456383ac7bb2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -700,6 +703,26 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes. </p>
 <dl class="section return"><dt>Returns</dt><dd>Effective data rate in bps. </dd></dl>
+
+</div>
+</div>
+<a id="a9a9b090eddcb811ee19b595debfab1df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a9b090eddcb811ee19b595debfab1df">&#9670;&nbsp;</a></span>getIrqStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t SX126x::getIrqStatus </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads the current IRQ status. </p>
+<dl class="section return"><dt>Returns</dt><dd>IRQ status bits </dd></dl>
 
 </div>
 </div>
@@ -2068,7 +2091,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method. DIO1 will be activated when full packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode).</td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
   </table>
   </dd>
 </dl>

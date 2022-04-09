@@ -12,6 +12,7 @@ var class_s_x126x =
     [ "getChannelScanResult", "class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f", null ],
     [ "getCurrentLimit", "class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab", null ],
     [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
+    [ "getIrqStatus", "class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df", null ],
     [ "getMod", "class_s_x126x.html#aae1af90432c457e5bf8f8f362295399b", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],
     [ "getRSSI", "class_s_x126x.html#a0e5f0032a91686b9673a48c908eb1925", null ],
