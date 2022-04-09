@@ -441,7 +441,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t SX126x::startReceive(uint32_t timeout) {
-  int16_t state = startReceiveCommon();
+  int16_t state = startReceiveCommon(timeout);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
@@ -520,9 +520,13 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   return(startReceiveDutyCycle(wakePeriod, sleepPeriod));
 }
 
-int16_t SX126x::startReceiveCommon() {
+int16_t SX126x::startReceiveCommon(uint32_t timeout) {
   // set DIO mapping
-  int16_t state = setDioIrqParams(RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT | RADIOLIB_SX126X_IRQ_CRC_ERR | RADIOLIB_SX126X_IRQ_HEADER_ERR, RADIOLIB_SX126X_IRQ_RX_DONE);
+  uint16_t mask = RADIOLIB_SX126X_IRQ_RX_DONE;
+  if(timeout != RADIOLIB_SX126X_RX_TIMEOUT_INF) {
+    mask |= RADIOLIB_SX126X_IRQ_TIMEOUT;
+  }
+  int16_t state = setDioIrqParams(RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT | RADIOLIB_SX126X_IRQ_CRC_ERR | RADIOLIB_SX126X_IRQ_HEADER_ERR, mask);
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers

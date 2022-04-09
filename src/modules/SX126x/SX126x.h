@@ -511,6 +511,7 @@ class SX126x: public PhysicalLayer {
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
 
       \param timeout Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode).
+      If timeout other than infinite is set, signal will be generated on DIO1.
 
       \returns \ref status_codes
     */
@@ -540,6 +541,13 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8);
+
+    /*!
+      \brief Reads the current IRQ status.
+
+      \returns IRQ status bits
+    */
+    uint16_t getIrqStatus();
 
     /*!
       \brief Reads data received after calling startReceive method.
@@ -927,7 +935,6 @@ class SX126x: public PhysicalLayer {
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t readBuffer(uint8_t* data, uint8_t numBytes);
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX126X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX126X_IRQ_NONE);
-    uint16_t getIrqStatus();
     int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
     int16_t calibrateImage(uint8_t* data);
@@ -944,7 +951,7 @@ class SX126x: public PhysicalLayer {
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
 
-    int16_t startReceiveCommon();
+    int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF);
     int16_t setFrequencyRaw(float freq);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
