@@ -1561,7 +1561,7 @@ int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
   RADIOLIB_ASSERT(state);
 
   // set correct IQ configuration
-  if(iqConfig == RADIOLIB_SX126X_LORA_IQ_STANDARD) {
+  if(iqConfig == RADIOLIB_SX126X_LORA_IQ_INVERTED) {
     iqConfigCurrent &= 0xFB;
   } else {
     iqConfigCurrent |= 0x04;
