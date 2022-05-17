@@ -155,7 +155,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
 
     if(_mod->micros() - start > timeout) {
       standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
+      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
