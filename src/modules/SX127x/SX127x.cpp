@@ -52,7 +52,7 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
 
   // initialize internal variables
   _dataRate = 0.0;
-
+  
   return(state);
 }
 
@@ -96,12 +96,17 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   state = SX127x::setAFCBandwidth(rxBw);
   RADIOLIB_ASSERT(state);
 
-  // set AFC&AGC trigger to RSSI (both in OOK and FSK)
-  state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
+  // set AFC&AGC trigger to RSSI (in OOK) or both (in FSK)
+  if(enableOOK) {
+    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_RSSI_INTERRUPT);
+  } else {
+    state = SX127x::setAFCAGCTrigger(RADIOLIB_SX127X_RX_TRIGGER_BOTH);
+  }
+
   RADIOLIB_ASSERT(state);
 
   // enable AFC
-  state = SX127x::setAFC(false);
+  state = SX127x::setAFC(true);
   RADIOLIB_ASSERT(state);
 
   // set receiver bandwidth
@@ -136,6 +141,7 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   // set default packet length mode
   state = variablePacketLengthMode();
 
+  
   return(state);
 }
 
@@ -993,7 +999,7 @@ int16_t SX127x::setOOK(bool enableOOK) {
 
 int16_t SX127x::setFrequencyRaw(float newFreq) {
   int16_t state = RADIOLIB_ERR_NONE;
-
+  
   // set mode to standby if not FHSS
   if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) == RADIOLIB_SX127X_HOP_PERIOD_OFF) {
     state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -1261,6 +1267,17 @@ int16_t SX127x::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
+int16_t SX127x::setCrcFiltering(bool crcOn) {
+  _crcOn = crcOn;
+
+  if (crcOn == true) {
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_CRC_ON, 4, 4));
+  } else {
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_CRC_OFF, 4, 4));
+  }
+}
+
+
 bool SX127x::findChip(uint8_t ver) {
   uint8_t i = 0;
   bool flagFound = false;
@@ -1367,11 +1384,11 @@ int16_t SX127x::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
 }
 
 uint8_t SX127x::getFHSSHoppingPeriod(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD));
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD)); 
 }
 
 uint8_t SX127x::getFHSSChannel(void) {
-  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0));
+  return(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 5, 0)); 
 }
 
 void SX127x::clearFHSSInt(void) {
@@ -1380,7 +1397,7 @@ void SX127x::clearFHSSInt(void) {
     _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     return; //These are not the interrupts you are looking for
-  }
+  }  
 }
 
 #endif
