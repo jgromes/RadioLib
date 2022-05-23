@@ -852,7 +852,7 @@ class CC1101: public PhysicalLayer {
      /*!
       \brief Enable CRC filtering and generation.
 
-      \param crcOn Set or unset promiscuous mode.
+      \param crcOn Set or unset CRC generation and filtering.
 
       \returns \ref status_codes
     */
