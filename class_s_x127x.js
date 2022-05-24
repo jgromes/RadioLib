@@ -40,6 +40,7 @@ var class_s_x127x =
     [ "setAFCBandwidth", "class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef", null ],
     [ "setBitRate", "class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022", null ],
     [ "setBroadcastAddress", "class_s_x127x.html#abc51ce6718153e4963128f25bb5aab40", null ],
+    [ "setCrcFiltering", "class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a", null ],
     [ "setCurrentLimit", "class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002", null ],
     [ "setDio0Action", "class_s_x127x.html#ada53419d65f207f352124da7747c5960", null ],
     [ "setDio1Action", "class_s_x127x.html#afc844f7f3530f4076c8ea5f684c1b123", null ],
