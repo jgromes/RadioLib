@@ -980,6 +980,15 @@ class SX127x: public PhysicalLayer {
    */
    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
+   /*!
+      \brief Enable CRC filtering and generation.
+
+      \param crcOn Set or unset CRC filtering and generation.
+
+      \returns \ref status_codes
+   */
+   int16_t setCrcFiltering(bool crcOn = true);
+
     /*!
       \brief Sets RSSI measurement configuration in FSK mode.
 
@@ -1117,6 +1126,7 @@ class SX127x: public PhysicalLayer {
     float _br = 0;
     bool _ook = false;
     bool _crcEnabled = false;
+    bool _crcOn = true; // default value used in FSK mode
     size_t _packetLength = 0;
 
     int16_t setFrequencyRaw(float newFreq);

@@ -1045,6 +1045,16 @@ int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_VARIABLE, maxLen));
 }
 
+int16_t SX127x::setCrcFiltering(bool crcOn) {
+  _crcOn = crcOn;
+
+  if (crcOn == true) {
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_CRC_ON, 4, 4));
+  } else {
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_CRC_OFF, 4, 4));
+  }
+}
+
 int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
