@@ -827,10 +827,68 @@
 #endif
 
 #else
+
   // generic non-Arduino platform
   #define RADIOLIB_PLATFORM                           "Generic"
 
-  // platform properties may be defined here, or somewhere else in the build system
+  #include <avr/pgmspace.h>
+  #include <util/delay.h>
+  #include <stdint.h>
+  #include "ATMega32_utility_bib.h"
+  // bogus String Class:
+  class String {};
+  // Fake String Helper:
+  class __FlashStringHelper;
+  #define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
+  
+  #define HIGH (1)
+  #define LOW (0)
+
+  // decimal
+  #define DEC    (10)
+
+  // I/O
+  #define INPUT (0)
+  #define OUTPUT (1)
+  #define INPUT_PULLUP (2)
+
+  // Taktflanken:
+  #define CHANGE  (1)
+  #define FALLING (2)
+  #define RISING  (3)
+
+  #define _initInterface (false)
+
+  #define RADIOLIB_PIN_TYPE                           uint8_t
+  #define RADIOLIB_PIN_MODE                           uint8_t
+  #define RADIOLIB_PIN_STATUS                         uint8_t
+  #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
+  #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
+  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_DEFAULT_SPI                        SPI
+  #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)
+  #define RADIOLIB_NONVOLATILE                        PROGMEM
+  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
+  #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+
+  // Arduino API callbacks
+  #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint8_t pin, uint8_t mode)
+  #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, uint8_t pin, uint8_t value)
+  #define RADIOLIB_CB_ARGS_DIGITAL_READ               (uint8_t, digitalRead, uint8_t pin)
+  #define RADIOLIB_CB_ARGS_TONE                       (void, tone, uint8_t _pin, unsigned int frequency, unsigned long duration)
+  #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t _pin)
+  #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint8_t pin, void (*userFunc)(void), uint8_t mode)
+  #define RADIOLIB_CB_ARGS_DETACH_INTERRUPT           (void, detachInterrupt, uint8_t interruptNum)
+  #define RADIOLIB_CB_ARGS_YIELD                      (void, yield, void)
+  #define RADIOLIB_CB_ARGS_DELAY                      (void, delay, unsigned long ms)
+  #define RADIOLIB_CB_ARGS_DELAY_MICROSECONDS         (void, delayMicroseconds, unsigned int us)
+  #define RADIOLIB_CB_ARGS_MILLIS                     (unsigned long, millis, void)
+  #define RADIOLIB_CB_ARGS_MICROS                     (unsigned long, micros, void)
+  #define RADIOLIB_CB_ARGS_SPI_BEGIN                  (void, SPIbegin, void)
+  #define RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION      (void, SPIbeginTransaction, void)
+  #define RADIOLIB_CB_ARGS_SPI_TRANSFER               (uint8_t, SPItransfer, uint8_t b)
+  #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)
+  #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)
 
 #endif
 
