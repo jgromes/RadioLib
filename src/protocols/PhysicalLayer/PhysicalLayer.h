@@ -36,7 +36,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(__FlashStringHelper* fstr, uint8_t addr = 0);
+    //int16_t transmit(__FlashStringHelper* fstr, uint8_t addr = 0);
 
     /*!
       \brief Arduino String transmit method.
@@ -47,7 +47,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t transmit(String& str, uint8_t addr = 0);
+    //int16_t transmit(String& str, uint8_t addr = 0);
 
     /*!
       \brief C-string transmit method.
@@ -82,7 +82,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t receive(String& str, size_t len = 0);
+    //int16_t receive(String& str, size_t len = 0);
 
     /*!
       \brief Sets module to standby.
@@ -112,7 +112,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startTransmit(String& str, uint8_t addr = 0);
+    //int16_t startTransmit(String& str, uint8_t addr = 0);
 
     /*!
       \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
@@ -149,7 +149,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t readData(String& str, size_t len = 0);
+    //int16_t readData(String& str, size_t len = 0);
 
     /*!
       \brief Reads data that was received after calling startReceive method.

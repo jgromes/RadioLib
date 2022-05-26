@@ -1,6 +1,8 @@
 #include "SX127x.h"
 #if !defined(RADIOLIB_EXCLUDE_SX127X)
 
+extern "C" void __cxa_pure_virtual() { while (1); }
+
 SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE, RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
   _mod = mod;
 }

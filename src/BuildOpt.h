@@ -834,30 +834,25 @@
   #include <avr/pgmspace.h>
   #include <util/delay.h>
   #include <stdint.h>
+  #include <string.h>
   #include "ATMega32_utility_bib.h"
-  // bogus String Class:
-  class String {};
+  //bogus String Class:
+  class String {
+    public:
+    String(char*) {}
+    char* c_str() {
+      return nullptr;
+    }
+  };
+
+    //typedef std::string String
   // Fake String Helper:
   class __FlashStringHelper;
   #define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
   
-  #define HIGH (1)
-  #define LOW (0)
 
-  // decimal
-  #define DEC    (10)
 
-  // I/O
-  #define INPUT (0)
-  #define OUTPUT (1)
-  #define INPUT_PULLUP (2)
-
-  // Taktflanken:
-  #define CHANGE  (1)
-  #define FALLING (2)
-  #define RISING  (3)
-
-  #define _initInterface (false)
+  #define _initInterface (true)
 
   #define RADIOLIB_PIN_TYPE                           uint8_t
   #define RADIOLIB_PIN_MODE                           uint8_t

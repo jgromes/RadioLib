@@ -105,13 +105,16 @@ Module& Module::operator=(const Module& mod) {
 void Module::init() {
   this->pinMode(_cs, OUTPUT);
   this->digitalWrite(_cs, HIGH);
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(_initInterface) {
     (this->*cb_SPIbegin)();
   }
+#endif
 }
 
 void Module::term() {
   // stop hardware interfaces (if they were initialized by the library)
+#if defined(RADIOLIB_BUILD_ARDUINO)  
   if(!_initInterface) {
     return;
   }
@@ -119,6 +122,7 @@ void Module::term() {
   if(_spi != nullptr) {
     this->SPIend();
   }
+#endif
 }
 
 int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
@@ -200,13 +204,15 @@ void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
 
 void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start SPI transaction
-  this->SPIbeginTransaction();
+  //this->SPIbeginTransaction();
+  this->beginTransaction();
 
   // pull CS low
   this->digitalWrite(_cs, LOW);
 
   // send SPI register address with access command
-  this->SPItransfer(reg | cmd);
+  //this->SPItransfer(reg | cmd);
+  this->transfer(reg | cmd);
   #if defined(RADIOLIB_VERBOSE)
     if(cmd == SPIwriteCommand) {
       RADIOLIB_VERBOSE_PRINT('W');
@@ -222,7 +228,8 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   if(cmd == SPIwriteCommand) {
     if(dataOut != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        this->SPItransfer(dataOut[n]);
+        //this->SPItransfer(dataOut[n]);
+        this->transfer(dataOut[n]);
         RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
       }
@@ -230,7 +237,8 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   } else if (cmd == SPIreadCommand) {
     if(dataIn != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->SPItransfer(0x00);
+        //dataIn[n] = this->SPItransfer(0x00);
+        dataIn[n] = this->transfer(0x00);
         RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
       }
@@ -242,7 +250,8 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   this->digitalWrite(_cs, HIGH);
 
   // end SPI transaction
-  this->SPIendTransaction();
+  //this->SPIendTransaction();
+  this->endTransaction();
 }
 
 void Module::pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode) {
@@ -377,35 +386,35 @@ void Module::begin() {
   if(cb_SPIbegin == nullptr) {
     return;
   }
-  (this->*cb_SPIbegin)();
+  (this->cb_SPIbegin)();
 }
 
 void Module::beginTransaction() {
   if(cb_SPIbeginTransaction == nullptr) {
     return;
   }
-  (this->*cb_SPIbeginTransaction)();
+  (this->cb_SPIbeginTransaction)();
 }
 
 uint8_t Module::transfer(uint8_t b) {
   if(cb_SPItransfer == nullptr) {
     return(0xFF);
   }
-  return((this->*cb_SPItransfer)(b));
+  return((this->cb_SPItransfer)(b));
 }
 
 void Module::endTransaction() {
   if(cb_SPIendTransaction == nullptr) {
     return;
   }
-  (this->*cb_SPIendTransaction)();
+  (this->cb_SPIendTransaction)();
 }
 
 void Module::end() {
   if(cb_SPIend == nullptr) {
     return;
   }
-  (this->*cb_SPIend)();
+  (this->cb_SPIend)();
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
