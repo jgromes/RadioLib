@@ -90,6 +90,12 @@ void loop() {
   // string saved in flash
   hell.print(F("Flash String"));
 
+  // in AFSK mode, it is possible to invert the text colors
+  // use white text on black background
+  hell.setInversion(true);
+  hell.print("Inverted String");
+  hell.setInversion(false);
+
   // character
   hell.print('c');
 

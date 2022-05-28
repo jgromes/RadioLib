@@ -119,8 +119,17 @@ class HellClient {
       \brief Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters.
 
       \param buff Buffer of pixels to send, in a 7x7 pixel array.
+
+      \returns Always returns the number of printed glyphs (1).
     */
     size_t printGlyph(uint8_t* buff);
+
+    /*!
+      \brief Invert text color.
+
+      \param invert Whether to enable color inversion (white text on black background), or not (black text on white background)
+    */
+    void setInversion(bool invert);
 
     size_t write(const char* str);
     size_t write(uint8_t* buff, size_t len);
@@ -159,6 +168,7 @@ class HellClient {
 
     uint32_t _base = 0, _baseHz = 0;
     uint32_t _pixelDuration = 0;
+    bool _inv = false;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);

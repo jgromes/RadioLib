@@ -223,6 +223,7 @@ getRangingResult	KEYWORD2
 
 # Hellschreiber
 printGlyph	KEYWORD2
+setInversion	KEYWORD2
 
 # AFSK
 tone	KEYWORD2
