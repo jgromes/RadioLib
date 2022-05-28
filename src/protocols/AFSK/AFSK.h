@@ -46,9 +46,11 @@ class AFSKClient  {
     /*!
       \brief Stops transmitting audio tone.
 
+      \param freq Keep transmitter on - this may limit noise when switching transmitter on or off.
+
       \returns \ref status_codes
     */
-    int16_t noTone();
+    int16_t noTone(bool keepOn = false);
 
 #if !defined(RADIOLIB_GODMODE)
   private:

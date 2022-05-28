@@ -308,7 +308,7 @@ int16_t MorseClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
 int16_t MorseClient::standby() {
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
-    return(_audio->noTone());
+    return(_audio->noTone(true));
   }
   #endif
   return(_phy->standby());

@@ -24,9 +24,13 @@ int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t AFSKClient::noTone() {
+int16_t AFSKClient::noTone(bool keepOn) {
   Module* mod = _phy->getMod();
   mod->noTone(_pin);
+  if(keepOn) {
+    return(0);
+  }
+
   return(_phy->standby());
 }
 
