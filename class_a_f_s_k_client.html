@@ -107,9 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6d2341901c83e45f853c077e60f1fa33"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33">tone</a> (uint16_t freq, bool autoStart=true)</td></tr>
 <tr class="memdesc:a6d2341901c83e45f853c077e60f1fa33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start transmitting audio tone.  <a href="class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33">More...</a><br /></td></tr>
 <tr class="separator:a6d2341901c83e45f853c077e60f1fa33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade91356bb158bbc820d28855dd5818d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1">noTone</a> ()</td></tr>
-<tr class="memdesc:ade91356bb158bbc820d28855dd5818d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops transmitting audio tone.  <a href="class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1">More...</a><br /></td></tr>
-<tr class="separator:ade91356bb158bbc820d28855dd5818d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a664c1de9b5cd792826a5a77ac5457bae"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#a664c1de9b5cd792826a5a77ac5457bae">noTone</a> (bool keepOn=false)</td></tr>
+<tr class="memdesc:a664c1de9b5cd792826a5a77ac5457bae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops transmitting audio tone.  <a href="class_a_f_s_k_client.html#a664c1de9b5cd792826a5a77ac5457bae">More...</a><br /></td></tr>
+<tr class="separator:a664c1de9b5cd792826a5a77ac5457bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -193,8 +193,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 
 </div>
 </div>
-<a id="ade91356bb158bbc820d28855dd5818d1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade91356bb158bbc820d28855dd5818d1">&#9670;&nbsp;</a></span>noTone()</h2>
+<a id="a664c1de9b5cd792826a5a77ac5457bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a664c1de9b5cd792826a5a77ac5457bae">&#9670;&nbsp;</a></span>noTone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -202,13 +202,20 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
         <tr>
           <td class="memname">int16_t AFSKClient::noTone </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>keepOn</em> = <code>false</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Stops transmitting audio tone. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freq</td><td>Keep transmitter on - this may limit noise when switching transmitter on or off.</td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>

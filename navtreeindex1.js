@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_morse_client.html":[3,0,10],
 "class_morse_client.html#a051cba718c88b0d25a0f6f6dbfeb1e46":[3,0,10,3],
 "class_morse_client.html#a1125d874d18a507b2e77675b687cce0f":[3,0,10,4],
 "class_morse_client.html#a178726e7279d49d873c715371d558751":[3,0,10,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_s_x126x.html#ab139a34e03a6fd5a781cd54da21d308f":[3,0,31,66],
 "class_s_x126x.html#ab843614658a79db7aa24e48d5b6e84f1":[3,0,31,64],
 "class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c":[3,0,31,1],
-"class_s_x126x.html#abbf8b4623da8c2caa83a8c3d35a44d0a":[3,0,31,40],
-"class_s_x126x.html#abc3a4f9213b2a7052e97c2e3a0bf45a5":[3,0,31,7]
+"class_s_x126x.html#abbf8b4623da8c2caa83a8c3d35a44d0a":[3,0,31,40]
 };

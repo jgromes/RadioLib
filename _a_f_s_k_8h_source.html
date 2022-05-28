@@ -105,37 +105,37 @@ $(document).ready(function(){initNavTree('_a_f_s_k_8h_source.html',''); initResi
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160; </div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    int16_t <a class="code" href="class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33">tone</a>(uint16_t freq, <span class="keywordtype">bool</span> autoStart = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    int16_t <a class="code" href="class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1">noTone</a>();</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    RADIOLIB_PIN_TYPE _pin;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="comment">// allow specific classes access the private PhysicalLayer pointer</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;};</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    int16_t <a class="code" href="class_a_f_s_k_client.html#a664c1de9b5cd792826a5a77ac5457bae">noTone</a>(<span class="keywordtype">bool</span> keepOn = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    RADIOLIB_PIN_TYPE _pin;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// allow specific classes access the private PhysicalLayer pointer</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_hell_client_html"><div class="ttname"><a href="class_hell_client.html">HellClient</a></div><div class="ttdoc">Client for Hellschreiber transmissions.</div><div class="ttdef"><b>Definition:</b> Hellschreiber.h:89</div></div>
 <div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:17</div></div>
 <div class="ttc" id="aclass_a_x25_client_html"><div class="ttname"><a href="class_a_x25_client.html">AX25Client</a></div><div class="ttdoc">Client for AX25 communication.</div><div class="ttdef"><b>Definition:</b> AX25.h:279</div></div>
-<div class="ttc" id="aclass_a_f_s_k_client_html_ade91356bb158bbc820d28855dd5818d1"><div class="ttname"><a href="class_a_f_s_k_client.html#ade91356bb158bbc820d28855dd5818d1">AFSKClient::noTone</a></div><div class="ttdeci">int16_t noTone()</div><div class="ttdoc">Stops transmitting audio tone.</div><div class="ttdef"><b>Definition:</b> AFSK.cpp:27</div></div>
 <div class="ttc" id="aclass_a_f_s_k_client_html_a6d2341901c83e45f853c077e60f1fa33"><div class="ttname"><a href="class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33">AFSKClient::tone</a></div><div class="ttdeci">int16_t tone(uint16_t freq, bool autoStart=true)</div><div class="ttdoc">Start transmitting audio tone.</div><div class="ttdef"><b>Definition:</b> AFSK.cpp:12</div></div>
 <div class="ttc" id="aclass_a_f_s_k_client_html_acfe53917bcba7f79611e01865c42fefd"><div class="ttname"><a href="class_a_f_s_k_client.html#acfe53917bcba7f79611e01865c42fefd">AFSKClient::AFSKClient</a></div><div class="ttdeci">AFSKClient(PhysicalLayer *phy, RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Default contructor.</div><div class="ttdef"><b>Definition:</b> AFSK.cpp:4</div></div>
 <div class="ttc" id="aclass_morse_client_html"><div class="ttname"><a href="class_morse_client.html">MorseClient</a></div><div class="ttdoc">Client for Morse Code communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> Morse.h:89</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 <div class="ttc" id="aclass_r_t_t_y_client_html"><div class="ttname"><a href="class_r_t_t_y_client.html">RTTYClient</a></div><div class="ttdoc">Client for RTTY communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> RTTY.h:88</div></div>
+<div class="ttc" id="aclass_a_f_s_k_client_html_a664c1de9b5cd792826a5a77ac5457bae"><div class="ttname"><a href="class_a_f_s_k_client.html#a664c1de9b5cd792826a5a77ac5457bae">AFSKClient::noTone</a></div><div class="ttdeci">int16_t noTone(bool keepOn=false)</div><div class="ttdoc">Stops transmitting audio tone.</div><div class="ttdef"><b>Definition:</b> AFSK.cpp:27</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html"><div class="ttname"><a href="class_s_s_t_v_client.html">SSTVClient</a></div><div class="ttdoc">Client for SSTV transmissions.</div><div class="ttdef"><b>Definition:</b> SSTV.h:120</div></div>
 <div class="ttc" id="aclass_a_f_s_k_client_html_a30b86bb7cd087b3bc3c45a011ba266c3"><div class="ttname"><a href="class_a_f_s_k_client.html#a30b86bb7cd087b3bc3c45a011ba266c3">AFSKClient::begin</a></div><div class="ttdeci">int16_t begin()</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> AFSK.cpp:8</div></div>
 <div class="ttc" id="aclass_f_s_k4_client_html"><div class="ttname"><a href="class_f_s_k4_client.html">FSK4Client</a></div><div class="ttdoc">Client for FSK-4 communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> FSK4.h:16</div></div>

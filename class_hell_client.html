@@ -109,6 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac527806ef871dc12555afe7c43a72ed9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hell_client.html#ac527806ef871dc12555afe7c43a72ed9">printGlyph</a> (uint8_t *buff)</td></tr>
 <tr class="memdesc:ac527806ef871dc12555afe7c43a72ed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters.  <a href="class_hell_client.html#ac527806ef871dc12555afe7c43a72ed9">More...</a><br /></td></tr>
 <tr class="separator:ac527806ef871dc12555afe7c43a72ed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1779f13c8052c2392a1f2f0e1164343e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_hell_client.html#a1779f13c8052c2392a1f2f0e1164343e">setInversion</a> (bool invert)</td></tr>
+<tr class="memdesc:a1779f13c8052c2392a1f2f0e1164343e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invert text color.  <a href="class_hell_client.html#a1779f13c8052c2392a1f2f0e1164343e">More...</a><br /></td></tr>
+<tr class="separator:a1779f13c8052c2392a1f2f0e1164343e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad82abc52034fafdea84c15530039a6f5"><td class="memItemLeft" align="right" valign="top"><a id="ad82abc52034fafdea84c15530039a6f5"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const char *str)</td></tr>
 <tr class="separator:ad82abc52034fafdea84c15530039a6f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -310,7 +313,34 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
 <p>Method to "print" a buffer of pixels, this is exposed to allow users to send custom characters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">buff</td><td>Buffer of pixels to send, in a 7x7 pixel array. </td></tr>
+    <tr><td class="paramname">buff</td><td>Buffer of pixels to send, in a 7x7 pixel array.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Always returns the number of printed glyphs (1). </dd></dl>
+
+</div>
+</div>
+<a id="a1779f13c8052c2392a1f2f0e1164343e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1779f13c8052c2392a1f2f0e1164343e">&#9670;&nbsp;</a></span>setInversion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void HellClient::setInversion </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>invert</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Invert text color. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">invert</td><td>Whether to enable color inversion (white text on black background), or not (black text on white background) </td></tr>
   </table>
   </dd>
 </dl>

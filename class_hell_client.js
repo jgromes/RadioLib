@@ -25,6 +25,7 @@ var class_hell_client =
     [ "println", "class_hell_client.html#ac7eab91507bf0413563c097cfca5196f", null ],
     [ "println", "class_hell_client.html#a72ee891123decbb2d883b8c120e30c18", null ],
     [ "println", "class_hell_client.html#aeded114263fcd3c023a5a7b177041449", null ],
+    [ "setInversion", "class_hell_client.html#a1779f13c8052c2392a1f2f0e1164343e", null ],
     [ "write", "class_hell_client.html#ad82abc52034fafdea84c15530039a6f5", null ],
     [ "write", "class_hell_client.html#a472555cea11854700db91843c335bded", null ],
     [ "write", "class_hell_client.html#a5c5117dadbe33da1cda5fd4981b405eb", null ]
