@@ -403,6 +403,8 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
 
     // FSK modem does not distinguish between Rx single and continuous
     if(mode == RADIOLIB_SX127X_RXCONTINUOUS) {
+      // set RF switch (if present)
+      _mod->setRfSwitchState(HIGH, LOW);
       return(setMode(RADIOLIB_SX127X_RX));
     }
   }
