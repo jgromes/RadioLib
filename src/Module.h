@@ -190,7 +190,7 @@ class Module {
 
       \param numBytes Number of bytes to transfer.
     */
-    void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    virtual void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
 
     // pin number access methods
 
