@@ -190,7 +190,7 @@ class Module {
 
       \param numBytes Number of bytes to transfer.
     */
-    virtual void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
 
     // pin number access methods
 
@@ -361,9 +361,9 @@ class Module {
     // helper functions to set up SPI overrides on Arduino
     #if defined(RADIOLIB_BUILD_ARDUINO)
     void SPIbegin();
-    void SPIbeginTransaction();
+    virtual void SPIbeginTransaction();
     uint8_t SPItransfer(uint8_t b);
-    void SPIendTransaction();
+    virtual void SPIendTransaction();
     void SPIend();
     #endif
 
