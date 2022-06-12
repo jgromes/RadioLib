@@ -75,6 +75,9 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * __Heltec__
   * [__CubeCell__](https://github.com/HelTecAutomation/CubeCell-Arduino) - ASR650X series (CubeCell-Board, CubeCell-Capsule, CubeCell-Module etc.)
 
+* __PJRC__
+  * [__Teensy__](https://github.com/PaulStoffregen/cores) - Teensy 2.x, 3.x and 4.x boards
+
 The list above is by no means exhaustive - RadioLib code is independent of the used platform! Compilation of all examples is tested for all platforms officially supported prior to releasing new version.
 
 ### In development:

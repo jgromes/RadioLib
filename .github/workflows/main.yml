@@ -33,6 +33,7 @@ jobs:
           - arduino:mbed_rp2040:pico
           - CubeCell:CubeCell:CubeCell-Board
           - MegaCore:avr:1281
+          - teensy:avr:teensy41
 
     runs-on: ubuntu-latest
     name: ${{ matrix.board }}
@@ -136,6 +137,10 @@ jobs:
           elif [[ "${{ contains(matrix.board, 'MegaCore:avr') }}" == "true" ]]; then
             # MegaCore
             echo "::set-output name=index-url::--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'teensy:avr') }}" == "true" ]]; then
+            # Teensy
+            echo "::set-output name=index-url::--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json"
 
           fi
 
