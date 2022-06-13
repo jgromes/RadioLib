@@ -195,9 +195,9 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="comment">// helper functions to set up SPI overrides on Arduino</span></div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keywordtype">void</span> SPIbegin();</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keywordtype">void</span> SPIbeginTransaction();</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> SPIbeginTransaction();</div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    uint8_t <a class="code" href="class_module.html#aefd955f1cd6d588b2cc229db87cb2121">SPItransfer</a>(uint8_t b);</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keywordtype">void</span> SPIendTransaction();</div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> SPIendTransaction();</div>
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordtype">void</span> SPIend();</div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
