@@ -472,7 +472,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // check packet length
-    if(len >= RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
+    if(len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
       return(RADIOLIB_ERR_PACKET_TOO_LONG);
     }
 
