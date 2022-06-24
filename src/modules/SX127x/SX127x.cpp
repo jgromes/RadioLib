@@ -148,16 +148,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   uint32_t start = 0;
   if(modem == RADIOLIB_SX127X_LORA) {
     // calculate timeout (150 % of expected time-one-air)
-    float symbolLength = (float)(uint32_t(1) <<_sf) / (float)_bw;
-    float de = 0;
-    if(symbolLength >= 16.0) {
-      de = 1;
-    }
-    float ih = (float)_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
-    float crc = (float)(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
-    float n_pre = (float)((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
-    float n_pay = 8.0 + max(ceil((8.0 * (float)len - 4.0 * (float)_sf + 28.0 + 16.0 * crc - 20.0 * ih)/(4.0 * (float)_sf - 8.0 * de)) * (float)_cr, 0.0);
-    uint32_t timeout = ceil(symbolLength * (n_pre + n_pay + 4.25) * 1500.0);
+    uint32_t timeout = getTimeOnAir(len) * 1500.0;
 
     // start transmission
     state = startTransmit(data, len, addr);
@@ -1045,6 +1036,19 @@ int16_t SX127x::fixedPacketLengthMode(uint8_t len) {
 
 int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_VARIABLE, maxLen));
+}
+
+uint32_t SX127x::getTimeOnAir(size_t len) {
+  float symbolLength = (float) (uint32_t(1) << _sf) / (float) _bw;
+  float de = 0;
+  if (symbolLength >= 16.0) {
+    de = 1;
+  }
+  float ih = (float) _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
+  float crc = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
+  float n_pre = (float) ((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
+  float n_pay = 8.0 + max(ceil((8.0 * (float) len - 4.0 * (float) _sf + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) _sf - 8.0 * de)) * (float) _cr, 0.0);
+  return ceil(symbolLength * (n_pre + n_pay + 4.25));
 }
 
 int16_t SX127x::setCrcFiltering(bool crcOn) {
