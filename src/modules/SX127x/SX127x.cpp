@@ -148,7 +148,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   uint32_t start = 0;
   if(modem == RADIOLIB_SX127X_LORA) {
     // calculate timeout (150 % of expected time-one-air)
-    uint32_t timeout = getTimeOnAir(len) * 1500.0;
+    uint32_t timeout = getTimeOnAir(len) * 1.5;
 
     // start transmission
     state = startTransmit(data, len, addr);
@@ -1039,15 +1039,23 @@ int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
 }
 
 uint32_t SX127x::getTimeOnAir(size_t len) {
-  float symbolLength = (float) (uint32_t(1) << _sf) / (float) _bw;
+  // Get symbol length in us
+  float symbolLength = (float) (uint32_t(1) << _sf) / (float) _bw * 1000;
+  // Get Low Data Rate optimization flag
   float de = 0;
   if (symbolLength >= 16.0) {
     de = 1;
   }
+  // Get explicit/implicit header enabled flag
   float ih = (float) _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
+  // Get CRC enabled flag
   float crc = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
+  // Get number of bits preamble
   float n_pre = (float) ((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
+  // Get number of bits payload
   float n_pay = 8.0 + max(ceil((8.0 * (float) len - 4.0 * (float) _sf + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) _sf - 8.0 * de)) * (float) _cr, 0.0);
+  
+  // Get time-on-air in us
   return ceil(symbolLength * (n_pre + n_pay + 4.25));
 }
 
