@@ -1064,7 +1064,7 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
     // Get number of bits preamble
     float n_pre = (float) ((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
     //Get the number of bits of the sync word
-    float n_syncWord = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1);
+    float n_syncWord = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1) * 8;
     //Get CRC enabled flag
     float crc = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) >> 2);
     //Get payload length
