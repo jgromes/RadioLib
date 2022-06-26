@@ -1068,8 +1068,7 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
     //Get CRC enabled flag
     float crc = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) >> 2);
     //Get payload length
-    uint16_t mode = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 7, 7);
-    if (mode == RADIOLIB_SX127X_PACKET_FIXED)
+    if (_packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED)
       len = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK);
 
     // Calculate time-on-air in us ((length in bytes) * (8 bits / 1 byte)) / ((Bit Rate in kbps) * (1000 bps / 1 kbps)) * (1000000 us in 1 sec)
