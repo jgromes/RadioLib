@@ -1065,13 +1065,18 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
     float n_pre = (float) ((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
     //Get the number of bits of the sync word
     float n_syncWord = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, 2, 0) + 1) * 8;
-    //Get CRC enabled flag
-    float crc = (float) (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) >> 2);
-    //Get payload length
-    if (_packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED)
-      len = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK);
+    //Get CRC bits
+    float crc = (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 4, 4) == RADIOLIB_SX127X_CRC_ON) * 16;
 
-    // Calculate time-on-air in us ((length in bytes) * (8 bits / 1 byte)) / ((Bit Rate in kbps) * (1000 bps / 1 kbps)) * (1000000 us in 1 sec)
+    if (_packetLengthConfig == RADIOLIB_SX127X_PACKET_FIXED) {
+      //If Packet size fixed -> len = fixed packet length
+      len = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH_FSK);
+    } else {
+      //if packet variable -> Add 1 extra byte for payload length
+      len += 1;
+    }
+
+    // Calculate time-on-air in us {[(length in bytes) * (8 bits / 1 byte)] / [(Bit Rate in kbps) * (1000 bps / 1 kbps)]} * (1000000 us in 1 sec)
     return (uint32_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (_br * 1000.0)) * 1000000.0);
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
