@@ -981,6 +981,15 @@ class SX127x: public PhysicalLayer {
    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
    /*!
+     \brief Get expected time-on-air for a given size of payload
+
+     \param len Payload length in bytes.
+
+     \returns Expected time-on-air in microseconds.
+   */
+   uint32_t getTimeOnAir(size_t len);
+   
+   /*!
       \brief Enable CRC filtering and generation.
 
       \param crcOn Set or unset CRC filtering and generation.
