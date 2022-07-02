@@ -27,5 +27,5 @@ var searchData=
   ['getstatus_74',['getStatus',['../classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9',1,'nRF24']]],
   ['gettemperature_75',['getTemperature',['../class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853',1,'RF69']]],
   ['gettempraw_76',['getTempRaw',['../class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1',1,'SX127x']]],
-  ['gettimeonair_77',['getTimeOnAir',['../class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10',1,'SX126x::getTimeOnAir()'],['../class_s_x128x.html#a2361a94f2e12ebc93e750a027d633232',1,'SX128x::getTimeOnAir()']]]
+  ['gettimeonair_77',['getTimeOnAir',['../class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10',1,'SX126x::getTimeOnAir()'],['../class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac',1,'SX127x::getTimeOnAir()'],['../class_s_x128x.html#a2361a94f2e12ebc93e750a027d633232',1,'SX128x::getTimeOnAir()']]]
 ];
