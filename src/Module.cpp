@@ -445,6 +445,26 @@ uint16_t Module::flipBits16(uint16_t i) {
   return i;
 }
 
+void Module::hexdump(uint8_t* data, size_t len) {
+  for(int i = 0; i < len; i+=16) {
+    char str[80];
+    sprintf(str, "%07x  ", i);
+    for(int j = 0; j < 16; j++) {
+      sprintf(&str[8 + j*3], "%02x ", data[i+j]);
+    }
+    str[56] = '|';
+    str[57] = ' ';
+    for(int j = 0; j < 16; j++) {
+      char c = data[i+j];
+      if((c < ' ') || (c > '~')) {
+        c = '.';
+      }
+      sprintf(&str[58 + j], "%c", c);
+    }
+    RADIOLIB_DEBUG_PRINTLN(str);
+  }
+}
+
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _useRfSwitch = true;
   _rxEn = rxEn;
