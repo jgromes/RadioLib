@@ -300,8 +300,6 @@ class PhysicalLayer {
     */
     uint8_t read();
 
-    virtual Module* getMod() = 0;
-
   protected:
     void updateDirectBuffer(uint8_t bit);
 
@@ -320,6 +318,17 @@ class PhysicalLayer {
     uint8_t _directSyncWordLen;
     uint32_t _directSyncWordMask;
     bool _gotSync;
+
+    virtual Module* getMod() = 0;
+
+    // allow specific classes access the private getMod method
+    friend class AFSKClient;
+    friend class RTTYClient;
+    friend class MorseClient;
+    friend class HellClient;
+    friend class SSTVClient;
+    friend class AX25Client;
+    friend class FSK4Client;
 };
 
 #endif
