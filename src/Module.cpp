@@ -465,6 +465,19 @@ void Module::hexdump(uint8_t* data, size_t len) {
   }
 }
 
+void Module::regdump(uint8_t start, uint8_t len) {
+  #if defined(RADIOLIB_STATIC_ONLY)
+    uint8_t buff[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* buff = new uint8_t[len];
+  #endif
+  SPIreadRegisterBurst(start, len, buff);
+  hexdump(buff, len);
+  #if !defined(RADIOLIB_STATIC_ONLY)
+    delete[] buff;
+  #endif
+}
+
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _useRfSwitch = true;
   _rxEn = rxEn;

@@ -382,9 +382,18 @@ class Module {
 
       \param data Data to dump.
 
-      \param data Number of bytes to dump.
+      \param len Number of bytes to dump.
     */
     static void hexdump(uint8_t* data, size_t len);
+
+    /*!
+      \brief Function to dump device registers as hex into the debug port.
+
+      \param start First address to dump.
+
+      \param len Number of bytes to dump.
+    */
+    void regdump(uint8_t start, uint8_t len);
 
     // hardware abstraction layer callbacks
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);
