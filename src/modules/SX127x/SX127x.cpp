@@ -443,8 +443,7 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     // set DIO mapping
     if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {
       _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE | RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL, 7, 4);
-    }
-    else {
+    } else {
       _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE, 7, 6);
     }
 
@@ -816,7 +815,7 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RX_BW, calculateBWManExp(rxBw), 4, 0));
 }
 
-int16_t SX127x::setAFCBandwidth(float rxBw){
+int16_t SX127x::setAFCBandwidth(float rxBw) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK){
       return(RADIOLIB_ERR_WRONG_MODEM);
@@ -832,7 +831,7 @@ int16_t SX127x::setAFCBandwidth(float rxBw){
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_AFC_BW, calculateBWManExp(rxBw), 4, 0));
 }
 
-int16_t SX127x::setAFC(bool isEnabled){
+int16_t SX127x::setAFC(bool isEnabled) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -842,7 +841,7 @@ int16_t SX127x::setAFC(bool isEnabled){
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RX_CONFIG, isEnabled ? RADIOLIB_SX127X_AFC_AUTO_ON : RADIOLIB_SX127X_AFC_AUTO_OFF, 4, 4));
 }
 
-int16_t SX127x::setAFCAGCTrigger(uint8_t trigger){
+int16_t SX127x::setAFCAGCTrigger(uint8_t trigger) {
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
