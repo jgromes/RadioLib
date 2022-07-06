@@ -39,6 +39,7 @@ var class_module =
     [ "RADIOLIB_GENERATE_CALLBACK", "class_module.html#ad21d31efe1ca5b4da8487f5e234b916a", null ],
     [ "RADIOLIB_GENERATE_CALLBACK", "class_module.html#a126721995b0b9ac702e96c35943b352e", null ],
     [ "RADIOLIB_GENERATE_CALLBACK", "class_module.html#a132de8c267f9386ce17a5dcdb67cde3a", null ],
+    [ "regdump", "class_module.html#a7216d32fc55130d111409c6f2050d9c0", null ],
     [ "setRfSwitchPins", "class_module.html#a0ecbb4e1e98094c1296b1e823dc14703", null ],
     [ "setRfSwitchState", "class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824", null ],
     [ "SPIgetRegValue", "class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4", null ],

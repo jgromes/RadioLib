@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('class_physical_layer.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="class_physical_layer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">PhysicalLayer Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
@@ -217,9 +218,30 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a929662904e9af2611e098dc13b91c977"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a> ()</td></tr>
 <tr class="memdesc:a929662904e9af2611e098dc13b91c977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">More...</a><br /></td></tr>
 <tr class="separator:a929662904e9af2611e098dc13b91c977"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf31222815bef1a7cb65859890c5c30a"><td class="memItemLeft" align="right" valign="top"><a id="adf31222815bef1a7cb65859890c5c30a"></a>
-virtual <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()=0</td></tr>
-<tr class="separator:adf31222815bef1a7cb65859890c5c30a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:acb94e5999123b5a1c63dd279b2a5a251"><td class="memItemLeft" align="right" valign="top"><a id="acb94e5999123b5a1c63dd279b2a5a251"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>AFSKClient</b></td></tr>
+<tr class="separator:acb94e5999123b5a1c63dd279b2a5a251"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a018393f703a257e39cd263cccf4ffad5"><td class="memItemLeft" align="right" valign="top"><a id="a018393f703a257e39cd263cccf4ffad5"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>RTTYClient</b></td></tr>
+<tr class="separator:a018393f703a257e39cd263cccf4ffad5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5c5757c553100373984a416b6c3690a"><td class="memItemLeft" align="right" valign="top"><a id="ae5c5757c553100373984a416b6c3690a"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>MorseClient</b></td></tr>
+<tr class="separator:ae5c5757c553100373984a416b6c3690a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afeb005bab389f137def61f1acc3714d3"><td class="memItemLeft" align="right" valign="top"><a id="afeb005bab389f137def61f1acc3714d3"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>HellClient</b></td></tr>
+<tr class="separator:afeb005bab389f137def61f1acc3714d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8dd4f2f60ef4fd1fa1868a7a630ab20"><td class="memItemLeft" align="right" valign="top"><a id="ae8dd4f2f60ef4fd1fa1868a7a630ab20"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>SSTVClient</b></td></tr>
+<tr class="separator:ae8dd4f2f60ef4fd1fa1868a7a630ab20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0012621c1414f4c7573e961b57884a5b"><td class="memItemLeft" align="right" valign="top"><a id="a0012621c1414f4c7573e961b57884a5b"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>AX25Client</b></td></tr>
+<tr class="separator:a0012621c1414f4c7573e961b57884a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0313fe86041eb37d290019203e095d3"><td class="memItemLeft" align="right" valign="top"><a id="ac0313fe86041eb37d290019203e095d3"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td></tr>
+<tr class="separator:ac0313fe86041eb37d290019203e095d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>

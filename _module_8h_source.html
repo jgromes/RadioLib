@@ -207,58 +207,60 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160; </div>
 <div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> <a class="code" href="class_module.html#ac2dc188128f32f9360a178f31659291a">hexdump</a>(uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
-<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160;    <span class="comment">// hardware abstraction layer callbacks</span></div>
-<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);</div>
-<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_WRITE);</div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_READ);</div>
-<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_TONE);</div>
-<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_NO_TONE);</div>
-<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_ATTACH_INTERRUPT);</div>
-<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DETACH_INTERRUPT);</div>
-<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_YIELD);</div>
-<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY);</div>
-<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY_MICROSECONDS);</div>
-<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MILLIS);</div>
-<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MICROS);</div>
-<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160; </div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END);</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160; </div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160; </div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="comment">// pins</span></div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;</div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160; </div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="comment">// SPI interface (Arduino only)</span></div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    SPIClass* _spi = NULL;</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;</div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    <span class="keywordtype">bool</span> _initInterface = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160; </div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    <span class="comment">// RF switch presence and pins</span></div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    <span class="keywordtype">bool</span> _useRfSwitch = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;</div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;};</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160; </div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">regdump</a>(uint8_t start, uint8_t len);</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="comment">// hardware abstraction layer callbacks</span></div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_WRITE);</div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_READ);</div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_TONE);</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_NO_TONE);</div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_ATTACH_INTERRUPT);</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DETACH_INTERRUPT);</div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_YIELD);</div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY);</div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY_MICROSECONDS);</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MILLIS);</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MICROS);</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160; </div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END);</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END);</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160; </div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160; </div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    <span class="comment">// pins</span></div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="comment">// SPI interface (Arduino only)</span></div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    SPIClass* _spi = NULL;</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    <span class="keywordtype">bool</span> _initInterface = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160; </div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    <span class="comment">// RF switch presence and pins</span></div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    <span class="keywordtype">bool</span> _useRfSwitch = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;};</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_module_html_af7e4872dad3d19b6f75f532c88683168"><div class="ttname"><a href="class_module.html#af7e4872dad3d19b6f75f532c88683168">Module::pinMode</a></div><div class="ttdeci">void pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode)</div><div class="ttdoc">Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.</div><div class="ttdef"><b>Definition:</b> Module.cpp:248</div></div>
@@ -269,6 +271,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="ttc" id="aclass_module_html_a45e7823c44ac0aa8a10bd4f365890c98"><div class="ttname"><a href="class_module.html#a45e7823c44ac0aa8a10bd4f365890c98">Module::transfer</a></div><div class="ttdeci">uint8_t transfer(uint8_t b)</div><div class="ttdoc">Arduino core SPI transfer override.</div><div class="ttdef"><b>Definition:</b> Module.cpp:390</div></div>
 <div class="ttc" id="aclass_module_html_ad1956ac81429ec1f61f83dbc081cf18c"><div class="ttname"><a href="class_module.html#ad1956ac81429ec1f61f83dbc081cf18c">Module::init</a></div><div class="ttdeci">void init()</div><div class="ttdoc">Initialize low-level module control.</div><div class="ttdef"><b>Definition:</b> Module.cpp:105</div></div>
 <div class="ttc" id="aclass_module_html_ad7ca9ae5a22cdacdf9437ca9cd37c9b4"><div class="ttname"><a href="class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4">Module::SPIgetRegValue</a></div><div class="ttdeci">int16_t SPIgetRegValue(uint8_t reg, uint8_t msb=7, uint8_t lsb=0)</div><div class="ttdoc">SPI read method that automatically masks unused bits. This method is the preferred SPI read mechanism...</div><div class="ttdef"><b>Definition:</b> Module.cpp:124</div></div>
+<div class="ttc" id="aclass_module_html_a7216d32fc55130d111409c6f2050d9c0"><div class="ttname"><a href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">Module::regdump</a></div><div class="ttdeci">void regdump(uint8_t start, uint8_t len)</div><div class="ttdoc">Function to dump device registers as hex into the debug port.</div><div class="ttdef"><b>Definition:</b> Module.cpp:468</div></div>
 <div class="ttc" id="aclass_module_html_ae352c7a7b997fc1b17189c1312a8347f"><div class="ttname"><a href="class_module.html#ae352c7a7b997fc1b17189c1312a8347f">Module::getRst</a></div><div class="ttdeci">RADIOLIB_PIN_TYPE getRst() const</div><div class="ttdoc">Access method to get the pin number of hardware reset pin.</div><div class="ttdef"><b>Definition:</b> Module.h:216</div></div>
 <div class="ttc" id="aclass_module_html_af6bfd022681d360082e3dd31a984e1f7"><div class="ttname"><a href="class_module.html#af6bfd022681d360082e3dd31a984e1f7">Module::begin</a></div><div class="ttdeci">void begin()</div><div class="ttdoc">Arduino core SPI begin override.</div><div class="ttdef"><b>Definition:</b> Module.cpp:376</div></div>
 <div class="ttc" id="aclass_module_html_ae89764d15e8df5694a6aec0e18f72d3f"><div class="ttname"><a href="class_module.html#ae89764d15e8df5694a6aec0e18f72d3f">Module::SPIwriteCommand</a></div><div class="ttdeci">uint8_t SPIwriteCommand</div><div class="ttdoc">Basic SPI write command. Defaults to 0x80.</div><div class="ttdef"><b>Definition:</b> Module.h:92</div></div>
@@ -282,7 +285,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="ttc" id="aclass_module_html_ab814614ddd34b57f5a612a20f5fe4c57"><div class="ttname"><a href="class_module.html#ab814614ddd34b57f5a612a20f5fe4c57">Module::SPIwriteRegister</a></div><div class="ttdeci">void SPIwriteRegister(uint8_t reg, uint8_t data)</div><div class="ttdoc">SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be us...</div><div class="ttdef"><b>Definition:</b> Module.cpp:197</div></div>
 <div class="ttc" id="aclass_module_html_af998b86ce1243f616f6fcb6df5336207"><div class="ttname"><a href="class_module.html#af998b86ce1243f616f6fcb6df5336207">Module::noTone</a></div><div class="ttdeci">void noTone(RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Arduino core noTone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPP...</div><div class="ttdef"><b>Definition:</b> Module.cpp:299</div></div>
 <div class="ttc" id="aclass_module_html_a015226566efc5131c8a39a184b6c4e6b"><div class="ttname"><a href="class_module.html#a015226566efc5131c8a39a184b6c4e6b">Module::endTransaction</a></div><div class="ttdeci">void endTransaction()</div><div class="ttdoc">Arduino core SPI endTransaction override.</div><div class="ttdef"><b>Definition:</b> Module.cpp:397</div></div>
-<div class="ttc" id="aclass_module_html_a0ecbb4e1e98094c1296b1e823dc14703"><div class="ttname"><a href="class_module.html#a0ecbb4e1e98094c1296b1e823dc14703">Module::setRfSwitchPins</a></div><div class="ttdeci">void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</div><div class="ttdoc">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control ...</div><div class="ttdef"><b>Definition:</b> Module.cpp:468</div></div>
+<div class="ttc" id="aclass_module_html_a0ecbb4e1e98094c1296b1e823dc14703"><div class="ttname"><a href="class_module.html#a0ecbb4e1e98094c1296b1e823dc14703">Module::setRfSwitchPins</a></div><div class="ttdeci">void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</div><div class="ttdoc">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control ...</div><div class="ttdef"><b>Definition:</b> Module.cpp:481</div></div>
 <div class="ttc" id="aclass_module_html_aeb4c7447372d56a7cae6db91994aacfc"><div class="ttname"><a href="class_module.html#aeb4c7447372d56a7cae6db91994aacfc">Module::getGpio</a></div><div class="ttdeci">RADIOLIB_PIN_TYPE getGpio() const</div><div class="ttdoc">Access method to get the pin number of second interrupt/GPIO.</div><div class="ttdef"><b>Definition:</b> Module.h:223</div></div>
 <div class="ttc" id="aclass_module_html_a1101d49f597f756141fc9de88a504f21"><div class="ttname"><a href="class_module.html#a1101d49f597f756141fc9de88a504f21">Module::Module</a></div><div class="ttdeci">Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio=RADIOLIB_NC)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> Module.cpp:79</div></div>
 <div class="ttc" id="aclass_module_html_a160006371be8e121a8a54cc4462b3a72"><div class="ttname"><a href="class_module.html#a160006371be8e121a8a54cc4462b3a72">Module::flipBits16</a></div><div class="ttdeci">static uint16_t flipBits16(uint16_t i)</div><div class="ttdoc">Function to reflect bits within an integer.</div><div class="ttdef"><b>Definition:</b> Module.cpp:440</div></div>
@@ -293,7 +296,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="ttc" id="aclass_module_html_a45bd514a1f2859d9a867c8f9b13eb332"><div class="ttname"><a href="class_module.html#a45bd514a1f2859d9a867c8f9b13eb332">Module::term</a></div><div class="ttdeci">void term()</div><div class="ttdoc">Terminate low-level module control.</div><div class="ttdef"><b>Definition:</b> Module.cpp:113</div></div>
 <div class="ttc" id="aclass_module_html_a849ad85fc1bc3a7130e660c13973ab26"><div class="ttname"><a href="class_module.html#a849ad85fc1bc3a7130e660c13973ab26">Module::SPIreadCommand</a></div><div class="ttdeci">uint8_t SPIreadCommand</div><div class="ttdoc">Basic SPI read command. Defaults to 0x00.</div><div class="ttdef"><b>Definition:</b> Module.h:87</div></div>
 <div class="ttc" id="aclass_module_html_a656738f2fe41fb236d27aed02efa8ad4"><div class="ttname"><a href="class_module.html#a656738f2fe41fb236d27aed02efa8ad4">Module::detachInterrupt</a></div><div class="ttdeci">void detachInterrupt(RADIOLIB_PIN_TYPE interruptNum)</div><div class="ttdoc">Arduino core detachInterrupt override.</div><div class="ttdef"><b>Definition:</b> Module.cpp:332</div></div>
-<div class="ttc" id="aclass_module_html_a4a87d59ad2bf6bb1bb9de1856a81b824"><div class="ttname"><a href="class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824">Module::setRfSwitchState</a></div><div class="ttdeci">void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState)</div><div class="ttdoc">Set RF switch state.</div><div class="ttdef"><b>Definition:</b> Module.cpp:476</div></div>
+<div class="ttc" id="aclass_module_html_a4a87d59ad2bf6bb1bb9de1856a81b824"><div class="ttname"><a href="class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824">Module::setRfSwitchState</a></div><div class="ttdeci">void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState)</div><div class="ttdoc">Set RF switch state.</div><div class="ttdef"><b>Definition:</b> Module.cpp:489</div></div>
 <div class="ttc" id="aclass_module_html_a6fa5239d73379e4140f5c4f513b1b8d2"><div class="ttname"><a href="class_module.html#a6fa5239d73379e4140f5c4f513b1b8d2">Module::SPIreadRegisterBurst</a></div><div class="ttdeci">void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t *inBytes)</div><div class="ttdoc">SPI burst read method.</div><div class="ttdef"><b>Definition:</b> Module.cpp:183</div></div>
 <div class="ttc" id="aclass_module_html_a7f5fd7409f21d33a16ea1de589962ae6"><div class="ttname"><a href="class_module.html#a7f5fd7409f21d33a16ea1de589962ae6">Module::flipBits</a></div><div class="ttdeci">static uint8_t flipBits(uint8_t b)</div><div class="ttdoc">Function to reflect bits within a byte.</div><div class="ttdef"><b>Definition:</b> Module.cpp:433</div></div>
 <div class="ttc" id="aclass_module_html_a216dd0c6ce140857f2b003ab8d89fbac"><div class="ttname"><a href="class_module.html#a216dd0c6ce140857f2b003ab8d89fbac">Module::millis</a></div><div class="ttdeci">uint32_t millis()</div><div class="ttdoc">Arduino core millis override.</div><div class="ttdef"><b>Definition:</b> Module.cpp:362</div></div>

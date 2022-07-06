@@ -214,6 +214,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aa7fc017ee35f40c90e5badc5bc568c3d">end</a> ()</td></tr>
 <tr class="memdesc:aa7fc017ee35f40c90e5badc5bc568c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI end override. <br /></td></tr>
 <tr class="separator:aa7fc017ee35f40c90e5badc5bc568c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7216d32fc55130d111409c6f2050d9c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">regdump</a> (uint8_t start, uint8_t len)</td></tr>
+<tr class="memdesc:a7216d32fc55130d111409c6f2050d9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump device registers as hex into the debug port.  <a href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">More...</a><br /></td></tr>
+<tr class="separator:a7216d32fc55130d111409c6f2050d9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9474048f40bb4ebe28e4ab4d122fb02"><td class="memItemLeft" align="right" valign="top"><a id="ac9474048f40bb4ebe28e4ab4d122fb02"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_GENERATE_CALLBACK</b> (RADIOLIB_CB_ARGS_PIN_MODE)</td></tr>
 <tr class="separator:ac9474048f40bb4ebe28e4ab4d122fb02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -708,7 +711,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Data to dump.</td></tr>
-    <tr><td class="paramname">data</td><td>Number of bytes to dump. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
   </table>
   </dd>
 </dl>
@@ -798,6 +801,43 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">pin</td><td>Pin to change the mode of.</td></tr>
     <tr><td class="paramname">mode</td><td>Which mode to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7216d32fc55130d111409c6f2050d9c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7216d32fc55130d111409c6f2050d9c0">&#9670;&nbsp;</a></span>regdump()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Module::regdump </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to dump device registers as hex into the debug port. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>First address to dump.</td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
   </table>
   </dd>
 </dl>
