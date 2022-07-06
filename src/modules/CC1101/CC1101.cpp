@@ -885,6 +885,13 @@ void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
+int16_t CC1101::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+  if (pin > 2)
+    return RADIOLIB_ERR_INVALID_DIO_PIN;
+
+  return(SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0 - pin, value));
+}
+
 int16_t CC1101::config() {
   // Reset the radio. Registers may be dirty from previous usage.
   SPIsendCommand(RADIOLIB_CC1101_CMD_RESET);
