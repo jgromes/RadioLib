@@ -300,6 +300,17 @@ class PhysicalLayer {
     */
     uint8_t read();
 
+    /*!
+      \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
+
+      \param pin Pin number onto which a signal is to be placed.
+
+      \param value The value that indicates which function to place on that pin. See chip datasheet for details.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+
   protected:
     void updateDirectBuffer(uint8_t bit);
 
