@@ -471,6 +471,20 @@ int16_t SX1278::explicitHeader() {
   return(setHeaderType(RADIOLIB_SX1278_HEADER_EXPL_MODE));
 }
 
+int16_t SX1278::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+  if (pin > 5)
+    return RADIOLIB_ERR_INVALID_DIO_PIN;
+
+  if (pin < 4)
+    return(_mod->SPIsetRegValue(RADIOLIB_SX1278_REG_DIO_MAPPING_1, value, 7 - 2 * pin, 6 - 2 * pin));
+  else
+    return(_mod->SPIsetRegValue(RADIOLIB_SX1278_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
+}
+
+int16_t SX1278::setDIOPreambleDetect(bool usePreambleDetect) {
+  return _mod->SPIsetRegValue(RADIOLIB_SX1278_REG_DIO_MAPPING_2, (usePreambleDetect) ? RADIOLIB_SX1278_DIO_MAP_PREAMBLE_DETECT : RADIOLIB_SX1278_DIO_MAP_RSSI, 0, 0);
+}
+
 int16_t SX1278::setBandwidthRaw(uint8_t newBandwidth) {
   // set mode to standby
   int16_t state = SX127x::standby();
