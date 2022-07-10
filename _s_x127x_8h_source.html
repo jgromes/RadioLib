@@ -682,154 +682,154 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
 <div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#a0f041e91ab2fbb6f05eef56b5addac71">clearFifoFullAction</a>();</div>
 <div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160; </div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509">fifoAdd</a>(uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* remLen);</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    <span class="keywordtype">bool</span> fifoGet(<span class="keyword">volatile</span> uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* rcvLen);</div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160; </div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#adc2f1379573b7a7b5ee8125ea3752083">startTransmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d">startReceive</a>(uint8_t len = 0, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS);</div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160; </div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160; </div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059">startChannelScan</a>();</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160; </div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160; </div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">setSyncWord</a>(uint8_t syncWord);</div>
-<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160; </div>
-<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">setCurrentLimit</a>(uint8_t currentLimit);</div>
-<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">setPreambleLength</a>(uint16_t preambleLength);</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160; </div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">getFrequencyError</a>(<span class="keywordtype">bool</span> autoCorrect = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544">getAFCError</a>();</div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb">getSNR</a>();</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160; </div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#adc25b685de0859b799488bf7729350b6">getDataRate</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160; </div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022">setBitRate</a>(<span class="keywordtype">float</span> br);</div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160; </div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a2cc53b9f9d90647c5709cb974779cf53">setRxBandwidth</a>(<span class="keywordtype">float</span> rxBw);</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160; </div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef">setAFCBandwidth</a>(<span class="keywordtype">float</span> afcBw);</div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160; </div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e">setAFC</a>(<span class="keywordtype">bool</span> isEnabled);</div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160; </div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">setAFCAGCTrigger</a>(uint8_t trigger);</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160; </div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">setSyncWord</a>(uint8_t* syncWord, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">setNodeAddress</a>(uint8_t nodeAddr);</div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
-<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abc51ce6718153e4963128f25bb5aab40">setBroadcastAddress</a>(uint8_t broadAddr);</div>
-<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160; </div>
-<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5">disableAddressFiltering</a>();</div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160; </div>
-<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee">setOOK</a>(<span class="keywordtype">bool</span> enableOOK);</div>
-<div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160; </div>
-<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a8b93142202167270db109d18b743c744">setOokThresholdType</a>(uint8_t type);</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160; </div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d">setOokPeakThresholdDecrement</a>(uint8_t value);</div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160; </div>
-<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">setOokFixedOrFloorThreshold</a>(uint8_t value);</div>
-<div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160; </div>
-<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54">setOokPeakThresholdStep</a>(uint8_t value);</div>
-<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160; </div>
-<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">enableBitSync</a>();</div>
-<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160; </div>
-<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd">disableBitSync</a>();</div>
-<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160; </div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160; </div>
-<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a6fb42d9cd518e9f6408a40753c0be359">fixedPacketLengthMode</a>(uint8_t len = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);</div>
-<div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160; </div>
-<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c">variablePacketLengthMode</a>(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);</div>
-<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160; </div>
-<div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;   uint32_t <a class="code" href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">getTimeOnAir</a>(<span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160; </div>
-<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">setCrcFiltering</a>(<span class="keywordtype">bool</span> crcOn = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160; </div>
-<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">setRSSIConfig</a>(uint8_t smoothingSamples, int8_t offset = 0);</div>
-<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160; </div>
-<div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abad2d455012bd28d304589c8164390eb">setEncoding</a>(uint8_t encoding) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160; </div>
-<div class="line"><a name="l01065"></a><span class="lineno"> 1065</span>&#160;    uint16_t <a class="code" href="class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d">getIRQFlags</a>();</div>
-<div class="line"><a name="l01066"></a><span class="lineno"> 1066</span>&#160; </div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc">getModemStatus</a>();</div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160; </div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;    int8_t <a class="code" href="class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1">getTempRaw</a>();</div>
+<div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509">fifoAdd</a>(uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* remLen);</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160; </div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a">fifoGet</a>(<span class="keyword">volatile</span> uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* rcvLen);</div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160; </div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#adc2f1379573b7a7b5ee8125ea3752083">startTransmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160; </div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d">startReceive</a>(uint8_t len = 0, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS);</div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160; </div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160; </div>
+<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059">startChannelScan</a>();</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160; </div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    <span class="comment">// configuration methods</span></div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">setSyncWord</a>(uint8_t syncWord);</div>
+<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160; </div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">setCurrentLimit</a>(uint8_t currentLimit);</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160; </div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">setPreambleLength</a>(uint16_t preambleLength);</div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">getFrequencyError</a>(<span class="keywordtype">bool</span> autoCorrect = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544">getAFCError</a>();</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160; </div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb">getSNR</a>();</div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160; </div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_s_x127x.html#adc25b685de0859b799488bf7729350b6">getDataRate</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022">setBitRate</a>(<span class="keywordtype">float</span> br);</div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160; </div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160; </div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a2cc53b9f9d90647c5709cb974779cf53">setRxBandwidth</a>(<span class="keywordtype">float</span> rxBw);</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160; </div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef">setAFCBandwidth</a>(<span class="keywordtype">float</span> afcBw);</div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160; </div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e">setAFC</a>(<span class="keywordtype">bool</span> isEnabled);</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">setAFCAGCTrigger</a>(uint8_t trigger);</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160; </div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">setSyncWord</a>(uint8_t* syncWord, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160; </div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">setNodeAddress</a>(uint8_t nodeAddr);</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160; </div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abc51ce6718153e4963128f25bb5aab40">setBroadcastAddress</a>(uint8_t broadAddr);</div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160; </div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5">disableAddressFiltering</a>();</div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160; </div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee">setOOK</a>(<span class="keywordtype">bool</span> enableOOK);</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160; </div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a8b93142202167270db109d18b743c744">setOokThresholdType</a>(uint8_t type);</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160; </div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#aac2f43d70b5f94e49e09b4c9f082f46d">setOokPeakThresholdDecrement</a>(uint8_t value);</div>
+<div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160; </div>
+<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538">setOokFixedOrFloorThreshold</a>(uint8_t value);</div>
+<div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160; </div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54">setOokPeakThresholdStep</a>(uint8_t value);</div>
+<div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160; </div>
+<div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa">enableBitSync</a>();</div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160; </div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd">disableBitSync</a>();</div>
+<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160; </div>
+<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160; </div>
+<div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a6fb42d9cd518e9f6408a40753c0be359">fixedPacketLengthMode</a>(uint8_t len = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);</div>
+<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160; </div>
+<div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c">variablePacketLengthMode</a>(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);</div>
+<div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160; </div>
+<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;   uint32_t <a class="code" href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">getTimeOnAir</a>(<span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160; </div>
+<div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;   int16_t <a class="code" href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">setCrcFiltering</a>(<span class="keywordtype">bool</span> crcOn = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160; </div>
+<div class="line"><a name="l01061"></a><span class="lineno"> 1061</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">setRSSIConfig</a>(uint8_t smoothingSamples, int8_t offset = 0);</div>
+<div class="line"><a name="l01062"></a><span class="lineno"> 1062</span>&#160; </div>
+<div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#abad2d455012bd28d304589c8164390eb">setEncoding</a>(uint8_t encoding) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160; </div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;    uint16_t <a class="code" href="class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d">getIRQFlags</a>();</div>
 <div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160; </div>
-<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">setRfSwitchPins</a>(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);</div>
-<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160; </div>
-<div class="line"><a name="l01097"></a><span class="lineno"> 1097</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">randomByte</a>();</div>
-<div class="line"><a name="l01098"></a><span class="lineno"> 1098</span>&#160; </div>
-<div class="line"><a name="l01104"></a><span class="lineno"> 1104</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a>();</div>
-<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160; </div>
-<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a>(<span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a>);</div>
-<div class="line"><a name="l01114"></a><span class="lineno"> 1114</span>&#160; </div>
-<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l01121"></a><span class="lineno"> 1121</span>&#160; </div>
-<div class="line"><a name="l01127"></a><span class="lineno"> 1127</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
-<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160; </div>
-<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">setFHSSHoppingPeriod</a>(uint8_t freqHoppingPeriod);</div>
-<div class="line"><a name="l01137"></a><span class="lineno"> 1137</span>&#160; </div>
-<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617">getFHSSHoppingPeriod</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01144"></a><span class="lineno"> 1144</span>&#160; </div>
-<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c">getFHSSChannel</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160; </div>
-<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66">clearFHSSInt</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160; </div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
-<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160; </div>
-<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l01163"></a><span class="lineno"> 1163</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01164"></a><span class="lineno"> 1164</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160; </div>
-<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
-<div class="line"><a name="l01167"></a><span class="lineno"> 1167</span>&#160;    <span class="keywordtype">float</span> _bw = 0;</div>
-<div class="line"><a name="l01168"></a><span class="lineno"> 1168</span>&#160;    uint8_t _sf = 0;</div>
-<div class="line"><a name="l01169"></a><span class="lineno"> 1169</span>&#160;    uint8_t _cr = 0;</div>
-<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
-<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;    <span class="keywordtype">bool</span> _ook = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    <span class="keywordtype">bool</span> _crcEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;    <span class="keywordtype">bool</span> _crcOn = <span class="keyword">true</span>; <span class="comment">// default value used in FSK mode</span></div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160; </div>
-<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
-<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;    int16_t configFSK();</div>
-<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;    int16_t getActiveModem();</div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;    int16_t directMode();</div>
-<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160; </div>
-<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    <span class="keywordtype">float</span> _dataRate = 0;</div>
-<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>; <span class="comment">// FSK packet length is the first byte in FIFO, length can only be queried once</span></div>
-<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;    uint8_t _packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;</div>
-<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160; </div>
-<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t ver);</div>
-<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;    int16_t setMode(uint8_t mode);</div>
-<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;    int16_t setActiveModem(uint8_t modem);</div>
-<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
-<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count); <span class="comment">// used mostly to clear remaining bytes in FIFO after a packet read</span></div>
-<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;<span class="comment"></span>    <span class="keyword">static</span> uint8_t calculateBWManExp(<span class="keywordtype">float</span> bandwidth);</div>
-<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160; </div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) = 0;</div>
-<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;};</div>
-<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160; </div>
-<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160; </div>
-<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc">getModemStatus</a>();</div>
+<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160; </div>
+<div class="line"><a name="l01095"></a><span class="lineno"> 1095</span>&#160;    int8_t <a class="code" href="class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1">getTempRaw</a>();</div>
+<div class="line"><a name="l01096"></a><span class="lineno"> 1096</span>&#160; </div>
+<div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">setRfSwitchPins</a>(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);</div>
+<div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160; </div>
+<div class="line"><a name="l01112"></a><span class="lineno"> 1112</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">randomByte</a>();</div>
+<div class="line"><a name="l01113"></a><span class="lineno"> 1113</span>&#160; </div>
+<div class="line"><a name="l01119"></a><span class="lineno"> 1119</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a>();</div>
+<div class="line"><a name="l01120"></a><span class="lineno"> 1120</span>&#160; </div>
+<div class="line"><a name="l01128"></a><span class="lineno"> 1128</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a>(<span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a>);</div>
+<div class="line"><a name="l01129"></a><span class="lineno"> 1129</span>&#160; </div>
+<div class="line"><a name="l01135"></a><span class="lineno"> 1135</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160; </div>
+<div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
+<div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160; </div>
+<div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">setFHSSHoppingPeriod</a>(uint8_t freqHoppingPeriod);</div>
+<div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160; </div>
+<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617">getFHSSHoppingPeriod</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160; </div>
+<div class="line"><a name="l01165"></a><span class="lineno"> 1165</span>&#160;    uint8_t <a class="code" href="class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c">getFHSSChannel</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01166"></a><span class="lineno"> 1166</span>&#160; </div>
+<div class="line"><a name="l01170"></a><span class="lineno"> 1170</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66">clearFHSSInt</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160; </div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l01173"></a><span class="lineno"> 1173</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
+<div class="line"><a name="l01176"></a><span class="lineno"> 1176</span>&#160; </div>
+<div class="line"><a name="l01177"></a><span class="lineno"> 1177</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01178"></a><span class="lineno"> 1178</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01179"></a><span class="lineno"> 1179</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160; </div>
+<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160;    <span class="keywordtype">float</span> _freq = 0;</div>
+<div class="line"><a name="l01182"></a><span class="lineno"> 1182</span>&#160;    <span class="keywordtype">float</span> _bw = 0;</div>
+<div class="line"><a name="l01183"></a><span class="lineno"> 1183</span>&#160;    uint8_t _sf = 0;</div>
+<div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;    uint8_t _cr = 0;</div>
+<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;    <span class="keywordtype">float</span> _br = 0;</div>
+<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    <span class="keywordtype">bool</span> _ook = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    <span class="keywordtype">bool</span> _crcEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160;    <span class="keywordtype">bool</span> _crcOn = <span class="keyword">true</span>; <span class="comment">// default value used in FSK mode</span></div>
+<div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    <span class="keywordtype">size_t</span> _packetLength = 0;</div>
+<div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160; </div>
+<div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
+<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    int16_t configFSK();</div>
+<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;    int16_t getActiveModem();</div>
+<div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160;    int16_t directMode();</div>
+<div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l01197"></a><span class="lineno"> 1197</span>&#160; </div>
+<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l01200"></a><span class="lineno"> 1200</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01201"></a><span class="lineno"> 1201</span>&#160;    <span class="keywordtype">float</span> _dataRate = 0;</div>
+<div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;    <span class="keywordtype">bool</span> _packetLengthQueried = <span class="keyword">false</span>; <span class="comment">// FSK packet length is the first byte in FIFO, length can only be queried once</span></div>
+<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;    uint8_t _packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;</div>
+<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160; </div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t ver);</div>
+<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160;    int16_t setMode(uint8_t mode);</div>
+<div class="line"><a name="l01207"></a><span class="lineno"> 1207</span>&#160;    int16_t setActiveModem(uint8_t modem);</div>
+<div class="line"><a name="l01208"></a><span class="lineno"> 1208</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count); <span class="comment">// used mostly to clear remaining bytes in FIFO after a packet read</span></div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;<span class="comment"></span>    <span class="keyword">static</span> uint8_t calculateBWManExp(<span class="keywordtype">float</span> bandwidth);</div>
+<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160; </div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) = 0;</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160;};</div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160; </div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160; </div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_physical_layer_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:10</div></div>
@@ -850,6 +850,7 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x127x_html_a1d39296b40e7282ef44d8f376065e92c"><div class="ttname"><a href="class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c">SX127x::variablePacketLengthMode</a></div><div class="ttdeci">int16_t variablePacketLengthMode(uint8_t maxLen=RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)</div><div class="ttdoc">Set modem in variable packet length mode. Available in FSK mode only.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:1127</div></div>
 <div class="ttc" id="aclass_s_x127x_html_a8025b05b8f4f2f2abb4cd803b06e2ebd"><div class="ttname"><a href="class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd">SX127x::disableBitSync</a></div><div class="ttdeci">int16_t disableBitSync()</div><div class="ttdoc">Disable Bit synchronizer (not allowed in Packet mode).</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:1051</div></div>
 <div class="ttc" id="aclass_s_x127x_html_a41f8cfcc2cdeb25a8e5a03f1ba4edd1e"><div class="ttname"><a href="class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e">SX127x::setAFC</a></div><div class="ttdeci">int16_t setAFC(bool isEnabled)</div><div class="ttdoc">Enables or disables FSK automatic frequency correction(AFC)</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:925</div></div>
+<div class="ttc" id="aclass_s_x127x_html_a25b193b71ddb6015d25b0a161809d75a"><div class="ttname"><a href="class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a">SX127x::fifoGet</a></div><div class="ttdeci">bool fifoGet(volatile uint8_t *data, int totalLen, volatile int *rcvLen)</div><div class="ttdoc">Set interrupt service routine function to call when FIFO is sufficently full to read.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:485</div></div>
 <div class="ttc" id="aclass_s_x127x_html_a48ca43e6aad02815fa1507f0f0831c54"><div class="ttname"><a href="class_s_x127x.html#a48ca43e6aad02815fa1507f0f0831c54">SX127x::setOokPeakThresholdStep</a></div><div class="ttdeci">int16_t setOokPeakThresholdStep(uint8_t value)</div><div class="ttdoc">Size of each decrement of the RSSI threshold in the OOK demodulator.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:1039</div></div>
 <div class="ttc" id="aclass_s_x127x_html_a9b6532a25e1730973ac08146008adca5"><div class="ttname"><a href="class_s_x127x.html#a9b6532a25e1730973ac08146008adca5">SX127x::clearDio1Action</a></div><div class="ttdeci">void clearDio1Action()</div><div class="ttdoc">Clears interrupt service routine to call when DIO1 activates.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:425</div></div>
 <div class="ttc" id="aclass_s_x127x_html_ac5c7f4584352a12390594395d9c29bde"><div class="ttname"><a href="class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde">SX127x::setSyncWord</a></div><div class="ttdeci">int16_t setSyncWord(uint8_t syncWord)</div><div class="ttdoc">Sets LoRa sync word. Only available in LoRa mode.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:672</div></div>
