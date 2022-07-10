@@ -484,7 +484,7 @@ bool SX127x::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
 
 bool SX127x::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
   // get pointer to the correct position in data buffer
-  uint8_t* dataPtr = &data[*rcvLen];
+  uint8_t* dataPtr = (uint8_t*)&data[*rcvLen];
 
   // check how much data are we still expecting
   uint8_t len = RADIOLIB_SX127X_FIFO_THRESH - 1;
