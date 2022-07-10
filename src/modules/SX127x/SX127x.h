@@ -12,7 +12,7 @@
 // SX127x physical layer properties
 #define RADIOLIB_SX127X_FREQUENCY_STEP_SIZE                    61.03515625
 #define RADIOLIB_SX127X_MAX_PACKET_LENGTH                      255
-#define RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK                  63
+#define RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK                  64
 #define RADIOLIB_SX127X_CRYSTAL_FREQ                           32.0
 #define RADIOLIB_SX127X_DIV_EXPONENT                           19
 
