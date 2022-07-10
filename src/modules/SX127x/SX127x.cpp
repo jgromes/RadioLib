@@ -429,6 +429,87 @@ void SX127x::clearDio1Action() {
   _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
+void SX127x::setFifoEmptyAction(void (*func)(void)) {
+  // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
+  setDio1Action(func);
+}
+
+void SX127x::clearFifoEmptyAction() {
+  clearDio1Action();
+}
+
+void SX127x::setFifoFullAction(void (*func)(void)) {
+  // set the interrupt
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, RADIOLIB_SX127X_FIFO_THRESH, 5, 0);
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_PACK_FIFO_LEVEL, 5, 4);
+
+  // set DIO1 to the FIFO full event
+  setDio1Action(func);
+}
+
+void SX127x::clearFifoFullAction() {
+  clearDio1Action();
+  _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, 0x00, 5, 4);
+}
+
+bool SX127x::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
+  // subtract first (this may be the first time we get to modify the remaining length)
+  *remLen -= RADIOLIB_SX127X_FIFO_THRESH - 1;
+
+  // check if there is still something left to send
+  if(*remLen <= 0) {
+    // we're done
+    return(true);
+  }
+
+  // calculate the number of bytes we can copy
+  int len = *remLen;
+  if(len > RADIOLIB_SX127X_FIFO_THRESH - 1) {
+    len = RADIOLIB_SX127X_FIFO_THRESH - 1;
+  }
+
+  // clear interrupt flags
+  clearIRQFlags();
+
+  // copy the bytes to the FIFO
+  _mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, &data[totalLen - *remLen], len);
+
+  // this is a hack, but it seems Rx FIFO level is getting triggered 1 byte before it should
+  // we just add a padding byte that we can drop without consequence
+  _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, '/');
+
+  // we're not done yet
+  return(false);
+}
+
+bool SX127x::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
+  // get pointer to the correct position in data buffer
+  uint8_t* dataPtr = &data[*rcvLen];
+
+  // check how much data are we still expecting
+  uint8_t len = RADIOLIB_SX127X_FIFO_THRESH - 1;
+  if(totalLen - *rcvLen < len) {
+    // we're nearly at the end
+    len = totalLen - *rcvLen;
+  }
+
+  // get the data
+  _mod->SPIreadRegisterBurst(RADIOLIB_SX127X_REG_FIFO, len, dataPtr);
+  (*rcvLen) += (len);
+
+  // dump the padding byte
+  _mod->SPIreadRegister(RADIOLIB_SX127X_REG_FIFO);
+
+  // clear flags
+  clearIRQFlags();
+
+  // check if we're done
+  if(*rcvLen >= totalLen) {
+    return(true);
+  }
+  return(false);
+}
+
 int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -461,16 +542,15 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     state |= _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX);
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // check packet length
-    if(len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
-      return(RADIOLIB_ERR_PACKET_TOO_LONG);
-    }
-
-    // set DIO mapping
-    _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT, 7, 6);
-
     // clear interrupt flags
     clearIRQFlags();
+
+    // set DIO mapping
+    if(len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_PACK_FIFO_EMPTY, 5, 4);
+    } else {
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT, 7, 6);
+    }
 
     // set packet length
     if (_packetLengthConfig == RADIOLIB_SX127X_PACKET_VARIABLE) {
@@ -485,7 +565,18 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, data, len);
+  size_t packetLen = len;
+  if((modem == RADIOLIB_SX127X_FSK_OOK) && (len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)) {
+    packetLen = RADIOLIB_SX127X_FIFO_THRESH - 1;
+    _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, RADIOLIB_SX127X_TX_START_FIFO_NOT_EMPTY, 7, 7);
+  }
+  _mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_FIFO, data, packetLen);
+
+  // this is a hack, but it seems than in Stream mode, Rx FIFO level is getting triggered 1 byte before it should
+  // just add a padding byte that can be dropped without consequence
+  if((modem == RADIOLIB_SX127X_FSK_OOK) && (len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK)) {
+    _mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, '/');
+  }
 
   // set RF switch (if present)
   _mod->setRfSwitchState(LOW, HIGH);

@@ -148,7 +148,10 @@ getFHSSChannel	KEYWORD2
 clearFHSSInt	KEYWORD2
 randomByte	KEYWORD2
 getPacketLength	KEYWORD2
-
+setFifoEmptyAction	KEYWORD2
+clearFifoEmptyAction	KEYWORD2
+fifoAdd	KEYWORD2
+fifoGet	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2

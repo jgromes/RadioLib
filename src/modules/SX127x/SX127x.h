@@ -12,7 +12,7 @@
 // SX127x physical layer properties
 #define RADIOLIB_SX127X_FREQUENCY_STEP_SIZE                    61.03515625
 #define RADIOLIB_SX127X_MAX_PACKET_LENGTH                      255
-#define RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK                  64
+#define RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK                  63
 #define RADIOLIB_SX127X_CRYSTAL_FREQ                           32.0
 #define RADIOLIB_SX127X_DIV_EXPONENT                           19
 
@@ -411,7 +411,7 @@
 // SX127X_REG_FIFO_THRESH
 #define RADIOLIB_SX127X_TX_START_FIFO_LEVEL                    0b00000000  //  7     7     start packet transmission when: number of bytes in FIFO exceeds FIFO_THRESHOLD
 #define RADIOLIB_SX127X_TX_START_FIFO_NOT_EMPTY                0b10000000  //  7     7                                     at least one byte in FIFO (default)
-#define RADIOLIB_SX127X_FIFO_THRESH                            0x0F        //  5     0     FIFO level threshold
+#define RADIOLIB_SX127X_FIFO_THRESH                            0x1F        //  5     0     FIFO level threshold
 
 // SX127X_REG_SEQ_CONFIG_1
 #define RADIOLIB_SX127X_SEQUENCER_START                        0b10000000  //  7     7     manually start sequencer
@@ -702,6 +702,41 @@ class SX127x: public PhysicalLayer {
     void clearDio1Action();
 
     /*!
+      \brief Set interrupt service routine function to call when FIFO is empty.
+
+      \param func Pointer to interrupt service routine.
+    */
+    void setFifoEmptyAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when  FIFO is empty.
+    */
+    void clearFifoEmptyAction();
+
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is full.
+
+      \param func Pointer to interrupt service routine.
+    */
+    void setFifoFullAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when  FIFO is full.
+    */
+    void clearFifoFullAction();
+
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is empty.
+
+      \param func Pointer to interrupt service routine.
+
+      \returns True when a complete packet is sent, false if more data is needed.
+    */
+    bool fifoAdd(uint8_t* data, int totalLen, volatile int* remLen);
+
+    bool fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen);
+
+    /*!
       \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
 
       \param data Binary data that will be transmitted.
@@ -933,12 +968,12 @@ class SX127x: public PhysicalLayer {
       /*!
       \brief Size of each decrement of the RSSI threshold in the OOK demodulator.
 
-      \param value Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB  
+      \param value Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB
 
       \returns \ref status_codes
     */
-    int16_t setOokPeakThresholdStep(uint8_t value);  
-  
+    int16_t setOokPeakThresholdStep(uint8_t value);
+
     /*!
     \brief Enable Bit synchronizer.
 
@@ -988,7 +1023,7 @@ class SX127x: public PhysicalLayer {
      \returns Expected time-on-air in microseconds.
    */
    uint32_t getTimeOnAir(size_t len);
-   
+
    /*!
       \brief Enable CRC filtering and generation.
 
