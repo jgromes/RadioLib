@@ -728,12 +728,27 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Set interrupt service routine function to call when FIFO is empty.
 
-      \param func Pointer to interrupt service routine.
+      \param data Pointer to the transmission buffer.
+
+      \param totalLen Total number of bytes to transmit.
+
+      \param remLen Pointer to a counter holding the number of bytes that have been transmitted so far.
 
       \returns True when a complete packet is sent, false if more data is needed.
     */
     bool fifoAdd(uint8_t* data, int totalLen, volatile int* remLen);
 
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is sufficently full to read.
+
+      \param data Pointer to a buffer that stores the receive data.
+
+      \param totalLen Total number of bytes to receive.
+
+      \param rcvLen Pointer to a counter holding the number of bytes that have been received so far.
+
+      \returns True when a complete packet is received, false if more data is needed.
+    */
     bool fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen);
 
     /*!
