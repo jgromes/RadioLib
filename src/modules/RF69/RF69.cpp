@@ -297,22 +297,108 @@ void RF69::clearDio1Action() {
   _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
 }
 
-int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
-  // check packet length
-  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+void RF69::setFifoEmptyAction(void (*func)(void)) {
+  // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
+  if(_mod->getGpio() == RADIOLIB_NC) {
+    return;
+  }
+  _mod->pinMode(_mod->getGpio(), INPUT);
+
+  // we need to invert the logic here (as compared to setDio1Action), since we are using the "FIFO not empty interrupt"
+  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, FALLING);
+}
+
+void RF69::clearFifoEmptyAction() {
+  clearDio1Action();
+}
+
+void RF69::setFifoFullAction(void (*func)(void)) {
+  // set the interrupt
+  _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_FIFO_THRESH, 6, 0);
+  _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO1_PACK_FIFO_LEVEL, 5, 4);
+
+  // set DIO1 to the FIFO full event
+  setDio1Action(func);
+}
+
+void RF69::clearFifoFullAction() {
+  clearDio1Action();
+  _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, 0x00, 5, 4);
+}
+
+bool RF69::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
+  // subtract first (this may be the first time we get to modify the remaining length)
+  *remLen -= RADIOLIB_RF69_FIFO_THRESH - 1;
+
+  // check if there is still something left to send
+  if(*remLen <= 0) {
+    // we're done
+    return(true);
   }
 
+  // calculate the number of bytes we can copy
+  int len = *remLen;
+  if(len > RADIOLIB_RF69_FIFO_THRESH - 1) {
+    len = RADIOLIB_RF69_FIFO_THRESH - 1;
+  }
+
+  // clear interrupt flags
+  clearIRQFlags();
+
+  // copy the bytes to the FIFO
+  _mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, &data[totalLen - *remLen], len);
+
+  // this is a hack, but it seems Rx FIFO level is getting triggered 1 byte before it should
+  // we just add a padding byte that we can drop without consequence
+  _mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
+
+  // we're not done yet
+  return(false);
+}
+
+bool RF69::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
+  // get pointer to the correct position in data buffer
+  uint8_t* dataPtr = (uint8_t*)&data[*rcvLen];
+
+  // check how much data are we still expecting
+  uint8_t len = RADIOLIB_RF69_FIFO_THRESH - 1;
+  if(totalLen - *rcvLen < len) {
+    // we're nearly at the end
+    len = totalLen - *rcvLen;
+  }
+
+  // get the data
+  _mod->SPIreadRegisterBurst(RADIOLIB_RF69_REG_FIFO, len, dataPtr);
+  (*rcvLen) += (len);
+
+  // dump the padding byte
+  _mod->SPIreadRegister(RADIOLIB_RF69_REG_FIFO);
+
+  // clear flags
+  clearIRQFlags();
+
+  // check if we're done
+  if(*rcvLen >= totalLen) {
+    return(true);
+  }
+  return(false);
+}
+
+int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_RF69_STANDBY);
   RADIOLIB_ASSERT(state);
 
-  // set DIO pin mapping
-  state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO0_PACK_PACKET_SENT, 7, 6);
-  RADIOLIB_ASSERT(state);
-
   // clear interrupt flags
   clearIRQFlags();
+
+  // set DIO mapping
+  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+    state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO1_PACK_FIFO_NOT_EMPTY, 5, 4);
+  } else {
+    state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, RADIOLIB_RF69_DIO0_PACK_PACKET_SENT, 7, 6);
+  }
+  RADIOLIB_ASSERT(state);
 
   // optionally write packet length
   if (_packetLengthConfig == RADIOLIB_RF69_PACKET_FORMAT_VARIABLE) {
@@ -326,7 +412,18 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // write packet to FIFO
-  _mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, data, len);
+  size_t packetLen = len;
+  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+    packetLen = RADIOLIB_RF69_FIFO_THRESH - 1;
+    _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY, 7, 7);
+  }
+  _mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, data, packetLen);
+
+  // this is a hack, but it seems than in Stream mode, Rx FIFO level is getting triggered 1 byte before it should
+  // just add a padding byte that can be dropped without consequence
+  if(len > RADIOLIB_RF69_MAX_PACKET_LENGTH) {
+    _mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
+  }
 
   // enable +20 dBm operation
   if(_power > 17) {
@@ -852,7 +949,7 @@ int16_t RF69::config() {
   RADIOLIB_ASSERT(state);
 
   // set FIFO threshold
-  state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY | RADIOLIB_RF69_FIFO_THRESHOLD, 7, 0);
+  state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY | RADIOLIB_RF69_FIFO_THRESH, 7, 0);
   RADIOLIB_ASSERT(state);
 
   // set Rx timeouts

@@ -11,6 +11,8 @@
 
    Modules that can be used for Stream are:
     - SX127x/RFM9x (FSK mode only)
+    - RF69
+    - SX1231
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
