@@ -28,6 +28,7 @@ var class_c_c1101 =
     [ "setBitRate", "class_c_c1101.html#aa53427cabcda0778f287ed1d850bbe37", null ],
     [ "setCrcFiltering", "class_c_c1101.html#aafac40359c4a1bb01aae12da6b03be26", null ],
     [ "setDataShaping", "class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6", null ],
+    [ "setDIOMapping", "class_c_c1101.html#a1acad996e9452c504cf0f89806c46c8a", null ],
     [ "setDirectAction", "class_c_c1101.html#a5161fa10b19d857840579601ef565363", null ],
     [ "setEncoding", "class_c_c1101.html#ab4b98eb6af33d006306bb7514ed216ea", null ],
     [ "setFrequency", "class_c_c1101.html#a9592c023556c38c2b8066a23da96ae5e", null ],

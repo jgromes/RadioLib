@@ -218,6 +218,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a929662904e9af2611e098dc13b91c977"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a> ()</td></tr>
 <tr class="memdesc:a929662904e9af2611e098dc13b91c977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">More...</a><br /></td></tr>
 <tr class="separator:a929662904e9af2611e098dc13b91c977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
+<tr class="memdesc:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">More...</a><br /></td></tr>
+<tr class="separator:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -357,7 +360,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Length of last received packet in bytes. </dd></dl>
 
-<p>Implemented in <a class="el" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">SX127x</a>, <a class="el" href="class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987">SX126x</a>, <a class="el" href="class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0">CC1101</a>, <a class="el" href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">RF69</a>, <a class="el" href="class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735">SX128x</a>, <a class="el" href="class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10">Si443x</a>, and <a class="el" href="classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b">nRF24</a>.</p>
+<p>Implemented in <a class="el" href="class_s_x127x.html#a462fa74275e67c296328a01f361892d5">SX127x</a>, <a class="el" href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">RF69</a>, <a class="el" href="class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987">SX126x</a>, <a class="el" href="class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0">CC1101</a>, <a class="el" href="class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735">SX128x</a>, <a class="el" href="class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10">Si443x</a>, and <a class="el" href="classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b">nRF24</a>.</p>
 
 </div>
 </div>
@@ -594,7 +597,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">SX127x</a>, <a class="el" href="class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e">Si443x</a>, <a class="el" href="class_c_c1101.html#a8c79975a7bbe8a37f8214ecd1f69ba22">CC1101</a>, <a class="el" href="class_r_f69.html#a3983b66c83818b4082805bcafc712f00">RF69</a>, <a class="el" href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">SX126x</a>, <a class="el" href="class_s_x128x.html#a94bca43258b09217fb476a2d8db784bb">SX128x</a>, and <a class="el" href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">nRF24</a>.</p>
+<p>Implemented in <a class="el" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">SX127x</a>, <a class="el" href="class_r_f69.html#a3983b66c83818b4082805bcafc712f00">RF69</a>, <a class="el" href="class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e">Si443x</a>, <a class="el" href="class_c_c1101.html#a8c79975a7bbe8a37f8214ecd1f69ba22">CC1101</a>, <a class="el" href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">SX126x</a>, <a class="el" href="class_s_x128x.html#a94bca43258b09217fb476a2d8db784bb">SX128x</a>, and <a class="el" href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">nRF24</a>.</p>
 
 </div>
 </div>
@@ -751,6 +754,54 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 
 </div>
 </div>
+<a id="a47c1d94d2ad2fd7eb5d11480b44cc368"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47c1d94d2ad2fd7eb5d11480b44cc368">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::setDIOMapping </td>
+          <td>(</td>
+          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#adbea7515add3d81c3024ceb0d570266b">SX127x</a>, <a class="el" href="class_r_f69.html#a4b879c689b19036411d884f6657f95db">RF69</a>, and <a class="el" href="class_c_c1101.html#a1acad996e9452c504cf0f89806c46c8a">CC1101</a>.</p>
+
+</div>
+</div>
 <a id="ab76fe7d3e0f453a807b205161c980086"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab76fe7d3e0f453a807b205161c980086">&#9670;&nbsp;</a></span>setDirectAction()</h2>
 
@@ -895,7 +946,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">SX127x</a>, <a class="el" href="class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66">Si443x</a>, <a class="el" href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">CC1101</a>, <a class="el" href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">RF69</a>, <a class="el" href="class_s_x126x.html#a7cd95a5f2e39ae8fb1a3040e77fa21a3">SX126x</a>, <a class="el" href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">SX128x</a>, and <a class="el" href="classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4">nRF24</a>.</p>
+<p>Implemented in <a class="el" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">SX127x</a>, <a class="el" href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">RF69</a>, <a class="el" href="class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66">Si443x</a>, <a class="el" href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">CC1101</a>, <a class="el" href="class_s_x126x.html#a7cd95a5f2e39ae8fb1a3040e77fa21a3">SX126x</a>, <a class="el" href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">SX128x</a>, and <a class="el" href="classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4">nRF24</a>.</p>
 
 </div>
 </div>
@@ -1076,7 +1127,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_s_x127x.html#adc2f1379573b7a7b5ee8125ea3752083">SX127x</a>, <a class="el" href="class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314">Si443x</a>, <a class="el" href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">CC1101</a>, <a class="el" href="class_r_f69.html#a855dc194947b095b821ec1524ba6814c">RF69</a>, <a class="el" href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">SX128x</a>, <a class="el" href="class_s_x126x.html#ab843614658a79db7aa24e48d5b6e84f1">SX126x</a>, and <a class="el" href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">nRF24</a>.</p>
+<p>Implemented in <a class="el" href="class_s_x127x.html#adc2f1379573b7a7b5ee8125ea3752083">SX127x</a>, <a class="el" href="class_r_f69.html#a855dc194947b095b821ec1524ba6814c">RF69</a>, <a class="el" href="class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314">Si443x</a>, <a class="el" href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">CC1101</a>, <a class="el" href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">SX128x</a>, <a class="el" href="class_s_x126x.html#ab843614658a79db7aa24e48d5b6e84f1">SX126x</a>, and <a class="el" href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">nRF24</a>.</p>
 
 </div>
 </div>

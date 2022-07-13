@@ -247,6 +247,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a5cebec89fc0fa0f5ccbce28c6ce7d2dc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a5cebec89fc0fa0f5ccbce28c6ce7d2dc">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
 <tr class="memdesc:a5cebec89fc0fa0f5ccbce28c6ce7d2dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_c_c1101.html#a5cebec89fc0fa0f5ccbce28c6ce7d2dc">More...</a><br /></td></tr>
 <tr class="separator:a5cebec89fc0fa0f5ccbce28c6ce7d2dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1acad996e9452c504cf0f89806c46c8a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a1acad996e9452c504cf0f89806c46c8a">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
+<tr class="memdesc:a1acad996e9452c504cf0f89806c46c8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_c_c1101.html#a1acad996e9452c504cf0f89806c46c8a">More...</a><br /></td></tr>
+<tr class="separator:a1acad996e9452c504cf0f89806c46c8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab139a34e03a6fd5a781cd54da21d308f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab139a34e03a6fd5a781cd54da21d308f">transmit</a> (__FlashStringHelper *fstr, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ab139a34e03a6fd5a781cd54da21d308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino Flash String transmit method.  <a href="class_c_c1101.html#ab139a34e03a6fd5a781cd54da21d308f">More...</a><br /></td></tr>
 <tr class="separator:ab139a34e03a6fd5a781cd54da21d308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1048,6 +1051,54 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1acad996e9452c504cf0f89806c46c8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1acad996e9452c504cf0f89806c46c8a">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::setDIOMapping </td>
+          <td>(</td>
+          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">PhysicalLayer</a>.</p>
 
 </div>
 </div>

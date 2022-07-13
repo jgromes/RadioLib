@@ -49,6 +49,8 @@ var class_s_x127x =
     [ "setCurrentLimit", "class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002", null ],
     [ "setDio0Action", "class_s_x127x.html#ada53419d65f207f352124da7747c5960", null ],
     [ "setDio1Action", "class_s_x127x.html#afc844f7f3530f4076c8ea5f684c1b123", null ],
+    [ "setDIOMapping", "class_s_x127x.html#adbea7515add3d81c3024ceb0d570266b", null ],
+    [ "setDIOPreambleDetect", "class_s_x127x.html#a7b85344084b800966a46ace59dcb5277", null ],
     [ "setDirectAction", "class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238", null ],
     [ "setEncoding", "class_s_x127x.html#abad2d455012bd28d304589c8164390eb", null ],
     [ "setFHSSHoppingPeriod", "class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1", null ],

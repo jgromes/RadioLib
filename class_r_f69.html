@@ -296,6 +296,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a0ca79ae99c3e0c9d7c097a7acefd6faa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
 <tr class="memdesc:a0ca79ae99c3e0c9d7c097a7acefd6faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa">More...</a><br /></td></tr>
 <tr class="separator:a0ca79ae99c3e0c9d7c097a7acefd6faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b879c689b19036411d884f6657f95db"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a4b879c689b19036411d884f6657f95db">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
+<tr class="memdesc:a4b879c689b19036411d884f6657f95db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_r_f69.html#a4b879c689b19036411d884f6657f95db">More...</a><br /></td></tr>
+<tr class="separator:a4b879c689b19036411d884f6657f95db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab139a34e03a6fd5a781cd54da21d308f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ab139a34e03a6fd5a781cd54da21d308f">transmit</a> (__FlashStringHelper *fstr, uint8_t addr=0)</td></tr>
 <tr class="memdesc:ab139a34e03a6fd5a781cd54da21d308f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino Flash String transmit method.  <a href="class_r_f69.html#ab139a34e03a6fd5a781cd54da21d308f">More...</a><br /></td></tr>
 <tr class="separator:ab139a34e03a6fd5a781cd54da21d308f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1340,6 +1343,54 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4b879c689b19036411d884f6657f95db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b879c689b19036411d884f6657f95db">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setDIOMapping </td>
+          <td>(</td>
+          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">PhysicalLayer</a>.</p>
 
 </div>
 </div>
