@@ -903,6 +903,16 @@ void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 
+int16_t RF69::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+  if (pin > 5)
+    return RADIOLIB_ERR_INVALID_DIO_PIN;
+
+  if (pin < 4)
+    return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, value, 7 - 2 * pin, 6 - 2 * pin));
+  else
+    return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
+}
+
 int16_t RF69::getChipVersion() {
   return(_mod->SPIgetRegValue(RADIOLIB_RF69_REG_VERSION));
 }

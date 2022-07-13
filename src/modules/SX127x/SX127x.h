@@ -141,14 +141,6 @@
 #define RADIOLIB_SX127X_HOP_PERIOD_OFF                         0b00000000  //  7     0     number of periods between frequency hops; 0 = disabled
 #define RADIOLIB_SX127X_HOP_PERIOD_MAX                         0b11111111  //  7     0
 
-// SX127X_REG_DIO_MAPPING_1
-#define RADIOLIB_SX127X_DIO0_RX_DONE                           0b00000000  //  7     6
-#define RADIOLIB_SX127X_DIO0_TX_DONE                           0b01000000  //  7     6
-#define RADIOLIB_SX127X_DIO0_CAD_DONE                          0b10000000  //  7     6
-#define RADIOLIB_SX127X_DIO1_RX_TIMEOUT                        0b00000000  //  5     4
-#define RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL               0b00010000  //  5     4
-#define RADIOLIB_SX127X_DIO1_CAD_DETECTED                      0b00100000  //  5     4
-
 // SX127X_REG_IRQ_FLAGS
 #define RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_TIMEOUT              0b10000000  //  7     7     timeout
 #define RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_DONE                 0b01000000  //  6     6     packet reception complete
@@ -509,20 +501,64 @@
 #define RADIOLIB_SX127X_FLAG_LOW_BAT                           0b00000001  //  0     0     battery voltage dropped below threshold
 
 // SX127X_REG_DIO_MAPPING_1
+#define RADIOLIB_SX127X_DIO0_LORA_RX_DONE                      0b00000000  //  7     6
+#define RADIOLIB_SX127X_DIO0_LORA_TX_DONE                      0b01000000  //  7     6
+#define RADIOLIB_SX127X_DIO0_LORA_CAD_DONE                     0b10000000  //  7     6
+#define RADIOLIB_SX127X_DIO0_CONT_MODE_READY                   0b11000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_CONT_SYNC_ADDRESS                 0b00000000  //  7     6
-#define RADIOLIB_SX127X_DIO0_CONT_TX_READY                     0b00000000  //  7     6
-#define RADIOLIB_SX127X_DIO0_CONT_RSSI_RADIOLIB_PREAMBLE_DETECTED       0b01000000  //  7     6
+#define RADIOLIB_SX127X_DIO0_CONT_RSSI_PREAMBLE_DETECT         0b01000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_CONT_RX_READY                     0b10000000  //  7     6
+#define RADIOLIB_SX127X_DIO0_CONT_TX_READY                     0b00000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY                0b00000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT                  0b00000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_PACK_CRC_OK                       0b01000000  //  7     6
 #define RADIOLIB_SX127X_DIO0_PACK_TEMP_CHANGE_LOW_BAT          0b11000000  //  7     6
+#define RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT                   0b00000000  //  5     4
+#define RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL          0b01000000  //  5     4
+#define RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED                 0b10000000  //  5     4
 #define RADIOLIB_SX127X_DIO1_CONT_DCLK                         0b00000000  //  5     4
-#define RADIOLIB_SX127X_DIO1_CONT_RSSI_RADIOLIB_PREAMBLE_DETECTED       0b00010000  //  5     4
+#define RADIOLIB_SX127X_DIO1_CONT_RSSI_PREAMBLE_DETECT         0b00010000  //  5     4
 #define RADIOLIB_SX127X_DIO1_PACK_FIFO_LEVEL                   0b00000000  //  5     4
 #define RADIOLIB_SX127X_DIO1_PACK_FIFO_EMPTY                   0b00010000  //  5     4
 #define RADIOLIB_SX127X_DIO1_PACK_FIFO_FULL                    0b00100000  //  5     4
+#define RADIOLIB_SX127X_DIO2_LORA_FHSS_CHANGE_CHANNEL          0b00000000  //  3     2
 #define RADIOLIB_SX127X_DIO2_CONT_DATA                         0b00000000  //  3     2
+#define RADIOLIB_SX127X_DIO2_PACK_FIFO_FULL                    0b00000000  //  3     2
+#define RADIOLIB_SX127X_DIO2_PACK_RX_READY                     0b00000100  //  3     2
+#define RADIOLIB_SX127X_DIO2_PACK_TIMEOUT                      0b00001000  //  3     2
+#define RADIOLIB_SX127X_DIO2_PACK_SYNC_ADDRESS                 0b00011000  //  3     2
+#define RADIOLIB_SX127X_DIO3_LORA_CAD_DONE                     0b00000000  //  0     1
+#define RADIOLIB_SX127X_DIO3_LORA_VALID_HEADER                 0b00000001  //  0     1
+#define RADIOLIB_SX127X_DIO3_LORA_PAYLOAD_CRC_ERROR            0b00000010  //  0     1
+#define RADIOLIB_SX127X_DIO3_CONT_TIMEOUT                      0b00000000  //  0     1
+#define RADIOLIB_SX127X_DIO3_CONT_RSSI_PREAMBLE_DETECT         0b00000001  //  0     1
+#define RADIOLIB_SX127X_DIO3_CONT_TEMP_CHANGE_LOW_BAT          0b00000011  //  0     1
+#define RADIOLIB_SX127X_DIO3_PACK_FIFO_EMPTY                   0b00000000  //  0     1
+#define RADIOLIB_SX127X_DIO3_PACK_TX_READY                     0b00000001  //  0     1
+
+// SX127X_REG_DIO_MAPPING_2
+#define RADIOLIB_SX127X_DIO4_LORA_CAD_DETECTED                 0b10000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_LORA_PLL_LOCK                     0b01000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_CONT_TEMP_CHANGE_LOW_BAT          0b00000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_CONT_PLL_LOCK                     0b01000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_CONT_TIMEOUT                      0b10000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_CONT_MODE_READY                   0b11000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_PACK_TEMP_CHANGE_LOW_BAT          0b00000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_PACK_PLL_LOCK                     0b01000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_PACK_TIMEOUT                      0b10000000  //  7     6
+#define RADIOLIB_SX127X_DIO4_PACK_RSSI_PREAMBLE_DETECT         0b11000000  //  7     6
+#define RADIOLIB_SX127X_DIO5_LORA_MODE_READY                   0b00000000  //  5     4
+#define RADIOLIB_SX127X_DIO5_LORA_CLK_OUT                      0b00010000  //  5     4
+#define RADIOLIB_SX127X_DIO5_CONT_CLK_OUT                      0b00000000  //  5     4
+#define RADIOLIB_SX127X_DIO5_CONT_PLL_LOCK                     0b00010000  //  5     4
+#define RADIOLIB_SX127X_DIO5_CONT_RSSI_PREAMBLE_DETECT         0b00100000  //  5     4
+#define RADIOLIB_SX127X_DIO5_CONT_MODE_READY                   0b00110000  //  5     4
+#define RADIOLIB_SX127X_DIO5_PACK_CLK_OUT                      0b00000000  //  5     4
+#define RADIOLIB_SX127X_DIO5_PACK_PLL_LOCK                     0b00010000  //  5     4
+#define RADIOLIB_SX127X_DIO5_PACK_DATA                         0b00100000  //  5     4
+#define RADIOLIB_SX127X_DIO5_PACK_MODE_READY                   0b00110000  //  5     4
+#define RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT                0b00000001  //  0     0     
+#define RADIOLIB_SX127X_DIO_MAP_RSSI                           0b00000000  //  0     0     
 
 // SX1272_REG_PLL_HOP + SX1278_REG_PLL_HOP
 #define RADIOLIB_SX127X_FAST_HOP_OFF                           0b00000000  //  7     7     carrier frequency validated when FRF registers are written
@@ -1168,6 +1204,26 @@ class SX127x: public PhysicalLayer {
       \brief Clear the FHSS interrupt
     */
     void clearFHSSInt(void);
+
+    /*!
+      \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
+
+      \param pin Pin number onto which a signal is to be placed.
+
+      \param value The value that indicates which function to place on that pin. See chip datasheet for details.
+
+      \returns \ref status_codes
+    */
+    int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+
+    /*!
+      \brief Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.
+
+      \param usePreambleDetect Whether to use PreambleDetect (true) or RSSI (false) on the pins that are mapped to this function.
+
+      \returns \ref status_codes
+    */
+    int16_t setDIOPreambleDetect(bool usePreambleDetect);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:

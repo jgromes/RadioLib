@@ -362,10 +362,10 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   if(modem == RADIOLIB_SX127X_LORA) {
     // set DIO pin mapping
     if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {
-      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_RX_DONE | RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL, 7, 4);
+      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 7, 4);
     }
     else {
-      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_RX_DONE | RADIOLIB_SX127X_DIO1_RX_TIMEOUT, 7, 4);
+      state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT, 7, 4);
     }
 
     // set expected packet length for SF6
@@ -523,9 +523,9 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // set DIO mapping
     if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {
-      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE | RADIOLIB_SX127X_DIO1_FHSS_CHANGE_CHANNEL, 7, 4);
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_TX_DONE | RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 7, 4);
     } else {
-      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_TX_DONE, 7, 6);
+      _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_TX_DONE, 7, 6);
     }
 
     // apply fixes to errata
@@ -655,7 +655,7 @@ int16_t SX127x::startChannelScan() {
   RADIOLIB_ASSERT(state);
 
   // set DIO pin mapping
-  state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_CAD_DONE | RADIOLIB_SX127X_DIO1_CAD_DETECTED, 7, 4);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_CAD_DONE | RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED, 7, 4);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1520,6 +1520,20 @@ void SX127x::clearFHSSInt(void) {
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     return; //These are not the interrupts you are looking for
   }
+}
+
+int16_t SX127x::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+  if (pin > 5)
+    return RADIOLIB_ERR_INVALID_DIO_PIN;
+
+  if (pin < 4)
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, value, 7 - 2 * pin, 6 - 2 * pin));
+  else
+    return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
+}
+
+int16_t SX127x::setDIOPreambleDetect(bool usePreambleDetect) {
+  return _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, (usePreambleDetect) ? RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT : RADIOLIB_SX127X_DIO_MAP_RSSI, 0, 0);
 }
 
 #endif

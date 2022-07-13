@@ -932,6 +932,17 @@ class CC1101: public PhysicalLayer {
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
 
+    /*!
+      \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
+
+      \param pin Pin number onto which a signal is to be placed.
+
+      \param value The value that indicates which function to place on that pin. See chip datasheet for details.
+
+      \returns \ref status_codes
+    */
+    int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+
   #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
     protected:
   #endif

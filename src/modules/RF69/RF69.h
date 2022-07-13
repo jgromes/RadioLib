@@ -295,8 +295,38 @@
 #define RADIOLIB_RF69_DIO1_PACK_PLL_LOCK                       0b00110000  //  5     4
 #define RADIOLIB_RF69_DIO1_PACK_TIMEOUT                        0b00110000  //  5     4
 #define RADIOLIB_RF69_DIO2_CONT_DATA                           0b00000000  //  3     2
+#define RADIOLIB_RF69_DIO2_PACK_FIFO_NOT_EMPTY                 0b00000000  //  3     2
+#define RADIOLIB_RF69_DIO2_PACK_AUTO_MODE                      0b00001100  //  3     2
+#define RADIOLIB_RF69_DIO2_PACK_DATA                           0b00000100  //  3     2
+#define RADIOLIB_RF69_DIO3_CONT_AUTO_MODE                      0b00000010  //  0     1
+#define RADIOLIB_RF69_DIO3_CONT_RSSI                           0b00000000  //  0     1
+#define RADIOLIB_RF69_DIO3_CONT_RX_READY                       0b00000001  //  0     1
+#define RADIOLIB_RF69_DIO3_CONT_TIMEOUT                        0b00000011  //  0     1
+#define RADIOLIB_RF69_DIO3_CONT_TX_READY                       0b00000001  //  0     1
+#define RADIOLIB_RF69_DIO3_PACK_FIFO_FULL                      0b00000000  //  0     1
+#define RADIOLIB_RF69_DIO3_PACK_PLL_LOCK                       0b00000011  //  0     1
+#define RADIOLIB_RF69_DIO3_PACK_RSSI                           0b00000001  //  0     1
+#define RADIOLIB_RF69_DIO3_PACK_SYNC_ADDRESSS                  0b00000010  //  0     1
+#define RADIOLIB_RF69_DIO3_PACK_TX_READY                       0b00000001  //  0     1
 
 // RF69_REG_DIO_MAPPING_2
+#define RADIOLIB_RF69_DIO4_CONT_PLL_LOCK                       0b11000000  //  7     6
+#define RADIOLIB_RF69_DIO4_CONT_TIMEOUT                        0b00000000  //  7     6
+#define RADIOLIB_RF69_DIO4_CONT_RX_READY                       0b01000000  //  7     6
+#define RADIOLIB_RF69_DIO4_CONT_SYNC_ADDRESS                   0b10000000  //  7     6
+#define RADIOLIB_RF69_DIO4_CONT_TX_READY                       0b01000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_PLL_LOCK                       0b11000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_TIMEOUT                        0b00000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_RSSI                           0b01000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_RX_READY                       0b10000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_MODE_READY                     0b00000000  //  7     6
+#define RADIOLIB_RF69_DIO4_PACK_TX_READY                       0b01000000  //  7     6
+#define RADIOLIB_RF69_DIO5_CONT_MODE_READY                     0b00110000  //  5     4
+#define RADIOLIB_RF69_DIO5_CONT_CLK_OUT                        0b00000000  //  5     4
+#define RADIOLIB_RF69_DIO5_CONT_RSSI                           0b00010000  //  5     4
+#define RADIOLIB_RF69_DIO5_PACK_MODE_READY                     0b00110000  //  5     4
+#define RADIOLIB_RF69_DIO5_PACK_CLK_OUT                        0b00000000  //  5     4
+#define RADIOLIB_RF69_DIO5_PACK_DATA                           0b00010000  //  5     4
 #define RADIOLIB_RF69_CLK_OUT_FXOSC                            0b00000000  //  2     0     ClkOut frequency: F(XOSC)
 #define RADIOLIB_RF69_CLK_OUT_FXOSC_2                          0b00000001  //  2     0                       F(XOSC) / 2
 #define RADIOLIB_RF69_CLK_OUT_FXOSC_4                          0b00000010  //  2     0                       F(XOSC) / 4
@@ -968,6 +998,17 @@ class RF69: public PhysicalLayer {
       \param pin Pin on which to read.
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
+
+    /*!
+      \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
+
+      \param pin Pin number onto which a signal is to be placed.
+
+      \param value The value that indicates which function to place on that pin. See chip datasheet for details.
+
+      \returns \ref status_codes
+    */
+    int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:

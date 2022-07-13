@@ -203,6 +203,16 @@
 */
 #define RADIOLIB_ERR_LORA_HEADER_DAMAGED                       (-24)
 
+/*!
+  \brief The requested functionality is not supported for this device
+*/
+#define RADIOLIB_ERR_UNSUPPORTED                               (-25)
+
+/*!
+  \brief The specified DIO pin does not exist on this device
+*/
+#define RADIOLIB_ERR_INVALID_DIO_PIN                           (-26)
+
 // RF69-specific status codes
 
 /*!
