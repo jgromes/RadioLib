@@ -711,12 +711,25 @@ int16_t CC1101::setOOK(bool enableOOK) {
   return(setOutputPower(_power));
 }
 
-float CC1101::getRSSI() const {
+float CC1101::getRSSI() { 
   float rssi;
-  if(_rawRSSI >= 128) {
-    rssi = (((float)_rawRSSI - 256.0)/2.0) - 74.0;
+
+  if (_directMode) {
+    if(_rawRSSI >= 128) {
+      rssi = (((float)_rawRSSI - 256.0)/2.0) - 74.0;
+    } else {
+      rssi = (((float)_rawRSSI)/2.0) - 74.0;
+    }
   } else {
-    rssi = (((float)_rawRSSI)/2.0) - 74.0;
+    uint8_t rawRssi = SPIreadRegister(RADIOLIB_CC1101_REG_RSSI);
+    if (rawRssi >= 128)
+    {
+      rssi = ((rawRssi - 256) / 2) - 74;
+    }
+    else
+    {
+      rssi = (rawRssi / 2) - 74;
+    }
   }
   return(rssi);
 }
@@ -907,6 +920,7 @@ int16_t CC1101::directMode(bool sync) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   int16_t state = 0;
+  _directMode = sync;
   if (sync) {
     // set GDO0 and GDO2 mapping
   	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
