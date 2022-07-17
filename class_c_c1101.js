@@ -13,7 +13,7 @@ var class_c_c1101 =
     [ "getMod", "class_c_c1101.html#ad47b3b7bd67159638ff9afcfe002fc66", null ],
     [ "getPacketLength", "class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0", null ],
     [ "getPromiscuousMode", "class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6", null ],
-    [ "getRSSI", "class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551", null ],
+    [ "getRSSI", "class_c_c1101.html#a490b2aa48bd7e5728fa82882411910dc", null ],
     [ "packetMode", "class_c_c1101.html#a38f6978c757b0dd73e3ef98164a735a2", null ],
     [ "randomByte", "class_c_c1101.html#a7ecf49d530ea7c29dd755f56db17d833", null ],
     [ "readBit", "class_c_c1101.html#a5cebec89fc0fa0f5ccbce28c6ce7d2dc", null ],

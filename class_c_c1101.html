@@ -196,9 +196,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afa64d1ad4789d3146b38d14437234756"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#afa64d1ad4789d3146b38d14437234756">setOOK</a> (bool enableOOK)</td></tr>
 <tr class="memdesc:afa64d1ad4789d3146b38d14437234756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK.  <a href="class_c_c1101.html#afa64d1ad4789d3146b38d14437234756">More...</a><br /></td></tr>
 <tr class="separator:afa64d1ad4789d3146b38d14437234756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48fd0452d6f7d7d51ea7d23b2dbe1551"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551">getRSSI</a> () const</td></tr>
-<tr class="memdesc:a48fd0452d6f7d7d51ea7d23b2dbe1551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_c_c1101.html#a48fd0452d6f7d7d51ea7d23b2dbe1551">More...</a><br /></td></tr>
-<tr class="separator:a48fd0452d6f7d7d51ea7d23b2dbe1551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a490b2aa48bd7e5728fa82882411910dc"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a490b2aa48bd7e5728fa82882411910dc">getRSSI</a> ()</td></tr>
+<tr class="memdesc:a490b2aa48bd7e5728fa82882411910dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_c_c1101.html#a490b2aa48bd7e5728fa82882411910dc">More...</a><br /></td></tr>
+<tr class="separator:a490b2aa48bd7e5728fa82882411910dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59ca9e8956e308159949638bf327e5fb"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb">getLQI</a> () const</td></tr>
 <tr class="memdesc:a59ca9e8956e308159949638bf327e5fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets LQI (Link Quality Indicator) of the last received packet.  <a href="class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb">More...</a><br /></td></tr>
 <tr class="separator:a59ca9e8956e308159949638bf327e5fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -635,8 +635,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a48fd0452d6f7d7d51ea7d23b2dbe1551"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48fd0452d6f7d7d51ea7d23b2dbe1551">&#9670;&nbsp;</a></span>getRSSI()</h2>
+<a id="a490b2aa48bd7e5728fa82882411910dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a490b2aa48bd7e5728fa82882411910dc">&#9670;&nbsp;</a></span>getRSSI()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -645,13 +645,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">float CC1101::getRSSI </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. </p>
-<dl class="section return"><dt>Returns</dt><dd>Last packet RSSI in dBm. </dd></dl>
+<p>or in asynchronous direct mode the current RSSI level</p>
+<dl class="section return"><dt>Returns</dt><dd>RSSI in dBm. </dd></dl>
 
 </div>
 </div>
