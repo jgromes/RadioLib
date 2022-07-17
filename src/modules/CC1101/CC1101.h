@@ -791,9 +791,11 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
 
-      \returns Last packet RSSI in dBm.
+      or in asynchronous direct mode the current RSSI level
+
+      \returns RSSI in dBm.
     */
-    float getRSSI() const;
+    float getRSSI();
 
     /*!
       \brief Gets LQI (Link Quality Indicator) of the last received packet.
@@ -974,6 +976,7 @@ class CC1101: public PhysicalLayer {
 
     bool _promiscuous = false;
     bool _crcOn = true;
+    bool _directMode = true;
 
     uint8_t _syncWordLength = 2;
     int8_t _power = 0;

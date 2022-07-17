@@ -827,7 +827,7 @@ int16_t SX127x::setBitRate(float br) {
 
   // check allowed bit rate
   if(_ook) {
-    RADIOLIB_CHECK_RANGE(br, 1.2, 32.768, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 1.2, 32.768002, RADIOLIB_ERR_INVALID_BIT_RATE);      // Found that 32.768 is 32.768002
   } else {
     RADIOLIB_CHECK_RANGE(br, 1.2, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
