@@ -239,7 +239,7 @@
     #define RADIOLIB_CB_ARGS_DIGITAL_READ               (int, digitalRead, uint32_t ulPin)
     #define RADIOLIB_CB_ARGS_TONE                       (void, tone, uint8_t _pin, unsigned int frequency, unsigned long duration)
     #define RADIOLIB_CB_ARGS_NO_TONE                    (void, noTone, uint8_t _pin, bool destruct)
-    #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint32_t pin, void (*callback)(void), uint32_t mode)
+    #define RADIOLIB_CB_ARGS_ATTACH_INTERRUPT           (void, attachInterrupt, uint32_t pin, callback_function_t callback, uint32_t mode)
     #define RADIOLIB_CB_ARGS_DETACH_INTERRUPT           (void, detachInterrupt, uint32_t pin)
     #define RADIOLIB_CB_ARGS_YIELD                      (void, yield, void)
     #define RADIOLIB_CB_ARGS_DELAY                      (void, delay, uint32_t ms)

@@ -27,7 +27,7 @@ jobs:
           - esp8266:esp8266:generic
           - Intel:arc32:arduino_101
           - SparkFun:apollo3:sfe_artemis
-          - STM32:stm32:GenF3
+          - STMicroelectronics:stm32:GenF3
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
           - arduino:mbed_rp2040:pico
@@ -116,10 +116,10 @@ jobs:
             echo "::set-output name=warnings::'none'"
             echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
-          elif [[ "${{ contains(matrix.board, 'STM32:stm32') }}" == "true" ]]; then
+          elif [[ "${{ contains(matrix.board, 'STMicroelectronics:stm32') }}" == "true" ]]; then
             # STM32 (official core)
             echo "::set-output name=options:::pnum=BLACKPILL_F303CC"
-            echo "::set-output name=index-url::--additional-urls https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
+            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json"
 
           elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
             # STM32 (unofficial core)
