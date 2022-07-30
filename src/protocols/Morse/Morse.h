@@ -9,6 +9,10 @@
 #define RADIOLIB_MORSE_DASH                                     0b1
 #define RADIOLIB_MORSE_GUARDBIT                                 0b1
 #define RADIOLIB_MORSE_UNSUPORTED                               0xFF
+#define RADIOLIB_MORSE_ASCII_OFFSET                             32
+#define RADIOLIB_MORSE_INTER_SYMBOL                             0x00
+#define RADIOLIB_MORSE_CHAR_COMPLETE                            0x01
+#define RADIOLIB_MORSE_WORD_COMPLETE                            0x02
 
 // Morse character table: - using codes defined in ITU-R M.1677-1
 //                        - Morse code representation is saved LSb first, using additional bit as guard
@@ -124,6 +128,34 @@ class MorseClient {
     */
     size_t startSignal();
 
+    /*!
+      \brief Decode Morse symbol to ASCII.
+
+      \param symbol Morse code symbol, respresented as outlined in MorseTable.
+
+      \param len Symbol length (number of dots and dashes).
+
+      \returns ASCII character matching the symbol, or 0xFF if no match is found.
+    */
+    static char decode(uint8_t symbol, uint8_t len);
+
+    /*!
+      \brief Read Morse tone on input pin.
+
+      \param symbol Pointer to the symbol buffer.
+
+      \param len Pointer to the length counter.
+
+      \param low Low threshold for decision limit (dot length, pause length etc.), defaults to 0.75.
+
+      \param high High threshold for decision limit (dot length, pause length etc.), defaults to 1.25.
+
+      \returns 0 if not enough symbols were decoded, 1 if inter-character space was detected, 2 if inter-word space was detected.
+    */
+    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    int read(byte* symbol, byte* len, float low = 0.75f, float high = 1.25f);
+    #endif
+
     size_t write(const char* str);
     size_t write(uint8_t* buff, size_t len);
     size_t write(uint8_t b);
@@ -160,7 +192,17 @@ class MorseClient {
     #endif
 
     uint32_t _base = 0, _baseHz = 0;
+    float _basePeriod = 0.0f;
     uint16_t _dotLength = 0;
+    uint16_t _dashLength = 0;
+    uint16_t _letterSpace = 0;
+    uint16_t _wordSpace = 0;
+
+    // variables to keep decoding state
+    uint32_t signalCounter = 0;
+    uint32_t signalStart = 0;
+    uint32_t pauseCounter = 0;
+    uint32_t pauseStart = 0;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);

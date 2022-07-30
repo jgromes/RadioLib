@@ -373,6 +373,13 @@ uint32_t Module::micros() {
   return(cb_micros());
 }
 
+uint32_t Module::pulseIn(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS state, uint32_t timeout) {
+  if(cb_pulseIn == nullptr) {
+    return(0);
+  }
+  return(cb_pulseIn(pin, state, timeout));
+}
+
 void Module::begin() {
   if(cb_SPIbegin == nullptr) {
     return;

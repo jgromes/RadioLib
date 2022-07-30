@@ -20,8 +20,14 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
   _baseHz = base;
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
-  // calculate dot length (assumes PARIS as typical word)
+  // calculate tone period for decoding
+  _basePeriod = (1000000.0f/base)/2.0f;
+
+  // calculate symbol lengths (assumes PARIS as typical word)
   _dotLength = 1200 / speed;
+  _dashLength = 3*_dotLength;
+  _letterSpace = 3*_dotLength;
+  _wordSpace = 4*_dotLength;
 
   // configure for direct mode
   return(_phy->startDirect());
@@ -30,6 +36,78 @@ int16_t MorseClient::begin(float base, uint8_t speed) {
 size_t MorseClient::startSignal() {
   return(MorseClient::write('_'));
 }
+
+char MorseClient::decode(uint8_t symbol, uint8_t len) {
+  // add the guard bit
+  symbol |= (RADIOLIB_MORSE_DASH << len);
+
+  // iterate over the table
+  for(uint8_t i = 0; i < sizeof(MorseTable); i++) {
+    uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[i]);
+    if(code == symbol) {
+      // match, return the index + ASCII offset
+      return((char)(i + RADIOLIB_MORSE_ASCII_OFFSET));
+    }
+  }
+
+  // nothing found
+  return(RADIOLIB_MORSE_UNSUPORTED);
+}
+
+#if !defined(RADIOLIB_EXCLUDE_AFSK)
+int MorseClient::read(byte* symbol, byte* len, float low, float high) {
+  Module* mod = _phy->getMod();
+
+  // measure pulse duration in us
+  uint32_t duration = mod->pulseIn(_audio->_pin, LOW, 4*_basePeriod);
+
+  // decide if this is a signal, or pause
+  if((duration > low*_basePeriod) && (duration < high*_basePeriod)) {
+    // this is a signal
+    signalCounter++;
+  } else if(duration == 0) {
+    // this is a pause
+    pauseCounter++;
+  }
+
+  // update everything
+  if((pauseCounter > 0) && (signalCounter == 1)) {
+    // start of dot or dash
+    pauseCounter = 0;
+    signalStart = mod->millis();
+    uint32_t pauseLen = mod->millis() - pauseStart;
+
+    if((pauseLen >= low*(float)_letterSpace) && (pauseLen <= high*(float)_letterSpace)) {
+      return(RADIOLIB_MORSE_CHAR_COMPLETE);
+    } else if(pauseLen > _wordSpace) {
+      RADIOLIB_DEBUG_PRINTLN("\n<space>");
+      return(RADIOLIB_MORSE_WORD_COMPLETE);
+    }
+
+  } else if((signalCounter > 0) && (pauseCounter == 1)) {
+    // end of dot or dash
+    signalCounter = 0;
+    pauseStart = mod->millis();
+    uint32_t signalLen = mod->millis() - signalStart;
+
+    if((signalLen >= low*(float)_dotLength) && (signalLen <= high*(float)_dotLength)) {
+      RADIOLIB_DEBUG_PRINT('.');
+      (*symbol) |= (RADIOLIB_MORSE_DOT << (*len));
+      (*len)++;
+    } else if((signalLen >= low*(float)_dashLength) && (signalLen <= high*(float)_dashLength)) {
+      RADIOLIB_DEBUG_PRINT('-');
+      (*symbol) |= (RADIOLIB_MORSE_DASH << (*len));
+      (*len)++;
+    } else {
+      RADIOLIB_DEBUG_PRINT("<len=");
+      RADIOLIB_DEBUG_PRINT(signalLen);
+      RADIOLIB_DEBUG_PRINTLN("ms>");
+    }
+  }
+
+  return(RADIOLIB_MORSE_INTER_SYMBOL);
+}
+#endif
 
 size_t MorseClient::write(const char* str) {
   if(str == NULL) {
@@ -59,12 +137,12 @@ size_t MorseClient::write(uint8_t b) {
   if(b == ' ') {
     RADIOLIB_DEBUG_PRINTLN(F("space"));
     standby();
-    mod->delay(4 * _dotLength);
+    mod->delay(_wordSpace);
     return(1);
   }
 
   // get morse code from lookup table
-  uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[(uint8_t)(toupper(b) - 32)]);
+  uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[(uint8_t)(toupper(b) - RADIOLIB_MORSE_ASCII_OFFSET)]);
 
   // check unsupported characters
   if(code == RADIOLIB_MORSE_UNSUPORTED) {
@@ -78,7 +156,7 @@ size_t MorseClient::write(uint8_t b) {
     if (code & RADIOLIB_MORSE_DASH) {
       RADIOLIB_DEBUG_PRINT('-');
       transmitDirect(_base, _baseHz);
-      mod->delay(3 * _dotLength);
+      mod->delay(_dashLength);
     } else {
       RADIOLIB_DEBUG_PRINT('.');
       transmitDirect(_base, _baseHz);
@@ -95,7 +173,7 @@ size_t MorseClient::write(uint8_t b) {
 
   // letter space
   standby();
-  mod->delay(2 * _dotLength);
+  mod->delay(_letterSpace - _dotLength);
   RADIOLIB_DEBUG_PRINTLN();
 
   return(1);
