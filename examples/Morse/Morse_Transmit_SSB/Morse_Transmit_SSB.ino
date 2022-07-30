@@ -1,17 +1,19 @@
 /*
-   RadioLib Morse Transmit AFSK Example
+   RadioLib Morse Transmit SSB Example
 
    This example sends Morse code message using
-   SX1278's FSK modem. The data is modulated
-   as AFSK.
+   SX1278's FSK modem. The signal is an unmodulated
+   carrier wave, and may be demodulated in SSB mode.
 
-   Other modules that can be used for Morse Code
-   with AFSK modulation:
+   Other modules that can be used for Morse Code:
     - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
+    - SX126x
+    - nRF24
     - Si443x/RFM2x
+    - SX128x
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -34,12 +36,8 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // https://github.com/jgromes/RadioShield
 //SX1278 radio = RadioShield.ModuleA;
 
-// create AFSK client instance using the FSK module
-// pin 5 is connected to SX1278 DIO2
-AFSKClient audio(&radio, 5);
-
-// create Morse client instance using the AFSK instance
-MorseClient morse(&audio);
+// create Morse client instance using the FSK module
+MorseClient morse(&radio);
 
 void setup() {
   Serial.begin(9600);
@@ -62,9 +60,9 @@ void setup() {
 
   // initialize Morse client
   Serial.print(F("[Morse] Initializing ... "));
-  // AFSK tone frequency:         400 MHz
+  // carrier wave frequency:      434.0 MHz
   // speed:                       20 words per minute
-  state = morse.begin(400);
+  state = morse.begin(434.0);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {

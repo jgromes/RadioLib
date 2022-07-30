@@ -1,18 +1,17 @@
 /*
-   RadioLib Morse Transmit Example
+   RadioLib Morse Transmit AFSK Example
 
    This example sends Morse code message using
-   SX1278's FSK modem.
+   SX1278's FSK modem. The signal is modulated
+   as AFSK, and may be demodulated in FM mode.
 
-   Other modules that can be used for Morse Code:
+   Other modules that can be used for Morse Code
+   with AFSK modulation:
     - SX127x/RFM9x
     - RF69
     - SX1231
     - CC1101
-    - SX126x
-    - nRF24
     - Si443x/RFM2x
-    - SX128x
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -29,14 +28,18 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 radio = new Module(10, 2, 9, 3);
+SX1278 radio = new Module(5, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
 //SX1278 radio = RadioShield.ModuleA;
 
-// create Morse client instance using the FSK module
-MorseClient morse(&radio);
+// create AFSK client instance using the FSK module
+// pin 5 is connected to SX1278 DIO2
+AFSKClient audio(&radio, 10);
+
+// create Morse client instance using the AFSK instance
+MorseClient morse(&audio);
 
 void setup() {
   Serial.begin(9600);
@@ -59,9 +62,20 @@ void setup() {
 
   // initialize Morse client
   Serial.print(F("[Morse] Initializing ... "));
-  // base frequency:              434.0 MHz
+  // tone frequency:              400 Hz
   // speed:                       20 words per minute
-  state = morse.begin(434.0);
+  state = morse.begin(400);
+  if(state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("success!"));
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while(true);
+  }
+
+  // after that, set mode to OOK
+  Serial.print(F("[SX1278] Switching to OOK ... "));
+  state = radio.setOOK(true);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
