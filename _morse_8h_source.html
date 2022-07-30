@@ -97,147 +97,169 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_DASH                                     0b1</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_GUARDBIT                                 0b1</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_UNSUPORTED                               0xFF</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160; </div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// Morse character table: - using codes defined in ITU-R M.1677-1</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">//                        - Morse code representation is saved LSb first, using additional bit as guard</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="comment">//                        - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="comment">//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPORTED do not have ITU-R M.1677-1 equivalent</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    0b00,                         <span class="comment">// space</span></div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    0b110101,                     <span class="comment">// ! (unsupported)</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    0b1010010,                    <span class="comment">// &quot;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// # (unsupported)</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// $ (unsupported)</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// % (unsupported)</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &amp; (unsupported)</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    0b1011110,                    <span class="comment">// &#39;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    0b101101,                     <span class="comment">// (</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    0b1101101,                    <span class="comment">// )</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// * (unsupported)</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    0b101010,                     <span class="comment">// +</span></div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    0b1110011,                    <span class="comment">// ,</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    0b1100001,                    <span class="comment">// -</span></div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    0b1101010,                    <span class="comment">// .</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    0b101001,                     <span class="comment">// /</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    0b111111,                     <span class="comment">// 0</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    0b111110,                     <span class="comment">// 1</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    0b111100,                     <span class="comment">// 2</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    0b111000,                     <span class="comment">// 3</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    0b110000,                     <span class="comment">// 4</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    0b100000,                     <span class="comment">// 5</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    0b100001,                     <span class="comment">// 6</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    0b100011,                     <span class="comment">// 7</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    0b100111,                     <span class="comment">// 8</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    0b101111,                     <span class="comment">// 9</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    0b1000111,                    <span class="comment">// :</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ; (unsupported)</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &lt; (unsupported)</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    0b110001,                     <span class="comment">// =</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &gt; (unsupported)</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    0b1001100,                    <span class="comment">// ?</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    0b1010110,                    <span class="comment">// @</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    0b110,                        <span class="comment">// A</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    0b10001,                      <span class="comment">// B</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    0b10101,                      <span class="comment">// C</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    0b1001,                       <span class="comment">// D</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    0b10,                         <span class="comment">// E</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    0b10100,                      <span class="comment">// F</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    0b1011,                       <span class="comment">// G</span></div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    0b10000,                      <span class="comment">// H</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    0b100,                        <span class="comment">// I</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    0b11110,                      <span class="comment">// J</span></div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    0b1101,                       <span class="comment">// K</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    0b10010,                      <span class="comment">// L</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    0b111,                        <span class="comment">// M</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    0b101,                        <span class="comment">// N</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    0b1111,                       <span class="comment">// O</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    0b10110,                      <span class="comment">// P</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    0b11011,                      <span class="comment">// Q</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    0b1010,                       <span class="comment">// R</span></div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    0b1000,                       <span class="comment">// S</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    0b11,                         <span class="comment">// T</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    0b1100,                       <span class="comment">// U</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    0b11000,                      <span class="comment">// V</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    0b1110,                       <span class="comment">// W</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    0b11001,                      <span class="comment">// X</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    0b11101,                      <span class="comment">// Y</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    0b10011,                      <span class="comment">// Z</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// [ (unsupported)</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// \ (unsupported)</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ] (unsupported)</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    0b1101000,                    <span class="comment">// ^ (unsupported, used as alias for end of work)</span></div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    0b110101                      <span class="comment">// _ (unsupported, used as alias for starting signal)</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;};</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="class_morse_client.html">   89</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a> {</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;    int16_t <a class="code" href="class_morse_client.html#a516f19bb51b87ead7f7ed149f2ca92cf">begin</a>(<span class="keywordtype">float</span> base, uint8_t speed = 20);</div>
-<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">startSignal</a>();</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keywordtype">size_t</span> write(<span class="keyword">const</span> <span class="keywordtype">char</span>* str);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t b);</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_ASCII_OFFSET                             32</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_INTER_SYMBOL                             0x00</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_CHAR_COMPLETE                            0x01</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_WORD_COMPLETE                            0x02</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="comment">// Morse character table: - using codes defined in ITU-R M.1677-1</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">//                        - Morse code representation is saved LSb first, using additional bit as guard</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//                        - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPORTED do not have ITU-R M.1677-1 equivalent</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    0b00,                         <span class="comment">// space</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    0b110101,                     <span class="comment">// ! (unsupported)</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    0b1010010,                    <span class="comment">// &quot;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// # (unsupported)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// $ (unsupported)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// % (unsupported)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &amp; (unsupported)</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    0b1011110,                    <span class="comment">// &#39;</span></div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    0b101101,                     <span class="comment">// (</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    0b1101101,                    <span class="comment">// )</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// * (unsupported)</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    0b101010,                     <span class="comment">// +</span></div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    0b1110011,                    <span class="comment">// ,</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    0b1100001,                    <span class="comment">// -</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    0b1101010,                    <span class="comment">// .</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    0b101001,                     <span class="comment">// /</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    0b111111,                     <span class="comment">// 0</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    0b111110,                     <span class="comment">// 1</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    0b111100,                     <span class="comment">// 2</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    0b111000,                     <span class="comment">// 3</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    0b110000,                     <span class="comment">// 4</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    0b100000,                     <span class="comment">// 5</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    0b100001,                     <span class="comment">// 6</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    0b100011,                     <span class="comment">// 7</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    0b100111,                     <span class="comment">// 8</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    0b101111,                     <span class="comment">// 9</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    0b1000111,                    <span class="comment">// :</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ; (unsupported)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &lt; (unsupported)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    0b110001,                     <span class="comment">// =</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &gt; (unsupported)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    0b1001100,                    <span class="comment">// ?</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    0b1010110,                    <span class="comment">// @</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    0b110,                        <span class="comment">// A</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    0b10001,                      <span class="comment">// B</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    0b10101,                      <span class="comment">// C</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    0b1001,                       <span class="comment">// D</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    0b10,                         <span class="comment">// E</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    0b10100,                      <span class="comment">// F</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    0b1011,                       <span class="comment">// G</span></div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    0b10000,                      <span class="comment">// H</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    0b100,                        <span class="comment">// I</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    0b11110,                      <span class="comment">// J</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    0b1101,                       <span class="comment">// K</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    0b10010,                      <span class="comment">// L</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    0b111,                        <span class="comment">// M</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    0b101,                        <span class="comment">// N</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    0b1111,                       <span class="comment">// O</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    0b10110,                      <span class="comment">// P</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    0b11011,                      <span class="comment">// Q</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    0b1010,                       <span class="comment">// R</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    0b1000,                       <span class="comment">// S</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    0b11,                         <span class="comment">// T</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    0b1100,                       <span class="comment">// U</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    0b11000,                      <span class="comment">// V</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    0b1110,                       <span class="comment">// W</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    0b11001,                      <span class="comment">// X</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    0b11101,                      <span class="comment">// Y</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    0b10011,                      <span class="comment">// Z</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// [ (unsupported)</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// \ (unsupported)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ] (unsupported)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    0b1101000,                    <span class="comment">// ^ (unsupported, used as alias for end of work)</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    0b110101                      <span class="comment">// _ (unsupported, used as alias for starting signal)</span></div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="class_morse_client.html">   93</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a> {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    int16_t <a class="code" href="class_morse_client.html#a516f19bb51b87ead7f7ed149f2ca92cf">begin</a>(<span class="keywordtype">float</span> base, uint8_t speed = 20);</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">startSignal</a>();</div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keywordtype">size_t</span> print(__FlashStringHelper*);</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keyword">const</span> String &amp;);</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keyword">const</span> <span class="keywordtype">char</span>[]);</div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">char</span>);</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">double</span>, <span class="keywordtype">int</span> = 2);</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7">decode</a>(uint8_t symbol, uint8_t len);</div>
 <div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">size_t</span> println(__FlashStringHelper*);</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keyword">const</span> String &amp;);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keyword">const</span> <span class="keywordtype">char</span>[]);</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">char</span>);</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
-<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">double</span>, <span class="keywordtype">int</span> = 2);</div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    uint32_t _base = 0, _baseHz = 0;</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    uint16_t _dotLength = 0;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">size_t</span> printNumber(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, uint8_t);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">size_t</span> printFloat(<span class="keywordtype">double</span>, uint8_t);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    int16_t standby();</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;};</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_morse_client.html#a709093c92d69f29f1520f0b290af374b">read</a>(<span class="keywordtype">byte</span>* symbol, <span class="keywordtype">byte</span>* len, <span class="keywordtype">float</span> low = 0.75f, <span class="keywordtype">float</span> high = 1.25f);</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">size_t</span> write(<span class="keyword">const</span> <span class="keywordtype">char</span>* str);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t b);</div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">size_t</span> print(__FlashStringHelper*);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keyword">const</span> String &amp;);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keyword">const</span> <span class="keywordtype">char</span>[]);</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">char</span>);</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    <span class="keywordtype">size_t</span> print(<span class="keywordtype">double</span>, <span class="keywordtype">int</span> = 2);</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160; </div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">size_t</span> println(__FlashStringHelper*);</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keyword">const</span> String &amp;);</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keyword">const</span> <span class="keywordtype">char</span>[]);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">char</span>);</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, <span class="keywordtype">int</span> = DEC);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keywordtype">size_t</span> println(<span class="keywordtype">double</span>, <span class="keywordtype">int</span> = 2);</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    uint32_t _base = 0, _baseHz = 0;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordtype">float</span> _basePeriod = 0.0f;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;    uint16_t _dotLength = 0;</div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    uint16_t _dashLength = 0;</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    uint16_t _letterSpace = 0;</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    uint16_t _wordSpace = 0;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="comment">// variables to keep decoding state</span></div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    uint32_t signalCounter = 0;</div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    uint32_t signalStart = 0;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    uint32_t pauseCounter = 0;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    uint32_t pauseStart = 0;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">size_t</span> printNumber(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, uint8_t);</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    <span class="keywordtype">size_t</span> printFloat(<span class="keywordtype">double</span>, uint8_t);</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    int16_t standby();</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;};</div>
+<div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
+<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:17</div></div>
-<div class="ttc" id="aclass_morse_client_html"><div class="ttname"><a href="class_morse_client.html">MorseClient</a></div><div class="ttdoc">Client for Morse Code communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> Morse.h:89</div></div>
+<div class="ttc" id="aclass_morse_client_html_a709093c92d69f29f1520f0b290af374b"><div class="ttname"><a href="class_morse_client.html#a709093c92d69f29f1520f0b290af374b">MorseClient::read</a></div><div class="ttdeci">int read(byte *symbol, byte *len, float low=0.75f, float high=1.25f)</div><div class="ttdoc">Read Morse tone on input pin.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:58</div></div>
+<div class="ttc" id="aclass_morse_client_html"><div class="ttname"><a href="class_morse_client.html">MorseClient</a></div><div class="ttdoc">Client for Morse Code communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> Morse.h:93</div></div>
 <div class="ttc" id="aclass_morse_client_html_aeade3a433da40e6a9f28688f2e6e3b5a"><div class="ttname"><a href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient::MorseClient</a></div><div class="ttdeci">MorseClient(PhysicalLayer *phy)</div><div class="ttdoc">Constructor for 2-FSK mode.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:4</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
+<div class="ttc" id="aclass_morse_client_html_abd1515c8e6c3ddade280be53f612ece7"><div class="ttname"><a href="class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7">MorseClient::decode</a></div><div class="ttdeci">static char decode(uint8_t symbol, uint8_t len)</div><div class="ttdoc">Decode Morse symbol to ASCII.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:40</div></div>
 <div class="ttc" id="aclass_morse_client_html_a516f19bb51b87ead7f7ed149f2ca92cf"><div class="ttname"><a href="class_morse_client.html#a516f19bb51b87ead7f7ed149f2ca92cf">MorseClient::begin</a></div><div class="ttdeci">int16_t begin(float base, uint8_t speed=20)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:18</div></div>
-<div class="ttc" id="aclass_morse_client_html_a3c718208786f8fe55f30eee990ec28e3"><div class="ttname"><a href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">MorseClient::startSignal</a></div><div class="ttdeci">size_t startSignal()</div><div class="ttdoc">Send start signal.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:30</div></div>
+<div class="ttc" id="aclass_morse_client_html_a3c718208786f8fe55f30eee990ec28e3"><div class="ttname"><a href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">MorseClient::startSignal</a></div><div class="ttdeci">size_t startSignal()</div><div class="ttdoc">Send start signal.</div><div class="ttdef"><b>Definition:</b> Morse.cpp:36</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

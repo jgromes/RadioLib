@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('class_morse_client.html',''); initResi
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="class_morse_client-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">MorseClient Class Reference</div>  </div>
@@ -109,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3c718208786f8fe55f30eee990ec28e3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">startSignal</a> ()</td></tr>
 <tr class="memdesc:a3c718208786f8fe55f30eee990ec28e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send start signal.  <a href="class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3">More...</a><br /></td></tr>
 <tr class="separator:a3c718208786f8fe55f30eee990ec28e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709093c92d69f29f1520f0b290af374b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_morse_client.html#a709093c92d69f29f1520f0b290af374b">read</a> (byte *symbol, byte *len, float low=0.75f, float high=1.25f)</td></tr>
+<tr class="memdesc:a709093c92d69f29f1520f0b290af374b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read Morse tone on input pin.  <a href="class_morse_client.html#a709093c92d69f29f1520f0b290af374b">More...</a><br /></td></tr>
+<tr class="separator:a709093c92d69f29f1520f0b290af374b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1be826249b4936e2b0bca20311714726"><td class="memItemLeft" align="right" valign="top"><a id="a1be826249b4936e2b0bca20311714726"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const char *str)</td></tr>
 <tr class="separator:a1be826249b4936e2b0bca20311714726"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -181,6 +185,12 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (unsign
 <tr class="memitem:af466855a342b3cc70b496a79caf65232"><td class="memItemLeft" align="right" valign="top"><a id="af466855a342b3cc70b496a79caf65232"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double, int=2)</td></tr>
 <tr class="separator:af466855a342b3cc70b496a79caf65232"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:abd1515c8e6c3ddade280be53f612ece7"><td class="memItemLeft" align="right" valign="top">static char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7">decode</a> (uint8_t symbol, uint8_t len)</td></tr>
+<tr class="memdesc:abd1515c8e6c3ddade280be53f612ece7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode Morse symbol to ASCII.  <a href="class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7">More...</a><br /></td></tr>
+<tr class="separator:abd1515c8e6c3ddade280be53f612ece7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client for Morse Code communication. The public interface is the same as Arduino Serial. </p>
@@ -289,6 +299,104 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="abd1515c8e6c3ddade280be53f612ece7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd1515c8e6c3ddade280be53f612ece7">&#9670;&nbsp;</a></span>decode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">char MorseClient::decode </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>symbol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Decode Morse symbol to ASCII. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">symbol</td><td>Morse code symbol, respresented as outlined in MorseTable.</td></tr>
+    <tr><td class="paramname">len</td><td>Symbol length (number of dots and dashes).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ASCII character matching the symbol, or 0xFF if no match is found. </dd></dl>
+
+</div>
+</div>
+<a id="a709093c92d69f29f1520f0b290af374b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a709093c92d69f29f1520f0b290af374b">&#9670;&nbsp;</a></span>read()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MorseClient::read </td>
+          <td>(</td>
+          <td class="paramtype">byte *&#160;</td>
+          <td class="paramname"><em>symbol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">byte *&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>low</em> = <code>0.75f</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>high</em> = <code>1.25f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read Morse tone on input pin. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">symbol</td><td>Pointer to the symbol buffer.</td></tr>
+    <tr><td class="paramname">len</td><td>Pointer to the length counter.</td></tr>
+    <tr><td class="paramname">low</td><td>Low threshold for decision limit (dot length, pause length etc.), defaults to 0.75.</td></tr>
+    <tr><td class="paramname">high</td><td>High threshold for decision limit (dot length, pause length etc.), defaults to 1.25.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 if not enough symbols were decoded, 1 if inter-character space was detected, 2 if inter-word space was detected. </dd></dl>
 
 </div>
 </div>

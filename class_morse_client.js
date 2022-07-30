@@ -24,6 +24,7 @@ var class_morse_client =
     [ "println", "class_morse_client.html#a9094ea2ccb2528be5a830485575e2b5e", null ],
     [ "println", "class_morse_client.html#a95d0edd2ab9a590668c6aaa67a893c49", null ],
     [ "println", "class_morse_client.html#ae1dd17e96858c9b6948ee7e5871c7efd", null ],
+    [ "read", "class_morse_client.html#a709093c92d69f29f1520f0b290af374b", null ],
     [ "startSignal", "class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3", null ],
     [ "write", "class_morse_client.html#a1be826249b4936e2b0bca20311714726", null ],
     [ "write", "class_morse_client.html#a9b46b2755abd59ece4abd69fab4f7808", null ],
