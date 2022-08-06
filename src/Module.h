@@ -366,11 +366,11 @@ class Module {
     // helper functions to set up SPI overrides on Arduino
     #if defined(RADIOLIB_BUILD_ARDUINO)
     void SPIbegin();
-    virtual void SPIbeginTransaction();
-    uint8_t SPItransfer(uint8_t b);
-    virtual void SPIendTransaction();
     void SPIend();
     #endif
+    virtual void SPIbeginTransaction();
+    virtual uint8_t SPItransfer(uint8_t b);
+    virtual void SPIendTransaction();
 
     /*!
       \brief Function to reflect bits within a byte.

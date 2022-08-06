@@ -105,13 +105,16 @@ Module& Module::operator=(const Module& mod) {
 void Module::init() {
   this->pinMode(_cs, OUTPUT);
   this->digitalWrite(_cs, HIGH);
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(_initInterface) {
     (this->*cb_SPIbegin)();
   }
+#endif
 }
 
 void Module::term() {
   // stop hardware interfaces (if they were initialized by the library)
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(!_initInterface) {
     return;
   }
@@ -119,6 +122,7 @@ void Module::term() {
   if(_spi != nullptr) {
     this->SPIend();
   }
+#endif
 }
 
 int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
@@ -381,57 +385,75 @@ uint32_t Module::pulseIn(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS state, uint3
 }
 
 void Module::begin() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIbegin == nullptr) {
     return;
   }
   (this->*cb_SPIbegin)();
+#endif
 }
 
 void Module::beginTransaction() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIbeginTransaction == nullptr) {
     return;
   }
   (this->*cb_SPIbeginTransaction)();
+#endif
 }
 
 uint8_t Module::transfer(uint8_t b) {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPItransfer == nullptr) {
     return(0xFF);
   }
   return((this->*cb_SPItransfer)(b));
+#endif
 }
 
 void Module::endTransaction() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIendTransaction == nullptr) {
     return;
   }
   (this->*cb_SPIendTransaction)();
+#endif
 }
 
 void Module::end() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIend == nullptr) {
     return;
   }
   (this->*cb_SPIend)();
+#endif
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 void Module::SPIbegin() {
   _spi->begin();
 }
+#endif
 
 void Module::SPIbeginTransaction() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   _spi->beginTransaction(_spiSettings);
+#endif
 }
 
 uint8_t Module::SPItransfer(uint8_t b) {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   return(_spi->transfer(b));
+#endif
 }
 
 void Module::SPIendTransaction() {
+#if defined(RADIOLIB_BUILD_ARDUINO)
   _spi->endTransaction();
+#endif
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 void Module::SPIend() {
   _spi->end();
 }

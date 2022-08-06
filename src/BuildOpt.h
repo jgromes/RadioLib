@@ -886,6 +886,7 @@
   #define RADIOLIB_PLATFORM                           "Generic"
 
   // platform properties may be defined here, or somewhere else in the build system
+  #include "noarduino.h"
 
 #endif
 
@@ -1019,11 +1020,11 @@
 #define RADIOLIB_REST(arg, ...) __VA_ARGS__
 #define RADIOLIB_EXP(...) __VA_ARGS__
 
-#define RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, FUNC, ...) public: typedef RET (*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;
+#define RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, FUNC, ...) public: typedef RET (*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC = nullptr;
 #define RADIOLIB_GENERATE_CALLBACK_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_RET_FUNC(RET, __VA_ARGS__)
 #define RADIOLIB_GENERATE_CALLBACK(CB) RADIOLIB_GENERATE_CALLBACK_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))
 
-#define RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, FUNC, ...) public: typedef RET (Module::*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC;
+#define RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, FUNC, ...) public: typedef RET (Module::*FUNC##_cb_t)(__VA_ARGS__); void setCb_##FUNC(FUNC##_cb_t cb) { cb_##FUNC = cb; }; private: FUNC##_cb_t cb_##FUNC = nullptr;
 #define RADIOLIB_GENERATE_CALLBACK_SPI_RET(RET, ...) RADIOLIB_GENERATE_CALLBACK_SPI_RET_FUNC(RET, __VA_ARGS__)
 #define RADIOLIB_GENERATE_CALLBACK_SPI(CB) RADIOLIB_GENERATE_CALLBACK_SPI_RET(RADIOLIB_EXP(RADIOLIB_FIRST CB), RADIOLIB_EXP(RADIOLIB_REST CB))
 
