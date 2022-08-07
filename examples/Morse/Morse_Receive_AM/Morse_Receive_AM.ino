@@ -95,8 +95,8 @@ void loop() {
   // try to read a new symbol
   int state = morse.read(&symbol, &len);
 
-  // check if we have a complete character
-  if(state == RADIOLIB_MORSE_CHAR_COMPLETE) {
+  // check if we have something to decode
+  if(state != RADIOLIB_MORSE_INTER_SYMBOL) {
     // decode and print
     Serial.print(MorseClient::decode(symbol, len));
 
@@ -104,9 +104,12 @@ void loop() {
     symbol = 0;
     len = 0;
 
-  } else if(state == RADIOLIB_MORSE_WORD_COMPLETE) {
-    // inter-word space, interpret that as a new line
-    Serial.println();
-
+    // check if we have a complete word
+    if(state == RADIOLIB_MORSE_WORD_COMPLETE) {
+      // inter-word space, interpret that as a new line
+      Serial.println();
+    }
+  
   }
+
 }
