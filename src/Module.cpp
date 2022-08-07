@@ -34,6 +34,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   setCb_delayMicroseconds(::delayMicroseconds);
   setCb_millis(::millis);
   setCb_micros(::micros);
+  setCb_pulseIn(::pulseIn);
   setCb_SPIbegin(&Module::SPIbegin);
   setCb_SPIbeginTransaction(&Module::beginTransaction);
   setCb_SPItransfer(&Module::transfer);
@@ -68,6 +69,7 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   setCb_delayMicroseconds(::delayMicroseconds);
   setCb_millis(::millis);
   setCb_micros(::micros);
+  setCb_pulseIn(::pulseIn);
   setCb_SPIbegin(&Module::SPIbegin);
   setCb_SPIbeginTransaction(&Module::beginTransaction);
   setCb_SPItransfer(&Module::transfer);
