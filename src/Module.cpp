@@ -272,6 +272,11 @@ RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
   return(cb_digitalRead(pin));
 }
 
+#if defined(ESP32)
+// we need to cache the previous tone value for emulation on ESP32
+int32_t prev = -1;
+#endif
+
 void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value, uint32_t duration) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED)
   if((pin == RADIOLIB_NC) || (cb_tone == nullptr)) {
@@ -285,8 +290,13 @@ void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value, uint32_t duration) {
     #if defined(ESP32)
       // ESP32 tone() emulation
       (void)duration;
-      ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
-      ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, value);
+      if(prev == -1) {
+        ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
+      }
+      if(prev != value) {
+        ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, value);
+      }
+      prev = value;
     #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
       // better tone for mbed OS boards
       (void)duration;
@@ -320,6 +330,7 @@ void Module::noTone(RADIOLIB_PIN_TYPE pin) {
       // ESP32 tone() emulation
       ledcDetachPin(pin);
       ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
+      prev = -1;
     #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
       // better tone for mbed OS boards
       (void)pin;
