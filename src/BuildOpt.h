@@ -108,6 +108,7 @@
   //#define RADIOLIB_EXCLUDE_MORSE
   //#define RADIOLIB_EXCLUDE_RTTY
   //#define RADIOLIB_EXCLUDE_SSTV
+  //#define RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 
 #else
   #if defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(ARDUINO_ARCH_MEGAAVR))

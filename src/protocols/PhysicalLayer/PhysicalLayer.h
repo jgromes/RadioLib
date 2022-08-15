@@ -261,6 +261,7 @@ class PhysicalLayer {
     */
     int16_t startDirect();
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Set sync word to be used to determine start of packet in direct reception mode.
 
@@ -299,6 +300,7 @@ class PhysicalLayer {
       \returns Byte from direct mode buffer.
     */
     uint8_t read();
+    #endif
 
     /*!
       \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).
@@ -311,8 +313,10 @@ class PhysicalLayer {
     */
     virtual int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
   protected:
     void updateDirectBuffer(uint8_t bit);
+#endif
 
 #if !defined(RADIOLIB_GODMODE)
   private:
@@ -320,6 +324,7 @@ class PhysicalLayer {
     float _freqStep;
     size_t _maxPacketLength;
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     uint8_t _bufferBitPos;
     uint8_t _bufferWritePos;
     uint8_t _bufferReadPos;
@@ -329,6 +334,7 @@ class PhysicalLayer {
     uint8_t _directSyncWordLen;
     uint32_t _directSyncWordMask;
     bool _gotSync;
+    #endif
 
     virtual Module* getMod() = 0;
 

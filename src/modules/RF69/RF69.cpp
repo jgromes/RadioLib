@@ -895,6 +895,7 @@ uint8_t RF69::randomByte() {
   return(randByte);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void RF69::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
@@ -902,15 +903,18 @@ void RF69::setDirectAction(void (*func)(void)) {
 void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
+#endif
 
 int16_t RF69::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
-  if (pin > 5)
-    return RADIOLIB_ERR_INVALID_DIO_PIN;
+  if(pin > 5) {
+    return(RADIOLIB_ERR_INVALID_DIO_PIN);
+  }
 
-  if (pin < 4)
+  if(pin < 4) {
     return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, value, 7 - 2 * pin, 6 - 2 * pin));
-  else
-    return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
+  }
+
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
 }
 
 int16_t RF69::getChipVersion() {

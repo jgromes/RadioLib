@@ -928,6 +928,7 @@ class SX126x: public PhysicalLayer {
   */
    uint8_t randomByte();
 
+   #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
    /*!
      \brief Dummy method, to ensure PhysicalLayer compatibility.
 
@@ -941,6 +942,8 @@ class SX126x: public PhysicalLayer {
      \param pin Ignored.
    */
    void readBit(RADIOLIB_PIN_TYPE pin);
+   #endif
+
 
 #if !defined(RADIOLIB_GODMODE)
   protected:

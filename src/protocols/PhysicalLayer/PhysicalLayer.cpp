@@ -3,8 +3,10 @@
 PhysicalLayer::PhysicalLayer(float freqStep, size_t maxPacketLength) {
   _freqStep = freqStep;
   _maxPacketLength = maxPacketLength;
+  #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
   _bufferBitPos = 0;
   _bufferWritePos = 0;
+  #endif
 }
 
 int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
@@ -188,6 +190,7 @@ int16_t PhysicalLayer::startDirect() {
   return(state);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 int16_t PhysicalLayer::available() {
   return(_bufferWritePos);
 }
@@ -246,6 +249,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     }
   }
 }
+#endif
 
 int16_t PhysicalLayer::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
   return(RADIOLIB_ERR_UNSUPPORTED);

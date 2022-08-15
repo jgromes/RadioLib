@@ -1233,6 +1233,7 @@ uint8_t SX126x::randomByte() {
   return(randByte);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX126x::setDirectAction(void (*func)(void)) {
   // SX126x is unable to perform direct mode reception
   // this method is implemented only for PhysicalLayer compatibility
@@ -1244,6 +1245,7 @@ void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;
 }
+#endif
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // set mode to standby

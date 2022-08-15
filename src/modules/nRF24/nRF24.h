@@ -473,6 +473,7 @@ class nRF24: public PhysicalLayer {
    */
     uint8_t randomByte();
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
 
@@ -486,6 +487,7 @@ class nRF24: public PhysicalLayer {
       \param pin Ignored.
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
+    #endif
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:

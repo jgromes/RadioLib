@@ -589,6 +589,7 @@ int16_t Si443x::getChipVersion() {
   return(_mod->SPIgetRegValue(RADIOLIB_SI443X_REG_DEVICE_VERSION));
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void Si443x::setDirectAction(void (*func)(void)) {
   setIrqAction(func);
 }
@@ -596,6 +597,7 @@ void Si443x::setDirectAction(void (*func)(void)) {
 void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
+#endif
 
 int16_t Si443x::fixedPacketLengthMode(uint8_t len) {
   return(Si443x::setPacketMode(RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON, len));

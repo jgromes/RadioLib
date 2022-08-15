@@ -516,6 +516,7 @@ uint8_t nRF24::randomByte() {
   return(0);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void nRF24::setDirectAction(void (*func)(void)) {
   // nRF24 is unable to perform direct mode actions
   // this method is implemented only for PhysicalLayer compatibility
@@ -527,6 +528,7 @@ void nRF24::readBit(RADIOLIB_PIN_TYPE pin) {
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;
 }
+#endif
 
 void nRF24::clearIRQ() {
   // clear status bits

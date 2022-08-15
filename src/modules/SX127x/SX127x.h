@@ -557,8 +557,8 @@
 #define RADIOLIB_SX127X_DIO5_PACK_PLL_LOCK                     0b00010000  //  5     4
 #define RADIOLIB_SX127X_DIO5_PACK_DATA                         0b00100000  //  5     4
 #define RADIOLIB_SX127X_DIO5_PACK_MODE_READY                   0b00110000  //  5     4
-#define RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT                0b00000001  //  0     0     
-#define RADIOLIB_SX127X_DIO_MAP_RSSI                           0b00000000  //  0     0     
+#define RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT                0b00000001  //  0     0
+#define RADIOLIB_SX127X_DIO_MAP_RSSI                           0b00000000  //  0     0
 
 // SX1272_REG_PLL_HOP + SX1278_REG_PLL_HOP
 #define RADIOLIB_SX127X_FAST_HOP_OFF                           0b00000000  //  7     7     carrier frequency validated when FRF registers are written
@@ -1163,6 +1163,7 @@ class SX127x: public PhysicalLayer {
     */
     int16_t invertIQ(bool invertIQ);
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
 
@@ -1176,6 +1177,7 @@ class SX127x: public PhysicalLayer {
       \param pin Pin on which to read.
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
+    #endif
 
     /*!
       \brief Sets the hopping period and enables FHSS

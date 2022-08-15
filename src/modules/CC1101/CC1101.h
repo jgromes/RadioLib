@@ -920,6 +920,7 @@ class CC1101: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
 
@@ -933,6 +934,7 @@ class CC1101: public PhysicalLayer {
       \param pin Pin on which to read.
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
+    #endif
 
     /*!
       \brief Configure DIO pin mapping to get a given signal on a DIO pin (if available).

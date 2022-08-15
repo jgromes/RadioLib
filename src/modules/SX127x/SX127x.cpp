@@ -1493,6 +1493,7 @@ int16_t SX127x::invertIQ(bool invertIQ) {
   return(state);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX127x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
@@ -1500,6 +1501,7 @@ void SX127x::setDirectAction(void (*func)(void)) {
 void SX127x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
+#endif
 
 int16_t SX127x::setFHSSHoppingPeriod(uint8_t freqHoppingPeriod) {
   return(_mod->SPIsetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD, freqHoppingPeriod));

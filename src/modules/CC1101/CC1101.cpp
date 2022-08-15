@@ -890,6 +890,7 @@ int16_t CC1101::getChipVersion() {
   return(SPIgetRegValue(RADIOLIB_CC1101_REG_VERSION));
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void CC1101::setDirectAction(void (*func)(void)) {
   setGdo0Action(func);
 }
@@ -897,6 +898,7 @@ void CC1101::setDirectAction(void (*func)(void)) {
 void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
+#endif
 
 int16_t CC1101::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
   if (pin > 2)

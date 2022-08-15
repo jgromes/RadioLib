@@ -802,6 +802,7 @@ class Si443x: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
 
@@ -815,6 +816,7 @@ class Si443x: public PhysicalLayer {
       \param pin Pin on which to read.
     */
     void readBit(RADIOLIB_PIN_TYPE pin);
+    #endif
 
     /*!
      \brief Set modem in fixed packet length mode.

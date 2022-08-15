@@ -1243,6 +1243,7 @@ uint8_t SX128x::randomByte() {
   return(0);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX128x::setDirectAction(void (*func)(void)) {
   // SX128x is unable to perform direct mode reception
   // this method is implemented only for PhysicalLayer compatibility
@@ -1254,6 +1255,7 @@ void SX128x::readBit(RADIOLIB_PIN_TYPE pin) {
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;
 }
+#endif
 
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;
