@@ -488,22 +488,34 @@ uint16_t Module::flipBits16(uint16_t i) {
 }
 
 void Module::hexdump(uint8_t* data, size_t len) {
+  size_t rem_len = len;
   for(int i = 0; i < len; i+=16) {
     char str[80];
     sprintf(str, "%07x  ", i);
-    for(int j = 0; j < 16; j++) {
+    size_t line_len = 16;
+    if(rem_len < line_len) {
+      line_len = rem_len;
+    }
+    for(int j = 0; j < line_len; j++) {
       sprintf(&str[8 + j*3], "%02x ", data[i+j]);
+    }
+    for(int j = line_len; j < 16; j++) {
+      sprintf(&str[8 + j*3], "   ");
     }
     str[56] = '|';
     str[57] = ' ';
-    for(int j = 0; j < 16; j++) {
+    for(int j = 0; j < line_len; j++) {
       char c = data[i+j];
       if((c < ' ') || (c > '~')) {
         c = '.';
       }
       sprintf(&str[58 + j], "%c", c);
     }
+    for(int j = line_len; j < 16; j++) {
+      sprintf(&str[58 + j], "   ");
+    }
     RADIOLIB_DEBUG_PRINTLN(str);
+    rem_len -= 16;
   }
 }
 
