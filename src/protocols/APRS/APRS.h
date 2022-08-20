@@ -28,6 +28,37 @@
 #define RADIOLIB_APRS_DATA_TYPE_THIRD_PARTY                     "}"
 
 /*!
+  \defgroup mic_e_message_types Mic-E message types.
+
+  \{
+*/
+#define RADIOLIB_APRS_MIC_E_TYPE_OFF_DUTY                       0b00000111
+#define RADIOLIB_APRS_MIC_E_TYPE_EN_ROUTE                       0b00000110
+#define RADIOLIB_APRS_MIC_E_TYPE_IN_SERVICE                     0b00000101
+#define RADIOLIB_APRS_MIC_E_TYPE_RETURNING                      0b00000100
+#define RADIOLIB_APRS_MIC_E_TYPE_COMMITTED                      0b00000011
+#define RADIOLIB_APRS_MIC_E_TYPE_SPECIAL                        0b00000010
+#define RADIOLIB_APRS_MIC_E_TYPE_PRIORITY                       0b00000001
+#define RADIOLIB_APRS_MIC_E_TYPE_EMERGENCY                      0b00000000
+/*!
+  \}
+*/
+
+// magic offset applied to encode extra bits in the Mic-E destination field
+#define RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET                     25
+
+// Mic-E data types
+#define RADIOLIB_APRS_MIC_E_GPS_DATA_CURRENT                    '`'
+#define RADIOLIB_APRS_MIC_E_GPS_DATA_OLD                        '\''
+
+// Mic-E telemetry flags
+#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_2                     '`'
+#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_5                     '\''
+
+// alias for unused altitude in Mic-E
+#define RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED                     -1000000
+
+/*!
   \class APRSClient
 
   \brief Client for APRS communication.
@@ -72,6 +103,31 @@ class APRSClient {
       \returns \ref status_codes
     */
     int16_t sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg = NULL, char* time = NULL);
+
+    /*
+      \brief Transmit position using Mic-E encoding.
+
+      \param lat Geographical latitude, positive for north, negative for south.
+
+      \param lon Geographical longitude, positive for east, negative for west.
+
+      \param heading Heading in degrees.
+
+      \param speed Speed in knots.
+
+      \param type Mic-E message type - see \ref mic_e_message_types.
+
+      \param telem Pointer to telemetry array (either 2 or 5 bytes long). NULL when telemetry is not used.
+
+      \param telemLen Telemetry length, 2 or 5. 0 when telemetry is not used.
+
+      \param grid Maidenhead grid locator. NULL when not used.
+
+      \param status Status message to send. NULL when not used.
+
+      \param alt Altitude to send. RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED when not used.
+    */
+    int16_t sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, size_t telemLen = 0, char* grid = NULL, char* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);
 
     /*!
       \brief Transmit generic APRS frame.

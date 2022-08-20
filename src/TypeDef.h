@@ -262,6 +262,21 @@
 */
 #define RADIOLIB_ERR_INVALID_SYMBOL                            (-201)
 
+/*!
+  \brief Mic-E Telemetry is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY                   (-202)
+
+/*!
+  \brief Mic-E Telemetry length is invalid (only 0, 2 or 5 is allowed).
+*/
+#define RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY_LENGTH            (-203)
+
+/*!
+  \brief Mic-E message cannot contaion both telemetry and status text.
+*/
+#define RADIOLIB_ERR_MIC_E_TELEMETRY_STATUS                    (-204)
+
 // RTTY status codes
 
 /*!
