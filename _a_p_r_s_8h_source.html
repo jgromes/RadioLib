@@ -115,39 +115,87 @@ $(document).ready(function(){initNavTree('_a_p_r_s_8h_source.html',''); initResi
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_DATA_TYPE_USER_DEFINED                    &quot;{&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_DATA_TYPE_THIRD_PARTY                     &quot;}&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno"><a class="line" href="class_a_p_r_s_client.html">   35</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_a_p_r_s_client.html">APRSClient</a> {</div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_a_x25_client.html">AX25Client</a>* ax);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_OFF_DUTY                       0b00000111</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EN_ROUTE                       0b00000110</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_IN_SERVICE                     0b00000101</span></div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_RETURNING                      0b00000100</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_COMMITTED                      0b00000011</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_SPECIAL                        0b00000010</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_PRIORITY                       0b00000001</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EMERGENCY                      0b00000000</span></div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a4befd17d1f753049f7ec08c48d8b8496">begin</a>(<span class="keywordtype">char</span> symbol, <span class="keywordtype">bool</span> alt = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* lat, <span class="keywordtype">char</span>* lon, <span class="keywordtype">char</span>* msg = NULL, <span class="keywordtype">char</span>* time = NULL);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* info);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <a class="code" href="class_a_x25_client.html">AX25Client</a>* _ax;</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="comment">// default APRS symbol (car)</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">char</span> _symbol = <span class="charliteral">&#39;&gt;&#39;</span>;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keywordtype">char</span> _table = <span class="charliteral">&#39;/&#39;</span>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// magic offset applied to encode extra bits in the Mic-E destination field</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET                     25</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Mic-E data types</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_CURRENT                    &#39;`&#39;</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_OLD                        &#39;\&#39;&#39;</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Mic-E telemetry flags</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_2                     &#39;`&#39;</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_5                     &#39;\&#39;&#39;</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// alias for unused altitude in Mic-E</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED                     -1000000</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="class_a_p_r_s_client.html">   66</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_a_p_r_s_client.html">APRSClient</a> {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_a_x25_client.html">AX25Client</a>* ax);</div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a4befd17d1f753049f7ec08c48d8b8496">begin</a>(<span class="keywordtype">char</span> symbol, <span class="keywordtype">bool</span> alt = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* lat, <span class="keywordtype">char</span>* lon, <span class="keywordtype">char</span>* msg = NULL, <span class="keywordtype">char</span>* time = NULL);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="comment">/*</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="comment">      \brief Transmit position using Mic-E encoding.</span></div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="comment">      \param lat Geographical latitude, positive for north, negative for south.</span></div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="comment">      \param lon Geographical longitude, positive for east, negative for west.</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="comment">      \param heading Heading in degrees.</span></div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;<span class="comment">      \param speed Speed in knots.</span></div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="comment">      \param type Mic-E message type - see \ref mic_e_message_types.</span></div>
+<div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="comment">      \param telem Pointer to telemetry array (either 2 or 5 bytes long). NULL when telemetry is not used.</span></div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">      \param telemLen Telemetry length, 2 or 5. 0 when telemetry is not used.</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="comment">      \param grid Maidenhead grid locator. NULL when not used.</span></div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="comment">      \param status Status message to send. NULL when not used.</span></div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="comment"></span> </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="comment">      \param alt Altitude to send. RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED when not used.</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment">    */</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    int16_t sendMicE(<span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, <span class="keywordtype">size_t</span> telemLen = 0, <span class="keywordtype">char</span>* grid = NULL, <span class="keywordtype">char</span>* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* info);</div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <a class="code" href="class_a_x25_client.html">AX25Client</a>* _ax;</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <span class="comment">// default APRS symbol (car)</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">char</span> _symbol = <span class="charliteral">&#39;&gt;&#39;</span>;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;    <span class="keywordtype">char</span> _table = <span class="charliteral">&#39;/&#39;</span>;</div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;};</div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_a_p_r_s_client_html_a05076f44e5708f1230894c11053707b1"><div class="ttname"><a href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">APRSClient::sendFrame</a></div><div class="ttdeci">int16_t sendFrame(char *destCallsign, uint8_t destSSID, char *info)</div><div class="ttdoc">Transmit generic APRS frame.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:57</div></div>
+<div class="ttc" id="aclass_a_p_r_s_client_html_a05076f44e5708f1230894c11053707b1"><div class="ttname"><a href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">APRSClient::sendFrame</a></div><div class="ttdeci">int16_t sendFrame(char *destCallsign, uint8_t destSSID, char *info)</div><div class="ttdoc">Transmit generic APRS frame.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:217</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_a08e166ed706d79c66c1d5b48f195724c"><div class="ttname"><a href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient::APRSClient</a></div><div class="ttdeci">APRSClient(AX25Client *ax)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:3</div></div>
 <div class="ttc" id="aclass_a_x25_client_html"><div class="ttname"><a href="class_a_x25_client.html">AX25Client</a></div><div class="ttdoc">Client for AX25 communication.</div><div class="ttdef"><b>Definition:</b> AX25.h:279</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_aebc95b926fb3d37f8489f895aa576d0e"><div class="ttname"><a href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">APRSClient::sendPosition</a></div><div class="ttdeci">int16_t sendPosition(char *destCallsign, uint8_t destSSID, char *lat, char *lon, char *msg=NULL, char *time=NULL)</div><div class="ttdoc">Transmit position.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:20</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_a4befd17d1f753049f7ec08c48d8b8496"><div class="ttname"><a href="class_a_p_r_s_client.html#a4befd17d1f753049f7ec08c48d8b8496">APRSClient::begin</a></div><div class="ttdeci">int16_t begin(char symbol, bool alt=false)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:7</div></div>
-<div class="ttc" id="aclass_a_p_r_s_client_html"><div class="ttname"><a href="class_a_p_r_s_client.html">APRSClient</a></div><div class="ttdoc">Client for APRS communication.</div><div class="ttdef"><b>Definition:</b> APRS.h:35</div></div>
+<div class="ttc" id="aclass_a_p_r_s_client_html"><div class="ttname"><a href="class_a_p_r_s_client.html">APRSClient</a></div><div class="ttdoc">Client for APRS communication.</div><div class="ttdef"><b>Definition:</b> APRS.h:66</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>

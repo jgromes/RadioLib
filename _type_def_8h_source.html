@@ -187,59 +187,65 @@ $(document).ready(function(){initNavTree('_type_def_8h_source.html',''); initRes
 <div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
 <div class="line"><a name="l00263"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga7f9712de2117b89215410fc18776dc84">  263</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_SYMBOL                            (-201)</span></div>
 <div class="line"><a name="l00264"></a><span class="lineno">  264</span>&#160; </div>
-<div class="line"><a name="l00265"></a><span class="lineno">  265</span>&#160;<span class="comment">// RTTY status codes</span></div>
-<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160; </div>
-<div class="line"><a name="l00270"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga6b75df06d8c18366f85848331c49a1af">  270</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_RTTY_SHIFT                        (-401)</span></div>
-<div class="line"><a name="l00271"></a><span class="lineno">  271</span>&#160; </div>
-<div class="line"><a name="l00275"></a><span class="lineno"><a class="line" href="group__status__codes.html#gae4d77c5138cc5f21fb2af4b0791e9f81">  275</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_UNSUPPORTED_ENCODING                      (-402)</span></div>
-<div class="line"><a name="l00276"></a><span class="lineno">  276</span>&#160; </div>
-<div class="line"><a name="l00277"></a><span class="lineno">  277</span>&#160;<span class="comment">// nRF24-specific status codes</span></div>
-<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160; </div>
-<div class="line"><a name="l00282"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga9a098ceda0c3f153515c8cc36f1d683e">  282</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_DATA_RATE                         (-501)</span></div>
-<div class="line"><a name="l00283"></a><span class="lineno">  283</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno"><a class="line" href="group__status__codes.html#gafbc04b924d23cba05307e94972d7d607">  287</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_ADDRESS_WIDTH                     (-502)</span></div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00292"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga3ed4264643f97b76f9f3cf242338573d">  292</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_PIPE_NUMBER                       (-503)</span></div>
+<div class="line"><a name="l00268"></a><span class="lineno"><a class="line" href="group__status__codes.html#gaeafdfcb2b10b08385feea93163fc3918">  268</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY                   (-202)</span></div>
+<div class="line"><a name="l00269"></a><span class="lineno">  269</span>&#160; </div>
+<div class="line"><a name="l00273"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga85e34d08b298a4125f77ddede011db3b">  273</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY_LENGTH            (-203)</span></div>
+<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga54a2fc9441c25b56979c6edab097ff12">  278</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_MIC_E_TELEMETRY_STATUS                    (-204)</span></div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160; </div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;<span class="comment">// RTTY status codes</span></div>
+<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga6b75df06d8c18366f85848331c49a1af">  285</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_RTTY_SHIFT                        (-401)</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00290"></a><span class="lineno"><a class="line" href="group__status__codes.html#gae4d77c5138cc5f21fb2af4b0791e9f81">  290</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_UNSUPPORTED_ENCODING                      (-402)</span></div>
+<div class="line"><a name="l00291"></a><span class="lineno">  291</span>&#160; </div>
+<div class="line"><a name="l00292"></a><span class="lineno">  292</span>&#160;<span class="comment">// nRF24-specific status codes</span></div>
 <div class="line"><a name="l00293"></a><span class="lineno">  293</span>&#160; </div>
-<div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="group__status__codes.html#gafeff72bd7b618959d86b804a11f09063">  297</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_ACK_NOT_RECEIVED                          (-504)</span></div>
+<div class="line"><a name="l00297"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga9a098ceda0c3f153515c8cc36f1d683e">  297</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_DATA_RATE                         (-501)</span></div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;<span class="comment">// CC1101-specific status codes</span></div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00304"></a><span class="lineno"><a class="line" href="group__status__codes.html#gae0e8ebbd71661b8a107b01befc997e5e">  304</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS                   (-601)</span></div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="comment">// SX126x-specific status codes</span></div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00311"></a><span class="lineno"><a class="line" href="group__status__codes.html#gaedc74820131d6cb654302d776360f969">  311</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_CRC_CONFIGURATION                 (-701)</span></div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd">  316</a></span>&#160;<span class="preprocessor">#define RADIOLIB_LORA_DETECTED                                 (-702)</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160; </div>
-<div class="line"><a name="l00321"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga691e968e9f057a6cecb37a5dd5d8bd68">  321</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_TCXO_VOLTAGE                      (-703)</span></div>
+<div class="line"><a name="l00302"></a><span class="lineno"><a class="line" href="group__status__codes.html#gafbc04b924d23cba05307e94972d7d607">  302</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_ADDRESS_WIDTH                     (-502)</span></div>
+<div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160; </div>
+<div class="line"><a name="l00307"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga3ed4264643f97b76f9f3cf242338573d">  307</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_PIPE_NUMBER                       (-503)</span></div>
+<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno"><a class="line" href="group__status__codes.html#gafeff72bd7b618959d86b804a11f09063">  312</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_ACK_NOT_RECEIVED                          (-504)</span></div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="comment">// CC1101-specific status codes</span></div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno"><a class="line" href="group__status__codes.html#gae0e8ebbd71661b8a107b01befc997e5e">  319</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS                   (-601)</span></div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;<span class="comment">// SX126x-specific status codes</span></div>
 <div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160; </div>
-<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga7f57f6eddc68b9a59cceab4fdf6556ba">  326</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS             (-704)</span></div>
+<div class="line"><a name="l00326"></a><span class="lineno"><a class="line" href="group__status__codes.html#gaedc74820131d6cb654302d776360f969">  326</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_CRC_CONFIGURATION                 (-701)</span></div>
 <div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160; </div>
-<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga72b849c71b8fdf112d318518a3b1ac7d">  331</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_TIMEOUT                           (-705)</span></div>
+<div class="line"><a name="l00331"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd">  331</a></span>&#160;<span class="preprocessor">#define RADIOLIB_LORA_DETECTED                                 (-702)</span></div>
 <div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160; </div>
-<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac1902fa5b8d5c9469dd9261880ba2957">  336</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_INVALID                           (-706)</span></div>
+<div class="line"><a name="l00336"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga691e968e9f057a6cecb37a5dd5d8bd68">  336</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_TCXO_VOLTAGE                      (-703)</span></div>
 <div class="line"><a name="l00337"></a><span class="lineno">  337</span>&#160; </div>
-<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="group__status__codes.html#gabc695a4fae689e856ae6f618e334066f">  341</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_FAILED                            (-707)</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga7f57f6eddc68b9a59cceab4fdf6556ba">  341</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS             (-704)</span></div>
 <div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160; </div>
-<div class="line"><a name="l00349"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga0066a30650888853a622413a579d891c">  349</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_SLEEP_PERIOD                      (-708)</span></div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
-<div class="line"><a name="l00356"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga4b30b822814dc8d49d3f3229011c8aff">  356</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_RX_PERIOD                         (-709)</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga72b849c71b8fdf112d318518a3b1ac7d">  346</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_TIMEOUT                           (-705)</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160; </div>
+<div class="line"><a name="l00351"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac1902fa5b8d5c9469dd9261880ba2957">  351</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_INVALID                           (-706)</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160; </div>
+<div class="line"><a name="l00356"></a><span class="lineno"><a class="line" href="group__status__codes.html#gabc695a4fae689e856ae6f618e334066f">  356</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_SPI_CMD_FAILED                            (-707)</span></div>
 <div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="comment">// AX.25-specific status codes</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
-<div class="line"><a name="l00365"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac1c27fd5a9ec38601a53c1c5ad428063">  365</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_CALLSIGN                          (-801)</span></div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga47f1cc22b76c6b8685bd7e265ab78a1a">  372</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_NUM_REPEATERS                     (-802)</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160; </div>
-<div class="line"><a name="l00379"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga684497ce1c94442b5fe0396ea4ec930d">  379</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN                 (-803)</span></div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160; </div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;<span class="comment">// SX128x-specific status codes</span></div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00386"></a><span class="lineno"><a class="line" href="group__status__codes.html#gabf529b0d150265c071c2255cb45f9e4f">  386</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_RANGING_TIMEOUT                           (-901)</span></div>
-<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
-<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga0066a30650888853a622413a579d891c">  364</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_SLEEP_PERIOD                      (-708)</span></div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
+<div class="line"><a name="l00371"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga4b30b822814dc8d49d3f3229011c8aff">  371</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_RX_PERIOD                         (-709)</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160; </div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="comment">// AX.25-specific status codes</span></div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160; </div>
+<div class="line"><a name="l00380"></a><span class="lineno"><a class="line" href="group__status__codes.html#gac1c27fd5a9ec38601a53c1c5ad428063">  380</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_CALLSIGN                          (-801)</span></div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160; </div>
+<div class="line"><a name="l00387"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga47f1cc22b76c6b8685bd7e265ab78a1a">  387</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_NUM_REPEATERS                     (-802)</span></div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160; </div>
+<div class="line"><a name="l00394"></a><span class="lineno"><a class="line" href="group__status__codes.html#ga684497ce1c94442b5fe0396ea4ec930d">  394</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN                 (-803)</span></div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160; </div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;<span class="comment">// SX128x-specific status codes</span></div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno"><a class="line" href="group__status__codes.html#gabf529b0d150265c071c2255cb45f9e4f">  401</a></span>&#160;<span class="preprocessor">#define RADIOLIB_ERR_RANGING_TIMEOUT                           (-901)</span></div>
+<div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160; </div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
