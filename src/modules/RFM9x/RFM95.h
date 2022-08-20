@@ -77,7 +77,7 @@ class RFM95: public SX1278 {
 
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK);
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
 
     // configuration methods
 
