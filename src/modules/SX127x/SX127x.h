@@ -1227,6 +1227,15 @@ class SX127x: public PhysicalLayer {
     */
     int16_t setDIOPreambleDetect(bool usePreambleDetect);
 
+    /*!
+      \brief Sets the RSSI value above which the RSSI interrupt is signaled
+
+      \param value A value between -127.5 and 0 inclusive
+
+      \returns \ref status_codes
+    */
+    int16_t setRSSIThreshold(float value);
+
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:
 #endif
