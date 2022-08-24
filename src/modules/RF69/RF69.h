@@ -964,11 +964,11 @@ class RF69: public PhysicalLayer {
     /*!
       \brief Sets the RSSI value above which the RSSI interrupt is signaled
 
-      \param value A value between -127.5 and 0 inclusive
+      \param dbm A dBm value between -127.5 and 0 inclusive
 
       \returns \ref status_codes
     */
-    int16_t setRSSIThreshold(float value);
+    int16_t setRSSIThreshold(float dbm);
 
     /*!
       \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.

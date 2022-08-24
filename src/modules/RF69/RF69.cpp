@@ -872,11 +872,11 @@ float RF69::getRSSI() {
   return(-1.0 * (_mod->SPIgetRegValue(RADIOLIB_RF69_REG_RSSI_VALUE)/2.0));
 }
 
-int16_t RF69::setRSSIThreshold(float value) {
-  if (value < 127.5 || value > 0)
+int16_t RF69::setRSSIThreshold(float dbm) {
+  if (dbm < 127.5 || dbm > 0)
     return RADIOLIB_ERR_INVALID_RSSI_THRESHOLD;
 
-  return _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0 * value), 7, 0);
+  return _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
 }
 
 void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
