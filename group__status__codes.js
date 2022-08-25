@@ -33,6 +33,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH", "group__status__codes.html#ga9dc55947447ed9c91217f86a9bca75bb", null ],
     [ "RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN", "group__status__codes.html#ga684497ce1c94442b5fe0396ea4ec930d", null ],
     [ "RADIOLIB_ERR_INVALID_RSSI_OFFSET", "group__status__codes.html#ga0f1e3d5da7867511500fcd4a43f4df2f", null ],
+    [ "RADIOLIB_ERR_INVALID_RSSI_THRESHOLD", "group__status__codes.html#ga0f0aad5acd6d24fc7da9269664912d48", null ],
     [ "RADIOLIB_ERR_INVALID_RTTY_SHIFT", "group__status__codes.html#ga6b75df06d8c18366f85848331c49a1af", null ],
     [ "RADIOLIB_ERR_INVALID_RX_BANDWIDTH", "group__status__codes.html#gaa1f484c73f9abe05408c84fe5891539b", null ],
     [ "RADIOLIB_ERR_INVALID_RX_PERIOD", "group__status__codes.html#ga4b30b822814dc8d49d3f3229011c8aff", null ],

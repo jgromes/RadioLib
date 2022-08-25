@@ -66,6 +66,7 @@ var class_s_x127x =
     [ "setPreambleLength", "class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed", null ],
     [ "setRfSwitchPins", "class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a", null ],
     [ "setRSSIConfig", "class_s_x127x.html#ad3955f85f456edae772a51025a19029b", null ],
+    [ "setRSSIThreshold", "class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76", null ],
     [ "setRxBandwidth", "class_s_x127x.html#a2cc53b9f9d90647c5709cb974779cf53", null ],
     [ "setSyncWord", "class_s_x127x.html#a9b7afe338fd5b81122c369ecaf0c3ebc", null ],
     [ "setSyncWord", "class_s_x127x.html#ac5c7f4584352a12390594395d9c29bde", null ],

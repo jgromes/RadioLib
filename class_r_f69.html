@@ -281,6 +281,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7">getRSSI</a> ()</td></tr>
 <tr class="memdesc:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7">More...</a><br /></td></tr>
 <tr class="separator:ac4fc3f2b178ef08caec3a9f548f44cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcb723ae58d6519e5b95d017d2beb78a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#afcb723ae58d6519e5b95d017d2beb78a">setRSSIThreshold</a> (float dbm)</td></tr>
+<tr class="memdesc:afcb723ae58d6519e5b95d017d2beb78a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the RSSI value above which the RSSI interrupt is signaled.  <a href="class_r_f69.html#afcb723ae58d6519e5b95d017d2beb78a">More...</a><br /></td></tr>
+<tr class="separator:afcb723ae58d6519e5b95d017d2beb78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aada7c48828b950cdfd260594d502b03d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#aada7c48828b950cdfd260594d502b03d">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
 <tr class="memdesc:aada7c48828b950cdfd260594d502b03d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="class_r_f69.html#aada7c48828b950cdfd260594d502b03d">More...</a><br /></td></tr>
 <tr class="separator:aada7c48828b950cdfd260594d502b03d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1871,6 +1874,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="afcb723ae58d6519e5b95d017d2beb78a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcb723ae58d6519e5b95d017d2beb78a">&#9670;&nbsp;</a></span>setRSSIThreshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::setRSSIThreshold </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>dbm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the RSSI value above which the RSSI interrupt is signaled. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dbm</td><td>A dBm value between -127.5 and 0 inclusive</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
