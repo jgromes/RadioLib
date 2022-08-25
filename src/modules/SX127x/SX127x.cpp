@@ -1184,6 +1184,12 @@ int16_t SX127x::setCrcFiltering(bool crcOn) {
   }
 }
 
+int16_t SX127x::setRSSIThreshold(float dbm) {
+  RADIOLIB_CHECK_RANGE(dbm, -127.5, 0, RADIOLIB_ERR_INVALID_RSSI_THRESHOLD);
+
+  return _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
+}
+
 int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {

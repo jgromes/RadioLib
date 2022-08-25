@@ -213,6 +213,11 @@
 */
 #define RADIOLIB_ERR_INVALID_DIO_PIN                           (-26)
 
+/*!
+  \brief The supplied RSSI threshold is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_RSSI_THRESHOLD                    (-27)
+
 // RF69-specific status codes
 
 /*!
