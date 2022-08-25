@@ -873,8 +873,7 @@ float RF69::getRSSI() {
 }
 
 int16_t RF69::setRSSIThreshold(float dbm) {
-  if (dbm < 127.5 || dbm > 0)
-    return RADIOLIB_ERR_INVALID_RSSI_THRESHOLD;
+  RADIOLIB_CHECK_RANGE(dbm, -127.5, 0, RADIOLIB_ERR_INVALID_RSSI_THRESHOLD);
 
   return _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
 }
