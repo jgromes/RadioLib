@@ -623,7 +623,7 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, 
     }
   }
 
-  _syncWordLength = len;
+  //_syncWordLength = len;
 
   // enable sync word filtering
   int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense);
@@ -677,6 +677,9 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
   if(state == RADIOLIB_ERR_NONE) {
     _preambleLen = preambleLength;
   }
+
+  return(state);
+}
 
   return(state);
 }

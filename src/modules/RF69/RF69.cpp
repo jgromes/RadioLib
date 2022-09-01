@@ -575,7 +575,7 @@ int16_t RF69::setRxBandwidth(float rxBw) {
         // set Rx bandwidth
         state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RX_BW, (m << 3) | e, 4, 0);
         if(state == RADIOLIB_ERR_NONE) {
-        _rxBw = rxBw;
+          RF69::_rxBw = rxBw;
         }
         return(state);
       }
