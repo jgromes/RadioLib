@@ -499,6 +499,16 @@
 #define RADIOLIB_CC1101_GDO2_ACTIVE                            0b00000100  //  2     2     GDO2 is active/asserted
 #define RADIOLIB_CC1101_GDO0_ACTIVE                            0b00000001  //  0     0     GDO0 is active/asserted
 
+//Defaults
+#define RADIOLIB_CC1101_DEFAULT_FREQ                           434.0
+#define RADIOLIB_CC1101_DEFAULT_BR                             48.0
+#define RADIOLIB_CC1101_DEFAULT_FREQDEV                        48.0
+#define RADIOLIB_CC1101_DEFAULT_RXBW                           135.0
+#define RADIOLIB_CC1101_DEFAULT_POWER                          10
+#define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                    16
+#define RADIOLIB_CC1101_DEFAULT_SW                             {0x12, 0xAD}
+#define RADIOLIB_CC1101_DEFAULT_SW_LEN                         2
+
 /*!
   \class CC1101
 
@@ -966,8 +976,14 @@ class CC1101: public PhysicalLayer {
     protected:
   #endif
 
-    float _freq = 0;
-    float _br = 0;
+    float _freq = RADIOLIB_CC1101_DEFAULT_FREQ;
+    float _br = RADIOLIB_CC1101_DEFAULT_BR;
+    float _freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV;
+    float _rxBw = RADIOLIB_CC1101_DEFAULT_RXBW;
+    int8_t _power = RADIOLIB_CC1101_DEFAULT_POWER;
+    uint8_t _preambleLen = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN;
+    //float _freq = 0;
+    //float _br = 0;
     uint8_t _rawRSSI = 0;
     uint8_t _rawLQI = 0;
     uint8_t _modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
@@ -980,8 +996,9 @@ class CC1101: public PhysicalLayer {
     bool _crcOn = true;
     bool _directMode = true;
 
-    uint8_t _syncWordLength = 2;
-    int8_t _power = 0;
+    //uint8_t _syncWordLength = 2;
+    //int8_t _power = 0;
+    uint8_t _syncWordLength = RADIOLIB_CC1101_DEFAULT_SW_LEN;
 
     int16_t config();
     int16_t transmitDirect(bool sync, uint32_t frf);
