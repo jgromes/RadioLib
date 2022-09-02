@@ -493,7 +493,7 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
         //return(SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
         uint16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4);
 
-        if(state == ERR_NONE) {
+        if(state == RADIOLIB_ERR_NONE) {
           _rxBw = rxBw;
         }
 
@@ -527,7 +527,7 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, (e << 4), 6, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, m, 2, 0);
   
-    if(state == ERR_NONE) {
+    if(state == RADIOLIB_ERR_NONE) {
     _freqDev = freqDev;
   }
 
@@ -676,8 +676,8 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
 
 
   //return SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
-  uint16_t state = SPIsetRegValue(CC1101_REG_MDMCFG1, value, 6, 4);
-  if(state == ERR_NONE) {
+  uint16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
+  if(state == RADIOLIB_ERR_NONE) {
     _preambleLen = preambleLength;
   }
 
