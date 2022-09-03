@@ -251,7 +251,6 @@ int16_t nRF24::setFrequency(int16_t freq) {
 
   // set frequency
   uint8_t freqRaw = freq - 2400;
-  //return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0));
   uint16_t state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
 
   if(state == RADIOLIB_ERR_NONE) {
@@ -349,7 +348,6 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
   }
 
   // save address width
-  //_addrWidth = addrWidth;
   if(state == RADIOLIB_ERR_NONE) {
     _addrWidth = addrWidth;
   }
