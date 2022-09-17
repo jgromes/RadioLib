@@ -602,8 +602,8 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO0_PACK_CRC_OK                       0b01000000  //  7     6</span></div>
 <div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO0_PACK_TEMP_CHANGE_LOW_BAT          0b11000000  //  7     6</span></div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT                   0b00000000  //  5     4</span></div>
-<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL          0b01000000  //  5     4</span></div>
-<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED                 0b10000000  //  5     4</span></div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL          0b00010000  //  5     4</span></div>
+<div class="line"><a name="l00518"></a><span class="lineno">  518</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED                 0b00100000  //  5     4</span></div>
 <div class="line"><a name="l00519"></a><span class="lineno">  519</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_CONT_DCLK                         0b00000000  //  5     4</span></div>
 <div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_CONT_RSSI_PREAMBLE_DETECT         0b00010000  //  5     4</span></div>
 <div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO1_PACK_FIFO_LEVEL                   0b00000000  //  5     4</span></div>
@@ -615,14 +615,14 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO2_PACK_RX_READY                     0b00000100  //  3     2</span></div>
 <div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO2_PACK_TIMEOUT                      0b00001000  //  3     2</span></div>
 <div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO2_PACK_SYNC_ADDRESS                 0b00011000  //  3     2</span></div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_CAD_DONE                     0b00000000  //  0     1</span></div>
-<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_VALID_HEADER                 0b00000001  //  0     1</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_PAYLOAD_CRC_ERROR            0b00000010  //  0     1</span></div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_TIMEOUT                      0b00000000  //  0     1</span></div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_RSSI_PREAMBLE_DETECT         0b00000001  //  0     1</span></div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_TEMP_CHANGE_LOW_BAT          0b00000011  //  0     1</span></div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_PACK_FIFO_EMPTY                   0b00000000  //  0     1</span></div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_PACK_TX_READY                     0b00000001  //  0     1</span></div>
+<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_CAD_DONE                     0b00000000  //  1     0</span></div>
+<div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_VALID_HEADER                 0b00000001  //  1     0</span></div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_LORA_PAYLOAD_CRC_ERROR            0b00000010  //  1     0</span></div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_TIMEOUT                      0b00000000  //  1     0</span></div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_RSSI_PREAMBLE_DETECT         0b00000001  //  1     0</span></div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_CONT_TEMP_CHANGE_LOW_BAT          0b00000011  //  1     0</span></div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_PACK_FIFO_EMPTY                   0b00000000  //  1     0</span></div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO3_PACK_TX_READY                     0b00000001  //  1     0</span></div>
 <div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160; </div>
 <div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;<span class="comment">// SX127X_REG_DIO_MAPPING_2</span></div>
 <div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;<span class="preprocessor">#define RADIOLIB_SX127X_DIO4_LORA_CAD_DETECTED                 0b10000000  //  7     6</span></div>
