@@ -140,6 +140,13 @@ class PhysicalLayer {
     virtual int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) = 0;
 
     /*!
+      \brief Clean up after transmission is done.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t finishTransmit() = 0;
+
+    /*!
       \brief Reads data that was received after calling startReceive method.
 
       \param str Address of Arduino String to save the received data.
