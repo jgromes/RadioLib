@@ -93,23 +93,18 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // check maximum number of retransmits
     if(getStatus(RADIOLIB_NRF24_MAX_RT)) {
-      standby();
-      clearIRQ();
+      finishTransmit();
       return(RADIOLIB_ERR_ACK_NOT_RECEIVED);
     }
 
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
     if(_mod->micros() - start >= 60000) {
-      standby();
-      clearIRQ();
+      finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-
-  // clear interrupts
-  clearIRQ();
-
-  return(state);
+  
+  return(finishTransmit());
 }
 
 int16_t nRF24::receive(uint8_t* data, size_t len) {
@@ -197,6 +192,14 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   _mod->digitalWrite(_mod->getRst(), LOW);
 
   return(state);
+}
+
+int16_t nRF24::finishTransmit() {
+  // clear interrupt flags
+  clearIRQ();
+
+  // set mode to standby to disable transmitter/RF switch
+  return(standby());
 }
 
 int16_t nRF24::startReceive() {
