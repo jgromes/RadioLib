@@ -228,8 +228,7 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   while(!_mod->digitalRead(_mod->getIrq())) {
     _mod->yield();
     if(_mod->micros() - start > timeout) {
-      clearIrqStatus();
-      standby();
+      finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -238,14 +237,7 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // update data rate
   _dataRate = (len*8.0)/((float)elapsed/1000000.0);
 
-  // clear interrupt flags
-  state = clearIrqStatus();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby to disable transmitter
-  state = standby();
-
-  return(state);
+  return(finishTransmit());
 }
 
 int16_t SX126x::receive(uint8_t* data, size_t len) {
@@ -438,6 +430,14 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   return(state);
+}
+
+int16_t SX126x::finishTransmit() {
+  // clear interrupt flags
+  clearIrqStatus();
+
+  // set mode to standby to disable transmitter/RF switch
+  return(standby());
 }
 
 int16_t SX126x::startReceive(uint32_t timeout) {
