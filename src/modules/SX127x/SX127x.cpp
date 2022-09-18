@@ -220,7 +220,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     while(!_mod->digitalRead(_mod->getIrq())) {
       _mod->yield();
 
-      if(_mod->getGpio() != RADIOLIB_NC) {
+      if(_mod->getGpio() == RADIOLIB_NC) {
         // no GPIO pin provided, use software timeout
         if(_mod->micros() - start > timeout) {
           clearIRQFlags();
