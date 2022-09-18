@@ -301,6 +301,13 @@ class nRF24: public PhysicalLayer {
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr) override;
 
     /*!
+      \brief Clean up after transmission is done.
+
+      \returns \ref status_codes
+    */
+    int16_t finishTransmit() override;
+
+    /*!
       \brief Interrupt-driven receive method. IRQ will be activated when full packet is received.
 
       \returns \ref status_codes

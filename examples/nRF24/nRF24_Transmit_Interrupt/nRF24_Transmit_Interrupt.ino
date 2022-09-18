@@ -127,6 +127,11 @@ void loop() {
 
     }
 
+    // clean up after transmission is finished
+    // this will ensure transmitter is disabled,
+    // RF switch is powered down etc.
+    radio.finishTransmit();
+
     // wait a second before transmitting again
     delay(1000);
 
