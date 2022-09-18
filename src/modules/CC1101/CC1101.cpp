@@ -113,8 +113,7 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
     _mod->yield();
 
     if(_mod->micros() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
+      finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
@@ -125,19 +124,12 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
     _mod->yield();
 
     if(_mod->micros() - start > timeout) {
-      standby();
-      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
+      finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
-  // set mode to standby
-  standby();
-
-  // flush Tx FIFO
-  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
-
-  return(state);
+  return(finishTransmit());
 }
 
 int16_t CC1101::receive(uint8_t* data, size_t len) {
@@ -326,6 +318,16 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   return (state);
+}
+
+int16_t CC1101::finishTransmit() {
+  // set mode to standby to disable transmitter/RF switch
+  int16_t state = standby();
+
+  // flush Tx FIFO
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
+
+  return(state);
 }
 
 int16_t CC1101::startReceive() {
@@ -711,7 +713,7 @@ int16_t CC1101::setOOK(bool enableOOK) {
   return(setOutputPower(_power));
 }
 
-float CC1101::getRSSI() { 
+float CC1101::getRSSI() {
   float rssi;
 
   if (_directMode) {
