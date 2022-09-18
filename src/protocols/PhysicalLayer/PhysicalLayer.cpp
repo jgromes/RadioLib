@@ -252,5 +252,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
 #endif
 
 int16_t PhysicalLayer::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+  (void)pin;
+  (void)value;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
