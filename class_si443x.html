@@ -153,6 +153,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a402b4f5f11ba79e9cd4fb6ac0bfd9314"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a402b4f5f11ba79e9cd4fb6ac0bfd9314"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 64 bytes long.  <a href="class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314">More...</a><br /></td></tr>
 <tr class="separator:a402b4f5f11ba79e9cd4fb6ac0bfd9314"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6792f13441a1bbb3340d2ba3d9abbec3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a6792f13441a1bbb3340d2ba3d9abbec3">finishTransmit</a> () override</td></tr>
+<tr class="memdesc:a6792f13441a1bbb3340d2ba3d9abbec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_si443x.html#a6792f13441a1bbb3340d2ba3d9abbec3">More...</a><br /></td></tr>
+<tr class="separator:a6792f13441a1bbb3340d2ba3d9abbec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">startReceive</a> ()</td></tr>
 <tr class="memdesc:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full valid packet is received.  <a href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">More...</a><br /></td></tr>
 <tr class="separator:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,6 +369,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6792f13441a1bbb3340d2ba3d9abbec3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6792f13441a1bbb3340d2ba3d9abbec3">&#9670;&nbsp;</a></span>finishTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t Si443x::finishTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after transmission is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">PhysicalLayer</a>.</p>
 
 </div>
 </div>

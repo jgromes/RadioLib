@@ -13,6 +13,7 @@ var class_s_x127x =
     [ "enableBitSync", "class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa", null ],
     [ "fifoAdd", "class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509", null ],
     [ "fifoGet", "class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a", null ],
+    [ "finishTransmit", "class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f", null ],
     [ "fixedPacketLengthMode", "class_s_x127x.html#a6fb42d9cd518e9f6408a40753c0be359", null ],
     [ "getAFCError", "class_s_x127x.html#a5094ba2d9268340b7aba99afe5da0544", null ],
     [ "getChipVersion", "class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd", null ],

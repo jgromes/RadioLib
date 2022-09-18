@@ -7,6 +7,7 @@ var class_s_x126x =
     [ "clearDio1Action", "class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd", null ],
     [ "disableAddressFiltering", "class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2", null ],
     [ "explicitHeader", "class_s_x126x.html#a3765f534418d4e0540c179621c019138", null ],
+    [ "finishTransmit", "class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e", null ],
     [ "fixedPacketLengthMode", "class_s_x126x.html#abc3a4f9213b2a7052e97c2e3a0bf45a5", null ],
     [ "forceLDRO", "class_s_x126x.html#a420c23bb1861646e29f44c0f4c646ee8", null ],
     [ "getChannelScanResult", "class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f", null ],

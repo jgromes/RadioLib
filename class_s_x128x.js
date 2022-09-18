@@ -7,6 +7,7 @@ var class_s_x128x =
     [ "beginGFSK", "class_s_x128x.html#a8dd8ce38bc9d0d8dbd711b373e864e93", null ],
     [ "clearDio1Action", "class_s_x128x.html#ab8a3fe8e2843fa039ef369668f1a423f", null ],
     [ "explicitHeader", "class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d", null ],
+    [ "finishTransmit", "class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4", null ],
     [ "getFrequencyError", "class_s_x128x.html#a2b424000856a9dc212f571d0e8890635", null ],
     [ "getMod", "class_s_x128x.html#a69ee7379f4b79abf626df186b2db6441", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],

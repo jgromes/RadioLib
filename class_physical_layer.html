@@ -164,6 +164,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a41a1de0ebffe7b65de6fd8cceb9a5123"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a41a1de0ebffe7b65de6fd8cceb9a5123">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0)=0</td></tr>
 <tr class="memdesc:a41a1de0ebffe7b65de6fd8cceb9a5123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method.  <a href="class_physical_layer.html#a41a1de0ebffe7b65de6fd8cceb9a5123">More...</a><br /></td></tr>
 <tr class="separator:a41a1de0ebffe7b65de6fd8cceb9a5123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeba51a21ad3c6d56b61a55061de7fc92"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">finishTransmit</a> ()=0</td></tr>
+<tr class="memdesc:aeba51a21ad3c6d56b61a55061de7fc92"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">More...</a><br /></td></tr>
+<tr class="separator:aeba51a21ad3c6d56b61a55061de7fc92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8eed0e888a7c8742e89d2b850977de2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">readData</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:ae8eed0e888a7c8742e89d2b850977de2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">More...</a><br /></td></tr>
 <tr class="separator:ae8eed0e888a7c8742e89d2b850977de2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,6 +307,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
 
 <p>Get the number of direct mode bytes currently available in buffer. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of available bytes. </dd></dl>
+
+</div>
+</div>
+<a id="aeba51a21ad3c6d56b61a55061de7fc92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeba51a21ad3c6d56b61a55061de7fc92">&#9670;&nbsp;</a></span>finishTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual int16_t PhysicalLayer::finishTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after transmission is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implemented in <a class="el" href="class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f">SX127x</a>, <a class="el" href="class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b">RF69</a>, <a class="el" href="class_si443x.html#a6792f13441a1bbb3340d2ba3d9abbec3">Si443x</a>, <a class="el" href="class_c_c1101.html#af70ea860154cd6d2b2e2a6962e161c8f">CC1101</a>, <a class="el" href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">SX128x</a>, <a class="el" href="class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e">SX126x</a>, and <a class="el" href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">nRF24</a>.</p>
 
 </div>
 </div>

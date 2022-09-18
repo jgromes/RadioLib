@@ -164,6 +164,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aef221e7d463c5228ce00ed6934512848"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:aef221e7d463c5228ce00ed6934512848"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x128x.html#aef221e7d463c5228ce00ed6934512848">More...</a><br /></td></tr>
 <tr class="separator:aef221e7d463c5228ce00ed6934512848"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4587409a9b96a0c496cf12b3acac20c4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">finishTransmit</a> () override</td></tr>
+<tr class="memdesc:a4587409a9b96a0c496cf12b3acac20c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">More...</a><br /></td></tr>
+<tr class="separator:a4587409a9b96a0c496cf12b3acac20c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad59ee052d8ab1f250245a14039fc8b66"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF)</td></tr>
 <tr class="memdesc:ad59ee052d8ab1f250245a14039fc8b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">More...</a><br /></td></tr>
 <tr class="separator:ad59ee052d8ab1f250245a14039fc8b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -652,6 +655,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4587409a9b96a0c496cf12b3acac20c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4587409a9b96a0c496cf12b3acac20c4">&#9670;&nbsp;</a></span>finishTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX128x::finishTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after transmission is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">PhysicalLayer</a>.</p>
 
 </div>
 </div>

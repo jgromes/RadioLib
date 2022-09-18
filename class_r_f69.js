@@ -15,6 +15,7 @@ var class_r_f69 =
     [ "enableSyncWordFiltering", "class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417", null ],
     [ "fifoAdd", "class_r_f69.html#a13ed34d82f3e08131b496196ba05a66d", null ],
     [ "fifoGet", "class_r_f69.html#aa6886410230c654400c76ec7710d623c", null ],
+    [ "finishTransmit", "class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b", null ],
     [ "fixedPacketLengthMode", "class_r_f69.html#a0de2a07f264839cda945faebf7319e0e", null ],
     [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
     [ "getMod", "class_r_f69.html#afd3a98c6ff75e1036c9ba6d5423851df", null ],

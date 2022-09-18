@@ -2,6 +2,7 @@ var class_physical_layer =
 [
     [ "PhysicalLayer", "class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62", null ],
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
+    [ "finishTransmit", "class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92", null ],
     [ "getFreqStep", "class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c", null ],
     [ "getPacketLength", "class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7", null ],
     [ "random", "class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53", null ],

@@ -157,6 +157,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a0df2938e2509a8f2746b20ae0558d4ea"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a0df2938e2509a8f2746b20ae0558d4ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">More...</a><br /></td></tr>
 <tr class="separator:a0df2938e2509a8f2746b20ae0558d4ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af70ea860154cd6d2b2e2a6962e161c8f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#af70ea860154cd6d2b2e2a6962e161c8f">finishTransmit</a> () override</td></tr>
+<tr class="memdesc:af70ea860154cd6d2b2e2a6962e161c8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_c_c1101.html#af70ea860154cd6d2b2e2a6962e161c8f">More...</a><br /></td></tr>
+<tr class="separator:af70ea860154cd6d2b2e2a6962e161c8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af727750d05be0bcef4bb8ac260d110e3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#af727750d05be0bcef4bb8ac260d110e3">startReceive</a> ()</td></tr>
 <tr class="memdesc:af727750d05be0bcef4bb8ac260d110e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. GDO0 will be activated when full packet is received.  <a href="class_c_c1101.html#af727750d05be0bcef4bb8ac260d110e3">More...</a><br /></td></tr>
 <tr class="separator:af727750d05be0bcef4bb8ac260d110e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -508,6 +511,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="af70ea860154cd6d2b2e2a6962e161c8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af70ea860154cd6d2b2e2a6962e161c8f">&#9670;&nbsp;</a></span>finishTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::finishTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after transmission is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">PhysicalLayer</a>.</p>
 
 </div>
 </div>

@@ -139,6 +139,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a42fdc828b49f2b8e15457189bd57d917"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr) override</td></tr>
 <tr class="memdesc:a42fdc828b49f2b8e15457189bd57d917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">More...</a><br /></td></tr>
 <tr class="separator:a42fdc828b49f2b8e15457189bd57d917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">finishTransmit</a> () override</td></tr>
+<tr class="memdesc:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">More...</a><br /></td></tr>
+<tr class="separator:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f443da5d90e032e5f2f65420515f9c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">startReceive</a> ()</td></tr>
 <tr class="memdesc:af4f443da5d90e032e5f2f65420515f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full packet is received.  <a href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">More...</a><br /></td></tr>
 <tr class="separator:af4f443da5d90e032e5f2f65420515f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -394,6 +397,36 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="af0c21ff66c011dfdc1ad12bc7dd11c2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af0c21ff66c011dfdc1ad12bc7dd11c2f">&#9670;&nbsp;</a></span>finishTransmit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t nRF24::finishTransmit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clean up after transmission is done. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#aeba51a21ad3c6d56b61a55061de7fc92">PhysicalLayer</a>.</p>
 
 </div>
 </div>
