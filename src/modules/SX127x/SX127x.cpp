@@ -208,13 +208,32 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     state = startReceive(len, RADIOLIB_SX127X_RXSINGLE);
     RADIOLIB_ASSERT(state);
 
-    // wait for packet reception or timeout (100 LoRa symbols)
+    // if no DIO1 is provided, use software timeout (100 LoRa symbols, same as hardware timeout)
+    uint32_t timeout = 0;
+    if(_mod->getGpio() == RADIOLIB_NC) {
+      float symbolLength = (float) (uint32_t(1) << _sf) / (float) _bw;
+      timeout = 100*symbolLength;
+    }
+
+    // wait for packet reception or timeout
+    uint32_t start = _mod->micros();
     while(!_mod->digitalRead(_mod->getIrq())) {
       _mod->yield();
-      if(_mod->digitalRead(_mod->getGpio())) {
-        clearIRQFlags();
-        return(RADIOLIB_ERR_RX_TIMEOUT);
+
+      if(_mod->getGpio() != RADIOLIB_NC) {
+        // no GPIO pin provided, use software timeout
+        if(_mod->micros() - start > timeout) {
+          clearIRQFlags();
+          return(RADIOLIB_ERR_RX_TIMEOUT);
+        }
+      } else {
+        // GPIO provided, use that
+        if(_mod->digitalRead(_mod->getGpio())) {
+          clearIRQFlags();
+          return(RADIOLIB_ERR_RX_TIMEOUT);
+        }
       }
+
     }
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
