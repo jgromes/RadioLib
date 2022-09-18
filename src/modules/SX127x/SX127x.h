@@ -801,6 +801,13 @@ class SX127x: public PhysicalLayer {
     int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
+      \brief Clean up after transmission is done.
+
+      \returns \ref status_codes
+    */
+    int16_t finishTransmit() override;
+
+    /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
 
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
