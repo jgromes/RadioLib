@@ -47,6 +47,10 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   return(state);
 }
 
+int16_t SX1262::setFrequency(float freq) {
+  return(setFrequency(freq, true));
+}
+
 int16_t SX1262::setFrequency(float freq, bool calibrate) {
   RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
