@@ -190,6 +190,7 @@ setRegulatorLDO	KEYWORD2
 setRegulatorDCDC	KEYWORD2
 getCurrentLimit	KEYWORD2
 getIrqStatus	KEYWORD2
+getLastError	KEYWORD2
 
 # nRF24
 setIrqAction	KEYWORD2
