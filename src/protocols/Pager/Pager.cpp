@@ -264,7 +264,7 @@ int16_t PagerClient::readData(String& str, size_t len) {
     // check tone-only tramsissions
     if(length == 0) {
       length = 6;
-      strncpy((char*)data, "<tone>", length);
+      strncpy((char*)data, "<tone>", length + 1);
     }
 
     // add null terminator
