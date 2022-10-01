@@ -130,7 +130,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   if(len > 0) {
     int8_t remBits = 0;
     uint8_t dataPos = 0;
-    for(uint8_t i = 0; i < numDataBlocks + numBatches - 1; i++) {
+    for(size_t i = 0; i < numDataBlocks + numBatches - 1; i++) {
       uint8_t blockPos = RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos + 1 + i;
 
       // check if we need to skip a frame sync marker
