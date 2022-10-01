@@ -323,16 +323,16 @@ class nRF24: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setFrequency(int16_t freq);
+    int16_t setFrequency(float freq);
 
     /*!
-      \brief Sets data rate. Allowed values are 2000, 1000 or 250 kbps.
+      \brief Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.
 
-      \param dataRate Data rate to be set in kbps.
+      \param br Bit rate to be set in kbps.
 
       \returns \ref status_codes
     */
-    int16_t setDataRate(int16_t dataRate);
+    int16_t setBitRate(float br);
 
     /*!
       \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
