@@ -28,7 +28,7 @@ var class_s_x128x =
     [ "scanChannel", "class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb", null ],
     [ "setAccessAddress", "class_s_x128x.html#a9346490a6c56edcff2e12ae0369a8df5", null ],
     [ "setBandwidth", "class_s_x128x.html#ae93c99c85deb950fe9bc7101142b5f6a", null ],
-    [ "setBitRate", "class_s_x128x.html#a3bee00ec197ef9855c0079cb0a3009a6", null ],
+    [ "setBitRate", "class_s_x128x.html#a465ac114dbe6844069b5cb989f87c3ee", null ],
     [ "setCodingRate", "class_s_x128x.html#a9da544e4a6120f73a078b46c6138505a", null ],
     [ "setCRC", "class_s_x128x.html#aa4b1e0b96347011522e053f30202c0fe", null ],
     [ "setDataShaping", "class_s_x128x.html#a99491c705e88dddc820f884b778f1660", null ],

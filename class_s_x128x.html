@@ -191,9 +191,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1984a405262f155f16a4759c5f6b0133"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133">setPreambleLength</a> (uint32_t preambleLength)</td></tr>
 <tr class="memdesc:a1984a405262f155f16a4759c5f6b0133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <a href="class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133">More...</a><br /></td></tr>
 <tr class="separator:a1984a405262f155f16a4759c5f6b0133"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bee00ec197ef9855c0079cb0a3009a6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a3bee00ec197ef9855c0079cb0a3009a6">setBitRate</a> (uint16_t br)</td></tr>
-<tr class="memdesc:a3bee00ec197ef9855c0079cb0a3009a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).  <a href="class_s_x128x.html#a3bee00ec197ef9855c0079cb0a3009a6">More...</a><br /></td></tr>
-<tr class="separator:a3bee00ec197ef9855c0079cb0a3009a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465ac114dbe6844069b5cb989f87c3ee"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a465ac114dbe6844069b5cb989f87c3ee">setBitRate</a> (float br)</td></tr>
+<tr class="memdesc:a465ac114dbe6844069b5cb989f87c3ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).  <a href="class_s_x128x.html#a465ac114dbe6844069b5cb989f87c3ee">More...</a><br /></td></tr>
+<tr class="separator:a465ac114dbe6844069b5cb989f87c3ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26d0d02e5e53a3172df9208fa343a3f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a26d0d02e5e53a3172df9208fa343a3f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation. Allowed values range from 0.0 to 3200.0 kHz.  <a href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">More...</a><br /></td></tr>
 <tr class="separator:a26d0d02e5e53a3172df9208fa343a3f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,9 +315,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">readData</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">More...</a><br /></td></tr>
 <tr class="separator:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">setBitRate</a> (float br)=0</td></tr>
-<tr class="memdesc:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">More...</a><br /></td></tr>
-<tr class="separator:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1226,20 +1223,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a3bee00ec197ef9855c0079cb0a3009a6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3bee00ec197ef9855c0079cb0a3009a6">&#9670;&nbsp;</a></span>setBitRate()</h2>
+<a id="a465ac114dbe6844069b5cb989f87c3ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a465ac114dbe6844069b5cb989f87c3ee">&#9670;&nbsp;</a></span>setBitRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX128x::setBitRate </td>
           <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>br</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000, 1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem). </p>
@@ -1250,6 +1255,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">PhysicalLayer</a>.</p>
 
 </div>
 </div>
