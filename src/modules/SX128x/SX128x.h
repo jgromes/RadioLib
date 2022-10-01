@@ -819,6 +819,13 @@ class SX128x: public PhysicalLayer {
    */
     uint8_t randomByte();
 
+    /*!
+     \brief Get the last recorded transaction error.
+
+     \returns \ref status_codes
+    */
+    int16_t getLastError();
+
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
@@ -903,7 +910,10 @@ class SX128x: public PhysicalLayer {
     // cached BLE parameters
     uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;
 
+    int16_t _lastError = RADIOLIB_ERR_NONE;
+
     int16_t config(uint8_t modem);
+    int16_t checkCommandResult();
 };
 
 #endif
