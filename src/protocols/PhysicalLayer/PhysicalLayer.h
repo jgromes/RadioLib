@@ -191,7 +191,7 @@ class PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.
+      \brief Sets carrier frequency. Must be implemented in module class.
 
       \param freq Carrier frequency to be set in MHz.
 
@@ -200,7 +200,7 @@ class PhysicalLayer {
     virtual int16_t setFrequency(float freq) = 0;
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.
+      \brief Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.
 
       \param br Bit rate to be set (in kbps).
 
@@ -209,8 +209,7 @@ class PhysicalLayer {
     virtual int16_t setBitRate(float br) = 0;
 
     /*!
-      \brief Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz.
-      Only available in FSK mode. Must be implemented in module class.
+      \brief Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented in module class.
 
       \param freqDev Frequency deviation to be set (in kHz).
 

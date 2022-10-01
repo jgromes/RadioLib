@@ -80,11 +80,20 @@ class SX1268: public SX126x {
 
       \param freq Carrier frequency to be set in MHz.
 
+      \returns \ref status_codes
+    */
+    int16_t setFrequency(float freq);
+
+    /*!
+      \brief Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.
+
+      \param freq Carrier frequency to be set in MHz.
+
       \param calibrate Run image calibration.
 
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool calibrate = true);
+    int16_t setFrequency(float freq, bool calibrate);
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
