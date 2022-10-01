@@ -646,7 +646,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setBitRate(uint16_t br);
+    int16_t setBitRate(float br);
 
     /*!
       \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 3200.0 kHz.
