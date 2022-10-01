@@ -37,6 +37,8 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+* [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:  
+SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 
 ### Supported Arduino platforms:
 * __Arduino__  
