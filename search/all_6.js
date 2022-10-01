@@ -14,7 +14,7 @@ var searchData=
   ['getirq_67',['getIrq',['../class_module.html#a8c7f17a63b67117d953f1ba990b17f80',1,'Module']]],
   ['getirqflags_68',['getIRQFlags',['../class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d',1,'SX127x']]],
   ['getirqstatus_69',['getIrqStatus',['../class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df',1,'SX126x']]],
-  ['getlasterror_70',['getLastError',['../class_s_x126x.html#ac71eb1209354837ced2e21e66534bff3',1,'SX126x']]],
+  ['getlasterror_70',['getLastError',['../class_s_x126x.html#ac71eb1209354837ced2e21e66534bff3',1,'SX126x::getLastError()'],['../class_s_x128x.html#abefabeb0ecd6c441fbd388340bb7b2b2',1,'SX128x::getLastError()']]],
   ['getlqi_71',['getLQI',['../class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb',1,'CC1101']]],
   ['getmodemstatus_72',['getModemStatus',['../class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc',1,'SX127x']]],
   ['getpacketlength_73',['getPacketLength',['../class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0',1,'CC1101::getPacketLength()'],['../classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b',1,'nRF24::getPacketLength()'],['../class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1',1,'RF69::getPacketLength()'],['../class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10',1,'Si443x::getPacketLength()'],['../class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987',1,'SX126x::getPacketLength()'],['../class_s_x127x.html#a462fa74275e67c296328a01f361892d5',1,'SX127x::getPacketLength()'],['../class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735',1,'SX128x::getPacketLength()'],['../class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7',1,'PhysicalLayer::getPacketLength()']]],
