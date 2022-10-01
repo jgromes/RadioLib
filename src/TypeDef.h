@@ -405,6 +405,18 @@
 */
 #define RADIOLIB_ERR_RANGING_TIMEOUT                           (-901)
 
+// Pager-specific status codes
+
+/*!
+  \brief The provided payload data configuration is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_PAYLOAD                            (-1001)
+
+/*!
+  \brief The requested address was not found in the received data.
+*/
+#define RADIOLIB_ERR_ADDRESS_NOT_FOUND                          (-1002)
+
 /*!
   \}
 */
