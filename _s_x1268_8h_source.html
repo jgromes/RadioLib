@@ -111,26 +111,28 @@ $(document).ready(function(){initNavTree('_s_x1268_8h_source.html',''); initResi
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// configuration methods</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    int16_t <a class="code" href="class_s_x1268.html#a6ad998275281de5c6f24f8a64db88052">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> calibrate = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    int16_t <a class="code" href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">setOutputPower</a>(int8_t power);</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    int16_t <a class="code" href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    int16_t <a class="code" href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> calibrate);</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    int16_t <a class="code" href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">setOutputPower</a>(int8_t power);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;};</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclass_s_x1268_html_a5b0744aa46fbb4f8c738b010dfcc9b45"><div class="ttname"><a href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">SX1268::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:75</div></div>
-<div class="ttc" id="aclass_s_x1268_html_a6ad998275281de5c6f24f8a64db88052"><div class="ttname"><a href="class_s_x1268.html#a6ad998275281de5c6f24f8a64db88052">SX1268::setFrequency</a></div><div class="ttdeci">int16_t setFrequency(float freq, bool calibrate=true)</div><div class="ttdoc">Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:51</div></div>
+<div class="ttc" id="aclass_s_x1268_html_a5b0744aa46fbb4f8c738b010dfcc9b45"><div class="ttname"><a href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">SX1268::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:79</div></div>
 <div class="ttc" id="aclass_s_x1268_html_ad9e92b39ae0fdfa47131ddf7adb92b71"><div class="ttname"><a href="class_s_x1268.html#ad9e92b39ae0fdfa47131ddf7adb92b71">SX1268::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:8</div></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:16</div></div>
 <div class="ttc" id="aclass_s_x1268_html"><div class="ttname"><a href="class_s_x1268.html">SX1268</a></div><div class="ttdoc">Derived class for SX1268 modules.</div><div class="ttdef"><b>Definition:</b> SX1268.h:19</div></div>
+<div class="ttc" id="aclass_s_x1268_html_abf338b7036d692a4a8ca6bf305c0cb12"><div class="ttname"><a href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">SX1268::setFrequency</a></div><div class="ttdeci">int16_t setFrequency(float freq)</div><div class="ttdoc">Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:50</div></div>
 <div class="ttc" id="aclass_s_x1268_html_a6bc50597d50fd9a2387628e452eac42f"><div class="ttname"><a href="class_s_x1268.html#a6bc50597d50fd9a2387628e452eac42f">SX1268::SX1268</a></div><div class="ttdeci">SX1268(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:4</div></div>
 <div class="ttc" id="aclass_s_x1268_html_af6b041392136b599eec57085e2067a6f"><div class="ttname"><a href="class_s_x1268.html#af6b041392136b599eec57085e2067a6f">SX1268::beginFSK</a></div><div class="ttdeci">int16_t beginFSK(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition:</b> SX1268.cpp:32</div></div>
 <div class="ttc" id="aclass_s_x126x_html"><div class="ttname"><a href="class_s_x126x.html">SX126x</a></div><div class="ttdoc">Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...</div><div class="ttdef"><b>Definition:</b> SX126x.h:362</div></div>

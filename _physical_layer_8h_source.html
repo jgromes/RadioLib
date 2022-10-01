@@ -137,83 +137,83 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
 <div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">setBitRate</a>(<span class="keywordtype">float</span> br) = 0;</div>
 <div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160; </div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) = 0;</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">setDataShaping</a>(uint8_t sh) = 0;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a7d3419227d201d6912b77784636d437d">setEncoding</a>(uint8_t encoding) = 0;</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) = 0;</div>
-<div class="line"><a name="l00254"></a><span class="lineno">  254</span>&#160; </div>
-<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160;    int32_t <a class="code" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a>(int32_t max);</div>
-<div class="line"><a name="l00263"></a><span class="lineno">  263</span>&#160; </div>
-<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160;    int32_t <a class="code" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a>(int32_t min, int32_t max);</div>
-<div class="line"><a name="l00274"></a><span class="lineno">  274</span>&#160; </div>
-<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160;    <span class="keyword">virtual</span> uint8_t <a class="code" href="class_physical_layer.html#a34543b885aa57ade08a4c659991e523e">randomByte</a>() = 0;</div>
-<div class="line"><a name="l00281"></a><span class="lineno">  281</span>&#160; </div>
-<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a>();</div>
-<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160; </div>
-<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00290"></a><span class="lineno">  290</span>&#160; </div>
-<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">setDirectSyncWord</a>(uint32_t syncWord, uint8_t len);</div>
-<div class="line"><a name="l00300"></a><span class="lineno">  300</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>)) = 0;</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#a9b720e7776ad7ea805932578907b0058">readBit</a>(RADIOLIB_PIN_TYPE pin) = 0;</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160; </div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">available</a>();</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    uint8_t <a class="code" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a>();</div>
-<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
-<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a>(RADIOLIB_PIN_TYPE pin, uint8_t value);</div>
-<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160; </div>
-<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;    <span class="keywordtype">void</span> updateDirectBuffer(uint8_t bit);</div>
-<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160; </div>
-<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">float</span> _freqStep;</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;    <span class="keywordtype">size_t</span> _maxPacketLength;</div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    uint8_t _bufferBitPos;</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    uint8_t _bufferWritePos;</div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    uint8_t _bufferReadPos;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    uint32_t _syncBuffer;</div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    uint32_t _directSyncWord;</div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    uint8_t _directSyncWordLen;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    uint32_t _directSyncWordMask;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordtype">bool</span> _gotSync;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160; </div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_module.html">Module</a>* getMod() = 0;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160; </div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="comment">// allow specific classes access the private getMod method</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
-<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a>;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;};</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160; </div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) = 0;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00227"></a><span class="lineno">  227</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">setDataShaping</a>(uint8_t sh) = 0;</div>
+<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160; </div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a7d3419227d201d6912b77784636d437d">setEncoding</a>(uint8_t encoding) = 0;</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160; </div>
+<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> <a class="code" href="class_physical_layer.html#a0bd6046e068ef63e3f2b6bead48e02a7">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) = 0;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    int32_t <a class="code" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a>(int32_t max);</div>
+<div class="line"><a name="l00262"></a><span class="lineno">  262</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    int32_t <a class="code" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a>(int32_t min, int32_t max);</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;    <span class="keyword">virtual</span> uint8_t <a class="code" href="class_physical_layer.html#a34543b885aa57ade08a4c659991e523e">randomByte</a>() = 0;</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a>();</div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160; </div>
+<div class="line"><a name="l00288"></a><span class="lineno">  288</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00289"></a><span class="lineno">  289</span>&#160; </div>
+<div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">setDirectSyncWord</a>(uint32_t syncWord, uint8_t len);</div>
+<div class="line"><a name="l00299"></a><span class="lineno">  299</span>&#160; </div>
+<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>)) = 0;</div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160; </div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#a9b720e7776ad7ea805932578907b0058">readBit</a>(RADIOLIB_PIN_TYPE pin) = 0;</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160; </div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">available</a>();</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;    uint8_t <a class="code" href="class_physical_layer.html#a929662904e9af2611e098dc13b91c977">read</a>();</div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160; </div>
+<div class="line"><a name="l00338"></a><span class="lineno">  338</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a>(RADIOLIB_PIN_TYPE pin, uint8_t value);</div>
+<div class="line"><a name="l00339"></a><span class="lineno">  339</span>&#160; </div>
+<div class="line"><a name="l00340"></a><span class="lineno">  340</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00341"></a><span class="lineno">  341</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00342"></a><span class="lineno">  342</span>&#160;    <span class="keywordtype">void</span> updateDirectBuffer(uint8_t bit);</div>
+<div class="line"><a name="l00343"></a><span class="lineno">  343</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00344"></a><span class="lineno">  344</span>&#160; </div>
+<div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;    <span class="keywordtype">float</span> _freqStep;</div>
+<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">size_t</span> _maxPacketLength;</div>
+<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160; </div>
+<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    uint8_t _bufferBitPos;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    uint8_t _bufferWritePos;</div>
+<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;    uint8_t _bufferReadPos;</div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    uint32_t _syncBuffer;</div>
+<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160;    uint32_t _directSyncWord;</div>
+<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;    uint8_t _directSyncWordLen;</div>
+<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    uint32_t _directSyncWordMask;</div>
+<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    <span class="keywordtype">bool</span> _gotSync;</div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_module.html">Module</a>* getMod() = 0;</div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    <span class="comment">// allow specific classes access the private getMod method</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>;</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
+<div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a>;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;};</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_physical_layer_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:12</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a0e77da761a2cbb5c9535df0bdea993f9"><div class="ttname"><a href="class_physical_layer.html#a0e77da761a2cbb5c9535df0bdea993f9">PhysicalLayer::standby</a></div><div class="ttdeci">virtual int16_t standby()=0</div><div class="ttdoc">Sets module to standby.</div></div>
-<div class="ttc" id="aclass_physical_layer_html_a56e9cf39bc8847492f7f3cd67ebf1c46"><div class="ttname"><a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">PhysicalLayer::setBitRate</a></div><div class="ttdeci">virtual int16_t setBitRate(float br)=0</div><div class="ttdoc">Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.</div></div>
-<div class="ttc" id="aclass_physical_layer_html_ab9060e8ab7a2da192b3bf53b3501553b"><div class="ttname"><a href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">PhysicalLayer::setFrequencyDeviation</a></div><div class="ttdeci">virtual int16_t setFrequencyDeviation(float freqDev)=0</div><div class="ttdoc">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and mu...</div></div>
-<div class="ttc" id="aclass_physical_layer_html_a4928642e647f2dd5b614b87b681cb0a6"><div class="ttname"><a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">PhysicalLayer::setFrequency</a></div><div class="ttdeci">virtual int16_t setFrequency(float freq)=0</div><div class="ttdoc">Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.</div></div>
+<div class="ttc" id="aclass_physical_layer_html_a56e9cf39bc8847492f7f3cd67ebf1c46"><div class="ttname"><a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">PhysicalLayer::setBitRate</a></div><div class="ttdeci">virtual int16_t setBitRate(float br)=0</div><div class="ttdoc">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.</div></div>
+<div class="ttc" id="aclass_physical_layer_html_ab9060e8ab7a2da192b3bf53b3501553b"><div class="ttname"><a href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">PhysicalLayer::setFrequencyDeviation</a></div><div class="ttdeci">virtual int16_t setFrequencyDeviation(float freqDev)=0</div><div class="ttdoc">Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented ...</div></div>
+<div class="ttc" id="aclass_physical_layer_html_a4928642e647f2dd5b614b87b681cb0a6"><div class="ttname"><a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">PhysicalLayer::setFrequency</a></div><div class="ttdeci">virtual int16_t setFrequency(float freq)=0</div><div class="ttdoc">Sets carrier frequency. Must be implemented in module class.</div></div>
 <div class="ttc" id="aclass_hell_client_html"><div class="ttname"><a href="class_hell_client.html">HellClient</a></div><div class="ttdoc">Client for Hellschreiber transmissions.</div><div class="ttdef"><b>Definition:</b> Hellschreiber.h:89</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a7d3419227d201d6912b77784636d437d"><div class="ttname"><a href="class_physical_layer.html#a7d3419227d201d6912b77784636d437d">PhysicalLayer::setEncoding</a></div><div class="ttdeci">virtual int16_t setEncoding(uint8_t encoding)=0</div><div class="ttdoc">Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a4b04eb6155b06d8ef400131c647d54e7"><div class="ttname"><a href="class_physical_layer.html#a4b04eb6155b06d8ef400131c647d54e7">PhysicalLayer::transmitDirect</a></div><div class="ttdeci">virtual int16_t transmitDirect(uint32_t frf=0)=0</div><div class="ttdoc">Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module ...</div></div>

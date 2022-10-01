@@ -118,9 +118,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a36d2c94ff9c3b9126fde23e3c54630f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">beginFSK</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
 <tr class="memdesc:a36d2c94ff9c3b9126fde23e3c54630f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">More...</a><br /></td></tr>
 <tr class="separator:a36d2c94ff9c3b9126fde23e3c54630f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e72da22fa1fc2d87186107a3285e846"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a7e72da22fa1fc2d87186107a3285e846">setFrequency</a> (float freq, bool calibrate=true)</td></tr>
-<tr class="memdesc:a7e72da22fa1fc2d87186107a3285e846"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a7e72da22fa1fc2d87186107a3285e846">More...</a><br /></td></tr>
-<tr class="separator:a7e72da22fa1fc2d87186107a3285e846"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb018b820eb71ca6b0cd92c62affa767"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a> (float freq)</td></tr>
+<tr class="memdesc:abb018b820eb71ca6b0cd92c62affa767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">More...</a><br /></td></tr>
+<tr class="separator:abb018b820eb71ca6b0cd92c62affa767"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f70b082116b03d1fafe395fc5a288f6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">setFrequency</a> (float freq, bool calibrate)</td></tr>
+<tr class="memdesc:a1f70b082116b03d1fafe395fc5a288f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">More...</a><br /></td></tr>
+<tr class="separator:a1f70b082116b03d1fafe395fc5a288f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa149463283dc9cddfec836ec6620d4dc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:aa149463283dc9cddfec836ec6620d4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -17 to 22 dBm.  <a href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">More...</a><br /></td></tr>
 <tr class="separator:aa149463283dc9cddfec836ec6620d4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -373,9 +376,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">readData</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">More...</a><br /></td></tr>
 <tr class="separator:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">setFrequency</a> (float freq)=0</td></tr>
-<tr class="memdesc:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.  <a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">More...</a><br /></td></tr>
-<tr class="separator:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -602,8 +602,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a7e72da22fa1fc2d87186107a3285e846"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e72da22fa1fc2d87186107a3285e846">&#9670;&nbsp;</a></span>setFrequency()</h2>
+<a id="abb018b820eb71ca6b0cd92c62affa767"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb018b820eb71ca6b0cd92c62affa767">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1262::setFrequency </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1f70b082116b03d1fafe395fc5a288f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f70b082116b03d1fafe395fc5a288f6">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -618,7 +655,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calibrate</em> = <code>true</code>&#160;</td>
+          <td class="paramname"><em>calibrate</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

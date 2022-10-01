@@ -180,13 +180,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a46b22145b33e97cf6065ed826799b6b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables direct reception mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class. While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.  <a href="class_physical_layer.html#a46b22145b33e97cf6065ed826799b6b4">More...</a><br /></td></tr>
 <tr class="separator:a46b22145b33e97cf6065ed826799b6b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4928642e647f2dd5b614b87b681cb0a6"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">setFrequency</a> (float freq)=0</td></tr>
-<tr class="memdesc:a4928642e647f2dd5b614b87b681cb0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.  <a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">More...</a><br /></td></tr>
+<tr class="memdesc:a4928642e647f2dd5b614b87b681cb0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">More...</a><br /></td></tr>
 <tr class="separator:a4928642e647f2dd5b614b87b681cb0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56e9cf39bc8847492f7f3cd67ebf1c46"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">setBitRate</a> (float br)=0</td></tr>
-<tr class="memdesc:a56e9cf39bc8847492f7f3cd67ebf1c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.  <a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">More...</a><br /></td></tr>
+<tr class="memdesc:a56e9cf39bc8847492f7f3cd67ebf1c46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">More...</a><br /></td></tr>
 <tr class="separator:a56e9cf39bc8847492f7f3cd67ebf1c46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9060e8ab7a2da192b3bf53b3501553b"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">setFrequencyDeviation</a> (float freqDev)=0</td></tr>
-<tr class="memdesc:ab9060e8ab7a2da192b3bf53b3501553b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">More...</a><br /></td></tr>
+<tr class="memdesc:ab9060e8ab7a2da192b3bf53b3501553b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b">More...</a><br /></td></tr>
 <tr class="separator:ab9060e8ab7a2da192b3bf53b3501553b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab643a814dce48f71a13bf6ea23f44cbd"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">setDataShaping</a> (uint8_t sh)=0</td></tr>
 <tr class="memdesc:ab643a814dce48f71a13bf6ea23f44cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">More...</a><br /></td></tr>
@@ -783,7 +783,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </table>
 </div><div class="memdoc">
 
-<p>Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode. </p>
+<p>Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps).</td></tr>
@@ -1016,7 +1016,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz. </p>
+<p>Sets carrier frequency. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz.</td></tr>
@@ -1025,7 +1025,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Implemented in <a class="el" href="class_r_f69.html#ab467f0fc318e651d0cdfbc0399d4c34b">RF69</a>, <a class="el" href="class_c_c1101.html#a9592c023556c38c2b8066a23da96ae5e">CC1101</a>, <a class="el" href="class_s_x128x.html#a2043ef7bb806968b9d9dcb64561ca371">SX128x</a>, <a class="el" href="class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4">SX1278</a>, <a class="el" href="class_s_x1272.html#af409f50e51042cf9357c0a8267f762f8">SX1272</a>, <a class="el" href="class_r_f_m95.html#a9dbe60f998ddc661282ebf454dba0f87">RFM95</a>, <a class="el" href="class_r_f_m96.html#ae2be63ae8365648098b84cc86475fb84">RFM96</a>, <a class="el" href="class_s_x1276.html#a657d75dced0af8c89c4e38535dd5b008">SX1276</a>, <a class="el" href="class_s_x1277.html#a42adde5eecccdca95214980848795e82">SX1277</a>, <a class="el" href="class_s_x1279.html#acf9b2087f5b661f06e9512bad36b3817">SX1279</a>, <a class="el" href="class_si4430.html#a025a31861d1511090168e416140d0343">Si4430</a>, and <a class="el" href="class_si4432.html#aa0cdb6cb53bb0176803d5115356a8e84">Si4432</a>.</p>
+<p>Implemented in <a class="el" href="class_r_f69.html#ab467f0fc318e651d0cdfbc0399d4c34b">RF69</a>, <a class="el" href="class_c_c1101.html#a9592c023556c38c2b8066a23da96ae5e">CC1101</a>, <a class="el" href="class_s_x128x.html#a2043ef7bb806968b9d9dcb64561ca371">SX128x</a>, <a class="el" href="class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4">SX1278</a>, <a class="el" href="class_s_x1272.html#af409f50e51042cf9357c0a8267f762f8">SX1272</a>, <a class="el" href="class_r_f_m95.html#a9dbe60f998ddc661282ebf454dba0f87">RFM95</a>, <a class="el" href="class_r_f_m96.html#ae2be63ae8365648098b84cc86475fb84">RFM96</a>, <a class="el" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">SX1262</a>, <a class="el" href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">SX1268</a>, <a class="el" href="class_s_x1276.html#a657d75dced0af8c89c4e38535dd5b008">SX1276</a>, <a class="el" href="class_s_x1277.html#a42adde5eecccdca95214980848795e82">SX1277</a>, <a class="el" href="class_s_x1279.html#acf9b2087f5b661f06e9512bad36b3817">SX1279</a>, <a class="el" href="class_si4430.html#a025a31861d1511090168e416140d0343">Si4430</a>, and <a class="el" href="class_si4432.html#aa0cdb6cb53bb0176803d5115356a8e84">Si4432</a>.</p>
 
 </div>
 </div>
@@ -1053,7 +1053,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </table>
 </div><div class="memdoc">
 
-<p>Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode. Must be implemented in module class. </p>
+<p>Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz).</td></tr>
