@@ -148,12 +148,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a410fb78acb4ed358818c132687b8857a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a410fb78acb4ed358818c132687b8857a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method.  <a href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">More...</a><br /></td></tr>
 <tr class="separator:a410fb78acb4ed358818c132687b8857a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec5f9dba44a019e23c8bf516f104fad"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#abec5f9dba44a019e23c8bf516f104fad">setFrequency</a> (int16_t freq)</td></tr>
-<tr class="memdesc:abec5f9dba44a019e23c8bf516f104fad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.  <a href="classn_r_f24.html#abec5f9dba44a019e23c8bf516f104fad">More...</a><br /></td></tr>
-<tr class="separator:abec5f9dba44a019e23c8bf516f104fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f3ec2196733a2e2476f50690967f285"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a1f3ec2196733a2e2476f50690967f285">setDataRate</a> (int16_t dataRate)</td></tr>
-<tr class="memdesc:a1f3ec2196733a2e2476f50690967f285"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets data rate. Allowed values are 2000, 1000 or 250 kbps.  <a href="classn_r_f24.html#a1f3ec2196733a2e2476f50690967f285">More...</a><br /></td></tr>
-<tr class="separator:a1f3ec2196733a2e2476f50690967f285"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408278336cdf25fd205ecffea86c26e8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">setFrequency</a> (float freq)</td></tr>
+<tr class="memdesc:a408278336cdf25fd205ecffea86c26e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.  <a href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">More...</a><br /></td></tr>
+<tr class="separator:a408278336cdf25fd205ecffea86c26e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0873f58ae62e41cff99813e21cc8b02a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a">setBitRate</a> (float br)</td></tr>
+<tr class="memdesc:a0873f58ae62e41cff99813e21cc8b02a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.  <a href="classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a">More...</a><br /></td></tr>
+<tr class="separator:a0873f58ae62e41cff99813e21cc8b02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a824453d547c0b42ac1988acb42032ca4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a824453d547c0b42ac1988acb42032ca4">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:a824453d547c0b42ac1988acb42032ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are -18, -12, -6 or 0 dBm.  <a href="classn_r_f24.html#a824453d547c0b42ac1988acb42032ca4">More...</a><br /></td></tr>
 <tr class="separator:a824453d547c0b42ac1988acb42032ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,12 +266,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">readData</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_physical_layer.html#ae8eed0e888a7c8742e89d2b850977de2">More...</a><br /></td></tr>
 <tr class="separator:ae8eed0e888a7c8742e89d2b850977de2 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">setFrequency</a> (float freq)=0</td></tr>
-<tr class="memdesc:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <a href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">More...</a><br /></td></tr>
-<tr class="separator:a4928642e647f2dd5b614b87b681cb0a6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">setBitRate</a> (float br)=0</td></tr>
-<tr class="memdesc:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">More...</a><br /></td></tr>
-<tr class="separator:a56e9cf39bc8847492f7f3cd67ebf1c46 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -900,6 +894,43 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a0873f58ae62e41cff99813e21cc8b02a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0873f58ae62e41cff99813e21cc8b02a">&#9670;&nbsp;</a></span>setBitRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t nRF24::setBitRate </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>br</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets bit rate. Allowed values are 2000, 1000 or 250 kbps. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">br</td><td>Bit rate to be set in kbps.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a3eb45884a5730ac1c339c7ba4f7b5282"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3eb45884a5730ac1c339c7ba4f7b5282">&#9670;&nbsp;</a></span>setCrcFiltering()</h2>
 
@@ -920,33 +951,6 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">crcOn</td><td>Set or unset CRC check.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a1f3ec2196733a2e2476f50690967f285"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f3ec2196733a2e2476f50690967f285">&#9670;&nbsp;</a></span>setDataRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t nRF24::setDataRate </td>
-          <td>(</td>
-          <td class="paramtype">int16_t&#160;</td>
-          <td class="paramname"><em>dataRate</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets data rate. Allowed values are 2000, 1000 or 250 kbps. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dataRate</td><td>Data rate to be set in kbps.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1064,20 +1068,28 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="abec5f9dba44a019e23c8bf516f104fad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abec5f9dba44a019e23c8bf516f104fad">&#9670;&nbsp;</a></span>setFrequency()</h2>
+<a id="a408278336cdf25fd205ecffea86c26e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a408278336cdf25fd205ecffea86c26e8">&#9670;&nbsp;</a></span>setFrequency()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t nRF24::setFrequency </td>
           <td>(</td>
-          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>freq</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz. </p>
@@ -1088,6 +1100,8 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6">PhysicalLayer</a>.</p>
 
 </div>
 </div>

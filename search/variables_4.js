@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['info_631',['info',['../class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988',1,'AX25Frame']]],
-  ['infolen_632',['infoLen',['../class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41',1,'AX25Frame']]]
+  ['info_629',['info',['../class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988',1,'AX25Frame']]],
+  ['infolen_630',['infoLen',['../class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41',1,'AX25Frame']]]
 ];
