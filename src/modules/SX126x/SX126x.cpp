@@ -1551,7 +1551,7 @@ int16_t SX126x::fixImplicitTimeout() {
 
   // stop RTC counter
   uint8_t rtcStop = 0x00;
-  int16_t state = writeRegister(RADIOLIB_SX126X_REG_DIO3_OUT_VOLTAGE_CTRL, &rtcStop, 1);
+  int16_t state = writeRegister(RADIOLIB_SX126X_REG_RTC_CTRL, &rtcStop, 1);
   RADIOLIB_ASSERT(state);
 
   // read currently active event
