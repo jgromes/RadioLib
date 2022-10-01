@@ -1342,7 +1342,6 @@ int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
   // check the status
   state = checkCommandResult();
   return(state);
-
 }
 
 int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
