@@ -746,56 +746,56 @@ int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX128x::setBitRate(uint16_t br) {
+int16_t SX128x::setBitRate(float br) {
   // check active modem
   uint8_t modem = getPacketType();
 
   // GFSK/BLE
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_BLE)) {
-    if(br == 125) {
+    if((uint16_t)br == 125) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_0_125_BW_0_3;
-    } else if(br == 250) {
+    } else if((uint16_t)br == 250) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_0_250_BW_0_6;
-    } else if(br == 400) {
+    } else if((uint16_t)br == 400) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_0_400_BW_1_2;
-    } else if(br == 500) {
+    } else if((uint16_t)br == 500) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_0_500_BW_1_2;
-    } else if(br == 800) {
+    } else if((uint16_t)br == 800) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_0_800_BW_2_4;
-    } else if(br == 1000) {
+    } else if((uint16_t)br == 1000) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_1_000_BW_2_4;
-    } else if(br == 1600) {
+    } else if((uint16_t)br == 1600) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_1_600_BW_2_4;
-    } else if(br == 2000) {
+    } else if((uint16_t)br == 2000) {
       _br = RADIOLIB_SX128X_BLE_GFSK_BR_2_000_BW_2_4;
     } else {
       return(RADIOLIB_ERR_INVALID_BIT_RATE);
     }
 
     // update modulation parameters
-    _brKbps = br;
+    _brKbps = (uint16_t)br;
     return(setModulationParams(_br, _modIndex, _shaping));
 
   // FLRC
   } else if(modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC) {
-    if(br == 260) {
+    if((uint16_t)br == 260) {
       _br = RADIOLIB_SX128X_FLRC_BR_0_260_BW_0_3;
-    } else if(br == 325) {
+    } else if((uint16_t)br == 325) {
       _br = RADIOLIB_SX128X_FLRC_BR_0_325_BW_0_3;
-    } else if(br == 520) {
+    } else if((uint16_t)br == 520) {
       _br = RADIOLIB_SX128X_FLRC_BR_0_520_BW_0_6;
-    } else if(br == 650) {
+    } else if((uint16_t)br == 650) {
       _br = RADIOLIB_SX128X_FLRC_BR_0_650_BW_0_6;
-    } else if(br == 1000) {
+    } else if((uint16_t)br == 1000) {
       _br = RADIOLIB_SX128X_FLRC_BR_1_000_BW_1_2;
-    } else if(br == 1300) {
+    } else if((uint16_t)br == 1300) {
       _br = RADIOLIB_SX128X_FLRC_BR_1_300_BW_1_2;
     } else {
       return(RADIOLIB_ERR_INVALID_BIT_RATE);
     }
 
     // update modulation parameters
-    _brKbps = br;
+    _brKbps = (uint16_t)br;
     return(setModulationParams(_br, _crFLRC, _shaping));
 
   }
