@@ -25,7 +25,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX1231__ FSK/OOK radio module
 
 ### Supported protocols and digital modes:
-* __AX.25__ using 2-FSK or AFSK for modules:  
+* [__AX.25__](https://www.sigidwiki.com/wiki/PACKET) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
