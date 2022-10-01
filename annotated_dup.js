@@ -12,6 +12,7 @@ var annotated_dup =
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],
+    [ "PagerClient", "class_pager_client.html", "class_pager_client" ],
     [ "PhysicalLayer", "class_physical_layer.html", "class_physical_layer" ],
     [ "RF69", "class_r_f69.html", "class_r_f69" ],
     [ "RFM22", "class_r_f_m22.html", null ],

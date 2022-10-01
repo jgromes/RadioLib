@@ -134,9 +134,6 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad">reset</a> () override</td></tr>
 <tr class="memdesc:a6d60902ac59b653a9eb83e82a932f7ad inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. <br /></td></tr>
 <tr class="separator:a6d60902ac59b653a9eb83e82a932f7ad inherit pub_methods_class_s_x1278"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b14d432ef1bd72982f4771cac5b62e4 inherit pub_methods_class_s_x1278"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4">setFrequency</a> (float freq)</td></tr>
-<tr class="memdesc:a4b14d432ef1bd72982f4771cac5b62e4 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 525.0 MHz.  <a href="class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4">More...</a><br /></td></tr>
-<tr class="separator:a4b14d432ef1bd72982f4771cac5b62e4 inherit pub_methods_class_s_x1278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46c27ed1ebaae4e3ed8afe3ae6941dd6 inherit pub_methods_class_s_x1278"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a46c27ed1ebaae4e3ed8afe3ae6941dd6">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a46c27ed1ebaae4e3ed8afe3ae6941dd6 inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa link bandwidth. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in LoRa mode.  <a href="class_s_x1278.html#a46c27ed1ebaae4e3ed8afe3ae6941dd6">More...</a><br /></td></tr>
 <tr class="separator:a46c27ed1ebaae4e3ed8afe3ae6941dd6 inherit pub_methods_class_s_x1278"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -672,6 +669,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX1279::setFrequency </td>
@@ -681,6 +681,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets carrier frequency. Allowed values range from 137.0 MHz to 960.0 MHz. </p>
@@ -691,6 +696,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_s_x1278.html#a4b14d432ef1bd72982f4771cac5b62e4">SX1278</a>.</p>
 
 </div>
 </div>

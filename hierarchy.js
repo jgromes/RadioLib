@@ -9,6 +9,7 @@ var hierarchy =
     [ "ITA2String", "class_i_t_a2_string.html", null ],
     [ "Module", "class_module.html", null ],
     [ "MorseClient", "class_morse_client.html", null ],
+    [ "PagerClient", "class_pager_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
       [ "nRF24", "classn_r_f24.html", null ],

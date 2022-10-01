@@ -15,11 +15,13 @@ var class_physical_layer =
     [ "receive", "class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36", null ],
     [ "receive", "class_physical_layer.html#a2ad4c6a8ac267f8ac590260414ffcda3", null ],
     [ "receiveDirect", "class_physical_layer.html#a46b22145b33e97cf6065ed826799b6b4", null ],
+    [ "setBitRate", "class_physical_layer.html#a56e9cf39bc8847492f7f3cd67ebf1c46", null ],
     [ "setDataShaping", "class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd", null ],
     [ "setDIOMapping", "class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368", null ],
     [ "setDirectAction", "class_physical_layer.html#ab76fe7d3e0f453a807b205161c980086", null ],
     [ "setDirectSyncWord", "class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab", null ],
     [ "setEncoding", "class_physical_layer.html#a7d3419227d201d6912b77784636d437d", null ],
+    [ "setFrequency", "class_physical_layer.html#a4928642e647f2dd5b614b87b681cb0a6", null ],
     [ "setFrequencyDeviation", "class_physical_layer.html#ab9060e8ab7a2da192b3bf53b3501553b", null ],
     [ "standby", "class_physical_layer.html#a0e77da761a2cbb5c9535df0bdea993f9", null ],
     [ "startDirect", "class_physical_layer.html#a88a10657bd2215a11a2331f937414b55", null ],
@@ -36,6 +38,7 @@ var class_physical_layer =
     [ "FSK4Client", "class_physical_layer.html#ac0313fe86041eb37d290019203e095d3", null ],
     [ "HellClient", "class_physical_layer.html#afeb005bab389f137def61f1acc3714d3", null ],
     [ "MorseClient", "class_physical_layer.html#ae5c5757c553100373984a416b6c3690a", null ],
+    [ "PagerClient", "class_physical_layer.html#a41ff2710d9e3a626becfa7a093900052", null ],
     [ "RTTYClient", "class_physical_layer.html#a018393f703a257e39cd263cccf4ffad5", null ],
     [ "SSTVClient", "class_physical_layer.html#ae8dd4f2f60ef4fd1fa1868a7a630ab20", null ]
 ];

@@ -2,6 +2,7 @@ var group__status__codes =
 [
     [ "RADIOLIB_CHANNEL_FREE", "group__status__codes.html#ga4673596b2cc7290be5ee0a2e9ee42718", null ],
     [ "RADIOLIB_ERR_ACK_NOT_RECEIVED", "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063", null ],
+    [ "RADIOLIB_ERR_ADDRESS_NOT_FOUND", "group__status__codes.html#ga806183ed238159d317132b0d44d7a0a2", null ],
     [ "RADIOLIB_ERR_CHIP_NOT_FOUND", "group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62", null ],
     [ "RADIOLIB_ERR_CRC_MISMATCH", "group__status__codes.html#ga9da949184e940a4fa6f4afb63c315963", null ],
     [ "RADIOLIB_ERR_INVALID_ADDRESS_WIDTH", "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607", null ],
@@ -29,6 +30,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_NUM_SAMPLES", "group__status__codes.html#gaa5d0e76a10099c6e1cfd8f24e48995a2", null ],
     [ "RADIOLIB_ERR_INVALID_OOK_RSSI_PEAK_TYPE", "group__status__codes.html#gabc97efb9f410af5c0a9c1e5f882e41d8", null ],
     [ "RADIOLIB_ERR_INVALID_OUTPUT_POWER", "group__status__codes.html#ga55da4b2ee0661872a37f1c57fc61c666", null ],
+    [ "RADIOLIB_ERR_INVALID_PAYLOAD", "group__status__codes.html#ga5529b54dc67d5ccdc2a29989ebf43711", null ],
     [ "RADIOLIB_ERR_INVALID_PIPE_NUMBER", "group__status__codes.html#ga3ed4264643f97b76f9f3cf242338573d", null ],
     [ "RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH", "group__status__codes.html#ga9dc55947447ed9c91217f86a9bca75bb", null ],
     [ "RADIOLIB_ERR_INVALID_REPEATER_CALLSIGN", "group__status__codes.html#ga684497ce1c94442b5fe0396ea4ec930d", null ],
