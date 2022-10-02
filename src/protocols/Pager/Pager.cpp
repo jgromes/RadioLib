@@ -422,16 +422,21 @@ void PagerClient::write(uint32_t codeWord) {
   Module* mod = _phy->getMod();
   for(int8_t i = 31; i >= 0; i--) {
     uint32_t mask = (uint32_t)0x01 << i;
+    uint32_t start = mod->micros();
     if(codeWord & mask) {
       // send 1
-      uint32_t start = mod->micros();
       _phy->transmitDirect(_baseRaw + _shift);
-      while(mod->micros() - start < _bitDuration);
     } else {
       // send 0
-      uint32_t start = mod->micros();
       _phy->transmitDirect(_baseRaw - _shift);
-      while(mod->micros() - start < _bitDuration);
+    }
+
+    // this is pretty silly, while(mod->micros() ... ) would be enough
+    // but for some reason, MegaCore throws a linker error on it
+    // "relocation truncated to fit: R_AVR_7_PCREL against `no symbol'"
+    uint32_t now = mod->micros();
+    while(now - start < _bitDuration) {
+      now = mod->micros();
     }
   }
 }
