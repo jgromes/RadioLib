@@ -1617,7 +1617,7 @@ int16_t SX126x::config(uint8_t modem) {
 
   // calibrate all blocks
   data[0] = RADIOLIB_SX126X_CALIBRATE_ALL;
-  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_CALIBRATE, data, 1);
+  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_CALIBRATE, data, 1, true, false);
   RADIOLIB_ASSERT(state);
 
   // wait for calibration completion
@@ -1662,43 +1662,55 @@ int16_t SX126x::checkCommandResult() {
   return(state);
 }
 
-int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
   int16_t state = SX126x::SPItransfer(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy);
   RADIOLIB_ASSERT(state);
 
   // check the status
-  state = checkCommandResult();
+  if(verify) {
+    state = checkCommandResult();
+  }
+
   return(state);
 }
 
-int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
   int16_t state = SX126x::SPItransfer(&cmd, 1, true, data, NULL, numBytes, waitForBusy);
   RADIOLIB_ASSERT(state);
 
   // check the status
-  state = checkCommandResult();
+  if(verify) {
+    state = checkCommandResult();
+  }
+
   return(state);
 }
 
-int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
   int16_t state = SX126x::SPItransfer(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy);
   RADIOLIB_ASSERT(state);
 
   // check the status
-  state = checkCommandResult();
+  if(verify) {
+    state = checkCommandResult();
+  }
+
   return(state);
 }
 
-int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
+int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
   int16_t state = SX126x::SPItransfer(&cmd, 1, false, NULL, data, numBytes, waitForBusy);
   RADIOLIB_ASSERT(state);
 
   // check the status
-  state = checkCommandResult();
+  if(verify) {
+    state = checkCommandResult();
+  }
+
   return(state);
 }
 
