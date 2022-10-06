@@ -552,6 +552,14 @@ int16_t SX126x::startReceiveCommon(uint32_t timeout) {
 int16_t SX126x::readData(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = standby();
+
+  // this method may get called from receive() after Rx timeout
+  // if that's the case, the standby call will return "SPI command timeout error"
+  // check the IRQ to be sure this really originated from timeout event
+  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
+    // this is definitely Rx timeout
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
   RADIOLIB_ASSERT(state);
 
   // check integrity CRC
