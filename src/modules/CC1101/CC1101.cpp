@@ -109,7 +109,7 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // wait for transmission start or timeout
   uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
+  while(!_mod->digitalRead(_mod->getGpio())) {
     _mod->yield();
 
     if(_mod->micros() - start > timeout) {
@@ -120,7 +120,7 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
   // wait for transmission end or timeout
   start = _mod->micros();
-  while(_mod->digitalRead(_mod->getIrq())) {
+  while(_mod->digitalRead(_mod->getGpio())) {
     _mod->yield();
 
     if(_mod->micros() - start > timeout) {
@@ -259,7 +259,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
 
   // set GDO0 mapping
-  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED);
+  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_RECEIVED, 5, 0);
   RADIOLIB_ASSERT(state);
 
   // data put on FIFO.

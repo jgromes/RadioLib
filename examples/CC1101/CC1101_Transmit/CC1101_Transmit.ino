@@ -21,7 +21,7 @@
 // CS pin:    10
 // GDO0 pin:  2
 // RST pin:   unused
-// GDO2 pin:  3 (optional)
+// GDO2 pin:  3
 CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
 
 // or using RadioShield
