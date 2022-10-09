@@ -48,7 +48,10 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setGdo0Action(setFlag);
+  // NOTE: Unlike other modules (such as SX127x),
+  //       different GDOx pins are used for
+  //       transmit and receive interrupts!
+  radio.setGdo2Action(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[CC1101] Sending first packet ... "));
