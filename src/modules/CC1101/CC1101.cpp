@@ -233,7 +233,7 @@ void CC1101::clearGdo0Action() {
 }
 
 void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
   _mod->pinMode(_mod->getGpio(), INPUT);
@@ -241,7 +241,7 @@ void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
 }
 
 void CC1101::clearGdo2Action() {
-  if(_mod->getGpio() != RADIOLIB_NC) {
+  if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
   _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
