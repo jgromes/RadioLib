@@ -323,6 +323,19 @@ class AX25Client {
     /*!
       \brief Transmit unnumbered information (UI) frame.
 
+      \param str Data to be sent as Arduino String.
+
+      \param destCallsign Callsign of the destination station.
+
+      \param destSSID 4-bit SSID of the destination station (in case there are more stations with the same callsign). Defaults to 0.
+
+      \returns \ref status_codes
+    */
+    int16_t transmit(String& str, const char* destCallsign, uint8_t destSSID = 0x00);
+
+    /*!
+      \brief Transmit unnumbered information (UI) frame.
+
       \param str Data to be sent.
 
       \param destCallsign Callsign of the destination station.

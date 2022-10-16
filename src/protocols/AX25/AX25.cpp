@@ -192,6 +192,10 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   return(_phy->startDirect());
 }
 
+int16_t AX25Client::transmit(String& str, const char* destCallsign, uint8_t destSSID) {
+  return(transmit(str.c_str(), destCallsign, destSSID));
+}
+
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
   // create control field
   uint8_t controlField = RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION | RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME;
