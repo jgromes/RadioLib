@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">begin</a> (const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preambleLen=8)</td></tr>
 <tr class="memdesc:a38be2b9385e4804339b3e4b57b90c2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">More...</a><br /></td></tr>
 <tr class="separator:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada21695e373b3e9b0e0f5d3cfbf29826"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#ada21695e373b3e9b0e0f5d3cfbf29826">transmit</a> (String &amp;str, const char *destCallsign, uint8_t destSSID=0x00)</td></tr>
+<tr class="memdesc:ada21695e373b3e9b0e0f5d3cfbf29826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit unnumbered information (UI) frame.  <a href="class_a_x25_client.html#ada21695e373b3e9b0e0f5d3cfbf29826">More...</a><br /></td></tr>
+<tr class="separator:ada21695e373b3e9b0e0f5d3cfbf29826"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985790943f3f3e06a2dfdd36977d0b98"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">transmit</a> (const char *str, const char *destCallsign, uint8_t destSSID=0x00)</td></tr>
 <tr class="memdesc:a985790943f3f3e06a2dfdd36977d0b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit unnumbered information (UI) frame.  <a href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">More...</a><br /></td></tr>
 <tr class="separator:a985790943f3f3e06a2dfdd36977d0b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -306,7 +309,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 </div>
 </div>
 <a id="a985790943f3f3e06a2dfdd36977d0b98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a985790943f3f3e06a2dfdd36977d0b98">&#9670;&nbsp;</a></span>transmit()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a985790943f3f3e06a2dfdd36977d0b98">&#9670;&nbsp;</a></span>transmit() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -341,6 +344,51 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>Data to be sent.</td></tr>
+    <tr><td class="paramname">destCallsign</td><td>Callsign of the destination station.</td></tr>
+    <tr><td class="paramname">destSSID</td><td>4-bit SSID of the destination station (in case there are more stations with the same callsign). Defaults to 0.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ada21695e373b3e9b0e0f5d3cfbf29826"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada21695e373b3e9b0e0f5d3cfbf29826">&#9670;&nbsp;</a></span>transmit() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t AX25Client::transmit </td>
+          <td>(</td>
+          <td class="paramtype">String &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>destCallsign</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>destSSID</em> = <code>0x00</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transmit unnumbered information (UI) frame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>Data to be sent as Arduino String.</td></tr>
     <tr><td class="paramname">destCallsign</td><td>Callsign of the destination station.</td></tr>
     <tr><td class="paramname">destSSID</td><td>4-bit SSID of the destination station (in case there are more stations with the same callsign). Defaults to 0.</td></tr>
   </table>
