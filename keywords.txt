@@ -244,6 +244,9 @@ sendMicE	KEYWORD2
 # Pager
 sendTone	KEYWORD2
 
+# PhysicalLayer
+dropSync	KEYWORD2
+
 #######################################
 # Constants (LITERAL1)
 #######################################
