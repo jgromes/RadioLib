@@ -195,10 +195,16 @@ int16_t PhysicalLayer::available() {
   return(_bufferWritePos);
 }
 
-uint8_t PhysicalLayer::read() {
+void PhysicalLayer::dropSync() {
   if(_directSyncWordLen > 0) {
     _gotSync = false;
     _syncBuffer = 0;
+  }
+}
+
+uint8_t PhysicalLayer::read(bool drop) {
+  if(drop) {
+    dropSync();
   }
   _bufferWritePos--;
   return(_buffer[_bufferReadPos++]);

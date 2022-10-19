@@ -319,11 +319,18 @@ class PhysicalLayer {
     int16_t available();
 
     /*!
+      \brief Forcefully drop synchronization.
+    */
+    void dropSync();
+
+    /*!
       \brief Get data from direct mode buffer.
+
+      \param drop Drop synchronization on read - next reading will require waiting for the sync word again. Defautls to true.
 
       \returns Byte from direct mode buffer.
     */
-    uint8_t read();
+    uint8_t read(bool drop = true);
     #endif
 
     /*!
