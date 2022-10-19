@@ -14,5 +14,6 @@ var searchData=
   ['disablebitsync_35',['disableBitSync',['../class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd',1,'SX127x']]],
   ['disablecontinuousmodebitsync_36',['disableContinuousModeBitSync',['../class_r_f69.html#a97d3570f4f898dde47e3daf8043e7bad',1,'RF69']]],
   ['disablepipe_37',['disablePipe',['../classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a',1,'nRF24']]],
-  ['disablesyncwordfiltering_38',['disableSyncWordFiltering',['../class_c_c1101.html#a4f2dc4176b62a0636636088e31b8e85b',1,'CC1101::disableSyncWordFiltering()'],['../class_r_f69.html#a400bb57d2353b57c29cf41a6d9497c80',1,'RF69::disableSyncWordFiltering()']]]
+  ['disablesyncwordfiltering_38',['disableSyncWordFiltering',['../class_c_c1101.html#a4f2dc4176b62a0636636088e31b8e85b',1,'CC1101::disableSyncWordFiltering()'],['../class_r_f69.html#a400bb57d2353b57c29cf41a6d9497c80',1,'RF69::disableSyncWordFiltering()']]],
+  ['dropsync_39',['dropSync',['../class_physical_layer.html#a429796eb2e7ea86781a2e8ca42af43f3',1,'PhysicalLayer']]]
 ];
