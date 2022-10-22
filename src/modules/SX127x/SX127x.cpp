@@ -60,6 +60,7 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float br, float freqDev, float rxB
   // set module properties
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
+  _mod->pinMode(_mod->getGpio(), INPUT);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
