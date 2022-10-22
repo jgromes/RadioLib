@@ -4,6 +4,10 @@
 // let's hope nobody ever tries running two POCSAG receivers at the same time
 static PhysicalLayer* _readBitInstance = NULL;
 static RADIOLIB_PIN_TYPE _readBitPin = RADIOLIB_NC;
+
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
 static void PagerClientReadBit(void) {
   if(_readBitInstance) {
     _readBitInstance->readBit(_readBitPin);
