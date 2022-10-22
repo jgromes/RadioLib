@@ -226,6 +226,8 @@ int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t
   RADIOLIB_ASSERT(state);
 
   // now set up the direct mode reception
+  Module* mod = _phy->getMod();
+  mod->pinMode(pin, INPUT);
   _phy->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
   _phy->setDirectAction(PagerClientReadBit);
   _phy->receiveDirect();
