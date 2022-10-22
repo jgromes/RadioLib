@@ -210,7 +210,7 @@ class SX1272: public SX127x {
 
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
-      Set to 0 to enable automatic gain control (recommended). Only available in %LoRa mode.
+      Set to 0 to enable automatic gain control (recommended).
 
       \param gain Gain of receiver LNA (low-noise amplifier) to be set.
 
