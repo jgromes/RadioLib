@@ -137,7 +137,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a6677a04aa0c2f3bbde2509786b6a66de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).  <a href="class_s_x1272.html#a6677a04aa0c2f3bbde2509786b6a66de">More...</a><br /></td></tr>
 <tr class="separator:a6677a04aa0c2f3bbde2509786b6a66de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1c57ad5e8496dc28cd3ba9852809852"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">setGain</a> (uint8_t gain)</td></tr>
-<tr class="memdesc:ae1c57ad5e8496dc28cd3ba9852809852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). Only available in LoRa mode.  <a href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">More...</a><br /></td></tr>
+<tr class="memdesc:ae1c57ad5e8496dc28cd3ba9852809852"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <a href="class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852">More...</a><br /></td></tr>
 <tr class="separator:ae1c57ad5e8496dc28cd3ba9852809852"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91aca64124321c07a67f26b3c6934aea"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea">setDataShaping</a> (uint8_t sh) override</td></tr>
 <tr class="memdesc:a91aca64124321c07a67f26b3c6934aea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea">More...</a><br /></td></tr>
@@ -988,7 +988,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). Only available in LoRa mode. </p>
+<p>Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier) to be set.</td></tr>
