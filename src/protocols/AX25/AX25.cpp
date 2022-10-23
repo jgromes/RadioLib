@@ -163,11 +163,13 @@ AX25Client::AX25Client(AFSKClient* audio) {
   _audio = audio;
   _afskMark = RADIOLIB_AX25_AFSK_MARK;
   _afskSpace = RADIOLIB_AX25_AFSK_SPACE;
+  _afskLen = RADIOLIB_AX25_AFSK_TONE_DURATION;
 }
 
-int16_t AX25Client::setCorrection(int16_t mark, int16_t space) {
+int16_t AX25Client::setCorrection(int16_t mark, int16_t space, float length) {
   _afskMark = RADIOLIB_AX25_AFSK_MARK + mark;
   _afskSpace = RADIOLIB_AX25_AFSK_SPACE + space;
+  _afskLen = length*(float)RADIOLIB_AX25_AFSK_TONE_DURATION;
   return(RADIOLIB_ERR_NONE);
 }
 #endif
@@ -411,7 +413,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
         } else {
           _audio->tone(_afskSpace, false);
         }
-        while(mod->micros() - start < RADIOLIB_AX25_AFSK_TONE_DURATION) {
+        while(mod->micros() - start < _afskLen) {
           mod->yield();
         }
       }

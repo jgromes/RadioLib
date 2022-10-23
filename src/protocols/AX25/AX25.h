@@ -300,9 +300,11 @@ class AX25Client {
 
       \param space Positive or negative correction offset for space audio frequency in Hz.
 
+      \param length Audio tone length modifier, defaults to 1.0.
+
       \returns \ref status_codes
     */
-    int16_t setCorrection(int16_t mark, int16_t space);
+    int16_t setCorrection(int16_t mark, int16_t space, float length = 1.0f);
     #endif
 
     // basic methods
@@ -365,6 +367,7 @@ class AX25Client {
     AFSKClient* _audio;
     uint32_t _afskMark;
     uint32_t _afskSpace;
+    uint32_t _afskLen;
     #endif
 
     char _srcCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
