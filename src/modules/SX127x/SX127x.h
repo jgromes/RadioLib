@@ -717,8 +717,10 @@ class SX127x: public PhysicalLayer {
       \brief Set interrupt service routine function to call when DIO0 activates.
 
       \param func Pointer to interrupt service routine.
+
+      \param dir Signal change direction. Defaults to RISING.
     */
-    void setDio0Action(void (*func)(void));
+    void setDio0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = RISING);
 
     /*!
       \brief Clears interrupt service routine to call when DIO0 activates.
@@ -729,8 +731,10 @@ class SX127x: public PhysicalLayer {
       \brief Set interrupt service routine function to call when DIO1 activates.
 
       \param func Pointer to interrupt service routine.
+
+      \param dir Signal change direction. Defaults to RISING.
     */
-    void setDio1Action(void (*func)(void));
+    void setDio1Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = RISING);
 
     /*!
       \brief Clears interrupt service routine to call when DIO1 activates.

@@ -417,19 +417,19 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   return(setMode(mode));
 }
 
-void SX127x::setDio0Action(void (*func)(void)) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+void SX127x::setDio0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
+  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
 }
 
 void SX127x::clearDio0Action() {
   _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
 }
 
-void SX127x::setDio1Action(void (*func)(void)) {
+void SX127x::setDio1Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
+  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
 }
 
 void SX127x::clearDio1Action() {
