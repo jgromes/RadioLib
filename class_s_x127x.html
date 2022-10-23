@@ -155,16 +155,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a0995088d37689a3c240a1af791df6cf1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1">packetMode</a> ()</td></tr>
 <tr class="memdesc:a0995088d37689a3c240a1af791df6cf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables direct mode and enables packet mode, allowing the module to receive packets. Can only be activated in FSK mode.  <a href="class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1">More...</a><br /></td></tr>
 <tr class="separator:a0995088d37689a3c240a1af791df6cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada53419d65f207f352124da7747c5960"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ada53419d65f207f352124da7747c5960">setDio0Action</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:ada53419d65f207f352124da7747c5960"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO0 activates.  <a href="class_s_x127x.html#ada53419d65f207f352124da7747c5960">More...</a><br /></td></tr>
-<tr class="separator:ada53419d65f207f352124da7747c5960"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71ecfed743942c4195d8668e8588a0fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a71ecfed743942c4195d8668e8588a0fc">setDio0Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=RISING)</td></tr>
+<tr class="memdesc:a71ecfed743942c4195d8668e8588a0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO0 activates.  <a href="class_s_x127x.html#a71ecfed743942c4195d8668e8588a0fc">More...</a><br /></td></tr>
+<tr class="separator:a71ecfed743942c4195d8668e8588a0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a729b4f3f36096b5b15bae19c7876e823"><td class="memItemLeft" align="right" valign="top"><a id="a729b4f3f36096b5b15bae19c7876e823"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823">clearDio0Action</a> ()</td></tr>
 <tr class="memdesc:a729b4f3f36096b5b15bae19c7876e823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO0 activates. <br /></td></tr>
 <tr class="separator:a729b4f3f36096b5b15bae19c7876e823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc844f7f3530f4076c8ea5f684c1b123"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#afc844f7f3530f4076c8ea5f684c1b123">setDio1Action</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:afc844f7f3530f4076c8ea5f684c1b123"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO1 activates.  <a href="class_s_x127x.html#afc844f7f3530f4076c8ea5f684c1b123">More...</a><br /></td></tr>
-<tr class="separator:afc844f7f3530f4076c8ea5f684c1b123"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae72f140bc934016411d7d54ebc14d69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae72f140bc934016411d7d54ebc14d69c">setDio1Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=RISING)</td></tr>
+<tr class="memdesc:ae72f140bc934016411d7d54ebc14d69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO1 activates.  <a href="class_s_x127x.html#ae72f140bc934016411d7d54ebc14d69c">More...</a><br /></td></tr>
+<tr class="separator:ae72f140bc934016411d7d54ebc14d69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6532a25e1730973ac08146008adca5"><td class="memItemLeft" align="right" valign="top"><a id="a9b6532a25e1730973ac08146008adca5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b6532a25e1730973ac08146008adca5">clearDio1Action</a> ()</td></tr>
 <tr class="memdesc:a9b6532a25e1730973ac08146008adca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
@@ -1612,8 +1612,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ada53419d65f207f352124da7747c5960"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada53419d65f207f352124da7747c5960">&#9670;&nbsp;</a></span>setDio0Action()</h2>
+<a id="a71ecfed743942c4195d8668e8588a0fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71ecfed743942c4195d8668e8588a0fc">&#9670;&nbsp;</a></span>setDio0Action()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1622,8 +1622,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">void SX127x::setDio0Action </td>
           <td>(</td>
           <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
+          <td class="paramname"><em>dir</em> = <code>RISING</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1631,15 +1641,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when DIO0 activates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
+    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to RISING. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="afc844f7f3530f4076c8ea5f684c1b123"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc844f7f3530f4076c8ea5f684c1b123">&#9670;&nbsp;</a></span>setDio1Action()</h2>
+<a id="ae72f140bc934016411d7d54ebc14d69c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae72f140bc934016411d7d54ebc14d69c">&#9670;&nbsp;</a></span>setDio1Action()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1648,8 +1659,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">void SX127x::setDio1Action </td>
           <td>(</td>
           <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
+          <td class="paramname"><em>dir</em> = <code>RISING</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1657,7 +1678,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when DIO1 activates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
+    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to RISING. </td></tr>
   </table>
   </dd>
 </dl>
