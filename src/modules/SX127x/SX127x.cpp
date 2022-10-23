@@ -266,13 +266,9 @@ int16_t SX127x::scanChannel() {
   while(!_mod->digitalRead(_mod->getIrq())) {
     _mod->yield();
     if(_mod->digitalRead(_mod->getGpio())) {
-      clearIRQFlags();
       return(RADIOLIB_PREAMBLE_DETECTED);
     }
   }
-
-  // clear interrupt flags
-  clearIRQFlags();
 
   return(RADIOLIB_CHANNEL_FREE);
 }
@@ -676,12 +672,12 @@ int16_t SX127x::startChannelScan() {
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
 
+  // clear interrupt flags
+  clearIRQFlags();
+
   // set DIO pin mapping
   state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_CAD_DONE | RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED, 7, 4);
   RADIOLIB_ASSERT(state);
-
-  // clear interrupt flags
-  clearIRQFlags();
 
   // set RF switch (if present)
   _mod->setRfSwitchState(HIGH, LOW);
