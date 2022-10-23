@@ -189,7 +189,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // update data rate
   uint32_t elapsed = _mod->micros() - start;
   _dataRate = (len*8.0)/((float)elapsed/1000000.0);
-  
+
   return(finishTransmit());
 }
 
@@ -378,8 +378,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     // set DIO pin mapping
     if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {
       state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 7, 4);
-    }
-    else {
+    } else {
       state = _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT, 7, 4);
     }
 
@@ -1322,7 +1321,7 @@ int8_t SX127x::getTempRaw() {
   previousOpMode = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_OP_MODE);
 
   // check if we need to step out of LoRa mode first
-  if ((previousOpMode & RADIOLIB_SX127X_LORA) == RADIOLIB_SX127X_LORA) {
+  if((previousOpMode & RADIOLIB_SX127X_LORA) == RADIOLIB_SX127X_LORA) {
     _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, (RADIOLIB_SX127X_LORA | RADIOLIB_SX127X_SLEEP));
   }
 
@@ -1348,14 +1347,14 @@ int8_t SX127x::getTempRaw() {
   ival = _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_TEMP);
 
   // convert very raw value
-  if ((ival & 0x80) == 0x80) {
+  if((ival & 0x80) == 0x80) {
     temp = 255 - ival;
   } else {
     temp = -1 * ival;
   }
 
   // check if we need to step back into LoRa mode
-  if ((previousOpMode & RADIOLIB_SX127X_LORA) == RADIOLIB_SX127X_LORA) {
+  if((previousOpMode & RADIOLIB_SX127X_LORA) == RADIOLIB_SX127X_LORA) {
     _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, (RADIOLIB_SX127X_LORA | RADIOLIB_SX127X_SLEEP));
   }
 
@@ -1407,7 +1406,7 @@ int16_t SX127x::configFSK() {
 
 int16_t SX127x::setPacketMode(uint8_t mode, uint8_t len) {
   // check packet length
-  if (len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
+  if(len > RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
