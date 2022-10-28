@@ -51,7 +51,7 @@ void setFlag(void) {
     return;
   }
 
-  // we sent aor received  packet, set the flag
+  // we sent or received a packet, set the flag
   operationDone = true;
 }
 

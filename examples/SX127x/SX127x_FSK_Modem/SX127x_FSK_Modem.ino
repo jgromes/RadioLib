@@ -28,7 +28,7 @@ SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
-//SX1278 fsk = RadioShield.ModuleA;
+//SX1278 radio = RadioShield.ModuleA;
 
 void setup() {
   Serial.begin(9600);
@@ -177,7 +177,7 @@ void loop() {
 
   // transmit FM tone at 1000 Hz for 1 second, then 500 Hz for 1 second
   // (DIO2 is connected to Arduino pin 4)
-  // Note: tone() function is not available on ESP32, Arduino Due and CubeCell
+  // Note: tone() function is not available on Arduino Due and CubeCell
   //       on these platforms, the following will do nothing
   #if !defined(RADIOLIB_TONE_UNSUPPORTED)
   tone(4, 1000);

@@ -1,7 +1,7 @@
 /*
    RadioLib APRS Mic-E Example
 
-   This example sends APRS position reports 
+   This example sends APRS position reports
    encoded in the Mic-E format using SX1278's
    FSK modem. The data is modulated as AFSK
    at 1200 baud using Bell 202 tones.
@@ -45,7 +45,7 @@ AFSKClient audio(&radio, 5);
 // create AX.25 client instance using the AFSK instance
 AX25Client ax25(&audio);
 
-// create APRS client isntance using the AX.25 client
+// create APRS client instance using the AX.25 client
 APRSClient aprs(&ax25);
 
 void setup() {

@@ -110,7 +110,7 @@ void setup() {
   // set the function to call when transmission is finished
   radio.setDio0Action(setTxFlag);
 
-  // set the function to call when we need to hcange frequency
+  // set the function to call when we need to change frequency
   radio.setDio1Action(setFHSSFlag);
 
   // start transmitting the first packet

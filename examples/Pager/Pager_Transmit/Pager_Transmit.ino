@@ -57,7 +57,7 @@ void setup() {
     while(true);
   }
 
-  // initalize Pager client
+  // initialize Pager client
   Serial.print(F("[Pager] Initializing ... "));
   // base (center) frequency:     434.0 MHz
   // speed:                       1200 bps
