@@ -45,7 +45,7 @@ AFSKClient audio(&radio, 5);
 // create AX.25 client instance using the AFSK instance
 AX25Client ax25(&audio);
 
-// create APRS client isntance using the AX.25 client
+// create APRS client instance using the AX.25 client
 APRSClient aprs(&ax25);
 
 void setup() {

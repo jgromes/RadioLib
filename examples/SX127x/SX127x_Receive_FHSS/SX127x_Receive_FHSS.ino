@@ -98,7 +98,7 @@ void setup() {
   // set the function to call when reception is finished
   radio.setDio0Action(setRxFlag);
 
-  // set the function to call when we need to hcange frequency
+  // set the function to call when we need to change frequency
   radio.setDio1Action(setFHSSFlag);
 
   // start listening for LoRa packets
