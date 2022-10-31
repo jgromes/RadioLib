@@ -97,12 +97,13 @@ class SX1262: public SX126x {
 
     /*!
       \brief Sets output power. Allowed values are in range from -17 to 22 dBm.
+      This method is virtual to allow override from the SX1261 class.
 
       \param power Output power to be set in dBm.
 
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    virtual int16_t setOutputPower(int8_t power);
 
 #if !defined(RADIOLIB_GODMODE)
   private:
