@@ -44,10 +44,15 @@ class Module {
      * See setRfSwitchTable() for details.
      */
     enum OpMode_t {
-      // Table end marker is zero to ensure zero-initialized mode ends the table
+      /*! End of table marker, use \ref END_OF_MODE_TABLE constant
+       * instead. Value is zero to ensure zero-initialized mode ends the
+       * table */
       MODE_END_OF_TABLE = 0,
+      /*! Idle mode */
       MODE_IDLE,
+      /*! Receive mode */
       MODE_RX,
+      /*! Transmission mode */
       MODE_TX,
     };
 
