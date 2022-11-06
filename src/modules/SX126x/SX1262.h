@@ -96,7 +96,7 @@ class SX1262: public SX126x {
     int16_t setFrequency(float freq, bool calibrate);
 
     /*!
-      \brief Sets output power. Allowed values are in range from -17 to 22 dBm.
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
       This method is virtual to allow override from the SX1261 class.
 
       \param power Output power to be set in dBm.
