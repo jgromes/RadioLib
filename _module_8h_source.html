@@ -211,59 +211,61 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160; </div>
 <div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">regdump</a>(uint8_t start, uint8_t len);</div>
 <div class="line"><a name="l00402"></a><span class="lineno">  402</span>&#160; </div>
-<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;    <span class="comment">// hardware abstraction layer callbacks</span></div>
-<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);</div>
-<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_WRITE);</div>
-<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_READ);</div>
-<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_TONE);</div>
-<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_NO_TONE);</div>
-<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_ATTACH_INTERRUPT);</div>
-<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DETACH_INTERRUPT);</div>
-<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_YIELD);</div>
-<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY);</div>
-<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY_MICROSECONDS);</div>
-<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MILLIS);</div>
-<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MICROS);</div>
-<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PULSE_IN);</div>
-<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160; </div>
-<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
-<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
-<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
-<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
-<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END);</div>
-<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
-<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
-<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
-<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
-<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END);</div>
-<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160; </div>
-<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160; </div>
-<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    <span class="comment">// pins</span></div>
-<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;</div>
-<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;</div>
-<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;</div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;</div>
+<div class="line"><a name="l00403"></a><span class="lineno">  403</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00404"></a><span class="lineno">  404</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00405"></a><span class="lineno">  405</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00406"></a><span class="lineno">  406</span>&#160; </div>
+<div class="line"><a name="l00407"></a><span class="lineno">  407</span>&#160;    <span class="comment">// pins</span></div>
+<div class="line"><a name="l00408"></a><span class="lineno">  408</span>&#160;    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;</div>
+<div class="line"><a name="l00409"></a><span class="lineno">  409</span>&#160;    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;</div>
+<div class="line"><a name="l00410"></a><span class="lineno">  410</span>&#160;    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;</div>
+<div class="line"><a name="l00411"></a><span class="lineno">  411</span>&#160;    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;</div>
+<div class="line"><a name="l00412"></a><span class="lineno">  412</span>&#160; </div>
+<div class="line"><a name="l00413"></a><span class="lineno">  413</span>&#160;    <span class="comment">// SPI interface (Arduino only)</span></div>
+<div class="line"><a name="l00414"></a><span class="lineno">  414</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00415"></a><span class="lineno">  415</span>&#160;    SPIClass* _spi = NULL;</div>
+<div class="line"><a name="l00416"></a><span class="lineno">  416</span>&#160;    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;</div>
+<div class="line"><a name="l00417"></a><span class="lineno">  417</span>&#160;    <span class="keywordtype">bool</span> _initInterface = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00418"></a><span class="lineno">  418</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00419"></a><span class="lineno">  419</span>&#160; </div>
+<div class="line"><a name="l00420"></a><span class="lineno">  420</span>&#160;    <span class="comment">// RF switch presence and pins</span></div>
+<div class="line"><a name="l00421"></a><span class="lineno">  421</span>&#160;    <span class="keywordtype">bool</span> _useRfSwitch = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;</div>
+<div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;</div>
+<div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;    <span class="comment">// hardware abstraction layer callbacks</span></div>
+<div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;    <span class="comment">// this is placed at the end of Module class because the callback generator macros</span></div>
+<div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;    <span class="comment">// screw with the private/public access specifiers</span></div>
+<div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);</div>
+<div class="line"><a name="l00429"></a><span class="lineno">  429</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_WRITE);</div>
+<div class="line"><a name="l00430"></a><span class="lineno">  430</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_READ);</div>
+<div class="line"><a name="l00431"></a><span class="lineno">  431</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_TONE);</div>
+<div class="line"><a name="l00432"></a><span class="lineno">  432</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_NO_TONE);</div>
+<div class="line"><a name="l00433"></a><span class="lineno">  433</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_ATTACH_INTERRUPT);</div>
+<div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DETACH_INTERRUPT);</div>
+<div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_YIELD);</div>
+<div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY);</div>
+<div class="line"><a name="l00437"></a><span class="lineno">  437</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DELAY_MICROSECONDS);</div>
+<div class="line"><a name="l00438"></a><span class="lineno">  438</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MILLIS);</div>
+<div class="line"><a name="l00439"></a><span class="lineno">  439</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_MICROS);</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PULSE_IN);</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
-<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;    <span class="comment">// SPI interface (Arduino only)</span></div>
-<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    SPIClass* _spi = NULL;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    <span class="keywordtype">bool</span> _initInterface = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160; </div>
-<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    <span class="comment">// RF switch presence and pins</span></div>
-<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    <span class="keywordtype">bool</span> _useRfSwitch = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;};</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160; </div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;    RADIOLIB_GENERATE_CALLBACK_SPI(RADIOLIB_CB_ARGS_SPI_END);</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN);</div>
+<div class="line"><a name="l00450"></a><span class="lineno">  450</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_BEGIN_TRANSACTION);</div>
+<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_TRANSFER);</div>
+<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);</div>
+<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;    RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END);</div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;};</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160; </div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_module_html_af7e4872dad3d19b6f75f532c88683168"><div class="ttname"><a href="class_module.html#af7e4872dad3d19b6f75f532c88683168">Module::pinMode</a></div><div class="ttdeci">void pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode)</div><div class="ttdoc">Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.</div><div class="ttdef"><b>Definition:</b> Module.cpp:254</div></div>
