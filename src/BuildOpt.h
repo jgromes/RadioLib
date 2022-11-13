@@ -82,11 +82,6 @@
   // the following must be defined if the Arduino core does not support tone function
   //#define RADIOLIB_TONE_UNSUPPORTED
 
-  // some platforms seem to have issues with SPI modules that use a command interface
-  // this can be mitigated by adding delays into SPI communication
-  // (see https://github.com/jgromes/RadioLib/issues/158 for details)
-  //#define RADIOLIB_SPI_SLOWDOWN
-
   // some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
   // the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
   // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
@@ -235,9 +230,6 @@
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
-    // slow down SX126x/8x SPI on this platform
-    #define RADIOLIB_SPI_SLOWDOWN
-
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint32_t dwPin, uint32_t dwMode)
     #define RADIOLIB_CB_ARGS_DIGITAL_WRITE              (void, digitalWrite, uint32_t dwPin, uint32_t dwVal)
@@ -272,9 +264,6 @@
     #define RADIOLIB_NONVOLATILE                        PROGMEM
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
-
-    // slow down SX126x/8x SPI on this platform
-    #define RADIOLIB_SPI_SLOWDOWN
 
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, uint32_t dwPin, uint32_t dwMode)
@@ -486,9 +475,6 @@
     #define RADIOLIB_NONVOLATILE                        PROGMEM
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
     #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
-
-    // slow down SX126x/8x SPI on this platform
-    #define RADIOLIB_SPI_SLOWDOWN
 
     // Arduino API callbacks
     #define RADIOLIB_CB_ARGS_PIN_MODE                   (void, pinMode, pin_size_t pinName, Arduino_PinMode pinMode)

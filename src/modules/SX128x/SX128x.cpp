@@ -1612,13 +1612,6 @@ int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* d
       RADIOLIB_VERBOSE_PRINTLN();
     }
     RADIOLIB_VERBOSE_PRINTLN();
-  #else
-    // some faster platforms require a short delay here
-    // not sure why, but it seems that long enough SPI transaction
-    // (e.g. setPacketParams for GFSK) will fail without it
-    #if defined(RADIOLIB_SPI_SLOWDOWN)
-      _mod->delay(1);
-    #endif
   #endif
 
   // parse status
