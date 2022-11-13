@@ -400,7 +400,31 @@ class Module {
     */
     void regdump(uint8_t start, uint8_t len);
 
+#if !defined(RADIOLIB_GODMODE)
+  private:
+#endif
+
+    // pins
+    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;
+
+    // SPI interface (Arduino only)
+    #if defined(RADIOLIB_BUILD_ARDUINO)
+    SPIClass* _spi = NULL;
+    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;
+    bool _initInterface = false;
+    #endif
+
+    // RF switch presence and pins
+    bool _useRfSwitch = false;
+    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;
+    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;
+
     // hardware abstraction layer callbacks
+    // this is placed at the end of Module class because the callback generator macros
+    // screw with the private/public access specifiers
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_PIN_MODE);
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_WRITE);
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_DIGITAL_READ);
@@ -428,28 +452,6 @@ class Module {
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END_TRANSACTION);
     RADIOLIB_GENERATE_CALLBACK(RADIOLIB_CB_ARGS_SPI_END);
     #endif
-
-#if !defined(RADIOLIB_GODMODE)
-  private:
-#endif
-
-    // pins
-    RADIOLIB_PIN_TYPE _cs = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _irq = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _rst = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _gpio = RADIOLIB_NC;
-
-    // SPI interface (Arduino only)
-    #if defined(RADIOLIB_BUILD_ARDUINO)
-    SPIClass* _spi = NULL;
-    SPISettings _spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;
-    bool _initInterface = false;
-    #endif
-
-    // RF switch presence and pins
-    bool _useRfSwitch = false;
-    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;
 };
 
 #endif
