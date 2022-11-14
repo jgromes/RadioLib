@@ -426,7 +426,7 @@
     #define RADIOLIB_CB_ARGS_SPI_END_TRANSACTION        (void, SPIendTransaction, void)
     #define RADIOLIB_CB_ARGS_SPI_END                    (void, SPIend, void)
 
-  #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY)
+  #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(PORTDUINO)
     // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
     #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
     #define RADIOLIB_PIN_TYPE                           uint8_t
