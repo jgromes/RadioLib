@@ -244,7 +244,7 @@ size_t PagerClient::available() {
   return(_phy->available() + sizeof(uint32_t))/(sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
 }
 
-int16_t PagerClient::readData(String& str, size_t len) {
+int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // determine the message length, based on user input or the amount of received data
@@ -265,7 +265,7 @@ int16_t PagerClient::readData(String& str, size_t len) {
   #endif
 
   // read the received data
-  state = readData(data, &length);
+  state = readData(data, &length, addr);
 
   if(state == RADIOLIB_ERR_NONE) {
     // check tone-only tramsissions
@@ -289,7 +289,7 @@ int16_t PagerClient::readData(String& str, size_t len) {
   return(state);
 }
 
-int16_t PagerClient::readData(uint8_t* data, size_t* len) {
+int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   // find the correct address
   bool match = false;
   uint8_t framePos = 0;
@@ -316,10 +316,13 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len) {
     }
 
     // should be an address code word, extract the address
-    uint32_t addr = ((cw & RADIOLIB_PAGER_ADDRESS_BITS_MASK) >> (RADIOLIB_PAGER_ADDRESS_POS - 3)) | (framePos/2);
-    if((addr & _filterMask) == (_filterAddr & _filterMask)) {
+    uint32_t addr_found = ((cw & RADIOLIB_PAGER_ADDRESS_BITS_MASK) >> (RADIOLIB_PAGER_ADDRESS_POS - 3)) | (framePos/2);
+    if((addr_found & _filterMask) == (_filterAddr & _filterMask)) {
       // we have a match!
       match = true;
+      if(addr) {
+        *addr = addr_found;
+      }
 
       // determine the encoding from the function bits
       if((cw & RADIOLIB_PAGER_FUNCTION_BITS_MASK) == RADIOLIB_PAGER_FUNC_BITS_NUMERIC) {
