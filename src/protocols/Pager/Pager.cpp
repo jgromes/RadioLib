@@ -19,7 +19,7 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
   _readBitInstance = _phy;
 }
 
-int16_t PagerClient::begin(float base, uint16_t speed) {
+int16_t PagerClient::begin(float base, uint16_t speed, uint16_t shift) {
   // calculate duration of 1 bit in us
   _speed = (float)speed/1000.0f;
   _bitDuration = (uint32_t)1000000/speed;
@@ -32,7 +32,8 @@ int16_t PagerClient::begin(float base, uint16_t speed) {
   uint16_t step = round(_phy->getFreqStep());
 
   // calculate raw frequency shift
-  _shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ/step;
+  _shiftHz = shift;
+  _shift = _shiftHz/step;
 
   // initialize BCH encoder
   encoderInit();
@@ -226,7 +227,7 @@ int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation to 4.5 khz
-  state = _phy->setFrequencyDeviation((float)RADIOLIB_PAGER_FREQ_SHIFT_HZ / 1000.0f);
+  state = _phy->setFrequencyDeviation((float)_shiftHz / 1000.0f);
   RADIOLIB_ASSERT(state);
 
   // now set up the direct mode reception

@@ -86,7 +86,7 @@ class PagerClient {
 
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint16_t speed);
+    int16_t begin(float base, uint16_t speed, uint16_t shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ);
 
     /*!
       \brief Method to send a tone-only alert to a destination pager.
@@ -192,6 +192,7 @@ class PagerClient {
     float _speed;
     uint32_t _baseRaw;
     uint16_t _shift;
+    uint16_t _shiftHz;
     uint16_t _bitDuration;
     uint32_t _readBatchPos;
     uint32_t _filterAddr;
