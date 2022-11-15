@@ -492,10 +492,6 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
         // set Rx channel filter bandwidth
         uint16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4);
 
-        if(state == RADIOLIB_ERR_NONE) {
-          _rxBw = rxBw;
-        }
-
         return(state);
       }
 
@@ -526,13 +522,28 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, (e << 4), 6, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, m, 2, 0);
   
-    if(state == RADIOLIB_ERR_NONE) {
-    _freqDev = freqDev;
+  return(state);
+}
+
+int16_t CC1101::getFrequencyDeviation(float *freqDev) {
+  // if ASK/OOK, deviation makes no sense
+  if (_modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK) {
+    *freqDev = 0.0;
+
+    return(RADIOLIB_ERR_NONE);
   }
 
+  // get exponent and mantissa values from registers
+  uint8_t e = (uint8_t)SPIgetRegValue(RADIOLIB_CC1101_REG_DEVIATN, 6, 4);
+  uint8_t m = (uint8_t)SPIgetRegValue(RADIOLIB_CC1101_REG_DEVIATN, 2, 0);
 
-  
-  return(state);
+  // calculate frequency deviation (pag. 79 of the CC1101 datasheet):
+  //
+  //   freqDev = (fXosc / 2^17) * (8 + m) * 2^e
+  //
+  *freqDev = (1000.0 / (uint32_t(1) << 17)) - (8 + m) * (uint32_t(1) << e);
+
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t CC1101::setOutputPower(int8_t power) {
@@ -674,16 +685,9 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
   }
 
   uint16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
-  if(state == RADIOLIB_ERR_NONE) {
-    _preambleLen = preambleLength;
-  }
 
   return(state);
 }
-
-  return(state);
-}
-
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
   RADIOLIB_CHECK_RANGE(numBroadcastAddrs, 1, 2, RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS);

@@ -731,6 +731,15 @@ class CC1101: public PhysicalLayer {
     int16_t setFrequencyDeviation(float freqDev) override;
 
     /*!
+      \brief Gets frequency deviation. 
+
+      \param[out] freqDev Pointer to variable where to save the frequency deviation.
+
+      \returns \ref status_codes
+    */
+    int16_t getFrequencyDeviation(float *freqDev);
+
+    /*!
       \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
 
       \param power Output power to be set in dBm.
@@ -985,12 +994,6 @@ class CC1101: public PhysicalLayer {
 
     float _freq = RADIOLIB_CC1101_DEFAULT_FREQ;
     float _br = RADIOLIB_CC1101_DEFAULT_BR;
-    float _freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV;
-    float _rxBw = RADIOLIB_CC1101_DEFAULT_RXBW;
-    int8_t _power = RADIOLIB_CC1101_DEFAULT_POWER;
-    uint8_t _preambleLen = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN;
-    //float _freq = 0;
-    //float _br = 0;
     uint8_t _rawRSSI = 0;
     uint8_t _rawLQI = 0;
     uint8_t _modulation = RADIOLIB_CC1101_MOD_FORMAT_2_FSK;
@@ -1003,9 +1006,9 @@ class CC1101: public PhysicalLayer {
     bool _crcOn = true;
     bool _directMode = true;
 
-    //uint8_t _syncWordLength = 2;
-    //int8_t _power = 0;
     uint8_t _syncWordLength = RADIOLIB_CC1101_DEFAULT_SW_LEN;
+    int8_t _power = RADIOLIB_CC1101_DEFAULT_POWER;
+
 
     int16_t config();
     int16_t transmitDirect(bool sync, uint32_t frf);
