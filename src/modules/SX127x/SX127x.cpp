@@ -623,7 +623,7 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
 
   if(modem == RADIOLIB_SX127X_LORA) {
     // check packet header integrity
-    if(_crcEnabled && (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6)) == 0) {
+    if((_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0))==1 && _crcEnabled && (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6)) == 0) {
       // CRC is disabled according to packet header and enabled according to user
       // most likely damaged packet header
       clearIRQFlags();
