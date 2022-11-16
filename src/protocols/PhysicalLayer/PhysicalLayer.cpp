@@ -83,7 +83,9 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   // read the received data
   state = readData(data, length);
 
-  if(state == RADIOLIB_ERR_NONE) {
+  // any of the following leads to at least some data being available
+  // let's leave the decision of whether to keep it or not up to the user
+  if((state == RADIOLIB_ERR_NONE) || (state == RADIOLIB_ERR_CRC_MISMATCH) || (state == RADIOLIB_ERR_LORA_HEADER_DAMAGED)) {
     // add null terminator
     data[length] = 0;
 
@@ -123,7 +125,9 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   // attempt packet reception
   state = receive(data, length);
 
-  if(state == RADIOLIB_ERR_NONE) {
+  // any of the following leads to at least some data being available
+  // let's leave the decision of whether to keep it or not up to the user
+  if((state == RADIOLIB_ERR_NONE) || (state == RADIOLIB_ERR_CRC_MISMATCH) || (state == RADIOLIB_ERR_LORA_HEADER_DAMAGED)) {
     // read the number of actually received bytes (for unknown packets)
     if(len == 0) {
       length = getPacketLength(false);
