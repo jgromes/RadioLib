@@ -621,20 +621,18 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
     length = len;
   }
 
+  // check payload CRC
+  int16_t state = RADIOLIB_ERR_NONE;
+  if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_IRQ_FLAGS, 5, 5) == RADIOLIB_SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
+    state = RADIOLIB_ERR_CRC_MISMATCH;
+  }
+
   if(modem == RADIOLIB_SX127X_LORA) {
     // check packet header integrity
-    if(_crcEnabled && (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6)) == 0) {
+    if(_crcEnabled && (state == RADIOLIB_ERR_NONE)  && (_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_CHANNEL, 6, 6) == 0)) {
       // CRC is disabled according to packet header and enabled according to user
       // most likely damaged packet header
-      clearIRQFlags();
-      return(RADIOLIB_ERR_LORA_HEADER_DAMAGED);
-    }
-
-    // check payload CRC
-    if(_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_IRQ_FLAGS, 5, 5) == RADIOLIB_SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR) {
-      // clear interrupt flags
-      clearIRQFlags();
-      return(RADIOLIB_ERR_CRC_MISMATCH);
+      state = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
     }
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
@@ -659,7 +657,7 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
   // clear interrupt flags
   clearIRQFlags();
 
-  return(RADIOLIB_ERR_NONE);
+  return(state);
 }
 
 int16_t SX127x::startChannelScan() {
