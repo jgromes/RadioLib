@@ -222,7 +222,7 @@
     #define RADIOLIB_PIN_MODE                           uint32_t
     #define RADIOLIB_PIN_STATUS                         uint32_t
     #define RADIOLIB_INTERRUPT_STATUS                   RADIOLIB_PIN_STATUS
-    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt((PinName)p)
+    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)
     #define RADIOLIB_NC                                 (0xFFFFFFFF)
     #define RADIOLIB_DEFAULT_SPI                        SPI
     #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)
