@@ -137,7 +137,7 @@ size_t MorseClient::write(uint8_t b) {
   if(b == ' ') {
     RADIOLIB_DEBUG_PRINTLN(F("space"));
     standby();
-    mod->delay(_wordSpace);
+    mod->waitForMicroseconds(mod->micros(), _wordSpace*1000);
     return(1);
   }
 
@@ -156,16 +156,16 @@ size_t MorseClient::write(uint8_t b) {
     if (code & RADIOLIB_MORSE_DASH) {
       RADIOLIB_DEBUG_PRINT('-');
       transmitDirect(_base, _baseHz);
-      mod->delay(_dashLength);
+      mod->waitForMicroseconds(mod->micros(), _dashLength*1000);
     } else {
       RADIOLIB_DEBUG_PRINT('.');
       transmitDirect(_base, _baseHz);
-      mod->delay(_dotLength);
+      mod->waitForMicroseconds(mod->micros(), _dotLength*1000);
     }
 
     // symbol space
     standby();
-    mod->delay(_dotLength);
+    mod->waitForMicroseconds(mod->micros(), _dotLength*1000);
 
     // move onto the next bit
     code >>= 1;
@@ -173,7 +173,7 @@ size_t MorseClient::write(uint8_t b) {
 
   // letter space
   standby();
-  mod->delay(_letterSpace - _dotLength);
+  mod->waitForMicroseconds(mod->micros(), _letterSpace*1000 - _dotLength*1000);
   RADIOLIB_DEBUG_PRINTLN();
 
   return(1);

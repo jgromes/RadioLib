@@ -193,9 +193,9 @@ class MorseClient {
 
     uint32_t _base = 0, _baseHz = 0;
     float _basePeriod = 0.0f;
-    uint16_t _dotLength = 0;
-    uint16_t _dashLength = 0;
-    uint16_t _letterSpace = 0;
+    uint32_t _dotLength = 0;
+    uint32_t _dashLength = 0;
+    uint32_t _letterSpace = 0;
     uint16_t _wordSpace = 0;
 
     // variables to keep decoding state
