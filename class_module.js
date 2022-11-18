@@ -39,6 +39,7 @@ var class_module =
     [ "term", "class_module.html#a45bd514a1f2859d9a867c8f9b13eb332", null ],
     [ "tone", "class_module.html#a33e33df69d58660b8cd0e2dafe5e9189", null ],
     [ "transfer", "class_module.html#a45e7823c44ac0aa8a10bd4f365890c98", null ],
+    [ "waitForMicroseconds", "class_module.html#a47978200f7e2e408fb64f506c81cee9f", null ],
     [ "yield", "class_module.html#a227d2d38e4747d0f49bb4df1c80b45d7", null ],
     [ "SPIreadCommand", "class_module.html#a849ad85fc1bc3a7130e660c13973ab26", null ],
     [ "SPIwriteCommand", "class_module.html#ae89764d15e8df5694a6aec0e18f72d3f", null ]

@@ -155,6 +155,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4a87d59ad2bf6bb1bb9de1856a81b824"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824">setRfSwitchState</a> (RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState)</td></tr>
 <tr class="memdesc:a4a87d59ad2bf6bb1bb9de1856a81b824"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set RF switch state.  <a href="class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824">More...</a><br /></td></tr>
 <tr class="separator:a4a87d59ad2bf6bb1bb9de1856a81b824"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47978200f7e2e408fb64f506c81cee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">waitForMicroseconds</a> (uint32_t start, uint32_t len)</td></tr>
+<tr class="memdesc:a47978200f7e2e408fb64f506c81cee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!  <a href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">More...</a><br /></td></tr>
+<tr class="separator:a47978200f7e2e408fb64f506c81cee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7e4872dad3d19b6f75f532c88683168"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af7e4872dad3d19b6f75f532c88683168">pinMode</a> (RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode)</td></tr>
 <tr class="memdesc:af7e4872dad3d19b6f75f532c88683168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.  <a href="class_module.html#af7e4872dad3d19b6f75f532c88683168">More...</a><br /></td></tr>
 <tr class="separator:af7e4872dad3d19b6f75f532c88683168"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1238,6 +1241,43 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">pin</td><td>Pin to write to.</td></tr>
     <tr><td class="paramname">value</td><td>Frequency to output. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a47978200f7e2e408fb64f506c81cee9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47978200f7e2e408fb64f506c81cee9f">&#9670;&nbsp;</a></span>waitForMicroseconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Module::waitForMicroseconds </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">start</td><td>Waiting start timestamp, in microseconds.</td></tr>
+    <tr><td class="paramname">len</td><td>Waiting duration, in microseconds; </td></tr>
   </table>
   </dd>
 </dl>

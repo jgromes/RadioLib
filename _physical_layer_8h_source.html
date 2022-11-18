@@ -172,43 +172,51 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00335"></a><span class="lineno">  335</span>&#160; </div>
 <div class="line"><a name="l00345"></a><span class="lineno">  345</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a>(RADIOLIB_PIN_TYPE pin, uint8_t value);</div>
 <div class="line"><a name="l00346"></a><span class="lineno">  346</span>&#160; </div>
-<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00349"></a><span class="lineno">  349</span>&#160;    <span class="keywordtype">void</span> updateDirectBuffer(uint8_t bit);</div>
-<div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
-<div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordtype">float</span> _freqStep;</div>
-<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <span class="keywordtype">size_t</span> _maxPacketLength;</div>
-<div class="line"><a name="l00357"></a><span class="lineno">  357</span>&#160; </div>
-<div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160;    uint8_t _bufferBitPos;</div>
-<div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;    uint8_t _bufferWritePos;</div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    uint8_t _bufferReadPos;</div>
-<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;    uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];</div>
-<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;    uint32_t _syncBuffer;</div>
-<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;    uint32_t _directSyncWord;</div>
-<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;    uint8_t _directSyncWordLen;</div>
-<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;    uint32_t _directSyncWordMask;</div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordtype">bool</span> _gotSync;</div>
-<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00347"></a><span class="lineno">  347</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_INTERRUPT_TIMING)</span></div>
+<div class="line"><a name="l00348"></a><span class="lineno">  348</span>&#160; </div>
+<div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="keywordtype">void</span> setInterruptSetup(<span class="keywordtype">void</span> (*func)(uint32_t));</div>
+<div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160; </div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;    <span class="keywordtype">void</span> setTimerFlag();</div>
+<div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160; </div>
+<div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160; </div>
+<div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;    <span class="keywordtype">void</span> updateDirectBuffer(uint8_t bit);</div>
+<div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_module.html">Module</a>* getMod() = 0;</div>
-<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;    <span class="comment">// allow specific classes access the private getMod method</span></div>
-<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>;</div>
-<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
-<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
-<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
-<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
-<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
-<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
-<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a>;</div>
-<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;};</div>
-<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00371"></a><span class="lineno">  371</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00372"></a><span class="lineno">  372</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;    <span class="keywordtype">float</span> _freqStep;</div>
+<div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;    <span class="keywordtype">size_t</span> _maxPacketLength;</div>
+<div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
+<div class="line"><a name="l00376"></a><span class="lineno">  376</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00377"></a><span class="lineno">  377</span>&#160;    uint8_t _bufferBitPos;</div>
+<div class="line"><a name="l00378"></a><span class="lineno">  378</span>&#160;    uint8_t _bufferWritePos;</div>
+<div class="line"><a name="l00379"></a><span class="lineno">  379</span>&#160;    uint8_t _bufferReadPos;</div>
+<div class="line"><a name="l00380"></a><span class="lineno">  380</span>&#160;    uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];</div>
+<div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    uint32_t _syncBuffer;</div>
+<div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160;    uint32_t _directSyncWord;</div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;    uint8_t _directSyncWordLen;</div>
+<div class="line"><a name="l00384"></a><span class="lineno">  384</span>&#160;    uint32_t _directSyncWordMask;</div>
+<div class="line"><a name="l00385"></a><span class="lineno">  385</span>&#160;    <span class="keywordtype">bool</span> _gotSync;</div>
+<div class="line"><a name="l00386"></a><span class="lineno">  386</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00387"></a><span class="lineno">  387</span>&#160; </div>
+<div class="line"><a name="l00388"></a><span class="lineno">  388</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_module.html">Module</a>* getMod() = 0;</div>
+<div class="line"><a name="l00389"></a><span class="lineno">  389</span>&#160; </div>
+<div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    <span class="comment">// allow specific classes access the private getMod method</span></div>
+<div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>;</div>
+<div class="line"><a name="l00392"></a><span class="lineno">  392</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_r_t_t_y_client.html">RTTYClient</a>;</div>
+<div class="line"><a name="l00393"></a><span class="lineno">  393</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_morse_client.html">MorseClient</a>;</div>
+<div class="line"><a name="l00394"></a><span class="lineno">  394</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_hell_client.html">HellClient</a>;</div>
+<div class="line"><a name="l00395"></a><span class="lineno">  395</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a>;</div>
+<div class="line"><a name="l00396"></a><span class="lineno">  396</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_x25_client.html">AX25Client</a>;</div>
+<div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_f_s_k4_client.html">FSK4Client</a>;</div>
+<div class="line"><a name="l00398"></a><span class="lineno">  398</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a>;</div>
+<div class="line"><a name="l00399"></a><span class="lineno">  399</span>&#160;};</div>
+<div class="line"><a name="l00400"></a><span class="lineno">  400</span>&#160; </div>
+<div class="line"><a name="l00401"></a><span class="lineno">  401</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_physical_layer_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:12</div></div>
