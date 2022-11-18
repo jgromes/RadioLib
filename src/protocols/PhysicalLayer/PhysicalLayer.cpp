@@ -266,3 +266,15 @@ int16_t PhysicalLayer::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
   (void)value;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
+
+#if defined(RADIOLIB_INTERRUPT_TIMING)
+void PhysicalLayer::setInterruptSetup(void (*func)(uint32_t)) {
+  Module* mod = getMod();
+  mod->TimerSetupCb = func;
+}
+
+void PhysicalLayer::setTimerFlag() {
+  Module* mod = getMod();
+  mod->TimerFlag = true;
+}
+#endif

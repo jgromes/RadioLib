@@ -344,6 +344,22 @@ class PhysicalLayer {
     */
     virtual int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
 
+    #if defined(RADIOLIB_INTERRUPT_TIMING)
+
+    /*!
+      \brief Set function to be called to set up the timing interrupt.
+
+      \param func Setup function to be called, with one argument (pulse length in microseconds).
+    */
+    void setInterruptSetup(void (*func)(uint32_t));
+
+    /*!
+      \brief Set timing interrupt flag.
+    */
+    void setTimerFlag();
+
+    #endif
+
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
   protected:
     void updateDirectBuffer(uint8_t bit);
