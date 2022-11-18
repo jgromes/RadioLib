@@ -301,9 +301,7 @@ void SSTVClient::tone(float freq, uint32_t len) {
   #else
   _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
   #endif
-  while(mod->micros() - start < len) {
-    mod->yield();
-  }
+  mod->waitForMicroseconds(start, len);
 }
 
 #endif
