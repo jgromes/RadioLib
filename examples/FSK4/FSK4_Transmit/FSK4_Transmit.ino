@@ -99,6 +99,23 @@ void setup() {
     Serial.println(state);
     while(true);
   }
+
+  // sometimes, it may be needed to set some manual corrections
+  // this can be done for tone frequencies,
+  // as well as tone lengths
+  /*
+    // set frequency shift offsets to -120, 60, 0 and 60 Hz and decrease tone length to 95%
+    int offsets[4] = { -120, -60, 0, 60 };
+    Serial.print(F("[FSK4] Setting corrections ... "));
+    state = fsk4.setCorrection(offsets, 0.95);
+    if(state == RADIOLIB_ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
+    }
+  */
 }
 
 void loop() {

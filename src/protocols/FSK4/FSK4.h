@@ -42,7 +42,6 @@ class FSK4Client {
 
       \param rate Baud rate to be used during transmission.
 
-
       \returns \ref status_codes
     */
     int16_t begin(float base, uint32_t shift, uint16_t rate);
@@ -52,9 +51,43 @@ class FSK4Client {
     */
     void idle();
 
+    /*!
+      \brief Set correction coefficients for frequencies and tone length.
+
+      \param offsets Four positive or negative correction offsets for audio frequencies in Hz.
+
+      \param length Tone length modifier, defaults to 1.0.
+
+      \returns \ref status_codes
+    */
+    int16_t setCorrection(int16_t offsets[4], float length = 1.0f);
+
+    /*!
+      \brief Transmit binary data.
+
+      \param buff Buffer to transmit.
+
+      \param len Number of bytes to transmit.
+
+      \returns Number of transmitted bytes.
+    */
     size_t write(uint8_t* buff, size_t len);
+
+    /*!
+      \brief Transmit a single byte.
+
+      \param b Byte to transmit.
+
+      \returns Number of transmitted bytes.
+    */
     size_t write(uint8_t b);
 
+    /*!
+      \brief Stop transmitting.
+
+      \returns \ref status_codes
+    */
+    int16_t standby();
 
 #if !defined(RADIOLIB_GODMODE)
   private:
@@ -73,7 +106,7 @@ class FSK4Client {
     void tone(uint8_t i);
 
     int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
-    int16_t standby();
+    int32_t getRawShift(int32_t shift);
 };
 
 #endif

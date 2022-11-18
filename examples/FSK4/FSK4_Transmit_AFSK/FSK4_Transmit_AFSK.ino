@@ -1,7 +1,7 @@
 /*
    RadioLib FSK4 Transmit AFSK Example
 
-   This example sends an example FSK-4 'Horus Binary' message 
+   This example sends an example FSK-4 'Horus Binary' message
    using SX1278's FSK modem. The data is modulated as AFSK.
 
    This signal can be demodulated using an FM demodulator (SDR or otherwise),
@@ -92,6 +92,23 @@ void setup() {
     Serial.println(state);
     while(true);
   }
+
+  // sometimes, it may be needed to set some manual corrections
+  // this can be done for tone frequencies,
+  // as well as tone lengths
+  /*
+    // set audio tone offsets to -10, 20, 0 and 5 Hz and decrease tone length to 95%
+    int offsets[4] = { -10, 20, 0, 5 };
+    Serial.print(F("[FSK4] Setting corrections ... "));
+    state = fsk4.setCorrection(offsets, 0.95);
+    if(state == RADIOLIB_ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
+    }
+  */
 }
 
 void loop() {
