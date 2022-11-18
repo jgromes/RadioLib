@@ -169,31 +169,39 @@ SSTVClient::SSTVClient(AFSKClient* audio) {
 #endif
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
-int16_t SSTVClient::begin(const SSTVMode_t& mode, float correction) {
+int16_t SSTVClient::begin(const SSTVMode_t& mode) {
   if(_audio == nullptr) {
     // this initialization method can only be used in AFSK mode
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  return(begin(0, mode, correction));
+  return(begin(0, mode));
 }
 #endif
 
-int16_t SSTVClient::begin(float base, const SSTVMode_t& mode, float correction) {
+int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
   // save mode
   _mode = mode;
-
-  // apply correction factor to all timings
-  _mode.scanPixelLen *= correction;
-  for(uint8_t i = 0; i < _mode.numTones; i++) {
-    _mode.tones[i].len *= correction;
-  }
 
   // calculate 24-bit frequency
   _base = (base * 1000000.0) / _phy->getFreqStep();
 
   // configure for direct mode
   return(_phy->startDirect());
+}
+
+int16_t SSTVClient::setCorrection(float correction) {
+  // check if mode is initialized
+  if(_mode.visCode == 0) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // apply correction factor to all timings
+  _mode.scanPixelLen *= correction;
+  for(uint8_t i = 0; i < _mode.numTones; i++) {
+    _mode.tones[i].len *= correction;
+  }
+  return(RADIOLIB_ERR_NONE);
 }
 
 void SSTVClient::idle() {

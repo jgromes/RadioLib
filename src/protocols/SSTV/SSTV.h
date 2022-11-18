@@ -144,11 +144,9 @@ class SSTVClient {
 
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
 
-      \param correction Timing correction factor, used to adjust the length of timing pulses. Less than 1.0 leads to shorter timing pulses, defaults to 1.0 (no correction).
-
       \returns \ref status_codes
     */
-    int16_t begin(float base, const SSTVMode_t& mode, float correction = 1.0);
+    int16_t begin(float base, const SSTVMode_t& mode);
 
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
     /*!
@@ -156,12 +154,19 @@ class SSTVClient {
 
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
 
+      \returns \ref status_codes
+    */
+    int16_t begin(const SSTVMode_t& mode);
+    #endif
+
+    /*!
+      \brief Set correction coefficient for tone length.
+
       \param correction Timing correction factor, used to adjust the length of timing pulses. Less than 1.0 leads to shorter timing pulses, defaults to 1.0 (no correction).
 
       \returns \ref status_codes
     */
-    int16_t begin(const SSTVMode_t& mode, float correction = 1.0);
-    #endif
+    int16_t setCorrection(float correction);
 
     /*!
       \brief Sends out tone at 1900 Hz.
