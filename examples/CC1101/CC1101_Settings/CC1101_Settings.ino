@@ -33,7 +33,7 @@ CC1101 radio1 = new Module(10, 2, RADIOLIB_NC, 3);
 // GDO0 pin:  4
 // RST pin:   unused
 // GDO2 pin:  5 (optional)
-CC1101 radio2 = new Module(9, 4, RADIOLIB_NC, 53);
+CC1101 radio2 = new Module(9, 4, RADIOLIB_NC, 5);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
