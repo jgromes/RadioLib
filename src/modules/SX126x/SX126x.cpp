@@ -1324,7 +1324,7 @@ int16_t SX126x::setTx(uint32_t timeout) {
 
 int16_t SX126x::setRx(uint32_t timeout) {
   uint8_t data[] = { (uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF) };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX, data, 3));
+  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
 int16_t SX126x::setCad() {
