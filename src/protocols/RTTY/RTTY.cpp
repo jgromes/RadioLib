@@ -407,18 +407,14 @@ void RTTYClient::mark() {
   Module* mod = _phy->getMod();
   uint32_t start = mod->micros();
   transmitDirect(_base + _shift, _baseHz + _shiftHz);
-  while(mod->micros() - start < _bitDuration) {
-    mod->yield();
-  }
+  mod->waitForMicroseconds(start, _bitDuration);
 }
 
 void RTTYClient::space() {
   Module* mod = _phy->getMod();
   uint32_t start = mod->micros();
   transmitDirect(_base, _baseHz);
-  while(mod->micros() - start < _bitDuration) {
-    mod->yield();
-  }
+  mod->waitForMicroseconds(start, _bitDuration);
 }
 
 size_t RTTYClient::printNumber(unsigned long n, uint8_t base) {
@@ -531,6 +527,9 @@ int16_t RTTYClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
 }
 
 int16_t RTTYClient::standby() {
+  // ensure everything is stopped in interrupt timing mode
+  Module* mod = _phy->getMod();
+  mod->waitForMicroseconds(0, 0);
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     return(_audio->noTone());
