@@ -82,9 +82,7 @@ void FSK4Client::tone(uint8_t i) {
   Module* mod = _phy->getMod();
   uint32_t start = mod->micros();
   transmitDirect(_base + _tones[i], _baseHz + _tonesHz[i]);
-  while(mod->micros() - start < _bitDuration) {
-    mod->yield();
-  }
+  mod->waitForMicroseconds(start, _bitDuration);
 }
 
 int16_t FSK4Client::transmitDirect(uint32_t freq, uint32_t freqHz) {
@@ -97,6 +95,9 @@ int16_t FSK4Client::transmitDirect(uint32_t freq, uint32_t freqHz) {
 }
 
 int16_t FSK4Client::standby() {
+  // ensure everything is stopped in interrupt timing mode
+  Module* mod = _phy->getMod();
+  mod->waitForMicroseconds(0, 0);
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     return(_audio->noTone());
