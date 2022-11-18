@@ -413,9 +413,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
         } else {
           _audio->tone(_afskSpace, false);
         }
-        while(mod->micros() - start < _afskLen) {
-          mod->yield();
-        }
+        mod->waitForMicroseconds(start, _afskLen);
       }
 
     }
