@@ -954,6 +954,14 @@
 #endif
 
 /*
+ * Uncomment to enable interrupt-based timing control
+ * For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
+ */
+#if !defined(RADIOLIB_INTERRUPT_TIMING)
+  //#define RADIOLIB_INTERRUPT_TIMING
+#endif
+
+/*
  * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
  * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
  */

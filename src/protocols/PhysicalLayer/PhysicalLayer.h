@@ -348,6 +348,7 @@ class PhysicalLayer {
 
     /*!
       \brief Set function to be called to set up the timing interrupt.
+      For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
 
       \param func Setup function to be called, with one argument (pulse length in microseconds).
     */
@@ -355,6 +356,7 @@ class PhysicalLayer {
 
     /*!
       \brief Set timing interrupt flag.
+      For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
     */
     void setTimerFlag();
 
