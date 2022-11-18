@@ -91,6 +91,25 @@ class Module {
     */
     uint8_t SPIwriteCommand = 0b10000000;
 
+    #if defined(RADIOLIB_INTERRUPT_TIMING)
+
+    /*!
+      \brief Timer interrupt setup callback typedef.
+    */
+    typedef void (*TimerSetupCb_t)(uint32_t len);
+
+    /*!
+      \brief Callback to timer interrupt setup function when running in interrupt timing control mode.
+    */
+    TimerSetupCb_t TimerSetupCb = nullptr;
+
+    /*!
+      \brief Timer flag variable to be controlled by a platform-dependent interrupt.
+    */
+    volatile bool TimerFlag = false;
+
+    #endif
+
     // basic methods
 
     /*!
@@ -240,6 +259,16 @@ class Module {
       \param txPinState  Pin state to set on Rx enable pin (usually high to receive).
     */
     void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState);
+
+    /*!
+      \brief Wait for time to elapse, either using the microsecond timer, or the TimerFlag.
+      Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!
+
+      \param start Waiting start timestamp, in microseconds.
+
+      \param len Waiting duration, in microseconds;
+    */
+    void waitForMicroseconds(uint32_t start, uint32_t len);
 
     // Arduino core overrides
 
@@ -421,6 +450,10 @@ class Module {
     bool _useRfSwitch = false;
     RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;
     RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;
+
+    #if defined(RADIOLIB_INTERRUPT_TIMING)
+    uint32_t _prevTimingLen = 0;
+    #endif
 
     // hardware abstraction layer callbacks
     // this is placed at the end of Module class because the callback generator macros

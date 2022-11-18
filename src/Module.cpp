@@ -251,6 +251,24 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   this->SPIendTransaction();
 }
 
+void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
+  #if defined(RADIOLIB_INTERRUPT_TIMING)
+  (void)start;
+  if((this->TimerSetupCb != nullptr) && (len != this->_prevTimingLen)) {
+    _prevTimingLen = len;
+    this->TimerSetupCb(len);
+  }
+  this->TimerFlag = false;
+  while(!this->TimerFlag) {
+    this->yield();
+  }
+  #else
+   while(this->micros() - start < len) {
+    this->yield();
+  }
+  #endif
+}
+
 void Module::pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode) {
   if((pin == RADIOLIB_NC) || (cb_pinMode == nullptr)) {
     return;

@@ -246,6 +246,8 @@ sendTone	KEYWORD2
 
 # PhysicalLayer
 dropSync	KEYWORD2
+setTimerFlag	KEYWORD2
+setInterruptSetup	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
