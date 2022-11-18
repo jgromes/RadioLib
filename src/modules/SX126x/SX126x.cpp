@@ -1328,6 +1328,51 @@ int16_t SX126x::setRx(uint32_t timeout) {
 }
 
 int16_t SX126x::setCad() {
+       // Configure CAD parameters for assigned SF as per Semtech AN1200.48, Rev 2.1, Page 50, November 2019.
+   // Parameters are configured in RADIOLIB_SX126X_CMD_SET_CAD_PARAMS register.
+
+  uint8_t data[7];
+
+  switch(_sf)
+    {
+        case 7:
+            data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
+            data[1] = 21;
+            break;
+
+        case 8:
+            data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
+            data[1] = 22;
+            break;
+
+        case 9:
+            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
+            data[1] = 22;
+            break;
+
+        case 10:
+            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
+            data[1] = 24;
+            break;
+        
+        case 11:
+            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
+            data[1] = 25;
+            break;
+
+        default:
+            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
+            data[1] = 28;
+            break;
+    }
+
+  data[2] = 10;
+  data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
+  data[4] = 0x00;
+  data[5] = 0x00;
+  data[6] = 0x00;
+  SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
+
   return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD, NULL, 0));
 }
 
