@@ -39,7 +39,7 @@ size_t HellClient::printGlyph(uint8_t* buff) {
         } else {
           standby();
         }
-        while(mod->micros() - start < _pixelDuration);
+        mod->waitForMicroseconds(start, _pixelDuration);
     }
   }
 
