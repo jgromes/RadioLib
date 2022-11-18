@@ -308,6 +308,8 @@
 #define RADIOLIB_SX126X_CAD_ON_16_SYMB                         0x04        //  7     0                                     16
 #define RADIOLIB_SX126X_CAD_GOTO_STDBY                         0x00        //  7     0     after CAD is done, always go to STDBY_RC mode
 #define RADIOLIB_SX126X_CAD_GOTO_RX                            0x01        //  7     0     after CAD is done, go to Rx mode if activity is detected
+#define RADIOLIB_SX126X_CAD_PARAM_DEFAULT                      0xFF        //  7     0     used by the CAD methods to specify default parameter value
+#define RADIOLIB_SX126X_CAD_PARAM_DET_MIN                      10          //  7     0     default detMin CAD parameter
 
 //RADIOLIB_SX126X_CMD_GET_STATUS
 #define RADIOLIB_SX126X_STATUS_MODE_STDBY_RC                   0b00100000  //  6     4     current chip mode: STDBY_RC
@@ -470,9 +472,15 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
 
+      \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
+
+      \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
+
+      \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
+
       \returns \ref status_codes
     */
-    int16_t scanChannel();
+    int16_t scanChannel(uint8_t symbolNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT);
 
     /*!
       \brief Sets the module to sleep mode.
@@ -591,9 +599,15 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout.
 
+      \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
+
+      \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
+
+      \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
+
       \returns \ref status_codes
     */
-    int16_t startChannelScan();
+    int16_t startChannelScan(uint8_t symbolNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT);
 
     /*!
       \brief Read the channel scan result
@@ -965,7 +979,7 @@ class SX126x: public PhysicalLayer {
     // SX126x SPI command implementations
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
-    int16_t setCad();
+    int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
     int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);

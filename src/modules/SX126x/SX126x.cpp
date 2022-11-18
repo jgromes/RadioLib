@@ -321,9 +321,9 @@ int16_t SX126x::receiveDirect() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-int16_t SX126x::scanChannel() {
+int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // set mode to CAD
-  int state = startChannelScan();
+  int state = startChannelScan(symbolNum, detPeak, detMin);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -589,7 +589,7 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
-int16_t SX126x::startChannelScan() {
+int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -611,7 +611,7 @@ int16_t SX126x::startChannelScan() {
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  state = setCad();
+  state = setCad(symbolNum, detPeak, detMin);
   return(state);
 }
 
@@ -1327,52 +1327,45 @@ int16_t SX126x::setRx(uint32_t timeout) {
   return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
-int16_t SX126x::setCad() {
-       // Configure CAD parameters for assigned SF as per Semtech AN1200.48, Rev 2.1, Page 50, November 2019.
-   // Parameters are configured in RADIOLIB_SX126X_CMD_SET_CAD_PARAMS register.
-
+int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+  // default CAD parameters for assigned SF as per Semtech AN1200.48, Rev 2.1, Page 50
+  uint8_t detPeakValues[8] = { 22, 22, 22, 22, 23, 24, 25, 28};
+  uint8_t symbolNumValues[8] = { RADIOLIB_SX126X_CAD_ON_2_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
+                                 RADIOLIB_SX126X_CAD_ON_4_SYMB };
+  // build the packet
   uint8_t data[7];
-
-  switch(_sf)
-    {
-        case 7:
-            data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
-            data[1] = 21;
-            break;
-
-        case 8:
-            data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
-            data[1] = 22;
-            break;
-
-        case 9:
-            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
-            data[1] = 22;
-            break;
-
-        case 10:
-            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
-            data[1] = 24;
-            break;
-        
-        case 11:
-            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
-            data[1] = 25;
-            break;
-
-        default:
-            data[0] = RADIOLIB_SX126X_CAD_ON_4_SYMB;
-            data[1] = 28;
-            break;
-    }
-
-  data[2] = 10;
+  data[0] = symbolNumValues[_sf - 5];
+  data[1] = detPeakValues[_sf - 5];
+  data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
   data[4] = 0x00;
   data[5] = 0x00;
   data[6] = 0x00;
-  SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
 
+  // set user-provided values
+  if(symbolNum != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
+    data[0] = symbolNum;
+  }
+
+  if(detPeak != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
+    data[1] = detPeak;
+  }
+
+  if(detMin != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
+    data[2] = detMin;
+  }
+
+  // configure paramaters
+  int16_t state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
+  RADIOLIB_ASSERT(state);
+
+  // start CAD
   return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD, NULL, 0));
 }
 
@@ -1652,10 +1645,10 @@ int16_t SX126x::config(uint8_t modem) {
   state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE, data, 1);
   RADIOLIB_ASSERT(state);
 
-  // set CAD parameters
+  // set some CAD parameters - will be overwritten whel calling CAD anyway
   data[0] = RADIOLIB_SX126X_CAD_ON_8_SYMB;
   data[1] = _sf + 13;
-  data[2] = 10;
+  data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
   data[4] = 0x00;
   data[5] = 0x00;
