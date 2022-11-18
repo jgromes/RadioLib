@@ -155,10 +155,12 @@ var NAVTREEINDEX0 =
 "class_f_s_k4_client.html":[3,0,5],
 "class_f_s_k4_client.html#a2b366b8f3c08f81431d8cc5f907652e9":[3,0,5,2],
 "class_f_s_k4_client.html#a2cdcea538e5b58e99a23f98ef4a68617":[3,0,5,0],
-"class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22":[3,0,5,5],
+"class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22":[3,0,5,7],
 "class_f_s_k4_client.html#a65105b2744c4721b75ca0894c654bf82":[3,0,5,1],
 "class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257":[3,0,5,3],
-"class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2":[3,0,5,4],
+"class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac":[3,0,5,5],
+"class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2":[3,0,5,6],
+"class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a":[3,0,5,4],
 "class_hell_client.html":[3,0,6],
 "class_hell_client.html#a079475eb50465c6b9c8e5e568648925d":[3,0,6,12],
 "class_hell_client.html#a0b47e81258fd838dc8c587daad9c75ef":[3,0,6,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "class_morse_client.html#a051cba718c88b0d25a0f6f6dbfeb1e46":[3,0,10,3],
 "class_morse_client.html#a1125d874d18a507b2e77675b687cce0f":[3,0,10,4],
 "class_morse_client.html#a178726e7279d49d873c715371d558751":[3,0,10,15],
-"class_morse_client.html#a1b7a4467adf49a3afa062fc93bf6f80f":[3,0,10,9],
-"class_morse_client.html#a1be826249b4936e2b0bca20311714726":[3,0,10,26],
-"class_morse_client.html#a2040051afe09bbd4fada12bdf76203b1":[3,0,10,6]
+"class_morse_client.html#a1b7a4467adf49a3afa062fc93bf6f80f":[3,0,10,9]
 };

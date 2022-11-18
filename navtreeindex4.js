@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"group__status__codes.html#ga9f80eb00fad12bb0bec384ad83b6941b":[2,3,18],
+"group__status__codes.html#gaa1f484c73f9abe05408c84fe5891539b":[2,3,37],
+"group__status__codes.html#gaa5d0e76a10099c6e1cfd8f24e48995a2":[2,3,27],
 "group__status__codes.html#gaabe141287f2d6ba723658309f4464662":[2,3,19],
 "group__status__codes.html#gab0f9cb8ee829a8504fc110de18c4ff67":[2,3,23],
 "group__status__codes.html#gab152891bb13f6f70e6631820904e9d90":[2,3,44],

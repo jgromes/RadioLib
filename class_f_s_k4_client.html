@@ -110,12 +110,18 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257">idle</a> ()</td></tr>
 <tr class="memdesc:a79ca465012acc9223d61d5b063ff8257"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send out idle condition (RF tone at mark frequency). <br /></td></tr>
 <tr class="separator:a79ca465012acc9223d61d5b063ff8257"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa59fb42d3eeafe5ab3f0437ef5567ec2"><td class="memItemLeft" align="right" valign="top"><a id="aa59fb42d3eeafe5ab3f0437ef5567ec2"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (uint8_t *buff, size_t len)</td></tr>
+<tr class="memitem:aab85cb6519e5448dc332bf17bd60f90a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a">setCorrection</a> (int16_t offsets[4], float length=1.0f)</td></tr>
+<tr class="memdesc:aab85cb6519e5448dc332bf17bd60f90a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set correction coefficients for frequencies and tone length.  <a href="class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a">More...</a><br /></td></tr>
+<tr class="separator:aab85cb6519e5448dc332bf17bd60f90a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa59fb42d3eeafe5ab3f0437ef5567ec2"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2">write</a> (uint8_t *buff, size_t len)</td></tr>
+<tr class="memdesc:aa59fb42d3eeafe5ab3f0437ef5567ec2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit binary data.  <a href="class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2">More...</a><br /></td></tr>
 <tr class="separator:aa59fb42d3eeafe5ab3f0437ef5567ec2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31218736d4f9a3412ee9009a4c4f5a22"><td class="memItemLeft" align="right" valign="top"><a id="a31218736d4f9a3412ee9009a4c4f5a22"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (uint8_t b)</td></tr>
+<tr class="memitem:a31218736d4f9a3412ee9009a4c4f5a22"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22">write</a> (uint8_t b)</td></tr>
+<tr class="memdesc:a31218736d4f9a3412ee9009a4c4f5a22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit a single byte.  <a href="class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22">More...</a><br /></td></tr>
 <tr class="separator:a31218736d4f9a3412ee9009a4c4f5a22"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b5765371ebbf68a21bc0bbfdf9f82ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac">standby</a> ()</td></tr>
+<tr class="memdesc:a8b5765371ebbf68a21bc0bbfdf9f82ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop transmitting.  <a href="class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac">More...</a><br /></td></tr>
+<tr class="separator:a8b5765371ebbf68a21bc0bbfdf9f82ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client for FSK-4 communication. The public interface is the same as Arduino Serial. </p>
@@ -231,6 +237,129 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (uint8_t 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aab85cb6519e5448dc332bf17bd60f90a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab85cb6519e5448dc332bf17bd60f90a">&#9670;&nbsp;</a></span>setCorrection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t FSK4Client::setCorrection </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>offsets</em>[4], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>length</em> = <code>1.0f</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set correction coefficients for frequencies and tone length. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">offsets</td><td>Four positive or negative correction offsets for audio frequencies in Hz.</td></tr>
+    <tr><td class="paramname">length</td><td>Tone length modifier, defaults to 1.0.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8b5765371ebbf68a21bc0bbfdf9f82ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b5765371ebbf68a21bc0bbfdf9f82ac">&#9670;&nbsp;</a></span>standby()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t FSK4Client::standby </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stop transmitting. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa59fb42d3eeafe5ab3f0437ef5567ec2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa59fb42d3eeafe5ab3f0437ef5567ec2">&#9670;&nbsp;</a></span>write() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t FSK4Client::write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>buff</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transmit binary data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">buff</td><td>Buffer to transmit.</td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to transmit.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of transmitted bytes. </dd></dl>
+
+</div>
+</div>
+<a id="a31218736d4f9a3412ee9009a4c4f5a22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31218736d4f9a3412ee9009a4c4f5a22">&#9670;&nbsp;</a></span>write() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t FSK4Client::write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transmit a single byte. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>Byte to transmit.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Number of transmitted bytes. </dd></dl>
 
 </div>
 </div>

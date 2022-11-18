@@ -107,42 +107,49 @@ $(document).ready(function(){initNavTree('_f_s_k4_8h_source.html',''); initResiz
 <div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160; </div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    <span class="comment">// basic methods</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    int16_t <a class="code" href="class_f_s_k4_client.html#a2b366b8f3c08f81431d8cc5f907652e9">begin</a>(<span class="keywordtype">float</span> base, uint32_t shift, uint16_t rate);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257">idle</a>();</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">size_t</span> write(uint8_t b);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    uint32_t _base = 0, _baseHz = 0;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    uint32_t _shift = 0, _shiftHz = 0;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    uint32_t _bitDuration = 0;</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    uint32_t _tones[4];</div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    uint32_t _tonesHz[4];</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keywordtype">void</span> tone(uint8_t i);</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    int16_t standby();</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    int16_t <a class="code" href="class_f_s_k4_client.html#a2b366b8f3c08f81431d8cc5f907652e9">begin</a>(<span class="keywordtype">float</span> base, uint32_t shift, uint16_t rate);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257">idle</a>();</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    int16_t <a class="code" href="class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a">setCorrection</a>(int16_t offsets[4], <span class="keywordtype">float</span> length = 1.0f);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2">write</a>(uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2">write</a>(uint8_t b);</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    int16_t <a class="code" href="class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac">standby</a>();</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    uint32_t _base = 0, _baseHz = 0;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    uint32_t _shift = 0, _shiftHz = 0;</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    uint32_t _bitDuration = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    uint32_t _tones[4];</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;    uint32_t _tonesHz[4];</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keywordtype">void</span> tone(uint8_t i);</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    int32_t getRawShift(int32_t shift);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;};</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclass_f_s_k4_client_html_a2b366b8f3c08f81431d8cc5f907652e9"><div class="ttname"><a href="class_f_s_k4_client.html#a2b366b8f3c08f81431d8cc5f907652e9">FSK4Client::begin</a></div><div class="ttdeci">int16_t begin(float base, uint32_t shift, uint16_t rate)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:18</div></div>
 <div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:17</div></div>
-<div class="ttc" id="aclass_f_s_k4_client_html_a79ca465012acc9223d61d5b063ff8257"><div class="ttname"><a href="class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257">FSK4Client::idle</a></div><div class="ttdeci">void idle()</div><div class="ttdoc">Send out idle condition (RF tone at mark frequency).</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:59</div></div>
+<div class="ttc" id="aclass_f_s_k4_client_html_aab85cb6519e5448dc332bf17bd60f90a"><div class="ttname"><a href="class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a">FSK4Client::setCorrection</a></div><div class="ttdeci">int16_t setCorrection(int16_t offsets[4], float length=1.0f)</div><div class="ttdoc">Set correction coefficients for frequencies and tone length.</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:47</div></div>
+<div class="ttc" id="aclass_f_s_k4_client_html_aa59fb42d3eeafe5ab3f0437ef5567ec2"><div class="ttname"><a href="class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2">FSK4Client::write</a></div><div class="ttdeci">size_t write(uint8_t *buff, size_t len)</div><div class="ttdoc">Transmit binary data.</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:56</div></div>
+<div class="ttc" id="aclass_f_s_k4_client_html_a79ca465012acc9223d61d5b063ff8257"><div class="ttname"><a href="class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257">FSK4Client::idle</a></div><div class="ttdeci">void idle()</div><div class="ttdoc">Send out idle condition (RF tone at mark frequency).</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:42</div></div>
+<div class="ttc" id="aclass_f_s_k4_client_html_a8b5765371ebbf68a21bc0bbfdf9f82ac"><div class="ttname"><a href="class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac">FSK4Client::standby</a></div><div class="ttdeci">int16_t standby()</div><div class="ttdoc">Stop transmitting.</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:99</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 <div class="ttc" id="aclass_f_s_k4_client_html"><div class="ttname"><a href="class_f_s_k4_client.html">FSK4Client</a></div><div class="ttdoc">Client for FSK-4 communication. The public interface is the same as Arduino Serial.</div><div class="ttdef"><b>Definition:</b> FSK4.h:16</div></div>
 <div class="ttc" id="aclass_f_s_k4_client_html_a2cdcea538e5b58e99a23f98ef4a68617"><div class="ttname"><a href="class_f_s_k4_client.html#a2cdcea538e5b58e99a23f98ef4a68617">FSK4Client::FSK4Client</a></div><div class="ttdeci">FSK4Client(PhysicalLayer *phy)</div><div class="ttdoc">Constructor for FSK-4 mode.</div><div class="ttdef"><b>Definition:</b> FSK4.cpp:4</div></div>
