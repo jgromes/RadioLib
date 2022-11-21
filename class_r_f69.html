@@ -113,9 +113,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afd3a98c6ff75e1036c9ba6d5423851df"><td class="memItemLeft" align="right" valign="top"><a id="afd3a98c6ff75e1036c9ba6d5423851df"></a>
 <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
 <tr class="separator:afd3a98c6ff75e1036c9ba6d5423851df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35944b24d27a1ac98c1034cfcdb816cd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a35944b24d27a1ac98c1034cfcdb816cd">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint8_t preambleLen=16)</td></tr>
-<tr class="memdesc:a35944b24d27a1ac98c1034cfcdb816cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_r_f69.html#a35944b24d27a1ac98c1034cfcdb816cd">More...</a><br /></td></tr>
-<tr class="separator:a35944b24d27a1ac98c1034cfcdb816cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a693faf6ab777d5612392b43152e744cb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a693faf6ab777d5612392b43152e744cb">begin</a> (float freq=RADIOLIB_RF69_DEFAULT_FREQ, float br=RADIOLIB_RF69_DEFAULT_BR, float freqDev=RADIOLIB_RF69_DEFAULT_FREQDEV, float rxBw=RADIOLIB_RF69_DEFAULT_RXBW, int8_t power=RADIOLIB_RF69_DEFAULT_POWER, uint8_t preambleLen=RADIOLIB_RF69_DEFAULT_PREAMBLELEN)</td></tr>
+<tr class="memdesc:a693faf6ab777d5612392b43152e744cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_r_f69.html#a693faf6ab777d5612392b43152e744cb">More...</a><br /></td></tr>
+<tr class="separator:a693faf6ab777d5612392b43152e744cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af953ee17aca5392f1e62ea4fe690550a"><td class="memItemLeft" align="right" valign="top"><a id="af953ee17aca5392f1e62ea4fe690550a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#af953ee17aca5392f1e62ea4fe690550a">reset</a> ()</td></tr>
 <tr class="memdesc:af953ee17aca5392f1e62ea4fe690550a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. <br /></td></tr>
@@ -200,6 +200,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab467f0fc318e651d0cdfbc0399d4c34b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ab467f0fc318e651d0cdfbc0399d4c34b">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:ab467f0fc318e651d0cdfbc0399d4c34b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in bands 290.0 to 340.0 MHz, 431.0 to 510.0 MHz and 862.0 to 1020.0 MHz.  <a href="class_r_f69.html#ab467f0fc318e651d0cdfbc0399d4c34b">More...</a><br /></td></tr>
 <tr class="separator:ab467f0fc318e651d0cdfbc0399d4c34b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2391eb6e07db3795e993b59b3a85cfed"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a2391eb6e07db3795e993b59b3a85cfed">getFrequency</a> (float *freq)</td></tr>
+<tr class="memdesc:a2391eb6e07db3795e993b59b3a85cfed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets carrier frequency.  <a href="class_r_f69.html#a2391eb6e07db3795e993b59b3a85cfed">More...</a><br /></td></tr>
+<tr class="separator:a2391eb6e07db3795e993b59b3a85cfed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad7f8132912a5dbf38c5cf676ac167d13"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ad7f8132912a5dbf38c5cf676ac167d13">setBitRate</a> (float br)</td></tr>
 <tr class="memdesc:ad7f8132912a5dbf38c5cf676ac167d13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bit rate. Allowed values range from 1.2 to 300.0 kbps.  <a href="class_r_f69.html#ad7f8132912a5dbf38c5cf676ac167d13">More...</a><br /></td></tr>
 <tr class="separator:ad7f8132912a5dbf38c5cf676ac167d13"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,6 +212,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:adb9fbfedf95f34ac537815870b98a9be"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:adb9fbfedf95f34ac537815870b98a9be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets frequency deviation.  <a href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">More...</a><br /></td></tr>
 <tr class="separator:adb9fbfedf95f34ac537815870b98a9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9">getFrequencyDeviation</a> (float *freqDev)</td></tr>
+<tr class="memdesc:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency deviation.  <a href="class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9">More...</a><br /></td></tr>
+<tr class="separator:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a998ddd21fc152d835c6f1b8d31b02fcc">setOutputPower</a> (int8_t power, bool highPower=false)</td></tr>
 <tr class="memdesc:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).  <a href="class_r_f69.html#a998ddd21fc152d835c6f1b8d31b02fcc">More...</a><br /></td></tr>
 <tr class="separator:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,8 +425,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a35944b24d27a1ac98c1034cfcdb816cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35944b24d27a1ac98c1034cfcdb816cd">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a693faf6ab777d5612392b43152e744cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a693faf6ab777d5612392b43152e744cb">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,37 +435,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t RF69::begin </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freq</em> = <code>434.0</code>, </td>
+          <td class="paramname"><em>freq</em> = <code>RADIOLIB_RF69_DEFAULT_FREQ</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em> = <code>4.8</code>, </td>
+          <td class="paramname"><em>br</em> = <code>RADIOLIB_RF69_DEFAULT_BR</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqDev</em> = <code>5.0</code>, </td>
+          <td class="paramname"><em>freqDev</em> = <code>RADIOLIB_RF69_DEFAULT_FREQDEV</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>rxBw</em> = <code>125.0</code>, </td>
+          <td class="paramname"><em>rxBw</em> = <code>RADIOLIB_RF69_DEFAULT_RXBW</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>power</em> = <code>10</code>, </td>
+          <td class="paramname"><em>power</em> = <code>RADIOLIB_RF69_DEFAULT_POWER</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>preambleLen</em> = <code>16</code>&#160;</td>
+          <td class="paramname"><em>preambleLen</em> = <code>RADIOLIB_RF69_DEFAULT_PREAMBLELEN</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -796,6 +802,60 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> is connected and working. </p>
 <dl class="section return"><dt>Returns</dt><dd>Version register contents or <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2391eb6e07db3795e993b59b3a85cfed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2391eb6e07db3795e993b59b3a85cfed">&#9670;&nbsp;</a></span>getFrequency()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::getFrequency </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>freq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets carrier frequency. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">freq</td><td>Variable to write carrier frequency currently set, in MHz.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a2bf0d5e045ccfecf9510773148cdd2c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bf0d5e045ccfecf9510773148cdd2c9">&#9670;&nbsp;</a></span>getFrequencyDeviation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t RF69::getFrequencyDeviation </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>freqDev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets frequency deviation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">freqDev</td><td>Where to write the frequency deviation currently set, in kHz.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

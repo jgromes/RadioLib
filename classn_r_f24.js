@@ -1,7 +1,7 @@
 var classn_r_f24 =
 [
     [ "nRF24", "classn_r_f24.html#ab12de8d953c2384c5fff09b4abf65d1e", null ],
-    [ "begin", "classn_r_f24.html#a60eb59262c5004b587b1d8177706ff28", null ],
+    [ "begin", "classn_r_f24.html#aab701c0336394e0473981913fbfd5da6", null ],
     [ "disablePipe", "classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a", null ],
     [ "finishTransmit", "classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f", null ],
     [ "getMod", "classn_r_f24.html#a03533af894b373fbff01601dd027b36a", null ],

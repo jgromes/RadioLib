@@ -1,7 +1,7 @@
 var class_c_c1101 =
 [
     [ "CC1101", "class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e", null ],
-    [ "begin", "class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593", null ],
+    [ "begin", "class_c_c1101.html#ae8ef8463220f2c5fa3120c4a5995e61f", null ],
     [ "clearGdo0Action", "class_c_c1101.html#ab5e6b3745f80cf61e1ced33303311df8", null ],
     [ "clearGdo2Action", "class_c_c1101.html#ac7a8b1fe7d08dc6db20cf1569b0d37b4", null ],
     [ "disableAddressFiltering", "class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883", null ],
@@ -10,6 +10,7 @@ var class_c_c1101 =
     [ "finishTransmit", "class_c_c1101.html#af70ea860154cd6d2b2e2a6962e161c8f", null ],
     [ "fixedPacketLengthMode", "class_c_c1101.html#ad25ad96cddf62273bffd601384d22275", null ],
     [ "getChipVersion", "class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705", null ],
+    [ "getFrequencyDeviation", "class_c_c1101.html#abe26fa310e973bf2b14750b9eae02124", null ],
     [ "getLQI", "class_c_c1101.html#a59ca9e8956e308159949638bf327e5fb", null ],
     [ "getMod", "class_c_c1101.html#ad47b3b7bd67159638ff9afcfe002fc66", null ],
     [ "getPacketLength", "class_c_c1101.html#a122281f6a915b77ee9dafc9926e731a0", null ],

@@ -112,9 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memItemLeft" align="right" valign="top"><a id="ad47b3b7bd67159638ff9afcfe002fc66"></a>
 <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
 <tr class="separator:ad47b3b7bd67159638ff9afcfe002fc66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b40fd5505fec6bad5986f67a5062593"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=135.0, int8_t power=10, uint8_t preambleLength=16)</td></tr>
-<tr class="memdesc:a3b40fd5505fec6bad5986f67a5062593"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_c_c1101.html#a3b40fd5505fec6bad5986f67a5062593">More...</a><br /></td></tr>
-<tr class="separator:a3b40fd5505fec6bad5986f67a5062593"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8ef8463220f2c5fa3120c4a5995e61f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ae8ef8463220f2c5fa3120c4a5995e61f">begin</a> (float freq=RADIOLIB_CC1101_DEFAULT_FREQ, float br=RADIOLIB_CC1101_DEFAULT_BR, float freqDev=RADIOLIB_CC1101_DEFAULT_FREQDEV, float rxBw=RADIOLIB_CC1101_DEFAULT_RXBW, int8_t power=RADIOLIB_CC1101_DEFAULT_POWER, uint8_t preambleLength=RADIOLIB_CC1101_DEFAULT_PREAMBLELEN)</td></tr>
+<tr class="memdesc:ae8ef8463220f2c5fa3120c4a5995e61f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_c_c1101.html#ae8ef8463220f2c5fa3120c4a5995e61f">More...</a><br /></td></tr>
+<tr class="separator:ae8ef8463220f2c5fa3120c4a5995e61f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb99a9200b21829b50e3fc3878573f4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4">transmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a7cb99a9200b21829b50e3fc3878573f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_c_c1101.html#a7cb99a9200b21829b50e3fc3878573f4">More...</a><br /></td></tr>
 <tr class="separator:a7cb99a9200b21829b50e3fc3878573f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,6 +178,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a0d69713b9f20c9de354c13c3167b18b3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a0d69713b9f20c9de354c13c3167b18b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.  <a href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">More...</a><br /></td></tr>
 <tr class="separator:a0d69713b9f20c9de354c13c3167b18b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe26fa310e973bf2b14750b9eae02124"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#abe26fa310e973bf2b14750b9eae02124">getFrequencyDeviation</a> (float *freqDev)</td></tr>
+<tr class="memdesc:abe26fa310e973bf2b14750b9eae02124"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency deviation.  <a href="class_c_c1101.html#abe26fa310e973bf2b14750b9eae02124">More...</a><br /></td></tr>
+<tr class="separator:abe26fa310e973bf2b14750b9eae02124"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3ff8051af5ca50c349e02257f1a3bda"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ac3ff8051af5ca50c349e02257f1a3bda">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:ac3ff8051af5ca50c349e02257f1a3bda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.  <a href="class_c_c1101.html#ac3ff8051af5ca50c349e02257f1a3bda">More...</a><br /></td></tr>
 <tr class="separator:ac3ff8051af5ca50c349e02257f1a3bda"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -367,8 +370,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3b40fd5505fec6bad5986f67a5062593"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b40fd5505fec6bad5986f67a5062593">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="ae8ef8463220f2c5fa3120c4a5995e61f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8ef8463220f2c5fa3120c4a5995e61f">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -377,37 +380,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t CC1101::begin </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freq</em> = <code>434.0</code>, </td>
+          <td class="paramname"><em>freq</em> = <code>RADIOLIB_CC1101_DEFAULT_FREQ</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em> = <code>4.8</code>, </td>
+          <td class="paramname"><em>br</em> = <code>RADIOLIB_CC1101_DEFAULT_BR</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqDev</em> = <code>5.0</code>, </td>
+          <td class="paramname"><em>freqDev</em> = <code>RADIOLIB_CC1101_DEFAULT_FREQDEV</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>rxBw</em> = <code>135.0</code>, </td>
+          <td class="paramname"><em>rxBw</em> = <code>RADIOLIB_CC1101_DEFAULT_RXBW</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>power</em> = <code>10</code>, </td>
+          <td class="paramname"><em>power</em> = <code>RADIOLIB_CC1101_DEFAULT_POWER</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>preambleLength</em> = <code>16</code>&#160;</td>
+          <td class="paramname"><em>preambleLength</em> = <code>RADIOLIB_CC1101_DEFAULT_PREAMBLELEN</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -420,7 +423,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434 MHz.</td></tr>
     <tr><td class="paramname">br</td><td>Bit rate to be used in kbps. Defaults to 4.8 kbps.</td></tr>
     <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.</td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 135.0 kHz.</td></tr>
@@ -592,6 +595,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or CC1101_VERSION_CURRENT (0x14) if <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> is connected and working. </p>
 <dl class="section return"><dt>Returns</dt><dd>Version register contents or <a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="abe26fa310e973bf2b14750b9eae02124"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe26fa310e973bf2b14750b9eae02124">&#9670;&nbsp;</a></span>getFrequencyDeviation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::getFrequencyDeviation </td>
+          <td>(</td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>freqDev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Gets frequency deviation. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">freqDev</td><td>Pointer to variable where to save the frequency deviation.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

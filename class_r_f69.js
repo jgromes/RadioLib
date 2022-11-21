@@ -1,7 +1,7 @@
 var class_r_f69 =
 [
     [ "RF69", "class_r_f69.html#afbc84d4f91502bcbe12ddda2fde51448", null ],
-    [ "begin", "class_r_f69.html#a35944b24d27a1ac98c1034cfcdb816cd", null ],
+    [ "begin", "class_r_f69.html#a693faf6ab777d5612392b43152e744cb", null ],
     [ "clearDio0Action", "class_r_f69.html#a9721d2a3ed9fa8dd878575d71d5a4942", null ],
     [ "clearDio1Action", "class_r_f69.html#ade1f9a7a603d712c480ed5e9a8d1bf51", null ],
     [ "clearFifoEmptyAction", "class_r_f69.html#a0d7b67499462777f7909860405ca6b62", null ],
@@ -18,6 +18,8 @@ var class_r_f69 =
     [ "finishTransmit", "class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b", null ],
     [ "fixedPacketLengthMode", "class_r_f69.html#a0de2a07f264839cda945faebf7319e0e", null ],
     [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
+    [ "getFrequency", "class_r_f69.html#a2391eb6e07db3795e993b59b3a85cfed", null ],
+    [ "getFrequencyDeviation", "class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9", null ],
     [ "getMod", "class_r_f69.html#afd3a98c6ff75e1036c9ba6d5423851df", null ],
     [ "getPacketLength", "class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1", null ],
     [ "getRSSI", "class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7", null ],
