@@ -464,8 +464,8 @@
 
 // Defaults
 #define RADIOLIB_RF69_DEFAULT_FREQ                             434.0
-#define RADIOLIB_RF69_DEFAULT_BR                               48.0
-#define RADIOLIB_RF69_DEFAULT_FREQDEV                          50.0
+#define RADIOLIB_RF69_DEFAULT_BR                               4.8
+#define RADIOLIB_RF69_DEFAULT_FREQDEV                          5.0
 #define RADIOLIB_RF69_DEFAULT_RXBW                             125.0
 #define RADIOLIB_RF69_DEFAULT_POWER                            10
 #define RADIOLIB_RF69_DEFAULT_PREAMBLELEN                      16
@@ -512,14 +512,14 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    //int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
       int16_t begin(
-      float freq = RADIOLIB_RF69_DEFAULT_FREQ,
-      float br = RADIOLIB_RF69_DEFAULT_BR,
-      float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
-      float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
-      int8_t power = RADIOLIB_RF69_DEFAULT_POWER,
-      uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
+        float freq = RADIOLIB_RF69_DEFAULT_FREQ,
+        float br = RADIOLIB_RF69_DEFAULT_BR,
+        float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
+        float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
+        int8_t power = RADIOLIB_RF69_DEFAULT_POWER,
+        uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
+
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
     */

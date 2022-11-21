@@ -501,8 +501,8 @@
 
 //Defaults
 #define RADIOLIB_CC1101_DEFAULT_FREQ                           434.0
-#define RADIOLIB_CC1101_DEFAULT_BR                             48.0
-#define RADIOLIB_CC1101_DEFAULT_FREQDEV                        48.0
+#define RADIOLIB_CC1101_DEFAULT_BR                             4.8
+#define RADIOLIB_CC1101_DEFAULT_FREQDEV                        5.0
 #define RADIOLIB_CC1101_DEFAULT_RXBW                           135.0
 #define RADIOLIB_CC1101_DEFAULT_POWER                          10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                    16
@@ -536,7 +536,7 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Initialization method.
 
-      \param freq Carrier frequency in MHz. Defaults to 434.0 MHz.
+      \param freq Carrier frequency in MHz. Defaults to 434 MHz.
 
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
 
@@ -550,7 +550,13 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 135.0, int8_t power = 10, uint8_t preambleLength = 16);
+    int16_t begin(
+      float freq = RADIOLIB_CC1101_DEFAULT_FREQ,
+      float br = RADIOLIB_CC1101_DEFAULT_BR,
+      float freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV,
+      float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
+      int8_t power = RADIOLIB_CC1101_DEFAULT_POWER,
+      uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
 
     /*!
       \brief Blocking binary transmit method.
@@ -1006,7 +1012,6 @@ class CC1101: public PhysicalLayer {
     bool _crcOn = true;
     bool _directMode = true;
 
-    uint8_t _syncWordLength = RADIOLIB_CC1101_DEFAULT_SW_LEN;
     int8_t _power = RADIOLIB_CC1101_DEFAULT_POWER;
 
 

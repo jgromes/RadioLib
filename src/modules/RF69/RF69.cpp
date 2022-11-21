@@ -59,7 +59,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
   RADIOLIB_ASSERT(state);
 
   // configure bitrate
-   _rxBw = rxBw;
+  _rxBw = rxBw;
   state = setBitRate(br);
   RADIOLIB_ASSERT(state);
 
@@ -615,7 +615,6 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set frequency deviation from carrier frequency
-  uint32_t base = 1;
   uint32_t fdev = (newFreqDev * (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT)) / 32000;
   int16_t state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_MSB, (fdev & 0xFF00) >> 8, 5, 0);
   state |= _mod->SPIsetRegValue(RADIOLIB_RF69_REG_FDEV_LSB, fdev & 0x00FF, 7, 0);
@@ -624,6 +623,10 @@ int16_t RF69::setFrequencyDeviation(float freqDev) {
 }
 
 int16_t RF69::getFrequencyDeviation(float *freqDev) {
+  if (freqDev == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+
   if (RF69::_ook) {
     *freqDev = 0.0;
     
@@ -715,9 +718,8 @@ int16_t RF69::setPreambleLength(uint8_t preambleLen) {
 
   uint8_t preLenBytes = preambleLen / 8;
   _mod->SPIwriteRegister(RADIOLIB_RF69_REG_PREAMBLE_MSB, 0x00);
-  uint16_t state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, preLenBytes);
 
-  return (state);
+  return (_mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, preLenBytes));
 }
 
 int16_t RF69::setNodeAddress(uint8_t nodeAddr) {

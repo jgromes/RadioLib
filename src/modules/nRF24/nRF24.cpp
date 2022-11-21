@@ -254,8 +254,7 @@ int16_t nRF24::setFrequency(float freq) {
 
   // set frequency
   uint8_t freqRaw = (uint16_t)freq - 2400;
-  //return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0));
-  uint16_t state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
+  int16_t state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
 
   if(state == RADIOLIB_ERR_NONE) {
     _freq = freq;
