@@ -254,7 +254,13 @@ int16_t nRF24::setFrequency(float freq) {
 
   // set frequency
   uint8_t freqRaw = (uint16_t)freq - 2400;
-  return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0));
+  int16_t state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_CH, freqRaw, 6, 0);
+
+  if(state == RADIOLIB_ERR_NONE) {
+    _freq = freq;
+  }
+
+  return(state);
 }
 
 int16_t nRF24::setBitRate(float br) {
@@ -276,6 +282,11 @@ int16_t nRF24::setBitRate(float br) {
   } else {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
+  
+  if(state == RADIOLIB_ERR_NONE) {
+    _dataRate = dataRate;
+  }
+
 
   return(state);
 }
@@ -306,6 +317,12 @@ int16_t nRF24::setOutputPower(int8_t power) {
 
   // write new register value
   state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, powerRaw, 2, 1);
+
+  if(state == RADIOLIB_ERR_NONE) {
+    _power = power;
+  }
+
+
   return(state);
 }
 
@@ -335,7 +352,9 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
   }
 
   // save address width
-  _addrWidth = addrWidth;
+  if(state == RADIOLIB_ERR_NONE) {
+    _addrWidth = addrWidth;
+  }
 
   return(state);
 }

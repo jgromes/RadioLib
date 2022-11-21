@@ -89,7 +89,8 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   RADIOLIB_ASSERT(state);
 
   // set default sync word
-  state = setSyncWord(0x12, 0xAD, 0, false);
+  uint8_t sw[RADIOLIB_CC1101_DEFAULT_SW_LEN] = RADIOLIB_CC1101_DEFAULT_SW;
+  state = setSyncWord(sw[0], sw[1], 0, false);
   RADIOLIB_ASSERT(state);
 
   // flush FIFOs
@@ -472,7 +473,7 @@ int16_t CC1101::setBitRate(float br) {
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, e, 3, 0);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG3, m);
   if(state == RADIOLIB_ERR_NONE) {
-    CC1101::_br = br;
+    _br = br;
   }
   return(state);
 }
@@ -491,6 +492,7 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
         // set Rx channel filter bandwidth
         return(SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG4, (e << 6) | (m << 4), 7, 4));
       }
+
     }
   }
 
@@ -517,7 +519,33 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set frequency deviation value
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, (e << 4), 6, 4);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_DEVIATN, m, 2, 0);
+  
   return(state);
+}
+
+int16_t CC1101::getFrequencyDeviation(float *freqDev) {
+  if (freqDev == NULL) {
+    return(RADIOLIB_ERR_NULL_POINTER);
+  }
+
+  // if ASK/OOK, deviation makes no sense
+  if (_modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK) {
+    *freqDev = 0.0;
+
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // get exponent and mantissa values from registers
+  uint8_t e = (uint8_t)(SPIgetRegValue(RADIOLIB_CC1101_REG_DEVIATN, 6, 4) >> 4);
+  uint8_t m = (uint8_t)SPIgetRegValue(RADIOLIB_CC1101_REG_DEVIATN, 2, 0);
+
+  // calculate frequency deviation (pag. 79 of the CC1101 datasheet):
+  //
+  //   freqDev = (fXosc / 2^17) * (8 + m) * 2^e
+  //
+  *freqDev = (1000.0 / (uint32_t(1) << 17)) - (8 + m) * (uint32_t(1) << e);
+
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t CC1101::setOutputPower(int8_t power) {
@@ -608,8 +636,6 @@ int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, 
     }
   }
 
-  _syncWordLength = len;
-
   // enable sync word filtering
   int16_t state = enableSyncWordFiltering(maxErrBits, requireCarrierSense);
   RADIOLIB_ASSERT(state);
@@ -658,10 +684,8 @@ int16_t CC1101::setPreambleLength(uint8_t preambleLength) {
       return(RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH);
   }
 
-
-  return SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4);
+  return(SPIsetRegValue(RADIOLIB_CC1101_REG_MDMCFG1, value, 6, 4));
 }
-
 
 int16_t CC1101::setNodeAddress(uint8_t nodeAddr, uint8_t numBroadcastAddrs) {
   RADIOLIB_CHECK_RANGE(numBroadcastAddrs, 1, 2, RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS);

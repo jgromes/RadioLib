@@ -462,6 +462,15 @@
 #define RADIOLIB_RF69_PA2_NORMAL                               0x70        //  7     0     PA_BOOST: none
 #define RADIOLIB_RF69_PA2_20_DBM                               0x7C        //  7     0               +20 dBm
 
+// Defaults
+#define RADIOLIB_RF69_DEFAULT_FREQ                             434.0
+#define RADIOLIB_RF69_DEFAULT_BR                               4.8
+#define RADIOLIB_RF69_DEFAULT_FREQDEV                          5.0
+#define RADIOLIB_RF69_DEFAULT_RXBW                             125.0
+#define RADIOLIB_RF69_DEFAULT_POWER                            10
+#define RADIOLIB_RF69_DEFAULT_PREAMBLELEN                      16
+#define RADIOLIB_RF69_DEFAULT_SW                               {0x12, 0xAD}
+#define RADIOLIB_RF69_DEFAULT_SW_LEN                           2
 /*!
   \class RF69
 
@@ -503,7 +512,13 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
+      int16_t begin(
+        float freq = RADIOLIB_RF69_DEFAULT_FREQ,
+        float br = RADIOLIB_RF69_DEFAULT_BR,
+        float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
+        float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
+        int8_t power = RADIOLIB_RF69_DEFAULT_POWER,
+        uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -722,6 +737,15 @@ class RF69: public PhysicalLayer {
     int16_t setFrequency(float freq);
 
     /*!
+      \brief Gets carrier frequency.
+
+      \param[out] freq Variable to write carrier frequency currently set, in MHz.
+
+      \returns \ref status_codes
+    */
+    int16_t getFrequency(float *freq);
+
+    /*!
       \brief Sets bit rate. Allowed values range from 1.2 to 300.0 kbps.
 
       \param br Bit rate to be set in kbps.
@@ -747,6 +771,15 @@ class RF69: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setFrequencyDeviation(float freqDev) override;
+
+    /*!
+      \brief Gets frequency deviation.
+
+      \param[out] freqDev Where to write the frequency deviation currently set, in kHz.
+
+      \returns \ref status_codes
+    */
+    int16_t getFrequencyDeviation(float *freqDev);
 
     /*!
       \brief Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).
@@ -1037,12 +1070,12 @@ class RF69: public PhysicalLayer {
   protected:
 #endif
 
-    float _freq = 0;
-    float _br = 0;
-    float _rxBw = 0;
+    float _freq = RADIOLIB_RF69_DEFAULT_FREQ;
+    float _br = RADIOLIB_RF69_DEFAULT_BR;
+    float _rxBw = RADIOLIB_RF69_DEFAULT_RXBW;
     bool _ook = false;
     int16_t _tempOffset = 0;
-    int8_t _power = 0;
+    int8_t _power = RADIOLIB_RF69_DEFAULT_POWER;
 
     size_t _packetLength = 0;
     bool _packetLengthQueried = false;
@@ -1050,7 +1083,7 @@ class RF69: public PhysicalLayer {
 
     bool _promiscuous = false;
 
-    uint8_t _syncWordLength = 2;
+    uint8_t _syncWordLength = RADIOLIB_RF69_DEFAULT_SW_LEN;
 
     bool _bitSync = true;
 

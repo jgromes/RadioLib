@@ -218,6 +218,11 @@
 */
 #define RADIOLIB_ERR_INVALID_RSSI_THRESHOLD                    (-27)
 
+/*!
+  \brief A `NULL` pointer has been encountered. If you see this, there may be a potential security vulnerability.
+*/
+#define RADIOLIB_ERR_NULL_POINTER                              (-28)
+
 // RF69-specific status codes
 
 /*!

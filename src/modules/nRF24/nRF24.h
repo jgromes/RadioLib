@@ -171,6 +171,13 @@
 #define RADIOLIB_NRF24_DYN_ACK_OFF                             0b00000000  //  0     0     payloads without ACK: disabled (default)
 #define RADIOLIB_NRF24_DYN_ACK_ON                              0b00000001  //  0     0                           enabled
 
+// Defaults
+#define RADIOLIB_NRF24_DEFAULT_FREQ                            2400
+#define RADIOLIB_NRF24_DEFAULT_DR                              1000
+#define RADIOLIB_NRF24_DEFAULT_POWER                           -12
+#define RADIOLIB_NRF24_DEFAULT_ADDRWIDTH                       5
+
+
 /*!
   \class nRF24
 
@@ -208,7 +215,11 @@ class nRF24: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t begin(int16_t freq = 2400, int16_t dataRate = 1000, int8_t power = -12, uint8_t addrWidth = 5);
+      int16_t begin(
+        int16_t freq = RADIOLIB_NRF24_DEFAULT_FREQ,
+        int16_t dataRate = RADIOLIB_NRF24_DEFAULT_DR,
+        int8_t power = RADIOLIB_NRF24_DEFAULT_POWER,
+        uint8_t addrWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH);
 
     /*!
       \brief Sets the module to sleep mode.
@@ -509,7 +520,11 @@ class nRF24: public PhysicalLayer {
   protected:
 #endif
 
-    uint8_t _addrWidth = 0;
+    int16_t _freq = RADIOLIB_NRF24_DEFAULT_FREQ;
+    int16_t _dataRate = RADIOLIB_NRF24_DEFAULT_DR;
+    int8_t _power = RADIOLIB_NRF24_DEFAULT_POWER;
+    uint8_t _addrWidth = RADIOLIB_NRF24_DEFAULT_ADDRWIDTH;
+
 
     int16_t config();
     void clearIRQ();
