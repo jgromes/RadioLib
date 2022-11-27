@@ -84,9 +84,13 @@ class PagerClient {
 
       \param speed Bit rate to use in bps. Common POCSAG decoders can receive 512, 1200 and 2400 bps.
 
+      \param invert Enable frequency inversion. Disabled by default (high frequency is digital 0).
+
+      \param shift Set custom frequency shift, defaults to 4500 Hz.
+
       \returns \ref status_codes
     */
-    int16_t begin(float base, uint16_t speed, uint16_t shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ);
+    int16_t begin(float base, uint16_t speed, bool invert = false, uint16_t shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ);
 
     /*!
       \brief Method to send a tone-only alert to a destination pager.
@@ -201,6 +205,7 @@ class PagerClient {
     uint32_t _readBatchPos;
     uint32_t _filterAddr;
     uint32_t _filterMask;
+    bool inv = false;
 
     // BCH encoder
     int32_t _bchAlphaTo[RADIOLIB_PAGER_BCH_N + 1];

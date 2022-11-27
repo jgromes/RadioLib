@@ -19,7 +19,7 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
   _readBitInstance = _phy;
 }
 
-int16_t PagerClient::begin(float base, uint16_t speed, uint16_t shift) {
+int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
   // calculate duration of 1 bit in us
   _speed = (float)speed/1000.0f;
   _bitDuration = (uint32_t)1000000/speed;
@@ -34,6 +34,7 @@ int16_t PagerClient::begin(float base, uint16_t speed, uint16_t shift) {
   // calculate raw frequency shift
   _shiftHz = shift;
   _shift = _shiftHz/step;
+  inv = invert;
 
   // initialize BCH encoder
   encoderInit();
@@ -433,13 +434,22 @@ void PagerClient::write(uint32_t codeWord) {
   for(int8_t i = 31; i >= 0; i--) {
     uint32_t mask = (uint32_t)0x01 << i;
     uint32_t start = mod->micros();
+
+    // figure out the shift direction - start by assuming the bit is 0
+    int16_t change = _shift;
+
+    // now check if it's actually 1
     if(codeWord & mask) {
-      // send 1
-      _phy->transmitDirect(_baseRaw + _shift);
-    } else {
-      // send 0
-      _phy->transmitDirect(_baseRaw - _shift);
+      change = -_shift;
     }
+
+    // finally, check if inversion is enabled
+    if(inv) {
+      change = -change;
+    }
+
+    // now transmit the shifted frequency
+    _phy->transmitDirect(_baseRaw + change);
 
     // this is pretty silly, while(mod->micros() ... ) would be enough
     // but for some reason, MegaCore throws a linker error on it
