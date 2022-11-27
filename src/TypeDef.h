@@ -328,6 +328,11 @@
 */
 #define RADIOLIB_ERR_INVALID_NUM_BROAD_ADDRS                   (-601)
 
+/*!
+  \brief FEC cannot be enabled for variable packet length mode
+*/
+#define RADIOLIB_ERR_FEC_UNAVAILABLE                           (-602)
+
 // SX126x-specific status codes
 
 /*!

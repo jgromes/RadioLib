@@ -765,9 +765,11 @@ class CC1101: public PhysicalLayer {
 
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
 
+      \param repeatSyncWord Enable repeated transmission in TX to emulate 32-bit sync word and force 32-bit word detection in RX.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t setSyncWord(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSyncWord = false);
 
     /*!
       \brief Sets 1 or 2 bytes of sync word.
@@ -780,9 +782,11 @@ class CC1101: public PhysicalLayer {
 
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
 
+      \param repeatSyncWord Enable repeated transmission in TX to emulate 32-bit sync word and force 32-bit word detection in RX.
+
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSyncWord = false);
 
     /*!
       \brief Sets preamble length.
@@ -864,15 +868,24 @@ class CC1101: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_CC1101_MAX_PACKET_LENGTH);
 
      /*!
+      \brief Enable or disable forward error correction for fixed length packets.
+
+      \returns \ref status_codes
+    */
+    int16_t setForwardErrorCorrection(bool enable = true);
+
+     /*!
       \brief Enable sync word filtering and generation.
 
       \param numBits Sync word length in bits.
 
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
 
+      \param repeatSyncWord Enable repeated transmission in TX to emulate 32-bit sync word and force 32-bit word detection in RX.
+
       \returns \ref status_codes
     */
-    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSyncWord);
 
      /*!
       \brief Disable preamble and sync word filtering and generation.
