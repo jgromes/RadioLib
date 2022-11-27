@@ -506,7 +506,8 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
     newFreqDev = 1.587;
   }
 
-  if (_modulation != RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK) {
+  // check range unless 0 (special value)
+  if (freqDev != 0) {
     RADIOLIB_CHECK_RANGE(newFreqDev, 1.587, 380.8, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
