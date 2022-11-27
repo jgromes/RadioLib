@@ -506,7 +506,10 @@ int16_t CC1101::setFrequencyDeviation(float freqDev) {
     newFreqDev = 1.587;
   }
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 1.587, 380.8, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  // check range unless 0 (special value)
+  if (freqDev != 0) {
+    RADIOLIB_CHECK_RANGE(newFreqDev, 1.587, 380.8, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  }
 
   // set mode to standby
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
