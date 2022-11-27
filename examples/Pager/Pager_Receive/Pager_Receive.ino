@@ -29,10 +29,10 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 radio = new Module(5, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // DIO2 pin:  5
-const int pin = 4;
+const int pin = 5;
 
 // create Pager client instance using the FSK module
 PagerClient pager(&radio);

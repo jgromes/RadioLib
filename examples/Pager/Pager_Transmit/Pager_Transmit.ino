@@ -29,7 +29,7 @@
 // DIO0 pin:  2
 // RESET pin: 9
 // DIO1 pin:  3
-SX1278 radio = new Module(5, 2, 9, 3);
+SX1278 radio = new Module(10, 2, 9, 3);
 
 // or using RadioShield
 // https://github.com/jgromes/RadioShield
@@ -77,9 +77,9 @@ void loop() {
   // the simples form of "message" is just a tone on the destination pager
   int state = pager.sendTone(1234567);
   delay(500);
-  
+
   // next, transmit numeric (BCD) message to the destination pager
-  // NOTE: Only characters 0123456789*U-() and space 
+  // NOTE: Only characters 0123456789*U-() and space
   //       can be sent in a BCD message!
   state |= pager.transmit("0123456789*U -()", 1234567);
   delay(500);
@@ -89,7 +89,7 @@ void loop() {
   delay(500);
 
   // we can also send only a tone
-  
+
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
