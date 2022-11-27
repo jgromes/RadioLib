@@ -100,9 +100,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9f978120467b13104fb356e9b7d855ec"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a9f978120467b13104fb356e9b7d855ec">PagerClient</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy)</td></tr>
 <tr class="memdesc:a9f978120467b13104fb356e9b7d855ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_pager_client.html#a9f978120467b13104fb356e9b7d855ec">More...</a><br /></td></tr>
 <tr class="separator:a9f978120467b13104fb356e9b7d855ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c9b5107f17b181ad8c99b6fc5046ee5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a7c9b5107f17b181ad8c99b6fc5046ee5">begin</a> (float base, uint16_t speed, uint16_t shift=RADIOLIB_PAGER_FREQ_SHIFT_HZ)</td></tr>
-<tr class="memdesc:a7c9b5107f17b181ad8c99b6fc5046ee5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_pager_client.html#a7c9b5107f17b181ad8c99b6fc5046ee5">More...</a><br /></td></tr>
-<tr class="separator:a7c9b5107f17b181ad8c99b6fc5046ee5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a1dc569f9b60b0ddd6ead7af5a8244f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f">begin</a> (float base, uint16_t speed, bool invert=false, uint16_t shift=RADIOLIB_PAGER_FREQ_SHIFT_HZ)</td></tr>
+<tr class="memdesc:a1a1dc569f9b60b0ddd6ead7af5a8244f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f">More...</a><br /></td></tr>
+<tr class="separator:a1a1dc569f9b60b0ddd6ead7af5a8244f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">sendTone</a> (uint32_t addr)</td></tr>
 <tr class="memdesc:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to send a tone-only alert to a destination pager.  <a href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">More...</a><br /></td></tr>
 <tr class="separator:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,8 +186,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7c9b5107f17b181ad8c99b6fc5046ee5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c9b5107f17b181ad8c99b6fc5046ee5">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a1a1dc569f9b60b0ddd6ead7af5a8244f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a1dc569f9b60b0ddd6ead7af5a8244f">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,6 +203,12 @@ Public Member Functions</h2></td></tr>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
           <td class="paramname"><em>speed</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>invert</em> = <code>false</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -223,6 +229,8 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">base</td><td>Base (center) frequency to be used in MHz.</td></tr>
     <tr><td class="paramname">speed</td><td>Bit rate to use in bps. Common POCSAG decoders can receive 512, 1200 and 2400 bps.</td></tr>
+    <tr><td class="paramname">invert</td><td>Enable frequency inversion. Disabled by default (high frequency is digital 0).</td></tr>
+    <tr><td class="paramname">shift</td><td>Set custom frequency shift, defaults to 4500 Hz.</td></tr>
   </table>
   </dd>
 </dl>
