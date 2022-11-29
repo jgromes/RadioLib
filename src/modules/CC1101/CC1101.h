@@ -872,7 +872,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setForwardErrorCorrection(bool enable = true);
+    int16_t setForwardErrorCorrection(bool enable = false);
 
      /*!
       \brief Enable sync word filtering and generation.
@@ -885,7 +885,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSyncWord);
+    int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false, bool repeatSyncWord = true);
 
      /*!
       \brief Disable preamble and sync word filtering and generation.
