@@ -1,4 +1,5 @@
 #include "Pager.h"
+#if !defined(RADIOLIB_EXCLUDE_PAGER)
 
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
@@ -731,3 +732,5 @@ uint32_t PagerClient::encodeBCH(uint32_t dat) {
 
 	return(iResult);
 }
+
+#endif
