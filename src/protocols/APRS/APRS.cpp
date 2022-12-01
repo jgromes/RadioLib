@@ -1,4 +1,5 @@
 #include "APRS.h"
+#if !defined(RADIOLIB_EXCLUDE_APRS)
 
 APRSClient::APRSClient(AX25Client* ax) {
   _ax = ax;
@@ -225,3 +226,5 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
 
   return(_ax->sendFrame(&frameUI));
 }
+
+#endif
