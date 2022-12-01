@@ -801,15 +801,8 @@ int16_t RF69::enableSyncWordFiltering(uint8_t maxErrBits) {
 }
 
 int16_t RF69::disableSyncWordFiltering() {
-  // disable preamble detection and generation
-  int16_t state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_LSB, 0, 7, 0);
-  state |= _mod->SPIsetRegValue(RADIOLIB_RF69_REG_PREAMBLE_MSB, 0, 7, 0);
-  RADIOLIB_ASSERT(state);
-
   // disable sync word detection and generation
-  state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, RADIOLIB_RF69_SYNC_OFF | RADIOLIB_RF69_FIFO_FILL_CONDITION, 7, 6);
-
-  return(state);
+  return(_mod->SPIsetRegValue(RADIOLIB_RF69_REG_SYNC_CONFIG, RADIOLIB_RF69_SYNC_OFF | RADIOLIB_RF69_FIFO_FILL_CONDITION, 7, 6));
 }
 
 int16_t RF69::enableContinuousModeBitSync() {
@@ -846,14 +839,22 @@ int16_t RF69::setPromiscuousMode(bool promiscuous) {
   }
 
   if (promiscuous == true) {
-    // disable preamble and sync word filtering and insertion
+    // disable preamble detection and generation
+    state = setPreambleLength(0);
+    RADIOLIB_ASSERT(state);
+
+    // disable sync word filtering and insertion
     state = disableSyncWordFiltering();
     RADIOLIB_ASSERT(state);
 
     // disable CRC filtering
     state = setCrcFiltering(false);
   } else {
-    // enable preamble and sync word filtering and insertion
+    // enable preamble detection and generation 
+    state = setPreambleLength(RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
+    RADIOLIB_ASSERT(state);
+
+    // enable sync word filtering and insertion
     state = enableSyncWordFiltering();
     RADIOLIB_ASSERT(state);
 

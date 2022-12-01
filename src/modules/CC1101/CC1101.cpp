@@ -824,14 +824,21 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   }
 
   if (promiscuous == true) {
-    // disable preamble and sync word filtering and insertion
+    // disable preamble detection and generation
+    state = setPreambleLength(0);
+    RADIOLIB_ASSERT(state);
+
+    // disable sync word filtering and insertion
     state = disableSyncWordFiltering();
     RADIOLIB_ASSERT(state);
 
     // disable CRC filtering
     state = setCrcFiltering(false);
   } else {
-    // enable preamble and sync word filtering and insertion
+    state = setPreambleLength(RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
+    RADIOLIB_ASSERT(state);
+
+    // enable sync word filtering and insertion
     state = enableSyncWordFiltering();
     RADIOLIB_ASSERT(state);
 
