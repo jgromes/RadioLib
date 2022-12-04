@@ -640,7 +640,7 @@ int16_t RF69::getFrequencyDeviation(float *freqDev) {
 
   // calculate frequency deviation from raw value obtained from register 
   // Fdev = Fstep * Fdev(13:0) (pag. 20 of datasheet)
-  *freqDev = (fdev * RADIOLIB_RF69_CRYSTAL_FREQ) / 
+  *freqDev = (1000.0 * fdev * RADIOLIB_RF69_CRYSTAL_FREQ) / 
     (uint32_t(1) << RADIOLIB_RF69_DIV_EXPONENT);
 
   return(RADIOLIB_ERR_NONE);
