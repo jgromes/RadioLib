@@ -184,7 +184,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a1382fc3b68f447e381613e6670747128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission encoding. Only available in FSK mode. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING.  <a href="class_si443x.html#a1382fc3b68f447e381613e6670747128">More...</a><br /></td></tr>
 <tr class="separator:a1382fc3b68f447e381613e6670747128"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade08c79074c7e4414d34eefa25cee168"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">setDataShaping</a> (uint8_t sh) override</td></tr>
-<tr class="memdesc:ade08c79074c7e4414d34eefa25cee168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">More...</a><br /></td></tr>
+<tr class="memdesc:ade08c79074c7e4414d34eefa25cee168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">More...</a><br /></td></tr>
 <tr class="separator:ade08c79074c7e4414d34eefa25cee168"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae365087803b88b29932b5c793edff1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ae365087803b88b29932b5c793edff1d4">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
 <tr class="memdesc:ae365087803b88b29932b5c793edff1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="class_si443x.html#ae365087803b88b29932b5c793edff1d4">More...</a><br /></td></tr>
@@ -862,7 +862,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
+<p>Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping</td></tr>
@@ -870,7 +870,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>implement fiter configuration - docs claim this should be possible, but seems undocumented </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html#ab643a814dce48f71a13bf6ea23f44cbd">PhysicalLayer</a>.</p>
 
