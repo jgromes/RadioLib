@@ -383,13 +383,6 @@ class Module {
     */
     void setRfSwitchState(uint8_t mode);
 
-    /*! Temporary compatibility wrapper */
-    void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState) {
-      if (rxPinState) setRfSwitchState(MODE_RX);
-      else if (txPinState) setRfSwitchState(MODE_TX);
-      else setRfSwitchState(MODE_IDLE);
-    }
-
     /*!
       \brief Wait for time to elapse, either using the microsecond timer, or the TimerFlag.
       Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!

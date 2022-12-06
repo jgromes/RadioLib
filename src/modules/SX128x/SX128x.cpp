@@ -348,7 +348,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
 
 int16_t SX128x::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // user requested to start transmitting immediately (required for RTTY)
   int16_t state = RADIOLIB_ERR_NONE;
@@ -363,7 +363,7 @@ int16_t SX128x::transmitDirect(uint32_t frf) {
 
 int16_t SX128x::receiveDirect() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // SX128x is unable to output received data directly
   return(RADIOLIB_ERR_UNKNOWN);
@@ -388,7 +388,7 @@ int16_t SX128x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to CAD
   state = setCad();
@@ -416,7 +416,7 @@ int16_t SX128x::scanChannel() {
 
 int16_t SX128x::sleep(bool retainConfig) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   uint8_t sleepConfig = RADIOLIB_SX128X_SLEEP_DATA_BUFFER_RETAIN | RADIOLIB_SX128X_SLEEP_DATA_RAM_RETAIN;
   if(!retainConfig) {
@@ -436,7 +436,7 @@ int16_t SX128x::standby() {
 
 int16_t SX128x::standby(uint8_t mode) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   uint8_t data[] = { mode };
   return(SPIwriteCommand(RADIOLIB_SX128X_CMD_SET_STANDBY, data, 1));
@@ -500,7 +500,7 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // start transmission
   state = setTx(RADIOLIB_SX128X_TX_TIMEOUT_NONE);
@@ -553,7 +553,7 @@ int16_t SX128x::startReceive(uint16_t timeout) {
   }
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to receive
   state = setRx(timeout);

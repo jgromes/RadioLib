@@ -299,7 +299,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
 
 int16_t SX126x::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // user requested to start transmitting immediately (required for RTTY)
   int16_t state = RADIOLIB_ERR_NONE;
@@ -315,7 +315,7 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
 
 int16_t SX126x::receiveDirect() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // SX126x is unable to output received data directly
   return(RADIOLIB_ERR_UNKNOWN);
@@ -337,7 +337,7 @@ int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) 
 
 int16_t SX126x::sleep(bool retainConfig) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   uint8_t sleepMode = RADIOLIB_SX126X_SLEEP_START_WARM | RADIOLIB_SX126X_SLEEP_RTC_OFF;
   if(!retainConfig) {
@@ -357,7 +357,7 @@ int16_t SX126x::standby() {
 
 int16_t SX126x::standby(uint8_t mode) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   uint8_t data[] = {mode};
   return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
@@ -418,7 +418,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // start transmission
   state = setTx(RADIOLIB_SX126X_TX_TIMEOUT_NONE);
@@ -445,7 +445,7 @@ int16_t SX126x::startReceive(uint32_t timeout) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to receive
   state = setRx(timeout);
@@ -600,7 +600,7 @@ int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
   state = setDioIrqParams(RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE, RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE);

@@ -162,7 +162,7 @@ int16_t CC1101::standby() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -176,7 +176,7 @@ int16_t CC1101::transmitDirectAsync(uint32_t frf) {
 
 int16_t CC1101::transmitDirect(bool sync, uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
@@ -206,7 +206,7 @@ int16_t CC1101::receiveDirectAsync() {
 
 int16_t CC1101::receiveDirect(bool sync) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // activate direct mode
   int16_t state = directMode(sync);
@@ -291,7 +291,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   dataSent += initialWrite;
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // set mode to transmit
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
@@ -344,7 +344,7 @@ int16_t CC1101::startReceive() {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to receive
   SPIsendCommand(RADIOLIB_CC1101_CMD_RX);

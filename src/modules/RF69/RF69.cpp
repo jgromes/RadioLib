@@ -159,7 +159,7 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
 
 int16_t RF69::sleep() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   // set module to sleep
   return(setMode(RADIOLIB_RF69_SLEEP));
@@ -167,7 +167,7 @@ int16_t RF69::sleep() {
 
 int16_t RF69::standby() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   // set module to standby
   return(setMode(RADIOLIB_RF69_STANDBY));
@@ -175,7 +175,7 @@ int16_t RF69::standby() {
 
 int16_t RF69::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
@@ -196,7 +196,7 @@ int16_t RF69::transmitDirect(uint32_t frf) {
 
 int16_t RF69::receiveDirect() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // activate direct mode
   int16_t state = directMode();
@@ -254,7 +254,7 @@ int16_t RF69::startReceive() {
   clearIRQFlags();
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to receive
   state = _mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM);
@@ -414,7 +414,7 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // set mode to transmit
   state = setMode(RADIOLIB_RF69_TX);
