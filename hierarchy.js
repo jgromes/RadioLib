@@ -12,15 +12,8 @@ var hierarchy =
     [ "PagerClient", "class_pager_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
-      [ "nRF24", "classn_r_f24.html", null ],
       [ "RF69", "class_r_f69.html", [
         [ "SX1231", "class_s_x1231.html", null ]
-      ] ],
-      [ "Si443x", "class_si443x.html", [
-        [ "Si4432", "class_si4432.html", [
-          [ "Si4430", "class_si4430.html", null ],
-          [ "Si4431", "class_si4431.html", null ]
-        ] ]
       ] ],
       [ "SX126x", "class_s_x126x.html", [
         [ "SX1262", "class_s_x1262.html", [
@@ -49,7 +42,14 @@ var hierarchy =
             [ "SX1282", "class_s_x1282.html", null ]
           ] ]
         ] ]
-      ] ]
+      ] ],
+      [ "Si443x", "class_si443x.html", [
+        [ "Si4432", "class_si4432.html", [
+          [ "Si4430", "class_si4430.html", null ],
+          [ "Si4431", "class_si4431.html", null ]
+        ] ]
+      ] ],
+      [ "nRF24", "classn_r_f24.html", null ]
     ] ],
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
