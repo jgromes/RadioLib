@@ -1043,6 +1043,9 @@ class SX126x: public PhysicalLayer {
 
     int16_t _lastError = RADIOLIB_ERR_NONE;
 
+    // Allow subclasses to define different TX modes
+    uint8_t _tx_mode = Module::MODE_TX;
+
     int16_t config(uint8_t modem);
     int16_t checkCommandResult();
 };

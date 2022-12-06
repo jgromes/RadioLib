@@ -299,7 +299,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
 
 int16_t SX126x::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(Module::MODE_TX);
+  _mod->setRfSwitchState(_tx_mode);
 
   // user requested to start transmitting immediately (required for RTTY)
   int16_t state = RADIOLIB_ERR_NONE;
@@ -418,7 +418,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(Module::MODE_TX);
+  _mod->setRfSwitchState(_tx_mode);
 
   // start transmission
   state = setTx(RADIOLIB_SX126X_TX_TIMEOUT_NONE);
