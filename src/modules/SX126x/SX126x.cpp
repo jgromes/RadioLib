@@ -1575,7 +1575,7 @@ int16_t SX126x::fixSensitivity() {
   return(writeRegister(RADIOLIB_SX126X_REG_SENSITIVITY_CONFIG, &sensitivityConfig, 1));
 }
 
-int16_t SX126x::fixPaClamping() {
+int16_t SX126x::fixPaClamping(bool enable) {
   // fixes overly eager PA clamping
   // see SX1262/SX1268 datasheet, chapter 15 Known Limitations, section 15.2 for details
 
@@ -1584,8 +1584,12 @@ int16_t SX126x::fixPaClamping() {
   int16_t state = readRegister(RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1);
   RADIOLIB_ASSERT(state);
 
-  // update with the new value
-  clampConfig |= 0x1E;
+  // apply or undo workaround
+  if (enable)
+    clampConfig |= 0x1E;
+  else
+    clampConfig = (clampConfig & ~0x1E) | 0x08;
+
   return(writeRegister(RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG, &clampConfig, 1));
 }
 

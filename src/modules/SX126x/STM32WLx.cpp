@@ -64,6 +64,10 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   }
   RADIOLIB_ASSERT(state);
 
+  // Apply workaround for HP only
+  state = SX126x::fixPaClamping(use_hp);
+  RADIOLIB_ASSERT(state);
+
   // set output power
   /// \todo power ramp time configuration
   state = SX126x::setTxParams(power);

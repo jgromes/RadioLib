@@ -1005,7 +1005,7 @@ class SX126x: public PhysicalLayer {
 
     // fixes to errata
     int16_t fixSensitivity();
-    int16_t fixPaClamping();
+    int16_t fixPaClamping(bool enable = true);
     int16_t fixImplicitTimeout();
     int16_t fixInvertedIQ(uint8_t iqConfig);
 
