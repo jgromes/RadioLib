@@ -79,10 +79,19 @@ int STM32WLx_Module::virtualDigitalRead(uint32_t ulPin) {
       return(SubGhz.isBusy() ? HIGH : LOW);
 
     case RADIOLIB_STM32WLx_VIRTUAL_PIN_IRQ:
-      // If the IRQ is disabled, we can read the value by clearing and
-      // seeing if it immediately becomes pending again.
-      // TODO: This seems a bit fragile, but it does work.
-      SubGhz.clearPendingInterrupt();
+      // We cannot use the radio IRQ output directly, but since:
+      //  - the pending flag will be set whenever the IRQ output is set,
+      //    and
+      //  - the pending flag will be cleared (by
+      //    STM32WLx::clearIrqStatus()) whenever the radio IRQ output is
+      //    cleared,
+      // the pending flag should always reflect the current radio IRQ
+      // output. There is one exception: when the ISR starts the pending
+      // flag is cleared by hardware and not set again until after the
+      // ISR finishes, so the value is incorrect *inside* the ISR, but
+      // running RadioLib code inside the ISR (especially code that
+      // polls the IRQ flag) is not supported and probably broken in
+      // other ways too.
       return(SubGhz.isInterruptPending() ? HIGH : LOW);
 
     case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
