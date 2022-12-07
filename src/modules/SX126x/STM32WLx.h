@@ -112,6 +112,23 @@ class STM32WLx : public SX1262 {
     // Note: This explicitly inherits this method only to override docs
     using SX126x::setRfSwitchTable;
 
+    /*!
+      \brief Sets interrupt service routine to call when DIO1/2/3 activates.
+
+      \param func ISR to call.
+    */
+    void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1/2/3 activates.
+    */
+    void clearDio1Action();
+
+#if !defined(RADIOLIB_GODMODE)
+  protected:
+#endif
+    virtual int16_t clearIrqStatus(uint16_t clearIrqParams) override;
+
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif

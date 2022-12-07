@@ -9,6 +9,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 #include "STM32WLx.h"
 #if !defined(RADIOLIB_EXCLUDE_STM32WLX)
 
+#include <SubGhz.h>
 
 STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) {
 }
@@ -72,5 +73,30 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
 }
 
+int16_t STM32WLx::clearIrqStatus(uint16_t clearIrqParams) {
+  int16_t res = SX126x::clearIrqStatus(clearIrqParams);
+  // The NVIC interrupt is level-sensitive, so clear away any pending
+  // flag that is only set because the radio IRQ status was not cleared
+  // in the interrupt (to prevent each IRQ triggering twice and allow
+  // reading the irq status through the pending flag).
+  SubGhz.clearPendingInterrupt();
+  if(SubGhz.hasInterrupt())
+    SubGhz.enableInterrupt();
+  return(res);
+}
+
+void STM32WLx::setDio1Action(void (*func)(void)) {
+  SubGhz.attachInterrupt([func]() {
+    // Because the interrupt is level-triggered, we disable it in the
+    // NVIC (otherwise we would need an SPI command to clear the IRQ in
+    // the radio, or it would trigger over and over again).
+    SubGhz.disableInterrupt();
+    func();
+  });
+}
+
+void STM32WLx::clearDio1Action() {
+  SubGhz.detachInterrupt();
+}
 
 #endif // !defined(RADIOLIB_EXCLUDE_STM32WLX)
