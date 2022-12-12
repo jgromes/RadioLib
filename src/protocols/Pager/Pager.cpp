@@ -469,6 +469,11 @@ uint32_t PagerClient::read() {
   codeWord |= (uint32_t)_phy->read() << 8;
   codeWord |= (uint32_t)_phy->read();
 
+  // check if we need to invert bits
+  if(inv) {
+    codeWord = ~codeWord;
+  }
+
   // TODO BCH error correction here
   return(codeWord);
 }
