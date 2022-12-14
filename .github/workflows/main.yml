@@ -72,14 +72,6 @@ jobs:
             # Arduino Mega
             echo "::set-output name=options:::cpu=atmega2560"
 
-          elif [[ "${{ contains(matrix.board, 'arduino:mbed') }}" == "true" ]]; then
-            # Arduino Nano 33 BLE
-            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
-
-          elif [[ "${{ contains(matrix.board, 'arduino-beta:mbed') }}" == "true" ]]; then
-            # Arduino Portenta H7
-            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
-
           elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
             # Arduino Uno WiFi
             echo "::set-output name=options:::mode=on"
@@ -108,13 +100,11 @@ jobs:
             # ESP8266
             echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
             echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
-            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
           elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
             # SparkFun Apollo
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json"
             echo "::set-output name=warnings::'none'"
-            echo "::set-output name=skip-pattern::(HTTP|MQTT).*ino"
 
           elif [[ "${{ contains(matrix.board, 'STMicroelectronics:stm32') }}" == "true" ]]; then
             # STM32 (official core)
