@@ -31,6 +31,7 @@ jobs:
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
           - arduino:mbed_rp2040:pico
+          - rp2040:rp2040:rpipico
           - CubeCell:CubeCell:CubeCell-Board
           - MegaCore:avr:1281
           - teensy:avr:teensy41
@@ -123,6 +124,10 @@ jobs:
           elif [[ "${{ contains(matrix.board, 'CubeCell:CubeCell') }}" == "true" ]]; then
             # CubeCell
             echo "::set-output name=index-url::--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json"
+
+          elif [[ "${{ contains(matrix.board, 'rp2040:rp2040') }}" == "true" ]]; then
+            # CubeCell
+            echo "::set-output name=index-url::--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json"
 
           elif [[ "${{ contains(matrix.board, 'MegaCore:avr') }}" == "true" ]]; then
             # MegaCore
