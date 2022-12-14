@@ -71,7 +71,8 @@ SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
   * [__MegaCore__](https://github.com/MCUdude/MegaCore) - AVR (ATmega1281, ATmega640 etc.)
 
 * __Raspberry Pi__
-  * [__RP2040__](https://github.com/arduino/ArduinoCore-mbed) - Raspberry Pi Pico and Arduino Nano RP2040 Connect
+  * [__RP2040__ (official core)](https://github.com/arduino/ArduinoCore-mbed) - Raspberry Pi Pico and Arduino Nano RP2040 Connect
+  * [__RP2040__ (unofficial core)](https://github.com/earlephilhower/arduino-pico) - Raspberry Pi Pico/RP2040-based boards
   * [__Raspberry Pi__](https://github.com/me-no-dev/RasPiArduino) - Arduino framework for RaspberryPI
 
 * __Heltec__
