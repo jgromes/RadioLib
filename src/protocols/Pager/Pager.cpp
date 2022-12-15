@@ -235,7 +235,11 @@ int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t
   // now set up the direct mode reception
   Module* mod = _phy->getMod();
   mod->pinMode(pin, INPUT);
-  _phy->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
+  if(inv) {
+    _phy->setDirectSyncWord(~RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
+  } else {
+    _phy->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
+  }
   _phy->setDirectAction(PagerClientReadBit);
   _phy->receiveDirect();
 
@@ -445,7 +449,7 @@ void PagerClient::write(uint32_t codeWord) {
     }
 
     // finally, check if inversion is enabled
-    if(inv) {
+    if(!inv) {
       change = -change;
     }
 
