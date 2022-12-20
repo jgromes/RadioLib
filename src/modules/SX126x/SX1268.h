@@ -38,13 +38,15 @@ class SX1268: public SX126x {
 
       \param cr LoRa coding rate denominator. Defaults to 7 (coding rate 4/7).
 
-      \param syncWord 2-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12).
+      \param syncWord 1-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12).
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+
+      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
 
       \returns \ref status_codes
     */
@@ -63,7 +65,7 @@ class SX1268: public SX126x {
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
-      \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
+      \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 

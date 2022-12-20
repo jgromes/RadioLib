@@ -398,7 +398,7 @@ class SX128x: public PhysicalLayer {
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
-      \parma preambleLength FSK preamble length in bits. Defaults to 16 bits.
+      \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
 
       \returns \ref status_codes
     */
@@ -432,7 +432,7 @@ class SX128x: public PhysicalLayer {
 
       \param power Output power in dBm. Defaults to 10 dBm.
 
-      \parma preambleLength FLRC preamble length in bits. Defaults to 16 bits.
+      \param preambleLength FLRC preamble length in bits. Defaults to 16 bits.
 
       \param dataShaping Time-bandwidth product of the Gaussian filter to be used for shaping. Defaults to 0.5.
 
