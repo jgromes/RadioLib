@@ -1010,6 +1010,13 @@
   #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
 #endif
 
+
+// This only compiles on STM32 boards with SUBGHZ module, but also
+// include when generating docs
+#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN)
+  #define RADIOLIB_EXCLUDE_STM32WLX
+#endif
+
 #if defined(RADIOLIB_DEBUG)
   #if defined(RADIOLIB_BUILD_ARDUINO)
     #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
