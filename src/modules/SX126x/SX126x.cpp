@@ -150,7 +150,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   state = setCRC(2);
   RADIOLIB_ASSERT(state);
 
-  state = setDio2AsRfSwitch(false);
+  state = setDio2AsRfSwitch(true);
   RADIOLIB_ASSERT(state);
 
   return(state);

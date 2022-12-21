@@ -391,7 +391,7 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
-      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
 
       \returns \ref status_codes
     */
@@ -410,7 +410,7 @@ class SX126x: public PhysicalLayer {
 
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
 
-      \param useRegulatorLDO use the LDO instead of DC-DC converter (default false). This is necessary for some modules such as the LAMBDA from RF solutions.
+      \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
 
       \returns \ref status_codes
     */
