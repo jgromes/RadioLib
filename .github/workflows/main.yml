@@ -27,7 +27,8 @@ jobs:
           - esp8266:esp8266:generic
           - Intel:arc32:arduino_101
           - SparkFun:apollo3:sfe_artemis
-          - STMicroelectronics:stm32:GenF3
+          - STMicroelectronics:stm32:GenF3:pnum=BLACKPILL_F303CC
+          - STMicroelectronics:stm32:Nucleo_64:pnum=NUCLEO_WL55JC1
           - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
           - arduino:mbed_rp2040:pico
@@ -63,9 +64,9 @@ jobs:
         id: prep
         run:
           |
-          # common settings - no extra options, skip nothing, all warnings
+          # common settings - no extra options, skip STM32WL examples, all warnings
           echo "::set-output name=options::"
-          echo "::set-output name=skip-pattern::''"
+          echo "::set-output name=skip-pattern::'STM32WL'"
           echo "::set-output name=warnings::'all'"
 
           # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
@@ -109,8 +110,12 @@ jobs:
 
           elif [[ "${{ contains(matrix.board, 'STMicroelectronics:stm32') }}" == "true" ]]; then
             # STM32 (official core)
-            echo "::set-output name=options:::pnum=BLACKPILL_F303CC"
             echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json"
+
+            if [[ "${{ contains(matrix.board, 'NUCLEO_WL55') }}" == "true" ]]; then
+              # Do *not* skip STM32WL examples
+              echo "::set-output name=skip-pattern::''"
+            fi
 
           elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
             # STM32 (unofficial core)
