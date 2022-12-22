@@ -86,6 +86,8 @@ volatile bool transmittedFlag = false;
 // disable interrupt when it's not needed
 volatile bool enableInterrupt = true;
 
+bool isFifoEmpty = false;
+
 // how many bytes are there in total
 volatile int totalLength = longPacket.length();
 
@@ -104,13 +106,19 @@ void fifoAdd(void) {
   if(!enableInterrupt) {
     return;
   }
-
-  // add more bytes to the transmit buffer
-  uint8_t* txBuffPtr = (uint8_t*)longPacket.c_str();
-  transmittedFlag = radio.fifoAdd(txBuffPtr, totalLength, &remLength);
+  isFifoEmpty = true;
 }
 
 void loop() {
+  if (isFifoEmpty) {
+    enableInterrupt = false;
+    // add more bytes to the transmit buffer
+    uint8_t* txBuffPtr = (uint8_t*)longPacket.c_str();
+    transmittedFlag = radio.fifoAdd(txBuffPtr, totalLength, &remLength);
+    enableInterrupt = true;
+    isFifoEmpty = false;
+  }
+
   // check if the previous transmission finished
   if(transmittedFlag) {
     // disable the interrupt service routine while
