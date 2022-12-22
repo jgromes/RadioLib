@@ -13,7 +13,7 @@ var class_r_f69 =
     [ "enableAES", "class_r_f69.html#a1fd4609f419d8b0213ee39b05dd40b69", null ],
     [ "enableContinuousModeBitSync", "class_r_f69.html#a7e2201b5bc389a68765400b70439f3f0", null ],
     [ "enableSyncWordFiltering", "class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417", null ],
-    [ "fifoAdd", "class_r_f69.html#a13ed34d82f3e08131b496196ba05a66d", null ],
+    [ "fifoAdd", "class_r_f69.html#ab6d98f3f2d964d1833e20da246a5be89", null ],
     [ "fifoGet", "class_r_f69.html#aa6886410230c654400c76ec7710d623c", null ],
     [ "finishTransmit", "class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b", null ],
     [ "fixedPacketLengthMode", "class_r_f69.html#a0de2a07f264839cda945faebf7319e0e", null ],

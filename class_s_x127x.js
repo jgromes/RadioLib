@@ -11,7 +11,7 @@ var class_s_x127x =
     [ "disableAddressFiltering", "class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5", null ],
     [ "disableBitSync", "class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd", null ],
     [ "enableBitSync", "class_s_x127x.html#a1921e1d9fc1d888d2e73bb732e7db7aa", null ],
-    [ "fifoAdd", "class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509", null ],
+    [ "fifoAdd", "class_s_x127x.html#a36dbd1697a415c6db3b47cd620c8c02e", null ],
     [ "fifoGet", "class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a", null ],
     [ "finishTransmit", "class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f", null ],
     [ "fixedPacketLengthMode", "class_s_x127x.html#a6fb42d9cd518e9f6408a40753c0be359", null ],

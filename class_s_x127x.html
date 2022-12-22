@@ -183,9 +183,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a0f041e91ab2fbb6f05eef56b5addac71">clearFifoFullAction</a> ()</td></tr>
 <tr class="memdesc:a0f041e91ab2fbb6f05eef56b5addac71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when FIFO is full. <br /></td></tr>
 <tr class="separator:a0f041e91ab2fbb6f05eef56b5addac71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f993bc663b8937f3683047f5e3b2509"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509">fifoAdd</a> (uint8_t *data, int totalLen, volatile int *remLen)</td></tr>
-<tr class="memdesc:a2f993bc663b8937f3683047f5e3b2509"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is empty.  <a href="class_s_x127x.html#a2f993bc663b8937f3683047f5e3b2509">More...</a><br /></td></tr>
-<tr class="separator:a2f993bc663b8937f3683047f5e3b2509"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36dbd1697a415c6db3b47cd620c8c02e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a36dbd1697a415c6db3b47cd620c8c02e">fifoAdd</a> (uint8_t *data, int totalLen, int *remLen)</td></tr>
+<tr class="memdesc:a36dbd1697a415c6db3b47cd620c8c02e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is empty.  <a href="class_s_x127x.html#a36dbd1697a415c6db3b47cd620c8c02e">More...</a><br /></td></tr>
+<tr class="separator:a36dbd1697a415c6db3b47cd620c8c02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a25b193b71ddb6015d25b0a161809d75a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a">fifoGet</a> (volatile uint8_t *data, int totalLen, volatile int *rcvLen)</td></tr>
 <tr class="memdesc:a25b193b71ddb6015d25b0a161809d75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is sufficently full to read.  <a href="class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a">More...</a><br /></td></tr>
 <tr class="separator:a25b193b71ddb6015d25b0a161809d75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -637,8 +637,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a2f993bc663b8937f3683047f5e3b2509"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f993bc663b8937f3683047f5e3b2509">&#9670;&nbsp;</a></span>fifoAdd()</h2>
+<a id="a36dbd1697a415c6db3b47cd620c8c02e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36dbd1697a415c6db3b47cd620c8c02e">&#9670;&nbsp;</a></span>fifoAdd()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,7 +658,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">volatile int *&#160;</td>
+          <td class="paramtype">int *&#160;</td>
           <td class="paramname"><em>remLen</em>&#160;</td>
         </tr>
         <tr>
