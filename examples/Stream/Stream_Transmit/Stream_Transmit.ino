@@ -80,19 +80,20 @@ void setup() {
   transmissionState = radio.startTransmit(longPacket);
 }
 
-// flag to indicate that a packet was sent
-volatile bool transmittedFlag = false;
-
 // disable interrupt when it's not needed
 volatile bool enableInterrupt = true;
 
-bool isFifoEmpty = false;
+// flag to indicate we can keep adding more bytes to FIFO
+volatile bool fifoEmpty = false;
+
+// flag to indicate that a packet was sent
+bool transmittedFlag = false;
 
 // how many bytes are there in total
-volatile int totalLength = longPacket.length();
+int totalLength = longPacket.length();
 
 // counter to keep track of how many bytes still need to be sent
-volatile int remLength = totalLength;
+int remLength = totalLength;
 
 // this function is called when the radio transmit buffer
 // is empty and ready to be refilled
@@ -106,25 +107,31 @@ void fifoAdd(void) {
   if(!enableInterrupt) {
     return;
   }
-  isFifoEmpty = true;
+
+  // we can send more bytes
+  fifoEmpty = true;
 }
 
 void loop() {
-  if (isFifoEmpty) {
-    enableInterrupt = false;
-    // add more bytes to the transmit buffer
-    uint8_t* txBuffPtr = (uint8_t*)longPacket.c_str();
-    transmittedFlag = radio.fifoAdd(txBuffPtr, totalLength, &remLength);
-    enableInterrupt = true;
-    isFifoEmpty = false;
-  }
-
-  // check if the previous transmission finished
-  if(transmittedFlag) {
+  if(fifoEmpty) {
     // disable the interrupt service routine while
     // processing the data
     enableInterrupt = false;
 
+    // reset flag
+    fifoEmpty = false;
+
+    // add more bytes to the transmit buffer
+    uint8_t* txBuffPtr = (uint8_t*)longPacket.c_str();
+    transmittedFlag = radio.fifoAdd(txBuffPtr, totalLength, &remLength);
+
+    // we're ready to send more packets,
+    // enable interrupt service routine
+    enableInterrupt = true;
+  }
+
+  // check if the previous transmission finished
+  if(transmittedFlag) {
     // reset flag
     transmittedFlag = false;
 
@@ -156,9 +163,5 @@ void loop() {
     // send another one
     Serial.print(F("[SX1278] Sending another long packet ... "));
     transmissionState = radio.startTransmit(longPacket);
-
-    // we're ready to send more packets,
-    // enable interrupt service routine
-    enableInterrupt = true;
   }
 }
