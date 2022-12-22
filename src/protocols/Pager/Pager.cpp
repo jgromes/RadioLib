@@ -235,11 +235,16 @@ int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t
   // now set up the direct mode reception
   Module* mod = _phy->getMod();
   mod->pinMode(pin, INPUT);
-  if(inv) {
+
+  // set direct sync word to the frame sync word
+  // the logic here is inverted, because modules like SX1278
+  // assume high frequency to be logic 1, which is opposite to POCSAG
+  if(!inv) {
     _phy->setDirectSyncWord(~RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
   } else {
     _phy->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
   }
+
   _phy->setDirectAction(PagerClientReadBit);
   _phy->receiveDirect();
 
@@ -449,7 +454,7 @@ void PagerClient::write(uint32_t codeWord) {
     }
 
     // finally, check if inversion is enabled
-    if(!inv) {
+    if(inv) {
       change = -change;
     }
 
@@ -474,9 +479,14 @@ uint32_t PagerClient::read() {
   codeWord |= (uint32_t)_phy->read();
 
   // check if we need to invert bits
-  if(inv) {
+  // the logic here is inverted, because modules like SX1278
+  // assume high frequency to be logic 1, which is opposite to POCSAG
+  if(!inv) {
     codeWord = ~codeWord;
   }
+
+  RADIOLIB_VERBOSE_PRINT("R\t");
+  RADIOLIB_VERBOSE_PRINTLN(codeWord, HEX);
 
   // TODO BCH error correction here
   return(codeWord);
