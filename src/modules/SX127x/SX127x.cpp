@@ -462,7 +462,7 @@ void SX127x::clearFifoFullAction() {
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, 0x00, 5, 4);
 }
 
-bool SX127x::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
+bool SX127x::fifoAdd(uint8_t* data, int totalLen, int* remLen) {
   // subtract first (this may be the first time we get to modify the remaining length)
   *remLen -= RADIOLIB_SX127X_FIFO_THRESH - 1;
 
