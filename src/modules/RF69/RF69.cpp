@@ -319,7 +319,7 @@ void RF69::clearFifoFullAction() {
   _mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_1, 0x00, 5, 4);
 }
 
-bool RF69::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
+bool RF69::fifoAdd(uint8_t* data, int totalLen, int* remLen) {
   // subtract first (this may be the first time we get to modify the remaining length)
   *remLen -= RADIOLIB_RF69_FIFO_THRESH - 1;
 
@@ -335,15 +335,8 @@ bool RF69::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
     len = RADIOLIB_RF69_FIFO_THRESH - 1;
   }
 
-  // clear interrupt flags
-  clearIRQFlags();
-
   // copy the bytes to the FIFO
   _mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, &data[totalLen - *remLen], len);
-
-  // this is a hack, but it seems Rx FIFO level is getting triggered 1 byte before it should
-  // we just add a padding byte that we can drop without consequence
-  _mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
 
   // we're not done yet
   return(false);
@@ -363,12 +356,6 @@ bool RF69::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
   // get the data
   _mod->SPIreadRegisterBurst(RADIOLIB_RF69_REG_FIFO, len, dataPtr);
   (*rcvLen) += (len);
-
-  // dump the padding byte
-  _mod->SPIreadRegister(RADIOLIB_RF69_REG_FIFO);
-
-  // clear flags
-  clearIRQFlags();
 
   // check if we're done
   if(*rcvLen >= totalLen) {

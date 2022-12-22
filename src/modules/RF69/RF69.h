@@ -670,7 +670,7 @@ class RF69: public PhysicalLayer {
 
       \returns True when a complete packet is sent, false if more data is needed.
     */
-    bool fifoAdd(uint8_t* data, int totalLen, volatile int* remLen);
+    bool fifoAdd(uint8_t* data, int totalLen, int* remLen);
 
     /*!
       \brief Set interrupt service routine function to call when FIFO is sufficently full to read.
