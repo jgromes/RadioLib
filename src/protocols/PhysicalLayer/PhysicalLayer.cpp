@@ -235,6 +235,10 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
   if(!_gotSync) {
     _syncBuffer <<= 1;
     _syncBuffer |= bit;
+
+    RADIOLIB_VERBOSE_PRINT("S\t");
+    RADIOLIB_VERBOSE_PRINTLN(_syncBuffer, HEX);
+
     if((_syncBuffer & _directSyncWordMask) == _directSyncWord) {
       _gotSync = true;
       _bufferWritePos = 0;
@@ -254,6 +258,9 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     // check complete byte
     if(_bufferBitPos == 8) {
       _buffer[_bufferWritePos] = Module::flipBits(_buffer[_bufferWritePos]);
+      RADIOLIB_VERBOSE_PRINT("R\t");
+      RADIOLIB_VERBOSE_PRINTLN(_buffer[_bufferWritePos], HEX);
+
       _bufferWritePos++;
       _bufferBitPos = 0;
     }
