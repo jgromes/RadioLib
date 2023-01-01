@@ -112,12 +112,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0356199b89860e15cda4979cd9dc13eb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a0356199b89860e15cda4979cd9dc13eb">SX1280</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a0356199b89860e15cda4979cd9dc13eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_s_x1280.html#a0356199b89860e15cda4979cd9dc13eb">More...</a><br /></td></tr>
 <tr class="separator:a0356199b89860e15cda4979cd9dc13eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a812e289084b2f78977b254c28f0fff7c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a812e289084b2f78977b254c28f0fff7c">range</a> (bool master, uint32_t addr)</td></tr>
-<tr class="memdesc:a812e289084b2f78977b254c28f0fff7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking ranging method.  <a href="class_s_x1280.html#a812e289084b2f78977b254c28f0fff7c">More...</a><br /></td></tr>
-<tr class="separator:a812e289084b2f78977b254c28f0fff7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af30ff497ca3bcc043dc4dc2e7587a795"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#af30ff497ca3bcc043dc4dc2e7587a795">startRanging</a> (bool master, uint32_t addr)</td></tr>
-<tr class="memdesc:af30ff497ca3bcc043dc4dc2e7587a795"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven ranging method.  <a href="class_s_x1280.html#af30ff497ca3bcc043dc4dc2e7587a795">More...</a><br /></td></tr>
-<tr class="separator:af30ff497ca3bcc043dc4dc2e7587a795"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3112e6bce39e6534711f5d76449f3dd2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a3112e6bce39e6534711f5d76449f3dd2">range</a> (bool master, uint32_t addr, uint16_t calTable[3][6]=NULL)</td></tr>
+<tr class="memdesc:a3112e6bce39e6534711f5d76449f3dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking ranging method.  <a href="class_s_x1280.html#a3112e6bce39e6534711f5d76449f3dd2">More...</a><br /></td></tr>
+<tr class="separator:a3112e6bce39e6534711f5d76449f3dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78cebe909fb2776f11f6c50f4f241c10"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a78cebe909fb2776f11f6c50f4f241c10">startRanging</a> (bool master, uint32_t addr, uint16_t calTable[3][6]=NULL)</td></tr>
+<tr class="memdesc:a78cebe909fb2776f11f6c50f4f241c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven ranging method.  <a href="class_s_x1280.html#a78cebe909fb2776f11f6c50f4f241c10">More...</a><br /></td></tr>
+<tr class="separator:a78cebe909fb2776f11f6c50f4f241c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f">getRangingResult</a> ()</td></tr>
 <tr class="memdesc:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ranging result of the last ranging exchange.  <a href="class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f">More...</a><br /></td></tr>
 <tr class="separator:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -417,8 +417,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a812e289084b2f78977b254c28f0fff7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a812e289084b2f78977b254c28f0fff7c">&#9670;&nbsp;</a></span>range()</h2>
+<a id="a3112e6bce39e6534711f5d76449f3dd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3112e6bce39e6534711f5d76449f3dd2">&#9670;&nbsp;</a></span>range()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,7 +433,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em>&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>calTable</em>[3][6] = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -448,6 +454,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">master</td><td>Whether to execute ranging in master mode (true) or slave mode (false).</td></tr>
     <tr><td class="paramname">addr</td><td>Ranging address to be used.</td></tr>
+    <tr><td class="paramname">calTable</td><td>Ranging calibration table - set to NULL to use the default.</td></tr>
   </table>
   </dd>
 </dl>
@@ -455,8 +462,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="af30ff497ca3bcc043dc4dc2e7587a795"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af30ff497ca3bcc043dc4dc2e7587a795">&#9670;&nbsp;</a></span>startRanging()</h2>
+<a id="a78cebe909fb2776f11f6c50f4f241c10"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78cebe909fb2776f11f6c50f4f241c10">&#9670;&nbsp;</a></span>startRanging()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -471,7 +478,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em>&#160;</td>
+          <td class="paramname"><em>addr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>calTable</em>[3][6] = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -486,6 +499,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">master</td><td>Whether to execute ranging in master mode (true) or slave mode (false).</td></tr>
     <tr><td class="paramname">addr</td><td>Ranging address to be used.</td></tr>
+    <tr><td class="paramname">calTable</td><td>Ranging calibration table - set to NULL to use the default.</td></tr>
   </table>
   </dd>
 </dl>
