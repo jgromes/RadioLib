@@ -57,13 +57,15 @@ int16_t SX1280::startRanging(bool master, uint32_t addr) {
   RADIOLIB_ASSERT(state);
 
   // check all address bits
-  uint8_t regValue;
-  state = readRegister(RADIOLIB_SX128X_REG_SLAVE_RANGING_ADDRESS_WIDTH, &regValue, 1);
-  RADIOLIB_ASSERT(state);
-  regValue &= 0b00111111;
-  regValue |= 0b11000000;
-  state = writeRegister(RADIOLIB_SX128X_REG_SLAVE_RANGING_ADDRESS_WIDTH, &regValue, 1);
-  RADIOLIB_ASSERT(state);
+  if(!master) {
+    uint8_t regValue;
+    state = readRegister(RADIOLIB_SX128X_REG_SLAVE_RANGING_ADDRESS_WIDTH, &regValue, 1);
+    RADIOLIB_ASSERT(state);
+    regValue &= 0b00111111;
+    regValue |= 0b11000000;
+    state = writeRegister(RADIOLIB_SX128X_REG_SLAVE_RANGING_ADDRESS_WIDTH, &regValue, 1);
+    RADIOLIB_ASSERT(state);
+  }
 
   // set remaining parameter values
   uint32_t addrReg = RADIOLIB_SX128X_REG_SLAVE_RANGING_ADDRESS_BYTE_3;
