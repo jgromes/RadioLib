@@ -5,9 +5,9 @@ SX1280::SX1280(Module* mod) : SX1281(mod) {
 
 }
 
-int16_t SX1280::range(bool master, uint32_t addr) {
+int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   // start ranging
-  int16_t state = startRanging(master, addr);
+  int16_t state = startRanging(master, addr, calTable);
   RADIOLIB_ASSERT(state);
 
   // wait until ranging is finished
@@ -31,7 +31,7 @@ int16_t SX1280::range(bool master, uint32_t addr) {
   return(state);
 }
 
-int16_t SX1280::startRanging(bool master, uint32_t addr) {
+int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING))) {
@@ -86,23 +86,30 @@ int16_t SX1280::startRanging(bool master, uint32_t addr) {
   state = setDioIrqParams(irqMask, irqDio1);
   RADIOLIB_ASSERT(state);
 
-  // set calibration values
-  uint8_t index = (_sf >> 4) - 5;
-  static const uint16_t calTable[3][6] = {
+  // this is the default calibration from AN1200.29
+  uint16_t calTbl[3][6] = {
     { 10299, 10271, 10244, 10242, 10230, 10246 },
     { 11486, 11474, 11453, 11426, 11417, 11401 },
     { 13308, 13493, 13528, 13515, 13430, 13376 }
   };
+
+  // check if user provided some custom calibration
+  if(calTable != NULL) {
+    memcpy(calTbl, calTable, sizeof(calTbl));
+  }
+
+  // set calibration values
+  uint8_t index = (_sf >> 4) - 5;
   uint16_t val = 0;
   switch(_bw) {
     case(RADIOLIB_SX128X_LORA_BW_406_25):
-      val = calTable[0][index];
+      val = calTbl[0][index];
       break;
     case(RADIOLIB_SX128X_LORA_BW_812_50):
-      val = calTable[1][index];
+      val = calTbl[1][index];
       break;
     case(RADIOLIB_SX128X_LORA_BW_1625_00):
-      val = calTable[2][index];
+      val = calTbl[2][index];
       break;
     default:
       return(RADIOLIB_ERR_INVALID_BANDWIDTH);
