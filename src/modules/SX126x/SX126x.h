@@ -657,7 +657,7 @@ class SX126x: public PhysicalLayer {
     int16_t setSyncWord(uint8_t syncWord, uint8_t controlBits = 0x44);
 
     /*!
-      \brief Sets current protection limit. Can be set in 0.25 mA steps.
+      \brief Sets current protection limit. Can be set in 2.5 mA steps.
 
       \param currentLimit current protection limit to be set in mA.
 
