@@ -659,7 +659,7 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets current protection limit. Can be set in 2.5 mA steps.
 
-      \param currentLimit current protection limit to be set in mA.
+      \param currentLimit current protection limit to be set in mA. Allowed values range from 0 to 140.
 
       \returns \ref status_codes
     */
