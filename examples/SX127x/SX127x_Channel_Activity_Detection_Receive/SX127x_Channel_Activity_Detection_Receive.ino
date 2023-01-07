@@ -76,9 +76,6 @@ volatile bool timeoutFlag = false;
 // flag to indicate that a preamble was detected
 volatile bool detectedFlag = false;
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // flag to indicate if we are currently receiving
 bool receiving = false;
 
@@ -90,11 +87,6 @@ bool receiving = false;
   ICACHE_RAM_ATTR
 #endif
 void setFlagTimeout(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // we timed out, set the flag
   timeoutFlag = true;
 }
@@ -107,11 +99,6 @@ void setFlagTimeout(void) {
   ICACHE_RAM_ATTR
 #endif
 void setFlagDetected(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // we got a preamble, set the flag
   detectedFlag = true;
 }
@@ -120,10 +107,6 @@ void loop() {
   // check if we need to restart channel activity detection
   if(detectedFlag || timeoutFlag) {
     int state = RADIOLIB_ERR_NONE;
-    
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
 
     // check ongoing reception
     if(receiving) {
@@ -217,10 +200,5 @@ void loop() {
     // reset flags
     timeoutFlag = false;
     detectedFlag = false;
-
-    // enable interrupts again
-    enableInterrupt = true;
-  
   }
-  
 }

@@ -71,9 +71,6 @@ void setup() {
 // flag to indicate that a packet was sent
 volatile bool transmittedFlag = false;
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // this function is called when a complete packet
 // is transmitted by the module
 // IMPORTANT: this function MUST be 'void' type
@@ -82,11 +79,6 @@ volatile bool enableInterrupt = true;
   ICACHE_RAM_ATTR
 #endif
 void setFlag(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // we sent a packet, set the flag
   transmittedFlag = true;
 }
@@ -94,10 +86,6 @@ void setFlag(void) {
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
-
     // reset flag
     transmittedFlag = false;
 
@@ -136,9 +124,5 @@ void loop() {
                         0x89, 0xAB, 0xCD, 0xEF};
       int state = radio.startTransmit(byteArr, 8);
     */
-
-    // we're ready to send more packets,
-    // enable interrupt service routine
-    enableInterrupt = true;
   }
 }

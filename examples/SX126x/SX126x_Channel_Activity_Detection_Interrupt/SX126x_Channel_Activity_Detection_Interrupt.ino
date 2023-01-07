@@ -64,9 +64,6 @@ void setup() {
 // flag to indicate that a packet was detected or CAD timed out
 volatile bool scanFlag = false;
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // this function is called when a complete packet
 // is received by the module
 // IMPORTANT: this function MUST be 'void' type
@@ -75,11 +72,6 @@ volatile bool enableInterrupt = true;
   ICACHE_RAM_ATTR
 #endif
 void setFlag(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // something happened, set the flag
   scanFlag = true;
 }
@@ -87,10 +79,6 @@ void setFlag(void) {
 void loop() {
   // check if the flag is set
   if(scanFlag) {
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
-
     // reset flag
     scanFlag = false;
 
@@ -121,9 +109,5 @@ void loop() {
       Serial.print(F("failed, code "));
       Serial.println(state);
     }
-
-    // enable interrupt service routine
-    enableInterrupt = true;
   }
-
 }
