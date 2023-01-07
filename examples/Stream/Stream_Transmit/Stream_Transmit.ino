@@ -80,9 +80,6 @@ void setup() {
   transmissionState = radio.startTransmit(longPacket);
 }
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // flag to indicate we can keep adding more bytes to FIFO
 volatile bool fifoEmpty = false;
 
@@ -103,31 +100,18 @@ int remLength = totalLength;
   ICACHE_RAM_ATTR
 #endif
 void fifoAdd(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // we can send more bytes
   fifoEmpty = true;
 }
 
 void loop() {
   if(fifoEmpty) {
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
-
     // reset flag
     fifoEmpty = false;
 
     // add more bytes to the transmit buffer
     uint8_t* txBuffPtr = (uint8_t*)longPacket.c_str();
     transmittedFlag = radio.fifoAdd(txBuffPtr, totalLength, &remLength);
-
-    // we're ready to send more packets,
-    // enable interrupt service routine
-    enableInterrupt = true;
   }
 
   // check if the previous transmission finished

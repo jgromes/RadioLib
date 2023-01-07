@@ -32,9 +32,6 @@ int transmissionState = RADIOLIB_ERR_NONE;
 // flag to indicate transmission or reception state
 bool transmitFlag = false;
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // flag to indicate that a packet was sent or received
 volatile bool operationDone = false;
 
@@ -43,11 +40,6 @@ volatile bool operationDone = false;
 // IMPORTANT: this function MUST be 'void' type
 //            and MUST NOT have any arguments!
 void setFlag(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // we sent or received  packet, set the flag
   operationDone = true;
 }
@@ -92,10 +84,6 @@ void setup() {
 void loop() {
   // check if the previous operation finished
   if(operationDone) {
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
-
     // reset flag
     operationDone = false;
 
@@ -150,10 +138,5 @@ void loop() {
       transmissionState = radio.startTransmit("Hello World!");
       transmitFlag = true;
     }
-
-    // we're ready to process more packets,
-    // enable interrupt service routine
-    enableInterrupt = true;
-
   }
 }

@@ -86,9 +86,6 @@ void setup() {
 // flag to indicate that a packet was received
 volatile bool receivedFlag = false;
 
-// disable interrupt when it's not needed
-volatile bool enableInterrupt = true;
-
 // how many bytes are there in total
 const int totalLength = 512;
 
@@ -106,11 +103,6 @@ volatile uint8_t rxBuffer[totalLength + 1];
   ICACHE_RAM_ATTR
 #endif
 void fifoGet(void) {
-  // check if the interrupt is enabled
-  if(!enableInterrupt) {
-    return;
-  }
-
   // set the flag when we receive the full packet
   receivedFlag = radio.fifoGet(rxBuffer, totalLength, &receivedLength);
 }
@@ -118,10 +110,6 @@ void fifoGet(void) {
 void loop() {
   // check if the flag is set
   if(receivedFlag) {
-    // disable the interrupt service routine while
-    // processing the data
-    enableInterrupt = false;
-  
     // packet was successfully received
     Serial.println(F("[SX1278] Received packet!"));
 
@@ -135,10 +123,5 @@ void loop() {
     
     // put module back to listen mode
     radio.startReceive();
-
-    // we're ready to receive more packets,
-    // enable interrupt service routine
-    enableInterrupt = true;
   }
-
 }
