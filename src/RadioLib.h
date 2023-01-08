@@ -99,6 +99,7 @@
 #include "protocols/SSTV/SSTV.h"
 #include "protocols/FSK4/FSK4.h"
 #include "protocols/APRS/APRS.h"
+#include "protocols/ExternalRadio/ExternalRadio.h"
 
 // only create Radio class when using RadioShield
 #if defined(RADIOLIB_RADIOSHIELD)

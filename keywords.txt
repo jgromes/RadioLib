@@ -50,6 +50,7 @@ AFSKClient	KEYWORD1
 FSK4Client	KEYWORD1
 APRSClient	KEYWORD1
 PagerClient	KEYWORD1
+ExternalRadio	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
