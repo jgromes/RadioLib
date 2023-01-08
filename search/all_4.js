@@ -7,5 +7,6 @@ var searchData=
   ['encoding_20type_20aliases_2e_44',['Encoding type aliases.',['../group__config__encoding.html',1,'']]],
   ['end_45',['end',['../class_module.html#aa7fc017ee35f40c90e5badc5bc568c3d',1,'Module']]],
   ['endtransaction_46',['endTransaction',['../class_module.html#a015226566efc5131c8a39a184b6c4e6b',1,'Module']]],
-  ['explicitheader_47',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]]
+  ['explicitheader_47',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]],
+  ['externalradio_48',['ExternalRadio',['../class_external_radio.html',1,'']]]
 ];

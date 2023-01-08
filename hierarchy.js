@@ -12,6 +12,7 @@ var hierarchy =
     [ "PagerClient", "class_pager_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
+      [ "ExternalRadio", "class_external_radio.html", null ],
       [ "RF69", "class_r_f69.html", [
         [ "SX1231", "class_s_x1231.html", null ]
       ] ],

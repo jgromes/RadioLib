@@ -5,6 +5,7 @@ var annotated_dup =
     [ "AX25Client", "class_a_x25_client.html", "class_a_x25_client" ],
     [ "AX25Frame", "class_a_x25_frame.html", "class_a_x25_frame" ],
     [ "CC1101", "class_c_c1101.html", "class_c_c1101" ],
+    [ "ExternalRadio", "class_external_radio.html", "class_external_radio" ],
     [ "FSK4Client", "class_f_s_k4_client.html", "class_f_s_k4_client" ],
     [ "HellClient", "class_hell_client.html", "class_hell_client" ],
     [ "ITA2String", "class_i_t_a2_string.html", "class_i_t_a2_string" ],
