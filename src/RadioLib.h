@@ -7,6 +7,7 @@
   Universal wireless communication library for Arduino.
 
   \par Currently Supported Wireless Modules and Protocols
+  - AX5x43 FSK module
   - CC1101 FSK module
   - RF69 FSK module
   - Si443x FSK module
@@ -62,6 +63,7 @@
   #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
 #endif
 
+#include "modules/AX5x43/AX5243.h"
 #include "modules/CC1101/CC1101.h"
 #include "modules/LLCC68/LLCC68.h"
 #include "modules/nRF24/nRF24.h"

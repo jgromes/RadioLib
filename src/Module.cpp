@@ -127,7 +127,7 @@ void Module::term() {
 #endif
 }
 
-int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
+int16_t Module::SPIgetRegValue(uint16_t reg, uint8_t msb, uint8_t lsb) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(RADIOLIB_ERR_INVALID_BIT_RANGE);
   }
@@ -137,7 +137,7 @@ int16_t Module::SPIgetRegValue(uint8_t reg, uint8_t msb, uint8_t lsb) {
   return(maskedValue);
 }
 
-int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval, uint8_t checkMask) {
+int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval, uint8_t checkMask) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(RADIOLIB_ERR_INVALID_BIT_RANGE);
   }
@@ -186,25 +186,25 @@ int16_t Module::SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb, uint8_t 
   #endif
 }
 
-void Module::SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes) {
+void Module::SPIreadRegisterBurst(uint16_t reg, uint8_t numBytes, uint8_t* inBytes) {
   SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
 }
 
-uint8_t Module::SPIreadRegister(uint8_t reg) {
+uint8_t Module::SPIreadRegister(uint16_t reg) {
   uint8_t resp = 0;
   SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
   return(resp);
 }
 
-void Module::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes) {
+void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, uint8_t numBytes) {
   SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
 }
 
-void Module::SPIwriteRegister(uint8_t reg, uint8_t data) {
+void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
   SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
 }
 
-void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
+void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start SPI transaction
   this->SPIbeginTransaction();
 
@@ -212,7 +212,13 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   this->digitalWrite(_cs, LOW);
 
   // send SPI register address with access command
-  this->SPItransfer(reg | cmd);
+  if(this->SPIaddrWidth <= 8) {
+    this->SPItransfer(reg | cmd);
+  } else {
+    this->SPItransfer((reg >> 8) | cmd);
+    this->SPItransfer(reg & 0xFF);
+  }
+
   #if defined(RADIOLIB_VERBOSE)
     if(cmd == SPIwriteCommand) {
       RADIOLIB_VERBOSE_PRINT('W');

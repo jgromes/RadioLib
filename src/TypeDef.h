@@ -422,6 +422,13 @@
 */
 #define RADIOLIB_ERR_ADDRESS_NOT_FOUND                          (-1002)
 
+// AX5x43 status codes
+
+/*!
+  \brief Error during PLL ranging.
+*/
+#define RADIOLIB_ERR_RANGING_FAILED                             (-1101)
+
 /*!
   \}
 */
