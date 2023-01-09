@@ -916,6 +916,10 @@ void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+void RF69::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  _mod->setRfSwitchTable(pins, table);
+}
+
 uint8_t RF69::randomByte() {
   // set mode to Rx
   setMode(RADIOLIB_RF69_RX);

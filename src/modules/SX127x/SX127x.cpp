@@ -1258,6 +1258,10 @@ void SX127x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+void SX127x::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  _mod->setRfSwitchTable(pins, table);
+}
+
 uint8_t SX127x::randomByte() {
   // check active modem
   uint8_t rssiValueReg = RADIOLIB_SX127X_REG_RSSI_WIDEBAND;

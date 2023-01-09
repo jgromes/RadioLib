@@ -1144,6 +1144,9 @@ class SX127x: public PhysicalLayer {
     /*! \copydoc Module::setRfSwitchPins */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
+    /*! \copydoc Module::setRfSwitchTable */
+    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+
     /*!
      \brief Get one truly random byte from RSSI noise.
 

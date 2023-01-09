@@ -917,6 +917,9 @@ class SX126x: public PhysicalLayer {
    /*! \copydoc Module::setRfSwitchPins */
    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
+   /*! \copydoc Module::setRfSwitchTable */
+   void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+
    /*!
      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
      the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX126x::autoLDRO()

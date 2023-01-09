@@ -902,6 +902,10 @@ void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
+void CC1101::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  _mod->setRfSwitchTable(pins, table);
+}
+
 uint8_t CC1101::randomByte() {
   // set mode to Rx
   SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
