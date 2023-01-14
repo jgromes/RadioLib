@@ -15,6 +15,54 @@
 */
 class Module {
   public:
+    /*!
+     * \brief The maximum number of pins supported by the RF switch
+     * code.
+     *
+     * Note: It is not recommended to use this constant in your sketch
+     * when defining a rfswitch pins array, to prevent issues when this
+     * value is ever increased and such an array gets extra zero
+     * elements (that will be interpreted as pin 0).
+     */
+    static const size_t RFSWITCH_MAX_PINS = 3;
+
+    /*!
+     * Description of RF switch pin states for a single mode.
+     *
+     * See setRfSwitchTable() for details.
+     */
+    struct RfSwitchMode_t {
+      uint8_t mode;
+      RADIOLIB_PIN_STATUS values[RFSWITCH_MAX_PINS];
+    };
+
+    /*!
+     * Constants to use in a mode table set be setRfSwitchTable. These
+     * constants work for most radios, but some radios define their own
+     * constants to be used instead.
+     *
+     * See setRfSwitchTable() for details.
+     */
+    enum OpMode_t {
+      /*! End of table marker, use \ref END_OF_MODE_TABLE constant
+       * instead. Value is zero to ensure zero-initialized mode ends the
+       * table */
+      MODE_END_OF_TABLE = 0,
+      /*! Idle mode */
+      MODE_IDLE,
+      /*! Receive mode */
+      MODE_RX,
+      /*! Transmission mode */
+      MODE_TX,
+    };
+
+    /*!
+     * Value to use as the last element in a mode table to indicate the
+     * end of the table.
+     *
+     * See setRfSwitchTable() for details.
+     */
+    static constexpr RfSwitchMode_t END_OF_MODE_TABLE = {MODE_END_OF_TABLE, {}};
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
 
@@ -242,23 +290,103 @@ class Module {
     RADIOLIB_PIN_TYPE getGpio() const { return(_gpio); }
 
     /*!
-      \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
-      When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
+      \brief Some modules contain external RF switch controlled by pins.
+      This function gives RadioLib control over those pins to
+      automatically switch between various modes: When idle both pins
+      will be LOW, during TX the `txEn` pin will be HIGH, during RX the
+      `rxPin` will be HIGH.
+
+      Radiolib will automatically set the pin mode and value of these
+      pins, so do not control them from the sketch.
+
+      When more than two pins or more control over the output values are
+      needed, use the setRfSwitchTable() function.
 
       \param rxEn RX enable pin.
-
       \param txEn TX enable pin.
     */
     void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
     /*!
-      \brief Set RF switch state.
+      \brief Some modules contain external RF switch controlled by pins.
+      This function gives RadioLib control over those pins to
+      automatically switch between various modes.
 
-      \param rxPinState Pin state to set on Tx enable pin (usually high to transmit).
+      Radiolib will automatically set the pin mode and value of these
+      pins, so do not control them from the sketch.
 
-      \param txPinState  Pin state to set on Rx enable pin (usually high to receive).
+
+      \param pins A reference to an array of pins to control. This
+      should always be an array of 3 elements. If you need less pins,
+      use RADIOLIB_NC for the unused elements.
+
+      \param table A reference to an array of pin values to use for each
+      supported mode. Each element is an RfSwitchMode_T struct that
+      lists the mode for which it applies and the values for each of the
+      pins passed in the pins argument respectively.
+
+      The `pins` array will be copied into the Module object, so the
+      original array can be deallocated after this call. However,
+      a reference to the `table` array will be stored, so that array
+      must remain valid as long RadioLib is being used.
+
+      The `mode` field in each table row should normally use any of the
+      `MODE_*` constants from the Module::OpMode_t enum. However, some
+      radios support additional modes and will define their own OpMode_t
+      enum.
+
+      The length of the table is variable (to support radios that add
+      additional modes), so the table must always be terminated with the
+      special END_OF_MODE_TABLE value.
+
+      Normally all modes should be listed in the table, but for some
+      radios, modes can be omitted to indicate they are not supported
+      (e.g. when a radio has a high power and low power TX mode but
+      external circuitry only supports low power). If applicable, this
+      is documented in the radio class itself.
+
+      #### Example
+      For example, on a board that has an RF switch with an enable pin
+      connected to PA0 and a TX/RX select pin connected to PA1:
+
+      \code
+      // In global scope, define the pin array and mode table
+      static const RADIOLIB_PIN_TYPE rfswitch_pins[] =
+                             {PA0,  PA1,  RADIOLIB_NC};
+      static const Module::RfSwitchMode_t rfswitch_table[] = {
+        {Module::MODE_IDLE,  {LOW,  LOW}},
+        {Module::MODE_RX,    {HIGH, LOW}},
+        {Module::MODE_TX,    {HIGH, HIGH}},
+         Module::END_OF_MODE_TABLE,
+      };
+
+      void setup() {
+        ...
+        // Then somewhere in setup, pass them to radiolib
+        radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
+        ...
+      }
+      \endcode
     */
-    void setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState);
+
+    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]);
+
+    /*!
+     * \brief Find a mode in the RfSwitchTable.
+     *
+     * \param The mode to find.
+     *
+     * \returns A pointer to the RfSwitchMode_t struct in the table that
+     * matches the passed mode. Returns nullptr if no rfswitch pins are
+     * configured, or the passed mode is not listed in the table.
+     */
+    const RfSwitchMode_t *findRfSwitchMode(uint8_t mode) const;
+
+    /*!
+      \brief Set RF switch state.
+      \param mode The mode to set. This must be one of the MODE_ constants, or a radio-specific constant.
+    */
+    void setRfSwitchState(uint8_t mode);
 
     /*!
       \brief Wait for time to elapse, either using the microsecond timer, or the TimerFlag.
@@ -446,10 +574,9 @@ class Module {
     bool _initInterface = false;
     #endif
 
-    // RF switch presence and pins
-    bool _useRfSwitch = false;
-    RADIOLIB_PIN_TYPE _rxEn = RADIOLIB_NC;
-    RADIOLIB_PIN_TYPE _txEn = RADIOLIB_NC;
+    // RF switch pins and table
+    RADIOLIB_PIN_TYPE _rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
+    const RfSwitchMode_t *_rfSwitchTable = nullptr;
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)
     uint32_t _prevTimingLen = 0;

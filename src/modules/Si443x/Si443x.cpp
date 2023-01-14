@@ -119,7 +119,7 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
 
 int16_t Si443x::sleep() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   // disable wakeup timer interrupt
   int16_t state = _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_1, 0x00);
@@ -135,14 +135,14 @@ int16_t Si443x::sleep() {
 
 int16_t Si443x::standby() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, LOW);
+  _mod->setRfSwitchState(Module::MODE_IDLE);
 
   return(_mod->SPIsetRegValue(RADIOLIB_SI443X_REG_OP_FUNC_CONTROL_1, RADIOLIB_SI443X_XTAL_ON, 7, 0, 10));
 }
 
 int16_t Si443x::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // user requested to start transmitting immediately (required for RTTY)
   if(frf != 0) {
@@ -184,7 +184,7 @@ int16_t Si443x::transmitDirect(uint32_t frf) {
 
 int16_t Si443x::receiveDirect() {
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // activate direct mode
   int16_t state = directMode();
@@ -239,7 +239,7 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   _mod->SPIwriteRegisterBurst(RADIOLIB_SI443X_REG_FIFO_ACCESS, data, len);
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(LOW, HIGH);
+  _mod->setRfSwitchState(Module::MODE_TX);
 
   // set interrupt mapping
   _mod->SPIwriteRegister(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_1, RADIOLIB_SI443X_PACKET_SENT_ENABLED);
@@ -272,7 +272,7 @@ int16_t Si443x::startReceive() {
   clearIRQFlags();
 
   // set RF switch (if present)
-  _mod->setRfSwitchState(HIGH, LOW);
+  _mod->setRfSwitchState(Module::MODE_RX);
 
   // set interrupt mapping
   _mod->SPIwriteRegister(RADIOLIB_SI443X_REG_INTERRUPT_ENABLE_1, RADIOLIB_SI443X_VALID_PACKET_RECEIVED_ENABLED | RADIOLIB_SI443X_CRC_ERROR_ENABLED);
@@ -566,6 +566,10 @@ int16_t Si443x::setDataShaping(uint8_t sh) {
 
 void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
+}
+
+void Si443x::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  _mod->setRfSwitchTable(pins, table);
 }
 
 uint8_t Si443x::randomByte() {

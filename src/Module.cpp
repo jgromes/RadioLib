@@ -551,20 +551,50 @@ void Module::regdump(uint8_t start, uint8_t len) {
 }
 
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
-  _useRfSwitch = true;
-  _rxEn = rxEn;
-  _txEn = txEn;
-  this->pinMode(rxEn, OUTPUT);
-  this->pinMode(txEn, OUTPUT);
+  // This can be on the stack, setRfSwitchTable copies the contents
+  const RADIOLIB_PIN_TYPE pins[] = {
+    rxEn, txEn, RADIOLIB_NC,
+  };
+  // This must be static, since setRfSwitchTable stores a reference.
+  static constexpr RfSwitchMode_t table[] = {
+    {MODE_IDLE,  {LOW,  LOW}},
+    {MODE_RX,    {HIGH, LOW}},
+    {MODE_TX,    {LOW,  HIGH}},
+    END_OF_MODE_TABLE,
+  };
+  setRfSwitchTable(pins, table);
 }
 
-void Module::setRfSwitchState(RADIOLIB_PIN_STATUS rxPinState, RADIOLIB_PIN_STATUS txPinState) {
-  // check RF switch control is enabled
-  if(!_useRfSwitch) {
+void Module::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[3], const RfSwitchMode_t table[]) {
+  memcpy(_rfSwitchPins, pins, sizeof(_rfSwitchPins));
+  _rfSwitchTable = table;
+  for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)
+    this->pinMode(pins[i], OUTPUT);
+}
+
+const Module::RfSwitchMode_t *Module::findRfSwitchMode(uint8_t mode) const {
+  const RfSwitchMode_t *row = _rfSwitchTable;
+  while (row && row->mode != MODE_END_OF_TABLE) {
+    if (row->mode == mode)
+      return row;
+    ++row;
+  }
+  return nullptr;
+}
+
+void Module::setRfSwitchState(uint8_t mode) {
+  const RfSwitchMode_t *row = findRfSwitchMode(mode);
+  if(!row) {
+    // RF switch control is disabled or does not have this mode
     return;
   }
 
   // set pins
-  this->digitalWrite(_rxEn, rxPinState);
-  this->digitalWrite(_txEn, txPinState);
+  const RADIOLIB_PIN_STATUS *value = &row->values[0];
+  for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
+    RADIOLIB_PIN_TYPE pin = _rfSwitchPins[i];
+    if (pin != RADIOLIB_NC)
+      this->digitalWrite(pin, *value);
+    ++value;
+  }
 }

@@ -20,10 +20,10 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = SX126x::fixPaClamping();
+  state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
   return(state);
@@ -38,10 +38,10 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = SX126x::fixPaClamping();
+  state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
   return(state);

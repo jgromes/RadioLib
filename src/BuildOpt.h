@@ -96,6 +96,7 @@
   //#define RADIOLIB_EXCLUDE_SX127X
   //#define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
   //#define RADIOLIB_EXCLUDE_SX126X
+  //#define RADIOLIB_EXCLUDE_STM32WLX   // dependent on RADIOLIB_EXCLUDE_SX126X
   //#define RADIOLIB_EXCLUDE_SX128X
   //#define RADIOLIB_EXCLUDE_AFSK
   //#define RADIOLIB_EXCLUDE_AX25
@@ -1007,6 +1008,13 @@
 // set the size of static arrays to use
 #if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
   #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
+#endif
+
+
+// This only compiles on STM32 boards with SUBGHZ module, but also
+// include when generating docs
+#if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN)
+  #define RADIOLIB_EXCLUDE_STM32WLX
 #endif
 
 #if defined(RADIOLIB_DEBUG)

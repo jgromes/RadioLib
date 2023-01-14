@@ -914,15 +914,11 @@ class SX126x: public PhysicalLayer {
    */
    int16_t setEncoding(uint8_t encoding) override;
 
-   /*!
-     \brief Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state.
-     When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!
-
-     \param rxEn RX enable pin.
-
-     \param txEn TX enable pin.
-   */
+   /*! \copydoc Module::setRfSwitchPins */
    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+
+   /*! \copydoc Module::setRfSwitchTable */
+   void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
    /*!
      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
@@ -986,7 +982,7 @@ class SX126x: public PhysicalLayer {
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t readBuffer(uint8_t* data, uint8_t numBytes);
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX126X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX126X_IRQ_NONE);
-    int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
+    virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
     int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
@@ -1009,7 +1005,7 @@ class SX126x: public PhysicalLayer {
 
     // fixes to errata
     int16_t fixSensitivity();
-    int16_t fixPaClamping();
+    int16_t fixPaClamping(bool enable = true);
     int16_t fixImplicitTimeout();
     int16_t fixInvertedIQ(uint8_t iqConfig);
 
@@ -1046,6 +1042,9 @@ class SX126x: public PhysicalLayer {
     size_t _implicitLen = 0;
 
     int16_t _lastError = RADIOLIB_ERR_NONE;
+
+    // Allow subclasses to define different TX modes
+    uint8_t _tx_mode = Module::MODE_TX;
 
     int16_t config(uint8_t modem);
     int16_t checkCommandResult();

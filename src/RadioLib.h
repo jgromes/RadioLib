@@ -78,6 +78,7 @@
 #include "modules/SX126x/SX1261.h"
 #include "modules/SX126x/SX1262.h"
 #include "modules/SX126x/SX1268.h"
+#include "modules/SX126x/STM32WLx.h"
 #include "modules/SX127x/SX1272.h"
 #include "modules/SX127x/SX1273.h"
 #include "modules/SX127x/SX1276.h"
