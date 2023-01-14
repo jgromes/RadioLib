@@ -111,6 +111,10 @@ int16_t PhysicalLayer::receive(uint8_t* data, size_t len) {
 }
 
 int16_t PhysicalLayer::standby() {
+  return(standby(RADIOLIB_STANDBY_DEFAULT));
+}
+
+int16_t PhysicalLayer::standby(uint8_t mode) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 

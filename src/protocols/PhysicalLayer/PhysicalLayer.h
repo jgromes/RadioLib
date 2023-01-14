@@ -92,6 +92,13 @@ class PhysicalLayer {
     virtual int16_t standby();
 
     /*!
+      \brief Sets module to a specific standby mode.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t standby(uint8_t mode);
+
+    /*!
       \brief Binary receive method. Must be implemented in module class.
 
       \param data Pointer to array to save the received binary data.
