@@ -824,11 +824,8 @@ int16_t CC1101::setPromiscuousMode(bool promiscuous) {
   }
 
   if (promiscuous == true) {
-    // disable preamble detection and generation
-    state = setPreambleLength(0);
-    RADIOLIB_ASSERT(state);
-
     // disable sync word filtering and insertion
+    // this also disables preamble
     state = disableSyncWordFiltering();
     RADIOLIB_ASSERT(state);
 
