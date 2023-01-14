@@ -31,12 +31,15 @@ int16_t HellClient::begin(float base, float rate) {
 size_t HellClient::printGlyph(uint8_t* buff) {
   // print the character
   Module* mod = _phy->getMod();
+  bool transmitting = false;
   for(uint8_t mask = 0x40; mask >= 0x01; mask >>= 1) {
     for(int8_t i = RADIOLIB_HELL_FONT_HEIGHT - 1; i >= 0; i--) {
         uint32_t start = mod->micros();
-        if(buff[i] & mask) {
+        if((buff[i] & mask) && (!transmitting)) {
+          transmitting = true;
           transmitDirect(_base, _baseHz);
-        } else {
+        } else if((!(buff[i] & mask)) && (transmitting)) {
+          transmitting = false;
           standby();
         }
         mod->waitForMicroseconds(start, _pixelDuration);
@@ -302,7 +305,7 @@ int16_t HellClient::standby() {
     return(_audio->noTone(_inv));
   }
   #endif
-  return(_phy->standby());
+  return(_phy->standby(RADIOLIB_STANDBY_WARM));
 }
 
 #endif
