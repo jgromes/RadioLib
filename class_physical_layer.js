@@ -25,6 +25,7 @@ var class_physical_layer =
     [ "setFrequency", "class_physical_layer.html#a8a194b0fbb66b1a953288bf3b9478d6e", null ],
     [ "setFrequencyDeviation", "class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b", null ],
     [ "standby", "class_physical_layer.html#acbcaf6aefcb77a354797e66222fe5018", null ],
+    [ "standby", "class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8", null ],
     [ "startDirect", "class_physical_layer.html#a88a10657bd2215a11a2331f937414b55", null ],
     [ "startTransmit", "class_physical_layer.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db", null ],
