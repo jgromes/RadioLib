@@ -29,6 +29,8 @@ var annotated_dup =
     [ "Si443x", "class_si443x.html", "class_si443x" ],
     [ "SSTVClient", "class_s_s_t_v_client.html", "class_s_s_t_v_client" ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", "struct_s_s_t_v_mode__t" ],
+    [ "STM32WLx", "class_s_t_m32_w_lx.html", "class_s_t_m32_w_lx" ],
+    [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", "class_s_t_m32_w_lx___module" ],
     [ "SX1231", "class_s_x1231.html", "class_s_x1231" ],
     [ "SX1261", "class_s_x1261.html", "class_s_x1261" ],
     [ "SX1262", "class_s_x1262.html", "class_s_x1262" ],

@@ -27,6 +27,7 @@ var class_si443x =
     [ "setIrqAction", "class_si443x.html#a801b51059e61f93d4e01ae6ba8eb0726", null ],
     [ "setPreambleLength", "class_si443x.html#a4821a6141caf16141074615c976ecd91", null ],
     [ "setRfSwitchPins", "class_si443x.html#ae365087803b88b29932b5c793edff1d4", null ],
+    [ "setRfSwitchTable", "class_si443x.html#a534eea9a03a36f9afd97200a0e0b7873", null ],
     [ "setRxBandwidth", "class_si443x.html#a51e6b7c677e82042224798114f311175", null ],
     [ "setSyncWord", "class_si443x.html#a4ed0da298c2418db4a88a19ef8938e0a", null ],
     [ "sleep", "class_si443x.html#ada90718aeb67d7f0e9899da534de9695", null ],

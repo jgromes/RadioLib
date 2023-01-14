@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['freq_642',['freq',['../structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf',1,'tone_t']]]
+  ['end_5fof_5fmode_5ftable_662',['END_OF_MODE_TABLE',['../class_module.html#a4819e8b5e1fba0c99aa11477296e0927',1,'Module::END_OF_MODE_TABLE()'],['../class_s_t_m32_w_lx.html#af632a308ba5ad8caf6732210cf7acaf7',1,'STM32WLx::END_OF_MODE_TABLE()']]]
 ];

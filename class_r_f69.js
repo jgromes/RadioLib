@@ -60,6 +60,7 @@ var class_r_f69 =
     [ "setPreambleLength", "class_r_f69.html#a7c84b3f881cad6e05b0f4f68c24496d9", null ],
     [ "setPromiscuousMode", "class_r_f69.html#a6d90ad1d455de045c53c5758babd876c", null ],
     [ "setRfSwitchPins", "class_r_f69.html#aada7c48828b950cdfd260594d502b03d", null ],
+    [ "setRfSwitchTable", "class_r_f69.html#a58e54536624722377010d7d6ea7a8b35", null ],
     [ "setRSSIThreshold", "class_r_f69.html#afcb723ae58d6519e5b95d017d2beb78a", null ],
     [ "setRxBandwidth", "class_r_f69.html#a735d8f22095a7e69471d73ca021b9d1a", null ],
     [ "setSyncWord", "class_r_f69.html#a26667d50ec845c28e17236c69c886561", null ],

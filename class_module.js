@@ -1,5 +1,12 @@
 var class_module =
 [
+    [ "RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", "struct_module_1_1_rf_switch_mode__t" ],
+    [ "OpMode_t", "class_module.html#a5a67b3a63420d762ecba9448671c99bf", [
+      [ "MODE_END_OF_TABLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770", null ],
+      [ "MODE_IDLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671", null ],
+      [ "MODE_RX", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f", null ],
+      [ "MODE_TX", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571", null ]
+    ] ],
     [ "Module", "class_module.html#a1101d49f597f756141fc9de88a504f21", null ],
     [ "Module", "class_module.html#a919baf2e46c357ebfcdbc1025b6c551e", null ],
     [ "attachInterrupt", "class_module.html#a91aaa34aecdfeaf24948551b037033be", null ],
@@ -12,6 +19,7 @@ var class_module =
     [ "digitalWrite", "class_module.html#a46ad10b113df7c7e0a932be19eff63cd", null ],
     [ "end", "class_module.html#aa7fc017ee35f40c90e5badc5bc568c3d", null ],
     [ "endTransaction", "class_module.html#a015226566efc5131c8a39a184b6c4e6b", null ],
+    [ "findRfSwitchMode", "class_module.html#a5699a937b62ba41387567b4d679b9377", null ],
     [ "getCs", "class_module.html#ae53e355a77f2b7ce6473c62ac5f37334", null ],
     [ "getGpio", "class_module.html#aeb4c7447372d56a7cae6db91994aacfc", null ],
     [ "getIrq", "class_module.html#a8c7f17a63b67117d953f1ba990b17f80", null ],
@@ -25,7 +33,8 @@ var class_module =
     [ "pulseIn", "class_module.html#a1310b9594f86fb1dc6646479922a1fdc", null ],
     [ "regdump", "class_module.html#a7216d32fc55130d111409c6f2050d9c0", null ],
     [ "setRfSwitchPins", "class_module.html#a0ecbb4e1e98094c1296b1e823dc14703", null ],
-    [ "setRfSwitchState", "class_module.html#a4a87d59ad2bf6bb1bb9de1856a81b824", null ],
+    [ "setRfSwitchState", "class_module.html#afbed643f082286012bf44bba22381ae6", null ],
+    [ "setRfSwitchTable", "class_module.html#a870c63233146d03380f753498c975050", null ],
     [ "SPIbeginTransaction", "class_module.html#a5ecd52243289112f35a9644cdafbe49f", null ],
     [ "SPIendTransaction", "class_module.html#acabb23f1cded0a43ffc38cfcc649dcb2", null ],
     [ "SPIgetRegValue", "class_module.html#ad7ca9ae5a22cdacdf9437ca9cd37c9b4", null ],

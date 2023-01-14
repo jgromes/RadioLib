@@ -307,8 +307,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a95bc32a555675879ad9e2a9e399dc6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads uncalibrated temperature value. This function will change operating mode and should not be called during Tx, Rx or CAD.  <a href="class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1">More...</a><br /></td></tr>
 <tr class="separator:a95bc32a555675879ad9e2a9e399dc6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9781180418c1ec9c365b74acbc98d8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
-<tr class="memdesc:ae9781180418c1ec9c365b74acbc98d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch!  <a href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">More...</a><br /></td></tr>
+<tr class="memdesc:ae9781180418c1ec9c365b74acbc98d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">More...</a><br /></td></tr>
 <tr class="separator:ae9781180418c1ec9c365b74acbc98d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad18500bf1dd7592f4ea9d7c447427e14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14">setRfSwitchTable</a> (const RADIOLIB_PIN_TYPE(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:ad18500bf1dd7592f4ea9d7c447427e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14">More...</a><br /></td></tr>
+<tr class="separator:ad18500bf1dd7592f4ea9d7c447427e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">randomByte</a> ()</td></tr>
 <tr class="memdesc:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">More...</a><br /></td></tr>
 <tr class="separator:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1525,7 +1528,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000009">Todo:</a></b></dt><dd>fractional part of bit rate setting (not in OOK) </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>fractional part of bit rate setting (not in OOK) </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">PhysicalLayer</a>.</p>
 
@@ -2165,15 +2168,82 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Some modules contain external RF switch controlled by two pins. This function gives RadioLib control over those two pins to automatically switch Rx and Tx state. When using automatic RF switch control, DO NOT change the pin mode of rxEn or txEn from Arduino sketch! </p>
+<p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH. </p>
+<p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
+<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxEn</td><td>RX enable pin.</td></tr>
+    <tr><td class="paramname">rxEn</td><td>RX enable pin. </td></tr>
     <tr><td class="paramname">txEn</td><td>TX enable pin. </td></tr>
   </table>
   </dd>
 </dl>
 
+</div>
+</div>
+<a id="ad18500bf1dd7592f4ea9d7c447427e14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad18500bf1dd7592f4ea9d7c447427e14">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX127x::setRfSwitchTable </td>
+          <td>(</td>
+          <td class="paramtype">const RADIOLIB_PIN_TYPE(&amp;)&#160;</td>
+          <td class="paramname"><em>pins</em>[Module::RFSWITCH_MAX_PINS], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a>&#160;</td>
+          <td class="paramname"><em>table</em>[]&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes. </p>
+<p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pins</td><td>A reference to an array of pins to control. This should always be an array of 3 elements. If you need less pins, use RADIOLIB_NC for the unused elements.</td></tr>
+    <tr><td class="paramname">table</td><td>A reference to an array of pin values to use for each supported mode. Each element is an RfSwitchMode_T struct that lists the mode for which it applies and the values for each of the pins passed in the pins argument respectively.</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>The <code>pins</code> array will be copied into the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> object, so the original array can be deallocated after this call. However, a reference to the <code>table</code> array will be stored, so that array must remain valid as long RadioLib is being used.</p>
+<p>The <code>mode</code> field in each table row should normally use any of the <code>MODE_*</code> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
+<p>The length of the table is variable (to support radios that add additional modes), so the table must always be terminated with the special END_OF_MODE_TABLE value.</p>
+<p>Normally all modes should be listed in the table, but for some radios, modes can be omitted to indicate they are not supported (e.g. when a radio has a high power and low power TX mode but external circuitry only supports low power). If applicable, this is documented in the radio class itself.</p>
+<h4>Example</h4>
+<p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
+<div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> RADIOLIB_PIN_TYPE rfswitch_pins[] =</div>
+<div class="line">                       {PA0,  PA1,  RADIOLIB_NC};</div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
+<div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
+<div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a>,    {HIGH, LOW}},</div>
+<div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a>,    {HIGH, HIGH}},</div>
+<div class="line">   <a class="code" href="class_module.html#a4819e8b5e1fba0c99aa11477296e0927">Module::END_OF_MODE_TABLE</a>,</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">void</span> setup() {</div>
+<div class="line">  ...</div>
+<div class="line">  <span class="comment">// Then somewhere in setup, pass them to radiolib</span></div>
+<div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
+<div class="line">  ...</div>
+<div class="line">}</div>
+<div class="ttc" id="aclass_module_html_a4819e8b5e1fba0c99aa11477296e0927"><div class="ttname"><a href="class_module.html#a4819e8b5e1fba0c99aa11477296e0927">Module::END_OF_MODE_TABLE</a></div><div class="ttdeci">static constexpr RfSwitchMode_t END_OF_MODE_TABLE</div><div class="ttdef"><b>Definition:</b> Module.h:65</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:56</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:52</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:54</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:34</div></div>
+</div><!-- fragment --> 
 </div>
 </div>
 <a id="ad3955f85f456edae772a51025a19029b"></a>

@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['scanpixellen_653',['scanPixelLen',['../struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694',1,'SSTVMode_t']]],
-  ['sendseqnumber_654',['sendSeqNumber',['../class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2',1,'AX25Frame']]],
-  ['spireadcommand_655',['SPIreadCommand',['../class_module.html#a849ad85fc1bc3a7130e660c13973ab26',1,'Module']]],
-  ['spiwritecommand_656',['SPIwriteCommand',['../class_module.html#ae89764d15e8df5694a6aec0e18f72d3f',1,'Module']]],
-  ['srccallsign_657',['srcCallsign',['../class_a_x25_frame.html#a38f7fb6a4a6344b5892c3a3cdf26c585',1,'AX25Frame']]],
-  ['srcssid_658',['srcSSID',['../class_a_x25_frame.html#a50c63276facf8126f0f8555b1fc6b2c9',1,'AX25Frame']]]
+  ['rcvseqnumber_671',['rcvSeqNumber',['../class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f',1,'AX25Frame']]],
+  ['repeatercallsigns_672',['repeaterCallsigns',['../class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94',1,'AX25Frame']]],
+  ['repeaterssids_673',['repeaterSSIDs',['../class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830',1,'AX25Frame']]],
+  ['rfswitch_5fmax_5fpins_674',['RFSWITCH_MAX_PINS',['../class_module.html#a0c11551e12579bbabf57b19e12555b3c',1,'Module']]]
 ];

@@ -7,7 +7,9 @@ var hierarchy =
     [ "FSK4Client", "class_f_s_k4_client.html", null ],
     [ "HellClient", "class_hell_client.html", null ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
-    [ "Module", "class_module.html", null ],
+    [ "Module", "class_module.html", [
+      [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ]
+    ] ],
     [ "MorseClient", "class_morse_client.html", null ],
     [ "PagerClient", "class_pager_client.html", null ],
     [ "PhysicalLayer", "class_physical_layer.html", [
@@ -19,6 +21,7 @@ var hierarchy =
       [ "SX126x", "class_s_x126x.html", [
         [ "SX1262", "class_s_x1262.html", [
           [ "LLCC68", "class_l_l_c_c68.html", null ],
+          [ "STM32WLx", "class_s_t_m32_w_lx.html", null ],
           [ "SX1261", "class_s_x1261.html", null ]
         ] ],
         [ "SX1268", "class_s_x1268.html", null ]
@@ -55,6 +58,7 @@ var hierarchy =
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
     [ "RFM98", "class_r_f_m98.html", null ],
+    [ "Module::RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", null ],
     [ "RTTYClient", "class_r_t_t_y_client.html", null ],
     [ "SSTVClient", "class_s_s_t_v_client.html", null ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", null ],

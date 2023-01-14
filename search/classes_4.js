@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['hellclient_357',['HellClient',['../class_hell_client.html',1,'']]]
+  ['hellclient_371',['HellClient',['../class_hell_client.html',1,'']]]
 ];
