@@ -19,6 +19,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __RFM2x__ series FSK modules (RFM22, RM23)
 * __RFM9x__ series LoRa modules (RFM95, RM96, RFM97, RFM98)
 * __Si443x__ series FSK modules (Si4430, Si4431, Si4432)
+* __STM32WL__ integrated microcontroller/LoRa module
 * __SX126x__ series LoRa modules (SX1261, SX1262, SX1268)
 * __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
 * __SX128x__ series LoRa/GFSK/BLE/FLRC modules (SX1280, SX1281, SX1282)
