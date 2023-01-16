@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_s_x1282.html":[3,0,45],
 "class_s_x1282.html#ae90b7dcd7167c4cbe20e33ced04e4232":[3,0,45,0],
 "class_s_x128x.html":[3,0,46],
 "class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed":[3,0,46,34],
@@ -197,8 +198,8 @@ var NAVTREEINDEX3 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,10],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,9],
 "files.html":[4,0],
-"functions.html":[3,3,0,0],
 "functions.html":[3,3,0],
+"functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,2,1],
 "group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,2,2],
 "group__config__encoding.html#gaffff394bbc47c05ed1bfde2e16a596e8":[2,2,0],
-"group__config__shaping.html":[2,1],
-"group__config__shaping.html#ga677dde0ea956d5e99af30cf501a727ad":[2,1,2]
+"group__config__shaping.html":[2,1]
 };

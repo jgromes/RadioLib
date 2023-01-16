@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"group__config__shaping.html#ga677dde0ea956d5e99af30cf501a727ad":[2,1,2],
 "group__config__shaping.html#ga6a562fca42573d39e4a214c293756f64":[2,1,0],
 "group__config__shaping.html#ga80e2185af1123c7632aa40cad1691e6d":[2,1,3],
 "group__config__shaping.html#gaa778d14c29d21fe329137a28a3f54a5d":[2,1,1],
@@ -74,8 +75,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607":[2,4,5],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,1],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
