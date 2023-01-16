@@ -709,6 +709,15 @@ class SX126x: public PhysicalLayer {
     int16_t setRxBandwidth(float rxBw);
 
     /*!
+      \brief Enables or disables Rx Boosted Gain mode as described in SX126x datasheet section 9.6 (SX1261/2 v2.1, SX1268 v1.1)
+
+      \param rxbgm True for Rx Boosted Gain, false for Rx Power Saving Gain
+
+      \returns \ref status_codes
+    */
+    int16_t setRxBoostedGainMode(bool rxbgm);
+
+    /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
       Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
       Set to RADIOLIB_SHAPING_NONE to disable data shaping.
