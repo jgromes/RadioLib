@@ -870,6 +870,26 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   return(setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev));
 }
 
+int16_t SX126x::setRxBoostedGainMode(bool rxbgm) {
+  // read the current register value
+  uint8_t rxGain = 0;
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
+  RADIOLIB_ASSERT(state);
+
+  // gain mode register value (SX1261/2 datasheet v2.1 section 9.6)
+  if(rxbgm) {
+    rxGain = 0x96; // Rx Boosted Gain
+  } else {
+    rxGain = 0x94; // Rx Power Saving Gain
+  }
+
+  // update RX gain setting register
+  state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX126x::setDataShaping(uint8_t sh) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
