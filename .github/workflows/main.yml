@@ -65,23 +65,23 @@ jobs:
         run:
           |
           # common settings - no extra options, skip STM32WL examples, all warnings
-          echo "::set-output name=options::"
-          echo "::set-output name=skip-pattern::'STM32WL'"
-          echo "::set-output name=warnings::'all'"
+          echo "name=options::" >> $GITHUB_OUTPUT
+          echo "name=skip-pattern::'STM32WL'" >> $GITHUB_OUTPUT
+          echo "name=warnings::'all'" >> $GITHUB_OUTPUT
 
           # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
           if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
             # Arduino Mega
-            echo "::set-output name=options:::cpu=atmega2560"
+            echo "name=options:::cpu=atmega2560" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
             # Arduino Uno WiFi
-            echo "::set-output name=options:::mode=on"
+            echo "name=options:::mode=on" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
             # Adafruit SAMD
-            echo "::set-output name=options:::usbstack=arduino,debug=off"
-            echo "::set-output name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
+            echo "name=options:::usbstack=arduino,debug=off" >> $GITHUB_OUTPUT
+            echo "name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
             # Adafruit Feather nRF52
@@ -90,57 +90,57 @@ jobs:
             pip3 install wheel
             pip3 install --user adafruit-nrfutil
             echo "/home/runner/.local/bin" >> $GITHUB_PATH
-            echo "::set-output name=options:::softdevice=s132v6,debug=l0"
-            echo "::set-output name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
+            echo "name=options:::softdevice=s132v6,debug=l0" >> $GITHUB_OUTPUT
+            echo "name=index-url::--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             # ESP32
             python -m pip install pyserial
-            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json"
-
+            echo "name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
+            
           elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             # ESP8266
-            echo "::set-output name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K"
-            echo "::set-output name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json"
+            echo "name=options:::xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K" >> $GITHUB_OUTPUT
+            echo "name=index-url::--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
             # SparkFun Apollo
-            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json"
-            echo "::set-output name=warnings::'none'"
+            echo "name=warnings::'none'" >> $GITHUB_OUTPUT
+            echo "name=index-url::--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'STMicroelectronics:stm32') }}" == "true" ]]; then
             # STM32 (official core)
-            echo "::set-output name=index-url::--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json"
-
+            echo "name=index-url::--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
+            
             if [[ "${{ contains(matrix.board, 'NUCLEO_WL55') }}" == "true" ]]; then
               # Do *not* skip STM32WL examples
-              echo "::set-output name=skip-pattern::''"
+              echo "name=skip-pattern::''" >> $GITHUB_OUTPUT
             fi
 
           elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
             # STM32 (unofficial core)
-            echo "::set-output name=options:::bootloader_version=original,cpu_speed=speed_72mhz"
-            echo "::set-output name=index-url::--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json"
+            echo "name=options:::bootloader_version=original,cpu_speed=speed_72mhz" >> $GITHUB_OUTPUT
+            echo "name=index-url::--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'MegaCoreX:megaavr') }}" == "true" ]]; then
             # MegaCoreX
-            echo "::set-output name=index-url::--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json"
-
+            echo "name=index-url::--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
+            
           elif [[ "${{ contains(matrix.board, 'CubeCell:CubeCell') }}" == "true" ]]; then
             # CubeCell
-            echo "::set-output name=index-url::--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json"
+            echo "name=index-url::--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'rp2040:rp2040') }}" == "true" ]]; then
             # CubeCell
-            echo "::set-output name=index-url::--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json"
+            echo "name=index-url::--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'MegaCore:avr') }}" == "true" ]]; then
             # MegaCore
-            echo "::set-output name=index-url::--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json"
+            echo "name=index-url::--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
 
           elif [[ "${{ contains(matrix.board, 'teensy:avr') }}" == "true" ]]; then
             # Teensy
-            echo "::set-output name=index-url::--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json"
+            echo "name=index-url::--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json" >> $GITHUB_OUTPUT
 
           fi
 
