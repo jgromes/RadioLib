@@ -65,9 +65,9 @@ jobs:
         run:
           |
           # common settings - no extra options, skip STM32WL examples, all warnings
-          echo "name=options::" >> $GITHUB_OUTPUT
-          echo "name=skip-pattern::'STM32WL'" >> $GITHUB_OUTPUT
-          echo "name=warnings::'all'" >> $GITHUB_OUTPUT
+          echo "options=''" >> $GITHUB_OUTPUT
+          echo "skip-pattern='STM32WL'" >> $GITHUB_OUTPUT
+          echo "warnings='all'" >> $GITHUB_OUTPUT
 
           # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
           if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
@@ -96,7 +96,7 @@ jobs:
           elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
             # ESP32
             python -m pip install pyserial
-            echo "name=index-url::--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
+            echo "index-url='--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json'" >> $GITHUB_OUTPUT
             
           elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
             # ESP8266
