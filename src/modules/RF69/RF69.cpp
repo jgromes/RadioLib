@@ -538,7 +538,8 @@ int16_t RF69::getFrequency(float *freq) {
 }
 
 int16_t RF69::setBitRate(float br) {
-  RADIOLIB_CHECK_RANGE(br, 1.2, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+  // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
+  RADIOLIB_CHECK_RANGE(br, 0.5, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
 
   // check bitrate-bandwidth ratio
   if(!(br < 2000 * _rxBw)) {

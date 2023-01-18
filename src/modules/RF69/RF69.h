@@ -746,7 +746,7 @@ class RF69: public PhysicalLayer {
     int16_t getFrequency(float *freq);
 
     /*!
-      \brief Sets bit rate. Allowed values range from 1.2 to 300.0 kbps.
+      \brief Sets bit rate. Allowed values range from 0.5 to 300.0 kbps.
 
       \param br Bit rate to be set in kbps.
 
