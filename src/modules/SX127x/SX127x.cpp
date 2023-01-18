@@ -381,6 +381,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     // set expected packet length for SF6
     if(_sf == 6) {
       state |= _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH, len);
+      _packetLength = len;
     }
 
     // apply fixes to errata
