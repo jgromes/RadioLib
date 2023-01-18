@@ -902,7 +902,7 @@ class SX127x: public PhysicalLayer {
     float getDataRate() const;
 
     /*!
-      \brief Sets FSK bit rate. Allowed values range from 1.2 to 300 kbps. Only available in FSK mode.
+      \brief Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.
 
       \param br Bit rate to be set (in kbps).
 
