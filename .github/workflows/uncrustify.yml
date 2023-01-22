@@ -11,7 +11,7 @@ jobs:
     name: Uncrustify
     runs-on: ubuntu-latest
     env:
-      run-uncrust: ${{ contains(github.event.head_commit.message, 'Bump version to') || github.event_name == 'pull_request' }}
+      run-uncrust: ${{ contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, 'CI_FORCE_UNCRUST') || github.event_name == 'pull_request' }}
 
     steps:
       - name: Checkout repository
