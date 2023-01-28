@@ -870,7 +870,7 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   return(setModulationParamsFSK(_br, _pulseShape, _rxBw, _freqDev));
 }
 
-int16_t SX126x::setRxBoostedGainMode(bool rxbgm) {
+int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
   // read the current register value
   uint8_t rxGain = 0;
   int16_t state = readRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
@@ -886,6 +886,23 @@ int16_t SX126x::setRxBoostedGainMode(bool rxbgm) {
   // update RX gain setting register
   state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
   RADIOLIB_ASSERT(state);
+
+  // add Rx Gain register to retention memory if requested
+  if(persist) {
+    // values and registers below are specified in SX126x datasheet v2.1 section 9.6, just below table 9-3
+    uint8_t value0 = 0x01;
+    uint8_t value1 = 0x08;
+    uint8_t value2 = 0xAC;
+
+    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0, &value0, 1);
+    RADIOLIB_ASSERT(state);
+
+    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_1, &value1, 1);
+    RADIOLIB_ASSERT(state);
+
+    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_2, &value2, 1);
+    RADIOLIB_ASSERT(state);
+  }
 
   return(state);
 }

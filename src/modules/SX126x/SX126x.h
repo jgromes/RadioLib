@@ -713,9 +713,11 @@ class SX126x: public PhysicalLayer {
 
       \param rxbgm True for Rx Boosted Gain, false for Rx Power Saving Gain
 
+      \param persist True to persist Rx gain setting when waking up from warm-start mode (e.g. when using Rx duty cycle mode)
+
       \returns \ref status_codes
     */
-    int16_t setRxBoostedGainMode(bool rxbgm);
+    int16_t setRxBoostedGainMode(bool rxbgm, bool persist = true);
 
     /*!
       \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
