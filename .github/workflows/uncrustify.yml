@@ -1,0 +1,23 @@
+name: "Uncrustify"
+
+on:
+  push:
+    branches: [master, uncrustify]
+  pull_request:
+    branches: [master]
+
+jobs:
+  uncrustify:
+    name: Uncrustify
+    runs-on: ubuntu-latest
+    env:
+      run-uncrust: ${{ contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, 'CI_FORCE_UNCRUST') || github.event_name == 'pull_request' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run style check
+        uses: coleaeason/actions-uncrustify@v1
+        with:
+          configPath: 'uncrustify.cfg'
