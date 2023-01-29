@@ -2,7 +2,7 @@ name: "Uncrustify"
 
 on:
   push:
-    branches: [master, uncrustify]
+    branches: [master]
   pull_request:
     branches: [master]
 
@@ -15,13 +15,11 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
-
-      # attempt to resolve "dubious ownership" error (https://github.com/actions/runner-images/issues/6775)
-      - name: Change Owner of Container Working Directory
-        run: chown root:root .
+        if: ${{ env.run-uncrust == 'true' }}
+        uses: actions/checkout@v3
 
       - name: Run style check
+        if: ${{ env.run-uncrust == 'true' }}
         uses: coleaeason/actions-uncrustify@v1
         with:
           configPath: 'uncrustify.cfg'
