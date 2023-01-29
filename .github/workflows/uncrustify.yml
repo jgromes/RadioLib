@@ -17,6 +17,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # attempt to resolve "dubious ownership" error (https://github.com/actions/runner-images/issues/6775)
+      - name: Change Owner of Container Working Directory
+        run: chown root:root .
+
       - name: Run style check
         uses: coleaeason/actions-uncrustify@v1
         with:
