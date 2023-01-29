@@ -52,7 +52,7 @@ var class_s_x126x =
     [ "setRfSwitchPins", "class_s_x126x.html#a288257242e483cb3eb6944333179dd26", null ],
     [ "setRfSwitchTable", "class_s_x126x.html#ad92085fdf4508c0849de0aec8dee2494", null ],
     [ "setRxBandwidth", "class_s_x126x.html#a59d443c02d4620cda32c63a00c6bcc22", null ],
-    [ "setRxBoostedGainMode", "class_s_x126x.html#af1277855a742e085fb849a6da8943d77", null ],
+    [ "setRxBoostedGainMode", "class_s_x126x.html#a920aa76ff5f0f579424ef6de92e588c8", null ],
     [ "setSpreadingFactor", "class_s_x126x.html#ae5993359ace652fbdc862eb23fdd263d", null ],
     [ "setSyncBits", "class_s_x126x.html#ac594fbb30c5010658c970a64654c7162", null ],
     [ "setSyncWord", "class_s_x126x.html#a38e6d7831f35893a5b8328c10a2901bf", null ],
