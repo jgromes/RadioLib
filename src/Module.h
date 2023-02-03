@@ -62,7 +62,7 @@ class Module {
      *
      * See setRfSwitchTable() for details.
      */
-    static constexpr RfSwitchMode_t END_OF_MODE_TABLE = {MODE_END_OF_TABLE, {}};
+    static const RfSwitchMode_t END_OF_MODE_TABLE;
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
 

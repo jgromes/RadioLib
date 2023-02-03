@@ -11,6 +11,8 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #include <SubGhz.h>
 
+const Module::RfSwitchMode_t STM32WLx::END_OF_MODE_TABLE = {Module::MODE_END_OF_TABLE, {}};
+
 STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) {
 }
 
