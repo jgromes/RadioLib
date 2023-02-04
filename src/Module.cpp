@@ -8,6 +8,8 @@
 mbed::PwmOut *pwmPin = NULL;
 #endif
 
+const Module::RfSwitchMode_t Module::END_OF_MODE_TABLE = {Module::MODE_END_OF_TABLE, {}};
+
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio):
   _cs(cs),
   _irq(irq),
