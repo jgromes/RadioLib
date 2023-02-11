@@ -10,6 +10,7 @@
     - SX1231
     - CC1101
     - Si443x/RFM2x
+    - SX126x/LLCC68 (only devices without TCXO!)
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -36,6 +37,7 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // SX1231:        DIO2
 // CC1101:        GDO2
 // Si443x/RFM2x:  GPIO
+// SX126x/LLCC68: DIO2
 AFSKClient audio(&radio, 5);
 
 void setup() {

@@ -13,6 +13,7 @@
     - SX1231
     - CC1101
     - Si443x/RFM2x
+    - SX126x/LLCC68 (only devices without TCXO!)
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -36,7 +37,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 //SX1278 radio = RadioShield.ModuleA;
 
 // create AFSK client instance using the FSK module
-// pin 5 is connected to SX1278 DIO2
+// this requires connection to the module direct
+// input pin, here connected to Arduino pin 5
+// SX127x/RFM9x:  DIO2
+// RF69:          DIO2
+// SX1231:        DIO2
+// CC1101:        GDO2
+// Si443x/RFM2x:  GPIO
+// SX126x/LLCC68: DIO2
 AFSKClient audio(&radio, 5);
 
 // create FSK4 client instance using the AFSK instance
@@ -81,7 +89,7 @@ void setup() {
   // NOTE: Unlike FSK FSK4, AFSK requires no rounding of
   //       the frequency shift.
   Serial.print(F("[FSK4] Initializing ... "));
-  // low ("space") frequency:     434.0 MHz
+  // lowest ("space") frequency:     400 Hz
   // frequency shift:             270 Hz
   // baud rate:                   100 baud
   state = fsk4.begin(400, 270, 100);

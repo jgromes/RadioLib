@@ -12,6 +12,7 @@
     - SX1231
     - CC1101
     - Si443x/RFM2x
+    - SX126x/LLCC68 (only devices without TCXO!)
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -35,8 +36,15 @@ SX1278 radio = new Module(10, 2, 9, 3);
 //SX1278 radio = RadioShield.ModuleA;
 
 // create AFSK client instance using the FSK module
-// pin 5 is connected to SX1278 DIO2
-AFSKClient audio(&radio, 10);
+// this requires connection to the module direct
+// input pin, here connected to Arduino pin 5
+// SX127x/RFM9x:  DIO2
+// RF69:          DIO2
+// SX1231:        DIO2
+// CC1101:        GDO2
+// Si443x/RFM2x:  GPIO
+// SX126x/LLCC68: DIO2
+AFSKClient audio(&radio, 5);
 
 // create Morse client instance using the AFSK instance
 MorseClient morse(&audio);
@@ -65,17 +73,6 @@ void setup() {
   // tone frequency:              400 Hz
   // speed:                       20 words per minute
   state = morse.begin(400);
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
-  }
-
-  // after that, set mode to OOK
-  Serial.print(F("[SX1278] Switching to OOK ... "));
-  state = radio.setOOK(true);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
