@@ -83,8 +83,11 @@
 #define RADIOLIB_SX126X_REG_DIOX_IN_ENABLE                     0x0583
 #define RADIOLIB_SX126X_REG_DIOX_PULL_UP_CTRL                  0x0584
 #define RADIOLIB_SX126X_REG_DIOX_PULL_DOWN_CTRL                0x0585
+#define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0                0x0587
+#define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1                0x0680
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_MSB              0x06B8
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_LSB              0x06B9
+#define RADIOLIB_SX126X_REG_RX_TX_PLD_LEN                      0x06BB
 #define RADIOLIB_SX126X_REG_CRC_INITIAL_MSB                    0x06BC
 #define RADIOLIB_SX126X_REG_CRC_INITIAL_LSB                    0x06BD
 #define RADIOLIB_SX126X_REG_CRC_POLYNOMIAL_MSB                 0x06BE
@@ -102,6 +105,7 @@
 #define RADIOLIB_SX126X_REG_IQ_CONFIG                          0x0736
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_MSB                 0x0740
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_LSB                 0x0741
+#define RADIOLIB_SX126X_REG_RX_ADDR_PTR                        0x0803
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_0                    0x0819
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_1                    0x081A
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_2                    0x081B
@@ -1013,6 +1017,7 @@ class SX126x: public PhysicalLayer {
     int16_t setFrequencyRaw(float freq);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
+    int16_t directMode();
 
     // fixes to errata
     int16_t fixSensitivity();

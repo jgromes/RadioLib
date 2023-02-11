@@ -321,6 +321,63 @@ int16_t SX126x::receiveDirect() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+int16_t SX126x::directMode() {
+  // check modem
+  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // disable DIO2 RF switch
+  state = setDio2AsRfSwitch(false);
+  RADIOLIB_ASSERT(state);
+
+  // set DIO2 to clock output and DIO3 to data input
+  // this is done exclusively by writing magic values to even more magic registers
+  uint8_t val = 0;
+
+  state = readRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, &val, 1);
+  RADIOLIB_ASSERT(state);
+  val &= ~(0x07 << 4);
+  val |= (0x01 << 4);
+  state = writeRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, &val, 1);
+  RADIOLIB_ASSERT(state);
+  
+  state = readRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, &val, 1);
+  RADIOLIB_ASSERT(state);
+  val &= ~(0x0F << 0);
+  val |= (0x0C << 0);
+  state = writeRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, &val, 1);
+  RADIOLIB_ASSERT(state);
+  
+  state = readRegister(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, &val, 1);
+  RADIOLIB_ASSERT(state);
+  val &= ~(0x01 << 3);
+  val |= (0x01 << 3);
+  state = writeRegister(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, &val, 1);
+  RADIOLIB_ASSERT(state);
+  
+  state = readRegister(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, &val, 1);
+  RADIOLIB_ASSERT(state);
+  val &= ~(0x01 << 3);
+  val |= (0x01 << 3);
+  state = writeRegister(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, &val, 1);
+  RADIOLIB_ASSERT(state);
+
+  // enable TxDone interrupt
+  state = setDioIrqParams(RADIOLIB_SX126X_IRQ_TX_DONE, RADIOLIB_SX126X_IRQ_TX_DONE);
+  RADIOLIB_ASSERT(state);
+
+  // set preamble length to the maximum to prevent SX126x from exiting Tx mode for a while
+  state = setPreambleLength(0xFFFF);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
 int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // set mode to CAD
   int state = startChannelScan(symbolNum, detPeak, detMin);
