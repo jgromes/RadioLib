@@ -1,5 +1,12 @@
 var NAVTREEINDEX4 =
 {
+"functions_t.html":[3,3,0,16],
+"functions_type.html":[3,3,3],
+"functions_v.html":[3,3,0,17],
+"functions_vars.html":[3,3,2],
+"functions_w.html":[3,3,0,18],
+"functions_y.html":[3,3,0,19],
+"functions_~.html":[3,3,0,20],
 "group__config__encoding.html":[2,2],
 "group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,2,1],
 "group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,2,2],
@@ -80,8 +87,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607":[2,4,5],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,1],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
