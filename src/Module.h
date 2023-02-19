@@ -140,6 +140,11 @@ class Module {
     uint8_t SPIwriteCommand = 0b10000000;
 
     /*!
+      \brief Basic SPI no-operation command. Defaults to 0x80.
+    */
+    uint8_t SPInopCommand = 0x00;
+
+    /*!
       \brief SPI address width. Defaults to 8, currently only supports 8 and 16-bit addresses.
     */
     uint8_t SPIaddrWidth = 8;

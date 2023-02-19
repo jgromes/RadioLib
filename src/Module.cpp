@@ -189,21 +189,41 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
 }
 
 void Module::SPIreadRegisterBurst(uint16_t reg, uint8_t numBytes, uint8_t* inBytes) {
-  SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
+  if(!SPIstreamType) {
+    SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
+  } else {
+    uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
+    SPItransferStream(cmd, 3, false, NULL, inBytes, numBytes, true, 5000);
+  }
 }
 
 uint8_t Module::SPIreadRegister(uint16_t reg) {
   uint8_t resp = 0;
-  SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
+  if(!SPIstreamType) {
+    SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
+  } else {
+    uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
+    SPItransferStream(cmd, 3, false, NULL, &resp, 1, true, 5000);
+  }
   return(resp);
 }
 
 void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, uint8_t numBytes) {
-  SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
+  if(!SPIstreamType) {
+    SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
+  } else {
+    uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
+    SPItransferStream(cmd, 3, true, data, NULL, numBytes, true, 5000);
+  }
 }
 
 void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
-  SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
+  if(!SPIstreamType) {
+    SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
+  } else {
+    uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
+    SPItransferStream(cmd, 3, true, &data, NULL, 1, true, 5000);
+  }
 }
 
 void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
@@ -220,7 +240,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
     this->SPItransfer((reg >> 8) | cmd);
     this->SPItransfer(reg & 0xFF);
   }
-  
+
   #if defined(RADIOLIB_VERBOSE)
     if(cmd == SPIwriteCommand) {
       RADIOLIB_VERBOSE_PRINT('W');
@@ -305,7 +325,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   } else {
     // skip the first byte for read-type commands (status-only)
-    uint8_t in = this->SPItransfer(this->SPIreadCommand);
+    uint8_t in = this->SPItransfer(this->SPInopCommand);
     #if defined(RADIOLIB_VERBOSE)
       debugBuff[0] = in;
     #endif
@@ -320,7 +340,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     // read the data
     if(state == RADIOLIB_ERR_NONE) {
       for(uint8_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->SPItransfer(this->SPIreadCommand);
+        dataIn[n] = this->SPItransfer(this->SPInopCommand);
       }
     }
   }
@@ -366,13 +386,13 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     } else {
       RADIOLIB_VERBOSE_PRINT("R\t");
       // skip the first byte for read-type commands (status-only)
-      RADIOLIB_VERBOSE_PRINT(this->SPIreadCommand, HEX);
+      RADIOLIB_VERBOSE_PRINT(this->SPInopCommand, HEX);
       RADIOLIB_VERBOSE_PRINT('\t');
       RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
       RADIOLIB_VERBOSE_PRINT('\t')
 
       for(uint8_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(this->SPIreadCommand, HEX);
+        RADIOLIB_VERBOSE_PRINT(this->SPInopCommand, HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
         RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
