@@ -279,6 +279,60 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->SPIendTransaction();
 }
 
+int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+  return(this->SPIreadStream(&cmd, 1, data, numBytes, waitForGpio, verify));
+}
+
+int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+  // send the command
+  int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, 5000);
+  RADIOLIB_ASSERT(state);
+
+  // check the status
+  if(verify) {
+    state = this->SPIcheckStream();
+  }
+
+  return(state);
+}
+
+int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+  return(this->SPIwriteStream(&cmd, 1, data, numBytes, waitForGpio, verify));
+}
+
+int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+  // send the command
+  int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, 5000);
+  RADIOLIB_ASSERT(state);
+
+  // check the status
+  if(verify) {
+    state = this->SPIcheckStream();
+  }
+
+  return(state);
+}
+
+int16_t Module::SPIcheckStream() {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  #if defined(RADIOLIB_SPI_PARANOID)
+  // get the status
+  uint8_t spiStatus = 0;
+  uint8_t cmd = this->SPIstatusCommand;
+  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, 5000);
+  RADIOLIB_ASSERT(state);
+
+  // translate to RadioLib status code
+  if(this->SPIparseStatusCb != nullptr) {
+    this->SPIstreamError = this->SPIparseStatusCb(spiStatus);
+  }
+
+  #endif
+
+  return(state);
+}
+
 int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout) {
   #if defined(RADIOLIB_VERBOSE)
     uint8_t debugBuff[RADIOLIB_STATIC_ARRAY_SIZE];

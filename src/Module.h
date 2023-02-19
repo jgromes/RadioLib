@@ -140,9 +140,14 @@ class Module {
     uint8_t SPIwriteCommand = 0b10000000;
 
     /*!
-      \brief Basic SPI no-operation command. Defaults to 0x80.
+      \brief Basic SPI no-operation command. Defaults to 0x00.
     */
     uint8_t SPInopCommand = 0x00;
+
+    /*!
+      \brief Basic SPI status read command. Defaults to 0x00.
+    */
+    uint8_t SPIstatusCommand = 0x00;
 
     /*!
       \brief SPI address width. Defaults to 8, currently only supports 8 and 16-bit addresses.
@@ -154,6 +159,11 @@ class Module {
       Defaults to register-type SPI interfaces.
     */
     bool SPIstreamType = false;
+
+    /*!
+      \brief The last recorded SPI stream error.
+    */
+    int16_t SPIstreamError = RADIOLIB_ERR_UNKNOWN;
 
     /*!
       \brief SPI status parsing callback typedef.
@@ -285,13 +295,92 @@ class Module {
       \param numBytes Number of bytes to transfer.
     */
     void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+
+    /*!
+      \brief Method to check the result of last SPI stream transfer.
+
+      \returns \ref status_codes
+    */
+    int16_t SPIcheckStream();
+    
+    /*!
+      \brief Method to perform a read transaction with SPI stream.
+
+      \param cmd SPI operation command.
+
+      \param data Data that will be transferred from slave to master.
+
+      \param numBytes Number of bytes to transfer.
+
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+
+      \param verify Whether to verify the result of the transaction after it is finished.
+
+      \returns \ref status_codes
+    */
+    int16_t SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    
+    /*!
+      \brief Method to perform a read transaction with SPI stream.
+
+      \param cmd SPI operation command.
+
+      \param cmdLen SPI command length in bytes.
+
+      \param data Data that will be transferred from slave to master.
+
+      \param numBytes Number of bytes to transfer.
+
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+
+      \param verify Whether to verify the result of the transaction after it is finished.
+
+      \returns \ref status_codes
+    */
+    int16_t SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    
+    /*!
+      \brief Method to perform a write transaction with SPI stream.
+
+      \param cmd SPI operation command.
+
+      \param data Data that will be transferred from master to slave.
+
+      \param numBytes Number of bytes to transfer.
+
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+
+      \param verify Whether to verify the result of the transaction after it is finished.
+
+      \returns \ref status_codes
+    */
+    int16_t SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+
+    /*!
+      \brief Method to perform a write transaction with SPI stream.
+
+      \param cmd SPI operation command.
+
+      \param cmdLen SPI command length in bytes.
+
+      \param data Data that will be transferred from master to slave.
+
+      \param numBytes Number of bytes to transfer.
+
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+
+      \param verify Whether to verify the result of the transaction after it is finished.
+
+      \returns \ref status_codes
+    */
+    int16_t SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
 
       \param cmd SPI operation command.
 
-      \param cmd SPI command length in bytes.
+      \param cmdLen SPI command length in bytes.
 
       \param write Set to true for write commands, false for read commands.
 
