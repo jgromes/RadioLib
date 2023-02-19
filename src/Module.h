@@ -140,6 +140,11 @@ class Module {
     uint8_t SPIwriteCommand = 0b10000000;
 
     /*!
+      \brief SPI address width. Defaults to 8, currently only supports 8 and 16-bit addresses.
+    */
+    uint8_t SPIaddrWidth = 8;
+
+    /*!
       \brief Whether the SPI interface is stream-type (e.g. SX126x) or register-type (e.g. SX127x).
       Defaults to register-type SPI interfaces.
     */
@@ -200,7 +205,7 @@ class Module {
 
       \returns Masked register value or status code.
     */
-    int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+    int16_t SPIgetRegValue(uint16_t reg, uint8_t msb = 7, uint8_t lsb = 0);
 
     /*!
       \brief Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.
@@ -219,7 +224,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
+    int16_t SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
 
     /*!
       \brief SPI burst read method.
@@ -230,7 +235,7 @@ class Module {
 
       \param inBytes Pointer to array that will hold the read data.
     */
-    void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
+    void SPIreadRegisterBurst(uint16_t reg, uint8_t numBytes, uint8_t* inBytes);
 
     /*!
       \brief SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead.
@@ -239,7 +244,7 @@ class Module {
 
       \returns Value that was read from register.
     */
-    uint8_t SPIreadRegister(uint8_t reg);
+    uint8_t SPIreadRegister(uint16_t reg);
 
     /*!
       \brief SPI burst write method.
@@ -250,7 +255,7 @@ class Module {
 
       \param numBytes Number of bytes that will be written.
     */
-    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, uint8_t numBytes);
+    void SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, uint8_t numBytes);
 
     /*!
       \brief SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead.
@@ -259,7 +264,7 @@ class Module {
 
       \param data Value that will be written to the register.
     */
-    void SPIwriteRegister(uint8_t reg, uint8_t data);
+    void SPIwriteRegister(uint16_t reg, uint8_t data);
 
     /*!
       \brief SPI single transfer method.
@@ -274,7 +279,7 @@ class Module {
 
       \param numBytes Number of bytes to transfer.
     */
-    void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
     
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
