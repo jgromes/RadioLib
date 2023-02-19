@@ -139,6 +139,23 @@ class Module {
     */
     uint8_t SPIwriteCommand = 0b10000000;
 
+    /*!
+      \brief Whether the SPI interface is stream-type (e.g. SX126x) or register-type (e.g. SX127x).
+      Defaults to register-type SPI interfaces.
+    */
+    bool SPIstreamType = false;
+
+    /*!
+      \brief SPI status parsing callback typedef.
+    */
+    typedef int16_t (*SPIparseStatusCb_t)(uint8_t in);
+
+    /*!
+      \brief Callback to function that will parse the module-specific status codes to RadioLib status codes.
+      Typically used for modules with SPI stream-type interface (e.g. SX126x/SX128x).
+    */
+    SPIparseStatusCb_t SPIparseStatusCb = nullptr;
+
     #if defined(RADIOLIB_INTERRUPT_TIMING)
 
     /*!
@@ -258,6 +275,29 @@ class Module {
       \param numBytes Number of bytes to transfer.
     */
     void SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    
+    /*!
+      \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
+
+      \param cmd SPI operation command.
+
+      \param cmd SPI command length in bytes.
+
+      \param write Set to true for write commands, false for read commands.
+
+      \param dataOut Data that will be transfered from master to slave.
+
+      \param dataIn Data that was transfered from slave to master.
+
+      \param numBytes Number of bytes to transfer.
+
+      \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
+
+      \param timeout GPIO wait period timeout in milliseconds.
+
+      \returns \ref status_codes
+    */
+    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout);
 
     // pin number access methods
 

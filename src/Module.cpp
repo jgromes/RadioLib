@@ -253,6 +253,132 @@ void Module::SPItransfer(uint8_t cmd, uint8_t reg, uint8_t* dataOut, uint8_t* da
   this->SPIendTransaction();
 }
 
+int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout) {
+  #if defined(RADIOLIB_VERBOSE)
+    uint8_t debugBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+  #endif
+
+  // pull NSS low
+  this->digitalWrite(this->getCs(), LOW);
+
+  // ensure GPIO is low
+  uint32_t start = this->millis();
+  while(this->digitalRead(this->getGpio())) {
+    this->yield();
+    if(this->millis() - start >= timeout) {
+      this->digitalWrite(this->getCs(), HIGH);
+      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+    }
+  }
+
+  // start transfer
+  this->SPIbeginTransaction();
+
+  // send command byte(s)
+  for(uint8_t n = 0; n < cmdLen; n++) {
+    this->SPItransfer(cmd[n]);
+  }
+
+  // variable to save error during SPI transfer
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // send/receive all bytes
+  if(write) {
+    for(uint8_t n = 0; n < numBytes; n++) {
+      // send byte
+      uint8_t in = this->SPItransfer(dataOut[n]);
+      #if defined(RADIOLIB_VERBOSE)
+        debugBuff[n] = in;
+      #endif
+
+      // check status
+      if(this->SPIparseStatusCb != nullptr) {
+        state = this->SPIparseStatusCb(in);
+      }
+    }
+
+  } else {
+    // skip the first byte for read-type commands (status-only)
+    uint8_t in = this->SPItransfer(this->SPIreadCommand);
+    #if defined(RADIOLIB_VERBOSE)
+      debugBuff[0] = in;
+    #endif
+
+    // check status
+    if(this->SPIparseStatusCb != nullptr) {
+      state = this->SPIparseStatusCb(in);
+    } else {
+      state = RADIOLIB_ERR_NONE;
+    }
+
+    // read the data
+    if(state == RADIOLIB_ERR_NONE) {
+      for(uint8_t n = 0; n < numBytes; n++) {
+        dataIn[n] = this->SPItransfer(this->SPIreadCommand);
+      }
+    }
+  }
+
+  // stop transfer
+  this->SPIendTransaction();
+  this->digitalWrite(this->getCs(), HIGH);
+
+  // wait for GPIO to go high and then low
+  if(waitForGpio) {
+    this->delayMicroseconds(1);
+    uint32_t start = this->millis();
+    while(this->digitalRead(this->getGpio())) {
+      this->yield();
+      if(this->millis() - start >= timeout) {
+        state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
+        break;
+      }
+    }
+  }
+
+  // print debug output
+  #if defined(RADIOLIB_VERBOSE)
+    // print command byte(s)
+    RADIOLIB_VERBOSE_PRINT("CMD\t");
+    for(uint8_t n = 0; n < cmdLen; n++) {
+      RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
+
+    // print data bytes
+    RADIOLIB_VERBOSE_PRINT("DAT");
+    if(write) {
+      RADIOLIB_VERBOSE_PRINT("W\t");
+      for(uint8_t n = 0; n < numBytes; n++) {
+        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
+      RADIOLIB_VERBOSE_PRINTLN();
+    } else {
+      RADIOLIB_VERBOSE_PRINT("R\t");
+      // skip the first byte for read-type commands (status-only)
+      RADIOLIB_VERBOSE_PRINT(this->SPIreadCommand, HEX);
+      RADIOLIB_VERBOSE_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
+      RADIOLIB_VERBOSE_PRINT('\t')
+
+      for(uint8_t n = 0; n < numBytes; n++) {
+        RADIOLIB_VERBOSE_PRINT(this->SPIreadCommand, HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
+        RADIOLIB_VERBOSE_PRINT('\t');
+      }
+      RADIOLIB_VERBOSE_PRINTLN();
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
+  #endif
+
+  return(state);
+}
+
 void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
   #if defined(RADIOLIB_INTERRUPT_TIMING)
   (void)start;
