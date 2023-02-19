@@ -1,6 +1,7 @@
 var class_module =
 [
     [ "RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", "struct_module_1_1_rf_switch_mode__t" ],
+    [ "SPIparseStatusCb_t", "class_module.html#a9393088249856eab568126aeb2493e4a", null ],
     [ "OpMode_t", "class_module.html#a5a67b3a63420d762ecba9448671c99bf", [
       [ "MODE_END_OF_TABLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770", null ],
       [ "MODE_IDLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671", null ],
@@ -43,6 +44,7 @@ var class_module =
     [ "SPIsetRegValue", "class_module.html#a1286d7fd9673cbfab945c26b2585a129", null ],
     [ "SPItransfer", "class_module.html#abb9e88a881632cb2c72931c5b8c2ae90", null ],
     [ "SPItransfer", "class_module.html#aefd955f1cd6d588b2cc229db87cb2121", null ],
+    [ "SPItransferStream", "class_module.html#a7295c6b22ac09146d538b90e2dc6ae92", null ],
     [ "SPIwriteRegister", "class_module.html#ab814614ddd34b57f5a612a20f5fe4c57", null ],
     [ "SPIwriteRegisterBurst", "class_module.html#a9d77a08070cbd48fd4ece62a739333e9", null ],
     [ "term", "class_module.html#a45bd514a1f2859d9a867c8f9b13eb332", null ],
@@ -50,6 +52,8 @@ var class_module =
     [ "transfer", "class_module.html#a45e7823c44ac0aa8a10bd4f365890c98", null ],
     [ "waitForMicroseconds", "class_module.html#a47978200f7e2e408fb64f506c81cee9f", null ],
     [ "yield", "class_module.html#a227d2d38e4747d0f49bb4df1c80b45d7", null ],
+    [ "SPIparseStatusCb", "class_module.html#af6e89e2bc4976e8c5dc42dedda9fa6a2", null ],
     [ "SPIreadCommand", "class_module.html#a849ad85fc1bc3a7130e660c13973ab26", null ],
+    [ "SPIstreamType", "class_module.html#a34927454be3a34df8a5a586c46c428af", null ],
     [ "SPIwriteCommand", "class_module.html#ae89764d15e8df5694a6aec0e18f72d3f", null ]
 ];

@@ -1,5 +1,10 @@
 var NAVTREEINDEX4 =
 {
+"group__config__encoding.html":[2,2],
+"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,2,1],
+"group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,2,2],
+"group__config__encoding.html#gaffff394bbc47c05ed1bfde2e16a596e8":[2,2,0],
+"group__config__shaping.html":[2,1],
 "group__config__shaping.html#ga677dde0ea956d5e99af30cf501a727ad":[2,1,2],
 "group__config__shaping.html#ga6a562fca42573d39e4a214c293756f64":[2,1,0],
 "group__config__shaping.html#ga80e2185af1123c7632aa40cad1691e6d":[2,1,3],
