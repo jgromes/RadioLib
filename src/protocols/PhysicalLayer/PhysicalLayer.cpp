@@ -115,6 +115,7 @@ int16_t PhysicalLayer::standby() {
 }
 
 int16_t PhysicalLayer::standby(uint8_t mode) {
+  (void)mode;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
