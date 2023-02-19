@@ -322,7 +322,7 @@ int16_t SX126x::transmitDirect(uint32_t frf) {
 
   // start transmitting
   uint8_t data[] = {RADIOLIB_SX126X_CMD_NOP};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_CONTINUOUS_WAVE, data, 1));
 }
 
 int16_t SX126x::receiveDirect() {
