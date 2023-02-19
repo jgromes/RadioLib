@@ -14,6 +14,11 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize LoRa modulation variables
@@ -69,6 +74,11 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize GFSK modulation variables
@@ -132,6 +142,11 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, u
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize BLE modulation variables
@@ -181,6 +196,11 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uin
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX128x"));
 
   // initialize FLRC modulation variables
@@ -1278,17 +1298,16 @@ uint8_t SX128x::getStatus() {
 }
 
 int16_t SX128x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
-  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_WRITE_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
-  return(SPIwriteCommand(cmd, 3, data, numBytes));
+  _mod->SPIwriteRegisterBurst(addr, data, numBytes);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
-  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_READ_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
-  int16_t state = SX128x::SPItransfer(cmd, 3, false, NULL, data, numBytes, true);
-  RADIOLIB_ASSERT(state);
+  // send the command
+  _mod->SPIreadRegisterBurst(addr, numBytes, data);
 
   // check the status
-  state = checkCommandResult();
+  int16_t state = checkCommandResult();
   return(state);
 }
 
@@ -1430,7 +1449,7 @@ int16_t SX128x::checkCommandResult() {
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = RADIOLIB_SX128X_CMD_GET_STATUS;
-  state = SX128x::SPItransfer(&cmd, 1, false, NULL, &spiStatus, 1, true);
+  state = _mod->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, 5000);
   RADIOLIB_ASSERT(state);
 
   // translate to RadioLib status code
@@ -1458,7 +1477,7 @@ int16_t SX128x::checkCommandResult() {
 
 int16_t SX128x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
   // send the command
-  int16_t state = SX128x::SPItransfer(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1468,7 +1487,7 @@ int16_t SX128x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uin
 
 int16_t SX128x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
   // send the command
-  int16_t state = SX128x::SPItransfer(&cmd, 1, true, data, NULL, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(&cmd, 1, true, data, NULL, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1478,7 +1497,7 @@ int16_t SX128x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bo
 
 int16_t SX128x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
   // send the command
-  int16_t state = SX128x::SPItransfer(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1488,7 +1507,7 @@ int16_t SX128x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint
 
 int16_t SX128x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy) {
   // send the command
-  int16_t state = SX128x::SPItransfer(&cmd, 1, false, NULL, data, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(&cmd, 1, false, NULL, data, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1496,147 +1515,17 @@ int16_t SX128x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, boo
   return(state);
 }
 
-int16_t SX128x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout) {
-  #if defined(RADIOLIB_VERBOSE)
-    uint8_t debugBuff[256];
-  #endif
-
-  // ensure BUSY is low (state machine ready)
-  uint32_t start = _mod->millis();
-  while(_mod->digitalRead(_mod->getGpio())) {
-    _mod->yield();
-    if(_mod->millis() - start >= timeout) {
-      _mod->digitalWrite(_mod->getCs(), HIGH);
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-    }
+int16_t SX128x::SPIparseStatus(uint8_t in) {
+  if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_TIMEOUT) {
+    return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+  } else if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_ERROR) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  } else if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_FAILED) {
+    return(RADIOLIB_ERR_SPI_CMD_FAILED);
+  } else if((in == 0x00) || (in == 0xFF)) {
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-
-  // pull NSS low
-  _mod->digitalWrite(_mod->getCs(), LOW);
-
-  // start transfer
-  _mod->SPIbeginTransaction();
-
-  // send command byte(s)
-  for(uint8_t n = 0; n < cmdLen; n++) {
-    _mod->SPItransfer(cmd[n]);
-  }
-
-  // variable to save error during SPI transfer
-  uint8_t status = 0;
-
-  // send/receive all bytes
-  if(write) {
-    for(uint8_t n = 0; n < numBytes; n++) {
-      // send byte
-      uint8_t in = _mod->SPItransfer(dataOut[n]);
-      #if defined(RADIOLIB_VERBOSE)
-        debugBuff[n] = in;
-      #endif
-
-      // check status
-      if(((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_TIMEOUT) ||
-         ((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_ERROR) ||
-         ((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_FAILED)) {
-        status = in & 0b00011100;
-        break;
-      } else if(in == 0x00 || in == 0xFF) {
-        status = RADIOLIB_SX128X_STATUS_SPI_FAILED;
-        break;
-      }
-    }
-
-  } else {
-    // skip the first byte for read-type commands (status-only)
-    uint8_t in = _mod->SPItransfer(RADIOLIB_SX128X_CMD_NOP);
-    #if defined(RADIOLIB_VERBOSE)
-      debugBuff[0] = in;
-    #endif
-
-    // check status
-    if(((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_TIMEOUT) ||
-       ((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_ERROR) ||
-       ((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_FAILED)) {
-      status = in & 0b00011100;
-    } else if(in == 0x00 || in == 0xFF) {
-      status = RADIOLIB_SX128X_STATUS_SPI_FAILED;
-    } else {
-      for(uint8_t n = 0; n < numBytes; n++) {
-        dataIn[n] = _mod->SPItransfer(RADIOLIB_SX128X_CMD_NOP);
-      }
-    }
-  }
-
-  // stop transfer
-  _mod->SPIendTransaction();
-  _mod->digitalWrite(_mod->getCs(), HIGH);
-
-  // wait for BUSY to go high and then low
-  if(waitForBusy) {
-    _mod->delayMicroseconds(1);
-    start = _mod->millis();
-    while(_mod->digitalRead(_mod->getGpio())) {
-      _mod->yield();
-      if(_mod->millis() - start >= timeout) {
-        status = RADIOLIB_SX128X_STATUS_CMD_TIMEOUT;
-        break;
-      }
-    }
-  }
-
-  // print debug output
-  #if defined(RADIOLIB_VERBOSE)
-    // print command byte(s)
-    RADIOLIB_VERBOSE_PRINT("CMD\t");
-    for(uint8_t n = 0; n < cmdLen; n++) {
-      RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-    }
-    RADIOLIB_VERBOSE_PRINTLN();
-
-    // print data bytes
-    RADIOLIB_VERBOSE_PRINT("DAT");
-    if(write) {
-      RADIOLIB_VERBOSE_PRINT("W\t");
-      for(uint8_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
-    } else {
-      RADIOLIB_VERBOSE_PRINT("R\t");
-      // skip the first byte for read-type commands (status-only)
-      RADIOLIB_VERBOSE_PRINT(RADIOLIB_SX128X_CMD_NOP, HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t')
-
-      for(uint8_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(RADIOLIB_SX128X_CMD_NOP, HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
-    }
-    RADIOLIB_VERBOSE_PRINTLN();
-  #endif
-
-  // parse status
-  switch(status) {
-    case RADIOLIB_SX128X_STATUS_CMD_TIMEOUT:
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-    case RADIOLIB_SX128X_STATUS_CMD_ERROR:
-      return(RADIOLIB_ERR_SPI_CMD_INVALID);
-    case RADIOLIB_SX128X_STATUS_CMD_FAILED:
-      return(RADIOLIB_ERR_SPI_CMD_FAILED);
-    case RADIOLIB_SX128X_STATUS_SPI_FAILED:
-      return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-    default:
-      return(RADIOLIB_ERR_NONE);
-  }
+  return(RADIOLIB_ERR_NONE);
 }
 
 #endif
