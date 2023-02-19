@@ -112,6 +112,8 @@
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_3                    0x081C
 #define RADIOLIB_SX126X_REG_RX_GAIN                            0x08AC
 #define RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG                    0x08D8
+#define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_N                     0x08E3
+#define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_P                     0x08E4
 #define RADIOLIB_SX126X_REG_OCP_CONFIGURATION                  0x08E7
 #define RADIOLIB_SX126X_REG_RTC_CTRL                           0x0902
 #define RADIOLIB_SX126X_REG_XTA_TRIM                           0x0911
@@ -358,6 +360,29 @@
 #define RADIOLIB_SX126X_SYNC_WORD_PUBLIC                       0x34        // actually 0x3444  NOTE: The low nibbles in each byte (0x_4_4) are masked out since apparently, they're reserved.
 #define RADIOLIB_SX126X_SYNC_WORD_PRIVATE                      0x12        // actually 0x1424        You couldn't make this up if you tried.
 
+// RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1
+#define RADIOLIB_SX126X_TX_BITBANG_1_DISABLED                  0b00000000  //  6     4     Tx bitbang: disabled (default)
+#define RADIOLIB_SX126X_TX_BITBANG_1_ENABLED                   0b00010000  //  6     4                 enabled
+
+// RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0
+#define RADIOLIB_SX126X_TX_BITBANG_0_DISABLED                  0b00000000  //  3     0     Tx bitbang: disabled (default)
+#define RADIOLIB_SX126X_TX_BITBANG_0_ENABLED                   0b00001100  //  3     0                 enabled
+
+// RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE
+#define RADIOLIB_SX126X_DIO1_OUT_DISABLED                      0b00000010  //  1     1     DIO1 output: disabled
+#define RADIOLIB_SX126X_DIO1_OUT_ENABLED                       0b00000000  //  1     1                  enabled
+#define RADIOLIB_SX126X_DIO2_OUT_DISABLED                      0b00000100  //  2     2     DIO2 output: disabled
+#define RADIOLIB_SX126X_DIO2_OUT_ENABLED                       0b00000000  //  2     2                  enabled
+#define RADIOLIB_SX126X_DIO3_OUT_DISABLED                      0b00001000  //  3     3     DIO3 output: disabled
+#define RADIOLIB_SX126X_DIO3_OUT_ENABLED                       0b00000000  //  3     3                  enabled
+
+// RADIOLIB_SX126X_REG_DIOX_IN_ENABLE
+#define RADIOLIB_SX126X_DIO1_IN_DISABLED                       0b00000000  //  1     1     DIO1 input: disabled
+#define RADIOLIB_SX126X_DIO1_IN_ENABLED                        0b00000010  //  1     1                 enabled
+#define RADIOLIB_SX126X_DIO2_IN_DISABLED                       0b00000000  //  2     2     DIO2 input: disabled
+#define RADIOLIB_SX126X_DIO2_IN_ENABLED                        0b00000100  //  2     2                 enabled
+#define RADIOLIB_SX126X_DIO3_IN_DISABLED                       0b00000000  //  3     3     DIO3 input: disabled
+#define RADIOLIB_SX126X_DIO3_IN_ENABLED                        0b00001000  //  3     3                 enabled
 
 /*!
   \class SX126x
@@ -1018,6 +1043,7 @@ class SX126x: public PhysicalLayer {
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
     int16_t directMode();
+    int16_t packetMode();
 
     // fixes to errata
     int16_t fixSensitivity();
@@ -1035,7 +1061,7 @@ class SX126x: public PhysicalLayer {
     int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true, bool verify = true);
     int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true, bool verify = true);
     int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true, bool verify = true);
-    int16_t SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout = 5000);
+    static int16_t SPIparseStatus(uint8_t in);
 
 #if !defined(RADIOLIB_GODMODE)
   protected:

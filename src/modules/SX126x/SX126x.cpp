@@ -14,6 +14,11 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX126X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX126X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
@@ -80,6 +85,11 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   _mod->init();
   _mod->pinMode(_mod->getIrq(), INPUT);
   _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->SPIreadCommand = RADIOLIB_SX126X_CMD_READ_REGISTER;
+  _mod->SPIwriteCommand = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
+  _mod->SPInopCommand = RADIOLIB_SX126X_CMD_NOP;
+  _mod->SPIstreamType = true;
+  _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // initialize configuration variables (will be overwritten during public settings configuration)
@@ -337,34 +347,13 @@ int16_t SX126x::directMode() {
 
   // set DIO2 to clock output and DIO3 to data input
   // this is done exclusively by writing magic values to even more magic registers
-  uint8_t val = 0;
-
-  state = readRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, &val, 1);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, RADIOLIB_SX126X_TX_BITBANG_1_ENABLED, 6, 4);
   RADIOLIB_ASSERT(state);
-  val &= ~(0x07 << 4);
-  val |= (0x01 << 4);
-  state = writeRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, &val, 1);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, RADIOLIB_SX126X_TX_BITBANG_0_ENABLED, 3, 0);
   RADIOLIB_ASSERT(state);
-  
-  state = readRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, &val, 1);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, RADIOLIB_SX126X_DIO3_OUT_DISABLED, 3, 3);
   RADIOLIB_ASSERT(state);
-  val &= ~(0x0F << 0);
-  val |= (0x0C << 0);
-  state = writeRegister(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, &val, 1);
-  RADIOLIB_ASSERT(state);
-  
-  state = readRegister(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, &val, 1);
-  RADIOLIB_ASSERT(state);
-  val &= ~(0x01 << 3);
-  val |= (0x01 << 3);
-  state = writeRegister(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, &val, 1);
-  RADIOLIB_ASSERT(state);
-  
-  state = readRegister(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, &val, 1);
-  RADIOLIB_ASSERT(state);
-  val &= ~(0x01 << 3);
-  val |= (0x01 << 3);
-  state = writeRegister(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, &val, 1);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, RADIOLIB_SX126X_DIO3_IN_ENABLED, 3, 3);
   RADIOLIB_ASSERT(state);
 
   // enable TxDone interrupt
@@ -373,6 +362,36 @@ int16_t SX126x::directMode() {
 
   // set preamble length to the maximum to prevent SX126x from exiting Tx mode for a while
   state = setPreambleLength(0xFFFF);
+  RADIOLIB_ASSERT(state);
+  
+  return(state);
+}
+
+int16_t SX126x::packetMode() {
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+  
+  // set preamble length to the default
+  state = setPreambleLength(16);
+  RADIOLIB_ASSERT(state);
+
+  // disable TxDone interrupt
+  state = setDioIrqParams(RADIOLIB_SX126X_IRQ_NONE, RADIOLIB_SX126X_IRQ_NONE);
+  RADIOLIB_ASSERT(state);
+  
+  // restore the magic registers
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, RADIOLIB_SX126X_DIO3_IN_DISABLED, 3, 3);
+  RADIOLIB_ASSERT(state);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE, RADIOLIB_SX126X_DIO3_OUT_ENABLED, 3, 3);
+  RADIOLIB_ASSERT(state);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0, RADIOLIB_SX126X_TX_BITBANG_0_DISABLED, 3, 0);
+  RADIOLIB_ASSERT(state);
+  state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1, RADIOLIB_SX126X_TX_BITBANG_1_DISABLED, 6, 4);
+  RADIOLIB_ASSERT(state);
+
+  // enable DIO2 RF switch
+  state = setDio2AsRfSwitch(true);
   RADIOLIB_ASSERT(state);
 
   return(state);
@@ -1345,15 +1364,11 @@ int16_t SX126x::getLastError() {
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX126x::setDirectAction(void (*func)(void)) {
-  // SX126x is unable to perform direct mode reception
-  // this method is implemented only for PhysicalLayer compatibility
-  (void)func;
+  setDio1Action(func);
 }
 
 void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
-  // SX126x is unable to perform direct mode reception
-  // this method is implemented only for PhysicalLayer compatibility
-  (void)pin;
+  updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 #endif
 
@@ -1473,18 +1488,16 @@ int16_t SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMa
 }
 
 int16_t SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
-  uint8_t cmd[] = { RADIOLIB_SX126X_CMD_WRITE_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
-  return(SPIwriteCommand(cmd, 3, data, numBytes));
+  _mod->SPIwriteRegisterBurst(addr, data, numBytes);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
   // send the command
-  uint8_t cmd[] = { RADIOLIB_SX126X_CMD_READ_REGISTER, (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
-  int16_t state = SX126x::SPItransfer(cmd, 3, false, NULL, data, numBytes, true);
-  RADIOLIB_ASSERT(state);
+  _mod->SPIreadRegisterBurst(addr, numBytes, data);
 
   // check the status
-  state = checkCommandResult();
+  int16_t state = checkCommandResult();
   return(state);
 }
 
@@ -1784,7 +1797,7 @@ int16_t SX126x::checkCommandResult() {
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = RADIOLIB_SX126X_CMD_GET_STATUS;
-  state = SX126x::SPItransfer(&cmd, 1, false, NULL, &spiStatus, 1, true);
+  state = _mod->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, 5000);
   RADIOLIB_ASSERT(state);
 
   // translate to RadioLib status code
@@ -1812,7 +1825,7 @@ int16_t SX126x::checkCommandResult() {
 
 int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
-  int16_t state = SX126x::SPItransfer(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1825,7 +1838,7 @@ int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uin
 
 int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
-  int16_t state = SX126x::SPItransfer(&cmd, 1, true, data, NULL, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(&cmd, 1, true, data, NULL, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1838,7 +1851,7 @@ int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bo
 
 int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
-  int16_t state = SX126x::SPItransfer(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1851,7 +1864,7 @@ int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint
 
 int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
   // send the command
-  int16_t state = SX126x::SPItransfer(&cmd, 1, false, NULL, data, numBytes, waitForBusy);
+  int16_t state = _mod->SPItransferStream(&cmd, 1, false, NULL, data, numBytes, waitForBusy, 5000);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -1862,147 +1875,17 @@ int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, boo
   return(state);
 }
 
-int16_t SX126x::SPItransfer(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForBusy, uint32_t timeout) {
-  #if defined(RADIOLIB_VERBOSE)
-    uint8_t debugBuff[256];
-  #endif
-
-  // pull NSS low
-  _mod->digitalWrite(_mod->getCs(), LOW);
-
-  // ensure BUSY is low (state machine ready)
-  uint32_t start = _mod->millis();
-  while(_mod->digitalRead(_mod->getGpio())) {
-    _mod->yield();
-    if(_mod->millis() - start >= timeout) {
-      _mod->digitalWrite(_mod->getCs(), HIGH);
+int16_t SX126x::SPIparseStatus(uint8_t in) {
+  if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_TIMEOUT) {
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-    }
-  }
-
-  // start transfer
-  _mod->SPIbeginTransaction();
-
-  // send command byte(s)
-  for(uint8_t n = 0; n < cmdLen; n++) {
-    _mod->SPItransfer(cmd[n]);
-  }
-
-  // variable to save error during SPI transfer
-  uint8_t status = 0;
-
-  // send/receive all bytes
-  if(write) {
-    for(uint8_t n = 0; n < numBytes; n++) {
-      // send byte
-      uint8_t in = _mod->SPItransfer(dataOut[n]);
-      #if defined(RADIOLIB_VERBOSE)
-        debugBuff[n] = in;
-      #endif
-
-      // check status
-      if(((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_TIMEOUT) ||
-         ((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_INVALID) ||
-         ((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_FAILED)) {
-        status = in & 0b00001110;
-        break;
-      } else if(in == 0x00 || in == 0xFF) {
-        status = RADIOLIB_SX126X_STATUS_SPI_FAILED;
-        break;
-      }
-    }
-
-  } else {
-    // skip the first byte for read-type commands (status-only)
-    uint8_t in = _mod->SPItransfer(RADIOLIB_SX126X_CMD_NOP);
-    #if defined(RADIOLIB_VERBOSE)
-      debugBuff[0] = in;
-    #endif
-
-    // check status
-    if(((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_TIMEOUT) ||
-       ((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_INVALID) ||
-       ((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_FAILED)) {
-      status = in & 0b00001110;
-    } else if(in == 0x00 || in == 0xFF) {
-      status = RADIOLIB_SX126X_STATUS_SPI_FAILED;
-    } else {
-      for(uint8_t n = 0; n < numBytes; n++) {
-        dataIn[n] = _mod->SPItransfer(RADIOLIB_SX126X_CMD_NOP);
-      }
-    }
-  }
-
-  // stop transfer
-  _mod->SPIendTransaction();
-  _mod->digitalWrite(_mod->getCs(), HIGH);
-
-  // wait for BUSY to go high and then low
-  if(waitForBusy) {
-    _mod->delayMicroseconds(1);
-    start = _mod->millis();
-    while(_mod->digitalRead(_mod->getGpio())) {
-      _mod->yield();
-      if(_mod->millis() - start >= timeout) {
-        status = RADIOLIB_SX126X_STATUS_CMD_TIMEOUT;
-        break;
-      }
-    }
-  }
-
-  // print debug output
-  #if defined(RADIOLIB_VERBOSE)
-    // print command byte(s)
-    RADIOLIB_VERBOSE_PRINT("CMD\t");
-    for(uint8_t n = 0; n < cmdLen; n++) {
-      RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-    }
-    RADIOLIB_VERBOSE_PRINTLN();
-
-    // print data bytes
-    RADIOLIB_VERBOSE_PRINT("DAT");
-    if(write) {
-      RADIOLIB_VERBOSE_PRINT("W\t");
-      for(uint8_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
-    } else {
-      RADIOLIB_VERBOSE_PRINT("R\t");
-      // skip the first byte for read-type commands (status-only)
-      RADIOLIB_VERBOSE_PRINT(RADIOLIB_SX126X_CMD_NOP, HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t')
-
-      for(uint8_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(RADIOLIB_SX126X_CMD_NOP, HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
-    }
-    RADIOLIB_VERBOSE_PRINTLN();
-  #endif
-
-  // parse status
-  switch(status) {
-    case RADIOLIB_SX126X_STATUS_CMD_TIMEOUT:
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-    case RADIOLIB_SX126X_STATUS_CMD_INVALID:
+  } else if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_INVALID) {
       return(RADIOLIB_ERR_SPI_CMD_INVALID);
-    case RADIOLIB_SX126X_STATUS_CMD_FAILED:
+  } else if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_FAILED) {
       return(RADIOLIB_ERR_SPI_CMD_FAILED);
-    case RADIOLIB_SX126X_STATUS_SPI_FAILED:
+  } else if((in == 0x00) || (in == 0xFF)) {
       return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-    default:
-      return(RADIOLIB_ERR_NONE);
   }
+      return(RADIOLIB_ERR_NONE);
 }
 
 #endif
