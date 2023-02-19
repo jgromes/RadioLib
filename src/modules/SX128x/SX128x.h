@@ -822,13 +822,6 @@ class SX128x: public PhysicalLayer {
    */
     uint8_t randomByte();
 
-    /*!
-     \brief Get the last recorded transaction error.
-
-     \returns \ref status_codes
-    */
-    int16_t getLastError();
-
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
@@ -888,10 +881,6 @@ class SX128x: public PhysicalLayer {
 #endif
 
     // common low-level SPI interface
-    int16_t SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
-    int16_t SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy = true);
     static int16_t SPIparseStatus(uint8_t in);
 
 #if !defined(RADIOLIB_GODMODE)
@@ -912,10 +901,7 @@ class SX128x: public PhysicalLayer {
     // cached BLE parameters
     uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;
 
-    int16_t _lastError = RADIOLIB_ERR_NONE;
-
     int16_t config(uint8_t modem);
-    int16_t checkCommandResult();
 };
 
 #endif
