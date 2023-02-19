@@ -279,11 +279,11 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->SPIendTransaction();
 }
 
-int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
   return(this->SPIreadStream(&cmd, 1, data, numBytes, waitForGpio, verify));
 }
 
-int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
   // send the command
   int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, 5000);
   RADIOLIB_ASSERT(state);
@@ -296,11 +296,11 @@ int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8
   return(state);
 }
 
-int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
   return(this->SPIwriteStream(&cmd, 1, data, numBytes, waitForGpio, verify));
 }
 
-int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true) {
+int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
   // send the command
   int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, 5000);
   RADIOLIB_ASSERT(state);
