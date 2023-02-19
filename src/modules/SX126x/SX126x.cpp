@@ -17,6 +17,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   _mod->SPIreadCommand = RADIOLIB_SX126X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX126X_CMD_NOP;
+  _mod->SPIstatusCommand = RADIOLIB_SX126X_CMD_GET_STATUS;
   _mod->SPIstreamType = true;
   _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
@@ -88,6 +89,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   _mod->SPIreadCommand = RADIOLIB_SX126X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX126X_CMD_NOP;
+  _mod->SPIstatusCommand = RADIOLIB_SX126X_CMD_GET_STATUS;
   _mod->SPIstreamType = true;
   _mod->SPIparseStatusCb = SPIparseStatus;
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
@@ -419,7 +421,7 @@ int16_t SX126x::sleep(bool retainConfig) {
   if(!retainConfig) {
     sleepMode = RADIOLIB_SX126X_SLEEP_START_COLD | RADIOLIB_SX126X_SLEEP_RTC_OFF;
   }
-  int16_t state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_SLEEP, &sleepMode, 1, false);
+  int16_t state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_SLEEP, &sleepMode, 1, false);
 
   // wait for SX126x to safely enter sleep mode
   _mod->delay(1);
@@ -436,7 +438,7 @@ int16_t SX126x::standby(uint8_t mode) {
   _mod->setRfSwitchState(Module::MODE_IDLE);
 
   uint8_t data[] = {mode};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
 }
 
 void SX126x::setDio1Action(void (*func)(void)) {
@@ -553,7 +555,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
 
   uint8_t data[6] = {(uint8_t)((rxPeriodRaw >> 16) & 0xFF), (uint8_t)((rxPeriodRaw >> 8) & 0xFF), (uint8_t)(rxPeriodRaw & 0xFF),
                      (uint8_t)((sleepPeriodRaw >> 16) & 0xFF), (uint8_t)((sleepPeriodRaw >> 8) & 0xFF), (uint8_t)(sleepPeriodRaw & 0xFF)};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
 int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols) {
@@ -853,9 +855,6 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // check modulation parameters
-  /*if(2 * freqDevRaw + _br > _rxBwKhz * 1000.0) {
-    return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
-  }*/
   _freqDev = freqDevRaw;
 
   // update modulation parameters
@@ -874,9 +873,6 @@ int16_t SX126x::setBitRate(float br) {
   uint32_t brRaw = (uint32_t)((RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
 
   // check modulation parameters
-  /*if(2 * _freqDev + brRaw > _rxBwKhz * 1000.0) {
-    return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
-  }*/
   _br = brRaw;
 
   // update modulation parameters
@@ -1234,7 +1230,7 @@ float SX126x::getSNR() {
 size_t SX126x::getPacketLength(bool update) {
   (void)update;
   uint8_t rxBufStatus[2] = {0, 0};
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
   return((size_t)rxBufStatus[0]);
 }
 
@@ -1283,7 +1279,7 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
 
 float SX126x::getRSSIInst() {
   uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_RSSI_INST, data, 3);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, data, 3);
 
   return (float)data[0] / (-2.0);
 }
@@ -1358,10 +1354,6 @@ uint8_t SX126x::randomByte() {
   return(randByte);
 }
 
-int16_t SX126x::getLastError() {
-  return(_lastError);
-}
-
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX126x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
@@ -1417,7 +1409,7 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   _tcxoDelay = delay;
 
   // enable TCXO control on DIO3
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO3_AS_TCXO_CTRL, data, 4));
 }
 
 int16_t SX126x::setDio2AsRfSwitch(bool enable) {
@@ -1427,17 +1419,17 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   } else {
     data = RADIOLIB_SX126X_DIO2_AS_IRQ;
   }
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
 }
 
 int16_t SX126x::setTx(uint32_t timeout) {
   uint8_t data[] = { (uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF)} ;
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_TX, data, 3));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX, data, 3));
 }
 
 int16_t SX126x::setRx(uint32_t timeout) {
   uint8_t data[] = { (uint8_t)((timeout >> 16) & 0xFF), (uint8_t)((timeout >> 8) & 0xFF), (uint8_t)(timeout & 0xFF) };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
@@ -1475,16 +1467,16 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   }
 
   // configure paramaters
-  int16_t state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
+  int16_t state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
   RADIOLIB_ASSERT(state);
 
   // start CAD
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD, NULL, 0));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD, NULL, 0));
 }
 
 int16_t SX126x::setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax, uint8_t paLut) {
   uint8_t data[] = { paDutyCycle, hpMax, deviceSel, paLut };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_PA_CONFIG, data, 4));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PA_CONFIG, data, 4));
 }
 
 int16_t SX126x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
@@ -1497,18 +1489,18 @@ int16_t SX126x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
   _mod->SPIreadRegisterBurst(addr, numBytes, data);
 
   // check the status
-  int16_t state = checkCommandResult();
+  int16_t state = _mod->SPIcheckStream();
   return(state);
 }
 
 int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
   uint8_t cmd[] = { RADIOLIB_SX126X_CMD_WRITE_BUFFER, offset };
-  return(SPIwriteCommand(cmd, 2, data, numBytes));
+  return(_mod->SPIwriteStream(cmd, 2, data, numBytes));
 }
 
 int16_t SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
   uint8_t cmd[] = { RADIOLIB_SX126X_CMD_READ_BUFFER, RADIOLIB_SX126X_CMD_NOP };
-  return(SPIreadCommand(cmd, 2, data, numBytes));
+  return(_mod->SPIreadStream(cmd, 2, data, numBytes));
 }
 
 int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask) {
@@ -1516,38 +1508,38 @@ int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t di
                      (uint8_t)((dio1Mask >> 8) & 0xFF), (uint8_t)(dio1Mask & 0xFF),
                      (uint8_t)((dio2Mask >> 8) & 0xFF), (uint8_t)(dio2Mask & 0xFF),
                      (uint8_t)((dio3Mask >> 8) & 0xFF), (uint8_t)(dio3Mask & 0xFF)};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS, data, 8));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS, data, 8));
 }
 
 uint16_t SX126x::getIrqStatus() {
   uint8_t data[] = { 0x00, 0x00 };
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
   return(((uint16_t)(data[0]) << 8) | data[1]);
 }
 
 int16_t SX126x::clearIrqStatus(uint16_t clearIrqParams) {
   uint8_t data[] = { (uint8_t)((clearIrqParams >> 8) & 0xFF), (uint8_t)(clearIrqParams & 0xFF) };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, data, 2));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CLEAR_IRQ_STATUS, data, 2));
 }
 
 int16_t SX126x::setRfFrequency(uint32_t frf) {
   uint8_t data[] = { (uint8_t)((frf >> 24) & 0xFF), (uint8_t)((frf >> 16) & 0xFF), (uint8_t)((frf >> 8) & 0xFF), (uint8_t)(frf & 0xFF) };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, data, 4));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, data, 4));
 }
 
 int16_t SX126x::calibrateImage(uint8_t* data) {
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2));
 }
 
 uint8_t SX126x::getPacketType() {
   uint8_t data = 0xFF;
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_PACKET_TYPE, &data, 1);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_TYPE, &data, 1);
   return(data);
 }
 
 int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
   uint8_t data[] = { power, rampTime };
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_TX_PARAMS, data, 2));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_PARAMS, data, 2));
 }
 
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
@@ -1600,62 +1592,62 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   // 500/9/8  - 0x09 0x04 0x03 0x00 - SF9, BW125, 4/8
   // 500/11/8 - 0x0B 0x04 0x03 0x00 - SF11 BW125, 4/7
   uint8_t data[4] = {sf, bw, cr, _ldro};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 4));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 4));
 }
 
 int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev) {
   uint8_t data[8] = {(uint8_t)((br >> 16) & 0xFF), (uint8_t)((br >> 8) & 0xFF), (uint8_t)(br & 0xFF),
                      pulseShape, rxBw,
                      (uint8_t)((freqDev >> 16) & 0xFF), (uint8_t)((freqDev >> 8) & 0xFF), (uint8_t)(freqDev & 0xFF)};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 8));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 8));
 }
 
 int16_t SX126x::setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ) {
   int16_t state = fixInvertedIQ(invertIQ);
   RADIOLIB_ASSERT(state);
   uint8_t data[6] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF), headerType, payloadLength, crcType, invertIQ};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 6));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 6));
 }
 
 int16_t SX126x::setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType, uint8_t payloadLength, uint8_t preambleDetectorLength) {
   uint8_t data[9] = {(uint8_t)((preambleLength >> 8) & 0xFF), (uint8_t)(preambleLength & 0xFF),
                      preambleDetectorLength, syncWordLength, addrComp,
                      packetType, payloadLength, crcType, whitening};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 9));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 9));
 }
 
 int16_t SX126x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddress) {
   uint8_t data[2] = {txBaseAddress, rxBaseAddress};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_BUFFER_BASE_ADDRESS, data, 2));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_BUFFER_BASE_ADDRESS, data, 2));
 }
 
 int16_t SX126x::setRegulatorMode(uint8_t mode) {
   uint8_t data[1] = {mode};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_REGULATOR_MODE, data, 1));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_REGULATOR_MODE, data, 1));
 }
 
 uint8_t SX126x::getStatus() {
   uint8_t data = 0;
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_STATUS, &data, 1);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_STATUS, &data, 1);
   return(data);
 }
 
 uint32_t SX126x::getPacketStatus() {
   uint8_t data[3] = {0, 0, 0};
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_PACKET_STATUS, data, 3);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_PACKET_STATUS, data, 3);
   return((((uint32_t)data[0]) << 16) | (((uint32_t)data[1]) << 8) | (uint32_t)data[2]);
 }
 
 uint16_t SX126x::getDeviceErrors() {
   uint8_t data[2] = {0, 0};
-  SPIreadCommand(RADIOLIB_SX126X_CMD_GET_DEVICE_ERRORS, data, 2);
+  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_DEVICE_ERRORS, data, 2);
   uint16_t opError = (((uint16_t)data[0] & 0xFF) << 8) & ((uint16_t)data[1]);
   return(opError);
 }
 
 int16_t SX126x::clearDeviceErrors() {
   uint8_t data[2] = {RADIOLIB_SX126X_CMD_NOP, RADIOLIB_SX126X_CMD_NOP};
-  return(SPIwriteCommand(RADIOLIB_SX126X_CMD_CLEAR_DEVICE_ERRORS, data, 2));
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CLEAR_DEVICE_ERRORS, data, 2));
 }
 
 int16_t SX126x::setFrequencyRaw(float freq) {
@@ -1752,12 +1744,12 @@ int16_t SX126x::config(uint8_t modem) {
   // set modem
   uint8_t data[7];
   data[0] = modem;
-  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_PACKET_TYPE, data, 1);
+  state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_TYPE, data, 1);
   RADIOLIB_ASSERT(state);
 
   // set Rx/Tx fallback mode to STDBY_RC
   data[0] = RADIOLIB_SX126X_RX_TX_FALLBACK_MODE_STDBY_RC;
-  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE, data, 1);
+  state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE, data, 1);
   RADIOLIB_ASSERT(state);
 
   // set some CAD parameters - will be overwritten whel calling CAD anyway
@@ -1768,7 +1760,7 @@ int16_t SX126x::config(uint8_t modem) {
   data[4] = 0x00;
   data[5] = 0x00;
   data[6] = 0x00;
-  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
+  state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
   RADIOLIB_ASSERT(state);
 
   // clear IRQ
@@ -1778,7 +1770,7 @@ int16_t SX126x::config(uint8_t modem) {
 
   // calibrate all blocks
   data[0] = RADIOLIB_SX126X_CALIBRATE_ALL;
-  state = SPIwriteCommand(RADIOLIB_SX126X_CMD_CALIBRATE, data, 1, true, false);
+  state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE, data, 1, true, false);
   RADIOLIB_ASSERT(state);
 
   // wait for calibration completion
@@ -1788,91 +1780,6 @@ int16_t SX126x::config(uint8_t modem) {
   }
 
   return(RADIOLIB_ERR_NONE);
-}
-
-int16_t SX126x::checkCommandResult() {
-  int16_t state = RADIOLIB_ERR_NONE;
-
-  #if defined(RADIOLIB_SPI_PARANOID)
-  // get the status
-  uint8_t spiStatus = 0;
-  uint8_t cmd = RADIOLIB_SX126X_CMD_GET_STATUS;
-  state = _mod->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, 5000);
-  RADIOLIB_ASSERT(state);
-
-  // translate to RadioLib status code
-  switch(spiStatus) {
-    case RADIOLIB_SX126X_STATUS_CMD_TIMEOUT:
-      _lastError = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
-      break;
-    case RADIOLIB_SX126X_STATUS_CMD_INVALID:
-      _lastError = RADIOLIB_ERR_SPI_CMD_INVALID;
-      break;
-    case RADIOLIB_SX126X_STATUS_CMD_FAILED:
-      _lastError = RADIOLIB_ERR_SPI_CMD_FAILED;
-      break;
-    case RADIOLIB_SX126X_STATUS_SPI_FAILED:
-      _lastError = RADIOLIB_ERR_CHIP_NOT_FOUND;
-      break;
-    default:
-      _lastError = RADIOLIB_ERR_NONE;
-  }
-
-  #endif
-
-  return(state);
-}
-
-int16_t SX126x::SPIwriteCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
-  // send the command
-  int16_t state = _mod->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForBusy, 5000);
-  RADIOLIB_ASSERT(state);
-
-  // check the status
-  if(verify) {
-    state = checkCommandResult();
-  }
-
-  return(state);
-}
-
-int16_t SX126x::SPIwriteCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
-  // send the command
-  int16_t state = _mod->SPItransferStream(&cmd, 1, true, data, NULL, numBytes, waitForBusy, 5000);
-  RADIOLIB_ASSERT(state);
-
-  // check the status
-  if(verify) {
-    state = checkCommandResult();
-  }
-
-  return(state);
-}
-
-int16_t SX126x::SPIreadCommand(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
-  // send the command
-  int16_t state = _mod->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForBusy, 5000);
-  RADIOLIB_ASSERT(state);
-
-  // check the status
-  if(verify) {
-    state = checkCommandResult();
-  }
-
-  return(state);
-}
-
-int16_t SX126x::SPIreadCommand(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForBusy, bool verify) {
-  // send the command
-  int16_t state = _mod->SPItransferStream(&cmd, 1, false, NULL, data, numBytes, waitForBusy, 5000);
-  RADIOLIB_ASSERT(state);
-
-  // check the status
-  if(verify) {
-    state = checkCommandResult();
-  }
-
-  return(state);
 }
 
 int16_t SX126x::SPIparseStatus(uint8_t in) {
