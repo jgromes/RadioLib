@@ -68,8 +68,11 @@
 #define RADIOLIB_SX126X_CMD_GET_STATS                          0x10
 #define RADIOLIB_SX126X_CMD_RESET_STATS                        0x00
 
+#define RADIOLIB_SX126X_CMD_PRAM_UPDATE                        0xD9
+#define RADIOLIB_SX126X_CMD_SET_SCAN_PARAMS                    0x9A
 
 // SX126X register map
+#define RADIOLIB_SX126X_REG_VERSION_STRING                     0x0320
 #define RADIOLIB_SX126X_REG_HOPPING_ENABLE                     0x0385
 #define RADIOLIB_SX126X_REG_LR_FHSS_PACKET_LENGTH              0x0386
 #define RADIOLIB_SX126X_REG_LR_FHSS_NUM_HOPPING_BLOCKS         0x0387
@@ -79,11 +82,13 @@
 #define RADIOLIB_SX126X_REG_LR_FHSS_FREQX_1(X)                 (0x038B + (X)*6)
 #define RADIOLIB_SX126X_REG_LR_FHSS_FREQX_2(X)                 (0x038C + (X)*6)
 #define RADIOLIB_SX126X_REG_LR_FHSS_FREQX_3(X)                 (0x038D + (X)*6)
+#define RADIOLIB_SX126X_REG_SPECTRAL_SCAN_RESULT               0x0401
 #define RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE                    0x0580
 #define RADIOLIB_SX126X_REG_DIOX_IN_ENABLE                     0x0583
 #define RADIOLIB_SX126X_REG_DIOX_PULL_UP_CTRL                  0x0584
 #define RADIOLIB_SX126X_REG_DIOX_PULL_DOWN_CTRL                0x0585
 #define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_0                0x0587
+#define RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE                0x0610
 #define RADIOLIB_SX126X_REG_TX_BITBANG_ENABLE_1                0x0680
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_MSB              0x06B8
 #define RADIOLIB_SX126X_REG_WHITENING_INITIAL_LSB              0x06B9
@@ -102,14 +107,24 @@
 #define RADIOLIB_SX126X_REG_SYNC_WORD_7                        0x06C7
 #define RADIOLIB_SX126X_REG_NODE_ADDRESS                       0x06CD
 #define RADIOLIB_SX126X_REG_BROADCAST_ADDRESS                  0x06CE
+#define RADIOLIB_SX126X_REG_PAYLOAD_LENGTH                     0x0702
+#define RADIOLIB_SX126X_REG_PACKET_PARAMS                      0x0704
 #define RADIOLIB_SX126X_REG_IQ_CONFIG                          0x0736
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_MSB                 0x0740
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_LSB                 0x0741
+#define RADIOLIB_SX126X_REG_FREQ_ERROR                         0x076B
+#define RADIOLIB_SX126X_REG_SPECTRAL_SCAN_STATUS               0x07CD
 #define RADIOLIB_SX126X_REG_RX_ADDR_PTR                        0x0803
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_0                    0x0819
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_1                    0x081A
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_2                    0x081B
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_3                    0x081C
+#define RADIOLIB_SX126X_REG_TX_MODULATION                      0x0889
+#define RADIOLIB_SX126X_REG_RF_FREQUENCY_0                     0x088B
+#define RADIOLIB_SX126X_REG_RF_FREQUENCY_1                     0x088C
+#define RADIOLIB_SX126X_REG_RF_FREQUENCY_2                     0x088D
+#define RADIOLIB_SX126X_REG_RF_FREQUENCY_3                     0x088E
+#define RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW                    0x089B
 #define RADIOLIB_SX126X_REG_RX_GAIN                            0x08AC
 #define RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG                    0x08D8
 #define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_N                     0x08E3
@@ -120,6 +135,7 @@
 #define RADIOLIB_SX126X_REG_XTB_TRIM                           0x0912
 #define RADIOLIB_SX126X_REG_DIO3_OUT_VOLTAGE_CTRL              0x0920
 #define RADIOLIB_SX126X_REG_EVENT_MASK                         0x0944
+#define RADIOLIB_SX126X_REG_PATCH_MEMORY_BASE                  0x8000
 
 // undocumented registers
 #define RADIOLIB_SX126X_REG_SENSITIVITY_CONFIG                 0x0889 // SX1268 datasheet v1.1, section 15.1
@@ -383,6 +399,21 @@
 #define RADIOLIB_SX126X_DIO2_IN_ENABLED                        0b00000100  //  2     2                 enabled
 #define RADIOLIB_SX126X_DIO3_IN_DISABLED                       0b00000000  //  3     3     DIO3 input: disabled
 #define RADIOLIB_SX126X_DIO3_IN_ENABLED                        0b00001000  //  3     3                 enabled
+
+// RADIOLIB_SX126X_REG_RX_GAIN
+#define RADIOLIB_SX126X_RX_GAIN_BOOSTED                        0x96        //  7     0     Rx gain: boosted
+#define RADIOLIB_SX126X_RX_GAIN_POWER_SAVING                   0x94        //  7     0              power saving
+#define RADIOLIB_SX126X_RX_GAIN_SPECTRAL_SCAN                  0xCB        //  7     0              spectral scan
+
+// RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE
+#define RADIOLIB_SX126X_PATCH_UPDATE_DISABLED                  0b00010000  //  4     4     patch update: disabled
+#define RADIOLIB_SX126X_PATCH_UPDATE_ENABLED                   0b00000000  //  4     4                   enabled
+
+// RADIOLIB_SX126X_REG_SPECTRAL_SCAN_STATUS
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_NONE                     0x00        //  7     0      spectral scan status: none
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_ONGOING                  0x0F        //  7     0                            ongoing
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_ABORTED                  0xF0        //  7     0                            aborted
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_COMPLETED                0xFF        //  7     0                            completed
 
 /*!
   \class SX126x
