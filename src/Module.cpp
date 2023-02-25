@@ -188,7 +188,7 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
   #endif
 }
 
-void Module::SPIreadRegisterBurst(uint16_t reg, uint8_t numBytes, uint8_t* inBytes) {
+void Module::SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inBytes) {
   if(!SPIstreamType) {
     SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
   } else {
@@ -208,7 +208,7 @@ uint8_t Module::SPIreadRegister(uint16_t reg) {
   return(resp);
 }
 
-void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, uint8_t numBytes) {
+void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes) {
   if(!SPIstreamType) {
     SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
   } else {
@@ -226,7 +226,7 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
   }
 }
 
-void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
+void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
   // start SPI transaction
   this->SPIbeginTransaction();
 
@@ -279,11 +279,11 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->SPIendTransaction();
 }
 
-int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
+int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   return(this->SPIreadStream(&cmd, 1, data, numBytes, waitForGpio, verify));
 }
 
-int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
+int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   // send the command
   int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, 5000);
   RADIOLIB_ASSERT(state);
@@ -296,11 +296,11 @@ int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8
   return(state);
 }
 
-int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
+int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   return(this->SPIwriteStream(&cmd, 1, data, numBytes, waitForGpio, verify));
 }
 
-int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio, bool verify) {
+int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   // send the command
   int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, 5000);
   RADIOLIB_ASSERT(state);
@@ -333,7 +333,7 @@ int16_t Module::SPIcheckStream() {
   return(state);
 }
 
-int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout) {
+int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout) {
   #if defined(RADIOLIB_VERBOSE)
     uint8_t debugBuff[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
@@ -364,7 +364,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // send/receive all bytes
   if(write) {
-    for(uint8_t n = 0; n < numBytes; n++) {
+    for(size_t n = 0; n < numBytes; n++) {
       // send byte
       uint8_t in = this->SPItransfer(dataOut[n]);
       #if defined(RADIOLIB_VERBOSE)
@@ -393,7 +393,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
     // read the data
     if(state == RADIOLIB_ERR_NONE) {
-      for(uint8_t n = 0; n < numBytes; n++) {
+      for(size_t n = 0; n < numBytes; n++) {
         dataIn[n] = this->SPItransfer(this->SPInopCommand);
       }
     }
@@ -430,7 +430,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     RADIOLIB_VERBOSE_PRINT("DAT");
     if(write) {
       RADIOLIB_VERBOSE_PRINT("W\t");
-      for(uint8_t n = 0; n < numBytes; n++) {
+      for(size_t n = 0; n < numBytes; n++) {
         RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
         RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
@@ -445,7 +445,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
       RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
       RADIOLIB_VERBOSE_PRINT('\t')
 
-      for(uint8_t n = 0; n < numBytes; n++) {
+      for(size_t n = 0; n < numBytes; n++) {
         RADIOLIB_VERBOSE_PRINT(this->SPInopCommand, HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
         RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
@@ -713,17 +713,29 @@ uint16_t Module::flipBits16(uint16_t i) {
   return i;
 }
 
-void Module::hexdump(uint8_t* data, size_t len) {
+void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
-  for(size_t i = 0; i < len; i+=16) {
+  for(int32_t i = 0; i < len; i+=16) {
     char str[80];
-    sprintf(str, "%07x  ", i);
+    sprintf(str, "%07x  ", i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
       line_len = rem_len;
     }
-    for(size_t j = 0; j < line_len; j++) {
-      sprintf(&str[8 + j*3], "%02x ", data[i+j]);
+    for(int32_t j = 0; j < line_len; j+=width) {
+      if(width > 1) {
+        int m = 0;
+        int step = width/2;
+        if(be) {
+          step *= -1;
+        }
+        for(int32_t k = width - 1; k >= -width + 1; k+=step) {
+          sprintf(&str[8 + (j+m)*3], "%02x ", data[i+j+k+m]);
+          m++;
+        }
+      } else {
+        sprintf(&str[8 + (j)*3], "%02x ", data[i+j]);
+      }
     }
     for(size_t j = line_len; j < 16; j++) {
       sprintf(&str[8 + j*3], "   ");
@@ -745,14 +757,14 @@ void Module::hexdump(uint8_t* data, size_t len) {
   }
 }
 
-void Module::regdump(uint8_t start, uint8_t len) {
+void Module::regdump(uint16_t start, size_t len) {
   #if defined(RADIOLIB_STATIC_ONLY)
     uint8_t buff[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* buff = new uint8_t[len];
   #endif
   SPIreadRegisterBurst(start, len, buff);
-  hexdump(buff, len);
+  hexdump(buff, len, start);
   #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] buff;
   #endif

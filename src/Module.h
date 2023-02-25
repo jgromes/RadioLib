@@ -250,7 +250,7 @@ class Module {
 
       \param inBytes Pointer to array that will hold the read data.
     */
-    void SPIreadRegisterBurst(uint16_t reg, uint8_t numBytes, uint8_t* inBytes);
+    void SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inBytes);
 
     /*!
       \brief SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead.
@@ -270,7 +270,7 @@ class Module {
 
       \param numBytes Number of bytes that will be written.
     */
-    void SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, uint8_t numBytes);
+    void SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes);
 
     /*!
       \brief SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead.
@@ -294,7 +294,7 @@ class Module {
 
       \param numBytes Number of bytes to transfer.
     */
-    void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes);
+    void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes);
 
     /*!
       \brief Method to check the result of last SPI stream transfer.
@@ -318,7 +318,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPIreadStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief Method to perform a read transaction with SPI stream.
@@ -337,7 +337,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief Method to perform a write transaction with SPI stream.
@@ -354,7 +354,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPIwriteStream(uint8_t cmd, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
 
     /*!
       \brief Method to perform a write transaction with SPI stream.
@@ -373,7 +373,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, uint8_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
@@ -396,7 +396,7 @@ class Module {
 
       \returns \ref status_codes
     */
-    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout);
+    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout);
 
     // pin number access methods
 
@@ -684,8 +684,12 @@ class Module {
       \param data Data to dump.
 
       \param len Number of bytes to dump.
+
+      \param width Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).
+
+      \param be Print multi-byte data as big endian. Defaults to false.
     */
-    static void hexdump(uint8_t* data, size_t len);
+    static void hexdump(uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
 
     /*!
       \brief Function to dump device registers as hex into the debug port.
@@ -694,7 +698,7 @@ class Module {
 
       \param len Number of bytes to dump.
     */
-    void regdump(uint8_t start, uint8_t len);
+    void regdump(uint16_t start, size_t len);
 
 #if !defined(RADIOLIB_GODMODE)
   private:
