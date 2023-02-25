@@ -717,7 +717,7 @@ void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, 
   size_t rem_len = len;
   for(int32_t i = 0; i < len; i+=16) {
     char str[80];
-    sprintf(str, "%07x  ", i+offset);
+    sprintf(str, "%07lx  ", i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
       line_len = rem_len;
