@@ -20,6 +20,13 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   _mod->SPIstatusCommand = RADIOLIB_SX126X_CMD_GET_STATUS;
   _mod->SPIstreamType = true;
   _mod->SPIparseStatusCb = SPIparseStatus;
+  
+  // try to find the SX126x chip
+  if(!SX126x::findChip(_chipType)) {
+    RADIOLIB_DEBUG_PRINTLN(F("No SX126x found!"));
+    _mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
@@ -92,6 +99,13 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   _mod->SPIstatusCommand = RADIOLIB_SX126X_CMD_GET_STATUS;
   _mod->SPIstreamType = true;
   _mod->SPIparseStatusCb = SPIparseStatus;
+  
+  // try to find the SX126x chip
+  if(!SX126x::findChip(_chipType)) {
+    RADIOLIB_DEBUG_PRINTLN(F("No SX126x found!"));
+    _mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
   RADIOLIB_DEBUG_PRINTLN(F("M\tSX126x"));
 
   // initialize configuration variables (will be overwritten during public settings configuration)
@@ -950,9 +964,9 @@ int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
 
   // gain mode register value (SX1261/2 datasheet v2.1 section 9.6)
   if(rxbgm) {
-    rxGain = 0x96; // Rx Boosted Gain
+    rxGain = RADIOLIB_SX126X_RX_GAIN_BOOSTED;
   } else {
-    rxGain = 0x94; // Rx Power Saving Gain
+    rxGain = RADIOLIB_SX126X_RX_GAIN_POWER_SAVING;
   }
 
   // update RX gain setting register
@@ -1793,6 +1807,41 @@ int16_t SX126x::SPIparseStatus(uint8_t in) {
       return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
       return(RADIOLIB_ERR_NONE);
+}
+
+bool SX126x::findChip(uint8_t ver) {
+  uint8_t i = 0;
+  bool flagFound = false;
+  char versionBuff[16];
+  sprintf(versionBuff, "SX126%d", ver);
+  while((i < 10) && !flagFound) {
+    // reset the module
+    reset();
+
+    // read the version string
+    char version[16];
+    _mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)version);
+
+    // check version register
+    if(strncmp(versionBuff, version, 6) == 0) {
+      RADIOLIB_DEBUG_PRINTLN(F("Found SX126x: RADIOLIB_SX126X_REG_VERSION_STRING:"));
+      _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+      RADIOLIB_DEBUG_PRINTLN();
+      flagFound = true;
+    } else {
+      #if defined(RADIOLIB_DEBUG)
+        RADIOLIB_DEBUG_PRINT(F("SX126x not found! ("));
+        RADIOLIB_DEBUG_PRINT(i + 1);
+        RADIOLIB_DEBUG_PRINTLN(F(" of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:"));
+      _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+        RADIOLIB_DEBUG_PRINTLN();
+      #endif
+      _mod->delay(10);
+      i++;
+    }
+  }
+
+  return(flagFound);
 }
 
 #endif

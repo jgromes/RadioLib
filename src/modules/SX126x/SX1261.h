@@ -12,6 +12,9 @@
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_SX1261                       0x01
 
+//RADIOLIB_SX126X_REG_VERSION_STRING
+#define RADIOLIB_SX1261_CHIP_TYPE                              1
+
 /*!
   \class SX1261
 

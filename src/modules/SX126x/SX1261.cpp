@@ -2,7 +2,7 @@
 #if !defined(RADIOLIB_EXCLUDE_SX126X)
 
 SX1261::SX1261(Module* mod): SX1262(mod) {
-
+  _chipType = RADIOLIB_SX1261_CHIP_TYPE;
 }
 
 int16_t SX1261::setOutputPower(int8_t power) {

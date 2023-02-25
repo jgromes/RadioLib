@@ -2,7 +2,7 @@
 #if !defined(RADIOLIB_EXCLUDE_SX126X)
 
 SX1262::SX1262(Module* mod) : SX126x(mod) {
-
+  _chipType = RADIOLIB_SX1262_CHIP_TYPE;
 }
 
 int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
@@ -42,6 +42,18 @@ int16_t SX1262::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
+
+  return(state);
+}
+
+int16_t SX1262::beginLRFHSS(float freq, float tcxoVoltage, bool useRegulatorLDO) {
+  // execute common part
+  int16_t state = SX126x::beginLRFHSS(tcxoVoltage, useRegulatorLDO);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
   RADIOLIB_ASSERT(state);
 
   return(state);
