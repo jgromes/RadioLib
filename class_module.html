@@ -152,39 +152,39 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a081191402ad5c49e6c21982fc4587b77"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a081191402ad5c49e6c21982fc4587b77">SPIsetRegValue</a> (uint16_t reg, uint8_t value, uint8_t msb=7, uint8_t lsb=0, uint8_t checkInterval=2, uint8_t checkMask=0xFF)</td></tr>
 <tr class="memdesc:a081191402ad5c49e6c21982fc4587b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.  <a href="class_module.html#a081191402ad5c49e6c21982fc4587b77">More...</a><br /></td></tr>
 <tr class="separator:a081191402ad5c49e6c21982fc4587b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40948ebf20bf154332d0c7b37a80865d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a40948ebf20bf154332d0c7b37a80865d">SPIreadRegisterBurst</a> (uint16_t reg, uint8_t numBytes, uint8_t *inBytes)</td></tr>
-<tr class="memdesc:a40948ebf20bf154332d0c7b37a80865d"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI burst read method.  <a href="class_module.html#a40948ebf20bf154332d0c7b37a80865d">More...</a><br /></td></tr>
-<tr class="separator:a40948ebf20bf154332d0c7b37a80865d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a874e030f1931e606e380930d37dd83ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a874e030f1931e606e380930d37dd83ee">SPIreadRegisterBurst</a> (uint16_t reg, size_t numBytes, uint8_t *inBytes)</td></tr>
+<tr class="memdesc:a874e030f1931e606e380930d37dd83ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI burst read method.  <a href="class_module.html#a874e030f1931e606e380930d37dd83ee">More...</a><br /></td></tr>
+<tr class="separator:a874e030f1931e606e380930d37dd83ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a545e4a001da0d9f6358279ac40d4f0"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a9a545e4a001da0d9f6358279ac40d4f0">SPIreadRegister</a> (uint16_t reg)</td></tr>
 <tr class="memdesc:a9a545e4a001da0d9f6358279ac40d4f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead.  <a href="class_module.html#a9a545e4a001da0d9f6358279ac40d4f0">More...</a><br /></td></tr>
 <tr class="separator:a9a545e4a001da0d9f6358279ac40d4f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9547d4753fc648878d294aec14a14754"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a9547d4753fc648878d294aec14a14754">SPIwriteRegisterBurst</a> (uint16_t reg, uint8_t *data, uint8_t numBytes)</td></tr>
-<tr class="memdesc:a9547d4753fc648878d294aec14a14754"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI burst write method.  <a href="class_module.html#a9547d4753fc648878d294aec14a14754">More...</a><br /></td></tr>
-<tr class="separator:a9547d4753fc648878d294aec14a14754"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af474f82d00fffc1ee0fc8def2c7f220c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af474f82d00fffc1ee0fc8def2c7f220c">SPIwriteRegisterBurst</a> (uint16_t reg, uint8_t *data, size_t numBytes)</td></tr>
+<tr class="memdesc:af474f82d00fffc1ee0fc8def2c7f220c"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI burst write method.  <a href="class_module.html#af474f82d00fffc1ee0fc8def2c7f220c">More...</a><br /></td></tr>
+<tr class="separator:af474f82d00fffc1ee0fc8def2c7f220c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4437af6552e258e95ed8ed452afa6dd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4437af6552e258e95ed8ed452afa6dd4">SPIwriteRegister</a> (uint16_t reg, uint8_t data)</td></tr>
 <tr class="memdesc:a4437af6552e258e95ed8ed452afa6dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead.  <a href="class_module.html#a4437af6552e258e95ed8ed452afa6dd4">More...</a><br /></td></tr>
 <tr class="separator:a4437af6552e258e95ed8ed452afa6dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48d526086ceefd38029ecf106b055225"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a48d526086ceefd38029ecf106b055225">SPItransfer</a> (uint8_t cmd, uint16_t reg, uint8_t *dataOut, uint8_t *dataIn, uint8_t numBytes)</td></tr>
-<tr class="memdesc:a48d526086ceefd38029ecf106b055225"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method.  <a href="class_module.html#a48d526086ceefd38029ecf106b055225">More...</a><br /></td></tr>
-<tr class="separator:a48d526086ceefd38029ecf106b055225"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78dd39aa71d97e2220a880df8162fdde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a78dd39aa71d97e2220a880df8162fdde">SPItransfer</a> (uint8_t cmd, uint16_t reg, uint8_t *dataOut, uint8_t *dataIn, size_t numBytes)</td></tr>
+<tr class="memdesc:a78dd39aa71d97e2220a880df8162fdde"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method.  <a href="class_module.html#a78dd39aa71d97e2220a880df8162fdde">More...</a><br /></td></tr>
+<tr class="separator:a78dd39aa71d97e2220a880df8162fdde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5efa7ae78cab1d7f43005e965923f769"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a5efa7ae78cab1d7f43005e965923f769">SPIcheckStream</a> ()</td></tr>
 <tr class="memdesc:a5efa7ae78cab1d7f43005e965923f769"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to check the result of last SPI stream transfer.  <a href="class_module.html#a5efa7ae78cab1d7f43005e965923f769">More...</a><br /></td></tr>
 <tr class="separator:a5efa7ae78cab1d7f43005e965923f769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab29965c0c58db4c967b98a91aae722dd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ab29965c0c58db4c967b98a91aae722dd">SPIreadStream</a> (uint8_t cmd, uint8_t *data, uint8_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
-<tr class="memdesc:ab29965c0c58db4c967b98a91aae722dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a read transaction with SPI stream.  <a href="class_module.html#ab29965c0c58db4c967b98a91aae722dd">More...</a><br /></td></tr>
-<tr class="separator:ab29965c0c58db4c967b98a91aae722dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaeeb0f2933e7d3d8fd822df4521959df"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aaeeb0f2933e7d3d8fd822df4521959df">SPIreadStream</a> (uint8_t *cmd, uint8_t cmdLen, uint8_t *data, uint8_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
-<tr class="memdesc:aaeeb0f2933e7d3d8fd822df4521959df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a read transaction with SPI stream.  <a href="class_module.html#aaeeb0f2933e7d3d8fd822df4521959df">More...</a><br /></td></tr>
-<tr class="separator:aaeeb0f2933e7d3d8fd822df4521959df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc910405811bc9ae262a51f217ab0975"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#adc910405811bc9ae262a51f217ab0975">SPIwriteStream</a> (uint8_t cmd, uint8_t *data, uint8_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
-<tr class="memdesc:adc910405811bc9ae262a51f217ab0975"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a write transaction with SPI stream.  <a href="class_module.html#adc910405811bc9ae262a51f217ab0975">More...</a><br /></td></tr>
-<tr class="separator:adc910405811bc9ae262a51f217ab0975"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46b612b35eeed08754f530d442454756"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a46b612b35eeed08754f530d442454756">SPIwriteStream</a> (uint8_t *cmd, uint8_t cmdLen, uint8_t *data, uint8_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
-<tr class="memdesc:a46b612b35eeed08754f530d442454756"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a write transaction with SPI stream.  <a href="class_module.html#a46b612b35eeed08754f530d442454756">More...</a><br /></td></tr>
-<tr class="separator:a46b612b35eeed08754f530d442454756"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7295c6b22ac09146d538b90e2dc6ae92"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7295c6b22ac09146d538b90e2dc6ae92">SPItransferStream</a> (uint8_t *cmd, uint8_t cmdLen, bool write, uint8_t *dataOut, uint8_t *dataIn, uint8_t numBytes, bool waitForGpio, uint32_t timeout)</td></tr>
-<tr class="memdesc:a7295c6b22ac09146d538b90e2dc6ae92"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.).  <a href="class_module.html#a7295c6b22ac09146d538b90e2dc6ae92">More...</a><br /></td></tr>
-<tr class="separator:a7295c6b22ac09146d538b90e2dc6ae92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9fc874adc8dbe7c3f1fd3c267c27708"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ab9fc874adc8dbe7c3f1fd3c267c27708">SPIreadStream</a> (uint8_t cmd, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
+<tr class="memdesc:ab9fc874adc8dbe7c3f1fd3c267c27708"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a read transaction with SPI stream.  <a href="class_module.html#ab9fc874adc8dbe7c3f1fd3c267c27708">More...</a><br /></td></tr>
+<tr class="separator:ab9fc874adc8dbe7c3f1fd3c267c27708"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a085415b49ff72238f118b937ad896cbd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a085415b49ff72238f118b937ad896cbd">SPIreadStream</a> (uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
+<tr class="memdesc:a085415b49ff72238f118b937ad896cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a read transaction with SPI stream.  <a href="class_module.html#a085415b49ff72238f118b937ad896cbd">More...</a><br /></td></tr>
+<tr class="separator:a085415b49ff72238f118b937ad896cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74ce586afa403130007a474d3295d762"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a74ce586afa403130007a474d3295d762">SPIwriteStream</a> (uint8_t cmd, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
+<tr class="memdesc:a74ce586afa403130007a474d3295d762"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a write transaction with SPI stream.  <a href="class_module.html#a74ce586afa403130007a474d3295d762">More...</a><br /></td></tr>
+<tr class="separator:a74ce586afa403130007a474d3295d762"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7acbe601ebe6398781d0f2de5177305e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7acbe601ebe6398781d0f2de5177305e">SPIwriteStream</a> (uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
+<tr class="memdesc:a7acbe601ebe6398781d0f2de5177305e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a write transaction with SPI stream.  <a href="class_module.html#a7acbe601ebe6398781d0f2de5177305e">More...</a><br /></td></tr>
+<tr class="separator:a7acbe601ebe6398781d0f2de5177305e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3586c8d4013cbdd22cf34032632c181"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">SPItransferStream</a> (uint8_t *cmd, uint8_t cmdLen, bool write, uint8_t *dataOut, uint8_t *dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout)</td></tr>
+<tr class="memdesc:ac3586c8d4013cbdd22cf34032632c181"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.).  <a href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">More...</a><br /></td></tr>
+<tr class="separator:ac3586c8d4013cbdd22cf34032632c181"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae53e355a77f2b7ce6473c62ac5f37334"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_TYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ae53e355a77f2b7ce6473c62ac5f37334">getCs</a> () const</td></tr>
 <tr class="memdesc:ae53e355a77f2b7ce6473c62ac5f37334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of SPI chip select.  <a href="class_module.html#ae53e355a77f2b7ce6473c62ac5f37334">More...</a><br /></td></tr>
 <tr class="separator:ae53e355a77f2b7ce6473c62ac5f37334"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,9 +284,9 @@ virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>SPItransfe
 <tr class="memitem:acabb23f1cded0a43ffc38cfcc649dcb2"><td class="memItemLeft" align="right" valign="top"><a id="acabb23f1cded0a43ffc38cfcc649dcb2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SPIendTransaction</b> ()</td></tr>
 <tr class="separator:acabb23f1cded0a43ffc38cfcc649dcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7216d32fc55130d111409c6f2050d9c0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">regdump</a> (uint8_t start, uint8_t len)</td></tr>
-<tr class="memdesc:a7216d32fc55130d111409c6f2050d9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump device registers as hex into the debug port.  <a href="class_module.html#a7216d32fc55130d111409c6f2050d9c0">More...</a><br /></td></tr>
-<tr class="separator:a7216d32fc55130d111409c6f2050d9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb13a50ed53b009c04dc2ed6caf78423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">regdump</a> (uint16_t start, size_t len)</td></tr>
+<tr class="memdesc:abb13a50ed53b009c04dc2ed6caf78423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump device registers as hex into the debug port.  <a href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">More...</a><br /></td></tr>
+<tr class="separator:abb13a50ed53b009c04dc2ed6caf78423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -298,9 +298,9 @@ static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a160006371be8e121a8a54cc4462b3a72">flipBits16</a> (uint16_t i)</td></tr>
 <tr class="memdesc:a160006371be8e121a8a54cc4462b3a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to reflect bits within an integer. <br /></td></tr>
 <tr class="separator:a160006371be8e121a8a54cc4462b3a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2dc188128f32f9360a178f31659291a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac2dc188128f32f9360a178f31659291a">hexdump</a> (uint8_t *data, size_t len)</td></tr>
-<tr class="memdesc:ac2dc188128f32f9360a178f31659291a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump data as hex into the debug port.  <a href="class_module.html#ac2dc188128f32f9360a178f31659291a">More...</a><br /></td></tr>
-<tr class="separator:ac2dc188128f32f9360a178f31659291a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0532274dafe433ba68529945bfe6a1b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">hexdump</a> (uint8_t *data, size_t len, uint32_t offset=0, uint8_t width=1, bool be=false)</td></tr>
+<tr class="memdesc:ad0532274dafe433ba68529945bfe6a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump data as hex into the debug port.  <a href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">More...</a><br /></td></tr>
+<tr class="separator:ad0532274dafe433ba68529945bfe6a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -778,8 +778,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ac2dc188128f32f9360a178f31659291a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2dc188128f32f9360a178f31659291a">&#9670;&nbsp;</a></span>hexdump()</h2>
+<a id="ad0532274dafe433ba68529945bfe6a1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0532274dafe433ba68529945bfe6a1b">&#9670;&nbsp;</a></span>hexdump()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -797,7 +797,25 @@ Static Public Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>width</em> = <code>1</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>be</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -816,7 +834,9 @@ Static Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Data to dump.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to dump.</td></tr>
+    <tr><td class="paramname">width</td><td>Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).</td></tr>
+    <tr><td class="paramname">be</td><td>Print multi-byte data as big endian. Defaults to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -912,8 +932,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7216d32fc55130d111409c6f2050d9c0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7216d32fc55130d111409c6f2050d9c0">&#9670;&nbsp;</a></span>regdump()</h2>
+<a id="abb13a50ed53b009c04dc2ed6caf78423"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb13a50ed53b009c04dc2ed6caf78423">&#9670;&nbsp;</a></span>regdump()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -921,13 +941,13 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Module::regdump </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint16_t&#160;</td>
           <td class="paramname"><em>start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>
@@ -1171,8 +1191,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a40948ebf20bf154332d0c7b37a80865d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40948ebf20bf154332d0c7b37a80865d">&#9670;&nbsp;</a></span>SPIreadRegisterBurst()</h2>
+<a id="a874e030f1931e606e380930d37dd83ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a874e030f1931e606e380930d37dd83ee">&#9670;&nbsp;</a></span>SPIreadRegisterBurst()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1186,7 +1206,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
@@ -1215,8 +1235,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aaeeb0f2933e7d3d8fd822df4521959df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaeeb0f2933e7d3d8fd822df4521959df">&#9670;&nbsp;</a></span>SPIreadStream() <span class="overload">[1/2]</span></h2>
+<a id="a085415b49ff72238f118b937ad896cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a085415b49ff72238f118b937ad896cbd">&#9670;&nbsp;</a></span>SPIreadStream() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1242,7 +1262,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
@@ -1281,8 +1301,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab29965c0c58db4c967b98a91aae722dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab29965c0c58db4c967b98a91aae722dd">&#9670;&nbsp;</a></span>SPIreadStream() <span class="overload">[2/2]</span></h2>
+<a id="ab9fc874adc8dbe7c3f1fd3c267c27708"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9fc874adc8dbe7c3f1fd3c267c27708">&#9670;&nbsp;</a></span>SPIreadStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1302,7 +1322,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
@@ -1406,8 +1426,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a48d526086ceefd38029ecf106b055225"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48d526086ceefd38029ecf106b055225">&#9670;&nbsp;</a></span>SPItransfer()</h2>
+<a id="a78dd39aa71d97e2220a880df8162fdde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78dd39aa71d97e2220a880df8162fdde">&#9670;&nbsp;</a></span>SPItransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1439,7 +1459,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>&#160;</td>
         </tr>
         <tr>
@@ -1464,8 +1484,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7295c6b22ac09146d538b90e2dc6ae92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7295c6b22ac09146d538b90e2dc6ae92">&#9670;&nbsp;</a></span>SPItransferStream()</h2>
+<a id="ac3586c8d4013cbdd22cf34032632c181"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3586c8d4013cbdd22cf34032632c181">&#9670;&nbsp;</a></span>SPItransferStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1503,7 +1523,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
@@ -1581,8 +1601,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a9547d4753fc648878d294aec14a14754"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9547d4753fc648878d294aec14a14754">&#9670;&nbsp;</a></span>SPIwriteRegisterBurst()</h2>
+<a id="af474f82d00fffc1ee0fc8def2c7f220c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af474f82d00fffc1ee0fc8def2c7f220c">&#9670;&nbsp;</a></span>SPIwriteRegisterBurst()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1602,7 +1622,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>&#160;</td>
         </tr>
         <tr>
@@ -1625,8 +1645,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a46b612b35eeed08754f530d442454756"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46b612b35eeed08754f530d442454756">&#9670;&nbsp;</a></span>SPIwriteStream() <span class="overload">[1/2]</span></h2>
+<a id="a7acbe601ebe6398781d0f2de5177305e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7acbe601ebe6398781d0f2de5177305e">&#9670;&nbsp;</a></span>SPIwriteStream() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1652,7 +1672,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
@@ -1691,8 +1711,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="adc910405811bc9ae262a51f217ab0975"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc910405811bc9ae262a51f217ab0975">&#9670;&nbsp;</a></span>SPIwriteStream() <span class="overload">[2/2]</span></h2>
+<a id="a74ce586afa403130007a474d3295d762"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74ce586afa403130007a474d3295d762">&#9670;&nbsp;</a></span>SPIwriteStream() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1712,7 +1732,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>numBytes</em>, </td>
         </tr>
         <tr>
