@@ -532,8 +532,8 @@ int16_t SX126x::finishTransmit() {
   return(standby());
 }
 
-int16_t SX126x::startReceive(uint32_t timeout) {
-  int16_t state = startReceiveCommon(timeout);
+int16_t SX126x::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
+  int16_t state = startReceiveCommon(timeout, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
@@ -545,7 +545,7 @@ int16_t SX126x::startReceive(uint32_t timeout) {
   return(state);
 }
 
-int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
+int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags, uint16_t irqMask) {
   // datasheet claims time to go to sleep is ~500us, same to wake up, compensate for that with 1 ms + TCXO delay
   uint32_t transitionTime = _tcxoDelay + 1000;
   sleepPeriod -= transitionTime;
@@ -564,7 +564,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
     return(RADIOLIB_ERR_INVALID_SLEEP_PERIOD);
   }
 
-  int16_t state = startReceiveCommon();
+  int16_t state = startReceiveCommon(RADIOLIB_SX126X_RX_TIMEOUT_INF, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
 
   uint8_t data[6] = {(uint8_t)((rxPeriodRaw >> 16) & 0xFF), (uint8_t)((rxPeriodRaw >> 8) & 0xFF), (uint8_t)(rxPeriodRaw & 0xFF),
@@ -572,7 +572,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod) {
   return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
-int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols) {
+int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, uint16_t irqFlags, uint16_t irqMask) {
   if(senderPreambleLength == 0) {
     senderPreambleLength = _preambleLength;
   }
@@ -584,7 +584,7 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
 
   // if we're not to sleep at all, just use the standard startReceive.
   if(2 * minSymbols > senderPreambleLength) {
-    return(startReceive());
+    return(startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, irqFlags, irqMask));
   }
 
   uint32_t symbolLength = ((uint32_t)(10 * 1000) << _sf) / (10 * _bwKhz);
@@ -606,19 +606,18 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
 
   // If our sleep period is shorter than our transition time, just use the standard startReceive
   if(sleepPeriod < _tcxoDelay + 1016) {
-    return(startReceive());
+    return(startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, irqFlags, irqMask));
   }
 
-  return(startReceiveDutyCycle(wakePeriod, sleepPeriod));
+  return(startReceiveDutyCycle(wakePeriod, sleepPeriod, irqFlags, irqMask));
 }
 
-int16_t SX126x::startReceiveCommon(uint32_t timeout) {
+int16_t SX126x::startReceiveCommon(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
   // set DIO mapping
-  uint16_t mask = RADIOLIB_SX126X_IRQ_RX_DONE;
   if(timeout != RADIOLIB_SX126X_RX_TIMEOUT_INF) {
-    mask |= RADIOLIB_SX126X_IRQ_TIMEOUT;
+    irqMask |= RADIOLIB_SX126X_IRQ_TIMEOUT;
   }
-  int16_t state = setDioIrqParams(RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT | RADIOLIB_SX126X_IRQ_CRC_ERR | RADIOLIB_SX126X_IRQ_HEADER_ERR, mask);
+  int16_t state = setDioIrqParams(irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers
