@@ -14,7 +14,7 @@ Before submitting new issue, please check the [Wiki](https://github.com/jgromes/
 A clear and concise description of what the bug is. When applicable, please include [debug mode output](https://github.com/jgromes/RadioLib/wiki/Debug-mode).
 
 **To Reproduce**
-Minimal Arduino sketch to reproduce the behavior. Please user Markdown to style the code to make it readable (see [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#code)).
+Minimal Arduino sketch to reproduce the behavior. Please use Markdown to style the code to make it readable (see [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#code)).
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
