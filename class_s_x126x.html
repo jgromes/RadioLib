@@ -163,15 +163,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8e22d67b64953c8b4da779d87d563f3e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:a8e22d67b64953c8b4da779d87d563f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e">More...</a><br /></td></tr>
 <tr class="separator:a8e22d67b64953c8b4da779d87d563f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb92dc9d2e2a2b3a3a5ff2856528d497"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aeb92dc9d2e2a2b3a3a5ff2856528d497">startReceive</a> (uint32_t timeout=RADIOLIB_SX126X_RX_TIMEOUT_INF)</td></tr>
-<tr class="memdesc:aeb92dc9d2e2a2b3a3a5ff2856528d497"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#aeb92dc9d2e2a2b3a3a5ff2856528d497">More...</a><br /></td></tr>
-<tr class="separator:aeb92dc9d2e2a2b3a3a5ff2856528d497"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc46b6adda2d0e82e25ed1fc78274136"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod)</td></tr>
-<tr class="memdesc:adc46b6adda2d0e82e25ed1fc78274136"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.  <a href="class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136">More...</a><br /></td></tr>
-<tr class="separator:adc46b6adda2d0e82e25ed1fc78274136"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b50cb78f02a3d93939437eb48489d3f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f">startReceiveDutyCycleAuto</a> (uint16_t senderPreambleLength=0, uint16_t minSymbols=8)</td></tr>
-<tr class="memdesc:a6b50cb78f02a3d93939437eb48489d3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.  <a href="class_s_x126x.html#a6b50cb78f02a3d93939437eb48489d3f">More...</a><br /></td></tr>
-<tr class="separator:a6b50cb78f02a3d93939437eb48489d3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34057f054d1cd3cce520ddf87b0821d5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a34057f054d1cd3cce520ddf87b0821d5">startReceive</a> (uint32_t timeout=RADIOLIB_SX126X_RX_TIMEOUT_INF, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE)</td></tr>
+<tr class="memdesc:a34057f054d1cd3cce520ddf87b0821d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#a34057f054d1cd3cce520ddf87b0821d5">More...</a><br /></td></tr>
+<tr class="separator:a34057f054d1cd3cce520ddf87b0821d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE)</td></tr>
+<tr class="memdesc:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.  <a href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">More...</a><br /></td></tr>
+<tr class="separator:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a077f180905ce4818cbdacad0cd9fe841"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a077f180905ce4818cbdacad0cd9fe841">startReceiveDutyCycleAuto</a> (uint16_t senderPreambleLength=0, uint16_t minSymbols=8, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE)</td></tr>
+<tr class="memdesc:a077f180905ce4818cbdacad0cd9fe841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls <a class="el" href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.  <a href="class_s_x126x.html#a077f180905ce4818cbdacad0cd9fe841">More...</a><br /></td></tr>
+<tr class="separator:a077f180905ce4818cbdacad0cd9fe841"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a9b090eddcb811ee19b595debfab1df"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:a9a9b090eddcb811ee19b595debfab1df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df">More...</a><br /></td></tr>
 <tr class="separator:a9a9b090eddcb811ee19b595debfab1df"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2297,8 +2297,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aeb92dc9d2e2a2b3a3a5ff2856528d497"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb92dc9d2e2a2b3a3a5ff2856528d497">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="a34057f054d1cd3cce520ddf87b0821d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34057f054d1cd3cce520ddf87b0821d5">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2307,8 +2307,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX126x::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX126X_RX_TIMEOUT_INF</code></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX126X_RX_TIMEOUT_INF</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX126X_IRQ_RX_DEFAULT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX126X_IRQ_RX_DONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2317,6 +2333,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2324,8 +2342,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="adc46b6adda2d0e82e25ed1fc78274136"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc46b6adda2d0e82e25ed1fc78274136">&#9670;&nbsp;</a></span>startReceiveDutyCycle()</h2>
+<a id="a5b4f8a41b593436b8c7a2a2d46ac387e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b4f8a41b593436b8c7a2a2d46ac387e">&#9670;&nbsp;</a></span>startReceiveDutyCycle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2340,7 +2358,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>sleepPeriod</em>&#160;</td>
+          <td class="paramname"><em>sleepPeriod</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX126X_IRQ_RX_DEFAULT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX126X_IRQ_RX_DONE</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2355,6 +2385,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">rxPeriod</td><td>The duration the receiver will be in Rx mode, in microseconds.</td></tr>
     <tr><td class="paramname">sleepPeriod</td><td>The duration the receiver will not be in Rx mode, in microseconds.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2362,8 +2394,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a6b50cb78f02a3d93939437eb48489d3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b50cb78f02a3d93939437eb48489d3f">&#9670;&nbsp;</a></span>startReceiveDutyCycleAuto()</h2>
+<a id="a077f180905ce4818cbdacad0cd9fe841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a077f180905ce4818cbdacad0cd9fe841">&#9670;&nbsp;</a></span>startReceiveDutyCycleAuto()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2378,7 +2410,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>minSymbols</em> = <code>8</code>&#160;</td>
+          <td class="paramname"><em>minSymbols</em> = <code>8</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX126X_IRQ_RX_DEFAULT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX126X_IRQ_RX_DONE</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2388,11 +2432,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Calls <a class="el" href="class_s_x126x.html#adc46b6adda2d0e82e25ed1fc78274136">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages. </p>
+<p>Calls <a class="el" href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">startReceiveDutyCycle</a> with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">senderPreambleLength</td><td>Expected preamble length of the messages to receive. If set to zero, the currently configured preamble length will be used. Defaults to zero.</td></tr>
     <tr><td class="paramname">minSymbols</td><td>Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length. Defaults to 8. According to Semtech, receiver requires 8 symbols to reliably latch a preamble. This makes this method redundant when transmitter preamble length is less than 17 (2*minSymbols + 1).</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
   </table>
   </dd>
 </dl>

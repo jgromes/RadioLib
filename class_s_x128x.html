@@ -167,9 +167,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4587409a9b96a0c496cf12b3acac20c4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:a4587409a9b96a0c496cf12b3acac20c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">More...</a><br /></td></tr>
 <tr class="separator:a4587409a9b96a0c496cf12b3acac20c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad59ee052d8ab1f250245a14039fc8b66"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF)</td></tr>
-<tr class="memdesc:ad59ee052d8ab1f250245a14039fc8b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#ad59ee052d8ab1f250245a14039fc8b66">More...</a><br /></td></tr>
-<tr class="separator:ad59ee052d8ab1f250245a14039fc8b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add774469f0bde099082a29068064712c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#add774469f0bde099082a29068064712c">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF, uint16_t irqFlags=RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX128X_IRQ_RX_DONE)</td></tr>
+<tr class="memdesc:add774469f0bde099082a29068064712c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#add774469f0bde099082a29068064712c">More...</a><br /></td></tr>
+<tr class="separator:add774469f0bde099082a29068064712c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f933f767161cc59fdaca816ab93e22"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:ae1f933f767161cc59fdaca816ab93e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">More...</a><br /></td></tr>
 <tr class="separator:ae1f933f767161cc59fdaca816ab93e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2015,8 +2015,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad59ee052d8ab1f250245a14039fc8b66"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad59ee052d8ab1f250245a14039fc8b66">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="add774469f0bde099082a29068064712c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add774469f0bde099082a29068064712c">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2025,8 +2025,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX128x::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX128X_RX_TIMEOUT_INF</code></td><td>)</td>
+          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX128X_RX_TIMEOUT_INF</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX128X_IRQ_RX_DEFAULT</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX128X_IRQ_RX_DONE</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2035,6 +2051,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX128X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX128X_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX128X_IRQ_RX_DEFAULT.</td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX128X_IRQ_RX_DONE.</td></tr>
   </table>
   </dd>
 </dl>
