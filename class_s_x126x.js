@@ -75,5 +75,6 @@ var class_s_x126x =
     [ "transmit", "class_s_x126x.html#a3dd42f8d5569487ea74f004ca652a709", null ],
     [ "transmit", "class_s_x126x.html#aab18364237ddac0c56aeaf63f08cf009", null ],
     [ "transmitDirect", "class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b", null ],
-    [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ]
+    [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ],
+    [ "XTAL", "class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1", null ]
 ];

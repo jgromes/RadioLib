@@ -1,13 +1,15 @@
 var NAVTREEINDEX4 =
 {
+"functions_r.html":[3,3,0,14],
 "functions_s.html":[3,3,0,15],
 "functions_t.html":[3,3,0,16],
 "functions_type.html":[3,3,3],
 "functions_v.html":[3,3,0,17],
 "functions_vars.html":[3,3,2],
 "functions_w.html":[3,3,0,18],
-"functions_y.html":[3,3,0,19],
-"functions_~.html":[3,3,0,20],
+"functions_x.html":[3,3,0,19],
+"functions_y.html":[3,3,0,20],
+"functions_~.html":[3,3,0,21],
 "group__config__encoding.html":[2,2],
 "group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,2,1],
 "group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,2,2],

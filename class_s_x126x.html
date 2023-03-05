@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('class_s_x126x.html',''); initResizable
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_s_x126x-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">SX126x Class Reference</div>  </div>
@@ -396,6 +397,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
 <tr class="memdesc:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">More...</a><br /></td></tr>
 <tr class="separator:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ada0fe6c3d31885952b439135cf0c18f1"><td class="memItemLeft" align="right" valign="top"><a id="ada0fe6c3d31885952b439135cf0c18f1"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1">XTAL</a></td></tr>
+<tr class="memdesc:ada0fe6c3d31885952b439135cf0c18f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the module has an XTAL (true) or TCXO (false). Defaults to false. <br /></td></tr>
+<tr class="separator:ada0fe6c3d31885952b439135cf0c18f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for SX126x series. All derived classes for SX126x (e.g. <a class="el" href="class_s_x1262.html" title="Derived class for SX1262 modules.">SX1262</a> or <a class="el" href="class_s_x1268.html" title="Derived class for SX1268 modules.">SX1268</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
