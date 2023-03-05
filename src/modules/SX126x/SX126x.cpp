@@ -3,6 +3,7 @@
 
 SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE, RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
   _mod = mod;
+  this->XTAL = false;
 }
 
 Module* SX126x::getMod() {
@@ -57,7 +58,7 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(tcxoVoltage > 0.0) {
+  if(!this->XTAL && tcxoVoltage > 0.0) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
@@ -131,7 +132,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(tcxoVoltage > 0.0) {
+  if(!this->XTAL && tcxoVoltage > 0.0) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }

@@ -439,6 +439,11 @@ class SX126x: public PhysicalLayer {
 
     Module* getMod();
 
+    /*!
+      \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
+    */
+    bool XTAL;
+
     // basic methods
 
     /*!
