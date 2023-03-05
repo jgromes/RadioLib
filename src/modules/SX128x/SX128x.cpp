@@ -546,20 +546,18 @@ int16_t SX128x::finishTransmit() {
   return(standby());
 }
 
-int16_t SX128x::startReceive(uint16_t timeout) {
+int16_t SX128x::startReceive(uint16_t timeout, uint16_t irqFlags, uint16_t irqMask) {
   // check active modem
   if(getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   // set DIO mapping
-  uint16_t mask = RADIOLIB_SX128X_IRQ_RX_DONE;
-
   if(timeout != RADIOLIB_SX128X_RX_TIMEOUT_INF) {
-    mask |= RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
+    irqMask |= RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
   }
 
-  int16_t state = setDioIrqParams(RADIOLIB_SX128X_IRQ_RX_DONE | RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT | RADIOLIB_SX128X_IRQ_CRC_ERROR | RADIOLIB_SX128X_IRQ_HEADER_ERROR, mask);
+  int16_t state = setDioIrqParams(irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers
