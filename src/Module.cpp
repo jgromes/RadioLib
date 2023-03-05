@@ -715,14 +715,14 @@ uint16_t Module::flipBits16(uint16_t i) {
 
 void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
-  for(int32_t i = 0; i < len; i+=16) {
+  for(size_t i = 0; i < len; i+=16) {
     char str[80];
     sprintf(str, "%07" PRIx32 "  ", i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
       line_len = rem_len;
     }
-    for(int32_t j = 0; j < line_len; j+=width) {
+    for(size_t j = 0; j < line_len; j+=width) {
       if(width > 1) {
         int m = 0;
         int step = width/2;
