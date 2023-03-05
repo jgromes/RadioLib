@@ -30,7 +30,7 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
   {STM32WLx::MODE_RX,    {HIGH, HIGH, LOW}},
   {STM32WLx::MODE_TX_LP, {HIGH, HIGH, HIGH}},
   {STM32WLx::MODE_TX_HP, {HIGH, LOW,  HIGH}},
-  STM32WLx::END_OF_MODE_TABLE,
+  END_OF_MODE_TABLE,
 };
 
 // save transmission state between loops
