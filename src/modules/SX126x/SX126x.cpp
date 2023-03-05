@@ -1542,7 +1542,19 @@ int16_t SX126x::setRfFrequency(uint32_t frf) {
 }
 
 int16_t SX126x::calibrateImage(uint8_t* data) {
-  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2));
+  int16_t state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2);
+
+  // if something failed, show the device errors
+  #if defined(RADIOLIB_DEBUG)
+  if(state != RADIOLIB_ERR_NONE) {
+    // unless mode is forced to standby, device errors will be 0
+    standby();
+    uint16_t errors = getDeviceErrors();
+    RADIOLIB_DEBUG_PRINT("Calibration failed, device errors: 0x");
+    RADIOLIB_DEBUG_PRINTLN(errors, HEX);
+  }
+  #endif
+  return(state);
 }
 
 uint8_t SX126x::getPacketType() {
@@ -1793,7 +1805,21 @@ int16_t SX126x::config(uint8_t modem) {
     _mod->yield();
   }
 
-  return(RADIOLIB_ERR_NONE);
+  // check calibration result
+  state = _mod->SPIcheckStream();
+
+  // if something failed, show the device errors
+  #if defined(RADIOLIB_DEBUG)
+  if(state != RADIOLIB_ERR_NONE) {
+    // unless mode is forced to standby, device errors will be 0
+    standby();
+    uint16_t errors = getDeviceErrors();
+    RADIOLIB_DEBUG_PRINT("Calibration failed, device errors: 0x");
+    RADIOLIB_DEBUG_PRINTLN(errors, HEX);
+  }
+  #endif
+
+  return(state);
 }
 
 int16_t SX126x::SPIparseStatus(uint8_t in) {
