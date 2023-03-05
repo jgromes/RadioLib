@@ -1379,6 +1379,11 @@ void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
 #endif
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
+  // check if TCXO is enabled at all
+  if(this->XTAL) {
+    return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
+  }
+
   // set mode to standby
   standby();
 
