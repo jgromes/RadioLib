@@ -8,6 +8,14 @@
 #endif
 
 /*!
+* Value to use as the last element in a mode table to indicate the
+* end of the table.
+*
+* See setRfSwitchTable() for details.
+*/
+#define END_OF_MODE_TABLE    { Module::MODE_END_OF_TABLE, {} }
+
+/*!
   \class Module
 
   \brief Implements all common low-level methods to control the wireless module.
@@ -55,14 +63,6 @@ class Module {
       /*! Transmission mode */
       MODE_TX,
     };
-
-    /*!
-     * Value to use as the last element in a mode table to indicate the
-     * end of the table.
-     *
-     * See setRfSwitchTable() for details.
-     */
-    static const RfSwitchMode_t END_OF_MODE_TABLE;
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
 

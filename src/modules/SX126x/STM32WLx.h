@@ -62,8 +62,6 @@ class STM32WLx : public SX1262 {
         /*! High power transmission mode */
         MODE_TX_HP,
     };
-    /*! \copydoc Module::END_OF_MODE_TABLE */
-    static const Module::RfSwitchMode_t END_OF_MODE_TABLE;
 
     // basic methods
 
