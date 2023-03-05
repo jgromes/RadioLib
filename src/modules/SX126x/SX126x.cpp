@@ -1860,7 +1860,8 @@ bool SX126x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINTLN(F(" of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:"));
       _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
-        RADIOLIB_DEBUG_PRINTLN();
+        RADIOLIB_DEBUG_PRINT(F("Expected string: "));
+        RADIOLIB_DEBUG_PRINTLN(versionBuff);
       #endif
       _mod->delay(10);
       i++;

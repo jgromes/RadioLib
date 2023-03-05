@@ -12,7 +12,8 @@
 #define RADIOLIB_SX126X_PA_CONFIG_SX1262                       0x00
 
 //RADIOLIB_SX126X_REG_VERSION_STRING
-#define RADIOLIB_SX1262_CHIP_TYPE                              2
+// Note: this should really be "2", however, it seems that all SX1262 devices report as SX1261
+#define RADIOLIB_SX1262_CHIP_TYPE                              1
 
 /*!
   \class SX1262
