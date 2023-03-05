@@ -1655,7 +1655,7 @@ uint32_t SX126x::getPacketStatus() {
 uint16_t SX126x::getDeviceErrors() {
   uint8_t data[2] = {0, 0};
   _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_DEVICE_ERRORS, data, 2);
-  uint16_t opError = (((uint16_t)data[0] & 0xFF) << 8) & ((uint16_t)data[1]);
+  uint16_t opError = (((uint16_t)data[0] & 0xFF) << 8) | ((uint16_t)data[1]);
   return(opError);
 }
 
