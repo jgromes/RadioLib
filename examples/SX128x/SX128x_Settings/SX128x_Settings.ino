@@ -65,9 +65,10 @@ void setup() {
   // bandwidth:                   1625.0 kHz
   // spreading factor:            7
   // coding rate:                 5
+  // sync word:                   0x12 (private network)
   // output power:                2 dBm
   // preamble length:             20 symbols
-  state = radio2.begin(2450.0, 1625.0, 7, 5, 2, 20);
+  state = radio2.begin(2450.0, 1625.0, 7, 5, 0x12, 2, 20);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
