@@ -1083,7 +1083,7 @@
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  (0x05)
-#define RADIOLIB_VERSION_MINOR  (0x06)
+#define RADIOLIB_VERSION_MINOR  (0x07)
 #define RADIOLIB_VERSION_PATCH  (0x00)
 #define RADIOLIB_VERSION_EXTRA  (0x00)
 
