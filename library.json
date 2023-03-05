@@ -1,0 +1,26 @@
+{
+    "name": "RadioLib",
+    "version": "5.6.0",
+    "description": "Universal wireless communication library. User-friendly library for sub-GHz radio modules (SX1278, RF69, CC1101, SX1268, and many others), as well as ham radio digital modes (RTTY, SSTV, AX.25 etc.).",
+    "keywords": "radio, sx1262",
+    "homepage": "https://github.com/jgromes/RadioLib",
+    "repository":
+    {
+        "type": "git",
+        "url": "https://github.com/jgromes/RadioLib.git"
+    },
+    "authors":
+    {
+        "name": "Jan Gromeš",
+        "email": "gromes.jan@gmail.com",
+        "maintainer": true
+    },
+    "license": "MIT",
+    "frameworks": "*",
+    "platforms": "*",
+    "headers": "RadioLib.h",
+    "build":
+    {
+        "libLDFMode": "chain+"
+    }
+}
