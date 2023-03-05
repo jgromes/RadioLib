@@ -1,8 +1,8 @@
 name: "Uncrustify"
 
 on:
-  #push:
-  #  branches: [master]
+  push:
+    branches: [master]
   #pull_request:
   #  branches: [master]
 
@@ -11,12 +11,15 @@ jobs:
     name: Uncrustify
     runs-on: ubuntu-latest
     env:
-      run-uncrust: ${{ false || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, 'CI_FORCE_UNCRUST') || github.event_name == 'pull_request' }}
+      run-uncrust: ${{ contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, 'CI_FORCE_UNCRUST') || github.event_name == 'pull_request' }}
 
     steps:
       - name: Checkout repository
         if: ${{ env.run-uncrust == 'true' }}
         uses: actions/checkout@v3
+      
+      - name: Workaround for https://github.com/actions/runner-images/issues/6775
+        run: git config --global --add safe.directory /github/workspace
 
       - name: Run style check
         if: ${{ env.run-uncrust == 'true' }}
