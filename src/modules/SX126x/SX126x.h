@@ -69,7 +69,8 @@
 #define RADIOLIB_SX126X_CMD_RESET_STATS                        0x00
 
 #define RADIOLIB_SX126X_CMD_PRAM_UPDATE                        0xD9
-#define RADIOLIB_SX126X_CMD_SET_SCAN_PARAMS                    0x9A
+#define RADIOLIB_SX126X_CMD_SET_LBT_SCAN_PARAMS                0x9A
+#define RADIOLIB_SX126X_CMD_SET_SPECTR_SCAN_PARAMS             0x9B
 
 // SX126X register map
 #define RADIOLIB_SX126X_REG_VERSION_STRING                     0x0320
@@ -367,6 +368,10 @@
 #define RADIOLIB_SX126X_RC13M_CALIB_ERR                       0b000000010  //  1     1                    RC13M calibration failed
 #define RADIOLIB_SX126X_RC64K_CALIB_ERR                       0b000000001  //  0     0                    RC64K calibration failed
 
+//RADIOLIB_SX126X_CMD_SET_LBT_SCAN_PARAMS + RADIOLIB_SX126X_CMD_SET_SPECTR_SCAN_PARAMS
+#define RADIOLIB_SX126X_SCAN_INTERVAL_7_68_US                  10          //  7     0     RSSI reading interval: 7.68 us
+#define RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US                  11          //  7     0                            8.20 us
+#define RADIOLIB_SX126X_SCAN_INTERVAL_8_68_US                  12          //  7     0                            8.68 us
 
 // SX126X SPI register variables
 //RADIOLIB_SX126X_REG_HOPPING_ENABLE
