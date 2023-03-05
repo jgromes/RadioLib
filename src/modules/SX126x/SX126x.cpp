@@ -53,15 +53,15 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   state = standby();
   RADIOLIB_ASSERT(state);
 
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX126X_PACKET_TYPE_LORA);
-  RADIOLIB_ASSERT(state);
-
   // set TCXO control, if requested
   if(!this->XTAL && tcxoVoltage > 0.0) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
+
+  // configure settings not accessible by API
+  state = config(RADIOLIB_SX126X_PACKET_TYPE_LORA);
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setCodingRate(cr);
@@ -127,15 +127,15 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   state = standby();
   RADIOLIB_ASSERT(state);
 
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX126X_PACKET_TYPE_GFSK);
-  RADIOLIB_ASSERT(state);
-
   // set TCXO control, if requested
   if(!this->XTAL && tcxoVoltage > 0.0) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
+
+  // configure settings not accessible by API
+  state = config(RADIOLIB_SX126X_PACKET_TYPE_GFSK);
+  RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setBitRate(br);
