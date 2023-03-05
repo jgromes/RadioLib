@@ -68,11 +68,11 @@ void setup() {
   // bandwidth:                   500.0 kHz
   // spreading factor:            6
   // coding rate:                 5
-  // sync word:                   0x14
+  // sync word:                   0x34
   // output power:                2 dBm
   // preamble length:             20 symbols
   // amplifier gain:              1 (maximum gain)
-  state = radio2.begin(915.0, 500.0, 6, 5, 0x14, 2, 20, 1);
+  state = radio2.begin(915.0, 500.0, 6, 5, 0x34, 2, 20, 1);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
