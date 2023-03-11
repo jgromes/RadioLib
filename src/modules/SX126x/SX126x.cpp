@@ -1427,7 +1427,7 @@ int16_t SX126x::uploadPatch(const uint32_t* patch, size_t len, bool nonvolatile)
   return(state);
 }
 
-int16_t SX126x::spectralScanStart(uint16_t numBands, uint8_t window, uint8_t interval) {
+int16_t SX126x::spectralScanStart(uint16_t numScans, uint8_t window, uint8_t interval) {
   // abort first - not sure if this is strictly needed, but the example code does this
   spectralScanAbort();
 
@@ -1439,7 +1439,7 @@ int16_t SX126x::spectralScanStart(uint16_t numBands, uint8_t window, uint8_t int
   RADIOLIB_ASSERT(state);
 
   // now set the actual spectral scan parameters
-  uint8_t data[3] = { (uint8_t)((numBands >> 8) & 0xFF), (uint8_t)(numBands & 0xFF), interval };
+  uint8_t data[3] = { (uint8_t)((numScans >> 8) & 0xFF), (uint8_t)(numScans & 0xFF), interval };
   return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_SPECTR_SCAN_PARAMS, data, 3));
 }
 

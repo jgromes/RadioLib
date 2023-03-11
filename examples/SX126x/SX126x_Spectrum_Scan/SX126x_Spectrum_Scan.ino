@@ -79,7 +79,8 @@ void loop() {
   Serial.print(F("[SX1262] Starting spectral scan ... "));
 
   // start spectral scan
-  // number of bands: 2048 (fewer bands = better temporal resolution)
+  // number of scans in each line is 2048
+  // fewer scans leads to better temporal resolution, 
   int state = radio.spectralScanStart(2048);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
