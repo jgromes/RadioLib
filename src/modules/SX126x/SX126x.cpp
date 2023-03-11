@@ -206,13 +206,13 @@ int16_t SX126x::reset(bool verify) {
     }
 
     // standby command failed, check timeout and try again
-    if(_mod->millis() - start >= 3000) {
+    if(_mod->millis() - start >= 1000) {
       // timed out, possibly incorrect wiring
       return(state);
     }
 
     // wait a bit to not spam the module
-    _mod->delay(10);
+    _mod->delay(100);
   }
 }
 
@@ -1377,6 +1377,95 @@ void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
   updateDirectBuffer((uint8_t)digitalRead(pin));
 }
 #endif
+
+int16_t SX126x::uploadPatch(const uint32_t* patch, size_t len, bool nonvolatile) {
+  // set to standby RC mode
+  int16_t state = standby(RADIOLIB_SX126X_STANDBY_RC);
+  RADIOLIB_ASSERT(state);
+
+  // check the version
+  #if defined(RADIOLIB_DEBUG)
+  char ver_pre[16];
+  _mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)ver_pre);
+  RADIOLIB_DEBUG_PRINT(F("Pre-update version string: "));
+  RADIOLIB_DEBUG_PRINTLN(ver_pre);
+  #endif
+
+  // enable patch update
+  _mod->SPIwriteRegister(RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE, RADIOLIB_SX126X_PATCH_UPDATE_ENABLED);
+  
+  // upload the patch
+  uint8_t data[4];
+  for(uint32_t i = 0; i < len / sizeof(uint32_t); i++) {
+    uint32_t bin = 0;
+    if(nonvolatile) {
+      bin = RADIOLIB_NONVOLATILE_READ_DWORD(patch + i);
+    } else {
+      bin = patch[i];
+    }
+    data[0] = (bin >> 24) & 0xFF;
+    data[1] = (bin >> 16) & 0xFF;
+    data[2] = (bin >> 8) & 0xFF;
+    data[3] = bin & 0xFF;
+    _mod->SPIwriteRegisterBurst(RADIOLIB_SX126X_REG_PATCH_MEMORY_BASE + i*sizeof(uint32_t), data, sizeof(uint32_t));
+  }
+
+  // disable patch update
+  _mod->SPIwriteRegister(RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE, RADIOLIB_SX126X_PATCH_UPDATE_DISABLED);
+
+  // update
+  _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_PRAM_UPDATE, NULL, 0);
+
+  // check the version again
+  #if defined(RADIOLIB_DEBUG)
+  char ver_post[16];
+  _mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)ver_post);
+  RADIOLIB_DEBUG_PRINT(F("Post-update version string: "));
+  RADIOLIB_DEBUG_PRINTLN(ver_post);
+  #endif
+
+  return(state);
+}
+
+int16_t SX126x::spectralScanStart(uint16_t numBands, uint8_t window, uint8_t interval) {
+  // abort first - not sure if this is strictly needed, but the example code does this
+  spectralScanAbort();
+
+  // set the RSSI window size
+  _mod->SPIwriteRegister(RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW, window);
+
+  // start Rx with infinite timeout
+  int16_t state = setRx(RADIOLIB_SX126X_RX_TIMEOUT_INF);
+  RADIOLIB_ASSERT(state);
+
+  // now set the actual spectral scan parameters
+  uint8_t data[3] = { (uint8_t)((numBands >> 8) & 0xFF), (uint8_t)(numBands & 0xFF), interval };
+  return(_mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_SPECTR_SCAN_PARAMS, data, 3));
+}
+
+void SX126x::spectralScanAbort() {
+  _mod->SPIwriteRegister(RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW, 0x00);
+}
+
+int16_t SX126x::spectralScanGetStatus() {
+  uint8_t status = _mod->SPIreadRegister(RADIOLIB_SX126X_REG_SPECTRAL_SCAN_STATUS);
+  if(status == RADIOLIB_SX126X_SPECTRAL_SCAN_COMPLETED) {
+    return(RADIOLIB_ERR_NONE);
+  }
+  return(RADIOLIB_ERR_RANGING_TIMEOUT);
+}
+
+int16_t SX126x::spectralScanGetResult(uint16_t* results) {
+  // read the raw results
+  uint8_t data[2*RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE];
+  _mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_SPECTRAL_SCAN_RESULT, 2*RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE, data);
+
+  // convert it
+  for(uint8_t i = 0; i < RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE; i++) {
+    results[i] = ((uint16_t)data[i*2] << 8) | ((uint16_t)data[i*2 + 1]);
+  }
+  return(RADIOLIB_ERR_NONE);
+}
 
 int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   // check if TCXO is enabled at all

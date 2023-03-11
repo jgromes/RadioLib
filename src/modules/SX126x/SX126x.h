@@ -412,14 +412,19 @@
 #define RADIOLIB_SX126X_RX_GAIN_SPECTRAL_SCAN                  0xCB        //  7     0              spectral scan
 
 // RADIOLIB_SX126X_REG_PATCH_UPDATE_ENABLE
-#define RADIOLIB_SX126X_PATCH_UPDATE_DISABLED                  0b00010000  //  4     4     patch update: disabled
-#define RADIOLIB_SX126X_PATCH_UPDATE_ENABLED                   0b00000000  //  4     4                   enabled
+#define RADIOLIB_SX126X_PATCH_UPDATE_DISABLED                  0b00000000  //  4     4     patch update: disabled
+#define RADIOLIB_SX126X_PATCH_UPDATE_ENABLED                   0b00010000  //  4     4                   enabled
 
 // RADIOLIB_SX126X_REG_SPECTRAL_SCAN_STATUS
-#define RADIOLIB_SX126X_SPECTRAL_SCAN_NONE                     0x00        //  7     0      spectral scan status: none
-#define RADIOLIB_SX126X_SPECTRAL_SCAN_ONGOING                  0x0F        //  7     0                            ongoing
-#define RADIOLIB_SX126X_SPECTRAL_SCAN_ABORTED                  0xF0        //  7     0                            aborted
-#define RADIOLIB_SX126X_SPECTRAL_SCAN_COMPLETED                0xFF        //  7     0                            completed
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_NONE                     0x00        //  7     0     spectral scan status: none
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_ONGOING                  0x0F        //  7     0                           ongoing
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_ABORTED                  0xF0        //  7     0                           aborted
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_COMPLETED                0xFF        //  7     0                           completed
+
+// RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW
+#define RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT           (0x05 << 2) //  7     0     default RSSI average window
+
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE                 (33)
 
 /*!
   \class SX126x
@@ -1041,20 +1046,68 @@ class SX126x: public PhysicalLayer {
 
    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
    /*!
-     \brief Dummy method, to ensure PhysicalLayer compatibility.
+      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
 
-     \param func Ignored.
+      \param func Pointer to interrupt service routine.
    */
    void setDirectAction(void (*func)(void));
 
    /*!
-     \brief Dummy method, to ensure PhysicalLayer compatibility.
+      \brief Function to read and process data bit in direct reception mode.
 
-     \param pin Ignored.
+      \param pin Pin on which to read.
    */
    void readBit(RADIOLIB_PIN_TYPE pin);
    #endif
 
+    /*!
+      \brief Upload binary patch into the SX126x device RAM.
+      Patch is needed to e.g., enable spectral scan and must be uploaded again on every power cycle.
+
+      \param patch Binary patch to upload.
+
+      \param len Length of the binary patch in 4-byte words.
+
+      \param nonvolatile Set to true when the patch is saved in non-volatile memory of the host processor,
+      or to false when the patch is in its RAM.
+
+      \returns \ref status_codes
+    */
+    int16_t uploadPatch(const uint32_t* patch, size_t len, bool nonvolatile = true);
+
+    /*!
+      \brief Start spectral scan. Requires binary path to be uploaded.
+
+      \param numBands Number of bands for the scan. Fewer bands = better temporal resolution, but fewer power samples.
+
+      \param window RSSI averaging window size.
+
+      \param interval Scan interval length, one of RADIOLIB_SX126X_SCAN_INTERVAL_* macros.
+
+      \returns \ref status_codes
+    */
+    int16_t spectralScanStart(uint16_t numBands, uint8_t window = RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
+    
+    /*!
+      \brief Abort an ongoing spectral scan.
+    */
+    void spectralScanAbort();
+
+    /*!
+      \brief Read the status of spectral scan.
+
+      \returns \ref status_codes
+    */
+    int16_t spectralScanGetStatus();
+
+    /*!
+      \brief Read the result of spectral scan.
+
+      \param results Array to which the results will be saved, must be RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE long.
+
+      \returns \ref status_codes
+    */
+    int16_t spectralScanGetResult(uint16_t* results);
 
 #if !defined(RADIOLIB_GODMODE)
   protected:

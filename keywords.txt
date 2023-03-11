@@ -195,6 +195,11 @@ getCurrentLimit	KEYWORD2
 getIrqStatus	KEYWORD2
 getLastError	KEYWORD2
 setRxBoostedGainMode	KEYWORD2
+uploadPatch	KEYWORD2
+spectralScanStart	KEYWORD2
+spectralScanAbort	KEYWORD2
+spectralScanGetStatus	KEYWORD2
+spectralScanGetResult	KEYWORD2
 
 # nRF24
 setIrqAction	KEYWORD2
