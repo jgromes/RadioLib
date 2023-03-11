@@ -84,7 +84,7 @@ var searchData=
   ['spectralscanabort_307',['spectralScanAbort',['../class_s_x126x.html#a865397e1cca38bec2d055c047825ea07',1,'SX126x']]],
   ['spectralscangetresult_308',['spectralScanGetResult',['../class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2',1,'SX126x']]],
   ['spectralscangetstatus_309',['spectralScanGetStatus',['../class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4',1,'SX126x']]],
-  ['spectralscanstart_310',['spectralScanStart',['../class_s_x126x.html#a45d4457ca299ac226d88b066bfc69329',1,'SX126x']]],
+  ['spectralscanstart_310',['spectralScanStart',['../class_s_x126x.html#a6a5ed11f9932a065438d073e7790a0e0',1,'SX126x']]],
   ['spiaddrwidth_311',['SPIaddrWidth',['../class_module.html#ac19a495026aae62f5c2f089aa1b2b57a',1,'Module']]],
   ['spicheckstream_312',['SPIcheckStream',['../class_module.html#a5efa7ae78cab1d7f43005e965923f769',1,'Module']]],
   ['spigetregvalue_313',['SPIgetRegValue',['../class_module.html#a01e15988ec448c76142ee5709929be2c',1,'Module']]],

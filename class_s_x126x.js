@@ -62,7 +62,7 @@ var class_s_x126x =
     [ "spectralScanAbort", "class_s_x126x.html#a865397e1cca38bec2d055c047825ea07", null ],
     [ "spectralScanGetResult", "class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2", null ],
     [ "spectralScanGetStatus", "class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4", null ],
-    [ "spectralScanStart", "class_s_x126x.html#a45d4457ca299ac226d88b066bfc69329", null ],
+    [ "spectralScanStart", "class_s_x126x.html#a6a5ed11f9932a065438d073e7790a0e0", null ],
     [ "standby", "class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71", null ],
     [ "standby", "class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd", null ],
     [ "startChannelScan", "class_s_x126x.html#a10a0e75571350fb05fa100e5d5151be2", null ],
