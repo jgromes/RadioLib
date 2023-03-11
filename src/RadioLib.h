@@ -98,7 +98,6 @@
 #include "protocols/Pager/Pager.h"
 #include "protocols/RTTY/RTTY.h"
 #include "protocols/SSTV/SSTV.h"
-#include "protocols/SSDV/SSDV.h"
 #include "protocols/FSK4/FSK4.h"
 #include "protocols/APRS/APRS.h"
 #include "protocols/ExternalRadio/ExternalRadio.h"
