@@ -59,6 +59,10 @@ var class_s_x126x =
     [ "setTCXO", "class_s_x126x.html#a57bee6f4b3a3b7ec646ac8de347ee0d6", null ],
     [ "setWhitening", "class_s_x126x.html#a67702de41ae866b9f9d73234fc9ae376", null ],
     [ "sleep", "class_s_x126x.html#afb5509f0705cdd971065251ed6b2fb4e", null ],
+    [ "spectralScanAbort", "class_s_x126x.html#a865397e1cca38bec2d055c047825ea07", null ],
+    [ "spectralScanGetResult", "class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2", null ],
+    [ "spectralScanGetStatus", "class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4", null ],
+    [ "spectralScanStart", "class_s_x126x.html#a45d4457ca299ac226d88b066bfc69329", null ],
     [ "standby", "class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71", null ],
     [ "standby", "class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd", null ],
     [ "startChannelScan", "class_s_x126x.html#a10a0e75571350fb05fa100e5d5151be2", null ],
@@ -75,6 +79,7 @@ var class_s_x126x =
     [ "transmit", "class_s_x126x.html#a3dd42f8d5569487ea74f004ca652a709", null ],
     [ "transmit", "class_s_x126x.html#aab18364237ddac0c56aeaf63f08cf009", null ],
     [ "transmitDirect", "class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b", null ],
+    [ "uploadPatch", "class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1", null ],
     [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ],
     [ "XTAL", "class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1", null ]
 ];

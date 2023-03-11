@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['waitformicroseconds_673',['waitForMicroseconds',['../class_module.html#a47978200f7e2e408fb64f506c81cee9f',1,'Module']]],
-  ['write_674',['write',['../class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2',1,'FSK4Client::write(uint8_t *buff, size_t len)'],['../class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22',1,'FSK4Client::write(uint8_t b)']]]
+  ['variablepacketlengthmode_682',['variablePacketLengthMode',['../class_c_c1101.html#a50b9e73d2d82a4cd03841f465825b73f',1,'CC1101::variablePacketLengthMode()'],['../class_r_f69.html#af434c67aabe02258ee6696a59973617b',1,'RF69::variablePacketLengthMode()'],['../class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a',1,'Si443x::variablePacketLengthMode()'],['../class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d',1,'SX126x::variablePacketLengthMode()'],['../class_s_x127x.html#a1d39296b40e7282ef44d8f376065e92c',1,'SX127x::variablePacketLengthMode()']]]
 ];
