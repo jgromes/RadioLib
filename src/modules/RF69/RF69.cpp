@@ -173,6 +173,11 @@ int16_t RF69::standby() {
   return(setMode(RADIOLIB_RF69_STANDBY));
 }
 
+int16_t RF69::standby(uint8_t mode) {
+  (void)mode;
+  return(standby());
+}
+
 int16_t RF69::transmitDirect(uint32_t frf) {
   // set RF switch (if present)
   _mod->setRfSwitchState(Module::MODE_TX);

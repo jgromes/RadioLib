@@ -566,6 +566,15 @@ class RF69: public PhysicalLayer {
     int16_t standby() override;
 
     /*!
+      \brief Sets the module to standby.
+
+      \param mode Standby mode to be used. No effect, implemented only for PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
       \brief Starts direct mode transmission.
 
       \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
