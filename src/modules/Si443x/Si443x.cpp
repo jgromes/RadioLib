@@ -134,10 +134,13 @@ int16_t Si443x::sleep() {
 }
 
 int16_t Si443x::standby() {
+  return(standby(RADIOLIB_SI443X_XTAL_ON));
+}
+
+int16_t Si443x::standby(uint8_t mode) {
   // set RF switch (if present)
   _mod->setRfSwitchState(Module::MODE_IDLE);
-
-  return(_mod->SPIsetRegValue(RADIOLIB_SI443X_REG_OP_FUNC_CONTROL_1, RADIOLIB_SI443X_XTAL_ON, 7, 0, 10));
+  return(_mod->SPIsetRegValue(RADIOLIB_SI443X_REG_OP_FUNC_CONTROL_1, mode, 7, 0, 10));
 }
 
 int16_t Si443x::transmitDirect(uint32_t frf) {

@@ -627,11 +627,20 @@ class Si443x: public PhysicalLayer {
     int16_t sleep();
 
     /*!
-      \brief Sets the module to standby.
+      \brief Sets the module to standby (with XTAL on).
 
       \returns \ref status_codes
     */
     int16_t standby() override;
+
+    /*!
+      \brief Sets the module to standby.
+
+      \param mode Standby mode to be used.
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
 
     /*!
       \brief Enables direct transmission mode. While in direct mode, the module will not be able to transmit or receive packets.
