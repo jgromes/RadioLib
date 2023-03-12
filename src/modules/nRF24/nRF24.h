@@ -236,6 +236,15 @@ class nRF24: public PhysicalLayer {
     int16_t standby() override;
 
     /*!
+      \brief Sets the module to standby.
+
+      \param mode Standby mode to be used.
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
       \brief Blocking binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
 

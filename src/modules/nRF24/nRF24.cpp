@@ -72,13 +72,17 @@ int16_t nRF24::sleep() {
 }
 
 int16_t nRF24::standby() {
+  return(standby(RADIOLIB_NRF24_POWER_UP));
+}
+
+int16_t nRF24::standby(uint8_t mode) {
   // make sure carrier output is disabled
   _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_CONT_WAVE_OFF, 7, 7);
   _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_PLL_LOCK_OFF, 4, 4);
   _mod->digitalWrite(_mod->getRst(), LOW);
 
   // use standby-1 mode
-  return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, RADIOLIB_NRF24_POWER_UP, 1, 1));
+  return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, mode, 1, 1));
 }
 
 int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
