@@ -687,6 +687,15 @@ class SX127x: public PhysicalLayer {
     int16_t standby() override;
 
     /*!
+      \brief Sets the %LoRa module to standby.
+
+      \param mode Standby mode to be used. No effect, implemented only for PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
+
+    /*!
       \brief Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data).
       While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.
 

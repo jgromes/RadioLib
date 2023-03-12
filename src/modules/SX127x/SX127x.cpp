@@ -289,6 +289,11 @@ int16_t SX127x::standby() {
   return(setMode(RADIOLIB_SX127X_STANDBY));
 }
 
+int16_t SX127x::standby(uint8_t mode) {
+  (void)mode;
+  return(standby());
+}
+
 int16_t SX127x::transmitDirect(uint32_t frf) {
   // check modem
   if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
