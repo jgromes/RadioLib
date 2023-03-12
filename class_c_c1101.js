@@ -48,6 +48,7 @@ var class_c_c1101 =
     [ "setSyncWord", "class_c_c1101.html#ab89b0932dbacadc34d049a2bd2292001", null ],
     [ "setSyncWord", "class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6", null ],
     [ "standby", "class_c_c1101.html#a7612bf81e48086004c62548de2682266", null ],
+    [ "standby", "class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a", null ],
     [ "startReceive", "class_c_c1101.html#af727750d05be0bcef4bb8ac260d110e3", null ],
     [ "startTransmit", "class_c_c1101.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_c_c1101.html#af068e6e862c99e39d0261a7971dd56db", null ],

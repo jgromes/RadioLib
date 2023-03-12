@@ -66,6 +66,7 @@ var class_r_f69 =
     [ "setSyncWord", "class_r_f69.html#a26667d50ec845c28e17236c69c886561", null ],
     [ "sleep", "class_r_f69.html#a472a04041551cb38d2223fb34f71d8eb", null ],
     [ "standby", "class_r_f69.html#a20242499eb926ff7b7da6e3f74a9ece1", null ],
+    [ "standby", "class_r_f69.html#a6e3002ab0c58e2087a7d101eda7afa82", null ],
     [ "startReceive", "class_r_f69.html#afae38fa64242043de34096bf497725f1", null ],
     [ "startTransmit", "class_r_f69.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_r_f69.html#af068e6e862c99e39d0261a7971dd56db", null ],

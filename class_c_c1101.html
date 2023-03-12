@@ -124,6 +124,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7612bf81e48086004c62548de2682266"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a7612bf81e48086004c62548de2682266">standby</a> () override</td></tr>
 <tr class="memdesc:a7612bf81e48086004c62548de2682266"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <a href="class_c_c1101.html#a7612bf81e48086004c62548de2682266">More...</a><br /></td></tr>
 <tr class="separator:a7612bf81e48086004c62548de2682266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af374ad0ecd820a01baef7d177a30132a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a">standby</a> (uint8_t mode) override</td></tr>
+<tr class="memdesc:af374ad0ecd820a01baef7d177a30132a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby.  <a href="class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a">More...</a><br /></td></tr>
+<tr class="separator:af374ad0ecd820a01baef7d177a30132a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a240eef8fa7d838d76f3c11086dc50e46"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">transmitDirect</a> (uint32_t frf=0) override</td></tr>
 <tr class="memdesc:a240eef8fa7d838d76f3c11086dc50e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode transmission.  <a href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">More...</a><br /></td></tr>
 <tr class="separator:a240eef8fa7d838d76f3c11086dc50e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,9 +311,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">receive</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino String receive method.  <a href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">More...</a><br /></td></tr>
 <tr class="separator:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
-<tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
-<tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">startTransmit</a> (String &amp;str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">More...</a><br /></td></tr>
 <tr class="separator:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1788,7 +1788,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <a id="a7612bf81e48086004c62548de2682266"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7612bf81e48086004c62548de2682266">&#9670;&nbsp;</a></span>standby()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7612bf81e48086004c62548de2682266">&#9670;&nbsp;</a></span>standby() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1814,6 +1814,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#acbcaf6aefcb77a354797e66222fe5018">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="af374ad0ecd820a01baef7d177a30132a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af374ad0ecd820a01baef7d177a30132a">&#9670;&nbsp;</a></span>standby() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::standby </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets the module to standby. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Standby mode to be used. No effect, implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">PhysicalLayer</a>.</p>
 
 </div>
 </div>

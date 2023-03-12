@@ -32,6 +32,7 @@ var class_si443x =
     [ "setSyncWord", "class_si443x.html#a4ed0da298c2418db4a88a19ef8938e0a", null ],
     [ "sleep", "class_si443x.html#ada90718aeb67d7f0e9899da534de9695", null ],
     [ "standby", "class_si443x.html#ac45d2776df3ff338db154ead143fb7b8", null ],
+    [ "standby", "class_si443x.html#acbc0f95f32ca961294666405596ff529", null ],
     [ "startReceive", "class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2", null ],
     [ "startTransmit", "class_si443x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_si443x.html#af068e6e862c99e39d0261a7971dd56db", null ],

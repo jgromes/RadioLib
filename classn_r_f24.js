@@ -34,6 +34,7 @@ var classn_r_f24 =
     [ "setTransmitPipe", "classn_r_f24.html#aa0e1f2dddf810213410a420205bbd8af", null ],
     [ "sleep", "classn_r_f24.html#a033287e33c532638c11e2775a073f297", null ],
     [ "standby", "classn_r_f24.html#a5957f06a891d3d9c07e87b59c239ce56", null ],
+    [ "standby", "classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b", null ],
     [ "startReceive", "classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c", null ],
     [ "startTransmit", "classn_r_f24.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "classn_r_f24.html#af068e6e862c99e39d0261a7971dd56db", null ],
