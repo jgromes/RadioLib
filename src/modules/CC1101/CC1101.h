@@ -111,7 +111,7 @@
 
 // CC1101_REG_IOCFG0
 #define RADIOLIB_CC1101_GDO0_TEMP_SENSOR_OFF                   0b00000000  //  7     7     analog temperature sensor output: disabled (default)
-#define RADIOLIB_CC1101_GDO0_TEMP_SENSOR_ON                    0b10000000  //  7     0                                       enabled
+#define RADIOLIB_CC1101_GDO0_TEMP_SENSOR_ON                    0b10000000  //  7     7                                       enabled
 #define RADIOLIB_CC1101_GDO0_NORM                              0b00000000  //  6     6     GDO0 output: active high (default)
 #define RADIOLIB_CC1101_GDO0_INV                               0b01000000  //  6     6                  active low
 
@@ -590,6 +590,15 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t standby() override;
+
+    /*!
+      \brief Sets the module to standby.
+
+      \param mode Standby mode to be used. No effect, implemented only for PhysicalLayer compatibility.
+
+      \returns \ref status_codes
+    */
+    int16_t standby(uint8_t mode) override;
 
     /*!
       \brief Starts direct mode transmission.

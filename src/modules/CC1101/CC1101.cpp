@@ -166,6 +166,11 @@ int16_t CC1101::standby() {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t CC1101::standby(uint8_t mode) {
+  (void)mode;
+  return(standby());
+}
+
 int16_t CC1101::transmitDirect(uint32_t frf) {
   return transmitDirect(true, frf);
 }
