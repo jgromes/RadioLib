@@ -1,6 +1,7 @@
 #include "Pager.h"
 #if !defined(RADIOLIB_EXCLUDE_PAGER)
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
 static PhysicalLayer* _readBitInstance = NULL;
@@ -14,10 +15,13 @@ static void PagerClientReadBit(void) {
     _readBitInstance->readBit(_readBitPin);
   }
 }
+#endif
 
 PagerClient::PagerClient(PhysicalLayer* phy) {
   _phy = phy;
+  #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
   _readBitInstance = _phy;
+  #endif
 }
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
@@ -214,6 +218,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   return(RADIOLIB_ERR_NONE);
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t mask) {
   // save the variables
   _readBitPin = pin;
@@ -430,6 +435,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   *len = decodedBytes;
   return(RADIOLIB_ERR_NONE);
 }
+#endif
 
 void PagerClient::write(uint32_t* data, size_t len) {
   // write code words from buffer
@@ -471,6 +477,7 @@ void PagerClient::write(uint32_t codeWord) {
   }
 }
 
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 uint32_t PagerClient::read() {
   uint32_t codeWord = 0;
   codeWord |= (uint32_t)_phy->read() << 24;
@@ -491,6 +498,7 @@ uint32_t PagerClient::read() {
   // TODO BCH error correction here
   return(codeWord);
 }
+#endif
 
 uint8_t PagerClient::encodeBCD(char c) {
   switch(c) {

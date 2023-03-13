@@ -142,6 +142,8 @@ class PagerClient {
     */
     int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);
 
+
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Start reception of POCSAG packets.
 
@@ -190,6 +192,7 @@ class PagerClient {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t* len, uint32_t* addr = NULL);
+#endif
 
 #if !defined(RADIOLIB_GODMODE)
   private:
@@ -202,7 +205,6 @@ class PagerClient {
     uint16_t _shift;
     uint16_t _shiftHz;
     uint16_t _bitDuration;
-    uint32_t _readBatchPos;
     uint32_t _filterAddr;
     uint32_t _filterMask;
     bool inv = false;
@@ -214,7 +216,10 @@ class PagerClient {
 
     void write(uint32_t* data, size_t len);
     void write(uint32_t codeWord);
+
+#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     uint32_t read();
+#endif
 
     uint8_t encodeBCD(char c);
     char decodeBCD(uint8_t b);
