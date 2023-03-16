@@ -262,6 +262,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">receive</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino String receive method.  <a href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">More...</a><br /></td></tr>
 <tr class="separator:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">startReceive</a> (uint32_t timeout=0, uint16_t irqFlags=0, uint16_t irqMask=0)</td></tr>
+<tr class="memdesc:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">More...</a><br /></td></tr>
+<tr class="separator:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">startTransmit</a> (String &amp;str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">More...</a><br /></td></tr>
 <tr class="separator:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -277,6 +280,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a> ()</td></tr>
+<tr class="memdesc:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">More...</a><br /></td></tr>
+<tr class="separator:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedddaf9460941b90e43e9005035faa0f inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">getSNR</a> ()</td></tr>
+<tr class="memdesc:aedddaf9460941b90e43e9005035faa0f inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <a href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">More...</a><br /></td></tr>
+<tr class="separator:aedddaf9460941b90e43e9005035faa0f inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -302,6 +311,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
 <tr class="memdesc:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">More...</a><br /></td></tr>
 <tr class="separator:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">setDio1Action</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">More...</a><br /></td></tr>
+<tr class="separator:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top"><a id="ad30127e094d8148870b9631007ec6b29"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad30127e094d8148870b9631007ec6b29">clearDio1Action</a> ()</td></tr>
+<tr class="memdesc:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
+<tr class="separator:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for <a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> series. All derived classes for <a class="el" href="class_si443x.html" title="Base class for Si443x series. All derived classes for Si443x (e.g. Si4431 or Si4432) inherit from thi...">Si443x</a> (e.g. <a class="el" href="class_si4431.html" title="Derived class for Si4431 modules.">Si4431</a> or <a class="el" href="class_si4432.html" title="Derived class for Si4432 modules.">Si4432</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
@@ -1221,6 +1237,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t Si443x::sleep </td>
@@ -1229,10 +1248,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets the module to sleep to save power. Module will not be able to transmit or receive any data while in sleep mode. Module will wake up automatically when methods like transmit or receive are called. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">PhysicalLayer</a>.</p>
 
 </div>
 </div>

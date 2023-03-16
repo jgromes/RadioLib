@@ -312,6 +312,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">receive</a> (String &amp;str, size_t len=0)</td></tr>
 <tr class="memdesc:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino String receive method.  <a href="class_physical_layer.html#afb1b090348d9091bfa3a0b5ba3d85b36">More...</a><br /></td></tr>
 <tr class="separator:afb1b090348d9091bfa3a0b5ba3d85b36 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">sleep</a> ()</td></tr>
+<tr class="memdesc:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to sleep.  <a href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">More...</a><br /></td></tr>
+<tr class="separator:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">startReceive</a> (uint32_t timeout=0, uint16_t irqFlags=0, uint16_t irqMask=0)</td></tr>
+<tr class="memdesc:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">More...</a><br /></td></tr>
+<tr class="separator:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">startTransmit</a> (String &amp;str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">More...</a><br /></td></tr>
 <tr class="separator:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -775,6 +781,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">float SX128x::getRSSI </td>
@@ -783,10 +792,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. </p>
 <dl class="section return"><dt>Returns</dt><dd>RSSI of the last received packet in dBm. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -795,6 +811,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">float SX128x::getSNR </td>
@@ -803,10 +822,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa or ranging modem. </p>
 <dl class="section return"><dt>Returns</dt><dd>SNR of the last received packet in dB. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1410,6 +1436,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void SX128x::setDio1Action </td>
@@ -1419,6 +1448,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets interrupt service routine to call when DIO1 activates. </p>
@@ -1428,6 +1462,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">PhysicalLayer</a>.</p>
 
 </div>
 </div>
