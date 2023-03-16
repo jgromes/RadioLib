@@ -110,12 +110,23 @@ int16_t PhysicalLayer::receive(uint8_t* data, size_t len) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::sleep() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::standby() {
   return(standby(RADIOLIB_STANDBY_DEFAULT));
 }
 
 int16_t PhysicalLayer::standby(uint8_t mode) {
   (void)mode;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
+  (void)timeout;
+  (void)irqFlags;
+  (void)irqMask;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
@@ -228,6 +239,14 @@ float PhysicalLayer::getFreqStep() const {
 size_t PhysicalLayer::getPacketLength(bool update) {
   (void)update;
   return(0);
+}
+
+float PhysicalLayer::getRSSI() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+float PhysicalLayer::getSNR() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int32_t PhysicalLayer::random(int32_t max) {
@@ -363,6 +382,13 @@ int16_t PhysicalLayer::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
   (void)pin;
   (void)value;
   return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+void PhysicalLayer::setDio1Action(void (*func)(void)) {
+  (void)func;
+}
+
+void PhysicalLayer::clearDio1Action() {
 }
 
 #if defined(RADIOLIB_INTERRUPT_TIMING)

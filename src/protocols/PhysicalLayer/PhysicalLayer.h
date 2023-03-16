@@ -85,6 +85,13 @@ class PhysicalLayer {
     int16_t receive(String& str, size_t len = 0);
 
     /*!
+      \brief Sets module to sleep.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t sleep();
+
+    /*!
       \brief Sets module to standby.
 
       \returns \ref status_codes
@@ -97,6 +104,19 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t standby(uint8_t mode);
+
+    /*!
+      \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
+
+      \param timeout Raw timeout value.
+
+      \param irqFlags Sets the IRQ flags.
+
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1.
+
+      \returns \ref status_codes
+    */
+    virtual int16_t startReceive(uint32_t timeout = 0, uint16_t irqFlags = 0, uint16_t irqMask = 0);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
@@ -259,6 +279,20 @@ class PhysicalLayer {
     virtual size_t getPacketLength(bool update = true);
 
     /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+
+      \returns RSSI of the last received packet in dBm.
+    */
+    virtual float getRSSI();
+
+    /*!
+      \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
+
+      \returns SNR of the last received packet in dB.
+    */
+    virtual float getSNR();
+
+    /*!
       \brief Get truly random number in range 0 - max.
 
       \param max The maximum value of the random number (non-inclusive).
@@ -350,6 +384,18 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+
+    /*!
+      \brief Sets interrupt service routine to call when DIO1 activates.
+
+      \param func ISR to call.
+    */
+    virtual void setDio1Action(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when DIO1 activates.
+    */
+    virtual void clearDio1Action();
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)
 
