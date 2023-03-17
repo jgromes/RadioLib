@@ -2,6 +2,7 @@
 #define _RADIOLIB_TYPES_H
 
 #include "BuildOpt.h"
+#include "BuildOptUser.h"
 
 /*!
   \defgroup config_shaping Data shaping filter values aliases.
@@ -311,6 +312,28 @@
   \brief Mic-E message cannot contaion both telemetry and status text.
 */
 #define RADIOLIB_ERR_MIC_E_TELEMETRY_STATUS                    (-204)
+
+// SSDV status codes
+
+/*!
+  \brief SSDV mode is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_SSDV_MODE                         (-301)
+
+/*!
+  \brief Image size is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_IMAGE_SIZE                        (-302)
+
+/*!
+  \brief Image quality is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_IMAGE_QUALITY                     (-303)
+
+/*!
+  \brief Image subsampling is invalid.
+*/
+#define RADIOLIB_ERR_INVALID_SUBSAMPLING                       (-304)
 
 // RTTY status codes
 
