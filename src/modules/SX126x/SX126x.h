@@ -73,6 +73,9 @@
 #define RADIOLIB_SX126X_CMD_SET_SPECTR_SCAN_PARAMS             0x9B
 
 // SX126X register map
+#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0                0x029F // SX1268 datasheet v1.1, section 9.6
+#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_1                0x02A0 // SX1268 datasheet v1.1, section 9.6
+#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_2                0x02A1 // SX1268 datasheet v1.1, section 9.6
 #define RADIOLIB_SX126X_REG_VERSION_STRING                     0x0320
 #define RADIOLIB_SX126X_REG_HOPPING_ENABLE                     0x0385
 #define RADIOLIB_SX126X_REG_LR_FHSS_PACKET_LENGTH              0x0386
@@ -85,6 +88,7 @@
 #define RADIOLIB_SX126X_REG_LR_FHSS_FREQX_3(X)                 (0x038D + (X)*6)
 #define RADIOLIB_SX126X_REG_SPECTRAL_SCAN_RESULT               0x0401
 #define RADIOLIB_SX126X_REG_DIOX_OUT_ENABLE                    0x0580
+#define RADIOLIB_SX126X_REG_DIOX_DRIVE_STRENGTH                0x0582
 #define RADIOLIB_SX126X_REG_DIOX_IN_ENABLE                     0x0583
 #define RADIOLIB_SX126X_REG_DIOX_PULL_UP_CTRL                  0x0584
 #define RADIOLIB_SX126X_REG_DIOX_PULL_DOWN_CTRL                0x0585
@@ -120,7 +124,7 @@
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_1                    0x081A
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_2                    0x081B
 #define RADIOLIB_SX126X_REG_RANDOM_NUMBER_3                    0x081C
-#define RADIOLIB_SX126X_REG_TX_MODULATION                      0x0889
+#define RADIOLIB_SX126X_REG_SENSITIVITY_CONFIG                 0x0889 // SX1268 datasheet v1.1, section 15.1
 #define RADIOLIB_SX126X_REG_RF_FREQUENCY_0                     0x088B
 #define RADIOLIB_SX126X_REG_RF_FREQUENCY_1                     0x088C
 #define RADIOLIB_SX126X_REG_RF_FREQUENCY_2                     0x088D
@@ -137,13 +141,6 @@
 #define RADIOLIB_SX126X_REG_DIO3_OUT_VOLTAGE_CTRL              0x0920
 #define RADIOLIB_SX126X_REG_EVENT_MASK                         0x0944
 #define RADIOLIB_SX126X_REG_PATCH_MEMORY_BASE                  0x8000
-
-// undocumented registers
-#define RADIOLIB_SX126X_REG_SENSITIVITY_CONFIG                 0x0889 // SX1268 datasheet v1.1, section 15.1
-#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0                0x029F // SX1268 datasheet v1.1, section 9.6
-#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_1                0x02A0 // SX1268 datasheet v1.1, section 9.6
-#define RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_2                0x02A1 // SX1268 datasheet v1.1, section 9.6
-
 
 // SX126X SPI command variables
 //RADIOLIB_SX126X_CMD_SET_SLEEP                                                MSB   LSB   DESCRIPTION
@@ -930,6 +927,15 @@ class SX126x: public PhysicalLayer {
       \returns SNR of the last received packet in dB.
     */
     float getSNR();
+
+    /*!
+      \brief Gets frequency error of the latest received packet.
+      WARNING: This functionality is based on SX128x implementation and not documented on SX126x.
+      While it seems to be working, it should be used with caution!
+
+      \returns Frequency error in Hz.
+    */
+    float getFrequencyError();
 
     /*!
       \brief Query modem for the packet length of received payload.

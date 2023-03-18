@@ -127,6 +127,11 @@ void loop() {
       Serial.print(radio.getSNR());
       Serial.println(F(" dB"));
 
+      // print frequency error
+      Serial.print(F("[SX1262] Frequency error:\t"));
+      Serial.print(radio.getFrequencyError());
+      Serial.println(F(" Hz"));
+
     } else if (state == RADIOLIB_ERR_CRC_MISMATCH) {
       // packet was received, but is malformed
       Serial.println(F("CRC error!"));

@@ -88,6 +88,11 @@ void loop() {
     Serial.print(radio.getSNR());
     Serial.println(F(" dB"));
 
+    // print frequency error
+    Serial.print(F("[SX1262] Frequency error:\t"));
+    Serial.print(radio.getFrequencyError());
+    Serial.println(F(" Hz"));
+
   } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
     // timeout occurred while waiting for a packet
     Serial.println(F("timeout!"));

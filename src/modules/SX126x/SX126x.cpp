@@ -1241,6 +1241,39 @@ float SX126x::getSNR() {
   }
 }
 
+float SX126x::getFrequencyError() {
+  // check active modem
+  uint8_t modem = getPacketType();
+  if(modem != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+    return(0.0);
+  }
+
+  // read the raw frequency error register values
+  uint8_t efeRaw[3] = {0};
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 2, &efeRaw[0], 1);
+  RADIOLIB_ASSERT(state);
+  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 1, &efeRaw[1], 1);
+  RADIOLIB_ASSERT(state);
+  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR, &efeRaw[2], 1);
+  RADIOLIB_ASSERT(state);
+  uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
+  efe &= 0x0FFFFF;
+
+  float error = 0;
+
+  // check the first bit
+  if (efe & 0x80000) {
+    // frequency error is negative
+    efe |= (uint32_t) 0xFFF00000;
+    efe = ~efe + 1;
+    error = 1.55 * (float) efe / (160.0 / (float) _bwKhz) * -1.0;
+  } else {
+    error = 1.55 * (float) efe / (160.0 / (float) _bwKhz);
+  }
+
+  return(error);
+}
+
 size_t SX126x::getPacketLength(bool update) {
   (void)update;
   uint8_t rxBufStatus[2] = {0, 0};
