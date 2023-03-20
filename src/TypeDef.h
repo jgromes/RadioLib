@@ -1,8 +1,9 @@
 #if !defined(_RADIOLIB_TYPES_H)
 #define _RADIOLIB_TYPES_H
 
-#include "BuildOpt.h"
+// user build options may override the default
 #include "BuildOptUser.h"
+#include "BuildOpt.h"
 
 /*!
   \defgroup config_shaping Data shaping filter values aliases.
