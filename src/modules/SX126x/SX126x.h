@@ -947,124 +947,124 @@ class SX126x: public PhysicalLayer {
     size_t getPacketLength(bool update = true) override;
 
     /*!
-     \brief Set modem in fixed packet length mode. Available in FSK mode only.
+      \brief Set modem in fixed packet length mode. Available in FSK mode only.
 
-     \param len Packet length.
+      \param len Packet length.
 
-     \returns \ref status_codes
-   */
-   int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SX126X_MAX_PACKET_LENGTH);
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_SX126X_MAX_PACKET_LENGTH);
 
-   /*!
-     \brief Set modem in variable packet length mode. Available in FSK mode only.
+    /*!
+      \brief Set modem in variable packet length mode. Available in FSK mode only.
 
-     \param len Maximum packet length.
+      \param len Maximum packet length.
 
-     \returns \ref status_codes
-   */
-   int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH);
+      \returns \ref status_codes
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH);
 
-   /*!
-     \brief Get expected time-on-air for a given size of payload
+    /*!
+      \brief Get expected time-on-air for a given size of payload
 
-     \param len Payload length in bytes.
+      \param len Payload length in bytes.
 
-     \returns Expected time-on-air in microseconds.
-   */
-   uint32_t getTimeOnAir(size_t len);
+      \returns Expected time-on-air in microseconds.
+    */
+    uint32_t getTimeOnAir(size_t len);
 
-   /*!
-     \brief Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation.
+    /*!
+      \brief Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation.
 
-     \returns Instantaneous RSSI value in dBm, in steps of 0.5dBm
-   */
-   float getRSSIInst();
+      \returns Instantaneous RSSI value in dBm, in steps of 0.5dBm
+    */
+    float getRSSIInst();
 
-   /*!
-     \brief Set implicit header mode for future reception/transmission.
+    /*!
+      \brief Set implicit header mode for future reception/transmission.
 
-     \param len Payload length in bytes.
+      \param len Payload length in bytes.
 
-     \returns \ref status_codes
-   */
-   int16_t implicitHeader(size_t len);
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
 
-   /*!
-     \brief Set explicit header mode for future reception/transmission.
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
 
-     \returns \ref status_codes
-   */
-   int16_t explicitHeader();
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
 
-   /*!
-     \brief Set regulator mode to LDO.
+    /*!
+      \brief Set regulator mode to LDO.
 
-     \returns \ref status_codes
-   */
-   int16_t setRegulatorLDO();
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorLDO();
 
-   /*!
-     \brief Set regulator mode to DC-DC.
+    /*!
+      \brief Set regulator mode to DC-DC.
 
-     \returns \ref status_codes
-   */
-   int16_t setRegulatorDCDC();
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorDCDC();
 
-   /*!
-     \brief Sets transmission encoding. Available in FSK mode only. Serves only as alias for PhysicalLayer compatibility.
+    /*!
+      \brief Sets transmission encoding. Available in FSK mode only. Serves only as alias for PhysicalLayer compatibility.
 
-     \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
+      \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
 
-     \returns \ref status_codes
-   */
-   int16_t setEncoding(uint8_t encoding) override;
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding) override;
 
-   /*! \copydoc Module::setRfSwitchPins */
-   void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    /*! \copydoc Module::setRfSwitchPins */
+    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
 
-   /*! \copydoc Module::setRfSwitchTable */
-   void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    /*! \copydoc Module::setRfSwitchTable */
+    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
-   /*!
-     \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
-     the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX126x::autoLDRO()
+    /*!
+      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
+      the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call SX126x::autoLDRO()
 
-     \param enable Force LDRO to be always enabled (true) or disabled (false).
+      \param enable Force LDRO to be always enabled (true) or disabled (false).
 
-     \returns \ref status_codes
-   */
-   int16_t forceLDRO(bool enable);
+      \returns \ref status_codes
+    */
+    int16_t forceLDRO(bool enable);
 
-   /*!
-     \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
-     when symbol length exceeds 16 ms.
+    /*!
+      \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
+      when symbol length exceeds 16 ms.
 
-     \returns \ref status_codes
-   */
-   int16_t autoLDRO();
+      \returns \ref status_codes
+    */
+    int16_t autoLDRO();
 
-   /*!
-    \brief Get one truly random byte from RSSI noise.
+    /*!
+      \brief Get one truly random byte from RSSI noise.
 
-    \returns TRNG byte.
-  */
-   uint8_t randomByte();
+      \returns TRNG byte.
+    */
+    uint8_t randomByte();
 
-   #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-   /*!
+    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    /*!
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
 
       \param func Pointer to interrupt service routine.
-   */
-   void setDirectAction(void (*func)(void));
+    */
+    void setDirectAction(void (*func)(void));
 
-   /*!
+    /*!
       \brief Function to read and process data bit in direct reception mode.
 
       \param pin Pin on which to read.
-   */
-   void readBit(RADIOLIB_PIN_TYPE pin);
-   #endif
+    */
+    void readBit(RADIOLIB_PIN_TYPE pin);
+    #endif
 
     /*!
       \brief Upload binary patch into the SX126x device RAM.

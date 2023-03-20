@@ -380,7 +380,7 @@ int16_t SX126x::directMode() {
   // set preamble length to the maximum to prevent SX126x from exiting Tx mode for a while
   state = setPreambleLength(0xFFFF);
   RADIOLIB_ASSERT(state);
-  
+
   return(state);
 }
 
@@ -388,7 +388,7 @@ int16_t SX126x::packetMode() {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
-  
+
   // set preamble length to the default
   state = setPreambleLength(16);
   RADIOLIB_ASSERT(state);
@@ -396,7 +396,7 @@ int16_t SX126x::packetMode() {
   // disable TxDone interrupt
   state = setDioIrqParams(RADIOLIB_SX126X_IRQ_NONE, RADIOLIB_SX126X_IRQ_NONE);
   RADIOLIB_ASSERT(state);
-  
+
   // restore the magic registers
   state = _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_DIOX_IN_ENABLE, RADIOLIB_SX126X_DIO3_IN_DISABLED, 3, 3);
   RADIOLIB_ASSERT(state);
@@ -1951,15 +1951,15 @@ int16_t SX126x::config(uint8_t modem) {
 
 int16_t SX126x::SPIparseStatus(uint8_t in) {
   if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_TIMEOUT) {
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+    return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
   } else if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_INVALID) {
-      return(RADIOLIB_ERR_SPI_CMD_INVALID);
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
   } else if((in & 0b00001110) == RADIOLIB_SX126X_STATUS_CMD_FAILED) {
-      return(RADIOLIB_ERR_SPI_CMD_FAILED);
+    return(RADIOLIB_ERR_SPI_CMD_FAILED);
   } else if((in == 0x00) || (in == 0xFF)) {
-      return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-      return(RADIOLIB_ERR_NONE);
+  return(RADIOLIB_ERR_NONE);
 }
 
 bool SX126x::findChip(uint8_t ver) {
@@ -1986,7 +1986,7 @@ bool SX126x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINT(F("SX126x not found! ("));
         RADIOLIB_DEBUG_PRINT(i + 1);
         RADIOLIB_DEBUG_PRINTLN(F(" of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:"));
-      _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+        _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
         RADIOLIB_DEBUG_PRINT(F("Expected string: "));
         RADIOLIB_DEBUG_PRINTLN(versionBuff);
       #endif
