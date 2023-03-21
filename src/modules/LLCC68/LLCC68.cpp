@@ -2,7 +2,7 @@
 #if !defined(RADIOLIB_EXCLUDE_SX126X)
 
 LLCC68::LLCC68(Module* mod) : SX1262(mod) {
-
+  _chipType = RADIOLIB_LLCC68_CHIP_TYPE;
 }
 
 int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {

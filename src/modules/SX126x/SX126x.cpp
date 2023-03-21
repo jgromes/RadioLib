@@ -1962,11 +1962,9 @@ int16_t SX126x::SPIparseStatus(uint8_t in) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool SX126x::findChip(uint8_t ver) {
+bool SX126x::findChip(const char* verStr) {
   uint8_t i = 0;
   bool flagFound = false;
-  char versionBuff[16];
-  sprintf(versionBuff, "SX126%d", ver);
   while((i < 10) && !flagFound) {
     // reset the module
     reset();
@@ -1976,7 +1974,7 @@ bool SX126x::findChip(uint8_t ver) {
     _mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)version);
 
     // check version register
-    if(strncmp(versionBuff, version, 6) == 0) {
+    if(strncmp(verStr, version, 6) == 0) {
       RADIOLIB_DEBUG_PRINTLN(F("Found SX126x: RADIOLIB_SX126X_REG_VERSION_STRING:"));
       _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
       RADIOLIB_DEBUG_PRINTLN();
@@ -1988,7 +1986,7 @@ bool SX126x::findChip(uint8_t ver) {
         RADIOLIB_DEBUG_PRINTLN(F(" of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:"));
         _mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
         RADIOLIB_DEBUG_PRINT(F("Expected string: "));
-        RADIOLIB_DEBUG_PRINTLN(versionBuff);
+        RADIOLIB_DEBUG_PRINTLN(verStr);
       #endif
       _mod->delay(10);
       i++;

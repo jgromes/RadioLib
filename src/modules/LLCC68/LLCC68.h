@@ -8,6 +8,9 @@
 #include "../../Module.h"
 #include "../SX126x/SX1262.h"
 
+//RADIOLIB_SX126X_REG_VERSION_STRING
+#define RADIOLIB_LLCC68_CHIP_TYPE                              "LLCC68"
+
 /*!
   \class LLCC68
 

@@ -12,7 +12,7 @@
 #define RADIOLIB_SX126X_PA_CONFIG_SX1268                       0x00
 
 //RADIOLIB_SX126X_REG_VERSION_STRING
-#define RADIOLIB_SX1268_CHIP_TYPE                              8
+#define RADIOLIB_SX1268_CHIP_TYPE                              "SX1268"
 
 /*!
   \class SX1268

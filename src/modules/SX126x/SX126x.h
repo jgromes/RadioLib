@@ -1184,13 +1184,13 @@ class SX126x: public PhysicalLayer {
     uint32_t _tcxoDelay = 0;
 
     size_t _implicitLen = 0;
-    uint8_t _chipType = 0;
+    const char* _chipType;
 
     // Allow subclasses to define different TX modes
     uint8_t _tx_mode = Module::MODE_TX;
 
     int16_t config(uint8_t modem);
-    bool findChip(uint8_t type);
+    bool findChip(const char* verStr);
 };
 
 #endif
