@@ -96,28 +96,31 @@ $(document).ready(function(){initNavTree('_l_l_c_c68_8h_source.html',''); initRe
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../SX126x/SX1262.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_l_l_c_c68.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_l_l_c_c68.html">LLCC68</a>: <span class="keyword">public</span> <a class="code" href="class_s_x1262.html">SX1262</a> {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261">LLCC68</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#a039fc3259e4f208d96eaa310720b161d">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf">setBandwidth</a>(<span class="keywordtype">float</span> bw);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#ad59d1a1cb32c7c89c13ebf46051d26e4">setSpreadingFactor</a>(uint8_t sf);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_l_l_c_c68_html"><div class="ttname"><a href="class_l_l_c_c68.html">LLCC68</a></div><div class="ttdoc">Derived class for LLCC68 modules.</div><div class="ttdef"><b>Definition:</b> LLCC68.h:16</div></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="comment">//RADIOLIB_SX126X_REG_VERSION_STRING</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_LLCC68_CHIP_TYPE                              &quot;LLCC68&quot;</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_l_l_c_c68.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_l_l_c_c68.html">LLCC68</a>: <span class="keyword">public</span> <a class="code" href="class_s_x1262.html">SX1262</a> {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261">LLCC68</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#a039fc3259e4f208d96eaa310720b161d">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="comment">// configuration methods</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf">setBandwidth</a>(<span class="keywordtype">float</span> bw);</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    int16_t <a class="code" href="class_l_l_c_c68.html#ad59d1a1cb32c7c89c13ebf46051d26e4">setSpreadingFactor</a>(uint8_t sf);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_l_l_c_c68_html"><div class="ttname"><a href="class_l_l_c_c68.html">LLCC68</a></div><div class="ttdoc">Derived class for LLCC68 modules.</div><div class="ttdef"><b>Definition:</b> LLCC68.h:19</div></div>
 <div class="ttc" id="aclass_l_l_c_c68_html_a039fc3259e4f208d96eaa310720b161d"><div class="ttname"><a href="class_l_l_c_c68.html#a039fc3259e4f208d96eaa310720b161d">LLCC68::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> LLCC68.cpp:8</div></div>
 <div class="ttc" id="aclass_l_l_c_c68_html_a6f6c206657304809ee30bd9761ef79bf"><div class="ttname"><a href="class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf">LLCC68::setBandwidth</a></div><div class="ttdeci">int16_t setBandwidth(float bw)</div><div class="ttdoc">Sets LoRa bandwidth. Allowed values are 125.0, 250.0 and 500.0 kHz.</div><div class="ttdef"><b>Definition:</b> LLCC68.cpp:32</div></div>
 <div class="ttc" id="aclass_l_l_c_c68_html_abf66e5649ac09e5997e29cf637803261"><div class="ttname"><a href="class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261">LLCC68::LLCC68</a></div><div class="ttdeci">LLCC68(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> LLCC68.cpp:4</div></div>

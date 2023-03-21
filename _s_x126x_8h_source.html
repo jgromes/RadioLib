@@ -740,13 +740,13 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01184"></a><span class="lineno"> 1184</span>&#160;    uint32_t _tcxoDelay = 0;</div>
 <div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160; </div>
 <div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160;    <span class="keywordtype">size_t</span> _implicitLen = 0;</div>
-<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    uint8_t _chipType = 0;</div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* _chipType;</div>
 <div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160; </div>
 <div class="line"><a name="l01189"></a><span class="lineno"> 1189</span>&#160;    <span class="comment">// Allow subclasses to define different TX modes</span></div>
 <div class="line"><a name="l01190"></a><span class="lineno"> 1190</span>&#160;    uint8_t _tx_mode = <a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a>;</div>
 <div class="line"><a name="l01191"></a><span class="lineno"> 1191</span>&#160; </div>
 <div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;    int16_t config(uint8_t modem);</div>
-<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t type);</div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordtype">bool</span> findChip(<span class="keyword">const</span> <span class="keywordtype">char</span>* verStr);</div>
 <div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160;};</div>
 <div class="line"><a name="l01195"></a><span class="lineno"> 1195</span>&#160; </div>
 <div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160;<span class="preprocessor">#endif</span></div>
