@@ -436,7 +436,7 @@ int16_t SX126x::sleep(bool retainConfig) {
   if(!retainConfig) {
     sleepMode = RADIOLIB_SX126X_SLEEP_START_COLD | RADIOLIB_SX126X_SLEEP_RTC_OFF;
   }
-  int16_t state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_SLEEP, &sleepMode, 1, false);
+  int16_t state = _mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_SLEEP, &sleepMode, 1, false, false);
 
   // wait for SX126x to safely enter sleep mode
   _mod->delay(1);
