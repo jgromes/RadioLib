@@ -1250,11 +1250,11 @@ float SX126x::getFrequencyError() {
 
   // read the raw frequency error register values
   uint8_t efeRaw[3] = {0};
-  int16_t state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 2, &efeRaw[0], 1);
+  int16_t state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR, &efeRaw[0], 1);
   RADIOLIB_ASSERT(state);
   state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 1, &efeRaw[1], 1);
   RADIOLIB_ASSERT(state);
-  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR, &efeRaw[2], 1);
+  state = readRegister(RADIOLIB_SX126X_REG_FREQ_ERROR + 2, &efeRaw[2], 1);
   RADIOLIB_ASSERT(state);
   uint32_t efe = ((uint32_t) efeRaw[0] << 16) | ((uint32_t) efeRaw[1] << 8) | efeRaw[2];
   efe &= 0x0FFFFF;
@@ -1266,9 +1266,9 @@ float SX126x::getFrequencyError() {
     // frequency error is negative
     efe |= (uint32_t) 0xFFF00000;
     efe = ~efe + 1;
-    error = 1.55 * (float) efe / (160.0 / (float) _bwKhz) * -1.0;
+    error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz) * -1.0;
   } else {
-    error = 1.55 * (float) efe / (160.0 / (float) _bwKhz);
+    error = 1.55 * (float) efe / (1600.0 / (float) _bwKhz);
   }
 
   return(error);
