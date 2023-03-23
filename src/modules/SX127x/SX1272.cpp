@@ -29,6 +29,10 @@ int16_t SX1272::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = setGain(gain);
   RADIOLIB_ASSERT(state);
 
+  // set publicly accessible settings that are not a part of begin method
+  state = setCRC(true);
+  RADIOLIB_ASSERT(state);
+
   return(state);
 }
 
@@ -55,6 +59,10 @@ int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
     state = setDataShaping(RADIOLIB_SHAPING_NONE);
     RADIOLIB_ASSERT(state);
   }
+
+  // set publicly accessible settings that are not a part of begin method
+  state = setCRC(true);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
