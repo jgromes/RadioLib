@@ -73,6 +73,12 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   state = setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
+  if (useRegulatorLDO) {
+      state = setRegulatorLDO();
+  } else {
+      state = setRegulatorDCDC();
+  }
+
   // set publicly accessible settings that are not a part of begin method
   state = setCurrentLimit(60.0);
   RADIOLIB_ASSERT(state);
@@ -80,11 +86,8 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   state = setDio2AsRfSwitch(true);
   RADIOLIB_ASSERT(state);
 
-  if (useRegulatorLDO) {
-      state = setRegulatorLDO();
-  } else {
-      state = setRegulatorDCDC();
-  }
+  state = setCRC(2);
+  RADIOLIB_ASSERT(state);
 
   return(state);
 }
