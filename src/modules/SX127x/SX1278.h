@@ -258,6 +258,15 @@ class SX1278: public SX127x {
     float getRSSI(bool skipReceive = false);
 
     /*!
+      \brief Gets current signal strength indicator of for LoRa modem, or current RSSI level for FSK modem.
+
+      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FKS/OOK mode.
+
+      \returns Current packet RSSI for LoRa modem, or FSK modem.
+    */
+    float getInstRSSI(bool skipReceive = false);
+
+    /*!
       \brief Enables/disables CRC check of received packets.
 
       \param enable Enable (true) or disable (false) CRC.

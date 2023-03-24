@@ -421,6 +421,39 @@ float SX1278::getRSSI(bool skipReceive) {
   }
 }
 
+float SX1278::getInstRSSI(bool skipReceive) {
+  if(getActiveModem() == RADIOLIB_SX127X_LORA) {
+    // for LoRa, get current RSSI
+    float currentRSSI;
+
+    // RSSI calculation uses different constant for low-frequency and high-frequency ports
+    if(_freq < 868.0) {
+      currentRSSI = -164 + _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE);
+    } else {
+      currentRSSI = -157 + _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE);
+    }
+
+    return(currentRSSI);
+
+  } else {
+    // enable listen mode
+    if(!skipReceive) {
+      startReceive();
+    }
+
+    // read the value for FSK
+    float rssi = (float)_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE_FSK) / -2.0;
+
+    // set mode back to standby
+    if(!skipReceive) {
+      standby();
+    }
+
+    // return the value
+    return(rssi);
+  }
+}
+
 int16_t SX1278::setCRC(bool enable, bool mode) {
   if(getActiveModem() == RADIOLIB_SX127X_LORA) {
     // set LoRa CRC
