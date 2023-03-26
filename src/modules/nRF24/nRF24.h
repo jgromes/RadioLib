@@ -324,6 +324,21 @@ class nRF24: public PhysicalLayer {
     int16_t startReceive();
 
     /*!
+      \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
+
+      \param timeout Ignored.
+
+      \param irqFlags Ignored.
+
+      \param irqMask Ignored.
+
+      \param len Ignored.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+
+    /*!
       \brief Reads data received after calling startReceive method.
 
       \param data Pointer to array to save the received binary data.

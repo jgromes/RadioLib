@@ -232,6 +232,14 @@ int16_t nRF24::startReceive() {
   return(state);
 }
 
+int16_t nRF24::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+  (void)timeout;
+  (void)irqFlags;
+  (void)irqMask;
+  (void)len;
+  return(startReceive());
+}
+
 int16_t nRF24::readData(uint8_t* data, size_t len) {
   // set mode to standby
   int16_t state = standby();
