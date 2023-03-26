@@ -287,6 +287,14 @@ int16_t Si443x::startReceive() {
   return(state);
 }
 
+int16_t Si443x::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+  (void)timeout;
+  (void)irqFlags;
+  (void)irqMask;
+  (void)len;
+  return(startReceive());
+}
+
 int16_t Si443x::readData(uint8_t* data, size_t len) {
   // clear interrupt flags
   clearIRQFlags();
