@@ -272,6 +272,14 @@ int16_t RF69::startReceive() {
   return(state);
 }
 
+int16_t RF69::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+  (void)timeout;
+  (void)irqFlags;
+  (void)irqMask;
+  (void)len;
+  return(startReceive());
+}
+
 void RF69::setDio0Action(void (*func)(void)) {
   _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
 }
