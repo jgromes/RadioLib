@@ -571,9 +571,11 @@ class SX128x: public PhysicalLayer {
 
       \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX128X_IRQ_RX_DONE.
 
+      \param len Only for PhysicalLayer compatibility, not used.
+
       \returns \ref status_codes
     */
-    int16_t startReceive(uint16_t timeout = RADIOLIB_SX128X_RX_TIMEOUT_INF, uint16_t irqFlags = RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX128X_IRQ_RX_DONE);
+    int16_t startReceive(uint16_t timeout = RADIOLIB_SX128X_RX_TIMEOUT_INF, uint16_t irqFlags = RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX128X_IRQ_RX_DONE, size_t len = 0);
 
     /*!
       \brief Reads the current IRQ status.
