@@ -123,10 +123,11 @@ int16_t PhysicalLayer::standby(uint8_t mode) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
+int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
   (void)timeout;
   (void)irqFlags;
   (void)irqMask;
+  (void)len;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 

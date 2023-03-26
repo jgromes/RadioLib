@@ -106,17 +106,19 @@ class PhysicalLayer {
     virtual int16_t standby(uint8_t mode);
 
     /*!
-      \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
+      \brief Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.
 
-      \param timeout Raw timeout value.
+      \param timeout Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive).
 
       \param irqFlags Sets the IRQ flags.
 
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1.
+      \param irqMask Sets the mask of IRQ flags that will trigger the DIO pin.
+
+      \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
 
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout = 0, uint16_t irqFlags = 0, uint16_t irqMask = 0);
+    virtual int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
