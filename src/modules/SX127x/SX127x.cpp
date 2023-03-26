@@ -423,6 +423,12 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   return(setMode(mode));
 }
 
+int16_t SX127x::startReceive(uint32_t mode, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+  (void)irqFlags;
+  (void)irqMask;
+  return(startReceive((uint8_t)len, (uint8_t)mode));
+}
+
 void SX127x::setDio0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
   _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
 }
