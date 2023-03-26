@@ -76,6 +76,7 @@ var class_s_x127x =
     [ "standby", "class_s_x127x.html#a760b8c5103128f122fbe489c6529ce41", null ],
     [ "standby", "class_s_x127x.html#aa565bbff460e487672953dc05d335cb0", null ],
     [ "startChannelScan", "class_s_x127x.html#a1d4631691c16d6ecf38815dc4e59a059", null ],
+    [ "startReceive", "class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c", null ],
     [ "startReceive", "class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d", null ],
     [ "startTransmit", "class_s_x127x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_s_x127x.html#af068e6e862c99e39d0261a7971dd56db", null ],

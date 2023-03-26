@@ -167,9 +167,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4587409a9b96a0c496cf12b3acac20c4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:a4587409a9b96a0c496cf12b3acac20c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4">More...</a><br /></td></tr>
 <tr class="separator:a4587409a9b96a0c496cf12b3acac20c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add774469f0bde099082a29068064712c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#add774469f0bde099082a29068064712c">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF, uint16_t irqFlags=RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX128X_IRQ_RX_DONE)</td></tr>
-<tr class="memdesc:add774469f0bde099082a29068064712c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#add774469f0bde099082a29068064712c">More...</a><br /></td></tr>
-<tr class="separator:add774469f0bde099082a29068064712c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8530aaeacc4c12736ce5aa5b5460ee19"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a8530aaeacc4c12736ce5aa5b5460ee19">startReceive</a> (uint16_t timeout=RADIOLIB_SX128X_RX_TIMEOUT_INF, uint16_t irqFlags=RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX128X_IRQ_RX_DONE, size_t len=0)</td></tr>
+<tr class="memdesc:a8530aaeacc4c12736ce5aa5b5460ee19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x128x.html#a8530aaeacc4c12736ce5aa5b5460ee19">More...</a><br /></td></tr>
+<tr class="separator:a8530aaeacc4c12736ce5aa5b5460ee19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1f933f767161cc59fdaca816ab93e22"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:ae1f933f767161cc59fdaca816ab93e22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">More...</a><br /></td></tr>
 <tr class="separator:ae1f933f767161cc59fdaca816ab93e22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,9 +315,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">sleep</a> ()</td></tr>
 <tr class="memdesc:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to sleep.  <a href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">More...</a><br /></td></tr>
 <tr class="separator:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">startReceive</a> (uint32_t timeout=0, uint16_t irqFlags=0, uint16_t irqMask=0)</td></tr>
-<tr class="memdesc:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">More...</a><br /></td></tr>
-<tr class="separator:a7a359a120ba6ad7c559d12de54b6349c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
+<tr class="memdesc:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">More...</a><br /></td></tr>
+<tr class="separator:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">startTransmit</a> (String &amp;str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db">More...</a><br /></td></tr>
 <tr class="separator:af068e6e862c99e39d0261a7971dd56db inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2050,8 +2050,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="add774469f0bde099082a29068064712c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add774469f0bde099082a29068064712c">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="a8530aaeacc4c12736ce5aa5b5460ee19"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8530aaeacc4c12736ce5aa5b5460ee19">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2072,7 +2072,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX128X_IRQ_RX_DONE</code>&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX128X_IRQ_RX_DONE</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2088,6 +2094,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX128X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX128X_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
     <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX128X_IRQ_RX_DEFAULT.</td></tr>
     <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX128X_IRQ_RX_DONE.</td></tr>
+    <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used.</td></tr>
   </table>
   </dd>
 </dl>

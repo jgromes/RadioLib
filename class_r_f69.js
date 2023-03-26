@@ -68,6 +68,7 @@ var class_r_f69 =
     [ "standby", "class_r_f69.html#a20242499eb926ff7b7da6e3f74a9ece1", null ],
     [ "standby", "class_r_f69.html#a6e3002ab0c58e2087a7d101eda7afa82", null ],
     [ "startReceive", "class_r_f69.html#afae38fa64242043de34096bf497725f1", null ],
+    [ "startReceive", "class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66", null ],
     [ "startTransmit", "class_r_f69.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_r_f69.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_r_f69.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],

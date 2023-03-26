@@ -141,9 +141,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
 <tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
 <tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a359a120ba6ad7c559d12de54b6349c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">startReceive</a> (uint32_t timeout=0, uint16_t irqFlags=0, uint16_t irqMask=0)</td></tr>
-<tr class="memdesc:a7a359a120ba6ad7c559d12de54b6349c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c">More...</a><br /></td></tr>
-<tr class="separator:a7a359a120ba6ad7c559d12de54b6349c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
+<tr class="memdesc:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">More...</a><br /></td></tr>
+<tr class="separator:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <a href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">More...</a><br /></td></tr>
 <tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1289,8 +1289,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 
 </div>
 </div>
-<a id="a7a359a120ba6ad7c559d12de54b6349c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a359a120ba6ad7c559d12de54b6349c">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="a13dbafeeb9dd9ede72cc4d907738ac48"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a13dbafeeb9dd9ede72cc4d907738ac48">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1302,19 +1302,25 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
           <td class="memname">int16_t PhysicalLayer::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>0</code>, </td>
+          <td class="paramname"><em>timeout</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>irqFlags</em> = <code>0</code>, </td>
+          <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>irqMask</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>irqMask</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1329,18 +1335,19 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven receive method. DIO1 will be activated when full packet is received. </p>
+<p>Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value.</td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive).</td></tr>
     <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1.</td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger the DIO pin.</td></tr>
+    <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a34057f054d1cd3cce520ddf87b0821d5">SX126x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a0ec1b926c93885739b546a7f39e8b09c">SX126x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>, <a class="el" href="class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33">CC1101</a>, and <a class="el" href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">SX127x</a>.</p>
 
 </div>
 </div>

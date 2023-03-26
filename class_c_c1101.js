@@ -50,6 +50,7 @@ var class_c_c1101 =
     [ "standby", "class_c_c1101.html#a7612bf81e48086004c62548de2682266", null ],
     [ "standby", "class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a", null ],
     [ "startReceive", "class_c_c1101.html#af727750d05be0bcef4bb8ac260d110e3", null ],
+    [ "startReceive", "class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33", null ],
     [ "startTransmit", "class_c_c1101.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_c_c1101.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_c_c1101.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],

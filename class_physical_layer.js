@@ -32,7 +32,7 @@ var class_physical_layer =
     [ "standby", "class_physical_layer.html#acbcaf6aefcb77a354797e66222fe5018", null ],
     [ "standby", "class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8", null ],
     [ "startDirect", "class_physical_layer.html#a88a10657bd2215a11a2331f937414b55", null ],
-    [ "startReceive", "class_physical_layer.html#a7a359a120ba6ad7c559d12de54b6349c", null ],
+    [ "startReceive", "class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48", null ],
     [ "startTransmit", "class_physical_layer.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_physical_layer.html#af068e6e862c99e39d0261a7971dd56db", null ],
     [ "startTransmit", "class_physical_layer.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],
