@@ -240,13 +240,15 @@ class SX1272: public SX127x {
     int16_t setDataShapingOOK(uint8_t sh);
 
     /*!
-      \brief Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.
+      \brief Gets recorded signal strength indicator.
 
-      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FKS/OOK mode.
+      \param packet Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.
 
-      \returns Last packet RSSI for LoRa modem, or current RSSI level for FSK modem.
+      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
+
+      \returns RSSI value in dBm.
     */
-    float getRSSI(bool skipReceive = false);
+    float getRSSI(bool packet = true, bool skipReceive = false);
 
     /*!
       \brief Enables/disables CRC check of received packets.
