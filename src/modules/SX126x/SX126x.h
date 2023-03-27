@@ -915,11 +915,11 @@ class SX126x: public PhysicalLayer {
     float getDataRate() const;
 
     /*!
-      \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
+      \brief GetsRSSI (Recorded Signal Strength Indicator).
 
-      \param packet Set to false to gets current RSSI measurement in LoRa mode.
+      \param packet Whether to read last packet RSSI, or the current value.
 
-      \returns RSSI of the last received packet in dBm.
+      \returns RSSI value in dBm.
     */
     float getRSSI(bool packet = true);
 
@@ -974,13 +974,6 @@ class SX126x: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     uint32_t getTimeOnAir(size_t len);
-
-    /*!
-      \brief Get instantaneous RSSI value during recption of the packet. Should switch to FSK receive mode for LBT implementation.
-
-      \returns Instantaneous RSSI value in dBm, in steps of 0.5dBm
-    */
-    float getRSSIInst();
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
