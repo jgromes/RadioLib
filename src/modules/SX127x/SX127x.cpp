@@ -1558,4 +1558,45 @@ int16_t SX127x::setDIOPreambleDetect(bool usePreambleDetect) {
   return _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, (usePreambleDetect) ? RADIOLIB_SX127X_DIO_MAP_PREAMBLE_DETECT : RADIOLIB_SX127X_DIO_MAP_RSSI, 0, 0);
 }
 
+float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
+  if(getActiveModem() == RADIOLIB_SX127X_LORA) {
+    if(packet) {
+      // LoRa packet mode, get RSSI of the last packet
+      float lastPacketRSSI = offset + _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PKT_RSSI_VALUE);
+
+      // spread-spectrum modulation signal can be received below noise floor
+      // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
+      float lastPacketSNR = SX127x::getSNR();
+      if(lastPacketSNR < 0.0) {
+        lastPacketRSSI += lastPacketSNR;
+      }
+      return(lastPacketRSSI);
+
+    } else {
+      // LoRa instant, get current RSSI
+      float currentRSSI = offset + _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE);
+      return(currentRSSI);
+    }
+  
+  } else {
+    // for FSK, there is no packet RSSI
+
+    // enable listen mode
+    if(!skipReceive) {
+      startReceive();
+    }
+
+    // read the value for FSK
+    float rssi = (float)_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE_FSK) / -2.0;
+
+    // set mode back to standby
+    if(!skipReceive) {
+      standby();
+    }
+
+    // return the value
+    return(rssi);
+  }
+}
+
 #endif

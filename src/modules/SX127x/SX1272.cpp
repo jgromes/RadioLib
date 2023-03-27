@@ -352,37 +352,8 @@ int16_t SX1272::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
-float SX1272::getRSSI(bool skipReceive) {
-  if(getActiveModem() == RADIOLIB_SX127X_LORA) {
-    // RSSI calculation uses different constant for low-frequency and high-frequency ports
-    float lastPacketRSSI = -139 + _mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PKT_RSSI_VALUE);
-
-    // spread-spectrum modulation signal can be received below noise floor
-    // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
-    float lastPacketSNR = SX127x::getSNR();
-    if(lastPacketSNR < 0.0) {
-      lastPacketRSSI += lastPacketSNR;
-    }
-
-    return(lastPacketRSSI);
-
-  } else {
-    // enable listen mode
-    if(!skipReceive) {
-      startReceive();
-    }
-
-    // read the value for FSK
-    float rssi = (float)_mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE_FSK) / -2.0;
-
-    // set mode back to standby
-    if(!skipReceive) {
-      standby();
-    }
-
-    // return the value
-    return(rssi);
-  }
+float SX1272::getRSSI(bool packet, bool skipReceive) {
+  return(SX127x::getRSSI(packet, skipReceive, -139));
 }
 
 int16_t SX1272::setCRC(bool enable, bool mode) {

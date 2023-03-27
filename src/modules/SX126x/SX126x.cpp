@@ -1222,11 +1222,18 @@ float SX126x::getDataRate() const {
   return(_dataRate);
 }
 
-float SX126x::getRSSI() {
-  // get last packet RSSI from packet status
-  uint32_t packetStatus = getPacketStatus();
-  uint8_t rssiPkt = packetStatus & 0xFF;
-  return(-1.0 * rssiPkt/2.0);
+float SX126x::getRSSI(bool packet) {
+  if(packet) { 
+    // get last packet RSSI from packet status
+    uint32_t packetStatus = getPacketStatus();
+    uint8_t rssiPkt = packetStatus & 0xFF;
+    return(-1.0 * rssiPkt/2.0);
+  } else {
+    // get instantaneous RSSI value
+    uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
+    _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, data, 3);
+    return((float)data[0] / (-2.0));
+  }
 }
 
 float SX126x::getSNR() {
@@ -1326,13 +1333,6 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   } else {
     return((len * 8 * _br) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 32));
   }
-}
-
-float SX126x::getRSSIInst() {
-  uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
-  _mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, data, 3);
-
-  return (float)data[0] / (-2.0);
 }
 
 int16_t SX126x::implicitHeader(size_t len) {

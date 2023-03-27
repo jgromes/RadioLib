@@ -1259,6 +1259,17 @@ class SX127x: public PhysicalLayer {
     int16_t setDIOPreambleDetect(bool usePreambleDetect);
 
     /*!
+      \brief Gets recorded signal strength indicator.
+
+      \param packet Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.
+
+      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
+
+      \returns RSSI value in dBm.
+    */
+    float getRSSI(bool packet, bool skipReceive, int16_t offset);
+
+    /*!
       \brief Sets the RSSI value above which the RSSI interrupt is signaled
 
       \param dbm A dBm value between -127.5 and 0 inclusive
