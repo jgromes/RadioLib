@@ -1221,7 +1221,7 @@ float SX126x::getDataRate() const {
   return(_dataRate);
 }
 
-float SX126x::getRSSI() {
+float SX126x::getRSSI(bool packet) {
 
   if (packet) { 
   // get last packet RSSI from packet status
