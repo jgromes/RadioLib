@@ -150,9 +150,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1ccc4d5062f739d534ab22562c7efca4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4">setDataShapingOOK</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:a1ccc4d5062f739d534ab22562c7efca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping. Only available in FSK mode with OOK modulation.  <a href="class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4">More...</a><br /></td></tr>
 <tr class="separator:a1ccc4d5062f739d534ab22562c7efca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae52d84fa301309a4a4294312571fc3b8"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#ae52d84fa301309a4a4294312571fc3b8">getRSSI</a> (bool skipReceive=false)</td></tr>
-<tr class="memdesc:ae52d84fa301309a4a4294312571fc3b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem.  <a href="class_s_x1278.html#ae52d84fa301309a4a4294312571fc3b8">More...</a><br /></td></tr>
-<tr class="separator:ae52d84fa301309a4a4294312571fc3b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a260399b893988196771bc5a62d604822"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a260399b893988196771bc5a62d604822">getRSSI</a> (bool packet=true, bool skipReceive=false)</td></tr>
+<tr class="memdesc:a260399b893988196771bc5a62d604822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <a href="class_s_x1278.html#a260399b893988196771bc5a62d604822">More...</a><br /></td></tr>
+<tr class="separator:a260399b893988196771bc5a62d604822"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0be7586b8e40355bbd29d78ae9941d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#ac0be7586b8e40355bbd29d78ae9941d1">setCRC</a> (bool enable, bool mode=false)</td></tr>
 <tr class="memdesc:ac0be7586b8e40355bbd29d78ae9941d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <a href="class_s_x1278.html#ac0be7586b8e40355bbd29d78ae9941d1">More...</a><br /></td></tr>
 <tr class="separator:ac0be7586b8e40355bbd29d78ae9941d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -402,6 +402,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">setDIOPreambleDetect</a> (bool usePreambleDetect)</td></tr>
 <tr class="memdesc:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.  <a href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">More...</a><br /></td></tr>
 <tr class="separator:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a53d9bd78635a97dc0e3309b675763510">getRSSI</a> (bool packet, bool skipReceive, int16_t offset)</td></tr>
+<tr class="memdesc:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <a href="class_s_x127x.html#a53d9bd78635a97dc0e3309b675763510">More...</a><br /></td></tr>
+<tr class="separator:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">setRSSIThreshold</a> (float dbm)</td></tr>
 <tr class="memdesc:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the RSSI value above which the RSSI interrupt is signaled.  <a href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">More...</a><br /></td></tr>
 <tr class="separator:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -745,8 +748,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae52d84fa301309a4a4294312571fc3b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae52d84fa301309a4a4294312571fc3b8">&#9670;&nbsp;</a></span>getRSSI()</h2>
+<a id="a260399b893988196771bc5a62d604822"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a260399b893988196771bc5a62d604822">&#9670;&nbsp;</a></span>getRSSI()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -755,20 +758,31 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">float SX1278::getRSSI </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>skipReceive</em> = <code>false</code></td><td>)</td>
+          <td class="paramname"><em>packet</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>skipReceive</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Gets recorded signal strength indicator of the latest received packet for LoRa modem, or current RSSI level for FSK modem. </p>
+<p>Gets recorded signal strength indicator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FKS/OOK mode.</td></tr>
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.</td></tr>
+    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Last packet RSSI for LoRa modem, or current RSSI level for FSK modem. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>RSSI value in dBm. </dd></dl>
 
 </div>
 </div>

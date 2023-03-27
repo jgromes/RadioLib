@@ -25,6 +25,7 @@ var class_s_x127x =
     [ "getMod", "class_s_x127x.html#a4c27736905cf848a67d6cbc92df823b8", null ],
     [ "getModemStatus", "class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc", null ],
     [ "getPacketLength", "class_s_x127x.html#a462fa74275e67c296328a01f361892d5", null ],
+    [ "getRSSI", "class_s_x127x.html#a53d9bd78635a97dc0e3309b675763510", null ],
     [ "getSNR", "class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb", null ],
     [ "getTempRaw", "class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1", null ],
     [ "getTimeOnAir", "class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac", null ],
