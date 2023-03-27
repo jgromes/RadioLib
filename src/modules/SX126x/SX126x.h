@@ -917,9 +917,11 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
 
+      \param packet Set to false to gets current RSSI measurement in LoRa mode.
+
       \returns RSSI of the last received packet in dBm.
     */
-    float getRSSI();
+    float getRSSI(bool packet = true);
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
