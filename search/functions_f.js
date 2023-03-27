@@ -82,7 +82,7 @@ var searchData=
   ['spectralscanabort_637',['spectralScanAbort',['../class_s_x126x.html#a865397e1cca38bec2d055c047825ea07',1,'SX126x']]],
   ['spectralscangetresult_638',['spectralScanGetResult',['../class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2',1,'SX126x']]],
   ['spectralscangetstatus_639',['spectralScanGetStatus',['../class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4',1,'SX126x']]],
-  ['spectralscanstart_640',['spectralScanStart',['../class_s_x126x.html#a6a5ed11f9932a065438d073e7790a0e0',1,'SX126x']]],
+  ['spectralscanstart_640',['spectralScanStart',['../class_s_x126x.html#acea676a81ee40e83f96becdee91d42be',1,'SX126x']]],
   ['spicheckstream_641',['SPIcheckStream',['../class_module.html#a5efa7ae78cab1d7f43005e965923f769',1,'Module']]],
   ['spigetregvalue_642',['SPIgetRegValue',['../class_module.html#a01e15988ec448c76142ee5709929be2c',1,'Module']]],
   ['spireadregister_643',['SPIreadRegister',['../class_module.html#a9a545e4a001da0d9f6358279ac40d4f0',1,'Module']]],
