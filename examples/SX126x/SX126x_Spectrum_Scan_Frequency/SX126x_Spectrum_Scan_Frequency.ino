@@ -5,7 +5,7 @@
    The output is in the form of scan lines, each line has 33 power bins.
    First power bin corresponds to -11 dBm, the second to -15 dBm and so on.
    Higher number of samples in a bin corresponds to more power received
-   at that level.
+   at that level. The example performs frequency sweep over a given range.
 
    To show the results in a plot, run the Python script
    RadioLib/extras/SX126x_Spectrum_Scan/SpectrumScan.py
@@ -34,12 +34,16 @@
 // BUSY pin:  9
 SX1262 radio = new Module(10, 2, 3, 9);
 
+// frequency range in MHz to scan
+const float freqStart = 431;
+const float freqEnd = 435;
+
 void setup() {
   Serial.begin(115200);
 
-   // initialize SX1262 FSK modem with default settings
+  // initialize SX1262 FSK modem at the initial frequency
   Serial.print(F("[SX1262] Initializing ... "));
-  int state = radio.beginFSK();
+  int state = radio.beginFSK(freqStart);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -76,38 +80,50 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(F("[SX1262] Starting spectral scan ... "));
+  // perform scan over the entire frequency range
+  float freq = freqStart;
+  while(freq <= freqEnd) {
+    Serial.print("FREQ ");
+    Serial.println(freq, 2);
 
-  // start spectral scan
-  // number of scans in each line is 2048
-  // number of samples: 2048 (fewer samples = better temporal resolution)
-  int state = radio.spectralScanStart(2048);
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
-  }
-
-  // wait for spectral scan to finish
-  while(radio.spectralScanGetStatus() != RADIOLIB_ERR_NONE) {
-    delay(10);
-  }
-
-  // read the results
-  uint16_t results[RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE];
-  state = radio.spectralScanGetResult(results);
-  if(state == RADIOLIB_ERR_NONE) {
-    // we have some results, print it
-    Serial.print("SCAN ");
-    for(uint8_t i = 0; i < RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE; i++) {
-      Serial.print(results[i]);
-      Serial.print(',');
+    // start spectral scan
+    // number of samples: 2048 (fewer samples = better temporal resolution)
+    Serial.print(F("[SX1262] Starting spectral scan ... "));
+    int state = radio.spectralScanStart(2048);
+    if(state == RADIOLIB_ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
     }
-    Serial.println(" END");
-  }
 
-  // wait a little bit before the next scan
-  delay(5);
+    // wait for spectral scan to finish
+    while(radio.spectralScanGetStatus() != RADIOLIB_ERR_NONE) {
+      delay(10);
+    }
+
+    // read the results
+    uint16_t results[RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE];
+    state = radio.spectralScanGetResult(results);
+    if(state == RADIOLIB_ERR_NONE) {
+      // we have some results, print it
+      Serial.print("SCAN ");
+      for(uint8_t i = 0; i < RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE; i++) {
+        Serial.print(results[i]);
+        Serial.print(',');
+      }
+      Serial.println(" END");
+    }
+
+    // wait a little bit before the next scan
+    delay(5);
+
+    // set the next frequency
+    // the frequency step should be slightly smaller
+    // or the same as the Rx bandwidth set in setup
+    freq += 0.2;
+    radio.setFrequency(freq);
+  }
+  
 }

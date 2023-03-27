@@ -1086,7 +1086,7 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Start spectral scan. Requires binary path to be uploaded.
 
-      \param numScans Number of scans for each iteration. Fewer scans = better temporal resolution, but fewer power samples.
+      \param numSamples Number of samples for each scan. Fewer samples = better temporal resolution.
 
       \param window RSSI averaging window size.
 
@@ -1094,7 +1094,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t spectralScanStart(uint16_t numScans, uint8_t window = RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
+    int16_t spectralScanStart(uint16_t numSamples, uint8_t window = RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
     
     /*!
       \brief Abort an ongoing spectral scan.
@@ -1121,6 +1121,7 @@ class SX126x: public PhysicalLayer {
   protected:
 #endif
     // SX126x SPI command implementations
+    int16_t setFs();
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
     int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
