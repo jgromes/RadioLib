@@ -834,7 +834,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;<span class="preprocessor">    #define RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(p)        digitalPinToInterrupt(p)</span></div>
 <div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;<span class="preprocessor">    #define RADIOLIB_NC                                 (0xFF)</span></div>
 <div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI                        SPI</span></div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)</span></div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(1000000, MSBFIRST, SPI_MODE0) </span><span class="comment">// see issue #709</span></div>
 <div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE                        PROGMEM</span></div>
 <div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)</span></div>
 <div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;<span class="preprocessor">    #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       pgm_read_dword(addr)</span></div>
