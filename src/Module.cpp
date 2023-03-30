@@ -336,9 +336,6 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     uint8_t debugBuff[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
 
-  // pull NSS low
-  this->digitalWrite(this->getCs(), LOW);
-
   // ensure GPIO is low
   uint32_t start = this->millis();
   while(this->digitalRead(this->getGpio())) {
@@ -348,6 +345,9 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
     }
   }
+
+  // pull NSS low
+  this->digitalWrite(this->getCs(), LOW);
 
   // start transfer
   this->SPIbeginTransaction();
