@@ -1182,6 +1182,12 @@ float SX128x::getFrequencyError() {
 
 size_t SX128x::getPacketLength(bool update) {
   (void)update;
+
+  // in implicit mode, return the cached value
+  if((getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_LORA) && (_headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT)) {
+    return(_payloadLen);
+  }
+
   uint8_t rxBufStatus[2] = {0, 0};
   _mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
   return((size_t)rxBufStatus[0]);
