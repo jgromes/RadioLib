@@ -114,6 +114,7 @@
 #define RADIOLIB_SX126X_REG_BROADCAST_ADDRESS                  0x06CE
 #define RADIOLIB_SX126X_REG_PAYLOAD_LENGTH                     0x0702
 #define RADIOLIB_SX126X_REG_PACKET_PARAMS                      0x0704
+#define RADIOLIB_SX126X_REG_LORA_SYNC_TIMEOUT                  0x0706
 #define RADIOLIB_SX126X_REG_IQ_CONFIG                          0x0736
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_MSB                 0x0740
 #define RADIOLIB_SX126X_REG_LORA_SYNC_WORD_LSB                 0x0741
@@ -132,8 +133,10 @@
 #define RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW                    0x089B
 #define RADIOLIB_SX126X_REG_RX_GAIN                            0x08AC
 #define RADIOLIB_SX126X_REG_TX_CLAMP_CONFIG                    0x08D8
+#define RADIOLIB_SX126X_REG_ANA_LNA                            0x08E2
 #define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_N                     0x08E3
 #define RADIOLIB_SX126X_REG_LNA_CAP_TUNE_P                     0x08E4
+#define RADIOLIB_SX126X_REG_ANA_MIXER                          0x08E5
 #define RADIOLIB_SX126X_REG_OCP_CONFIGURATION                  0x08E7
 #define RADIOLIB_SX126X_REG_RTC_CTRL                           0x0902
 #define RADIOLIB_SX126X_REG_XTA_TRIM                           0x0911
@@ -419,8 +422,17 @@
 #define RADIOLIB_SX126X_SPECTRAL_SCAN_COMPLETED                0xFF        //  7     0                           completed
 
 // RADIOLIB_SX126X_REG_RSSI_AVG_WINDOW
-#define RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT           (0x05 << 2) //  7     0     default RSSI average window
+#define RADIOLIB_SX126X_SPECTRAL_SCAN_WINDOW_DEFAULT           (0x05 << 2) //  7     0     default RSSI average window
 
+// RADIOLIB_SX126X_REG_ANA_LNA
+#define RADIOLIB_SX126X_LNA_RNG_DISABLED                       0b00000001  //  0     0     random number: disabled
+#define RADIOLIB_SX126X_LNA_RNG_ENABLED                        0b00000000  //  0     0                    enabled
+
+// RADIOLIB_SX126X_REG_ANA_MIXER
+#define RADIOLIB_SX126X_MIXER_RNG_DISABLED                     0b00000001  //  7     7     random number: disabled
+#define RADIOLIB_SX126X_MIXER_RNG_ENABLED                      0b00000000  //  7     7                    enabled
+
+// size of the spectral scan result
 #define RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE                 (33)
 
 /*!
@@ -1089,7 +1101,7 @@ class SX126x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t spectralScanStart(uint16_t numSamples, uint8_t window = RADIOLIB_SX126x_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
+    int16_t spectralScanStart(uint16_t numSamples, uint8_t window = RADIOLIB_SX126X_SPECTRAL_SCAN_WINDOW_DEFAULT, uint8_t interval = RADIOLIB_SX126X_SCAN_INTERVAL_8_20_US);
     
     /*!
       \brief Abort an ongoing spectral scan.

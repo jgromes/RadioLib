@@ -1391,6 +1391,10 @@ int16_t SX126x::autoLDRO() {
 }
 
 uint8_t SX126x::randomByte() {
+  // set some magic registers
+  _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_ANA_LNA, RADIOLIB_SX126X_LNA_RNG_ENABLED, 0, 0);
+  _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_ANA_MIXER, RADIOLIB_SX126X_MIXER_RNG_ENABLED, 0, 0);
+
   // set mode to Rx
   setRx(RADIOLIB_SX126X_RX_TIMEOUT_INF);
 
@@ -1407,6 +1411,10 @@ uint8_t SX126x::randomByte() {
 
   // set mode to standby
   standby();
+
+  // restore the magic registers
+  _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_ANA_LNA, RADIOLIB_SX126X_LNA_RNG_DISABLED, 0, 0);
+  _mod->SPIsetRegValue(RADIOLIB_SX126X_REG_ANA_MIXER, RADIOLIB_SX126X_MIXER_RNG_DISABLED, 0, 0);
 
   return(randByte);
 }
