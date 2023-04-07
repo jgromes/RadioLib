@@ -94,6 +94,9 @@ The list above is by no means exhaustive - RadioLib code is independent of the u
 ### Where should I start?
 First of all, take a look at the [examples](https://github.com/jgromes/RadioLib/tree/master/examples) and the [Wiki](https://github.com/jgromes/RadioLib/wiki) - especially the [Basics](https://github.com/jgromes/RadioLib/wiki/Basics) page. There's a lot of useful information over there. If something isn't working as expected, try searching the [issues](https://github.com/jgromes/RadioLib/issues/).
 
+### Does RadioLib require Arduino?
+While RadioLib was originally written with Arduino in mind, it has since evolved and contains its own lightweight hardware abstraction layer. Thanks to this layer, RadioLib can be used on non-Arduino frameworks as well. See (this Wiki page)[https://github.com/jgromes/RadioLib/wiki/Porting-to-non-Arduino-Platforms] for details.
+
 ### Help, my module isn't working!
 The fastest way to get help is by creating an [issue](https://github.com/jgromes/RadioLib/issues/new/choose) using the appropriate template. It is also highly recommended to try running the examples first - their functionality is tested from time to time and they should work. Finally, RadioLib is still under development, which means that sometimes, backwards-incompatible changes might be introduced. Though these are kept at minimum, sometimes it is unavoidable. You can check the [release changelog](https://github.com/jgromes/RadioLib/releases) to find out if there's been such a major change recently.
 
