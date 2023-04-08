@@ -1186,9 +1186,9 @@ class SX127x: public PhysicalLayer {
     int16_t getChipVersion();
 
     /*!
-      \brief Enables/disables Invert the LoRa I and Q signals.
+      \brief Enable/disable inversion of the I and Q signals
 
-      \param invertIQ Enable (true) or disable (false) LoRa I and Q signals.
+      \param invertIQ QI inversion enabled (true) or disabled (false);
 
       \returns \ref status_codes
     */
