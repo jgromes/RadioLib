@@ -1419,6 +1419,19 @@ uint8_t SX126x::randomByte() {
   return(randByte);
 }
 
+int16_t SX126x::invertIQ(bool invertIQ) {
+  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  uint8_t invert = RADIOLIB_SX126X_LORA_IQ_STANDARD;
+  if(invertIQ) {
+    invert = RADIOLIB_SX126X_LORA_IQ_INVERTED;
+  }
+
+  return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, invert));
+}
+
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX126x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
