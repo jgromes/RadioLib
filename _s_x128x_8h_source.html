@@ -542,81 +542,83 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    uint8_t <a class="code" href="class_s_x128x.html#a95637e8addc48b0e1c30c2cf6f54354a">randomByte</a>();</div>
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160; </div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160; </div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160; </div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    int16_t <a class="code" href="class_s_x128x.html#aa102a9a3d0dd50060fd79ab244d10f50">invertIQ</a>(<span class="keywordtype">bool</span> <a class="code" href="class_s_x128x.html#aa102a9a3d0dd50060fd79ab244d10f50">invertIQ</a>);</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160; </div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">readBit</a>(RADIOLIB_PIN_TYPE pin);</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0;</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    uint8_t _preambleLengthLoRa = 0, _headerType = 0, _payloadLen = 0, _crcLoRa = 0;</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    <a class="code" href="class_module.html">Module</a>* _mod;</div>
 <div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160; </div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    <span class="comment">// SX128x SPI command implementations</span></div>
-<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;    uint8_t getStatus();</div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    int16_t readBuffer(uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    int16_t setCad();</div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    uint8_t getPacketType();</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    int16_t setRfFrequency(uint32_t frf);</div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX128X_PA_RAMP_10_US);</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);</div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    int16_t setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_t modParam3);</div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    int16_t setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncWordLen, uint8_t syncWordMatch, uint8_t crcLen, uint8_t whitening, uint8_t payloadLen = 0xFF, uint8_t headerType = RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE);</div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    int16_t setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bleTestPayload, uint8_t whitening);</div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    int16_t setPacketParamsLoRa(uint8_t preambleLen, uint8_t headerType, uint8_t payloadLen, uint8_t crc, uint8_t invertIQ = RADIOLIB_SX128X_LORA_IQ_STANDARD);</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX128X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX128X_IRQ_NONE);</div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX128X_IRQ_ALL);</div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    int16_t setRangingRole(uint8_t role);</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    int16_t setPacketType(uint8_t type);</div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160; </div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160; </div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160; </div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160; </div>
+<div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="keywordtype">float</span> _bwKhz = 0;</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    uint8_t _bw = 0, _sf = 0, _cr = 0;</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    uint8_t _preambleLengthLoRa = 0, _headerType = 0, _payloadLen = 0, _crcLoRa = 0;</div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160; </div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    <span class="comment">// SX128x SPI command implementations</span></div>
+<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;    uint8_t getStatus();</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    int16_t readBuffer(uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    int16_t setCad();</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    uint8_t getPacketType();</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    int16_t setRfFrequency(uint32_t frf);</div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX128X_PA_RAMP_10_US);</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    int16_t setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_t modParam3);</div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    int16_t setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncWordLen, uint8_t syncWordMatch, uint8_t crcLen, uint8_t whitening, uint8_t payloadLen = 0xFF, uint8_t headerType = RADIOLIB_SX128X_GFSK_FLRC_PACKET_VARIABLE);</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    int16_t setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bleTestPayload, uint8_t whitening);</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    int16_t setPacketParamsLoRa(uint8_t preambleLen, uint8_t headerType, uint8_t payloadLen, uint8_t crc, uint8_t <a class="code" href="class_s_x128x.html#aa102a9a3d0dd50060fd79ab244d10f50">invertIQ</a> = RADIOLIB_SX128X_LORA_IQ_STANDARD);</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX128X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX128X_IRQ_NONE);</div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX128X_IRQ_ALL);</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    int16_t setRangingRole(uint8_t role);</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    int16_t setPacketType(uint8_t type);</div>
 <div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160; </div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    <span class="comment">// common parameters</span></div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    uint8_t _pwr = 0;</div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160; </div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160; </div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keywordtype">float</span> _modIndexReal = 0;</div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    uint16_t _brKbps = 0;</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    uint8_t _br = 0, _modIndex = 0, _shaping = 0;</div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    uint8_t _preambleLengthGFSK = 0, _syncWordLen = 0, _syncWordMatch = 0, _crcGFSK = 0, _whitening = 0;</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160; </div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="comment">// cached FLRC parameters</span></div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;    uint8_t _crFLRC = 0;</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160; </div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="comment">// common parameters</span></div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;    uint8_t _pwr = 0;</div>
 <div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160; </div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <span class="comment">// cached BLE parameters</span></div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;</div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160; </div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    int16_t config(uint8_t modem);</div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;};</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    <span class="keywordtype">float</span> _modIndexReal = 0;</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    uint16_t _brKbps = 0;</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    uint8_t _br = 0, _modIndex = 0, _shaping = 0;</div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    uint8_t _preambleLengthGFSK = 0, _syncWordLen = 0, _syncWordMatch = 0, _crcGFSK = 0, _whitening = 0;</div>
 <div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160; </div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160; </div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    <span class="comment">// cached FLRC parameters</span></div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    uint8_t _crFLRC = 0;</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160; </div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <span class="comment">// cached BLE parameters</span></div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    uint8_t _connectionState = 0, _crcBLE = 0, _bleTestPayload = 0;</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160; </div>
+<div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160;    int16_t config(uint8_t modem);</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;};</div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160; </div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160; </div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:24</div></div>
 <div class="ttc" id="aclass_module_html_a0c11551e12579bbabf57b19e12555b3c"><div class="ttname"><a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a></div><div class="ttdeci">static const size_t RFSWITCH_MAX_PINS</div><div class="ttdoc">The maximum number of pins supported by the RF switch code.</div><div class="ttdef"><b>Definition:</b> Module.h:35</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
@@ -635,7 +637,7 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x128x_html_a26d0d02e5e53a3172df9208fa343a3f1"><div class="ttname"><a href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">SX128x::setFrequencyDeviation</a></div><div class="ttdeci">int16_t setFrequencyDeviation(float freqDev) override</div><div class="ttdoc">Sets FSK frequency deviation. Allowed values range from 0.0 to 3200.0 kHz.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:836</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a2b424000856a9dc212f571d0e8890635"><div class="ttname"><a href="class_s_x128x.html#a2b424000856a9dc212f571d0e8890635">SX128x::getFrequencyError</a></div><div class="ttdeci">float getFrequencyError()</div><div class="ttdoc">Gets frequency error of the latest received packet.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1150</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a2be8cc6c3b61b59cb6a6ca4f6a030b45"><div class="ttname"><a href="class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45">SX128x::standby</a></div><div class="ttdeci">int16_t standby() override</div><div class="ttdoc">Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:457</div></div>
-<div class="ttc" id="aclass_s_x128x_html_a2dd0ecae9f54cf6943cf702ae15f5039"><div class="ttname"><a href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">SX128x::readBit</a></div><div class="ttdeci">void readBit(RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1293</div></div>
+<div class="ttc" id="aclass_s_x128x_html_a2dd0ecae9f54cf6943cf702ae15f5039"><div class="ttname"><a href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">SX128x::readBit</a></div><div class="ttdeci">void readBit(RADIOLIB_PIN_TYPE pin)</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1306</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a316340d7ba2a6e7cb5742e3ff21e728c"><div class="ttname"><a href="class_s_x128x.html#a316340d7ba2a6e7cb5742e3ff21e728c">SX128x::beginBLE</a></div><div class="ttdeci">int16_t beginBLE(float freq=2400.0, uint16_t br=800, float freqDev=400.0, int8_t power=10, uint8_t dataShaping=RADIOLIB_SHAPING_0_5)</div><div class="ttdoc">Initialization method for BLE modem.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:142</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a3837662441a9eb3f0a71f4f667db9e91"><div class="ttname"><a href="class_s_x128x.html#a3837662441a9eb3f0a71f4f667db9e91">SX128x::setGainControl</a></div><div class="ttdeci">int16_t setGainControl(uint8_t gain=0)</div><div class="ttdoc">Enables or disables receiver manual gain control.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1070</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a390fd0749b316eed67da7b54f4f24735"><div class="ttname"><a href="class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735">SX128x::getPacketLength</a></div><div class="ttdeci">size_t getPacketLength(bool update=true) override</div><div class="ttdoc">Query modem for the packet length of received payload.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1183</div></div>
@@ -657,6 +659,7 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x128x_html_a99491c705e88dddc820f884b778f1660"><div class="ttname"><a href="class_s_x128x.html#a99491c705e88dddc820f884b778f1660">SX128x::setDataShaping</a></div><div class="ttdeci">int16_t setDataShaping(uint8_t sh) override</div><div class="ttdoc">Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are RADIOLIB_SHAPI...</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:869</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a9ccbf51f8304f1041c8eef182be547a7"><div class="ttname"><a href="class_s_x128x.html#a9ccbf51f8304f1041c8eef182be547a7">SX128x::SX128x</a></div><div class="ttdeci">SX128x(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:4</div></div>
 <div class="ttc" id="aclass_s_x128x_html_a9da544e4a6120f73a078b46c6138505a"><div class="ttname"><a href="class_s_x128x.html#a9da544e4a6120f73a078b46c6138505a">SX128x::setCodingRate</a></div><div class="ttdeci">int16_t setCodingRate(uint8_t cr, bool longInterleaving=false)</div><div class="ttdoc">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:697</div></div>
+<div class="ttc" id="aclass_s_x128x_html_aa102a9a3d0dd50060fd79ab244d10f50"><div class="ttname"><a href="class_s_x128x.html#aa102a9a3d0dd50060fd79ab244d10f50">SX128x::invertIQ</a></div><div class="ttdeci">int16_t invertIQ(bool invertIQ)</div><div class="ttdoc">Enable/disable inversion of the I and Q signals.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1286</div></div>
 <div class="ttc" id="aclass_s_x128x_html_aa4b1e0b96347011522e053f30202c0fe"><div class="ttname"><a href="class_s_x128x.html#aa4b1e0b96347011522e053f30202c0fe">SX128x::setCRC</a></div><div class="ttdeci">int16_t setCRC(uint8_t len, uint32_t initial=0x1D0F, uint16_t polynomial=0x1021)</div><div class="ttdoc">Sets CRC configuration.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:958</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ab139a34e03a6fd5a781cd54da21d308f"><div class="ttname"><a href="class_s_x128x.html#ab139a34e03a6fd5a781cd54da21d308f">SX128x::transmit</a></div><div class="ttdeci">int16_t transmit(__FlashStringHelper *fstr, uint8_t addr=0)</div><div class="ttdoc">Arduino Flash String transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:12</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ab8a3fe8e2843fa039ef369668f1a423f"><div class="ttname"><a href="class_s_x128x.html#ab8a3fe8e2843fa039ef369668f1a423f">SX128x::clearDio1Action</a></div><div class="ttdeci">void clearDio1Action()</div><div class="ttdoc">Clears interrupt service routine to call when DIO1 activates.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:473</div></div>
@@ -665,13 +668,13 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x128x_html_acbd0d1a48051ccd35f4a89c9b8d05bdf"><div class="ttname"><a href="class_s_x128x.html#acbd0d1a48051ccd35f4a89c9b8d05bdf">SX128x::begin</a></div><div class="ttdeci">int16_t begin(float freq=2400.0, float bw=812.5, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX128X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=12)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:12</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ad6e2b46c317a8d8512cf0380025147a9"><div class="ttname"><a href="class_s_x128x.html#ad6e2b46c317a8d8512cf0380025147a9">SX128x::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values are in range from -18 to 13 dBm.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:725</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ae14ea0c263fba51ec39d146c5877f0a3"><div class="ttname"><a href="class_s_x128x.html#ae14ea0c263fba51ec39d146c5877f0a3">SX128x::setRfSwitchTable</a></div><div class="ttdeci">void setRfSwitchTable(const RADIOLIB_PIN_TYPE(&amp;pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[])</div><div class="ttdoc">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1276</div></div>
-<div class="ttc" id="aclass_s_x128x_html_ae1f933f767161cc59fdaca816ab93e22"><div class="ttname"><a href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">SX128x::getIrqStatus</a></div><div class="ttdeci">uint16_t getIrqStatus()</div><div class="ttdoc">Reads the current IRQ status.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1393</div></div>
+<div class="ttc" id="aclass_s_x128x_html_ae1f933f767161cc59fdaca816ab93e22"><div class="ttname"><a href="class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22">SX128x::getIrqStatus</a></div><div class="ttdeci">uint16_t getIrqStatus()</div><div class="ttdoc">Reads the current IRQ status.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1406</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ae435f57132f76f4283abb870176acf54"><div class="ttname"><a href="class_s_x128x.html#ae435f57132f76f4283abb870176acf54">SX128x::setSpreadingFactor</a></div><div class="ttdeci">int16_t setSpreadingFactor(uint8_t sf)</div><div class="ttdoc">Sets LoRa spreading factor. Allowed values range from 5 to 12.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:663</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ae8eed0e888a7c8742e89d2b850977de2"><div class="ttname"><a href="class_s_x128x.html#ae8eed0e888a7c8742e89d2b850977de2">SX128x::readData</a></div><div class="ttdeci">int16_t readData(String &amp;str, size_t len=0)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:153</div></div>
 <div class="ttc" id="aclass_s_x128x_html_ae93c99c85deb950fe9bc7101142b5f6a"><div class="ttname"><a href="class_s_x128x.html#ae93c99c85deb950fe9bc7101142b5f6a">SX128x::setBandwidth</a></div><div class="ttdeci">int16_t setBandwidth(float bw)</div><div class="ttdoc">Sets LoRa bandwidth. Allowed values are 203.125, 406.25, 812.5 and 1625.0 kHz.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:633</div></div>
 <div class="ttc" id="aclass_s_x128x_html_af068e6e862c99e39d0261a7971dd56db"><div class="ttname"><a href="class_s_x128x.html#af068e6e862c99e39d0261a7971dd56db">SX128x::startTransmit</a></div><div class="ttdeci">int16_t startTransmit(String &amp;str, uint8_t addr=0)</div><div class="ttdoc">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method,...</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:134</div></div>
 <div class="ttc" id="aclass_s_x128x_html_afb1b090348d9091bfa3a0b5ba3d85b36"><div class="ttname"><a href="class_s_x128x.html#afb1b090348d9091bfa3a0b5ba3d85b36">SX128x::receive</a></div><div class="ttdeci">int16_t receive(String &amp;str, size_t len=0)</div><div class="ttdoc">Arduino String receive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:60</div></div>
-<div class="ttc" id="aclass_s_x128x_html_aff1b549077b9d752f53bf9dfc6840236"><div class="ttname"><a href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">SX128x::setDirectAction</a></div><div class="ttdeci">void setDirectAction(void(*func)(void))</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1287</div></div>
+<div class="ttc" id="aclass_s_x128x_html_aff1b549077b9d752f53bf9dfc6840236"><div class="ttname"><a href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">SX128x::setDirectAction</a></div><div class="ttdeci">void setDirectAction(void(*func)(void))</div><div class="ttdoc">Dummy method, to ensure PhysicalLayer compatibility.</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:1300</div></div>
 <div class="ttc" id="aclass_s_x128x_html_aff7d86352c98771595375e17d19a2a97"><div class="ttname"><a href="class_s_x128x.html#aff7d86352c98771595375e17d19a2a97">SX128x::receiveDirect</a></div><div class="ttdeci">int16_t receiveDirect() override</div><div class="ttdoc">Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as SX128x series does...</div><div class="ttdef"><b>Definition:</b> SX128x.cpp:388</div></div>
 <div class="ttc" id="agroup__config__shaping_html_gaa778d14c29d21fe329137a28a3f54a5d"><div class="ttname"><a href="group__config__shaping.html#gaa778d14c29d21fe329137a28a3f54a5d">RADIOLIB_SHAPING_0_5</a></div><div class="ttdeci">#define RADIOLIB_SHAPING_0_5</div><div class="ttdoc">Gaussin shaping filter, BT = 0.5.</div><div class="ttdef"><b>Definition:</b> TypeDef.h:27</div></div>
 <div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:42</div></div>
