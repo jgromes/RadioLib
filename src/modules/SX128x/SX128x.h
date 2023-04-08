@@ -829,6 +829,15 @@ class SX128x: public PhysicalLayer {
    */
     uint8_t randomByte();
 
+    /*!
+      \brief Enable/disable inversion of the I and Q signals
+
+      \param invertIQ QI inversion enabled (true) or disabled (false);
+
+      \returns \ref status_codes
+    */
+    int16_t invertIQ(bool invertIQ);
+
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.

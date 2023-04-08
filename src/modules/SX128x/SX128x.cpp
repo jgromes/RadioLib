@@ -1283,6 +1283,19 @@ uint8_t SX128x::randomByte() {
   return(0);
 }
 
+int16_t SX128x::invertIQ(bool invertIQ) {
+  if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  uint8_t invert = RADIOLIB_SX128X_LORA_IQ_STANDARD;
+  if(invertIQ) {
+    invert = RADIOLIB_SX128X_LORA_IQ_INVERTED;
+  }
+
+  return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, invert));
+}
+
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX128x::setDirectAction(void (*func)(void)) {
   // SX128x is unable to perform direct mode reception
