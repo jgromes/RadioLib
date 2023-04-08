@@ -209,6 +209,7 @@ size_t RTTYClient::write(uint8_t b) {
   return(1);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t RTTYClient::print(__FlashStringHelper* fstr) {
   // read flash string length
   size_t len = 0;
@@ -247,13 +248,6 @@ size_t RTTYClient::print(__FlashStringHelper* fstr) {
   return(n);
 }
 
-size_t RTTYClient::print(ITA2String& ita2) {
-  uint8_t* arr = ita2.byteArr();
-  size_t n = RTTYClient::write(arr, ita2.length());
-  delete[] arr;
-  return(n);
-}
-
 size_t RTTYClient::print(const String& str) {
   size_t n = 0;
   if(_encoding == RADIOLIB_ITA2) {
@@ -262,6 +256,14 @@ size_t RTTYClient::print(const String& str) {
   } else if((_encoding == RADIOLIB_ASCII) || (_encoding == RADIOLIB_ASCII_EXTENDED)) {
     n = RTTYClient::write((uint8_t*)str.c_str(), str.length());
   }
+  return(n);
+}
+#endif
+
+size_t RTTYClient::print(ITA2String& ita2) {
+  uint8_t* arr = ita2.byteArr();
+  size_t n = RTTYClient::write(arr, ita2.length());
+  delete[] arr;
   return(n);
 }
 
@@ -337,20 +339,22 @@ size_t RTTYClient::println(void) {
   return(n);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t RTTYClient::println(__FlashStringHelper* fstr) {
   size_t n = RTTYClient::print(fstr);
   n += RTTYClient::println();
   return(n);
 }
 
-size_t RTTYClient::println(ITA2String& ita2) {
-  size_t n = RTTYClient::print(ita2);
+size_t RTTYClient::println(const String& str) {
+  size_t n = RTTYClient::print(str);
   n += RTTYClient::println();
   return(n);
 }
+#endif
 
-size_t RTTYClient::println(const String& str) {
-  size_t n = RTTYClient::print(str);
+size_t RTTYClient::println(ITA2String& ita2) {
+  size_t n = RTTYClient::print(ita2);
   n += RTTYClient::println();
   return(n);
 }

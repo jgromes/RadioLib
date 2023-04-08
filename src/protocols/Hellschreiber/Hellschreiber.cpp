@@ -94,6 +94,7 @@ size_t HellClient::write(uint8_t b) {
   return(printGlyph(buff));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t HellClient::print(__FlashStringHelper* fstr) {
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   size_t n = 0;
@@ -110,6 +111,7 @@ size_t HellClient::print(__FlashStringHelper* fstr) {
 size_t HellClient::print(const String& str) {
   return(HellClient::write((uint8_t*)str.c_str(), str.length()));
 }
+#endif
 
 size_t HellClient::print(const char* str) {
   return(HellClient::write((uint8_t*)str, strlen(str)));
@@ -163,6 +165,7 @@ size_t HellClient::println(void) {
   return(HellClient::print(' '));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t HellClient::println(__FlashStringHelper* fstr) {
   size_t n = HellClient::print(fstr);
   n += HellClient::println();
@@ -174,6 +177,7 @@ size_t HellClient::println(const String& str) {
   n += HellClient::println();
   return(n);
 }
+#endif
 
 size_t HellClient::println(const char* str) {
   size_t n = HellClient::print(str);

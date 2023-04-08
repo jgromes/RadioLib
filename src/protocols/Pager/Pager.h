@@ -101,6 +101,7 @@ class PagerClient {
     */
     int16_t sendTone(uint32_t addr);
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Arduino String transmit method.
 
@@ -113,6 +114,7 @@ class PagerClient {
       \returns \ref status_codes
     */
     int16_t transmit(String& str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);
+    #endif
 
     /*!
       \brief C-string transmit method.
@@ -164,6 +166,7 @@ class PagerClient {
     */
     size_t available();
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Reads data that was received after calling startReceive method.
 
@@ -177,6 +180,7 @@ class PagerClient {
       \returns \ref status_codes
     */
     int16_t readData(String& str, size_t len = 0, uint32_t* addr = NULL);
+    #endif
 
     /*!
       \brief Reads data that was received after calling startReceive method.

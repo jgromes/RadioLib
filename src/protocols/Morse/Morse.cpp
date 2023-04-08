@@ -179,6 +179,7 @@ size_t MorseClient::write(uint8_t b) {
   return(1);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t MorseClient::print(__FlashStringHelper* fstr) {
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   size_t n = 0;
@@ -195,6 +196,7 @@ size_t MorseClient::print(__FlashStringHelper* fstr) {
 size_t MorseClient::print(const String& str) {
   return(MorseClient::write((uint8_t*)str.c_str(), str.length()));
 }
+#endif
 
 size_t MorseClient::print(const char* str) {
   return(MorseClient::write((uint8_t*)str, strlen(str)));
@@ -247,6 +249,7 @@ size_t MorseClient::println(void) {
   return(MorseClient::write('^'));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t MorseClient::println(__FlashStringHelper* fstr) {
   size_t n = MorseClient::print(fstr);
   n += MorseClient::println();
@@ -258,6 +261,7 @@ size_t MorseClient::println(const String& str) {
   n += MorseClient::println();
   return(n);
 }
+#endif
 
 size_t MorseClient::println(const char* str) {
   size_t n = MorseClient::print(str);

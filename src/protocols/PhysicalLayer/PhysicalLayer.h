@@ -27,6 +27,7 @@ class PhysicalLayer {
 
     // basic methods
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Arduino Flash String transmit method.
 
@@ -48,6 +49,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t transmit(String& str, uint8_t addr = 0);
+    #endif
 
     /*!
       \brief C-string transmit method.
@@ -73,6 +75,7 @@ class PhysicalLayer {
     */
     virtual int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Arduino String receive method.
 
@@ -83,6 +86,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t receive(String& str, size_t len = 0);
+    #endif
 
     /*!
       \brief Sets module to sleep.
@@ -131,6 +135,7 @@ class PhysicalLayer {
     */
     virtual int16_t receive(uint8_t* data, size_t len);
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
       Interrupt pin will be activated when transmission finishes.
@@ -142,6 +147,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t startTransmit(String& str, uint8_t addr = 0);
+    #endif
 
     /*!
       \brief Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking.
@@ -175,6 +181,7 @@ class PhysicalLayer {
     */
     virtual int16_t finishTransmit();
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Reads data that was received after calling startReceive method.
 
@@ -186,6 +193,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(String& str, size_t len = 0);
+    #endif
 
     /*!
       \brief Reads data that was received after calling startReceive method.

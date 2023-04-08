@@ -9,6 +9,7 @@ PhysicalLayer::PhysicalLayer(float freqStep, size_t maxPacketLength) {
   #endif
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   // read flash string length
   size_t len = 0;
@@ -45,6 +46,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
 int16_t PhysicalLayer::transmit(String& str, uint8_t addr) {
   return(transmit(str.c_str(), addr));
 }
+#endif
 
 int16_t PhysicalLayer::transmit(const char* str, uint8_t addr) {
   return(transmit((uint8_t*)str, strlen(str), addr));
@@ -57,6 +59,7 @@ int16_t PhysicalLayer::transmit(uint8_t* data, size_t len, uint8_t addr) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PhysicalLayer::receive(String& str, size_t len) {
   int16_t state = RADIOLIB_ERR_NONE;
 
@@ -103,6 +106,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
 
   return(state);
 }
+#endif
 
 int16_t PhysicalLayer::receive(uint8_t* data, size_t len) {
   (void)data;
@@ -131,9 +135,11 @@ int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PhysicalLayer::startTransmit(String& str, uint8_t addr) {
   return(startTransmit(str.c_str(), addr));
 }
+#endif
 
 int16_t PhysicalLayer::startTransmit(const char* str, uint8_t addr) {
   return(startTransmit((uint8_t*)str, strlen(str), addr));
@@ -150,6 +156,7 @@ int16_t PhysicalLayer::finishTransmit() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PhysicalLayer::readData(String& str, size_t len) {
   int16_t state = RADIOLIB_ERR_NONE;
 
@@ -192,6 +199,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 
   return(state);
 }
+#endif
 
 int16_t PhysicalLayer::readData(uint8_t* data, size_t len) {
   (void)data;

@@ -322,6 +322,7 @@ class AX25Client {
     */
     int16_t begin(const char* srcCallsign, uint8_t srcSSID = 0x00, uint8_t preambleLen = 8);
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Transmit unnumbered information (UI) frame.
 
@@ -334,6 +335,7 @@ class AX25Client {
       \returns \ref status_codes
     */
     int16_t transmit(String& str, const char* destCallsign, uint8_t destSSID = 0x00);
+    #endif
 
     /*!
       \brief Transmit unnumbered information (UI) frame.
