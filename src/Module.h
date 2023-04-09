@@ -663,10 +663,10 @@ class Module {
     #if defined(RADIOLIB_BUILD_ARDUINO)
     void SPIbegin();
     void SPIend();
-    #endif
     virtual void SPIbeginTransaction();
     virtual uint8_t SPItransfer(uint8_t b);
     virtual void SPIendTransaction();
+    #endif
 
     /*!
       \brief Function to reflect bits within a byte.

@@ -350,11 +350,11 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   this->digitalWrite(this->getCs(), LOW);
 
   // start transfer
-  this->SPIbeginTransaction();
+  this->beginTransaction();
 
   // send command byte(s)
   for(uint8_t n = 0; n < cmdLen; n++) {
-    this->SPItransfer(cmd[n]);
+    this->transfer(cmd[n]);
   }
 
   // variable to save error during SPI transfer
@@ -364,7 +364,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   if(write) {
     for(size_t n = 0; n < numBytes; n++) {
       // send byte
-      uint8_t in = this->SPItransfer(dataOut[n]);
+      uint8_t in = this->transfer(dataOut[n]);
       #if defined(RADIOLIB_VERBOSE)
         debugBuff[n] = in;
       #endif
@@ -377,7 +377,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   } else {
     // skip the first byte for read-type commands (status-only)
-    uint8_t in = this->SPItransfer(this->SPInopCommand);
+    uint8_t in = this->transfer(this->SPInopCommand);
     #if defined(RADIOLIB_VERBOSE)
       debugBuff[0] = in;
     #endif
@@ -392,13 +392,13 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     // read the data
     if(state == RADIOLIB_ERR_NONE) {
       for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->SPItransfer(this->SPInopCommand);
+        dataIn[n] = this->transfer(this->SPInopCommand);
       }
     }
   }
 
   // stop transfer
-  this->SPIendTransaction();
+  this->endTransaction();
   this->digitalWrite(this->getCs(), HIGH);
 
   // wait for GPIO to go high and then low
@@ -622,75 +622,57 @@ uint32_t Module::pulseIn(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS state, uint3
 }
 
 void Module::begin() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIbegin == nullptr) {
     return;
   }
   (this->*cb_SPIbegin)();
-#endif
 }
 
 void Module::beginTransaction() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIbeginTransaction == nullptr) {
     return;
   }
   (this->*cb_SPIbeginTransaction)();
-#endif
 }
 
 uint8_t Module::transfer(uint8_t b) {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPItransfer == nullptr) {
     return(0xFF);
   }
   return((this->*cb_SPItransfer)(b));
-#endif
 }
 
 void Module::endTransaction() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIendTransaction == nullptr) {
     return;
   }
   (this->*cb_SPIendTransaction)();
-#endif
 }
 
 void Module::end() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   if(cb_SPIend == nullptr) {
     return;
   }
   (this->*cb_SPIend)();
-#endif
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 void Module::SPIbegin() {
   _spi->begin();
 }
-#endif
 
 void Module::SPIbeginTransaction() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   _spi->beginTransaction(_spiSettings);
-#endif
 }
 
 uint8_t Module::SPItransfer(uint8_t b) {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   return(_spi->transfer(b));
-#endif
 }
 
 void Module::SPIendTransaction() {
-#if defined(RADIOLIB_BUILD_ARDUINO)
   _spi->endTransaction();
-#endif
 }
 
-#if defined(RADIOLIB_BUILD_ARDUINO)
 void Module::SPIend() {
   _spi->end();
 }
