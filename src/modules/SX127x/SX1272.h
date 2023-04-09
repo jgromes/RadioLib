@@ -198,6 +198,15 @@ class SX1272: public SX127x {
     int16_t setCodingRate(uint8_t cr);
 
     /*!
+      \brief Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.
+
+      \param br Bit rate to be set (in kbps).
+
+      \returns \ref status_codes
+    */
+    int16_t setBitRate(float br) override;
+
+    /*!
       \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
 
       \param power Transmission output power in dBm.

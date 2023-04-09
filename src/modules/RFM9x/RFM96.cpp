@@ -43,10 +43,10 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
 
 int16_t RFM96::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
   // execute common part
-  int16_t state = SX127x::beginFSK(RADIOLIB_RFM9X_CHIP_VERSION_OFFICIAL, br, freqDev, rxBw, preambleLength, enableOOK);
+  int16_t state = SX127x::beginFSK(RADIOLIB_RFM9X_CHIP_VERSION_OFFICIAL, freqDev, rxBw, preambleLength, enableOOK);
   if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
     // SX127X_REG_VERSION might be set 0x12
-    state = SX127x::beginFSK(RADIOLIB_RFM9X_CHIP_VERSION_UNOFFICIAL, br, freqDev, rxBw, preambleLength, enableOOK);
+    state = SX127x::beginFSK(RADIOLIB_RFM9X_CHIP_VERSION_UNOFFICIAL, freqDev, rxBw, preambleLength, enableOOK);
     RADIOLIB_ASSERT(state);
   } else if(state != RADIOLIB_ERR_NONE) {
     // some other error
@@ -61,6 +61,9 @@ int16_t RFM96::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t 
 
   // configure publicly accessible settings
   state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setBitRate(br);
   RADIOLIB_ASSERT(state);
 
   state = setOutputPower(power);

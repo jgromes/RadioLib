@@ -14,7 +14,7 @@
 #define RADIOLIB_SX1278_REG_TCXO                               0x4B
 #define RADIOLIB_SX1278_REG_PA_DAC                             0x4D
 #define RADIOLIB_SX1278_REG_FORMER_TEMP                        0x5B
-#define RADIOLIB_SX1278_REG_REG_BIT_RATE_FRAC                  0x5D
+#define RADIOLIB_SX1278_REG_BIT_RATE_FRAC                      0x5D
 #define RADIOLIB_SX1278_REG_AGC_REF                            0x61
 #define RADIOLIB_SX1278_REG_AGC_THRESH_1                       0x62
 #define RADIOLIB_SX1278_REG_AGC_THRESH_2                       0x63
@@ -204,6 +204,15 @@ class SX1278: public SX127x {
       \returns \ref status_codes
     */
     int16_t setCodingRate(uint8_t cr);
+
+    /*!
+      \brief Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.
+
+      \param br Bit rate to be set (in kbps).
+
+      \returns \ref status_codes
+    */
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin).
