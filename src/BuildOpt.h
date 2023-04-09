@@ -1044,10 +1044,10 @@
     #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
   #else
     #if !defined(RADIOLIB_DEBUG_PRINT)
-      #define RADIOLIB_DEBUG_PRINT(...) { frintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }
+      #define RADIOLIB_DEBUG_PRINT(...) { fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }
     #endif
     #if !defined(RADIOLIB_DEBUG_PRINTLN)
-      #define RADIOLIB_DEBUG_PRINTLN(...)  { printf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ "\n"); }
+      #define RADIOLIB_DEBUG_PRINTLN(...)  { fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ "\n"); }
     #endif
   #endif
 #else
