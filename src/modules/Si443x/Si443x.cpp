@@ -612,7 +612,7 @@ void Si443x::setDirectAction(void (*func)(void)) {
 }
 
 void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 

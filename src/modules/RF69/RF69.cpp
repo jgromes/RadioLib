@@ -959,7 +959,7 @@ void RF69::setDirectAction(void (*func)(void)) {
 }
 
 void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 

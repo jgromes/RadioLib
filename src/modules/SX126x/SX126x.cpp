@@ -1438,7 +1438,7 @@ void SX126x::setDirectAction(void (*func)(void)) {
 }
 
 void SX126x::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 

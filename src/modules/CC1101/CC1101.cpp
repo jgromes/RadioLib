@@ -946,7 +946,7 @@ void CC1101::setDirectAction(void (*func)(void)) {
 }
 
 void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 
