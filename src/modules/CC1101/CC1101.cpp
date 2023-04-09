@@ -319,7 +319,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
         *
         * TODO: test this on real hardware
       */
-     delayMicroseconds(250);
+     _mod->delayMicroseconds(250);
     }
   }
 
