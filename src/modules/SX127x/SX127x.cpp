@@ -17,11 +17,11 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
-    RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
+    RADIOLIB_DEBUG_PRINTLN("No SX127x found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-  RADIOLIB_DEBUG_PRINTLN(F("M\tSX127x"));
+  RADIOLIB_DEBUG_PRINTLN("M\tSX127x");
 
   // set mode to standby
   int16_t state = standby();
@@ -64,11 +64,11 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float freqDev, float rxBw, uint16_
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
-    RADIOLIB_DEBUG_PRINTLN(F("No SX127x found!"));
+    RADIOLIB_DEBUG_PRINTLN("No SX127x found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-  RADIOLIB_DEBUG_PRINTLN(F("M\tSX127x"));
+  RADIOLIB_DEBUG_PRINTLN("M\tSX127x");
 
   // set mode to standby
   int16_t state = standby();
@@ -1434,17 +1434,7 @@ bool SX127x::findChip(uint8_t ver) {
     if(version == ver) {
       flagFound = true;
     } else {
-      #if defined(RADIOLIB_DEBUG)
-        RADIOLIB_DEBUG_PRINT(F("SX127x not found! ("));
-        RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RADIOLIB_SX127X_REG_VERSION == "));
-
-        char buffHex[12];
-        sprintf(buffHex, "0x%04X", version);
-        RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
-        RADIOLIB_DEBUG_PRINTLN(ver, HEX);
-      #endif
+      RADIOLIB_DEBUG_PRINTLN("SX127x not found! (%d of 10 tries) RADIOLIB_SX127X_REG_VERSION == 0x%04X, expected 0x00%X", i + 1, version, ver);
       _mod->delay(10);
       i++;
     }

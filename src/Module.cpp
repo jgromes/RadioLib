@@ -160,24 +160,26 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
       }
     }
 
+    #if defined(RADIOLIB_DEBUG) && defined(RADIOLIB_BUILD_ARDUINO)
+      #define DEBUG_BIN(x) RADIOLIB_DEBUG_PORT.println(x, BIN)
+    #else // no bin representation, fallback to hex
+      #define DEBUG_BIN(x) RADIOLIB_DEBUG_PRINTLN("%X", x)
+    #endif
+
     // check failed, print debug info
     RADIOLIB_DEBUG_PRINTLN();
-    RADIOLIB_DEBUG_PRINT(F("address:\t0x"));
-    RADIOLIB_DEBUG_PRINTLN(reg, HEX);
-    RADIOLIB_DEBUG_PRINT(F("bits:\t\t"));
-    RADIOLIB_DEBUG_PRINT(msb);
-    RADIOLIB_DEBUG_PRINT(' ');
-    RADIOLIB_DEBUG_PRINTLN(lsb);
-    RADIOLIB_DEBUG_PRINT(F("value:\t\t0b"));
-    RADIOLIB_DEBUG_PRINTLN(value, BIN);
-    RADIOLIB_DEBUG_PRINT(F("current:\t0b"));
-    RADIOLIB_DEBUG_PRINTLN(currentValue, BIN);
-    RADIOLIB_DEBUG_PRINT(F("mask:\t\t0b"));
-    RADIOLIB_DEBUG_PRINTLN(mask, BIN);
-    RADIOLIB_DEBUG_PRINT(F("new:\t\t0b"));
-    RADIOLIB_DEBUG_PRINTLN(newValue, BIN);
-    RADIOLIB_DEBUG_PRINT(F("read:\t\t0b"));
-    RADIOLIB_DEBUG_PRINTLN(readValue, BIN);
+    RADIOLIB_DEBUG_PRINTLN("address:\t0x%X", reg);
+    RADIOLIB_DEBUG_PRINTLN("bits:\t\t%d %d", msb, lsb);
+    RADIOLIB_DEBUG_PRINT("value:\t\t0b");
+    DEBUG_BIN(value);
+    RADIOLIB_DEBUG_PRINT("current:\t0b");
+    DEBUG_BIN(currentValue);
+    RADIOLIB_DEBUG_PRINT("mask:\t\t0b");
+    DEBUG_BIN(mask);
+    RADIOLIB_DEBUG_PRINT("new:\t\t0b");
+    DEBUG_BIN(newValue);
+    RADIOLIB_DEBUG_PRINT("read:\t\t0b");
+    DEBUG_BIN(readValue);
     RADIOLIB_DEBUG_PRINTLN();
 
     return(RADIOLIB_ERR_SPI_WRITE_FAILED);
@@ -241,13 +243,11 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
 
   #if defined(RADIOLIB_VERBOSE)
     if(cmd == SPIwriteCommand) {
-      RADIOLIB_VERBOSE_PRINT('W');
+      RADIOLIB_VERBOSE_PRINT("W");
     } else if(cmd == SPIreadCommand) {
-      RADIOLIB_VERBOSE_PRINT('R');
+      RADIOLIB_VERBOSE_PRINT("R");
     }
-    RADIOLIB_VERBOSE_PRINT('\t')
-    RADIOLIB_VERBOSE_PRINT(reg, HEX);
-    RADIOLIB_VERBOSE_PRINT('\t');
+    RADIOLIB_VERBOSE_PRINT("\t%X\t", reg);
   #endif
 
   // send data or get response
@@ -255,16 +255,14 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
     if(dataOut != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
         this->transfer(dataOut[n]);
-        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT("%X\t", dataOut[n]);
       }
     }
   } else if (cmd == SPIreadCommand) {
     if(dataIn != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
         dataIn[n] = this->transfer(0x00);
-        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT("%X\t", dataIn[n]);
       }
     }
   }
@@ -419,8 +417,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     // print command byte(s)
     RADIOLIB_VERBOSE_PRINT("CMD\t");
     for(uint8_t n = 0; n < cmdLen; n++) {
-      RADIOLIB_VERBOSE_PRINT(cmd[n], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
+      RADIOLIB_VERBOSE_PRINT("%X\t", cmd[n]);
     }
     RADIOLIB_VERBOSE_PRINTLN();
 
@@ -429,25 +426,14 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     if(write) {
       RADIOLIB_VERBOSE_PRINT("W\t");
       for(size_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(debugBuff[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT("%X\t%X\t", dataOut[n], debugBuff[n]);
       }
       RADIOLIB_VERBOSE_PRINTLN();
     } else {
-      RADIOLIB_VERBOSE_PRINT("R\t");
-      // skip the first byte for read-type commands (status-only)
-      RADIOLIB_VERBOSE_PRINT(this->SPInopCommand, HEX);
-      RADIOLIB_VERBOSE_PRINT('\t');
-      RADIOLIB_VERBOSE_PRINT(debugBuff[0], HEX);
-      RADIOLIB_VERBOSE_PRINT('\t')
+      RADIOLIB_VERBOSE_PRINT("R\t%X\t%X\t", this->SPInopCommand, debugBuff[0]);
 
       for(size_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT(this->SPInopCommand, HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
-        RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
-        RADIOLIB_VERBOSE_PRINT('\t');
+        RADIOLIB_VERBOSE_PRINT("%X\t%X\t", this->SPInopCommand, dataIn[n]);
       }
       RADIOLIB_VERBOSE_PRINTLN();
     }
@@ -752,7 +738,8 @@ void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, 
     for(size_t j = line_len; j < 16; j++) {
       sprintf(&str[58 + j], "   ");
     }
-    RADIOLIB_DEBUG_PRINTLN(str);
+    RADIOLIB_DEBUG_PRINT(str);
+    RADIOLIB_DEBUG_PRINTLN();
     rem_len -= 16;
   }
 }

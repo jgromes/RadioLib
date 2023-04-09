@@ -274,7 +274,7 @@ int32_t PhysicalLayer::random(int32_t max) {
   if(randNum < 0) {
     randNum *= -1;
   }
-  RADIOLIB_DEBUG_PRINTLN(randNum);
+  RADIOLIB_DEBUG_PRINTLN("%d", randNum);
   return(randNum % max);
 }
 
@@ -346,8 +346,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     _syncBuffer <<= 1;
     _syncBuffer |= bit;
 
-    RADIOLIB_VERBOSE_PRINT("S\t");
-    RADIOLIB_VERBOSE_PRINTLN(_syncBuffer, HEX);
+    RADIOLIB_VERBOSE_PRINTLN("S\t%X", _syncBuffer);
 
     if((_syncBuffer & _directSyncWordMask) == _directSyncWord) {
       _gotSync = true;
@@ -368,8 +367,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     // check complete byte
     if(_bufferBitPos == 8) {
       _buffer[_bufferWritePos] = Module::flipBits(_buffer[_bufferWritePos]);
-      RADIOLIB_VERBOSE_PRINT("R\t");
-      RADIOLIB_VERBOSE_PRINTLN(_buffer[_bufferWritePos], HEX);
+      RADIOLIB_VERBOSE_PRINTLN("R\t%X", _buffer[_bufferWritePos]);
 
       _bufferWritePos++;
       _bufferBitPos = 0;

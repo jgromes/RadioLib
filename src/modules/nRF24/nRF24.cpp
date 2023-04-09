@@ -26,11 +26,11 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   // check SPI connection
   int16_t val = _mod->SPIgetRegValue(RADIOLIB_NRF24_REG_SETUP_AW);
   if(!((val >= 0) && (val <= 3))) {
-    RADIOLIB_DEBUG_PRINTLN(F("No nRF24 found!"));
+    RADIOLIB_DEBUG_PRINTLN("No nRF24 found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
-  RADIOLIB_DEBUG_PRINTLN(F("M\tnRF24"));
+  RADIOLIB_DEBUG_PRINTLN("M\tnRF24");
 
   // configure settings inaccessible by public API
   int16_t state = config();

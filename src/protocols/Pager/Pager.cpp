@@ -496,9 +496,7 @@ uint32_t PagerClient::read() {
     codeWord = ~codeWord;
   }
 
-  RADIOLIB_VERBOSE_PRINT("R\t");
-  RADIOLIB_VERBOSE_PRINTLN(codeWord, HEX);
-
+  RADIOLIB_VERBOSE_PRINTLN("R\t%X", codeWord);
   // TODO BCH error correction here
   return(codeWord);
 }
