@@ -128,9 +128,9 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a3321ac4a7f65e73004202486db9b1d68">reset</a> ()=0</td></tr>
 <tr class="memdesc:a3321ac4a7f65e73004202486db9b1d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ. <br /></td></tr>
 <tr class="separator:a3321ac4a7f65e73004202486db9b1d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add78edb65673d9e88931a55b0672a9f3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#add78edb65673d9e88931a55b0672a9f3">beginFSK</a> (uint8_t chipVersion, float br, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
-<tr class="memdesc:add78edb65673d9e88931a55b0672a9f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <a href="class_s_x127x.html#add78edb65673d9e88931a55b0672a9f3">More...</a><br /></td></tr>
-<tr class="separator:add78edb65673d9e88931a55b0672a9f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73f2d2fe803e3496026011f0da694cfb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb">beginFSK</a> (uint8_t chipVersion, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
+<tr class="memdesc:a73f2d2fe803e3496026011f0da694cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <a href="class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb">More...</a><br /></td></tr>
+<tr class="separator:a73f2d2fe803e3496026011f0da694cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9c4ea3285922bf01cebd2c8a706d9a29">transmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#ab139a34e03a6fd5a781cd54da21d308f" title="Arduino Flash String transmit method.">PhysicalLayer::transmit</a>.  <a href="class_s_x127x.html#a9c4ea3285922bf01cebd2c8a706d9a29">More...</a><br /></td></tr>
 <tr class="separator:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -231,9 +231,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:adc25b685de0859b799488bf7729350b6"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adc25b685de0859b799488bf7729350b6">getDataRate</a> () const</td></tr>
 <tr class="memdesc:adc25b685de0859b799488bf7729350b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data rate of the latest transmitted packet.  <a href="class_s_x127x.html#adc25b685de0859b799488bf7729350b6">More...</a><br /></td></tr>
 <tr class="separator:adc25b685de0859b799488bf7729350b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a606d839b3a992c681ac9ad7ca6020022"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022">setBitRate</a> (float br)</td></tr>
-<tr class="memdesc:a606d839b3a992c681ac9ad7ca6020022"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.  <a href="class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022">More...</a><br /></td></tr>
-<tr class="separator:a606d839b3a992c681ac9ad7ca6020022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode.  <a href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">More...</a><br /></td></tr>
 <tr class="separator:a448ea8a6a6011a9cdddd4e09bd6c9679"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,6 +416,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8a194b0fbb66b1a953288bf3b9478d6e">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Must be implemented in module class.  <a href="class_physical_layer.html#a8a194b0fbb66b1a953288bf3b9478d6e">More...</a><br /></td></tr>
 <tr class="separator:a8a194b0fbb66b1a953288bf3b9478d6e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">setBitRate</a> (float br)</td></tr>
+<tr class="memdesc:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">More...</a><br /></td></tr>
+<tr class="separator:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">setDataShaping</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">More...</a><br /></td></tr>
 <tr class="separator:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -529,8 +529,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="add78edb65673d9e88931a55b0672a9f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add78edb65673d9e88931a55b0672a9f3">&#9670;&nbsp;</a></span>beginFSK()</h2>
+<a id="a73f2d2fe803e3496026011f0da694cfb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73f2d2fe803e3496026011f0da694cfb">&#9670;&nbsp;</a></span>beginFSK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,12 +540,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>chipVersion</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -583,7 +577,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version.</td></tr>
-    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second).</td></tr>
     <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz.</td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz.</td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits.</td></tr>
@@ -1562,44 +1555,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a606d839b3a992c681ac9ad7ca6020022"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a606d839b3a992c681ac9ad7ca6020022">&#9670;&nbsp;</a></span>setBitRate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX127x::setBitRate </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>br</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps).</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000010">Todo:</a></b></dt><dd>fractional part of bit rate setting (not in OOK) </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">PhysicalLayer</a>.</p>
 
 </div>
 </div>

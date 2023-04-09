@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
 "functions_func_e.html":[3,3,1,4],
@@ -123,8 +124,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607":[2,4,5],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,1],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],

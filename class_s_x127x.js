@@ -2,7 +2,7 @@ var class_s_x127x =
 [
     [ "SX127x", "class_s_x127x.html#ac74c5914ca429a3892c66b9d98e3ea6c", null ],
     [ "begin", "class_s_x127x.html#a5da8218f69e3bf52df389a0480f8b430", null ],
-    [ "beginFSK", "class_s_x127x.html#add78edb65673d9e88931a55b0672a9f3", null ],
+    [ "beginFSK", "class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb", null ],
     [ "clearDio0Action", "class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823", null ],
     [ "clearDio1Action", "class_s_x127x.html#a9b6532a25e1730973ac08146008adca5", null ],
     [ "clearFHSSInt", "class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66", null ],
@@ -45,7 +45,6 @@ var class_s_x127x =
     [ "setAFC", "class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e", null ],
     [ "setAFCAGCTrigger", "class_s_x127x.html#ab0f67330124cefc07a462e77922453d0", null ],
     [ "setAFCBandwidth", "class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef", null ],
-    [ "setBitRate", "class_s_x127x.html#a606d839b3a992c681ac9ad7ca6020022", null ],
     [ "setBroadcastAddress", "class_s_x127x.html#abc51ce6718153e4963128f25bb5aab40", null ],
     [ "setCrcFiltering", "class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a", null ],
     [ "setCurrentLimit", "class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002", null ],

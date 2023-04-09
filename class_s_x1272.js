@@ -10,6 +10,7 @@ var class_s_x1272 =
     [ "implicitHeader", "class_s_x1272.html#a4ee36122f8aca42b27a8412e0c362dd3", null ],
     [ "reset", "class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac", null ],
     [ "setBandwidth", "class_s_x1272.html#a0cc8eeb00241031796fc73b08711469b", null ],
+    [ "setBitRate", "class_s_x1272.html#ab5c9a79d72996c3d793cee812b0aded5", null ],
     [ "setCodingRate", "class_s_x1272.html#a960913438feccad4c1913a9222384a5f", null ],
     [ "setCRC", "class_s_x1272.html#abd912314a977f92c464d36d862329ffc", null ],
     [ "setDataShaping", "class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea", null ],
