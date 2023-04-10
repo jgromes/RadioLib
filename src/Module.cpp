@@ -226,17 +226,17 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
 
 void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
   // start SPI transaction
-  this->SPIbeginTransaction();
+  this->beginTransaction();
 
   // pull CS low
   this->digitalWrite(_cs, LOW);
 
   // send SPI register address with access command
   if(this->SPIaddrWidth <= 8) {
-    this->SPItransfer(reg | cmd);
+    this->transfer(reg | cmd);
   } else {
-    this->SPItransfer((reg >> 8) | cmd);
-    this->SPItransfer(reg & 0xFF);
+    this->transfer((reg >> 8) | cmd);
+    this->transfer(reg & 0xFF);
   }
 
   #if defined(RADIOLIB_VERBOSE)
@@ -254,7 +254,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   if(cmd == SPIwriteCommand) {
     if(dataOut != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        this->SPItransfer(dataOut[n]);
+        this->transfer(dataOut[n]);
         RADIOLIB_VERBOSE_PRINT(dataOut[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
       }
@@ -262,7 +262,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   } else if (cmd == SPIreadCommand) {
     if(dataIn != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->SPItransfer(0x00);
+        dataIn[n] = this->transfer(0x00);
         RADIOLIB_VERBOSE_PRINT(dataIn[n], HEX);
         RADIOLIB_VERBOSE_PRINT('\t');
       }
@@ -274,7 +274,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->digitalWrite(_cs, HIGH);
 
   // end SPI transaction
-  this->SPIendTransaction();
+  this->endTransaction();
 }
 
 int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
@@ -625,35 +625,55 @@ void Module::begin() {
   if(cb_SPIbegin == nullptr) {
     return;
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   (this->*cb_SPIbegin)();
+  #else
+  cb_SPIbegin();
+  #endif
 }
 
 void Module::beginTransaction() {
   if(cb_SPIbeginTransaction == nullptr) {
     return;
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   (this->*cb_SPIbeginTransaction)();
+  #else
+  cb_SPIbeginTransaction();
+  #endif
 }
 
 uint8_t Module::transfer(uint8_t b) {
   if(cb_SPItransfer == nullptr) {
     return(0xFF);
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   return((this->*cb_SPItransfer)(b));
+  #else
+  return(cb_SPItransfer(b));
+  #endif
 }
 
 void Module::endTransaction() {
   if(cb_SPIendTransaction == nullptr) {
     return;
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   (this->*cb_SPIendTransaction)();
+  #else
+  cb_SPIendTransaction();
+  #endif
 }
 
 void Module::end() {
   if(cb_SPIend == nullptr) {
     return;
   }
+  #if defined(RADIOLIB_BUILD_ARDUINO)
   (this->*cb_SPIend)();
+  #else
+  cb_SPIend();
+  #endif
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
