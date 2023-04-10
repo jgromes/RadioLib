@@ -36,10 +36,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   setCb_micros(::micros);
   setCb_pulseIn(::pulseIn);
   setCb_SPIbegin(&Module::SPIbegin);
-  setCb_SPIbeginTransaction(&Module::beginTransaction);
-  setCb_SPItransfer(&Module::transfer);
-  setCb_SPIendTransaction(&Module::endTransaction);
-  setCb_SPIend(&Module::end);
+  setCb_SPIbeginTransaction(&Module::SPIbeginTransaction);
+  setCb_SPItransfer(&Module::SPItransfer);
+  setCb_SPIendTransaction(&Module::SPIendTransaction);
+  setCb_SPIend(&Module::SPIend);
 }
 
 Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings):
@@ -71,10 +71,10 @@ Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rs
   setCb_micros(::micros);
   setCb_pulseIn(::pulseIn);
   setCb_SPIbegin(&Module::SPIbegin);
-  setCb_SPIbeginTransaction(&Module::beginTransaction);
-  setCb_SPItransfer(&Module::transfer);
-  setCb_SPIendTransaction(&Module::endTransaction);
-  setCb_SPIend(&Module::end);
+  setCb_SPIbeginTransaction(&Module::SPIbeginTransaction);
+  setCb_SPItransfer(&Module::SPItransfer);
+  setCb_SPIendTransaction(&Module::SPIendTransaction);
+  setCb_SPIend(&Module::SPIend);
 }
 #else
 
