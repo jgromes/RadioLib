@@ -71,7 +71,6 @@ void setup() {
   // radio.sleep()
   // radio.transmit();
   // radio.receive();
-  // radio.readData();
   // radio.scanChannel();
 }
 
