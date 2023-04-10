@@ -617,24 +617,24 @@ void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
 void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start transfer
   _mod->digitalWrite(_mod->getCs(), LOW);
-  _mod->SPIbeginTransaction();
+  _mod->beginTransaction();
 
   // send command
-  _mod->SPItransfer(cmd);
+  _mod->transfer(cmd);
 
   // send data
   if(write) {
     for(uint8_t i = 0; i < numBytes; i++) {
-      _mod->SPItransfer(dataOut[i]);
+      _mod->transfer(dataOut[i]);
     }
   } else {
     for(uint8_t i = 0; i < numBytes; i++) {
-      dataIn[i] = _mod->SPItransfer(0x00);
+      dataIn[i] = _mod->transfer(0x00);
     }
   }
 
   // stop transfer
-  _mod->SPIendTransaction();
+  _mod->endTransaction();
   _mod->digitalWrite(_mod->getCs(), HIGH);
 }
 
