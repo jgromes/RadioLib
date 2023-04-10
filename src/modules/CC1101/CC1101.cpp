@@ -1095,13 +1095,13 @@ void CC1101::SPIsendCommand(uint8_t cmd) {
   _mod->digitalWrite(_mod->getCs(), LOW);
 
   // start transfer
-  _mod->SPIbeginTransaction();
+  _mod->beginTransaction();
 
   // send the command byte
-  _mod->SPItransfer(cmd);
+  _mod->transfer(cmd);
 
   // stop transfer
-  _mod->SPIendTransaction();
+  _mod->endTransaction();
   _mod->digitalWrite(_mod->getCs(), HIGH);
 }
 
