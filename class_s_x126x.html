@@ -2524,7 +2524,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method. DIO1 will be activated when full packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
+    <tr><td class="paramname">timeout</td><td>Receive mode type and/or raw timeout value, expressed as multiples of 15.625 us. When set to RADIOLIB_SX126X_RX_TIMEOUT_INF, the timeout will be infinite and the device will remain in Rx mode until explicitly commanded to stop (Rx continuous mode). When set to RADIOLIB_SX126X_RX_TIMEOUT_NONE, there will be no timeout and the device will return to standby when a packet is received (Rx single mode). For any other value, timeout will be applied and signal will be generated on DIO1 for conditions defined by irqFlags and irqMask.</td></tr>
     <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
     <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
     <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used.</td></tr>
