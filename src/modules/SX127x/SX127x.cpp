@@ -598,9 +598,6 @@ int16_t SX127x::finishTransmit() {
 int16_t SX127x::readData(uint8_t* data, size_t len) {
   int16_t modem = getActiveModem();
 
-  // put module to standby
-  standby();
-
   // get packet length
   size_t length = getPacketLength();
   size_t dumpLen = 0;
