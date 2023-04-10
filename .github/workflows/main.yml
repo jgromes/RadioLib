@@ -70,7 +70,11 @@ jobs:
           echo "warnings=all" >> $GITHUB_OUTPUT
 
           # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
-          if [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
+          if [[ "${{ contains(matrix.board, 'arduino:avr:uno') }}" == "true" ]]; then
+            # Arduino Uno
+            echo "skip-pattern=(STM32WL|SSTV)" >> $GITHUB_OUTPUT
+
+          elif [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
             # Arduino Mega
             echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
 
