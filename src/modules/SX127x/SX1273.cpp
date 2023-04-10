@@ -29,6 +29,10 @@ int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = setGain(gain);
   RADIOLIB_ASSERT(state);
 
+  // set publicly accessible settings that are not a part of begin method
+  state = setCRC(true);
+  RADIOLIB_ASSERT(state);
+
   return(state);
 }
 
