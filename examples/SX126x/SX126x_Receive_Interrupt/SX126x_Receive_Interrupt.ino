@@ -74,7 +74,6 @@ void setup() {
   // radio.sleep()
   // radio.transmit();
   // radio.receive();
-  // radio.readData();
   // radio.scanChannel();
 }
 
@@ -142,8 +141,5 @@ void loop() {
       Serial.println(state);
 
     }
-
-    // put module back to listen mode
-    radio.startReceive();
   }
 }

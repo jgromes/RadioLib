@@ -646,12 +646,10 @@ int16_t SX126x::startReceiveCommon(uint32_t timeout, uint16_t irqFlags, uint16_t
 }
 
 int16_t SX126x::readData(uint8_t* data, size_t len) {
-  // set mode to standby
-  int16_t state = standby();
-
   // this method may get called from receive() after Rx timeout
-  // if that's the case, the standby call will return "SPI command timeout error"
+  // if that's the case, the first call will return "SPI command timeout error"
   // check the IRQ to be sure this really originated from timeout event
+  int16_t state = _mod->SPIcheckStream();
   if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
     // this is definitely Rx timeout
     return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -674,6 +672,10 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 
   // read packet data
   state = readBuffer(data, length);
+  RADIOLIB_ASSERT(state);
+
+  // reset the base addresses
+  state = setBufferBaseAddress();
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1674,8 +1676,8 @@ int16_t SX126x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
   return(_mod->SPIwriteStream(cmd, 2, data, numBytes));
 }
 
-int16_t SX126x::readBuffer(uint8_t* data, uint8_t numBytes) {
-  uint8_t cmd[] = { RADIOLIB_SX126X_CMD_READ_BUFFER, RADIOLIB_SX126X_CMD_NOP };
+int16_t SX126x::readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
+  uint8_t cmd[] = { RADIOLIB_SX126X_CMD_READ_BUFFER, offset };
   return(_mod->SPIreadStream(cmd, 2, data, numBytes));
 }
 

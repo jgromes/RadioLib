@@ -630,8 +630,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
 
-      \param timeout Raw timeout value, expressed as multiples of 15.625 us. Defaults to RADIOLIB_SX126X_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_SX126X_RX_TIMEOUT_NONE for no timeout (Rx single mode).
-      If timeout other than infinite is set, signal will be generated on DIO1.
+      \param timeout Receive mode type and/or raw timeout value, expressed as multiples of 15.625 us.
+      When set to RADIOLIB_SX126X_RX_TIMEOUT_INF, the timeout will be infinite and the device will remain in Rx mode until explicitly commanded to stop (Rx continuous mode).
+      When set to RADIOLIB_SX126X_RX_TIMEOUT_NONE, there will be no timeout and the device will return to standby when a packet is received (Rx single mode).
+      For any other value, timeout will be applied and signal will be generated on DIO1 for conditions defined by irqFlags and irqMask.
 
       \param irqFlags Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.
 
@@ -1145,7 +1147,7 @@ class SX126x: public PhysicalLayer {
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
-    int16_t readBuffer(uint8_t* data, uint8_t numBytes);
+    int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX126X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX126X_IRQ_NONE);
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
