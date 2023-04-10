@@ -7,6 +7,10 @@
   #include <SPI.h>
 #endif
 
+#if defined(STM32WLxx)
+  #include <SubGhz.h>
+#endif
+
 /*!
 * Value to use as the last element in a mode table to indicate the
 * end of the table.

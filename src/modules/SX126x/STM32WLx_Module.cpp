@@ -9,8 +9,6 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #if !defined(RADIOLIB_EXCLUDE_STM32WLX)
 
-#include <SubGhz.h>
-
 // This defines some dummy pin numbers (starting at NUM_DIGITAL_PINS to
 // guarantee these are not valid regular pin numbers) that can be passed
 // to the parent Module class, to be stored here and then passed back to
