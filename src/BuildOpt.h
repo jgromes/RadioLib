@@ -1040,31 +1040,8 @@
 
 #if defined(RADIOLIB_DEBUG)
   #if defined(RADIOLIB_BUILD_ARDUINO)
-// https://github.com/esp8266/Arduino/blob/65579d29081cb8501e4d7f786747bf12e7b37da2/cores/esp8266/Print.cpp#L50
-size_t serialPrintf(const char *format, ...) {
-    va_list arg;
-    va_start(arg, format);
-    char temp[64];
-    char* buffer = temp;
-    size_t len = vsnprintf(temp, sizeof(temp), format, arg);
-    va_end(arg);
-    if (len > sizeof(temp) - 1) {
-        buffer = new char[len + 1];
-        if (!buffer) {
-            return 0;
-        }
-        va_start(arg, format);
-        vsnprintf(buffer, len + 1, format, arg);
-        va_end(arg);
-    }
-    len = RADIOLIB_DEBUG_PORT.write((const uint8_t*) buffer, len);
-    if (buffer != temp) {
-        delete[] buffer;
-    }
-    return len;
-}
-    #define RADIOLIB_DEBUG_PRINT(...) serialPrintf(__VA_ARGS__)
-    #define RADIOLIB_DEBUG_PRINTLN(M, ...) serialPrintf(M "\n", ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
   #else
     #if !defined(RADIOLIB_DEBUG_PRINT)
       #define RADIOLIB_DEBUG_PRINT(...) fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__)

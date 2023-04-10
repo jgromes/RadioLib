@@ -161,9 +161,9 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
     }
 
     #if defined(RADIOLIB_DEBUG) && defined(RADIOLIB_BUILD_ARDUINO)
-      #define DEBUG_BIN(x) RADIOLIB_DEBUG_PORT.println(x, BIN)
+      #define RADIOLIB_DEBUG_PRINT_BIN(x) RADIOLIB_DEBUG_PORT.println(x, BIN)
     #else // no bin representation, fallback to hex
-      #define DEBUG_BIN(x) RADIOLIB_DEBUG_PRINTLN("%X", x)
+      #define RADIOLIB_DEBUG_PRINT_BIN(x) RADIOLIB_DEBUG_PRINTLN("%X", x)
     #endif
 
     // check failed, print debug info
@@ -171,15 +171,15 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
     RADIOLIB_DEBUG_PRINTLN("address:\t0x%X", reg);
     RADIOLIB_DEBUG_PRINTLN("bits:\t\t%d %d", msb, lsb);
     RADIOLIB_DEBUG_PRINT("value:\t\t0b");
-    DEBUG_BIN(value);
+    RADIOLIB_DEBUG_PRINT_BIN(value);
     RADIOLIB_DEBUG_PRINT("current:\t0b");
-    DEBUG_BIN(currentValue);
+    RADIOLIB_DEBUG_PRINT_BIN(currentValue);
     RADIOLIB_DEBUG_PRINT("mask:\t\t0b");
-    DEBUG_BIN(mask);
+    RADIOLIB_DEBUG_PRINT_BIN(mask);
     RADIOLIB_DEBUG_PRINT("new:\t\t0b");
-    DEBUG_BIN(newValue);
+    RADIOLIB_DEBUG_PRINT_BIN(newValue);
     RADIOLIB_DEBUG_PRINT("read:\t\t0b");
-    DEBUG_BIN(readValue);
+    RADIOLIB_DEBUG_PRINT_BIN(readValue);
     RADIOLIB_DEBUG_PRINTLN();
 
     return(RADIOLIB_ERR_SPI_WRITE_FAILED);
@@ -756,6 +756,32 @@ void Module::regdump(uint16_t start, size_t len) {
     delete[] buff;
   #endif
 }
+
+#if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
+// https://github.com/esp8266/Arduino/blob/65579d29081cb8501e4d7f786747bf12e7b37da2/cores/esp8266/Print.cpp#L50
+size_t Module::serialPrintf(const char* format, ...) {
+  va_list arg;
+  va_start(arg, format);
+  char temp[64];
+  char* buffer = temp;
+  size_t len = vsnprintf(temp, sizeof(temp), format, arg);
+  va_end(arg);
+  if (len > sizeof(temp) - 1) {
+    buffer = new char[len + 1];
+    if (!buffer) {
+      return 0;
+    }
+    va_start(arg, format);
+    vsnprintf(buffer, len + 1, format, arg);
+    va_end(arg);
+  }
+  len = RADIOLIB_DEBUG_PORT.write((const uint8_t*)buffer, len);
+  if (buffer != temp) {
+    delete[] buffer;
+  }
+  return len;
+}
+#endif
 
 void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
   // This can be on the stack, setRfSwitchTable copies the contents
