@@ -106,9 +106,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">sendTone</a> (uint32_t addr)</td></tr>
 <tr class="memdesc:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to send a tone-only alert to a destination pager.  <a href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">More...</a><br /></td></tr>
 <tr class="separator:a8f9af4c0a5c2e9de7cdfa1a907479111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a897f990002a4a2196fcdb31c547e0648"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a897f990002a4a2196fcdb31c547e0648">transmit</a> (String &amp;str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD)</td></tr>
-<tr class="memdesc:a897f990002a4a2196fcdb31c547e0648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino String transmit method.  <a href="class_pager_client.html#a897f990002a4a2196fcdb31c547e0648">More...</a><br /></td></tr>
-<tr class="separator:a897f990002a4a2196fcdb31c547e0648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab6a8977f89d43620b98bcedf5a47dbd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">transmit</a> (const char *str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD)</td></tr>
 <tr class="memdesc:aab6a8977f89d43620b98bcedf5a47dbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">More...</a><br /></td></tr>
 <tr class="separator:aab6a8977f89d43620b98bcedf5a47dbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,9 +118,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec073fa9e5adcff9730482d9583715e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a> ()</td></tr>
 <tr class="memdesc:aec073fa9e5adcff9730482d9583715e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!  <a href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">More...</a><br /></td></tr>
 <tr class="separator:aec073fa9e5adcff9730482d9583715e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac000d0d6b1eb389ead95290f8895d02d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ac000d0d6b1eb389ead95290f8895d02d">readData</a> (String &amp;str, size_t len=0, uint32_t *addr=NULL)</td></tr>
-<tr class="memdesc:ac000d0d6b1eb389ead95290f8895d02d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_pager_client.html#ac000d0d6b1eb389ead95290f8895d02d">More...</a><br /></td></tr>
-<tr class="separator:ac000d0d6b1eb389ead95290f8895d02d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2c6132819a84712b929c0bb22ba172b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a> (uint8_t *data, size_t *len, uint32_t *addr=NULL)</td></tr>
 <tr class="memdesc:ad2c6132819a84712b929c0bb22ba172b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">More...</a><br /></td></tr>
 <tr class="separator:ad2c6132819a84712b929c0bb22ba172b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -238,53 +232,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac000d0d6b1eb389ead95290f8895d02d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac000d0d6b1eb389ead95290f8895d02d">&#9670;&nbsp;</a></span>readData() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t PagerClient::readData </td>
-          <td>(</td>
-          <td class="paramtype">String &amp;&#160;</td>
-          <td class="paramname"><em>str</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t *&#160;</td>
-          <td class="paramname"><em>addr</em> = <code>NULL</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Reads data that was received after calling startReceive method. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">str</td><td>Address of Arduino String to save the received data.</td></tr>
-    <tr><td class="paramname">len</td><td>Expected number of characters in the message. When set to 0, the message length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
-    <tr><td class="paramname">addr</td><td>Pointer to variable holding the address of the received pager message. Set to NULL to not retrieve address.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
 <a id="ad2c6132819a84712b929c0bb22ba172b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad2c6132819a84712b929c0bb22ba172b">&#9670;&nbsp;</a></span>readData() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2c6132819a84712b929c0bb22ba172b">&#9670;&nbsp;</a></span>readData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,7 +350,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="aab6a8977f89d43620b98bcedf5a47dbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aab6a8977f89d43620b98bcedf5a47dbd">&#9670;&nbsp;</a></span>transmit() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aab6a8977f89d43620b98bcedf5a47dbd">&#9670;&nbsp;</a></span>transmit() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -445,53 +394,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a897f990002a4a2196fcdb31c547e0648"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a897f990002a4a2196fcdb31c547e0648">&#9670;&nbsp;</a></span>transmit() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t PagerClient::transmit </td>
-          <td>(</td>
-          <td class="paramtype">String &amp;&#160;</td>
-          <td class="paramname"><em>str</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>RADIOLIB_PAGER_BCD</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino String transmit method. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">str</td><td>Address of Arduino string that will be transmitted.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
 <a id="a77aafe7c86e6e1e4e22990be4e7f090b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77aafe7c86e6e1e4e22990be4e7f090b">&#9670;&nbsp;</a></span>transmit() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a77aafe7c86e6e1e4e22990be4e7f090b">&#9670;&nbsp;</a></span>transmit() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

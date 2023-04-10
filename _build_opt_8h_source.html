@@ -1128,14 +1128,14 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160; </div>
 <div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_DEBUG)</span></div>
 <div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;<span class="preprocessor">  #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }</span></div>
-<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }</span></div>
+<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)</span></div>
+<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M &quot;\n&quot;</span>, ##__VA_ARGS__)</div>
 <div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160;<span class="preprocessor">  #else</span></div>
 <div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINT)</span></div>
-<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINT(...) { frintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }</span></div>
+<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINT(...) fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__)</span></div>
 <div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_DEBUG_PRINTLN)</span></div>
-<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINTLN(...)  { printf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ &quot;\n&quot;</span>); }</div>
+<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;<span class="preprocessor">      #define RADIOLIB_DEBUG_PRINTLN(M, ...) fprintf(RADIOLIB_DEBUG_PORT, M &quot;\n&quot;</span>, ##__VA_ARGS__)</div>
 <div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;<span class="preprocessor">  #endif</span></div>
 <div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;<span class="preprocessor">#else</span></div>
