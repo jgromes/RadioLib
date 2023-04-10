@@ -16,8 +16,8 @@ int16_t RFM96::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncW
     // some other error
     return(state);
   }
-  RADIOLIB_DEBUG_PRINTLN(F("M\tSX1278"));
-  RADIOLIB_DEBUG_PRINTLN(F("M\tRFM96"));
+  RADIOLIB_DEBUG_PRINTLN("M\tSX1278");
+  RADIOLIB_DEBUG_PRINTLN("M\tRFM96");
 
   // configure publicly accessible settings
   state = setBandwidth(bw);
@@ -52,8 +52,8 @@ int16_t RFM96::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t 
     // some other error
     return(state);
   }
-  RADIOLIB_DEBUG_PRINTLN(F("M\tSX1278"));
-  RADIOLIB_DEBUG_PRINTLN(F("M\tRFM96"));
+  RADIOLIB_DEBUG_PRINTLN("M\tSX1278");
+  RADIOLIB_DEBUG_PRINTLN("M\tRFM96");
 
   // configure settings not accessible by API
   state = configFSK();

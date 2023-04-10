@@ -52,9 +52,11 @@ int16_t PagerClient::sendTone(uint32_t addr) {
   return(PagerClient::transmit(NULL, 0, addr));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PagerClient::transmit(String& str, uint32_t addr, uint8_t encoding) {
   return(PagerClient::transmit(str.c_str(), addr, encoding));
 }
+#endif
 
 int16_t PagerClient::transmit(const char* str, uint32_t addr, uint8_t encoding) {
   return(PagerClient::transmit((uint8_t*)str, strlen(str), addr, encoding));
@@ -260,6 +262,7 @@ size_t PagerClient::available() {
   return(_phy->available() + sizeof(uint32_t))/(sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   int16_t state = RADIOLIB_ERR_NONE;
 
@@ -304,6 +307,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
 
   return(state);
 }
+#endif
 
 int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   // find the correct address
@@ -492,9 +496,7 @@ uint32_t PagerClient::read() {
     codeWord = ~codeWord;
   }
 
-  RADIOLIB_VERBOSE_PRINT("R\t");
-  RADIOLIB_VERBOSE_PRINTLN(codeWord, HEX);
-
+  RADIOLIB_VERBOSE_PRINTLN("R\t%X", codeWord);
   // TODO BCH error correction here
   return(codeWord);
 }

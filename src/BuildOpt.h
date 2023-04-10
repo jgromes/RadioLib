@@ -1040,14 +1040,14 @@
 
 #if defined(RADIOLIB_DEBUG)
   #if defined(RADIOLIB_BUILD_ARDUINO)
-    #define RADIOLIB_DEBUG_PRINT(...) { RADIOLIB_DEBUG_PORT.print(__VA_ARGS__); }
-    #define RADIOLIB_DEBUG_PRINTLN(...) { RADIOLIB_DEBUG_PORT.println(__VA_ARGS__); }
+    #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
   #else
     #if !defined(RADIOLIB_DEBUG_PRINT)
-      #define RADIOLIB_DEBUG_PRINT(...) { frintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__); }
+      #define RADIOLIB_DEBUG_PRINT(...) fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__)
     #endif
     #if !defined(RADIOLIB_DEBUG_PRINTLN)
-      #define RADIOLIB_DEBUG_PRINTLN(...)  { printf(RADIOLIB_DEBUG_PORT, __VA_ARGS__ "\n"); }
+      #define RADIOLIB_DEBUG_PRINTLN(M, ...) fprintf(RADIOLIB_DEBUG_PORT, M "\n", ##__VA_ARGS__)
     #endif
   #endif
 #else

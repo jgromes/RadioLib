@@ -91,17 +91,15 @@ int MorseClient::read(byte* symbol, byte* len, float low, float high) {
     uint32_t signalLen = mod->millis() - signalStart;
 
     if((signalLen >= low*(float)_dotLength) && (signalLen <= high*(float)_dotLength)) {
-      RADIOLIB_DEBUG_PRINT('.');
+      RADIOLIB_DEBUG_PRINT(".");
       (*symbol) |= (RADIOLIB_MORSE_DOT << (*len));
       (*len)++;
     } else if((signalLen >= low*(float)_dashLength) && (signalLen <= high*(float)_dashLength)) {
-      RADIOLIB_DEBUG_PRINT('-');
+      RADIOLIB_DEBUG_PRINT("-");
       (*symbol) |= (RADIOLIB_MORSE_DASH << (*len));
       (*len)++;
     } else {
-      RADIOLIB_DEBUG_PRINT("<len=");
-      RADIOLIB_DEBUG_PRINT(signalLen);
-      RADIOLIB_DEBUG_PRINTLN("ms>");
+      RADIOLIB_DEBUG_PRINTLN("<len=%dms>", signalLen);
     }
   }
 
@@ -135,7 +133,7 @@ size_t MorseClient::write(uint8_t b) {
 
   // inter-word pause (space)
   if(b == ' ') {
-    RADIOLIB_DEBUG_PRINTLN(F("space"));
+    RADIOLIB_DEBUG_PRINTLN("space");
     standby();
     mod->waitForMicroseconds(mod->micros(), _wordSpace*1000);
     return(1);
@@ -154,11 +152,11 @@ size_t MorseClient::write(uint8_t b) {
 
     // send dot or dash
     if (code & RADIOLIB_MORSE_DASH) {
-      RADIOLIB_DEBUG_PRINT('-');
+      RADIOLIB_DEBUG_PRINT("-");
       transmitDirect(_base, _baseHz);
       mod->waitForMicroseconds(mod->micros(), _dashLength*1000);
     } else {
-      RADIOLIB_DEBUG_PRINT('.');
+      RADIOLIB_DEBUG_PRINT(".");
       transmitDirect(_base, _baseHz);
       mod->waitForMicroseconds(mod->micros(), _dotLength*1000);
     }
@@ -179,6 +177,7 @@ size_t MorseClient::write(uint8_t b) {
   return(1);
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t MorseClient::print(__FlashStringHelper* fstr) {
   PGM_P p = reinterpret_cast<PGM_P>(fstr);
   size_t n = 0;
@@ -195,6 +194,7 @@ size_t MorseClient::print(__FlashStringHelper* fstr) {
 size_t MorseClient::print(const String& str) {
   return(MorseClient::write((uint8_t*)str.c_str(), str.length()));
 }
+#endif
 
 size_t MorseClient::print(const char* str) {
   return(MorseClient::write((uint8_t*)str, strlen(str)));
@@ -247,6 +247,7 @@ size_t MorseClient::println(void) {
   return(MorseClient::write('^'));
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 size_t MorseClient::println(__FlashStringHelper* fstr) {
   size_t n = MorseClient::print(fstr);
   n += MorseClient::println();
@@ -258,6 +259,7 @@ size_t MorseClient::println(const String& str) {
   n += MorseClient::println();
   return(n);
 }
+#endif
 
 size_t MorseClient::println(const char* str) {
   size_t n = MorseClient::print(str);

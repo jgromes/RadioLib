@@ -194,9 +194,11 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t prea
   return(_phy->startDirect());
 }
 
+#if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t AX25Client::transmit(String& str, const char* destCallsign, uint8_t destSSID) {
   return(transmit(str.c_str(), destCallsign, destSSID));
 }
+#endif
 
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
   // create control field

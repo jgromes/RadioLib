@@ -24,28 +24,18 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
     if((version == RADIOLIB_CC1101_VERSION_CURRENT) || (version == RADIOLIB_CC1101_VERSION_LEGACY) || (version == RADIOLIB_CC1101_VERSION_CLONE)) {
       flagFound = true;
     } else {
-      #if defined(RADIOLIB_DEBUG)
-        RADIOLIB_DEBUG_PRINT(F("CC1101 not found! ("));
-        RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RADIOLIB_CC1101_REG_VERSION == "));
-
-        char buffHex[7];
-        sprintf(buffHex, "0x%04X", version);
-        RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x0004/0x0014"));
-        RADIOLIB_DEBUG_PRINTLN();
-      #endif
+      RADIOLIB_DEBUG_PRINTLN("CC1101 not found! (%d of 10 tries) RADIOLIB_CC1101_REG_VERSION == 0x%04X, expected 0x0004/0x0014", i + 1, version);
       _mod->delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
-    RADIOLIB_DEBUG_PRINTLN(F("No CC1101 found!"));
+    RADIOLIB_DEBUG_PRINTLN("No CC1101 found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("M\tCC1101"));
+    RADIOLIB_DEBUG_PRINTLN("M\tCC1101");
   }
 
   // configure settings not accessible by API
@@ -319,7 +309,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
         *
         * TODO: test this on real hardware
       */
-     delayMicroseconds(250);
+     _mod->delayMicroseconds(250);
     }
   }
 
@@ -388,7 +378,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     if (bytesInFIFO == 0) {
       if (millis() - lastPop > 5) {
         // readData was required to read a packet longer than the one received.
-        RADIOLIB_DEBUG_PRINTLN(F("No data for more than 5mS. Stop here."));
+        RADIOLIB_DEBUG_PRINTLN("No data for more than 5mS. Stop here.");
         break;
       } else {
         delay(1);
@@ -919,7 +909,7 @@ void CC1101::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_M
 uint8_t CC1101::randomByte() {
   // set mode to Rx
   SPIsendCommand(RADIOLIB_CC1101_CMD_RX);
-  RADIOLIB_DEBUG_PRINTLN("random");
+  RADIOLIB_DEBUG_PRINTLN("CC1101::randomByte");
 
   // wait a bit for the RSSI reading to stabilise
   _mod->delay(10);
@@ -946,7 +936,7 @@ void CC1101::setDirectAction(void (*func)(void)) {
 }
 
 void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 

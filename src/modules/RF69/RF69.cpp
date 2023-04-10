@@ -26,28 +26,18 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
     if(version == RADIOLIB_RF69_CHIP_VERSION) {
       flagFound = true;
     } else {
-      #if defined(RADIOLIB_DEBUG)
-        RADIOLIB_DEBUG_PRINT(F("RF69 not found! ("));
-        RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RADIOLIB_RF69_REG_VERSION == "));
-
-        char buffHex[7];
-        sprintf(buffHex, "0x%04X", version);
-        RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x0024"));
-        RADIOLIB_DEBUG_PRINTLN();
-      #endif
+      RADIOLIB_DEBUG_PRINTLN("RF69 not found! (%d of 10 tries) RADIOLIB_RF69_REG_VERSION == 0x%04X, expected 0x0024", i + 1, version);
       _mod->delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
-    RADIOLIB_DEBUG_PRINTLN(F("No RF69 found!"));
+    RADIOLIB_DEBUG_PRINTLN("No RF69 found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("M\tRF69"));
+    RADIOLIB_DEBUG_PRINTLN("M\tRF69");
   }
 
   // configure settings not accessible by API
@@ -959,7 +949,7 @@ void RF69::setDirectAction(void (*func)(void)) {
 }
 
 void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 

@@ -18,11 +18,11 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
 
   // try to find the Si443x chip
   if(!Si443x::findChip()) {
-    RADIOLIB_DEBUG_PRINTLN(F("No Si443x found!"));
+    RADIOLIB_DEBUG_PRINTLN("No Si443x found!");
     _mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   } else {
-    RADIOLIB_DEBUG_PRINTLN(F("M\tSi443x"));
+    RADIOLIB_DEBUG_PRINTLN("M\tSi443x");
   }
 
   // reset the device
@@ -612,7 +612,7 @@ void Si443x::setDirectAction(void (*func)(void)) {
 }
 
 void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)digitalRead(pin));
+  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
 }
 #endif
 
@@ -683,17 +683,7 @@ bool Si443x::findChip() {
     if(version == RADIOLIB_SI443X_DEVICE_VERSION) {
       flagFound = true;
     } else {
-      #if defined(RADIOLIB_DEBUG)
-        RADIOLIB_DEBUG_PRINT(F("Si443x not found! ("));
-        RADIOLIB_DEBUG_PRINT(i + 1);
-        RADIOLIB_DEBUG_PRINT(F(" of 10 tries) RADIOLIB_SI443X_REG_DEVICE_VERSION == "));
-
-        char buffHex[5];
-        sprintf(buffHex, "0x%02X", version);
-        RADIOLIB_DEBUG_PRINT(buffHex);
-        RADIOLIB_DEBUG_PRINT(F(", expected 0x00"));
-        RADIOLIB_DEBUG_PRINTLN(RADIOLIB_SI443X_DEVICE_VERSION, HEX);
-      #endif
+      RADIOLIB_DEBUG_PRINTLN("Si443x not found! (%d of 10 tries) RADIOLIB_SI443X_REG_DEVICE_VERSION == 0x%02X, expected 0x0%X", i + 1, version, RADIOLIB_SI443X_DEVICE_VERSION);
       _mod->delay(10);
       i++;
     }
@@ -762,20 +752,8 @@ int16_t Si443x::updateClockRecovery() {
   uint16_t rxOsr_fixed = (uint16_t)rxOsr;
 
   // print that whole mess
-  RADIOLIB_DEBUG_PRINTLN(bypass, HEX);
-  RADIOLIB_DEBUG_PRINTLN(decRate, HEX);
-  RADIOLIB_DEBUG_PRINTLN(manch, HEX);
-  RADIOLIB_DEBUG_PRINT(rxOsr, 3);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINT(rxOsr_fixed);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINTLN(rxOsr_fixed, HEX);
-  RADIOLIB_DEBUG_PRINT(ncoOff);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINTLN(ncoOff, HEX);
-  RADIOLIB_DEBUG_PRINT(crGain);
-  RADIOLIB_DEBUG_PRINT('\t');
-  RADIOLIB_DEBUG_PRINTLN(crGain, HEX);
+  RADIOLIB_DEBUG_PRINTLN("%X\n%X\n%X", bypass, decRate, manch);
+  RADIOLIB_DEBUG_PRINTLN("%f\t%d\t%X\n%d\t%X\n%d\t%X", rxOsr, rxOsr_fixed, rxOsr_fixed, ncoOff, ncoOff, crGain, crGain);
 
   // update oversampling ratio
   int16_t state = _mod->SPIsetRegValue(RADIOLIB_SI443X_REG_CLOCK_REC_OFFSET_2, (uint8_t)((rxOsr_fixed & 0x0700) >> 3), 7, 5);

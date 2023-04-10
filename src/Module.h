@@ -704,6 +704,10 @@ class Module {
     */
     void regdump(uint16_t start, size_t len);
 
+    #if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
+    static size_t serialPrintf(const char* format, ...);
+    #endif
+
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
