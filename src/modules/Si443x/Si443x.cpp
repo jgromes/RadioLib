@@ -1,4 +1,5 @@
 #include "Si443x.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_SI443X)
 
 Si443x::Si443x(Module* mod) : PhysicalLayer(RADIOLIB_SI443X_FREQUENCY_STEP_SIZE, RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
@@ -12,9 +13,9 @@ Module* Si443x::getMod() {
 int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), LOW);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
 
   // try to find the Si443x chip
   if(!Si443x::findChip()) {
@@ -67,11 +68,11 @@ int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) 
 }
 
 void Si443x::reset() {
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), HIGH);
-  _mod->delay(1);
-  _mod->digitalWrite(_mod->getRst(), LOW);
-  _mod->delay(100);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
+  _mod->hal->delay(1);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
+  _mod->hal->delay(100);
 }
 
 int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -83,10 +84,10 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = _mod->micros();
-  while(_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
-    if(_mod->micros() - start > timeout) {
+  uint32_t start = _mod->hal->micros();
+  while(_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
+    if(_mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -104,9 +105,9 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = _mod->micros();
-  while(_mod->digitalRead(_mod->getIrq())) {
-    if(_mod->micros() - start > timeout) {
+  uint32_t start = _mod->hal->micros();
+  while(_mod->hal->digitalRead(_mod->getIrq())) {
+    if(_mod->hal->micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -206,11 +207,11 @@ int16_t Si443x::packetMode() {
 }
 
 void Si443x::setIrqAction(void (*func)(void)) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, _mod->hal->GpioInterruptFalling);
 }
 
 void Si443x::clearIrqAction() {
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
 int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -575,11 +576,11 @@ int16_t Si443x::setDataShaping(uint8_t sh) {
   }
 }
 
-void Si443x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void Si443x::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void Si443x::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void Si443x::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -588,7 +589,7 @@ uint8_t Si443x::randomByte() {
   _mod->SPIwriteRegister(RADIOLIB_SI443X_REG_OP_FUNC_CONTROL_1, RADIOLIB_SI443X_RX_ON | RADIOLIB_SI443X_XTAL_ON);
 
   // wait a bit for the RSSI reading to stabilise
-  _mod->delay(10);
+  _mod->hal->delay(10);
 
   // read RSSI value 8 times, always keep just the least significant bit
   uint8_t randByte = 0x00;
@@ -611,8 +612,8 @@ void Si443x::setDirectAction(void (*func)(void)) {
   setIrqAction(func);
 }
 
-void Si443x::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
+void Si443x::readBit(uint8_t pin) {
+  updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
@@ -684,7 +685,7 @@ bool Si443x::findChip() {
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_PRINTLN("Si443x not found! (%d of 10 tries) RADIOLIB_SI443X_REG_DEVICE_VERSION == 0x%02X, expected 0x0%X", i + 1, version, RADIOLIB_SI443X_DEVICE_VERSION);
-      _mod->delay(10);
+      _mod->hal->delay(10);
       i++;
     }
   }

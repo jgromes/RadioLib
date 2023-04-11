@@ -108,10 +108,10 @@ void setup() {
   }
 
   // set the function to call when transmission is finished
-  radio.setDio0Action(setTxFlag);
+  radio.setDio0Action(setTxFlag, RISING);
 
   // set the function to call when we need to change frequency
-  radio.setDio1Action(setFHSSFlag);
+  radio.setDio1Action(setFHSSFlag, RISING);
 
   // start transmitting the first packet
   Serial.print(F("[SX1278] Sending first packet ... "));

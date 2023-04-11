@@ -1,11 +1,13 @@
 #include "Pager.h"
+#include <string.h>
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_PAGER)
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
 static PhysicalLayer* _readBitInstance = NULL;
-static RADIOLIB_PIN_TYPE _readBitPin = RADIOLIB_NC;
+static uint8_t _readBitPin = RADIOLIB_NC;
 
 #if defined(ESP8266) || defined(ESP32)
   ICACHE_RAM_ATTR
@@ -221,7 +223,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
 }
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t mask) {
+int16_t PagerClient::startReceive(uint8_t pin, uint32_t addr, uint32_t mask) {
   // save the variables
   _readBitPin = pin;
   _filterAddr = addr;
@@ -241,7 +243,7 @@ int16_t PagerClient::startReceive(RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t
 
   // now set up the direct mode reception
   Module* mod = _phy->getMod();
-  mod->pinMode(pin, INPUT);
+  mod->hal->pinMode(pin, mod->hal->GpioModeInput);
 
   // set direct sync word to the frame sync word
   // the logic here is inverted, because modules like SX1278
@@ -453,7 +455,7 @@ void PagerClient::write(uint32_t codeWord) {
   Module* mod = _phy->getMod();
   for(int8_t i = 31; i >= 0; i--) {
     uint32_t mask = (uint32_t)0x01 << i;
-    uint32_t start = mod->micros();
+    uint32_t start = mod->hal->micros();
 
     // figure out the shift direction - start by assuming the bit is 0
     int16_t change = _shift;
@@ -471,12 +473,12 @@ void PagerClient::write(uint32_t codeWord) {
     // now transmit the shifted frequency
     _phy->transmitDirect(_baseRaw + change);
 
-    // this is pretty silly, while(mod->micros() ... ) would be enough
+    // this is pretty silly, while(mod->hal->micros() ... ) would be enough
     // but for some reason, MegaCore throws a linker error on it
     // "relocation truncated to fit: R_AVR_7_PCREL against `no symbol'"
-    uint32_t now = mod->micros();
+    uint32_t now = mod->hal->micros();
     while(now - start < _bitDuration) {
-      now = mod->micros();
+      now = mod->hal->micros();
     }
   }
 }

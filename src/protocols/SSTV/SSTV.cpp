@@ -291,7 +291,7 @@ uint16_t SSTVClient::getPictureHeight() const {
 
 void SSTVClient::tone(float freq, uint32_t len) {
   Module* mod = _phy->getMod();
-  uint32_t start = mod->micros();
+  uint32_t start = mod->hal->micros();
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
   if(_audio != nullptr) {
     _audio->tone(freq, false);

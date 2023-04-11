@@ -528,7 +528,7 @@ class nRF24: public PhysicalLayer {
 
       \param pin Ignored.
     */
-    void readBit(RADIOLIB_PIN_TYPE pin);
+    void readBit(uint8_t pin);
     #endif
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)

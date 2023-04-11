@@ -1,4 +1,5 @@
 #include "nRF24.h"
+#include <string.h>
 #if !defined(RADIOLIB_EXCLUDE_NRF24)
 
 nRF24::nRF24(Module* mod) : PhysicalLayer(RADIOLIB_NRF24_FREQUENCY_STEP_SIZE, RADIOLIB_NRF24_MAX_PACKET_LENGTH) {
@@ -14,14 +15,14 @@ int16_t nRF24::begin(int16_t freq, int16_t dataRate, int8_t power, uint8_t addrW
   _mod->SPIreadCommand = RADIOLIB_NRF24_CMD_READ;
   _mod->SPIwriteCommand = RADIOLIB_NRF24_CMD_WRITE;
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
 
   // set pin mode on RST (connected to nRF24 CE pin)
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), LOW);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
 
   // wait for minimum power-on reset duration
-  _mod->delay(100);
+  _mod->hal->delay(100);
 
   // check SPI connection
   int16_t val = _mod->SPIgetRegValue(RADIOLIB_NRF24_REG_SETUP_AW);
@@ -79,7 +80,7 @@ int16_t nRF24::standby(uint8_t mode) {
   // make sure carrier output is disabled
   _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_CONT_WAVE_OFF, 7, 7);
   _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_PLL_LOCK_OFF, 4, 4);
-  _mod->digitalWrite(_mod->getRst(), LOW);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
 
   // use standby-1 mode
   return(_mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, mode, 1, 1));
@@ -91,9 +92,9 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait until transmission is finished
-  uint32_t start = _mod->micros();
-  while(_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
 
     // check maximum number of retransmits
     if(getStatus(RADIOLIB_NRF24_MAX_RT)) {
@@ -102,7 +103,7 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
     }
 
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
-    if(_mod->micros() - start >= 60000) {
+    if(_mod->hal->micros() - start >= 60000) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -117,12 +118,12 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for Rx_DataReady or timeout
-  uint32_t start = _mod->micros();
-  while(_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
 
     // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
-    if(_mod->micros() - start >= 60000) {
+    if(_mod->hal->micros() - start >= 60000) {
       standby();
       clearIRQ();
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -144,7 +145,7 @@ int16_t nRF24::transmitDirect(uint32_t frf) {
   int16_t state = _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, RADIOLIB_NRF24_PTX, 0, 0);
   state |= _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_CONT_WAVE_ON, 7, 7);
   state |= _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_PLL_LOCK_ON, 4, 4);
-  _mod->digitalWrite(_mod->getRst(), HIGH);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
   return(state);
 }
 
@@ -155,7 +156,7 @@ int16_t nRF24::receiveDirect() {
 }
 
 void nRF24::setIrqAction(void (*func)(void)) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, FALLING);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, _mod->hal->GpioInterruptFalling);
 }
 
 int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -191,9 +192,9 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   SPIwriteTxPayload(data, len);
 
   // CE high to start transmitting
-  _mod->digitalWrite(_mod->getRst(), HIGH);
-  _mod->delay(1);
-  _mod->digitalWrite(_mod->getRst(), LOW);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
+  _mod->hal->delay(1);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
 
   return(state);
 }
@@ -224,10 +225,10 @@ int16_t nRF24::startReceive() {
   SPItransfer(RADIOLIB_NRF24_CMD_FLUSH_RX);
 
   // CE high to start receiving
-  _mod->digitalWrite(_mod->getRst(), HIGH);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
 
   // wait to enter Rx state
-  _mod->delay(1);
+  _mod->hal->delay(1);
 
   return(state);
 }
@@ -558,7 +559,7 @@ void nRF24::setDirectAction(void (*func)(void)) {
   (void)func;
 }
 
-void nRF24::readBit(RADIOLIB_PIN_TYPE pin) {
+void nRF24::readBit(uint8_t pin) {
   // nRF24 is unable to perform direct mode actions
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;
@@ -601,7 +602,7 @@ int16_t nRF24::config() {
 
   // power up
   _mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, RADIOLIB_NRF24_POWER_UP, 1, 1);
-  _mod->delay(5);
+  _mod->hal->delay(5);
 
   return(state);
 }
@@ -616,26 +617,26 @@ void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
 
 void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // start transfer
-  _mod->digitalWrite(_mod->getCs(), LOW);
-  _mod->beginTransaction();
+  _mod->hal->digitalWrite(_mod->getCs(), _mod->hal->GpioLevelLow);
+  _mod->hal->spiBeginTransaction();
 
   // send command
-  _mod->transfer(cmd);
+  _mod->hal->spiTransfer(cmd);
 
   // send data
   if(write) {
     for(uint8_t i = 0; i < numBytes; i++) {
-      _mod->transfer(dataOut[i]);
+      _mod->hal->spiTransfer(dataOut[i]);
     }
   } else {
     for(uint8_t i = 0; i < numBytes; i++) {
-      dataIn[i] = _mod->transfer(0x00);
+      dataIn[i] = _mod->hal->spiTransfer(0x00);
     }
   }
 
   // stop transfer
-  _mod->endTransaction();
-  _mod->digitalWrite(_mod->getCs(), HIGH);
+  _mod->hal->spiEndTransaction();
+  _mod->hal->digitalWrite(_mod->getCs(), _mod->hal->GpioLevelHigh);
 }
 
 #endif

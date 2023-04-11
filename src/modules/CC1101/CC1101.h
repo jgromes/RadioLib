@@ -644,9 +644,9 @@ class CC1101: public PhysicalLayer {
 
       \param func ISR to call.
 
-      \param dir Signal change direction. Defaults to RISING.
+      \param dir Signal change direction.
     */
-    void setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = RISING);
+    void setGdo0Action(void (*func)(void), uint8_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -658,9 +658,9 @@ class CC1101: public PhysicalLayer {
 
       \param func ISR to call.
 
-      \param dir Signal change direction. Defaults to FALLING.
+      \param dir Signal change direction.
     */
-    void setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir = FALLING);
+    void setGdo2Action(void (*func)(void), uint8_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -953,10 +953,10 @@ class CC1101: public PhysicalLayer {
     int16_t setEncoding(uint8_t encoding) override;
 
     /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    void setRfSwitchPins(uint8_t rxEn, uint8_t txEn);
 
     /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
      \brief Get one truly random byte from RSSI noise.
@@ -985,7 +985,7 @@ class CC1101: public PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    void readBit(RADIOLIB_PIN_TYPE pin);
+    void readBit(uint8_t pin);
     #endif
 
     /*!
@@ -997,7 +997,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+    int16_t setDIOMapping(uint8_t pin, uint8_t value);
 
   #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
     protected:

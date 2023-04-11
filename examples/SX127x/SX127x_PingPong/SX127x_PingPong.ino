@@ -60,7 +60,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setDio0Action(setFlag);
+  radio.setDio0Action(setFlag, RISING);
 
   #if defined(INITIATING_NODE)
     // send the first packet on this node

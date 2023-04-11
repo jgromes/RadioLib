@@ -360,7 +360,7 @@ class PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    virtual void readBit(RADIOLIB_PIN_TYPE pin);
+    virtual void readBit(uint8_t pin);
 
     /*!
       \brief Get the number of direct mode bytes currently available in buffer.
@@ -393,7 +393,7 @@ class PhysicalLayer {
 
       \returns \ref status_codes
     */
-    virtual int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+    virtual int16_t setDIOMapping(uint8_t pin, uint8_t value);
 
     /*!
       \brief Sets interrupt service routine to call when DIO1 activates.

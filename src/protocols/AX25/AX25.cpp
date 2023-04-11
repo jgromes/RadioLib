@@ -1,4 +1,5 @@
 #include "AX25.h"
+#include <string.h>
 #if !defined(RADIOLIB_EXCLUDE_AX25)
 
 AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control)
@@ -409,7 +410,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
       // check each bit
       for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-        uint32_t start = mod->micros();
+        uint32_t start = mod->hal->micros();
         if(stuffedFrameBuff[i] & mask) {
           _audio->tone(_afskMark, false);
         } else {

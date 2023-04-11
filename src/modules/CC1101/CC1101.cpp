@@ -1,4 +1,5 @@
 #include "CC1101.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_CC1101)
 
 CC1101::CC1101(Module* module) : PhysicalLayer(RADIOLIB_CC1101_FREQUENCY_STEP_SIZE, RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
@@ -14,7 +15,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   _mod->SPIreadCommand = RADIOLIB_CC1101_CMD_READ;
   _mod->SPIwriteCommand = RADIOLIB_CC1101_CMD_WRITE;
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
 
   // try to find the CC1101 chip
   uint8_t i = 0;
@@ -25,7 +26,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_PRINTLN("CC1101 not found! (%d of 10 tries) RADIOLIB_CC1101_REG_VERSION == 0x%04X, expected 0x0004/0x0014", i + 1, version);
-      _mod->delay(10);
+      _mod->hal->delay(10);
       i++;
     }
   }
@@ -99,22 +100,22 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getGpio())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getGpio())) {
+    _mod->hal->yield();
 
-    if(_mod->micros() - start > timeout) {
+    if(_mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
   // wait for transmission end or timeout
-  start = _mod->micros();
-  while(_mod->digitalRead(_mod->getGpio())) {
-    _mod->yield();
+  start = _mod->hal->micros();
+  while(_mod->hal->digitalRead(_mod->getGpio())) {
+    _mod->hal->yield();
 
-    if(_mod->micros() - start > timeout) {
+    if(_mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -132,11 +133,11 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
 
-    if(_mod->micros() - start > timeout) {
+    if(_mod->hal->micros() - start > timeout) {
       standby();
       SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -219,27 +220,27 @@ int16_t CC1101::packetMode() {
   return(state);
 }
 
-void CC1101::setGdo0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
+void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, dir);
 }
 
 void CC1101::clearGdo0Action() {
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
-void CC1101::setGdo2Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
+void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->pinMode(_mod->getGpio(), INPUT);
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()), func, dir);
 }
 
 void CC1101::clearGdo2Action() {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()));
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -309,7 +310,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
         *
         * TODO: test this on real hardware
       */
-     _mod->delayMicroseconds(250);
+     _mod->hal->delayMicroseconds(250);
     }
   }
 
@@ -371,17 +372,17 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
 
   uint8_t bytesInFIFO = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
   size_t readBytes = 0;
-  uint32_t lastPop = millis();
+  uint32_t lastPop = _mod->hal->millis();
 
   // keep reading from FIFO until we get all the packet.
   while (readBytes < length) {
     if (bytesInFIFO == 0) {
-      if (millis() - lastPop > 5) {
+      if (_mod->hal->millis() - lastPop > 5) {
         // readData was required to read a packet longer than the one received.
         RADIOLIB_DEBUG_PRINTLN("No data for more than 5mS. Stop here.");
         break;
       } else {
-        delay(1);
+        _mod->hal->delay(1);
         bytesInFIFO = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
         continue;
       }
@@ -391,7 +392,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     uint8_t bytesToRead = min((uint8_t)(length - readBytes), bytesInFIFO);
     SPIreadRegisterBurst(RADIOLIB_CC1101_REG_FIFO, bytesToRead, &(data[readBytes]));
     readBytes += bytesToRead;
-    lastPop = millis();
+    lastPop = _mod->hal->millis();
 
     // Get how many bytes are left in FIFO.
     bytesInFIFO = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
@@ -401,7 +402,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   bool isAppendStatus = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 2, 2) == RADIOLIB_CC1101_APPEND_STATUS_ON;
 
   // for some reason, we need this delay here to get the correct status bytes
-  delay(3);
+  _mod->hal->delay(3);
 
   // If status byte is enabled at least 2 bytes (2 status bytes + any following packet) will remain in FIFO.
   if (isAppendStatus) {
@@ -898,11 +899,11 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
   }
 }
 
-void CC1101::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void CC1101::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void CC1101::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void CC1101::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -912,7 +913,7 @@ uint8_t CC1101::randomByte() {
   RADIOLIB_DEBUG_PRINTLN("CC1101::randomByte");
 
   // wait a bit for the RSSI reading to stabilise
-  _mod->delay(10);
+  _mod->hal->delay(10);
 
   // read RSSI value 8 times, always keep just the least significant bit
   uint8_t randByte = 0x00;
@@ -932,15 +933,15 @@ int16_t CC1101::getChipVersion() {
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void CC1101::setDirectAction(void (*func)(void)) {
-  setGdo0Action(func);
+  setGdo0Action(func, _mod->hal->GpioInterruptRising);
 }
 
-void CC1101::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
+void CC1101::readBit(uint8_t pin) {
+  updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
-int16_t CC1101::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+int16_t CC1101::setDIOMapping(uint8_t pin, uint8_t value) {
   if (pin > 2)
     return RADIOLIB_ERR_INVALID_DIO_PIN;
 
@@ -952,7 +953,7 @@ int16_t CC1101::config() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_RESET);
 
   // Wait a ridiculous amount of time to be sure radio is ready.
-  _mod->delay(150);
+  _mod->hal->delay(150);
 
   // enable automatic frequency synthesizer calibration
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_MCSM0, RADIOLIB_CC1101_FS_AUTOCAL_IDLE_TO_RXTX, 5, 4);
@@ -1082,17 +1083,17 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
   // pull NSS low
-  _mod->digitalWrite(_mod->getCs(), LOW);
+  _mod->hal->digitalWrite(_mod->getCs(), _mod->hal->GpioLevelLow);
 
   // start transfer
-  _mod->beginTransaction();
+  _mod->hal->spiBeginTransaction();
 
   // send the command byte
-  _mod->transfer(cmd);
+  _mod->hal->spiTransfer(cmd);
 
   // stop transfer
-  _mod->endTransaction();
-  _mod->digitalWrite(_mod->getCs(), HIGH);
+  _mod->hal->spiEndTransaction();
+  _mod->hal->digitalWrite(_mod->getCs(), _mod->hal->GpioLevelHigh);
 }
 
 #endif

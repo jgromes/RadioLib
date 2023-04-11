@@ -1,4 +1,5 @@
 #include "SX128x.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_SX128X)
 
 SX128x::SX128x(Module* mod) : PhysicalLayer(RADIOLIB_SX128X_FREQUENCY_STEP_SIZE, RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
@@ -12,8 +13,8 @@ Module* SX128x::getMod() {
 int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
   _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
@@ -73,8 +74,8 @@ int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, uint16_t preambleLength) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
   _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
@@ -142,8 +143,8 @@ int16_t SX128x::beginGFSK(float freq, uint16_t br, float freqDev, int8_t power, 
 int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, uint8_t dataShaping) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
   _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
@@ -197,8 +198,8 @@ int16_t SX128x::beginBLE(float freq, uint16_t br, float freqDev, int8_t power, u
 int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uint16_t preambleLength, uint8_t dataShaping) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
   _mod->SPIreadCommand = RADIOLIB_SX128X_CMD_READ_REGISTER;
   _mod->SPIwriteCommand = RADIOLIB_SX128X_CMD_WRITE_REGISTER;
   _mod->SPInopCommand = RADIOLIB_SX128X_CMD_NOP;
@@ -261,10 +262,10 @@ int16_t SX128x::beginFLRC(float freq, uint16_t br, uint8_t cr, int8_t power, uin
 
 int16_t SX128x::reset(bool verify) {
   // run the reset sequence - same as SX126x, as SX128x docs don't seem to mention this
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), LOW);
-  _mod->delay(1);
-  _mod->digitalWrite(_mod->getRst(), HIGH);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
+  _mod->hal->delay(1);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
 
   // return immediately when verification is disabled
   if(!verify) {
@@ -272,7 +273,7 @@ int16_t SX128x::reset(bool verify) {
   }
 
   // set mode to standby
-  uint32_t start = _mod->millis();
+  uint32_t start = _mod->hal->millis();
   while(true) {
     // try to set mode to standby
     int16_t state = standby();
@@ -282,13 +283,13 @@ int16_t SX128x::reset(bool verify) {
     }
 
     // standby command failed, check timeout and try again
-    if(_mod->millis() - start >= 3000) {
+    if(_mod->hal->millis() - start >= 3000) {
       // timed out, possibly incorrect wiring
       return(state);
     }
 
     // wait a bit to not spam the module
-    _mod->delay(10);
+    _mod->hal->delay(10);
   }
 }
 
@@ -318,10 +319,10 @@ int16_t SX128x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
-    if(_mod->micros() - start > timeout) {
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
+    if(_mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -352,10 +353,10 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
-    if(_mod->micros() - start > timeout) {
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
+    if(_mod->hal->micros() - start > timeout) {
       clearIrqStatus();
       standby();
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -415,8 +416,8 @@ int16_t SX128x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
   }
 
   // check CAD result
@@ -445,7 +446,7 @@ int16_t SX128x::sleep(bool retainConfig) {
   int16_t state = _mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_SLEEP, &sleepConfig, 1, false, false);
 
   // wait for SX128x to safely enter sleep mode
-  _mod->delay(1);
+  _mod->hal->delay(1);
 
   return(state);
 }
@@ -463,11 +464,11 @@ int16_t SX128x::standby(uint8_t mode) {
 }
 
 void SX128x::setDio1Action(void (*func)(void)) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, _mod->hal->GpioInterruptRising);
 }
 
 void SX128x::clearDio1Action() {
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
 int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -527,8 +528,8 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for BUSY to go low (= PA ramp up done)
-  while(_mod->digitalRead(_mod->getGpio())) {
-    _mod->yield();
+  while(_mod->hal->digitalRead(_mod->getGpio())) {
+    _mod->hal->yield();
   }
 
   return(state);
@@ -1265,11 +1266,11 @@ int16_t SX128x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
 }
 
-void SX128x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void SX128x::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void SX128x::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void SX128x::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -1299,7 +1300,7 @@ void SX128x::setDirectAction(void (*func)(void)) {
   (void)func;
 }
 
-void SX128x::readBit(RADIOLIB_PIN_TYPE pin) {
+void SX128x::readBit(uint8_t pin) {
   // SX128x is unable to perform direct mode reception
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;

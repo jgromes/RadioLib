@@ -49,7 +49,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setGdo0Action(setFlag);
+  radio.setGdo0Action(setFlag, RISING);
 
   // start listening for packets
   Serial.print(F("[CC1101] Starting to listen ... "));

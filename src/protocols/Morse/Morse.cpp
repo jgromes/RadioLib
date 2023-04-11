@@ -1,4 +1,7 @@
 #include "Morse.h"
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_MORSE)
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
@@ -59,7 +62,7 @@ int MorseClient::read(byte* symbol, byte* len, float low, float high) {
   Module* mod = _phy->getMod();
 
   // measure pulse duration in us
-  uint32_t duration = mod->pulseIn(_audio->_pin, LOW, 4*_basePeriod);
+  uint32_t duration = mod->hal->pulseIn(_audio->_pin, mod->hal->GpioLevelLow, 4*_basePeriod);
 
   // decide if this is a signal, or pause
   if((duration > low*_basePeriod) && (duration < high*_basePeriod)) {
@@ -74,8 +77,8 @@ int MorseClient::read(byte* symbol, byte* len, float low, float high) {
   if((pauseCounter > 0) && (signalCounter == 1)) {
     // start of dot or dash
     pauseCounter = 0;
-    signalStart = mod->millis();
-    uint32_t pauseLen = mod->millis() - pauseStart;
+    signalStart = mod->hal->millis();
+    uint32_t pauseLen = mod->hal->millis() - pauseStart;
 
     if((pauseLen >= low*(float)_letterSpace) && (pauseLen <= high*(float)_letterSpace)) {
       return(RADIOLIB_MORSE_CHAR_COMPLETE);
@@ -87,8 +90,8 @@ int MorseClient::read(byte* symbol, byte* len, float low, float high) {
   } else if((signalCounter > 0) && (pauseCounter == 1)) {
     // end of dot or dash
     signalCounter = 0;
-    pauseStart = mod->millis();
-    uint32_t signalLen = mod->millis() - signalStart;
+    pauseStart = mod->hal->millis();
+    uint32_t signalLen = mod->hal->millis() - signalStart;
 
     if((signalLen >= low*(float)_dotLength) && (signalLen <= high*(float)_dotLength)) {
       RADIOLIB_DEBUG_PRINT(".");
@@ -135,7 +138,7 @@ size_t MorseClient::write(uint8_t b) {
   if(b == ' ') {
     RADIOLIB_DEBUG_PRINTLN("space");
     standby();
-    mod->waitForMicroseconds(mod->micros(), _wordSpace*1000);
+    mod->waitForMicroseconds(mod->hal->micros(), _wordSpace*1000);
     return(1);
   }
 
@@ -154,16 +157,16 @@ size_t MorseClient::write(uint8_t b) {
     if (code & RADIOLIB_MORSE_DASH) {
       RADIOLIB_DEBUG_PRINT("-");
       transmitDirect(_base, _baseHz);
-      mod->waitForMicroseconds(mod->micros(), _dashLength*1000);
+      mod->waitForMicroseconds(mod->hal->micros(), _dashLength*1000);
     } else {
       RADIOLIB_DEBUG_PRINT(".");
       transmitDirect(_base, _baseHz);
-      mod->waitForMicroseconds(mod->micros(), _dotLength*1000);
+      mod->waitForMicroseconds(mod->hal->micros(), _dotLength*1000);
     }
 
     // symbol space
     standby();
-    mod->waitForMicroseconds(mod->micros(), _dotLength*1000);
+    mod->waitForMicroseconds(mod->hal->micros(), _dotLength*1000);
 
     // move onto the next bit
     code >>= 1;
@@ -171,7 +174,7 @@ size_t MorseClient::write(uint8_t b) {
 
   // letter space
   standby();
-  mod->waitForMicroseconds(mod->micros(), _letterSpace*1000 - _dotLength*1000);
+  mod->waitForMicroseconds(mod->hal->micros(), _letterSpace*1000 - _dotLength*1000);
   RADIOLIB_DEBUG_PRINTLN();
 
   return(1);

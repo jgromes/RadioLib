@@ -1,93 +1,23 @@
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+#include <stdio.h>
+#include <string.h>
 #include "Module.h"
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
+#include "ArduinoHal.h"
+Module::Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+  this->hal = new ArduinoHal;
+}
 
-// we need this to emulate tone() on mbed Arduino boards
-#if defined(RADIOLIB_MBED_TONE_OVERRIDE)
-#include "mbed.h"
-mbed::PwmOut *pwmPin = NULL;
+Module::Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio, SPIClass& spi, SPISettings spiSettings) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+  this->hal = new ArduinoHal(spi, spiSettings);
+}
 #endif
 
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio):
-  _cs(cs),
-  _irq(irq),
-  _rst(rst),
-  _gpio(gpio)
-{
-  _spi = &RADIOLIB_DEFAULT_SPI;
-  _initInterface = true;
-
-  // this is Arduino build, pre-set callbacks
-  setCb_pinMode(::pinMode);
-  setCb_digitalRead(::digitalRead);
-  setCb_digitalWrite(::digitalWrite);
-  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
-  setCb_tone(::tone);
-  setCb_noTone(::noTone);
-  #endif
-  setCb_attachInterrupt(::attachInterrupt);
-  setCb_detachInterrupt(::detachInterrupt);
-  #if !defined(RADIOLIB_YIELD_UNSUPPORTED)
-  setCb_yield(::yield);
-  #endif
-  setCb_delay(::delay);
-  setCb_delayMicroseconds(::delayMicroseconds);
-  setCb_millis(::millis);
-  setCb_micros(::micros);
-  setCb_pulseIn(::pulseIn);
-  setCb_SPIbegin(&Module::SPIbegin);
-  setCb_SPIbeginTransaction(&Module::SPIbeginTransaction);
-  setCb_SPItransfer(&Module::SPItransfer);
-  setCb_SPIendTransaction(&Module::SPIendTransaction);
-  setCb_SPIend(&Module::SPIend);
+Module::Module(Hal *hal, uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+  this->hal = hal;
 }
-
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio, SPIClass& spi, SPISettings spiSettings):
-  _cs(cs),
-  _irq(irq),
-  _rst(rst),
-  _gpio(gpio),
-  _spiSettings(spiSettings)
-{
-  _spi = &spi;
-  _initInterface = false;
-
-  // this is Arduino build, pre-set callbacks
-  setCb_pinMode(::pinMode);
-  setCb_digitalRead(::digitalRead);
-  setCb_digitalWrite(::digitalWrite);
-  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
-  setCb_tone(::tone);
-  setCb_noTone(::noTone);
-  #endif
-  setCb_attachInterrupt(::attachInterrupt);
-  setCb_detachInterrupt(::detachInterrupt);
-  #if !defined(RADIOLIB_YIELD_UNSUPPORTED)
-  setCb_yield(::yield);
-  #endif
-  setCb_delay(::delay);
-  setCb_delayMicroseconds(::delayMicroseconds);
-  setCb_millis(::millis);
-  setCb_micros(::micros);
-  setCb_pulseIn(::pulseIn);
-  setCb_SPIbegin(&Module::SPIbegin);
-  setCb_SPIbeginTransaction(&Module::SPIbeginTransaction);
-  setCb_SPItransfer(&Module::SPItransfer);
-  setCb_SPIendTransaction(&Module::SPIendTransaction);
-  setCb_SPIend(&Module::SPIend);
-}
-#else
-
-Module::Module(RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio):
-  _cs(cs),
-  _irq(irq),
-  _rst(rst),
-  _gpio(gpio)
-{
-  // not an Arduino build, it's up to the user to set all callbacks
-}
-
-#endif
 
 Module::Module(const Module& mod) {
   *this = mod;
@@ -96,35 +26,23 @@ Module::Module(const Module& mod) {
 Module& Module::operator=(const Module& mod) {
   this->SPIreadCommand = mod.SPIreadCommand;
   this->SPIwriteCommand = mod.SPIwriteCommand;
-  this->_cs = mod.getCs();
-  this->_irq = mod.getIrq();
-  this->_rst = mod.getRst();
-  this->_gpio = mod.getGpio();
+  this->_cs = mod._cs;
+  this->_irq = mod._irq;
+  this->_rst = mod._rst;
+  this->_gpio = mod._gpio;
 
   return(*this);
 }
 
 void Module::init() {
-  this->pinMode(_cs, OUTPUT);
-  this->digitalWrite(_cs, HIGH);
-#if defined(RADIOLIB_BUILD_ARDUINO)
-  if(_initInterface) {
-    (this->*cb_SPIbegin)();
-  }
-#endif
+  this->hal->init();
+  this->hal->pinMode(_cs, this->hal->GpioModeOutput);
+  this->hal->digitalWrite(_cs, this->hal->GpioLevelHigh);
 }
 
 void Module::term() {
   // stop hardware interfaces (if they were initialized by the library)
-#if defined(RADIOLIB_BUILD_ARDUINO)
-  if(!_initInterface) {
-    return;
-  }
-
-  if(_spi != nullptr) {
-    this->SPIend();
-  }
-#endif
+  this->hal->term();
 }
 
 int16_t Module::SPIgetRegValue(uint16_t reg, uint8_t msb, uint8_t lsb) {
@@ -150,9 +68,9 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
   #if defined(RADIOLIB_SPI_PARANOID)
     // check register value each millisecond until check interval is reached
     // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
-    uint32_t start = this->micros();
+    uint32_t start = this->hal->micros();
     uint8_t readValue = 0x00;
-    while(this->micros() - start < (checkInterval * 1000)) {
+    while(this->hal->micros() - start < (checkInterval * 1000)) {
       readValue = SPIreadRegister(reg);
       if((readValue & checkMask) == (newValue & checkMask)) {
         // check passed, we can stop the loop
@@ -216,17 +134,17 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
 
 void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
   // start SPI transaction
-  this->beginTransaction();
+  this->hal->spiBeginTransaction();
 
   // pull CS low
-  this->digitalWrite(_cs, LOW);
+  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
 
   // send SPI register address with access command
   if(this->SPIaddrWidth <= 8) {
-    this->transfer(reg | cmd);
+    this->hal->spiTransfer(reg | cmd);
   } else {
-    this->transfer((reg >> 8) | cmd);
-    this->transfer(reg & 0xFF);
+    this->hal->spiTransfer((reg >> 8) | cmd);
+    this->hal->spiTransfer(reg & 0xFF);
   }
 
   #if defined(RADIOLIB_VERBOSE)
@@ -242,14 +160,14 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   if(cmd == SPIwriteCommand) {
     if(dataOut != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        this->transfer(dataOut[n]);
+        this->hal->spiTransfer(dataOut[n]);
         RADIOLIB_VERBOSE_PRINT("%X\t", dataOut[n]);
       }
     }
   } else if (cmd == SPIreadCommand) {
     if(dataIn != NULL) {
       for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->transfer(0x00);
+        dataIn[n] = this->hal->spiTransfer(0x00);
         RADIOLIB_VERBOSE_PRINT("%X\t", dataIn[n]);
       }
     }
@@ -257,10 +175,10 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   RADIOLIB_VERBOSE_PRINTLN();
 
   // release CS
-  this->digitalWrite(_cs, HIGH);
+  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelHigh);
 
   // end SPI transaction
-  this->endTransaction();
+  this->hal->spiEndTransaction();
 }
 
 int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
@@ -311,7 +229,6 @@ int16_t Module::SPIcheckStream() {
   if(this->SPIparseStatusCb != nullptr) {
     this->SPIstreamError = this->SPIparseStatusCb(spiStatus);
   }
-
   #endif
 
   return(state);
@@ -323,24 +240,24 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   #endif
 
   // ensure GPIO is low
-  uint32_t start = this->millis();
-  while(this->digitalRead(this->getGpio())) {
-    this->yield();
-    if(this->millis() - start >= timeout) {
-      this->digitalWrite(this->getCs(), HIGH);
+  uint32_t start = this->hal->millis();
+  while(this->hal->digitalRead(this->_gpio)) {
+    this->hal->yield();
+    if(this->hal->millis() - start >= timeout) {
+      this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
     }
   }
 
   // pull NSS low
-  this->digitalWrite(this->getCs(), LOW);
+  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
 
   // start transfer
-  this->beginTransaction();
+  this->hal->spiBeginTransaction();
 
   // send command byte(s)
   for(uint8_t n = 0; n < cmdLen; n++) {
-    this->transfer(cmd[n]);
+    this->hal->spiTransfer(cmd[n]);
   }
 
   // variable to save error during SPI transfer
@@ -350,7 +267,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   if(write) {
     for(size_t n = 0; n < numBytes; n++) {
       // send byte
-      uint8_t in = this->transfer(dataOut[n]);
+      uint8_t in = this->hal->spiTransfer(dataOut[n]);
       #if defined(RADIOLIB_VERBOSE)
         debugBuff[n] = in;
       #endif
@@ -363,7 +280,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   } else {
     // skip the first byte for read-type commands (status-only)
-    uint8_t in = this->transfer(this->SPInopCommand);
+    uint8_t in = this->hal->spiTransfer(this->SPInopCommand);
     #if defined(RADIOLIB_VERBOSE)
       debugBuff[0] = in;
     #endif
@@ -378,22 +295,22 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     // read the data
     if(state == RADIOLIB_ERR_NONE) {
       for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->transfer(this->SPInopCommand);
+        dataIn[n] = this->hal->spiTransfer(this->SPInopCommand);
       }
     }
   }
 
   // stop transfer
-  this->endTransaction();
-  this->digitalWrite(this->getCs(), HIGH);
+  this->hal->spiEndTransaction();
+  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelHigh);
 
   // wait for GPIO to go high and then low
   if(waitForGpio) {
-    this->delayMicroseconds(1);
-    uint32_t start = this->millis();
-    while(this->digitalRead(this->getGpio())) {
-      this->yield();
-      if(this->millis() - start >= timeout) {
+    this->hal->delayMicroseconds(1);
+    uint32_t start = this->hal->millis();
+    while(this->hal->digitalRead(this->_gpio)) {
+      this->hal->yield();
+      if(this->hal->millis() - start >= timeout) {
         state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
         break;
       }
@@ -440,237 +357,14 @@ void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
   }
   this->TimerFlag = false;
   while(!this->TimerFlag) {
-    this->yield();
+    this->hal->yield();
   }
   #else
-   while(this->micros() - start < len) {
-    this->yield();
+   while(this->hal->micros() - start < len) {
+    this->hal->yield();
   }
   #endif
 }
-
-void Module::pinMode(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode) {
-  if((pin == RADIOLIB_NC) || (cb_pinMode == nullptr)) {
-    return;
-  }
-  cb_pinMode(pin, mode);
-}
-
-void Module::digitalWrite(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS value) {
-  if((pin == RADIOLIB_NC) || (cb_digitalWrite == nullptr)) {
-    return;
-  }
-  cb_digitalWrite(pin, value);
-}
-
-RADIOLIB_PIN_STATUS Module::digitalRead(RADIOLIB_PIN_TYPE pin) {
-  if((pin == RADIOLIB_NC) || (cb_digitalRead == nullptr)) {
-    return((RADIOLIB_PIN_STATUS)0);
-  }
-  return(cb_digitalRead(pin));
-}
-
-#if defined(ESP32)
-// we need to cache the previous tone value for emulation on ESP32
-int32_t prev = -1;
-#endif
-
-void Module::tone(RADIOLIB_PIN_TYPE pin, uint16_t value, uint32_t duration) {
-  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
-  if((pin == RADIOLIB_NC) || (cb_tone == nullptr)) {
-    return;
-  }
-  cb_tone(pin, value, duration);
-  #else
-  if(pin == RADIOLIB_NC) {
-    return;
-  }
-    #if defined(ESP32)
-      // ESP32 tone() emulation
-      (void)duration;
-      if(prev == -1) {
-        ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
-      }
-      if(prev != value) {
-        ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, value);
-      }
-      prev = value;
-    #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
-      // better tone for mbed OS boards
-      (void)duration;
-      if(!pwmPin) {
-        pwmPin = new mbed::PwmOut(digitalPinToPinName(pin));
-      }
-      pwmPin->period(1.0 / value);
-      pwmPin->write(0.5);
-    #else
-      (void)value;
-      (void)duration;
-    #endif
-  #endif
-}
-
-void Module::noTone(RADIOLIB_PIN_TYPE pin) {
-  #if !defined(RADIOLIB_TONE_UNSUPPORTED)
-  if((pin == RADIOLIB_NC) || (cb_noTone == nullptr)) {
-    return;
-  }
-  #if defined(ARDUINO_ARCH_STM32)
-  cb_noTone(pin, false);
-  #else
-  cb_noTone(pin);
-  #endif
-  #else
-  if(pin == RADIOLIB_NC) {
-    return;
-  }
-    #if defined(ESP32)
-      // ESP32 tone() emulation
-      ledcDetachPin(pin);
-      ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
-      prev = -1;
-    #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
-      // better tone for mbed OS boards
-      (void)pin;
-      pwmPin->suspend();
-    #endif
-  #endif
-}
-
-void Module::attachInterrupt(RADIOLIB_PIN_TYPE interruptNum, void (*userFunc)(void), RADIOLIB_INTERRUPT_STATUS mode) {
-  if((interruptNum == RADIOLIB_NC) || (cb_attachInterrupt == nullptr)) {
-    return;
-  }
-  cb_attachInterrupt(interruptNum, userFunc, mode);
-}
-
-void Module::detachInterrupt(RADIOLIB_PIN_TYPE interruptNum) {
-  if((interruptNum == RADIOLIB_NC) || (cb_detachInterrupt == nullptr)) {
-    return;
-  }
-  cb_detachInterrupt(interruptNum);
-}
-
-void Module::yield() {
-  if(cb_yield == nullptr) {
-    return;
-  }
-  #if !defined(RADIOLIB_YIELD_UNSUPPORTED)
-  cb_yield();
-  #endif
-}
-
-void Module::delay(uint32_t ms) {
-  if(cb_delay == nullptr) {
-    return;
-  }
-  cb_delay(ms);
-}
-
-void Module::delayMicroseconds(uint32_t us) {
-  if(cb_delayMicroseconds == nullptr) {
-    return;
-  }
-  cb_delayMicroseconds(us);
-}
-
-uint32_t Module::millis() {
-  if(cb_millis == nullptr) {
-    return(0);
-  }
-  return(cb_millis());
-}
-
-uint32_t Module::micros() {
-  if(cb_micros == nullptr) {
-    return(0);
-  }
-  return(cb_micros());
-}
-
-uint32_t Module::pulseIn(RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS state, uint32_t timeout) {
-  if(cb_pulseIn == nullptr) {
-    return(0);
-  }
-  return(cb_pulseIn(pin, state, timeout));
-}
-
-void Module::begin() {
-  if(cb_SPIbegin == nullptr) {
-    return;
-  }
-  #if defined(RADIOLIB_BUILD_ARDUINO)
-  (this->*cb_SPIbegin)();
-  #else
-  cb_SPIbegin();
-  #endif
-}
-
-void Module::beginTransaction() {
-  if(cb_SPIbeginTransaction == nullptr) {
-    return;
-  }
-  #if defined(RADIOLIB_BUILD_ARDUINO)
-  (this->*cb_SPIbeginTransaction)();
-  #else
-  cb_SPIbeginTransaction();
-  #endif
-}
-
-uint8_t Module::transfer(uint8_t b) {
-  if(cb_SPItransfer == nullptr) {
-    return(0xFF);
-  }
-  #if defined(RADIOLIB_BUILD_ARDUINO)
-  return((this->*cb_SPItransfer)(b));
-  #else
-  return(cb_SPItransfer(b));
-  #endif
-}
-
-void Module::endTransaction() {
-  if(cb_SPIendTransaction == nullptr) {
-    return;
-  }
-  #if defined(RADIOLIB_BUILD_ARDUINO)
-  (this->*cb_SPIendTransaction)();
-  #else
-  cb_SPIendTransaction();
-  #endif
-}
-
-void Module::end() {
-  if(cb_SPIend == nullptr) {
-    return;
-  }
-  #if defined(RADIOLIB_BUILD_ARDUINO)
-  (this->*cb_SPIend)();
-  #else
-  cb_SPIend();
-  #endif
-}
-
-#if defined(RADIOLIB_BUILD_ARDUINO)
-void Module::SPIbegin() {
-  _spi->begin();
-}
-
-void Module::SPIbeginTransaction() {
-  _spi->beginTransaction(_spiSettings);
-}
-
-uint8_t Module::SPItransfer(uint8_t b) {
-  return(_spi->transfer(b));
-}
-
-void Module::SPIendTransaction() {
-  _spi->endTransaction();
-}
-
-void Module::SPIend() {
-  _spi->end();
-}
-#endif
 
 uint8_t Module::flipBits(uint8_t b) {
   b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
@@ -771,26 +465,26 @@ size_t Module::serialPrintf(const char* format, ...) {
 }
 #endif
 
-void Module::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void Module::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
   // This can be on the stack, setRfSwitchTable copies the contents
-  const RADIOLIB_PIN_TYPE pins[] = {
+  const uint8_t pins[] = {
     rxEn, txEn, RADIOLIB_NC,
   };
   // This must be static, since setRfSwitchTable stores a reference.
-  static constexpr RfSwitchMode_t table[] = {
-    {MODE_IDLE,  {LOW,  LOW}},
-    {MODE_RX,    {HIGH, LOW}},
-    {MODE_TX,    {LOW,  HIGH}},
+  static const RfSwitchMode_t table[] = {
+    {MODE_IDLE,  {this->hal->GpioLevelLow,  this->hal->GpioLevelLow}},
+    {MODE_RX,    {this->hal->GpioLevelHigh, this->hal->GpioLevelLow}},
+    {MODE_TX,    {this->hal->GpioLevelLow,  this->hal->GpioLevelHigh}},
     END_OF_MODE_TABLE,
   };
   setRfSwitchTable(pins, table);
 }
 
-void Module::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[3], const RfSwitchMode_t table[]) {
+void Module::setRfSwitchTable(const uint8_t (&pins)[3], const RfSwitchMode_t table[]) {
   memcpy(_rfSwitchPins, pins, sizeof(_rfSwitchPins));
   _rfSwitchTable = table;
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)
-    this->pinMode(pins[i], OUTPUT);
+    this->hal->pinMode(pins[i], this->hal->GpioModeOutput);
 }
 
 const Module::RfSwitchMode_t *Module::findRfSwitchMode(uint8_t mode) const {
@@ -811,11 +505,11 @@ void Module::setRfSwitchState(uint8_t mode) {
   }
 
   // set pins
-  const RADIOLIB_PIN_STATUS *value = &row->values[0];
+  const uint8_t *value = &row->values[0];
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
-    RADIOLIB_PIN_TYPE pin = _rfSwitchPins[i];
+    uint8_t pin = _rfSwitchPins[i];
     if (pin != RADIOLIB_NC)
-      this->digitalWrite(pin, *value);
+      this->hal->digitalWrite(pin, *value);
     ++value;
   }
 }

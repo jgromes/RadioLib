@@ -1,4 +1,7 @@
 #include "APRS.h"
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 #if !defined(RADIOLIB_EXCLUDE_APRS)
 
 APRSClient::APRSClient(AX25Client* ax) {
