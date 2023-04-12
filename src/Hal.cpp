@@ -4,8 +4,8 @@
 Hal::Hal(const uint8_t input, const uint8_t output, const uint8_t low, const uint8_t high, const uint8_t rising, const uint8_t falling)
     : GpioModeInput(input),
       GpioModeOutput(output),
-      GpioLevelLow(high),
-      GpioLevelHigh(low),
+      GpioLevelLow(low),
+      GpioLevelHigh(high),
       GpioInterruptRising(rising),
       GpioInterruptFalling(falling) {}
 
