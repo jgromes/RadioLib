@@ -160,27 +160,15 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
       }
     }
 
-    #if defined(RADIOLIB_DEBUG) && defined(RADIOLIB_BUILD_ARDUINO)
-      #define RADIOLIB_DEBUG_PRINT_BIN(x) RADIOLIB_DEBUG_PORT.println(x, BIN)
-    #else // no bin representation, fallback to hex
-      #define RADIOLIB_DEBUG_PRINT_BIN(x) RADIOLIB_DEBUG_PRINTLN("%X", x)
-    #endif
-
     // check failed, print debug info
     RADIOLIB_DEBUG_PRINTLN();
     RADIOLIB_DEBUG_PRINTLN("address:\t0x%X", reg);
     RADIOLIB_DEBUG_PRINTLN("bits:\t\t%d %d", msb, lsb);
-    RADIOLIB_DEBUG_PRINT("value:\t\t0b");
-    RADIOLIB_DEBUG_PRINT_BIN(value);
-    RADIOLIB_DEBUG_PRINT("current:\t0b");
-    RADIOLIB_DEBUG_PRINT_BIN(currentValue);
-    RADIOLIB_DEBUG_PRINT("mask:\t\t0b");
-    RADIOLIB_DEBUG_PRINT_BIN(mask);
-    RADIOLIB_DEBUG_PRINT("new:\t\t0b");
-    RADIOLIB_DEBUG_PRINT_BIN(newValue);
-    RADIOLIB_DEBUG_PRINT("read:\t\t0b");
-    RADIOLIB_DEBUG_PRINT_BIN(readValue);
-    RADIOLIB_DEBUG_PRINTLN();
+    RADIOLIB_DEBUG_PRINT("value:\t\t0x%X", value);
+    RADIOLIB_DEBUG_PRINT("current:\t0x%X", currentValue);
+    RADIOLIB_DEBUG_PRINT("mask:\t\t0x%X", mask);
+    RADIOLIB_DEBUG_PRINT("new:\t\t0x%X", newValue);
+    RADIOLIB_DEBUG_PRINTLN("read:\t\t0x%X", readValue);
 
     return(RADIOLIB_ERR_SPI_WRITE_FAILED);
   #else
