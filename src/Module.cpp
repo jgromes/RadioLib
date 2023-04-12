@@ -181,6 +181,8 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
     RADIOLIB_DEBUG_PRINT("read:\t\t0b");
     RADIOLIB_DEBUG_PRINT_BIN(readValue);
     RADIOLIB_DEBUG_PRINTLN();
+    
+    #undef RADIOLIB_DEBUG_PRINT_BIN
 
     return(RADIOLIB_ERR_SPI_WRITE_FAILED);
   #else
