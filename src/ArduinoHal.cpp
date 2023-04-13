@@ -84,7 +84,7 @@ void inline ArduinoHal::spiEnd() {
 void inline ArduinoHal::tone(uint8_t pin, unsigned int frequency, unsigned long duration) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED)
   if (pin == RADIOLIB_NC) {
-    return 0;
+    return;
   }
   ::tone(pin, frequency, duration);
   #elif defined(ESP32)
@@ -110,17 +110,17 @@ void inline ArduinoHal::tone(uint8_t pin, unsigned int frequency, unsigned long 
 void inline ArduinoHal::noTone(uint8_t pin) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED) and defined(ARDUINO_ARCH_STM32)
   if (pin == RADIOLIB_NC) {
-    return 0;
+    return;
   }
   ::noTone(pin, false);
   #elif !defined(RADIOLIB_TONE_UNSUPPORTED)
   if (pin == RADIOLIB_NC) {
-    return 0;
+    return;
   }
   ::noTone(pin);
   #elif defined(ESP32)
   if (pin == RADIOLIB_NC) {
-    return 0;
+    return;
   }
   // ESP32 tone() emulation
   ledcDetachPin(pin);
@@ -128,7 +128,7 @@ void inline ArduinoHal::noTone(uint8_t pin) {
   _prev = -1;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
   if (pin == RADIOLIB_NC) {
-    return 0;
+    return;
   }
   // better tone for mbed OS boards
   (void)pin;
