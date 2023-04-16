@@ -1,7 +1,8 @@
-#include "TypeDef.h"
-#include "Hal.h"
 #if !defined(_RADIOLIB_MODULE_H)
 #define _RADIOLIB_MODULE_H
+
+#include "TypeDef.h"
+#include "Hal.h"
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
   #include <SPI.h>
