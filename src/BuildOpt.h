@@ -273,8 +273,6 @@
   #include <algorithm>
   #include <stdint.h>
 
-  typedef uint8_t byte;
-
   using std::max;
   using std::min;
 #endif

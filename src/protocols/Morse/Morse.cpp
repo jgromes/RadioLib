@@ -58,7 +58,7 @@ char MorseClient::decode(uint8_t symbol, uint8_t len) {
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
-int MorseClient::read(byte* symbol, byte* len, float low, float high) {
+int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
   Module* mod = _phy->getMod();
 
   // measure pulse duration in us

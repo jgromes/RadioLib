@@ -153,7 +153,7 @@ class MorseClient {
       \returns 0 if not enough symbols were decoded, 1 if inter-character space was detected, 2 if inter-word space was detected.
     */
     #if !defined(RADIOLIB_EXCLUDE_AFSK)
-    int read(byte* symbol, byte* len, float low = 0.75f, float high = 1.25f);
+    int read(uint8_t* symbol, uint8_t* len, float low = 0.75f, float high = 1.25f);
     #endif
 
     size_t write(const char* str);
