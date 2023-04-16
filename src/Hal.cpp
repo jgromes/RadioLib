@@ -11,7 +11,15 @@ Hal::Hal(const uint8_t input, const uint8_t output, const uint8_t low, const uin
 
 void Hal::init(){};
 void Hal::term(){};
-void Hal::tone(uint8_t pin, unsigned int frequency, unsigned long duration){};
-void Hal::noTone(uint8_t pin){};
+void Hal::tone(uint8_t pin, unsigned int frequency, unsigned long duration){
+  (void)pin;
+  (void)frequency;
+  (void)duration;
+};
+void Hal::noTone(uint8_t pin){
+  (void)pin;
+};
 void Hal::yield(){};
-uint8_t Hal::pinToInterrupt(uint8_t pin) { return pin; };
+uint8_t Hal::pinToInterrupt(uint8_t pin) {
+  return pin;
+};
