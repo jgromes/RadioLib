@@ -220,7 +220,7 @@ int16_t CC1101::packetMode() {
   return(state);
 }
 
-void CC1101::setGdo0Action(void (*func)(void), uint8_t dir) {
+void CC1101::setGdo0Action(void (*func)(void), uint32_t dir) {
   _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, dir);
 }
 
@@ -228,7 +228,7 @@ void CC1101::clearGdo0Action() {
   _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
-void CC1101::setGdo2Action(void (*func)(void), uint8_t dir) {
+void CC1101::setGdo2Action(void (*func)(void), uint32_t dir) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }

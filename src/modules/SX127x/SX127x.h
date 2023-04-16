@@ -727,7 +727,7 @@ class SX127x: public PhysicalLayer {
 
       \param dir Signal change direction.
     */
-    void setDio0Action(void (*func)(void), uint8_t dir);
+    void setDio0Action(void (*func)(void), uint32_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when DIO0 activates.
@@ -741,7 +741,7 @@ class SX127x: public PhysicalLayer {
 
       \param dir Signal change direction.
     */
-    void setDio1Action(void (*func)(void), uint8_t dir);
+    void setDio1Action(void (*func)(void), uint32_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when DIO1 activates.

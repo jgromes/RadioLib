@@ -646,7 +646,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction.
     */
-    void setGdo0Action(void (*func)(void), uint8_t dir);
+    void setGdo0Action(void (*func)(void), uint32_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.
@@ -660,7 +660,7 @@ class CC1101: public PhysicalLayer {
 
       \param dir Signal change direction.
     */
-    void setGdo2Action(void (*func)(void), uint8_t dir);
+    void setGdo2Action(void (*func)(void), uint32_t dir);
 
     /*!
       \brief Clears interrupt service routine to call when GDO0 activates.

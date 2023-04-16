@@ -426,7 +426,7 @@ int16_t SX127x::startReceive(uint32_t mode, uint16_t irqFlags, uint16_t irqMask,
   return(startReceive((uint8_t)len, (uint8_t)mode));
 }
 
-void SX127x::setDio0Action(void (*func)(void), uint8_t dir) {
+void SX127x::setDio0Action(void (*func)(void), uint32_t dir) {
   _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, dir);
 }
 
@@ -434,7 +434,7 @@ void SX127x::clearDio0Action() {
   _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
-void SX127x::setDio1Action(void (*func)(void), uint8_t dir) {
+void SX127x::setDio1Action(void (*func)(void), uint32_t dir) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
