@@ -16,7 +16,18 @@
 
 class ArduinoHal : public Hal {
   public:
+    /*!
+      \brief Arduino Hal constructor. Will use the default SPI interface and automatically initialize it.
+    */
     ArduinoHal();
+
+    /*!
+      \brief Arduino Hal constructor. Will not attempt SPI interface initialization.
+
+      \param spi SPI interface to be used, can also use software SPI implementations.
+
+      \param spiSettings SPI interface settings.
+    */
     ArduinoHal(SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
 
     void init() override;

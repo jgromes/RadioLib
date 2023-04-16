@@ -106,13 +106,13 @@ class Module {
 
       \param hal A Hardware abstraction layer instance. An ArduinoHal instance for example.
 
-      \param cs Arduino pin to be used as chip select.
+      \param cs Pin to be used as chip select.
 
-      \param irq Arduino pin to be used as interrupt/GPIO.
+      \param irq Pin to be used as interrupt/GPIO.
 
-      \param rst Arduino pin to be used as hardware reset for the module.
+      \param rst Pin to be used as hardware reset for the module.
 
-      \param gpio Arduino pin to be used as additional interrupt/GPIO.
+      \param gpio Pin to be used as additional interrupt/GPIO.
     */
     Module(Hal *hal, uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio = RADIOLIB_NC);
 
