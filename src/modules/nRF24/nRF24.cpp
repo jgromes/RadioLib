@@ -559,7 +559,7 @@ void nRF24::setDirectAction(void (*func)(void)) {
   (void)func;
 }
 
-void nRF24::readBit(uint8_t pin) {
+void nRF24::readBit(uint32_t pin) {
   // nRF24 is unable to perform direct mode actions
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;

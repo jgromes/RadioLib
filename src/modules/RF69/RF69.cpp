@@ -917,11 +917,11 @@ int16_t RF69::setRSSIThreshold(float dbm) {
   return _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
 }
 
-void RF69::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void RF69::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void RF69::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void RF69::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -949,12 +949,12 @@ void RF69::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
 
-void RF69::readBit(uint8_t pin) {
+void RF69::readBit(uint32_t pin) {
   updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
-int16_t RF69::setDIOMapping(uint8_t pin, uint8_t value) {
+int16_t RF69::setDIOMapping(uint32_t pin, uint32_t value) {
   if(pin > 5) {
     return(RADIOLIB_ERR_INVALID_DIO_PIN);
   }

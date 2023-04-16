@@ -46,7 +46,7 @@ class Module {
      */
     struct RfSwitchMode_t {
       uint8_t mode;
-      uint8_t values[RFSWITCH_MAX_PINS];
+      uint32_t values[RFSWITCH_MAX_PINS];
     };
 
     /*!
@@ -81,7 +81,7 @@ class Module {
 
       \param gpio Arduino pin to be used as additional interrupt/GPIO.
     */
-    Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio = RADIOLIB_NC);
+    Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Arduino Module constructor. Will not attempt SPI interface initialization.
@@ -98,7 +98,7 @@ class Module {
 
       \param spiSettings SPI interface settings.
     */
-    Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio, SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
+    Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
     #endif
 
     /*!
@@ -114,7 +114,7 @@ class Module {
 
       \param gpio Pin to be used as additional interrupt/GPIO.
     */
-    Module(Hal *hal, uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio = RADIOLIB_NC);
+    Module(Hal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Copy constructor.
@@ -410,28 +410,28 @@ class Module {
 
       \returns Pin number of SPI chip select configured in the constructor.
     */
-    uint8_t getCs() const { return(_cs); }
+    uint32_t getCs() const { return(_cs); }
 
     /*!
       \brief Access method to get the pin number of interrupt/GPIO.
 
       \returns Pin number of interrupt/GPIO configured in the constructor.
     */
-    uint8_t getIrq() const { return(_irq); }
+    uint32_t getIrq() const { return(_irq); }
 
     /*!
       \brief Access method to get the pin number of hardware reset pin.
 
       \returns Pin number of hardware reset pin configured in the constructor.
     */
-    uint8_t getRst() const { return(_rst); }
+    uint32_t getRst() const { return(_rst); }
 
     /*!
       \brief Access method to get the pin number of second interrupt/GPIO.
 
       \returns Pin number of second interrupt/GPIO configured in the constructor.
     */
-    uint8_t getGpio() const { return(_gpio); }
+    uint32_t getGpio() const { return(_gpio); }
 
     /*!
       \brief Some modules contain external RF switch controlled by pins.
@@ -449,7 +449,7 @@ class Module {
       \param rxEn RX enable pin.
       \param txEn TX enable pin.
     */
-    void setRfSwitchPins(uint8_t rxEn, uint8_t txEn);
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
 
     /*!
       \brief Some modules contain external RF switch controlled by pins.
@@ -495,7 +495,7 @@ class Module {
 
       \code
       // In global scope, define the pin array and mode table
-      static const uint8_t rfswitch_pins[] =
+      static const uint32_t rfswitch_pins[] =
                              {PA0,  PA1,  RADIOLIB_NC};
       static const Module::RfSwitchMode_t rfswitch_table[] = {
         {Module::MODE_IDLE,  {LOW,  LOW}},
@@ -513,7 +513,7 @@ class Module {
       \endcode
     */
 
-    void setRfSwitchTable(const uint8_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]);
 
     /*!
      * \brief Find a mode in the RfSwitchTable.
@@ -581,13 +581,13 @@ class Module {
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
-    uint8_t _cs = RADIOLIB_NC;
-    uint8_t _irq = RADIOLIB_NC;
-    uint8_t _rst = RADIOLIB_NC;
-    uint8_t _gpio = RADIOLIB_NC;
+    uint32_t _cs = RADIOLIB_NC;
+    uint32_t _irq = RADIOLIB_NC;
+    uint32_t _rst = RADIOLIB_NC;
+    uint32_t _gpio = RADIOLIB_NC;
 
     // RF switch pins and table
-    uint8_t _rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
+    uint32_t _rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
     const RfSwitchMode_t *_rfSwitchTable = nullptr;
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)

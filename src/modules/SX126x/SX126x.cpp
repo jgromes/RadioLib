@@ -1359,11 +1359,11 @@ int16_t SX126x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
 }
 
-void SX126x::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void SX126x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void SX126x::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void SX126x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -1435,7 +1435,7 @@ void SX126x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
 
-void SX126x::readBit(uint8_t pin) {
+void SX126x::readBit(uint32_t pin) {
   updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif

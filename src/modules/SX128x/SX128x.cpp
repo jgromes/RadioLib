@@ -1266,11 +1266,11 @@ int16_t SX128x::setEncoding(uint8_t encoding) {
   return(setWhitening(encoding));
 }
 
-void SX128x::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void SX128x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void SX128x::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void SX128x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -1300,7 +1300,7 @@ void SX128x::setDirectAction(void (*func)(void)) {
   (void)func;
 }
 
-void SX128x::readBit(uint8_t pin) {
+void SX128x::readBit(uint32_t pin) {
   // SX128x is unable to perform direct mode reception
   // this method is implemented only for PhysicalLayer compatibility
   (void)pin;

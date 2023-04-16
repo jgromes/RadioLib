@@ -14,6 +14,12 @@
 
 #include <SPI.h>
 
+/*!
+  \class ArduinoHal
+
+  \brief Arduino default hardware abstraction library implementation.
+  This class can be extended to support other Arduino platform or change behaviour of the default implementation
+*/
 class ArduinoHal : public Hal {
   public:
     /*!
@@ -33,25 +39,25 @@ class ArduinoHal : public Hal {
     void init() override;
     void term() override;
 
-    void pinMode(uint8_t pin, uint8_t mode) override;
-    void digitalWrite(uint8_t pin, uint8_t value) override;
-    uint8_t digitalRead(uint8_t pin) override;
-    void attachInterrupt(uint8_t interruptNum, void (*interruptCb)(void), uint8_t mode) override;
-    void detachInterrupt(uint8_t interruptNum) override;
+    void pinMode(uint32_t pin, uint32_t mode) override;
+    void digitalWrite(uint32_t pin, uint32_t value) override;
+    uint32_t digitalRead(uint32_t pin) override;
+    void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override;
+    void detachInterrupt(uint32_t interruptNum) override;
     void delay(unsigned long ms) override;
     void delayMicroseconds(unsigned long us) override;
     unsigned long millis() override;
     unsigned long micros() override;
-    long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout) override;
+    long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override;
     void spiBegin() override;
     void spiBeginTransaction() override;
     uint8_t spiTransfer(uint8_t b) override;
     void spiEndTransaction() override;
     void spiEnd() override;
-    void tone(uint8_t pin, unsigned int frequency, unsigned long duration = 0) override;
-    void noTone(uint8_t pin) override;
+    void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) override;
+    void noTone(uint32_t pin) override;
     void yield() override;
-    uint8_t pinToInterrupt(uint8_t pin) override;
+    uint32_t pinToInterrupt(uint32_t pin) override;
 
 #if !defined(RADIOLIB_GODMODE)
   private:

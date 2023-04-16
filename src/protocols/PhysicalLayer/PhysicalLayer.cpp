@@ -380,13 +380,13 @@ void PhysicalLayer::setDirectAction(void (*func)(void)) {
   (void)func;
 }
 
-void PhysicalLayer::readBit(uint8_t pin) {
+void PhysicalLayer::readBit(uint32_t pin) {
   (void)pin;
 }
 
 #endif
 
-int16_t PhysicalLayer::setDIOMapping(uint8_t pin, uint8_t value) {
+int16_t PhysicalLayer::setDIOMapping(uint32_t pin, uint32_t value) {
   (void)pin;
   (void)value;
   return(RADIOLIB_ERR_UNSUPPORTED);

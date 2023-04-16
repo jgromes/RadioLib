@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "Hal.h"
 
-Hal::Hal(const uint8_t input, const uint8_t output, const uint8_t low, const uint8_t high, const uint8_t rising, const uint8_t falling)
+Hal::Hal(const uint32_t input, const uint32_t output, const uint32_t low, const uint32_t high, const uint32_t rising, const uint32_t falling)
     : GpioModeInput(input),
       GpioModeOutput(output),
       GpioLevelLow(low),
@@ -11,15 +11,15 @@ Hal::Hal(const uint8_t input, const uint8_t output, const uint8_t low, const uin
 
 void Hal::init(){};
 void Hal::term(){};
-void Hal::tone(uint8_t pin, unsigned int frequency, unsigned long duration){
+void Hal::tone(uint32_t pin, unsigned int frequency, unsigned long duration){
   (void)pin;
   (void)frequency;
   (void)duration;
 };
-void Hal::noTone(uint8_t pin){
+void Hal::noTone(uint32_t pin){
   (void)pin;
 };
 void Hal::yield(){};
-uint8_t Hal::pinToInterrupt(uint8_t pin) {
+uint32_t Hal::pinToInterrupt(uint32_t pin) {
   return pin;
 };

@@ -26,7 +26,7 @@ class Stm32wlxHal : public ArduinoHal {
   public:
     Stm32wlxHal(): ArduinoHal(SubGhz.SPI, SubGhz.spi_settings) {}
 
-    void pinMode(uint8_t dwPin, uint8_t dwMode) {
+    void pinMode(uint32_t dwPin, uint32_t dwMode) {
       switch(dwPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY:
@@ -40,7 +40,7 @@ class Stm32wlxHal : public ArduinoHal {
       }
     }
 
-    void digitalWrite(uint8_t dwPin, uint8_t dwVal) {
+    void digitalWrite(uint32_t dwPin, uint32_t dwVal) {
       switch (dwPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
           SubGhz.setNssActive(dwVal == LOW);
@@ -61,7 +61,7 @@ class Stm32wlxHal : public ArduinoHal {
       }
     }
 
-    uint8_t digitalRead(uint8_t ulPin) {
+    uint32_t digitalRead(uint32_t ulPin) {
       switch (ulPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY:
           return(SubGhz.isBusy() ? HIGH : LOW);

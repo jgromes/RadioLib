@@ -1267,11 +1267,11 @@ uint8_t SX127x::getModemStatus() {
   return(_mod->SPIreadRegister(RADIOLIB_SX127X_REG_MODEM_STAT));
 }
 
-void SX127x::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void SX127x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void SX127x::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void SX127x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -1508,7 +1508,7 @@ void SX127x::setDirectAction(void (*func)(void)) {
   setDio1Action(func, _mod->hal->GpioInterruptRising);
 }
 
-void SX127x::readBit(uint8_t pin) {
+void SX127x::readBit(uint32_t pin) {
   updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
@@ -1534,7 +1534,7 @@ void SX127x::clearFHSSInt(void) {
   }
 }
 
-int16_t SX127x::setDIOMapping(uint8_t pin, uint8_t value) {
+int16_t SX127x::setDIOMapping(uint32_t pin, uint32_t value) {
   if (pin > 5)
     return RADIOLIB_ERR_INVALID_DIO_PIN;
 

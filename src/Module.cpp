@@ -6,16 +6,16 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 #include "ArduinoHal.h"
-Module::Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
   this->hal = new ArduinoHal;
 }
 
-Module::Module(uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio, SPIClass& spi, SPISettings spiSettings) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
   this->hal = new ArduinoHal(spi, spiSettings);
 }
 #endif
 
-Module::Module(Hal *hal, uint8_t cs, uint8_t irq, uint8_t rst, uint8_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(Hal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
   this->hal = hal;
 }
 
@@ -465,9 +465,9 @@ size_t Module::serialPrintf(const char* format, ...) {
 }
 #endif
 
-void Module::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   // This can be on the stack, setRfSwitchTable copies the contents
-  const uint8_t pins[] = {
+  const uint32_t pins[] = {
     rxEn, txEn, RADIOLIB_NC,
   };
   // This must be static, since setRfSwitchTable stores a reference.
@@ -480,7 +480,7 @@ void Module::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
   setRfSwitchTable(pins, table);
 }
 
-void Module::setRfSwitchTable(const uint8_t (&pins)[3], const RfSwitchMode_t table[]) {
+void Module::setRfSwitchTable(const uint32_t (&pins)[3], const RfSwitchMode_t table[]) {
   memcpy(_rfSwitchPins, pins, sizeof(_rfSwitchPins));
   _rfSwitchTable = table;
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)
@@ -505,9 +505,9 @@ void Module::setRfSwitchState(uint8_t mode) {
   }
 
   // set pins
-  const uint8_t *value = &row->values[0];
+  const uint32_t *value = &row->values[0];
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
-    uint8_t pin = _rfSwitchPins[i];
+    uint32_t pin = _rfSwitchPins[i];
     if (pin != RADIOLIB_NC)
       this->hal->digitalWrite(pin, *value);
     ++value;

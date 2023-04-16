@@ -899,11 +899,11 @@ int16_t CC1101::setEncoding(uint8_t encoding) {
   }
 }
 
-void CC1101::setRfSwitchPins(uint8_t rxEn, uint8_t txEn) {
+void CC1101::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void CC1101::setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void CC1101::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -936,12 +936,12 @@ void CC1101::setDirectAction(void (*func)(void)) {
   setGdo0Action(func, _mod->hal->GpioInterruptRising);
 }
 
-void CC1101::readBit(uint8_t pin) {
+void CC1101::readBit(uint32_t pin) {
   updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
-int16_t CC1101::setDIOMapping(uint8_t pin, uint8_t value) {
+int16_t CC1101::setDIOMapping(uint32_t pin, uint32_t value) {
   if (pin > 2)
     return RADIOLIB_ERR_INVALID_DIO_PIN;
 

@@ -7,7 +7,7 @@
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
 static PhysicalLayer* _readBitInstance = NULL;
-static uint8_t _readBitPin = RADIOLIB_NC;
+static uint32_t _readBitPin = RADIOLIB_NC;
 
 #if defined(ESP8266) || defined(ESP32)
   ICACHE_RAM_ATTR
@@ -223,7 +223,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
 }
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-int16_t PagerClient::startReceive(uint8_t pin, uint32_t addr, uint32_t mask) {
+int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
   // save the variables
   _readBitPin = pin;
   _filterAddr = addr;

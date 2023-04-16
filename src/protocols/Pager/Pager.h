@@ -157,7 +157,7 @@ class PagerClient {
 
       \returns \ref status_codes
     */
-    int16_t startReceive(uint8_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);
+    int16_t startReceive(uint32_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);
 
     /*!
       \brief Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!

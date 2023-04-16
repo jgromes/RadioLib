@@ -221,7 +221,7 @@
 #endif
 
   #if !defined(RADIOLIB_NC)
-  #define RADIOLIB_NC                                 (0xFF)
+  #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #endif
   #if !defined(RADIOLIB_DEFAULT_SPI)
   #define RADIOLIB_DEFAULT_SPI                        SPI

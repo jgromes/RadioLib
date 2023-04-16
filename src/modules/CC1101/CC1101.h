@@ -953,10 +953,10 @@ class CC1101: public PhysicalLayer {
     int16_t setEncoding(uint8_t encoding) override;
 
     /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(uint8_t rxEn, uint8_t txEn);
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
 
     /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const uint8_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
      \brief Get one truly random byte from RSSI noise.
@@ -985,7 +985,7 @@ class CC1101: public PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    void readBit(uint8_t pin);
+    void readBit(uint32_t pin);
     #endif
 
     /*!
@@ -997,7 +997,7 @@ class CC1101: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(uint8_t pin, uint8_t value);
+    int16_t setDIOMapping(uint32_t pin, uint32_t value);
 
   #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
     protected:
