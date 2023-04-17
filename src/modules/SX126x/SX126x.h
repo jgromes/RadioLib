@@ -1156,7 +1156,7 @@ class SX126x: public PhysicalLayer {
     int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);
-    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ = RADIOLIB_SX126X_LORA_IQ_STANDARD);
+    int16_t setPacketParams(uint16_t preambleLength, uint8_t crcType, uint8_t payloadLength, uint8_t headerType, uint8_t invertIQ);
     int16_t setPacketParamsFSK(uint16_t preambleLength, uint8_t crcType, uint8_t syncWordLength, uint8_t addrComp, uint8_t whitening, uint8_t packetType = RADIOLIB_SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLength = 0xFF, uint8_t preambleDetectorLength = RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16);
     int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);
     int16_t setRegulatorMode(uint8_t mode);
@@ -1205,6 +1205,7 @@ class SX126x: public PhysicalLayer {
     uint32_t _tcxoDelay = 0;
 
     size_t _implicitLen = 0;
+    uint8_t _invertIQ = RADIOLIB_SX126X_LORA_IQ_STANDARD;
     const char* _chipType;
 
     // Allow subclasses to define different TX modes

@@ -481,7 +481,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    state = setPacketParams(_preambleLength, _crcType, len, _headerType);
+    state = setPacketParams(_preambleLength, _crcType, len, _headerType, _invertIQ);
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType, len);
   } else {
@@ -629,7 +629,7 @@ int16_t SX126x::startReceiveCommon(uint32_t timeout, uint16_t irqFlags, uint16_t
   // restore original packet length
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType);
+    state = setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, _invertIQ);
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     state = setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType);
   } else {
@@ -842,7 +842,7 @@ int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     _preambleLength = preambleLength;
-    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, _invertIQ));
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     _preambleLengthFSK = preambleLength;
     return(setPacketParamsFSK(_preambleLengthFSK, _crcTypeFSK, _syncWordLength, _addrComp, _whitening, _packetType));
@@ -1171,7 +1171,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
       _crcType = RADIOLIB_SX126X_LORA_CRC_OFF;
     }
 
-    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType));
+    return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, _invertIQ));
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
@@ -1420,12 +1420,13 @@ int16_t SX126x::invertIQ(bool invertIQ) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  uint8_t invert = RADIOLIB_SX126X_LORA_IQ_STANDARD;
   if(invertIQ) {
-    invert = RADIOLIB_SX126X_LORA_IQ_INVERTED;
+    _invertIQ = RADIOLIB_SX126X_LORA_IQ_INVERTED;
+  } else {
+    _invertIQ = RADIOLIB_SX126X_LORA_IQ_STANDARD;
   }
 
-  return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, invert));
+  return(setPacketParams(_preambleLength, _crcType, _implicitLen, _headerType, _invertIQ));
 }
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
@@ -1745,7 +1746,7 @@ int16_t SX126x::setHeaderType(uint8_t headerType, size_t len) {
   }
 
   // set requested packet mode
-  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType);
+  int16_t state = setPacketParams(_preambleLength, _crcType, len, headerType, _invertIQ);
   RADIOLIB_ASSERT(state);
 
   // update cached value
