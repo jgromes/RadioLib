@@ -483,7 +483,7 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
-    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, len, _crcLoRa);
+    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, len, _crcLoRa, _invertIQ);
   } else if((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC)) {
     state = setPacketParamsGFSK(_preambleLengthGFSK, _syncWordLen, _syncWordMatch, _crcGFSK, _whitening, len);
   } else if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
@@ -568,7 +568,7 @@ int16_t SX128x::startReceive(uint16_t timeout, uint16_t irqFlags, uint16_t irqMa
 
   // set implicit mode and expected len if applicable
   if((_headerType == RADIOLIB_SX128X_LORA_HEADER_IMPLICIT) && (getPacketType() == RADIOLIB_SX128X_PACKET_TYPE_LORA)) {
-    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa);
+    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, _invertIQ);
     RADIOLIB_ASSERT(state);
   }
 
@@ -753,7 +753,7 @@ int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
 
     // update packet parameters
     _preambleLengthLoRa = (e << 4) | m;
-    return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa));
+    return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, _invertIQ));
 
   } else if((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC)) {
     // GFSK or FLRC
@@ -1008,7 +1008,7 @@ int16_t SX128x::setCRC(uint8_t len, uint32_t initial, uint16_t polynomial) {
     } else {
       return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
-    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa);
+    state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, _invertIQ);
     return(state);
   }
 
@@ -1284,12 +1284,13 @@ int16_t SX128x::invertIQ(bool invertIQ) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  uint8_t invert = RADIOLIB_SX128X_LORA_IQ_STANDARD;
   if(invertIQ) {
-    invert = RADIOLIB_SX128X_LORA_IQ_INVERTED;
+    _invertIQ = RADIOLIB_SX128X_LORA_IQ_INVERTED;
+  } else {
+    _invertIQ = RADIOLIB_SX128X_LORA_IQ_STANDARD;
   }
 
-  return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, invert));
+  return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, _invertIQ));
 }
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
@@ -1430,7 +1431,7 @@ int16_t SX128x::setHeaderType(uint8_t headerType, size_t len) {
   // update packet parameters
   _headerType = headerType;
   _payloadLen = len;
-  return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa));
+  return(setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa, _invertIQ));
 }
 
 int16_t SX128x::config(uint8_t modem) {

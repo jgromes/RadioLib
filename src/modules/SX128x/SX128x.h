@@ -905,6 +905,9 @@ class SX128x: public PhysicalLayer {
     // common parameters
     uint8_t _pwr = 0;
 
+    // cached LoRa parameters
+    uint8_t _invertIQ = RADIOLIB_SX128X_LORA_IQ_STANDARD;
+
     // cached GFSK parameters
     float _modIndexReal = 0;
     uint16_t _brKbps = 0;
