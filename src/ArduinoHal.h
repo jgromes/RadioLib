@@ -1,8 +1,10 @@
+// make sure this is always compiled
 #include "TypeDef.h"
 
 #if !defined(_RADIOLIB_ARDUINOHAL_H)
 #define _RADIOLIB_ARDUINOHAL_H
 
+// this file only makes sense for Arduino builds
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
 #if defined(RADIOLIB_MBED_TONE_OVERRIDE)
@@ -10,7 +12,7 @@
 #endif
 
 #include "Hal.h"
-#include <stdint.h>
+//#include <stdint.h>
 
 #include <SPI.h>
 
@@ -18,9 +20,9 @@
   \class ArduinoHal
 
   \brief Arduino default hardware abstraction library implementation.
-  This class can be extended to support other Arduino platform or change behaviour of the default implementation
+  This class can be extended to support other Arduino platform or change behaviour of the default implementation.
 */
-class ArduinoHal : public Hal {
+class ArduinoHal : public RadioLibHal {
   public:
     /*!
       \brief Arduino Hal constructor. Will use the default SPI interface and automatically initialize it.
@@ -29,16 +31,12 @@ class ArduinoHal : public Hal {
 
     /*!
       \brief Arduino Hal constructor. Will not attempt SPI interface initialization.
-
       \param spi SPI interface to be used, can also use software SPI implementations.
-
       \param spiSettings SPI interface settings.
     */
     ArduinoHal(SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
 
-    void init() override;
-    void term() override;
-
+    // implementations of pure virtual RadioLibHal methods
     void pinMode(uint32_t pin, uint32_t mode) override;
     void digitalWrite(uint32_t pin, uint32_t value) override;
     uint32_t digitalRead(uint32_t pin) override;
@@ -54,6 +52,10 @@ class ArduinoHal : public Hal {
     uint8_t spiTransfer(uint8_t b) override;
     void spiEndTransaction() override;
     void spiEnd() override;
+
+    // implementations of virtual RadioLibHal methods
+    void init() override;
+    void term() override;
     void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) override;
     void noTone(uint32_t pin) override;
     void yield() override;
@@ -76,4 +78,5 @@ class ArduinoHal : public Hal {
 };
 
 #endif
+
 #endif
