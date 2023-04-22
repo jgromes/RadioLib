@@ -10,7 +10,7 @@ static PhysicalLayer* readBitInstance = NULL;
 static uint32_t readBitPin = RADIOLIB_NC;
 
 #if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
+  IRAM_ATTR
 #endif
 static void PagerClientReadBit(void) {
   if(readBitInstance) {
