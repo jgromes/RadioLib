@@ -7,16 +7,16 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 #include "ArduinoHal.h"
-Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : csPin(cs), irqPin(irq), rstPin(rst), gpioPin(gpio) {
   this->hal = new ArduinoHal();
 }
 
-Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings) : csPin(cs), irqPin(irq), rstPin(rst), gpioPin(gpio) {
   this->hal = new ArduinoHal(spi, spiSettings);
 }
 #endif
 
-Module::Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : csPin(cs), irqPin(irq), rstPin(rst), gpioPin(gpio) {
   this->hal = hal;
 }
 
@@ -27,18 +27,17 @@ Module::Module(const Module& mod) {
 Module& Module::operator=(const Module& mod) {
   this->SPIreadCommand = mod.SPIreadCommand;
   this->SPIwriteCommand = mod.SPIwriteCommand;
-  this->_cs = mod._cs;
-  this->_irq = mod._irq;
-  this->_rst = mod._rst;
-  this->_gpio = mod._gpio;
-
+  this->csPin = mod.csPin;
+  this->irqPin = mod.irqPin;
+  this->rstPin = mod.rstPin;
+  this->gpioPin = mod.gpioPin;
   return(*this);
 }
 
 void Module::init() {
   this->hal->init();
-  this->hal->pinMode(_cs, this->hal->GpioModeOutput);
-  this->hal->digitalWrite(_cs, this->hal->GpioLevelHigh);
+  this->hal->pinMode(csPin, this->hal->GpioModeOutput);
+  this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
 }
 
 void Module::term() {
@@ -138,7 +137,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->hal->spiBeginTransaction();
 
   // pull CS low
-  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
 
   // send SPI register address with access command
   if(this->SPIaddrWidth <= 8) {
@@ -176,7 +175,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   RADIOLIB_VERBOSE_PRINTLN();
 
   // release CS
-  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelHigh);
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
 
   // end SPI transaction
   this->hal->spiEndTransaction();
@@ -242,16 +241,16 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // ensure GPIO is low
   uint32_t start = this->hal->millis();
-  while(this->hal->digitalRead(this->_gpio)) {
+  while(this->hal->digitalRead(this->gpioPin)) {
     this->hal->yield();
     if(this->hal->millis() - start >= timeout) {
-      this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
+      this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
     }
   }
 
   // pull NSS low
-  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelLow);
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
 
   // start transfer
   this->hal->spiBeginTransaction();
@@ -303,13 +302,13 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // stop transfer
   this->hal->spiEndTransaction();
-  this->hal->digitalWrite(this->_cs, this->hal->GpioLevelHigh);
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
 
   // wait for GPIO to go high and then low
   if(waitForGpio) {
     this->hal->delayMicroseconds(1);
     uint32_t start = this->hal->millis();
-    while(this->hal->digitalRead(this->_gpio)) {
+    while(this->hal->digitalRead(this->gpioPin)) {
       this->hal->yield();
       if(this->hal->millis() - start >= timeout) {
         state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
@@ -352,7 +351,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
   #if defined(RADIOLIB_INTERRUPT_TIMING)
   (void)start;
-  if((this->TimerSetupCb != nullptr) && (len != this->_prevTimingLen)) {
+  if((this->TimerSetupCb != nullptr) && (len != this->prevTimingLen)) {
     _prevTimingLen = len;
     this->TimerSetupCb(len);
   }
@@ -471,25 +470,26 @@ void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   const uint32_t pins[] = {
     rxEn, txEn, RADIOLIB_NC,
   };
+  
   // This must be static, since setRfSwitchTable stores a reference.
   static const RfSwitchMode_t table[] = {
-    {MODE_IDLE,  {this->hal->GpioLevelLow,  this->hal->GpioLevelLow}},
-    {MODE_RX,    {this->hal->GpioLevelHigh, this->hal->GpioLevelLow}},
-    {MODE_TX,    {this->hal->GpioLevelLow,  this->hal->GpioLevelHigh}},
+    { MODE_IDLE,  {this->hal->GpioLevelLow,  this->hal->GpioLevelLow} },
+    { MODE_RX,    {this->hal->GpioLevelHigh, this->hal->GpioLevelLow} },
+    { MODE_TX,    {this->hal->GpioLevelLow,  this->hal->GpioLevelHigh} },
     END_OF_MODE_TABLE,
   };
   setRfSwitchTable(pins, table);
 }
 
 void Module::setRfSwitchTable(const uint32_t (&pins)[3], const RfSwitchMode_t table[]) {
-  memcpy(_rfSwitchPins, pins, sizeof(_rfSwitchPins));
-  _rfSwitchTable = table;
+  memcpy(this->rfSwitchPins, pins, sizeof(this->rfSwitchPins));
+  this->rfSwitchTable = table;
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)
     this->hal->pinMode(pins[i], this->hal->GpioModeOutput);
 }
 
 const Module::RfSwitchMode_t *Module::findRfSwitchMode(uint8_t mode) const {
-  const RfSwitchMode_t *row = _rfSwitchTable;
+  const RfSwitchMode_t *row = this->rfSwitchTable;
   while (row && row->mode != MODE_END_OF_TABLE) {
     if (row->mode == mode)
       return row;
@@ -508,7 +508,7 @@ void Module::setRfSwitchState(uint8_t mode) {
   // set pins
   const uint32_t *value = &row->values[0];
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
-    uint32_t pin = _rfSwitchPins[i];
+    uint32_t pin = this->rfSwitchPins[i];
     if (pin != RADIOLIB_NC)
       this->hal->digitalWrite(pin, *value);
     ++value;

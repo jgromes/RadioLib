@@ -22,7 +22,6 @@
 
 /*!
   \class Module
-
   \brief Implements all common low-level methods to control the wireless module.
   Every module class contains one private instance of this class.
 */
@@ -72,30 +71,20 @@ class Module {
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Arduino Module constructor. Will use the default SPI interface and automatically initialize it.
-
       \param cs Arduino pin to be used as chip select.
-
       \param irq Arduino pin to be used as interrupt/GPIO.
-
       \param rst Arduino pin to be used as hardware reset for the module.
-
       \param gpio Arduino pin to be used as additional interrupt/GPIO.
     */
     Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Arduino Module constructor. Will not attempt SPI interface initialization.
-
       \param cs Arduino pin to be used as chip select.
-
       \param irq Arduino pin to be used as interrupt/GPIO.
-
       \param rst Arduino pin to be used as hardware reset for the module.
-
       \param gpio Arduino pin to be used as additional interrupt/GPIO.
-
       \param spi SPI interface to be used, can also use software SPI implementations.
-
       \param spiSettings SPI interface settings.
     */
     Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
@@ -103,35 +92,30 @@ class Module {
 
     /*!
       \brief Module constructor.
-
       \param hal A Hardware abstraction layer instance. An ArduinoHal instance for example.
-
       \param cs Pin to be used as chip select.
-
       \param irq Pin to be used as interrupt/GPIO.
-
       \param rst Pin to be used as hardware reset for the module.
-
       \param gpio Pin to be used as additional interrupt/GPIO.
     */
     Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Copy constructor.
-
       \param mod Module instance to copy.
     */
     Module(const Module& mod);
 
     /*!
       \brief Overload for assignment operator.
-
       \param frame rvalue Module.
     */
     Module& operator=(const Module& mod);
 
     // public member variables
-
+    /*!
+      \brief Hardware abstraction layer to be used.
+    */
     RadioLibHal* hal = NULL;
 
     /*!
@@ -216,189 +200,127 @@ class Module {
 
     /*!
       \brief SPI read method that automatically masks unused bits. This method is the preferred SPI read mechanism.
-
       \param reg Address of SPI register to read.
-
       \param msb Most significant bit of the register variable. Bits above this one will be masked out.
-
       \param lsb Least significant bit of the register variable. Bits below this one will be masked out.
-
       \returns Masked register value or status code.
     */
     int16_t SPIgetRegValue(uint16_t reg, uint8_t msb = 7, uint8_t lsb = 0);
 
     /*!
       \brief Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.
-
       \param reg Address of SPI register to write.
-
       \param value Single byte value that will be written to the SPI register.
-
       \param msb Most significant bit of the register variable. Bits above this one will not be affected by the write operation.
-
       \param lsb Least significant bit of the register variable. Bits below this one will not be affected by the write operation.
-
       \param checkInterval Number of milliseconds between register writing and verification reading. Some registers need up to 10ms to process the change.
-
       \param checkMask Mask of bits to check, only bits set to 1 will be verified.
-
       \returns \ref status_codes
     */
     int16_t SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
 
     /*!
       \brief SPI burst read method.
-
       \param reg Address of SPI register to read.
-
       \param numBytes Number of bytes that will be read.
-
       \param inBytes Pointer to array that will hold the read data.
     */
     void SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inBytes);
 
     /*!
       \brief SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead.
-
       \param reg Address of SPI register to read.
-
       \returns Value that was read from register.
     */
     uint8_t SPIreadRegister(uint16_t reg);
 
     /*!
       \brief SPI burst write method.
-
       \param reg Address of SPI register to write.
-
       \param data Pointer to array that holds the data that will be written.
-
       \param numBytes Number of bytes that will be written.
     */
     void SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes);
 
     /*!
       \brief SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead.
-
       \param reg Address of SPI register to write.
-
       \param data Value that will be written to the register.
     */
     void SPIwriteRegister(uint16_t reg, uint8_t data);
 
     /*!
       \brief SPI single transfer method.
-
       \param cmd SPI access command (read/write/burst/...).
-
       \param reg Address of SPI register to transfer to/from.
-
       \param dataOut Data that will be transfered from master to slave.
-
       \param dataIn Data that was transfered from slave to master.
-
       \param numBytes Number of bytes to transfer.
     */
     void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes);
 
     /*!
       \brief Method to check the result of last SPI stream transfer.
-
       \returns \ref status_codes
     */
     int16_t SPIcheckStream();
     
     /*!
       \brief Method to perform a read transaction with SPI stream.
-
       \param cmd SPI operation command.
-
       \param data Data that will be transferred from slave to master.
-
       \param numBytes Number of bytes to transfer.
-
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
-
       \param verify Whether to verify the result of the transaction after it is finished.
-
       \returns \ref status_codes
     */
     int16_t SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief Method to perform a read transaction with SPI stream.
-
       \param cmd SPI operation command.
-
       \param cmdLen SPI command length in bytes.
-
       \param data Data that will be transferred from slave to master.
-
       \param numBytes Number of bytes to transfer.
-
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
-
       \param verify Whether to verify the result of the transaction after it is finished.
-
       \returns \ref status_codes
     */
     int16_t SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief Method to perform a write transaction with SPI stream.
-
       \param cmd SPI operation command.
-
       \param data Data that will be transferred from master to slave.
-
       \param numBytes Number of bytes to transfer.
-
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
-
       \param verify Whether to verify the result of the transaction after it is finished.
-
       \returns \ref status_codes
     */
     int16_t SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
 
     /*!
       \brief Method to perform a write transaction with SPI stream.
-
       \param cmd SPI operation command.
-
       \param cmdLen SPI command length in bytes.
-
       \param data Data that will be transferred from master to slave.
-
       \param numBytes Number of bytes to transfer.
-
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
-
       \param verify Whether to verify the result of the transaction after it is finished.
-
       \returns \ref status_codes
     */
     int16_t SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief SPI single transfer method for modules with stream-type SPI interface (SX126x, SX128x etc.).
-
       \param cmd SPI operation command.
-
       \param cmdLen SPI command length in bytes.
-
       \param write Set to true for write commands, false for read commands.
-
       \param dataOut Data that will be transfered from master to slave.
-
       \param dataIn Data that was transfered from slave to master.
-
       \param numBytes Number of bytes to transfer.
-
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
-
       \param timeout GPIO wait period timeout in milliseconds.
-
       \returns \ref status_codes
     */
     int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout);
@@ -407,31 +329,27 @@ class Module {
 
     /*!
       \brief Access method to get the pin number of SPI chip select.
-
       \returns Pin number of SPI chip select configured in the constructor.
     */
-    uint32_t getCs() const { return(_cs); }
+    uint32_t getCs() const { return(csPin); }
 
     /*!
       \brief Access method to get the pin number of interrupt/GPIO.
-
       \returns Pin number of interrupt/GPIO configured in the constructor.
     */
-    uint32_t getIrq() const { return(_irq); }
+    uint32_t getIrq() const { return(irqPin); }
 
     /*!
       \brief Access method to get the pin number of hardware reset pin.
-
       \returns Pin number of hardware reset pin configured in the constructor.
     */
-    uint32_t getRst() const { return(_rst); }
+    uint32_t getRst() const { return(rstPin); }
 
     /*!
       \brief Access method to get the pin number of second interrupt/GPIO.
-
       \returns Pin number of second interrupt/GPIO configured in the constructor.
     */
-    uint32_t getGpio() const { return(_gpio); }
+    uint32_t getGpio() const { return(gpioPin); }
 
     /*!
       \brief Some modules contain external RF switch controlled by pins.
@@ -516,14 +434,12 @@ class Module {
     void setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]);
 
     /*!
-     * \brief Find a mode in the RfSwitchTable.
-     *
-     * \param The mode to find.
-     *
-     * \returns A pointer to the RfSwitchMode_t struct in the table that
-     * matches the passed mode. Returns nullptr if no rfswitch pins are
-     * configured, or the passed mode is not listed in the table.
-     */
+      \brief Find a mode in the RfSwitchTable.
+      \param The mode to find.
+      \returns A pointer to the RfSwitchMode_t struct in the table that
+      matches the passed mode. Returns nullptr if no rfswitch pins are
+      configured, or the passed mode is not listed in the table.
+    */
     const RfSwitchMode_t *findRfSwitchMode(uint8_t mode) const;
 
     /*!
@@ -537,7 +453,6 @@ class Module {
       Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!
 
       \param start Waiting start timestamp, in microseconds.
-
       \param len Waiting duration, in microseconds;
     */
     void waitForMicroseconds(uint32_t start, uint32_t len);
@@ -554,22 +469,16 @@ class Module {
 
     /*!
       \brief Function to dump data as hex into the debug port.
-
       \param data Data to dump.
-
       \param len Number of bytes to dump.
-
       \param width Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).
-
       \param be Print multi-byte data as big endian. Defaults to false.
     */
     static void hexdump(uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
 
     /*!
       \brief Function to dump device registers as hex into the debug port.
-
       \param start First address to dump.
-
       \param len Number of bytes to dump.
     */
     void regdump(uint16_t start, size_t len);
@@ -581,17 +490,17 @@ class Module {
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
-    uint32_t _cs = RADIOLIB_NC;
-    uint32_t _irq = RADIOLIB_NC;
-    uint32_t _rst = RADIOLIB_NC;
-    uint32_t _gpio = RADIOLIB_NC;
+    uint32_t csPin = RADIOLIB_NC;
+    uint32_t irqPin = RADIOLIB_NC;
+    uint32_t rstPin = RADIOLIB_NC;
+    uint32_t gpioPin = RADIOLIB_NC;
 
     // RF switch pins and table
-    uint32_t _rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
-    const RfSwitchMode_t *_rfSwitchTable = nullptr;
+    uint32_t rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
+    const RfSwitchMode_t *rfSwitchTable = nullptr;
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)
-    uint32_t _prevTimingLen = 0;
+    uint32_t prevTimingLen = 0;
     #endif
 };
 
