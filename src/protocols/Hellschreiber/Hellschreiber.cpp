@@ -4,47 +4,47 @@
 #if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
 
 HellClient::HellClient(PhysicalLayer* phy) {
-  _phy = phy;
+  phyLayer = phy;
 
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  _audio = nullptr;
+  audioClient = nullptr;
   #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 HellClient::HellClient(AFSKClient* audio) {
-  _phy = audio->_phy;
-  _audio = audio;
+  phyLayer = audio->phyLayer;
+  audioClient = audio;
 }
 #endif
 
 int16_t HellClient::begin(float base, float rate) {
   // calculate 24-bit frequency
-  _baseHz = base;
-  _base = (base * 1000000.0) / _phy->getFreqStep();
+  baseFreqHz = base;
+  baseFreq = (base * 1000000.0) / phyLayer->getFreqStep();
 
   // calculate "pixel" duration
-  _pixelDuration = 1000000.0/rate;
+  pixelDuration = 1000000.0/rate;
 
   // configure for direct mode
-  return(_phy->startDirect());
+  return(phyLayer->startDirect());
 }
 
 size_t HellClient::printGlyph(uint8_t* buff) {
   // print the character
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   bool transmitting = false;
   for(uint8_t mask = 0x40; mask >= 0x01; mask >>= 1) {
     for(int8_t i = RADIOLIB_HELL_FONT_HEIGHT - 1; i >= 0; i--) {
         uint32_t start = mod->hal->micros();
         if((buff[i] & mask) && (!transmitting)) {
           transmitting = true;
-          transmitDirect(_base, _baseHz);
+          transmitDirect(baseFreq, baseFreqHz);
         } else if((!(buff[i] & mask)) && (transmitting)) {
           transmitting = false;
           standby();
         }
-        mod->waitForMicroseconds(start, _pixelDuration);
+        mod->waitForMicroseconds(start, pixelDuration);
     }
   }
 
@@ -54,8 +54,8 @@ size_t HellClient::printGlyph(uint8_t* buff) {
   return(1);
 }
 
-void HellClient::setInversion(bool invert) {
-  _inv = invert;
+void HellClient::setInversion(bool inv) {
+  invert = inv;
 }
 
 size_t HellClient::write(const char* str) {
@@ -298,20 +298,20 @@ size_t HellClient::printFloat(double number, uint8_t digits)  {
 
 int16_t HellClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio != nullptr) {
-    return(_audio->tone(freqHz));
+  if(audioClient != nullptr) {
+    return(audioClient->tone(freqHz));
   }
   #endif
-  return(_phy->transmitDirect(freq));
+  return(phyLayer->transmitDirect(freq));
 }
 
 int16_t HellClient::standby() {
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio != nullptr) {
-    return(_audio->noTone(_inv));
+  if(audioClient != nullptr) {
+    return(audioClient->noTone(invert));
   }
   #endif
-  return(_phy->standby(RADIOLIB_STANDBY_WARM));
+  return(phyLayer->standby(RADIOLIB_STANDBY_WARM));
 }
 
 #endif
