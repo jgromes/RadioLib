@@ -6,48 +6,48 @@
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
-static PhysicalLayer* _readBitInstance = NULL;
-static uint32_t _readBitPin = RADIOLIB_NC;
+static PhysicalLayer* readBitInstance = NULL;
+static uint32_t readBitPin = RADIOLIB_NC;
 
 #if defined(ESP8266) || defined(ESP32)
   ICACHE_RAM_ATTR
 #endif
 static void PagerClientReadBit(void) {
-  if(_readBitInstance) {
-    _readBitInstance->readBit(_readBitPin);
+  if(readBitInstance) {
+    readBitInstance->readBit(readBitPin);
   }
 }
 #endif
 
 PagerClient::PagerClient(PhysicalLayer* phy) {
-  _phy = phy;
+  phyLayer = phy;
   #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-  _readBitInstance = _phy;
+  readBitInstance = phyLayer;
   #endif
 }
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
   // calculate duration of 1 bit in us
-  _speed = (float)speed/1000.0f;
-  _bitDuration = (uint32_t)1000000/speed;
+  dataRate = (float)speed/1000.0f;
+  bitDuration = (uint32_t)1000000/speed;
 
   // calculate 24-bit frequency
-  _base = base;
-  _baseRaw = (_base * 1000000.0) / _phy->getFreqStep();
+  baseFreq = base;
+  baseFreqRaw = (baseFreq * 1000000.0) / phyLayer->getFreqStep();
 
   // calculate module carrier frequency resolution
-  uint16_t step = round(_phy->getFreqStep());
+  uint16_t step = round(phyLayer->getFreqStep());
 
   // calculate raw frequency shift
-  _shiftHz = shift;
-  _shift = _shiftHz/step;
+  shiftFreqHz = shift;
+  shiftFreq = shiftFreqHz/step;
   inv = invert;
 
   // initialize BCH encoder
   encoderInit();
 
   // configure for direct mode
-  return(_phy->startDirect());
+  return(phyLayer->startDirect());
 }
 
 int16_t PagerClient::sendTone(uint32_t addr) {
@@ -217,7 +217,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   #endif
 
   // turn transmitter off
-  _phy->standby();
+  phyLayer->standby();
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -225,43 +225,43 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
   // save the variables
-  _readBitPin = pin;
-  _filterAddr = addr;
-  _filterMask = mask;
+  readBitPin = pin;
+  filterAddr = addr;
+  filterMask = mask;
 
   // set the carrier frequency
-  int16_t state = _phy->setFrequency(_base);
+  int16_t state = phyLayer->setFrequency(baseFreq);
   RADIOLIB_ASSERT(state);
 
   // set bitrate
-  state = _phy->setBitRate(_speed);
+  state = phyLayer->setBitRate(dataRate);
   RADIOLIB_ASSERT(state);
 
   // set frequency deviation to 4.5 khz
-  state = _phy->setFrequencyDeviation((float)_shiftHz / 1000.0f);
+  state = phyLayer->setFrequencyDeviation((float)shiftFreqHz / 1000.0f);
   RADIOLIB_ASSERT(state);
 
   // now set up the direct mode reception
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   mod->hal->pinMode(pin, mod->hal->GpioModeInput);
 
   // set direct sync word to the frame sync word
   // the logic here is inverted, because modules like SX1278
   // assume high frequency to be logic 1, which is opposite to POCSAG
   if(!inv) {
-    _phy->setDirectSyncWord(~RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
+    phyLayer->setDirectSyncWord(~RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
   } else {
-    _phy->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
+    phyLayer->setDirectSyncWord(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD, 32);
   }
 
-  _phy->setDirectAction(PagerClientReadBit);
-  _phy->receiveDirect();
+  phyLayer->setDirectAction(PagerClientReadBit);
+  phyLayer->receiveDirect();
 
   return(state);
 }
 
 size_t PagerClient::available() {
-  return(_phy->available() + sizeof(uint32_t))/(sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
+  return(phyLayer->available() + sizeof(uint32_t))/(sizeof(uint32_t) * (RADIOLIB_PAGER_BATCH_LEN + 1));
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
@@ -316,7 +316,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   bool match = false;
   uint8_t framePos = 0;
   uint8_t symbolLength = 0;
-  while(!match && _phy->available()) {
+  while(!match && phyLayer->available()) {
     uint32_t cw = read();
     framePos++;
 
@@ -339,7 +339,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
 
     // should be an address code word, extract the address
     uint32_t addr_found = ((cw & RADIOLIB_PAGER_ADDRESS_BITS_MASK) >> (RADIOLIB_PAGER_ADDRESS_POS - 3)) | (framePos/2);
-    if((addr_found & _filterMask) == (_filterAddr & _filterMask)) {
+    if((addr_found & filterMask) == (filterAddr & filterMask)) {
       // we have a match!
       match = true;
       if(addr) {
@@ -366,7 +366,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   uint32_t prevCw = 0;
   bool overflow = false;
   int8_t ovfBits = 0;
-  while(!complete && _phy->available()) {
+  while(!complete && phyLayer->available()) {
     uint32_t cw = read();
 
     // check if it's the idle code word
@@ -452,17 +452,17 @@ void PagerClient::write(uint32_t* data, size_t len) {
 
 void PagerClient::write(uint32_t codeWord) {
   // write single code word
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   for(int8_t i = 31; i >= 0; i--) {
     uint32_t mask = (uint32_t)0x01 << i;
     uint32_t start = mod->hal->micros();
 
     // figure out the shift direction - start by assuming the bit is 0
-    int16_t change = _shift;
+    int16_t change = shiftFreq;
 
     // now check if it's actually 1
     if(codeWord & mask) {
-      change = -_shift;
+      change = -shiftFreq;
     }
 
     // finally, check if inversion is enabled
@@ -471,13 +471,13 @@ void PagerClient::write(uint32_t codeWord) {
     }
 
     // now transmit the shifted frequency
-    _phy->transmitDirect(_baseRaw + change);
+    phyLayer->transmitDirect(baseFreqRaw + change);
 
     // this is pretty silly, while(mod->hal->micros() ... ) would be enough
     // but for some reason, MegaCore throws a linker error on it
     // "relocation truncated to fit: R_AVR_7_PCREL against `no symbol'"
     uint32_t now = mod->hal->micros();
-    while(now - start < _bitDuration) {
+    while(now - start < bitDuration) {
       now = mod->hal->micros();
     }
   }
@@ -486,10 +486,10 @@ void PagerClient::write(uint32_t codeWord) {
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 uint32_t PagerClient::read() {
   uint32_t codeWord = 0;
-  codeWord |= (uint32_t)_phy->read() << 24;
-  codeWord |= (uint32_t)_phy->read() << 16;
-  codeWord |= (uint32_t)_phy->read() << 8;
-  codeWord |= (uint32_t)_phy->read();
+  codeWord |= (uint32_t)phyLayer->read() << 24;
+  codeWord |= (uint32_t)phyLayer->read() << 16;
+  codeWord |= (uint32_t)phyLayer->read() << 8;
+  codeWord |= (uint32_t)phyLayer->read();
 
   // check if we need to invert bits
   // the logic here is inverted, because modules like SX1278
@@ -548,40 +548,40 @@ char PagerClient::decodeBCD(uint8_t b) {
 void PagerClient::encoderInit() {
   /*
   * generate GF(2**m) from the irreducible polynomial p(X) in p[0]..p[m]
-  * lookup tables:  index->polynomial form   _bchAlphaTo[] contains j=alpha**i;
-  * polynomial form -> index form  _bchIndexOf[j=alpha**i] = i alpha=2 is the
+  * lookup tables:  index->polynomial form   bchAlphaTo[] contains j=alpha**i;
+  * polynomial form -> index form  bchIndexOf[j=alpha**i] = i alpha=2 is the
   * primitive element of GF(2**m)
   */
 
 	int32_t mask = 1;
-	_bchAlphaTo[RADIOLIB_PAGER_BCH_M] = 0;
+	bchAlphaTo[RADIOLIB_PAGER_BCH_M] = 0;
 
 	for(uint8_t i = 0; i < RADIOLIB_PAGER_BCH_M; i++) {
-		_bchAlphaTo[i] = mask;
+		bchAlphaTo[i] = mask;
 
-		_bchIndexOf[_bchAlphaTo[i]] = i;
+		bchIndexOf[bchAlphaTo[i]] = i;
 
     if(RADIOLIB_PAGER_BCH_PRIMITIVE_POLY & ((uint32_t)0x01 << i)) {
-      _bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^= mask;
+      bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^= mask;
     }
 
 		mask <<= 1;
 	}
 
-	_bchIndexOf[_bchAlphaTo[RADIOLIB_PAGER_BCH_M]] = RADIOLIB_PAGER_BCH_M;
+	bchIndexOf[bchAlphaTo[RADIOLIB_PAGER_BCH_M]] = RADIOLIB_PAGER_BCH_M;
 	mask >>= 1;
 
 	for(uint8_t i = RADIOLIB_PAGER_BCH_M + 1; i < RADIOLIB_PAGER_BCH_N; i++) {
-		if(_bchAlphaTo[i - 1] >= mask) {
-      _bchAlphaTo[i] = _bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^ ((_bchAlphaTo[i - 1] ^ mask) << 1);
+		if(bchAlphaTo[i - 1] >= mask) {
+      bchAlphaTo[i] = bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^ ((bchAlphaTo[i - 1] ^ mask) << 1);
     } else {
-      _bchAlphaTo[i] = _bchAlphaTo[i - 1] << 1;
+      bchAlphaTo[i] = bchAlphaTo[i - 1] << 1;
     }
 
-		_bchIndexOf[_bchAlphaTo[i]] = i;
+		bchIndexOf[bchAlphaTo[i]] = i;
 	}
 
-	_bchIndexOf[0] = -1;
+	bchIndexOf[0] = -1;
 
   /*
 	* Compute generator polynomial of BCH code of length = 31, redundancy = 10
@@ -665,19 +665,19 @@ void PagerClient::encoderInit() {
   }
 
 	// Compute generator polynomial
-	_bchG[0] = _bchAlphaTo[zeros[1]];
-	_bchG[1] = 1;		// g(x) = (X + zeros[1]) initially
+	bchG[0] = bchAlphaTo[zeros[1]];
+	bchG[1] = 1;		// g(x) = (X + zeros[1]) initially
 
 	for(ii = 2; ii <= rdncy; ii++) {
-	  _bchG[ii] = 1;
+	  bchG[ii] = 1;
 	  for(jj = ii - 1; jj > 0; jj--) {
-      if(_bchG[jj] != 0) {
-        _bchG[jj] = _bchG[jj - 1] ^ _bchAlphaTo[(_bchIndexOf[_bchG[jj]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
+      if(bchG[jj] != 0) {
+        bchG[jj] = bchG[jj - 1] ^ bchAlphaTo[(bchIndexOf[bchG[jj]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
       } else {
-        _bchG[jj] = _bchG[jj - 1];
+        bchG[jj] = bchG[jj - 1];
       }
     }
-		_bchG[0] = _bchAlphaTo[(_bchIndexOf[_bchG[0]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
+		bchG[0] = bchAlphaTo[(bchIndexOf[bchG[0]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
 	}
 }
 
@@ -711,7 +711,7 @@ uint32_t PagerClient::encodeBCH(uint32_t dat) {
   while(end < RADIOLIB_PAGER_BCH_N) {
     for(int32_t i = end; i > start-2; --i) {
       if(Mr[start]) {
-        Mr[i] ^= _bchG[j];
+        Mr[i] ^= bchG[j];
         ++j;
       } else {
         ++start;
