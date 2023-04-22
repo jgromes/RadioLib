@@ -60,14 +60,12 @@
 
 /*!
   \class APRSClient
-
   \brief Client for APRS communication.
 */
 class APRSClient {
   public:
     /*!
       \brief Default constructor.
-
       \param ax Pointer to the instance of AX25Client to be used for APRS.
     */
     explicit APRSClient(AX25Client* ax);
@@ -76,68 +74,44 @@ class APRSClient {
 
     /*!
       \brief Initialization method.
-
-      \param symbol APRS symbol to be displayed.
-
+      \param sym APRS symbol to be displayed.
       \param alt Whether to use the primary (false) or alternate (true) symbol table. Defaults to primary table.
-
       \returns \ref status_codes
     */
-    int16_t begin(char symbol, bool alt = false);
+    int16_t begin(char sym, bool alt = false);
 
     /*!
       \brief Transmit position.
-
       \param destCallsign Destination station callsign.
-
       \param destSSID Destination station SSID.
-
       \param lat Latitude as a null-terminated string.
-
       \param long Longitude as a null-terminated string.
-
       \param msg Message to be transmitted. Defaults to NULL (no message).
-
       \param msg Position timestamp. Defaults to NULL (no timestamp).
-
       \returns \ref status_codes
     */
     int16_t sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg = NULL, char* time = NULL);
 
-    /*
+    /*!
       \brief Transmit position using Mic-E encoding.
-
       \param lat Geographical latitude, positive for north, negative for south.
-
       \param lon Geographical longitude, positive for east, negative for west.
-
       \param heading Heading in degrees.
-
       \param speed Speed in knots.
-
       \param type Mic-E message type - see \ref mic_e_message_types.
-
       \param telem Pointer to telemetry array (either 2 or 5 bytes long). NULL when telemetry is not used.
-
       \param telemLen Telemetry length, 2 or 5. 0 when telemetry is not used.
-
       \param grid Maidenhead grid locator. NULL when not used.
-
       \param status Status message to send. NULL when not used.
-
       \param alt Altitude to send. RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED when not used.
     */
     int16_t sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, size_t telemLen = 0, char* grid = NULL, char* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);
 
     /*!
       \brief Transmit generic APRS frame.
-
       \param destCallsign Destination station callsign.
-
       \param destSSID Destination station SSID.
-
       \param info AX.25 info field contents.
-
       \returns \ref status_codes
     */
     int16_t sendFrame(char* destCallsign, uint8_t destSSID, char* info);
@@ -145,11 +119,11 @@ class APRSClient {
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
-    AX25Client* _ax;
+    AX25Client* axClient;
 
     // default APRS symbol (car)
-    char _symbol = '>';
-    char _table = '/';
+    char symbol = '>';
+    char table = '/';
 };
 
 #endif

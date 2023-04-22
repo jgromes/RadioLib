@@ -5,17 +5,17 @@
 #if !defined(RADIOLIB_EXCLUDE_APRS)
 
 APRSClient::APRSClient(AX25Client* ax) {
-  _ax = ax;
+  axClient = ax;
 }
 
-int16_t APRSClient::begin(char symbol, bool alt) {
-  RADIOLIB_CHECK_RANGE(symbol, ' ', '}', RADIOLIB_ERR_INVALID_SYMBOL);
-  _symbol = symbol;
+int16_t APRSClient::begin(char sym, bool alt) {
+  RADIOLIB_CHECK_RANGE(sym, ' ', '}', RADIOLIB_ERR_INVALID_SYMBOL);
+  symbol = sym;
 
   if(alt) {
-    _table = '\\';
+    table = '\\';
   } else {
-    _table = '/';
+    table = '/';
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -38,16 +38,16 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
   // build the info field
   if((msg == NULL) && (time == NULL)) {
     // no message, no timestamp
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_NO_MSG "%s%c%s%c", lat, _table, lon, _symbol);
+    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_NO_MSG "%s%c%s%c", lat, table, lon, symbol);
   } else if((msg != NULL) && (time == NULL)) {
     // message, no timestamp
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, _table, lon, _symbol, msg);
+    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, table, lon, symbol, msg);
   } else if((msg == NULL) && (time != NULL)) {
     // timestamp, no message
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_NO_MSG "%s%s%c%s%c", time, lat, _table, lon, _symbol);
+    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_NO_MSG "%s%s%c%s%c", time, lat, table, lon, symbol);
   } else {
     // timestamp and message
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_MSG "%s%s%c%s%c%s", time, lat, _table, lon, _symbol, msg);
+    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_MSG "%s%s%c%s%c%s", time, lat, table, lon, symbol, msg);
   }
 
   // send the frame
@@ -170,8 +170,8 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
 
   info[infoPos++] = speed_uni*10 + head_hun + 32;
   info[infoPos++] = head_ten_uni + 28;
-  info[infoPos++] = _symbol;
-  info[infoPos++] = _table;
+  info[infoPos++] = symbol;
+  info[infoPos++] = table;
 
   // onto the optional stuff - check telemetry first
   if(telemLen > 0) {
@@ -221,13 +221,13 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
 int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) {
   // get AX.25 callsign
   char srcCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
-  _ax->getCallsign(srcCallsign);
+  axClient->getCallsign(srcCallsign);
 
-  AX25Frame frameUI(destCallsign, destSSID, srcCallsign, _ax->getSSID(), RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
+  AX25Frame frameUI(destCallsign, destSSID, srcCallsign, axClient->getSSID(), RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
                     RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
                     RADIOLIB_AX25_PID_NO_LAYER_3, (const char*)info);
 
-  return(_ax->sendFrame(&frameUI));
+  return(axClient->sendFrame(&frameUI));
 }
 
 #endif
