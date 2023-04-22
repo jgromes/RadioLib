@@ -201,9 +201,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf96cf4f3cb4c82d44be581dbe615966"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:abf96cf4f3cb4c82d44be581dbe615966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode. Must be implemented in module class.  <a href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">More...</a><br /></td></tr>
 <tr class="separator:abf96cf4f3cb4c82d44be581dbe615966"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae868adcc63ee0869999e8ccac86b6ff2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae868adcc63ee0869999e8ccac86b6ff2">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
-<tr class="memdesc:ae868adcc63ee0869999e8ccac86b6ff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode. Must be implemented in module class.  <a href="class_physical_layer.html#ae868adcc63ee0869999e8ccac86b6ff2">More...</a><br /></td></tr>
-<tr class="separator:ae868adcc63ee0869999e8ccac86b6ff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acda61fc99cfa373153c50c78380ed885"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">readBit</a> (uint32_t pin)</td></tr>
+<tr class="memdesc:acda61fc99cfa373153c50c78380ed885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode. Must be implemented in module class.  <a href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">More...</a><br /></td></tr>
+<tr class="separator:acda61fc99cfa373153c50c78380ed885"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab57182d32646861ef0d865e2740d6b26"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">available</a> ()</td></tr>
 <tr class="memdesc:ab57182d32646861ef0d865e2740d6b26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of direct mode bytes currently available in buffer.  <a href="class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26">More...</a><br /></td></tr>
 <tr class="separator:ab57182d32646861ef0d865e2740d6b26"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,9 +214,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">More...</a><br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
-<tr class="memdesc:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">More...</a><br /></td></tr>
-<tr class="separator:a47c1d94d2ad2fd7eb5d11480b44cc368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349e8a22cd28ad89d45460fdeeefc05c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
+<tr class="memdesc:a349e8a22cd28ad89d45460fdeeefc05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">More...</a><br /></td></tr>
+<tr class="separator:a349e8a22cd28ad89d45460fdeeefc05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63c0beb4990876947f746751d45ac41d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a63c0beb4990876947f746751d45ac41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">More...</a><br /></td></tr>
 <tr class="separator:a63c0beb4990876947f746751d45ac41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,8 +582,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 
 </div>
 </div>
-<a id="ae868adcc63ee0869999e8ccac86b6ff2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae868adcc63ee0869999e8ccac86b6ff2">&#9670;&nbsp;</a></span>readBit()</h2>
+<a id="acda61fc99cfa373153c50c78380ed885"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acda61fc99cfa373153c50c78380ed885">&#9670;&nbsp;</a></span>readBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -594,7 +594,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
         <tr>
           <td class="memname">void PhysicalLayer::readBit </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em></td><td>)</td>
           <td></td>
         </tr>
@@ -614,7 +614,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">SX128x</a>, <a class="el" href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">SX127x</a>, <a class="el" href="class_s_x126x.html#aff80db65e546934980feac7e6c81dd80">SX126x</a>, <a class="el" href="class_si443x.html#a45d3ffcb312c34a2f6391be6d609d7b7">Si443x</a>, <a class="el" href="class_r_f69.html#a0ca79ae99c3e0c9d7c097a7acefd6faa">RF69</a>, <a class="el" href="classn_r_f24.html#a2db0cd487b03f937afc0bc2e3eccb6f6">nRF24</a>, and <a class="el" href="class_c_c1101.html#a5cebec89fc0fa0f5ccbce28c6ce7d2dc">CC1101</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#aceeb18acbfedb20c6cf60e26d5275793">SX128x</a>, <a class="el" href="class_s_x127x.html#a1a2dc7554414f0ce2ee0db23087f698a">SX127x</a>, <a class="el" href="class_s_x126x.html#a8cdc4f25d4193dc75f9442874131eab3">SX126x</a>, <a class="el" href="class_si443x.html#af23d8eb0f1c436e6cc60361df13c08f7">Si443x</a>, <a class="el" href="class_r_f69.html#ab797840275fbccc40162225c32f5ffc3">RF69</a>, <a class="el" href="classn_r_f24.html#a2db0be9ff6891e6bfb539245a2a66563">nRF24</a>, and <a class="el" href="class_c_c1101.html#a206e6c6f094aa7e68388fd9412cd969e">CC1101</a>.</p>
 
 </div>
 </div>
@@ -854,8 +854,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 
 </div>
 </div>
-<a id="a47c1d94d2ad2fd7eb5d11480b44cc368"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47c1d94d2ad2fd7eb5d11480b44cc368">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
+<a id="a349e8a22cd28ad89d45460fdeeefc05c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a349e8a22cd28ad89d45460fdeeefc05c">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -866,13 +866,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
         <tr>
           <td class="memname">int16_t PhysicalLayer::setDIOMapping </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
@@ -898,7 +898,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x127x.html#adbea7515add3d81c3024ceb0d570266b">SX127x</a>, <a class="el" href="class_r_f69.html#a4b879c689b19036411d884f6657f95db">RF69</a>, and <a class="el" href="class_c_c1101.html#a1acad996e9452c504cf0f89806c46c8a">CC1101</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a103b606166eba8c69bff061270744768">SX127x</a>, <a class="el" href="class_r_f69.html#a0d7720672c0aa0cf4464d544540cbada">RF69</a>, and <a class="el" href="class_c_c1101.html#a009c31564866d8d14759f17f29b08ee6">CC1101</a>.</p>
 
 </div>
 </div>

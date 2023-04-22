@@ -112,9 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a77aafe7c86e6e1e4e22990be4e7f090b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a77aafe7c86e6e1e4e22990be4e7f090b">transmit</a> (uint8_t *data, size_t len, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD)</td></tr>
 <tr class="memdesc:a77aafe7c86e6e1e4e22990be4e7f090b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data.  <a href="class_pager_client.html#a77aafe7c86e6e1e4e22990be4e7f090b">More...</a><br /></td></tr>
 <tr class="separator:a77aafe7c86e6e1e4e22990be4e7f090b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad6f4f034b71311144f76b629a8ef8f8d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ad6f4f034b71311144f76b629a8ef8f8d">startReceive</a> (RADIOLIB_PIN_TYPE pin, uint32_t addr, uint32_t mask=0xFFFFF)</td></tr>
-<tr class="memdesc:ad6f4f034b71311144f76b629a8ef8f8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start reception of POCSAG packets.  <a href="class_pager_client.html#ad6f4f034b71311144f76b629a8ef8f8d">More...</a><br /></td></tr>
-<tr class="separator:ad6f4f034b71311144f76b629a8ef8f8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac232570ac012ff315a1971ab0422fed3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a> (uint32_t pin, uint32_t addr, uint32_t mask=0xFFFFF)</td></tr>
+<tr class="memdesc:ac232570ac012ff315a1971ab0422fed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start reception of POCSAG packets.  <a href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">More...</a><br /></td></tr>
+<tr class="separator:ac232570ac012ff315a1971ab0422fed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec073fa9e5adcff9730482d9583715e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a> ()</td></tr>
 <tr class="memdesc:aec073fa9e5adcff9730482d9583715e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!  <a href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">More...</a><br /></td></tr>
 <tr class="separator:aec073fa9e5adcff9730482d9583715e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,8 +304,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ad6f4f034b71311144f76b629a8ef8f8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad6f4f034b71311144f76b629a8ef8f8d">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="ac232570ac012ff315a1971ab0422fed3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac232570ac012ff315a1971ab0422fed3">&#9670;&nbsp;</a></span>startReceive()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +313,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">int16_t PagerClient::startReceive </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em>, </td>
         </tr>
         <tr>

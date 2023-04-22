@@ -5,7 +5,7 @@ var class_pager_client =
     [ "begin", "class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f", null ],
     [ "readData", "class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b", null ],
     [ "sendTone", "class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111", null ],
-    [ "startReceive", "class_pager_client.html#ad6f4f034b71311144f76b629a8ef8f8d", null ],
+    [ "startReceive", "class_pager_client.html#ac232570ac012ff315a1971ab0422fed3", null ],
     [ "transmit", "class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd", null ],
     [ "transmit", "class_pager_client.html#a77aafe7c86e6e1e4e22990be4e7f090b", null ]
 ];

@@ -2,9 +2,13 @@ var hierarchy =
 [
     [ "AFSKClient", "class_a_f_s_k_client.html", null ],
     [ "APRSClient", "class_a_p_r_s_client.html", null ],
+    [ "ArduinoHal", null, [
+      [ "Stm32wlxHal", "class_stm32wlx_hal.html", null ]
+    ] ],
     [ "AX25Client", "class_a_x25_client.html", null ],
     [ "AX25Frame", "class_a_x25_frame.html", null ],
     [ "FSK4Client", "class_f_s_k4_client.html", null ],
+    [ "Hal", "class_hal.html", null ],
     [ "HellClient", "class_hell_client.html", null ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
     [ "Module", "class_module.html", [

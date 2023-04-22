@@ -13,5 +13,5 @@ var class_s_t_m32_w_lx =
     [ "clearDio1Action", "class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc", null ],
     [ "setDio1Action", "class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e", null ],
     [ "setOutputPower", "class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b", null ],
-    [ "setRfSwitchTable", "class_s_t_m32_w_lx.html#ad92085fdf4508c0849de0aec8dee2494", null ]
+    [ "setRfSwitchTable", "class_s_t_m32_w_lx.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7", null ]
 ];

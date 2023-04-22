@@ -248,12 +248,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8720a388d2cd10fac3112b89f4a80947"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a8720a388d2cd10fac3112b89f4a80947">setEncoding</a> (uint8_t encoding) override</td></tr>
 <tr class="memdesc:a8720a388d2cd10fac3112b89f4a80947"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission encoding. Serves only as alias for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#a8720a388d2cd10fac3112b89f4a80947">More...</a><br /></td></tr>
 <tr class="separator:a8720a388d2cd10fac3112b89f4a80947"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f11803b3430bc059321b443f407e78b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a5f11803b3430bc059321b443f407e78b">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
-<tr class="memdesc:a5f11803b3430bc059321b443f407e78b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_s_x128x.html#a5f11803b3430bc059321b443f407e78b">More...</a><br /></td></tr>
-<tr class="separator:a5f11803b3430bc059321b443f407e78b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae14ea0c263fba51ec39d146c5877f0a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ae14ea0c263fba51ec39d146c5877f0a3">setRfSwitchTable</a> (const RADIOLIB_PIN_TYPE(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
-<tr class="memdesc:ae14ea0c263fba51ec39d146c5877f0a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_x128x.html#ae14ea0c263fba51ec39d146c5877f0a3">More...</a><br /></td></tr>
-<tr class="separator:ae14ea0c263fba51ec39d146c5877f0a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba683fbc4a46418ce3736f224fb55f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2">setRfSwitchPins</a> (uint32_t rxEn, uint32_t txEn)</td></tr>
+<tr class="memdesc:a5ba683fbc4a46418ce3736f224fb55f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_s_x128x.html#a5ba683fbc4a46418ce3736f224fb55f2">More...</a><br /></td></tr>
+<tr class="separator:a5ba683fbc4a46418ce3736f224fb55f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5789bd27d46b24f54aac9ca55ec9958"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:ad5789bd27d46b24f54aac9ca55ec9958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958">More...</a><br /></td></tr>
+<tr class="separator:ad5789bd27d46b24f54aac9ca55ec9958"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95637e8addc48b0e1c30c2cf6f54354a"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a95637e8addc48b0e1c30c2cf6f54354a">randomByte</a> ()</td></tr>
 <tr class="memdesc:a95637e8addc48b0e1c30c2cf6f54354a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy random method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#a95637e8addc48b0e1c30c2cf6f54354a">More...</a><br /></td></tr>
 <tr class="separator:a95637e8addc48b0e1c30c2cf6f54354a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -263,9 +263,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aff1b549077b9d752f53bf9dfc6840236"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:aff1b549077b9d752f53bf9dfc6840236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#aff1b549077b9d752f53bf9dfc6840236">More...</a><br /></td></tr>
 <tr class="separator:aff1b549077b9d752f53bf9dfc6840236"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dd0ecae9f54cf6943cf702ae15f5039"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
-<tr class="memdesc:a2dd0ecae9f54cf6943cf702ae15f5039"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#a2dd0ecae9f54cf6943cf702ae15f5039">More...</a><br /></td></tr>
-<tr class="separator:a2dd0ecae9f54cf6943cf702ae15f5039"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceeb18acbfedb20c6cf60e26d5275793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#aceeb18acbfedb20c6cf60e26d5275793">readBit</a> (uint32_t pin)</td></tr>
+<tr class="memdesc:aceeb18acbfedb20c6cf60e26d5275793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy method, to ensure <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#aceeb18acbfedb20c6cf60e26d5275793">More...</a><br /></td></tr>
+<tr class="separator:aceeb18acbfedb20c6cf60e26d5275793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_s_x128x.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -325,9 +325,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">More...</a><br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
-<tr class="memdesc:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">More...</a><br /></td></tr>
-<tr class="separator:a47c1d94d2ad2fd7eb5d11480b44cc368 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
+<tr class="memdesc:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">More...</a><br /></td></tr>
+<tr class="separator:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for SX128x series. All derived classes for SX128x (e.g. <a class="el" href="class_s_x1280.html" title="Derived class for SX1280 modules.">SX1280</a> or <a class="el" href="class_s_x1281.html" title="Derived class for SX1281 modules.">SX1281</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
@@ -915,8 +915,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a2dd0ecae9f54cf6943cf702ae15f5039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dd0ecae9f54cf6943cf702ae15f5039">&#9670;&nbsp;</a></span>readBit()</h2>
+<a id="aceeb18acbfedb20c6cf60e26d5275793"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aceeb18acbfedb20c6cf60e26d5275793">&#9670;&nbsp;</a></span>readBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -927,7 +927,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX128x::readBit </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em></td><td>)</td>
           <td></td>
         </tr>
@@ -947,7 +947,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae868adcc63ee0869999e8ccac86b6ff2">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1674,8 +1674,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a5f11803b3430bc059321b443f407e78b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f11803b3430bc059321b443f407e78b">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
+<a id="a5ba683fbc4a46418ce3736f224fb55f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ba683fbc4a46418ce3736f224fb55f2">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1683,13 +1683,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX128x::setRfSwitchPins </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>rxEn</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>txEn</em>&#160;</td>
         </tr>
         <tr>
@@ -1702,7 +1702,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH. </p>
 <p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
-<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_s_x128x.html#ae14ea0c263fba51ec39d146c5877f0a3" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
+<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rxEn</td><td>RX enable pin. </td></tr>
@@ -1713,8 +1713,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae14ea0c263fba51ec39d146c5877f0a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae14ea0c263fba51ec39d146c5877f0a3">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
+<a id="ad5789bd27d46b24f54aac9ca55ec9958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5789bd27d46b24f54aac9ca55ec9958">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1722,7 +1722,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX128x::setRfSwitchTable </td>
           <td>(</td>
-          <td class="paramtype">const RADIOLIB_PIN_TYPE(&amp;)&#160;</td>
+          <td class="paramtype">const uint32_t(&amp;)&#160;</td>
           <td class="paramname"><em>pins</em>[Module::RFSWITCH_MAX_PINS], </td>
         </tr>
         <tr>
@@ -1755,7 +1755,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <h4>Example</h4>
 <p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
 <div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> RADIOLIB_PIN_TYPE rfswitch_pins[] =</div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint32_t rfswitch_pins[] =</div>
 <div class="line">                       {PA0,  PA1,  RADIOLIB_NC};</div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
 <div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
@@ -1770,10 +1770,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:64</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:66</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:65</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:47</div></div>
 </div><!-- fragment --> 
 </div>
 </div>

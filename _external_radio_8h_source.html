@@ -91,20 +91,28 @@ $(document).ready(function(){initNavTree('_external_radio_8h_source.html',''); i
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../PhysicalLayer/PhysicalLayer.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
-<div class="line"><a name="l00009"></a><span class="lineno"><a class="line" href="class_external_radio.html">    9</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_external_radio.html">ExternalRadio</a>: <span class="keyword">public</span> <a class="code" href="class_physical_layer.html">PhysicalLayer</a> {</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="class_external_radio.html">ExternalRadio</a>();</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;};</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_external_radio_html"><div class="ttname"><a href="class_external_radio.html">ExternalRadio</a></div><div class="ttdef"><b>Definition:</b> ExternalRadio.h:9</div></div>
-<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:28</div></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../../ArduinoHal.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#include &quot;../PhysicalLayer/PhysicalLayer.h&quot;</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00012"></a><span class="lineno"><a class="line" href="class_external_radio.html">   12</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_external_radio.html">ExternalRadio</a>: <span class="keyword">public</span> <a class="code" href="class_physical_layer.html">PhysicalLayer</a> {</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="class_external_radio.html">ExternalRadio</a>();</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;    <a class="code" href="class_external_radio.html">ExternalRadio</a>(<a class="code" href="class_hal.html">Hal</a> *hal);</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;};</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_external_radio_html"><div class="ttname"><a href="class_external_radio.html">ExternalRadio</a></div><div class="ttdef"><b>Definition:</b> ExternalRadio.h:12</div></div>
+<div class="ttc" id="aclass_hal_html"><div class="ttname"><a href="class_hal.html">Hal</a></div><div class="ttdoc">Hardware abstraction library base interface.</div><div class="ttdef"><b>Definition:</b> Hal.h:11</div></div>
+<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:29</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

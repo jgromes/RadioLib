@@ -9,7 +9,7 @@ var classn_r_f24 =
     [ "getStatus", "classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9", null ],
     [ "isCarrierDetected", "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37", null ],
     [ "randomByte", "classn_r_f24.html#a5cc7cd54db2a6af1c9183a2d0653fe2e", null ],
-    [ "readBit", "classn_r_f24.html#a2db0cd487b03f937afc0bc2e3eccb6f6", null ],
+    [ "readBit", "classn_r_f24.html#a2db0be9ff6891e6bfb539245a2a66563", null ],
     [ "readData", "classn_r_f24.html#a3563453988a83d22dd07d4691543a300", null ],
     [ "readData", "classn_r_f24.html#a410fb78acb4ed358818c132687b8857a", null ],
     [ "receive", "classn_r_f24.html#ab82617fa3fa9f21d4cd427314ecc4af8", null ],

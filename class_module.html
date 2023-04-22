@@ -129,9 +129,9 @@ typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1101d49f597f756141fc9de88a504f21"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a1101d49f597f756141fc9de88a504f21">Module</a> (RADIOLIB_PIN_TYPE cs, RADIOLIB_PIN_TYPE irq, RADIOLIB_PIN_TYPE rst, RADIOLIB_PIN_TYPE gpio=RADIOLIB_NC)</td></tr>
-<tr class="memdesc:a1101d49f597f756141fc9de88a504f21"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_module.html#a1101d49f597f756141fc9de88a504f21">More...</a><br /></td></tr>
-<tr class="separator:a1101d49f597f756141fc9de88a504f21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24ec9667744f4f6997e98d0f8b5776fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a24ec9667744f4f6997e98d0f8b5776fe">Module</a> (<a class="el" href="class_hal.html">Hal</a> *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio=RADIOLIB_NC)</td></tr>
+<tr class="memdesc:a24ec9667744f4f6997e98d0f8b5776fe"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor.  <a href="class_module.html#a24ec9667744f4f6997e98d0f8b5776fe">More...</a><br /></td></tr>
+<tr class="separator:a24ec9667744f4f6997e98d0f8b5776fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919baf2e46c357ebfcdbc1025b6c551e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a919baf2e46c357ebfcdbc1025b6c551e">Module</a> (const <a class="el" href="class_module.html">Module</a> &amp;mod)</td></tr>
 <tr class="memdesc:a919baf2e46c357ebfcdbc1025b6c551e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="class_module.html#a919baf2e46c357ebfcdbc1025b6c551e">More...</a><br /></td></tr>
 <tr class="separator:a919baf2e46c357ebfcdbc1025b6c551e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -185,24 +185,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac3586c8d4013cbdd22cf34032632c181"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">SPItransferStream</a> (uint8_t *cmd, uint8_t cmdLen, bool write, uint8_t *dataOut, uint8_t *dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout)</td></tr>
 <tr class="memdesc:ac3586c8d4013cbdd22cf34032632c181"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.).  <a href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">More...</a><br /></td></tr>
 <tr class="separator:ac3586c8d4013cbdd22cf34032632c181"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae53e355a77f2b7ce6473c62ac5f37334"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_TYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ae53e355a77f2b7ce6473c62ac5f37334">getCs</a> () const</td></tr>
-<tr class="memdesc:ae53e355a77f2b7ce6473c62ac5f37334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of SPI chip select.  <a href="class_module.html#ae53e355a77f2b7ce6473c62ac5f37334">More...</a><br /></td></tr>
-<tr class="separator:ae53e355a77f2b7ce6473c62ac5f37334"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c7f17a63b67117d953f1ba990b17f80"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_TYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a8c7f17a63b67117d953f1ba990b17f80">getIrq</a> () const</td></tr>
-<tr class="memdesc:a8c7f17a63b67117d953f1ba990b17f80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of interrupt/GPIO.  <a href="class_module.html#a8c7f17a63b67117d953f1ba990b17f80">More...</a><br /></td></tr>
-<tr class="separator:a8c7f17a63b67117d953f1ba990b17f80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae352c7a7b997fc1b17189c1312a8347f"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_TYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ae352c7a7b997fc1b17189c1312a8347f">getRst</a> () const</td></tr>
-<tr class="memdesc:ae352c7a7b997fc1b17189c1312a8347f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of hardware reset pin.  <a href="class_module.html#ae352c7a7b997fc1b17189c1312a8347f">More...</a><br /></td></tr>
-<tr class="separator:ae352c7a7b997fc1b17189c1312a8347f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb4c7447372d56a7cae6db91994aacfc"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_TYPE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aeb4c7447372d56a7cae6db91994aacfc">getGpio</a> () const</td></tr>
-<tr class="memdesc:aeb4c7447372d56a7cae6db91994aacfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of second interrupt/GPIO.  <a href="class_module.html#aeb4c7447372d56a7cae6db91994aacfc">More...</a><br /></td></tr>
-<tr class="separator:aeb4c7447372d56a7cae6db91994aacfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ecbb4e1e98094c1296b1e823dc14703"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a0ecbb4e1e98094c1296b1e823dc14703">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
-<tr class="memdesc:a0ecbb4e1e98094c1296b1e823dc14703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_module.html#a0ecbb4e1e98094c1296b1e823dc14703">More...</a><br /></td></tr>
-<tr class="separator:a0ecbb4e1e98094c1296b1e823dc14703"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a870c63233146d03380f753498c975050"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a870c63233146d03380f753498c975050">setRfSwitchTable</a> (const RADIOLIB_PIN_TYPE(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> table[])</td></tr>
-<tr class="memdesc:a870c63233146d03380f753498c975050"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_module.html#a870c63233146d03380f753498c975050">More...</a><br /></td></tr>
-<tr class="separator:a870c63233146d03380f753498c975050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7">getCs</a> () const</td></tr>
+<tr class="memdesc:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of SPI chip select.  <a href="class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7">More...</a><br /></td></tr>
+<tr class="separator:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab61bc5066c356e2d0d79f08a2bd0fbc9"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ab61bc5066c356e2d0d79f08a2bd0fbc9">getIrq</a> () const</td></tr>
+<tr class="memdesc:ab61bc5066c356e2d0d79f08a2bd0fbc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of interrupt/GPIO.  <a href="class_module.html#ab61bc5066c356e2d0d79f08a2bd0fbc9">More...</a><br /></td></tr>
+<tr class="separator:ab61bc5066c356e2d0d79f08a2bd0fbc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6cddbf3aebec9717a1a381dd81ad398"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ad6cddbf3aebec9717a1a381dd81ad398">getRst</a> () const</td></tr>
+<tr class="memdesc:ad6cddbf3aebec9717a1a381dd81ad398"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of hardware reset pin.  <a href="class_module.html#ad6cddbf3aebec9717a1a381dd81ad398">More...</a><br /></td></tr>
+<tr class="separator:ad6cddbf3aebec9717a1a381dd81ad398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ec27f0ba5e0009ea9661a5110526b52"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4ec27f0ba5e0009ea9661a5110526b52">getGpio</a> () const</td></tr>
+<tr class="memdesc:a4ec27f0ba5e0009ea9661a5110526b52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of second interrupt/GPIO.  <a href="class_module.html#a4ec27f0ba5e0009ea9661a5110526b52">More...</a><br /></td></tr>
+<tr class="separator:a4ec27f0ba5e0009ea9661a5110526b52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d3adea64acab11c47c804afc74bd4f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7d3adea64acab11c47c804afc74bd4f3">setRfSwitchPins</a> (uint32_t rxEn, uint32_t txEn)</td></tr>
+<tr class="memdesc:a7d3adea64acab11c47c804afc74bd4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_module.html#a7d3adea64acab11c47c804afc74bd4f3">More...</a><br /></td></tr>
+<tr class="separator:a7d3adea64acab11c47c804afc74bd4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac308fa817a5c36c5dc724a0d15cefd4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:ac308fa817a5c36c5dc724a0d15cefd4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d">More...</a><br /></td></tr>
+<tr class="separator:ac308fa817a5c36c5dc724a0d15cefd4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5699a937b62ba41387567b4d679b9377"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a5699a937b62ba41387567b4d679b9377">findRfSwitchMode</a> (uint8_t mode) const</td></tr>
 <tr class="memdesc:a5699a937b62ba41387567b4d679b9377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a mode in the RfSwitchTable.  <a href="class_module.html#a5699a937b62ba41387567b4d679b9377">More...</a><br /></td></tr>
 <tr class="separator:a5699a937b62ba41387567b4d679b9377"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -212,69 +212,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a47978200f7e2e408fb64f506c81cee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">waitForMicroseconds</a> (uint32_t start, uint32_t len)</td></tr>
 <tr class="memdesc:a47978200f7e2e408fb64f506c81cee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!  <a href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">More...</a><br /></td></tr>
 <tr class="separator:a47978200f7e2e408fb64f506c81cee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7e4872dad3d19b6f75f532c88683168"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af7e4872dad3d19b6f75f532c88683168">pinMode</a> (RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_MODE mode)</td></tr>
-<tr class="memdesc:af7e4872dad3d19b6f75f532c88683168"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin.  <a href="class_module.html#af7e4872dad3d19b6f75f532c88683168">More...</a><br /></td></tr>
-<tr class="separator:af7e4872dad3d19b6f75f532c88683168"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ad10b113df7c7e0a932be19eff63cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a46ad10b113df7c7e0a932be19eff63cd">digitalWrite</a> (RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS value)</td></tr>
-<tr class="memdesc:a46ad10b113df7c7e0a932be19eff63cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin.  <a href="class_module.html#a46ad10b113df7c7e0a932be19eff63cd">More...</a><br /></td></tr>
-<tr class="separator:a46ad10b113df7c7e0a932be19eff63cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7495c81640aac8f4686221dad34a274f"><td class="memItemLeft" align="right" valign="top">RADIOLIB_PIN_STATUS&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7495c81640aac8f4686221dad34a274f">digitalRead</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
-<tr class="memdesc:a7495c81640aac8f4686221dad34a274f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin.  <a href="class_module.html#a7495c81640aac8f4686221dad34a274f">More...</a><br /></td></tr>
-<tr class="separator:a7495c81640aac8f4686221dad34a274f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33e33df69d58660b8cd0e2dafe5e9189"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a33e33df69d58660b8cd0e2dafe5e9189">tone</a> (RADIOLIB_PIN_TYPE pin, uint16_t value, uint32_t duration=0)</td></tr>
-<tr class="memdesc:a33e33df69d58660b8cd0e2dafe5e9189"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core tone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone.  <a href="class_module.html#a33e33df69d58660b8cd0e2dafe5e9189">More...</a><br /></td></tr>
-<tr class="separator:a33e33df69d58660b8cd0e2dafe5e9189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af998b86ce1243f616f6fcb6df5336207"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af998b86ce1243f616f6fcb6df5336207">noTone</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
-<tr class="memdesc:af998b86ce1243f616f6fcb6df5336207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core noTone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone.  <a href="class_module.html#af998b86ce1243f616f6fcb6df5336207">More...</a><br /></td></tr>
-<tr class="separator:af998b86ce1243f616f6fcb6df5336207"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91aaa34aecdfeaf24948551b037033be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a91aaa34aecdfeaf24948551b037033be">attachInterrupt</a> (RADIOLIB_PIN_TYPE interruptNum, void(*userFunc)(void), RADIOLIB_INTERRUPT_STATUS mode)</td></tr>
-<tr class="memdesc:a91aaa34aecdfeaf24948551b037033be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core attachInterrupt override.  <a href="class_module.html#a91aaa34aecdfeaf24948551b037033be">More...</a><br /></td></tr>
-<tr class="separator:a91aaa34aecdfeaf24948551b037033be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a656738f2fe41fb236d27aed02efa8ad4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a656738f2fe41fb236d27aed02efa8ad4">detachInterrupt</a> (RADIOLIB_PIN_TYPE interruptNum)</td></tr>
-<tr class="memdesc:a656738f2fe41fb236d27aed02efa8ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core detachInterrupt override.  <a href="class_module.html#a656738f2fe41fb236d27aed02efa8ad4">More...</a><br /></td></tr>
-<tr class="separator:a656738f2fe41fb236d27aed02efa8ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a227d2d38e4747d0f49bb4df1c80b45d7"><td class="memItemLeft" align="right" valign="top"><a id="a227d2d38e4747d0f49bb4df1c80b45d7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a227d2d38e4747d0f49bb4df1c80b45d7">yield</a> ()</td></tr>
-<tr class="memdesc:a227d2d38e4747d0f49bb4df1c80b45d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core yield override. <br /></td></tr>
-<tr class="separator:a227d2d38e4747d0f49bb4df1c80b45d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0f870b09b9dd9636f1587d708f07d38"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af0f870b09b9dd9636f1587d708f07d38">delay</a> (uint32_t ms)</td></tr>
-<tr class="memdesc:af0f870b09b9dd9636f1587d708f07d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core delay override.  <a href="class_module.html#af0f870b09b9dd9636f1587d708f07d38">More...</a><br /></td></tr>
-<tr class="separator:af0f870b09b9dd9636f1587d708f07d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14d7cd8220bfa4440bda055ce5be748c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a14d7cd8220bfa4440bda055ce5be748c">delayMicroseconds</a> (uint32_t us)</td></tr>
-<tr class="memdesc:a14d7cd8220bfa4440bda055ce5be748c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core delayMicroseconds override.  <a href="class_module.html#a14d7cd8220bfa4440bda055ce5be748c">More...</a><br /></td></tr>
-<tr class="separator:a14d7cd8220bfa4440bda055ce5be748c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a216dd0c6ce140857f2b003ab8d89fbac"><td class="memItemLeft" align="right" valign="top"><a id="a216dd0c6ce140857f2b003ab8d89fbac"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a216dd0c6ce140857f2b003ab8d89fbac">millis</a> ()</td></tr>
-<tr class="memdesc:a216dd0c6ce140857f2b003ab8d89fbac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core millis override. <br /></td></tr>
-<tr class="separator:a216dd0c6ce140857f2b003ab8d89fbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3f51e517a825949891ad29e30fd3f59"><td class="memItemLeft" align="right" valign="top"><a id="af3f51e517a825949891ad29e30fd3f59"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af3f51e517a825949891ad29e30fd3f59">micros</a> ()</td></tr>
-<tr class="memdesc:af3f51e517a825949891ad29e30fd3f59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core micros override. <br /></td></tr>
-<tr class="separator:af3f51e517a825949891ad29e30fd3f59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1310b9594f86fb1dc6646479922a1fdc"><td class="memItemLeft" align="right" valign="top"><a id="a1310b9594f86fb1dc6646479922a1fdc"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a1310b9594f86fb1dc6646479922a1fdc">pulseIn</a> (RADIOLIB_PIN_TYPE pin, RADIOLIB_PIN_STATUS state, uint32_t timeout)</td></tr>
-<tr class="memdesc:a1310b9594f86fb1dc6646479922a1fdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core pulseIn override. <br /></td></tr>
-<tr class="separator:a1310b9594f86fb1dc6646479922a1fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6bfd022681d360082e3dd31a984e1f7"><td class="memItemLeft" align="right" valign="top"><a id="af6bfd022681d360082e3dd31a984e1f7"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#af6bfd022681d360082e3dd31a984e1f7">begin</a> ()</td></tr>
-<tr class="memdesc:af6bfd022681d360082e3dd31a984e1f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI begin override. <br /></td></tr>
-<tr class="separator:af6bfd022681d360082e3dd31a984e1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d0caa9f5e38cfa2c609570a89a4a703"><td class="memItemLeft" align="right" valign="top"><a id="a3d0caa9f5e38cfa2c609570a89a4a703"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a3d0caa9f5e38cfa2c609570a89a4a703">beginTransaction</a> ()</td></tr>
-<tr class="memdesc:a3d0caa9f5e38cfa2c609570a89a4a703"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI beginTransaction override. <br /></td></tr>
-<tr class="separator:a3d0caa9f5e38cfa2c609570a89a4a703"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45e7823c44ac0aa8a10bd4f365890c98"><td class="memItemLeft" align="right" valign="top"><a id="a45e7823c44ac0aa8a10bd4f365890c98"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a45e7823c44ac0aa8a10bd4f365890c98">transfer</a> (uint8_t b)</td></tr>
-<tr class="memdesc:a45e7823c44ac0aa8a10bd4f365890c98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI transfer override. <br /></td></tr>
-<tr class="separator:a45e7823c44ac0aa8a10bd4f365890c98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a015226566efc5131c8a39a184b6c4e6b"><td class="memItemLeft" align="right" valign="top"><a id="a015226566efc5131c8a39a184b6c4e6b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a015226566efc5131c8a39a184b6c4e6b">endTransaction</a> ()</td></tr>
-<tr class="memdesc:a015226566efc5131c8a39a184b6c4e6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI endTransaction override. <br /></td></tr>
-<tr class="separator:a015226566efc5131c8a39a184b6c4e6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7fc017ee35f40c90e5badc5bc568c3d"><td class="memItemLeft" align="right" valign="top"><a id="aa7fc017ee35f40c90e5badc5bc568c3d"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aa7fc017ee35f40c90e5badc5bc568c3d">end</a> ()</td></tr>
-<tr class="memdesc:aa7fc017ee35f40c90e5badc5bc568c3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Arduino core SPI end override. <br /></td></tr>
-<tr class="separator:aa7fc017ee35f40c90e5badc5bc568c3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb13a50ed53b009c04dc2ed6caf78423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">regdump</a> (uint16_t start, size_t len)</td></tr>
 <tr class="memdesc:abb13a50ed53b009c04dc2ed6caf78423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump device registers as hex into the debug port.  <a href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">More...</a><br /></td></tr>
 <tr class="separator:abb13a50ed53b009c04dc2ed6caf78423"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,6 +232,9 @@ static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:aa6b563cefaacda5518563ff533c6569b"><td class="memItemLeft" align="right" valign="top"><a id="aa6b563cefaacda5518563ff533c6569b"></a>
+<a class="el" href="class_hal.html">Hal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hal</b> = NULL</td></tr>
+<tr class="separator:aa6b563cefaacda5518563ff533c6569b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849ad85fc1bc3a7130e660c13973ab26"><td class="memItemLeft" align="right" valign="top"><a id="a849ad85fc1bc3a7130e660c13973ab26"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a849ad85fc1bc3a7130e660c13973ab26">SPIreadCommand</a> = 0b00000000</td></tr>
 <tr class="memdesc:a849ad85fc1bc3a7130e660c13973ab26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic SPI read command. Defaults to 0x00. <br /></td></tr>
@@ -349,7 +289,7 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead.</p>
-<p>See <a class="el" href="class_module.html#a870c63233146d03380f753498c975050" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> for details. </p>
+<p>See <a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> for details. </p>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770"></a>MODE_END_OF_TABLE&#160;</td><td class="fielddoc"><p>End of table marker, use END_OF_MODE_TABLE constant instead. Value is zero to ensure zero-initialized mode ends the table </p>
 </td></tr>
@@ -364,8 +304,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1101d49f597f756141fc9de88a504f21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1101d49f597f756141fc9de88a504f21">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/2]</span></h2>
+<a id="a24ec9667744f4f6997e98d0f8b5776fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24ec9667744f4f6997e98d0f8b5776fe">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -373,25 +313,31 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">Module::Module </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype"><a class="el" href="class_hal.html">Hal</a> *&#160;</td>
+          <td class="paramname"><em>hal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>cs</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>rst</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>gpio</em> = <code>RADIOLIB_NC</code>&#160;</td>
         </tr>
         <tr>
@@ -402,9 +348,10 @@ Static Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
+<p><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">hal</td><td>A Hardware abstraction layer instance. An ArduinoHal instance for example.</td></tr>
     <tr><td class="paramname">cs</td><td>Pin to be used as chip select.</td></tr>
     <tr><td class="paramname">irq</td><td>Pin to be used as interrupt/GPIO.</td></tr>
     <tr><td class="paramname">rst</td><td>Pin to be used as hardware reset for the module.</td></tr>
@@ -442,192 +389,6 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a91aaa34aecdfeaf24948551b037033be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91aaa34aecdfeaf24948551b037033be">&#9670;&nbsp;</a></span>attachInterrupt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::attachInterrupt </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>interruptNum</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>userFunc</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core attachInterrupt override. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">interruptNum</td><td>Interrupt number.</td></tr>
-    <tr><td class="paramname">userFunc</td><td>Interrupt service routine.</td></tr>
-    <tr><td class="paramname">mode</td><td>Pin hcange direction. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af0f870b09b9dd9636f1587d708f07d38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0f870b09b9dd9636f1587d708f07d38">&#9670;&nbsp;</a></span>delay()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::delay </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>ms</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core delay override. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">ms</td><td>Delay length in milliseconds. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a14d7cd8220bfa4440bda055ce5be748c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14d7cd8220bfa4440bda055ce5be748c">&#9670;&nbsp;</a></span>delayMicroseconds()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::delayMicroseconds </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>us</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core delayMicroseconds override. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">us</td><td>Delay length in microseconds. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a656738f2fe41fb236d27aed02efa8ad4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a656738f2fe41fb236d27aed02efa8ad4">&#9670;&nbsp;</a></span>detachInterrupt()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::detachInterrupt </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>interruptNum</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core detachInterrupt override. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">interruptNum</td><td>Interrupt number. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a7495c81640aac8f4686221dad34a274f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7495c81640aac8f4686221dad34a274f">&#9670;&nbsp;</a></span>digitalRead()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">RADIOLIB_PIN_STATUS Module::digitalRead </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>pin</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to read from.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Pin value. </dd></dl>
-
-</div>
-</div>
-<a id="a46ad10b113df7c7e0a932be19eff63cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a46ad10b113df7c7e0a932be19eff63cd">&#9670;&nbsp;</a></span>digitalWrite()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::digitalWrite </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>pin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RADIOLIB_PIN_STATUS&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core digitalWrite override that checks RADIOLIB_NC as alias for unused pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to write to.</td></tr>
-    <tr><td class="paramname">value</td><td>Whether to set the pin high or low. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a5699a937b62ba41387567b4d679b9377"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5699a937b62ba41387567b4d679b9377">&#9670;&nbsp;</a></span>findRfSwitchMode()</h2>
 
@@ -655,8 +416,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae53e355a77f2b7ce6473c62ac5f37334"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae53e355a77f2b7ce6473c62ac5f37334">&#9670;&nbsp;</a></span>getCs()</h2>
+<a id="aa6cac04c7cb6d5278a318db0966ad1a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6cac04c7cb6d5278a318db0966ad1a7">&#9670;&nbsp;</a></span>getCs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -665,7 +426,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RADIOLIB_PIN_TYPE Module::getCs </td>
+          <td class="memname">uint32_t Module::getCs </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -683,8 +444,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aeb4c7447372d56a7cae6db91994aacfc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb4c7447372d56a7cae6db91994aacfc">&#9670;&nbsp;</a></span>getGpio()</h2>
+<a id="a4ec27f0ba5e0009ea9661a5110526b52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ec27f0ba5e0009ea9661a5110526b52">&#9670;&nbsp;</a></span>getGpio()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -693,7 +454,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RADIOLIB_PIN_TYPE Module::getGpio </td>
+          <td class="memname">uint32_t Module::getGpio </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -711,8 +472,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8c7f17a63b67117d953f1ba990b17f80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c7f17a63b67117d953f1ba990b17f80">&#9670;&nbsp;</a></span>getIrq()</h2>
+<a id="ab61bc5066c356e2d0d79f08a2bd0fbc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61bc5066c356e2d0d79f08a2bd0fbc9">&#9670;&nbsp;</a></span>getIrq()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -721,7 +482,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RADIOLIB_PIN_TYPE Module::getIrq </td>
+          <td class="memname">uint32_t Module::getIrq </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -739,8 +500,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ae352c7a7b997fc1b17189c1312a8347f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae352c7a7b997fc1b17189c1312a8347f">&#9670;&nbsp;</a></span>getRst()</h2>
+<a id="ad6cddbf3aebec9717a1a381dd81ad398"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6cddbf3aebec9717a1a381dd81ad398">&#9670;&nbsp;</a></span>getRst()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -749,7 +510,7 @@ Static Public Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">RADIOLIB_PIN_TYPE Module::getRst </td>
+          <td class="memname">uint32_t Module::getRst </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -832,32 +593,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af998b86ce1243f616f6fcb6df5336207"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af998b86ce1243f616f6fcb6df5336207">&#9670;&nbsp;</a></span>noTone()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::noTone </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>pin</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core noTone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to write to. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a4ea888758b4a7784082d513a1e7849a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ea888758b4a7784082d513a1e7849a4">&#9670;&nbsp;</a></span>operator=()</h2>
 
@@ -878,43 +613,6 @@ Static Public Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frame</td><td>rvalue <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a>. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="af7e4872dad3d19b6f75f532c88683168"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7e4872dad3d19b6f75f532c88683168">&#9670;&nbsp;</a></span>pinMode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::pinMode </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>pin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">RADIOLIB_PIN_MODE&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core pinMode override that checks RADIOLIB_NC as alias for unused pin. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to change the mode of.</td></tr>
-    <tr><td class="paramname">mode</td><td>Which mode to set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -958,8 +656,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a0ecbb4e1e98094c1296b1e823dc14703"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ecbb4e1e98094c1296b1e823dc14703">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
+<a id="a7d3adea64acab11c47c804afc74bd4f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d3adea64acab11c47c804afc74bd4f3">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -967,13 +665,13 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Module::setRfSwitchPins </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>rxEn</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>txEn</em>&#160;</td>
         </tr>
         <tr>
@@ -986,7 +684,7 @@ Static Public Attributes</h2></td></tr>
 
 <p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH. </p>
 <p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
-<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_module.html#a870c63233146d03380f753498c975050" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
+<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rxEn</td><td>RX enable pin. </td></tr>
@@ -1023,8 +721,8 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a870c63233146d03380f753498c975050"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a870c63233146d03380f753498c975050">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
+<a id="ac308fa817a5c36c5dc724a0d15cefd4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac308fa817a5c36c5dc724a0d15cefd4d">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1032,7 +730,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void Module::setRfSwitchTable </td>
           <td>(</td>
-          <td class="paramtype">const RADIOLIB_PIN_TYPE(&amp;)&#160;</td>
+          <td class="paramtype">const uint32_t(&amp;)&#160;</td>
           <td class="paramname"><em>pins</em>[RFSWITCH_MAX_PINS], </td>
         </tr>
         <tr>
@@ -1065,7 +763,7 @@ Static Public Attributes</h2></td></tr>
 <h4>Example</h4>
 <p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
 <div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> RADIOLIB_PIN_TYPE rfswitch_pins[] =</div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint32_t rfswitch_pins[] =</div>
 <div class="line">                       {PA0,  PA1,  RADIOLIB_NC};</div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
 <div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
@@ -1080,10 +778,10 @@ Static Public Attributes</h2></td></tr>
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:64</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:66</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:65</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:47</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -1755,49 +1453,6 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a33e33df69d58660b8cd0e2dafe5e9189"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33e33df69d58660b8cd0e2dafe5e9189">&#9670;&nbsp;</a></span>tone()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::tone </td>
-          <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
-          <td class="paramname"><em>pin</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>value</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>duration</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Arduino core tone override that checks RADIOLIB_NC as alias for unused pin and RADIOLIB_TONE_UNSUPPORTED to make sure the platform does support tone. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to write to.</td></tr>
-    <tr><td class="paramname">value</td><td>Frequency to output. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

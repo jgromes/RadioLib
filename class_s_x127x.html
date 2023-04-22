@@ -158,16 +158,16 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a0995088d37689a3c240a1af791df6cf1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1">packetMode</a> ()</td></tr>
 <tr class="memdesc:a0995088d37689a3c240a1af791df6cf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disables direct mode and enables packet mode, allowing the module to receive packets. Can only be activated in FSK mode.  <a href="class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1">More...</a><br /></td></tr>
 <tr class="separator:a0995088d37689a3c240a1af791df6cf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a71ecfed743942c4195d8668e8588a0fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a71ecfed743942c4195d8668e8588a0fc">setDio0Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=RISING)</td></tr>
-<tr class="memdesc:a71ecfed743942c4195d8668e8588a0fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO0 activates.  <a href="class_s_x127x.html#a71ecfed743942c4195d8668e8588a0fc">More...</a><br /></td></tr>
-<tr class="separator:a71ecfed743942c4195d8668e8588a0fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae75bc48cc74a407370cd9f4bf95e9e30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae75bc48cc74a407370cd9f4bf95e9e30">setDio0Action</a> (void(*func)(void), uint32_t dir)</td></tr>
+<tr class="memdesc:ae75bc48cc74a407370cd9f4bf95e9e30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO0 activates.  <a href="class_s_x127x.html#ae75bc48cc74a407370cd9f4bf95e9e30">More...</a><br /></td></tr>
+<tr class="separator:ae75bc48cc74a407370cd9f4bf95e9e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a729b4f3f36096b5b15bae19c7876e823"><td class="memItemLeft" align="right" valign="top"><a id="a729b4f3f36096b5b15bae19c7876e823"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823">clearDio0Action</a> ()</td></tr>
 <tr class="memdesc:a729b4f3f36096b5b15bae19c7876e823"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO0 activates. <br /></td></tr>
 <tr class="separator:a729b4f3f36096b5b15bae19c7876e823"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae72f140bc934016411d7d54ebc14d69c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae72f140bc934016411d7d54ebc14d69c">setDio1Action</a> (void(*func)(void), RADIOLIB_INTERRUPT_STATUS dir=RISING)</td></tr>
-<tr class="memdesc:ae72f140bc934016411d7d54ebc14d69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO1 activates.  <a href="class_s_x127x.html#ae72f140bc934016411d7d54ebc14d69c">More...</a><br /></td></tr>
-<tr class="separator:ae72f140bc934016411d7d54ebc14d69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4bce81839b105c464ebf922602e58b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b4bce81839b105c464ebf922602e58b">setDio1Action</a> (void(*func)(void), uint32_t dir)</td></tr>
+<tr class="memdesc:a7b4bce81839b105c464ebf922602e58b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when DIO1 activates.  <a href="class_s_x127x.html#a7b4bce81839b105c464ebf922602e58b">More...</a><br /></td></tr>
+<tr class="separator:a7b4bce81839b105c464ebf922602e58b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b6532a25e1730973ac08146008adca5"><td class="memItemLeft" align="right" valign="top"><a id="a9b6532a25e1730973ac08146008adca5"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b6532a25e1730973ac08146008adca5">clearDio1Action</a> ()</td></tr>
 <tr class="memdesc:a9b6532a25e1730973ac08146008adca5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
@@ -309,12 +309,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a95bc32a555675879ad9e2a9e399dc6c1"><td class="memItemLeft" align="right" valign="top">int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1">getTempRaw</a> ()</td></tr>
 <tr class="memdesc:a95bc32a555675879ad9e2a9e399dc6c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads uncalibrated temperature value. This function will change operating mode and should not be called during Tx, Rx or CAD.  <a href="class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1">More...</a><br /></td></tr>
 <tr class="separator:a95bc32a555675879ad9e2a9e399dc6c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9781180418c1ec9c365b74acbc98d8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">setRfSwitchPins</a> (RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn)</td></tr>
-<tr class="memdesc:ae9781180418c1ec9c365b74acbc98d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_s_x127x.html#ae9781180418c1ec9c365b74acbc98d8a">More...</a><br /></td></tr>
-<tr class="separator:ae9781180418c1ec9c365b74acbc98d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad18500bf1dd7592f4ea9d7c447427e14"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14">setRfSwitchTable</a> (const RADIOLIB_PIN_TYPE(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
-<tr class="memdesc:ad18500bf1dd7592f4ea9d7c447427e14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14">More...</a><br /></td></tr>
-<tr class="separator:ad18500bf1dd7592f4ea9d7c447427e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca9edcae05060cce3ff7ee58faeb4e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a8ca9edcae05060cce3ff7ee58faeb4e2">setRfSwitchPins</a> (uint32_t rxEn, uint32_t txEn)</td></tr>
+<tr class="memdesc:a8ca9edcae05060cce3ff7ee58faeb4e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH.  <a href="class_s_x127x.html#a8ca9edcae05060cce3ff7ee58faeb4e2">More...</a><br /></td></tr>
+<tr class="separator:a8ca9edcae05060cce3ff7ee58faeb4e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9625a5246a45112267ce441ac2de254"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab9625a5246a45112267ce441ac2de254">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:ab9625a5246a45112267ce441ac2de254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_x127x.html#ab9625a5246a45112267ce441ac2de254">More...</a><br /></td></tr>
+<tr class="separator:ab9625a5246a45112267ce441ac2de254"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">randomByte</a> ()</td></tr>
 <tr class="memdesc:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">More...</a><br /></td></tr>
 <tr class="separator:a68cba1ff1e6bfd9b3034c97f3932e450"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -327,9 +327,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aa3f409359eafa5988e8e4c2948735238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:aa3f409359eafa5988e8e4c2948735238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">More...</a><br /></td></tr>
 <tr class="separator:aa3f409359eafa5988e8e4c2948735238"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a071442611a32154e8b3db7981f242a53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">readBit</a> (RADIOLIB_PIN_TYPE pin)</td></tr>
-<tr class="memdesc:a071442611a32154e8b3db7981f242a53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_s_x127x.html#a071442611a32154e8b3db7981f242a53">More...</a><br /></td></tr>
-<tr class="separator:a071442611a32154e8b3db7981f242a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a2dc7554414f0ce2ee0db23087f698a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1a2dc7554414f0ce2ee0db23087f698a">readBit</a> (uint32_t pin)</td></tr>
+<tr class="memdesc:a1a2dc7554414f0ce2ee0db23087f698a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode.  <a href="class_s_x127x.html#a1a2dc7554414f0ce2ee0db23087f698a">More...</a><br /></td></tr>
+<tr class="separator:a1a2dc7554414f0ce2ee0db23087f698a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f04a7e883057908df18f06c7f74c7e1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">setFHSSHoppingPeriod</a> (uint8_t freqHoppingPeriod)</td></tr>
 <tr class="memdesc:a7f04a7e883057908df18f06c7f74c7e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the hopping period and enables FHSS.  <a href="class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1">More...</a><br /></td></tr>
 <tr class="separator:a7f04a7e883057908df18f06c7f74c7e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -343,9 +343,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a41089d9e5b45217d3e31ac22b5326b66">clearFHSSInt</a> (void)</td></tr>
 <tr class="memdesc:a41089d9e5b45217d3e31ac22b5326b66"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the FHSS interrupt. <br /></td></tr>
 <tr class="separator:a41089d9e5b45217d3e31ac22b5326b66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbea7515add3d81c3024ceb0d570266b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adbea7515add3d81c3024ceb0d570266b">setDIOMapping</a> (RADIOLIB_PIN_TYPE pin, uint8_t value)</td></tr>
-<tr class="memdesc:adbea7515add3d81c3024ceb0d570266b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_s_x127x.html#adbea7515add3d81c3024ceb0d570266b">More...</a><br /></td></tr>
-<tr class="separator:adbea7515add3d81c3024ceb0d570266b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a103b606166eba8c69bff061270744768"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a103b606166eba8c69bff061270744768">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
+<tr class="memdesc:a103b606166eba8c69bff061270744768"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_s_x127x.html#a103b606166eba8c69bff061270744768">More...</a><br /></td></tr>
+<tr class="separator:a103b606166eba8c69bff061270744768"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b85344084b800966a46ace59dcb5277"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">setDIOPreambleDetect</a> (bool usePreambleDetect)</td></tr>
 <tr class="memdesc:a7b85344084b800966a46ace59dcb5277"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.  <a href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">More...</a><br /></td></tr>
 <tr class="separator:a7b85344084b800966a46ace59dcb5277"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1169,8 +1169,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a071442611a32154e8b3db7981f242a53"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a071442611a32154e8b3db7981f242a53">&#9670;&nbsp;</a></span>readBit()</h2>
+<a id="a1a2dc7554414f0ce2ee0db23087f698a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a2dc7554414f0ce2ee0db23087f698a">&#9670;&nbsp;</a></span>readBit()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1181,7 +1181,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX127x::readBit </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1201,7 +1201,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae868adcc63ee0869999e8ccac86b6ff2">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1561,8 +1561,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a71ecfed743942c4195d8668e8588a0fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a71ecfed743942c4195d8668e8588a0fc">&#9670;&nbsp;</a></span>setDio0Action()</h2>
+<a id="ae75bc48cc74a407370cd9f4bf95e9e30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae75bc48cc74a407370cd9f4bf95e9e30">&#9670;&nbsp;</a></span>setDio0Action()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1576,8 +1576,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
-          <td class="paramname"><em>dir</em> = <code>RISING</code>&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dir</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1591,15 +1591,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
-    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to RISING. </td></tr>
+    <tr><td class="paramname">dir</td><td>Signal change direction. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ae72f140bc934016411d7d54ebc14d69c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae72f140bc934016411d7d54ebc14d69c">&#9670;&nbsp;</a></span>setDio1Action()</h2>
+<a id="a7b4bce81839b105c464ebf922602e58b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b4bce81839b105c464ebf922602e58b">&#9670;&nbsp;</a></span>setDio1Action()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1613,8 +1613,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_INTERRUPT_STATUS&#160;</td>
-          <td class="paramname"><em>dir</em> = <code>RISING</code>&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dir</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1628,15 +1628,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
-    <tr><td class="paramname">dir</td><td>Signal change direction. Defaults to RISING. </td></tr>
+    <tr><td class="paramname">dir</td><td>Signal change direction. </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="adbea7515add3d81c3024ceb0d570266b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbea7515add3d81c3024ceb0d570266b">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
+<a id="a103b606166eba8c69bff061270744768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a103b606166eba8c69bff061270744768">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1647,13 +1647,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t SX127x::setDIOMapping </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>pin</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>value</em>&#160;</td>
         </tr>
         <tr>
@@ -1679,7 +1679,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a47c1d94d2ad2fd7eb5d11480b44cc368">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2088,8 +2088,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae9781180418c1ec9c365b74acbc98d8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9781180418c1ec9c365b74acbc98d8a">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
+<a id="a8ca9edcae05060cce3ff7ee58faeb4e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ca9edcae05060cce3ff7ee58faeb4e2">&#9670;&nbsp;</a></span>setRfSwitchPins()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2097,13 +2097,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX127x::setRfSwitchPins </td>
           <td>(</td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>rxEn</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">RADIOLIB_PIN_TYPE&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>txEn</em>&#160;</td>
         </tr>
         <tr>
@@ -2116,7 +2116,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes: When idle both pins will be LOW, during TX the <code>txEn</code> pin will be HIGH, during RX the <code>rxPin</code> will be HIGH. </p>
 <p>Radiolib will automatically set the pin mode and value of these pins, so do not control them from the sketch.</p>
-<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_s_x127x.html#ad18500bf1dd7592f4ea9d7c447427e14" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
+<p>When more than two pins or more control over the output values are needed, use the <a class="el" href="class_s_x127x.html#ab9625a5246a45112267ce441ac2de254" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> function.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rxEn</td><td>RX enable pin. </td></tr>
@@ -2127,8 +2127,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad18500bf1dd7592f4ea9d7c447427e14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad18500bf1dd7592f4ea9d7c447427e14">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
+<a id="ab9625a5246a45112267ce441ac2de254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9625a5246a45112267ce441ac2de254">&#9670;&nbsp;</a></span>setRfSwitchTable()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2136,7 +2136,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void SX127x::setRfSwitchTable </td>
           <td>(</td>
-          <td class="paramtype">const RADIOLIB_PIN_TYPE(&amp;)&#160;</td>
+          <td class="paramtype">const uint32_t(&amp;)&#160;</td>
           <td class="paramname"><em>pins</em>[Module::RFSWITCH_MAX_PINS], </td>
         </tr>
         <tr>
@@ -2169,7 +2169,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <h4>Example</h4>
 <p>For example, on a board that has an RF switch with an enable pin connected to PA0 and a TX/RX select pin connected to PA1:</p>
 <div class="fragment"><div class="line"><span class="comment">// In global scope, define the pin array and mode table</span></div>
-<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> RADIOLIB_PIN_TYPE rfswitch_pins[] =</div>
+<div class="line"><span class="keyword">static</span> <span class="keyword">const</span> uint32_t rfswitch_pins[] =</div>
 <div class="line">                       {PA0,  PA1,  RADIOLIB_NC};</div>
 <div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> rfswitch_table[] = {</div>
 <div class="line">  {<a class="code" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a>,  {LOW,  LOW}},</div>
@@ -2184,10 +2184,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:64</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:66</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:65</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:47</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
