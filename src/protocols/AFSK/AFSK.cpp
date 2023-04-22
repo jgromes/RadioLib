@@ -1,12 +1,12 @@
 #include "AFSK.h"
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 
-AFSKClient::AFSKClient(PhysicalLayer* phy, uint32_t pin): _pin(pin) {
-  _phy = phy;
+AFSKClient::AFSKClient(PhysicalLayer* phy, uint32_t pin): outPin(pin) {
+  phyLayer = phy;
 }
 
 int16_t AFSKClient::begin() {
-  return(_phy->startDirect());
+  return(phyLayer->startDirect());
 }
 
 int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
@@ -15,23 +15,23 @@ int16_t AFSKClient::tone(uint16_t freq, bool autoStart) {
   }
 
   if(autoStart) {
-    int16_t state = _phy->transmitDirect();
+    int16_t state = phyLayer->transmitDirect();
     RADIOLIB_ASSERT(state);
   }
 
-  Module* mod = _phy->getMod();
-  mod->hal->tone(_pin, freq);
+  Module* mod = phyLayer->getMod();
+  mod->hal->tone(outPin, freq);
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t AFSKClient::noTone(bool keepOn) {
-  Module* mod = _phy->getMod();
-  mod->hal->noTone(_pin);
+  Module* mod = phyLayer->getMod();
+  mod->hal->noTone(outPin);
   if(keepOn) {
     return(0);
   }
 
-  return(_phy->standby());
+  return(phyLayer->standby());
 }
 
 #endif
