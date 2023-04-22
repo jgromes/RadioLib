@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['len_671',['len',['../structtone__t.html#a3b0421dd255c7c59552741957a6224ed',1,'tone_t']]]
+  ['info_718',['info',['../class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988',1,'AX25Frame']]],
+  ['infolen_719',['infoLen',['../class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41',1,'AX25Frame']]]
 ];

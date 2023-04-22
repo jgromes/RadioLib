@@ -8,7 +8,7 @@ var class_module =
       [ "MODE_RX", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f", null ],
       [ "MODE_TX", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571", null ]
     ] ],
-    [ "Module", "class_module.html#a24ec9667744f4f6997e98d0f8b5776fe", null ],
+    [ "Module", "class_module.html#a817178405f125e068e88bad62aeb6f3b", null ],
     [ "Module", "class_module.html#a919baf2e46c357ebfcdbc1025b6c551e", null ],
     [ "findRfSwitchMode", "class_module.html#a5699a937b62ba41387567b4d679b9377", null ],
     [ "getCs", "class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7", null ],
@@ -36,7 +36,7 @@ var class_module =
     [ "SPIwriteStream", "class_module.html#a74ce586afa403130007a474d3295d762", null ],
     [ "term", "class_module.html#a45bd514a1f2859d9a867c8f9b13eb332", null ],
     [ "waitForMicroseconds", "class_module.html#a47978200f7e2e408fb64f506c81cee9f", null ],
-    [ "hal", "class_module.html#aa6b563cefaacda5518563ff533c6569b", null ],
+    [ "hal", "class_module.html#a4483f0a39a523dd1b37b467d81418f7d", null ],
     [ "SPIaddrWidth", "class_module.html#ac19a495026aae62f5c2f089aa1b2b57a", null ],
     [ "SPInopCommand", "class_module.html#a466112286d19675ca2dbe481358e4365", null ],
     [ "SPIparseStatusCb", "class_module.html#af6e89e2bc4976e8c5dc42dedda9fa6a2", null ],

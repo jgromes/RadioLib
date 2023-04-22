@@ -129,9 +129,9 @@ typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a24ec9667744f4f6997e98d0f8b5776fe"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a24ec9667744f4f6997e98d0f8b5776fe">Module</a> (<a class="el" href="class_hal.html">Hal</a> *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio=RADIOLIB_NC)</td></tr>
-<tr class="memdesc:a24ec9667744f4f6997e98d0f8b5776fe"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor.  <a href="class_module.html#a24ec9667744f4f6997e98d0f8b5776fe">More...</a><br /></td></tr>
-<tr class="separator:a24ec9667744f4f6997e98d0f8b5776fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a817178405f125e068e88bad62aeb6f3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a817178405f125e068e88bad62aeb6f3b">Module</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio=RADIOLIB_NC)</td></tr>
+<tr class="memdesc:a817178405f125e068e88bad62aeb6f3b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor.  <a href="class_module.html#a817178405f125e068e88bad62aeb6f3b">More...</a><br /></td></tr>
+<tr class="separator:a817178405f125e068e88bad62aeb6f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919baf2e46c357ebfcdbc1025b6c551e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a919baf2e46c357ebfcdbc1025b6c551e">Module</a> (const <a class="el" href="class_module.html">Module</a> &amp;mod)</td></tr>
 <tr class="memdesc:a919baf2e46c357ebfcdbc1025b6c551e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="class_module.html#a919baf2e46c357ebfcdbc1025b6c551e">More...</a><br /></td></tr>
 <tr class="separator:a919baf2e46c357ebfcdbc1025b6c551e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -232,9 +232,9 @@ static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aa6b563cefaacda5518563ff533c6569b"><td class="memItemLeft" align="right" valign="top"><a id="aa6b563cefaacda5518563ff533c6569b"></a>
-<a class="el" href="class_hal.html">Hal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hal</b> = NULL</td></tr>
-<tr class="separator:aa6b563cefaacda5518563ff533c6569b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4483f0a39a523dd1b37b467d81418f7d"><td class="memItemLeft" align="right" valign="top"><a id="a4483f0a39a523dd1b37b467d81418f7d"></a>
+<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hal</b> = NULL</td></tr>
+<tr class="separator:a4483f0a39a523dd1b37b467d81418f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849ad85fc1bc3a7130e660c13973ab26"><td class="memItemLeft" align="right" valign="top"><a id="a849ad85fc1bc3a7130e660c13973ab26"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a849ad85fc1bc3a7130e660c13973ab26">SPIreadCommand</a> = 0b00000000</td></tr>
 <tr class="memdesc:a849ad85fc1bc3a7130e660c13973ab26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Basic SPI read command. Defaults to 0x00. <br /></td></tr>
@@ -304,8 +304,8 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a24ec9667744f4f6997e98d0f8b5776fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24ec9667744f4f6997e98d0f8b5776fe">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/2]</span></h2>
+<a id="a817178405f125e068e88bad62aeb6f3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a817178405f125e068e88bad62aeb6f3b">&#9670;&nbsp;</a></span>Module() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +313,7 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">Module::Module </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_hal.html">Hal</a> *&#160;</td>
+          <td class="paramtype"><a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *&#160;</td>
           <td class="paramname"><em>hal</em>, </td>
         </tr>
         <tr>
