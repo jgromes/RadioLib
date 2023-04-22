@@ -129,7 +129,7 @@ typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="e
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a817178405f125e068e88bad62aeb6f3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a817178405f125e068e88bad62aeb6f3b">Module</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio=RADIOLIB_NC)</td></tr>
+<tr class="memitem:a817178405f125e068e88bad62aeb6f3b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a817178405f125e068e88bad62aeb6f3b">Module</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *<a class="el" href="class_module.html#a4483f0a39a523dd1b37b467d81418f7d">hal</a>, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio=RADIOLIB_NC)</td></tr>
 <tr class="memdesc:a817178405f125e068e88bad62aeb6f3b"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor.  <a href="class_module.html#a817178405f125e068e88bad62aeb6f3b">More...</a><br /></td></tr>
 <tr class="separator:a817178405f125e068e88bad62aeb6f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919baf2e46c357ebfcdbc1025b6c551e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a919baf2e46c357ebfcdbc1025b6c551e">Module</a> (const <a class="el" href="class_module.html">Module</a> &amp;mod)</td></tr>
@@ -233,7 +233,8 @@ static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el"
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a4483f0a39a523dd1b37b467d81418f7d"><td class="memItemLeft" align="right" valign="top"><a id="a4483f0a39a523dd1b37b467d81418f7d"></a>
-<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>hal</b> = NULL</td></tr>
+<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4483f0a39a523dd1b37b467d81418f7d">hal</a> = NULL</td></tr>
+<tr class="memdesc:a4483f0a39a523dd1b37b467d81418f7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hardware abstraction layer to be used. <br /></td></tr>
 <tr class="separator:a4483f0a39a523dd1b37b467d81418f7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a849ad85fc1bc3a7130e660c13973ab26"><td class="memItemLeft" align="right" valign="top"><a id="a849ad85fc1bc3a7130e660c13973ab26"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a849ad85fc1bc3a7130e660c13973ab26">SPIreadCommand</a> = 0b00000000</td></tr>
@@ -351,10 +352,10 @@ Static Public Attributes</h2></td></tr>
 <p><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">hal</td><td>A Hardware abstraction layer instance. An ArduinoHal instance for example.</td></tr>
-    <tr><td class="paramname">cs</td><td>Pin to be used as chip select.</td></tr>
-    <tr><td class="paramname">irq</td><td>Pin to be used as interrupt/GPIO.</td></tr>
-    <tr><td class="paramname">rst</td><td>Pin to be used as hardware reset for the module.</td></tr>
+    <tr><td class="paramname">hal</td><td>A Hardware abstraction layer instance. An ArduinoHal instance for example. </td></tr>
+    <tr><td class="paramname">cs</td><td>Pin to be used as chip select. </td></tr>
+    <tr><td class="paramname">irq</td><td>Pin to be used as interrupt/GPIO. </td></tr>
+    <tr><td class="paramname">rst</td><td>Pin to be used as hardware reset for the module. </td></tr>
     <tr><td class="paramname">gpio</td><td>Pin to be used as additional interrupt/GPIO. </td></tr>
   </table>
   </dd>
@@ -408,7 +409,7 @@ Static Public Attributes</h2></td></tr>
 <p>Find a mode in the RfSwitchTable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">The</td><td>mode to find.</td></tr>
+    <tr><td class="paramname">The</td><td>mode to find. </td></tr>
   </table>
   </dd>
 </dl>
@@ -583,9 +584,9 @@ Static Public Attributes</h2></td></tr>
 <p>Function to dump data as hex into the debug port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Data to dump.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to dump.</td></tr>
-    <tr><td class="paramname">width</td><td>Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).</td></tr>
+    <tr><td class="paramname">data</td><td>Data to dump. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
+    <tr><td class="paramname">width</td><td>Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t). </td></tr>
     <tr><td class="paramname">be</td><td>Print multi-byte data as big endian. Defaults to false. </td></tr>
   </table>
   </dd>
@@ -648,7 +649,7 @@ Static Public Attributes</h2></td></tr>
 <p>Function to dump device registers as hex into the debug port. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">start</td><td>First address to dump.</td></tr>
+    <tr><td class="paramname">start</td><td>First address to dump. </td></tr>
     <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
   </table>
   </dd>
@@ -778,10 +779,10 @@ Static Public Attributes</h2></td></tr>
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:65</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:47</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:64</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:66</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -840,9 +841,9 @@ Static Public Attributes</h2></td></tr>
 <p>SPI read method that automatically masks unused bits. This method is the preferred SPI read mechanism. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to read.</td></tr>
-    <tr><td class="paramname">msb</td><td>Most significant bit of the register variable. Bits above this one will be masked out.</td></tr>
-    <tr><td class="paramname">lsb</td><td>Least significant bit of the register variable. Bits below this one will be masked out.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to read. </td></tr>
+    <tr><td class="paramname">msb</td><td>Most significant bit of the register variable. Bits above this one will be masked out. </td></tr>
+    <tr><td class="paramname">lsb</td><td>Least significant bit of the register variable. Bits below this one will be masked out. </td></tr>
   </table>
   </dd>
 </dl>
@@ -869,7 +870,7 @@ Static Public Attributes</h2></td></tr>
 <p>SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to read.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to read. </td></tr>
   </table>
   </dd>
 </dl>
@@ -912,8 +913,8 @@ Static Public Attributes</h2></td></tr>
 <p>SPI burst read method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to read.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes that will be read.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to read. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes that will be read. </td></tr>
     <tr><td class="paramname">inBytes</td><td>Pointer to array that will hold the read data. </td></tr>
   </table>
   </dd>
@@ -974,12 +975,12 @@ Static Public Attributes</h2></td></tr>
 <p>Method to perform a read transaction with SPI stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI operation command.</td></tr>
-    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes.</td></tr>
-    <tr><td class="paramname">data</td><td>Data that will be transferred from slave to master.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer.</td></tr>
-    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).</td></tr>
-    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI operation command. </td></tr>
+    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes. </td></tr>
+    <tr><td class="paramname">data</td><td>Data that will be transferred from slave to master. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
+    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x). </td></tr>
+    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1034,11 +1035,11 @@ Static Public Attributes</h2></td></tr>
 <p>Method to perform a read transaction with SPI stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI operation command.</td></tr>
-    <tr><td class="paramname">data</td><td>Data that will be transferred from slave to master.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer.</td></tr>
-    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).</td></tr>
-    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI operation command. </td></tr>
+    <tr><td class="paramname">data</td><td>Data that will be transferred from slave to master. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
+    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x). </td></tr>
+    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1099,12 +1100,12 @@ Static Public Attributes</h2></td></tr>
 <p>Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to write.</td></tr>
-    <tr><td class="paramname">value</td><td>Single byte value that will be written to the SPI register.</td></tr>
-    <tr><td class="paramname">msb</td><td>Most significant bit of the register variable. Bits above this one will not be affected by the write operation.</td></tr>
-    <tr><td class="paramname">lsb</td><td>Least significant bit of the register variable. Bits below this one will not be affected by the write operation.</td></tr>
-    <tr><td class="paramname">checkInterval</td><td>Number of milliseconds between register writing and verification reading. Some registers need up to 10ms to process the change.</td></tr>
-    <tr><td class="paramname">checkMask</td><td>Mask of bits to check, only bits set to 1 will be verified.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to write. </td></tr>
+    <tr><td class="paramname">value</td><td>Single byte value that will be written to the SPI register. </td></tr>
+    <tr><td class="paramname">msb</td><td>Most significant bit of the register variable. Bits above this one will not be affected by the write operation. </td></tr>
+    <tr><td class="paramname">lsb</td><td>Least significant bit of the register variable. Bits below this one will not be affected by the write operation. </td></tr>
+    <tr><td class="paramname">checkInterval</td><td>Number of milliseconds between register writing and verification reading. Some registers need up to 10ms to process the change. </td></tr>
+    <tr><td class="paramname">checkMask</td><td>Mask of bits to check, only bits set to 1 will be verified. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1159,10 +1160,10 @@ Static Public Attributes</h2></td></tr>
 <p>SPI single transfer method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI access command (read/write/burst/...).</td></tr>
-    <tr><td class="paramname">reg</td><td>Address of SPI register to transfer to/from.</td></tr>
-    <tr><td class="paramname">dataOut</td><td>Data that will be transfered from master to slave.</td></tr>
-    <tr><td class="paramname">dataIn</td><td>Data that was transfered from slave to master.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI access command (read/write/burst/...). </td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to transfer to/from. </td></tr>
+    <tr><td class="paramname">dataOut</td><td>Data that will be transfered from master to slave. </td></tr>
+    <tr><td class="paramname">dataIn</td><td>Data that was transfered from slave to master. </td></tr>
     <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
   </table>
   </dd>
@@ -1235,14 +1236,14 @@ Static Public Attributes</h2></td></tr>
 <p>SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI operation command.</td></tr>
-    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes.</td></tr>
-    <tr><td class="paramname">write</td><td>Set to true for write commands, false for read commands.</td></tr>
-    <tr><td class="paramname">dataOut</td><td>Data that will be transfered from master to slave.</td></tr>
-    <tr><td class="paramname">dataIn</td><td>Data that was transfered from slave to master.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer.</td></tr>
-    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).</td></tr>
-    <tr><td class="paramname">timeout</td><td>GPIO wait period timeout in milliseconds.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI operation command. </td></tr>
+    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes. </td></tr>
+    <tr><td class="paramname">write</td><td>Set to true for write commands, false for read commands. </td></tr>
+    <tr><td class="paramname">dataOut</td><td>Data that will be transfered from master to slave. </td></tr>
+    <tr><td class="paramname">dataIn</td><td>Data that was transfered from slave to master. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
+    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x). </td></tr>
+    <tr><td class="paramname">timeout</td><td>GPIO wait period timeout in milliseconds. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1279,7 +1280,7 @@ Static Public Attributes</h2></td></tr>
 <p>SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to write.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to write. </td></tr>
     <tr><td class="paramname">data</td><td>Value that will be written to the register. </td></tr>
   </table>
   </dd>
@@ -1322,8 +1323,8 @@ Static Public Attributes</h2></td></tr>
 <p>SPI burst write method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">reg</td><td>Address of SPI register to write.</td></tr>
-    <tr><td class="paramname">data</td><td>Pointer to array that holds the data that will be written.</td></tr>
+    <tr><td class="paramname">reg</td><td>Address of SPI register to write. </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array that holds the data that will be written. </td></tr>
     <tr><td class="paramname">numBytes</td><td>Number of bytes that will be written. </td></tr>
   </table>
   </dd>
@@ -1384,12 +1385,12 @@ Static Public Attributes</h2></td></tr>
 <p>Method to perform a write transaction with SPI stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI operation command.</td></tr>
-    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes.</td></tr>
-    <tr><td class="paramname">data</td><td>Data that will be transferred from master to slave.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer.</td></tr>
-    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).</td></tr>
-    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI operation command. </td></tr>
+    <tr><td class="paramname">cmdLen</td><td>SPI command length in bytes. </td></tr>
+    <tr><td class="paramname">data</td><td>Data that will be transferred from master to slave. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
+    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x). </td></tr>
+    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1444,11 +1445,11 @@ Static Public Attributes</h2></td></tr>
 <p>Method to perform a write transaction with SPI stream. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cmd</td><td>SPI operation command.</td></tr>
-    <tr><td class="paramname">data</td><td>Data that will be transferred from master to slave.</td></tr>
-    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer.</td></tr>
-    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).</td></tr>
-    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished.</td></tr>
+    <tr><td class="paramname">cmd</td><td>SPI operation command. </td></tr>
+    <tr><td class="paramname">data</td><td>Data that will be transferred from master to slave. </td></tr>
+    <tr><td class="paramname">numBytes</td><td>Number of bytes to transfer. </td></tr>
+    <tr><td class="paramname">waitForGpio</td><td>Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x). </td></tr>
+    <tr><td class="paramname">verify</td><td>Whether to verify the result of the transaction after it is finished. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1485,7 +1486,7 @@ Static Public Attributes</h2></td></tr>
 <p>Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">start</td><td>Waiting start timestamp, in microseconds.</td></tr>
+    <tr><td class="paramname">start</td><td>Waiting start timestamp, in microseconds. </td></tr>
     <tr><td class="paramname">len</td><td>Waiting duration, in microseconds; </td></tr>
   </table>
   </dd>
