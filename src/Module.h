@@ -114,7 +114,7 @@ class Module {
 
       \param gpio Pin to be used as additional interrupt/GPIO.
     */
-    Module(Hal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
+    Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio = RADIOLIB_NC);
 
     /*!
       \brief Copy constructor.
@@ -132,7 +132,7 @@ class Module {
 
     // public member variables
 
-    Hal* hal = NULL;
+    RadioLibHal* hal = NULL;
 
     /*!
       \brief Basic SPI read command. Defaults to 0x00.

@@ -12,7 +12,6 @@
 #endif
 
 #include "Hal.h"
-//#include <stdint.h>
 
 #include <SPI.h>
 

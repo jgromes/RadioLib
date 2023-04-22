@@ -1,13 +1,14 @@
-#define __STDC_FORMAT_MACROS
+#include "Module.h"
+
+// the following is probably only needed on non-Arduino builds
 #include <inttypes.h>
 #include <stdio.h>
 #include <string.h>
-#include "Module.h"
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 #include "ArduinoHal.h"
 Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
-  this->hal = new ArduinoHal;
+  this->hal = new ArduinoHal();
 }
 
 Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass& spi, SPISettings spiSettings) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
@@ -15,7 +16,7 @@ Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio, SPIClass&
 }
 #endif
 
-Module::Module(Hal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
+Module::Module(RadioLibHal *hal, uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : _cs(cs), _irq(irq), _rst(rst), _gpio(gpio) {
   this->hal = hal;
 }
 

@@ -6,7 +6,7 @@ ExternalRadio::ExternalRadio() : PhysicalLayer(1, 0) {
 }
 #endif
 
-ExternalRadio::ExternalRadio(Hal *hal) : PhysicalLayer(1, 0) {
+ExternalRadio::ExternalRadio(RadioLibHal *hal) : PhysicalLayer(1, 0) {
   mod = new Module(hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC);
 }
 

@@ -42,6 +42,20 @@
   //#define RADIOLIB_TONE_UNSUPPORTED
   //#define RADIOLIB_YIELD_UNSUPPORTED
 
+  // in addition, the following macros may be defined if the Arduino core differs from the defaults
+  #define RADIOLIB_NC                                 (0xFFFFFFFF)
+  #define RADIOLIB_DEFAULT_SPI                        SPI
+  #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)
+  #define RADIOLIB_NONVOLATILE                        PROGMEM
+  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
+  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       pgm_read_dword(addr)
+  #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+
+  // you might also have to define these if the Arduino core has some uncommon pin mode/status types
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST
+
   // some of RadioLib drivers may be excluded, to prevent collisions with platforms (or to speed up build process)
   // the following is a complete list of all possible exclusion macros, uncomment any of them to disable that driver
   // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
@@ -65,107 +79,118 @@
   //#define RADIOLIB_EXCLUDE_RTTY
   //#define RADIOLIB_EXCLUDE_SSTV
   //#define RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+
 #elif defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(ARDUINO_ARCH_MEGAAVR))
   // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
   #define RADIOLIB_PLATFORM                           "Arduino AVR"
+
 #elif defined(ESP8266)
   // ESP8266 boards
   #define RADIOLIB_PLATFORM                           "ESP8266"
+
 #elif defined(ESP32)
   // ESP32 boards
   #define RADIOLIB_PLATFORM                           "ESP32"
+  
   // ESP32 doesn't support tone(), but it can be emulated via LED control peripheral
   #define RADIOLIB_TONE_UNSUPPORTED
   #define RADIOLIB_TONE_ESP32_CHANNEL                 (1)
+
 #elif defined(ARDUINO_ARCH_STM32)
   // official STM32 Arduino core (https://github.com/stm32duino/Arduino_Core_STM32)
   #define RADIOLIB_PLATFORM                           "Arduino STM32 (official)"
+
 #elif defined(SAMD_SERIES)
   // Adafruit SAMD boards (M0 and M4)
   #define RADIOLIB_PLATFORM                           "Adafruit SAMD"
+
 #elif defined(ARDUINO_ARCH_SAMD)
   // Arduino SAMD (Zero, MKR, etc.)
   #define RADIOLIB_PLATFORM                           "Arduino SAMD"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)  
 
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)  
 #elif defined(__SAM3X8E__)
   // Arduino Due
   #define RADIOLIB_PLATFORM                           "Arduino Due"
   #define RADIOLIB_TONE_UNSUPPORTED
+
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
   // Adafruit nRF52 boards
   #define RADIOLIB_PLATFORM                           "Adafruit nRF52"
+
 #elif defined(ARDUINO_ARC32_TOOLS)
   // Intel Curie
   #define RADIOLIB_PLATFORM                           "Intel Curie"
+
 #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(PORTDUINO)
   // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
   #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
+
 #elif defined(ARDUINO_ARCH_APOLLO3)
   // Sparkfun Apollo3 boards
   #define RADIOLIB_PLATFORM                           "Sparkfun Apollo3"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (Arduino_PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (Arduino_PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)
 #elif defined(ARDUINO_ARDUINO_NANO33BLE)
   // Arduino Nano 33 BLE
   #define RADIOLIB_PLATFORM                           "Arduino Nano 33 BLE"
-
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
   #define RADIOLIB_MBED_TONE_OVERRIDE
+
 #elif defined(ARDUINO_PORTENTA_H7_M7) || defined(ARDUINO_PORTENTA_H7_M4)
   // Arduino Portenta H7
   #define RADIOLIB_PLATFORM                           "Portenta H7"
-
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
   #define RADIOLIB_MBED_TONE_OVERRIDE
+
 #elif defined(__STM32F4__) || defined(__STM32F1__)
   // Arduino STM32 core by Roger Clark (https://github.com/rogerclarkmelbourne/Arduino_STM32)
   #define RADIOLIB_PLATFORM                           "STM32duino (unofficial)"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (WiringPinMode)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (ExtIntTriggerMode)
 
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (WiringPinMode)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (ExtIntTriggerMode)
 #elif defined(ARDUINO_ARCH_MEGAAVR)
   // MegaCoreX by MCUdude (https://github.com/MCUdude/MegaCoreX)
   #define RADIOLIB_PLATFORM                           "MegaCoreX"
+
 #elif defined(ARDUINO_ARCH_MBED_RP2040)
   // Raspberry Pi Pico (official mbed core)
   #define RADIOLIB_PLATFORM                           "Raspberry Pi Pico"
-
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
   #define RADIOLIB_MBED_TONE_OVERRIDE
+
 #elif defined(ARDUINO_ARCH_RP2040)
   // Raspberry Pi Pico (unofficial core)
   #define RADIOLIB_PLATFORM                           "Raspberry Pi Pico (unofficial)"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PinMode)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST (PinStatus)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (PinStatus)
 #elif defined(__ASR6501__) || defined(ARDUINO_ARCH_ASR650X) || defined(DARDUINO_ARCH_ASR6601)
   // CubeCell
   #define RADIOLIB_PLATFORM                           "CubeCell"
   #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(1000000, MSBFIRST, SPI_MODE0) // see issue #709
-
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST (PINMODE)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST (IrqModes)
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PINMODE)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (IrqModes)
 
   // provide an easy access to the on-board module
   #include "board-config.h"
@@ -188,6 +213,7 @@
   #if defined(yield)
   #undef yield
   #endif
+
 #elif defined(RASPI)
   // RaspiDuino framework (https://github.com/me-no-dev/RasPiArduino)
   #define RADIOLIB_PLATFORM                           "RasPiArduino"
@@ -211,46 +237,60 @@
   #undef micros
   inline unsigned long micros() { return((unsigned long)(STCV)); };
   #endif
+
 #elif defined(TEENSYDUINO)
   // Teensy
   #define RADIOLIB_PLATFORM                           "Teensy"
+
 #else
   // other Arduino platforms not covered by the above list - this may or may not work
   #define RADIOLIB_PLATFORM                           "Unknown Arduino"
   #define RADIOLIB_UNKNOWN_PLATFORM
+
 #endif
 
+  // set the default values for all macros
+  // these will be applied if they were not defined above
   #if !defined(RADIOLIB_NC)
-  #define RADIOLIB_NC                                 (0xFFFFFFFF)
+    #define RADIOLIB_NC                                 (0xFFFFFFFF)
   #endif
+
   #if !defined(RADIOLIB_DEFAULT_SPI)
-  #define RADIOLIB_DEFAULT_SPI                        SPI
+    #define RADIOLIB_DEFAULT_SPI                        SPI
   #endif
+
   #if !defined(RADIOLIB_DEFAULT_SPI_SETTINGS)
-  #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)
+    #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(2000000, MSBFIRST, SPI_MODE0)
   #endif
+
   #if !defined(RADIOLIB_NONVOLATILE)
-  #define RADIOLIB_NONVOLATILE                        PROGMEM
+    #define RADIOLIB_NONVOLATILE                        PROGMEM
   #endif
+
   #if !defined(RADIOLIB_NONVOLATILE_READ_BYTE)
-  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
+    #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
   #endif
+
   #if !defined(RADIOLIB_NONVOLATILE_READ_DWORD)
-  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       pgm_read_dword(addr)
+    #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       pgm_read_dword(addr)
   #endif
+
   #if !defined(RADIOLIB_TYPE_ALIAS)
-  #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
+    #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
   #endif
 
   #if !defined(RADIOLIB_ARDUINOHAL_PIN_MODE_CAST)
-  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST
+    #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST
   #endif
+
   #if !defined(RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST)
-  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST
+    #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST
   #endif
+
   #if !defined(RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST)
-  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST
+    #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST
   #endif
+
 #else
   // generic non-Arduino platform
   #define RADIOLIB_PLATFORM                           "Generic"
@@ -262,7 +302,7 @@
   #define RADIOLIB_TYPE_ALIAS(type, alias)            using alias = type;
 
   #if !defined(RADIOLIB_DEBUG_PORT)
-    #define RADIOLIB_DEBUG_PORT   stdout
+    #define RADIOLIB_DEBUG_PORT                       stdout
   #endif
 
   #define DEC 10
@@ -373,7 +413,6 @@
 #if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
   #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
 #endif
-
 
 // This only compiles on STM32 boards with SUBGHZ module, but also
 // include when generating docs

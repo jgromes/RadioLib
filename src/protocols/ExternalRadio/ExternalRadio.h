@@ -14,7 +14,7 @@ class ExternalRadio: public PhysicalLayer {
     #if defined(RADIOLIB_BUILD_ARDUINO)
     ExternalRadio();
     #endif
-    ExternalRadio(Hal *hal);
+    ExternalRadio(RadioLibHal *hal);
 
     Module* getMod();
   private:
