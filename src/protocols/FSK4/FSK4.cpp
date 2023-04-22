@@ -3,41 +3,41 @@
 #if !defined(RADIOLIB_EXCLUDE_FSK4)
 
 FSK4Client::FSK4Client(PhysicalLayer* phy) {
-  _phy = phy;
+  phyLayer = phy;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  _audio = nullptr;
+  audioClient = nullptr;
   #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
  FSK4Client::FSK4Client(AFSKClient* audio) {
-   _phy = audio->_phy;
-   _audio = audio;
+   phyLayer = audio->phyLayer;
+   audioClient = audio;
  }
 #endif
 
 int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
   // save configuration
-  _baseHz = base;
-  _shiftHz = shift;
+  baseFreqHz = base;
+  shiftFreqHz = shift;
 
   // calculate duration of 1 bit
-  _bitDuration = (uint32_t)1000000/rate;
+  bitDuration = (uint32_t)1000000/rate;
 
   // calculate carrier shift
-  _shift = getRawShift(shift);
+  shiftFreq = getRawShift(shift);
 
   // Write resultant tones into arrays for quick lookup when modulating.
   for(uint8_t i = 0; i < 4; i++) {
-    _tones[i] = _shift*i;
-    _tonesHz[i] = _shiftHz*i;
+    tones[i] = shiftFreq*i;
+    tonesHz[i] = shiftFreqHz*i;
   }
 
   // calculate 24-bit frequency
-  _base = (base * 1000000.0) / _phy->getFreqStep();
+  baseFreq = (base * 1000000.0) / phyLayer->getFreqStep();
 
   // configure for direct mode
-  return(_phy->startDirect());
+  return(phyLayer->startDirect());
 }
 
 void FSK4Client::idle() {
@@ -47,10 +47,10 @@ void FSK4Client::idle() {
 
 int16_t FSK4Client::setCorrection(int16_t offsets[], float length) {
   for(uint8_t i = 0; i < 4; i++) {
-    _tones[i] += getRawShift(offsets[i]);
-    _tonesHz[i] += offsets[i];
+    tones[i] += getRawShift(offsets[i]);
+    tonesHz[i] += offsets[i];
   }
-  _bitDuration *= length;
+  bitDuration *= length;
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -80,36 +80,36 @@ size_t FSK4Client::write(uint8_t b) {
 }
 
 void FSK4Client::tone(uint8_t i) {
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   uint32_t start = mod->hal->micros();
-  transmitDirect(_base + _tones[i], _baseHz + _tonesHz[i]);
-  mod->waitForMicroseconds(start, _bitDuration);
+  transmitDirect(baseFreq + tones[i], baseFreqHz + tonesHz[i]);
+  mod->waitForMicroseconds(start, bitDuration);
 }
 
 int16_t FSK4Client::transmitDirect(uint32_t freq, uint32_t freqHz) {
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio != nullptr) {
-    return(_audio->tone(freqHz));
+  if(audioClient != nullptr) {
+    return(audioClient->tone(freqHz));
   }
   #endif
-  return(_phy->transmitDirect(freq));
+  return(phyLayer->transmitDirect(freq));
 }
 
 int16_t FSK4Client::standby() {
   // ensure everything is stopped in interrupt timing mode
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   mod->waitForMicroseconds(0, 0);
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio != nullptr) {
-    return(_audio->noTone());
+  if(audioClient != nullptr) {
+    return(audioClient->noTone());
   }
   #endif
-  return(_phy->standby());
+  return(phyLayer->standby());
 }
 
 int32_t FSK4Client::getRawShift(int32_t shift) {
   // calculate module carrier frequency resolution
-  int32_t step = round(_phy->getFreqStep());
+  int32_t step = round(phyLayer->getFreqStep());
 
   // check minimum shift value
   if(abs(shift) < step / 2) {
