@@ -2,18 +2,18 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
-ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), _spi(&RADIOLIB_DEFAULT_SPI), _initInterface(true) {}
+ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
 
-ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), _spi(&spi), _spiSettings(spiSettings) {}
+ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
 
 void ArduinoHal::init() {
-  if(_initInterface) {
+  if(initInterface) {
     spiBegin();
   }
 }
 
 void ArduinoHal::term() {
-  if(_initInterface) {
+  if(initInterface) {
     spiEnd();
   }
 }
@@ -77,23 +77,23 @@ long inline ArduinoHal::pulseIn(uint32_t pin, uint32_t state, unsigned long time
 }
 
 void inline ArduinoHal::spiBegin() {
-  _spi->begin();
+  spi->begin();
 }
 
 void inline ArduinoHal::spiBeginTransaction() {
-  _spi->beginTransaction(_spiSettings);
+  spi->beginTransaction(spiSettings);
 }
 
 uint8_t inline ArduinoHal::spiTransfer(uint8_t b) {
-  return(_spi->transfer(b));
+  return(spi->transfer(b));
 }
 
 void inline ArduinoHal::spiEndTransaction() {
-  _spi->endTransaction();
+  spi->endTransaction();
 }
 
 void inline ArduinoHal::spiEnd() {
-  _spi->end();
+  spi->end();
 }
 
 void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long duration) {
@@ -105,13 +105,13 @@ void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long
   #elif defined(ESP32)
     // ESP32 tone() emulation
     (void)duration;
-    if(_prev == -1) {
+    if(prev == -1) {
       ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
     }
-    if(_prev != frequency) {
+    if(prev != frequency) {
       ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, frequency);
     }
-    _prev = frequency;
+    prev = frequency;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
     // better tone for mbed OS boards
     (void)duration;
@@ -141,7 +141,7 @@ void inline ArduinoHal::noTone(uint32_t pin) {
     // ESP32 tone() emulation
     ledcDetachPin(pin);
     ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
-    _prev = -1;
+    prev = -1;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
     if(pin == RADIOLIB_NC) {
       return;
