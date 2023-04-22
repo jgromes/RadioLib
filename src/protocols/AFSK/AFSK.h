@@ -23,7 +23,7 @@ class AFSKClient  {
 
       \param pin The pin that will be used for audio output.
     */
-    AFSKClient(PhysicalLayer* phy, RADIOLIB_PIN_TYPE pin);
+    AFSKClient(PhysicalLayer* phy, uint32_t pin);
 
     /*!
       \brief Initialization method.
@@ -56,7 +56,7 @@ class AFSKClient  {
   private:
 #endif
     PhysicalLayer* _phy;
-    RADIOLIB_PIN_TYPE _pin;
+    uint32_t _pin;
 
     // allow specific classes access the private PhysicalLayer pointer
     friend class RTTYClient;

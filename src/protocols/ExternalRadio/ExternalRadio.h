@@ -3,12 +3,19 @@
 
 #include "../../TypeDef.h"
 #include "../../Module.h"
+#if defined(RADIOLIB_BUILD_ARDUINO)
+#include "../../ArduinoHal.h"
+#endif
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 
 class ExternalRadio: public PhysicalLayer {
   public:
+    #if defined(RADIOLIB_BUILD_ARDUINO)
     ExternalRadio();
+    #endif
+    ExternalRadio(Hal *hal);
+
     Module* getMod();
   private:
     Module* mod;

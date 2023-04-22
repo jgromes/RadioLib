@@ -31,17 +31,6 @@ class STM32WLx_Module : public Module {
 
   public:
     STM32WLx_Module();
-
-#if !defined(RADIOLIB_GODMODE)
-  private:
-#endif
-
-    // Replacement callbacks to handle virtual pins. These are static,
-    // since they replace global functions that cannot take any this
-    // pointer for context.
-    static void virtualPinMode(uint32_t dwPin, uint32_t dwMode);
-    static void virtualDigitalWrite(uint32_t dwPin, uint32_t dwVal);
-    static int virtualDigitalRead(uint32_t ulPin);
 };
 
 #endif // !defined(RADIOLIB_EXCLUDE_STM32WLX)

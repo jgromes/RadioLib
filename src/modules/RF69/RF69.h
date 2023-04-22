@@ -1035,10 +1035,10 @@ class RF69: public PhysicalLayer {
     int16_t setRSSIThreshold(float dbm);
 
     /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
 
     /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
      \brief Get one truly random byte from RSSI noise.
@@ -1067,7 +1067,7 @@ class RF69: public PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    void readBit(RADIOLIB_PIN_TYPE pin);
+    void readBit(uint32_t pin);
     #endif
 
     /*!
@@ -1079,7 +1079,7 @@ class RF69: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value);
+    int16_t setDIOMapping(uint32_t pin, uint32_t value);
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
   protected:

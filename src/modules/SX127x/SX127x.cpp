@@ -1,4 +1,5 @@
 #include "SX127x.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE, RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
@@ -12,8 +13,8 @@ Module* SX127x::getMod() {
 int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -59,8 +60,8 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
 int16_t SX127x::beginFSK(uint8_t chipVersion, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
 
   // try to find the SX127x chip
   if(!SX127x::findChip(chipVersion)) {
@@ -152,10 +153,10 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet transmission or timeout
-    start = _mod->micros();
-    while(!_mod->digitalRead(_mod->getIrq())) {
-      _mod->yield();
-      if(_mod->micros() - start > timeout) {
+    start = _mod->hal->micros();
+    while(!_mod->hal->digitalRead(_mod->getIrq())) {
+      _mod->hal->yield();
+      if(_mod->hal->micros() - start > timeout) {
         finishTransmit();
         return(RADIOLIB_ERR_TX_TIMEOUT);
       }
@@ -170,10 +171,10 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     RADIOLIB_ASSERT(state);
 
     // wait for transmission end or timeout
-    start = _mod->micros();
-    while(!_mod->digitalRead(_mod->getIrq())) {
-      _mod->yield();
-      if(_mod->micros() - start > timeout) {
+    start = _mod->hal->micros();
+    while(!_mod->hal->digitalRead(_mod->getIrq())) {
+      _mod->hal->yield();
+      if(_mod->hal->micros() - start > timeout) {
         finishTransmit();
         return(RADIOLIB_ERR_TX_TIMEOUT);
       }
@@ -183,7 +184,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // update data rate
-  uint32_t elapsed = _mod->micros() - start;
+  uint32_t elapsed = _mod->hal->micros() - start;
   _dataRate = (len*8.0)/((float)elapsed/1000000.0);
 
   return(finishTransmit());
@@ -208,19 +209,19 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
 
     // wait for packet reception or timeout
-    uint32_t start = _mod->micros();
-    while(!_mod->digitalRead(_mod->getIrq())) {
-      _mod->yield();
+    uint32_t start = _mod->hal->micros();
+    while(!_mod->hal->digitalRead(_mod->getIrq())) {
+      _mod->hal->yield();
 
       if(_mod->getGpio() == RADIOLIB_NC) {
         // no GPIO pin provided, use software timeout
-        if(_mod->micros() - start > timeout) {
+        if(_mod->hal->micros() - start > timeout) {
           clearIRQFlags();
           return(RADIOLIB_ERR_RX_TIMEOUT);
         }
       } else {
         // GPIO provided, use that
-        if(_mod->digitalRead(_mod->getGpio())) {
+        if(_mod->hal->digitalRead(_mod->getGpio())) {
           clearIRQFlags();
           return(RADIOLIB_ERR_RX_TIMEOUT);
         }
@@ -237,10 +238,10 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet reception or timeout
-    uint32_t start = _mod->micros();
-    while(!_mod->digitalRead(_mod->getIrq())) {
-      _mod->yield();
-      if(_mod->micros() - start > timeout) {
+    uint32_t start = _mod->hal->micros();
+    while(!_mod->hal->digitalRead(_mod->getIrq())) {
+      _mod->hal->yield();
+      if(_mod->hal->micros() - start > timeout) {
         clearIRQFlags();
         return(RADIOLIB_ERR_RX_TIMEOUT);
       }
@@ -259,9 +260,9 @@ int16_t SX127x::scanChannel() {
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
-    if(_mod->digitalRead(_mod->getGpio())) {
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
+    if(_mod->hal->digitalRead(_mod->getGpio())) {
       return(RADIOLIB_PREAMBLE_DETECTED);
     }
   }
@@ -425,31 +426,31 @@ int16_t SX127x::startReceive(uint32_t mode, uint16_t irqFlags, uint16_t irqMask,
   return(startReceive((uint8_t)len, (uint8_t)mode));
 }
 
-void SX127x::setDio0Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, dir);
+void SX127x::setDio0Action(void (*func)(void), uint32_t dir) {
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, dir);
 }
 
 void SX127x::clearDio0Action() {
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
-void SX127x::setDio1Action(void (*func)(void), RADIOLIB_INTERRUPT_STATUS dir) {
+void SX127x::setDio1Action(void (*func)(void), uint32_t dir) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, dir);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()), func, dir);
 }
 
 void SX127x::clearDio1Action() {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()));
 }
 
 void SX127x::setFifoEmptyAction(void (*func)(void)) {
   // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
-  setDio1Action(func);
+  setDio1Action(func, _mod->hal->GpioInterruptRising);
 }
 
 void SX127x::clearFifoEmptyAction() {
@@ -462,7 +463,7 @@ void SX127x::setFifoFullAction(void (*func)(void)) {
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_PACK_FIFO_LEVEL, 5, 4);
 
   // set DIO1 to the FIFO full event
-  setDio1Action(func);
+  setDio1Action(func, _mod->hal->GpioInterruptRising);
 }
 
 void SX127x::clearFifoFullAction() {
@@ -1266,11 +1267,11 @@ uint8_t SX127x::getModemStatus() {
   return(_mod->SPIreadRegister(RADIOLIB_SX127X_REG_MODEM_STAT));
 }
 
-void SX127x::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void SX127x::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void SX127x::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void SX127x::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -1285,7 +1286,7 @@ uint8_t SX127x::randomByte() {
   setMode(RADIOLIB_SX127X_RX);
 
   // wait a bit for the RSSI reading to stabilise
-  _mod->delay(10);
+  _mod->hal->delay(10);
 
   // read RSSI value 8 times, always keep just the least significant bit
   uint8_t randByte = 0x00;
@@ -1326,7 +1327,7 @@ int8_t SX127x::getTempRaw() {
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_IMAGE_CAL, RADIOLIB_SX127X_TEMP_MONITOR_ON, 0, 0);
 
   // wait
-  _mod->delayMicroseconds(200);
+  _mod->hal->delayMicroseconds(200);
 
   // disable temperature reading
   _mod->SPIsetRegValue(RADIOLIB_SX127X_REG_IMAGE_CAL, RADIOLIB_SX127X_TEMP_MONITOR_OFF, 0, 0);
@@ -1432,7 +1433,7 @@ bool SX127x::findChip(uint8_t ver) {
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_PRINTLN("SX127x not found! (%d of 10 tries) RADIOLIB_SX127X_REG_VERSION == 0x%04X, expected 0x00%X", i + 1, version, ver);
-      _mod->delay(10);
+      _mod->hal->delay(10);
       i++;
     }
   }
@@ -1504,11 +1505,11 @@ int16_t SX127x::invertIQ(bool invertIQ) {
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 void SX127x::setDirectAction(void (*func)(void)) {
-  setDio1Action(func);
+  setDio1Action(func, _mod->hal->GpioInterruptRising);
 }
 
-void SX127x::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
+void SX127x::readBit(uint32_t pin) {
+  updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
@@ -1533,7 +1534,7 @@ void SX127x::clearFHSSInt(void) {
   }
 }
 
-int16_t SX127x::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+int16_t SX127x::setDIOMapping(uint32_t pin, uint32_t value) {
   if (pin > 5)
     return RADIOLIB_ERR_INVALID_DIO_PIN;
 

@@ -1,4 +1,5 @@
 #include "SX1272.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_SX127X)
 
 SX1272::SX1272(Module* mod) : SX127x(mod) {
@@ -71,11 +72,11 @@ int16_t SX1272::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 }
 
 void SX1272::reset() {
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), HIGH);
-  _mod->delay(1);
-  _mod->digitalWrite(_mod->getRst(), LOW);
-  _mod->delay(5);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
+  _mod->hal->delay(1);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
+  _mod->hal->delay(5);
 }
 
 int16_t SX1272::setFrequency(float freq) {

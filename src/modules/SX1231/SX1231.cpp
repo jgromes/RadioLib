@@ -8,8 +8,8 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
-  _mod->pinMode(_mod->getRst(), OUTPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
 
   // try to find the SX1231 chip
   uint8_t i = 0;
@@ -21,7 +21,7 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
       _chipRevision = version;
     } else {
       RADIOLIB_DEBUG_PRINTLN("SX1231 not found! (%d of 10 tries) RF69_REG_VERSION == 0x%04X, expected 0x0021 / 0x0022 / 0x0023", i + 1, version);
-      _mod->delay(10);
+      _mod->hal->delay(10);
       i++;
     }
   }

@@ -31,7 +31,7 @@ STM32WLx radio = new STM32WLx_Module();
 
 // set RF switch configuration for Nucleo WL55JC1
 // NOTE: other boards may be different!
-static const RADIOLIB_PIN_TYPE rfswitch_pins[] =
+static const uint32_t rfswitch_pins[] =
                          {PC3,  PC4,  PC5};
 static const Module::RfSwitchMode_t rfswitch_table[] = {
   {STM32WLx::MODE_IDLE,  {LOW,  LOW,  LOW}},

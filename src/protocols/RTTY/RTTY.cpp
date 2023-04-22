@@ -1,4 +1,6 @@
 #include "RTTY.h"
+#include <string.h>
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_RTTY)
 
 ITA2String::ITA2String(char c) {
@@ -409,14 +411,14 @@ size_t RTTYClient::println(double d, int digits) {
 
 void RTTYClient::mark() {
   Module* mod = _phy->getMod();
-  uint32_t start = mod->micros();
+  uint32_t start = mod->hal->micros();
   transmitDirect(_base + _shift, _baseHz + _shiftHz);
   mod->waitForMicroseconds(start, _bitDuration);
 }
 
 void RTTYClient::space() {
   Module* mod = _phy->getMod();
-  uint32_t start = mod->micros();
+  uint32_t start = mod->hal->micros();
   transmitDirect(_base, _baseHz);
   mod->waitForMicroseconds(start, _bitDuration);
 }

@@ -53,11 +53,11 @@ void setup() {
   // set the function that will be called
   // when LoRa preamble is not detected within CAD timeout period
   // or when a packet is received
-  radio.setDio0Action(setFlagTimeout);
+  radio.setDio0Action(setFlagTimeout, RISING);
 
   // set the function that will be called
   // when LoRa preamble is detected
-  radio.setDio1Action(setFlagDetected);
+  radio.setDio1Action(setFlagDetected, RISING);
 
   // start scanning the channel
   Serial.print(F("[SX1278] Starting scan for LoRa preamble ... "));

@@ -810,10 +810,10 @@ class Si443x: public PhysicalLayer {
     int16_t setDataShaping(uint8_t sh) override;
 
     /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
 
     /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
      \brief Get one truly random byte from RSSI noise.
@@ -842,7 +842,7 @@ class Si443x: public PhysicalLayer {
 
       \param pin Pin on which to read.
     */
-    void readBit(RADIOLIB_PIN_TYPE pin);
+    void readBit(uint32_t pin);
     #endif
 
     /*!

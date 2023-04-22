@@ -1,4 +1,5 @@
 #include "RF69.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_RF69)
 
 RF69::RF69(Module* module) : PhysicalLayer(RADIOLIB_RF69_FREQUENCY_STEP_SIZE, RADIOLIB_RF69_MAX_PACKET_LENGTH)  {
@@ -12,7 +13,7 @@ Module* RF69::getMod() {
 int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
   _mod->init();
-  _mod->pinMode(_mod->getIrq(), INPUT);
+  _mod->hal->pinMode(_mod->getIrq(), _mod->hal->GpioModeInput);
 
   // try to find the RF69 chip
   uint8_t i = 0;
@@ -27,7 +28,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_PRINTLN("RF69 not found! (%d of 10 tries) RADIOLIB_RF69_REG_VERSION == 0x%04X, expected 0x0024", i + 1, version);
-      _mod->delay(10);
+      _mod->hal->delay(10);
       i++;
     }
   }
@@ -94,11 +95,11 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
 }
 
 void RF69::reset() {
-  _mod->pinMode(_mod->getRst(), OUTPUT);
-  _mod->digitalWrite(_mod->getRst(), HIGH);
-  _mod->delay(1);
-  _mod->digitalWrite(_mod->getRst(), LOW);
-  _mod->delay(10);
+  _mod->hal->pinMode(_mod->getRst(), _mod->hal->GpioModeOutput);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelHigh);
+  _mod->hal->delay(1);
+  _mod->hal->digitalWrite(_mod->getRst(), _mod->hal->GpioLevelLow);
+  _mod->hal->delay(10);
 }
 
 int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
@@ -110,11 +111,11 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
 
-    if(_mod->micros() - start > timeout) {
+    if(_mod->hal->micros() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -132,11 +133,11 @@ int16_t RF69::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = _mod->micros();
-  while(!_mod->digitalRead(_mod->getIrq())) {
-    _mod->yield();
+  uint32_t start = _mod->hal->micros();
+  while(!_mod->hal->digitalRead(_mod->getIrq())) {
+    _mod->hal->yield();
 
-    if(_mod->micros() - start > timeout) {
+    if(_mod->hal->micros() - start > timeout) {
       standby();
       clearIRQFlags();
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -271,26 +272,26 @@ int16_t RF69::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask
 }
 
 void RF69::setDio0Action(void (*func)(void)) {
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()), func, RISING);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()), func, _mod->hal->GpioInterruptRising);
 }
 
 void RF69::clearDio0Action() {
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getIrq()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getIrq()));
 }
 
 void RF69::setDio1Action(void (*func)(void)) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->pinMode(_mod->getGpio(), INPUT);
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, RISING);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()), func, _mod->hal->GpioInterruptRising);
 }
 
 void RF69::clearDio1Action() {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->detachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()));
+  _mod->hal->detachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()));
 }
 
 void RF69::setFifoEmptyAction(void (*func)(void)) {
@@ -298,10 +299,10 @@ void RF69::setFifoEmptyAction(void (*func)(void)) {
   if(_mod->getGpio() == RADIOLIB_NC) {
     return;
   }
-  _mod->pinMode(_mod->getGpio(), INPUT);
+  _mod->hal->pinMode(_mod->getGpio(), _mod->hal->GpioModeInput);
 
   // we need to invert the logic here (as compared to setDio1Action), since we are using the "FIFO not empty interrupt"
-  _mod->attachInterrupt(RADIOLIB_DIGITAL_PIN_TO_INTERRUPT(_mod->getGpio()), func, FALLING);
+  _mod->hal->attachInterrupt(_mod->hal->pinToInterrupt(_mod->getGpio()), func, _mod->hal->GpioInterruptFalling);
 }
 
 void RF69::clearFifoEmptyAction() {
@@ -758,7 +759,7 @@ int16_t RF69::getTemperature() {
   // wait until measurement is finished
   while(_mod->SPIgetRegValue(RADIOLIB_RF69_REG_TEMP_1, 2, 2) == RADIOLIB_RF69_TEMP_MEAS_RUNNING) {
     // check every 10 us
-    _mod->delay(10);
+    _mod->hal->delay(10);
   }
   int8_t rawTemp = _mod->SPIgetRegValue(RADIOLIB_RF69_REG_TEMP_2);
 
@@ -916,11 +917,11 @@ int16_t RF69::setRSSIThreshold(float dbm) {
   return _mod->SPIsetRegValue(RADIOLIB_RF69_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
 }
 
-void RF69::setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn) {
+void RF69::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   _mod->setRfSwitchPins(rxEn, txEn);
 }
 
-void RF69::setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+void RF69::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
   _mod->setRfSwitchTable(pins, table);
 }
 
@@ -929,7 +930,7 @@ uint8_t RF69::randomByte() {
   setMode(RADIOLIB_RF69_RX);
 
   // wait a bit for the RSSI reading to stabilise
-  _mod->delay(10);
+  _mod->hal->delay(10);
 
   // read RSSI value 8 times, always keep just the least significant bit
   uint8_t randByte = 0x00;
@@ -948,12 +949,12 @@ void RF69::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
 
-void RF69::readBit(RADIOLIB_PIN_TYPE pin) {
-  updateDirectBuffer((uint8_t)_mod->digitalRead(pin));
+void RF69::readBit(uint32_t pin) {
+  updateDirectBuffer((uint8_t)_mod->hal->digitalRead(pin));
 }
 #endif
 
-int16_t RF69::setDIOMapping(RADIOLIB_PIN_TYPE pin, uint8_t value) {
+int16_t RF69::setDIOMapping(uint32_t pin, uint32_t value) {
   if(pin > 5) {
     return(RADIOLIB_ERR_INVALID_DIO_PIN);
   }

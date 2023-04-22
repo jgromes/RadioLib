@@ -1,4 +1,5 @@
 #include "FSK4.h"
+#include <math.h>
 #if !defined(RADIOLIB_EXCLUDE_FSK4)
 
 FSK4Client::FSK4Client(PhysicalLayer* phy) {
@@ -80,7 +81,7 @@ size_t FSK4Client::write(uint8_t b) {
 
 void FSK4Client::tone(uint8_t i) {
   Module* mod = _phy->getMod();
-  uint32_t start = mod->micros();
+  uint32_t start = mod->hal->micros();
   transmitDirect(_base + _tones[i], _baseHz + _tonesHz[i]);
   mod->waitForMicroseconds(start, _bitDuration);
 }

@@ -9,6 +9,8 @@
 RadioLib	KEYWORD1
 RadioShield	KEYWORD1
 Module	KEYWORD1
+Hal	KEYWORD1
+ArduinoHal	KEYWORD1
 
 # modules
 CC1101	KEYWORD1

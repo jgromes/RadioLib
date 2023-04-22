@@ -817,10 +817,10 @@ class SX128x: public PhysicalLayer {
     int16_t setEncoding(uint8_t encoding) override;
 
     /*! \copydoc Module::setRfSwitchPins */
-    void setRfSwitchPins(RADIOLIB_PIN_TYPE rxEn, RADIOLIB_PIN_TYPE txEn);
+    void setRfSwitchPins(uint32_t rxEn, uint32_t txEn);
 
     /*! \copydoc Module::setRfSwitchTable */
-    void setRfSwitchTable(const RADIOLIB_PIN_TYPE (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
      \brief Dummy random method, to ensure PhysicalLayer compatibility.
@@ -851,7 +851,7 @@ class SX128x: public PhysicalLayer {
 
       \param pin Ignored.
     */
-    void readBit(RADIOLIB_PIN_TYPE pin);
+    void readBit(uint32_t pin);
     #endif
 
 #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
