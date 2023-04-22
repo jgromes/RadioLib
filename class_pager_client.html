@@ -221,10 +221,10 @@ Public Member Functions</h2></td></tr>
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base (center) frequency to be used in MHz.</td></tr>
-    <tr><td class="paramname">speed</td><td>Bit rate to use in bps. Common POCSAG decoders can receive 512, 1200 and 2400 bps.</td></tr>
-    <tr><td class="paramname">invert</td><td>Enable frequency inversion. Disabled by default (high frequency is digital 0).</td></tr>
-    <tr><td class="paramname">shift</td><td>Set custom frequency shift, defaults to 4500 Hz.</td></tr>
+    <tr><td class="paramname">base</td><td>Base (center) frequency to be used in MHz. </td></tr>
+    <tr><td class="paramname">speed</td><td>Bit rate to use in bps. Common POCSAG decoders can receive 512, 1200 and 2400 bps. </td></tr>
+    <tr><td class="paramname">invert</td><td>Enable frequency inversion. Disabled by default (high frequency is digital 0). </td></tr>
+    <tr><td class="paramname">shift</td><td>Set custom frequency shift, defaults to 4500 Hz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -267,9 +267,9 @@ Public Member Functions</h2></td></tr>
 <p>Reads data that was received after calling startReceive method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received message.</td></tr>
-    <tr><td class="paramname">len</td><td>Pointer to variable holding the number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. Upon completion, the number of bytes received will be written to this variable.</td></tr>
-    <tr><td class="paramname">addr</td><td>Pointer to variable holding the address of the received pager message. Set to NULL to not retrieve address.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received message. </td></tr>
+    <tr><td class="paramname">len</td><td>Pointer to variable holding the number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. Upon completion, the number of bytes received will be written to this variable. </td></tr>
+    <tr><td class="paramname">addr</td><td>Pointer to variable holding the address of the received pager message. Set to NULL to not retrieve address. </td></tr>
   </table>
   </dd>
 </dl>
@@ -296,7 +296,7 @@ Public Member Functions</h2></td></tr>
 <p>Method to send a tone-only alert to a destination pager. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.</td></tr>
+    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved. </td></tr>
   </table>
   </dd>
 </dl>
@@ -339,9 +339,9 @@ Public Member Functions</h2></td></tr>
 <p>Start reception of POCSAG packets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to receive digital data on (e.g., DIO2 for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a>).</td></tr>
-    <tr><td class="paramname">addr</td><td>Address of this "pager". Allowed values are 0 to 2097151 - values above 2000000 are reserved.</td></tr>
-    <tr><td class="paramname">mask</td><td>Address filter mask - set individual bits to enable or disable match on that bit of the address.¨Set to 0xFFFFF (all bits checked) by default.</td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to receive digital data on (e.g., DIO2 for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a>). </td></tr>
+    <tr><td class="paramname">addr</td><td>Address of this "pager". Allowed values are 0 to 2097151 - values above 2000000 are reserved. </td></tr>
+    <tr><td class="paramname">mask</td><td>Address filter mask - set individual bits to enable or disable match on that bit of the address. Set to 0xFFFFF (all bits checked) by default. </td></tr>
   </table>
   </dd>
 </dl>
@@ -384,9 +384,9 @@ Public Member Functions</h2></td></tr>
 <p>C-string transmit method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>C-string that will be transmitted.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.</td></tr>
+    <tr><td class="paramname">str</td><td>C-string that will be transmitted. </td></tr>
+    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved. </td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD. </td></tr>
   </table>
   </dd>
 </dl>
@@ -435,10 +435,10 @@ Public Member Functions</h2></td></tr>
 <p>Binary transmit method. Will transmit arbitrary binary data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved. </td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD. </td></tr>
   </table>
   </dd>
 </dl>

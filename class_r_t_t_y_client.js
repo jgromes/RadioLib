@@ -2,7 +2,7 @@ var class_r_t_t_y_client =
 [
     [ "RTTYClient", "class_r_t_t_y_client.html#ae6bc08fa88457ee00a992448be1d63ea", null ],
     [ "RTTYClient", "class_r_t_t_y_client.html#ab0e11944c2f1e2c60fc45bcd2db18570", null ],
-    [ "begin", "class_r_t_t_y_client.html#ac4ae2458f8005c87161c74cf827d35b9", null ],
+    [ "begin", "class_r_t_t_y_client.html#ae0b25083baf01469786b6242389298fa", null ],
     [ "idle", "class_r_t_t_y_client.html#ac477e65ea756e56bb9043d778a51b4bc", null ],
     [ "print", "class_r_t_t_y_client.html#a5fc5f8235ec0a330ae602b162e09c8bb", null ],
     [ "print", "class_r_t_t_y_client.html#a05633ffc5007424aaa97b55f9bb4832f", null ],

@@ -107,9 +107,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a74a43c60c84e4150b9508c83e461d24e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a74a43c60c84e4150b9508c83e461d24e">setCorrection</a> (int16_t mark, int16_t space, float length=1.0f)</td></tr>
 <tr class="memdesc:a74a43c60c84e4150b9508c83e461d24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones.  <a href="class_a_x25_client.html#a74a43c60c84e4150b9508c83e461d24e">More...</a><br /></td></tr>
 <tr class="separator:a74a43c60c84e4150b9508c83e461d24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">begin</a> (const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preambleLen=8)</td></tr>
-<tr class="memdesc:a38be2b9385e4804339b3e4b57b90c2ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_x25_client.html#a38be2b9385e4804339b3e4b57b90c2ca">More...</a><br /></td></tr>
-<tr class="separator:a38be2b9385e4804339b3e4b57b90c2ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadeefb210a0b5170d4e8d281c2257e73"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#aadeefb210a0b5170d4e8d281c2257e73">begin</a> (const char *srcCallsign, uint8_t srcSSID=0x00, uint8_t preLen=8)</td></tr>
+<tr class="memdesc:aadeefb210a0b5170d4e8d281c2257e73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_x25_client.html#aadeefb210a0b5170d4e8d281c2257e73">More...</a><br /></td></tr>
+<tr class="separator:aadeefb210a0b5170d4e8d281c2257e73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a985790943f3f3e06a2dfdd36977d0b98"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">transmit</a> (const char *str, const char *destCallsign, uint8_t destSSID=0x00)</td></tr>
 <tr class="memdesc:a985790943f3f3e06a2dfdd36977d0b98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit unnumbered information (UI) frame.  <a href="class_a_x25_client.html#a985790943f3f3e06a2dfdd36977d0b98">More...</a><br /></td></tr>
 <tr class="separator:a985790943f3f3e06a2dfdd36977d0b98"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,8 +195,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a38be2b9385e4804339b3e4b57b90c2ca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38be2b9385e4804339b3e4b57b90c2ca">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="aadeefb210a0b5170d4e8d281c2257e73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadeefb210a0b5170d4e8d281c2257e73">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -217,7 +217,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>preambleLen</em> = <code>8</code>&#160;</td>
+          <td class="paramname"><em>preLen</em> = <code>8</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -230,9 +230,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">srcCallsign</td><td>Callsign of the source station.</td></tr>
-    <tr><td class="paramname">srcSSID</td><td>4-bit SSID of the source station (in case there are more stations with the same callsign). Defaults to 0.</td></tr>
-    <tr><td class="paramname">preambleLen</td><td>Number of "preamble" bytes (RADIOLIB_AX25_FLAG) sent ahead of the actual AX.25 frame. Does not include the first RADIOLIB_AX25_FLAG byte, which is considered part of the frame. Defaults to 8.</td></tr>
+    <tr><td class="paramname">srcCallsign</td><td>Callsign of the source station. </td></tr>
+    <tr><td class="paramname">srcSSID</td><td>4-bit SSID of the source station (in case there are more stations with the same callsign). Defaults to 0. </td></tr>
+    <tr><td class="paramname">preLen</td><td>Number of "preamble" bytes (RADIOLIB_AX25_FLAG) sent ahead of the actual AX.25 frame. Does not include the first RADIOLIB_AX25_FLAG byte, which is considered part of the frame. Defaults to 8. </td></tr>
   </table>
   </dd>
 </dl>
@@ -259,7 +259,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <p>Transmit arbitrary AX.25 frame. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frame</td><td>Frame to be sent.</td></tr>
+    <tr><td class="paramname">frame</td><td>Frame to be sent. </td></tr>
   </table>
   </dd>
 </dl>
@@ -302,9 +302,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <p>Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mark</td><td>Positive or negative correction offset for mark audio frequency in Hz.</td></tr>
-    <tr><td class="paramname">space</td><td>Positive or negative correction offset for space audio frequency in Hz.</td></tr>
-    <tr><td class="paramname">length</td><td>Audio tone length modifier, defaults to 1.0.</td></tr>
+    <tr><td class="paramname">mark</td><td>Positive or negative correction offset for mark audio frequency in Hz. </td></tr>
+    <tr><td class="paramname">space</td><td>Positive or negative correction offset for space audio frequency in Hz. </td></tr>
+    <tr><td class="paramname">length</td><td>Audio tone length modifier, defaults to 1.0. </td></tr>
   </table>
   </dd>
 </dl>
@@ -347,9 +347,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <p>Transmit unnumbered information (UI) frame. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>Data to be sent.</td></tr>
-    <tr><td class="paramname">destCallsign</td><td>Callsign of the destination station.</td></tr>
-    <tr><td class="paramname">destSSID</td><td>4-bit SSID of the destination station (in case there are more stations with the same callsign). Defaults to 0.</td></tr>
+    <tr><td class="paramname">str</td><td>Data to be sent. </td></tr>
+    <tr><td class="paramname">destCallsign</td><td>Callsign of the destination station. </td></tr>
+    <tr><td class="paramname">destSSID</td><td>4-bit SSID of the destination station (in case there are more stations with the same callsign). Defaults to 0. </td></tr>
   </table>
   </dd>
 </dl>

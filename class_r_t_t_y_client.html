@@ -103,9 +103,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab0e11944c2f1e2c60fc45bcd2db18570"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#ab0e11944c2f1e2c60fc45bcd2db18570">RTTYClient</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
 <tr class="memdesc:ab0e11944c2f1e2c60fc45bcd2db18570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <a href="class_r_t_t_y_client.html#ab0e11944c2f1e2c60fc45bcd2db18570">More...</a><br /></td></tr>
 <tr class="separator:ab0e11944c2f1e2c60fc45bcd2db18570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4ae2458f8005c87161c74cf827d35b9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#ac4ae2458f8005c87161c74cf827d35b9">begin</a> (float base, uint32_t shift, uint16_t rate, uint8_t encoding=RADIOLIB_ASCII, uint8_t stopBits=1)</td></tr>
-<tr class="memdesc:ac4ae2458f8005c87161c74cf827d35b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_r_t_t_y_client.html#ac4ae2458f8005c87161c74cf827d35b9">More...</a><br /></td></tr>
-<tr class="separator:ac4ae2458f8005c87161c74cf827d35b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b25083baf01469786b6242389298fa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#ae0b25083baf01469786b6242389298fa">begin</a> (float base, uint32_t shift, uint16_t rate, uint8_t enc=RADIOLIB_ASCII, uint8_t stopBits=1)</td></tr>
+<tr class="memdesc:ae0b25083baf01469786b6242389298fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_r_t_t_y_client.html#ae0b25083baf01469786b6242389298fa">More...</a><br /></td></tr>
+<tr class="separator:ae0b25083baf01469786b6242389298fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac477e65ea756e56bb9043d778a51b4bc"><td class="memItemLeft" align="right" valign="top"><a id="ac477e65ea756e56bb9043d778a51b4bc"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#ac477e65ea756e56bb9043d778a51b4bc">idle</a> ()</td></tr>
 <tr class="memdesc:ac477e65ea756e56bb9043d778a51b4bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send out idle condition (RF tone at mark frequency). <br /></td></tr>
@@ -252,8 +252,8 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac4ae2458f8005c87161c74cf827d35b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4ae2458f8005c87161c74cf827d35b9">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="ae0b25083baf01469786b6242389298fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0b25083baf01469786b6242389298fa">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,7 +280,7 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>encoding</em> = <code>RADIOLIB_ASCII</code>, </td>
+          <td class="paramname"><em>enc</em> = <code>RADIOLIB_ASCII</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -299,11 +299,11 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">base</td><td>Base (space) frequency to be used in MHz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode)</td></tr>
-    <tr><td class="paramname">shift</td><td>Frequency shift between mark and space in Hz.</td></tr>
-    <tr><td class="paramname">rate</td><td>Baud rate to be used during transmission.</td></tr>
-    <tr><td class="paramname">encoding</td><td>Encoding to be used. Defaults to ASCII.</td></tr>
-    <tr><td class="paramname">stopBits</td><td>Number of stop bits to be used.</td></tr>
+    <tr><td class="paramname">base</td><td>Base (space) frequency to be used in MHz (in 2-FSK mode), or the space tone frequency in Hz (in AFSK mode) </td></tr>
+    <tr><td class="paramname">shift</td><td>Frequency shift between mark and space in Hz. </td></tr>
+    <tr><td class="paramname">rate</td><td>Baud rate to be used during transmission. </td></tr>
+    <tr><td class="paramname">enc</td><td>Encoding to be used. Defaults to ASCII. </td></tr>
+    <tr><td class="paramname">stopBits</td><td>Number of stop bits to be used. </td></tr>
   </table>
   </dd>
 </dl>

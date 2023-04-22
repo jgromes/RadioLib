@@ -123,93 +123,93 @@ $(document).ready(function(){initNavTree('_s_s_t_v_8h_source.html',''); initResi
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_HEADER_BREAK_LENGTH                       10000</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define RADIOLIB_SSTV_HEADER_BIT_LENGTH                         30000</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structtone__t.html">   43</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtone__t.html">tone_t</a> {</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  <span class="keyword">enum</span> {</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    GENERIC = 0,</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    SCAN_GREEN,</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    SCAN_BLUE,</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    SCAN_RED</div>
-<div class="line"><a name="l00053"></a><span class="lineno"><a class="line" href="structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74">   53</a></span>&#160;  } <a class="code" href="structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74">type</a>;</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">   58</a></span>&#160;  uint32_t <a class="code" href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">len</a>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">   63</a></span>&#160;  uint16_t <a class="code" href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">freq</a>;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;};</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html">   71</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> {</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">   76</a></span>&#160;  uint8_t <a class="code" href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">visCode</a>;</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">   81</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">width</a>;</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">   86</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">height</a>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">   91</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">scanPixelLen</a>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00096"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">   96</a></span>&#160;  uint8_t <a class="code" href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">numTones</a>;</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">  101</a></span>&#160;  <a class="code" href="structtone__t.html">tone_t</a> <a class="code" href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">tones</a>[8];</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="comment">// all currently supported SSTV modes</span></div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Scottie1;</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Scottie2;</div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> ScottieDX;</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Martin1;</div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Martin2;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Wrasse;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP3;</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP5;</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP7;</div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="class_s_s_t_v_client.html">  120</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a> {</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_s_s_t_v_client.html#af15cf501c00172270d2d2c43d7a7100a">SSTVClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_s_s_t_v_client.html#af15cf501c00172270d2d2c43d7a7100a">SSTVClient</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a3769dcdebf8b1fa01eb2d8bd2bb3815a">begin</a>(<span class="keywordtype">float</span> base, <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a>&amp; mode);</div>
-<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
-<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a3769dcdebf8b1fa01eb2d8bd2bb3815a">begin</a>(<span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a>&amp; mode);</div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structtone__t.html">   42</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structtone__t.html">tone_t</a> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;  <span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    GENERIC = 0,</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    SCAN_GREEN,</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    SCAN_BLUE,</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    SCAN_RED</div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74">   52</a></span>&#160;  } <a class="code" href="structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74">type</a>;</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">   57</a></span>&#160;  uint32_t <a class="code" href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">len</a>;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">   62</a></span>&#160;  uint16_t <a class="code" href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">freq</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html">   69</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> {</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">   74</a></span>&#160;  uint8_t <a class="code" href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">visCode</a>;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">   79</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">width</a>;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00084"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">   84</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">height</a>;</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">   89</a></span>&#160;  uint16_t <a class="code" href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">scanPixelLen</a>;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">   94</a></span>&#160;  uint8_t <a class="code" href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">numTones</a>;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">   99</a></span>&#160;  <a class="code" href="structtone__t.html">tone_t</a> <a class="code" href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">tones</a>[8];</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;<span class="comment">// all currently supported SSTV modes</span></div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Scottie1;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Scottie2;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> ScottieDX;</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Martin1;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Martin2;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> Wrasse;</div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP3;</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP5;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> PasokonP7;</div>
+<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
+<div class="line"><a name="l00117"></a><span class="lineno"><a class="line" href="class_s_s_t_v_client.html">  117</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s_s_t_v_client.html">SSTVClient</a> {</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_s_s_t_v_client.html#af15cf501c00172270d2d2c43d7a7100a">SSTVClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_s_s_t_v_client.html#af15cf501c00172270d2d2c43d7a7100a">SSTVClient</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a3769dcdebf8b1fa01eb2d8bd2bb3815a">begin</a>(<span class="keywordtype">float</span> base, <span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a>&amp; mode);</div>
+<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160; </div>
+<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a3769dcdebf8b1fa01eb2d8bd2bb3815a">begin</a>(<span class="keyword">const</span> <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a>&amp; mode);</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160; </div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a0e9cc17123f26d1e7ae2a2b93546515e">setCorrection</a>(<span class="keywordtype">float</span> correction);</div>
 <div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    int16_t <a class="code" href="class_s_s_t_v_client.html#a0e9cc17123f26d1e7ae2a2b93546515e">setCorrection</a>(<span class="keywordtype">float</span> correction);</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a0126ac04934f589b8cb04a038c342044">idle</a>();</div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160; </div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a30741de183c81492402187b9d6d8c11e">sendHeader</a>();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a772bfc68ac0a5f723c1031138dc27bd0">sendLine</a>(uint32_t* imgLine);</div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    uint16_t <a class="code" href="class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d">getPictureHeight</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* _phy;</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* _audio;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    uint32_t _base = 0;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> _mode = Scottie1;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordtype">bool</span> _firstLine = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keywordtype">void</span> tone(<span class="keywordtype">float</span> freq, uint32_t len = 0);</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;};</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
-<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:17</div></div>
-<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:14</div></div>
-<div class="ttc" id="aclass_s_s_t_v_client_html"><div class="ttname"><a href="class_s_s_t_v_client.html">SSTVClient</a></div><div class="ttdoc">Client for SSTV transmissions.</div><div class="ttdef"><b>Definition:</b> SSTV.h:120</div></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a0126ac04934f589b8cb04a038c342044">idle</a>();</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a30741de183c81492402187b9d6d8c11e">sendHeader</a>();</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_s_t_v_client.html#a772bfc68ac0a5f723c1031138dc27bd0">sendLine</a>(uint32_t* imgLine);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    uint16_t <a class="code" href="class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d">getPictureHeight</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audioClient;</div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    uint32_t baseFreq = 0;</div>
+<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160;    <a class="code" href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a> txMode = Scottie1;</div>
+<div class="line"><a name="l00195"></a><span class="lineno">  195</span>&#160;    <span class="keywordtype">bool</span> firstLine = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;    <span class="keywordtype">void</span> tone(<span class="keywordtype">float</span> freq, uint32_t len = 0);</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;};</div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160; </div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_a_f_s_k_client_html"><div class="ttname"><a href="class_a_f_s_k_client.html">AFSKClient</a></div><div class="ttdoc">Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...</div><div class="ttdef"><b>Definition:</b> AFSK.h:16</div></div>
+<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:15</div></div>
+<div class="ttc" id="aclass_s_s_t_v_client_html"><div class="ttname"><a href="class_s_s_t_v_client.html">SSTVClient</a></div><div class="ttdoc">Client for SSTV transmissions.</div><div class="ttdef"><b>Definition:</b> SSTV.h:117</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html_a0126ac04934f589b8cb04a038c342044"><div class="ttname"><a href="class_s_s_t_v_client.html#a0126ac04934f589b8cb04a038c342044">SSTVClient::idle</a></div><div class="ttdeci">void idle()</div><div class="ttdoc">Sends out tone at 1900 Hz.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:207</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html_a0e9cc17123f26d1e7ae2a2b93546515e"><div class="ttname"><a href="class_s_s_t_v_client.html#a0e9cc17123f26d1e7ae2a2b93546515e">SSTVClient::setCorrection</a></div><div class="ttdeci">int16_t setCorrection(float correction)</div><div class="ttdoc">Set correction coefficient for tone length.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:193</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html_a30741de183c81492402187b9d6d8c11e"><div class="ttname"><a href="class_s_s_t_v_client.html#a30741de183c81492402187b9d6d8c11e">SSTVClient::sendHeader</a></div><div class="ttdeci">void sendHeader()</div><div class="ttdoc">Sends synchronization header for the SSTV mode set in begin method.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:212</div></div>
@@ -217,16 +217,16 @@ $(document).ready(function(){initNavTree('_s_s_t_v_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_s_t_v_client_html_a772bfc68ac0a5f723c1031138dc27bd0"><div class="ttname"><a href="class_s_s_t_v_client.html#a772bfc68ac0a5f723c1031138dc27bd0">SSTVClient::sendLine</a></div><div class="ttdeci">void sendLine(uint32_t *imgLine)</div><div class="ttdoc">Sends single picture line in the currently configured SSTV mode.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:249</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html_ad66e5082788b507f0f18e6e0e255314d"><div class="ttname"><a href="class_s_s_t_v_client.html#ad66e5082788b507f0f18e6e0e255314d">SSTVClient::getPictureHeight</a></div><div class="ttdeci">uint16_t getPictureHeight() const</div><div class="ttdoc">Get picture height of the currently configured SSTV mode.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:288</div></div>
 <div class="ttc" id="aclass_s_s_t_v_client_html_af15cf501c00172270d2d2c43d7a7100a"><div class="ttname"><a href="class_s_s_t_v_client.html#af15cf501c00172270d2d2c43d7a7100a">SSTVClient::SSTVClient</a></div><div class="ttdeci">SSTVClient(PhysicalLayer *phy)</div><div class="ttdoc">Constructor for 2-FSK mode.</div><div class="ttdef"><b>Definition:</b> SSTV.cpp:157</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a></div><div class="ttdoc">Structure to save data about supported SSTV modes.</div><div class="ttdef"><b>Definition:</b> SSTV.h:71</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a27c6a271c1aa8e499a31a784ab9254ad"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">SSTVMode_t::tones</a></div><div class="ttdeci">tone_t tones[8]</div><div class="ttdoc">Sequence of tones in each transmission line. This is used to create the correct encoding sequence.</div><div class="ttdef"><b>Definition:</b> SSTV.h:101</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a4033deed34e2703ab7f9a95cc32e5820"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">SSTVMode_t::visCode</a></div><div class="ttdeci">uint8_t visCode</div><div class="ttdoc">Unique VIS code of the SSTV mode.</div><div class="ttdef"><b>Definition:</b> SSTV.h:76</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a991e84b2b6f696ec2390f2c3f8cb9694"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">SSTVMode_t::scanPixelLen</a></div><div class="ttdeci">uint16_t scanPixelLen</div><div class="ttdoc">Pixel scan length in us.</div><div class="ttdef"><b>Definition:</b> SSTV.h:91</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_aae9c12993b804b63c258e82244f20031"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">SSTVMode_t::height</a></div><div class="ttdeci">uint16_t height</div><div class="ttdoc">Picture height in pixels.</div><div class="ttdef"><b>Definition:</b> SSTV.h:86</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_ad8d4e7efb12eb0e0cfa850aeb7353e40"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">SSTVMode_t::width</a></div><div class="ttdeci">uint16_t width</div><div class="ttdoc">Picture width in pixels.</div><div class="ttdef"><b>Definition:</b> SSTV.h:81</div></div>
-<div class="ttc" id="astruct_s_s_t_v_mode__t_html_ae3d67bbc9815c38bea17ec070c8c0096"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">SSTVMode_t::numTones</a></div><div class="ttdeci">uint8_t numTones</div><div class="ttdoc">Number of tones in each transmission line. Picture scan data is considered single tone.</div><div class="ttdef"><b>Definition:</b> SSTV.h:96</div></div>
-<div class="ttc" id="astructtone__t_html"><div class="ttname"><a href="structtone__t.html">tone_t</a></div><div class="ttdoc">Structure to save data about tone.</div><div class="ttdef"><b>Definition:</b> SSTV.h:43</div></div>
-<div class="ttc" id="astructtone__t_html_a322e5f269a6a7eaae58f3ca0b73da0cf"><div class="ttname"><a href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">tone_t::freq</a></div><div class="ttdeci">uint16_t freq</div><div class="ttdoc">Frequency of tone in Hz, set to 0 for picture scan tones.</div><div class="ttdef"><b>Definition:</b> SSTV.h:63</div></div>
-<div class="ttc" id="astructtone__t_html_a3b0421dd255c7c59552741957a6224ed"><div class="ttname"><a href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">tone_t::len</a></div><div class="ttdeci">uint32_t len</div><div class="ttdoc">Length of tone in us, set to 0 for picture scan tones.</div><div class="ttdef"><b>Definition:</b> SSTV.h:58</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html">SSTVMode_t</a></div><div class="ttdoc">Structure to save data about supported SSTV modes.</div><div class="ttdef"><b>Definition:</b> SSTV.h:69</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a27c6a271c1aa8e499a31a784ab9254ad"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad">SSTVMode_t::tones</a></div><div class="ttdeci">tone_t tones[8]</div><div class="ttdoc">Sequence of tones in each transmission line. This is used to create the correct encoding sequence.</div><div class="ttdef"><b>Definition:</b> SSTV.h:99</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a4033deed34e2703ab7f9a95cc32e5820"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820">SSTVMode_t::visCode</a></div><div class="ttdeci">uint8_t visCode</div><div class="ttdoc">Unique VIS code of the SSTV mode.</div><div class="ttdef"><b>Definition:</b> SSTV.h:74</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_a991e84b2b6f696ec2390f2c3f8cb9694"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694">SSTVMode_t::scanPixelLen</a></div><div class="ttdeci">uint16_t scanPixelLen</div><div class="ttdoc">Pixel scan length in us.</div><div class="ttdef"><b>Definition:</b> SSTV.h:89</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_aae9c12993b804b63c258e82244f20031"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#aae9c12993b804b63c258e82244f20031">SSTVMode_t::height</a></div><div class="ttdeci">uint16_t height</div><div class="ttdoc">Picture height in pixels.</div><div class="ttdef"><b>Definition:</b> SSTV.h:84</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_ad8d4e7efb12eb0e0cfa850aeb7353e40"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40">SSTVMode_t::width</a></div><div class="ttdeci">uint16_t width</div><div class="ttdoc">Picture width in pixels.</div><div class="ttdef"><b>Definition:</b> SSTV.h:79</div></div>
+<div class="ttc" id="astruct_s_s_t_v_mode__t_html_ae3d67bbc9815c38bea17ec070c8c0096"><div class="ttname"><a href="struct_s_s_t_v_mode__t.html#ae3d67bbc9815c38bea17ec070c8c0096">SSTVMode_t::numTones</a></div><div class="ttdeci">uint8_t numTones</div><div class="ttdoc">Number of tones in each transmission line. Picture scan data is considered single tone.</div><div class="ttdef"><b>Definition:</b> SSTV.h:94</div></div>
+<div class="ttc" id="astructtone__t_html"><div class="ttname"><a href="structtone__t.html">tone_t</a></div><div class="ttdoc">Structure to save data about tone.</div><div class="ttdef"><b>Definition:</b> SSTV.h:42</div></div>
+<div class="ttc" id="astructtone__t_html_a322e5f269a6a7eaae58f3ca0b73da0cf"><div class="ttname"><a href="structtone__t.html#a322e5f269a6a7eaae58f3ca0b73da0cf">tone_t::freq</a></div><div class="ttdeci">uint16_t freq</div><div class="ttdoc">Frequency of tone in Hz, set to 0 for picture scan tones.</div><div class="ttdef"><b>Definition:</b> SSTV.h:62</div></div>
+<div class="ttc" id="astructtone__t_html_a3b0421dd255c7c59552741957a6224ed"><div class="ttname"><a href="structtone__t.html#a3b0421dd255c7c59552741957a6224ed">tone_t::len</a></div><div class="ttdeci">uint32_t len</div><div class="ttdoc">Length of tone in us, set to 0 for picture scan tones.</div><div class="ttdef"><b>Definition:</b> SSTV.h:57</div></div>
 <div class="ttc" id="astructtone__t_html_af92472bf087b9a7ec0c350bd503bdd74"><div class="ttname"><a href="structtone__t.html#af92472bf087b9a7ec0c350bd503bdd74">tone_t::type</a></div><div class="ttdeci">enum tone_t::@1 type</div><div class="ttdoc">Tone type: GENERIC for sync and porch tones, SCAN_GREEN, SCAN_BLUE and SCAN_RED for scan lines.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

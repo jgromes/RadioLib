@@ -284,7 +284,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqStep</td><td>Frequency step of the synthesizer in Hz.</td></tr>
+    <tr><td class="paramname">freqStep</td><td>Frequency step of the synthesizer in Hz. </td></tr>
     <tr><td class="paramname">maxPacketLength</td><td>Maximum length of packet that can be received by the module. </td></tr>
   </table>
   </dd>
@@ -390,7 +390,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Query modem for the packet length of received payload. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
+    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -479,7 +479,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Get truly random number in range 0 - max. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive).</td></tr>
+    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive). </td></tr>
   </table>
   </dd>
 </dl>
@@ -516,8 +516,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Get truly random number in range min - max. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">min</td><td>The minimum value of the random number (inclusive).</td></tr>
-    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive).</td></tr>
+    <tr><td class="paramname">min</td><td>The minimum value of the random number (inclusive). </td></tr>
+    <tr><td class="paramname">max</td><td>The maximum value of the random number (non-inclusive). </td></tr>
   </table>
   </dd>
 </dl>
@@ -574,7 +574,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Get data from direct mode buffer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">drop</td><td>Drop synchronization on read - next reading will require waiting for the sync word again. Defautls to true.</td></tr>
+    <tr><td class="paramname">drop</td><td>Drop synchronization on read - next reading will require waiting for the sync word again. Defaults to true. </td></tr>
   </table>
   </dd>
 </dl>
@@ -655,8 +655,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Reads data that was received after calling startReceive method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -703,8 +703,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Binary receive method. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions. </td></tr>
   </table>
   </dd>
 </dl>
@@ -771,7 +771,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps).</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps). </td></tr>
   </table>
   </dd>
 </dl>
@@ -808,7 +808,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Shaping to be set. See <a class="el" href="group__config__shaping.html">Data shaping filter values aliases.</a> for possible values.</td></tr>
+    <tr><td class="paramname">sh</td><td>Shaping to be set. See <a class="el" href="group__config__shaping.html">Data shaping filter values aliases.</a> for possible values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -891,8 +891,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
-    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed. </td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -967,8 +967,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Set sync word to be used to determine start of packet in direct reception mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Sync word bits.</td></tr>
-    <tr><td class="paramname">len</td><td>Sync word length in bits. Set to zero to disable sync word matching.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>Sync word bits. </td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length in bits. Set to zero to disable sync word matching. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1003,7 +1003,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enc</td><td>Encoding to be used. See <a class="el" href="group__config__encoding.html">Encoding type aliases.</a> for possible values.</td></tr>
+    <tr><td class="paramname">enc</td><td>Encoding to be used. See <a class="el" href="group__config__encoding.html">Encoding type aliases.</a> for possible values. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1040,7 +1040,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Sets carrier frequency. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1077,7 +1077,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz).</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1247,10 +1247,10 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive).</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger the DIO pin.</td></tr>
-    <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).</td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive). </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger the DIO pin. </td></tr>
+    <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1289,8 +1289,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>C-string that will be transmitted.</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">str</td><td>C-string that will be transmitted. </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1341,9 +1341,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Interrupt-driven binary transmit method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1382,8 +1382,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>C-string transmit method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">str</td><td>C-string that will be transmitted.</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">str</td><td>C-string that will be transmitted. </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1434,9 +1434,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Binary transmit method. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1473,7 +1473,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class. While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frf</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.</td></tr>
+    <tr><td class="paramname">frf</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY. </td></tr>
   </table>
   </dd>
 </dl>
