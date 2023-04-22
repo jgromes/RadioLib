@@ -231,9 +231,7 @@ class RadioLibHal {
     
     /*!
       \brief Function to convert from pin number to interrupt number.
-      
       \param pin Pin to convert from.
-
       \returns The interrupt number of a given pin.
     */
     virtual uint32_t pinToInterrupt(uint32_t pin);
