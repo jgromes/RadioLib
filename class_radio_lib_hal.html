@@ -248,11 +248,11 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">input</td><td>Value to be used as the "input" GPIO direction. </td></tr>
-    <tr><td class="paramname">output</td><td>Value to be used as the "output" GPIO direction. </td></tr>
-    <tr><td class="paramname">low</td><td>Value to be used as the "low" GPIO level. </td></tr>
-    <tr><td class="paramname">high</td><td>Value to be used as the "high" GPIO level. </td></tr>
-    <tr><td class="paramname">rising</td><td>Value to be used as the "rising" GPIO level change direction. </td></tr>
+    <tr><td class="paramname">input</td><td>Value to be used as the "input" GPIO direction.</td></tr>
+    <tr><td class="paramname">output</td><td>Value to be used as the "output" GPIO direction.</td></tr>
+    <tr><td class="paramname">low</td><td>Value to be used as the "low" GPIO level.</td></tr>
+    <tr><td class="paramname">high</td><td>Value to be used as the "high" GPIO level.</td></tr>
+    <tr><td class="paramname">rising</td><td>Value to be used as the "rising" GPIO level change direction.</td></tr>
     <tr><td class="paramname">falling</td><td>Value to be used as the "falling" GPIO level change direction. </td></tr>
   </table>
   </dd>
@@ -304,8 +304,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Method to attach function to an external interrupt. Must be implemented by the platform-specific hardware abstraction! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">interruptNum</td><td>Interrupt number to attach to (platform-specific). </td></tr>
-    <tr><td class="paramname">interruptCb</td><td>Interrupt service routine to execute. </td></tr>
+    <tr><td class="paramname">interruptNum</td><td>Interrupt number to attach to (platform-specific).</td></tr>
+    <tr><td class="paramname">interruptCb</td><td>Interrupt service routine to execute.</td></tr>
     <tr><td class="paramname">mode</td><td>Rising/falling mode (platform-specific). </td></tr>
   </table>
   </dd>
@@ -442,7 +442,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Digital read method. Must be implemented by the platform-specific hardware abstraction! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific). </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific).</td></tr>
   </table>
   </dd>
 </dl>
@@ -487,7 +487,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Digital write method. Must be implemented by the platform-specific hardware abstraction! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific). </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific).</td></tr>
     <tr><td class="paramname">value</td><td>Value to set (platform-specific). </td></tr>
   </table>
   </dd>
@@ -622,7 +622,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>GPIO pin mode (input/output/...) configuration method. Must be implemented by the platform-specific hardware abstraction! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific). </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to be changed (platform-specific).</td></tr>
     <tr><td class="paramname">mode</td><td>Mode to be set (platform-specific). </td></tr>
   </table>
   </dd>
@@ -657,7 +657,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Function to convert from pin number to interrupt number. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to convert from. </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to convert from.</td></tr>
   </table>
   </dd>
 </dl>
@@ -708,9 +708,9 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Measure the length of incoming digital pulse in microseconds. Must be implemented by the platform-specific hardware abstraction! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to measure on (platform-specific). </td></tr>
-    <tr><td class="paramname">state</td><td>Pin level to monitor (platform-specific). </td></tr>
-    <tr><td class="paramname">timeout</td><td>Timeout in microseconds. </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to measure on (platform-specific).</td></tr>
+    <tr><td class="paramname">state</td><td>Pin level to monitor (platform-specific).</td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout in microseconds.</td></tr>
   </table>
   </dd>
 </dl>
@@ -745,7 +745,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Method to transfer one byte over SPI. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>Byte to send. </td></tr>
+    <tr><td class="paramname">b</td><td>Byte to send.</td></tr>
   </table>
   </dd>
 </dl>
@@ -796,8 +796,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <p>Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin to be used as the output. </td></tr>
-    <tr><td class="paramname">frequency</td><td>Frequency of the square wave. </td></tr>
+    <tr><td class="paramname">pin</td><td>Pin to be used as the output.</td></tr>
+    <tr><td class="paramname">frequency</td><td>Frequency of the square wave.</td></tr>
     <tr><td class="paramname">duration</td><td>Duration of the tone in ms. When set to 0, the tone will be infinite. </td></tr>
   </table>
   </dd>
