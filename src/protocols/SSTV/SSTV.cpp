@@ -155,22 +155,22 @@ const SSTVMode_t PasokonP7 {
 };
 
 SSTVClient::SSTVClient(PhysicalLayer* phy) {
-  _phy = phy;
+  phyLayer = phy;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  _audio = nullptr;
+  audioClient = nullptr;
   #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 SSTVClient::SSTVClient(AFSKClient* audio) {
-  _phy = audio->_phy;
-  _audio = audio;
+  phyLayer = audio->phyLayer;
+  audioClient = audio;
 }
 #endif
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 int16_t SSTVClient::begin(const SSTVMode_t& mode) {
-  if(_audio == nullptr) {
+  if(audioClient == nullptr) {
     // this initialization method can only be used in AFSK mode
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
@@ -181,38 +181,38 @@ int16_t SSTVClient::begin(const SSTVMode_t& mode) {
 
 int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
   // save mode
-  _mode = mode;
+  txMode = mode;
 
   // calculate 24-bit frequency
-  _base = (base * 1000000.0) / _phy->getFreqStep();
+  baseFreq = (base * 1000000.0) / phyLayer->getFreqStep();
 
   // configure for direct mode
-  return(_phy->startDirect());
+  return(phyLayer->startDirect());
 }
 
 int16_t SSTVClient::setCorrection(float correction) {
   // check if mode is initialized
-  if(_mode.visCode == 0) {
+  if(txMode.visCode == 0) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   // apply correction factor to all timings
-  _mode.scanPixelLen *= correction;
-  for(uint8_t i = 0; i < _mode.numTones; i++) {
-    _mode.tones[i].len *= correction;
+  txMode.scanPixelLen *= correction;
+  for(uint8_t i = 0; i < txMode.numTones; i++) {
+    txMode.tones[i].len *= correction;
   }
   return(RADIOLIB_ERR_NONE);
 }
 
 void SSTVClient::idle() {
-  _phy->transmitDirect();
+  phyLayer->transmitDirect();
   this->tone(RADIOLIB_SSTV_TONE_LEADER);
 }
 
 void SSTVClient::sendHeader() {
   // save first header flag for Scottie modes
-  _firstLine = true;
-  _phy->transmitDirect();
+  firstLine = true;
+  phyLayer->transmitDirect();
 
   // send the first part of header (leader-break-leader)
   this->tone(RADIOLIB_SSTV_TONE_LEADER, RADIOLIB_SSTV_HEADER_LEADER_LENGTH);
@@ -225,7 +225,7 @@ void SSTVClient::sendHeader() {
   // VIS code
   uint8_t parityCount = 0;
   for(uint8_t mask = 0x01; mask < 0x80; mask <<= 1) {
-    if(_mode.visCode & mask) {
+    if(txMode.visCode & mask) {
       this->tone(RADIOLIB_SSTV_TONE_VIS_1, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
       parityCount++;
     } else {
@@ -248,23 +248,23 @@ void SSTVClient::sendHeader() {
 
 void SSTVClient::sendLine(uint32_t* imgLine) {
   // check first line flag in Scottie modes
-  if(_firstLine && ((_mode.visCode == RADIOLIB_SSTV_SCOTTIE_1) || (_mode.visCode == RADIOLIB_SSTV_SCOTTIE_2) || (_mode.visCode == RADIOLIB_SSTV_SCOTTIE_DX))) {
-    _firstLine = false;
+  if(firstLine && ((txMode.visCode == RADIOLIB_SSTV_SCOTTIE_1) || (txMode.visCode == RADIOLIB_SSTV_SCOTTIE_2) || (txMode.visCode == RADIOLIB_SSTV_SCOTTIE_DX))) {
+    firstLine = false;
 
     // send start sync tone
     this->tone(RADIOLIB_SSTV_TONE_BREAK, 9000);
   }
 
   // send all tones in sequence
-  for(uint8_t i = 0; i < _mode.numTones; i++) {
-    if((_mode.tones[i].type == tone_t::GENERIC) && (_mode.tones[i].len > 0)) {
+  for(uint8_t i = 0; i < txMode.numTones; i++) {
+    if((txMode.tones[i].type == tone_t::GENERIC) && (txMode.tones[i].len > 0)) {
       // sync/porch tones
-      this->tone(_mode.tones[i].freq, _mode.tones[i].len);
+      this->tone(txMode.tones[i].freq, txMode.tones[i].len);
     } else {
       // scan lines
-      for(uint16_t j = 0; j < _mode.width; j++) {
+      for(uint16_t j = 0; j < txMode.width; j++) {
         uint32_t color = imgLine[j];
-        switch(_mode.tones[i].type) {
+        switch(txMode.tones[i].type) {
           case(tone_t::SCAN_RED):
             color &= 0x00FF0000;
             color >>= 16;
@@ -279,27 +279,27 @@ void SSTVClient::sendLine(uint32_t* imgLine) {
           case(tone_t::GENERIC):
             break;
         }
-        this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), _mode.scanPixelLen);
+        this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), txMode.scanPixelLen);
       }
     }
   }
 }
 
 uint16_t SSTVClient::getPictureHeight() const {
-  return(_mode.height);
+  return(txMode.height);
 }
 
 void SSTVClient::tone(float freq, uint32_t len) {
-  Module* mod = _phy->getMod();
+  Module* mod = phyLayer->getMod();
   uint32_t start = mod->hal->micros();
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(_audio != nullptr) {
-    _audio->tone(freq, false);
+  if(audioClient != nullptr) {
+    audioClient->tone(freq, false);
   } else {
-    _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
+    phyLayer->transmitDirect(baseFreq + (freq / phyLayer->getFreqStep()));
   }
   #else
-  _phy->transmitDirect(_base + (freq / _phy->getFreqStep()));
+  phyLayer->transmitDirect(baseFreq + (freq / phyLayer->getFreqStep()));
   #endif
   mod->waitForMicroseconds(start, len);
 }
