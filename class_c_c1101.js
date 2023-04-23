@@ -1,7 +1,7 @@
 var class_c_c1101 =
 [
     [ "CC1101", "class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e", null ],
-    [ "begin", "class_c_c1101.html#ae8ef8463220f2c5fa3120c4a5995e61f", null ],
+    [ "begin", "class_c_c1101.html#ad86f23bb3d113d20f6238a671f18b565", null ],
     [ "clearGdo0Action", "class_c_c1101.html#ab5e6b3745f80cf61e1ced33303311df8", null ],
     [ "clearGdo2Action", "class_c_c1101.html#ac7a8b1fe7d08dc6db20cf1569b0d37b4", null ],
     [ "disableAddressFiltering", "class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883", null ],
@@ -38,7 +38,7 @@ var class_c_c1101 =
     [ "setGdo2Action", "class_c_c1101.html#ad71efbe54590e4431f3286ab99536fe9", null ],
     [ "setNodeAddress", "class_c_c1101.html#a6e62914790f132816134fc68c2bb5eb8", null ],
     [ "setOOK", "class_c_c1101.html#afa64d1ad4789d3146b38d14437234756", null ],
-    [ "setOutputPower", "class_c_c1101.html#ac3ff8051af5ca50c349e02257f1a3bda", null ],
+    [ "setOutputPower", "class_c_c1101.html#a4f89d13ea170157df109eca36674f0aa", null ],
     [ "setPreambleLength", "class_c_c1101.html#ae77c828c9c7cc12012fe011e8c4d3570", null ],
     [ "setPromiscuousMode", "class_c_c1101.html#a047be5159af73374521a26e8f880fe12", null ],
     [ "setRfSwitchPins", "class_c_c1101.html#a5ef45183690bb1879f106af079b01140", null ],

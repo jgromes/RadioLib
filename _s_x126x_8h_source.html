@@ -703,7 +703,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;    uint8_t getPacketType();</div>
 <div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;    int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);</div>
 <div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;    int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);</div>
-<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;    int16_t setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev);</div>
+<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;    int16_t setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);</div>
 <div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;    int16_t setPacketParams(uint16_t preambleLen, uint8_t crcType, uint8_t payloadLen, uint8_t hdrType, uint8_t <a class="code" href="class_s_x126x.html#a249c905c1752feb7d228f78a15d5b2e1">invertIQ</a>);</div>
 <div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160;    int16_t setPacketParamsFSK(uint16_t preambleLen, uint8_t crcType, uint8_t syncWordLen, uint8_t addrCmp, uint8_t whiten, uint8_t packType = RADIOLIB_SX126X_GFSK_PACKET_VARIABLE, uint8_t payloadLen = 0xFF, uint8_t preambleDetectorLen = RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16);</div>
 <div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;    int16_t setBufferBaseAddress(uint8_t txBaseAddress = 0x00, uint8_t rxBaseAddress = 0x00);</div>

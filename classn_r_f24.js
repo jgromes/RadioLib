@@ -23,7 +23,7 @@ var classn_r_f24 =
     [ "setFrequency", "classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8", null ],
     [ "setFrequencyDeviation", "classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4", null ],
     [ "setIrqAction", "classn_r_f24.html#abf9323748b1a850e6ddc6f6d48f4cfb3", null ],
-    [ "setOutputPower", "classn_r_f24.html#a824453d547c0b42ac1988acb42032ca4", null ],
+    [ "setOutputPower", "classn_r_f24.html#ad9859fa54aed7d3cd82839bad9d7d33a", null ],
     [ "setReceivePipe", "classn_r_f24.html#a31bcc5a8c3747bf08a273dbdadc5481a", null ],
     [ "setReceivePipe", "classn_r_f24.html#ab5bc08aef88d8cf41c38369044005da8", null ],
     [ "setTransmitPipe", "classn_r_f24.html#aa0e1f2dddf810213410a420205bbd8af", null ],

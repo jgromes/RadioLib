@@ -1,7 +1,7 @@
 var class_r_f69 =
 [
     [ "RF69", "class_r_f69.html#afbc84d4f91502bcbe12ddda2fde51448", null ],
-    [ "begin", "class_r_f69.html#a693faf6ab777d5612392b43152e744cb", null ],
+    [ "begin", "class_r_f69.html#a637ea5386066f5608bcbb4266e5c1bd6", null ],
     [ "clearDio0Action", "class_r_f69.html#a9721d2a3ed9fa8dd878575d71d5a4942", null ],
     [ "clearDio1Action", "class_r_f69.html#ade1f9a7a603d712c480ed5e9a8d1bf51", null ],
     [ "clearFifoEmptyAction", "class_r_f69.html#a0d7b67499462777f7909860405ca6b62", null ],

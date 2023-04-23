@@ -111,9 +111,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf66e5649ac09e5997e29cf637803261"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261">LLCC68</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:abf66e5649ac09e5997e29cf637803261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261">More...</a><br /></td></tr>
 <tr class="separator:abf66e5649ac09e5997e29cf637803261"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a039fc3259e4f208d96eaa310720b161d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_l_c_c68.html#a039fc3259e4f208d96eaa310720b161d">begin</a> (float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
-<tr class="memdesc:a039fc3259e4f208d96eaa310720b161d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_l_l_c_c68.html#a039fc3259e4f208d96eaa310720b161d">More...</a><br /></td></tr>
-<tr class="separator:a039fc3259e4f208d96eaa310720b161d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53593942089544c09bfb5b665184054b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_l_c_c68.html#a53593942089544c09bfb5b665184054b">begin</a> (float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t pwr=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</td></tr>
+<tr class="memdesc:a53593942089544c09bfb5b665184054b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LoRa modem.  <a href="class_l_l_c_c68.html#a53593942089544c09bfb5b665184054b">More...</a><br /></td></tr>
+<tr class="separator:a53593942089544c09bfb5b665184054b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f6c206657304809ee30bd9761ef79bf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a6f6c206657304809ee30bd9761ef79bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa bandwidth. Allowed values are 125.0, 250.0 and 500.0 kHz.  <a href="class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf">More...</a><br /></td></tr>
 <tr class="separator:a6f6c206657304809ee30bd9761ef79bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -456,8 +456,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a039fc3259e4f208d96eaa310720b161d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a039fc3259e4f208d96eaa310720b161d">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a53593942089544c09bfb5b665184054b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53593942089544c09bfb5b665184054b">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -496,7 +496,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>power</em> = <code>10</code>, </td>
+          <td class="paramname"><em>pwr</em> = <code>10</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -532,7 +532,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">sf</td><td>LoRa spreading factor. Defaults to 9. </td></tr>
     <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Defaults to 7 (coding rate 4/7). </td></tr>
     <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12). </td></tr>
-    <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
+    <tr><td class="paramname">pwr</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Defaults to 8 symbols. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
     <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
