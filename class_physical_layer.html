@@ -114,9 +114,9 @@ Inheritance diagram for PhysicalLayer:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5e02457f1d519cf81b1590a182321c62"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">PhysicalLayer</a> (float freqStep, size_t maxPacketLength)</td></tr>
-<tr class="memdesc:a5e02457f1d519cf81b1590a182321c62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#a5e02457f1d519cf81b1590a182321c62">More...</a><br /></td></tr>
-<tr class="separator:a5e02457f1d519cf81b1590a182321c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add63d7d4fa8b14df5e185813794a49d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">PhysicalLayer</a> (float step, size_t maxLen)</td></tr>
+<tr class="memdesc:add63d7d4fa8b14df5e185813794a49d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">More...</a><br /></td></tr>
+<tr class="separator:add63d7d4fa8b14df5e185813794a49d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -255,8 +255,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a5e02457f1d519cf81b1590a182321c62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e02457f1d519cf81b1590a182321c62">&#9670;&nbsp;</a></span>PhysicalLayer()</h2>
+<a id="add63d7d4fa8b14df5e185813794a49d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#add63d7d4fa8b14df5e185813794a49d5">&#9670;&nbsp;</a></span>PhysicalLayer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -265,13 +265,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
           <td class="memname">PhysicalLayer::PhysicalLayer </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>freqStep</em>, </td>
+          <td class="paramname"><em>step</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>maxPacketLength</em>&#160;</td>
+          <td class="paramname"><em>maxLen</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -284,8 +284,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqStep</td><td>Frequency step of the synthesizer in Hz. </td></tr>
-    <tr><td class="paramname">maxPacketLength</td><td>Maximum length of packet that can be received by the module. </td></tr>
+    <tr><td class="paramname">step</td><td>Frequency step of the synthesizer in Hz. </td></tr>
+    <tr><td class="paramname">maxLen</td><td>Maximum length of packet that can be received by the module. </td></tr>
   </table>
   </dd>
 </dl>
