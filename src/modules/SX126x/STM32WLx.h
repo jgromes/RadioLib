@@ -1,5 +1,4 @@
 /*
-
 Copyright (c) 2018 Jan Gromeš
 Copyright (c) 2022 STMicroelectronics
 
@@ -38,18 +37,17 @@ class STM32WLx : public SX1262 {
   public:
     /*!
       \brief Default constructor.
-
       \param mod Instance of STM32WLx_Module that will be used to communicate with the radio.
     */
     STM32WLx(STM32WLx_Module* mod);
 
     /*!
-     * \brief Custom operation modes for STMWLx.
-     *
-     * This splits the TX mode into two modes: Low-power and high-power.
-     * These constants can be used with the setRfSwitchTable() method,
-     * instead of the Module::OpMode_t constants.
-     */
+      \brief Custom operation modes for STMWLx.
+     
+      This splits the TX mode into two modes: Low-power and high-power.
+      These constants can be used with the setRfSwitchTable() method,
+      instead of the Module::OpMode_t constants.
+    */
     enum OpMode_t {
         /*! End of table marker, use \ref END_OF_MODE_TABLE constant instead */
         MODE_END_OF_TABLE = Module::MODE_END_OF_TABLE,
@@ -112,7 +110,6 @@ class STM32WLx : public SX1262 {
 
     /*!
       \brief Sets interrupt service routine to call when DIO1/2/3 activates.
-
       \param func ISR to call.
     */
     void setDio1Action(void (*func)(void));

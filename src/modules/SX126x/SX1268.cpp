@@ -2,7 +2,7 @@
 #if !defined(RADIOLIB_EXCLUDE_SX126X)
 
 SX1268::SX1268(Module* mod) : SX126x(mod) {
-  _chipType = RADIOLIB_SX1268_CHIP_TYPE;
+  chipType = RADIOLIB_SX1268_CHIP_TYPE;
 }
 
 int16_t SX1268::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {

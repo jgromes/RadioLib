@@ -1,5 +1,4 @@
 /*
-
 Copyright (c) 2018 Jan Gromeš
 Copyright (c) 2022 STMicroelectronics
 
@@ -9,8 +8,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 #include "STM32WLx.h"
 #if !defined(RADIOLIB_EXCLUDE_STM32WLX)
 
-STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) {
-}
+STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) { }
 
 int16_t STM32WLx::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // Execute common part
@@ -47,18 +45,18 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // Use HP only if available and needed for the requested power
-  bool hp_supported = _mod->findRfSwitchMode(MODE_TX_HP);
+  bool hp_supported = this->mod->findRfSwitchMode(MODE_TX_HP);
   bool use_hp = power > 14 && hp_supported;
 
   // set PA config.
   if(use_hp) {
     RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
     state = SX126x::setPaConfig(0x04, 0x00, 0x07); // HP output up to 22dBm
-    _tx_mode = MODE_TX_HP;
+    this->txMode = MODE_TX_HP;
   } else {
     RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
     state = SX126x::setPaConfig(0x04, 0x01, 0x00); // LP output up to 14dBm
-    _tx_mode = MODE_TX_LP;
+    this->txMode = MODE_TX_LP;
   }
   RADIOLIB_ASSERT(state);
 
