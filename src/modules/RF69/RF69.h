@@ -500,7 +500,7 @@ class RF69: public PhysicalLayer {
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
       \param rxBw Receiver bandwidth in kHz. Defaults to 125.0 kHz.
-      \param power Output power in dBm. Defaults to 10 dBm.
+      \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLen Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
     */
@@ -509,7 +509,7 @@ class RF69: public PhysicalLayer {
         float br = RADIOLIB_RF69_DEFAULT_BR,
         float freqDev = RADIOLIB_RF69_DEFAULT_FREQDEV,
         float rxBw = RADIOLIB_RF69_DEFAULT_RXBW,
-        int8_t power = RADIOLIB_RF69_DEFAULT_POWER,
+        int8_t pwr = RADIOLIB_RF69_DEFAULT_POWER,
         uint8_t preambleLen = RADIOLIB_RF69_DEFAULT_PREAMBLELEN);
 
     /*!

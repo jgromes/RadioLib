@@ -10,7 +10,7 @@ Module* RF69::getMod() {
   return(this->mod);
 }
 
-int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
+int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -63,7 +63,7 @@ int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t powe
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(power);
+  state = setOutputPower(pwr);
   RADIOLIB_ASSERT(state);
 
   // configure default preamble length
