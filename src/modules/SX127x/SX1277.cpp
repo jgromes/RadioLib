@@ -72,7 +72,7 @@ int16_t SX1277::setFrequency(float freq) {
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);
   if(state == RADIOLIB_ERR_NONE) {
-    SX127x::_freq = freq;
+    SX127x::frequency = freq;
   }
   return(state);
 }
@@ -101,7 +101,7 @@ int16_t SX1277::setSpreadingFactor(uint8_t sf) {
   // set spreading factor and if successful, save the new setting
   int16_t state = SX1278::setSpreadingFactorRaw(newSpreadingFactor);
   if(state == RADIOLIB_ERR_NONE) {
-    SX127x::_sf = sf;
+    SX127x::spreadingFactor = sf;
   }
 
   return(state);
