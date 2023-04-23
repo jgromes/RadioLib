@@ -132,6 +132,8 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
     }
   }
 
+  delay(20);
+
   return(finishTransmit());
 }
 
@@ -239,8 +241,6 @@ void CC1101::clearGdo0Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
-}
-
 void CC1101::setGdo2Action(void (*func)(void), uint32_t dir) {
   if(this->mod->getGpio() == RADIOLIB_NC) {
     return;
@@ -258,9 +258,9 @@ void CC1101::clearGdo2Action() {
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
-  if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+  /*if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
-  }
+  }*/
 
   // set mode to standby
   standby();
@@ -271,6 +271,12 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set GDO0 mapping
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
   RADIOLIB_ASSERT(state);
+  /*int16_t state = RADIOLIB_ERR_NONE;
+  if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+    state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_TX_FIFO_ABOVE_THR);
+  } else {
+    state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED);
+  }*/
 
   // data put on FIFO
   uint8_t dataSent = 0;
@@ -295,6 +301,13 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // fill the FIFO
+  /*if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, RADIOLIB_CC1101_FIFO_THRESH_TX);
+  } else {
+    uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
+    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, initialWrite);
+    dataSent += initialWrite;
+  }*/
   uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
   SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, initialWrite);
   dataSent += initialWrite;
@@ -305,6 +318,9 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // set mode to transmit
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
 
+  if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+    return(state);
+  }
 
   // keep feeding the FIFO until the packet is over
   while (dataSent < len) {
@@ -348,10 +364,11 @@ int16_t CC1101::startReceive() {
   RADIOLIB_ASSERT(state);
 
   // flush Rx FIFO
-  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX | RADIOLIB_CC1101_CMD_READ);
 
   // set GDO0 mapping: Asserted when RX FIFO > 4 bytes.
   state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_RX_FIFO_FULL_OR_PKT_END);
+  //state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED);
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, RADIOLIB_CC1101_FIFO_THR_TX_61_RX_4, 3, 0);
   RADIOLIB_ASSERT(state);
 
@@ -375,10 +392,19 @@ int16_t CC1101::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMa
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
   size_t length = getPacketLength();
+  /*RADIOLIB_DEBUG_PRINTLN("length = %d", length);
+  if(length == 0) {
+    this->packetLengthQueried = false;
+    standby();
+    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }*/
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
     length = len;
   }
+  //SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE | RADIOLIB_CC1101_CMD_READ);
+  SPIreadRegister(RADIOLIB_CC1101_REG_RXBYTES);
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
@@ -440,14 +466,15 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   this->packetLengthQueried = false;
 
   // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
-  if (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
-
-    // flush Rx FIFO
-    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+  //if (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
 
     // set mode to standby
     standby();
-  }
+
+    // flush Rx FIFO
+    SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX | RADIOLIB_CC1101_CMD_READ);
+    delay(10);
+  //}
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -795,6 +822,9 @@ uint8_t CC1101::getLQI() const {
 }
 
 size_t CC1101::getPacketLength(bool update) {
+  RADIOLIB_DEBUG_PRINTLN("this->packetLengthQueried=%d", this->packetLengthQueried);
+  RADIOLIB_DEBUG_PRINTLN("update=%d", update);
+  RADIOLIB_DEBUG_PRINTLN("this->packetLengthConfig=%d", this->packetLengthConfig);
   if(!this->packetLengthQueried && update) {
     if (this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {
       this->packetLength = 0;
@@ -808,11 +838,18 @@ size_t CC1101::getPacketLength(bool update) {
 
     this->packetLengthQueried = true;
   }
+  RADIOLIB_DEBUG_PRINTLN("this->packetLength=%d", this->packetLength);
 
   return(this->packetLength);
 }
 
 int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
+  if(len == 0) {
+    // infinite packet mode
+    int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
+    RADIOLIB_ASSERT(state);
+  }
+
   return(setPacketMode(RADIOLIB_CC1101_LENGTH_CONFIG_FIXED, len));
 }
 
@@ -844,10 +881,10 @@ int16_t CC1101::disableSyncWordFiltering(bool requireCarrierSense) {
   return(state);
 }
 
-int16_t CC1101::setCrcFiltering(bool crcOn) {
-  _crcOn = crcOn;
+int16_t CC1101::setCrcFiltering(bool enable) {
+  this->crcOn = enable;
 
-  if (crcOn == true) {
+  if (this->crcOn == true) {
     return(SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_CRC_ON, 2, 2));
   } else {
     return(SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_CRC_OFF, 2, 2));
