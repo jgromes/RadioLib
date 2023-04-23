@@ -552,7 +552,7 @@ class CC1101: public PhysicalLayer {
       \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
       \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
-      \param power Output power in dBm. Defaults to 10 dBm.
+      \param pwr Output power in dBm. Defaults to 10 dBm.
       \param preambleLength Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
     */
@@ -561,7 +561,7 @@ class CC1101: public PhysicalLayer {
       float br = RADIOLIB_CC1101_DEFAULT_BR,
       float freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV,
       float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
-      int8_t power = RADIOLIB_CC1101_DEFAULT_POWER,
+      int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
       uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
     
     /*!
@@ -740,10 +740,10 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.
-      \param power Output power to be set in dBm.
+      \param pwr Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t pwr);
 
     /*!
       \brief Sets 16-bit sync word as a two byte value.

@@ -10,7 +10,7 @@ Module* CC1101::getMod() {
   return(this->mod);
 }
 
-int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLength) {
+int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength) {
   // set module properties
   this->mod->SPIreadCommand = RADIOLIB_CC1101_CMD_READ;
   this->mod->SPIwriteCommand = RADIOLIB_CC1101_CMD_WRITE;
@@ -60,7 +60,7 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   RADIOLIB_ASSERT(state);
 
   // configure default TX output power
-  state = setOutputPower(power);
+  state = setOutputPower(pwr);
   RADIOLIB_ASSERT(state);
 
   // set default packet length mode
@@ -598,7 +598,7 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t CC1101::setOutputPower(int8_t power) {
+int16_t CC1101::setOutputPower(int8_t pwr) {
   // round to the known frequency settings
   uint8_t f;
   if(this->frequency < 374.0) {
@@ -626,7 +626,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
                            {0xC2, 0xC0, 0xC2, 0xC0}};
 
   uint8_t powerRaw;
-  switch(power) {
+  switch(pwr) {
     case -30:
       powerRaw = paTable[0][f];
       break;
@@ -656,7 +656,7 @@ int16_t CC1101::setOutputPower(int8_t power) {
   }
 
   // store the value
-  this->power = power;
+  this->power = pwr;
 
   if(this->modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK){
     // Amplitude modulation:
