@@ -330,10 +330,10 @@ class nRF24: public PhysicalLayer {
 
     /*!
       \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
-      \param power Output power to be set in dBm.
+      \param pwr Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t pwr);
 
     /*!
       \brief Sets address width of transmit and receive pipes in bytes. Allowed values are 3, 4 or 5 bytes.

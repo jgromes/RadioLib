@@ -304,14 +304,14 @@ int16_t nRF24::setBitRate(float br) {
   return(state);
 }
 
-int16_t nRF24::setOutputPower(int8_t power) {
+int16_t nRF24::setOutputPower(int8_t pwr) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
   // check allowed values
   uint8_t powerRaw = 0;
-  switch(power) {
+  switch(pwr) {
     case -18:
       powerRaw = RADIOLIB_NRF24_RF_PWR_18_DBM;
       break;
@@ -332,9 +332,8 @@ int16_t nRF24::setOutputPower(int8_t power) {
   state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, powerRaw, 2, 1);
 
   if(state == RADIOLIB_ERR_NONE) {
-    this->power = power;
+    this->power = pwr;
   }
-
 
   return(state);
 }
