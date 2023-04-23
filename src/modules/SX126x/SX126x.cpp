@@ -116,7 +116,7 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
 
   // initialize configuration variables (will be overwritten during public settings configuration)
   this->bitRate = 21333;                                  // 48.0 kbps
-  this->freqencyDev = 52428;                             // 50.0 kHz
+  this->frequencyDev = 52428;                             // 50.0 kHz
   this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
   this->rxBandwidthKhz = 156.2;
   this->pulseShape = RADIOLIB_SX126X_GFSK_FILTER_GAUSS_0_5;
@@ -871,10 +871,10 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
   uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0));
 
   // check modulation parameters
-  this->freqencyDev = freqDevRaw;
+  this->frequencyDev = freqDevRaw;
 
   // update modulation parameters
-  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->freqencyDev));
+  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
 int16_t SX126x::setBitRate(float br) {
@@ -895,7 +895,7 @@ int16_t SX126x::setBitRate(float br) {
   this->bitRate = brRaw;
 
   // update modulation parameters
-  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->freqencyDev));
+  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
 int16_t SX126x::setRxBandwidth(float rxBw) {
@@ -905,7 +905,7 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   }
 
   // check modulation parameters
-  /*if(2 * this->freqencyDev + this->bitRate > rxBw * 1000.0) {
+  /*if(2 * this->frequencyDev + this->bitRate > rxBw * 1000.0) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }*/
   this->rxBandwidthKhz = rxBw;
@@ -958,7 +958,7 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   }
 
   // update modulation parameters
-  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->freqencyDev));
+  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
 int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
@@ -1026,7 +1026,7 @@ int16_t SX126x::setDataShaping(uint8_t sh) {
   }
 
   // update modulation parameters
-  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->freqencyDev));
+  return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
 int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
