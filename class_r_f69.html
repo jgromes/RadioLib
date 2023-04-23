@@ -221,9 +221,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9">getFrequencyDeviation</a> (float *freqDev)</td></tr>
 <tr class="memdesc:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency deviation.  <a href="class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9">More...</a><br /></td></tr>
 <tr class="separator:a2bf0d5e045ccfecf9510773148cdd2c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a998ddd21fc152d835c6f1b8d31b02fcc">setOutputPower</a> (int8_t power, bool highPower=false)</td></tr>
-<tr class="memdesc:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).  <a href="class_r_f69.html#a998ddd21fc152d835c6f1b8d31b02fcc">More...</a><br /></td></tr>
-<tr class="separator:a998ddd21fc152d835c6f1b8d31b02fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721094611fa375e73bd0332ab2d7d113"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a721094611fa375e73bd0332ab2d7d113">setOutputPower</a> (int8_t pwr, bool highPower=false)</td></tr>
+<tr class="memdesc:a721094611fa375e73bd0332ab2d7d113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW).  <a href="class_r_f69.html#a721094611fa375e73bd0332ab2d7d113">More...</a><br /></td></tr>
+<tr class="separator:a721094611fa375e73bd0332ab2d7d113"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26667d50ec845c28e17236c69c886561"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a26667d50ec845c28e17236c69c886561">setSyncWord</a> (uint8_t *syncWord, size_t len, uint8_t maxErrBits=0)</td></tr>
 <tr class="memdesc:a26667d50ec845c28e17236c69c886561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets sync word. Up to 8 bytes can be set as sync word.  <a href="class_r_f69.html#a26667d50ec845c28e17236c69c886561">More...</a><br /></td></tr>
 <tr class="separator:a26667d50ec845c28e17236c69c886561"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,9 +248,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a86a080086c0228d23e2cb77d2b1915c1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">getPacketLength</a> (bool update=true) override</td></tr>
 <tr class="memdesc:a86a080086c0228d23e2cb77d2b1915c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Query modem for the packet length of received payload.  <a href="class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1">More...</a><br /></td></tr>
 <tr class="separator:a86a080086c0228d23e2cb77d2b1915c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">setOOK</a> (bool enableOOK)</td></tr>
-<tr class="memdesc:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK. Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled.  <a href="class_r_f69.html#a9c2f94a1c3c8a4f3fd2c5785217bee0a">More...</a><br /></td></tr>
-<tr class="separator:a9c2f94a1c3c8a4f3fd2c5785217bee0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a465df5a2e1f924f6d3ba4eae765847b7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a465df5a2e1f924f6d3ba4eae765847b7">setOOK</a> (bool enable)</td></tr>
+<tr class="memdesc:a465df5a2e1f924f6d3ba4eae765847b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables OOK modulation instead of FSK. Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled.  <a href="class_r_f69.html#a465df5a2e1f924f6d3ba4eae765847b7">More...</a><br /></td></tr>
+<tr class="separator:a465df5a2e1f924f6d3ba4eae765847b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a219a046c10ddcc0a787ad19346ecad6a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">setOokThresholdType</a> (uint8_t type)</td></tr>
 <tr class="memdesc:a219a046c10ddcc0a787ad19346ecad6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects the type of threshold in the OOK data slicer.  <a href="class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a">More...</a><br /></td></tr>
 <tr class="separator:a219a046c10ddcc0a787ad19346ecad6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -281,9 +281,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ac205bc487833dc4eae4bb0069c0c4d1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ac205bc487833dc4eae4bb0069c0c4d1e">setCrcFiltering</a> (bool crcOn=true)</td></tr>
 <tr class="memdesc:ac205bc487833dc4eae4bb0069c0c4d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_r_f69.html#ac205bc487833dc4eae4bb0069c0c4d1e">More...</a><br /></td></tr>
 <tr class="separator:ac205bc487833dc4eae4bb0069c0c4d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d90ad1d455de045c53c5758babd876c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a6d90ad1d455de045c53c5758babd876c">setPromiscuousMode</a> (bool promiscuous=true)</td></tr>
-<tr class="memdesc:a6d90ad1d455de045c53c5758babd876c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_r_f69.html#a6d90ad1d455de045c53c5758babd876c">More...</a><br /></td></tr>
-<tr class="separator:a6d90ad1d455de045c53c5758babd876c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae004326d663a9d6a9c30e792aa368b49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ae004326d663a9d6a9c30e792aa368b49">setPromiscuousMode</a> (bool enable=true)</td></tr>
+<tr class="memdesc:ae004326d663a9d6a9c30e792aa368b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_r_f69.html#ae004326d663a9d6a9c30e792aa368b49">More...</a><br /></td></tr>
+<tr class="separator:ae004326d663a9d6a9c30e792aa368b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42b99e437454e92c6932c3b7acc1fc4a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a42b99e437454e92c6932c3b7acc1fc4a">setDataShaping</a> (uint8_t sh) override</td></tr>
 <tr class="memdesc:a42b99e437454e92c6932c3b7acc1fc4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets Gaussian filter bandwidth-time product that will be used for data shaping. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping.  <a href="class_r_f69.html#a42b99e437454e92c6932c3b7acc1fc4a">More...</a><br /></td></tr>
 <tr class="separator:a42b99e437454e92c6932c3b7acc1fc4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -460,12 +460,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz.</td></tr>
-    <tr><td class="paramname">br</td><td>Bit rate to be used in kbps. Defaults to 4.8 kbps.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.</td></tr>
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 125.0 kHz.</td></tr>
-    <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm.</td></tr>
-    <tr><td class="paramname">preambleLen</td><td>Preamble Length in bits. Defaults to 16 bits.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Defaults to 434.0 MHz. </td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be used in kbps. Defaults to 4.8 kbps. </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz. </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 125.0 kHz. </td></tr>
+    <tr><td class="paramname">power</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
+    <tr><td class="paramname">preambleLen</td><td>Preamble Length in bits. Defaults to 16 bits. </td></tr>
   </table>
   </dd>
 </dl>
@@ -612,7 +612,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable sync word filtering and generation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">numBits</td><td>Sync word length in bits.</td></tr>
+    <tr><td class="paramname">numBits</td><td>Sync word length in bits. </td></tr>
   </table>
   </dd>
 </dl>
@@ -655,9 +655,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when FIFO is empty. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to the transmission buffer.</td></tr>
-    <tr><td class="paramname">totalLen</td><td>Total number of bytes to transmit.</td></tr>
-    <tr><td class="paramname">remLen</td><td>Pointer to a counter holding the number of bytes that have been transmitted so far.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to the transmission buffer. </td></tr>
+    <tr><td class="paramname">totalLen</td><td>Total number of bytes to transmit. </td></tr>
+    <tr><td class="paramname">remLen</td><td>Pointer to a counter holding the number of bytes that have been transmitted so far. </td></tr>
   </table>
   </dd>
 </dl>
@@ -700,9 +700,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when FIFO is sufficently full to read. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to a buffer that stores the receive data.</td></tr>
-    <tr><td class="paramname">totalLen</td><td>Total number of bytes to receive.</td></tr>
-    <tr><td class="paramname">rcvLen</td><td>Pointer to a counter holding the number of bytes that have been received so far.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to a buffer that stores the receive data. </td></tr>
+    <tr><td class="paramname">totalLen</td><td>Total number of bytes to receive. </td></tr>
+    <tr><td class="paramname">rcvLen</td><td>Pointer to a counter holding the number of bytes that have been received so far. </td></tr>
   </table>
   </dd>
 </dl>
@@ -759,7 +759,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in fixed packet length mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Packet length. </td></tr>
   </table>
   </dd>
 </dl>
@@ -806,7 +806,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Gets carrier frequency. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">freq</td><td>Variable to write carrier frequency currently set, in MHz.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">freq</td><td>Variable to write carrier frequency currently set, in MHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -833,7 +833,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Gets frequency deviation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[out]</td><td class="paramname">freqDev</td><td>Where to write the frequency deviation currently set, in kHz.</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">freqDev</td><td>Where to write the frequency deviation currently set, in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -868,7 +868,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Query modem for the packet length of received payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
+    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1055,8 +1055,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Reads data received after calling startReceive method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1127,8 +1127,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1247,7 +1247,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets bit rate. Allowed values range from 0.5 to 300.0 kbps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate to be set in kbps.</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be set in kbps. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1276,7 +1276,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">broadAddr</td><td>Node address to be set.</td></tr>
+    <tr><td class="paramname">broadAddr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1303,7 +1303,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable CRC filtering and generation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">crcOn</td><td>Set or unset CRC filtering.</td></tr>
+    <tr><td class="paramname">crcOn</td><td>Set or unset CRC filtering. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1338,7 +1338,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets Gaussian filter bandwidth-time product that will be used for data shaping. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping</td></tr>
+    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping </td></tr>
   </table>
   </dd>
 </dl>
@@ -1447,8 +1447,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
-    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed. </td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1521,7 +1521,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets transmission encoding. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">encoding</td><td>Encoding to be used.</td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1610,7 +1610,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets carrier frequency. Allowed values are in bands 290.0 to 340.0 MHz, 431.0 to 510.0 MHz and 862.0 to 1020.0 MHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1647,7 +1647,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets frequency deviation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set in kHz.</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1676,7 +1676,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable/disable LNA Boost mode (disabled by default). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>True to enable, false to disable.</td></tr>
+    <tr><td class="paramname">value</td><td>True to enable, false to disable. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1703,7 +1703,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets node address. Calling this method will also enable address filtering for node address only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nodeAddr</td><td>Node address to be set.</td></tr>
+    <tr><td class="paramname">nodeAddr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1711,8 +1711,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a9c2f94a1c3c8a4f3fd2c5785217bee0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c2f94a1c3c8a4f3fd2c5785217bee0a">&#9670;&nbsp;</a></span>setOOK()</h2>
+<a id="a465df5a2e1f924f6d3ba4eae765847b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a465df5a2e1f924f6d3ba4eae765847b7">&#9670;&nbsp;</a></span>setOOK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1721,7 +1721,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t RF69::setOOK </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enableOOK</em></td><td>)</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1730,7 +1730,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables/disables OOK modulation instead of FSK. Note: This function calls setRxBandwidth again, since register values differ based on OOK mode being enabled/disabled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enableOOK</td><td>Enable (true) or disable (false) OOK.</td></tr>
+    <tr><td class="paramname">enable</td><td>Enable (true) or disable (false) OOK. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1757,7 +1757,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RADIOLIB_RF69_OOK_THRESH_FIXED.</td></tr>
+    <tr><td class="paramname">value</td><td>Fixed threshold value (in dB) in the OOK demodulator. Used when OokThresType = RADIOLIB_RF69_OOK_THRESH_FIXED. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1784,7 +1784,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Period of decrement of the RSSI threshold in the OOK demodulator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Use defines RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP</td></tr>
+    <tr><td class="paramname">value</td><td>Use defines RADIOLIB_RF69_OOK_PEAK_THRESH_DEC_X_X_CHIP </td></tr>
   </table>
   </dd>
 </dl>
@@ -1811,7 +1811,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Selects the type of threshold in the OOK data slicer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>Threshold type: RADIOLIB_RF69_OOK_THRESH_PEAK(default), RADIOLIB_RF69_OOK_THRESH_FIXED or RADIOLIB_RF69_OOK_THRESH_AVERAGE</td></tr>
+    <tr><td class="paramname">type</td><td>Threshold type: RADIOLIB_RF69_OOK_THRESH_PEAK(default), RADIOLIB_RF69_OOK_THRESH_FIXED or RADIOLIB_RF69_OOK_THRESH_AVERAGE </td></tr>
   </table>
   </dd>
 </dl>
@@ -1819,8 +1819,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a998ddd21fc152d835c6f1b8d31b02fcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a998ddd21fc152d835c6f1b8d31b02fcc">&#9670;&nbsp;</a></span>setOutputPower()</h2>
+<a id="a721094611fa375e73bd0332ab2d7d113"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a721094611fa375e73bd0332ab2d7d113">&#9670;&nbsp;</a></span>setOutputPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1829,7 +1829,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t RF69::setOutputPower </td>
           <td>(</td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>power</em>, </td>
+          <td class="paramname"><em>pwr</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1848,8 +1848,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets output power. Allowed values range from -18 to 13 dBm for low power modules (RF69C/CW) or -2 to 20 dBm (RF69H/HC/HCW). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">power</td><td>Output power to be set in dBm.</td></tr>
-    <tr><td class="paramname">highPower</td><td>Set to true when using modules high power port (RF69H/HC/HCW). Defaults to false (models without high power port - RF69C/CW).</td></tr>
+    <tr><td class="paramname">pwr</td><td>Output power to be set in dBm. </td></tr>
+    <tr><td class="paramname">highPower</td><td>Set to true when using modules high power port (RF69H/HC/HCW). Defaults to false (models without high power port - RF69C/CW). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1876,7 +1876,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets preamble length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLen</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.</td></tr>
+    <tr><td class="paramname">preambleLen</td><td>Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1884,8 +1884,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a6d90ad1d455de045c53c5758babd876c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d90ad1d455de045c53c5758babd876c">&#9670;&nbsp;</a></span>setPromiscuousMode()</h2>
+<a id="ae004326d663a9d6a9c30e792aa368b49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae004326d663a9d6a9c30e792aa368b49">&#9670;&nbsp;</a></span>setPromiscuousMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1894,7 +1894,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t RF69::setPromiscuousMode </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>promiscuous</em> = <code>true</code></td><td>)</td>
+          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1903,7 +1903,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">promiscuous</td><td>Set or unset promiscuous mode.</td></tr>
+    <tr><td class="paramname">enable</td><td>Set or unset promiscuous mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2033,7 +2033,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the RSSI value above which the RSSI interrupt is signaled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dbm</td><td>A dBm value between -127.5 and 0 inclusive</td></tr>
+    <tr><td class="paramname">dbm</td><td>A dBm value between -127.5 and 0 inclusive </td></tr>
   </table>
   </dd>
 </dl>
@@ -2060,7 +2060,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets receiver bandwidth. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25.0, 31.3, 41.7, 50.0, 62.5, 83.3, 100.0, 125.0, 166.7, 200.0, 250.0, 333.3, 400.0 and 500.0 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set in kHz.</td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2103,8 +2103,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets sync word. Up to 8 bytes can be set as sync word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes.</td></tr>
-    <tr><td class="paramname">len</td><td>Sync word length in bytes.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes. </td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length in bytes. </td></tr>
     <tr><td class="paramname">maxErrBits</td><td>Maximum allowed number of bit errors in received sync word. Defaults to 0. </td></tr>
   </table>
   </dd>
@@ -2199,7 +2199,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the module to standby. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Standby mode to be used. No effect, implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.</td></tr>
+    <tr><td class="paramname">mode</td><td>Standby mode to be used. No effect, implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2278,10 +2278,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">len</td><td>Ignored.</td></tr>
+    <tr><td class="paramname">timeout</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">len</td><td>Ignored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2383,9 +2383,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
+    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2487,9 +2487,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
+    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2526,7 +2526,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Starts direct mode transmission. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.</td></tr>
+    <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2555,7 +2555,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in variable packet length mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Maximum packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Maximum packet length. </td></tr>
   </table>
   </dd>
 </dl>
