@@ -1,12 +1,12 @@
 #include "PhysicalLayer.h"
 #include <string.h>
 
-PhysicalLayer::PhysicalLayer(float freqStep, size_t maxPacketLength) {
-  _freqStep = freqStep;
-  _maxPacketLength = maxPacketLength;
+PhysicalLayer::PhysicalLayer(float step, size_t maxLen) {
+  this->freqStep = step;
+  this->maxPacketLength = maxLen;
   #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-  _bufferBitPos = 0;
-  _bufferWritePos = 0;
+  this->bufferBitPos = 0;
+  this->bufferWritePos = 0;
   #endif
 }
 
@@ -73,7 +73,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   #else
     uint8_t* data = NULL;
     if(length == 0) {
-      data = new uint8_t[_maxPacketLength + 1];
+      data = new uint8_t[this->maxPacketLength + 1];
     } else {
       data = new uint8_t[length + 1];
     }
@@ -243,7 +243,7 @@ int16_t PhysicalLayer::setEncoding(uint8_t encoding) {
 }
 
 float PhysicalLayer::getFreqStep() const {
-  return(_freqStep);
+  return(this->freqStep);
 }
 
 size_t PhysicalLayer::getPacketLength(bool update) {
@@ -307,13 +307,13 @@ int16_t PhysicalLayer::startDirect() {
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 int16_t PhysicalLayer::available() {
-  return(_bufferWritePos);
+  return(this->bufferWritePos);
 }
 
 void PhysicalLayer::dropSync() {
-  if(_directSyncWordLen > 0) {
-    _gotSync = false;
-    _syncBuffer = 0;
+  if(this->directSyncWordLen > 0) {
+    this->gotSync = false;
+    this->syncBuffer = 0;
   }
 }
 
@@ -321,21 +321,21 @@ uint8_t PhysicalLayer::read(bool drop) {
   if(drop) {
     dropSync();
   }
-  _bufferWritePos--;
-  return(_buffer[_bufferReadPos++]);
+  this->bufferWritePos--;
+  return(this->buffer[this->bufferReadPos++]);
 }
 
 int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
   if(len > 32) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
-  _directSyncWordMask = 0xFFFFFFFF >> (32 - len);
-  _directSyncWordLen = len;
-  _directSyncWord = syncWord;
+  this->directSyncWordMask = 0xFFFFFFFF >> (32 - len);
+  this->directSyncWordLen = len;
+  this->directSyncWord = syncWord;
 
   // override sync word matching when length is set to 0
-  if(_directSyncWordLen == 0) {
-    _gotSync = true;
+  if(this->directSyncWordLen == 0) {
+    this->gotSync = true;
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -343,35 +343,35 @@ int16_t PhysicalLayer::setDirectSyncWord(uint32_t syncWord, uint8_t len) {
 
 void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
   // check sync word
-  if(!_gotSync) {
-    _syncBuffer <<= 1;
-    _syncBuffer |= bit;
+  if(!this->gotSync) {
+    this->syncBuffer <<= 1;
+    this->syncBuffer |= bit;
 
-    RADIOLIB_VERBOSE_PRINTLN("S\t%X", _syncBuffer);
+    RADIOLIB_VERBOSE_PRINTLN("S\t%X", this->syncBuffer);
 
-    if((_syncBuffer & _directSyncWordMask) == _directSyncWord) {
-      _gotSync = true;
-      _bufferWritePos = 0;
-      _bufferReadPos = 0;
-      _bufferBitPos = 0;
+    if((this->syncBuffer & this->directSyncWordMask) == this->directSyncWord) {
+      this->gotSync = true;
+      this->bufferWritePos = 0;
+      this->bufferReadPos = 0;
+      this->bufferBitPos = 0;
     }
 
   } else {
     // save the bit
     if(bit) {
-      _buffer[_bufferWritePos] |= 0x01 << _bufferBitPos;
+      this->buffer[this->bufferWritePos] |= 0x01 << this->bufferBitPos;
     } else {
-      _buffer[_bufferWritePos] &= ~(0x01 << _bufferBitPos);
+      this->buffer[this->bufferWritePos] &= ~(0x01 << this->bufferBitPos);
     }
-    _bufferBitPos++;
+    this->bufferBitPos++;
 
     // check complete byte
-    if(_bufferBitPos == 8) {
-      _buffer[_bufferWritePos] = Module::flipBits(_buffer[_bufferWritePos]);
-      RADIOLIB_VERBOSE_PRINTLN("R\t%X", _buffer[_bufferWritePos]);
+    if(this->bufferBitPos == 8) {
+      this->buffer[this->bufferWritePos] = Module::flipBits(this->buffer[this->bufferWritePos]);
+      RADIOLIB_VERBOSE_PRINTLN("R\t%X", this->buffer[this->bufferWritePos]);
 
-      _bufferWritePos++;
-      _bufferBitPos = 0;
+      this->bufferWritePos++;
+      this->bufferBitPos = 0;
     }
   }
 }

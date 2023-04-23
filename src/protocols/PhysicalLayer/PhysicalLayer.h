@@ -19,10 +19,10 @@ class PhysicalLayer {
 
     /*!
       \brief Default constructor.
-      \param freqStep Frequency step of the synthesizer in Hz.
-      \param maxPacketLength Maximum length of packet that can be received by the module.
+      \param step Frequency step of the synthesizer in Hz.
+      \param maxLen Maximum length of packet that can be received by the module.
     */
-    PhysicalLayer(float freqStep, size_t maxPacketLength);
+    PhysicalLayer(float step, size_t maxLen);
 
     // basic methods
 
@@ -356,19 +356,19 @@ class PhysicalLayer {
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
-    float _freqStep;
-    size_t _maxPacketLength;
+    float freqStep;
+    size_t maxPacketLength;
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
-    uint8_t _bufferBitPos;
-    uint8_t _bufferWritePos;
-    uint8_t _bufferReadPos;
-    uint8_t _buffer[RADIOLIB_STATIC_ARRAY_SIZE];
-    uint32_t _syncBuffer;
-    uint32_t _directSyncWord;
-    uint8_t _directSyncWordLen;
-    uint32_t _directSyncWordMask;
-    bool _gotSync;
+    uint8_t bufferBitPos;
+    uint8_t bufferWritePos;
+    uint8_t bufferReadPos;
+    uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE];
+    uint32_t syncBuffer;
+    uint32_t directSyncWord;
+    uint8_t directSyncWordLen;
+    uint32_t directSyncWordMask;
+    bool gotSync;
     #endif
 
     virtual Module* getMod() = 0;
