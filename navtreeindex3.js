@@ -1,5 +1,6 @@
 var NAVTREEINDEX3 =
 {
+"class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362":[3,0,45,20],
 "class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5":[3,0,45,8],
 "class_s_x1280.html":[3,0,46],
 "class_s_x1280.html#a0356199b89860e15cda4979cd9dc13eb":[3,0,46,0],
@@ -210,8 +211,8 @@ var NAVTREEINDEX3 =
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1],
 "functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX3 =
 "functions_u.html":[3,3,0,17],
 "functions_v.html":[3,3,0,18],
 "functions_vars.html":[3,3,2],
-"functions_w.html":[3,3,0,19],
-"functions_x.html":[3,3,0,20]
+"functions_w.html":[3,3,0,19]
 };

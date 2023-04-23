@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_module.html#af6e89e2bc4976e8c5dc42dedda9fa6a2":[3,0,11,34],
 "class_module.html#afbed643f082286012bf44bba22381ae6":[3,0,11,14],
 "class_morse_client.html":[3,0,12],
 "class_morse_client.html#a1125d874d18a507b2e77675b687cce0f":[3,0,12,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b":[3,0,31,6],
 "class_s_t_m32_w_lx.html#ac0e8787dbb8e8aaa172b089ace6eaa09":[3,0,31,1],
 "class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787":[3,0,31,0],
-"class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a0cffe238c4822ab7f8beddf4ec72052b":[3,0,31,0,0],
-"class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a20a2eda9aaf3c7cdb4a55955d6ff3544":[3,0,31,0,3]
+"class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a0cffe238c4822ab7f8beddf4ec72052b":[3,0,31,0,0]
 };
