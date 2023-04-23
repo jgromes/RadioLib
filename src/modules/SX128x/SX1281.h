@@ -10,14 +10,12 @@
 
 /*!
   \class SX1281
-
   \brief Derived class for %SX1281 modules.
 */
 class SX1281: public SX128x {
   public:
     /*!
       \brief Default constructor.
-
       \param mod Instance of Module that will be used to communicate with the radio.
     */
     SX1281(Module* mod);

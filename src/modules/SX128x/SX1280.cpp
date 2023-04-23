@@ -12,10 +12,10 @@ int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   RADIOLIB_ASSERT(state);
 
   // wait until ranging is finished
-  uint32_t start = _mod->hal->millis();
-  while(!_mod->hal->digitalRead(_mod->getIrq())) {
-    _mod->hal->yield();
-    if(_mod->hal->millis() - start > 10000) {
+  uint32_t start = this->mod->hal->millis();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->millis() - start > 10000) {
       clearIrqStatus();
       standby();
       return(RADIOLIB_ERR_RANGING_TIMEOUT);
@@ -50,11 +50,11 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]
   }
 
   // set modulation parameters
-  state = setModulationParams(_sf, _bw, _cr);
+  state = setModulationParams(this->spreadingFactor, this->bandwidth, this->codingRateLoRa);
   RADIOLIB_ASSERT(state);
 
   // set packet parameters
-  state = setPacketParamsLoRa(_preambleLengthLoRa, _headerType, _payloadLen, _crcLoRa);
+  state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->payloadLen, this->crcLoRa);
   RADIOLIB_ASSERT(state);
 
   // check all address bits
@@ -100,9 +100,9 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]
   }
 
   // set calibration values
-  uint8_t index = (_sf >> 4) - 5;
+  uint8_t index = (this->spreadingFactor >> 4) - 5;
   uint16_t val = 0;
-  switch(_bw) {
+  switch(this->bandwidth) {
     case(RADIOLIB_SX128X_LORA_BW_406_25):
       val = calTbl[0][index];
       break;
@@ -176,7 +176,7 @@ float SX1280::getRangingResult() {
 
   // calculate the real result
   uint32_t raw = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
-  return((float)raw * 150.0 / (4.096 * _bwKhz));
+  return((float)raw * 150.0 / (4.096 * this->bandwidthKhz));
 }
 
 #endif
