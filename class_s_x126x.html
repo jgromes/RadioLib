@@ -302,9 +302,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a819bb3ced0f184a63cbfbef408a68561"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a819bb3ced0f184a63cbfbef408a68561">randomByte</a> ()</td></tr>
 <tr class="memdesc:a819bb3ced0f184a63cbfbef408a68561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_s_x126x.html#a819bb3ced0f184a63cbfbef408a68561">More...</a><br /></td></tr>
 <tr class="separator:a819bb3ced0f184a63cbfbef408a68561"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab04cbc1125170c6ea16ca5143f3ea5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adab04cbc1125170c6ea16ca5143f3ea5">invertIQ</a> (bool invertIQ)</td></tr>
-<tr class="memdesc:adab04cbc1125170c6ea16ca5143f3ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x126x.html#adab04cbc1125170c6ea16ca5143f3ea5">More...</a><br /></td></tr>
-<tr class="separator:adab04cbc1125170c6ea16ca5143f3ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a249c905c1752feb7d228f78a15d5b2e1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a249c905c1752feb7d228f78a15d5b2e1">invertIQ</a> (bool enable)</td></tr>
+<tr class="memdesc:a249c905c1752feb7d228f78a15d5b2e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x126x.html#a249c905c1752feb7d228f78a15d5b2e1">More...</a><br /></td></tr>
+<tr class="separator:a249c905c1752feb7d228f78a15d5b2e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbf8b4623da8c2caa83a8c3d35a44d0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#abbf8b4623da8c2caa83a8c3d35a44d0a">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:abbf8b4623da8c2caa83a8c3d35a44d0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x126x.html#abbf8b4623da8c2caa83a8c3d35a44d0a">More...</a><br /></td></tr>
 <tr class="separator:abbf8b4623da8c2caa83a8c3d35a44d0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -497,11 +497,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method for LoRa modem. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 5 to 8.</td></tr>
-    <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Allowed values range from 1 to 65535.</td></tr>
-    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.</td></tr>
-    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.</td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator. Allowed values range from 5 to 8. </td></tr>
+    <tr><td class="paramname">syncWord</td><td>1-byte LoRa sync word. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>LoRa preamble length in symbols. Allowed values range from 1 to 65535. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
+    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -562,12 +562,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method for FSK modem. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Allowed values range from 0.6 to 300.0 kbps.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. Allowed values range from 0.0 to 200.0 kHz.</td></tr>
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>FSK preamble length in bits. Allowed values range from 0 to 65535.</td></tr>
-    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.</td></tr>
-    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.</td></tr>
+    <tr><td class="paramname">br</td><td>FSK bit rate in kbps. Allowed values range from 0.6 to 300.0 kbps. </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. Allowed values range from 0.0 to 200.0 kHz. </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>FSK preamble length in bits. Allowed values range from 0 to 65535. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip. </td></tr>
+    <tr><td class="paramname">useRegulatorLDO</td><td>Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -664,7 +664,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in fixed packet length mode. Available in FSK mode only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Packet length. </td></tr>
   </table>
   </dd>
 </dl>
@@ -691,7 +691,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call <a class="el" href="class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c" title="Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method,...">SX126x::autoLDRO()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enable</td><td>Force LDRO to be always enabled (true) or disabled (false).</td></tr>
+    <tr><td class="paramname">enable</td><td>Force LDRO to be always enabled (true) or disabled (false). </td></tr>
   </table>
   </dd>
 </dl>
@@ -826,7 +826,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Query modem for the packet length of received payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
+    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -855,7 +855,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>GetsRSSI (Recorded Signal Strength Indicator). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value.</td></tr>
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. </td></tr>
   </table>
   </dd>
 </dl>
@@ -912,7 +912,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Get expected time-on-air for a given size of payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Payload length in bytes.</td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -939,7 +939,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set implicit header mode for future reception/transmission. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Payload length in bytes.</td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -947,8 +947,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="adab04cbc1125170c6ea16ca5143f3ea5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adab04cbc1125170c6ea16ca5143f3ea5">&#9670;&nbsp;</a></span>invertIQ()</h2>
+<a id="a249c905c1752feb7d228f78a15d5b2e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a249c905c1752feb7d228f78a15d5b2e1">&#9670;&nbsp;</a></span>invertIQ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -957,7 +957,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX126x::invertIQ </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>invertIQ</em></td><td>)</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -966,7 +966,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable/disable inversion of the I and Q signals. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">invertIQ</td><td>QI inversion enabled (true) or disabled (false);</td></tr>
+    <tr><td class="paramname">enable</td><td>QI inversion enabled (true) or disabled (false); </td></tr>
   </table>
   </dd>
 </dl>
@@ -1101,8 +1101,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Reads data received after calling startReceive method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1173,8 +1173,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1233,7 +1233,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Reset method. Will reset the chip to the default state using RST pin. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">verify</td><td>Whether correct module startup should be verified. When set to true, RadioLib will attempt to verify the module has started correctly by repeatedly issuing setStandby command. Enabled by default.</td></tr>
+    <tr><td class="paramname">verify</td><td>Whether correct module startup should be verified. When set to true, RadioLib will attempt to verify the module has started correctly by repeatedly issuing setStandby command. Enabled by default. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1276,9 +1276,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Performs scan for LoRa transmission in the current channel. Detects both preamble and payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
-    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
-    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
+    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
+    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
+    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1305,7 +1305,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bw</td><td>LoRa bandwidth to be set in kHz.</td></tr>
+    <tr><td class="paramname">bw</td><td>LoRa bandwidth to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1340,7 +1340,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK bit rate. Allowed values range from 0.6 to 300.0 kbps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>FSK bit rate to be set in kbps.</td></tr>
+    <tr><td class="paramname">br</td><td>FSK bit rate to be set in kbps. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1369,7 +1369,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets broadcast address. Calling this method will also enable address filtering for node and broadcast address. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">broadAddr</td><td>Node address to be set.</td></tr>
+    <tr><td class="paramname">broadAddr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1396,7 +1396,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa coding rate denominator. Allowed values range from 5 to 8. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator to be set.</td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa coding rate denominator to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1445,10 +1445,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets CRC configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable CRC.</td></tr>
-    <tr><td class="paramname">initial</td><td>Initial CRC value. FSK only. Defaults to 0x1D0F (CCIT CRC).</td></tr>
-    <tr><td class="paramname">polynomial</td><td>Polynomial for CRC calculation. FSK only. Defaults to 0x1021 (CCIT CRC).</td></tr>
-    <tr><td class="paramname">inverted</td><td>Invert CRC bytes. FSK only. Defaults to true (CCIT CRC).</td></tr>
+    <tr><td class="paramname">len</td><td>CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable CRC. </td></tr>
+    <tr><td class="paramname">initial</td><td>Initial CRC value. FSK only. Defaults to 0x1D0F (CCIT CRC). </td></tr>
+    <tr><td class="paramname">polynomial</td><td>Polynomial for CRC calculation. FSK only. Defaults to 0x1021 (CCIT CRC). </td></tr>
+    <tr><td class="paramname">inverted</td><td>Invert CRC bytes. FSK only. Defaults to true (CCIT CRC). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1475,7 +1475,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets current protection limit. Can be set in 2.5 mA steps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">currentLimit</td><td>current protection limit to be set in mA. Allowed values range from 0 to 140.</td></tr>
+    <tr><td class="paramname">currentLimit</td><td>current protection limit to be set in mA. Allowed values range from 0 to 140. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1510,7 +1510,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Time-bandwidth product of Gaussian filter to be set.</td></tr>
+    <tr><td class="paramname">sh</td><td>Time-bandwidth product of Gaussian filter to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1640,7 +1640,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets transmission encoding. Available in FSK mode only. Serves only as alias for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">encoding</td><td>Encoding to be used. Set to 0 for NRZ, and 2 for whitening.</td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used. Set to 0 for NRZ, and 2 for whitening. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1677,7 +1677,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>FSK frequency deviation to be set in kHz.</td></tr>
+    <tr><td class="paramname">freqDev</td><td>FSK frequency deviation to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1706,7 +1706,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets node address. Calling this method will also enable address filtering for node address only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nodeAddr</td><td>Node address to be set.</td></tr>
+    <tr><td class="paramname">nodeAddr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1733,7 +1733,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK).</td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1903,7 +1903,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5, 23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">FSK</td><td>receiver bandwidth to be set in kHz.</td></tr>
+    <tr><td class="paramname">rxBw</td><td>FSK receiver bandwidth to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1940,8 +1940,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables or disables Rx Boosted Gain mode as described in <a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a> datasheet section 9.6 (SX1261/2 v2.1, <a class="el" href="class_s_x1268.html" title="Derived class for SX1268 modules.">SX1268</a> v1.1) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxbgm</td><td>True for Rx Boosted Gain, false for Rx Power Saving Gain</td></tr>
-    <tr><td class="paramname">persist</td><td>True to persist Rx gain setting when waking up from warm-start mode (e.g. when using Rx duty cycle mode)</td></tr>
+    <tr><td class="paramname">rxbgm</td><td>True for Rx Boosted Gain, false for Rx Power Saving Gain </td></tr>
+    <tr><td class="paramname">persist</td><td>True to persist Rx gain setting when waking up from warm-start mode (e.g. when using Rx duty cycle mode). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1968,7 +1968,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa spreading factor. Allowed values range from 5 to 12. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sf</td><td>LoRa spreading factor to be set.</td></tr>
+    <tr><td class="paramname">sf</td><td>LoRa spreading factor to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2005,8 +2005,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK sync word in the form of array of up to 8 bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>FSK sync word to be set.</td></tr>
-    <tr><td class="paramname">bitsLen</td><td>FSK sync word length in bits. If length is not divisible by 8, least significant bits of syncWord will be ignored.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>FSK sync word to be set. </td></tr>
+    <tr><td class="paramname">bitsLen</td><td>FSK sync word length in bits. If length is not divisible by 8, least significant bits of syncWord will be ignored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2043,8 +2043,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK sync word in the form of array of up to 8 bytes. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>FSK sync word to be set.</td></tr>
-    <tr><td class="paramname">len</td><td>FSK sync word length in bytes.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>FSK sync word to be set. </td></tr>
+    <tr><td class="paramname">len</td><td>FSK sync word length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2081,8 +2081,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa sync word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>LoRa sync word to be set.</td></tr>
-    <tr><td class="paramname">controlBits</td><td>Undocumented control bits, required for compatibility purposes.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>LoRa sync word to be set. </td></tr>
+    <tr><td class="paramname">controlBits</td><td>Undocumented control bits, required for compatibility purposes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2119,8 +2119,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets TCXO (Temperature Compensated Crystal Oscillator) configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">TCXO</td><td>reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V. Set to 0 to disable TCXO. NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).</td></tr>
-    <tr><td class="paramname">TCXO</td><td>timeout in us. Defaults to 5000 us.</td></tr>
+    <tr><td class="paramname">voltage</td><td>TCXO reference voltage in volts. Allowed values are 1.6, 1.7, 1.8, 2.2. 2.4, 2.7, 3.0 and 3.3 V. Set to 0 to disable TCXO. NOTE: After setting this parameter to 0, the module will be reset (since there's no other way to disable TCXO).</td></tr>
+    <tr><td class="paramname">delay</td><td>TCXO timeout in us. Defaults to 5000 us. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2157,8 +2157,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK whitening parameters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enabled</td><td>True = Whitening enabled</td></tr>
-    <tr><td class="paramname">initial</td><td>Initial value used for the whitening LFSR in FSK mode. Defaults to 0x0100, use 0x01FF for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> compatibility.</td></tr>
+    <tr><td class="paramname">enabled</td><td>True = Whitening enabled </td></tr>
+    <tr><td class="paramname">initial</td><td>Initial value used for the whitening LFSR in FSK mode. Defaults to 0x0100, use 0x01FF for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> compatibility. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2185,7 +2185,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the module to sleep mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">retainConfig</td><td>Set to true to retain configuration of the currently active modem ("warm start") or to false to discard current configuration ("cold start"). Defaults to true.</td></tr>
+    <tr><td class="paramname">retainConfig</td><td>Set to true to retain configuration of the currently active modem ("warm start") or to false to discard current configuration ("cold start"). Defaults to true. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2212,7 +2212,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Read the result of spectral scan. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">results</td><td>Array to which the results will be saved, must be RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE long.</td></tr>
+    <tr><td class="paramname">results</td><td>Array to which the results will be saved, must be RADIOLIB_SX126X_SPECTRAL_SCAN_RES_SIZE long. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2275,9 +2275,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Start spectral scan. Requires binary path to be uploaded. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">numSamples</td><td>Number of samples for each scan. Fewer samples = better temporal resolution.</td></tr>
-    <tr><td class="paramname">window</td><td>RSSI averaging window size.</td></tr>
-    <tr><td class="paramname">interval</td><td>Scan interval length, one of RADIOLIB_SX126X_SCAN_INTERVAL_* macros.</td></tr>
+    <tr><td class="paramname">numSamples</td><td>Number of samples for each scan. Fewer samples = better temporal resolution. </td></tr>
+    <tr><td class="paramname">window</td><td>RSSI averaging window size. </td></tr>
+    <tr><td class="paramname">interval</td><td>Scan interval length, one of RADIOLIB_SX126X_SCAN_INTERVAL_* macros. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2342,7 +2342,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the module to standby mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to RADIOLIB_SX126X_STANDBY_RC (13 MHz RC oscillator) or RADIOLIB_SX126X_STANDBY_XOSC (32 MHz external crystal oscillator).</td></tr>
+    <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to RADIOLIB_SX126X_STANDBY_RC (13 MHz RC oscillator) or RADIOLIB_SX126X_STANDBY_XOSC (32 MHz external crystal oscillator). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2387,9 +2387,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
-    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
-    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.</td></tr>
+    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
+    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
+    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2447,9 +2447,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Receive mode type and/or raw timeout value, expressed as multiples of 15.625 us. When set to RADIOLIB_SX126X_RX_TIMEOUT_INF, the timeout will be infinite and the device will remain in Rx mode until explicitly commanded to stop (Rx continuous mode). When set to RADIOLIB_SX126X_RX_TIMEOUT_NONE, there will be no timeout and the device will return to standby when a packet is received (Rx single mode). For any other value, timeout will be applied and signal will be generated on DIO1 for conditions defined by irqFlags and irqMask.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
-    <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE. </td></tr>
+    <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2500,10 +2500,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxPeriod</td><td>The duration the receiver will be in Rx mode, in microseconds.</td></tr>
-    <tr><td class="paramname">sleepPeriod</td><td>The duration the receiver will not be in Rx mode, in microseconds.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
+    <tr><td class="paramname">rxPeriod</td><td>The duration the receiver will be in Rx mode, in microseconds. </td></tr>
+    <tr><td class="paramname">sleepPeriod</td><td>The duration the receiver will not be in Rx mode, in microseconds. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2554,8 +2554,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">senderPreambleLength</td><td>Expected preamble length of the messages to receive. If set to zero, the currently configured preamble length will be used. Defaults to zero.</td></tr>
     <tr><td class="paramname">minSymbols</td><td>Parameters will be chosen to ensure that the unit will catch at least this many symbols of any preamble of the specified length. Defaults to 8. According to Semtech, receiver requires 8 symbols to reliably latch a preamble. This makes this method redundant when transmitter preamble length is less than 17 (2*minSymbols + 1).</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2655,9 +2655,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
+    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2759,9 +2759,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send.</td></tr>
-    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
+    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2798,7 +2798,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Starts direct mode transmission. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.</td></tr>
+    <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2843,9 +2843,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Upload binary patch into the <a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a> device RAM. Patch is needed to e.g., enable spectral scan and must be uploaded again on every power cycle. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">patch</td><td>Binary patch to upload.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of the binary patch in 4-byte words.</td></tr>
-    <tr><td class="paramname">nonvolatile</td><td>Set to true when the patch is saved in non-volatile memory of the host processor, or to false when the patch is in its RAM.</td></tr>
+    <tr><td class="paramname">patch</td><td>Binary patch to upload. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of the binary patch in 4-byte words. </td></tr>
+    <tr><td class="paramname">nonvolatile</td><td>Set to true when the patch is saved in non-volatile memory of the host processor, or to false when the patch is in its RAM. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2872,7 +2872,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in variable packet length mode. Available in FSK mode only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Maximum packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Maximum packet length. </td></tr>
   </table>
   </dd>
 </dl>

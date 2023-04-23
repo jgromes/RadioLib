@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"functions_x.html":[3,3,0,20],
 "functions_y.html":[3,3,0,21],
 "functions_~.html":[3,3,0,22],
 "group__config__encoding.html":[2,2],
