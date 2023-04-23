@@ -349,9 +349,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">getTimeOnAir</a> (size_t len)</td></tr>
 <tr class="memdesc:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">More...</a><br /></td></tr>
 <tr class="separator:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">setCrcFiltering</a> (bool crcOn=true)</td></tr>
-<tr class="memdesc:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">More...</a><br /></td></tr>
-<tr class="separator:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">setCrcFiltering</a> (bool enable=true)</td></tr>
+<tr class="memdesc:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">More...</a><br /></td></tr>
+<tr class="separator:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">setRSSIConfig</a> (uint8_t smoothingSamples, int8_t offset=0)</td></tr>
 <tr class="memdesc:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets RSSI measurement configuration in FSK mode.  <a href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">More...</a><br /></td></tr>
 <tr class="separator:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -568,14 +568,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.</td></tr>
-    <tr><td class="paramname">bw</td><td>LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.</td></tr>
-    <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 9.</td></tr>
-    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8.</td></tr>
-    <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.</td></tr>
-    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535.</td></tr>
-    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz. </td></tr>
+    <tr><td class="paramname">bw</td><td>LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz. </td></tr>
+    <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 9. </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8. </td></tr>
+    <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks. </td></tr>
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535. </td></tr>
+    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). </td></tr>
   </table>
   </dd>
 </dl>
@@ -602,7 +602,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa link spreading factor. Allowed values range from 6 to 9. Only available in LoRa mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sf</td><td>LoRa link spreading factor to be set.</td></tr>
+    <tr><td class="paramname">sf</td><td>LoRa link spreading factor to be set. </td></tr>
   </table>
   </dd>
 </dl>

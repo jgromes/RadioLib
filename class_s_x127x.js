@@ -44,7 +44,7 @@ var class_s_x127x =
     [ "setAFCAGCTrigger", "class_s_x127x.html#ab0f67330124cefc07a462e77922453d0", null ],
     [ "setAFCBandwidth", "class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef", null ],
     [ "setBroadcastAddress", "class_s_x127x.html#abc51ce6718153e4963128f25bb5aab40", null ],
-    [ "setCrcFiltering", "class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a", null ],
+    [ "setCrcFiltering", "class_s_x127x.html#ab531ad461b250a060e92d9c744e79070", null ],
     [ "setCurrentLimit", "class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002", null ],
     [ "setDio0Action", "class_s_x127x.html#ae75bc48cc74a407370cd9f4bf95e9e30", null ],
     [ "setDio1Action", "class_s_x127x.html#a7b4bce81839b105c464ebf922602e58b", null ],

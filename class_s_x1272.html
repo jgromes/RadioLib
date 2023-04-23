@@ -339,9 +339,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">getTimeOnAir</a> (size_t len)</td></tr>
 <tr class="memdesc:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">More...</a><br /></td></tr>
 <tr class="separator:ad532e1a62c6ee2c58f9517e6e62728ac inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">setCrcFiltering</a> (bool crcOn=true)</td></tr>
-<tr class="memdesc:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">More...</a><br /></td></tr>
-<tr class="separator:a9b3a76eb89cad60dcad92513e6848f5a inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">setCrcFiltering</a> (bool enable=true)</td></tr>
+<tr class="memdesc:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">More...</a><br /></td></tr>
+<tr class="separator:ab531ad461b250a060e92d9c744e79070 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">setRSSIConfig</a> (uint8_t smoothingSamples, int8_t offset=0)</td></tr>
 <tr class="memdesc:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets RSSI measurement configuration in FSK mode.  <a href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">More...</a><br /></td></tr>
 <tr class="separator:ad3955f85f456edae772a51025a19029b inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -578,14 +578,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.</td></tr>
-    <tr><td class="paramname">bw</td><td>LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz.</td></tr>
-    <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 12.</td></tr>
-    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8.</td></tr>
-    <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.</td></tr>
-    <tr><td class="paramname">currentLimit</td><td>Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. Set to 0 to disable OCP (not recommended).</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535.</td></tr>
-    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz. </td></tr>
+    <tr><td class="paramname">bw</td><td>LoRa link bandwidth in kHz. Allowed values are 125, 250 and 500 kHz. </td></tr>
+    <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 12. </td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8. </td></tr>
+    <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks. </td></tr>
+    <tr><td class="paramname">currentLimit</td><td>Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. Set to 0 to disable OCP (not recommended). </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535. </td></tr>
+    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). </td></tr>
   </table>
   </dd>
 </dl>
@@ -652,13 +652,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz.</td></tr>
-    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz. Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 &lt;= 250 kHz is always met.</td></tr>
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz.</td></tr>
-    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits.</td></tr>
-    <tr><td class="paramname">enableOOK</td><td>Use OOK modulation instead of FSK.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency in MHz. Allowed values range from 860.0 MHz to 1020.0 MHz. </td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second). Allowed values range from 1.2 to 300.0 kbps. </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. Allowed values range from 0.6 to 200.0 kHz. Note that the allowed range changes based on bit rate setting, so that the condition FreqDev + BitRate/2 &lt;= 250 kHz is always met. </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6, 20.8, 25, 31.3, 41.7, 50, 62.5, 83.3, 100, 125, 166.7, 200 and 250 kHz. </td></tr>
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits. </td></tr>
+    <tr><td class="paramname">enableOOK</td><td>Use OOK modulation instead of FSK. </td></tr>
   </table>
   </dd>
 </dl>
@@ -705,7 +705,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call <a class="el" href="class_s_x1278.html#ae02adcde8c2978c0d1b157729dd5df1e" title="Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method,...">SX1278::autoLDRO()</a> </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enable</td><td>Force LDRO to be always enabled (true) or disabled (false).</td></tr>
+    <tr><td class="paramname">enable</td><td>Force LDRO to be always enabled (true) or disabled (false). </td></tr>
   </table>
   </dd>
 </dl>
@@ -742,8 +742,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Gets recorded signal strength indicator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.</td></tr>
-    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.</td></tr>
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK. </td></tr>
+    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -770,7 +770,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set implicit header mode for future reception/transmission. Required for spreading factor 6. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Payload length in bytes.</td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -797,7 +797,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa link bandwidth. Allowed values are 125, 250 and 500 kHz. Only available in LoRa mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">bw</td><td>LoRa link bandwidth to be set in kHz.</td></tr>
+    <tr><td class="paramname">bw</td><td>LoRa link bandwidth to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -832,7 +832,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps).</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps). </td></tr>
   </table>
   </dd>
 </dl>
@@ -861,7 +861,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in LoRa mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator to be set.</td></tr>
+    <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -898,8 +898,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables/disables CRC check of received packets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enable</td><td>Enable (true) or disable (false) CRC.</td></tr>
-    <tr><td class="paramname">mode</td><td>Set CRC mode to RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false) or RADIOLIB_SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode.</td></tr>
+    <tr><td class="paramname">enable</td><td>Enable (true) or disable (false) CRC. </td></tr>
+    <tr><td class="paramname">mode</td><td>Set CRC mode to RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT for CCITT, polynomial X16 + X12 + X5 + 1 (false) or RADIOLIB_SX127X_CRC_WHITENING_TYPE_IBM for IBM, polynomial X16 + X15 + X2 + 1 (true). Only valid in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -934,7 +934,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping</td></tr>
+    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping </td></tr>
   </table>
   </dd>
 </dl>
@@ -963,7 +963,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping. Only available in FSK mode with OOK modulation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Cutoff frequency that will be used for data shaping</td></tr>
+    <tr><td class="paramname">sh</td><td>Cutoff frequency that will be used for data shaping </td></tr>
   </table>
   </dd>
 </dl>
@@ -998,7 +998,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets carrier frequency. Allowed values range from 860.0 MHz to 1020.0 MHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz.</td></tr>
+    <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1027,7 +1027,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier) to be set.</td></tr>
+    <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier) to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1064,8 +1064,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">power</td><td>Transmission output power in dBm.</td></tr>
-    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST.</td></tr>
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. </td></tr>
+    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1092,7 +1092,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa link spreading factor. Allowed values range from 6 to 12. Only available in LoRa mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sf</td><td>LoRa link spreading factor to be set.</td></tr>
+    <tr><td class="paramname">sf</td><td>LoRa link spreading factor to be set. </td></tr>
   </table>
   </dd>
 </dl>

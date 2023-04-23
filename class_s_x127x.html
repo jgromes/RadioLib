@@ -291,9 +291,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad532e1a62c6ee2c58f9517e6e62728ac"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">getTimeOnAir</a> (size_t len)</td></tr>
 <tr class="memdesc:ad532e1a62c6ee2c58f9517e6e62728ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x127x.html#ad532e1a62c6ee2c58f9517e6e62728ac">More...</a><br /></td></tr>
 <tr class="separator:ad532e1a62c6ee2c58f9517e6e62728ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b3a76eb89cad60dcad92513e6848f5a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">setCrcFiltering</a> (bool crcOn=true)</td></tr>
-<tr class="memdesc:a9b3a76eb89cad60dcad92513e6848f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#a9b3a76eb89cad60dcad92513e6848f5a">More...</a><br /></td></tr>
-<tr class="separator:a9b3a76eb89cad60dcad92513e6848f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab531ad461b250a060e92d9c744e79070"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">setCrcFiltering</a> (bool enable=true)</td></tr>
+<tr class="memdesc:ab531ad461b250a060e92d9c744e79070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">More...</a><br /></td></tr>
+<tr class="separator:ab531ad461b250a060e92d9c744e79070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3955f85f456edae772a51025a19029b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">setRSSIConfig</a> (uint8_t smoothingSamples, int8_t offset=0)</td></tr>
 <tr class="memdesc:ad3955f85f456edae772a51025a19029b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets RSSI measurement configuration in FSK mode.  <a href="class_s_x127x.html#ad3955f85f456edae772a51025a19029b">More...</a><br /></td></tr>
 <tr class="separator:ad3955f85f456edae772a51025a19029b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -489,9 +489,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method. Will be called with appropriate parameters when calling initialization method from derived class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version.</td></tr>
-    <tr><td class="paramname">syncWord</td><td>LoRa sync word.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols.</td></tr>
+    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">syncWord</td><td>LoRa sync word. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. </td></tr>
   </table>
   </dd>
 </dl>
@@ -546,11 +546,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version.</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz.</td></tr>
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz.</td></tr>
-    <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits.</td></tr>
-    <tr><td class="paramname">enableOOK</td><td>Flag to specify OOK mode. This modulation is similar to FSK.</td></tr>
+    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits. </td></tr>
+    <tr><td class="paramname">enableOOK</td><td>Flag to specify OOK mode. This modulation is similar to FSK. </td></tr>
   </table>
   </dd>
 </dl>
@@ -653,9 +653,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when FIFO is empty. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to the transmission buffer.</td></tr>
-    <tr><td class="paramname">totalLen</td><td>Total number of bytes to transmit.</td></tr>
-    <tr><td class="paramname">remLen</td><td>Pointer to a counter holding the number of bytes that have been transmitted so far.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to the transmission buffer. </td></tr>
+    <tr><td class="paramname">totalLen</td><td>Total number of bytes to transmit. </td></tr>
+    <tr><td class="paramname">remLen</td><td>Pointer to a counter holding the number of bytes that have been transmitted so far. </td></tr>
   </table>
   </dd>
 </dl>
@@ -698,9 +698,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when FIFO is sufficently full to read. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to a buffer that stores the receive data.</td></tr>
-    <tr><td class="paramname">totalLen</td><td>Total number of bytes to receive.</td></tr>
-    <tr><td class="paramname">rcvLen</td><td>Pointer to a counter holding the number of bytes that have been received so far.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to a buffer that stores the receive data. </td></tr>
+    <tr><td class="paramname">totalLen</td><td>Total number of bytes to receive. </td></tr>
+    <tr><td class="paramname">rcvLen</td><td>Pointer to a counter holding the number of bytes that have been received so far. </td></tr>
   </table>
   </dd>
 </dl>
@@ -757,7 +757,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in fixed packet length mode. Available in FSK mode only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Packet length. </td></tr>
   </table>
   </dd>
 </dl>
@@ -886,7 +886,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Gets frequency error of the latest received packet. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">autoCorrect</td><td>When set to true, frequency will be automatically corrected.</td></tr>
+    <tr><td class="paramname">autoCorrect</td><td>When set to true, frequency will be automatically corrected. </td></tr>
   </table>
   </dd>
 </dl>
@@ -961,7 +961,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Query modem for the packet length of received payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
+    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1006,8 +1006,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Gets recorded signal strength indicator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.</td></tr>
-    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.</td></tr>
+    <tr><td class="paramname">packet</td><td>Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK. </td></tr>
+    <tr><td class="paramname">skipReceive</td><td>Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1084,7 +1084,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Get expected time-on-air for a given size of payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Payload length in bytes.</td></tr>
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1111,7 +1111,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable/disable inversion of the I and Q signals. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">invertIQ</td><td>QI inversion enabled (true) or disabled (false);</td></tr>
+    <tr><td class="paramname">invertIQ</td><td>QI inversion enabled (true) or disabled (false); </td></tr>
   </table>
   </dd>
 </dl>
@@ -1266,8 +1266,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Reads data that was received after calling startReceive method. This method reads len characters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1338,8 +1338,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Binary receive method. Will attempt to receive arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to receive Arduino String, see <a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8" title="Binary receive method. Must be implemented in module class.">PhysicalLayer::receive</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1418,7 +1418,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables or disables FSK automatic frequency correction(AFC) </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">isEnabled</td><td>AFC enabled or disabled</td></tr>
+    <tr><td class="paramname">isEnabled</td><td>AFC enabled or disabled </td></tr>
   </table>
   </dd>
 </dl>
@@ -1445,7 +1445,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Controls trigger of AFC and AGC. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">trigger</td><td>one from SX127X_RX_TRIGGER_NONE, SX127X_RX_TRIGGER_RSSI_INTERRUPT, SX127X_RX_TRIGGER_PREAMBLE_DETECT, SX127X_RX_TRIGGER_BOTH</td></tr>
+    <tr><td class="paramname">trigger</td><td>one from SX127X_RX_TRIGGER_NONE, SX127X_RX_TRIGGER_RSSI_INTERRUPT, SX127X_RX_TRIGGER_PREAMBLE_DETECT, SX127X_RX_TRIGGER_BOTH </td></tr>
   </table>
   </dd>
 </dl>
@@ -1472,7 +1472,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxBw</td><td>Receiver AFC bandwidth to be set (in kHz).</td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver AFC bandwidth to be set (in kHz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1499,7 +1499,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK broadcast address. Calling this method will enable address filtering. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">broadAddr</td><td>Broadcast address to be set.</td></tr>
+    <tr><td class="paramname">broadAddr</td><td>Broadcast address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1507,8 +1507,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a9b3a76eb89cad60dcad92513e6848f5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b3a76eb89cad60dcad92513e6848f5a">&#9670;&nbsp;</a></span>setCrcFiltering()</h2>
+<a id="ab531ad461b250a060e92d9c744e79070"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab531ad461b250a060e92d9c744e79070">&#9670;&nbsp;</a></span>setCrcFiltering()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1517,7 +1517,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX127x::setCrcFiltering </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>crcOn</em> = <code>true</code></td><td>)</td>
+          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1526,7 +1526,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable CRC filtering and generation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">crcOn</td><td>Set or unset CRC filtering and generation.</td></tr>
+    <tr><td class="paramname">enable</td><td>Set or unset CRC filtering and generation. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1553,7 +1553,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets current limit for over current protection at transmitter amplifier. Allowed values range from 45 to 120 mA in 5 mA steps and 120 to 240 mA in 10 mA steps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">currentLimit</td><td>Current limit to be set (in mA).</td></tr>
+    <tr><td class="paramname">currentLimit</td><td>Current limit to be set (in mA). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1590,7 +1590,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when DIO0 activates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
     <tr><td class="paramname">dir</td><td>Signal change direction. </td></tr>
   </table>
   </dd>
@@ -1627,7 +1627,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set interrupt service routine function to call when DIO1 activates. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine.</td></tr>
+    <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
     <tr><td class="paramname">dir</td><td>Signal change direction. </td></tr>
   </table>
   </dd>
@@ -1672,8 +1672,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Configure DIO pin mapping to get a given signal on a DIO pin (if available). </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed.</td></tr>
-    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details.</td></tr>
+    <tr><td class="paramname">pin</td><td>Pin number onto which a signal is to be placed. </td></tr>
+    <tr><td class="paramname">value</td><td>The value that indicates which function to place on that pin. See chip datasheet for details. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1702,7 +1702,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Configure DIO mapping to use RSSI or Preamble Detect for pins that support it. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">usePreambleDetect</td><td>Whether to use PreambleDetect (true) or RSSI (false) on the pins that are mapped to this function.</td></tr>
+    <tr><td class="paramname">usePreambleDetect</td><td>Whether to use PreambleDetect (true) or RSSI (false) on the pins that are mapped to this function. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1773,7 +1773,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets transmission encoding. Only available in FSK mode. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">encoding</td><td>Encoding to be used.</td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1802,7 +1802,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the hopping period and enables FHSS. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqHoppingPeriod</td><td>Integer multiple of symbol periods between hops</td></tr>
+    <tr><td class="paramname">freqHoppingPeriod</td><td>Integer multiple of symbol periods between hops </td></tr>
   </table>
   </dd>
 </dl>
@@ -1889,7 +1889,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK frequency deviation from carrier frequency. Allowed values depend on bit rate setting and must be lower than 200 kHz. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz).</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1918,7 +1918,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK node address. Calling this method will enable address filtering. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">nodeAddr</td><td>Node address to be set.</td></tr>
+    <tr><td class="paramname">nodeAddr</td><td>Node address to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1945,7 +1945,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables/disables OOK modulation instead of FSK. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enableOOK</td><td>Enable (true) or disable (false) OOK.</td></tr>
+    <tr><td class="paramname">enableOOK</td><td>Enable (true) or disable (false) OOK. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1972,7 +1972,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Fixed threshold for the Data Slicer in OOK mode or floor threshold for the Data Slicer in OOK when Peak mode is used. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Threshold level in steps of 0.5 dB.</td></tr>
+    <tr><td class="paramname">value</td><td>Threshold level in steps of 0.5 dB. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1999,7 +1999,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Period of decrement of the RSSI threshold in the OOK demodulator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Use defines RADIOLIB_SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP</td></tr>
+    <tr><td class="paramname">value</td><td>Use defines RADIOLIB_SX127X_OOK_PEAK_THRESH_DEC_X_X_CHIP </td></tr>
   </table>
   </dd>
 </dl>
@@ -2026,7 +2026,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Size of each decrement of the RSSI threshold in the OOK demodulator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">value</td><td>Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB</td></tr>
+    <tr><td class="paramname">value</td><td>Step size: RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_0_5_DB (default), RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_1_5_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_2_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_3_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_4_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_5_0_DB, RADIOLIB_SX127X_OOK_PEAK_THRESH_STEP_6_0_DB </td></tr>
   </table>
   </dd>
 </dl>
@@ -2053,7 +2053,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Selects the type of threshold in the OOK data slicer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">type</td><td>Threshold type: SX127X_OOK_THRESH_PEAK(default), SX127X_OOK_THRESH_FIXED, SX127X_OOK_THRESH_AVERAGE</td></tr>
+    <tr><td class="paramname">type</td><td>Threshold type: SX127X_OOK_THRESH_PEAK(default), SX127X_OOK_THRESH_FIXED, SX127X_OOK_THRESH_AVERAGE </td></tr>
   </table>
   </dd>
 </dl>
@@ -2080,7 +2080,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).</td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2220,8 +2220,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets RSSI measurement configuration in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">smoothingSamples</td><td>Number of samples taken to average the RSSI result. numSamples = 2 ^ (1 + smoothingSamples), allowed values are in range 0 (2 samples) - 7 (256 samples)</td></tr>
-    <tr><td class="paramname">offset</td><td>Signed RSSI offset that will be automatically compensated. 1 dB per LSB, defaults to 0, allowed values are in range -16 dB to +15 dB.</td></tr>
+    <tr><td class="paramname">smoothingSamples</td><td>Number of samples taken to average the RSSI result. numSamples = 2 ^ (1 + smoothingSamples), allowed values are in range 0 (2 samples) - 7 (256 samples) </td></tr>
+    <tr><td class="paramname">offset</td><td>Signed RSSI offset that will be automatically compensated. 1 dB per LSB, defaults to 0, allowed values are in range -16 dB to +15 dB. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2248,7 +2248,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the RSSI value above which the RSSI interrupt is signaled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dbm</td><td>A dBm value between -127.5 and 0 inclusive</td></tr>
+    <tr><td class="paramname">dbm</td><td>A dBm value between -127.5 and 0 inclusive </td></tr>
   </table>
   </dd>
 </dl>
@@ -2275,7 +2275,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK receiver bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set (in kHz).</td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set (in kHz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2312,8 +2312,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Sync word array.</td></tr>
-    <tr><td class="paramname">len</td><td>Sync word length (in bytes).</td></tr>
+    <tr><td class="paramname">syncWord</td><td>Sync word array. </td></tr>
+    <tr><td class="paramname">len</td><td>Sync word length (in bytes). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2340,7 +2340,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets LoRa sync word. Only available in LoRa mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Sync word to be set.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>Sync word to be set. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2435,7 +2435,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets the LoRa module to standby. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Standby mode to be used. No effect, implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.</td></tr>
+    <tr><td class="paramname">mode</td><td>Standby mode to be used. No effect, implemented only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2514,10 +2514,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Receive mode to be used.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6.</td></tr>
+    <tr><td class="paramname">mode</td><td>Receive mode to be used. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2556,8 +2556,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method. DIO0 will be activated when full valid packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6.</td></tr>
-    <tr><td class="paramname">mode</td><td>Receive mode to be used. Defaults to RxContinuous.</td></tr>
+    <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6. </td></tr>
+    <tr><td class="paramname">mode</td><td>Receive mode to be used. Defaults to RxContinuous. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2657,9 +2657,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2761,9 +2761,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534" title="C-string transmit method.">PhysicalLayer::transmit</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2800,7 +2800,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frf</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.</td></tr>
+    <tr><td class="paramname">frf</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2829,7 +2829,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set modem in variable packet length mode. Available in FSK mode only. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Maximum packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Maximum packet length. </td></tr>
   </table>
   </dd>
 </dl>
