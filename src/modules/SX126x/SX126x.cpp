@@ -1724,8 +1724,8 @@ uint8_t SX126x::getPacketType() {
   return(data);
 }
 
-int16_t SX126x::setTxParams(uint8_t power, uint8_t rampTime) {
-  uint8_t data[] = { power, rampTime };
+int16_t SX126x::setTxParams(uint8_t pwr, uint8_t rampTime) {
+  uint8_t data[] = { pwr, rampTime };
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_PARAMS, data, 2));
 }
 
@@ -1780,9 +1780,9 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 4));
 }
 
-int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t pulseShape, uint8_t rxBw, uint32_t freqDev) {
+int16_t SX126x::setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev) {
   uint8_t data[8] = {(uint8_t)((br >> 16) & 0xFF), (uint8_t)((br >> 8) & 0xFF), (uint8_t)(br & 0xFF),
-                     pulseShape, rxBw,
+                     sh, rxBw,
                      (uint8_t)((freqDev >> 16) & 0xFF), (uint8_t)((freqDev >> 8) & 0xFF), (uint8_t)(freqDev & 0xFF)};
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_MODULATION_PARAMS, data, 8));
 }
