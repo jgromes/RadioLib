@@ -360,10 +360,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Initialization method. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second).</td></tr>
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz.</td></tr>
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz.</td></tr>
-    <tr><td class="paramname">preambleLen</td><td>Preamble Length in bits.</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate of the FSK transmission in kbps (kilobits per second). </td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. </td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. </td></tr>
+    <tr><td class="paramname">preambleLen</td><td>Preamble Length in bits. </td></tr>
   </table>
   </dd>
 </dl>
@@ -420,7 +420,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Set modem in fixed packet length mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Packet length.</td></tr>
+    <tr><td class="paramname">len</td><td>Packet length. </td></tr>
   </table>
   </dd>
 </dl>
@@ -475,7 +475,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Query modem for the packet length of received payload. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false.</td></tr>
+    <tr><td class="paramname">update</td><td>Update received packet length. Will return cached value when set to false. </td></tr>
   </table>
   </dd>
 </dl>
@@ -632,8 +632,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Reads data that was received after calling startReceive method. This method reads len characters. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -704,8 +704,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Binary receive method. Will attempt to receive arbitrary binary data up to 64 bytes long. For overloads to receive Arduino String, see <a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8" title="Binary receive method. Must be implemented in module class.">PhysicalLayer::receive</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data.</td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions.</td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions. </td></tr>
   </table>
   </dd>
 </dl>
@@ -772,7 +772,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets FSK bit rate. Allowed values range from 0.123 to 256.0 kbps. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps).</td></tr>
+    <tr><td class="paramname">br</td><td>Bit rate to be set (in kbps). </td></tr>
   </table>
   </dd>
 </dl>
@@ -809,7 +809,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets Gaussian filter bandwidth-time product that will be used for data shaping. Only available in FSK mode with FSK modulation. Allowed values are RADIOLIB_SHAPING_0_5 or RADIOLIB_SHAPING_1_0. Set to RADIOLIB_SHAPING_NONE to disable data shaping. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping</td></tr>
+    <tr><td class="paramname">sh</td><td>Gaussian shaping bandwidth-time product that will be used for data shaping </td></tr>
   </table>
   </dd>
 </dl>
@@ -882,7 +882,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets transmission encoding. Only available in FSK mode. Allowed values are RADIOLIB_ENCODING_NRZ, RADIOLIB_ENCODING_MANCHESTER and RADIOLIB_ENCODING_WHITENING. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">encoding</td><td>Encoding to be used.</td></tr>
+    <tr><td class="paramname">encoding</td><td>Encoding to be used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -923,7 +923,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets FSK frequency deviation from carrier frequency. Allowed values range from 0.625 to 320.0 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz).</td></tr>
+    <tr><td class="paramname">freqDev</td><td>Frequency deviation to be set (in kHz). </td></tr>
   </table>
   </dd>
 </dl>
@@ -978,7 +978,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets preamble length. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLen</td><td>Preamble length to be set (in bits).</td></tr>
+    <tr><td class="paramname">preambleLen</td><td>Preamble length to be set (in bits). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1108,7 +1108,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets receiver bandwidth. Allowed values range from 2.6 to 620.7 kHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set in kHz.</td></tr>
+    <tr><td class="paramname">rxBw</td><td>Receiver bandwidth to be set in kHz. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1146,7 +1146,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets sync word. Up to 4 bytes can be set as sync word. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes.</td></tr>
+    <tr><td class="paramname">syncWord</td><td>Pointer to the array of sync word bytes. </td></tr>
     <tr><td class="paramname">len</td><td>Sync word length in bytes. </td></tr>
   </table>
   </dd>
@@ -1241,7 +1241,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets the module to standby. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mode</td><td>Standby mode to be used.</td></tr>
+    <tr><td class="paramname">mode</td><td>Standby mode to be used. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1320,10 +1320,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">irqMask</td><td>Ignored.</td></tr>
-    <tr><td class="paramname">len</td><td>Ignored.</td></tr>
+    <tr><td class="paramname">timeout</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">len</td><td>Ignored. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1425,9 +1425,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 64 bytes long. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1530,9 +1530,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Binary transmit method. Will transmit arbitrary binary data up to 64 bytes long. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534" title="C-string transmit method.">PhysicalLayer::transmit</a>. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data that will be transmitted.</td></tr>
-    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes).</td></tr>
-    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to.</td></tr>
+    <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
+    <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
+    <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1569,7 +1569,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Enables direct transmission mode. While in direct mode, the module will not be able to transmit or receive packets. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">FRF</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY.</td></tr>
+    <tr><td class="paramname">frf</td><td>24-bit raw frequency value to start transmitting at. Required for quick frequency shifts in RTTY. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1599,7 +1599,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Set modem in variable packet length mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Maximum packet length.</td></tr>
+    <tr><td class="paramname">maxLen</td><td>Maximum packet length. </td></tr>
   </table>
   </dd>
 </dl>

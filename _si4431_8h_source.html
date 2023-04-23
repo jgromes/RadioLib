@@ -96,40 +96,39 @@ $(document).ready(function(){initNavTree('_si4431_8h_source.html',''); initResiz
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;Si4432.h&quot;</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160; </div>
-<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_si4431.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_si4431.html">Si4431</a>: <span class="keyword">public</span> <a class="code" href="class_si4432.html">Si4432</a> {</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="comment">// constructor</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160; </div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="class_si4431.html#a332bfd2a32dea9ac0700bf172fe5b2d0">Si4431</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l00015"></a><span class="lineno"><a class="line" href="class_si4431.html">   15</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_si4431.html">Si4431</a>: <span class="keyword">public</span> <a class="code" href="class_si4432.html">Si4432</a> {</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160; </div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="comment">// constructor</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="class_si4431.html#a332bfd2a32dea9ac0700bf172fe5b2d0">Si4431</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="comment">// basic methods</span></div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    int16_t <a class="code" href="class_si4431.html#a402223a49d5b1012b0bf58ce602e6ff3">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16);</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    int16_t <a class="code" href="class_si4431.html#a402223a49d5b1012b0bf58ce602e6ff3">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16);</div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <span class="comment">// configuration methods</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    int16_t <a class="code" href="class_si4431.html#a4da296b35056e076ff69a288bd801d19">setOutputPower</a>(int8_t power);</div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    int16_t <a class="code" href="class_si4431.html#a4da296b35056e076ff69a288bd801d19">setOutputPower</a>(int8_t power);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;};</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:28</div></div>
-<div class="ttc" id="aclass_si4431_html"><div class="ttname"><a href="class_si4431.html">Si4431</a></div><div class="ttdoc">Derived class for Si4431 modules.</div><div class="ttdef"><b>Definition:</b> Si4431.h:16</div></div>
+<div class="ttc" id="aclass_si4431_html"><div class="ttname"><a href="class_si4431.html">Si4431</a></div><div class="ttdoc">Derived class for Si4431 modules.</div><div class="ttdef"><b>Definition:</b> Si4431.h:15</div></div>
 <div class="ttc" id="aclass_si4431_html_a332bfd2a32dea9ac0700bf172fe5b2d0"><div class="ttname"><a href="class_si4431.html#a332bfd2a32dea9ac0700bf172fe5b2d0">Si4431::Si4431</a></div><div class="ttdeci">Si4431(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> Si4431.cpp:4</div></div>
 <div class="ttc" id="aclass_si4431_html_a402223a49d5b1012b0bf58ce602e6ff3"><div class="ttname"><a href="class_si4431.html#a402223a49d5b1012b0bf58ce602e6ff3">Si4431::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=181.1, int8_t power=10, uint8_t preambleLen=16)</div><div class="ttdoc">Initialization method. Must be called at least once from Arduino sketch to initialize the module.</div><div class="ttdef"><b>Definition:</b> Si4431.cpp:8</div></div>
 <div class="ttc" id="aclass_si4431_html_a4da296b35056e076ff69a288bd801d19"><div class="ttname"><a href="class_si4431.html#a4da296b35056e076ff69a288bd801d19">Si4431::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values range from -8 to 13 dBm in 3 dBm steps.</div><div class="ttdef"><b>Definition:</b> Si4431.cpp:24</div></div>
-<div class="ttc" id="aclass_si4432_html"><div class="ttname"><a href="class_si4432.html">Si4432</a></div><div class="ttdoc">Derived class for Si4432 modules.</div><div class="ttdef"><b>Definition:</b> Si4432.h:16</div></div>
+<div class="ttc" id="aclass_si4432_html"><div class="ttname"><a href="class_si4432.html">Si4432</a></div><div class="ttdoc">Derived class for Si4432 modules.</div><div class="ttdef"><b>Definition:</b> Si4432.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
