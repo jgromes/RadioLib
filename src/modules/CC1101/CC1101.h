@@ -940,7 +940,7 @@ class CC1101: public PhysicalLayer {
     protected:
   #endif
 
-    float freq = RADIOLIB_CC1101_DEFAULT_FREQ;
+    float frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
     float bitRate = RADIOLIB_CC1101_DEFAULT_BR;
     uint8_t rawRSSI = 0;
     uint8_t rawLQI = 0;

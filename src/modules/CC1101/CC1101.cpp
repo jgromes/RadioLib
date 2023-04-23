@@ -498,7 +498,7 @@ int16_t CC1101::setFrequency(float freq) {
   state |= SPIsetRegValue(RADIOLIB_CC1101_REG_FREQ0, FRF & 0x0000FF, 7, 0);
 
   if(state == RADIOLIB_ERR_NONE) {
-    this->freq = freq;
+    this->frequency = freq;
   }
 
   // Update the TX power accordingly to new freq. (PA values depend on chosen freq)
@@ -601,13 +601,13 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
 int16_t CC1101::setOutputPower(int8_t power) {
   // round to the known frequency settings
   uint8_t f;
-  if(this->freq < 374.0) {
+  if(this->frequency < 374.0) {
     // 315 MHz
     f = 0;
-  } else if(this->freq < 650.5) {
+  } else if(this->frequency < 650.5) {
     // 434 MHz
     f = 1;
-  } else if(this->freq < 891.5) {
+  } else if(this->frequency < 891.5) {
     // 868 MHz
     f = 2;
   } else {
