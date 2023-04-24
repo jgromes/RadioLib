@@ -251,6 +251,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     this->hal->yield();
     if(this->hal->millis() - start >= timeout) {
       this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
+      RADIOLIB_DEBUG_PRINTLN("Timed out waiting for GPIO pin, is it connected?");
       return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
     }
   }
