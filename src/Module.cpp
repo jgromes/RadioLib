@@ -105,7 +105,7 @@ void Module::SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inByte
     SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
   } else {
     uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, false, NULL, inBytes, numBytes, true, 5000);
+    SPItransferStream(cmd, 3, false, NULL, inBytes, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
@@ -115,7 +115,7 @@ uint8_t Module::SPIreadRegister(uint16_t reg) {
     SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
   } else {
     uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, false, NULL, &resp, 1, true, 5000);
+    SPItransferStream(cmd, 3, false, NULL, &resp, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
   return(resp);
 }
@@ -125,7 +125,7 @@ void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes)
     SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
   } else {
     uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, true, data, NULL, numBytes, true, 5000);
+    SPItransferStream(cmd, 3, true, data, NULL, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
@@ -134,7 +134,7 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
     SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
   } else {
     uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, true, &data, NULL, 1, true, 5000);
+    SPItransferStream(cmd, 3, true, &data, NULL, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
@@ -193,7 +193,7 @@ int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool 
 
 int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   // send the command
-  int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, 5000);
+  int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -210,7 +210,7 @@ int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool
 
 int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
   // send the command
-  int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, 5000);
+  int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   // check the status
@@ -228,7 +228,7 @@ int16_t Module::SPIcheckStream() {
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = this->SPIstatusCommand;
-  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, 5000);
+  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   // translate to RadioLib status code

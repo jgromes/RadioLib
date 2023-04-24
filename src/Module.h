@@ -20,6 +20,9 @@
 */
 #define END_OF_MODE_TABLE    { Module::MODE_END_OF_TABLE, {} }
 
+// default timeout for SPI transfers
+#define RADIOLIB_MODULE_SPI_TIMEOUT                             (1000)
+
 /*!
   \class Module
   \brief Implements all common low-level methods to control the wireless module.
