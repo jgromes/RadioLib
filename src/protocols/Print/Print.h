@@ -50,15 +50,16 @@ class RadioLibPrint {
     size_t println(unsigned long, int = DEC);
     size_t println(double, int = 2);
     size_t println(void);
-  
+
+#if !defined(RADIOLIB_GODMODE)
   protected:
+#endif
     uint8_t encoding = RADIOLIB_ASCII_EXTENDED;
     const char* lineFeed;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);
 
-  private:
 };
 
 #endif
