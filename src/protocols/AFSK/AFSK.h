@@ -23,6 +23,12 @@ class AFSKClient  {
     AFSKClient(PhysicalLayer* phy, uint32_t pin);
 
     /*!
+      \brief Copy contructor.
+      \param aud Pointer to the AFSKClient instance to copy.
+    */
+    AFSKClient(AFSKClient* aud);
+
+    /*!
       \brief Initialization method.
       \returns \ref status_codes
     */
@@ -56,6 +62,7 @@ class AFSKClient  {
     friend class SSTVClient;
     friend class AX25Client;
     friend class FSK4Client;
+    friend class BellClient;
 };
 
 #endif

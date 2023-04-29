@@ -5,6 +5,11 @@ AFSKClient::AFSKClient(PhysicalLayer* phy, uint32_t pin): outPin(pin) {
   phyLayer = phy;
 }
 
+AFSKClient::AFSKClient(AFSKClient* aud) {
+  phyLayer = aud->phyLayer;
+  outPin = aud->outPin;
+}
+
 int16_t AFSKClient::begin() {
   return(phyLayer->startDirect());
 }
