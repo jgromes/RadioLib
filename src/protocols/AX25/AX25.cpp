@@ -154,23 +154,25 @@ void AX25Frame::setSendSequence(uint8_t seqNumber) {
 AX25Client::AX25Client(PhysicalLayer* phy) {
   phyLayer = phy;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  audioClient = nullptr;
+  bellModem = nullptr;
   #endif
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
 AX25Client::AX25Client(AFSKClient* audio) {
   phyLayer = audio->phyLayer;
-  audioClient = audio;
-  afskMark = RADIOLIB_AX25_AFSK_MARK;
-  afskSpace = RADIOLIB_AX25_AFSK_SPACE;
-  afskLen = RADIOLIB_AX25_AFSK_TONE_DURATION;
+  bellModem = new BellClient(audio);
+  bellModem->setModem(Bell202);
 }
 
 int16_t AX25Client::setCorrection(int16_t mark, int16_t space, float length) {
-  afskMark = RADIOLIB_AX25_AFSK_MARK + mark;
-  afskSpace = RADIOLIB_AX25_AFSK_SPACE + space;
-  afskLen = length*(float)RADIOLIB_AX25_AFSK_TONE_DURATION;
+  BellModem_t modem;
+  modem.freqMark = Bell202.freqMark + mark;
+  modem.freqSpace = Bell202.freqSpace + space;
+  modem.freqMarkReply = modem.freqMark;
+  modem.freqSpaceReply = modem.freqSpace;
+  modem.baudRate = length*(float)Bell202.baudRate;
+  bellModem->setModem(modem);
   return(RADIOLIB_ERR_NONE);
 }
 #endif
@@ -401,27 +403,15 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
   // transmit
   int16_t state = RADIOLIB_ERR_NONE;
   #if !defined(RADIOLIB_EXCLUDE_AFSK)
-  if(audioClient != nullptr) {
-    Module* mod = phyLayer->getMod();
-    phyLayer->transmitDirect();
+  if(bellModem != nullptr) {
+    bellModem->idle();
 
     // iterate over all bytes in the buffer
     for(uint32_t i = 0; i < stuffedFrameBuffLen; i++) {
-
-      // check each bit
-      for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-        uint32_t start = mod->hal->micros();
-        if(stuffedFrameBuff[i] & mask) {
-          audioClient->tone(afskMark, false);
-        } else {
-          audioClient->tone(afskSpace, false);
-        }
-        mod->waitForMicroseconds(start, afskLen);
-      }
-
+      bellModem->write(stuffedFrameBuff[i]);
     }
 
-    audioClient->noTone();
+    bellModem->standby();
 
   } else {
   #endif
