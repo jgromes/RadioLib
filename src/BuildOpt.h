@@ -267,6 +267,10 @@
     #define RADIOLIB_NONVOLATILE                        PROGMEM
   #endif
 
+  #if !defined(RADIOLIB_NONVOLATILE_PTR)
+    #define RADIOLIB_NONVOLATILE_PTR                    PGM_P
+  #endif
+
   #if !defined(RADIOLIB_NONVOLATILE_READ_BYTE)
     #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        pgm_read_byte(addr)
   #endif
