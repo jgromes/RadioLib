@@ -107,6 +107,8 @@
 #include "protocols/FSK4/FSK4.h"
 #include "protocols/APRS/APRS.h"
 #include "protocols/ExternalRadio/ExternalRadio.h"
+#include "protocols/Print/Print.h"
+#include "protocols/BellModem/BellModem.h"
 
 // only create Radio class when using RadioShield
 #if defined(RADIOLIB_RADIOSHIELD)

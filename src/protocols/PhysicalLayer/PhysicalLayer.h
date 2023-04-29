@@ -382,6 +382,7 @@ class PhysicalLayer {
     friend class AX25Client;
     friend class FSK4Client;
     friend class PagerClient;
+    friend class BellClient;
 };
 
 #endif

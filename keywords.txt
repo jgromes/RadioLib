@@ -55,6 +55,7 @@ FSK4Client	KEYWORD1
 APRSClient	KEYWORD1
 PagerClient	KEYWORD1
 ExternalRadio	KEYWORD1
+BellClient	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
@@ -66,6 +67,11 @@ Wrasse	KEYWORD1
 PasokonP3	KEYWORD1
 PasokonP5	KEYWORD1
 PasokonP7	KEYWORD1
+
+# Bell Modems
+Bell101	KEYWORD1
+Bell103	KEYWORD1
+Bell202	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -259,6 +265,9 @@ sendTone	KEYWORD2
 dropSync	KEYWORD2
 setTimerFlag	KEYWORD2
 setInterruptSetup	KEYWORD2
+
+# BellModem
+setModem	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
