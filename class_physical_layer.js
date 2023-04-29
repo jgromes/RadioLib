@@ -38,6 +38,7 @@ var class_physical_layer =
     [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ],
     [ "AFSKClient", "class_physical_layer.html#acb94e5999123b5a1c63dd279b2a5a251", null ],
     [ "AX25Client", "class_physical_layer.html#a0012621c1414f4c7573e961b57884a5b", null ],
+    [ "BellClient", "class_physical_layer.html#af9f435b28f04a142bdf136fc6fdc49b3", null ],
     [ "FSK4Client", "class_physical_layer.html#ac0313fe86041eb37d290019203e095d3", null ],
     [ "HellClient", "class_physical_layer.html#afeb005bab389f137def61f1acc3714d3", null ],
     [ "MorseClient", "class_physical_layer.html#ae5c5757c553100373984a416b6c3690a", null ],

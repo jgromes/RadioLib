@@ -94,6 +94,15 @@ $(document).ready(function(){initNavTree('class_r_t_t_y_client.html',''); initRe
  <a href="class_r_t_t_y_client.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_r_t_t_y_8h_source.html">RTTY.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for RTTYClient:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_r_t_t_y_client.png" usemap="#RTTYClient_map" alt=""/>
+  <map id="RTTYClient_map" name="RTTYClient_map">
+<area href="class_radio_lib_print.html" alt="RadioLibPrint" shape="rect" coords="0,0,87,24"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -113,72 +122,76 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a928dd206749d68b8ce450e14c24b9f22"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#a928dd206749d68b8ce450e14c24b9f22">standby</a> ()</td></tr>
 <tr class="memdesc:a928dd206749d68b8ce450e14c24b9f22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stops transmitting.  <a href="class_r_t_t_y_client.html#a928dd206749d68b8ce450e14c24b9f22">More...</a><br /></td></tr>
 <tr class="separator:a928dd206749d68b8ce450e14c24b9f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a094aa9c3506c0620d01e9c5e04a60e3e"><td class="memItemLeft" align="right" valign="top"><a id="a094aa9c3506c0620d01e9c5e04a60e3e"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const char *str)</td></tr>
-<tr class="separator:a094aa9c3506c0620d01e9c5e04a60e3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a49169d8cf3b4121f6930a9c70e3dc9dc"><td class="memItemLeft" align="right" valign="top"><a id="a49169d8cf3b4121f6930a9c70e3dc9dc"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (uint8_t *buff, size_t len)</td></tr>
-<tr class="separator:a49169d8cf3b4121f6930a9c70e3dc9dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a077a21423deee0393cead0b3a239691f"><td class="memItemLeft" align="right" valign="top"><a id="a077a21423deee0393cead0b3a239691f"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (uint8_t b)</td></tr>
+<tr class="memitem:a077a21423deee0393cead0b3a239691f"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_t_t_y_client.html#a077a21423deee0393cead0b3a239691f">write</a> (uint8_t b)</td></tr>
+<tr class="memdesc:a077a21423deee0393cead0b3a239691f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write one byte. Implementation of interface of the RadioLibPrint/Print class.  <a href="class_r_t_t_y_client.html#a077a21423deee0393cead0b3a239691f">More...</a><br /></td></tr>
 <tr class="separator:a077a21423deee0393cead0b3a239691f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f45fcc2c241a95939d34560f5631664"><td class="memItemLeft" align="right" valign="top"><a id="a7f45fcc2c241a95939d34560f5631664"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (<a class="el" href="class_i_t_a2_string.html">ITA2String</a> &amp;)</td></tr>
-<tr class="separator:a7f45fcc2c241a95939d34560f5631664"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05633ffc5007424aaa97b55f9bb4832f"><td class="memItemLeft" align="right" valign="top"><a id="a05633ffc5007424aaa97b55f9bb4832f"></a>
+<tr class="inherit_header pub_methods_class_radio_lib_print"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_radio_lib_print')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_radio_lib_print.html">RadioLibPrint</a></td></tr>
+<tr class="memitem:a6e1803a39074e658e54931f13bd2d641 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a6e1803a39074e658e54931f13bd2d641"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const char *str)</td></tr>
+<tr class="separator:a6e1803a39074e658e54931f13bd2d641 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1543d3565013e22448385a4d1799ada9 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a1543d3565013e22448385a4d1799ada9"></a>
+virtual size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const uint8_t *buffer, size_t size)</td></tr>
+<tr class="separator:a1543d3565013e22448385a4d1799ada9 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2c5435bea28e97f4893002f01549c80 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="ad2c5435bea28e97f4893002f01549c80"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>write</b> (const char *buffer, size_t size)</td></tr>
+<tr class="separator:ad2c5435bea28e97f4893002f01549c80 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2ac029ea08cf28ebcc3abd52e19164f inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="aa2ac029ea08cf28ebcc3abd52e19164f"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (<a class="el" href="class_i_t_a2_string.html">ITA2String</a> &amp;ita2)</td></tr>
+<tr class="separator:aa2ac029ea08cf28ebcc3abd52e19164f inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1f386ce4a8fa5b10eb72f7d8854e292 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="ab1f386ce4a8fa5b10eb72f7d8854e292"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (<a class="el" href="class_i_t_a2_string.html">ITA2String</a> &amp;ita2)</td></tr>
+<tr class="separator:ab1f386ce4a8fa5b10eb72f7d8854e292 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aa1fb490af4bd22aabc6687c4d082af inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a9aa1fb490af4bd22aabc6687c4d082af"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (const char[])</td></tr>
-<tr class="separator:a05633ffc5007424aaa97b55f9bb4832f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5fc5f8235ec0a330ae602b162e09c8bb"><td class="memItemLeft" align="right" valign="top"><a id="a5fc5f8235ec0a330ae602b162e09c8bb"></a>
+<tr class="separator:a9aa1fb490af4bd22aabc6687c4d082af inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaecbc6db0a6312a186f5eef774be5ad2 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="aaecbc6db0a6312a186f5eef774be5ad2"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (char)</td></tr>
-<tr class="separator:a5fc5f8235ec0a330ae602b162e09c8bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59962fb30c431d5e975cd82fcfb0b86d"><td class="memItemLeft" align="right" valign="top"><a id="a59962fb30c431d5e975cd82fcfb0b86d"></a>
+<tr class="separator:aaecbc6db0a6312a186f5eef774be5ad2 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02b4c3892a70d7bc0868e74622e4a97e inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a02b4c3892a70d7bc0868e74622e4a97e"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (unsigned char, int=DEC)</td></tr>
-<tr class="separator:a59962fb30c431d5e975cd82fcfb0b86d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6b22c13d227bca5ac80ce3fa855f75a"><td class="memItemLeft" align="right" valign="top"><a id="ac6b22c13d227bca5ac80ce3fa855f75a"></a>
+<tr class="separator:a02b4c3892a70d7bc0868e74622e4a97e inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2211384921ec34cce7257f729fff60d inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="af2211384921ec34cce7257f729fff60d"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (int, int=DEC)</td></tr>
-<tr class="separator:ac6b22c13d227bca5ac80ce3fa855f75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3854b00703118c3f024eb032216b3d6d"><td class="memItemLeft" align="right" valign="top"><a id="a3854b00703118c3f024eb032216b3d6d"></a>
+<tr class="separator:af2211384921ec34cce7257f729fff60d inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecfc38ba379bc123ea7e07e47de801e9 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="aecfc38ba379bc123ea7e07e47de801e9"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (unsigned int, int=DEC)</td></tr>
-<tr class="separator:a3854b00703118c3f024eb032216b3d6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a523a0617c3729989e18405096e5283d5"><td class="memItemLeft" align="right" valign="top"><a id="a523a0617c3729989e18405096e5283d5"></a>
+<tr class="separator:aecfc38ba379bc123ea7e07e47de801e9 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4c5fc3fbe7c78a2739dfd5b2648a11 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a7a4c5fc3fbe7c78a2739dfd5b2648a11"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (long, int=DEC)</td></tr>
-<tr class="separator:a523a0617c3729989e18405096e5283d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4dc1637ed62069b787d27779c7a5982f"><td class="memItemLeft" align="right" valign="top"><a id="a4dc1637ed62069b787d27779c7a5982f"></a>
+<tr class="separator:a7a4c5fc3fbe7c78a2739dfd5b2648a11 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2cbd376adf2d4fc949e02c955cf213c inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="ad2cbd376adf2d4fc949e02c955cf213c"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (unsigned long, int=DEC)</td></tr>
-<tr class="separator:a4dc1637ed62069b787d27779c7a5982f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a2c72461356b6569a2076436a14d94b"><td class="memItemLeft" align="right" valign="top"><a id="a7a2c72461356b6569a2076436a14d94b"></a>
+<tr class="separator:ad2cbd376adf2d4fc949e02c955cf213c inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e6857e72af3ebca1607ccd5d8201c6c inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a2e6857e72af3ebca1607ccd5d8201c6c"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>print</b> (double, int=2)</td></tr>
-<tr class="separator:a7a2c72461356b6569a2076436a14d94b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5d60281fe24f0724ffd727034d2851d"><td class="memItemLeft" align="right" valign="top"><a id="ac5d60281fe24f0724ffd727034d2851d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (void)</td></tr>
-<tr class="separator:ac5d60281fe24f0724ffd727034d2851d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02feea7bcdeaee42f91507d34399777d"><td class="memItemLeft" align="right" valign="top"><a id="a02feea7bcdeaee42f91507d34399777d"></a>
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (<a class="el" href="class_i_t_a2_string.html">ITA2String</a> &amp;)</td></tr>
-<tr class="separator:a02feea7bcdeaee42f91507d34399777d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ec7cc1dd981198972a0d4ad031dd987"><td class="memItemLeft" align="right" valign="top"><a id="a7ec7cc1dd981198972a0d4ad031dd987"></a>
+<tr class="separator:a2e6857e72af3ebca1607ccd5d8201c6c inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcab0d059987ce8f72e8a99959f1605c inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="abcab0d059987ce8f72e8a99959f1605c"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (const char[])</td></tr>
-<tr class="separator:a7ec7cc1dd981198972a0d4ad031dd987"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9086c57441dc8712d940a0186e3c573e"><td class="memItemLeft" align="right" valign="top"><a id="a9086c57441dc8712d940a0186e3c573e"></a>
+<tr class="separator:abcab0d059987ce8f72e8a99959f1605c inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac62c6e144cc5f2ab3d2dfa69e304600d inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="ac62c6e144cc5f2ab3d2dfa69e304600d"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (char)</td></tr>
-<tr class="separator:a9086c57441dc8712d940a0186e3c573e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73281624d10f9c05810527f4762fdeb9"><td class="memItemLeft" align="right" valign="top"><a id="a73281624d10f9c05810527f4762fdeb9"></a>
+<tr class="separator:ac62c6e144cc5f2ab3d2dfa69e304600d inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab794539d4769bcf1f0f4d2984b767390 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="ab794539d4769bcf1f0f4d2984b767390"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (unsigned char, int=DEC)</td></tr>
-<tr class="separator:a73281624d10f9c05810527f4762fdeb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1ce7543eccd14a22865c1cb7b1bc69f"><td class="memItemLeft" align="right" valign="top"><a id="ac1ce7543eccd14a22865c1cb7b1bc69f"></a>
+<tr class="separator:ab794539d4769bcf1f0f4d2984b767390 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21d43e8baa2efae0651f714b0f61a0ad inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a21d43e8baa2efae0651f714b0f61a0ad"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (int, int=DEC)</td></tr>
-<tr class="separator:ac1ce7543eccd14a22865c1cb7b1bc69f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56981a884b5d76d820493dddb7d605ec"><td class="memItemLeft" align="right" valign="top"><a id="a56981a884b5d76d820493dddb7d605ec"></a>
+<tr class="separator:a21d43e8baa2efae0651f714b0f61a0ad inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a361a76b2f27cb9398d201a4e5efe0358 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a361a76b2f27cb9398d201a4e5efe0358"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (unsigned int, int=DEC)</td></tr>
-<tr class="separator:a56981a884b5d76d820493dddb7d605ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c005f4bf067d1bfa6ef7793ffb25d16"><td class="memItemLeft" align="right" valign="top"><a id="a6c005f4bf067d1bfa6ef7793ffb25d16"></a>
+<tr class="separator:a361a76b2f27cb9398d201a4e5efe0358 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a800f38287c6f292ab0110c6d396a88 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a9a800f38287c6f292ab0110c6d396a88"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (long, int=DEC)</td></tr>
-<tr class="separator:a6c005f4bf067d1bfa6ef7793ffb25d16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cdfebbf555f3e02e650df8eef2386b8"><td class="memItemLeft" align="right" valign="top"><a id="a4cdfebbf555f3e02e650df8eef2386b8"></a>
+<tr class="separator:a9a800f38287c6f292ab0110c6d396a88 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c5d589d814403fb1be6351e1f93f8e8 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a0c5d589d814403fb1be6351e1f93f8e8"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (unsigned long, int=DEC)</td></tr>
-<tr class="separator:a4cdfebbf555f3e02e650df8eef2386b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f9506d85cde12c8265d71b5088dec6"><td class="memItemLeft" align="right" valign="top"><a id="ae4f9506d85cde12c8265d71b5088dec6"></a>
+<tr class="separator:a0c5d589d814403fb1be6351e1f93f8e8 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00bbdff41954312512167cb2b799cb01 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a00bbdff41954312512167cb2b799cb01"></a>
 size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double, int=2)</td></tr>
-<tr class="separator:ae4f9506d85cde12c8265d71b5088dec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a00bbdff41954312512167cb2b799cb01 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c055b364954957a48a798abe14cdff7 inherit pub_methods_class_radio_lib_print"><td class="memItemLeft" align="right" valign="top"><a id="a2c055b364954957a48a798abe14cdff7"></a>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (void)</td></tr>
+<tr class="separator:a2c055b364954957a48a798abe14cdff7 inherit pub_methods_class_radio_lib_print"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client for RTTY communication. The public interface is the same as Arduino Serial. </p>
@@ -328,6 +341,43 @@ size_t&#160;</td><td class="memItemRight" valign="bottom"><b>println</b> (double
 
 <p>Stops transmitting. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a077a21423deee0393cead0b3a239691f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a077a21423deee0393cead0b3a239691f">&#9670;&nbsp;</a></span>write()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">size_t RTTYClient::write </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>b</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Write one byte. Implementation of interface of the RadioLibPrint/Print class. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">b</td><td>Byte to write. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>1 if the byte was written, 0 otherwise. </dd></dl>
+
+<p>Implements <a class="el" href="class_radio_lib_print.html">RadioLibPrint</a>.</p>
 
 </div>
 </div>

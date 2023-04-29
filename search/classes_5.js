@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ita2string_409',['ITA2String',['../class_i_t_a2_string.html',1,'']]]
+  ['hal_425',['Hal',['../class_hal.html',1,'']]],
+  ['hellclient_426',['HellClient',['../class_hell_client.html',1,'']]]
 ];

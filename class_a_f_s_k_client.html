@@ -95,12 +95,24 @@ $(document).ready(function(){initNavTree('class_a_f_s_k_client.html',''); initRe
  <a href="class_a_f_s_k_client.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="_a_f_s_k_8h_source.html">AFSK.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for AFSKClient:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_a_f_s_k_client.png" usemap="#AFSKClient_map" alt=""/>
+  <map id="AFSKClient_map" name="AFSKClient_map">
+<area href="class_bell_client.html" title="Client for Bell modem communication. The public interface is the same as Arduino Serial." alt="BellClient" shape="rect" coords="0,56,77,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a89c7ab4759d37c9a032ac29fa9782eea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#a89c7ab4759d37c9a032ac29fa9782eea">AFSKClient</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, uint32_t pin)</td></tr>
 <tr class="memdesc:a89c7ab4759d37c9a032ac29fa9782eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default contructor.  <a href="class_a_f_s_k_client.html#a89c7ab4759d37c9a032ac29fa9782eea">More...</a><br /></td></tr>
 <tr class="separator:a89c7ab4759d37c9a032ac29fa9782eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac54633fe75157ce126e44e4e494266f2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#ac54633fe75157ce126e44e4e494266f2">AFSKClient</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *aud)</td></tr>
+<tr class="memdesc:ac54633fe75157ce126e44e4e494266f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy contructor.  <a href="class_a_f_s_k_client.html#ac54633fe75157ce126e44e4e494266f2">More...</a><br /></td></tr>
+<tr class="separator:ac54633fe75157ce126e44e4e494266f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30b86bb7cd087b3bc3c45a011ba266c3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_f_s_k_client.html#a30b86bb7cd087b3bc3c45a011ba266c3">begin</a> ()</td></tr>
 <tr class="memdesc:a30b86bb7cd087b3bc3c45a011ba266c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_f_s_k_client.html#a30b86bb7cd087b3bc3c45a011ba266c3">More...</a><br /></td></tr>
 <tr class="separator:a30b86bb7cd087b3bc3c45a011ba266c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,12 +143,15 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>AX25Client</b></td><
 <tr class="memitem:ac0313fe86041eb37d290019203e095d3"><td class="memItemLeft" align="right" valign="top"><a id="ac0313fe86041eb37d290019203e095d3"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td></tr>
 <tr class="separator:ac0313fe86041eb37d290019203e095d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9f435b28f04a142bdf136fc6fdc49b3"><td class="memItemLeft" align="right" valign="top"><a id="af9f435b28f04a142bdf136fc6fdc49b3"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>BellClient</b></td></tr>
+<tr class="separator:af9f435b28f04a142bdf136fc6fdc49b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client for audio-based transmissions. Requires Arduino <a class="el" href="class_a_f_s_k_client.html#a6d2341901c83e45f853c077e60f1fa33" title="Start transmitting audio tone.">tone()</a> function, and a module capable of direct mode transmission using DIO pins. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a89c7ab4759d37c9a032ac29fa9782eea"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89c7ab4759d37c9a032ac29fa9782eea">&#9670;&nbsp;</a></span>AFSKClient()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a89c7ab4759d37c9a032ac29fa9782eea">&#9670;&nbsp;</a></span>AFSKClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -166,6 +181,32 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FSK4Client</b></td><
   <table class="params">
     <tr><td class="paramname">phy</td><td>Pointer to the wireless module providing <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> communication. </td></tr>
     <tr><td class="paramname">pin</td><td>The pin that will be used for audio output. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac54633fe75157ce126e44e4e494266f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac54633fe75157ce126e44e4e494266f2">&#9670;&nbsp;</a></span>AFSKClient() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AFSKClient::AFSKClient </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *&#160;</td>
+          <td class="paramname"><em>aud</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy contructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">aud</td><td>Pointer to the <a class="el" href="class_a_f_s_k_client.html" title="Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...">AFSKClient</a> instance to copy. </td></tr>
   </table>
   </dd>
 </dl>

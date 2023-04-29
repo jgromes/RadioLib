@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['control_710',['control',['../class_a_x25_frame.html#a5b196079b539dc417ca65dd4ad622f8f',1,'AX25Frame']]]
+  ['baudrate_731',['baudRate',['../struct_bell_modem__t.html#a8e16be8997a90db9a4b2482ec7e93171',1,'BellModem_t']]]
 ];
