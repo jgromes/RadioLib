@@ -49,6 +49,7 @@ int16_t BellClient::setModem(const BellModem_t& modem) {
 
 int16_t BellClient::setCorrection(float corr) {
   this->correction = corr;
+  return(RADIOLIB_ERR_NONE);
 }
 
 size_t BellClient::write(uint8_t b) {
