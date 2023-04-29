@@ -1379,7 +1379,7 @@ int16_t SX128x::setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_
 }
 
 int16_t SX128x::setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncLen, uint8_t syncMatch, uint8_t crcLen, uint8_t whiten, uint8_t payLen, uint8_t hdrType) {
-  uint8_t data[] = { preambleLen, syncLen, syncMatch, hdrType, this->payloadLen, crcLen, whiten };
+  uint8_t data[] = { preambleLen, syncLen, syncMatch, hdrType, payLen, crcLen, whiten };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS, data, 7));
 }
 
@@ -1389,7 +1389,7 @@ int16_t SX128x::setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bl
 }
 
 int16_t SX128x::setPacketParamsLoRa(uint8_t preambleLen, uint8_t hdrType, uint8_t payLen, uint8_t crc, uint8_t invIQ) {
-  uint8_t data[] = { preambleLen, hdrType, this->payloadLen, crc, invIQ, 0x00, 0x00 };
+  uint8_t data[] = { preambleLen, hdrType, payLen, crc, invIQ, 0x00, 0x00 };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS, data, 7));
 }
 
