@@ -7,6 +7,7 @@
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
+#include "../Print/Print.h"
 
 #define RADIOLIB_HELL_FONT_WIDTH                                7
 #define RADIOLIB_HELL_FONT_HEIGHT                               7
@@ -86,7 +87,7 @@ static const uint8_t HellFont[64][RADIOLIB_HELL_FONT_WIDTH - 2] RADIOLIB_NONVOLA
   \class HellClient
   \brief Client for Hellschreiber transmissions.
 */
-class HellClient {
+class HellClient: public RadioLibPrint {
   public:
     /*!
       \brief Constructor for 2-FSK mode.
@@ -124,36 +125,12 @@ class HellClient {
     */
     void setInversion(bool inv);
 
-    size_t write(const char* str);
-    size_t write(uint8_t* buff, size_t len);
+    /*!
+      \brief Write one byte. Implementation of interface of the RadioLibPrint/Print class.
+      \param b Byte to write.
+      \returns 1 if the byte was written, 0 otherwise.
+    */
     size_t write(uint8_t b);
-
-    #if defined(RADIOLIB_BUILD_ARDUINO)
-    size_t print(__FlashStringHelper*);
-    size_t print(const String &);
-    #endif
-    size_t print(const char[]);
-    size_t print(char);
-    size_t print(unsigned char, int = DEC);
-    size_t print(int, int = DEC);
-    size_t print(unsigned int, int = DEC);
-    size_t print(long, int = DEC);
-    size_t print(unsigned long, int = DEC);
-    size_t print(double, int = 2);
-
-    size_t println(void);
-    #if defined(RADIOLIB_BUILD_ARDUINO)
-    size_t println(__FlashStringHelper*);
-    size_t println(const String &);
-    #endif
-    size_t println(const char[]);
-    size_t println(char);
-    size_t println(unsigned char, int = DEC);
-    size_t println(int, int = DEC);
-    size_t println(unsigned int, int = DEC);
-    size_t println(long, int = DEC);
-    size_t println(unsigned long, int = DEC);
-    size_t println(double, int = 2);
 
 #if !defined(RADIOLIB_GODMODE)
   private:
