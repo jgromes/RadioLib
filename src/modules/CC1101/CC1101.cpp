@@ -93,11 +93,11 @@ int16_t CC1101::begin(float freq, float br, float freqDev, float rxBw, int8_t pw
 
 void CC1101::reset() {
   // this is the manual power-on-reset sequence
-  this->mod->hal->digitalWrite(this->mod->getCs(), LOW);
+  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
   this->mod->hal->delayMicroseconds(5);
-  this->mod->hal->digitalWrite(this->mod->getCs(), HIGH);
+  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
   this->mod->hal->delayMicroseconds(40);
-  this->mod->hal->digitalWrite(this->mod->getCs(), LOW);
+  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
   this->mod->hal->delay(10);
   SPIsendCommand(RADIOLIB_CC1101_CMD_RESET);
 }
@@ -131,8 +131,6 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-
-  delay(20);
 
   return(finishTransmit());
 }
@@ -466,15 +464,14 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   this->packetLengthQueried = false;
 
   // Flush then standby according to RXOFF_MODE (default: RADIOLIB_CC1101_RXOFF_IDLE)
-  //if (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
+  if (SPIgetRegValue(RADIOLIB_CC1101_REG_MCSM1, 3, 2) == RADIOLIB_CC1101_RXOFF_IDLE) {
 
     // set mode to standby
     standby();
 
     // flush Rx FIFO
     SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX | RADIOLIB_CC1101_CMD_READ);
-    delay(10);
-  //}
+  }
 
   return(RADIOLIB_ERR_NONE);
 }
