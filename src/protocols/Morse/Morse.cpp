@@ -1,5 +1,7 @@
 #include "Morse.h"
 
+#include <ctype.h>
+
 #if !defined(RADIOLIB_EXCLUDE_MORSE)
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
