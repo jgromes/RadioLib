@@ -1,6 +1,5 @@
 #include "RTTY.h"
-#include <string.h>
-#include <math.h>
+
 #if !defined(RADIOLIB_EXCLUDE_RTTY)
 
 RTTYClient::RTTYClient(PhysicalLayer* phy) {

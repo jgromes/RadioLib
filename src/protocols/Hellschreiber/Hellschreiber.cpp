@@ -1,6 +1,5 @@
 #include "Hellschreiber.h"
-#include <string.h>
-#include <math.h>
+
 #if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
 
 HellClient::HellClient(PhysicalLayer* phy) {
