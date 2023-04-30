@@ -1,5 +1,9 @@
 #include "Print.h"
 
+#include <string.h>
+#include <ctype.h>
+#include <math.h>
+
 size_t RadioLibPrint::print(ITA2String& ita2) {
   uint8_t enc = this->encoding;
   this->encoding = RADIOLIB_ITA2;
