@@ -1,6 +1,8 @@
 #if !defined(_RADIOLIB_PRINT_H)
 #define _RADIOLIB_PRINT_H
 
+#include <string.h>
+
 #include "ITA2String.h"
 
 // supported encoding schemes
