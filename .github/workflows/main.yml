@@ -6,13 +6,14 @@ on:
   pull_request:
     branches: [ master ]
   workflow_dispatch:
-
-jobs:
-
-  build:
-    strategy:
-      matrix:
-        board:
+    inputs:
+      id:
+        description: The ID of the platform on which the build is run
+        required: true
+        default: arduino:avr:uno
+        type: choice
+        options:
+          - all
           - arduino:avr:uno
           - arduino:avr:mega
           - arduino:avr:leonardo
@@ -37,10 +38,76 @@ jobs:
           - MegaCore:avr:1281
           - teensy:avr:teensy41
 
+jobs:
+  build:
+    strategy:
+      matrix:
+        # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
+        include:
+          - id: arduino:avr:uno
+            run: echo "skip-pattern=(STM32WL|SSTV)" >> $GITHUB_OUTPUT
+          - id: arduino:avr:mega
+            run: echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
+          - id: arduino:avr:leonardo
+          - id: arduino:mbed:nano33ble
+          - id: arduino:mbed:envie_m4
+          - id: arduino:megaavr:uno2018
+            run: echo "options=':mode=on'" >> $GITHUB_OUTPUT
+          - id: arduino:sam:arduino_due_x
+          - id: arduino:samd:arduino_zero_native
+          - id: adafruit:samd:adafruit_feather_m0
+            run: |
+              echo "options=':usbstack=arduino,debug=off'" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
+          - id: adafruit:nrf52:feather52832
+            run: |
+              sudo apt-get update
+              sudo apt-get install -y python3 python3-pip python3-setuptools
+              pip3 install wheel
+              pip3 install --user adafruit-nrfutil
+              echo "/home/runner/.local/bin" >> $GITHUB_PATH
+              echo "options=':softdevice=s132v6,debug=l0'" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
+          - id: esp32:esp32:esp32
+            run:
+              python -m pip install pyserial
+              echo "index-url=--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
+          - id: esp8266:esp8266:generic
+            run: |
+              echo "options=':xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K'" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
+          - id: Intel:arc32:arduino_101
+          - id: SparkFun:apollo3:sfe_artemis
+            run: |
+              echo "warnings='none'" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json" >> $GITHUB_OUTPUT
+          - id: STMicroelectronics:stm32:GenF3:pnum=BLACKPILL_F303CC
+            run: echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
+          - id: STMicroelectronics:stm32:Nucleo_64:pnum=NUCLEO_WL55JC1
+            run: |
+              # Do *not* skip STM32WL examples
+              echo "skip-pattern=''" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
+          - id: stm32duino:STM32F1:mapleMini
+            run: |
+              echo "options=':bootloader_version=original,cpu_speed=speed_72mhz'" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
+          - id: MegaCoreX:megaavr:4809
+            run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
+          - id: arduino:mbed_rp2040:pico
+          - id: rp2040:rp2040:rpipico
+            run: echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
+          - id: CubeCell:CubeCell:CubeCell-Board
+            run: echo "index-url=--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
+          - id: MegaCore:avr:1281
+            run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
+          - id: teensy:avr:teensy41
+            run: echo "index-url=--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json" >> $GITHUB_OUTPUT
+
     runs-on: ubuntu-latest
-    name: ${{ matrix.board }}
+    name: ${{ matrix.id }}
     env:
-      run-build: ${{ (matrix.board == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.board)) }}
+      run-build: ${{ (matrix.id == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.id)) }}
 
     steps:
       - name: Install arduino-cli
@@ -56,7 +123,7 @@ jobs:
         uses: jungwinter/split@v1
         id: split
         with:
-          msg: ${{ matrix.board }}
+          msg: ${{ matrix.id }}
           seperator: ':'
 
       - name: Prepare platform-specific settings
@@ -69,84 +136,8 @@ jobs:
           echo "skip-pattern=STM32WL" >> $GITHUB_OUTPUT
           echo "warnings=all" >> $GITHUB_OUTPUT
 
-          # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
-          if [[ "${{ contains(matrix.board, 'arduino:avr:uno') }}" == "true" ]]; then
-            # Arduino Uno
-            echo "skip-pattern=(STM32WL|SSTV)" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'arduino:avr:mega') }}" == "true" ]]; then
-            # Arduino Mega
-            echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'arduino:megaavr:uno2018') }}" == "true" ]]; then
-            # Arduino Uno WiFi
-            echo "options=':mode=on'" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'adafruit:samd') }}" == "true" ]]; then
-            # Adafruit SAMD
-            echo "options=':usbstack=arduino,debug=off'" >> $GITHUB_OUTPUT
-            echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'adafruit:nrf52') }}" == "true" ]]; then
-            # Adafruit Feather nRF52
-            sudo apt-get update
-            sudo apt-get install -y python3 python3-pip python3-setuptools
-            pip3 install wheel
-            pip3 install --user adafruit-nrfutil
-            echo "/home/runner/.local/bin" >> $GITHUB_PATH
-            echo "options=':softdevice=s132v6,debug=l0'" >> $GITHUB_OUTPUT
-            echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'esp32:esp32') }}" == "true" ]]; then
-            # ESP32
-            python -m pip install pyserial
-            echo "index-url=--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
-            
-          elif [[ "${{ contains(matrix.board, 'esp8266:esp8266') }}" == "true" ]]; then
-            # ESP8266
-            echo "options=':xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K'" >> $GITHUB_OUTPUT
-            echo "index-url=--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'SparkFun:apollo3') }}" == "true" ]]; then
-            # SparkFun Apollo
-            echo "warnings='none'" >> $GITHUB_OUTPUT
-            echo "index-url=--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'STMicroelectronics:stm32') }}" == "true" ]]; then
-            # STM32 (official core)
-            echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
-            
-            if [[ "${{ contains(matrix.board, 'NUCLEO_WL55') }}" == "true" ]]; then
-              # Do *not* skip STM32WL examples
-              echo "skip-pattern=''" >> $GITHUB_OUTPUT
-            fi
-
-          elif [[ "${{ contains(matrix.board, 'stm32duino:STM32F1') }}" == "true" ]]; then
-            # STM32 (unofficial core)
-            echo "options=':bootloader_version=original,cpu_speed=speed_72mhz'" >> $GITHUB_OUTPUT
-            echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'MegaCoreX:megaavr') }}" == "true" ]]; then
-            # MegaCoreX
-            echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
-            
-          elif [[ "${{ contains(matrix.board, 'CubeCell:CubeCell') }}" == "true" ]]; then
-            # CubeCell
-            echo "index-url=--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'rp2040:rp2040') }}" == "true" ]]; then
-            # CubeCell
-            echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'MegaCore:avr') }}" == "true" ]]; then
-            # MegaCore
-            echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
-
-          elif [[ "${{ contains(matrix.board, 'teensy:avr') }}" == "true" ]]; then
-            # Teensy
-            echo "index-url=--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json" >> $GITHUB_OUTPUT
-
-          fi
+          # run platform-dependent scripts defined in matrix
+          ${{ matrix.run }}
 
       - name: Install platform
         if: ${{ env.run-build == 'true' }}
@@ -171,7 +162,7 @@ jobs:
             else
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.board }}${{ steps.prep.outputs.options }} $example --warnings=${{ steps.prep.outputs.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
