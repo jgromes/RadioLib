@@ -1,5 +1,7 @@
 #include "ITA2String.h"
 
+#include <string.h>
+
 ITA2String::ITA2String(char c) {
   asciiLen = 1;
   #if !defined(RADIOLIB_STATIC_ONLY)
