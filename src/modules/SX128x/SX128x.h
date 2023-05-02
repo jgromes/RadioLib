@@ -460,7 +460,7 @@ class SX128x: public PhysicalLayer {
     int16_t scanChannel();
 
     /*!
-      \brief Sets the module to sleep mode.
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
       \param retainConfig Set to true to retain configuration and data buffer or to false
       to discard current configuration and data buffer. Defaults to true.
       \returns \ref status_codes
