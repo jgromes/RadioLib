@@ -453,8 +453,16 @@ int16_t SX126x::standby(uint8_t mode) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
-  uint8_t data[] = {mode};
-  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
+  uint8_t data[] = { mode };
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1);
+  if(state == RADIOLIB_ERR_NONE) {
+    return(state);
+  } else if(state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) {
+    // the device might be in sleep mode, pull NSS low to wake up and try again
+    this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
+    return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
+  }
+  return(state);
 }
 
 void SX126x::setDio1Action(void (*func)(void)) {
