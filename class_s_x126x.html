@@ -148,9 +148,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a1579e2557c36a4a34b09039c0d0c71"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71">standby</a> () override</td></tr>
 <tr class="memdesc:a7a1579e2557c36a4a34b09039c0d0c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, uses 13 MHz RC oscillator).  <a href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71">More...</a><br /></td></tr>
 <tr class="separator:a7a1579e2557c36a4a34b09039c0d0c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad7569396f09f3867dc1bd4d4a0613acd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd">standby</a> (uint8_t mode)</td></tr>
-<tr class="memdesc:ad7569396f09f3867dc1bd4d4a0613acd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <a href="class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd">More...</a><br /></td></tr>
-<tr class="separator:ad7569396f09f3867dc1bd4d4a0613acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fa0384a529746811e2dcb2eeb4188ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2fa0384a529746811e2dcb2eeb4188ec">standby</a> (uint8_t mode, bool wakeup=true)</td></tr>
+<tr class="memdesc:a2fa0384a529746811e2dcb2eeb4188ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <a href="class_s_x126x.html#a2fa0384a529746811e2dcb2eeb4188ec">More...</a><br /></td></tr>
+<tr class="separator:a2fa0384a529746811e2dcb2eeb4188ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">More...</a><br /></td></tr>
 <tr class="separator:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -355,6 +355,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">sleep</a> ()</td></tr>
 <tr class="memdesc:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to sleep.  <a href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">More...</a><br /></td></tr>
 <tr class="separator:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
+<tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
+<tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">More...</a><br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2315,40 +2318,41 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad7569396f09f3867dc1bd4d4a0613acd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad7569396f09f3867dc1bd4d4a0613acd">&#9670;&nbsp;</a></span>standby() <span class="overload">[2/2]</span></h2>
+<a id="a2fa0384a529746811e2dcb2eeb4188ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fa0384a529746811e2dcb2eeb4188ec">&#9670;&nbsp;</a></span>standby() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX126x::standby </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>wakeup</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sets the module to standby mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">mode</td><td>Oscillator to be used in standby mode. Can be set to RADIOLIB_SX126X_STANDBY_RC (13 MHz RC oscillator) or RADIOLIB_SX126X_STANDBY_XOSC (32 MHz external crystal oscillator). </td></tr>
+    <tr><td class="paramname">wakeup</td><td>Whether to force the module to wake up. Setting to true will immediately attempt to wake up the module. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">PhysicalLayer</a>.</p>
 
 </div>
 </div>

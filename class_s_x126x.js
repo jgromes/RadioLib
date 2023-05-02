@@ -63,7 +63,7 @@ var class_s_x126x =
     [ "spectralScanGetStatus", "class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4", null ],
     [ "spectralScanStart", "class_s_x126x.html#a8a3ad4e12df862ab18b326d9dba26d66", null ],
     [ "standby", "class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71", null ],
-    [ "standby", "class_s_x126x.html#ad7569396f09f3867dc1bd4d4a0613acd", null ],
+    [ "standby", "class_s_x126x.html#a2fa0384a529746811e2dcb2eeb4188ec", null ],
     [ "startChannelScan", "class_s_x126x.html#a10a0e75571350fb05fa100e5d5151be2", null ],
     [ "startReceive", "class_s_x126x.html#a0ec1b926c93885739b546a7f39e8b09c", null ],
     [ "startReceiveDutyCycle", "class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e", null ],
