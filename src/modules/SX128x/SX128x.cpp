@@ -455,20 +455,17 @@ int16_t SX128x::standby() {
   return(SX128x::standby(RADIOLIB_SX128X_STANDBY_RC));
 }
 
-int16_t SX128x::standby(uint8_t mode) {
+int16_t SX128x::standby(uint8_t mode, bool wakeup) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
-  uint8_t data[] = { mode };
-  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_STANDBY, data, 1);
-  if(state == RADIOLIB_ERR_NONE) {
-    return(state);
-  } else if(state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) {
-    // the device might be in sleep mode, pull NSS low to wake up and try again
+  if(wakeup) {
+    // pull NSS low to wake up
     this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-    return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_STANDBY, data, 1));
   }
-  return(state);
+
+  uint8_t data[] = { mode };
+  return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_STANDBY, data, 1));
 }
 
 void SX128x::setDio1Action(void (*func)(void)) {
