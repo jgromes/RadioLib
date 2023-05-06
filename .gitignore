@@ -20,3 +20,6 @@ extras/SX126x_Spectrum_Scan/out/*
 
 # PlatformIO
 .pio*
+
+# cmake
+build/
