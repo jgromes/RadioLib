@@ -193,5 +193,5 @@ jobs:
       
       - name: Build the example
         run: |
-          cd $PWD/examples/NonArduino/RaspberryPi
+          cd $PWD/examples/NonArduino/Raspberry
           ./build.sh
