@@ -171,3 +171,27 @@ jobs:
               fi
             fi
           done
+
+  rpi-build:
+    runs-on: [self-hosted, ARM64]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pigpio cmake
+      
+      - name: Install the library
+        run: |
+          cd $PWD
+          mkdir build
+          cd build
+          cmake ..
+          sudo make install
+      
+      - name: Build the example
+        run: |
+          cd $PWD/examples/NonArduino/RaspberryPi
+          ./build.sh
