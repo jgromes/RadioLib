@@ -36,12 +36,12 @@ class PiHal : public RadioLibHal {
       // stop the SPI
       spiEnd();
 
-      // and now the pigpio library
-      gpioTerminate();
-
-      // finally, pull the enable pin low
+      // pull the enable pin low
       gpioSetMode(18, PI_OUTPUT);
       gpioWrite(18, PI_LOW);
+
+      // finally, stop the pigpio library
+      gpioTerminate();
     }
 
     // GPIO-related methods (pinMode, digitalWrite etc.) should check
