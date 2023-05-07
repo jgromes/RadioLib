@@ -195,3 +195,14 @@ jobs:
         run: |
           cd $PWD/examples/NonArduino/Raspberry
           ./build.sh
+
+  rpi-test:
+    needs: rpi-build
+    runs-on: [self-hosted, ARM64]
+    steps:
+      - name: SX126x test
+        run: |
+          cd $PWD/extras/test/SX126x
+          ./clean.sh
+          ./build.sh
+          sudo ./build/rpi-sx1261
