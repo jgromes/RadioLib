@@ -14,8 +14,9 @@ int main(int argc, char** argv) {
   state = radio.begin();
   printf("[SX1261] Test:begin() = %d\n", state);
 
-  state = radio.transmit("Hello World!");
-  printf("[SX1261] Test:transmit() = %d\n", state);
+  //state = radio.transmit("Hello World!");
+  //printf("[SX1261] Test:transmit() = %d\n", state);
 
+  hal->term();
   return(0);
 }
