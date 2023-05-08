@@ -31,7 +31,15 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// DIO2 pin:  5
+// receiving packets requires connection
+// to the module direct output pin,
+// here connected to Arduino pin 5
+// SX127x/RFM9x:  DIO2
+// RF69:          DIO2
+// SX1231:        DIO2
+// CC1101:        GDO2
+// Si443x/RFM2x:  GPIO
+// SX126x/LLCC68: DIO2
 const int pin = 5;
 
 // create Pager client instance using the FSK module
