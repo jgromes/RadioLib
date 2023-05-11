@@ -365,9 +365,9 @@ int16_t SX1272::setCRC(bool enable, bool mode) {
     // set LoRa CRC
     SX127x::crcEnabled = enable;
     if(enable) {
-      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, RADIOLIB_SX1272_RX_CRC_MODE_ON, 2, 2));
+      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_RX_CRC_MODE_ON, 1, 1));
     } else {
-      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, RADIOLIB_SX1272_RX_CRC_MODE_OFF, 2, 2));
+      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_RX_CRC_MODE_OFF, 1, 1));
     }
   } else {
     // set FSK CRC
