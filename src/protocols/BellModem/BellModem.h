@@ -7,6 +7,8 @@
 #include "../../ArduinoHal.h"
 #endif
 
+#if !defined(RADIOLIB_EXCLUDE_BELL)
+
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 #include "../Print/Print.h"
@@ -123,5 +125,7 @@ class BellClient: public AFSKClient, public RadioLibPrint {
     bool autoStart = true;
 
 };
+
+#endif
 
 #endif
