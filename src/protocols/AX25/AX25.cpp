@@ -306,8 +306,9 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     frameBuff[i] = Module::reflect(frameBuff[i], 8);
   }
 
-  // calculate FCS
-  uint16_t fcs = getFrameCheckSequence(frameBuff, frameBuffLen);
+  // calculate 
+  RadioLibCRC crc(16, RADIOLIB_CRC_CCITT_POLY, RADIOLIB_CRC_CCITT_INIT, RADIOLIB_CRC_CCITT_OUT, false, false);
+  uint16_t fcs = crc.checksum(frameBuff, frameBuffLen);
   *(frameBuffPtr++) = (uint8_t)((fcs >> 8) & 0xFF);
   *(frameBuffPtr++) = (uint8_t)(fcs & 0xFF);
 
@@ -434,29 +435,6 @@ void AX25Client::getCallsign(char* buff) {
 
 uint8_t AX25Client::getSSID() {
   return(sourceSSID);
-}
-
-/*
-  CCITT CRC implementation based on https://github.com/kicksat/ax25
-
-  Licensed under Creative Commons Attribution-ShareAlike 4.0 International
-  https://creativecommons.org/licenses/by-sa/4.0/
-*/
-uint16_t AX25Client::getFrameCheckSequence(uint8_t* buff, size_t len) {
-  uint8_t outBit;
-  uint16_t mask;
-  uint16_t shiftReg = CRC_CCITT_INIT;
-
-  for(size_t i = 0; i < len; i++) {
-    for(uint8_t b = 0x80; b > 0x00; b /= 2) {
-      outBit = (shiftReg & 0x01) ? 0x01 : 0x00;
-      shiftReg >>= 1;
-      mask = XOR((buff[i] & b), outBit) ? CRC_CCITT_POLY_REVERSED : 0x0000;
-      shiftReg ^= mask;
-    }
-  }
-
-  return(Module::flipBits16(~shiftReg));
 }
 
 #endif

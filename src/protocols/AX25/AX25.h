@@ -8,18 +8,13 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
 #include "../BellModem/BellModem.h"
+#include "../../utils/CRC.h"
 
 // macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
 #define SET_BIT_IN_ARRAY(A, k)                                  ( A[(k/8)] |= (1 << (k%8)) )
 #define CLEAR_BIT_IN_ARRAY(A, k)                                ( A[(k/8)] &= ~(1 << (k%8)) )
 #define TEST_BIT_IN_ARRAY(A, k)                                 ( A[(k/8)] & (1 << (k%8)) )
 #define GET_BIT_IN_ARRAY(A, k)                                  ( (A[(k/8)] & (1 << (k%8))) ? 1 : 0 )
-
-// CRC-CCITT calculation macros
-#define XOR(A, B)                                               ( ((A) || (B)) && !((A) && (B)) )
-#define CRC_CCITT_POLY                                          0x1021      //  generator polynomial
-#define CRC_CCITT_POLY_REVERSED                                 0x8408      //  CRC_CCITT_POLY in reversed bit order
-#define CRC_CCITT_INIT                                          0xFFFF      //  initial value
 
 // maximum callsign length in bytes
 #define RADIOLIB_AX25_MAX_CALLSIGN_LEN                          6
@@ -321,8 +316,6 @@ class AX25Client {
     char sourceCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
     uint8_t sourceSSID = 0;
     uint16_t preambleLen = 0;
-
-    static uint16_t getFrameCheckSequence(uint8_t* buff, size_t len);
 
     void getCallsign(char* buff);
     uint8_t getSSID();
