@@ -462,13 +462,11 @@ class Module {
 
     /*!
       \brief Function to reflect bits within a byte.
+      \param in The input to reflect.
+      \param bits Number of bits to reflect.
+      \return The reflected input.
     */
-    static uint8_t flipBits(uint8_t b);
-
-    /*!
-      \brief Function to reflect bits within an integer.
-    */
-    static uint16_t flipBits16(uint16_t i);
+    static uint32_t reflect(uint32_t in, uint8_t bits);
 
     /*!
       \brief Function to dump data as hex into the debug port.

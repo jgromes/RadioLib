@@ -303,7 +303,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // flip bit order
   for(size_t i = 0; i < frameBuffLen; i++) {
-    frameBuff[i] = Module::flipBits(frameBuff[i]);
+    frameBuff[i] = Module::reflect(frameBuff[i], 8);
   }
 
   // calculate FCS

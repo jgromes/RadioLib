@@ -367,7 +367,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
 
     // check complete byte
     if(this->bufferBitPos == 8) {
-      this->buffer[this->bufferWritePos] = Module::flipBits(this->buffer[this->bufferWritePos]);
+      this->buffer[this->bufferWritePos] = Module::reflect(this->buffer[this->bufferWritePos], 8);
       RADIOLIB_VERBOSE_PRINTLN("R\t%X", this->buffer[this->bufferWritePos]);
 
       this->bufferWritePos++;

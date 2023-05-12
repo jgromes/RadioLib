@@ -372,19 +372,12 @@ void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
   #endif
 }
 
-uint8_t Module::flipBits(uint8_t b) {
-  b = (b & 0xF0) >> 4 | (b & 0x0F) << 4;
-  b = (b & 0xCC) >> 2 | (b & 0x33) << 2;
-  b = (b & 0xAA) >> 1 | (b & 0x55) << 1;
-  return b;
-}
-
-uint16_t Module::flipBits16(uint16_t i) {
-  i = (i & 0xFF00) >> 8 | (i & 0x00FF) << 8;
-  i = (i & 0xF0F0) >> 4 | (i & 0x0F0F) << 4;
-  i = (i & 0xCCCC) >> 2 | (i & 0x3333) << 2;
-  i = (i & 0xAAAA) >> 1 | (i & 0x5555) << 1;
-  return i;
+uint32_t Module::reflect(uint32_t in, uint8_t bits) {
+  uint32_t res = 0;
+  for(uint8_t i = 0; i < bits; i++) {
+    res |= (((in & ((uint32_t)1 << i)) >> i) << (bits - i - 1));
+  }
+  return(res);
 }
 
 void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
