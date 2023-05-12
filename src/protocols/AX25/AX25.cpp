@@ -306,9 +306,14 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
     frameBuff[i] = Module::reflect(frameBuff[i], 8);
   }
 
-  // calculate 
-  RadioLibCRC crc(16, RADIOLIB_CRC_CCITT_POLY, RADIOLIB_CRC_CCITT_INIT, RADIOLIB_CRC_CCITT_OUT, false, false);
-  uint16_t fcs = crc.checksum(frameBuff, frameBuffLen);
+  // calculate
+  RadioLibCRCInstance.size = 16;
+  RadioLibCRCInstance.poly = RADIOLIB_CRC_CCITT_POLY;
+  RadioLibCRCInstance.init = RADIOLIB_CRC_CCITT_INIT;
+  RadioLibCRCInstance.out = RADIOLIB_CRC_CCITT_OUT;
+  RadioLibCRCInstance.refIn = false;
+  RadioLibCRCInstance.refOut = false;
+  uint16_t fcs = RadioLibCRCInstance.checksum(frameBuff, frameBuffLen);
   *(frameBuffPtr++) = (uint8_t)((fcs >> 8) & 0xFF);
   *(frameBuffPtr++) = (uint8_t)(fcs & 0xFF);
 

@@ -1,12 +1,7 @@
 #include "CRC.h"
 
-RadioLibCRC::RadioLibCRC(uint8_t size, uint32_t poly, uint32_t init, uint32_t out, bool refIn, bool refOut) {
-  this->size = size;
-  this->poly = poly;
-  this->init = init;
-  this->out = out;
-  this->refIn = refIn;
-  this->refOut = refOut;
+RadioLibCRC::RadioLibCRC() {
+
 }
 
 uint32_t RadioLibCRC::checksum(uint8_t* buff, size_t len) {
@@ -37,3 +32,5 @@ uint32_t RadioLibCRC::checksum(uint8_t* buff, size_t len) {
   crc &= (uint32_t)0xFFFFFFFF >> (32 - this->size);
   return(crc);
 }
+
+RadioLibCRC RadioLibCRCInstance;

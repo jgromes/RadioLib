@@ -50,14 +50,8 @@ class RadioLibCRC {
 
     /*!
       \brief Default constructor.
-      \param size CRC size in bits.
-      \param poly CRC polynomial.
-      \param init Initial value.
-      \param out Final XOR value.
-      \param refIn Whether to reflect input bytes.
-      \param refOut Whether to reflect the result.
     */
-    RadioLibCRC(uint8_t size, uint32_t poly, uint32_t init, uint32_t out, bool refIn, bool refOut);
+    RadioLibCRC();
 
     /*!
       \brief Calcualte checksum of a buffer.
@@ -67,5 +61,8 @@ class RadioLibCRC {
     */
     uint32_t checksum(uint8_t* buff, size_t len);
 };
+
+// the global singleton
+extern RadioLibCRC RadioLibCRCInstance;
 
 #endif
