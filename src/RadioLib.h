@@ -110,6 +110,9 @@
 #include "protocols/Print/Print.h"
 #include "protocols/BellModem/BellModem.h"
 
+// utilities
+#include "utils/CRC.h"
+
 // only create Radio class when using RadioShield
 #if defined(RADIOLIB_RADIOSHIELD)
 
