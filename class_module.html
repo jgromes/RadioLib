@@ -218,14 +218,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a7f5fd7409f21d33a16ea1de589962ae6"><td class="memItemLeft" align="right" valign="top"><a id="a7f5fd7409f21d33a16ea1de589962ae6"></a>
-static uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7f5fd7409f21d33a16ea1de589962ae6">flipBits</a> (uint8_t b)</td></tr>
-<tr class="memdesc:a7f5fd7409f21d33a16ea1de589962ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to reflect bits within a byte. <br /></td></tr>
-<tr class="separator:a7f5fd7409f21d33a16ea1de589962ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a160006371be8e121a8a54cc4462b3a72"><td class="memItemLeft" align="right" valign="top"><a id="a160006371be8e121a8a54cc4462b3a72"></a>
-static uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a160006371be8e121a8a54cc4462b3a72">flipBits16</a> (uint16_t i)</td></tr>
-<tr class="memdesc:a160006371be8e121a8a54cc4462b3a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to reflect bits within an integer. <br /></td></tr>
-<tr class="separator:a160006371be8e121a8a54cc4462b3a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4add1a875bb88e91da232118201a78a8"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4add1a875bb88e91da232118201a78a8">reflect</a> (uint32_t in, uint8_t bits)</td></tr>
+<tr class="memdesc:a4add1a875bb88e91da232118201a78a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to reflect bits within a byte.  <a href="class_module.html#a4add1a875bb88e91da232118201a78a8">More...</a><br /></td></tr>
+<tr class="separator:a4add1a875bb88e91da232118201a78a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0532274dafe433ba68529945bfe6a1b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">hexdump</a> (uint8_t *data, size_t len, uint32_t offset=0, uint8_t width=1, bool be=false)</td></tr>
 <tr class="memdesc:ad0532274dafe433ba68529945bfe6a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump data as hex into the debug port.  <a href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">More...</a><br /></td></tr>
 <tr class="separator:ad0532274dafe433ba68529945bfe6a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -617,6 +612,52 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a4add1a875bb88e91da232118201a78a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4add1a875bb88e91da232118201a78a8">&#9670;&nbsp;</a></span>reflect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Module::reflect </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>in</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bits</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Function to reflect bits within a byte. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">in</td><td>The input to reflect. </td></tr>
+    <tr><td class="paramname">bits</td><td>Number of bits to reflect. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The reflected input. </dd></dl>
 
 </div>
 </div>

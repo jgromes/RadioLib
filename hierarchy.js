@@ -63,6 +63,7 @@ var hierarchy =
       ] ],
       [ "nRF24", "classn_r_f24.html", null ]
     ] ],
+    [ "RadioLibCRC", "class_radio_lib_c_r_c.html", null ],
     [ "RadioLibHal", "class_radio_lib_hal.html", null ],
     [ "RadioLibPrint", "class_radio_lib_print.html", [
       [ "BellClient", "class_bell_client.html", null ],
