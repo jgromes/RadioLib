@@ -314,11 +314,15 @@
   #define OCT 8
   #define BIN 2
 
-  #include <algorithm>
   #include <stdint.h>
 
-  using std::max;
-  using std::min;
+  #if !defined(min)
+  #define min(a,b) ((a)<(b)?(a):(b))
+  #endif
+  
+  #if !defined(max)
+  #define max(a,b) ((a)>(b)?(a):(b))
+  #endif
 #endif
 
 /*
