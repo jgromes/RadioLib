@@ -302,11 +302,11 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   /*if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
     SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, RADIOLIB_CC1101_FIFO_THRESH_TX);
   } else {
-    uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
+    uint8_t initialWrite = RADIOLIB_MIN((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
     SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, initialWrite);
     dataSent += initialWrite;
   }*/
-  uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
+  uint8_t initialWrite = RADIOLIB_MIN((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
   SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, initialWrite);
   dataSent += initialWrite;
 
@@ -327,7 +327,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 
     // if there's room then put other data
     if (bytesInFIFO < RADIOLIB_CC1101_FIFO_SIZE) {
-      uint8_t bytesToWrite = min((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - bytesInFIFO), (uint8_t)(len - dataSent));
+      uint8_t bytesToWrite = RADIOLIB_MIN((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - bytesInFIFO), (uint8_t)(len - dataSent));
       SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, &data[dataSent], bytesToWrite);
       dataSent += bytesToWrite;
     } else {
@@ -429,7 +429,7 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
     }
 
     // read the minimum between "remaining length" and bytesInFifo
-    uint8_t bytesToRead = min((uint8_t)(length - readBytes), bytesInFIFO);
+    uint8_t bytesToRead = RADIOLIB_MIN((uint8_t)(length - readBytes), bytesInFIFO);
     SPIreadRegisterBurst(RADIOLIB_CC1101_REG_FIFO, bytesToRead, &(data[readBytes]));
     readBytes += bytesToRead;
     lastPop = this->mod->hal->millis();

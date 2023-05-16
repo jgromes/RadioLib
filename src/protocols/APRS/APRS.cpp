@@ -100,7 +100,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   // as discussed in https://github.com/jgromes/RadioLib/issues/430
 
   // latitude first, because that is in the destination field
-  float lat_abs = abs(lat);
+  float lat_abs = RADIOLIB_ABS(lat);
   int lat_deg = (int)lat_abs;
   int lat_min = (lat_abs - (float)lat_deg) * 60.0f;
   int lat_hun = (((lat_abs - (float)lat_deg) * 60.0f) - lat_min) * 100.0f;
@@ -133,7 +133,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   info[infoPos++] = RADIOLIB_APRS_MIC_E_GPS_DATA_CURRENT;
 
   // encode the longtitude
-  float lon_abs = abs(lon);
+  float lon_abs = RADIOLIB_ABS(lon);
   int32_t lon_deg = (int32_t)lon_abs;
   int32_t lon_min = (lon_abs - (float)lon_deg) * 60.0f;
   int32_t lon_hun = (((lon_abs - (float)lon_deg) * 60.0f) - lon_min) * 100.0f;

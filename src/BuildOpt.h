@@ -316,13 +316,6 @@
 
   #include <stdint.h>
 
-  #if !defined(min)
-  #define min(a,b) ((a)<(b)?(a):(b))
-  #endif
-  
-  #if !defined(max)
-  #define max(a,b) ((a)>(b)?(a):(b))
-  #endif
 #endif
 
 /*
@@ -458,7 +451,6 @@
 */
 #define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }
 
-
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges. Requires RADIOLIB_CHECK_RANGE to be enabled
 */
@@ -473,6 +465,11 @@
 #else
   #define RADIOLIB_ERRATA_SX127X(...) {}
 #endif
+
+// these macros are usually defined by Arduino, but some platforms undef them, so its safer to use our own
+#define RADIOLIB_MIN(a,b)				((a)<(b)?(a):(b))
+#define RADIOLIB_MAX(a,b)				((a)>(b)?(a):(b))
+#define RADIOLIB_ABS(x)         ((x)>0?(x):-(x))
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  (0x06)
