@@ -14,7 +14,7 @@
 */
 
 // include the library
-#include <RadioLib/RadioLib.h>
+#include <RadioLib.h>
 
 // include the hardware abstraction layer
 #include "PiHal.h"
