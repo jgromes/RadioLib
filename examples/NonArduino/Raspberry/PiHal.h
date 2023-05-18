@@ -107,17 +107,17 @@ class PiHal : public RadioLibHal {
         return(0);
       }
 
-      gpioSetMode(pin, PI_INPUT);
-      uint32_t start = gpioTick();
-      uint32_t curtick = gpioTick();
+      this->pinMode(pin, PI_INPUT);
+      uint32_t start = this->micros();
+      uint32_t curtick = this->micros();
 
-      while(gpioRead(pin) == state) {
-        if((gpioTick() - curtick) > timeout) {
+      while(this->digitalRead(pin) == state) {
+        if((this->micros() - curtick) > timeout) {
           return(0);
         }
       }
 
-      return(gpioTick() - start);
+      return(this->micros() - start);
     }
 
    void spiBegin() {

@@ -29,8 +29,8 @@ PiHal* hal = new PiHal(1);
 // NSS pin:   7
 // DIO1 pin:  17
 // NRST pin:  22
-// BUSY pin:  4
-SX1261 radio = new Module(hal, 7, 17, 22, 4);
+// BUSY pin:  not connected
+SX1261 radio = new Module(hal, 7, 17, 22, RADIOLIB_NC);
 
 // the entry point for the program
 int main(int argc, char** argv) {
@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     state = radio.transmit("Hello World!");
     if(state == RADIOLIB_ERR_NONE) {
       // the packet was successfully transmitted
-      printf("success!");
+      printf("success!\n");
 
       // wait for a second before transmitting again
       hal->delay(1000);
