@@ -2,7 +2,7 @@
 #define PI_HAL_H
 
 // include RadioLib
-#include <RadioLib.h>
+#include <RadioLib/RadioLib.h>
 
 // include the library for Raspberry GPIO pins
 #include "pigpio.h"
