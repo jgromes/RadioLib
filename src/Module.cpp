@@ -246,12 +246,16 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   #endif
 
   // ensure GPIO is low
-  uint32_t start = this->hal->millis();
-  while(this->hal->digitalRead(this->gpioPin)) {
-    this->hal->yield();
-    if(this->hal->millis() - start >= timeout) {
-      RADIOLIB_DEBUG_PRINTLN("Timed out waiting for GPIO pin, is it connected?");
-      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+  if(this->gpioPin == RADIOLIB_NC) {
+    this->hal->delay(1);
+  } else {
+    uint32_t start = this->hal->millis();
+    while(this->hal->digitalRead(this->gpioPin)) {
+      this->hal->yield();
+      if(this->hal->millis() - start >= timeout) {
+        RADIOLIB_DEBUG_PRINTLN("Timed out waiting for GPIO pin, is it connected?");
+        return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+      }
     }
   }
 
@@ -312,13 +316,17 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // wait for GPIO to go high and then low
   if(waitForGpio) {
-    this->hal->delayMicroseconds(1);
-    uint32_t start = this->hal->millis();
-    while(this->hal->digitalRead(this->gpioPin)) {
-      this->hal->yield();
-      if(this->hal->millis() - start >= timeout) {
-        state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
-        break;
+    if(this->gpioPin == RADIOLIB_NC) {
+      this->hal->delay(1);
+    } else {
+      this->hal->delayMicroseconds(1);
+      uint32_t start = this->hal->millis();
+      while(this->hal->digitalRead(this->gpioPin)) {
+        this->hal->yield();
+        if(this->hal->millis() - start >= timeout) {
+          state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
+          break;
+        }
       }
     }
   }
