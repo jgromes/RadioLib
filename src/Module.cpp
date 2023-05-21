@@ -88,10 +88,10 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
     RADIOLIB_DEBUG_PRINTLN();
     RADIOLIB_DEBUG_PRINTLN("address:\t0x%X", reg);
     RADIOLIB_DEBUG_PRINTLN("bits:\t\t%d %d", msb, lsb);
-    RADIOLIB_DEBUG_PRINT("value:\t\t0x%X", value);
-    RADIOLIB_DEBUG_PRINT("current:\t0x%X", currentValue);
-    RADIOLIB_DEBUG_PRINT("mask:\t\t0x%X", mask);
-    RADIOLIB_DEBUG_PRINT("new:\t\t0x%X", newValue);
+    RADIOLIB_DEBUG_PRINTLN("value:\t\t0x%X", value);
+    RADIOLIB_DEBUG_PRINTLN("current:\t0x%X", currentValue);
+    RADIOLIB_DEBUG_PRINTLN("mask:\t\t0x%X", mask);
+    RADIOLIB_DEBUG_PRINTLN("new:\t\t0x%X", newValue);
     RADIOLIB_DEBUG_PRINTLN("read:\t\t0x%X", readValue);
 
     return(RADIOLIB_ERR_SPI_WRITE_FAILED);
