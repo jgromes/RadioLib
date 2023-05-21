@@ -312,7 +312,7 @@ int16_t SX128x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (500% of expected time-on-air)
   uint32_t timeout = getTimeOnAir(len) * 5;
 
-  RADIOLIB_DEBUG_PRINTLN("Timeout in %d us", timeout);
+  RADIOLIB_DEBUG_PRINTLN("Timeout in %lu us", timeout);
 
   // start transmission
   state = startTransmit(data, len, addr);
@@ -345,7 +345,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   // calculate timeout (1000% of expected time-on-air)
   uint32_t timeout = getTimeOnAir(len) * 10;
 
-  RADIOLIB_DEBUG_PRINTLN("Timeout in %d us", timeout);
+  RADIOLIB_DEBUG_PRINTLN("Timeout in %lu us", timeout);
 
   // start reception
   uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
