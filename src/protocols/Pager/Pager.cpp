@@ -44,7 +44,7 @@ int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shi
   inv = invert;
 
   // initialize BCH encoder
-  encoderInit();
+  RadioLibBCHInstance.begin(RADIOLIB_PAGER_BCH_N, RADIOLIB_PAGER_BCH_K, RADIOLIB_PAGER_BCH_PRIMITIVE_POLY);
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -139,7 +139,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   }
 
   // write address code word
-  msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos] = encodeBCH(frameAddr);
+  msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos] = RadioLibBCHInstance.encode(frameAddr);
 
   // write the data as 20-bit code blocks
   if(len > 0) {
@@ -205,7 +205,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
       remBits = RADIOLIB_PAGER_FUNC_BITS_POS - symbolPos - symbolLength;
 
       // do the FEC
-      msg[blockPos] = encodeBCH(msg[blockPos]);
+      msg[blockPos] = RadioLibBCHInstance.encode(msg[blockPos]);
     }
   }
 
@@ -538,230 +538,6 @@ char PagerClient::decodeBCD(uint8_t b) {
       return('(');
   }
   return(b + '0');
-}
-
-/*
-  BCH Encoder based on https://www.codeproject.com/articles/13189/pocsag-encoder
-
-  Significantly cleaned up and slightly fixed.
-*/
-void PagerClient::encoderInit() {
-  /*
-  * generate GF(2**m) from the irreducible polynomial p(X) in p[0]..p[m]
-  * lookup tables:  index->polynomial form   bchAlphaTo[] contains j=alpha**i;
-  * polynomial form -> index form  bchIndexOf[j=alpha**i] = i alpha=2 is the
-  * primitive element of GF(2**m)
-  */
-
-	int32_t mask = 1;
-	bchAlphaTo[RADIOLIB_PAGER_BCH_M] = 0;
-
-	for(uint8_t i = 0; i < RADIOLIB_PAGER_BCH_M; i++) {
-		bchAlphaTo[i] = mask;
-
-		bchIndexOf[bchAlphaTo[i]] = i;
-
-    if(RADIOLIB_PAGER_BCH_PRIMITIVE_POLY & ((uint32_t)0x01 << i)) {
-      bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^= mask;
-    }
-
-		mask <<= 1;
-	}
-
-	bchIndexOf[bchAlphaTo[RADIOLIB_PAGER_BCH_M]] = RADIOLIB_PAGER_BCH_M;
-	mask >>= 1;
-
-	for(uint8_t i = RADIOLIB_PAGER_BCH_M + 1; i < RADIOLIB_PAGER_BCH_N; i++) {
-		if(bchAlphaTo[i - 1] >= mask) {
-      bchAlphaTo[i] = bchAlphaTo[RADIOLIB_PAGER_BCH_M] ^ ((bchAlphaTo[i - 1] ^ mask) << 1);
-    } else {
-      bchAlphaTo[i] = bchAlphaTo[i - 1] << 1;
-    }
-
-		bchIndexOf[bchAlphaTo[i]] = i;
-	}
-
-	bchIndexOf[0] = -1;
-
-  /*
-	* Compute generator polynomial of BCH code of length = 31, redundancy = 10
-	* (OK, this is not very efficient, but we only do it once, right? :)
-	*/
-
-	int32_t ii = 0;
-  int32_t jj = 1;
-  int32_t ll = 0;
-  int32_t kaux = 0;
-  bool test = false;
-	int32_t aux = 0;
-	int32_t cycle[15][6] = { { 0 } };
-  int32_t size[15] = { 0 };
-
-	// Generate cycle sets modulo 31
-	cycle[0][0] = 0; size[0] = 1;
-	cycle[1][0] = 1; size[1] = 1;
-
-	do {
-		// Generate the jj-th cycle set
-		ii = 0;
-		do {
-			ii++;
-			cycle[jj][ii] = (cycle[jj][ii - 1] * 2) % RADIOLIB_PAGER_BCH_N;
-			size[jj]++;
-			aux = (cycle[jj][ii] * 2) % RADIOLIB_PAGER_BCH_N;
-		} while(aux != cycle[jj][0]);
-
-		// Next cycle set representative
-		ll = 0;
-		do {
-			ll++;
-			test = false;
-			for(ii = 1; ((ii <= jj) && !test); ii++) {
-        // Examine previous cycle sets
-			  for(kaux = 0; ((kaux < size[ii]) && !test); kaux++) {
-          test = (ll == cycle[ii][kaux]);
-        }
-      }
-		} while(test && (ll < (RADIOLIB_PAGER_BCH_N - 1)));
-
-		if(!test) {
-			jj++;	// next cycle set index
-			cycle[jj][0] = ll;
-			size[jj] = 1;
-		}
-
-	} while(ll < (RADIOLIB_PAGER_BCH_N - 1));
-
-	// Search for roots 1, 2, ..., d-1 in cycle sets
-	int32_t rdncy = 0;
-  int32_t min[11];
-	kaux = 0;
-
-	for(ii = 1; ii <= jj; ii++) {
-		min[kaux] = 0;
-		for(jj = 0; jj < size[ii]; jj++) {
-      for(uint8_t root = 1; root < RADIOLIB_PAGER_BCH_D; root++) {
-        if(root == cycle[ii][jj]) {
-          min[kaux] = ii;
-        }
-      }
-    }
-
-		if(min[kaux]) {
-			rdncy += size[min[kaux]];
-			kaux++;
-		}
-	}
-
-	int32_t noterms = kaux;
-  int32_t zeros[11];
-	kaux = 1;
-
-	for(ii = 0; ii < noterms; ii++) {
-    for(jj = 0; jj < size[min[ii]]; jj++) {
-			zeros[kaux] = cycle[min[ii]][jj];
-			kaux++;
-		}
-  }
-
-	// Compute generator polynomial
-	bchG[0] = bchAlphaTo[zeros[1]];
-	bchG[1] = 1;		// g(x) = (X + zeros[1]) initially
-
-	for(ii = 2; ii <= rdncy; ii++) {
-	  bchG[ii] = 1;
-	  for(jj = ii - 1; jj > 0; jj--) {
-      if(bchG[jj] != 0) {
-        bchG[jj] = bchG[jj - 1] ^ bchAlphaTo[(bchIndexOf[bchG[jj]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
-      } else {
-        bchG[jj] = bchG[jj - 1];
-      }
-    }
-		bchG[0] = bchAlphaTo[(bchIndexOf[bchG[0]] + zeros[ii]) % RADIOLIB_PAGER_BCH_N];
-	}
-}
-
-/*
-  BCH Encoder based on https://www.codeproject.com/articles/13189/pocsag-encoder
-
-  Significantly cleaned up and slightly fixed.
-*/
-uint32_t PagerClient::encodeBCH(uint32_t dat) {
-  // we only use the 21 most significant bits
-  int32_t data[21];
-	int32_t j1 = 0;
-	for(int32_t i = 31; i > 10; i--) {
-		if(dat & ((uint32_t)1<<i)) {
-      data[j1++]=1;
-    } else {
-      data[j1++]=0;
-    }
-	}
-
-  // reset the M(x)+r array elements
-  int32_t Mr[RADIOLIB_PAGER_BCH_N];
-  memset(Mr, 0x00, RADIOLIB_PAGER_BCH_N*sizeof(int32_t));
-
-  // copy the contents of data into Mr and add the zeros
-  memcpy(Mr, data, RADIOLIB_PAGER_BCH_K*sizeof(int32_t));
-
-  int32_t j = 0;
-  int32_t start = 0;
-  int32_t end = RADIOLIB_PAGER_BCH_N - RADIOLIB_PAGER_BCH_K;
-  while(end < RADIOLIB_PAGER_BCH_N) {
-    for(int32_t i = end; i > start-2; --i) {
-      if(Mr[start]) {
-        Mr[i] ^= bchG[j];
-        ++j;
-      } else {
-        ++start;
-        j = 0;
-        end = start + RADIOLIB_PAGER_BCH_N - RADIOLIB_PAGER_BCH_K;
-        break;
-      }
-    }
-  }
-
-  int32_t bb[11];
-  j = 0;
-  for(int32_t i = start; i < end; ++i) {
-    bb[j] = Mr[i];
-    ++j;
-  }
-
-	int32_t iEvenParity = 0;
-  int32_t recd[32];
-	for(uint8_t i = 0; i < 21; i++) {
-		recd[31 - i] = data[i];
-		if(data[i] == 1) {
-      iEvenParity++;
-    }
-	}
-
-	for(uint8_t i = 0; i < 11; i++) {
-		recd[10 - i] = bb[i];
-		if(bb[i] == 1) {
-      iEvenParity++;
-    }
-	}
-
-	if((iEvenParity % 2) == 0) {
-    recd[0] = 0;
-  } else {
-    recd[0] = 1;
-  }
-
-  int32_t Codeword[32];
-	memcpy(Codeword, recd, sizeof(int32_t)*32);
-
-  int32_t iResult = 0;
-	for(int32_t i = 0; i < 32; i++) {
-		if(Codeword[i]) {
-      iResult |= ((uint32_t)1<<i);
-    }
-	}
-
-	return(iResult);
 }
 
 #endif

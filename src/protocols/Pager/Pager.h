@@ -3,6 +3,7 @@
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
+#include "../../utils/FEC.h"
 
 // frequency shift in Hz
 #define RADIOLIB_PAGER_FREQ_SHIFT_HZ                            (4500)
@@ -51,15 +52,6 @@
 
 // the maximum allowed address (2^22 - 1)
 #define RADIOLIB_PAGER_ADDRESS_MAX                              (2097151)
-
-// BCH(31, 21) code constants
-#define RADIOLIB_PAGER_BCH_M                                    (5)
-#define RADIOLIB_PAGER_BCH_N                                    (31)
-#define RADIOLIB_PAGER_BCH_K                                    (21)
-#define RADIOLIB_PAGER_BCH_D                                    (5)
-
- // BCH(31, 21) primitive polynomial x^5 + x^2 + 1
-#define RADIOLIB_PAGER_BCH_PRIMITIVE_POLY                       (0x25)
 
 /*!
   \class PagerClient
@@ -180,11 +172,6 @@ class PagerClient {
     uint32_t filterMask;
     bool inv = false;
 
-    // BCH encoder
-    int32_t bchAlphaTo[RADIOLIB_PAGER_BCH_N + 1];
-    int32_t bchIndexOf[RADIOLIB_PAGER_BCH_N + 1];
-    int32_t bchG[RADIOLIB_PAGER_BCH_N - RADIOLIB_PAGER_BCH_K + 1];
-
     void write(uint32_t* data, size_t len);
     void write(uint32_t codeWord);
 
@@ -194,9 +181,6 @@ class PagerClient {
 
     uint8_t encodeBCD(char c);
     char decodeBCD(uint8_t b);
-
-    void encoderInit();
-    uint32_t encodeBCH(uint32_t data);
 };
 
 #endif
