@@ -13,8 +13,8 @@
 #define RADIOLIB_CRC_CCITT_OUT                                  (0xFFFF)
 
 /*!
-  \class AX25Frame
-  \brief Abstraction of AX.25 frame format.
+  \class RadioLibCRC
+  \brief Class to calculate CRCs of varying formats.
 */
 class RadioLibCRC {
   public:
