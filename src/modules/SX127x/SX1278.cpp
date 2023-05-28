@@ -185,7 +185,7 @@ int16_t SX1278::setSpreadingFactor(uint8_t sf) {
     // calculate symbol length and set low data rate optimization, if auto-configuration is enabled
     if(this->ldroAuto) {
       float symbolLength = (float)(uint32_t(1) << SX127x::spreadingFactor) / (float)SX127x::bandwidth;
-      RADIOLIB_DEBUG_PRINT("Symbol length: %f ms", symbolLength);
+      RADIOLIB_DEBUG_PRINTLN("Symbol length: %f ms", symbolLength);
       if(symbolLength >= 16.0) {
         state = this->mod->SPIsetRegValue(RADIOLIB_SX1278_REG_MODEM_CONFIG_3, RADIOLIB_SX1278_LOW_DATA_RATE_OPT_ON, 3, 3);
       } else {
