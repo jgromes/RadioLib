@@ -548,6 +548,10 @@ int16_t SX128x::finishTransmit() {
   return(standby());
 }
 
+int16_t SX128x::startReceive() {
+  return(this->startReceive(RADIOLIB_SX128X_RX_TIMEOUT_INF, RADIOLIB_SX128X_IRQ_RX_DEFAULT, RADIOLIB_SX128X_IRQ_RX_DONE, 0));
+}
+
 int16_t SX128x::startReceive(uint16_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
   (void)len;
   

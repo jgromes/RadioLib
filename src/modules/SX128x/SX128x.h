@@ -510,6 +510,14 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t finishTransmit() override;
+    
+    /*!
+      \brief Interrupt-driven receive method with default parameters.
+      Implemented for compatibility with PhysicalLayer.
+
+      \returns \ref status_codes
+    */
+    int16_t startReceive();
 
     /*!
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
