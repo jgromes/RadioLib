@@ -90,6 +90,12 @@ class PhysicalLayer {
     virtual int16_t standby(uint8_t mode);
 
     /*!
+      \brief Sets module to received mode using its default configuration.
+      \returns \ref status_codes
+    */
+    virtual int16_t startReceive();
+
+    /*!
       \brief Interrupt-driven receive method. A DIO pin will be activated when full packet is received. 
       Must be implemented in module class.
       \param timeout Raw timeout value. Some modules use this argument to specify operation mode
@@ -383,6 +389,8 @@ class PhysicalLayer {
     friend class FSK4Client;
     friend class PagerClient;
     friend class BellClient;
+    friend class FT8Client;
+    friend class LoRaWANNode;
 };
 
 #endif
