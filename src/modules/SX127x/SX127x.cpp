@@ -366,6 +366,10 @@ int16_t SX127x::packetMode() {
   return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_2, RADIOLIB_SX127X_DATA_MODE_PACKET, 6, 6));
 }
 
+int16_t SX127x::startReceive() {
+  return(this->startReceive(0, RADIOLIB_SX127X_RXCONTINUOUS));
+}
+
 int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);

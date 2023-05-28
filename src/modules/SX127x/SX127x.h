@@ -770,14 +770,22 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t finishTransmit() override;
+    
+    /*!
+      \brief Interrupt-driven receive method with default parameters.
+      Implemented for compatibility with PhysicalLayer.
+      \returns \ref status_codes
+    */
+    int16_t startReceive();
 
     /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
-      \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
-      \param mode Receive mode to be used. Defaults to RxContinuous.
+      \param len Expected length of packet to be received, or 0 when unused.
+      Defaults to 0, non-zero required for LoRa spreading factor 6.
+      \param mode Receive mode to be used.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint8_t len = 0, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS);
+    int16_t startReceive(uint8_t len, uint8_t mode);
     
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
