@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['module_437',['Module',['../class_module.html',1,'']]],
-  ['morseclient_438',['MorseClient',['../class_morse_client.html',1,'']]]
+  ['module_442',['Module',['../class_module.html',1,'']]],
+  ['morseclient_443',['MorseClient',['../class_morse_client.html',1,'']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uploadpatch_737',['uploadPatch',['../class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1',1,'SX126x']]]
+  ['uploadpatch_747',['uploadPatch',['../class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1',1,'SX126x']]]
 ];

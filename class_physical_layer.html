@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
 <tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
 <tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18664ad615c5507ff1690baaca90b094"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">startReceive</a> ()</td></tr>
+<tr class="memdesc:a18664ad615c5507ff1690baaca90b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to received mode using its default configuration.  <a href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">More...</a><br /></td></tr>
+<tr class="separator:a18664ad615c5507ff1690baaca90b094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
 <tr class="memdesc:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">More...</a><br /></td></tr>
 <tr class="separator:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,6 +257,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>PagerClient</b></td>
 <tr class="memitem:af9f435b28f04a142bdf136fc6fdc49b3"><td class="memItemLeft" align="right" valign="top"><a id="af9f435b28f04a142bdf136fc6fdc49b3"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>BellClient</b></td></tr>
 <tr class="separator:af9f435b28f04a142bdf136fc6fdc49b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3870f0bd18d0a60e195bc7d39058190c"><td class="memItemLeft" align="right" valign="top"><a id="a3870f0bd18d0a60e195bc7d39058190c"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>FT8Client</b></td></tr>
+<tr class="separator:a3870f0bd18d0a60e195bc7d39058190c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ec0776e58831979405850594429e2d2"><td class="memItemLeft" align="right" valign="top"><a id="a9ec0776e58831979405850594429e2d2"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td></tr>
+<tr class="separator:a9ec0776e58831979405850594429e2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
@@ -1201,8 +1210,38 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>BellClient</b></td><
 
 </div>
 </div>
+<a id="a18664ad615c5507ff1690baaca90b094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18664ad615c5507ff1690baaca90b094">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::startReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets module to received mode using its default configuration. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#afe700968c1e02e335c389b59d950ca39">SX128x</a>, <a class="el" href="class_s_x127x.html#ae90a5df2d414dfcafd1e3b8aa790f9fd">SX127x</a>, <a class="el" href="class_s_x126x.html#a16e8b271dc5e9af3015dd2901153cbde">SX126x</a>, <a class="el" href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">Si443x</a>, <a class="el" href="class_r_f69.html#afae38fa64242043de34096bf497725f1">RF69</a>, <a class="el" href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">nRF24</a>, and <a class="el" href="class_c_c1101.html#af727750d05be0bcef4bb8ac260d110e3">CC1101</a>.</p>
+
+</div>
+</div>
 <a id="a13dbafeeb9dd9ede72cc4d907738ac48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13dbafeeb9dd9ede72cc4d907738ac48">&#9670;&nbsp;</a></span>startReceive()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a13dbafeeb9dd9ede72cc4d907738ac48">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1259,7 +1298,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>BellClient</b></td><
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a0ec1b926c93885739b546a7f39e8b09c">SX126x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>, <a class="el" href="class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33">CC1101</a>, and <a class="el" href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">SX127x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a013065f21a7c029f310178f884a60898">SX126x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>, <a class="el" href="class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33">CC1101</a>, and <a class="el" href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">SX127x</a>.</p>
 
 </div>
 </div>

@@ -164,9 +164,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8e22d67b64953c8b4da779d87d563f3e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:a8e22d67b64953c8b4da779d87d563f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x126x.html#a8e22d67b64953c8b4da779d87d563f3e">More...</a><br /></td></tr>
 <tr class="separator:a8e22d67b64953c8b4da779d87d563f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ec1b926c93885739b546a7f39e8b09c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0ec1b926c93885739b546a7f39e8b09c">startReceive</a> (uint32_t timeout=RADIOLIB_SX126X_RX_TIMEOUT_INF, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE, size_t len=0)</td></tr>
-<tr class="memdesc:a0ec1b926c93885739b546a7f39e8b09c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#a0ec1b926c93885739b546a7f39e8b09c">More...</a><br /></td></tr>
-<tr class="separator:a0ec1b926c93885739b546a7f39e8b09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16e8b271dc5e9af3015dd2901153cbde"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a16e8b271dc5e9af3015dd2901153cbde">startReceive</a> ()</td></tr>
+<tr class="memdesc:a16e8b271dc5e9af3015dd2901153cbde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x126x.html#a16e8b271dc5e9af3015dd2901153cbde">More...</a><br /></td></tr>
+<tr class="separator:a16e8b271dc5e9af3015dd2901153cbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a013065f21a7c029f310178f884a60898"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a013065f21a7c029f310178f884a60898">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
+<tr class="memdesc:a013065f21a7c029f310178f884a60898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#a013065f21a7c029f310178f884a60898">More...</a><br /></td></tr>
+<tr class="separator:a013065f21a7c029f310178f884a60898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE)</td></tr>
 <tr class="memdesc:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.  <a href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">More...</a><br /></td></tr>
 <tr class="separator:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2401,8 +2404,38 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a0ec1b926c93885739b546a7f39e8b09c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ec1b926c93885739b546a7f39e8b09c">&#9670;&nbsp;</a></span>startReceive()</h2>
+<a id="a16e8b271dc5e9af3015dd2901153cbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16e8b271dc5e9af3015dd2901153cbde">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::startReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a013065f21a7c029f310178f884a60898"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a013065f21a7c029f310178f884a60898">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2414,25 +2447,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX126x::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>timeout</em> = <code>RADIOLIB_SX126X_RX_TIMEOUT_INF</code>, </td>
+          <td class="paramname"><em>timeout</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX126X_IRQ_RX_DEFAULT</code>, </td>
+          <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX126X_IRQ_RX_DONE</code>, </td>
+          <td class="paramname"><em>irqMask</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em> = <code>0</code>&#160;</td>
+          <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2451,8 +2484,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Receive mode type and/or raw timeout value, expressed as multiples of 15.625 us. When set to RADIOLIB_SX126X_RX_TIMEOUT_INF, the timeout will be infinite and the device will remain in Rx mode until explicitly commanded to stop (Rx continuous mode). When set to RADIOLIB_SX126X_RX_TIMEOUT_NONE, there will be no timeout and the device will return to standby when a packet is received (Rx single mode). For any other value, timeout will be applied and signal will be generated on DIO1 for conditions defined by irqFlags and irqMask.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT. </td></tr>
-    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1. </td></tr>
     <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
   </table>
   </dd>

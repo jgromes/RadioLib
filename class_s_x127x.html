@@ -198,9 +198,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7fd9cec52b7fbd0c69cbd861dc17549f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:a7fd9cec52b7fbd0c69cbd861dc17549f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f">More...</a><br /></td></tr>
 <tr class="separator:a7fd9cec52b7fbd0c69cbd861dc17549f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adffb96b7f80dc43909bb4cebde68fe9d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d">startReceive</a> (uint8_t len=0, uint8_t mode=RADIOLIB_SX127X_RXCONTINUOUS)</td></tr>
-<tr class="memdesc:adffb96b7f80dc43909bb4cebde68fe9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.  <a href="class_s_x127x.html#adffb96b7f80dc43909bb4cebde68fe9d">More...</a><br /></td></tr>
-<tr class="separator:adffb96b7f80dc43909bb4cebde68fe9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae90a5df2d414dfcafd1e3b8aa790f9fd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae90a5df2d414dfcafd1e3b8aa790f9fd">startReceive</a> ()</td></tr>
+<tr class="memdesc:ae90a5df2d414dfcafd1e3b8aa790f9fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x127x.html#ae90a5df2d414dfcafd1e3b8aa790f9fd">More...</a><br /></td></tr>
+<tr class="separator:ae90a5df2d414dfcafd1e3b8aa790f9fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaa90f7b8fcb4c41e2672923945d8ea7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#acaa90f7b8fcb4c41e2672923945d8ea7">startReceive</a> (uint8_t len, uint8_t mode)</td></tr>
+<tr class="memdesc:acaa90f7b8fcb4c41e2672923945d8ea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.  <a href="class_s_x127x.html#acaa90f7b8fcb4c41e2672923945d8ea7">More...</a><br /></td></tr>
+<tr class="separator:acaa90f7b8fcb4c41e2672923945d8ea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ae533401c801f1d4034eb3db8b1f30c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">startReceive</a> (uint32_t mode, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
 <tr class="memdesc:a0ae533401c801f1d4034eb3db8b1f30c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">More...</a><br /></td></tr>
 <tr class="separator:a0ae533401c801f1d4034eb3db8b1f30c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2465,8 +2468,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ae90a5df2d414dfcafd1e3b8aa790f9fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae90a5df2d414dfcafd1e3b8aa790f9fd">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::startReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a0ae533401c801f1d4034eb3db8b1f30c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ae533401c801f1d4034eb3db8b1f30c">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ae533401c801f1d4034eb3db8b1f30c">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2527,8 +2560,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="adffb96b7f80dc43909bb4cebde68fe9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adffb96b7f80dc43909bb4cebde68fe9d">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="acaa90f7b8fcb4c41e2672923945d8ea7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaa90f7b8fcb4c41e2672923945d8ea7">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2537,13 +2570,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX127x::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>len</em> = <code>0</code>, </td>
+          <td class="paramname"><em>len</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>mode</em> = <code>RADIOLIB_SX127X_RXCONTINUOUS</code>&#160;</td>
+          <td class="paramname"><em>mode</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2556,8 +2589,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Interrupt-driven receive method. DIO0 will be activated when full valid packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6. </td></tr>
-    <tr><td class="paramname">mode</td><td>Receive mode to be used. Defaults to RxContinuous. </td></tr>
+    <tr><td class="paramname">len</td><td>Expected length of packet to be received, or 0 when unused. Defaults to 0, non-zero required for LoRa spreading factor 6. </td></tr>
+    <tr><td class="paramname">mode</td><td>Receive mode to be used. </td></tr>
   </table>
   </dd>
 </dl>
