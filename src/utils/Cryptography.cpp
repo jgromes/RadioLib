@@ -73,7 +73,7 @@ void RadioLibAES128::generateCMAC(uint8_t* in, size_t len, uint8_t* cmac) {
   };
   uint8_t Y[RADIOLIB_AES128_BLOCK_SIZE];
 
-  for(uint8_t i = 0; i < num_blocks - 1; i++) {
+  for(size_t i = 0; i < num_blocks - 1; i++) {
     this->blockXor(Y, &buff[i*RADIOLIB_AES128_BLOCK_SIZE], X);
     this->encryptECB(Y, RADIOLIB_AES128_BLOCK_SIZE, X);
   }
