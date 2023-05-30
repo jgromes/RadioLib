@@ -14,7 +14,6 @@ on:
         type: choice
         options:
           - all
-          - none
           - arduino:avr:uno
           - arduino:avr:mega
           - arduino:avr:leonardo
@@ -176,10 +175,6 @@ jobs:
   rpi-build:
     runs-on: [self-hosted, ARM64]
     steps:
-      - name: Cleanup from previous run
-        run: |
-          sudo rm -rf /home/pi/actions-runner/_work/RadioLib/RadioLib/build
-
       - name: Checkout repository
         uses: actions/checkout@v2
       
