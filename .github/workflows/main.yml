@@ -14,6 +14,7 @@ on:
         type: choice
         options:
           - all
+          - none
           - arduino:avr:uno
           - arduino:avr:mega
           - arduino:avr:leonardo
