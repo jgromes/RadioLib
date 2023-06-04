@@ -366,7 +366,7 @@ void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
   #if defined(RADIOLIB_INTERRUPT_TIMING)
   (void)start;
   if((this->TimerSetupCb != nullptr) && (len != this->prevTimingLen)) {
-    _prevTimingLen = len;
+    prevTimingLen = len;
     this->TimerSetupCb(len);
   }
   this->TimerFlag = false;
