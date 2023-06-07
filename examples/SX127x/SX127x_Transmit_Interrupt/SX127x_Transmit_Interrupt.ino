@@ -2,7 +2,7 @@
    RadioLib SX127x Transmit with Interrupts Example
 
    This example transmits LoRa packets with one second delays
-   between them. Each packet contains up to 256 bytes
+   between them. Each packet contains up to 255 bytes
    of data, in the form of:
     - Arduino String
     - null-terminated char array (C-string)
@@ -56,10 +56,10 @@ void setup() {
   Serial.print(F("[SX1278] Sending first packet ... "));
 
   // you can transmit C-string or Arduino string up to
-  // 256 characters long
+  // 255 characters long
   transmissionState = radio.startTransmit("Hello World!");
 
-  // you can also transmit byte array up to 256 bytes long
+  // you can also transmit byte array up to 255 bytes long
   /*
     byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                       0x89, 0xAB, 0xCD, 0xEF};
@@ -114,10 +114,10 @@ void loop() {
     Serial.print(F("[SX1278] Sending another packet ... "));
 
     // you can transmit C-string or Arduino string up to
-    // 256 characters long
+    // 255 characters long
     transmissionState = radio.startTransmit("Hello World!");
 
-    // you can also transmit byte array up to 256 bytes long
+    // you can also transmit byte array up to 255 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};

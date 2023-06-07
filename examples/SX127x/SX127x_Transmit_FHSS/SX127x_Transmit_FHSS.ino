@@ -2,7 +2,7 @@
    RadioLib SX127x Transmit with Frequency Hopping Example
 
    This example transmits packets using SX1278 LoRa radio module.
-   Each packet contains up to 256 bytes of data, in the form of:
+   Each packet contains up to 255 bytes of data, in the form of:
     - Arduino String
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
@@ -56,7 +56,7 @@ int transmissionState = RADIOLIB_ERR_NONE;
 
 // this is the packet that will be sent
 String longPacket = "Let's create a really long packet to trigger \
-lots of hop interrupts. A packet can be up to 256 bytes long. \
+lots of hop interrupts. A packet can be up to 255 bytes long. \
 This packet is 222 bytes so using sf = 9, bw = 125, timeOnAir is \
 1488ms. 1488ms / (9*4.10ms) = 40 hops. Counter: ";
 

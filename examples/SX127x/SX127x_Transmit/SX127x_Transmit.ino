@@ -2,7 +2,7 @@
    RadioLib SX127x Transmit Example
 
    This example transmits packets using SX1278 LoRa radio module.
-   Each packet contains up to 256 bytes of data, in the form of:
+   Each packet contains up to 255 bytes of data, in the form of:
     - Arduino String
     - null-terminated char array (C-string)
     - arbitrary binary data (byte array)
@@ -59,7 +59,7 @@ void loop() {
   Serial.print(F("[SX1278] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to
-  // 256 characters long
+  // 255 characters long
   // NOTE: transmit() is a blocking method!
   //       See example SX127x_Transmit_Interrupt for details
   //       on non-blocking transmission method.
