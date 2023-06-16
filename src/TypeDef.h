@@ -477,7 +477,7 @@
 #define RADIOLIB_ERR_ADDRESS_NOT_FOUND                          (-1002)
 
 /*!
-  \brief The requested address was not found in the received data.
+  \brief The function code is invalid. 2 Bits only.
 */
 #define RADIOLIB_ERR_INVALID_FUNCTION                           (-1003)
 
