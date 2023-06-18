@@ -125,7 +125,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   }
 
   // calculate message length in 32-bit code words
-  size_t msgLen = RADIOLIB_PAGER_PREAMBLE_LENGTH + (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
+  size_t msgLen = (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
 
   #if defined(RADIOLIB_STATIC_ONLY)
     uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -136,33 +136,28 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   // build the message
   memset(msg, 0x00, msgLen*sizeof(uint32_t));
 
-  // set preamble
-  for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
-    msg[i] = RADIOLIB_PAGER_PREAMBLE_CODE_WORD;
-  }
-
-  // start by setting everything after preamble to idle
-  for(size_t i = RADIOLIB_PAGER_PREAMBLE_LENGTH; i < msgLen; i++) {
+  // start by setting everything to idle
+  for(size_t i = 0; i < msgLen; i++) {
     msg[i] = RADIOLIB_PAGER_IDLE_CODE_WORD;
   }
 
   // set frame synchronization code words
   for(size_t i = 0; i < numBatches; i++) {
-    msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + i*(1 + RADIOLIB_PAGER_BATCH_LEN)] = RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD;
+    msg[i*(1 + RADIOLIB_PAGER_BATCH_LEN)] = RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD;
   }
 
   // write address code word
-  msg[RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos] = RadioLibBCHInstance.encode(frameAddr);
+  msg[1 + framePos] = RadioLibBCHInstance.encode(frameAddr);
 
   // write the data as 20-bit code blocks
   if(len > 0) {
     int8_t remBits = 0;
     uint8_t dataPos = 0;
     for(size_t i = 0; i < numDataBlocks + numBatches - 1; i++) {
-      uint8_t blockPos = RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos + 1 + i;
+      uint8_t blockPos = 1 + framePos + 1 + i;
 
       // check if we need to skip a frame sync marker
-      if(((blockPos - (RADIOLIB_PAGER_PREAMBLE_LENGTH + 1)) % RADIOLIB_PAGER_BATCH_LEN) == 0) {
+      if(((blockPos - 1) % RADIOLIB_PAGER_BATCH_LEN) == 0) {
         blockPos++;
         i++;
       }
@@ -220,6 +215,11 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
       // do the FEC
       msg[blockPos] = RadioLibBCHInstance.encode(msg[blockPos]);
     }
+  }
+
+  // transmit the preamble
+  for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
+    PagerClient::write(RADIOLIB_PAGER_PREAMBLE_CODE_WORD);
   }
 
   // transmit the message
