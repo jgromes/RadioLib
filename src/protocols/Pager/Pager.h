@@ -56,6 +56,38 @@
 #define RADIOLIB_PAGER_ADDRESS_MAX                              (2097151)
 
 /*!
+  \struct PagerMessage_t
+  \brief Structure to save one message.
+*/
+struct PagerMessage_t {
+
+  /*!
+    \brief Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.
+  */
+  uint32_t addr;
+
+  /*!
+    \brief function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
+  */
+  uint8_t func;
+
+  /*!
+    \brief Binary data that will be transmitted.
+  */
+  uint8_t* data;
+
+  /*!
+    \brief Length of binary data to transmit (in bytes).
+  */
+  size_t data_len;
+
+  /*!
+    \brief Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.
+  */
+  uint8_t encoding;
+};
+
+/*!
   \class PagerClient
   \brief Client for Pager communication.
 */
@@ -118,6 +150,13 @@ class PagerClient {
       \returns \ref status_codes
     */
     int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+
+    /*!
+      \brief Message transmit method.
+      \param message Message object that will be transmitted.
+      \returns \ref status_codes
+    */
+    int16_t transmit(PagerMessage_t &message);
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!

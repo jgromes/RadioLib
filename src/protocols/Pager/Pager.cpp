@@ -65,6 +65,22 @@ int16_t PagerClient::transmit(const char* str, uint32_t addr, uint8_t encoding, 
 }
 
 int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding, uint8_t function) {
+  PagerMessage_t message;
+  message.addr = addr;
+  message.func = function;
+  message.data = data;
+  message.data_len = len;
+  message.encoding = encoding;
+  return(PagerClient::transmit(message));
+}
+
+int16_t PagerClient::transmit(PagerMessage_t &message) {
+  uint32_t addr = message.addr;
+  uint8_t function = message.func;
+  uint8_t* data = message.data;
+  size_t len = message.data_len;
+  uint8_t encoding = message.encoding;
+
   if(addr > RADIOLIB_PAGER_ADDRESS_MAX) {
     return(RADIOLIB_ERR_INVALID_ADDRESS_WIDTH);
   }
