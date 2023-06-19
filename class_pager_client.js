@@ -6,6 +6,6 @@ var class_pager_client =
     [ "readData", "class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b", null ],
     [ "sendTone", "class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111", null ],
     [ "startReceive", "class_pager_client.html#ac232570ac012ff315a1971ab0422fed3", null ],
-    [ "transmit", "class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd", null ],
-    [ "transmit", "class_pager_client.html#a77aafe7c86e6e1e4e22990be4e7f090b", null ]
+    [ "transmit", "class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6", null ],
+    [ "transmit", "class_pager_client.html#aa9df7f8675170affc5256a896168601b", null ]
 ];

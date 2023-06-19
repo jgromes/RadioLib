@@ -134,78 +134,80 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_BCH_BITS_MASK                            (0x000007FFUL)</span></div>
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// message type functional bits</span></div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_NUMERIC                        (0b00UL &lt;&lt; RADIOLIB_PAGER_FUNC_BITS_POS)</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_TONE                           (0b01UL &lt;&lt; RADIOLIB_PAGER_FUNC_BITS_POS)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_ALPHA                          (0b11UL &lt;&lt; RADIOLIB_PAGER_FUNC_BITS_POS)</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="comment">// the maximum allowed address (2^22 - 1)</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_ADDRESS_MAX                              (2097151)</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00060"></a><span class="lineno"><a class="line" href="class_pager_client.html">   60</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a> {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_pager_client.html#a9f978120467b13104fb356e9b7d855ec">PagerClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_NUMERIC                        (0b00)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_TONE                           (0b01)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_ACTIVATION                     (0b10)</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_BITS_ALPHA                          (0b11)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_FUNC_AUTO                                0xFF</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="comment">// the maximum allowed address (2^22 - 1)</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_ADDRESS_MAX                              (2097151)</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="class_pager_client.html">   62</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_pager_client.html">PagerClient</a> {</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_pager_client.html#a9f978120467b13104fb356e9b7d855ec">PagerClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    int16_t <a class="code" href="class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f">begin</a>(<span class="keywordtype">float</span> base, uint16_t speed, <span class="keywordtype">bool</span> invert = <span class="keyword">false</span>, uint16_t shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ);</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    int16_t <a class="code" href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">sendTone</a>(uint32_t addr);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    int16_t <a class="code" href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">transmit</a>(String&amp; str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    int16_t <a class="code" href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    int16_t <a class="code" href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a>(uint32_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);</div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a>();</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a>(String&amp; str, <span class="keywordtype">size_t</span> len = 0, uint32_t* addr = NULL);</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span>* len, uint32_t* addr = NULL);</div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    int16_t <a class="code" href="class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f">begin</a>(<span class="keywordtype">float</span> base, uint16_t speed, <span class="keywordtype">bool</span> invert = <span class="keyword">false</span>, uint16_t shift = RADIOLIB_PAGER_FREQ_SHIFT_HZ);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    int16_t <a class="code" href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">sendTone</a>(uint32_t addr);</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    int16_t <a class="code" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(String&amp; str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t <span class="keyword">function</span> = RADIOLIB_PAGER_FUNC_AUTO);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    int16_t <a class="code" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t <span class="keyword">function</span> = RADIOLIB_PAGER_FUNC_AUTO);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    int16_t <a class="code" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t <span class="keyword">function</span> = RADIOLIB_PAGER_FUNC_AUTO);</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a>(uint32_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a>();</div>
+<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a>(String&amp; str, <span class="keywordtype">size_t</span> len = 0, uint32_t* addr = NULL);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span>* len, uint32_t* addr = NULL);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">float</span> baseFreq;</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">float</span> dataRate;</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    uint32_t baseFreqRaw;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    uint16_t shiftFreq;</div>
-<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    uint16_t shiftFreqHz;</div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    uint16_t bitDuration;</div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    uint32_t filterAddr;</div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    uint32_t filterMask;</div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keywordtype">bool</span> inv = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keywordtype">void</span> write(uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordtype">void</span> write(uint32_t codeWord);</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;    uint32_t read();</div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;    uint8_t encodeBCD(<span class="keywordtype">char</span> c);</div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keywordtype">char</span> decodeBCD(uint8_t b);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;};</div>
-<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
-<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_pager_client_html"><div class="ttname"><a href="class_pager_client.html">PagerClient</a></div><div class="ttdoc">Client for Pager communication.</div><div class="ttdef"><b>Definition:</b> Pager.h:60</div></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keywordtype">float</span> baseFreq;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;    <span class="keywordtype">float</span> dataRate;</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;    uint32_t baseFreqRaw;</div>
+<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    uint16_t shiftFreq;</div>
+<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    uint16_t shiftFreqHz;</div>
+<div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    uint16_t bitDuration;</div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    uint32_t filterAddr;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    uint32_t filterMask;</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;    <span class="keywordtype">bool</span> inv = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160; </div>
+<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">void</span> write(uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">void</span> write(uint32_t codeWord);</div>
+<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    uint32_t read();</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    uint8_t encodeBCD(<span class="keywordtype">char</span> c);</div>
+<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160;    <span class="keywordtype">char</span> decodeBCD(uint8_t b);</div>
+<div class="line"><a name="l00189"></a><span class="lineno">  189</span>&#160;};</div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_pager_client_html"><div class="ttname"><a href="class_pager_client.html">PagerClient</a></div><div class="ttdoc">Client for Pager communication.</div><div class="ttdef"><b>Definition:</b> Pager.h:62</div></div>
 <div class="ttc" id="aclass_pager_client_html_a1a1dc569f9b60b0ddd6ead7af5a8244f"><div class="ttname"><a href="class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f">PagerClient::begin</a></div><div class="ttdeci">int16_t begin(float base, uint16_t speed, bool invert=false, uint16_t shift=RADIOLIB_PAGER_FREQ_SHIFT_HZ)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:29</div></div>
 <div class="ttc" id="aclass_pager_client_html_a8f9af4c0a5c2e9de7cdfa1a907479111"><div class="ttname"><a href="class_pager_client.html#a8f9af4c0a5c2e9de7cdfa1a907479111">PagerClient::sendTone</a></div><div class="ttdeci">int16_t sendTone(uint32_t addr)</div><div class="ttdoc">Method to send a tone-only alert to a destination pager.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:53</div></div>
 <div class="ttc" id="aclass_pager_client_html_a9f978120467b13104fb356e9b7d855ec"><div class="ttname"><a href="class_pager_client.html#a9f978120467b13104fb356e9b7d855ec">PagerClient::PagerClient</a></div><div class="ttdeci">PagerClient(PhysicalLayer *phy)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:22</div></div>
-<div class="ttc" id="aclass_pager_client_html_aab6a8977f89d43620b98bcedf5a47dbd"><div class="ttname"><a href="class_pager_client.html#aab6a8977f89d43620b98bcedf5a47dbd">PagerClient::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD)</div><div class="ttdoc">C-string transmit method.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:63</div></div>
-<div class="ttc" id="aclass_pager_client_html_ac232570ac012ff315a1971ab0422fed3"><div class="ttname"><a href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">PagerClient::startReceive</a></div><div class="ttdeci">int16_t startReceive(uint32_t pin, uint32_t addr, uint32_t mask=0xFFFFF)</div><div class="ttdoc">Start reception of POCSAG packets.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:226</div></div>
-<div class="ttc" id="aclass_pager_client_html_ad2c6132819a84712b929c0bb22ba172b"><div class="ttname"><a href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">PagerClient::readData</a></div><div class="ttdeci">int16_t readData(uint8_t *data, size_t *len, uint32_t *addr=NULL)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:314</div></div>
-<div class="ttc" id="aclass_pager_client_html_aec073fa9e5adcff9730482d9583715e9"><div class="ttname"><a href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">PagerClient::available</a></div><div class="ttdeci">size_t available()</div><div class="ttdoc">Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!</div><div class="ttdef"><b>Definition:</b> Pager.cpp:263</div></div>
+<div class="ttc" id="aclass_pager_client_html_ac232570ac012ff315a1971ab0422fed3"><div class="ttname"><a href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">PagerClient::startReceive</a></div><div class="ttdeci">int16_t startReceive(uint32_t pin, uint32_t addr, uint32_t mask=0xFFFFF)</div><div class="ttdoc">Start reception of POCSAG packets.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:239</div></div>
+<div class="ttc" id="aclass_pager_client_html_ad2c6132819a84712b929c0bb22ba172b"><div class="ttname"><a href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">PagerClient::readData</a></div><div class="ttdeci">int16_t readData(uint8_t *data, size_t *len, uint32_t *addr=NULL)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:327</div></div>
+<div class="ttc" id="aclass_pager_client_html_adbab4e162a5719bd4407a42a85d26ff6"><div class="ttname"><a href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">PagerClient::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD, uint8_t function=RADIOLIB_PAGER_FUNC_AUTO)</div><div class="ttdoc">C-string transmit method.</div><div class="ttdef"><b>Definition:</b> Pager.cpp:63</div></div>
+<div class="ttc" id="aclass_pager_client_html_aec073fa9e5adcff9730482d9583715e9"><div class="ttname"><a href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">PagerClient::available</a></div><div class="ttdeci">size_t available()</div><div class="ttdoc">Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!</div><div class="ttdef"><b>Definition:</b> Pager.cpp:276</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

@@ -20,6 +20,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_ENCODING", "group__status__codes.html#ga41b17f0207ad1aa10d666c8a9e4830c5", null ],
     [ "RADIOLIB_ERR_INVALID_FREQUENCY", "group__status__codes.html#ga9f80eb00fad12bb0bec384ad83b6941b", null ],
     [ "RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION", "group__status__codes.html#gaabe141287f2d6ba723658309f4464662", null ],
+    [ "RADIOLIB_ERR_INVALID_FUNCTION", "group__status__codes.html#ga025420df476275dc901f67dd6ae13a9c", null ],
     [ "RADIOLIB_ERR_INVALID_GAIN", "group__status__codes.html#ga908f3a5ab6937d28536791c96cf9de23", null ],
     [ "RADIOLIB_ERR_INVALID_IMAGE_QUALITY", "group__status__codes.html#gad195c8d9ba523944ecf41dbb7cb9baa3", null ],
     [ "RADIOLIB_ERR_INVALID_IMAGE_SIZE", "group__status__codes.html#ga44f09021bdc7fdd4b57db3ab8725b5a1", null ],
