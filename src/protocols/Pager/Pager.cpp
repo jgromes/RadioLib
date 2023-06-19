@@ -157,23 +157,18 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
     msg[i] = RADIOLIB_PAGER_IDLE_CODE_WORD;
   }
 
-  // set frame synchronization code words
-  for(size_t i = 0; i < numBatches; i++) {
-    msg[i*(1 + RADIOLIB_PAGER_BATCH_LEN)] = RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD;
-  }
-
   // write address code word
-  msg[1 + framePos] = RadioLibBCHInstance.encode(frameAddr);
+  msg[framePos] = RadioLibBCHInstance.encode(frameAddr);
 
   // write the data as 20-bit code blocks
   if(len > 0) {
     int8_t remBits = 0;
     uint8_t dataPos = 0;
     for(size_t i = 0; i < numDataBlocks + numBatches - 1; i++) {
-      uint8_t blockPos = 1 + framePos + 1 + i;
+      uint8_t blockPos = framePos + 1 + i;
 
       // check if we need to skip a frame sync marker
-      if(((blockPos - 1) % RADIOLIB_PAGER_BATCH_LEN) == 0) {
+      if((blockPos % RADIOLIB_PAGER_BATCH_LEN) == 0) {
         blockPos++;
         i++;
       }
@@ -238,8 +233,13 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
     PagerClient::write(RADIOLIB_PAGER_PREAMBLE_CODE_WORD);
   }
 
-  // transmit the message
-  PagerClient::write(msg, msgLen);
+  for(size_t i = 0; i < numBatches; i++) {
+    // transmit the frame synchronization word
+    PagerClient::write(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD);
+
+    // transmit the message
+    PagerClient::write(msg+i*RADIOLIB_PAGER_BATCH_LEN, RADIOLIB_PAGER_BATCH_LEN);
+  }
 
   #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] msg;
