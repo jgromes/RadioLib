@@ -74,6 +74,73 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   return(PagerClient::transmit(message));
 }
 
+int16_t PagerClient::encodeData(uint32_t* buf, uint8_t* data, size_t len, uint8_t encoding) {
+  // get symbol bit length based on encoding
+  uint8_t symbolLength = (encoding == RADIOLIB_PAGER_BCD)?4:7;
+  // calculate the number of 20-bit data blocks
+  size_t numDataBlocks = (len * symbolLength) / RADIOLIB_PAGER_MESSAGE_BITS_LENGTH;
+  if((len * symbolLength) % RADIOLIB_PAGER_MESSAGE_BITS_LENGTH > 0) {
+    numDataBlocks += 1;
+  }
+
+  // write the data as 20-bit code blocks
+    int8_t remBits = 0;
+    uint8_t dataPos = 0;
+    for(uint8_t blockPos = 0; blockPos < numDataBlocks; blockPos++) {
+
+      // mark this as a message code word
+      buf[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);
+
+      // first insert the remainder from previous code word (if any)
+      if(remBits > 0) {
+        // this doesn't apply to BCD messages, so no need to check that here
+        uint8_t prev = Module::reflect(data[dataPos - 1], 8);
+        prev >>= 1;
+        buf[blockPos] |= (uint32_t)prev << (RADIOLIB_PAGER_CODE_WORD_LEN - 1 - remBits);
+      }
+
+      // set all message symbols until we overflow to the next code word or run out of message symbols
+      int8_t symbolPos = RADIOLIB_PAGER_CODE_WORD_LEN - 1 - symbolLength - remBits;
+      while(symbolPos > (RADIOLIB_PAGER_FUNC_BITS_POS - symbolLength)) {
+
+        uint8_t symbol;
+        if(dataPos < len) {
+          symbol = data[dataPos++];
+        } else if(dataPos >= len) {
+          // we ran out of message symbols
+          // in BCD mode, pad the rest of the code word with spaces (0xC)
+          if(encoding == RADIOLIB_PAGER_BCD) {
+            symbol = ' ';
+          } else {
+            break;
+          }
+        }
+        // for BCD, encode the symbol
+        if(encoding == RADIOLIB_PAGER_BCD) {
+          symbol = encodeBCD(symbol);
+        }
+        symbol = Module::reflect(symbol, 8);
+        symbol >>= (8 - symbolLength);
+
+        // insert the next message symbol
+        buf[blockPos] |= (uint32_t)symbol << symbolPos;
+        symbolPos -= symbolLength;
+
+      }
+
+      // ensure the parity bits are not set due to overflow
+      buf[blockPos] &= ~(RADIOLIB_PAGER_BCH_BITS_MASK);
+
+      // save the number of overflown bits
+      remBits = RADIOLIB_PAGER_FUNC_BITS_POS - symbolPos - symbolLength;
+
+      // do the FEC
+      buf[blockPos] = RadioLibBCHInstance.encode(buf[blockPos]);
+    }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t PagerClient::transmit(PagerMessage_t &message) {
   uint32_t addr = message.addr;
   if(addr > RADIOLIB_PAGER_ADDRESS_MAX) {
@@ -158,61 +225,7 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
   // write address code word
   msg[framePosAddr] = RadioLibBCHInstance.encode(frameAddr);
 
-  // write the data as 20-bit code blocks
-    int8_t remBits = 0;
-    uint8_t dataPos = 0;
-    for(size_t i = 0; i < numDataBlocks; i++) {
-      uint8_t blockPos = framePosAddr + 1 + i;
-
-      // mark this as a message code word
-      msg[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);
-
-      // first insert the remainder from previous code word (if any)
-      if(remBits > 0) {
-        // this doesn't apply to BCD messages, so no need to check that here
-        uint8_t prev = Module::reflect(data[dataPos - 1], 8);
-        prev >>= 1;
-        msg[blockPos] |= (uint32_t)prev << (RADIOLIB_PAGER_CODE_WORD_LEN - 1 - remBits);
-      }
-
-      // set all message symbols until we overflow to the next code word or run out of message symbols
-      int8_t symbolPos = RADIOLIB_PAGER_CODE_WORD_LEN - 1 - symbolLength - remBits;
-      while(symbolPos > (RADIOLIB_PAGER_FUNC_BITS_POS - symbolLength)) {
-
-        uint8_t symbol;
-        if(dataPos < len) {
-          symbol = data[dataPos++];
-        } else if(dataPos >= len) {
-          // we ran out of message symbols
-          // in BCD mode, pad the rest of the code word with spaces (0xC)
-          if(encoding == RADIOLIB_PAGER_BCD) {
-            symbol = ' ';
-          } else {
-            break;
-          }
-        }
-        // for BCD, encode the symbol
-        if(encoding == RADIOLIB_PAGER_BCD) {
-          symbol = encodeBCD(symbol);
-        }
-        symbol = Module::reflect(symbol, 8);
-        symbol >>= (8 - symbolLength);
-
-        // insert the next message symbol
-        msg[blockPos] |= (uint32_t)symbol << symbolPos;
-        symbolPos -= symbolLength;
-
-      }
-
-      // ensure the parity bits are not set due to overflow
-      msg[blockPos] &= ~(RADIOLIB_PAGER_BCH_BITS_MASK);
-
-      // save the number of overflown bits
-      remBits = RADIOLIB_PAGER_FUNC_BITS_POS - symbolPos - symbolLength;
-
-      // do the FEC
-      msg[blockPos] = RadioLibBCHInstance.encode(msg[blockPos]);
-    }
+  encodeData(msg+framePosAddr+1, data, len, encoding);
 
   // transmit the preamble
   for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {

@@ -158,6 +158,8 @@ class PagerClient {
     */
     int16_t transmit(PagerMessage_t &message);
 
+    int16_t encodeData(uint32_t* buf, uint8_t* data, size_t len, uint8_t encoding);
+
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
       \brief Start reception of POCSAG packets.
