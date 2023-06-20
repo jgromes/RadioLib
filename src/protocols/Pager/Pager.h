@@ -50,7 +50,6 @@
 #define RADIOLIB_PAGER_FUNC_BITS_TONE                           (0b01)
 #define RADIOLIB_PAGER_FUNC_BITS_ACTIVATION                     (0b10)
 #define RADIOLIB_PAGER_FUNC_BITS_ALPHA                          (0b11)
-#define RADIOLIB_PAGER_FUNC_AUTO                                0xFF
 
 // the maximum allowed address (2^22 - 1)
 #define RADIOLIB_PAGER_ADDRESS_MAX                              (2097151)
@@ -59,32 +58,57 @@
   \struct PagerMessage_t
   \brief Structure to save one message.
 */
-struct PagerMessage_t {
+class PagerMessage {
+  public:
+    /*!
+      \brief Default constructor.
+      \param data Binary data that will be transmitted.
+      \param len Length of binary data to transmit (in bytes).
+      \param addr Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.
+      \param encoding Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.
+      \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
+    */
+    explicit PagerMessage(uint32_t address, uint8_t function, uint8_t* data, size_t data_len, uint8_t encoding);
+    explicit PagerMessage(uint32_t address, uint8_t* data, size_t data_len, uint8_t encoding);
 
-  /*!
-    \brief Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.
-  */
-  uint32_t addr;
+    uint32_t getAddr_h();
+    uint32_t getAddr_l();
+    uint8_t getAddrFrameNr();
+    uint8_t getFirstDataFrameNr();
+    uint8_t getSymbolLength();
+    uint8_t getFunction() { return function; };
+    uint8_t* getData() { return data; };
+    size_t getDataLen() { return data_len; };
+    uint8_t getEncoding() { return encoding; };
+    size_t getNumDataBlocks();
+    size_t getNumBatches();
+    uint16_t validate();
 
-  /*!
-    \brief function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
-  */
-  uint8_t func;
+  private:
+    /*!
+      \brief Address of the destination pager. Allowed values are 0 to 2097151 - values above 2000000 are reserved.
+    */
+    uint32_t address;
 
-  /*!
-    \brief Binary data that will be transmitted.
-  */
-  uint8_t* data;
+    /*!
+      \brief function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
+    */
+    uint8_t function;
 
-  /*!
-    \brief Length of binary data to transmit (in bytes).
-  */
-  size_t data_len;
+    /*!
+      \brief Binary data that will be transmitted.
+    */
+    uint8_t* data;
 
-  /*!
-    \brief Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.
-  */
-  uint8_t encoding;
+    /*!
+      \brief Length of binary data to transmit (in bytes).
+    */
+    size_t data_len;
+
+    /*!
+      \brief Encoding to be used (BCD or ASCII). Defaults to RADIOLIB_PAGER_BCD.
+    */
+    uint8_t encoding;
 };
 
 /*!
@@ -127,7 +151,8 @@ class PagerClient {
       \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
       \returns \ref status_codes
     */
-    int16_t transmit(String& str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+    int16_t transmit(String& str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);
+    int16_t transmit(String& str, uint32_t addr, uint8_t encoding, uint8_t function);
     #endif
 
     /*!
@@ -138,7 +163,8 @@ class PagerClient {
       \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
       \returns \ref status_codes
     */
-    int16_t transmit(const char* str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+    int16_t transmit(const char* str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);
+    int16_t transmit(const char* str, uint32_t addr, uint8_t encoding, uint8_t function);
 
     /*!
       \brief Binary transmit method. Will transmit arbitrary binary data.
@@ -149,16 +175,17 @@ class PagerClient {
       \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+    int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD);
+    int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding, uint8_t function);
 
     /*!
       \brief Message transmit method.
       \param message Message object that will be transmitted.
       \returns \ref status_codes
     */
-    int16_t transmit(PagerMessage_t &message);
+    int16_t transmit(PagerMessage &message);
 
-    int16_t encodeData(uint32_t* buf, uint8_t* data, size_t len, uint8_t encoding);
+    int16_t encodeData(uint32_t* buf, PagerMessage &message);
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
