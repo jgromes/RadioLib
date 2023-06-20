@@ -76,19 +76,19 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
 
 int16_t PagerClient::transmit(PagerMessage_t &message) {
   uint32_t addr = message.addr;
-  uint8_t function = message.func;
-  uint8_t* data = message.data;
-  size_t len = message.data_len;
-  uint8_t encoding = message.encoding;
-
   if(addr > RADIOLIB_PAGER_ADDRESS_MAX) {
     return(RADIOLIB_ERR_INVALID_ADDRESS_WIDTH);
   }
+  uint32_t addr_h = message.addr >> 3;
+  uint32_t addr_l = message.addr & 0x07;
 
+  uint8_t* data = message.data;
+  size_t len = message.data_len;
   if(((data == NULL) && (len > 0)) || ((data != NULL) && (len == 0))) {
     return(RADIOLIB_ERR_INVALID_PAYLOAD);
   }
 
+  uint8_t encoding = message.encoding;
   // get symbol bit length based on encoding
   uint8_t symbolLength = 0;
   if(encoding == RADIOLIB_PAGER_BCD) {
@@ -102,6 +102,7 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
 
   }
 
+  uint8_t function = message.func;
   // Automatically set function bits based on given encoding
   if (function == RADIOLIB_PAGER_FUNC_AUTO) {
     if(encoding == RADIOLIB_PAGER_BCD) {
@@ -123,10 +124,7 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
   }
 
   // get target position in batch (3 LSB from address determine frame position in batch)
-  uint8_t framePos = 2*(addr & 0x07);
-
-  // get address that will be written into address frame
-  uint32_t frameAddr = ((addr >> 3) << RADIOLIB_PAGER_ADDRESS_POS) | (function << RADIOLIB_PAGER_FUNC_BITS_POS);
+  uint8_t framePosAddr = 2*addr_l;
 
   // calculate the number of 20-bit data blocks
   size_t numDataBlocks = (len * symbolLength) / RADIOLIB_PAGER_MESSAGE_BITS_LENGTH;
@@ -135,13 +133,13 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
   }
 
   // calculate number of batches
-  size_t numBatches = (1 + framePos + numDataBlocks) / RADIOLIB_PAGER_BATCH_LEN + 1;
-  if((1 + numDataBlocks) % RADIOLIB_PAGER_BATCH_LEN == 0) {
-    numBatches -= 1;
+  size_t numBatches = (1 + framePosAddr + numDataBlocks) / RADIOLIB_PAGER_BATCH_LEN;
+  if((1 + framePosAddr + numDataBlocks) % RADIOLIB_PAGER_BATCH_LEN > 0) {
+    numBatches += 1;
   }
 
   // calculate message length in 32-bit code words
-  size_t msgLen = (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
+  size_t msgLen = RADIOLIB_PAGER_BATCH_LEN * numBatches;
 
   #if defined(RADIOLIB_STATIC_ONLY)
     uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -149,29 +147,22 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
     uint32_t* msg = new uint32_t[msgLen];
   #endif
 
-  // build the message
-  memset(msg, 0x00, msgLen*sizeof(uint32_t));
-
   // start by setting everything to idle
   for(size_t i = 0; i < msgLen; i++) {
     msg[i] = RADIOLIB_PAGER_IDLE_CODE_WORD;
   }
 
+  // construct address frame
+  uint32_t frameAddr = (addr_h << RADIOLIB_PAGER_ADDRESS_POS) | (function << RADIOLIB_PAGER_FUNC_BITS_POS);
+
   // write address code word
-  msg[framePos] = RadioLibBCHInstance.encode(frameAddr);
+  msg[framePosAddr] = RadioLibBCHInstance.encode(frameAddr);
 
   // write the data as 20-bit code blocks
-  if(len > 0) {
     int8_t remBits = 0;
     uint8_t dataPos = 0;
-    for(size_t i = 0; i < numDataBlocks + numBatches - 1; i++) {
-      uint8_t blockPos = framePos + 1 + i;
-
-      // check if we need to skip a frame sync marker
-      if((blockPos % RADIOLIB_PAGER_BATCH_LEN) == 0) {
-        blockPos++;
-        i++;
-      }
+    for(size_t i = 0; i < numDataBlocks; i++) {
+      uint8_t blockPos = framePosAddr + 1 + i;
 
       // mark this as a message code word
       msg[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);
@@ -188,8 +179,19 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
       int8_t symbolPos = RADIOLIB_PAGER_CODE_WORD_LEN - 1 - symbolLength - remBits;
       while(symbolPos > (RADIOLIB_PAGER_FUNC_BITS_POS - symbolLength)) {
 
+        uint8_t symbol;
+        if(dataPos < len) {
+          symbol = data[dataPos++];
+        } else if(dataPos >= len) {
+          // we ran out of message symbols
+          // in BCD mode, pad the rest of the code word with spaces (0xC)
+          if(encoding == RADIOLIB_PAGER_BCD) {
+            symbol = ' ';
+          } else {
+            break;
+          }
+        }
         // for BCD, encode the symbol
-        uint8_t symbol = data[dataPos++];
         if(encoding == RADIOLIB_PAGER_BCD) {
           symbol = encodeBCD(symbol);
         }
@@ -200,21 +202,6 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
         msg[blockPos] |= (uint32_t)symbol << symbolPos;
         symbolPos -= symbolLength;
 
-        // check if we ran out of message symbols
-        if(dataPos >= len) {
-          // in BCD mode, pad the rest of the code word with spaces (0xC)
-          if(encoding == RADIOLIB_PAGER_BCD) {
-            uint8_t numSteps = (symbolPos - RADIOLIB_PAGER_FUNC_BITS_POS + symbolLength)/symbolLength;
-            for(uint8_t i = 0; i < numSteps; i++) {
-              symbol = encodeBCD(' ');
-              symbol = Module::reflect(symbol, 8);
-              symbol >>= (8 - symbolLength);
-              msg[blockPos] |= (uint32_t)symbol << symbolPos;
-              symbolPos -= symbolLength;
-            }
-          }
-          break;
-        }
       }
 
       // ensure the parity bits are not set due to overflow
@@ -226,7 +213,6 @@ int16_t PagerClient::transmit(PagerMessage_t &message) {
       // do the FEC
       msg[blockPos] = RadioLibBCHInstance.encode(msg[blockPos]);
     }
-  }
 
   // transmit the preamble
   for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
