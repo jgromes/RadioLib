@@ -70,6 +70,8 @@ class PagerMessage {
     */
     explicit PagerMessage(uint32_t address, uint8_t function, uint8_t* data, size_t data_len, uint8_t encoding);
     explicit PagerMessage(uint32_t address, uint8_t* data, size_t data_len, uint8_t encoding);
+    explicit PagerMessage(uint32_t address, const char* string, uint8_t encoding);
+    PagerMessage() {};
 
     uint32_t getAddr_h();
     uint32_t getAddr_l();
@@ -185,7 +187,13 @@ class PagerClient {
     */
     int16_t transmit(PagerMessage &message);
 
-    int16_t encodeData(uint32_t* buf, PagerMessage &message);
+    int16_t transmitBuffer(uint32_t* buf, size_t num_words);
+
+    #if !defined(RADIOLIB_STATIC_ONLY)
+    int16_t transmitMulti(PagerMessage messages[], size_t num_messages);
+    #endif
+
+    int16_t encodeMessage(uint32_t* buf, PagerMessage &message);
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!

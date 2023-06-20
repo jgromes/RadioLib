@@ -44,6 +44,10 @@ PagerMessage::PagerMessage(uint32_t address, uint8_t* data, size_t data_len, uin
     }
   }
 
+PagerMessage::PagerMessage(uint32_t address, const char* string, uint8_t encoding)
+  : PagerMessage(address, (uint8_t*)string, strlen(string), encoding)
+  {}
+
 uint32_t PagerMessage::getAddr_h() {
   return address >> 3;
 }
@@ -171,10 +175,47 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   return(PagerClient::transmit(message));
 }
 
+int16_t PagerClient::transmitBuffer(uint32_t* buf, size_t num_words) {
+  size_t num_batches = num_words / RADIOLIB_PAGER_BATCH_LEN;
 
-int16_t PagerClient::encodeData(uint32_t* buf, PagerMessage &message) {
+  // transmit the preamble
+  for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
+    PagerClient::write(RADIOLIB_PAGER_PREAMBLE_CODE_WORD);
+  }
+
+  for(size_t i = 0; i < num_batches; i++) {
+    // transmit the frame synchronization word
+    PagerClient::write(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD);
+
+    // transmit the batch
+    PagerClient::write(buf+i*RADIOLIB_PAGER_BATCH_LEN, RADIOLIB_PAGER_BATCH_LEN);
+  }
+
+  // turn transmitter off
+  phyLayer->standby();
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t PagerClient::encodeMessage(uint32_t* buf, PagerMessage &message) {
+  // calculate message length in 32-bit code words
+  size_t msgLen = RADIOLIB_PAGER_BATCH_LEN * message.getNumBatches();
+
+  // start by setting everything to idle
+  for(size_t i = 0; i < msgLen; i++) {
+    buf[i] = RADIOLIB_PAGER_IDLE_CODE_WORD;
+  }
+
+  // construct address frame
+  uint32_t frameAddr = (message.getAddr_h() << RADIOLIB_PAGER_ADDRESS_POS) | (message.getFunction() << RADIOLIB_PAGER_FUNC_BITS_POS);
+
+  // write address code word
+  buf[message.getAddrFrameNr()] = RadioLibBCHInstance.encode(frameAddr);
+
+
   uint8_t symbolLength = message.getSymbolLength();
   uint8_t* data = message.getData();
+  uint32_t* buf_data_ptr = buf+message.getFirstDataFrameNr();
 
   // write the data as 20-bit code blocks
     int8_t remBits = 0;
@@ -182,14 +223,14 @@ int16_t PagerClient::encodeData(uint32_t* buf, PagerMessage &message) {
     for(uint8_t blockPos = 0; blockPos < message.getNumDataBlocks(); blockPos++) {
 
       // mark this as a message code word
-      buf[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);
+      buf_data_ptr[blockPos] = RADIOLIB_PAGER_MESSAGE_CODE_WORD << (RADIOLIB_PAGER_CODE_WORD_LEN - 1);
 
       // first insert the remainder from previous code word (if any)
       if(remBits > 0) {
         // this doesn't apply to BCD messages, so no need to check that here
         uint8_t prev = Module::reflect(data[dataPos - 1], 8);
         prev >>= 1;
-        buf[blockPos] |= (uint32_t)prev << (RADIOLIB_PAGER_CODE_WORD_LEN - 1 - remBits);
+        buf_data_ptr[blockPos] |= (uint32_t)prev << (RADIOLIB_PAGER_CODE_WORD_LEN - 1 - remBits);
       }
 
       // set all message symbols until we overflow to the next code word or run out of message symbols
@@ -216,22 +257,23 @@ int16_t PagerClient::encodeData(uint32_t* buf, PagerMessage &message) {
         symbol >>= (8 - symbolLength);
 
         // insert the next message symbol
-        buf[blockPos] |= (uint32_t)symbol << symbolPos;
+        buf_data_ptr[blockPos] |= (uint32_t)symbol << symbolPos;
         symbolPos -= symbolLength;
 
       }
 
       // ensure the parity bits are not set due to overflow
-      buf[blockPos] &= ~(RADIOLIB_PAGER_BCH_BITS_MASK);
+      buf_data_ptr[blockPos] &= ~(RADIOLIB_PAGER_BCH_BITS_MASK);
 
       // save the number of overflown bits
       remBits = RADIOLIB_PAGER_FUNC_BITS_POS - symbolPos - symbolLength;
 
       // do the FEC
-      buf[blockPos] = RadioLibBCHInstance.encode(buf[blockPos]);
+      buf_data_ptr[blockPos] = RadioLibBCHInstance.encode(buf_data_ptr[blockPos]);
     }
 
-  return(RADIOLIB_ERR_NONE);
+  return(msgLen);
+
 }
 
 int16_t PagerClient::transmit(PagerMessage &message) {
@@ -250,42 +292,41 @@ int16_t PagerClient::transmit(PagerMessage &message) {
     uint32_t* msg = new uint32_t[msgLen];
   #endif
 
-  // start by setting everything to idle
-  for(size_t i = 0; i < msgLen; i++) {
-    msg[i] = RADIOLIB_PAGER_IDLE_CODE_WORD;
-  }
+  encodeMessage(msg, message);
 
-  // construct address frame
-  uint32_t frameAddr = (message.getAddr_h() << RADIOLIB_PAGER_ADDRESS_POS) | (message.getFunction() << RADIOLIB_PAGER_FUNC_BITS_POS);
-
-  // write address code word
-  msg[message.getAddrFrameNr()] = RadioLibBCHInstance.encode(frameAddr);
-
-  uint32_t* msg_data_ptr = msg+message.getFirstDataFrameNr();
-  encodeData(msg_data_ptr, message);
-
-  // transmit the preamble
-  for(size_t i = 0; i < RADIOLIB_PAGER_PREAMBLE_LENGTH; i++) {
-    PagerClient::write(RADIOLIB_PAGER_PREAMBLE_CODE_WORD);
-  }
-
-  for(size_t i = 0; i < message.getNumBatches(); i++) {
-    // transmit the frame synchronization word
-    PagerClient::write(RADIOLIB_PAGER_FRAME_SYNC_CODE_WORD);
-
-    // transmit the message
-    PagerClient::write(msg+i*RADIOLIB_PAGER_BATCH_LEN, RADIOLIB_PAGER_BATCH_LEN);
-  }
+  transmitBuffer(msg, msgLen);
 
   #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] msg;
   #endif
 
-  // turn transmitter off
-  phyLayer->standby();
-
   return(RADIOLIB_ERR_NONE);
 }
+
+#if !defined(RADIOLIB_STATIC_ONLY)
+int16_t PagerClient::transmitMulti(PagerMessage messages[], size_t num_messages) {
+  size_t total_words = 0;
+  for (int i = 0; i < num_messages; i++) {
+    if (messages[i].validate() == RADIOLIB_ERR_NONE) {
+      total_words += messages[i].getNumBatches() * RADIOLIB_PAGER_BATCH_LEN;
+    } else {
+      uint16_t error = messages[i].validate();
+      return(error);
+    }
+  }
+  uint32_t* buffer = new uint32_t[total_words];
+
+  int pos = 0;
+  for (int i = 0; i < num_messages; i++) {
+    pos += encodeMessage(buffer+pos, messages[i]);
+  }
+
+  transmitBuffer(buffer, total_words);
+
+  delete[] buffer;
+  return(RADIOLIB_ERR_NONE);
+}
+#endif
 
 #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
 int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
