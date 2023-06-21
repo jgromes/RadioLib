@@ -43,7 +43,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setIrqAction(setFlag);
+  radio.setPacketReceivedAction(setFlag);
 
   // start listening for packets
   Serial.print(F("[Si4432] Starting to listen ... "));

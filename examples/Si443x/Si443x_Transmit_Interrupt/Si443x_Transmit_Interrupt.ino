@@ -48,7 +48,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setIrqAction(setFlag);
+  radio.setPacketSentAction(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[Si4432] Sending first packet ... "));

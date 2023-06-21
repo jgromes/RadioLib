@@ -214,6 +214,22 @@ void Si443x::clearIrqAction() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
+void Si443x::setPacketReceivedAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void Si443x::clearPacketReceivedAction() {
+  this->clearIrqAction();
+}
+
+void Si443x::setPacketSentAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void Si443x::clearPacketSentAction() {
+  this->clearIrqAction();
+}
+
 int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
