@@ -452,6 +452,22 @@ void SX127x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getGpio()));
 }
 
+void SX127x::setPacketReceivedAction(void (*func)(void)) {
+  this->setDio0Action(func, RISING);
+}
+
+void SX127x::clearPacketReceivedAction() {
+  this->clearDio0Action();
+}
+
+void SX127x::setPacketSentAction(void (*func)(void)) {
+  this->setDio0Action(func, RISING);
+}
+
+void SX127x::clearPacketSentAction() {
+  this->clearDio0Action();
+}
+
 void SX127x::setFifoEmptyAction(void (*func)(void)) {
   // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
   setDio1Action(func, this->mod->hal->GpioInterruptRising);
