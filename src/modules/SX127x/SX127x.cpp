@@ -453,7 +453,7 @@ void SX127x::clearDio1Action() {
 }
 
 void SX127x::setPacketReceivedAction(void (*func)(void)) {
-  this->setDio0Action(func, RISING);
+  this->setDio0Action(func, this->mod->hal->GpioInterruptRising);
 }
 
 void SX127x::clearPacketReceivedAction() {
@@ -461,7 +461,7 @@ void SX127x::clearPacketReceivedAction() {
 }
 
 void SX127x::setPacketSentAction(void (*func)(void)) {
-  this->setDio0Action(func, RISING);
+  this->setDio0Action(func, this->mod->hal->GpioInterruptRising);
 }
 
 void SX127x::clearPacketSentAction() {
