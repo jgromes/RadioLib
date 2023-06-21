@@ -395,11 +395,20 @@ int16_t PhysicalLayer::setDIOMapping(uint32_t pin, uint32_t value) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-void PhysicalLayer::setDio1Action(void (*func)(void)) {
+void PhysicalLayer::setPacketReceivedAction(void (*func)(void)) {
   (void)func;
 }
 
-void PhysicalLayer::clearDio1Action() {
+void PhysicalLayer::clearPacketReceivedAction() {
+  
+}
+
+void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
+  (void)func;
+}
+
+void PhysicalLayer::clearPacketSentAction() {
+  
 }
 
 #if defined(RADIOLIB_INTERRUPT_TIMING)

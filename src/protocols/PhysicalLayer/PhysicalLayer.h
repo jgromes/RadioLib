@@ -327,15 +327,26 @@ class PhysicalLayer {
     virtual int16_t setDIOMapping(uint32_t pin, uint32_t value);
 
     /*!
-      \brief Sets interrupt service routine to call when DIO1 activates.
+      \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    virtual void setDio1Action(void (*func)(void));
+    virtual void setPacketReceivedAction(void (*func)(void));
 
     /*!
-      \brief Clears interrupt service routine to call when DIO1 activates.
+      \brief Clears interrupt service routine to call when a packet is received.
     */
-    virtual void clearDio1Action();
+    virtual void clearPacketReceivedAction();
+
+    /*!
+      \brief Sets interrupt service routine to call when a packet is sent.
+      \param func ISR to call.
+    */
+    virtual void setPacketSentAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a packet is sent.
+    */
+    virtual void clearPacketSentAction();
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)
 
