@@ -61,7 +61,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setIrqAction(setFlag);
+  radio.setPacketReceivedAction(setFlag);
 
   // start listening
   Serial.print(F("[nRF24] Starting to listen ... "));

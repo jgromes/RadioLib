@@ -159,6 +159,26 @@ void nRF24::setIrqAction(void (*func)(void)) {
   this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptFalling);
 }
 
+void nRF24::clearIrqAction() {
+  this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
+}
+
+void nRF24::setPacketReceivedAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void nRF24::clearPacketReceivedAction() {
+  this->clearIrqAction();
+}
+
+void nRF24::setPacketSentAction(void (*func)(void)) {
+  this->setIrqAction(func);
+}
+
+void nRF24::clearPacketSentAction() {
+  this->clearIrqAction();
+}
+
 int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
