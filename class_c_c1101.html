@@ -161,6 +161,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ac7a8b1fe7d08dc6db20cf1569b0d37b4">clearGdo2Action</a> ()</td></tr>
 <tr class="memdesc:ac7a8b1fe7d08dc6db20cf1569b0d37b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when GDO0 activates. <br /></td></tr>
 <tr class="separator:ac7a8b1fe7d08dc6db20cf1569b0d37b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f47f83e7a1cb6cd014161803db867fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a4f47f83e7a1cb6cd014161803db867fb">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a4f47f83e7a1cb6cd014161803db867fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="class_c_c1101.html#a4f47f83e7a1cb6cd014161803db867fb">More...</a><br /></td></tr>
+<tr class="separator:a4f47f83e7a1cb6cd014161803db867fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70fa0ead602f3128f161fc2018cc3af6"><td class="memItemLeft" align="right" valign="top"><a id="a70fa0ead602f3128f161fc2018cc3af6"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a70fa0ead602f3128f161fc2018cc3af6">clearPacketReceivedAction</a> ()</td></tr>
+<tr class="memdesc:a70fa0ead602f3128f161fc2018cc3af6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
+<tr class="separator:a70fa0ead602f3128f161fc2018cc3af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff4ddeb8f8680307079a1e84de1cc676"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aff4ddeb8f8680307079a1e84de1cc676">setPacketSentAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:aff4ddeb8f8680307079a1e84de1cc676"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="class_c_c1101.html#aff4ddeb8f8680307079a1e84de1cc676">More...</a><br /></td></tr>
+<tr class="separator:aff4ddeb8f8680307079a1e84de1cc676"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ac3d16c54a7340f83f3c5ac6bb8e40"><td class="memItemLeft" align="right" valign="top"><a id="a70ac3d16c54a7340f83f3c5ac6bb8e40"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a70ac3d16c54a7340f83f3c5ac6bb8e40">clearPacketSentAction</a> ()</td></tr>
+<tr class="memdesc:a70ac3d16c54a7340f83f3c5ac6bb8e40"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
+<tr class="separator:a70ac3d16c54a7340f83f3c5ac6bb8e40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0df2938e2509a8f2746b20ae0558d4ea"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a0df2938e2509a8f2746b20ae0558d4ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_c_c1101.html#a0df2938e2509a8f2746b20ae0558d4ea">More...</a><br /></td></tr>
 <tr class="separator:a0df2938e2509a8f2746b20ae0558d4ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -328,13 +342,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">More...</a><br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">setDio1Action</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">More...</a><br /></td></tr>
-<tr class="separator:a63c0beb4990876947f746751d45ac41d inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top"><a id="ad30127e094d8148870b9631007ec6b29"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad30127e094d8148870b9631007ec6b29">clearDio1Action</a> ()</td></tr>
-<tr class="memdesc:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
-<tr class="separator:ad30127e094d8148870b9631007ec6b29 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Control class for CC1101 module. </p>
@@ -1447,6 +1454,78 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a4f47f83e7a1cb6cd014161803db867fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f47f83e7a1cb6cd014161803db867fb">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CC1101::setPacketReceivedAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is received. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aff4ddeb8f8680307079a1e84de1cc676"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff4ddeb8f8680307079a1e84de1cc676">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void CC1101::setPacketSentAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">PhysicalLayer</a>.</p>
 
 </div>
 </div>

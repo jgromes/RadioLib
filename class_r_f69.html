@@ -168,6 +168,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ade1f9a7a603d712c480ed5e9a8d1bf51">clearDio1Action</a> ()</td></tr>
 <tr class="memdesc:ade1f9a7a603d712c480ed5e9a8d1bf51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
 <tr class="separator:ade1f9a7a603d712c480ed5e9a8d1bf51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8bff26070735a733a24146d414c3c5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ac8bff26070735a733a24146d414c3c5f">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:ac8bff26070735a733a24146d414c3c5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="class_r_f69.html#ac8bff26070735a733a24146d414c3c5f">More...</a><br /></td></tr>
+<tr class="separator:ac8bff26070735a733a24146d414c3c5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac302d3524dc802467a7ce91b2223db90"><td class="memItemLeft" align="right" valign="top"><a id="ac302d3524dc802467a7ce91b2223db90"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#ac302d3524dc802467a7ce91b2223db90">clearPacketReceivedAction</a> ()</td></tr>
+<tr class="memdesc:ac302d3524dc802467a7ce91b2223db90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
+<tr class="separator:ac302d3524dc802467a7ce91b2223db90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27fad7a67c4239c19bd94d1ccfb493ca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a27fad7a67c4239c19bd94d1ccfb493ca">setPacketSentAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a27fad7a67c4239c19bd94d1ccfb493ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="class_r_f69.html#a27fad7a67c4239c19bd94d1ccfb493ca">More...</a><br /></td></tr>
+<tr class="separator:a27fad7a67c4239c19bd94d1ccfb493ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a8be5bcc37d3e4f5ac2d0310c8bac12"><td class="memItemLeft" align="right" valign="top"><a id="a3a8be5bcc37d3e4f5ac2d0310c8bac12"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a3a8be5bcc37d3e4f5ac2d0310c8bac12">clearPacketSentAction</a> ()</td></tr>
+<tr class="memdesc:a3a8be5bcc37d3e4f5ac2d0310c8bac12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
+<tr class="separator:a3a8be5bcc37d3e4f5ac2d0310c8bac12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a788023a0de9d6b43cb4079d12ca90b8d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f69.html#a788023a0de9d6b43cb4079d12ca90b8d">setFifoEmptyAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a788023a0de9d6b43cb4079d12ca90b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is empty.  <a href="class_r_f69.html#a788023a0de9d6b43cb4079d12ca90b8d">More...</a><br /></td></tr>
 <tr class="separator:a788023a0de9d6b43cb4079d12ca90b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1379,9 +1393,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void RF69::setDio1Action </td>
@@ -1391,11 +1402,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Sets interrupt service routine to call when DIO1 activates. </p>
@@ -1405,8 +1411,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </table>
   </dd>
 </dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1854,6 +1858,78 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac8bff26070735a733a24146d414c3c5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8bff26070735a733a24146d414c3c5f">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RF69::setPacketReceivedAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is received. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a27fad7a67c4239c19bd94d1ccfb493ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27fad7a67c4239c19bd94d1ccfb493ca">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void RF69::setPacketSentAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">PhysicalLayer</a>.</p>
 
 </div>
 </div>

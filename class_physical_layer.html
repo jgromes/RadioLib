@@ -220,13 +220,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a349e8a22cd28ad89d45460fdeeefc05c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
 <tr class="memdesc:a349e8a22cd28ad89d45460fdeeefc05c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">More...</a><br /></td></tr>
 <tr class="separator:a349e8a22cd28ad89d45460fdeeefc05c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63c0beb4990876947f746751d45ac41d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">setDio1Action</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:a63c0beb4990876947f746751d45ac41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_physical_layer.html#a63c0beb4990876947f746751d45ac41d">More...</a><br /></td></tr>
-<tr class="separator:a63c0beb4990876947f746751d45ac41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad30127e094d8148870b9631007ec6b29"><td class="memItemLeft" align="right" valign="top"><a id="ad30127e094d8148870b9631007ec6b29"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad30127e094d8148870b9631007ec6b29">clearDio1Action</a> ()</td></tr>
-<tr class="memdesc:ad30127e094d8148870b9631007ec6b29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
-<tr class="separator:ad30127e094d8148870b9631007ec6b29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec928bb26f65752aa20cd236fbabb95c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:aec928bb26f65752aa20cd236fbabb95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">More...</a><br /></td></tr>
+<tr class="separator:aec928bb26f65752aa20cd236fbabb95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7edf27f03600b96f72f011fc82fa4ef9"><td class="memItemLeft" align="right" valign="top"><a id="a7edf27f03600b96f72f011fc82fa4ef9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7edf27f03600b96f72f011fc82fa4ef9">clearPacketReceivedAction</a> ()</td></tr>
+<tr class="memdesc:a7edf27f03600b96f72f011fc82fa4ef9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
+<tr class="separator:a7edf27f03600b96f72f011fc82fa4ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32b512b34f6575b2109ae3c3f35d1369"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">setPacketSentAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a32b512b34f6575b2109ae3c3f35d1369"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">More...</a><br /></td></tr>
+<tr class="separator:a32b512b34f6575b2109ae3c3f35d1369"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67ee4ec36f352d06dda0102260f6bfce"><td class="memItemLeft" align="right" valign="top"><a id="a67ee4ec36f352d06dda0102260f6bfce"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce">clearPacketSentAction</a> ()</td></tr>
+<tr class="memdesc:a67ee4ec36f352d06dda0102260f6bfce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
+<tr class="separator:a67ee4ec36f352d06dda0102260f6bfce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -830,42 +837,6 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 
 </div>
 </div>
-<a id="a63c0beb4990876947f746751d45ac41d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63c0beb4990876947f746751d45ac41d">&#9670;&nbsp;</a></span>setDio1Action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void PhysicalLayer::setDio1Action </td>
-          <td>(</td>
-          <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when DIO1 activates. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Reimplemented in <a class="el" href="class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed">SX128x</a>, <a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">SX126x</a>, <a class="el" href="class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e">STM32WLx</a>, and <a class="el" href="class_r_f69.html#aa72ad2ac5238bd87886684064b7494cf">RF69</a>.</p>
-
-</div>
-</div>
 <a id="a349e8a22cd28ad89d45460fdeeefc05c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a349e8a22cd28ad89d45460fdeeefc05c">&#9670;&nbsp;</a></span>setDIOMapping()</h2>
 
@@ -1096,6 +1067,78 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1">SX128x</a>, <a class="el" href="class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679">SX127x</a>, <a class="el" href="class_s_x126x.html#a7cd95a5f2e39ae8fb1a3040e77fa21a3">SX126x</a>, <a class="el" href="class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66">Si443x</a>, <a class="el" href="class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be">RF69</a>, <a class="el" href="classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4">nRF24</a>, and <a class="el" href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">CC1101</a>.</p>
+
+</div>
+</div>
+<a id="aec928bb26f65752aa20cd236fbabb95c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec928bb26f65752aa20cd236fbabb95c">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PhysicalLayer::setPacketReceivedAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is received. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#a697880c42c4b1def04c8fe7f3a023ffb">SX128x</a>, <a class="el" href="class_s_x127x.html#ad63322c9c58dd82e4b9982f10e546f33">SX127x</a>, <a class="el" href="class_s_x126x.html#ad2bc2016783a3fcad3ad4e6518ee7fc8">SX126x</a>, <a class="el" href="class_si443x.html#a2badfa5db1ae5b9ec26ad7a8b3cab167">Si443x</a>, <a class="el" href="class_r_f69.html#ac8bff26070735a733a24146d414c3c5f">RF69</a>, <a class="el" href="classn_r_f24.html#a08b90ae895a6a45bceb11f67237245b4">nRF24</a>, and <a class="el" href="class_c_c1101.html#a4f47f83e7a1cb6cd014161803db867fb">CC1101</a>.</p>
+
+</div>
+</div>
+<a id="a32b512b34f6575b2109ae3c3f35d1369"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32b512b34f6575b2109ae3c3f35d1369">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PhysicalLayer::setPacketSentAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#acaa115bb9eb3d325d6baba1f578d678b">SX128x</a>, <a class="el" href="class_s_x127x.html#a91476a51019910b958f464e73ba797c5">SX127x</a>, <a class="el" href="class_s_x126x.html#a0417720a61b2d587e5633360cbecb33c">SX126x</a>, <a class="el" href="class_si443x.html#aa55274bb345f178328ea2a674621fc84">Si443x</a>, <a class="el" href="class_r_f69.html#a27fad7a67c4239c19bd94d1ccfb493ca">RF69</a>, <a class="el" href="classn_r_f24.html#a8e00d6729ee3c869cda8ccb5ae15ba27">nRF24</a>, and <a class="el" href="class_c_c1101.html#aff4ddeb8f8680307079a1e84de1cc676">CC1101</a>.</p>
 
 </div>
 </div>

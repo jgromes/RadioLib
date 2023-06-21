@@ -2,6 +2,9 @@ var classn_r_f24 =
 [
     [ "nRF24", "classn_r_f24.html#ab12de8d953c2384c5fff09b4abf65d1e", null ],
     [ "begin", "classn_r_f24.html#a0ef68849f812367432f5a3798f94b8ce", null ],
+    [ "clearIrqAction", "classn_r_f24.html#aaf5887fe58c4d542cbed80482de1d42d", null ],
+    [ "clearPacketReceivedAction", "classn_r_f24.html#a4295cfbfe05ec696aae680593f63ff7b", null ],
+    [ "clearPacketSentAction", "classn_r_f24.html#a5ae45ceec01854226ecce0320f1051e2", null ],
     [ "disablePipe", "classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a", null ],
     [ "finishTransmit", "classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f", null ],
     [ "getMod", "classn_r_f24.html#a03533af894b373fbff01601dd027b36a", null ],
@@ -24,6 +27,8 @@ var classn_r_f24 =
     [ "setFrequencyDeviation", "classn_r_f24.html#a5170284f0a5535de7d00216d450b87a4", null ],
     [ "setIrqAction", "classn_r_f24.html#abf9323748b1a850e6ddc6f6d48f4cfb3", null ],
     [ "setOutputPower", "classn_r_f24.html#ad9859fa54aed7d3cd82839bad9d7d33a", null ],
+    [ "setPacketReceivedAction", "classn_r_f24.html#a08b90ae895a6a45bceb11f67237245b4", null ],
+    [ "setPacketSentAction", "classn_r_f24.html#a8e00d6729ee3c869cda8ccb5ae15ba27", null ],
     [ "setReceivePipe", "classn_r_f24.html#a31bcc5a8c3747bf08a273dbdadc5481a", null ],
     [ "setReceivePipe", "classn_r_f24.html#ab5bc08aef88d8cf41c38369044005da8", null ],
     [ "setTransmitPipe", "classn_r_f24.html#aa0e1f2dddf810213410a420205bbd8af", null ],
