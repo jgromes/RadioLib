@@ -470,6 +470,22 @@ void SX126x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
+void SX126x::setPacketReceivedAction(void (*func)(void)) {
+  this->setDio1Action(func);
+}
+
+void SX126x::clearPacketReceivedAction() {
+  this->clearDio1Action();
+}
+
+void SX126x::setPacketSentAction(void (*func)(void)) {
+  this->setDio1Action(func);
+}
+
+void SX126x::clearPacketSentAction() {
+  this->clearDio1Action();
+}
+
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
