@@ -240,7 +240,7 @@ void CC1101::clearGdo0Action() {
 }
 
 void CC1101::setPacketReceivedAction(void (*func)(void)) {
-  this->setGdo0Action(func, RISING);
+  this->setGdo0Action(func, this->mod->hal->GpioInterruptRising);
 }
 
 void CC1101::clearPacketReceivedAction() {
@@ -248,7 +248,7 @@ void CC1101::clearPacketReceivedAction() {
 }
 
 void CC1101::setPacketSentAction(void (*func)(void)) {
-  this->setGdo2Action(func, FALLING);
+  this->setGdo2Action(func, this->mod->hal->GpioInterruptFalling);
 }
 
 void CC1101::clearPacketSentAction() {
