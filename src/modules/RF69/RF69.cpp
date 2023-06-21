@@ -294,6 +294,22 @@ void RF69::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getGpio()));
 }
 
+void RF69::setPacketReceivedAction(void (*func)(void)) {
+  this->setDio0Action(func);
+}
+
+void RF69::clearPacketReceivedAction() {
+  this->clearDio0Action();
+}
+
+void RF69::setPacketSentAction(void (*func)(void)) {
+  this->setDio0Action(func);
+}
+
+void RF69::clearPacketSentAction() {
+  this->clearDio0Action();
+}
+
 void RF69::setFifoEmptyAction(void (*func)(void)) {
   // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
   if(this->mod->getGpio() == RADIOLIB_NC) {

@@ -41,7 +41,7 @@ void setup() {
 
   // set the function that will be called
   // when new packet is received
-  radio.setDio0Action(setFlag);
+  radio.setPacketReceivedAction(setFlag);
 
   // start listening for packets
   Serial.print(F("[RF69] Starting to listen ... "));

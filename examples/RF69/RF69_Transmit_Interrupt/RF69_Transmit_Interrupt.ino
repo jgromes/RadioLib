@@ -47,7 +47,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setDio0Action(setFlag);
+  radio.setPacketSentAction(setFlag);
 
   // NOTE: some RF69 modules use high power output,
   //       those are usually marked RF69H(C/CW).
