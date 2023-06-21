@@ -476,6 +476,22 @@ void SX128x::clearDio1Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
+void SX128x::setPacketReceivedAction(void (*func)(void)) {
+  this->setDio1Action(func);
+}
+
+void SX128x::clearPacketReceivedAction() {
+  this->clearDio1Action();
+}
+
+void SX128x::setPacketSentAction(void (*func)(void)) {
+  this->setDio1Action(func);
+}
+
+void SX128x::clearPacketSentAction() {
+  this->clearDio1Action();
+}
+
 int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;

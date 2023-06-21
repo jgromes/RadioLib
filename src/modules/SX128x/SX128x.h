@@ -496,6 +496,28 @@ class SX128x: public PhysicalLayer {
     void clearDio1Action();
 
     /*!
+      \brief Sets interrupt service routine to call when a packet is received.
+      \param func ISR to call.
+    */
+    void setPacketReceivedAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a packet is received.
+    */
+    void clearPacketReceivedAction();
+
+    /*!
+      \brief Sets interrupt service routine to call when a packet is sent.
+      \param func ISR to call.
+    */
+    void setPacketSentAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a packet is sent.
+    */
+    void clearPacketSentAction();
+
+    /*!
       \brief Interrupt-driven binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.

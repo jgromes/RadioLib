@@ -50,7 +50,7 @@ void setup() {
 
   // set the function that will be called
   // when packet transmission is finished
-  radio.setDio1Action(setFlag);
+  radio.setPacketSentAction(setFlag);
 
   // start transmitting the first packet
   Serial.print(F("[SX1280] Sending first packet ... "));
