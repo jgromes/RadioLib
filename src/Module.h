@@ -326,7 +326,7 @@ class Module {
       \param timeout GPIO wait period timeout in milliseconds.
       \returns \ref status_codes
     */
-    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout);
+    virtual int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout);
 
     // pin number access methods
 
