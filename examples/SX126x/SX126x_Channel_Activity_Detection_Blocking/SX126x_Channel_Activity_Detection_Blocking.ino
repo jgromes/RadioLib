@@ -1,18 +1,23 @@
 /*
-   RadioLib SX126x Channel Activity Detection Example
+  RadioLib SX126x Blocking Channel Activity Detection Example
 
-   This example uses SX1262 to scan the current LoRa
-   channel and detect ongoing LoRa transmissions.
-   Unlike SX127x CAD, SX126x can detect any part
-   of LoRa transmission, not just the preamble.
+  This example uses SX1262 to scan the current LoRa
+  channel and detect ongoing LoRa transmissions.
+  Unlike SX127x CAD, SX126x can detect any part
+  of LoRa transmission, not just the preamble.
 
-   Other modules from SX126x family can also be used.
+  Other modules from SX126x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  Using blocking CAD is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt CAD is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

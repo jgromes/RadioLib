@@ -1,20 +1,20 @@
 /*
-   RadioLib SX126x Transmit with Interrupts Example
+  RadioLib SX126x Transmit with Interrupts Example
 
-   This example transmits LoRa packets with one second delays
-   between them. Each packet contains up to 256 bytes
-   of data, in the form of:
-    - Arduino String
-    - null-terminated char array (C-string)
-    - arbitrary binary data (byte array)
+  This example transmits LoRa packets with one second delays
+  between them. Each packet contains up to 256 bytes
+  of data, in the form of:
+  - Arduino String
+  - null-terminated char array (C-string)
+  - arbitrary binary data (byte array)
 
-   Other modules from SX126x family can also be used.
+  Other modules from SX126x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -85,6 +85,9 @@ void setFlag(void) {
   transmittedFlag = true;
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
@@ -118,13 +121,13 @@ void loop() {
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
-    transmissionState = radio.startTransmit("Hello World!");
+    transmissionState = radio.startTransmit("Hello World! #" + String(count++));
 
     // you can also transmit byte array up to 256 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
-      int state = radio.startTransmit(byteArr, 8);
+      transmissionState = radio.startTransmit(byteArr, 8);
     */
   }
 }

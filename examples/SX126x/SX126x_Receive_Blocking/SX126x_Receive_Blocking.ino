@@ -1,5 +1,5 @@
 /*
-   RadioLib SX126x Receive Example
+   RadioLib SX126x Blocking Receive Example
 
    This example listens for LoRa transmissions using SX126x Lora modules.
    To successfully receive data, the following settings have to be the same
@@ -12,6 +12,11 @@
     - preamble length
 
    Other modules from SX126x family can also be used.
+
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt receive is recommended.
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
@@ -56,9 +61,6 @@ void loop() {
   Serial.print(F("[SX1262] Waiting for incoming transmission ... "));
 
   // you can receive data as an Arduino String
-  // NOTE: receive() is a blocking method!
-  //       See example ReceiveInterrupt for details
-  //       on non-blocking reception method.
   String str;
   int state = radio.receive(str);
 

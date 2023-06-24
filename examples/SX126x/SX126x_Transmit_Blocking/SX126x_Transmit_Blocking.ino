@@ -1,19 +1,23 @@
 /*
-   RadioLib SX126x Transmit Example
+  RadioLib SX126x Blocking Transmit Example
 
-   This example transmits packets using SX1262 LoRa radio module.
-   Each packet contains up to 256 bytes of data, in the form of:
-    - Arduino String
-    - null-terminated char array (C-string)
-    - arbitrary binary data (byte array)
+  This example transmits packets using SX1262 LoRa radio module.
+  Each packet contains up to 256 bytes of data, in the form of:
+  - Arduino String
+  - null-terminated char array (C-string)
+  - arbitrary binary data (byte array)
 
-   Other modules from SX126x family can also be used.
+  Other modules from SX126x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  Using blocking transmit is not recommended, as it will lead
+  to inefficient use of processor time!
+  Instead, interrupt transmit is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -58,15 +62,15 @@ void setup() {
   */
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   Serial.print(F("[SX1262] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
-  // NOTE: transmit() is a blocking method!
-  //       See example SX126x_Transmit_Interrupt for details
-  //       on non-blocking transmission method.
-  int state = radio.transmit("Hello World!");
+  int state = radio.transmit("Hello World! #" + String(count++));
 
   // you can also transmit byte array up to 256 bytes long
   /*
