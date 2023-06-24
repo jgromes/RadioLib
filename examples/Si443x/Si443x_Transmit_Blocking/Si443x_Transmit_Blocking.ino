@@ -1,19 +1,23 @@
 /*
-   RadioLib Si443x Transmit Example
+  RadioLib Si443x Blocking Transmit Example
 
-   This example transmits packets using Si4432 FSK radio module.
-   Each packet contains up to 64 bytes of data, in the form of:
-    - Arduino String
-    - null-terminated char array (C-string)
-    - arbitrary binary data (byte array)
+  This example transmits packets using Si4432 FSK radio module.
+  Each packet contains up to 64 bytes of data, in the form of:
+  - Arduino String
+  - null-terminated char array (C-string)
+  - arbitrary binary data (byte array)
 
-   Other modules from Si443x/RFM2x family can also be used.
+  Other modules from Si443x/RFM2x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+  Using blocking transmit is not recommended, as it will lead
+  to inefficient use of processor time!
+  Instead, interrupt transmit is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -44,15 +48,15 @@ void setup() {
   }
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   Serial.print(F("[Si4432] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 64 characters long
-  // NOTE: transmit() is a blocking method!
-  //       See example Si443x_Transmit_Interrupt for details
-  //       on non-blocking transmission method.
-  int state = radio.transmit("Hello World!");
+  int state = radio.transmit("Hello World! #" + String(count++));
 
   // you can also transmit byte array up to 64 bytes long
   /*
