@@ -1,19 +1,24 @@
 /*
-   RadioLib CC1101 Receive Example
+  RadioLib CC1101 Blocking Receive Example
 
-   This example receives packets using CC1101 FSK radio module.
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bit rate
-    - frequency deviation
-    - sync word
+  This example receives packets using CC1101 FSK radio module.
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - bit rate
+  - frequency deviation
+  - sync word
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt receive is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
