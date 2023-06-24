@@ -1,19 +1,23 @@
 /*
-   RadioLib nRF24 Receive Example
+  RadioLib nRF24 Blocking Receive Example
 
-   This example listens for FSK transmissions using nRF24 2.4 GHz radio module.
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - data rate
-    - transmit pipe on transmitter must match receive pipe
-      on receiver
+  This example listens for FSK transmissions using nRF24 2.4 GHz radio module.
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - data rate
+  - transmit pipe on transmitter must match receive pipe on receiver
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#nrf24
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt receive is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#nrf24
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

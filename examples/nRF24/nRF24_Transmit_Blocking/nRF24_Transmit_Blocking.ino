@@ -59,12 +59,15 @@ void setup() {
   }
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   Serial.print(F("[nRF24] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to
   // 32 characters long
-  int state = radio.transmit("Hello World!");
+  int state = radio.transmit("Hello World! #" + String(count++));
 
   if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted
