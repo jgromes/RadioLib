@@ -82,6 +82,9 @@ void setFlag(void) {
   transmittedFlag = true;
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
