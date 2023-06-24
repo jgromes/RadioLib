@@ -1,27 +1,32 @@
 /*
-   RadioLib STM32WLx Receive Example
+  RadioLib STM32WLx Blocking Receive Example
 
-   This example listens for LoRa transmissions using STM32WL MCU with
-   integrated (SX126x) LoRa radio.
+  This example listens for LoRa transmissions using STM32WL MCU with
+  integrated (SX126x) LoRa radio.
 
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-    - preamble length
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
+  - preamble length
    
-   This example assumes Nucleo WL55JC1 is used. For other Nucleo boards
-   or standalone STM32WL, some configuration such as TCXO voltage and
-   RF switch control may have to be adjusted.
+  This example assumes Nucleo WL55JC1 is used. For other Nucleo boards
+  or standalone STM32WL, some configuration such as TCXO voltage and
+  RF switch control may have to be adjusted.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt receive is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -75,9 +80,6 @@ void loop() {
   Serial.print(F("[STM32WL] Waiting for incoming transmission ... "));
 
   // you can receive data as an Arduino String
-  // NOTE: receive() is a blocking method!
-  //       See example ReceiveInterrupt for details
-  //       on non-blocking reception method.
   String str;
   int state = radio.receive(str);
 
