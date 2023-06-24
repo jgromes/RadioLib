@@ -1,17 +1,22 @@
 /*
-   RadioLib SX1231 Receive Example
+  RadioLib SX1231 Blocking Receive Example
 
-   This example receives packets using SX1231 FSK radio module.
+  This example receives packets using SX1231 FSK radio module.
 
-   NOTE: SX1231 offers the same features as RF69 and has the same
-         interface. Please see RF69 examples for examples on AES,
-         address filtering, interrupts and settings.
+  NOTE: SX1231 offers the same features as RF69 and has the same
+        interface. Please see RF69 examples for examples on AES,
+        address filtering, interrupts and settings.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt receive is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

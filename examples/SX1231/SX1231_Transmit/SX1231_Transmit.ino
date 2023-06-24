@@ -1,17 +1,21 @@
 /*
-   RadioLib SX1231 Transmit Example
+  RadioLib SX1231 Blocking Transmit Example
 
-   This example transmits packets using SX1231 FSK radio module.
+  This example transmits packets using SX1231 FSK radio module.
 
-   NOTE: SX1231 offers the same features as RF69 and has the same
-         interface. Please see RF69 examples for examples on AES,
-         address filtering, interrupts and settings.
+  NOTE: SX1231 offers the same features as RF69 and has the same
+        interface. Please see RF69 examples for examples on AES,
+        address filtering, interrupts and settings.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  Using blocking transmit is not recommended, as it will lead
+  to inefficient use of processor time!
+  Instead, interrupt transmit is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -42,11 +46,14 @@ void setup() {
   }
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   Serial.print(F("[SX1231] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 256 characters long
-  int state = radio.transmit("Hello World!");
+  int state = radio.transmit("Hello World! #" + String(count++));
 
   // you can also transmit byte array up to 256 bytes long
   /*
