@@ -1,19 +1,24 @@
 /*
-   RadioLib RF69 Receive Example
+  RadioLib RF69 Blocking Receive Example
 
-   This example receives packets using RF69 FSK radio module.
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bit rate
-    - frequency deviation
-    - sync word
+  This example receives packets using RF69 FSK radio module.
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - bit rate
+  - frequency deviation
+  - sync word
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  Using blocking receive is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can miss some packets!
+  Instead, interrupt receive is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

@@ -96,6 +96,9 @@ void setFlag(void) {
   transmittedFlag = true;
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
@@ -128,14 +131,14 @@ void loop() {
     Serial.print(F("[RF69] Sending another packet ... "));
 
     // you can transmit C-string or Arduino string up to
-    // 256 characters long
-    transmissionState = radio.startTransmit("Hello World!");
+    // 64 characters long
+    transmissionState = radio.startTransmit("Hello World! #" + String(count++));
 
     // you can also transmit byte array up to 64 bytes long
     /*
       byte byteArr[] = {0x01, 0x23, 0x45, 0x67,
                         0x89, 0xAB, 0xCD, 0xEF};
-      int state = radio.startTransmit(byteArr, 8);
+      transmissionState = radio.startTransmit(byteArr, 8);
     */
   }
 }

@@ -1,17 +1,21 @@
 /*
-   RadioLib RF69 Transmit Example
+  RadioLib RF69 Blocking Transmit Example
 
-   This example transmits packets using RF69 FSK radio module.
-   Each packet contains up to 64 bytes of data, in the form of:
-    - Arduino String
-    - null-terminated char array (C-string)
-    - arbitrary binary data (byte array)
+  This example transmits packets using RF69 FSK radio module.
+  Each packet contains up to 64 bytes of data, in the form of:
+  - Arduino String
+  - null-terminated char array (C-string)
+  - arbitrary binary data (byte array)
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  Using blocking transmit is not recommended, as it will lead
+  to inefficient use of processor time!
+  Instead, interrupt transmit is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -59,11 +63,14 @@ void setup() {
   */
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   Serial.print(F("[RF69] Transmitting packet ... "));
 
   // you can transmit C-string or Arduino string up to 64 characters long
-  int state = radio.transmit("Hello World!");
+  int state = radio.transmit("Hello World! #" + String(count++));
 
   // you can also transmit byte array up to 64 bytes long
   /*
