@@ -1,19 +1,24 @@
 /*
-   RadioLib SX127x Channel Activity Detection Example
+  RadioLib SX127x Blocking Channel Activity Detection Example
 
-   This example scans the current LoRa channel and detects
-   valid LoRa preambles. Preamble is the first part of
-   LoRa transmission, so this can be used to check
-   if the LoRa channel is free, or if you should start
-   receiving a message.
+  This example scans the current LoRa channel and detects
+  valid LoRa preambles. Preamble is the first part of
+  LoRa transmission, so this can be used to check
+  if the LoRa channel is free, or if you should start
+  receiving a message.
 
-   Other modules from SX127x/RFM9x family can also be used.
+  Other modules from SX127x/RFM9x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+  Using blocking CAD is not recommended, as it will lead
+  to significant amount of timeouts, inefficient use of processor
+  time and can some miss packets!
+  Instead, interrupt CAD is recommended.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
