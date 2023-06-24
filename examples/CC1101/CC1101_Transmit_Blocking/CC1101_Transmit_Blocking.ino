@@ -47,7 +47,7 @@ void setup() {
   }
 }
 
-// use a counter to keep track of transmitted packets
+// counter to keep track of transmitted packets
 int count = 0;
 
 void loop() {

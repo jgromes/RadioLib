@@ -80,6 +80,9 @@ void setFlag(void) {
   transmittedFlag = true;
 }
 
+// counter to keep track of transmitted packets
+int count = 0;
+
 void loop() {
   // check if the previous transmission finished
   if(transmittedFlag) {
@@ -113,7 +116,7 @@ void loop() {
 
     // you can transmit C-string or Arduino string up to
     // 256 characters long
-    transmissionState = radio.startTransmit("Hello World!");
+    transmissionState = radio.startTransmit("Hello World! #" + String(count++));
 
     // you can also transmit byte array up to 256 bytes long
     /*
