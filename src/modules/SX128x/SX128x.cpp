@@ -353,14 +353,28 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
+  bool softTimeout = false;
   uint32_t start = this->mod->hal->micros();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
+    // safety check, the timeout should be done by the radio
     if(this->mod->hal->micros() - start > timeout) {
-      clearIrqStatus();
-      standby();
-      return(RADIOLIB_ERR_RX_TIMEOUT);
+      softTimeout = true;
+      break;
     }
+  }
+
+  // if it was a timeout, this will return an error code
+  state = standby();
+  if((state != RADIOLIB_ERR_NONE) && (state != RADIOLIB_ERR_SPI_CMD_TIMEOUT)) {
+    return(state);
+  }
+
+  // check whether this was a timeout or not
+  if((getIrqStatus() & RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT) || softTimeout) {
+    standby();
+    clearIrqStatus();
+    return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
   // read the received data
