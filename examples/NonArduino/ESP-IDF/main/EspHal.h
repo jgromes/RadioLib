@@ -285,13 +285,19 @@ class EspHal : public RadioLibHal {
       // repeats clock div, mode and bit order configuration
     }
 
-    uint8_t spiTransfer(uint8_t b) {
+    uint8_t spiTransferByte(uint8_t b) {
       this->spi->mosi_dlen.usr_mosi_dbitlen = 7;
       this->spi->miso_dlen.usr_miso_dbitlen = 7;
       this->spi->data_buf[0] = b;
       this->spi->cmd.usr = 1;
       while(this->spi->cmd.usr);
       return(this->spi->data_buf[0] & 0xFF);
+    }
+
+    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+      for(size_t i = 0; i < len; i++) {
+        in[i] = this->spiTransferByte(out[i]);
+      }
     }
 
     void spiEndTransaction() {
