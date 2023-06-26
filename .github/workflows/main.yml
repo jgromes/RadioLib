@@ -70,7 +70,7 @@ jobs:
               echo "options=':softdevice=s132v6,debug=l0'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
           - id: esp32:esp32:esp32
-            run:
+            run: |
               python -m pip install pyserial
               echo "index-url=--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
           - id: esp8266:esp8266:generic
