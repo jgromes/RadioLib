@@ -127,11 +127,9 @@ class PiHal : public RadioLibHal {
     }
 
     void spiBeginTransaction() {}
-
-    uint8_t spiTransfer(uint8_t b) {
-      char ret;
-      spiXfer(_spiHandle, (char*)&b, &ret, 1);
-      return(ret);
+    
+    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+      spiXfer(_spiHandle, (char*)out, (char*)in, len);
     }
 
     void spiEndTransaction() {}
