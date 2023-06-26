@@ -47,7 +47,7 @@ class ArduinoHal : public RadioLibHal {
     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override;
     void spiBegin() override;
     void spiBeginTransaction() override;
-    uint8_t spiTransfer(uint8_t b) override;
+    void spiTransfer(uint8_t* out, size_t len, uint8_t* in) override;
     void spiEndTransaction() override;
     void spiEnd() override;
 

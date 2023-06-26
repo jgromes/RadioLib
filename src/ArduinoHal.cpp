@@ -84,8 +84,10 @@ void inline ArduinoHal::spiBeginTransaction() {
   spi->beginTransaction(spiSettings);
 }
 
-uint8_t inline ArduinoHal::spiTransfer(uint8_t b) {
-  return(spi->transfer(b));
+void ArduinoHal::spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
+  for(size_t i = 0; i < len; i++) {
+    in[i] = spi->transfer(out[i]);
+  }
 }
 
 void inline ArduinoHal::spiEndTransaction() {

@@ -1181,7 +1181,8 @@ void CC1101::SPIsendCommand(uint8_t cmd) {
   this->mod->hal->spiBeginTransaction();
 
   // send the command byte
-  uint8_t status = this->mod->hal->spiTransfer(cmd);
+  uint8_t status = 0;
+  this->mod->hal->spiTransfer(&cmd, 1, &status);
 
   // stop transfer
   this->mod->hal->spiEndTransaction();

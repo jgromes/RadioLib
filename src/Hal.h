@@ -146,11 +146,12 @@ class RadioLibHal {
     virtual void spiBeginTransaction() = 0;
 
     /*!
-      \brief Method to transfer one byte over SPI.
-      \param b Byte to send.
-      \returns Received byte.
+      \brief Method to transfer buffer over SPI.
+      \param out Buffer to send.
+      \param len Number of data to send or receive.
+      \param in Buffer to save received data into.
     */
-    virtual uint8_t spiTransfer(uint8_t b) = 0;
+    virtual void spiTransfer(uint8_t* out, size_t len, uint8_t* in) = 0;
 
     /*!
       \brief Method to end SPI transaction.

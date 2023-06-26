@@ -139,52 +139,64 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
 }
 
 void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
-  // start SPI transaction
-  this->hal->spiBeginTransaction();
+  // prepare the buffers
+  size_t buffLen = this->SPIaddrWidth/8 + numBytes;
+  #if defined(RADIOLIB_STATIC_ONLY)
+    uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
+    uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* buffOut = new uint8_t[buffLen];
+    uint8_t* buffIn = new uint8_t[buffLen];
+  #endif
+  uint8_t* buffOutPtr = buffOut;
 
-  // pull CS low
-  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
-
-  // send SPI register address with access command
+  // copy the command
   if(this->SPIaddrWidth <= 8) {
-    this->hal->spiTransfer(reg | cmd);
+    *(buffOutPtr++) = reg | cmd;
   } else {
-    this->hal->spiTransfer((reg >> 8) | cmd);
-    this->hal->spiTransfer(reg & 0xFF);
+    *(buffOutPtr++) = (reg >> 8) | cmd;
+    *(buffOutPtr++) = reg & 0xFF;
   }
 
+  // copy the data
+  if(cmd == SPIwriteCommand) {
+    memcpy(buffOutPtr, dataOut, numBytes);
+  } else {
+    memset(buffOutPtr, this->SPInopCommand, numBytes);
+  }
+
+  // do the transfer
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
+  this->hal->spiBeginTransaction();
+  this->hal->spiTransfer(buffOut, buffLen, buffIn);
+  this->hal->spiEndTransaction();
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
+  
+  // copy the data
+  if(cmd == SPIreadCommand) {
+    memcpy(dataIn, &buffIn[this->SPIaddrWidth/8], numBytes);
+  }
+
+  // print debug information
   #if defined(RADIOLIB_VERBOSE)
+    uint8_t* debugBuffPtr = NULL;
     if(cmd == SPIwriteCommand) {
-      RADIOLIB_VERBOSE_PRINT("W");
+      RADIOLIB_VERBOSE_PRINT("W\t%X\t", reg);
+      debugBuffPtr = &buffOut[this->SPIaddrWidth/8];
     } else if(cmd == SPIreadCommand) {
-      RADIOLIB_VERBOSE_PRINT("R");
+      RADIOLIB_VERBOSE_PRINT("R\t%X\t", reg);
+      debugBuffPtr = &buffIn[this->SPIaddrWidth/8];
     }
-    RADIOLIB_VERBOSE_PRINT("\t%X\t", reg);
+    for(size_t n = 0; n < numBytes; n++) {
+      RADIOLIB_VERBOSE_PRINT("%X\t", debugBuffPtr[n]);
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
   #endif
 
-  // send data or get response
-  if(cmd == SPIwriteCommand) {
-    if(dataOut != NULL) {
-      for(size_t n = 0; n < numBytes; n++) {
-        this->hal->spiTransfer(dataOut[n]);
-        RADIOLIB_VERBOSE_PRINT("%X\t", dataOut[n]);
-      }
-    }
-  } else if (cmd == SPIreadCommand) {
-    if(dataIn != NULL) {
-      for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->hal->spiTransfer(0x00);
-        RADIOLIB_VERBOSE_PRINT("%X\t", dataIn[n]);
-      }
-    }
-  }
-  RADIOLIB_VERBOSE_PRINTLN();
-
-  // release CS
-  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
-
-  // end SPI transaction
-  this->hal->spiEndTransaction();
+  #if !defined(RADIOLIB_STATIC_ONLY)
+    delete[] buffOut;
+    delete[] buffIn;
+  #endif
 }
 
 int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
@@ -241,9 +253,31 @@ int16_t Module::SPIcheckStream() {
 }
 
 int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout) {
-  #if defined(RADIOLIB_VERBOSE)
-    uint8_t debugBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+  // prepare the buffers
+  size_t buffLen = cmdLen + numBytes;
+  if(!write) {
+    buffLen++;
+  }
+  #if defined(RADIOLIB_STATIC_ONLY)
+    uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
+    uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* buffOut = new uint8_t[buffLen];
+    uint8_t* buffIn = new uint8_t[buffLen];
   #endif
+  uint8_t* buffOutPtr = buffOut;
+
+  // copy the command
+  for(uint8_t n = 0; n < cmdLen; n++) {
+    *(buffOutPtr++) = cmd[n];
+  }
+
+  // copy the data
+  if(write) {
+    memcpy(buffOutPtr, dataOut, numBytes);
+  } else {
+    memset(buffOutPtr, this->SPInopCommand, numBytes + 1);
+  }
 
   // ensure GPIO is low
   if(this->gpioPin == RADIOLIB_NC) {
@@ -253,64 +287,20 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     while(this->hal->digitalRead(this->gpioPin)) {
       this->hal->yield();
       if(this->hal->millis() - start >= timeout) {
-        RADIOLIB_DEBUG_PRINTLN("Timed out waiting for GPIO pin, is it connected?");
+        RADIOLIB_DEBUG_PRINTLN("GPIO pre-transfer timeout, is it connected?");
+        #if !defined(RADIOLIB_STATIC_ONLY)
+          delete[] buffOut;
+          delete[] buffIn;
+        #endif
         return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
       }
     }
   }
 
-  // pull NSS low
+  // do the transfer
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
-
-  // start transfer
   this->hal->spiBeginTransaction();
-
-  // send command byte(s)
-  for(uint8_t n = 0; n < cmdLen; n++) {
-    this->hal->spiTransfer(cmd[n]);
-  }
-
-  // variable to save error during SPI transfer
-  int16_t state = RADIOLIB_ERR_NONE;
-
-  // send/receive all bytes
-  if(write) {
-    for(size_t n = 0; n < numBytes; n++) {
-      // send byte
-      uint8_t in = this->hal->spiTransfer(dataOut[n]);
-      #if defined(RADIOLIB_VERBOSE)
-        debugBuff[n] = in;
-      #endif
-
-      // check status
-      if(this->SPIparseStatusCb != nullptr) {
-        state = this->SPIparseStatusCb(in);
-      }
-    }
-
-  } else {
-    // skip the first byte for read-type commands (status-only)
-    uint8_t in = this->hal->spiTransfer(this->SPInopCommand);
-    #if defined(RADIOLIB_VERBOSE)
-      debugBuff[0] = in;
-    #endif
-
-    // check status
-    if(this->SPIparseStatusCb != nullptr) {
-      state = this->SPIparseStatusCb(in);
-    } else {
-      state = RADIOLIB_ERR_NONE;
-    }
-
-    // read the data
-    if(state == RADIOLIB_ERR_NONE) {
-      for(size_t n = 0; n < numBytes; n++) {
-        dataIn[n] = this->hal->spiTransfer(this->SPInopCommand);
-      }
-    }
-  }
-
-  // stop transfer
+  this->hal->spiTransfer(buffOut, buffLen, buffIn);
   this->hal->spiEndTransaction();
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
 
@@ -324,39 +314,60 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
         if(this->hal->millis() - start >= timeout) {
-          state = RADIOLIB_ERR_SPI_CMD_TIMEOUT;
-          break;
+          RADIOLIB_DEBUG_PRINTLN("GPIO post-transfer timeout, is it connected?");
+          #if !defined(RADIOLIB_STATIC_ONLY)
+            delete[] buffOut;
+            delete[] buffIn;
+          #endif
+          return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
         }
       }
     }
   }
 
-  // print debug output
+  // parse status
+  int16_t state = RADIOLIB_ERR_NONE;
+  if(this->SPIparseStatusCb != nullptr) {
+    state = this->SPIparseStatusCb(buffIn[0]);
+  }
+  
+  // copy the data
+  if(!write) {
+    // skip the first byte for read-type commands (status-only)
+    memcpy(dataIn, &buffIn[cmdLen + 1], numBytes);
+  }
+
+  // print debug information
   #if defined(RADIOLIB_VERBOSE)
     // print command byte(s)
-    RADIOLIB_VERBOSE_PRINT("CMD\t");
-    for(uint8_t n = 0; n < cmdLen; n++) {
+    RADIOLIB_VERBOSE_PRINT("CMD");
+    if(write) {
+      RADIOLIB_VERBOSE_PRINT("W\t");
+    } else {
+      RADIOLIB_VERBOSE_PRINT("R\t");
+    }
+    size_t n = 0;
+    for(; n < cmdLen; n++) {
       RADIOLIB_VERBOSE_PRINT("%X\t", cmd[n]);
     }
     RADIOLIB_VERBOSE_PRINTLN();
 
     // print data bytes
-    RADIOLIB_VERBOSE_PRINT("DAT");
-    if(write) {
-      RADIOLIB_VERBOSE_PRINT("W\t");
-      for(size_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT("%X\t%X\t", dataOut[n], debugBuff[n]);
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
-    } else {
-      RADIOLIB_VERBOSE_PRINT("R\t%X\t%X\t", this->SPInopCommand, debugBuff[0]);
-
-      for(size_t n = 0; n < numBytes; n++) {
-        RADIOLIB_VERBOSE_PRINT("%X\t%X\t", this->SPInopCommand, dataIn[n]);
-      }
-      RADIOLIB_VERBOSE_PRINTLN();
+    RADIOLIB_VERBOSE_PRINT("SI\t");
+    for(; n < buffLen; n++) {
+      RADIOLIB_VERBOSE_PRINT("%X\t", buffOut[n]);
     }
     RADIOLIB_VERBOSE_PRINTLN();
+    RADIOLIB_VERBOSE_PRINT("SO\t");
+    for(n = cmdLen; n < buffLen; n++) {
+      RADIOLIB_VERBOSE_PRINT("%X\t", buffIn[n]);
+    }
+    RADIOLIB_VERBOSE_PRINTLN();
+  #endif
+
+  #if !defined(RADIOLIB_STATIC_ONLY)
+    delete[] buffOut;
+    delete[] buffIn;
   #endif
 
   return(state);

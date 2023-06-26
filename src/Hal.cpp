@@ -20,16 +20,16 @@ void RadioLibHal::tone(uint32_t pin, unsigned int frequency, unsigned long durat
   (void)pin;
   (void)frequency;
   (void)duration;
-};
+}
 
 void RadioLibHal::noTone(uint32_t pin) {
   (void)pin;
-};
+}
 
 void RadioLibHal::yield() {
 
-};
+}
 
 uint32_t RadioLibHal::pinToInterrupt(uint32_t pin) {
   return(pin);
-};
+}
