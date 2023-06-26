@@ -67,7 +67,8 @@ void loop() {
 
   // you can transmit C-string or Arduino string up to
   // 32 characters long
-  int state = radio.transmit("Hello World! #" + String(count++));
+  String str = "Hello World! #" + String(count++);
+  int state = radio.transmit(str);
 
   if (state == RADIOLIB_ERR_NONE) {
     // the packet was successfully transmitted

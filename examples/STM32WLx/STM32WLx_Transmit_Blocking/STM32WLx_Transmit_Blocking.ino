@@ -79,7 +79,8 @@ void loop() {
 
   // you can transmit C-string or Arduino string up to
   // 256 characters long
-  int state = radio.transmit("Hello World! #" + String(count++));
+  String str = "Hello World! #" + String(count++);
+  int state = radio.transmit(str);
 
   // you can also transmit byte array up to 256 bytes long
   /*
