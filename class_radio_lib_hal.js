@@ -18,7 +18,7 @@ var class_radio_lib_hal =
     [ "spiBeginTransaction", "class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460", null ],
     [ "spiEnd", "class_radio_lib_hal.html#a41c85e560155d644f5b4ce8444dd8b64", null ],
     [ "spiEndTransaction", "class_radio_lib_hal.html#a68d9271c76f8c96afb734a4634bf92e9", null ],
-    [ "spiTransfer", "class_radio_lib_hal.html#a12facb08577402e50c91c75ca7dd560f", null ],
+    [ "spiTransfer", "class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a", null ],
     [ "term", "class_radio_lib_hal.html#aa4f2bd49aea5a19aa9f85c720b4a883e", null ],
     [ "tone", "class_radio_lib_hal.html#ab4cc3bef7109f00b77b95e84511b0bb9", null ],
     [ "yield", "class_radio_lib_hal.html#a1bd9d614f66b374ec820ce31b167fdb2", null ],

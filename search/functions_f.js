@@ -97,7 +97,7 @@ var searchData=
   ['spireadregisterburst_715',['SPIreadRegisterBurst',['../class_module.html#a874e030f1931e606e380930d37dd83ee',1,'Module']]],
   ['spireadstream_716',['SPIreadStream',['../class_module.html#ab9fc874adc8dbe7c3f1fd3c267c27708',1,'Module::SPIreadStream(uint8_t cmd, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)'],['../class_module.html#a085415b49ff72238f118b937ad896cbd',1,'Module::SPIreadStream(uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)']]],
   ['spisetregvalue_717',['SPIsetRegValue',['../class_module.html#a081191402ad5c49e6c21982fc4587b77',1,'Module']]],
-  ['spitransfer_718',['spiTransfer',['../class_radio_lib_hal.html#a12facb08577402e50c91c75ca7dd560f',1,'RadioLibHal']]],
+  ['spitransfer_718',['spiTransfer',['../class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a',1,'RadioLibHal']]],
   ['spitransfer_719',['SPItransfer',['../class_module.html#a78dd39aa71d97e2220a880df8162fdde',1,'Module']]],
   ['spitransferstream_720',['SPItransferStream',['../class_module.html#ac3586c8d4013cbdd22cf34032632c181',1,'Module']]],
   ['spiwriteregister_721',['SPIwriteRegister',['../class_module.html#a4437af6552e258e95ed8ed452afa6dd4',1,'Module']]],

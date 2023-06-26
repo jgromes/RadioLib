@@ -108,7 +108,7 @@ var searchData=
   ['spistatuscommand_367',['SPIstatusCommand',['../class_module.html#a06d8d4257c584b57a529fcc405d87c79',1,'Module']]],
   ['spistreamerror_368',['SPIstreamError',['../class_module.html#a66b06e69d57b97116bed1c6f185381f1',1,'Module']]],
   ['spistreamtype_369',['SPIstreamType',['../class_module.html#a34927454be3a34df8a5a586c46c428af',1,'Module']]],
-  ['spitransfer_370',['spiTransfer',['../class_radio_lib_hal.html#a12facb08577402e50c91c75ca7dd560f',1,'RadioLibHal']]],
+  ['spitransfer_370',['spiTransfer',['../class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a',1,'RadioLibHal']]],
   ['spitransfer_371',['SPItransfer',['../class_module.html#a78dd39aa71d97e2220a880df8162fdde',1,'Module']]],
   ['spitransferstream_372',['SPItransferStream',['../class_module.html#ac3586c8d4013cbdd22cf34032632c181',1,'Module']]],
   ['spiwritecommand_373',['SPIwriteCommand',['../class_module.html#ae89764d15e8df5694a6aec0e18f72d3f',1,'Module']]],

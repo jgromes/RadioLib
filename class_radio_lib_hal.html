@@ -134,9 +134,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460">spiBeginTransaction</a> ()=0</td></tr>
 <tr class="memdesc:abe787d5e556190eef2c63e1581235460"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to start SPI transaction. <br /></td></tr>
 <tr class="separator:abe787d5e556190eef2c63e1581235460"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12facb08577402e50c91c75ca7dd560f"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a12facb08577402e50c91c75ca7dd560f">spiTransfer</a> (uint8_t b)=0</td></tr>
-<tr class="memdesc:a12facb08577402e50c91c75ca7dd560f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to transfer one byte over SPI.  <a href="class_radio_lib_hal.html#a12facb08577402e50c91c75ca7dd560f">More...</a><br /></td></tr>
-<tr class="separator:a12facb08577402e50c91c75ca7dd560f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebcaaf0cefdaaf5b572d4261e472ac8a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a">spiTransfer</a> (uint8_t *out, size_t len, uint8_t *in)=0</td></tr>
+<tr class="memdesc:aebcaaf0cefdaaf5b572d4261e472ac8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to transfer buffer over SPI.  <a href="class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a">More...</a><br /></td></tr>
+<tr class="separator:aebcaaf0cefdaaf5b572d4261e472ac8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68d9271c76f8c96afb734a4634bf92e9"><td class="memItemLeft" align="right" valign="top"><a id="a68d9271c76f8c96afb734a4634bf92e9"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a68d9271c76f8c96afb734a4634bf92e9">spiEndTransaction</a> ()=0</td></tr>
 <tr class="memdesc:a68d9271c76f8c96afb734a4634bf92e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to end SPI transaction. <br /></td></tr>
@@ -718,8 +718,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="a12facb08577402e50c91c75ca7dd560f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12facb08577402e50c91c75ca7dd560f">&#9670;&nbsp;</a></span>spiTransfer()</h2>
+<a id="aebcaaf0cefdaaf5b572d4261e472ac8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebcaaf0cefdaaf5b572d4261e472ac8a">&#9670;&nbsp;</a></span>spiTransfer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -728,11 +728,27 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual uint8_t RadioLibHal::spiTransfer </td>
+          <td class="memname">virtual void RadioLibHal::spiTransfer </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>b</em></td><td>)</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>out</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>in</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -742,14 +758,15 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 </table>
 </div><div class="memdoc">
 
-<p>Method to transfer one byte over SPI. </p>
+<p>Method to transfer buffer over SPI. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">b</td><td>Byte to send. </td></tr>
+    <tr><td class="paramname">out</td><td>Buffer to send. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of data to send or receive. </td></tr>
+    <tr><td class="paramname">in</td><td>Buffer to save received data into. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Received byte. </dd></dl>
 
 </div>
 </div>
