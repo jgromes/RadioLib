@@ -338,9 +338,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aee5324d7d854e7a2f6768221d4f362cd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a> ()</td></tr>
 <tr class="memdesc:aee5324d7d854e7a2f6768221d4f362cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> is connected and working.  <a href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">More...</a><br /></td></tr>
 <tr class="separator:aee5324d7d854e7a2f6768221d4f362cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">invertIQ</a> (bool invertIQ)</td></tr>
-<tr class="memdesc:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#a1f6c61b16a39a2bbb5b94b3685caae04">More...</a><br /></td></tr>
-<tr class="separator:a1f6c61b16a39a2bbb5b94b3685caae04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4f377acb95484a8a0bc9d15adff047f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">invertIQ</a> (bool enable)</td></tr>
+<tr class="memdesc:af4f377acb95484a8a0bc9d15adff047f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">More...</a><br /></td></tr>
+<tr class="separator:af4f377acb95484a8a0bc9d15adff047f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3f409359eafa5988e8e4c2948735238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:aa3f409359eafa5988e8e4c2948735238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">More...</a><br /></td></tr>
 <tr class="separator:aa3f409359eafa5988e8e4c2948735238"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1106,8 +1106,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a1f6c61b16a39a2bbb5b94b3685caae04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f6c61b16a39a2bbb5b94b3685caae04">&#9670;&nbsp;</a></span>invertIQ()</h2>
+<a id="af4f377acb95484a8a0bc9d15adff047f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4f377acb95484a8a0bc9d15adff047f">&#9670;&nbsp;</a></span>invertIQ()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1116,7 +1116,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX127x::invertIQ </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>invertIQ</em></td><td>)</td>
+          <td class="paramname"><em>enable</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1125,7 +1125,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Enable/disable inversion of the I and Q signals. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">invertIQ</td><td>QI inversion enabled (true) or disabled (false); </td></tr>
+    <tr><td class="paramname">enable</td><td>QI inversion enabled (true) or disabled (false); </td></tr>
   </table>
   </dd>
 </dl>
