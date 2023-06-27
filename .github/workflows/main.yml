@@ -38,6 +38,7 @@ on:
           - CubeCell:CubeCell:CubeCell-Board
           - MegaCore:avr:1281
           - teensy:avr:teensy41
+          - arduino:renesas_uno:minima
 
 jobs:
   build:
