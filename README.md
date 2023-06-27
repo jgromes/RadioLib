@@ -50,6 +50,7 @@ SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
   * [__megaAVR__](https://github.com/arduino/ArduinoCore-megaavr) - Arduino Uno WiFi Rev.2 and Nano Every
   * [__SAM__](https://github.com/arduino/ArduinoCore-sam) - Arduino Due
   * [__SAMD__](https://github.com/arduino/ArduinoCore-samd) - Arduino Zero, MKR boards, M0 Pro etc.
+  * [__Renesas__](https://github.com/arduino/ArduinoCore-renesas) - Arduino Uno R4
 
 * __Adafruit__
   * [__SAMD__](https://github.com/adafruit/ArduinoCore-samd) - Adafruit Feather M0 and M4 boards (Feather, Metro, Gemma, Trinket etc.)

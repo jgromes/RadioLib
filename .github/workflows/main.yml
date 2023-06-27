@@ -105,6 +105,7 @@ jobs:
             run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
           - id: teensy:avr:teensy41
             run: echo "index-url=--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json" >> $GITHUB_OUTPUT
+          - id: arduino:renesas_uno:minima
 
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}

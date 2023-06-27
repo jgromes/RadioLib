@@ -242,6 +242,13 @@
   // Teensy
   #define RADIOLIB_PLATFORM                           "Teensy"
 
+#elif defined(ARDUINO_ARCH_RENESAS)
+  // Arduino Renesas (UNO R4)
+  #define RADIOLIB_PLATFORM                           "Arduino Renesas (UNO R4)"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
+
 #else
   // other Arduino platforms not covered by the above list - this may or may not work
   #define RADIOLIB_PLATFORM                           "Unknown Arduino"
