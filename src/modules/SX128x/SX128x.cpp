@@ -1349,7 +1349,7 @@ void SX128x::readBit(uint32_t pin) {
 
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;
-  this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_STATUS, &data, 1);
+  this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_STATUS, &data, 0);
   return(data);
 }
 
