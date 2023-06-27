@@ -1852,7 +1852,7 @@ int16_t SX126x::setRegulatorMode(uint8_t mode) {
 
 uint8_t SX126x::getStatus() {
   uint8_t data = 0;
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_STATUS, &data, 1);
+  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_STATUS, &data, 0);
   return(data);
 }
 

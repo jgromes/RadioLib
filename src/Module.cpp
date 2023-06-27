@@ -240,7 +240,7 @@ int16_t Module::SPIcheckStream() {
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = this->SPIstatusCommand;
-  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 0, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   // translate to RadioLib status code
