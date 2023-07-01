@@ -109,27 +109,27 @@ $(document).ready(function(){initNavTree('_s_x1262_8h_source.html',''); initResi
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// basic methods</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#a9ceab9913d102c2fd657a1a91afaf9cc">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">beginFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> calibrate);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">setOutputPower</a>(int8_t power);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#a9ceab9913d102c2fd657a1a91afaf9cc">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1">beginFSK</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, <span class="keywordtype">float</span> tcxoVoltage = 1.6, <span class="keywordtype">bool</span> useRegulatorLDO = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    </div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="comment">// configuration methods</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    int16_t <a class="code" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> calibrate);</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">setOutputPower</a>(int8_t power);</div>
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;};</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:31</div></div>
 <div class="ttc" id="aclass_s_x1262_html"><div class="ttname"><a href="class_s_x1262.html">SX1262</a></div><div class="ttdoc">Derived class for SX1262 modules.</div><div class="ttdef"><b>Definition:</b> SX1262.h:22</div></div>
 <div class="ttc" id="aclass_s_x1262_html_a0da317728ec8ef23c5032d550c9acb8d"><div class="ttname"><a href="class_s_x1262.html#a0da317728ec8ef23c5032d550c9acb8d">SX1262::SX1262</a></div><div class="ttdeci">SX1262(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> SX1262.cpp:4</div></div>
