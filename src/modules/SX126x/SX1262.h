@@ -38,7 +38,9 @@ class SX1262: public SX126x {
       \param syncWord 1-byte LoRa sync word. Defaults to RADIOLIB_SX126X_SYNC_WORD_PRIVATE (0x12).
       \param power Output power in dBm. Defaults to 10 dBm.
       \param preambleLength LoRa preamble length in symbols. Defaults to 8 symbols.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
@@ -52,7 +54,9 @@ class SX1262: public SX126x {
       \param rxBw Receiver bandwidth in kHz. Defaults to 156.2 kHz.
       \param power Output power in dBm. Defaults to 10 dBm.
       \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
+      To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
