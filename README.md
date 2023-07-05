@@ -85,7 +85,7 @@ SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * __PJRC__
   * [__Teensy__](https://github.com/PaulStoffregen/cores) - Teensy 2.x, 3.x and 4.x boards
 
-The list above is by no means exhaustive - RadioLib code is independent of the used platform! Compilation of all examples is tested for all platforms officially supported prior to releasing new version. In addition, RadioLib includes an internal hardware abstracton layer, which allows it to be easily ported even to non-Arduino encironments.
+The list above is by no means exhaustive - RadioLib code is independent of the used platform! Compilation of all examples is tested for all platforms officially supported prior to releasing new version. In addition, RadioLib includes an internal hardware abstraction layer, which allows it to be easily ported even to non-Arduino environments.
 
 ### In development:
 * __AX5243__ FSK module
