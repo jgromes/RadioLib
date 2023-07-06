@@ -246,6 +246,32 @@ int16_t PhysicalLayer::setEncoding(uint8_t encoding) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::invertIQ(bool enable) {
+  (void)enable;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setOutputPower(int8_t power) {
+  (void)power;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setSyncWord(uint8_t* sync, size_t len) {
+  (void)sync;
+  (void)len;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setPreambleLength(size_t len) {
+  (void)len;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setDataRate(DataRate_t dr) {
+  (void)dr;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 float PhysicalLayer::getFreqStep() const {
   return(this->freqStep);
 }

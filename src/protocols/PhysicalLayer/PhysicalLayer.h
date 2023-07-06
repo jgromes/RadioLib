@@ -4,6 +4,24 @@
 #include "../../TypeDef.h"
 #include "../../Module.h"
 
+// data rate structure interpretation in case LoRa is used
+struct LoRaRate_t {
+  uint8_t spreadingFactor;
+  float bandwidth;
+};
+
+// data rate structure interpretation in case FSK is used
+struct FSKRate_t {
+  float bitRate;
+  float freqDev;
+};
+
+// common data rate
+union DataRate_t {
+  LoRaRate_t lora;
+  FSKRate_t fsk;
+};
+
 /*!
   \class PhysicalLayer
 
@@ -222,6 +240,42 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t setEncoding(uint8_t encoding);
+
+    /*!
+      \brief Set IQ inversion. Must be implemented in module class if the module supports it.
+      \param enable True to use inverted IQ, false for non-inverted.
+      \returns \ref status_codes
+    */
+    virtual int16_t invertIQ(bool enable);
+
+    /*!
+      \brief Set output power. Must be implemented in module class if the module supports it.
+      \param power Output power in dBm. The allowed range depends on the module used.
+      \returns \ref status_codes
+    */
+    virtual int16_t setOutputPower(int8_t power);
+
+    /*!
+      \brief Set sync word. Must be implemented in module class if the module supports it.
+      \param sync Pointer to the sync word.
+      \param len Sync word length in bytes. Maximum length depends on the module used.
+      \returns \ref status_codes
+    */
+    virtual int16_t setSyncWord(uint8_t* sync, size_t len);
+
+    /*!
+      \brief Set preamble length. Must be implemented in module class if the module supports it.
+      \param len Preamble length in bytes. Maximum length depends on the module used.
+      \returns \ref status_codes
+    */
+    virtual int16_t setPreambleLength(size_t len);
+    
+    /*!
+      \brief Set data. Must be implemented in module class if the module supports it.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    virtual int16_t setDataRate(DataRate_t dr);
 
     /*!
       \brief Gets the module frequency step size that was set in constructor.
