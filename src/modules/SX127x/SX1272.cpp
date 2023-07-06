@@ -220,6 +220,35 @@ int16_t SX1272::setBitRate(float br) {
   return(SX127x::setBitRateCommon(br, RADIOLIB_SX1272_REG_BIT_RATE_FRAC));
 }
 
+int16_t SX1272::setDataRate(DataRate_t dr) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
+  // select interpretation based on active modem
+  uint8_t modem = this->getActiveModem();
+  if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(modem == RADIOLIB_SX127X_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+  }
+
+  return(state);
+}
+
+int16_t SX1272::setOutputPower(int8_t power) {
+  return(this->setOutputPower(power, false));
+}
+
 int16_t SX1272::setOutputPower(int8_t power, bool useRfo) {
   // check allowed power range
   if(useRfo) {

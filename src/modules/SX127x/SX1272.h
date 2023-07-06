@@ -176,14 +176,29 @@ class SX1272: public SX127x {
       \returns \ref status_codes
     */
     int16_t setBitRate(float br) override;
+    
+    /*!
+      \brief Set data.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
+
+    /*!
+      \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
+      High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST.
+      \param power Transmission output power in dBm.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power) override;
 
     /*!
       \brief Sets transmission output power. Allowed values range from -1 to 14 dBm (RFO pin) or +2 to +20 dBm (PA_BOOST pin).
       \param power Transmission output power in dBm.
-      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST.
+      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool useRfo = false);
+    int16_t setOutputPower(int8_t power, bool useRfo);
 
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.

@@ -66,4 +66,29 @@ int16_t SX1273::setSpreadingFactor(uint8_t sf) {
   return(state);
 }
 
+int16_t SX1273::setDataRate(DataRate_t dr) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
+  // select interpretation based on active modem
+  uint8_t modem = this->getActiveModem();
+  if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(modem == RADIOLIB_SX127X_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+  }
+
+  return(state);
+}
+
 #endif

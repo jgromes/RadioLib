@@ -856,7 +856,7 @@ class SX127x: public PhysicalLayer {
       \param preambleLength Preamble length to be set (in symbols when in LoRa mode or bits in FSK mode).
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint16_t preambleLength);
+    int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
       \brief Gets frequency error of the latest received packet.
@@ -924,7 +924,7 @@ class SX127x: public PhysicalLayer {
       \param len Sync word length (in bytes).
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, size_t len);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
       \brief Sets FSK node address. Calling this method will enable address filtering. Only available in FSK mode.
@@ -1089,7 +1089,7 @@ class SX127x: public PhysicalLayer {
       \param enable QI inversion enabled (true) or disabled (false);
       \returns \ref status_codes
     */
-    int16_t invertIQ(bool enable);
+    int16_t invertIQ(bool enable) override;
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!

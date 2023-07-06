@@ -729,7 +729,7 @@ int16_t SX127x::setCurrentLimit(uint8_t currentLimit) {
   return(state);
 }
 
-int16_t SX127x::setPreambleLength(uint16_t preambleLength) {
+int16_t SX127x::setPreambleLength(size_t preambleLength) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
@@ -973,27 +973,36 @@ int16_t SX127x::setAFCAGCTrigger(uint8_t trigger) {
 
 int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   // check active modem
-  if(getActiveModem() != RADIOLIB_SX127X_FSK_OOK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
+  uint8_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    RADIOLIB_CHECK_RANGE(len, 1, 8, RADIOLIB_ERR_INVALID_SYNC_WORD);
 
-  RADIOLIB_CHECK_RANGE(len, 1, 8, RADIOLIB_ERR_INVALID_SYNC_WORD);
+    // sync word must not contain value 0x00
+    for(size_t i = 0; i < len; i++) {
+      if(syncWord[i] == 0x00) {
+        return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+      }
+    }
 
-  // sync word must not contain value 0x00
-  for(size_t i = 0; i < len; i++) {
-    if(syncWord[i] == 0x00) {
+    // enable sync word recognition
+    int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_SYNC_ON, 4, 4);
+    state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, len - 1, 2, 0);
+    RADIOLIB_ASSERT(state);
+
+    // set sync word
+    this->mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_SYNC_VALUE_1, syncWord, len);
+    return(RADIOLIB_ERR_NONE);
+  
+  } else if(modem == RADIOLIB_SX127X_LORA) {
+    // with length set to 1 and LoRa modem active, assume it is the LoRa sync word
+    if(len > 1) {
       return(RADIOLIB_ERR_INVALID_SYNC_WORD);
     }
+
+    return(this->setSyncWord(syncWord[0]));
   }
 
-  // enable sync word recognition
-  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_SYNC_ON, 4, 4);
-  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, len - 1, 2, 0);
-  RADIOLIB_ASSERT(state);
-
-  // set sync word
-  this->mod->SPIwriteRegisterBurst(RADIOLIB_SX127X_REG_SYNC_VALUE_1, syncWord, len);
-  return(RADIOLIB_ERR_NONE);
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t SX127x::setNodeAddress(uint8_t nodeAddr) {

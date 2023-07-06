@@ -49,6 +49,13 @@ class SX1273: public SX1272 {
     */
     int16_t setSpreadingFactor(uint8_t sf);
 
+    /*!
+      \brief Set data.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
+
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
