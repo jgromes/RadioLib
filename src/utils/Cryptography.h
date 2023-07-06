@@ -6,6 +6,7 @@
 
 // AES-128 constants
 #define RADIOLIB_AES128_BLOCK_SIZE                              (16)
+#define RADIOLIB_AES128_KEY_SIZE                                (RADIOLIB_AES128_BLOCK_SIZE)
 #define RADIOLIB_AES128_N_K                                     ((RADIOLIB_AES128_BLOCK_SIZE) / sizeof(uint32_t))
 #define RADIOLIB_AES128_N_B                                     (4)
 #define RADIOLIB_AES128_N_R                                     (10)
