@@ -422,6 +422,21 @@
   #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
 #endif
 
+// the base address for persistent storage
+// some protocols (e.g. LoRaWAN) require a method
+// to store some data persistently
+// on Arduino, this will use EEPROM, on non-Arduino platform,
+// it will use anything provided by the hardware abstraction layer
+// RadioLib will place these starting at this address
+#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_BASE            (0)
+#endif
+
+// the amount of space allocated to the persistent storage
+#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (32)
+#endif
+
 // This only compiles on STM32 boards with SUBGHZ module, but also
 // include when generating docs
 #if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN)
