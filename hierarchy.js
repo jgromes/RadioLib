@@ -13,9 +13,14 @@ var hierarchy =
     [ "Bell103", "struct_bell103.html", null ],
     [ "Bell202", "struct_bell202.html", null ],
     [ "BellModem_t", "struct_bell_modem__t.html", null ],
+    [ "DataRate_t", "union_data_rate__t.html", null ],
     [ "FSK4Client", "class_f_s_k4_client.html", null ],
-    [ "Hal", "class_hal.html", null ],
+    [ "FSKRate_t", "struct_f_s_k_rate__t.html", null ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
+    [ "LoRaRate_t", "struct_lo_ra_rate__t.html", null ],
+    [ "LoRaWANBand_t", "struct_lo_ra_w_a_n_band__t.html", null ],
+    [ "LoRaWANChannelSpan_t", "struct_lo_ra_w_a_n_channel_span__t.html", null ],
+    [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", null ],
     [ "Module", "class_module.html", [
       [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ]
     ] ],

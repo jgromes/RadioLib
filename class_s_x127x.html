@@ -233,9 +233,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a400575e3d83977bd250c5cb382fc7002"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">setCurrentLimit</a> (uint8_t currentLimit)</td></tr>
 <tr class="memdesc:a400575e3d83977bd250c5cb382fc7002"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets current limit for over current protection at transmitter amplifier. Allowed values range from 45 to 120 mA in 5 mA steps and 120 to 240 mA in 10 mA steps.  <a href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">More...</a><br /></td></tr>
 <tr class="separator:a400575e3d83977bd250c5cb382fc7002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab608c45e0dcc44280df29580dc0a31ed"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">setPreambleLength</a> (uint16_t preambleLength)</td></tr>
-<tr class="memdesc:ab608c45e0dcc44280df29580dc0a31ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <a href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">More...</a><br /></td></tr>
-<tr class="separator:ab608c45e0dcc44280df29580dc0a31ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a844499bace6ae001446d71bee2877656"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a844499bace6ae001446d71bee2877656">setPreambleLength</a> (size_t preambleLength) override</td></tr>
+<tr class="memdesc:a844499bace6ae001446d71bee2877656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <a href="class_s_x127x.html#a844499bace6ae001446d71bee2877656">More...</a><br /></td></tr>
+<tr class="separator:a844499bace6ae001446d71bee2877656"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6aa854a2668d70f4d3a374a49440362"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">getFrequencyError</a> (bool autoCorrect=false)</td></tr>
 <tr class="memdesc:af6aa854a2668d70f4d3a374a49440362"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency error of the latest received packet.  <a href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">More...</a><br /></td></tr>
 <tr class="separator:af6aa854a2668d70f4d3a374a49440362"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -263,9 +263,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab0f67330124cefc07a462e77922453d0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">setAFCAGCTrigger</a> (uint8_t trigger)</td></tr>
 <tr class="memdesc:ab0f67330124cefc07a462e77922453d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls trigger of AFC and AGC.  <a href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">More...</a><br /></td></tr>
 <tr class="separator:ab0f67330124cefc07a462e77922453d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b7afe338fd5b81122c369ecaf0c3ebc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b7afe338fd5b81122c369ecaf0c3ebc">setSyncWord</a> (uint8_t *syncWord, size_t len)</td></tr>
-<tr class="memdesc:a9b7afe338fd5b81122c369ecaf0c3ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.  <a href="class_s_x127x.html#a9b7afe338fd5b81122c369ecaf0c3ebc">More...</a><br /></td></tr>
-<tr class="separator:a9b7afe338fd5b81122c369ecaf0c3ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf400f33e17c1679c0b55cd70bef90b0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aaf400f33e17c1679c0b55cd70bef90b0">setSyncWord</a> (uint8_t *syncWord, size_t len) override</td></tr>
+<tr class="memdesc:aaf400f33e17c1679c0b55cd70bef90b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.  <a href="class_s_x127x.html#aaf400f33e17c1679c0b55cd70bef90b0">More...</a><br /></td></tr>
+<tr class="separator:aaf400f33e17c1679c0b55cd70bef90b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab99630d50672b43fc7162ba8f3293f95"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">setNodeAddress</a> (uint8_t nodeAddr)</td></tr>
 <tr class="memdesc:ab99630d50672b43fc7162ba8f3293f95"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK node address. Calling this method will enable address filtering. Only available in FSK mode.  <a href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">More...</a><br /></td></tr>
 <tr class="separator:ab99630d50672b43fc7162ba8f3293f95"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -338,9 +338,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aee5324d7d854e7a2f6768221d4f362cd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a> ()</td></tr>
 <tr class="memdesc:aee5324d7d854e7a2f6768221d4f362cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> is connected and working.  <a href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">More...</a><br /></td></tr>
 <tr class="separator:aee5324d7d854e7a2f6768221d4f362cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4f377acb95484a8a0bc9d15adff047f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">invertIQ</a> (bool enable)</td></tr>
-<tr class="memdesc:af4f377acb95484a8a0bc9d15adff047f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">More...</a><br /></td></tr>
-<tr class="separator:af4f377acb95484a8a0bc9d15adff047f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363a436978ba990e1bf7d73f648ad7e9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">invertIQ</a> (bool enable) override</td></tr>
+<tr class="memdesc:a363a436978ba990e1bf7d73f648ad7e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">More...</a><br /></td></tr>
+<tr class="separator:a363a436978ba990e1bf7d73f648ad7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3f409359eafa5988e8e4c2948735238"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:aa3f409359eafa5988e8e4c2948735238"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">More...</a><br /></td></tr>
 <tr class="separator:aa3f409359eafa5988e8e4c2948735238"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,6 +409,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">setDataShaping</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">More...</a><br /></td></tr>
 <tr class="separator:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
+<tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">More...</a><br /></td></tr>
+<tr class="separator:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
+<tr class="memdesc:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">More...</a><br /></td></tr>
+<tr class="separator:a6ee1fed6bbb8d3571974153ac6f26751 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1106,11 +1112,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="af4f377acb95484a8a0bc9d15adff047f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4f377acb95484a8a0bc9d15adff047f">&#9670;&nbsp;</a></span>invertIQ()</h2>
+<a id="a363a436978ba990e1bf7d73f648ad7e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a363a436978ba990e1bf7d73f648ad7e9">&#9670;&nbsp;</a></span>invertIQ()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX127x::invertIQ </td>
@@ -1120,6 +1129,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Enable/disable inversion of the I and Q signals. </p>
@@ -1130,6 +1144,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2147,20 +2163,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ab608c45e0dcc44280df29580dc0a31ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab608c45e0dcc44280df29580dc0a31ed">&#9670;&nbsp;</a></span>setPreambleLength()</h2>
+<a id="a844499bace6ae001446d71bee2877656"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a844499bace6ae001446d71bee2877656">&#9670;&nbsp;</a></span>setPreambleLength()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX127x::setPreambleLength </td>
           <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>preambleLength</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode. </p>
@@ -2171,6 +2195,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a85db1ff64e6c56e054f276c511194633">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2369,11 +2395,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a9b7afe338fd5b81122c369ecaf0c3ebc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b7afe338fd5b81122c369ecaf0c3ebc">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<a id="aaf400f33e17c1679c0b55cd70bef90b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf400f33e17c1679c0b55cd70bef90b0">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX127x::setSyncWord </td>
@@ -2393,6 +2422,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode. </p>
@@ -2404,6 +2438,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
 
 </div>
 </div>

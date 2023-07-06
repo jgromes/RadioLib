@@ -141,9 +141,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afd6df07fc4972cc656f05670e6802f67"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#afd6df07fc4972cc656f05670e6802f67">setBitRate</a> (float br) override</td></tr>
 <tr class="memdesc:afd6df07fc4972cc656f05670e6802f67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Allowed values range from 0.5 to 300 kbps. Only available in FSK mode.  <a href="class_s_x1278.html#afd6df07fc4972cc656f05670e6802f67">More...</a><br /></td></tr>
 <tr class="separator:afd6df07fc4972cc656f05670e6802f67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fe05d0751714577f70da4290b7ced88"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a7fe05d0751714577f70da4290b7ced88">setOutputPower</a> (int8_t power, bool useRfo=false)</td></tr>
-<tr class="memdesc:a7fe05d0751714577f70da4290b7ced88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin). High power +20 dBm operation is also supported, on the PA_BOOST pin.  <a href="class_s_x1278.html#a7fe05d0751714577f70da4290b7ced88">More...</a><br /></td></tr>
-<tr class="separator:a7fe05d0751714577f70da4290b7ced88"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a286f1ee00e2c7f2ab1bd06b66196c3f9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a286f1ee00e2c7f2ab1bd06b66196c3f9">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr) override</td></tr>
+<tr class="memdesc:a286f1ee00e2c7f2ab1bd06b66196c3f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data.  <a href="class_s_x1278.html#a286f1ee00e2c7f2ab1bd06b66196c3f9">More...</a><br /></td></tr>
+<tr class="separator:a286f1ee00e2c7f2ab1bd06b66196c3f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69abc18e7fa0055e6b80024e8cde7db4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a69abc18e7fa0055e6b80024e8cde7db4">setOutputPower</a> (int8_t power) override</td></tr>
+<tr class="memdesc:a69abc18e7fa0055e6b80024e8cde7db4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin). High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST.  <a href="class_s_x1278.html#a69abc18e7fa0055e6b80024e8cde7db4">More...</a><br /></td></tr>
+<tr class="separator:a69abc18e7fa0055e6b80024e8cde7db4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca58a6c2e8fcef6414fdf3bc1eb62082"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#aca58a6c2e8fcef6414fdf3bc1eb62082">setOutputPower</a> (int8_t power, bool useRfo)</td></tr>
+<tr class="memdesc:aca58a6c2e8fcef6414fdf3bc1eb62082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin). High power +20 dBm operation is also supported, on the PA_BOOST pin.  <a href="class_s_x1278.html#aca58a6c2e8fcef6414fdf3bc1eb62082">More...</a><br /></td></tr>
+<tr class="separator:aca58a6c2e8fcef6414fdf3bc1eb62082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa57b713988cfa224a6db2ff325052931"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#aa57b713988cfa224a6db2ff325052931">setGain</a> (uint8_t gain)</td></tr>
 <tr class="memdesc:aa57b713988cfa224a6db2ff325052931"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended).  <a href="class_s_x1278.html#aa57b713988cfa224a6db2ff325052931">More...</a><br /></td></tr>
 <tr class="separator:aa57b713988cfa224a6db2ff325052931"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,9 +292,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a400575e3d83977bd250c5cb382fc7002 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">setCurrentLimit</a> (uint8_t currentLimit)</td></tr>
 <tr class="memdesc:a400575e3d83977bd250c5cb382fc7002 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets current limit for over current protection at transmitter amplifier. Allowed values range from 45 to 120 mA in 5 mA steps and 120 to 240 mA in 10 mA steps.  <a href="class_s_x127x.html#a400575e3d83977bd250c5cb382fc7002">More...</a><br /></td></tr>
 <tr class="separator:a400575e3d83977bd250c5cb382fc7002 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab608c45e0dcc44280df29580dc0a31ed inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">setPreambleLength</a> (uint16_t preambleLength)</td></tr>
-<tr class="memdesc:ab608c45e0dcc44280df29580dc0a31ed inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <a href="class_s_x127x.html#ab608c45e0dcc44280df29580dc0a31ed">More...</a><br /></td></tr>
-<tr class="separator:ab608c45e0dcc44280df29580dc0a31ed inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a844499bace6ae001446d71bee2877656 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a844499bace6ae001446d71bee2877656">setPreambleLength</a> (size_t preambleLength) override</td></tr>
+<tr class="memdesc:a844499bace6ae001446d71bee2877656 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or FSK preamble length. Allowed values range from 6 to 65535 in LoRa mode or 0 to 65535 in FSK mode.  <a href="class_s_x127x.html#a844499bace6ae001446d71bee2877656">More...</a><br /></td></tr>
+<tr class="separator:a844499bace6ae001446d71bee2877656 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6aa854a2668d70f4d3a374a49440362 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">getFrequencyError</a> (bool autoCorrect=false)</td></tr>
 <tr class="memdesc:af6aa854a2668d70f4d3a374a49440362 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets frequency error of the latest received packet.  <a href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">More...</a><br /></td></tr>
 <tr class="separator:af6aa854a2668d70f4d3a374a49440362 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -316,9 +322,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab0f67330124cefc07a462e77922453d0 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">setAFCAGCTrigger</a> (uint8_t trigger)</td></tr>
 <tr class="memdesc:ab0f67330124cefc07a462e77922453d0 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controls trigger of AFC and AGC.  <a href="class_s_x127x.html#ab0f67330124cefc07a462e77922453d0">More...</a><br /></td></tr>
 <tr class="separator:ab0f67330124cefc07a462e77922453d0 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b7afe338fd5b81122c369ecaf0c3ebc inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9b7afe338fd5b81122c369ecaf0c3ebc">setSyncWord</a> (uint8_t *syncWord, size_t len)</td></tr>
-<tr class="memdesc:a9b7afe338fd5b81122c369ecaf0c3ebc inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.  <a href="class_s_x127x.html#a9b7afe338fd5b81122c369ecaf0c3ebc">More...</a><br /></td></tr>
-<tr class="separator:a9b7afe338fd5b81122c369ecaf0c3ebc inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf400f33e17c1679c0b55cd70bef90b0 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aaf400f33e17c1679c0b55cd70bef90b0">setSyncWord</a> (uint8_t *syncWord, size_t len) override</td></tr>
+<tr class="memdesc:aaf400f33e17c1679c0b55cd70bef90b0 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK sync word. Allowed sync words are up to 8 bytes long and can not contain null bytes. Only available in FSK mode.  <a href="class_s_x127x.html#aaf400f33e17c1679c0b55cd70bef90b0">More...</a><br /></td></tr>
+<tr class="separator:aaf400f33e17c1679c0b55cd70bef90b0 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab99630d50672b43fc7162ba8f3293f95 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">setNodeAddress</a> (uint8_t nodeAddr)</td></tr>
 <tr class="memdesc:ab99630d50672b43fc7162ba8f3293f95 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK node address. Calling this method will enable address filtering. Only available in FSK mode.  <a href="class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95">More...</a><br /></td></tr>
 <tr class="separator:ab99630d50672b43fc7162ba8f3293f95 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -391,9 +397,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aee5324d7d854e7a2f6768221d4f362cd inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">getChipVersion</a> ()</td></tr>
 <tr class="memdesc:aee5324d7d854e7a2f6768221d4f362cd inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> is connected and working.  <a href="class_s_x127x.html#aee5324d7d854e7a2f6768221d4f362cd">More...</a><br /></td></tr>
 <tr class="separator:aee5324d7d854e7a2f6768221d4f362cd inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4f377acb95484a8a0bc9d15adff047f inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">invertIQ</a> (bool enable)</td></tr>
-<tr class="memdesc:af4f377acb95484a8a0bc9d15adff047f inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#af4f377acb95484a8a0bc9d15adff047f">More...</a><br /></td></tr>
-<tr class="separator:af4f377acb95484a8a0bc9d15adff047f inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">invertIQ</a> (bool enable) override</td></tr>
+<tr class="memdesc:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">More...</a><br /></td></tr>
+<tr class="separator:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3f409359eafa5988e8e4c2948735238 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">setDirectAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:aa3f409359eafa5988e8e4c2948735238 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode.  <a href="class_s_x127x.html#aa3f409359eafa5988e8e4c2948735238">More...</a><br /></td></tr>
 <tr class="separator:aa3f409359eafa5988e8e4c2948735238 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -926,6 +932,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a286f1ee00e2c7f2ab1bd06b66196c3f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a286f1ee00e2c7f2ab1bd06b66196c3f9">&#9670;&nbsp;</a></span>setDataRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1278::setDataRate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="afb740a4925b64d83d5edca10d93f0563"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afb740a4925b64d83d5edca10d93f0563">&#9670;&nbsp;</a></span>setDataShaping()</h2>
 
@@ -1056,8 +1099,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a7fe05d0751714577f70da4290b7ced88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7fe05d0751714577f70da4290b7ced88">&#9670;&nbsp;</a></span>setOutputPower()</h2>
+<a id="a69abc18e7fa0055e6b80024e8cde7db4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69abc18e7fa0055e6b80024e8cde7db4">&#9670;&nbsp;</a></span>setOutputPower() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1278::setOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets transmission output power. Allowed values range from -3 to 15 dBm (RFO pin) or +2 to +17 dBm (PA_BOOST pin). High power +20 dBm operation is also supported, on the PA_BOOST pin. Defaults to PA_BOOST. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aca58a6c2e8fcef6414fdf3bc1eb62082"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca58a6c2e8fcef6414fdf3bc1eb62082">&#9670;&nbsp;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1072,7 +1152,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>useRfo</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>useRfo</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1086,7 +1166,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Transmission output power in dBm. </td></tr>
-    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. Defaults to PA_BOOST. </td></tr>
+    <tr><td class="paramname">useRfo</td><td>Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output. </td></tr>
   </table>
   </dd>
 </dl>

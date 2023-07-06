@@ -13,10 +13,12 @@ var class_s_x1272 =
     [ "setBitRate", "class_s_x1272.html#ab5c9a79d72996c3d793cee812b0aded5", null ],
     [ "setCodingRate", "class_s_x1272.html#a960913438feccad4c1913a9222384a5f", null ],
     [ "setCRC", "class_s_x1272.html#abd912314a977f92c464d36d862329ffc", null ],
+    [ "setDataRate", "class_s_x1272.html#a5b79b7cd20c4c3cd1f486f777b3457d1", null ],
     [ "setDataShaping", "class_s_x1272.html#a91aca64124321c07a67f26b3c6934aea", null ],
     [ "setDataShapingOOK", "class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47", null ],
     [ "setFrequency", "class_s_x1272.html#af409f50e51042cf9357c0a8267f762f8", null ],
     [ "setGain", "class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852", null ],
-    [ "setOutputPower", "class_s_x1272.html#a6677a04aa0c2f3bbde2509786b6a66de", null ],
+    [ "setOutputPower", "class_s_x1272.html#aec51f08c0902145ff5f11e27e7cab638", null ],
+    [ "setOutputPower", "class_s_x1272.html#a03f7073d710f18aad79b7d46f2fda659", null ],
     [ "setSpreadingFactor", "class_s_x1272.html#a82084ac58502c83d2ada998410307490", null ]
 ];

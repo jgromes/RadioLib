@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['fsk4client_442',['FSK4Client',['../class_f_s_k4_client.html',1,'']]]
+  ['externalradio_473',['ExternalRadio',['../class_external_radio.html',1,'']]]
 ];
