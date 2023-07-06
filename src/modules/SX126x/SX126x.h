@@ -744,7 +744,7 @@ class SX126x: public PhysicalLayer {
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK).
       \returns \ref status_codes
     */
-    int16_t setPreambleLength(uint16_t preambleLength);
+    int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
       \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
@@ -759,6 +759,13 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setBitRate(float br);
+
+    /*!
+      \brief Set data.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
 
     /*!
       \brief Sets FSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
@@ -793,7 +800,7 @@ class SX126x: public PhysicalLayer {
       \param len FSK sync word length in bytes.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
       \brief Sets FSK sync word in the form of array of up to 8 bytes.
@@ -984,7 +991,7 @@ class SX126x: public PhysicalLayer {
       \param enable QI inversion enabled (true) or disabled (false);
       \returns \ref status_codes
     */
-    int16_t invertIQ(bool enable);
+    int16_t invertIQ(bool enable) override;
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!

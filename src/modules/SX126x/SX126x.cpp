@@ -879,7 +879,7 @@ float SX126x::getCurrentLimit() {
   return((float)ocp * 2.5);
 }
 
-int16_t SX126x::setPreambleLength(uint16_t preambleLength) {
+int16_t SX126x::setPreambleLength(size_t preambleLength) {
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     this->preambleLengthLoRa = preambleLength;
@@ -935,6 +935,31 @@ int16_t SX126x::setBitRate(float br) {
 
   // update modulation parameters
   return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+}
+
+int16_t SX126x::setDataRate(DataRate_t dr) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
+  // select interpretation based on active modem
+  uint8_t modem = this->getPacketType();
+  if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+  }
+
+  return(state);
 }
 
 int16_t SX126x::setRxBandwidth(float rxBw) {
@@ -1068,26 +1093,34 @@ int16_t SX126x::setDataShaping(uint8_t sh) {
   return(setModulationParamsFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
-int16_t SX126x::setSyncWord(uint8_t* syncWord, uint8_t len) {
+int16_t SX126x::setSyncWord(uint8_t* syncWord, size_t len) {
   // check active modem
-  if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+  uint8_t modem = getPacketType();
+  if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    // check sync word Length
+    if(len > 8) {
+      return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+    }
+
+    // write sync word
+    int16_t state = writeRegister(RADIOLIB_SX126X_REG_SYNC_WORD_0, syncWord, len);
+    RADIOLIB_ASSERT(state);
+
+    // update packet parameters
+    this->syncWordLength = len * 8;
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+
+    return(state);
+  
+  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
+    // with length set to 1 and LoRa modem active, assume it is the LoRa sync word
+    if(len > 1) {
+      return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+    }
+    return(setSyncWord(syncWord[0]));
   }
 
-  // check sync word Length
-  if(len > 8) {
-    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
-  }
-
-  // write sync word
-  int16_t state = writeRegister(RADIOLIB_SX126X_REG_SYNC_WORD_0, syncWord, len);
-  RADIOLIB_ASSERT(state);
-
-  // update packet parameters
-  this->syncWordLength = len * 8;
-  state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
-
-  return(state);
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
