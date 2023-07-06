@@ -183,11 +183,14 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
   // check protocol version (1.0 vs 1.1)
   if(dlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) {
     // TODO implement 1.1
+    this->rev = 1;
     RADIOLIB_DEBUG_PRINTLN("LoRaWAN 1.1 not supported (yet)");
+    (void)appKey;
     return(RADIOLIB_ERR_UNSUPPORTED_ENCODING);
   
   } else {
     // 1.0 version, just derive the keys
+    this->rev = 0;
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
     RadioLibAES128Instance.init(nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
@@ -332,8 +335,14 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   uint32_t micS = this->generateMIC(uplinkMsg, uplinkMsgLen - sizeof(uint32_t), this->sNwkSIntKey);
   memcpy(uplinkMsg, block0, RADIOLIB_AES128_BLOCK_SIZE);
   uint32_t micF = this->generateMIC(uplinkMsg, uplinkMsgLen - sizeof(uint32_t), this->fNwkSIntKey);
-  // TODO check LoRaWAN 1.0/1.1
-  LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], micF);
+
+  // check LoRaWAN revision
+  if(this->rev == 1) {
+    uint32_t mic = ((uint32_t)(micS & 0x00FF) << 24) | ((uint32_t)(micS & 0xFF00) << 8) | ((uint32_t)(micF & 0xFF00) >> 8) | ((uint32_t)(micF & 0x00FF) << 8);
+    LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], mic);
+  } else {
+    LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], micF);
+  }
 
   //Module::hexdump(uplinkMsg, uplinkMsgLen);
 

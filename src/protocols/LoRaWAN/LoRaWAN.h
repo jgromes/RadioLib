@@ -304,6 +304,9 @@ class LoRaWANNode {
     float availableChannelsFreq[5];
     uint16_t availableChannelsMask[6];
 
+    // LoRaWAN revision (1.0 vs 1.1)
+    uint8_t rev;
+
     // currently configured data rate DR0 - DR15 (band-dependent!)
     uint8_t dataRate;
 
