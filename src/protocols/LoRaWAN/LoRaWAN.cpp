@@ -482,7 +482,7 @@ T LoRaWANNode::ntoh(uint8_t* buff, size_t size) {
     targetSize = size;
   }
   T res = 0;
-  for(uint8_t i = 0; i < targetSize; i++) {
+  for(size_t i = 0; i < targetSize; i++) {
     res |= (uint32_t)(*(buffPtr++)) << 8*i;
   }
   return(res);
@@ -495,7 +495,7 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
   if(size != 0) {
     targetSize = size;
   }
-  for(uint8_t i = 0; i < targetSize; i++) {
+  for(size_t i = 0; i < targetSize; i++) {
     *(buffPtr++) = val >> 8*i;
   }
 }
