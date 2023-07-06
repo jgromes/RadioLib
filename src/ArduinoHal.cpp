@@ -2,6 +2,8 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
+#include <EEPROM.h>
+
 ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
 
 ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
@@ -96,6 +98,31 @@ void inline ArduinoHal::spiEndTransaction() {
 
 void inline ArduinoHal::spiEnd() {
   spi->end();
+}
+
+void ArduinoHal::readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
+  #if defined(ESP32)
+    EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
+  #endif
+  for(size_t i = 0; i < len; i++) {
+    buff[i] = EEPROM.read(addr + i);
+  }
+  #if defined(ESP32)
+    EEPROM.end();
+  #endif
+}
+
+void ArduinoHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
+  #if defined(ESP32)
+    EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
+  #endif
+  for(size_t i = 0; i < len; i++) {
+    EEPROM.write(addr + i, buff[i]);
+  }
+  #if defined(ESP32)
+    EEPROM.commit();
+    EEPROM.end();
+  #endif
 }
 
 void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long duration) {

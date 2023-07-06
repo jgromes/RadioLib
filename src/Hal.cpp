@@ -33,3 +33,32 @@ void RadioLibHal::yield() {
 uint32_t RadioLibHal::pinToInterrupt(uint32_t pin) {
   return(pin);
 }
+
+void RadioLibHal::wipePersistentStorage() {
+  uint8_t dummy = 0;
+  for(size_t i = 0; i < RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE; i++) {
+    this->writePersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + i, &dummy, sizeof(uint8_t));
+  }
+}
+
+template<typename T>
+void RadioLibHal::setPersistentParameter(uint32_t id, T val) {
+  uint8_t *ptr = (uint8_t*)&val;
+  this->writePersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + RadioLibPersistentParamTable[id], ptr, sizeof(T));
+}
+
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint8_t val);
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint16_t val);
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint32_t val);
+
+template<typename T>
+T RadioLibHal::getPersistentParameter(uint32_t id) {
+  T val = 0;
+  uint8_t *ptr = (uint8_t*)&val;
+  this->readPersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + RadioLibPersistentParamTable[id], ptr, sizeof(T));
+  return(val);
+}
+
+template uint8_t RadioLibHal::getPersistentParameter(uint32_t id);
+template uint16_t RadioLibHal::getPersistentParameter(uint32_t id);
+template uint32_t RadioLibHal::getPersistentParameter(uint32_t id);

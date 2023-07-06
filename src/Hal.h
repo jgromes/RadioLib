@@ -4,8 +4,27 @@
 #include <stdint.h>
 #include <stddef.h>
 
+#include "BuildOpt.h"
+
+// list of persistent parameters
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID    (0)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID     (1)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID      (2)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_DOWN_ID    (3)
+
+static const uint32_t RadioLibPersistentParamTable[] = {
+  0x00,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID
+  0x02,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID
+  0x06,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID
+  0x0A,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_DOWN_ID
+};
+
+// static assert to make sure that the persistent parameter table will fit to the allocated storage space
+#define RADIOLIB_STATIC_ASSERT(test) typedef char radiolib_static_assert[( !!(test) )*2-1 ]
+RADIOLIB_STATIC_ASSERT( sizeof(RadioLibPersistentParamTable) <= RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE );
+
 /*!
-  \class Hal
+  \class RadioLibHal
   \brief Hardware abstraction library base interface.
 */
 class RadioLibHal {
@@ -205,6 +224,48 @@ class RadioLibHal {
       \returns The interrupt number of a given pin.
     */
     virtual uint32_t pinToInterrupt(uint32_t pin);
+
+    /*!
+      \brief Method to read from persistent storage (e.g. EEPROM).
+      \param addr Address to start reading at.
+      \param buff Buffer to read into.
+      \param len Number of bytes to read.
+    */
+    virtual void readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) = 0;
+
+    /*!
+      \brief Method to write to persistent storage (e.g. EEPROM).
+      \param addr Address to start writing to.
+      \param buff Buffer to write.
+      \param len Number of bytes to write.
+    */
+    virtual void writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) = 0;
+
+    /*!
+      \brief Method to wipe the persistent storage by writing to 0.
+      Will write at most RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE bytes.
+    */
+    void wipePersistentStorage();
+
+    /*!
+      \brief Method to set arbitrary parameter to persistent storage.
+      This method DOES NOT perform any endianness conversion, so the value
+      will be stored in the system endian!
+      \param id Parameter ID to save at.
+      \param val Value to set.
+    */
+    template<typename T>
+    void setPersistentParameter(uint32_t id, T val);
+
+    /*!
+      \brief Method to get arbitrary parameter from persistent storage.
+      This method DOES NOT perform any endianness conversion, so the value
+      will be retrieved in the system endian!
+      \param id Parameter ID to load from.
+      \returns The lodaded value.
+    */
+    template<typename T>
+    T getPersistentParameter(uint32_t id);
 };
 
 #endif
