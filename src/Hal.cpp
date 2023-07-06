@@ -34,11 +34,29 @@ uint32_t RadioLibHal::pinToInterrupt(uint32_t pin) {
   return(pin);
 }
 
+void RadioLibHal::readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
+  // these are only needed for some protocols, so it's not needed to have them by default
+  (void)addr;
+  (void)buff;
+  (void)len;
+}
+
+void RadioLibHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
+  // these are only needed for some protocols, so it's not needed to have them by default
+  (void)addr;
+  (void)buff;
+  (void)len;
+}
+
 void RadioLibHal::wipePersistentStorage() {
   uint8_t dummy = 0;
   for(size_t i = 0; i < RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE; i++) {
     this->writePersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + i, &dummy, sizeof(uint8_t));
   }
+}
+
+uint32_t RadioLibHal::getPersistentAddr(uint32_t id) {
+  return(RadioLibPersistentParamTable[id]);
 }
 
 template<typename T>

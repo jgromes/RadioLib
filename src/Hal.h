@@ -10,18 +10,23 @@
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID    (0)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID     (1)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID      (2)
-#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_DOWN_ID    (3)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID        (3)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_APP_S_KEY_ID    (4)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_FNWK_SINT_KEY_ID (5)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_SNWK_SINT_KEY_ID (6)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_NWK_SENC_KEY_ID (7)
 
 static const uint32_t RadioLibPersistentParamTable[] = {
   0x00,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID
-  0x02,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID
-  0x06,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID
-  0x0A,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_DOWN_ID
+  0x04,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID
+  0x08,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID
+  0x0C,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID
+  0x10,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_APP_S_KEY_ID
+  0x20,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_FNWK_SINT_KEY_ID
+  0x30,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_SNWK_SINT_KEY_ID
+  0x40,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_NWK_SENC_KEY_ID
+  0x50,   // end
 };
-
-// static assert to make sure that the persistent parameter table will fit to the allocated storage space
-#define RADIOLIB_STATIC_ASSERT(test) typedef char radiolib_static_assert[( !!(test) )*2-1 ]
-RADIOLIB_STATIC_ASSERT( sizeof(RadioLibPersistentParamTable) <= RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE );
 
 /*!
   \class RadioLibHal
@@ -231,7 +236,7 @@ class RadioLibHal {
       \param buff Buffer to read into.
       \param len Number of bytes to read.
     */
-    virtual void readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) = 0;
+    virtual void readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len);
 
     /*!
       \brief Method to write to persistent storage (e.g. EEPROM).
@@ -239,13 +244,15 @@ class RadioLibHal {
       \param buff Buffer to write.
       \param len Number of bytes to write.
     */
-    virtual void writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) = 0;
+    virtual void writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len);
 
     /*!
       \brief Method to wipe the persistent storage by writing to 0.
       Will write at most RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE bytes.
     */
     void wipePersistentStorage();
+
+    uint32_t getPersistentAddr(uint32_t id);
 
     /*!
       \brief Method to set arbitrary parameter to persistent storage.
