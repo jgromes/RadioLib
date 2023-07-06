@@ -56,6 +56,8 @@ APRSClient	KEYWORD1
 PagerClient	KEYWORD1
 ExternalRadio	KEYWORD1
 BellClient	KEYWORD1
+LoRaWANNode	KEYWORD1
+LoRaWANBand_t	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1
@@ -269,9 +271,17 @@ setPacketReceivedAction	KEYWORD2
 clearPacketReceivedAction	KEYWORD2
 setPacketSentAction	KEYWORD2
 clearPacketSentAction	KEYWORD2
+setDataRate	KEYWORD2
 
 # BellModem
 setModem	KEYWORD2
+
+# LoRaWAN
+wipe	KEYWORD2
+beginOTAA	KEYWORD2
+beginAPB	KEYWORD2
+uplink	KEYWORD2
+configureChannel	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
