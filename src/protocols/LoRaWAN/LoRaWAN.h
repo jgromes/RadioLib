@@ -196,6 +196,13 @@ struct LoRaWANBand_t {
 // supported bands
 extern const LoRaWANBand_t EU868;
 extern const LoRaWANBand_t US915;
+extern const LoRaWANBand_t CN780;
+extern const LoRaWANBand_t EU433;
+extern const LoRaWANBand_t AU915;
+extern const LoRaWANBand_t CN500;
+extern const LoRaWANBand_t AS923;
+extern const LoRaWANBand_t KR920;
+extern const LoRaWANBand_t IN865;
 
 /*!
   \class LoRaWANNode

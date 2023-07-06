@@ -75,6 +75,17 @@ Bell101	KEYWORD1
 Bell103	KEYWORD1
 Bell202	KEYWORD1
 
+# LoRaWAN bands
+EU868	KEYWORD1
+US915	KEYWORD1
+CN780	KEYWORD1
+EU433	KEYWORD1
+AU915	KEYWORD1
+CN500	KEYWORD1
+AS923	KEYWORD1
+KR920	KEYWORD1
+IN865	KEYWORD1
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
