@@ -101,12 +101,24 @@ Inheritance diagram for ExternalRadio:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afcffa04e5da2db85e38bb4ef3505ff2a"><td class="memItemLeft" align="right" valign="top"><a id="afcffa04e5da2db85e38bb4ef3505ff2a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalRadio</b> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal)</td></tr>
-<tr class="separator:afcffa04e5da2db85e38bb4ef3505ff2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="memItemLeft" align="right" valign="top"><a id="ae6f8473e407cfcba0e1f07c225b5cb50"></a>
-<a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
+<tr class="memitem:a49f10e1b05e7463583ac05b3284b9dda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">ExternalRadio</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal, uint32_t pin=RADIOLIB_NC)</td></tr>
+<tr class="memdesc:a49f10e1b05e7463583ac05b3284b9dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">More...</a><br /></td></tr>
+<tr class="separator:a49f10e1b05e7463583ac05b3284b9dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae6f8473e407cfcba0e1f07c225b5cb50">getMod</a> ()</td></tr>
+<tr class="memdesc:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to retrieve pointer to the underlying <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance.  <a href="class_external_radio.html#ae6f8473e407cfcba0e1f07c225b5cb50">More...</a><br /></td></tr>
 <tr class="separator:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02928a19eab0eab615c02180cedda3eb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a02928a19eab0eab615c02180cedda3eb">setFrequencyDeviation</a> (float freqDev) override</td></tr>
+<tr class="memdesc:a02928a19eab0eab615c02180cedda3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_external_radio.html#a02928a19eab0eab615c02180cedda3eb">More...</a><br /></td></tr>
+<tr class="separator:a02928a19eab0eab615c02180cedda3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe0bfb0f178783eff28bdc867e9324fd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#abe0bfb0f178783eff28bdc867e9324fd">setDataShaping</a> (uint8_t sh) override</td></tr>
+<tr class="memdesc:abe0bfb0f178783eff28bdc867e9324fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_external_radio.html#abe0bfb0f178783eff28bdc867e9324fd">More...</a><br /></td></tr>
+<tr class="separator:abe0bfb0f178783eff28bdc867e9324fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae619f011daea49a97098d2897e5a3c2c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae619f011daea49a97098d2897e5a3c2c">setEncoding</a> (uint8_t encoding) override</td></tr>
+<tr class="memdesc:ae619f011daea49a97098d2897e5a3c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_external_radio.html#ae619f011daea49a97098d2897e5a3c2c">More...</a><br /></td></tr>
+<tr class="separator:ae619f011daea49a97098d2897e5a3c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8c160da3b82f706b2526af2bac85d69"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae8c160da3b82f706b2526af2bac85d69">transmitDirect</a> (uint32_t frf=0)</td></tr>
+<tr class="memdesc:ae8c160da3b82f706b2526af2bac85d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct transmission to drive external radio.  <a href="class_external_radio.html#ae8c160da3b82f706b2526af2bac85d69">More...</a><br /></td></tr>
+<tr class="separator:ae8c160da3b82f706b2526af2bac85d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">PhysicalLayer</a> (float step, size_t maxLen)</td></tr>
 <tr class="memdesc:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">More...</a><br /></td></tr>
@@ -147,9 +159,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">More...</a><br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4c99ac794ee653c2061be4201724b65 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65">transmitDirect</a> (uint32_t frf=0)</td></tr>
-<tr class="memdesc:aa4c99ac794ee653c2061be4201724b65 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables direct transmission mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class. While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.  <a href="class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65">More...</a><br /></td></tr>
-<tr class="separator:aa4c99ac794ee653c2061be4201724b65 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad9d1dbb2041e87af5a80e12f125a60e6 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad9d1dbb2041e87af5a80e12f125a60e6">receiveDirect</a> ()</td></tr>
 <tr class="memdesc:ad9d1dbb2041e87af5a80e12f125a60e6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables direct reception mode on pins DIO1 (clock) and DIO2 (data). Must be implemented in module class. While in direct mode, the module will not be able to transmit or receive packets. Can only be activated in FSK mode.  <a href="class_physical_layer.html#ad9d1dbb2041e87af5a80e12f125a60e6">More...</a><br /></td></tr>
 <tr class="separator:ad9d1dbb2041e87af5a80e12f125a60e6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -159,15 +168,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">setBitRate</a> (float br)</td></tr>
 <tr class="memdesc:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK bit rate. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c">More...</a><br /></td></tr>
 <tr class="separator:aedd39ad84b45c6392087b12d59192d8c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f4f9b428d9ea9af886ca85e5088ed7b inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">setFrequencyDeviation</a> (float freqDev)</td></tr>
-<tr class="memdesc:a2f4f9b428d9ea9af886ca85e5088ed7b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK frequency deviation from carrier frequency. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">More...</a><br /></td></tr>
-<tr class="separator:a2f4f9b428d9ea9af886ca85e5088ed7b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">setDataShaping</a> (uint8_t sh)</td></tr>
-<tr class="memdesc:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK data shaping. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">More...</a><br /></td></tr>
-<tr class="separator:aeba04366a0cf05ff3d8227c4f7c8e1e9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488">setEncoding</a> (uint8_t encoding)</td></tr>
-<tr class="memdesc:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488">More...</a><br /></td></tr>
-<tr class="separator:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">invertIQ</a> (bool enable)</td></tr>
 <tr class="memdesc:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set IQ inversion. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">More...</a><br /></td></tr>
 <tr class="separator:a11b4c6d0bf3ae7b9ca04e9434180feab inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,6 +244,223 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memdesc:a67ee4ec36f352d06dda0102260f6bfce inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
 <tr class="separator:a67ee4ec36f352d06dda0102260f6bfce inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a49f10e1b05e7463583ac05b3284b9dda"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f10e1b05e7463583ac05b3284b9dda">&#9670;&nbsp;</a></span>ExternalRadio()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ExternalRadio::ExternalRadio </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *&#160;</td>
+          <td class="paramname"><em>hal</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pin</em> = <code>RADIOLIB_NC</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">hal</td><td>Pointer to the hardware abstraction layer to use. </td></tr>
+    <tr><td class="paramname">pin</td><td>Output pin when using direct transmission, defaults to unused pin. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae6f8473e407cfcba0e1f07c225b5cb50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6f8473e407cfcba0e1f07c225b5cb50">&#9670;&nbsp;</a></span>getMod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_module.html">Module</a> * ExternalRadio::getMod </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Method to retrieve pointer to the underlying <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance. </p>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance. </dd></dl>
+
+<p>Implements <a class="el" href="class_physical_layer.html">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="abe0bfb0f178783eff28bdc867e9324fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe0bfb0f178783eff28bdc867e9324fd">&#9670;&nbsp;</a></span>setDataShaping()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t ExternalRadio::setDataShaping </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>sh</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sh</td><td>Ignored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aeba04366a0cf05ff3d8227c4f7c8e1e9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ae619f011daea49a97098d2897e5a3c2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae619f011daea49a97098d2897e5a3c2c">&#9670;&nbsp;</a></span>setEncoding()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t ExternalRadio::setEncoding </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>encoding</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">encoding</td><td>Ignored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a02928a19eab0eab615c02180cedda3eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02928a19eab0eab615c02180cedda3eb">&#9670;&nbsp;</a></span>setFrequencyDeviation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t ExternalRadio::setFrequencyDeviation </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqDev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freqDev</td><td>Ignored. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ae8c160da3b82f706b2526af2bac85d69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8c160da3b82f706b2526af2bac85d69">&#9670;&nbsp;</a></span>transmitDirect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t ExternalRadio::transmitDirect </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>frf</em> = <code>0</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Direct transmission to drive external radio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">frf</td><td>"Frequency" to control the output pin. If the frequency is higher than the one sent previously, the output pin will be set to logic high. Otherwise it will be set to logic low. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/protocols/ExternalRadio/<a class="el" href="_external_radio_8h_source.html">ExternalRadio.h</a></li>
 <li>src/protocols/ExternalRadio/ExternalRadio.cpp</li>

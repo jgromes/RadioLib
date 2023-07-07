@@ -8,5 +8,5 @@ var searchData=
   ['encoding_20type_20aliases_2e_65',['Encoding type aliases.',['../group__config__encoding.html',1,'']]],
   ['encryptecb_66',['encryptECB',['../class_radio_lib_a_e_s128.html#a4c7b49c3ed16f3849d8050a24a11c3c1',1,'RadioLibAES128']]],
   ['explicitheader_67',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]],
-  ['externalradio_68',['ExternalRadio',['../class_external_radio.html',1,'']]]
+  ['externalradio_68',['ExternalRadio',['../class_external_radio.html',1,'ExternalRadio'],['../class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda',1,'ExternalRadio::ExternalRadio()']]]
 ];
