@@ -12,6 +12,11 @@
 #define RADIOLIB_PAGER_BCH_K                                    (21)
 #define RADIOLIB_PAGER_BCH_PRIMITIVE_POLY                       (0x25)
 
+#if defined(RADIOLIB_STATIC_ONLY)
+#define RADIOLIB_BCH_MAX_N                                      (63)
+#define RADIOLIB_BCH_MAX_K                                      (31)
+#endif
+
 /*!
   \class RadioLibBCH
   \brief Class to calculate Bose–Chaudhuri–Hocquenghem (BCH) class of forward error correction codes.
@@ -46,9 +51,16 @@ class RadioLibBCH {
     uint8_t k;
     uint32_t poly;
     uint8_t m;
-    int32_t* alphaTo;
-    int32_t* indexOf;
-    int32_t* generator;
+    
+    #if defined(RADIOLIB_STATIC_ONLY)
+      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1];
+      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1];
+      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
+    #else
+      int32_t* alphaTo;
+      int32_t* indexOf;
+      int32_t* generator;
+    #endif
 };
 
 // the global singleton
