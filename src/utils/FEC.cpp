@@ -246,6 +246,8 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     }
 	}
 
+  delete[] recd;
+
 	return(res);
 }
 
