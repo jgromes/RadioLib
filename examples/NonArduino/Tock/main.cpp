@@ -46,7 +46,10 @@ int main(void) {
   Module* tock_module = new Module(hal, RADIO_NSS, RADIO_DIO_1, RADIO_RESET, RADIO_BUSY);
   SX1262* radio = new SX1262(tock_module);
 
-  int state = radio->begin();
+  // Setup the radio
+  // The settings here work for the SparkFun LoRa Thing Plus - expLoRaBLE
+  int state = radio->begin(915.0, 125.0, 9, 7, RADIOLIB_SX126X_SYNC_WORD_PRIVATE, 10, 8, 0, false);
+
   if (state != RADIOLIB_ERR_NONE) {
     printf("failed, code %d\n", state);
     return 1;
