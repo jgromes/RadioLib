@@ -221,7 +221,7 @@ void RadioLibAES128::generateSubkeys(uint8_t* key1, uint8_t* key2) {
 void RadioLibAES128::subBytes(state_t* state, const uint8_t* box) {
   for(size_t row = 0; row < 4; row++) {
     for(size_t col = 0; col < 4; col++) {
-      (*state)[col][row] = box[(*state)[col][row]];
+      (*state)[col][row] = RADIOLIB_NONVOLATILE_READ_BYTE(&box[(*state)[col][row]]);
     }
   }
 }
