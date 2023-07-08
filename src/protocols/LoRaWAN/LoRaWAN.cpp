@@ -89,6 +89,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
 
   // start receiving
   uint32_t start = mod->hal->millis();
+  downlinkReceived = false;
   state = this->phyLayer->startReceive();
   RADIOLIB_ASSERT(state);
 
@@ -119,7 +120,11 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
 
   // read the packet
   state = this->phyLayer->readData(joinAcceptMsgEnc, lenRx);
-  RADIOLIB_ASSERT(state);
+  // downlink frames are sent without CRC, which will raise error on SX127x
+  // we can ignore that error
+  if(state != RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
+    RADIOLIB_ASSERT(state);
+  }
 
   // check reply message type
   if((joinAcceptMsgEnc[0] & RADIOLIB_LORAWAN_MHDR_MTYPE_MASK) != RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_ACCEPT) {
