@@ -32,7 +32,7 @@
 
 // the entry point for the program
 int main(void) {
-  printf("[SX1261] Initializing ... \n");
+  printf("[SX1261] Initialising Radio ... \r\n");
 
   // create a new instance of the HAL class
   TockHal* hal = new TockHal();
@@ -51,27 +51,27 @@ int main(void) {
   int state = radio->begin(915.0, 125.0, 9, 7, RADIOLIB_SX126X_SYNC_WORD_PRIVATE, 10, 8, 0, false);
 
   if (state != RADIOLIB_ERR_NONE) {
-    printf("failed, code %d\n", state);
+    printf("failed, code %d\r\n", state);
     return 1;
   }
-  printf("success!\n");
+  printf("success!\r\n");
 
   // loop forever
   for(;;) {
     yield_no_wait();
     // send a packet
-    printf("[SX1261] Transmitting packet ... \n");
+    printf("[SX1261] Transmitting '%s' \r\n", transmit_string);
 
     state = radio->transmit("Hello World!");
 
     if(state == RADIOLIB_ERR_NONE) {
       // the packet was successfully transmitted
-      printf("success!\n");
+      printf("success!\r\n");
 
       // wait for a second before transmitting again
       hal->delay(1000);
     } else {
-      printf("failed, code %d\n", state);
+      printf("failed, code %d\r\n", state);
     }
 
   }
