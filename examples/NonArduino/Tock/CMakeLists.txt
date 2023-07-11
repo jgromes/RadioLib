@@ -45,8 +45,8 @@ add_executable(${PROJECT_NAME} main.cpp)
 # link with RadioLib and libtock-c
 target_link_libraries(${PROJECT_NAME} PUBLIC
     RadioLib
-    gcc
     ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/cortex-m4/libtock.a
+    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libgcc.a
     ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libstdc++.a
     ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libc.a
     ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libm.a

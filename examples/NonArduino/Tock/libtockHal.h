@@ -190,6 +190,10 @@ class TockHal : public RadioLibHal {
     void spiEnd() {
     }
 
+    void yield() {
+      ::yield();
+    }
+
   private:
 };
 
