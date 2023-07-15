@@ -140,7 +140,7 @@ class PagerClient {
     /*!
       \brief Reads data that was received after calling startReceive method.
       \param str Address of Arduino String to save the received data.
-      \param len Expected number of characters in the message. When set to 0, the message lengthwill be retreived
+      \param len Expected number of characters in the message. When set to 0, the message length will be retrieved
       automatically. When more bytes than received are requested, only the number of bytes requested will be returned.
       \param addr Pointer to variable holding the address of the received pager message.
       Set to NULL to not retrieve address.
@@ -153,7 +153,7 @@ class PagerClient {
       \brief Reads data that was received after calling startReceive method.
       \param data Pointer to array to save the received message.
       \param len Pointer to variable holding the number of bytes that will be read. When set to 0, the packet length
-      will be retreived automatically. When more bytes than received are requested, only the number of bytes
+      will be retrieved automatically. When more bytes than received are requested, only the number of bytes
       requested will be returned. Upon completion, the number of bytes received will be written to this variable.
       \param addr Pointer to variable holding the address of the received pager message.
       Set to NULL to not retrieve address.

@@ -17,22 +17,22 @@
 #define RADIOLIB_SHAPING_NONE                                   (0x00)
 
 /*!
-  \brief Gaussin shaping filter, BT = 0.3
+  \brief Gaussian shaping filter, BT = 0.3
 */
 #define RADIOLIB_SHAPING_0_3                                    (0x01)
 
 /*!
-  \brief Gaussin shaping filter, BT = 0.5
+  \brief Gaussian shaping filter, BT = 0.5
 */
 #define RADIOLIB_SHAPING_0_5                                    (0x02)
 
 /*!
-  \brief Gaussin shaping filter, BT = 0.7
+  \brief Gaussian shaping filter, BT = 0.7
 */
 #define RADIOLIB_SHAPING_0_7                                    (0x03)
 
 /*!
-  \brief Gaussin shaping filter, BT = 1.0
+  \brief Gaussian shaping filter, BT = 1.0
 */
 #define RADIOLIB_SHAPING_1_0                                    (0x04)
 
@@ -310,7 +310,7 @@
 #define RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY_LENGTH            (-203)
 
 /*!
-  \brief Mic-E message cannot contaion both telemetry and status text.
+  \brief Mic-E message cannot contain both telemetry and status text.
 */
 #define RADIOLIB_ERR_MIC_E_TELEMETRY_STATUS                    (-204)
 

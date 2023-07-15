@@ -9,7 +9,7 @@
 #define RADIOLIB_MORSE_DOT                                      0b0
 #define RADIOLIB_MORSE_DASH                                     0b1
 #define RADIOLIB_MORSE_GUARDBIT                                 0b1
-#define RADIOLIB_MORSE_UNSUPORTED                               0xFF
+#define RADIOLIB_MORSE_UNSUPPORTED                              0xFF
 #define RADIOLIB_MORSE_ASCII_OFFSET                             32
 #define RADIOLIB_MORSE_INTER_SYMBOL                             0x00
 #define RADIOLIB_MORSE_CHAR_COMPLETE                            0x01
@@ -18,19 +18,19 @@
 // Morse character table: - using codes defined in ITU-R M.1677-1
 //                        - Morse code representation is saved LSb first, using additional bit as guard
 //                        - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET
-//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPORTED do not have ITU-R M.1677-1 equivalent
+//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPPORTED do not have ITU-R M.1677-1 equivalent
 static const uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {
     0b00,                         // space
     0b110101,                     // ! (unsupported)
     0b1010010,                    // "
-    RADIOLIB_MORSE_UNSUPORTED,    // # (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // $ (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // % (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // & (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // # (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // $ (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // % (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // & (unsupported)
     0b1011110,                    // '
     0b101101,                     // (
     0b1101101,                    // )
-    RADIOLIB_MORSE_UNSUPORTED,    // * (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // * (unsupported)
     0b101010,                     // +
     0b1110011,                    // ,
     0b1100001,                    // -
@@ -47,10 +47,10 @@ static const uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {
     0b100111,                     // 8
     0b101111,                     // 9
     0b1000111,                    // :
-    RADIOLIB_MORSE_UNSUPORTED,    // ; (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // < (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // ; (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // < (unsupported)
     0b110001,                     // =
-    RADIOLIB_MORSE_UNSUPORTED,    // > (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // > (unsupported)
     0b1001100,                    // ?
     0b1010110,                    // @
     0b110,                        // A
@@ -79,9 +79,9 @@ static const uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {
     0b11001,                      // X
     0b11101,                      // Y
     0b10011,                      // Z
-    RADIOLIB_MORSE_UNSUPORTED,    // [ (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // \ (unsupported)
-    RADIOLIB_MORSE_UNSUPORTED,    // ] (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // [ (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // \ (unsupported)
+    RADIOLIB_MORSE_UNSUPPORTED,   // ] (unsupported)
     0b1101000,                    // ^ (unsupported, used as alias for end of work)
     0b110101                      // _ (unsupported, used as alias for starting signal)
 };
@@ -124,7 +124,7 @@ class MorseClient: public RadioLibPrint {
 
     /*!
       \brief Decode Morse symbol to ASCII.
-      \param symbol Morse code symbol, respresented as outlined in MorseTable.
+      \param symbol Morse code symbol, represented as outlined in MorseTable.
       \param len Symbol length (number of dots and dashes).
       \returns ASCII character matching the symbol, or 0xFF if no match is found.
     */

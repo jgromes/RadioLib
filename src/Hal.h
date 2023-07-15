@@ -193,13 +193,13 @@ class RadioLibHal {
     /*!
       \brief Module initialization method.
       This will be called by all radio modules at the beginning of startup.
-      Can be used to e.g., initalize SPI interface.
+      Can be used to e.g., initialize SPI interface.
     */
     virtual void init();
 
     /*!
       \brief Module termination method.
-      This will be called by all radio modules when the desctructor is called.
+      This will be called by all radio modules when the destructor is called.
       Can be used to e.g., stop SPI interface.
     */
     virtual void term();
@@ -251,7 +251,12 @@ class RadioLibHal {
       Will write at most RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE bytes.
     */
     void wipePersistentStorage();
-
+    
+    /*!
+      \brief Method to convert from persistent parameter ID to its physical address.
+      \param id Parameter ID.
+      \returns Parameter physical address.
+    */
     uint32_t getPersistentAddr(uint32_t id);
 
     /*!
@@ -269,7 +274,7 @@ class RadioLibHal {
       This method DOES NOT perform any endianness conversion, so the value
       will be retrieved in the system endian!
       \param id Parameter ID to load from.
-      \returns The lodaded value.
+      \returns The loaded value.
     */
     template<typename T>
     T getPersistentParameter(uint32_t id);

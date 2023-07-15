@@ -348,7 +348,7 @@
 /*
  * Uncomment to enable "paranoid" SPI mode
  * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
- * This improves reliablility, but slightly slows down communication.
+ * This improves reliability, but slightly slows down communication.
  * Note: Enabled by default.
  */
 #if !defined(RADIOLIB_SPI_PARANOID)

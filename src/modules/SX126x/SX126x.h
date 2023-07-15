@@ -35,10 +35,10 @@
 #define RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE             0x93
 
 // register and buffer access commands
-#define RADIOLIB_SX126X_CMD_WRITE_REGISTER                     0x0D
-#define RADIOLIB_SX126X_CMD_READ_REGISTER                      0x1D
-#define RADIOLIB_SX126X_CMD_WRITE_BUFFER                       0x0E
-#define RADIOLIB_SX126X_CMD_READ_BUFFER                        0x1E
+#define RADIOLIB_SX126X_CMD_WRITE_REGISTER                      0x0D
+#define RADIOLIB_SX126X_CMD_READ_REGISTER                       0x1D
+#define RADIOLIB_SX126X_CMD_WRITE_BUFFER                        0x0E
+#define RADIOLIB_SX126X_CMD_READ_BUFFER                         0x1E
 
 // DIO and IRQ control
 #define RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS                  0x08
@@ -673,7 +673,7 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Reads data received after calling startReceive method.
       \param data Pointer to array to save the received binary data.
-      \param len Number of bytes that will be read. When set to 0, the packet length will be retreived automatically.
+      \param len Number of bytes that will be read. When set to 0, the packet length will be retrieved automatically.
       When more bytes than received are requested, only the number of bytes requested will be returned.
       \returns \ref status_codes
     */

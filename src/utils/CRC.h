@@ -54,7 +54,7 @@ class RadioLibCRC {
     RadioLibCRC();
 
     /*!
-      \brief Calcualte checksum of a buffer.
+      \brief Calculate checksum of a buffer.
       \param buff Buffer to calculate the checksum over.
       \param len Size of the buffer in bytes.
       \returns The resulting checksum.

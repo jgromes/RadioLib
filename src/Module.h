@@ -256,8 +256,8 @@ class Module {
       \brief SPI single transfer method.
       \param cmd SPI access command (read/write/burst/...).
       \param reg Address of SPI register to transfer to/from.
-      \param dataOut Data that will be transfered from master to slave.
-      \param dataIn Data that was transfered from slave to master.
+      \param dataOut Data that will be transferred from master to slave.
+      \param dataIn Data that was transferred from slave to master.
       \param numBytes Number of bytes to transfer.
     */
     void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes);
@@ -319,8 +319,8 @@ class Module {
       \param cmd SPI operation command.
       \param cmdLen SPI command length in bytes.
       \param write Set to true for write commands, false for read commands.
-      \param dataOut Data that will be transfered from master to slave.
-      \param dataIn Data that was transfered from slave to master.
+      \param dataOut Data that will be transferred from master to slave.
+      \param dataIn Data that was transferred from slave to master.
       \param numBytes Number of bytes to transfer.
       \param waitForGpio Whether to wait for some GPIO at the end of transfer (e.g. BUSY line on SX126x/SX128x).
       \param timeout GPIO wait period timeout in milliseconds.

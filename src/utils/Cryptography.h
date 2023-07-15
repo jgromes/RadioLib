@@ -136,7 +136,7 @@ class RadioLibAES128 {
     void generateCMAC(uint8_t* in, size_t len, uint8_t* cmac);
 
     /*!
-      \brief Verify the recevied CMAC. This just calculates the CMAC again and compares the results.
+      \brief Verify the received CMAC. This just calculates the CMAC again and compares the results.
       \param in Input data (unpadded).
       \param len Length of the input data.
       \param cmac CMAC to verify.

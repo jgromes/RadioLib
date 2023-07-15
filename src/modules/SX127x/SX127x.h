@@ -770,7 +770,7 @@ class SX127x: public PhysicalLayer {
     bool fifoAdd(uint8_t* data, int totalLen, int* remLen);
 
     /*!
-      \brief Set interrupt service routine function to call when FIFO is sufficently full to read.
+      \brief Set interrupt service routine function to call when FIFO is sufficiently full to read.
       \param data Pointer to a buffer that stores the receive data.
       \param totalLen Total number of bytes to receive.
       \param rcvLen Pointer to a counter holding the number of bytes that have been received so far.
@@ -822,7 +822,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Reads data that was received after calling startReceive method. This method reads len characters.
       \param data Pointer to array to save the received binary data.
-      \param len Number of bytes that will be read. When set to 0, the packet length will be retreived automatically.
+      \param len Number of bytes that will be read. When set to 0, the packet length will be retrieved automatically.
       When more bytes than received are requested, only the number of bytes requested will be returned.
       \returns \ref status_codes
     */
@@ -1093,7 +1093,7 @@ class SX127x: public PhysicalLayer {
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
-      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
+      \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
     void setDirectAction(void (*func)(void));
@@ -1202,7 +1202,7 @@ class SX127x: public PhysicalLayer {
     /*!
       \brief Calculate exponent and mantissa values for receiver bandwidth and AFC
       \param bandwidth bandwidth to be set (in kHz).
-      \returns bandwidth in manitsa and exponent format
+      \returns bandwidth in mantissa and exponent format
     */
     static uint8_t calculateBWManExp(float bandwidth);
 

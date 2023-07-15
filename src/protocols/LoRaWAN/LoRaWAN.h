@@ -165,10 +165,10 @@ struct LoRaWANChannelSpan_t {
   \brief Structure to save information about LoRaWAN band
 */
 struct LoRaWANBand_t {
-  /*! \brief The base downlik data rate. Used to calculate data rate changes for adaptive data rate */
+  /*! \brief The base downlink data rate. Used to calculate data rate changes for adaptive data rate */
   uint8_t downlinkDataRateBase;
 
-  /*! \brief The minimum allowed downlik data rate. Used to calculate data rate changes for adaptive data rate */
+  /*! \brief The minimum allowed downlink data rate. Used to calculate data rate changes for adaptive data rate */
   uint8_t downlinkDataRateMin;
 
   /*! \brief Array of allowed maximum payload lengths for each data rate */
@@ -326,7 +326,7 @@ class LoRaWANNode {
     template<typename T>
     static T ntoh(uint8_t* buff, size_t size = 0);
 
-    // host-to-network conversion method - takes data from host variable and and converts it to network packet endiands
+    // host-to-network conversion method - takes data from host variable and and converts it to network packet endians
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
 };

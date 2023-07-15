@@ -172,7 +172,7 @@ class PhysicalLayer {
     /*!
       \brief Reads data that was received after calling startReceive method.
       \param str Address of Arduino String to save the received data.
-      \param len Expected number of characters in the message. When set to 0, the packet length will be retreived 
+      \param len Expected number of characters in the message. When set to 0, the packet length will be retrieved 
       automatically. When more bytes than received are requested, only the number of bytes requested will be returned.
       \returns \ref status_codes
     */
@@ -182,7 +182,7 @@ class PhysicalLayer {
     /*!
       \brief Reads data that was received after calling startReceive method.
       \param data Pointer to array to save the received binary data.
-      \param len Number of bytes that will be read. When set to 0, the packet length will be retreived automatically.
+      \param len Number of bytes that will be read. When set to 0, the packet length will be retrieved automatically.
       When more bytes than received are requested, only the number of bytes requested will be returned.
       \returns \ref status_codes
     */
@@ -340,7 +340,7 @@ class PhysicalLayer {
     int16_t setDirectSyncWord(uint32_t syncWord, uint8_t len);
 
     /*!
-      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
+      \brief Set interrupt service routine function to call when data bit is received in direct mode.
       Must be implemented in module class.
       \param func Pointer to interrupt service routine.
     */
