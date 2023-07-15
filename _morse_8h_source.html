@@ -97,7 +97,7 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_DOT                                      0b0</span></div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_DASH                                     0b1</span></div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_GUARDBIT                                 0b1</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_UNSUPORTED                               0xFF</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_UNSUPPORTED                              0xFF</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_ASCII_OFFSET                             32</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_INTER_SYMBOL                             0x00</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define RADIOLIB_MORSE_CHAR_COMPLETE                            0x01</span></div>
@@ -106,19 +106,19 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// Morse character table: - using codes defined in ITU-R M.1677-1</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">//                        - Morse code representation is saved LSb first, using additional bit as guard</span></div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">//                        - position in array corresponds ASCII code minus RADIOLIB_MORSE_ASCII_OFFSET</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPORTED do not have ITU-R M.1677-1 equivalent</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">//                        - ASCII characters marked RADIOLIB_MORSE_UNSUPPORTED do not have ITU-R M.1677-1 equivalent</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint8_t MorseTable[] RADIOLIB_NONVOLATILE = {</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    0b00,                         <span class="comment">// space</span></div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    0b110101,                     <span class="comment">// ! (unsupported)</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    0b1010010,                    <span class="comment">// &quot;</span></div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// # (unsupported)</span></div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// $ (unsupported)</span></div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// % (unsupported)</span></div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &amp; (unsupported)</span></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// # (unsupported)</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// $ (unsupported)</span></div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// % (unsupported)</span></div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// &amp; (unsupported)</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    0b1011110,                    <span class="comment">// &#39;</span></div>
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    0b101101,                     <span class="comment">// (</span></div>
 <div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;    0b1101101,                    <span class="comment">// )</span></div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// * (unsupported)</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// * (unsupported)</span></div>
 <div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;    0b101010,                     <span class="comment">// +</span></div>
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    0b1110011,                    <span class="comment">// ,</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    0b1100001,                    <span class="comment">// -</span></div>
@@ -135,10 +135,10 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    0b100111,                     <span class="comment">// 8</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    0b101111,                     <span class="comment">// 9</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    0b1000111,                    <span class="comment">// :</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ; (unsupported)</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &lt; (unsupported)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// ; (unsupported)</span></div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// &lt; (unsupported)</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    0b110001,                     <span class="comment">// =</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// &gt; (unsupported)</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// &gt; (unsupported)</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    0b1001100,                    <span class="comment">// ?</span></div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    0b1010110,                    <span class="comment">// @</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    0b110,                        <span class="comment">// A</span></div>
@@ -167,9 +167,9 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    0b11001,                      <span class="comment">// X</span></div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    0b11101,                      <span class="comment">// Y</span></div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    0b10011,                      <span class="comment">// Z</span></div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// [ (unsupported)</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// \ (unsupported)</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    RADIOLIB_MORSE_UNSUPORTED,    <span class="comment">// ] (unsupported)</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// [ (unsupported)</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// \ (unsupported)</span></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    RADIOLIB_MORSE_UNSUPPORTED,   <span class="comment">// ] (unsupported)</span></div>
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    0b1101000,                    <span class="comment">// ^ (unsupported, used as alias for end of work)</span></div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    0b110101                      <span class="comment">// _ (unsupported, used as alias for starting signal)</span></div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;};</div>

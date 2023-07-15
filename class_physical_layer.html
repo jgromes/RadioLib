@@ -217,7 +217,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a8e378fe136a498ea485a9c10f5e15aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word to be used to determine start of packet in direct reception mode.  <a href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">More...</a><br /></td></tr>
 <tr class="separator:a8e378fe136a498ea485a9c10f5e15aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf96cf4f3cb4c82d44be581dbe615966"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">setDirectAction</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:abf96cf4f3cb4c82d44be581dbe615966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is receveid in direct mode. Must be implemented in module class.  <a href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">More...</a><br /></td></tr>
+<tr class="memdesc:abf96cf4f3cb4c82d44be581dbe615966"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is received in direct mode. Must be implemented in module class.  <a href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">More...</a><br /></td></tr>
 <tr class="separator:abf96cf4f3cb4c82d44be581dbe615966"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acda61fc99cfa373153c50c78380ed885"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">readBit</a> (uint32_t pin)</td></tr>
 <tr class="memdesc:acda61fc99cfa373153c50c78380ed885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to read and process data bit in direct reception mode. Must be implemented in module class.  <a href="class_physical_layer.html#acda61fc99cfa373153c50c78380ed885">More...</a><br /></td></tr>
@@ -727,7 +727,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retreived automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
+    <tr><td class="paramname">len</td><td>Number of bytes that will be read. When set to 0, the packet length will be retrieved automatically. When more bytes than received are requested, only the number of bytes requested will be returned. </td></tr>
   </table>
   </dd>
 </dl>
@@ -998,7 +998,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 </table>
 </div><div class="memdoc">
 
-<p>Set interrupt service routine function to call when data bit is receveid in direct mode. Must be implemented in module class. </p>
+<p>Set interrupt service routine function to call when data bit is received in direct mode. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>

@@ -152,11 +152,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="separator:a41c85e560155d644f5b4ce8444dd8b64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a450037acdfeb4e87413674ac90feb4d2"><td class="memItemLeft" align="right" valign="top"><a id="a450037acdfeb4e87413674ac90feb4d2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a450037acdfeb4e87413674ac90feb4d2">init</a> ()</td></tr>
-<tr class="memdesc:a450037acdfeb4e87413674ac90feb4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> initialization method. This will be called by all radio modules at the beginning of startup. Can be used to e.g., initalize SPI interface. <br /></td></tr>
+<tr class="memdesc:a450037acdfeb4e87413674ac90feb4d2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> initialization method. This will be called by all radio modules at the beginning of startup. Can be used to e.g., initialize SPI interface. <br /></td></tr>
 <tr class="separator:a450037acdfeb4e87413674ac90feb4d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="memItemLeft" align="right" valign="top"><a id="aa4f2bd49aea5a19aa9f85c720b4a883e"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aa4f2bd49aea5a19aa9f85c720b4a883e">term</a> ()</td></tr>
-<tr class="memdesc:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the desctructor is called. Can be used to e.g., stop SPI interface. <br /></td></tr>
+<tr class="memdesc:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the destructor is called. Can be used to e.g., stop SPI interface. <br /></td></tr>
 <tr class="separator:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4cc3bef7109f00b77b95e84511b0bb9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ab4cc3bef7109f00b77b95e84511b0bb9">tone</a> (uint32_t pin, unsigned int frequency, unsigned long duration=0)</td></tr>
 <tr class="memdesc:ab4cc3bef7109f00b77b95e84511b0bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin.  <a href="class_radio_lib_hal.html#ab4cc3bef7109f00b77b95e84511b0bb9">More...</a><br /></td></tr>
@@ -181,8 +181,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ac9d93c46d699b8ece64ec9afe4d3ad71">wipePersistentStorage</a> ()</td></tr>
 <tr class="memdesc:ac9d93c46d699b8ece64ec9afe4d3ad71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to wipe the persistent storage by writing to 0. Will write at most RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE bytes. <br /></td></tr>
 <tr class="separator:ac9d93c46d699b8ece64ec9afe4d3ad71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memItemLeft" align="right" valign="top"><a id="ae8bda4b34a69c2738eb0b43a59b86f0d"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>getPersistentAddr</b> (uint32_t id)</td></tr>
+<tr class="memitem:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">getPersistentAddr</a> (uint32_t id)</td></tr>
+<tr class="memdesc:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to convert from persistent parameter ID to its physical address.  <a href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">More...</a><br /></td></tr>
 <tr class="separator:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33d918e9e01c069e7d7bb64dbfcad478"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a33d918e9e01c069e7d7bb64dbfcad478"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a33d918e9e01c069e7d7bb64dbfcad478">setPersistentParameter</a> (uint32_t id, T val)</td></tr>
@@ -523,6 +523,33 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
+<a id="ae8bda4b34a69c2738eb0b43a59b86f0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8bda4b34a69c2738eb0b43a59b86f0d">&#9670;&nbsp;</a></span>getPersistentAddr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t RadioLibHal::getPersistentAddr </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method to convert from persistent parameter ID to its physical address. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>Parameter ID. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Parameter physical address. </dd></dl>
+
+</div>
+</div>
 <a id="a216a59fbd4c022a3410a4b1e42059dbe"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a216a59fbd4c022a3410a4b1e42059dbe">&#9670;&nbsp;</a></span>getPersistentParameter()</h2>
 
@@ -548,7 +575,7 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The lodaded value. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The loaded value. </dd></dl>
 
 </div>
 </div>
