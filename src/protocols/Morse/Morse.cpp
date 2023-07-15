@@ -56,7 +56,7 @@ char MorseClient::decode(uint8_t symbol, uint8_t len) {
   }
 
   // nothing found
-  return(RADIOLIB_MORSE_UNSUPORTED);
+  return(RADIOLIB_MORSE_UNSUPPORTED);
 }
 
 #if !defined(RADIOLIB_EXCLUDE_AFSK)
@@ -132,7 +132,7 @@ size_t MorseClient::write(uint8_t b) {
   uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[(uint8_t)(toupper(b) - RADIOLIB_MORSE_ASCII_OFFSET)]);
 
   // check unsupported characters
-  if(code == RADIOLIB_MORSE_UNSUPORTED) {
+  if(code == RADIOLIB_MORSE_UNSUPPORTED) {
     return(0);
   }
 
