@@ -170,7 +170,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:ad672f45f73267249265044063e19b4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">More...</a><br /></td></tr>
 <tr class="separator:ad672f45f73267249265044063e19b4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a410fb78acb4ed358818c132687b8857a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">readData</a> (uint8_t *data, size_t len) override</td></tr>
-<tr class="memdesc:a410fb78acb4ed358818c132687b8857a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method.  <a href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">More...</a><br /></td></tr>
+<tr class="memdesc:a410fb78acb4ed358818c132687b8857a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">More...</a><br /></td></tr>
 <tr class="separator:a410fb78acb4ed358818c132687b8857a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a408278336cdf25fd205ecffea86c26e8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:a408278336cdf25fd205ecffea86c26e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.  <a href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">More...</a><br /></td></tr>
@@ -588,7 +588,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Reads data received after calling startReceive method. </p>
+<p>Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData! </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>

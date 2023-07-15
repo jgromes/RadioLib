@@ -691,78 +691,78 @@ $(document).ready(function(){initNavTree('_si443x_8h_source.html',''); initResiz
 <div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160; </div>
 <div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    int16_t <a class="code" href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">startReceive</a>(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160; </div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    int16_t <a class="code" href="class_si443x.html#a3563453988a83d22dd07d4691543a300">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160; </div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    <span class="comment">// configuration methods</span></div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160; </div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    int16_t <a class="code" href="class_si443x.html#ad43575e731dd7e66d5ad9e6dccd27170">setBitRate</a>(<span class="keywordtype">float</span> br);</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160; </div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    int16_t <a class="code" href="class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    int16_t <a class="code" href="class_si443x.html#a51e6b7c677e82042224798114f311175">setRxBandwidth</a>(<span class="keywordtype">float</span> rxBw);</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160; </div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    int16_t <a class="code" href="class_si443x.html#a4ed0da298c2418db4a88a19ef8938e0a">setSyncWord</a>(uint8_t* syncWord, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160; </div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    int16_t <a class="code" href="class_si443x.html#a4821a6141caf16141074615c976ecd91">setPreambleLength</a>(uint8_t preambleLen);</div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160; </div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160; </div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    int16_t <a class="code" href="class_si443x.html#a1382fc3b68f447e381613e6670747128">setEncoding</a>(uint8_t encoding) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160; </div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    int16_t <a class="code" href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">setDataShaping</a>(uint8_t sh) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160; </div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a43e7ceeff9114b35ab89f1d69916b375">setRfSwitchPins</a>(uint32_t rxEn, uint32_t txEn);</div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160; </div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6">setRfSwitchTable</a>(<span class="keyword">const</span> uint32_t (&amp;pins)[<a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[]);</div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160; </div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    uint8_t <a class="code" href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">randomByte</a>();</div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160; </div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    int16_t <a class="code" href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">getChipVersion</a>();</div>
-<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160; </div>
-<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a55fae20e81755c8b014d080741d61913">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160; </div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#af23d8eb0f1c436e6cc60361df13c08f7">readBit</a>(uint32_t pin);</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160; </div>
-<div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160;   int16_t <a class="code" href="class_si443x.html#ad2b3a961a99d9e8f3a7ead6e8b69e858">fixedPacketLengthMode</a>(uint8_t len = RADIOLIB_SI443X_MAX_PACKET_LENGTH);</div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160; </div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;   int16_t <a class="code" href="class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a">variablePacketLengthMode</a>(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="keywordtype">float</span> bitRate = 0;</div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="keywordtype">float</span> frequencyDev = 0;</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordtype">float</span> frequency = 0;</div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160; </div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    <span class="keywordtype">size_t</span> packetLength = 0;</div>
-<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordtype">bool</span> packetLengthQueried = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    uint8_t packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;</div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160; </div>
-<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160; </div>
-<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;    <span class="keywordtype">bool</span> findChip();</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count);</div>
-<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    int16_t updateClockRecovery();</div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    int16_t directMode();</div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;};</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160; </div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160; </div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    int16_t <a class="code" href="class_si443x.html#a3563453988a83d22dd07d4691543a300">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160; </div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;    <span class="comment">// configuration methods</span></div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160; </div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    int16_t <a class="code" href="class_si443x.html#ad43575e731dd7e66d5ad9e6dccd27170">setBitRate</a>(<span class="keywordtype">float</span> br);</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160; </div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    int16_t <a class="code" href="class_si443x.html#a7c4e6caa95e5622f6f515ba0339a1c66">setFrequencyDeviation</a>(<span class="keywordtype">float</span> freqDev) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160; </div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    int16_t <a class="code" href="class_si443x.html#a51e6b7c677e82042224798114f311175">setRxBandwidth</a>(<span class="keywordtype">float</span> rxBw);</div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160; </div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    int16_t <a class="code" href="class_si443x.html#a4ed0da298c2418db4a88a19ef8938e0a">setSyncWord</a>(uint8_t* syncWord, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160; </div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    int16_t <a class="code" href="class_si443x.html#a4821a6141caf16141074615c976ecd91">setPreambleLength</a>(uint8_t preambleLen);</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160; </div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_si443x.html#a2d944669dc69ccd47f9e6c360f2ffd10">getPacketLength</a>(<span class="keywordtype">bool</span> update = <span class="keyword">true</span>) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160; </div>
+<div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160;    int16_t <a class="code" href="class_si443x.html#a1382fc3b68f447e381613e6670747128">setEncoding</a>(uint8_t encoding) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160; </div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    int16_t <a class="code" href="class_si443x.html#ade08c79074c7e4414d34eefa25cee168">setDataShaping</a>(uint8_t sh) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160; </div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a43e7ceeff9114b35ab89f1d69916b375">setRfSwitchPins</a>(uint32_t rxEn, uint32_t txEn);</div>
+<div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160; </div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a8898f11cf9dabd9a5ad717376fdbffa6">setRfSwitchTable</a>(<span class="keyword">const</span> uint32_t (&amp;pins)[<a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], <span class="keyword">const</span> <a class="code" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[]);</div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160; </div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    uint8_t <a class="code" href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">randomByte</a>();</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160; </div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    int16_t <a class="code" href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">getChipVersion</a>();</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a55fae20e81755c8b014d080741d61913">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160; </div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#af23d8eb0f1c436e6cc60361df13c08f7">readBit</a>(uint32_t pin);</div>
+<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160; </div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;   int16_t <a class="code" href="class_si443x.html#ad2b3a961a99d9e8f3a7ead6e8b69e858">fixedPacketLengthMode</a>(uint8_t len = RADIOLIB_SI443X_MAX_PACKET_LENGTH);</div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;   int16_t <a class="code" href="class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a">variablePacketLengthMode</a>(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);</div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160; </div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    <span class="keywordtype">float</span> bitRate = 0;</div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="keywordtype">float</span> frequencyDev = 0;</div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="keywordtype">float</span> frequency = 0;</div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
+<div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160;    <span class="keywordtype">size_t</span> packetLength = 0;</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="keywordtype">bool</span> packetLengthQueried = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    uint8_t packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;</div>
+<div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160; </div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <span class="keywordtype">bool</span> findChip();</div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
+<div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count);</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    int16_t updateClockRecovery();</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    int16_t directMode();</div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;};</div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160; </div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160; </div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:31</div></div>
 <div class="ttc" id="aclass_module_html_a0c11551e12579bbabf57b19e12555b3c"><div class="ttname"><a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a></div><div class="ttdeci">static const size_t RFSWITCH_MAX_PINS</div><div class="ttdoc">The maximum number of pins supported by the RF switch code.</div><div class="ttdef"><b>Definition:</b> Module.h:42</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:33</div></div>
