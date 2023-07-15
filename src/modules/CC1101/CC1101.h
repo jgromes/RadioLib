@@ -714,7 +714,8 @@ class CC1101: public PhysicalLayer {
     int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
 
     /*!
-      \brief Reads data received after calling startReceive method.
+      \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
+      getPacketLength method must be called BEFORE calling readData!
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be read. When set to 0, the packet length will be retreived automatically.
       When more bytes than received are requested, only the number of bytes requested will be returned.

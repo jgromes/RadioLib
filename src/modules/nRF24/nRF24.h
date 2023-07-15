@@ -332,7 +332,8 @@ class nRF24: public PhysicalLayer {
     int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
 
     /*!
-      \brief Reads data received after calling startReceive method.
+      \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
+      getPacketLength method must be called BEFORE calling readData!
       \param data Pointer to array to save the received binary data.
       \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
       \returns \ref status_codes
