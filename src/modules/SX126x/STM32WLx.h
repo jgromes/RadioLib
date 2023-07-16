@@ -82,7 +82,8 @@ class STM32WLx : public SX1262 {
 
       LP is preferred and supports -17 to +14dBm. When a higher power is
       requested (or the LP amplifier is marked as unavailable using
-      setRfSwitchTable()), HP is used, which supports -9 to +22dBm.
+      setRfSwitchTable()), HP is used, which supports -9 to +22dBm. If the LP is marked as unavailable,
+      HP output will be used instead.
 
       \param power Output power to be set in dBm.
 

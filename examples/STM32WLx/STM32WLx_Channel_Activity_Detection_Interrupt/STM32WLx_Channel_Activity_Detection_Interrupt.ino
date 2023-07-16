@@ -19,11 +19,28 @@
 // no need to configure pins, signals are routed to the radio internally
 STM32WLx radio = new STM32WLx_Module();
 
+// set RF switch configuration for Nucleo WL55JC1
+// NOTE: other boards may be different!
+//       Some boards may not have either LP or HP.
+//       For those, do not set the LP/HP entry in the table.
+static const uint32_t rfswitch_pins[] =
+                         {PC3,  PC4,  PC5};
+static const Module::RfSwitchMode_t rfswitch_table[] = {
+  {STM32WLx::MODE_IDLE,  {LOW,  LOW,  LOW}},
+  {STM32WLx::MODE_RX,    {HIGH, HIGH, LOW}},
+  {STM32WLx::MODE_TX_LP, {HIGH, HIGH, HIGH}},
+  {STM32WLx::MODE_TX_HP, {HIGH, LOW,  HIGH}},
+  END_OF_MODE_TABLE,
+};
 
 void setup() {
   Serial.begin(9600);
 
-  // initialize STM32WLx with default settings
+  // set RF switch control configuration
+  // this has to be done prior to calling begin()
+  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
+
+  // initialize STM32WLx with default settings, except frequency
   Serial.print(F("[STM32WLx] Initializing ... "));
   int state = radio.begin(868.0);
   if (state == RADIOLIB_ERR_NONE) {
