@@ -45,13 +45,13 @@
 #define RADIOLIB_LORAWAN_NOPTS_LEN                              (8)
 
 // data rat encoding
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_12                        (0x06 << 4) //  7     4     LoRaWAN spreading factor: SF12
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_11                        (0x05 << 4) //  7     4                               SF11
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_10                        (0x04 << 4) //  7     4                               SF10
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_9                         (0x03 << 4) //  7     4                               SF9
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_8                         (0x02 << 4) //  7     4                               SF8
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_7                         (0x01 << 4) //  7     4                               SF7
-#define RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K                     (0x00 << 4) //  7     4                               FSK @ 50 kbps
+#define RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K                     (0x01 << 7) //  7     7     FSK @ 50 kbps
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_12                        (0x06 << 4) //  6     4     LoRaWAN spreading factor: SF12
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_11                        (0x05 << 4) //  6     4                               SF11
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_10                        (0x04 << 4) //  6     4                               SF10
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_9                         (0x03 << 4) //  6     4                               SF9
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_8                         (0x02 << 4) //  6     4                               SF8
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_7                         (0x01 << 4) //  6     4                               SF7
 #define RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ                   (0x00 << 0) //  3     0     LoRaWAN bandwidth: 500 kHz
 #define RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ                   (0x01 << 0) //  3     0                        250 kHz
 #define RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ                   (0x02 << 0) //  3     0                        125 kHz
@@ -130,6 +130,7 @@
 #define RADIOLIB_LORAWAN_MIC_DATA_RATE_POS                      (3)
 #define RADIOLIB_LORAWAN_MIC_CH_INDEX_POS                       (4)
 
+// magic word saved in persistent memory upon activation
 #define RADIOLIB_LORAWAN_MAGIC                                  (0x12AD101B)
 
 /*!
@@ -182,6 +183,9 @@ struct LoRaWANBand_t {
 
   /*! \brief Whether the optional channels are defined as list of frequencies or bit mask */
   uint8_t cfListType;
+
+  /*! \brief FSK channel frequency */
+  float fskFreq;
   
   /*! \brief Number of channel spans in the band */
   uint8_t numChannelSpans;
@@ -210,6 +214,9 @@ extern const LoRaWANBand_t IN865;
 */
 class LoRaWANNode {
   public:
+    /*! \brief Set to true to force the node to only use FSK channels. Set to false by default. */
+    bool FSK;
+
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -245,12 +252,13 @@ class LoRaWANNode {
       \brief Join network by performing activation by personalization.
       In this procedure, all necessary configuration must be provided by the user.
       \param addr Device address.
-      \param net Network ID.
-      \param nwkSKey Pointer to the network session AES-128 key.
+      \param nwkSKey Pointer to the network session AES-128 key (LoRaWAN 1.0) or MAC command network session key (LoRaWAN 1.1).
       \param appSKey Pointer to the application session AES-128 key.
+      \param fNwkSIntKey Pointer to the network session F key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
+      \param sNwkSIntkey Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \returns \ref status_codes
     */
-    int16_t beginAPB(uint32_t addr, uint8_t net, uint8_t* nwkSKey, uint8_t* appSKey);
+    int16_t beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntkey = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!

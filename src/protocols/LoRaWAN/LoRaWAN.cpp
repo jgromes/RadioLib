@@ -231,11 +231,23 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::beginAPB(uint32_t addr, uint8_t net, uint8_t* nwkSKey, uint8_t* appSKey) {
-  this->devAddr = (((uint32_t)net << 25) & 0xFE000000) | (addr & 0x01FFFFFF);
+int16_t LoRaWANNode::beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntkey) {
+  this->devAddr = addr;
   memcpy(this->appSKey, appSKey, RADIOLIB_AES128_KEY_SIZE);
   memcpy(this->nwkSEncKey, nwkSKey, RADIOLIB_AES128_KEY_SIZE);
-  return(RADIOLIB_ERR_NONE);
+  if(fNwkSIntKey) {
+    this->rev = 1;
+    memcpy(this->fNwkSIntKey, fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
+  } else {
+    memcpy(this->fNwkSIntKey, nwkSKey, RADIOLIB_AES128_KEY_SIZE);
+  }
+  if(sNwkSIntKey) {
+    memcpy(this->sNwkSIntKey, sNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
+  }
+
+  // set the physical layer configuration
+  int16_t state = this->setPhyProperties();
+  return(state);
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
