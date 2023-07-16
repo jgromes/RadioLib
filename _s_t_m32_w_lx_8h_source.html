@@ -127,28 +127,28 @@ $(document).ready(function(){initNavTree('_s_t_m32_w_lx_8h_source.html',''); ini
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="comment">// configuration methods</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;    <span class="comment">// Note: This explicitly inherits this method only to override docs</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="keyword">using</span> <a class="code" href="class_s_x126x.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7">SX126x::setRfSwitchTable</a>;</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e">setDio1Action</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc">clearDio1Action</a>();</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;    <span class="keyword">virtual</span> int16_t clearIrqStatus(uint16_t clearIrqParams) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160; </div>
-<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;};</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// !defined(RADIOLIB_EXCLUDE_SX126X)</span></div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// _RADIOLIB_STM32WLX_MODULE_H</span></div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">setOutputPower</a>(int8_t power) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    <span class="comment">// Note: This explicitly inherits this method only to override docs</span></div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">using</span> <a class="code" href="class_s_x126x.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7">SX126x::setRfSwitchTable</a>;</div>
+<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e">setDio1Action</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc">clearDio1Action</a>();</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;    <span class="keyword">virtual</span> int16_t clearIrqStatus(uint16_t clearIrqParams) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;};</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// !defined(RADIOLIB_EXCLUDE_SX126X)</span></div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// _RADIOLIB_STM32WLX_MODULE_H</span></div>
 <div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:71</div></div>
 <div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
 <div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
@@ -156,8 +156,8 @@ $(document).ready(function(){initNavTree('_s_t_m32_w_lx_8h_source.html',''); ini
 <div class="ttc" id="aclass_s_t_m32_w_lx___module_html"><div class="ttname"><a href="class_s_t_m32_w_lx___module.html">STM32WLx_Module</a></div><div class="ttdef"><b>Definition:</b> STM32WLx_Module.h:26</div></div>
 <div class="ttc" id="aclass_s_t_m32_w_lx_html"><div class="ttname"><a href="class_s_t_m32_w_lx.html">STM32WLx</a></div><div class="ttdoc">Derived class for STM32WL modules.</div><div class="ttdef"><b>Definition:</b> STM32WLx.h:33</div></div>
 <div class="ttc" id="aclass_s_t_m32_w_lx_html_a4f2a9b5a72b5238d2014199d91094f84"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a4f2a9b5a72b5238d2014199d91094f84">STM32WLx::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6, bool useRegulatorLDO=false)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:13</div></div>
-<div class="ttc" id="aclass_s_t_m32_w_lx_html_a54130403f6afbb0924da17c28afb17fc"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc">STM32WLx::clearDio1Action</a></div><div class="ttdeci">void clearDio1Action()</div><div class="ttdoc">Clears interrupt service routine to call when DIO1/2/3 activates.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:98</div></div>
-<div class="ttc" id="aclass_s_t_m32_w_lx_html_a63d61bc5057e9da3d0ea12feae67122e"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e">STM32WLx::setDio1Action</a></div><div class="ttdeci">void setDio1Action(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when DIO1/2/3 activates.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:88</div></div>
+<div class="ttc" id="aclass_s_t_m32_w_lx_html_a54130403f6afbb0924da17c28afb17fc"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc">STM32WLx::clearDio1Action</a></div><div class="ttdeci">void clearDio1Action()</div><div class="ttdoc">Clears interrupt service routine to call when DIO1/2/3 activates.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:125</div></div>
+<div class="ttc" id="aclass_s_t_m32_w_lx_html_a63d61bc5057e9da3d0ea12feae67122e"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a63d61bc5057e9da3d0ea12feae67122e">STM32WLx::setDio1Action</a></div><div class="ttdeci">void setDio1Action(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when DIO1/2/3 activates.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:115</div></div>
 <div class="ttc" id="aclass_s_t_m32_w_lx_html_a9afbde1c466907598974cc3923784c5b"><div class="ttname"><a href="class_s_t_m32_w_lx.html#a9afbde1c466907598974cc3923784c5b">STM32WLx::setOutputPower</a></div><div class="ttdeci">virtual int16_t setOutputPower(int8_t power) override</div><div class="ttdoc">Sets output power. Allowed values are in range from -17 to 22 dBm.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:41</div></div>
 <div class="ttc" id="aclass_s_t_m32_w_lx_html_ac0e8787dbb8e8aaa172b089ace6eaa09"><div class="ttname"><a href="class_s_t_m32_w_lx.html#ac0e8787dbb8e8aaa172b089ace6eaa09">STM32WLx::STM32WLx</a></div><div class="ttdeci">STM32WLx(STM32WLx_Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> STM32WLx.cpp:11</div></div>
 <div class="ttc" id="aclass_s_t_m32_w_lx_html_ac8d380c3d3201015ad35594826975787"><div class="ttname"><a href="class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787">STM32WLx::OpMode_t</a></div><div class="ttdeci">OpMode_t</div><div class="ttdoc">Custom operation modes for STMWLx.</div><div class="ttdef"><b>Definition:</b> STM32WLx.h:51</div></div>
