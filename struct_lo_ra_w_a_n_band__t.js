@@ -5,6 +5,7 @@ var struct_lo_ra_w_a_n_band__t =
     [ "defaultChannels", "struct_lo_ra_w_a_n_band__t.html#a9435bba595e2139c09fd46fd619390a9", null ],
     [ "downlinkDataRateBase", "struct_lo_ra_w_a_n_band__t.html#a43a53c935e0ac482027a22e9c58ed8ed", null ],
     [ "downlinkDataRateMin", "struct_lo_ra_w_a_n_band__t.html#ac885c9beda28b2fcacac002ebfeaf358", null ],
+    [ "fskFreq", "struct_lo_ra_w_a_n_band__t.html#abe8ccbc940eae22ed5d9f6e7cc929e74", null ],
     [ "numChannelSpans", "struct_lo_ra_w_a_n_band__t.html#ac469294eedf3ff6f621b9adef382a0c3", null ],
     [ "payloadLenMax", "struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055", null ],
     [ "powerMax", "struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c", null ],

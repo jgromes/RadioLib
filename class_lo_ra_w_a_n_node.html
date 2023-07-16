@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_lo_ra_w_a_n_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LoRaWANNode Class Reference</div>  </div>
@@ -110,9 +111,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a36e62e7273ad5a5c3d12c55243ed30f9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a36e62e7273ad5a5c3d12c55243ed30f9">beginOTAA</a> (uint64_t appEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false)</td></tr>
 <tr class="memdesc:a36e62e7273ad5a5c3d12c55243ed30f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a36e62e7273ad5a5c3d12c55243ed30f9">More...</a><br /></td></tr>
 <tr class="separator:a36e62e7273ad5a5c3d12c55243ed30f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3d1dc19a43116c2f04bd59563b38904"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ab3d1dc19a43116c2f04bd59563b38904">beginAPB</a> (uint32_t addr, uint8_t net, uint8_t *nwkSKey, uint8_t *appSKey)</td></tr>
-<tr class="memdesc:ab3d1dc19a43116c2f04bd59563b38904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#ab3d1dc19a43116c2f04bd59563b38904">More...</a><br /></td></tr>
-<tr class="separator:ab3d1dc19a43116c2f04bd59563b38904"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adce65e6e5826cd4aa283efb625c878bb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adce65e6e5826cd4aa283efb625c878bb">beginAPB</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntkey=NULL)</td></tr>
+<tr class="memdesc:adce65e6e5826cd4aa283efb625c878bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#adce65e6e5826cd4aa283efb625c878bb">More...</a><br /></td></tr>
+<tr class="separator:adce65e6e5826cd4aa283efb625c878bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">uplink</a> (const char *str, uint8_t port)</td></tr>
 <tr class="memdesc:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">More...</a><br /></td></tr>
 <tr class="separator:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -122,6 +123,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aeb11880cbbe657239648e4c5c4ac5c5a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aeb11880cbbe657239648e4c5c4ac5c5a">configureChannel</a> (uint8_t chan, uint8_t dr)</td></tr>
 <tr class="memdesc:aeb11880cbbe657239648e4c5c4ac5c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the radio to a given channel frequency and data rate.  <a href="class_lo_ra_w_a_n_node.html#aeb11880cbbe657239648e4c5c4ac5c5a">More...</a><br /></td></tr>
 <tr class="separator:aeb11880cbbe657239648e4c5c4ac5c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a2335294022dff4bfed27491f7d61e645"><td class="memItemLeft" align="right" valign="top"><a id="a2335294022dff4bfed27491f7d61e645"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2335294022dff4bfed27491f7d61e645">FSK</a></td></tr>
+<tr class="memdesc:a2335294022dff4bfed27491f7d61e645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true to force the node to only use FSK channels. Set to false by default. <br /></td></tr>
+<tr class="separator:a2335294022dff4bfed27491f7d61e645"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
@@ -184,8 +192,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ab3d1dc19a43116c2f04bd59563b38904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3d1dc19a43116c2f04bd59563b38904">&#9670;&nbsp;</a></span>beginAPB()</h2>
+<a id="adce65e6e5826cd4aa283efb625c878bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adce65e6e5826cd4aa283efb625c878bb">&#9670;&nbsp;</a></span>beginAPB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -199,12 +207,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>net</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
           <td class="paramname"><em>nwkSKey</em>, </td>
         </tr>
@@ -212,7 +214,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>appSKey</em>&#160;</td>
+          <td class="paramname"><em>appSKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>fNwkSIntKey</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>sNwkSIntkey</em> = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -226,9 +240,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>Device address. </td></tr>
-    <tr><td class="paramname">net</td><td>Network ID. </td></tr>
-    <tr><td class="paramname">nwkSKey</td><td>Pointer to the network session AES-128 key. </td></tr>
+    <tr><td class="paramname">nwkSKey</td><td>Pointer to the network session AES-128 key (LoRaWAN 1.0) or MAC command network session key (LoRaWAN 1.1). </td></tr>
     <tr><td class="paramname">appSKey</td><td>Pointer to the application session AES-128 key. </td></tr>
+    <tr><td class="paramname">fNwkSIntKey</td><td>Pointer to the network session F key (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
+    <tr><td class="paramname">sNwkSIntkey</td><td>Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
   </table>
   </dd>
 </dl>
