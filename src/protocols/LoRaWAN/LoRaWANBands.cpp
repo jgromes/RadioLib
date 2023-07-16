@@ -19,6 +19,7 @@ const LoRaWANBand_t EU868 = {
   .powerMax = 16,
   .powerNumSteps = 7,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 868.8,
   .numChannelSpans = 1,
   .defaultChannels = {
     {
@@ -85,6 +86,7 @@ const LoRaWANBand_t US915 = {
   .powerMax = 30,
   .powerNumSteps = 10,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
+  .fskFreq = 0,
   .numChannelSpans = 3,
   .defaultChannels = {
     {
@@ -197,6 +199,7 @@ const LoRaWANBand_t CN780 = {
   .powerMax = 12,
   .powerNumSteps = 5,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 0,
   .numChannelSpans = 1,
   .defaultChannels = {
     {
@@ -263,6 +266,7 @@ const LoRaWANBand_t EU433 = {
   .powerMax = 12,
   .powerNumSteps = 5,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 0,
   .numChannelSpans = 1,
   .defaultChannels = {
     {
@@ -329,6 +333,7 @@ const LoRaWANBand_t AU915 = {
   .powerMax = 30,
   .powerNumSteps = 10,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
+  .fskFreq = 0,
   .numChannelSpans = 3,
   .defaultChannels = {
     {
@@ -441,6 +446,7 @@ const LoRaWANBand_t CN500 = {
   .powerMax = 19,
   .powerNumSteps = 7,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
+  .fskFreq = 0,
   .numChannelSpans = 2,
   .defaultChannels = {
     {
@@ -530,6 +536,7 @@ const LoRaWANBand_t AS923 = {
   .powerMax = 16,
   .powerNumSteps = 7,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 921.8,
   .numChannelSpans = 1,
   .defaultChannels = {
     {
@@ -596,6 +603,7 @@ const LoRaWANBand_t KR920 = {
   .powerMax = 14,
   .powerNumSteps = 7,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 0,
   .numChannelSpans = 1,
   .defaultChannels = {
     {
@@ -662,6 +670,7 @@ const LoRaWANBand_t IN865 = {
   .powerMax = 30,
   .powerNumSteps = 10,
   .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
+  .fskFreq = 0,
   .numChannelSpans = 1,
   .defaultChannels = {
     {

@@ -18,6 +18,7 @@ static void LoRaWANNodeOnDownlink(void) {
 LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->phyLayer = phy;
   this->band = band;
+  this->FSK = false;
 }
 
 void LoRaWANNode::wipe() {
@@ -83,10 +84,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
   // set the function that will be called when the reply is received
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlink);
 
-  // downlink messages are sent with interted IQ
-  state = this->phyLayer->invertIQ(true);
-  RADIOLIB_ASSERT(state);
-
+  // downlink messages are sent with inverted IQ
+  if(!this->FSK) {
+    state = this->phyLayer->invertIQ(true);
+    RADIOLIB_ASSERT(state);
+  }
+  
   // start receiving
   uint32_t start = mod->hal->millis();
   downlinkReceived = false;
@@ -97,7 +100,9 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
   while(!downlinkReceived) {
     if(mod->hal->millis() - start >= RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS + 2000) {
       downlinkReceived = false;
-      this->phyLayer->invertIQ(false);
+      if(!this->FSK) {
+        this->phyLayer->invertIQ(false);
+      }
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
@@ -105,9 +110,11 @@ int16_t LoRaWANNode::beginOTAA(uint64_t appEUI, uint64_t devEUI, uint8_t* nwkKey
   // we have a message, reset the IQ inversion
   downlinkReceived = false;
   this->phyLayer->clearPacketReceivedAction();
-  state = this->phyLayer->invertIQ(false);
-  RADIOLIB_ASSERT(state);
-  
+  if(!this->FSK) {
+    state = this->phyLayer->invertIQ(false);
+    RADIOLIB_ASSERT(state);
+  }
+
   // build the buffer for the reply data
   uint8_t joinAcceptMsgEnc[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
 
@@ -410,22 +417,30 @@ int16_t LoRaWANNode::configureChannel(uint8_t chan, uint8_t dr) {
   
   RADIOLIB_DEBUG_PRINTLN("Data rate %02x", dataRateBand);
   DataRate_t datr;
-  uint8_t bw = dataRateBand & 0x03;
-  switch(bw) {
-    case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
-      datr.lora.bandwidth = 125.0;
-      break;
-    case(RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ):
-      datr.lora.bandwidth = 250.0;
-      break;
-    case(RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ):
-      datr.lora.bandwidth = 500.0;
-      break;
-    default:
-      return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+  if(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
+    datr.fsk.bitRate = 50;
+    datr.fsk.freqDev = 25;
+  
+  } else {
+    uint8_t bw = dataRateBand & 0x03;
+    switch(bw) {
+      case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
+        datr.lora.bandwidth = 125.0;
+        break;
+      case(RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ):
+        datr.lora.bandwidth = 250.0;
+        break;
+      case(RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ):
+        datr.lora.bandwidth = 500.0;
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+    }
+    
+    datr.lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
+  
   }
   
-  datr.lora.spreadingFactor = ((dataRateBand & 0xF0) >> 4) + 6;
   state = this->phyLayer->setDataRate(datr);
 
   return(state);
@@ -465,17 +480,47 @@ int16_t LoRaWANNode::setPhyProperties() {
   // TODO select channel span based on channel ID
   // TODO select channel randomly
   uint8_t channelId = 0;
-  int16_t state = this->configureChannel(channelId, this->band->defaultChannels[0].joinRequestDataRate);
+  int16_t state = RADIOLIB_ERR_NONE;
+  if(this->FSK) {
+    state = this->phyLayer->setFrequency(this->band->fskFreq);
+    RADIOLIB_ASSERT(state);
+    DataRate_t dr;
+    dr.fsk.bitRate = 50;
+    dr.fsk.freqDev = 25;
+    state = this->phyLayer->setDataRate(dr);
+    RADIOLIB_ASSERT(state);
+    state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
+    RADIOLIB_ASSERT(state);
+    state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
+  } else {
+    state = this->configureChannel(channelId, this->band->defaultChannels[0].joinRequestDataRate);
+  }
   RADIOLIB_ASSERT(state);
 
   state = this->phyLayer->setOutputPower(this->band->powerMax);
   RADIOLIB_ASSERT(state);
 
-  uint8_t syncWord = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
-  state = this->phyLayer->setSyncWord(&syncWord, 1);
+  uint8_t syncWord[3] = { 0 };
+  uint8_t syncWordLen = 0;
+  size_t preLen = 0;
+  if(this->FSK) {
+    preLen = 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN;
+    syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
+    syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
+    syncWord[2] = (uint8_t)RADIOLIB_LORAWAN_GFSK_SYNC_WORD;
+    syncWordLen = 3;
+  
+  } else {
+    preLen = RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN;
+    syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
+    syncWordLen = 1;
+  
+  }
+
+  state = this->phyLayer->setSyncWord(syncWord, syncWordLen);
   RADIOLIB_ASSERT(state);
 
-  state = this->phyLayer->setPreambleLength(RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN);
+  state = this->phyLayer->setPreambleLength(preLen);
   return(state);
 }
 
