@@ -255,10 +255,10 @@ class LoRaWANNode {
       \param nwkSKey Pointer to the network session AES-128 key (LoRaWAN 1.0) or MAC command network session key (LoRaWAN 1.1).
       \param appSKey Pointer to the application session AES-128 key.
       \param fNwkSIntKey Pointer to the network session F key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
-      \param sNwkSIntkey Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
+      \param sNwkSIntKey Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \returns \ref status_codes
     */
-    int16_t beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntkey = NULL);
+    int16_t beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
