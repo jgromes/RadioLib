@@ -154,7 +154,7 @@ class TockHal : public RadioLibHal {
     }
 
     void delayMicroseconds(unsigned long us) override {
-      delay_ms( us * 1000 );
+      delay_ms( us / 1000 );
     }
 
     unsigned long millis() override {
@@ -163,7 +163,7 @@ class TockHal : public RadioLibHal {
       alarm_internal_frequency(&frequency);
       alarm_internal_read(&now);
 
-      return (now / frequency) * 1000;
+      return (now / frequency) / 1000;
     }
 
     unsigned long micros() override {
@@ -191,7 +191,7 @@ class TockHal : public RadioLibHal {
     }
 
     void yield() {
-      ::yield();
+      ::yield_no_wait();
     }
 
   private:
