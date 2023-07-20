@@ -191,7 +191,7 @@ class TockHal : public RadioLibHal {
     }
 
     void yield() {
-      ::yield();
+      ::yield_no_wait();
     }
 
   private:
