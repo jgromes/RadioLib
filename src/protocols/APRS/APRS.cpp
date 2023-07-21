@@ -256,11 +256,10 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
   } else if(this->phyLayer != nullptr) {
     // non-AX.25/LoRa mode
     size_t len = RADIOLIB_APRS_LORA_HEADER_LEN + strlen(this->src) + 4 + strlen(destCallsign) + 11 + strlen(info);
-    Serial.println(len);
-    uint8_t* buff = new uint8_t[len];
+    char* buff = new char[len];
     snprintf(buff, len, RADIOLIB_APRS_LORA_HEADER "%s-%d>%s,WIDE%d-%d:%s", this->src, this->id, destCallsign, destSSID, destSSID, info);
 
-    int16_t res = this->phyLayer->transmit(buff, strlen(buff));
+    int16_t res = this->phyLayer->transmit((uint8_t*)buff, strlen(buff));
     delete[] buff;
     return(res);
   } 
