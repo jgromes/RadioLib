@@ -1,7 +1,7 @@
 var searchData=
 [
   ['afskclient_0',['AFSKClient',['../class_a_f_s_k_client.html',1,'AFSKClient'],['../class_a_f_s_k_client.html#a89c7ab4759d37c9a032ac29fa9782eea',1,'AFSKClient::AFSKClient(PhysicalLayer *phy, uint32_t pin)'],['../class_a_f_s_k_client.html#ac54633fe75157ce126e44e4e494266f2',1,'AFSKClient::AFSKClient(AFSKClient *aud)']]],
-  ['aprsclient_1',['APRSClient',['../class_a_p_r_s_client.html',1,'APRSClient'],['../class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c',1,'APRSClient::APRSClient()']]],
+  ['aprsclient_1',['APRSClient',['../class_a_p_r_s_client.html',1,'APRSClient'],['../class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c',1,'APRSClient::APRSClient(AX25Client *ax)'],['../class_a_p_r_s_client.html#afa314fad96837523df4a73cf47986f82',1,'APRSClient::APRSClient(PhysicalLayer *phy)']]],
   ['attachinterrupt_2',['attachInterrupt',['../class_radio_lib_hal.html#af142f747becacd1e3e13503f79fd5ebe',1,'RadioLibHal']]],
   ['autoldro_3',['autoLDRO',['../class_s_x1272.html#abb4bbfe8acc6026c833d267d78417b63',1,'SX1272::autoLDRO()'],['../class_s_x1278.html#ae02adcde8c2978c0d1b157729dd5df1e',1,'SX1278::autoLDRO()'],['../class_s_x126x.html#ab9ce38cfeaa36ddcc2d82b2974d7088c',1,'SX126x::autoLDRO()']]],
   ['available_4',['available',['../class_pager_client.html#aec073fa9e5adcff9730482d9583715e9',1,'PagerClient::available()'],['../class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26',1,'PhysicalLayer::available()']]],

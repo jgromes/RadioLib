@@ -98,11 +98,14 @@ $(document).ready(function(){initNavTree('class_a_p_r_s_client.html',''); initRe
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a08e166ed706d79c66c1d5b48f195724c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a> (<a class="el" href="class_a_x25_client.html">AX25Client</a> *ax)</td></tr>
-<tr class="memdesc:a08e166ed706d79c66c1d5b48f195724c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">More...</a><br /></td></tr>
+<tr class="memdesc:a08e166ed706d79c66c1d5b48f195724c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for "classic" mode using AX.25/AFSK.  <a href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">More...</a><br /></td></tr>
 <tr class="separator:a08e166ed706d79c66c1d5b48f195724c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a916fa8b4477199c92ca630d1de7fdab5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a916fa8b4477199c92ca630d1de7fdab5">begin</a> (char sym, bool alt=false)</td></tr>
-<tr class="memdesc:a916fa8b4477199c92ca630d1de7fdab5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_p_r_s_client.html#a916fa8b4477199c92ca630d1de7fdab5">More...</a><br /></td></tr>
-<tr class="separator:a916fa8b4477199c92ca630d1de7fdab5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa314fad96837523df4a73cf47986f82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#afa314fad96837523df4a73cf47986f82">APRSClient</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy)</td></tr>
+<tr class="memdesc:afa314fad96837523df4a73cf47986f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for LoRa mode.  <a href="class_a_p_r_s_client.html#afa314fad96837523df4a73cf47986f82">More...</a><br /></td></tr>
+<tr class="separator:afa314fad96837523df4a73cf47986f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1468be141940a12fd3964957f79c1a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">begin</a> (char sym, char *callsign=NULL, uint8_t ssid=0, bool alt=false)</td></tr>
+<tr class="memdesc:a4d1468be141940a12fd3964957f79c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">More...</a><br /></td></tr>
+<tr class="separator:a4d1468be141940a12fd3964957f79c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebc95b926fb3d37f8489f895aa576d0e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a> (char *destCallsign, uint8_t destSSID, char *lat, char *lon, char *msg=NULL, char *time=NULL)</td></tr>
 <tr class="memdesc:aebc95b926fb3d37f8489f895aa576d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit position.  <a href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">More...</a><br /></td></tr>
 <tr class="separator:aebc95b926fb3d37f8489f895aa576d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,7 +120,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>Client for APRS communication. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a08e166ed706d79c66c1d5b48f195724c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08e166ed706d79c66c1d5b48f195724c">&#9670;&nbsp;</a></span>APRSClient()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a08e166ed706d79c66c1d5b48f195724c">&#9670;&nbsp;</a></span>APRSClient() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -140,7 +143,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Default constructor. </p>
+<p>Constructor for "classic" mode using AX.25/AFSK. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">ax</td><td>Pointer to the instance of <a class="el" href="class_a_x25_client.html" title="Client for AX25 communication.">AX25Client</a> to be used for APRS. </td></tr>
@@ -150,9 +153,43 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="afa314fad96837523df4a73cf47986f82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa314fad96837523df4a73cf47986f82">&#9670;&nbsp;</a></span>APRSClient() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">APRSClient::APRSClient </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_physical_layer.html">PhysicalLayer</a> *&#160;</td>
+          <td class="paramname"><em>phy</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Constructor for LoRa mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">phy</td><td>Pointer to the wireless module providing <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> communication. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a916fa8b4477199c92ca630d1de7fdab5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a916fa8b4477199c92ca630d1de7fdab5">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="a4d1468be141940a12fd3964957f79c1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d1468be141940a12fd3964957f79c1a">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -162,6 +199,18 @@ Public Member Functions</h2></td></tr>
           <td>(</td>
           <td class="paramtype">char&#160;</td>
           <td class="paramname"><em>sym</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>callsign</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ssid</em> = <code>0</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -181,6 +230,8 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sym</td><td>APRS symbol to be displayed. </td></tr>
+    <tr><td class="paramname">callsign</td><td>Source callsign. Required and only used for APRS over LoRa, ignored in classic mode. </td></tr>
+    <tr><td class="paramname">ssid</td><td>Source SSID. Only used for APRS over LoRa, ignored in classic mode, defaults to 0. </td></tr>
     <tr><td class="paramname">alt</td><td>Whether to use the primary (false) or alternate (true) symbol table. Defaults to primary table. </td></tr>
   </table>
   </dd>
