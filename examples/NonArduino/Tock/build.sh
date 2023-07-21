@@ -3,6 +3,10 @@ set -e
 
 rm -rf ./build
 
+cd libtock-c/libtock
+make -j4
+cd ../../
+
 mkdir -p build
 cd build
 
