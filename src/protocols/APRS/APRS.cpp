@@ -6,9 +6,15 @@
 
 APRSClient::APRSClient(AX25Client* ax) {
   axClient = ax;
+  phyLayer = nullptr;
 }
 
-int16_t APRSClient::begin(char sym, bool alt) {
+APRSClient::APRSClient(PhysicalLayer* phy) {
+  axClient = nullptr;
+  phyLayer = phy;
+}
+
+int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
   RADIOLIB_CHECK_RANGE(sym, ' ', '}', RADIOLIB_ERR_INVALID_SYMBOL);
   symbol = sym;
 
@@ -17,6 +23,16 @@ int16_t APRSClient::begin(char sym, bool alt) {
   } else {
     table = '/';
   }
+
+  if((!src) && (this->phyLayer != nullptr)) {
+    return(RADIOLIB_ERR_INVALID_CALLSIGN);
+  }
+
+  if(strlen(callsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
+    return(RADIOLIB_ERR_INVALID_CALLSIGN);
+  }
+  memcpy(this->src, callsign, strlen(callsign));
+  this->id = ssid;
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -30,7 +46,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
     if(time != NULL) {
       len += strlen(time);
     }
-    char* info = new char[len];
+    char* info = new char[len + 1];
   #else
     char info[RADIOLIB_STATIC_ARRAY_SIZE];
   #endif
@@ -49,6 +65,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
     // timestamp and message
     sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_MSG "%s%s%c%s%c%s", time, lat, table, lon, symbol, msg);
   }
+  info[len] = '\0';
 
   // send the frame
   int16_t state = sendFrame(destCallsign, destSSID, info);
@@ -211,7 +228,12 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
   info[infoPos++] = '\0';
 
   // send the frame
-  int16_t state = sendFrame(destCallsign, 0, info);
+  uint8_t destSSID = 0;
+  if(this->phyLayer != nullptr) {
+    // TODO make SSID configurable?
+    destSSID = 1;
+  }
+  int16_t state = sendFrame(destCallsign, destSSID, info);
   #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] info;
   #endif
@@ -219,15 +241,31 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
 }
 
 int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) {
-  // get AX.25 callsign
-  char srcCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
-  axClient->getCallsign(srcCallsign);
+  // encoding depends on whether AX.25 should be used or not
+  if(this->axClient != nullptr) {
+    // AX.25/classical mode, get AX.25 callsign
+    char srcCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
+    axClient->getCallsign(srcCallsign);
 
-  AX25Frame frameUI(destCallsign, destSSID, srcCallsign, axClient->getSSID(), RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
-                    RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
-                    RADIOLIB_AX25_PID_NO_LAYER_3, (const char*)info);
+    AX25Frame frameUI(destCallsign, destSSID, srcCallsign, axClient->getSSID(), RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
+                      RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
+                      RADIOLIB_AX25_PID_NO_LAYER_3, (const char*)info);
 
-  return(axClient->sendFrame(&frameUI));
+    return(axClient->sendFrame(&frameUI));
+  
+  } else if(this->phyLayer != nullptr) {
+    // non-AX.25/LoRa mode
+    size_t len = RADIOLIB_APRS_LORA_HEADER_LEN + strlen(this->src) + 4 + strlen(destCallsign) + 11 + strlen(info);
+    Serial.println(len);
+    uint8_t* buff = new uint8_t[len];
+    snprintf(buff, len, RADIOLIB_APRS_LORA_HEADER "%s-%d>%s,WIDE%d-%d:%s", this->src, this->id, destCallsign, destSSID, destSSID, info);
+
+    int16_t res = this->phyLayer->transmit(buff, strlen(buff));
+    delete[] buff;
+    return(res);
+  } 
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 #endif

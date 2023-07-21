@@ -58,6 +58,10 @@
 // alias for unused altitude in Mic-E
 #define RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED                     -1000000
 
+// special header applied for APRS over LoRa
+#define RADIOLIB_APRS_LORA_HEADER                               "<\xff\x01"
+#define RADIOLIB_APRS_LORA_HEADER_LEN                           (3)
+
 /*!
   \class APRSClient
   \brief Client for APRS communication.
@@ -65,20 +69,28 @@
 class APRSClient {
   public:
     /*!
-      \brief Default constructor.
+      \brief Constructor for "classic" mode using AX.25/AFSK.
       \param ax Pointer to the instance of AX25Client to be used for APRS.
     */
     explicit APRSClient(AX25Client* ax);
+
+    /*!
+      \brief Constructor for LoRa mode.
+      \param phy Pointer to the wireless module providing PhysicalLayer communication.
+    */
+    explicit APRSClient(PhysicalLayer* phy);
 
     // basic methods
 
     /*!
       \brief Initialization method.
       \param sym APRS symbol to be displayed.
+      \param callsign Source callsign. Required and only used for APRS over LoRa, ignored in classic mode.
+      \param ssid Source SSID. Only used for APRS over LoRa, ignored in classic mode, defaults to 0.
       \param alt Whether to use the primary (false) or alternate (true) symbol table. Defaults to primary table.
       \returns \ref status_codes
     */
-    int16_t begin(char sym, bool alt = false);
+    int16_t begin(char sym, char* callsign = NULL, uint8_t ssid = 0, bool alt = false);
 
     /*!
       \brief Transmit position.
@@ -120,10 +132,15 @@ class APRSClient {
   private:
 #endif
     AX25Client* axClient;
+    PhysicalLayer* phyLayer;
 
     // default APRS symbol (car)
     char symbol = '>';
     char table = '/';
+    
+    // source callsign when using APRS over LoRa
+    char src[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };
+    uint8_t id = 0;
 };
 
 #endif
