@@ -48,7 +48,7 @@ int main(void) {
 
   // Setup the radio
   // The settings here work for the SparkFun LoRa Thing Plus - expLoRaBLE
-  int state = radio->begin(915.0, 125.0, 9, 7, RADIOLIB_SX126X_SYNC_WORD_PRIVATE, 10, 8, 0, false);
+  int state = radio->begin(915.0, 125.0, 7, 5, RADIOLIB_SX126X_SYNC_WORD_PRIVATE, 0, 8, 0, false);
 
   if (state != RADIOLIB_ERR_NONE) {
     printf("failed, code %d\r\n", state);
