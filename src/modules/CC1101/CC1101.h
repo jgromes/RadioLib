@@ -518,7 +518,7 @@
 #define RADIOLIB_CC1101_DEFAULT_FREQ                            434.0
 #define RADIOLIB_CC1101_DEFAULT_BR                              4.8
 #define RADIOLIB_CC1101_DEFAULT_FREQDEV                         5.0
-#define RADIOLIB_CC1101_DEFAULT_RXBW                            135.0
+#define RADIOLIB_CC1101_DEFAULT_RXBW                            58.0
 #define RADIOLIB_CC1101_DEFAULT_POWER                           10
 #define RADIOLIB_CC1101_DEFAULT_PREAMBLELEN                     16
 #define RADIOLIB_CC1101_DEFAULT_SW                              {0x12, 0xAD}
