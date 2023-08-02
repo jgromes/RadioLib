@@ -8,10 +8,9 @@
 
 // CC1101 physical layer properties
 #define RADIOLIB_CC1101_FREQUENCY_STEP_SIZE                     396.7285156
-#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       255
+#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       63
 #define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
-#define RADIOLIB_CC1101_FIFO_SIZE                               64
 
 // CC1101 SPI commands
 #define RADIOLIB_CC1101_CMD_READ                                0b10000000
@@ -116,8 +115,8 @@
 #define RADIOLIB_CC1101_GDO2_INV                                0b01000000  //  6     6                active low
 
 // RADIOLIB_CC1101_REG_IOCFG1
-#define RADIOLIB_CC1101_GDO1_DS_LOW                             0b00000000  //  7     7   GDO1 output drive strength: low (default)
-#define RADIOLIB_CC1101_GDO1_DS_HIGH                            0b10000000  //  7     7                               high
+#define RADIOLIB_CC1101_GDO_DS_LOW                              0b00000000  //  7     7   GDOx output drive strength: low (default)
+#define RADIOLIB_CC1101_GDO_DS_HIGH                             0b10000000  //  7     7                               high
 #define RADIOLIB_CC1101_GDO1_NORM                               0b00000000  //  6     6   GDO1 output: active high (default)
 #define RADIOLIB_CC1101_GDO1_INV                                0b01000000  //  6     6                active low
 
