@@ -98,8 +98,8 @@
 
 // RF69 modem settings
 // RADIOLIB_RF69_REG_OP_MODE                                                  MSB   LSB   DESCRIPTION
-#define RADIOLIB_RF69_SEQUENCER_OFF                             0b00000000  //  7     7   disable automatic sequencer
-#define RADIOLIB_RF69_SEQUENCER_ON                              0b10000000  //  7     7   enable automatic sequencer
+#define RADIOLIB_RF69_SEQUENCER_OFF                             0b10000000  //  7     7   disable automatic sequencer
+#define RADIOLIB_RF69_SEQUENCER_ON                              0b00000000  //  7     7   enable automatic sequencer
 #define RADIOLIB_RF69_LISTEN_OFF                                0b00000000  //  6     6   disable Listen mode
 #define RADIOLIB_RF69_LISTEN_ON                                 0b01000000  //  6     6   enable Listen mode
 #define RADIOLIB_RF69_LISTEN_ABORT                              0b00100000  //  5     5   abort Listen mode (has to be set together with RF69_LISTEN_OFF)
