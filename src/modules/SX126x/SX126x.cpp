@@ -429,6 +429,10 @@ int16_t SX126x::packetMode() {
   return(state);
 }
 
+int16_t SX126x::scanChannel() {
+  return(this->scanChannel(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+}
+
 int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // set mode to CAD
   int state = startChannelScan(symbolNum, detPeak, detMin);

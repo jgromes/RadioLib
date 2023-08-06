@@ -530,12 +530,18 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel() override;
+
+    /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
       \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
       \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
       \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
       \returns \ref status_codes
     */
-    int16_t scanChannel(uint8_t symbolNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT);
+    int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
     
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
