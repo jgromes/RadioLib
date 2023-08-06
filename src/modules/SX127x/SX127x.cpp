@@ -609,6 +609,11 @@ int16_t SX127x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
 }
 
 int16_t SX127x::finishTransmit() {
+  // wait for at least 1 bit at the lowest possible bit rate before clearing IRQ flags
+  // not doing this and clearing RADIOLIB_SX127X_FLAG_FIFO_OVERRUN will dump the FIFO,
+  // which can lead to mangling of the last bit (#808)
+  mod->hal->delayMicroseconds(1000000/1200);
+
   // clear interrupt flags
   clearIRQFlags();
 
