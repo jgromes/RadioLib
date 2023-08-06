@@ -303,6 +303,14 @@ class PhysicalLayer {
     virtual float getSNR();
 
     /*!
+      \brief Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules,
+      or RSSI measurement for FSK modules.
+      \returns RADIOLIB_CHANNEL_FREE when channel is free,
+      RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
+    */
+    virtual int16_t scanChannel();
+
+    /*!
       \brief Get truly random number in range 0 - max.
       \param max The maximum value of the random number (non-inclusive).
       \returns Random number.

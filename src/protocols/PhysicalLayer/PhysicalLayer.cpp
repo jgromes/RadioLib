@@ -289,6 +289,10 @@ float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::scanChannel() {
+  return(RADIOLIB_ERR_UNSUPPORTED); 
+}
+
 int32_t PhysicalLayer::random(int32_t max) {
   if(max == 0) {
     return(0);
