@@ -647,7 +647,7 @@ class SX127x: public PhysicalLayer {
       \brief Performs scan for valid %LoRa preamble in the current channel.
       \returns \ref status_codes
     */
-    int16_t scanChannel();
+    int16_t scanChannel() override;
 
     /*!
       \brief Sets the %LoRa module to sleep to save power. %Module will not be able to transmit or receive any data while in sleep mode.
