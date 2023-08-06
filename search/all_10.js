@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['scanchannel_291',['scanChannel',['../class_s_x126x.html#a755e7df4b0958f7c793d0c058408831a',1,'SX126x::scanChannel()'],['../class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb',1,'SX128x::scanChannel()'],['../class_s_x127x.html#ada007b90821258fe8c6ca7f8ae3efed5',1,'SX127x::scanChannel()']]],
+  ['scanchannel_291',['scanChannel',['../class_s_x126x.html#acb8611a9c3862dd1bfa73ef47b8f9b20',1,'SX126x::scanChannel()'],['../class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718',1,'PhysicalLayer::scanChannel()'],['../class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb',1,'SX128x::scanChannel()'],['../class_s_x127x.html#a13ae97e18744dc617bc9326cfbaad3a3',1,'SX127x::scanChannel()'],['../class_s_x126x.html#a4bbc29f5dc7253b7743599c68137df48',1,'SX126x::scanChannel()']]],
   ['scanpixellen_292',['scanPixelLen',['../struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694',1,'SSTVMode_t']]],
   ['sendframe_293',['sendFrame',['../class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6',1,'AX25Client::sendFrame()'],['../class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1',1,'APRSClient::sendFrame()']]],
   ['sendheader_294',['sendHeader',['../class_s_s_t_v_client.html#a30741de183c81492402187b9d6d8c11e',1,'SSTVClient']]],

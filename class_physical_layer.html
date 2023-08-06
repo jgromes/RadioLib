@@ -201,6 +201,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aedddaf9460941b90e43e9005035faa0f"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">getSNR</a> ()</td></tr>
 <tr class="memdesc:aedddaf9460941b90e43e9005035faa0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <a href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">More...</a><br /></td></tr>
 <tr class="separator:aedddaf9460941b90e43e9005035faa0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd9e39cc745acbf084cfa0d3f4d10718"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718">scanChannel</a> ()</td></tr>
+<tr class="memdesc:abd9e39cc745acbf084cfa0d3f4d10718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules, or RSSI measurement for FSK modules.  <a href="class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718">More...</a><br /></td></tr>
+<tr class="separator:abd9e39cc745acbf084cfa0d3f4d10718"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -812,6 +815,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x128x.html#aff7d86352c98771595375e17d19a2a97">SX128x</a>, <a class="el" href="class_s_x127x.html#aa7ac558d537c6364c4bc82c8f33e398f">SX127x</a>, <a class="el" href="class_s_x126x.html#a8a18aee2bf05793aa29b5cf6b47bb435">SX126x</a>, <a class="el" href="class_si443x.html#a178b471527813a608c04db7d3c9648d6">Si443x</a>, <a class="el" href="class_r_f69.html#abd556b0f455f9510213b17588a4baf1b">RF69</a>, <a class="el" href="classn_r_f24.html#a415d86947742e981bfcf7f2371f8605c">nRF24</a>, and <a class="el" href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">CC1101</a>.</p>
+
+</div>
+</div>
+<a id="abd9e39cc745acbf084cfa0d3f4d10718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd9e39cc745acbf084cfa0d3f4d10718">&#9670;&nbsp;</a></span>scanChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::scanChannel </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules, or RSSI measurement for FSK modules. </p>
+<dl class="section return"><dt>Returns</dt><dd>RADIOLIB_CHANNEL_FREE when channel is free, RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other <a class="el" href="group__status__codes.html">Status Codes</a>. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a13ae97e18744dc617bc9326cfbaad3a3">SX127x</a>, <a class="el" href="class_s_x126x.html#acb8611a9c3862dd1bfa73ef47b8f9b20">SX126x</a>, and <a class="el" href="class_s_x128x.html#a89cc916f5cd5cdfbd331bb15f8a3d5cb">SX128x</a>.</p>
 
 </div>
 </div>

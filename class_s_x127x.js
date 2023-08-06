@@ -41,7 +41,7 @@ var class_s_x127x =
     [ "receive", "class_s_x127x.html#adfe0d3f033a23ec2f3c2a407285d357c", null ],
     [ "receiveDirect", "class_s_x127x.html#aa7ac558d537c6364c4bc82c8f33e398f", null ],
     [ "reset", "class_s_x127x.html#a3321ac4a7f65e73004202486db9b1d68", null ],
-    [ "scanChannel", "class_s_x127x.html#ada007b90821258fe8c6ca7f8ae3efed5", null ],
+    [ "scanChannel", "class_s_x127x.html#a13ae97e18744dc617bc9326cfbaad3a3", null ],
     [ "setAFC", "class_s_x127x.html#a41f8cfcc2cdeb25a8e5a03f1ba4edd1e", null ],
     [ "setAFCAGCTrigger", "class_s_x127x.html#ab0f67330124cefc07a462e77922453d0", null ],
     [ "setAFCBandwidth", "class_s_x127x.html#a63e00b1ecf1b0dcb6d8a91fc9b8ea5ef", null ],
