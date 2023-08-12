@@ -72,6 +72,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_UNKNOWN", "group__status__codes.html#gacc0baeb3e5fc99760a07d18ba55531b6", null ],
     [ "RADIOLIB_ERR_UNSUPPORTED", "group__status__codes.html#ga00c1c2b500feea59d0d47dddd7179be1", null ],
     [ "RADIOLIB_ERR_UNSUPPORTED_ENCODING", "group__status__codes.html#gae4d77c5138cc5f21fb2af4b0791e9f81", null ],
+    [ "RADIOLIB_ERR_UPLINK_UNAVAILABLE", "group__status__codes.html#ga8b424bb8992a6ac80e2ba46667bf9c6e", null ],
     [ "RADIOLIB_ERR_WRONG_MODEM", "group__status__codes.html#gad95d2455d580745d41ef2f319c6585f8", null ],
     [ "RADIOLIB_LORA_DETECTED", "group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd", null ],
     [ "RADIOLIB_PREAMBLE_DETECTED", "group__status__codes.html#ga382dc113e93f196401914853ec176b18", null ]
