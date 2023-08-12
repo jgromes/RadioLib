@@ -778,11 +778,9 @@ int16_t SX126x::getChannelScanResult() {
   uint16_t cadResult = getIrqStatus();
   if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DETECTED) {
     // detected some LoRa activity
-    clearIrqStatus();
     return(RADIOLIB_LORA_DETECTED);
   } else if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DONE) {
     // channel is free
-    clearIrqStatus();
     return(RADIOLIB_CHANNEL_FREE);
   }
 
