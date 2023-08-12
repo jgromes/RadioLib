@@ -701,6 +701,13 @@ int16_t SX127x::startChannelScan() {
   return(state);
 }
 
+int16_t SX127x::getChannelScanResult() {
+  if(this->getIRQFlags() & RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED == RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED) {
+    return(RADIOLIB_PREAMBLE_DETECTED);
+  }
+  return(RADIOLIB_CHANNEL_FREE);
+}
+
 int16_t SX127x::setSyncWord(uint8_t syncWord) {
   // check active modem
   if(getActiveModem() != RADIOLIB_SX127X_LORA) {
