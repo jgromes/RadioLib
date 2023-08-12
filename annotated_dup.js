@@ -20,6 +20,7 @@ var annotated_dup =
     [ "LoRaRate_t", "struct_lo_ra_rate__t.html", "struct_lo_ra_rate__t" ],
     [ "LoRaWANBand_t", "struct_lo_ra_w_a_n_band__t.html", "struct_lo_ra_w_a_n_band__t" ],
     [ "LoRaWANChannelSpan_t", "struct_lo_ra_w_a_n_channel_span__t.html", "struct_lo_ra_w_a_n_channel_span__t" ],
+    [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", "struct_lo_ra_w_a_n_mac_command__t" ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", "class_lo_ra_w_a_n_node" ],
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],

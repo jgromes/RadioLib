@@ -8,7 +8,7 @@ var searchData=
   ['beginflrc_12',['beginFLRC',['../class_s_x128x.html#a2c4a24623c5fd27b3cc937e55783d709',1,'SX128x']]],
   ['beginfsk_13',['beginFSK',['../class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c',1,'SX126x::beginFSK()'],['../class_s_x1268.html#af6b041392136b599eec57085e2067a6f',1,'SX1268::beginFSK()'],['../class_s_x1279.html#ab5cb738ed4bf6f40e777f797af2a8b4b',1,'SX1279::beginFSK()'],['../class_s_x1262.html#a36d2c94ff9c3b9126fde23e3c54630f1',1,'SX1262::beginFSK()'],['../class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260',1,'SX1272::beginFSK()'],['../class_s_x1276.html#ae1240a7418dce80c10bf0f7b3c807840',1,'SX1276::beginFSK()'],['../class_s_x1277.html#ac4f2e93c9096e6d2552958f4bc9c1b44',1,'SX1277::beginFSK()'],['../class_s_x1278.html#a86464af008b71d12948690b780280e7d',1,'SX1278::beginFSK()'],['../class_s_t_m32_w_lx.html#af12e8eba13c5dd8bcf8656ed5c1f6cef',1,'STM32WLx::beginFSK()'],['../class_r_f_m96.html#a82ef1b7354238637eee6f4d65b9be6e5',1,'RFM96::beginFSK()'],['../class_r_f_m95.html#a7e0f8fa59ddd48f7b026b0f996202b30',1,'RFM95::beginFSK()'],['../class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb',1,'SX127x::beginFSK()']]],
   ['begingfsk_14',['beginGFSK',['../class_s_x128x.html#a6ed60dfbd142315bb4e1abd2555a470a',1,'SX128x']]],
-  ['beginotaa_15',['beginOTAA',['../class_lo_ra_w_a_n_node.html#a36e62e7273ad5a5c3d12c55243ed30f9',1,'LoRaWANNode']]],
+  ['beginotaa_15',['beginOTAA',['../class_lo_ra_w_a_n_node.html#a1c51588ea3b3ca82e2742c7cc9bc2a72',1,'LoRaWANNode']]],
   ['bell101_16',['Bell101',['../struct_bell101.html',1,'']]],
   ['bell103_17',['Bell103',['../struct_bell103.html',1,'']]],
   ['bell202_18',['Bell202',['../struct_bell202.html',1,'']]],
