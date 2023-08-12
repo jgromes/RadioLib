@@ -166,11 +166,11 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   }
 
   // do the transfer
-  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
   this->hal->spiBeginTransaction();
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
   this->hal->spiTransfer(buffOut, buffLen, buffIn);
-  this->hal->spiEndTransaction();
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
+  this->hal->spiEndTransaction();
   
   // copy the data
   if(cmd == SPIreadCommand) {
@@ -298,11 +298,11 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   }
 
   // do the transfer
-  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
   this->hal->spiBeginTransaction();
+  this->hal->digitalWrite(this->csPin, this->hal->GpioLevelLow);
   this->hal->spiTransfer(buffOut, buffLen, buffIn);
-  this->hal->spiEndTransaction();
   this->hal->digitalWrite(this->csPin, this->hal->GpioLevelHigh);
+  this->hal->spiEndTransaction();
 
   // wait for GPIO to go high and then low
   if(waitForGpio) {
