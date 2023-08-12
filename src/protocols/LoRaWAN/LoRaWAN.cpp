@@ -325,7 +325,9 @@ int16_t LoRaWANNode::uplink(const char* str, uint8_t port) {
 
 int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   // check destination port
-  RADIOLIB_CHECK_RANGE(port, 0x00, 0xDF, RADIOLIB_ERR_INVALID_PORT);
+  if(port > 0xDF) {
+    return(RADIOLIB_ERR_INVALID_PORT);
+  }
 
   // check if there is a MAC command to piggyback
   uint8_t foptsLen = 0;
