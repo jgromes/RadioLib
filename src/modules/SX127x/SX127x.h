@@ -739,6 +739,17 @@ class SX127x: public PhysicalLayer {
     void clearPacketSentAction();
 
     /*!
+      \brief Sets interrupt service routine to call when a channel scan is finished.
+      \param func ISR to call.
+    */
+    void setChannelScanAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a channel scan is finished.
+    */
+    void clearChannelScanAction();
+
+    /*!
       \brief Set interrupt service routine function to call when FIFO is empty.
       \param func Pointer to interrupt service routine.
     */

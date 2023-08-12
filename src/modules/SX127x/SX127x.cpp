@@ -472,6 +472,14 @@ void SX127x::clearPacketSentAction() {
   this->clearDio0Action();
 }
 
+void SX127x::setChannelScanAction(void (*func)(void)) {
+  this->setDio0Action(func, this->mod->hal->GpioInterruptRising);
+}
+
+void SX127x::clearChannelScanAction() {
+  this->clearDio0Action();
+}
+
 void SX127x::setFifoEmptyAction(void (*func)(void)) {
   // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
   setDio1Action(func, this->mod->hal->GpioInterruptRising);
