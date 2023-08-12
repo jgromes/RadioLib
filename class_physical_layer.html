@@ -201,6 +201,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aedddaf9460941b90e43e9005035faa0f"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">getSNR</a> ()</td></tr>
 <tr class="memdesc:aedddaf9460941b90e43e9005035faa0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.  <a href="class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f">More...</a><br /></td></tr>
 <tr class="separator:aedddaf9460941b90e43e9005035faa0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e">getTimeOnAir</a> (size_t len)</td></tr>
+<tr class="memdesc:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e">More...</a><br /></td></tr>
+<tr class="separator:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">startChannelScan</a> ()</td></tr>
+<tr class="memdesc:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. interrupt will be activated when packet is detected. Must be implemented in module class.  <a href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">More...</a><br /></td></tr>
+<tr class="separator:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63979795a7b53557560bb95b65480906"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a63979795a7b53557560bb95b65480906">getChannelScanResult</a> ()</td></tr>
+<tr class="memdesc:a63979795a7b53557560bb95b65480906"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <a href="class_physical_layer.html#a63979795a7b53557560bb95b65480906">More...</a><br /></td></tr>
+<tr class="separator:a63979795a7b53557560bb95b65480906"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd9e39cc745acbf084cfa0d3f4d10718"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718">scanChannel</a> ()</td></tr>
 <tr class="memdesc:abd9e39cc745acbf084cfa0d3f4d10718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules, or RSSI measurement for FSK modules.  <a href="class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718">More...</a><br /></td></tr>
 <tr class="separator:abd9e39cc745acbf084cfa0d3f4d10718"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -252,6 +261,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce">clearPacketSentAction</a> ()</td></tr>
 <tr class="memdesc:a67ee4ec36f352d06dda0102260f6bfce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
 <tr class="separator:a67ee4ec36f352d06dda0102260f6bfce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae11c191a7edf3116bf468b9153237260"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">setChannelScanAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:ae11c191a7edf3116bf468b9153237260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <a href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">More...</a><br /></td></tr>
+<tr class="separator:ae11c191a7edf3116bf468b9153237260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169a4d04c5c50d3336e274d70930d9f6"><td class="memItemLeft" align="right" valign="top"><a id="a169a4d04c5c50d3336e274d70930d9f6"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">clearChannelScanAction</a> ()</td></tr>
+<tr class="memdesc:a169a4d04c5c50d3336e274d70930d9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
+<tr class="separator:a169a4d04c5c50d3336e274d70930d9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -380,6 +396,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 
 </div>
 </div>
+<a id="a63979795a7b53557560bb95b65480906"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63979795a7b53557560bb95b65480906">&#9670;&nbsp;</a></span>getChannelScanResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::getChannelScanResult </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read the channel scan result. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a81189ce77541d78fc8feb99c2a3f35b2">SX127x</a>, and <a class="el" href="class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317">SX126x</a>.</p>
+
+</div>
+</div>
 <a id="a977e5236693960bb1c79090a201e9e1c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a977e5236693960bb1c79090a201e9e1c">&#9670;&nbsp;</a></span>getFreqStep()</h2>
 
@@ -494,6 +540,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd>SNR of the last received packet in dB. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x128x.html#a89ebf1f4f227cd35c0799c06d5d9c1d2">SX128x</a>, <a class="el" href="class_s_x127x.html#abc5069b39dc31b637ee561d5745e1deb">SX127x</a>, and <a class="el" href="class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca">SX126x</a>.</p>
+
+</div>
+</div>
+<a id="a55ccbe60bfc1ab58814dbd5f9cd4939e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55ccbe60bfc1ab58814dbd5f9cd4939e">&#9670;&nbsp;</a></span>getTimeOnAir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t PhysicalLayer::getTimeOnAir </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get expected time-on-air for a given size of payload. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#aca2e782dc6ed44fa77d4d14775d9a4a3">SX127x</a>, <a class="el" href="class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76">SX126x</a>, and <a class="el" href="class_s_x128x.html#a2361a94f2e12ebc93e750a027d633232">SX128x</a>.</p>
 
 </div>
 </div>
@@ -882,6 +965,42 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x1278.html#afd6df07fc4972cc656f05670e6802f67">SX1278</a>, <a class="el" href="class_s_x1272.html#ab5c9a79d72996c3d793cee812b0aded5">SX1272</a>, <a class="el" href="class_s_x128x.html#a465ac114dbe6844069b5cb989f87c3ee">SX128x</a>, <a class="el" href="class_s_x126x.html#a7deeef45d7f64a4018a3e56aaea4eb0e">SX126x</a>, <a class="el" href="class_si443x.html#ad43575e731dd7e66d5ad9e6dccd27170">Si443x</a>, <a class="el" href="class_r_f69.html#ad7f8132912a5dbf38c5cf676ac167d13">RF69</a>, <a class="el" href="classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a">nRF24</a>, and <a class="el" href="class_c_c1101.html#aa53427cabcda0778f287ed1d850bbe37">CC1101</a>.</p>
+
+</div>
+</div>
+<a id="ae11c191a7edf3116bf468b9153237260"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae11c191a7edf3116bf468b9153237260">&#9670;&nbsp;</a></span>setChannelScanAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void PhysicalLayer::setChannelScanAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a channel scan is finished. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#ab0f5f695011a8d734ae86ff39c8ff6f5">SX127x</a>, and <a class="el" href="class_s_x126x.html#a1fc6360740d80b664a5042ecc9d8b4fa">SX126x</a>.</p>
 
 </div>
 </div>
@@ -1474,6 +1593,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x127x.html#aa565bbff460e487672953dc05d335cb0">SX127x</a>, <a class="el" href="class_si443x.html#acbc0f95f32ca961294666405596ff529">Si443x</a>, <a class="el" href="class_r_f69.html#a6e3002ab0c58e2087a7d101eda7afa82">RF69</a>, <a class="el" href="classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b">nRF24</a>, and <a class="el" href="class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a">CC1101</a>.</p>
+
+</div>
+</div>
+<a id="ae30dfbb5445bb674898fc54f5f90b2f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae30dfbb5445bb674898fc54f5f90b2f9">&#9670;&nbsp;</a></span>startChannelScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::startChannelScan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven channel activity detection method. interrupt will be activated when packet is detected. Must be implemented in module class. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a6fa5723724393576ed597509200e17d1">SX127x</a>, and <a class="el" href="class_s_x126x.html#a001c4637f01ed6f0216cd6c4d7e10da3">SX126x</a>.</p>
 
 </div>
 </div>

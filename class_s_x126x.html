@@ -175,6 +175,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0ffc659019932dbf1fda881710054cfb">clearPacketSentAction</a> ()</td></tr>
 <tr class="memdesc:a0ffc659019932dbf1fda881710054cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
 <tr class="separator:a0ffc659019932dbf1fda881710054cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc6360740d80b664a5042ecc9d8b4fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1fc6360740d80b664a5042ecc9d8b4fa">setChannelScanAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a1fc6360740d80b664a5042ecc9d8b4fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <a href="class_s_x126x.html#a1fc6360740d80b664a5042ecc9d8b4fa">More...</a><br /></td></tr>
+<tr class="separator:a1fc6360740d80b664a5042ecc9d8b4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fe0afde9d35c1f860bfc6bf63e8f11e"><td class="memItemLeft" align="right" valign="top"><a id="a7fe0afde9d35c1f860bfc6bf63e8f11e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7fe0afde9d35c1f860bfc6bf63e8f11e">clearChannelScanAction</a> ()</td></tr>
+<tr class="memdesc:a7fe0afde9d35c1f860bfc6bf63e8f11e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
+<tr class="separator:a7fe0afde9d35c1f860bfc6bf63e8f11e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab843614658a79db7aa24e48d5b6e84f1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ab843614658a79db7aa24e48d5b6e84f1">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:ab843614658a79db7aa24e48d5b6e84f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x126x.html#ab843614658a79db7aa24e48d5b6e84f1">More...</a><br /></td></tr>
 <tr class="separator:ab843614658a79db7aa24e48d5b6e84f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,12 +206,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3350cbfab628956c1a456383ac7bb2b2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a3350cbfab628956c1a456383ac7bb2b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="class_s_x126x.html#a3350cbfab628956c1a456383ac7bb2b2">More...</a><br /></td></tr>
 <tr class="separator:a3350cbfab628956c1a456383ac7bb2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10a0e75571350fb05fa100e5d5151be2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a10a0e75571350fb05fa100e5d5151be2">startChannelScan</a> (uint8_t symbolNum=RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detPeak=RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detMin=RADIOLIB_SX126X_CAD_PARAM_DEFAULT)</td></tr>
-<tr class="memdesc:a10a0e75571350fb05fa100e5d5151be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout.  <a href="class_s_x126x.html#a10a0e75571350fb05fa100e5d5151be2">More...</a><br /></td></tr>
-<tr class="separator:a10a0e75571350fb05fa100e5d5151be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f">getChannelScanResult</a> ()</td></tr>
-<tr class="memdesc:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <a href="class_s_x126x.html#abf1c3d6fa419a1e3ef11db63d3f46f8f">More...</a><br /></td></tr>
-<tr class="separator:abf1c3d6fa419a1e3ef11db63d3f46f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a001c4637f01ed6f0216cd6c4d7e10da3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a001c4637f01ed6f0216cd6c4d7e10da3">startChannelScan</a> () override</td></tr>
+<tr class="memdesc:a001c4637f01ed6f0216cd6c4d7e10da3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.  <a href="class_s_x126x.html#a001c4637f01ed6f0216cd6c4d7e10da3">More...</a><br /></td></tr>
+<tr class="separator:a001c4637f01ed6f0216cd6c4d7e10da3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8ec92d828421564322f13fb1c90223"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aff8ec92d828421564322f13fb1c90223">startChannelScan</a> (uint8_t symbolNum, uint8_t detPeak, uint8_t detMin)</td></tr>
+<tr class="memdesc:aff8ec92d828421564322f13fb1c90223"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout.  <a href="class_s_x126x.html#aff8ec92d828421564322f13fb1c90223">More...</a><br /></td></tr>
+<tr class="separator:aff8ec92d828421564322f13fb1c90223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdd901c5eac2ca8773d0977e2c493317"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317">getChannelScanResult</a> () override</td></tr>
+<tr class="memdesc:afdd901c5eac2ca8773d0977e2c493317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <a href="class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317">More...</a><br /></td></tr>
+<tr class="separator:afdd901c5eac2ca8773d0977e2c493317"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f60df59c80241d98ce078c0417a7f08"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a2f60df59c80241d98ce078c0417a7f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.  <a href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">More...</a><br /></td></tr>
 <tr class="separator:a2f60df59c80241d98ce078c0417a7f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,9 +302,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a92c157efe751b4ae73d22ff44115285d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d">variablePacketLengthMode</a> (uint8_t maxLen=RADIOLIB_SX126X_MAX_PACKET_LENGTH)</td></tr>
 <tr class="memdesc:a92c157efe751b4ae73d22ff44115285d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in variable packet length mode. Available in FSK mode only.  <a href="class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d">More...</a><br /></td></tr>
 <tr class="separator:a92c157efe751b4ae73d22ff44115285d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e342ddbef84cf845bef8f4448b8da10"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10">getTimeOnAir</a> (size_t len)</td></tr>
-<tr class="memdesc:a7e342ddbef84cf845bef8f4448b8da10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x126x.html#a7e342ddbef84cf845bef8f4448b8da10">More...</a><br /></td></tr>
-<tr class="separator:a7e342ddbef84cf845bef8f4448b8da10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691c960e3fabfb9edcfccbae6eab5b76"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76">getTimeOnAir</a> (size_t len) override</td></tr>
+<tr class="memdesc:a691c960e3fabfb9edcfccbae6eab5b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76">More...</a><br /></td></tr>
+<tr class="separator:a691c960e3fabfb9edcfccbae6eab5b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec09cba71494bd927ad1da786606ca6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adec09cba71494bd927ad1da786606ca6">implicitHeader</a> (size_t len)</td></tr>
 <tr class="memdesc:adec09cba71494bd927ad1da786606ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <a href="class_s_x126x.html#adec09cba71494bd927ad1da786606ca6">More...</a><br /></td></tr>
 <tr class="separator:adec09cba71494bd927ad1da786606ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -728,11 +738,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="abf1c3d6fa419a1e3ef11db63d3f46f8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf1c3d6fa419a1e3ef11db63d3f46f8f">&#9670;&nbsp;</a></span>getChannelScanResult()</h2>
+<a id="afdd901c5eac2ca8773d0977e2c493317"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afdd901c5eac2ca8773d0977e2c493317">&#9670;&nbsp;</a></span>getChannelScanResult()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX126x::getChannelScanResult </td>
@@ -741,10 +754,17 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Read the channel scan result. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a63979795a7b53557560bb95b65480906">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -922,11 +942,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a7e342ddbef84cf845bef8f4448b8da10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e342ddbef84cf845bef8f4448b8da10">&#9670;&nbsp;</a></span>getTimeOnAir()</h2>
+<a id="a691c960e3fabfb9edcfccbae6eab5b76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a691c960e3fabfb9edcfccbae6eab5b76">&#9670;&nbsp;</a></span>getTimeOnAir()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">uint32_t SX126x::getTimeOnAir </td>
@@ -936,6 +959,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Get expected time-on-air for a given size of payload. </p>
@@ -946,6 +974,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1443,6 +1473,42 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1fc6360740d80b664a5042ecc9d8b4fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc6360740d80b664a5042ecc9d8b4fa">&#9670;&nbsp;</a></span>setChannelScanAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX126x::setChannelScanAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a channel scan is finished. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2541,8 +2607,38 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a10a0e75571350fb05fa100e5d5151be2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10a0e75571350fb05fa100e5d5151be2">&#9670;&nbsp;</a></span>startChannelScan()</h2>
+<a id="a001c4637f01ed6f0216cd6c4d7e10da3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a001c4637f01ed6f0216cd6c4d7e10da3">&#9670;&nbsp;</a></span>startChannelScan() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::startChannelScan </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aff8ec92d828421564322f13fb1c90223"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8ec92d828421564322f13fb1c90223">&#9670;&nbsp;</a></span>startChannelScan() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2551,19 +2647,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">int16_t SX126x::startChannelScan </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>symbolNum</em> = <code>RADIOLIB_SX126X_CAD_PARAM_DEFAULT</code>, </td>
+          <td class="paramname"><em>symbolNum</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>detPeak</em> = <code>RADIOLIB_SX126X_CAD_PARAM_DEFAULT</code>, </td>
+          <td class="paramname"><em>detPeak</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>detMin</em> = <code>RADIOLIB_SX126X_CAD_PARAM_DEFAULT</code>&#160;</td>
+          <td class="paramname"><em>detMin</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2573,12 +2669,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven channel activity detection method. DIO0 will be activated when LoRa preamble is detected, or upon timeout. </p>
+<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
-    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
-    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. Defaults to the value recommended by AN1200.48. </td></tr>
+    <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. </td></tr>
+    <tr><td class="paramname">detPeak</td><td>Peak value for CAD detection. </td></tr>
+    <tr><td class="paramname">detMin</td><td>Minimum value for CAD detection. </td></tr>
   </table>
   </dd>
 </dl>
