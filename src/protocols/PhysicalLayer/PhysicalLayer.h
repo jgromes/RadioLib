@@ -303,6 +303,26 @@ class PhysicalLayer {
     virtual float getSNR();
 
     /*!
+      \brief Get expected time-on-air for a given size of payload
+      \param len Payload length in bytes.
+      \returns Expected time-on-air in microseconds.
+    */
+    virtual uint32_t getTimeOnAir(size_t len);
+    
+    /*!
+      \brief Interrupt-driven channel activity detection method. interrupt will be activated
+      when packet is detected. Must be implemented in module class.
+      \returns \ref status_codes
+    */
+    virtual int16_t startChannelScan();
+
+    /*!
+      \brief Read the channel scan result
+      \returns \ref status_codes
+    */
+    virtual int16_t getChannelScanResult();
+
+    /*!
       \brief Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules,
       or RSSI measurement for FSK modules.
       \returns RADIOLIB_CHANNEL_FREE when channel is free,
@@ -409,6 +429,17 @@ class PhysicalLayer {
       \brief Clears interrupt service routine to call when a packet is sent.
     */
     virtual void clearPacketSentAction();
+    
+    /*!
+      \brief Sets interrupt service routine to call when a channel scan is finished.
+      \param func ISR to call.
+    */
+    virtual void setChannelScanAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a channel scan is finished.
+    */
+    virtual void clearChannelScanAction();
 
     #if defined(RADIOLIB_INTERRUPT_TIMING)
 
