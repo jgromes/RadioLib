@@ -292,6 +292,7 @@ wipe	KEYWORD2
 beginOTAA	KEYWORD2
 beginAPB	KEYWORD2
 uplink	KEYWORD2
+downlink	KEYWORD2
 configureChannel	KEYWORD2
 
 #######################################

@@ -72,6 +72,10 @@ void setup() {
   const char nwkSKey[] = "topSecretKey1234";
   const char appSKey[] = "aDifferentKeyABC";
 
+  // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
+  // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
+  // and can be set to NULL
+
   // start the device by directly providing the encryption keys and device address
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginAPB(devAddr, (uint8_t*)nwkSKey, (uint8_t*)appSKey);
@@ -105,8 +109,8 @@ int count = 0;
 void loop() {
   // send uplink to port 10
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String str = "Hello World! #" + String(count++);
-  int state = node.uplink(str, 10);
+  String strUp = "Hello World! #" + String(count++);
+  int state = node.uplink(strUp, 10);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -114,6 +118,43 @@ void loop() {
     Serial.println(state);
   }
 
-  // wait before sending another one
+  // after uplink, you can call downlink(),
+  // to receive any possible reply from the server
+  // this function must be called within a few seconds
+  // after uplink to receive the downlink!
+  Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
+  String strDown;
+  state = node.downlink(strDown);
+  if(state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("success!"));
+
+    // print data of the packet
+    Serial.print(F("[LoRaWAN] Data:\t\t"));
+    Serial.println(strDown);
+
+    // print RSSI (Received Signal Strength Indicator)
+    Serial.print(F("[LoRaWAN] RSSI:\t\t"));
+    Serial.print(radio.getRSSI());
+    Serial.println(F(" dBm"));
+
+    // print SNR (Signal-to-Noise Ratio)
+    Serial.print(F("[LoRaWAN] SNR:\t\t"));
+    Serial.print(radio.getSNR());
+    Serial.println(F(" dB"));
+
+    // print frequency error
+    Serial.print(F("[LoRaWAN] Frequency error:\t"));
+    Serial.print(radio.getFrequencyError());
+    Serial.println(F(" Hz"));
+  
+  } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
+    Serial.println(F("timeout!"));
+  
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+  }
+
+  // wait before sending another packet
   delay(10000);
 }
