@@ -342,9 +342,10 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
 
   // check if sufficient time has elapsed since the last uplink
   Module* mod = this->phyLayer->getMod();
-  /*if(mod->hal->millis() - this->rxDelayStart < ) {
-
-  }*/
+  if(mod->hal->millis() - this->rxDelayStart < rxDelays[1]) {
+    // not enough time elapsed since the last uplink, we may still be in an RX window
+    return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
+  }
 
   // build the uplink message
   // the first 16 bytes are reserved for MIC calculation blocks
