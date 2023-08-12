@@ -331,7 +331,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // parse status
   int16_t state = RADIOLIB_ERR_NONE;
-  if(this->SPIparseStatusCb != nullptr) {
+  if((this->SPIparseStatusCb != nullptr) && (numBytes > 0)) {
     state = this->SPIparseStatusCb(buffIn[cmdLen]);
   }
   
