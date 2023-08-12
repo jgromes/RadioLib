@@ -51,18 +51,6 @@
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
 #endif
 
-// print debug info
-#if defined(RADIOLIB_DEBUG)
-  #define RADIOLIB_VALUE_TO_STRING(x) #x
-  #define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)
-  #define RADIOLIB_VAR_NAME_VALUE(var) #var "="  RADIOLIB_VALUE(var)
-  #pragma message(RADIOLIB_VAR_NAME_VALUE(RADIOLIB_PLATFORM))
-  #pragma message(RADIOLIB_VAR_NAME_VALUE(RADIOLIB_VERSION_MAJOR))
-  #pragma message(RADIOLIB_VAR_NAME_VALUE(RADIOLIB_VERSION_MINOR))
-  #pragma message(RADIOLIB_VAR_NAME_VALUE(RADIOLIB_VERSION_PATCH))
-  #pragma message(RADIOLIB_VAR_NAME_VALUE(RADIOLIB_VERSION_EXTRA))
-#endif
-
 // check unknown/unsupported platform
 #if defined(RADIOLIB_UNKNOWN_PLATFORM)
   #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"

@@ -44,6 +44,10 @@ void Module::init() {
   this->hal->init();
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
+  RADIOLIB_DEBUG_PRINTLN("\nRadioLib Debug Info");
+  RADIOLIB_DEBUG_PRINTLN("Version:  %d.%d.%d.%d", RADIOLIB_VERSION_MAJOR, RADIOLIB_VERSION_MINOR, RADIOLIB_VERSION_PATCH, RADIOLIB_VERSION_EXTRA);
+  RADIOLIB_DEBUG_PRINTLN("Platform: " RADIOLIB_PLATFORM);
+  RADIOLIB_DEBUG_PRINTLN("Compiled: " __DATE__ " " __TIME__ "\n");
 }
 
 void Module::term() {
