@@ -51,6 +51,10 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
+  // disable IQ inversion
+  state = SX127x::invertIQ(false);
+  RADIOLIB_ASSERT(state);
+
   // initialize internal variables
   this->dataRate = 0.0;
 
