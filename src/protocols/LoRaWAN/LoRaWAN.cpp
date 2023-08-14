@@ -625,6 +625,12 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     state = RADIOLIB_ERR_NONE;
   }
 
+  // get the frame counter and set it to the MIC calculation block
+  // TODO this will not handle overflow into 32-bits!
+  // TODO cache the ADR bit?
+  uint16_t fcnt = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS]);
+  LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], fcnt);
+
   //Module::hexdump(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
   
   if(state != RADIOLIB_ERR_NONE) {
@@ -645,10 +651,6 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     RADIOLIB_DEBUG_PRINTLN("Device address mismatch, expected 0x%08X, got 0x%08X", this->devAddr, addr);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
-
-  // TODO cache the ADR bit?
-  // TODO cache and check fcnt?
-  uint16_t fcnt = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS]);
 
   // check fopts len
   uint8_t foptsLen = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK;
