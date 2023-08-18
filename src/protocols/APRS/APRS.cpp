@@ -24,7 +24,7 @@ int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
     table = '/';
   }
 
-  if((!src) && (this->phyLayer != nullptr)) {
+  if(this->phyLayer != nullptr) {
     return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
 
