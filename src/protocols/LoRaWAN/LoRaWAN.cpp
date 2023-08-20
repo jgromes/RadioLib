@@ -806,8 +806,14 @@ int16_t LoRaWANNode::setPhyProperties() {
     state = this->configureChannel(channelId, this->band->defaultChannels[0].joinRequestDataRate);
   }
   RADIOLIB_ASSERT(state);
-
-  state = this->phyLayer->setOutputPower(this->band->powerMax);
+  
+  // set the maximum power supported by both the module and the band
+  int8_t pwr = this->band->powerMax;
+  state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
+  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
+    // go from the highest power in band and lower it until we hit one supported by the module
+    state = this->phyLayer->setOutputPower(pwr--);
+  }
   RADIOLIB_ASSERT(state);
 
   uint8_t syncWord[3] = { 0 };
