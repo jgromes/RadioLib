@@ -128,9 +128,13 @@ void loop() {
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
 
-    // print data of the packet
+    // print data of the packet (if there are any)
     Serial.print(F("[LoRaWAN] Data:\t\t"));
-    Serial.println(strDown);
+    if(strDown.length() > 0) {
+      Serial.println(strDown);
+    } else {
+      Serial.println(F("<MAC commands only>"));
+    }
 
     // print RSSI (Received Signal Strength Indicator)
     Serial.print(F("[LoRaWAN] RSSI:\t\t"));

@@ -250,16 +250,16 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
     //Module::hexdump(this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
 
-    // send the RekeyInd MAC command
+    // enqueue the RekeyInd MAC command to be sent in the next uplink
     this->rev = 1;
-    uint8_t serverRev = 0xFF;
-    state = sendMacCommand(RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND, &this->rev, sizeof(uint8_t), &serverRev, sizeof(uint8_t));
+    LoRaWANMacCommand_t cmd = {
+      .cid = RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND,
+      .len = sizeof(uint8_t),
+      .payload = { this->rev },
+      .repeat = RADIOLIB_LORAWAN_ADR_ACK_LIMIT,
+    };
+    state = pushMacCommand(&cmd, &this->commandsUp);
     RADIOLIB_ASSERT(state);
-
-    // check the supported server version
-    if(serverRev != this->rev) {
-      return(RADIOLIB_ERR_INVALID_REVISION);
-    }
   
   } else {
     // 1.0 version, just derive the keys
@@ -329,10 +329,11 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
 
-  // check if there is a MAC command to piggyback
-  uint8_t foptsLen = 0;
-  if(this->command) {
-    foptsLen = 1 + this->command->len;
+  // check if there are some MAC commands to piggyback
+  size_t foptsLen = 0;
+  if(this->commandsUp.numCommands > 0) {
+    // there are, assume the maximum possible FOpts len for buffer allocation
+    foptsLen = 15;
   }
 
   // check maximum payload len as defined in phy
@@ -361,24 +362,30 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   LoRaWANNode::hton<uint32_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS], this->devAddr);
 
   // TODO implement adaptive data rate
-  uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] = 0x00 | foptsLen;
+  // foptslen will be added later
+  uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] = 0x00;
 
   // get frame counter from persistent storage
   uint32_t fcnt = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID) + 1;
   mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID, fcnt);
   LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS], (uint16_t)fcnt);
 
-  // check if there is something in FOpts
-  if(this->command) {
-    // append MAC command
+  // check if we have some MAC command to append
+  // TODO implement appending multiple MAC commands
+  LoRaWANMacCommand_t cmd = { 0 };
+  if(popMacCommand(&cmd, &this->commandsUp) == RADIOLIB_ERR_NONE) {
+    // we do, add it to fopts
     uint8_t foptsBuff[RADIOLIB_AES128_BLOCK_SIZE];
-    foptsBuff[0] = this->command->cid;
-    for(size_t i = 1; i < this->command->len; i++) {
-      foptsBuff[i] = this->command->payload[i];
+    foptsBuff[0] = cmd.cid;
+    for(size_t i = 1; i < cmd.len; i++) {
+      foptsBuff[i] = cmd.payload[i];
     }
+    foptsLen = 1 + cmd.len;
+    uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen);
+    uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= foptsLen;
 
     // encrypt it
-    processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(0)], fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x00, false);
+    processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x01, true);
   }
 
   // set the port
@@ -435,7 +442,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   RADIOLIB_ASSERT(state);
 
   // set the timestamp so that we can measure when to start receiving
-  this->command = NULL;
   this->rxDelayStart = txStart + timeOnAir;
   return(RADIOLIB_ERR_NONE);
 }
@@ -656,21 +662,46 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   uint8_t foptsLen = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK;
   if(foptsLen > 0) {
     // there are some Fopts, decrypt them
-    *len = foptsLen;
+    uint8_t fopts[RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK];
 
     // according to the specification, the last two arguments should be 0x00 and false,
     // but that will fail even for LoRaWAN 1.1.0 server
-    processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], foptsLen, this->nwkSEncKey, data, fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x01, true);
+    processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x01, true);
 
-    #if !defined(RADIOLIB_STATIC_ONLY)
-      delete[] downlinkMsg;
-    #endif
+    //Module::hexdump(fopts, foptsLen);
+
+    // process the MAC command(s)
+    int8_t remLen = foptsLen;
+    uint8_t* foptsPtr = fopts;
+    while(remLen > 0) {
+      LoRaWANMacCommand_t cmd = {
+        .cid = *foptsPtr,
+        .len = remLen - 1,
+        .payload = { 0 },
+      };
+      memcpy(cmd.payload, foptsPtr + 1, cmd.len);
+
+      // try to process the mac command
+      // TODO how to handle incomplete commands?
+      size_t processedLen = execMacCommand(&cmd) + 1;
+
+      // processing succeeded, move in the buffer to the next command
+      remLen -= processedLen;
+      foptsPtr += processedLen;
+    }
+  }
+
+  // fopts are processed or not present, check if there is payload
+  int payLen = downlinkMsgLen - 8 - foptsLen - sizeof(uint32_t);
+  if(payLen <= 0) {
+    // no payload
+    *len = 0;
     return(RADIOLIB_ERR_NONE);
   }
 
-  // no fopts, just payload
-  // TODO implement decoding piggybacked Fopts?
-  *len = downlinkMsgLen;
+  // there is payload, and so there should be a port too
+  // TODO pass the port?
+  *len = payLen - 1;
   processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], downlinkMsgLen, this->appSKey, data, fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x00, true);
   
   #if !defined(RADIOLIB_STATIC_ONLY)
@@ -678,6 +709,10 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   #endif
 
   return(state);
+}
+
+void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
+  this->battLevel = battLevel;
 }
 
 void LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span) {
@@ -903,6 +938,82 @@ int16_t LoRaWANNode::sendMacCommand(uint8_t cid, uint8_t* payload, size_t payloa
   #endif
 
   return(state);
+}
+
+int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue) {
+  if(queue->numCommands >= RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE) {
+    return(RADIOLIB_ERR_COMMAND_QUEUE_FULL);
+  }
+
+  memcpy(&queue->commands[queue->numCommands], cmd, sizeof(LoRaWANMacCommand_t));
+  /*RADIOLIB_DEBUG_PRINTLN("push MAC CID = %02x, len = %d, payload = %02x %02x %02x %02x %02x, repeat = %d ", 
+    queue->commands[queue->numCommands - 1].cid,
+    queue->commands[queue->numCommands - 1].len,
+    queue->commands[queue->numCommands - 1].payload[0],
+    queue->commands[queue->numCommands - 1].payload[1],
+    queue->commands[queue->numCommands - 1].payload[2],
+    queue->commands[queue->numCommands - 1].payload[3],
+    queue->commands[queue->numCommands - 1].payload[4],
+    queue->commands[queue->numCommands - 1].repeat);*/
+  queue->numCommands++;
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t LoRaWANNode::popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, bool force) {
+  if(queue->numCommands == 0) {
+    return(RADIOLIB_ERR_COMMAND_QUEUE_EMPTY);
+  }
+
+  if(cmd) {
+    /*RADIOLIB_DEBUG_PRINTLN("pop MAC CID = %02x, len = %d, payload = %02x %02x %02x %02x %02x, repeat = %d ", 
+      queue->commands[queue->numCommands - 1].cid,
+      queue->commands[queue->numCommands - 1].len,
+      queue->commands[queue->numCommands - 1].payload[0],
+      queue->commands[queue->numCommands - 1].payload[1],
+      queue->commands[queue->numCommands - 1].payload[2],
+      queue->commands[queue->numCommands - 1].payload[3],
+      queue->commands[queue->numCommands - 1].payload[4],
+      queue->commands[queue->numCommands - 1].repeat);*/
+    memcpy(cmd, &queue->commands[queue->numCommands - 1], sizeof(LoRaWANMacCommand_t));
+  }
+
+  if((!force) && (queue->commands[queue->numCommands - 1].repeat > 0)) {
+    queue->commands[queue->numCommands - 1].repeat--;
+  } else {
+    queue->commands[queue->numCommands - 1].repeat = 0;
+    queue->numCommands--;
+  }
+
+  return(RADIOLIB_ERR_NONE);
+}
+
+size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
+  //RADIOLIB_DEBUG_PRINTLN("exe MAC CID = %02x, len = %d", cmd->cid, cmd->len);
+
+  switch(cmd->cid) {
+    case(RADIOLIB_LORAWAN_MAC_CMD_DEV_STATUS_ANS): {
+      // set the uplink reply
+      cmd->len = 2;
+      cmd->payload[1] = this->battLevel;
+      int8_t snr = this->phyLayer->getSNR();
+      cmd->payload[0] = snr & 0x3F;
+
+      // push it to the uplink queue
+      pushMacCommand(cmd, &this->commandsUp);
+      return(0);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND): {
+      // TODO verify the actual server version here
+
+      // stop sending the ReKey MAC command
+      popMacCommand(NULL, &this->commandsUp, true);
+      return(1);
+    } break;
+  }
+
+  return(0);
 }
 
 void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter) {

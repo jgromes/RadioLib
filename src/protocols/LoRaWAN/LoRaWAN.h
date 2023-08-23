@@ -160,6 +160,9 @@
 #define RADIOLIB_LORAWAN_MAC_CMD_DEVICE_TIME_REQ                (0x0D)
 #define RADIOLIB_LORAWAN_MAC_CMD_REJOIN_PARAM_SETUP_ANS         (0x0F)
 
+// the length of internal MAC command queue - hopefully this is enough for most use cases
+#define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (8)
+
 /*!
   \struct LoRaWANChannelSpan_t
   \brief Structure to save information about LoRaWAN channels.
@@ -235,10 +238,27 @@ extern const LoRaWANBand_t AS923;
 extern const LoRaWANBand_t KR920;
 extern const LoRaWANBand_t IN865;
 
+/*!
+  \struct LoRaWANMacCommand_t
+  \brief Structure to save information about MAC command
+*/
 struct LoRaWANMacCommand_t {
+  /*! \brief The command ID */
   uint8_t cid;
+
+  /*! \brief Length of the payload */
   size_t len;
-  uint8_t* payload;
+
+  /*! \brief Payload buffer (5 bytes is the longest possible) */
+  uint8_t payload[5];
+
+  /*! \brief Repetition counter (the command will be uplinked repeat + 1 times) */
+  uint8_t repeat;
+};
+
+struct LoRaWANMacCommandQueue_t {
+  LoRaWANMacCommand_t commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE];
+  size_t numCommands;
 };
 
 /*!
@@ -337,13 +357,21 @@ class LoRaWANNode {
     */
     int16_t downlink(uint8_t* data, size_t* len);
 
+    /*!
+      \brief Set device status.
+      \param battLevel Battery level to set. 0 for external power source, 1 for lowest battery,
+      254 for highest battery, 255 for unable to measure.
+    */
+    void setDeviceStatus(uint8_t battLevel);
+
 #if !defined(RADIOLIB_GODMODE)
   private:
 #endif
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;
 
-    LoRaWANMacCommand_t* command = NULL;
+    LoRaWANMacCommandQueue_t commandsUp = { .commands = { 0 }, .numCommands = 0 };
+    LoRaWANMacCommandQueue_t commandsDown = { .commands = { 0 }, .numCommands = 0 };
 
     // the following is either provided by the network server (OTAA)
     // or directly entered by the user (ABP)
@@ -371,6 +399,9 @@ class LoRaWANNode {
     // delays between the uplink and RX1/2 windows
     uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };
 
+    // device status - battery level
+    uint8_t battLevel = 0xFF;
+
     // find the first usable data rate in a given channel span
     void findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span);
 
@@ -394,6 +425,15 @@ class LoRaWANNode {
 
     // send a MAC command to the network server
     int16_t sendMacCommand(uint8_t cid, uint8_t* payload, size_t payloadLen, uint8_t* reply, size_t replyLen);
+
+    // push MAC command to queue, done by copy
+    int16_t pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue);
+    
+    // pop MAC command from queue, done by copy unless CMD is NULL
+    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, bool force = false);
+
+    // execute mac command, return the number of processed bytes for sequential processing
+    size_t execMacCommand(LoRaWANMacCommand_t* cmd);
 
     // function to encrypt and decrypt payloads
     void processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter);

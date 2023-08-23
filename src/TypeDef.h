@@ -524,6 +524,16 @@
 #define RADIOLIB_ERR_UPLINK_UNAVAILABLE                         (-1108)
 
 /*!
+  \brief Unable to push new MAC command because the queue is full.
+*/
+#define RADIOLIB_ERR_COMMAND_QUEUE_FULL                         (-1109)
+
+/*!
+  \brief Unable to pop existing MAC command because the queue is empty.
+*/
+#define RADIOLIB_ERR_COMMAND_QUEUE_EMPTY                        (-1110)
+
+/*!
   \}
 */
 
