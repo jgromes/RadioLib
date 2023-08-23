@@ -24,13 +24,10 @@ int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
     table = '/';
   }
 
-  if((!src) && (this->phyLayer != nullptr)) {
-    return(RADIOLIB_ERR_INVALID_CALLSIGN);
-  }
-
   if(strlen(callsign) > RADIOLIB_AX25_MAX_CALLSIGN_LEN) {
     return(RADIOLIB_ERR_INVALID_CALLSIGN);
   }
+  
   memcpy(this->src, callsign, strlen(callsign));
   this->id = ssid;
 

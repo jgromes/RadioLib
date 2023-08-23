@@ -60,10 +60,10 @@ void setup() {
   //       the end device in TTN and perform the join procedure again!
   //node.wipe();
 
-  // application identifier - in LoRaWAN 1.1, it is also called joinEUI
+  // application identifier - pre-LoRaWAN 1.1.0, this was called appEUI
   // when adding new end device in TTN, you will have to enter this number
   // you can pick any number you want, but it has to be unique
-  uint64_t appEUI = 0x12AD1011B0C0FFEE;
+  uint64_t joinEUI = 0x12AD1011B0C0FFEE;
 
   // device identifier - this number can be anything
   // when adding new end device in TTN, you can generate this number,
@@ -76,10 +76,14 @@ void setup() {
   const char nwkKey[] = "topSecretKey1234";
   const char appKey[] = "aDifferentKeyABC";
 
+  // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
+  // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
+  // and can be set to NULL
+
   // now we can start the activation
   // this can take up to 20 seconds, and requires a LoRaWAN gateway in range
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
-  state = node.beginOTAA(appEUI, devEUI, (uint8_t*)nwkKey, (uint8_t*)appKey);
+  state = node.beginOTAA(joinEUI, devEUI, (uint8_t*)nwkKey, (uint8_t*)appKey);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -110,8 +114,8 @@ int count = 0;
 void loop() {
   // send uplink to port 10
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String str = "Hello World! #" + String(count++);
-  int state = node.uplink(str, 10);
+  String strUp = "Hello World! #" + String(count++);
+  int state = node.uplink(strUp, 10);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -119,6 +123,47 @@ void loop() {
     Serial.println(state);
   }
 
-  // wait before sending another one
+  // after uplink, you can call downlink(),
+  // to receive any possible reply from the server
+  // this function must be called within a few seconds
+  // after uplink to receive the downlink!
+  Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
+  String strDown;
+  state = node.downlink(strDown);
+  if(state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("success!"));
+
+    // print data of the packet (if there are any)
+    Serial.print(F("[LoRaWAN] Data:\t\t"));
+    if(strDown.length() > 0) {
+      Serial.println(strDown);
+    } else {
+      Serial.println(F("<MAC commands only>"));
+    }
+
+    // print RSSI (Received Signal Strength Indicator)
+    Serial.print(F("[LoRaWAN] RSSI:\t\t"));
+    Serial.print(radio.getRSSI());
+    Serial.println(F(" dBm"));
+
+    // print SNR (Signal-to-Noise Ratio)
+    Serial.print(F("[LoRaWAN] SNR:\t\t"));
+    Serial.print(radio.getSNR());
+    Serial.println(F(" dB"));
+
+    // print frequency error
+    Serial.print(F("[LoRaWAN] Frequency error:\t"));
+    Serial.print(radio.getFrequencyError());
+    Serial.println(F(" Hz"));
+  
+  } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
+    Serial.println(F("timeout!"));
+  
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+  }
+
+  // wait before sending another packet
   delay(10000);
 }

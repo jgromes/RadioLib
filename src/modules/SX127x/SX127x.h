@@ -739,6 +739,17 @@ class SX127x: public PhysicalLayer {
     void clearPacketSentAction();
 
     /*!
+      \brief Sets interrupt service routine to call when a channel scan is finished.
+      \param func ISR to call.
+    */
+    void setChannelScanAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a channel scan is finished.
+    */
+    void clearChannelScanAction();
+
+    /*!
       \brief Set interrupt service routine function to call when FIFO is empty.
       \param func Pointer to interrupt service routine.
     */
@@ -834,7 +845,13 @@ class SX127x: public PhysicalLayer {
       DIO1 will be activated if there's no preamble detected before timeout.
       \returns \ref status_codes
     */
-    int16_t startChannelScan();
+    int16_t startChannelScan() override;
+
+    /*!
+      \brief Read the channel scan result.
+      \returns \ref status_codes
+    */
+    int16_t getChannelScanResult() override;
 
     // configuration methods
 
@@ -1016,11 +1033,11 @@ class SX127x: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
     /*!
-      \brief Get expected time-on-air for a given size of payload
+      \brief Get expected time-on-air for a given size of payload.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    uint32_t getTimeOnAir(size_t len);
+    uint32_t getTimeOnAir(size_t len) override;
 
     /*!
       \brief Enable CRC filtering and generation.

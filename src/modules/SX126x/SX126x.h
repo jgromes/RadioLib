@@ -602,6 +602,17 @@ class SX126x: public PhysicalLayer {
     void clearPacketSentAction();
 
     /*!
+      \brief Sets interrupt service routine to call when a channel scan is finished.
+      \param func ISR to call.
+    */
+    void setChannelScanAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when a channel scan is finished.
+    */
+    void clearChannelScanAction();
+
+    /*!
       \brief Interrupt-driven binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
@@ -685,22 +696,29 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
-
+    
     /*!
-      \brief Interrupt-driven channel activity detection method. DIO0 will be activated
-      when LoRa preamble is detected, or upon timeout.
-      \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(uint8_t symbolNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT, uint8_t detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT);
+    int16_t startChannelScan() override;
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout.
+      \param symbolNum Number of symbols for CAD detection. 
+      \param detPeak Peak value for CAD detection.
+      \param detMin Minimum value for CAD detection.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
 
     /*!
       \brief Read the channel scan result
       \returns \ref status_codes
     */
-    int16_t getChannelScanResult();
+    int16_t getChannelScanResult() override;
 
     // configuration methods
 
@@ -929,7 +947,7 @@ class SX126x: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    uint32_t getTimeOnAir(size_t len);
+    uint32_t getTimeOnAir(size_t len) override;
 
     /*!
       \brief Set implicit header mode for future reception/transmission.

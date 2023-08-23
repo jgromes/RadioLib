@@ -91,6 +91,9 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   state = setCRC(2);
   RADIOLIB_ASSERT(state);
 
+  state = invertIQ(false);
+  RADIOLIB_ASSERT(state);
+
   return(state);
 }
 
@@ -504,6 +507,15 @@ void SX126x::clearPacketSentAction() {
   this->clearDio1Action();
 }
 
+void SX126x::setChannelScanAction(void (*func)(void)) {
+  this->setDio1Action(func);
+}
+
+void SX126x::clearChannelScanAction() {
+  this->clearDio1Action();
+}
+
+
 int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
@@ -726,6 +738,10 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
+int16_t SX126x::startChannelScan() {
+  return(this->startChannelScan(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+}
+
 int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
@@ -762,11 +778,9 @@ int16_t SX126x::getChannelScanResult() {
   uint16_t cadResult = getIrqStatus();
   if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DETECTED) {
     // detected some LoRa activity
-    clearIrqStatus();
     return(RADIOLIB_LORA_DETECTED);
   } else if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DONE) {
     // channel is free
-    clearIrqStatus();
     return(RADIOLIB_CHANNEL_FREE);
   }
 
@@ -1718,7 +1732,7 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     data[2] = detMin;
   }
 
-  // configure paramaters
+  // configure parameters
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
   RADIOLIB_ASSERT(state);
 

@@ -289,6 +289,19 @@ float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+uint32_t PhysicalLayer::getTimeOnAir(size_t len) {
+  (void)len;
+  return(0);
+}
+    
+int16_t PhysicalLayer::startChannelScan() {
+  return(RADIOLIB_ERR_UNSUPPORTED); 
+}
+
+int16_t PhysicalLayer::getChannelScanResult() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::scanChannel() {
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }
@@ -438,6 +451,14 @@ void PhysicalLayer::setPacketSentAction(void (*func)(void)) {
 }
 
 void PhysicalLayer::clearPacketSentAction() {
+  
+}
+
+void PhysicalLayer::setChannelScanAction(void (*func)(void)) {
+  (void)func;
+}
+
+void PhysicalLayer::clearChannelScanAction() {
   
 }
 

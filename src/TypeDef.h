@@ -481,6 +481,58 @@
 */
 #define RADIOLIB_ERR_INVALID_FUNCTION                           (-1003)
 
+// LoRaWAN-specific status codes
+
+/*!
+  \brief Unable to restore existing LoRaWAN session because this node did not join any network yet.
+*/
+#define RADIOLIB_ERR_NETWORK_NOT_JOINED                         (-1101)
+
+/*!
+  \brief Malformed downlink packet received from network server.
+*/
+#define RADIOLIB_ERR_DOWNLINK_MALFORMED                         (-1102)
+
+/*!
+  \brief Network server requested switch to unsupported LoRaWAN revision.
+*/
+#define RADIOLIB_ERR_INVALID_REVISION                           (-1103)
+
+/*!
+  \brief Invalid LoRaWAN uplink port requested by user.
+*/
+#define RADIOLIB_ERR_INVALID_PORT                               (-1104)
+
+/*!
+  \brief User did not enable downlink in time.
+*/
+#define RADIOLIB_ERR_NO_RX_WINDOW                               (-1105)
+
+/*!
+  \brief No valid channel for the currently active LoRaWAN band was found.
+*/
+#define RADIOLIB_ERR_INVALID_CHANNEL                            (-1106)
+
+/*!
+  \brief Invalid LoRaWAN MAC command ID.
+*/
+#define RADIOLIB_ERR_INVALID_CID                                (-1107)
+
+/*!
+  \brief User requested to start uplink while still inside RX window.
+*/
+#define RADIOLIB_ERR_UPLINK_UNAVAILABLE                         (-1108)
+
+/*!
+  \brief Unable to push new MAC command because the queue is full.
+*/
+#define RADIOLIB_ERR_COMMAND_QUEUE_FULL                         (-1109)
+
+/*!
+  \brief Unable to pop existing MAC command because the queue is empty.
+*/
+#define RADIOLIB_ERR_COMMAND_QUEUE_EMPTY                        (-1110)
+
 /*!
   \}
 */

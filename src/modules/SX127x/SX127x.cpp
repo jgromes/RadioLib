@@ -51,6 +51,10 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
+  // disable IQ inversion
+  state = SX127x::invertIQ(false);
+  RADIOLIB_ASSERT(state);
+
   // initialize internal variables
   this->dataRate = 0.0;
 
@@ -468,6 +472,14 @@ void SX127x::clearPacketSentAction() {
   this->clearDio0Action();
 }
 
+void SX127x::setChannelScanAction(void (*func)(void)) {
+  this->setDio0Action(func, this->mod->hal->GpioInterruptRising);
+}
+
+void SX127x::clearChannelScanAction() {
+  this->clearDio0Action();
+}
+
 void SX127x::setFifoEmptyAction(void (*func)(void)) {
   // set DIO1 to the FIFO empty event (the register setting is done in startTransmit)
   setDio1Action(func, this->mod->hal->GpioInterruptRising);
@@ -695,6 +707,13 @@ int16_t SX127x::startChannelScan() {
   // set mode to CAD
   state = setMode(RADIOLIB_SX127X_CAD);
   return(state);
+}
+
+int16_t SX127x::getChannelScanResult() {
+  if((this->getIRQFlags() & RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED) == RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED) {
+    return(RADIOLIB_PREAMBLE_DETECTED);
+  }
+  return(RADIOLIB_CHANNEL_FREE);
 }
 
 int16_t SX127x::setSyncWord(uint8_t syncWord) {
