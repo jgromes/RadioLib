@@ -123,6 +123,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a55156cbc6b09da6d4ba7337d1a4136fe">downlink</a> (uint8_t *data, size_t *len)</td></tr>
 <tr class="memdesc:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for downlink from the server in either RX1 or RX2 window.  <a href="class_lo_ra_w_a_n_node.html#a55156cbc6b09da6d4ba7337d1a4136fe">More...</a><br /></td></tr>
 <tr class="separator:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5449e301634dff1838a1b024b4067034"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a> (uint8_t battLevel)</td></tr>
+<tr class="memdesc:a5449e301634dff1838a1b024b4067034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set device status.  <a href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">More...</a><br /></td></tr>
+<tr class="separator:a5449e301634dff1838a1b024b4067034"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -345,6 +348,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5449e301634dff1838a1b024b4067034"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5449e301634dff1838a1b024b4067034">&#9670;&nbsp;</a></span>setDeviceStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::setDeviceStatus </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>battLevel</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set device status. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">battLevel</td><td>Battery level to set. 0 for external power source, 1 for lowest battery, 254 for highest battery, 255 for unable to measure. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
