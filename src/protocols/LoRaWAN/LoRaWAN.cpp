@@ -676,7 +676,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     while(remLen > 0) {
       LoRaWANMacCommand_t cmd = {
         .cid = *foptsPtr,
-        .len = remLen - 1,
+        .len = (uint8_t)(remLen - 1),
         .payload = { 0 },
       };
       memcpy(cmd.payload, foptsPtr + 1, cmd.len);
