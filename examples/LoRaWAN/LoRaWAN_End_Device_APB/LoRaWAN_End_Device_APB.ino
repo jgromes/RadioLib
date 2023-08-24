@@ -69,8 +69,14 @@ void setup() {
   // select some encryption keys which will be used to secure the communication
   // there are two of them - network key and application key
   // because LoRaWAN uses AES-128, the key MUST be 16 bytes (or characters) long
-  const char nwkSKey[] = "topSecretKey1234";
-  const char appSKey[] = "aDifferentKeyABC";
+
+  // network key is the ASCII string "topSecretKey1234"
+  uint8_t nwkSKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
+                        0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
+
+  // application key is the ASCII string "aDifferentKeyABC"
+  uint8_t appSKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
+                        0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
 
   // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded

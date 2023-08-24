@@ -73,8 +73,14 @@ void setup() {
   // select some encryption keys which will be used to secure the communication
   // there are two of them - network key and application key
   // because LoRaWAN uses AES-128, the key MUST be 16 bytes (or characters) long
-  const char nwkKey[] = "topSecretKey1234";
-  const char appKey[] = "aDifferentKeyABC";
+
+  // network key is the ASCII string "topSecretKey1234"
+  uint8_t nwkKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
+                       0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
+
+  // application key is the ASCII string "aDifferentKeyABC"
+  uint8_t appKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
+                       0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
 
   // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
@@ -83,7 +89,7 @@ void setup() {
   // now we can start the activation
   // this can take up to 20 seconds, and requires a LoRaWAN gateway in range
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
-  state = node.beginOTAA(joinEUI, devEUI, (uint8_t*)nwkKey, (uint8_t*)appKey);
+  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
