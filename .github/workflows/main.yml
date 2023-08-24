@@ -195,11 +195,11 @@ jobs:
         run: |
           cd ~/esp/esp-idf
           ./install.sh esp32
-          . ./export.sh
       
       - name: Build the example
         run: |
           cd $PWD/examples/NonArduino/ESP-IDF
+          . ~/esp/esp-idf/export.sh
           idf.py build
 
   rpi-build:
