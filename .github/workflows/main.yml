@@ -176,6 +176,32 @@ jobs:
             fi
           done
 
+  esp-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: sudo apt-get install -y git wget flex bison gperf python3 python3-pip python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
+
+      - name: Clone ESP-IDF
+        run: |
+          mkdir -p ~/esp
+          cd ~/esp
+          git clone --recursive https://github.com/espressif/esp-idf.git
+      
+      - name: Install ESP-IDF
+        run: |
+          cd ~/esp/esp-idf
+          ./install.sh esp32
+          . ./export.sh
+      
+      - name: Build the example
+        run: |
+          cd $PWD/examples/NonArduino/ESP-IDF
+          idf.py build
+
   rpi-build:
     runs-on: [self-hosted, ARM64]
     steps:
