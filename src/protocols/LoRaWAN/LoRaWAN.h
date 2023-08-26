@@ -370,8 +370,14 @@ class LoRaWANNode {
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;
 
-    LoRaWANMacCommandQueue_t commandsUp = { .commands = { 0 }, .numCommands = 0 };
-    LoRaWANMacCommandQueue_t commandsDown = { .commands = { 0 }, .numCommands = 0 };
+    LoRaWANMacCommandQueue_t commandsUp = { 
+      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
+      .numCommands = 0,
+    };
+    LoRaWANMacCommandQueue_t commandsDown = { 
+      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
+      .numCommands = 0,
+    };
 
     // the following is either provided by the network server (OTAA)
     // or directly entered by the user (ABP)

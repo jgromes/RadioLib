@@ -372,7 +372,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
 
   // check if we have some MAC command to append
   // TODO implement appending multiple MAC commands
-  LoRaWANMacCommand_t cmd = { 0 };
+  LoRaWANMacCommand_t cmd = { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, };
   if(popMacCommand(&cmd, &this->commandsUp) == RADIOLIB_ERR_NONE) {
     // we do, add it to fopts
     uint8_t foptsBuff[RADIOLIB_AES128_BLOCK_SIZE];
@@ -678,6 +678,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
         .cid = *foptsPtr,
         .len = (uint8_t)(remLen - 1),
         .payload = { 0 },
+        .repeat = 0,
       };
       memcpy(cmd.payload, foptsPtr + 1, cmd.len);
 
