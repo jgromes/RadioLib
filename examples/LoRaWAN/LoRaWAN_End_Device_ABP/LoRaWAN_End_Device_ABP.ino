@@ -1,7 +1,7 @@
 /*
-  RadioLib LoRaWAN End Device APB Example
+  RadioLib LoRaWAN End Device ABP Example
 
-  This example sets up a LoRaWAN node using APB (activation
+  This example sets up a LoRaWAN node using ABP (activation
   by personalization). Before you start, you will have to
   register your device at https://www.thethingsnetwork.org/
   After your device is registered, you can run this example.
