@@ -88,7 +88,9 @@
   // ESP8266 boards
   #define RADIOLIB_PLATFORM                           "ESP8266"
 
-#elif defined(ESP32)
+#elif defined(ESP32) || defined(ARDUINO_ARCH_ESP32)
+  #define RADIOLIB_ESP32
+
   // ESP32 boards
   #define RADIOLIB_PLATFORM                           "ESP32"
   

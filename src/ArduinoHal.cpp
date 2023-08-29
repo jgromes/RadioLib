@@ -101,25 +101,25 @@ void inline ArduinoHal::spiEnd() {
 }
 
 void ArduinoHal::readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
-  #if defined(ESP32)
+  #if defined(RADIOLIB_ESP32)
     EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
   #endif
   for(size_t i = 0; i < len; i++) {
     buff[i] = EEPROM.read(addr + i);
   }
-  #if defined(ESP32)
+  #if defined(RADIOLIB_ESP32)
     EEPROM.end();
   #endif
 }
 
 void ArduinoHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
-  #if defined(ESP32)
+  #if defined(RADIOLIB_ESP32)
     EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
   #endif
   for(size_t i = 0; i < len; i++) {
     EEPROM.write(addr + i, buff[i]);
   }
-  #if defined(ESP32)
+  #if defined(RADIOLIB_ESP32)
     EEPROM.commit();
     EEPROM.end();
   #endif
@@ -131,7 +131,7 @@ void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long
       return;
     }
     ::tone(pin, frequency, duration);
-  #elif defined(ESP32)
+  #elif defined(RADIOLIB_ESP32)
     // ESP32 tone() emulation
     (void)duration;
     if(prev == -1) {
@@ -163,7 +163,7 @@ void inline ArduinoHal::noTone(uint32_t pin) {
       return;
     }
     ::noTone(pin);
-  #elif defined(ESP32)
+  #elif defined(RADIOLIB_ESP32)
     if(pin == RADIOLIB_NC) {
       return;
     }

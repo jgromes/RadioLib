@@ -73,7 +73,7 @@ class ArduinoHal : public RadioLibHal {
     mbed::PwmOut *pwmPin = NULL;
     #endif
 
-    #if defined(ESP32)
+    #if defined(RADIOLIB_ESP32)
     int32_t prev = -1;
     #endif
 };
