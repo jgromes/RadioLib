@@ -61,7 +61,7 @@ int main(void) {
   for(;;) {
     yield_no_wait();
     // send a packet
-    printf("[SX1261] Transmitting '%s' \r\n", transmit_string);
+    printf("[SX1261] Transmitting\r\n");
 
     state = radio->transmit("Hello World!");
 
