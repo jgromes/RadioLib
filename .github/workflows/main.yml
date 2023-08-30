@@ -202,6 +202,27 @@ jobs:
           . ~/esp/esp-idf/export.sh
           idf.py build
 
+  tock-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get install -y gcc-arm-none-eabi
+          cargo install elf2tab
+
+      - name: Build the example
+        run: |
+          cd $PWD/examples/NonArduino/Tock
+          ./build.sh
+
   rpi-build:
     runs-on: [self-hosted, ARM64]
     steps:
