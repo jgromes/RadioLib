@@ -38,21 +38,13 @@ set(CMAKE_SYSTEM_PROCESSOR ARM)
 # Set toolchain paths
 #---------------------------------------------------------------------------------------
 set(TOOLCHAIN arm-none-eabi)
-if(NOT DEFINED TOOLCHAIN_PREFIX)
-    if(CMAKE_HOST_SYSTEM_NAME STREQUAL Linux)
-        set(TOOLCHAIN_PREFIX "/usr")
-    elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Darwin)
-        set(TOOLCHAIN_PREFIX "/usr/local")
-    elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL Windows)
-        message(STATUS "Please specify the TOOLCHAIN_PREFIX !\n For example: -DTOOLCHAIN_PREFIX=\"C:/Program Files/GNU Tools ARM Embedded\" ")
-    else()
-        set(TOOLCHAIN_PREFIX "/usr")
-        message(STATUS "No TOOLCHAIN_PREFIX specified, using default: " ${TOOLCHAIN_PREFIX})
-    endif()
-endif()
-set(TOOLCHAIN_BIN_DIR ${TOOLCHAIN_PREFIX}/bin)
-set(TOOLCHAIN_INC_DIR ${TOOLCHAIN_PREFIX}/${TOOLCHAIN}/include)
-set(TOOLCHAIN_LIB_DIR ${TOOLCHAIN_PREFIX}/${TOOLCHAIN}/lib)
+
+find_program(TOOLCHAIN_PREFIX ${TOOLCHAIN}-gcc NO_CACHE)
+get_filename_component(TOOLCHAIN_PREFIX ${TOOLCHAIN_PREFIX} DIRECTORY)
+
+set(TOOLCHAIN_BIN_DIR ${TOOLCHAIN_PREFIX}/../bin)
+set(TOOLCHAIN_INC_DIR ${TOOLCHAIN_PREFIX}/../${TOOLCHAIN}/include)
+set(TOOLCHAIN_LIB_DIR ${TOOLCHAIN_PREFIX}/../${TOOLCHAIN}/lib)
 
 # Set system depended extensions
 if(WIN32)
