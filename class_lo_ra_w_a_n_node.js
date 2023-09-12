@@ -9,5 +9,7 @@ var class_lo_ra_w_a_n_node =
     [ "uplink", "class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#aa5e6ccffe7a9d633dce21e20760cbe31", null ],
     [ "wipe", "class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea", null ],
-    [ "FSK", "class_lo_ra_w_a_n_node.html#a2335294022dff4bfed27491f7d61e645", null ]
+    [ "FSK", "class_lo_ra_w_a_n_node.html#a2335294022dff4bfed27491f7d61e645", null ],
+    [ "numChannels", "class_lo_ra_w_a_n_node.html#a814a0ef01d5a989479631f13ce737754", null ],
+    [ "startChannel", "class_lo_ra_w_a_n_node.html#accc2a98737dba4de0fabb904f053efe3", null ]
 ];

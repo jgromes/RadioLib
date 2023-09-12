@@ -133,6 +133,14 @@ Public Attributes</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2335294022dff4bfed27491f7d61e645">FSK</a></td></tr>
 <tr class="memdesc:a2335294022dff4bfed27491f7d61e645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true to force the node to only use FSK channels. Set to false by default. <br /></td></tr>
 <tr class="separator:a2335294022dff4bfed27491f7d61e645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc2a98737dba4de0fabb904f053efe3"><td class="memItemLeft" align="right" valign="top"><a id="accc2a98737dba4de0fabb904f053efe3"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#accc2a98737dba4de0fabb904f053efe3">startChannel</a></td></tr>
+<tr class="memdesc:accc2a98737dba4de0fabb904f053efe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting channel offset. Some band plans only support a subset of available channels. Set to a positive value to set the first channel that will be used (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). <br /></td></tr>
+<tr class="separator:accc2a98737dba4de0fabb904f053efe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a814a0ef01d5a989479631f13ce737754"><td class="memItemLeft" align="right" valign="top"><a id="a814a0ef01d5a989479631f13ce737754"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a814a0ef01d5a989479631f13ce737754">numChannels</a></td></tr>
+<tr class="memdesc:a814a0ef01d5a989479631f13ce737754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of supported channels. Some band plans only support a subset of available channels. Set to a positive value to set the number of channels that will be used (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). <br /></td></tr>
+<tr class="separator:a814a0ef01d5a989479631f13ce737754"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
