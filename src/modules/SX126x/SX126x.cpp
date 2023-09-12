@@ -2097,13 +2097,13 @@ bool SX126x::findChip(const char* verStr) {
     // check version register
     if(strncmp(verStr, version, 6) == 0) {
       RADIOLIB_DEBUG_PRINTLN("Found SX126x: RADIOLIB_SX126X_REG_VERSION_STRING:");
-      this->mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+      RADIOLIB_DEBUG_HEXDUMP((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
       RADIOLIB_DEBUG_PRINTLN();
       flagFound = true;
     } else {
       #if defined(RADIOLIB_DEBUG)
         RADIOLIB_DEBUG_PRINTLN("SX126x not found! (%d of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:", i + 1);
-        this->mod->hexdump((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+        RADIOLIB_DEBUG_HEXDUMP((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
         RADIOLIB_DEBUG_PRINTLN("Expected string: %s", verStr);
       #endif
       this->mod->hal->delay(10);

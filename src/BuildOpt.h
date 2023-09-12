@@ -457,9 +457,11 @@
       #define RADIOLIB_DEBUG_PRINTLN(M, ...) fprintf(RADIOLIB_DEBUG_PORT, M "\n", ##__VA_ARGS__)
     #endif
   #endif
+  #define RADIOLIB_DEBUG_HEXDUMP(...) Module::hexdump(__VA_ARGS__)
 #else
   #define RADIOLIB_DEBUG_PRINT(...) {}
   #define RADIOLIB_DEBUG_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_HEXDUMP(...) {}
 #endif
 
 #if defined(RADIOLIB_VERBOSE)
