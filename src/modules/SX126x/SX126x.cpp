@@ -1855,7 +1855,6 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    RADIOLIB_DEBUG_PRINTLN("Symbol length: %f ms", symbolLength);
     if(symbolLength >= 16.0) {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
