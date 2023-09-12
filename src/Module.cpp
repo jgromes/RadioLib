@@ -403,6 +403,7 @@ uint32_t Module::reflect(uint32_t in, uint8_t bits) {
   return(res);
 }
 
+#if defined(RADIOLIB_DEBUG)
 void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
@@ -460,6 +461,7 @@ void Module::regdump(uint16_t start, size_t len) {
     delete[] buff;
   #endif
 }
+#endif
 
 #if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
 // https://github.com/esp8266/Arduino/blob/65579d29081cb8501e4d7f786747bf12e7b37da2/cores/esp8266/Print.cpp#L50

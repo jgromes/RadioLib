@@ -468,6 +468,7 @@ class Module {
     */
     static uint32_t reflect(uint32_t in, uint8_t bits);
 
+    #if defined(RADIOLIB_DEBUG)
     /*!
       \brief Function to dump data as hex into the debug port.
       \param data Data to dump.
@@ -483,6 +484,7 @@ class Module {
       \param len Number of bytes to dump.
     */
     void regdump(uint16_t start, size_t len);
+    #endif
 
     #if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
     static size_t serialPrintf(const char* format, ...);
