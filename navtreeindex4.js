@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classn_r_f24.html#abf9323748b1a850e6ddc6f6d48f4cfb3":[3,0,25,25],
 "classn_r_f24.html#ac1c3419442d93abeede39e7fda4db62e":[3,0,25,18],
 "classn_r_f24.html#aca941c9235ba1212257288554eb4b7fe":[3,0,25,17],
 "classn_r_f24.html#ad59e37ce0606dc8051e40be9d14cfec3":[3,0,25,39],
@@ -187,8 +186,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafc3bca002b982af27b703c30b2d12df3":[2,4,59],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,1],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "struct_lo_ra_w_a_n_mac_command_queue__t.html#a0a17c93236cdeb3703b9f69b4f6d702b":[3,0,21,0],
 "struct_lo_ra_w_a_n_mac_command_queue__t.html#a4904c56e4c34e51197c6e8af908096a6":[3,0,21,1],
 "struct_module_1_1_rf_switch_mode__t.html":[3,0,23,0],
-"struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462":[3,0,23,0,0]
+"struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462":[3,0,23,0,0],
+"struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66":[3,0,23,0,1]
 };

@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66":[3,0,23,0,1],
 "struct_s_s_t_v_mode__t.html":[3,0,46],
 "struct_s_s_t_v_mode__t.html#a27c6a271c1aa8e499a31a784ab9254ad":[3,0,46,3],
 "struct_s_s_t_v_mode__t.html#a4033deed34e2703ab7f9a95cc32e5820":[3,0,46,4],

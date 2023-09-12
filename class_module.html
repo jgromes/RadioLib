@@ -212,18 +212,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a47978200f7e2e408fb64f506c81cee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">waitForMicroseconds</a> (uint32_t start, uint32_t len)</td></tr>
 <tr class="memdesc:a47978200f7e2e408fb64f506c81cee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!  <a href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">More...</a><br /></td></tr>
 <tr class="separator:a47978200f7e2e408fb64f506c81cee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb13a50ed53b009c04dc2ed6caf78423"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">regdump</a> (uint16_t start, size_t len)</td></tr>
-<tr class="memdesc:abb13a50ed53b009c04dc2ed6caf78423"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump device registers as hex into the debug port.  <a href="class_module.html#abb13a50ed53b009c04dc2ed6caf78423">More...</a><br /></td></tr>
-<tr class="separator:abb13a50ed53b009c04dc2ed6caf78423"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4add1a875bb88e91da232118201a78a8"><td class="memItemLeft" align="right" valign="top">static uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a4add1a875bb88e91da232118201a78a8">reflect</a> (uint32_t in, uint8_t bits)</td></tr>
 <tr class="memdesc:a4add1a875bb88e91da232118201a78a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to reflect bits within a byte.  <a href="class_module.html#a4add1a875bb88e91da232118201a78a8">More...</a><br /></td></tr>
 <tr class="separator:a4add1a875bb88e91da232118201a78a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0532274dafe433ba68529945bfe6a1b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">hexdump</a> (uint8_t *data, size_t len, uint32_t offset=0, uint8_t width=1, bool be=false)</td></tr>
-<tr class="memdesc:ad0532274dafe433ba68529945bfe6a1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to dump data as hex into the debug port.  <a href="class_module.html#ad0532274dafe433ba68529945bfe6a1b">More...</a><br /></td></tr>
-<tr class="separator:ad0532274dafe433ba68529945bfe6a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -524,71 +518,6 @@ Static Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad0532274dafe433ba68529945bfe6a1b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0532274dafe433ba68529945bfe6a1b">&#9670;&nbsp;</a></span>hexdump()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::hexdump </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>offset</em> = <code>0</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>width</em> = <code>1</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>be</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function to dump data as hex into the debug port. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>Data to dump. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
-    <tr><td class="paramname">width</td><td>Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t). </td></tr>
-    <tr><td class="paramname">be</td><td>Print multi-byte data as big endian. Defaults to false. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a4ea888758b4a7784082d513a1e7849a4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4ea888758b4a7784082d513a1e7849a4">&#9670;&nbsp;</a></span>operator=()</h2>
 
@@ -658,43 +587,6 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The reflected input. </dd></dl>
-
-</div>
-</div>
-<a id="abb13a50ed53b009c04dc2ed6caf78423"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abb13a50ed53b009c04dc2ed6caf78423">&#9670;&nbsp;</a></span>regdump()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Module::regdump </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Function to dump device registers as hex into the debug port. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">start</td><td>First address to dump. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to dump. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

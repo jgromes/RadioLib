@@ -17,7 +17,6 @@ var class_module =
     [ "getRst", "class_module.html#ad6cddbf3aebec9717a1a381dd81ad398", null ],
     [ "init", "class_module.html#ad1956ac81429ec1f61f83dbc081cf18c", null ],
     [ "operator=", "class_module.html#a4ea888758b4a7784082d513a1e7849a4", null ],
-    [ "regdump", "class_module.html#abb13a50ed53b009c04dc2ed6caf78423", null ],
     [ "setRfSwitchPins", "class_module.html#a7d3adea64acab11c47c804afc74bd4f3", null ],
     [ "setRfSwitchState", "class_module.html#afbed643f082286012bf44bba22381ae6", null ],
     [ "setRfSwitchTable", "class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d", null ],
