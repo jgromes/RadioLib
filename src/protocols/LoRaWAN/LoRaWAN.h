@@ -44,17 +44,22 @@
 
 #define RADIOLIB_LORAWAN_NOPTS_LEN                              (8)
 
-// data rat encoding
+// data rate encoding
 #define RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K                     (0x01 << 7) //  7     7     FSK @ 50 kbps
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_12                        (0x06 << 4) //  6     4     LoRaWAN spreading factor: SF12
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_11                        (0x05 << 4) //  6     4                               SF11
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_10                        (0x04 << 4) //  6     4                               SF10
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_9                         (0x03 << 4) //  6     4                               SF9
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_8                         (0x02 << 4) //  6     4                               SF8
-#define RADIOLIB_LORAWAN_DATA_RATE_SF_7                         (0x01 << 4) //  6     4                               SF7
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ                   (0x00 << 0) //  3     0     LoRaWAN bandwidth: 500 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ                   (0x01 << 0) //  3     0                        250 kHz
-#define RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ                   (0x02 << 0) //  3     0                        125 kHz
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_12                        (0x06 << 4) //  6     4     LoRa spreading factor: SF12
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_11                        (0x05 << 4) //  6     4                             SF11
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_10                        (0x04 << 4) //  6     4                             SF10
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_9                         (0x03 << 4) //  6     4                             SF9
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_8                         (0x02 << 4) //  6     4                             SF8
+#define RADIOLIB_LORAWAN_DATA_RATE_SF_7                         (0x01 << 4) //  6     4                             SF7
+#define RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ                   (0x00 << 2) //  3     2     LoRa bandwidth: 500 kHz
+#define RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ                   (0x01 << 2) //  3     2                     250 kHz
+#define RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ                   (0x02 << 2) //  3     2                     125 kHz
+#define RADIOLIB_LORAWAN_DATA_RATE_BW_RESERVED                  (0x03 << 2) //  3     2                     reserved value
+#define RADIOLIB_LORAWAN_DATA_RATE_CR_4_5                       (0x00 << 0) //  1     0     LoRa coding rate: 4/5
+#define RADIOLIB_LORAWAN_DATA_RATE_CR_4_6                       (0x01 << 0) //  1     0                       4/6
+#define RADIOLIB_LORAWAN_DATA_RATE_CR_4_7                       (0x02 << 0) //  1     0                       4/7
+#define RADIOLIB_LORAWAN_DATA_RATE_CR_4_8                       (0x03 << 0) //  1     0                       4/8
 #define RADIOLIB_LORAWAN_DATA_RATE_UNUSED                       (0xFF << 0) //  7     0     unused data rate
 
 #define RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK                     (0x00 << 0)
@@ -163,6 +168,9 @@
 // the length of internal MAC command queue - hopefully this is enough for most use cases
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (8)
 
+// the maximum number of simultaneously available channels
+#define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (8)
+
 /*!
   \struct LoRaWANChannelSpan_t
   \brief Structure to save information about LoRaWAN channels.
@@ -269,6 +277,18 @@ class LoRaWANNode {
   public:
     /*! \brief Set to true to force the node to only use FSK channels. Set to false by default. */
     bool FSK;
+
+    /*! \brief Starting channel offset.
+        Some band plans only support a subset of available channels.
+        Set to a positive value to set the first channel that will be used (e.g. 8 for US915 FSB2 used by TTN).
+        By default -1 (no channel offset). */
+    int8_t startChannel;
+
+    /*! \brief Number of supported channels.
+        Some band plans only support a subset of available channels.
+        Set to a positive value to set the number of channels that will be used
+        (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). */
+    int8_t numChannels;
 
     /*!
       \brief Default constructor.
@@ -387,17 +407,21 @@ class LoRaWANNode {
     uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
-    float availableChannelsFreq[5] = { 0 };
-    uint16_t availableChannelsMask[6] = { 0 };
+
+    // available channel frequencies from list passed during OTA activation
+    float availableChannelsFreq[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
+
+    // currently configured channel frequency
+    float channelFreq[2] = { 0 };
 
     // LoRaWAN revision (1.0 vs 1.1)
     uint8_t rev = 0;
 
-    // currently configured data rate DR0 - DR15 (band-dependent!)
-    uint8_t dataRate = 0;
+    // currently configured data rate for uplink and downlink: DR0 - DR15 (band-dependent!)
+    uint8_t dataRate[2] = { 0 };
 
-    // currently configured channel (band-dependent!)
-    uint8_t chIndex = 0;
+    // currently configured channel for uplink and downlink (band-dependent!)
+    uint8_t chIndex[2] = { 0 };
 
     // timestamp to measure the RX1/2 delay (from uplink end)
     uint32_t rxDelayStart = 0;
@@ -408,17 +432,6 @@ class LoRaWANNode {
     // device status - battery level
     uint8_t battLevel = 0xFF;
 
-    // find the first usable data rate in a given channel span
-    void findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span);
-
-    /*!
-      \brief Configure the radio to a given channel frequency and data rate.
-      \param chan Channel ID to set.
-      \param dr Data rate to set, DR0 - DR15.
-      \returns \ref status_codes
-    */
-    int16_t configureChannel(uint8_t chan, uint8_t dr);
-
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
 
@@ -426,8 +439,28 @@ class LoRaWANNode {
     // it assumes that the MIC is the last 4 bytes of the message
     bool verifyMIC(uint8_t* msg, size_t len, uint8_t* key);
 
-    // configure the physical layer properties (frequency, sync word etc.)
+    // configure the common physical layer properties (preamble, sync word etc.)
+    // channels must be configured separately by setupChannels()!
     int16_t setPhyProperties();
+
+    // setup uplink/downlink channel data rates and frequencies
+    // will attempt to randomly select based on currently used band plan
+    int16_t setupChannels();
+
+    // find the first usable data rate in a given channel span
+    uint8_t findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span);
+
+    // find a channel ID that conforms to the requested direction and ID range
+    int16_t findChannelId(uint8_t dir, uint8_t* ch, uint8_t* dr, int8_t min, int8_t max);
+
+    // find a channel span that any given channel id belongs to
+    LoRaWANChannelSpan_t* findChannelSpan(uint8_t dir, uint8_t ch, uint8_t* spanChannelId);
+
+    // calculate channel frequency in MHz based on channel ID and direction
+    int16_t findChannelFreq(uint8_t dir, uint8_t ch, float* freq);
+
+    // configure channel based on cached data rate ID and frequency
+    int16_t configureChannel(uint8_t dir);
 
     // send a MAC command to the network server
     int16_t sendMacCommand(uint8_t cid, uint8_t* payload, size_t payloadLen, uint8_t* reply, size_t replyLen);

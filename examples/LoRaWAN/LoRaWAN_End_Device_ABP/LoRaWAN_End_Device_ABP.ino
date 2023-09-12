@@ -82,6 +82,14 @@ void setup() {
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
   // and can be set to NULL
 
+  // some frequency bands only use a subset of the available channels
+  // you can set the starting channel and their number
+  // for example, the following corresponds to US915 FSB2 in TTN
+  /*
+    node.startChannel = 8;
+    node.numChannels = 8;
+  */
+
   // start the device by directly providing the encryption keys and device address
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginAPB(devAddr, (uint8_t*)nwkSKey, (uint8_t*)appSKey);
