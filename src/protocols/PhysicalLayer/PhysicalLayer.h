@@ -8,6 +8,7 @@
 struct LoRaRate_t {
   uint8_t spreadingFactor;
   float bandwidth;
+  uint8_t codingRate;
 };
 
 // data rate structure interpretation in case FSK is used

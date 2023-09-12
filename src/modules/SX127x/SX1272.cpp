@@ -238,6 +238,10 @@ int16_t SX1272::setDataRate(DataRate_t dr) {
 
     // set the bandwidth
     state = this->setBandwidth(dr.lora.bandwidth);
+    RADIOLIB_ASSERT(state);
+
+    // set the coding rate
+    state = this->setCodingRate(dr.lora.codingRate);
   }
 
   return(state);
