@@ -403,7 +403,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   LoRaWANNode::hton<uint32_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS], this->devAddr);
 
   // TODO implement adaptive data rate
-  // foptslen will be added later
+  // length of fopts will be added later
   uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] = 0x00;
 
   // get frame counter from persistent storage
@@ -588,9 +588,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
       state = this->phyLayer->setFrequency(this->band->backupChannel.freqStart);
       RADIOLIB_ASSERT(state);
 
-      DataRate_t datr;
-      findDataRate(RADIOLIB_LORAWAN_DATA_RATE_UNUSED, &datr, &this->band->backupChannel);
-      state = this->phyLayer->setDataRate(datr);
+      DataRate_t dataRate;
+      findDataRate(RADIOLIB_LORAWAN_DATA_RATE_UNUSED, &dataRate, &this->band->backupChannel);
+      state = this->phyLayer->setDataRate(dataRate);
       RADIOLIB_ASSERT(state);
     
     }
@@ -890,7 +890,7 @@ int16_t LoRaWANNode::setupChannels() {
   return(state);
 }
 
-uint8_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span) {
+uint8_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate, const LoRaWANChannelSpan_t* span) {
   uint8_t dataRateBand = 0;
   uint8_t dataRateFound = 0;
   if(dr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
@@ -907,27 +907,27 @@ uint8_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANCha
   }
 
   if(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
-    datr->fsk.bitRate = 50;
-    datr->fsk.freqDev = 25;
+    dataRate->fsk.bitRate = 50;
+    dataRate->fsk.freqDev = 25;
   
   } else {
     uint8_t bw = dataRateBand & 0x0C;
     switch(bw) {
       case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
-        datr->lora.bandwidth = 125.0;
+        dataRate->lora.bandwidth = 125.0;
         break;
       case(RADIOLIB_LORAWAN_DATA_RATE_BW_250_KHZ):
-        datr->lora.bandwidth = 250.0;
+        dataRate->lora.bandwidth = 250.0;
         break;
       case(RADIOLIB_LORAWAN_DATA_RATE_BW_500_KHZ):
-        datr->lora.bandwidth = 500.0;
+        dataRate->lora.bandwidth = 500.0;
         break;
       default:
-        datr->lora.bandwidth = 125.0;
+        dataRate->lora.bandwidth = 125.0;
     }
     
-    datr->lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
-    datr->lora.codingRate = (dataRateBand & 0x03) + 5;
+    dataRate->lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
+    dataRate->lora.codingRate = (dataRateBand & 0x03) + 5;
   }
 
   return(dataRateFound);
@@ -1016,9 +1016,9 @@ int16_t LoRaWANNode::configureChannel(uint8_t dir) {
   }
 
   // set the data rate
-  DataRate_t datr;
-  this->dataRate[dir] = findDataRate(this->dataRate[dir], &datr, span);
-  state = this->phyLayer->setDataRate(datr);
+  DataRate_t dataRate;
+  this->dataRate[dir] = findDataRate(this->dataRate[dir], &dataRate, span);
+  state = this->phyLayer->setDataRate(dataRate);
   return(state);
 }
 

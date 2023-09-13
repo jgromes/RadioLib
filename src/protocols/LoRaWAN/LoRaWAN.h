@@ -448,7 +448,7 @@ class LoRaWANNode {
     int16_t setupChannels();
 
     // find the first usable data rate in a given channel span
-    uint8_t findDataRate(uint8_t dr, DataRate_t* datr, const LoRaWANChannelSpan_t* span);
+    uint8_t findDataRate(uint8_t dr, DataRate_t* dataRate, const LoRaWANChannelSpan_t* span);
 
     // find a channel ID that conforms to the requested direction and ID range
     int16_t findChannelId(uint8_t dir, uint8_t* ch, uint8_t* dr, int8_t min, int8_t max);
