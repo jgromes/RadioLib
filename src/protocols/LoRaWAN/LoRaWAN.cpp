@@ -695,6 +695,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
   // check the MIC
   if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, this->sNwkSIntKey)) {
+    #if !defined(RADIOLIB_STATIC_ONLY)
+      delete[] downlinkMsg;
+    #endif
     return(RADIOLIB_ERR_CRC_MISMATCH);
   }
 
@@ -702,6 +705,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
   if(addr != this->devAddr) {
     RADIOLIB_DEBUG_PRINTLN("Device address mismatch, expected 0x%08X, got 0x%08X", this->devAddr, addr);
+    #if !defined(RADIOLIB_STATIC_ONLY)
+      delete[] downlinkMsg;
+    #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -745,6 +751,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   if(payLen <= 0) {
     // no payload
     *len = 0;
+    #if !defined(RADIOLIB_STATIC_ONLY)
+      delete[] downlinkMsg;
+    #endif
     return(RADIOLIB_ERR_NONE);
   }
 
