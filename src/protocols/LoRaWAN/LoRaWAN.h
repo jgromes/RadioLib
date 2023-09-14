@@ -150,20 +150,22 @@
 #define RADIOLIB_LORAWAN_MAGIC                                  (0x12AD101B)
 
 // MAC commands
-#define RADIOLIB_LORAWAN_MAC_CMD_RESET_IND                      (0x01)
-#define RADIOLIB_LORAWAN_MAC_CMD_LINK_CHECK_REQ                 (0x02)
-#define RADIOLIB_LORAWAN_MAC_CMD_LINK_ADR_ANS                   (0x03)
-#define RADIOLIB_LORAWAN_MAC_CMD_DUTY_CYCLE_ANS                 (0x04)
-#define RADIOLIB_LORAWAN_MAC_CMD_RX_PARAM_SETUP_ANS             (0x05)
-#define RADIOLIB_LORAWAN_MAC_CMD_DEV_STATUS_ANS                 (0x06)
-#define RADIOLIB_LORAWAN_MAC_CMD_NEW_CHANNEL_ANS                (0x07)
-#define RADIOLIB_LORAWAN_MAC_CMD_RX_TIMING_SETUP_ANS            (0x08)
-#define RADIOLIB_LORAWAN_MAC_CMD_TX_PARAM_SETUP_ANS             (0x09)
-#define RADIOLIB_LORAWAN_MAC_CMD_DI_CHANNEL_ANS                 (0x0A)
-#define RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND                      (0x0B)
-#define RADIOLIB_LORAWAN_MAC_CMD_ADR_PARAM_SETUP_ANS            (0x0C)
-#define RADIOLIB_LORAWAN_MAC_CMD_DEVICE_TIME_REQ                (0x0D)
-#define RADIOLIB_LORAWAN_MAC_CMD_REJOIN_PARAM_SETUP_ANS         (0x0F)
+#define RADIOLIB_LORAWAN_MAC_CMD_RESET                          (0x01)
+#define RADIOLIB_LORAWAN_MAC_CMD_LINK_CHECK                     (0x02)
+#define RADIOLIB_LORAWAN_MAC_CMD_LINK_ADR                       (0x03)
+#define RADIOLIB_LORAWAN_MAC_CMD_DUTY_CYCLE                     (0x04)
+#define RADIOLIB_LORAWAN_MAC_CMD_RX_PARAM_SETUP                 (0x05)
+#define RADIOLIB_LORAWAN_MAC_CMD_DEV_STATUS                     (0x06)
+#define RADIOLIB_LORAWAN_MAC_CMD_NEW_CHANNEL                    (0x07)
+#define RADIOLIB_LORAWAN_MAC_CMD_RX_TIMING_SETUP                (0x08)
+#define RADIOLIB_LORAWAN_MAC_CMD_TX_PARAM_SETUP                 (0x09)
+#define RADIOLIB_LORAWAN_MAC_CMD_DL_CHANNEL                     (0x0A)
+#define RADIOLIB_LORAWAN_MAC_CMD_REKEY                          (0x0B)
+#define RADIOLIB_LORAWAN_MAC_CMD_ADR_PARAM_SETUP                (0x0C)
+#define RADIOLIB_LORAWAN_MAC_CMD_DEVICE_TIME                    (0x0D)
+#define RADIOLIB_LORAWAN_MAC_CMD_FORCE_REJOIN                   (0x0E)
+#define RADIOLIB_LORAWAN_MAC_CMD_REJOIN_PARAM_SETUP             (0x0F)
+#define RADIOLIB_LORAWAN_MAC_CMD_PROPRIETARY                    (0x80)
 
 // the length of internal MAC command queue - hopefully this is enough for most use cases
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (8)
@@ -422,6 +424,10 @@ class LoRaWANNode {
 
     // currently configured channel for uplink and downlink (band-dependent!)
     uint8_t chIndex[2] = { 0 };
+
+    // backup channel properties - may be changed by MAC command
+    float backupFreq = 0;
+    uint8_t backupDataRate = 0;
 
     // timestamp to measure the RX1/2 delay (from uplink end)
     uint32_t rxDelayStart = 0;

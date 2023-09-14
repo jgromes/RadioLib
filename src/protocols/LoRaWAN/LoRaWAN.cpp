@@ -32,6 +32,7 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->FSK = false;
   this->startChannel = -1;
   this->numChannels = -1;
+  this->backupFreq = this->band->backupChannel.freqStart;
 }
 
 void LoRaWANNode::wipe() {
@@ -285,7 +286,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     // enqueue the RekeyInd MAC command to be sent in the next uplink
     this->rev = 1;
     LoRaWANMacCommand_t cmd = {
-      .cid = RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND,
+      .cid = RADIOLIB_LORAWAN_MAC_CMD_REKEY,
       .len = sizeof(uint8_t),
       .payload = { this->rev },
       .repeat = RADIOLIB_LORAWAN_ADR_ACK_LIMIT,
@@ -585,7 +586,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
     } else if(i == 0) {
       // nothing in the first window, configure for the second
-      state = this->phyLayer->setFrequency(this->band->backupChannel.freqStart);
+      state = this->phyLayer->setFrequency(this->backupFreq);
       RADIOLIB_ASSERT(state);
 
       DataRate_t dataRate;
@@ -1146,10 +1147,131 @@ int16_t LoRaWANNode::popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQu
 }
 
 size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
-  //RADIOLIB_DEBUG_PRINTLN("exe MAC CID = %02x, len = %d", cmd->cid, cmd->len);
+  RADIOLIB_DEBUG_PRINTLN("exe MAC CID = %02x, len = %d", cmd->cid, cmd->len);
+
+  if(cmd->cid >= RADIOLIB_LORAWAN_MAC_CMD_PROPRIETARY) {
+    // TODO call user-provided callback for proprietary MAC commands?
+    return(cmd->len - 1);
+  }
 
   switch(cmd->cid) {
-    case(RADIOLIB_LORAWAN_MAC_CMD_DEV_STATUS_ANS): {
+    case(RADIOLIB_LORAWAN_MAC_CMD_RESET): {
+      // get the server version
+      uint8_t srvVersion = cmd->payload[0];
+      RADIOLIB_DEBUG_PRINTLN("Server version: 1.%d", srvVersion);
+      if(srvVersion == this->rev) {
+        // valid server version, stop sending the ResetInd MAC command
+        popMacCommand(NULL, &this->commandsUp, true);
+      }
+      return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_LINK_CHECK): {
+      // TODO sent by gateway as reply to node request, how to get this info to the user?
+      uint8_t margin = cmd->payload[0];
+      uint8_t gwCnt = cmd->payload[1];
+      RADIOLIB_DEBUG_PRINTLN("Link check: margin = %d dB, gwCnt = %d", margin, gwCnt);
+      return(2);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_LINK_ADR): {
+      // get the ADR configuration
+      uint8_t dr = (cmd->payload[0] & 0xF0) >> 4;
+      uint8_t txPower = cmd->payload[0] & 0x0F;
+      uint16_t chMask = LoRaWANNode::ntoh<uint16_t>(&cmd->payload[1]);
+      uint8_t chMaskCntl = (cmd->payload[3] & 0x70) >> 4;
+      uint8_t nbTrans = cmd->payload[3] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("ADR REQ: dataRate = %d, txPower = %d, chMask = 0x%04x, chMaskCntl = %02x, nbTrans = %d", dr, txPower, chMask, chMaskCntl, nbTrans);
+
+      // apply the configuration
+      uint8_t drAck = 0;
+      if(dr != 0x0F) {
+        // first figure out which channel span this data rate applies to
+        // TODO do that by processing the chMask/chMaskCntl?
+        uint8_t spanChannelId = 0;
+        LoRaWANChannelSpan_t* span = findChannelSpan(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], &spanChannelId);
+
+        // seems to be only applicable to uplink
+        if(span) {
+          DataRate_t dataRate;
+          this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = findDataRate(dr, &dataRate, span);
+          if(this->phyLayer->setDataRate(dataRate) == RADIOLIB_ERR_NONE) {
+            RADIOLIB_DEBUG_PRINTLN("ADR set dr = %d channel = %d", dr, spanChannelId);
+            drAck = 1;
+          }
+        }
+
+      } else {
+        drAck = 1;
+      
+      }
+
+      // try to apply the power configuration
+      uint8_t pwrAck = 0;
+      if(txPower != 0x0F) {
+        int8_t pwr = this->band->powerMax - 2*txPower;
+        if(this->phyLayer->setOutputPower(pwr) == RADIOLIB_ERR_NONE) {
+          RADIOLIB_DEBUG_PRINTLN("ADR set pwr = %d", pwr);
+          pwrAck = 1;
+        }
+
+      } else {
+        pwrAck = 1;
+      }
+
+      // TODO implement repeated uplinks with nbTrans
+      // TODO implement channel mask
+      uint8_t chMaskAck = 0;
+
+      // send the reply
+      cmd->len = 1;
+      cmd->payload[0] = (pwrAck << 2) | (drAck << 1) | (chMaskAck << 0);
+      RADIOLIB_DEBUG_PRINTLN("ADR ANS: status = 0x%02x", cmd->payload[0]);
+      pushMacCommand(cmd, &this->commandsUp);
+      return(4);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_DUTY_CYCLE): {
+      uint8_t maxDutyCycle = cmd->payload[0] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("Max duty cycle: 1/2^%d", maxDutyCycle);
+
+      // TODO implement this
+
+      return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_RX_PARAM_SETUP): {
+      // get the configuration
+      uint8_t rx1DrOffset = (cmd->payload[0] & 0x70) >> 4;
+      uint8_t rx2DataRate = cmd->payload[0] & 0x0F;
+      uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
+      float freq = (float)freqRaw/10000.0;
+      RADIOLIB_DEBUG_PRINTLN("RX Param: rx1DrOffset = %d, rx2DataRate = %d, freq = %f", rx1DrOffset, rx2DataRate, freq);
+      
+      // apply the configuration
+      this->backupFreq = freq;
+      float prevFreq = this->channelFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK];
+      uint8_t chanAck = 0;
+      if(this->phyLayer->setFrequency(freq) == RADIOLIB_ERR_NONE) {
+        chanAck = 1;
+        this->phyLayer->setFrequency(prevFreq);
+      }
+
+      // TODO process the RX2 data rate
+      uint8_t rx2Ack = 0;
+
+      // TODO process the data rate offset
+      uint8_t rx1OffsAck = 0;
+
+      // send the reply
+      cmd->len = 1;
+      cmd->payload[0] = (rx1OffsAck << 2) | (rx2Ack << 1) | (chanAck << 0);
+      RADIOLIB_DEBUG_PRINTLN("Rx param ANS: status = 0x%02x", cmd->payload[0]);
+      pushMacCommand(cmd, &this->commandsUp);
+      return(4);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_DEV_STATUS): {
       // set the uplink reply
       cmd->len = 2;
       cmd->payload[1] = this->battLevel;
@@ -1161,12 +1283,110 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       return(0);
     } break;
 
-    case(RADIOLIB_LORAWAN_MAC_CMD_REKEY_IND): {
-      // TODO verify the actual server version here
+    case(RADIOLIB_LORAWAN_MAC_CMD_NEW_CHANNEL): {
+      // get the configuration
+      uint8_t chIndex = cmd->payload[0];
+      uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
+      float freq = (float)freqRaw/10000.0;
+      uint8_t maxDr = (cmd->payload[4] & 0xF0) >> 4;
+      uint8_t minDr = cmd->payload[4] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("New channel: index = %d, freq = %f MHz, maxDr = %d, minDr = %d", chIndex, freq, maxDr, minDr);
 
-      // stop sending the ReKey MAC command
-      popMacCommand(NULL, &this->commandsUp, true);
+      // TODO implement this
+
+      return(5);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_RX_TIMING_SETUP): {
+      // get the configuration
+      uint8_t delay = cmd->payload[0] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("RX timing: delay = %d sec", delay);
+      
+      // apply the configuration
+      if(delay == 0) {
+        delay = 1;
+      }
+      this->rxDelays[0] = delay * 1000;
+      this->rxDelays[1] = this->rxDelays[0] + 1000;
+
+      // send the reply
+      cmd->len = 0;
+
+      // TODO this should be sent repeatedly until the next downlink
+      pushMacCommand(cmd, &this->commandsUp);
+      
       return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_TX_PARAM_SETUP): {
+      uint8_t dlDwell = (cmd->payload[0] & 0x20) >> 5;
+      uint8_t ulDwell = (cmd->payload[0] & 0x10) >> 4;
+      uint8_t maxEirpRaw = cmd->payload[0] & 0x0F;
+
+      // who the f came up with this ...
+      const uint8_t eirpEncoding[] = { 8, 10, 12, 13, 14, 16, 18, 20, 21, 24, 26, 27, 29, 30, 33, 36 };
+      uint8_t maxEirp = eirpEncoding[maxEirpRaw];
+      RADIOLIB_DEBUG_PRINTLN("TX timing: dlDwell = %d, dlDwell = %d, maxEirp = %d dBm", dlDwell, ulDwell, maxEirp);
+
+      // TODO implement this
+      return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_DL_CHANNEL): {
+      // get the configuration
+      uint8_t chIndex = cmd->payload[0];
+      uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
+      float freq = (float)freqRaw/10000.0;
+      RADIOLIB_DEBUG_PRINTLN("DL channel: index = %d, freq = %f MHz", chIndex, freq);
+
+      // TODO implement this
+      return(4);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_REKEY): {
+      // get the server version
+      uint8_t srvVersion = cmd->payload[0];
+      RADIOLIB_DEBUG_PRINTLN("Server version: 1.%d", srvVersion);
+      if((srvVersion > 0) && (srvVersion <= this->rev)) {
+        // valid server version, stop sending the ReKey MAC command
+        popMacCommand(NULL, &this->commandsUp, true);
+      }
+      return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_ADR_PARAM_SETUP): {
+      // TODO implement this
+      uint8_t limitExp = (cmd->payload[0] & 0xF0) >> 4;
+      uint8_t delayExp = cmd->payload[0] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("ADR param setup: limitExp = %d, delayExp = %d", limitExp, delayExp);
+      return(1);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_DEVICE_TIME): {
+      // TODO implement this - sent by gateway as reply to node request
+      uint32_t gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[0]);
+      uint8_t fraction = cmd->payload[5];
+      RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)fraction/256.0f);
+      return(5);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_FORCE_REJOIN): {
+      // TODO implement this
+      uint16_t rejoinReq = LoRaWANNode::ntoh<uint16_t>(&cmd->payload[0]);
+      uint8_t period = (rejoinReq & 0x3800) >> 11;
+      uint8_t maxRetries = (rejoinReq & 0x0700) >> 8;
+      uint8_t rejoinType = (rejoinReq & 0x0070) >> 4;
+      uint8_t dr = rejoinReq & 0x000F;
+      RADIOLIB_DEBUG_PRINTLN("Force rejoin: period = %d, maxRetries = %d, rejoinType = %d, dr = %d", period, maxRetries, rejoinType, dr);
+      return(2);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_REJOIN_PARAM_SETUP): {
+      // TODO implement this
+      uint8_t maxTime = (cmd->payload[0] & 0xF0) >> 4;
+      uint8_t maxCount = cmd->payload[0] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("Rejoin setup: maxTime = %d, maxCount = %d", maxTime, maxCount);
+      return(0);
     } break;
   }
 
