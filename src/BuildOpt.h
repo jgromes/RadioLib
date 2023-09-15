@@ -117,6 +117,7 @@
   // Arduino Due
   #define RADIOLIB_PLATFORM                           "Arduino Due"
   #define RADIOLIB_TONE_UNSUPPORTED
+  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
   // Adafruit nRF52 boards

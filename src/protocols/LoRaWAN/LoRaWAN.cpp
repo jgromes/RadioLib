@@ -7,6 +7,10 @@
 // flag to indicate whether we have received a downlink
 static volatile bool downlinkReceived = false;
 
+#if defined(RADIOLIB_EEPROM_UNSUPPORTED)
+  #warning "Persistent storage not supported!"
+#endif
+
 // interrupt service routine to handle downlinks automatically
 #if defined(ESP8266) || defined(ESP32)
   IRAM_ATTR
