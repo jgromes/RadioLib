@@ -105,6 +105,7 @@
 #elif defined(SAMD_SERIES)
   // Adafruit SAMD boards (M0 and M4)
   #define RADIOLIB_PLATFORM                           "Adafruit SAMD"
+  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif defined(ARDUINO_ARCH_SAMD)
   // Arduino SAMD (Zero, MKR, etc.)
@@ -112,6 +113,7 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)  
+  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif defined(__SAM3X8E__)
   // Arduino Due
