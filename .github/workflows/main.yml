@@ -17,7 +17,6 @@ on:
           - none
           - arduino:avr:uno
           - arduino:avr:mega
-          - arduino:avr:leonardo
           - arduino:mbed:nano33ble
           - arduino:mbed:envie_m4
           - arduino:megaavr:uno2018
