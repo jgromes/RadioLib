@@ -1226,8 +1226,11 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       }
 
       // TODO implement repeated uplinks with nbTrans
+      (void)nbTrans;
       // TODO implement channel mask
       uint8_t chMaskAck = 0;
+      (void)chMask;
+      (void)chMaskCntl;
 
       // send the reply
       cmd->len = 1;
@@ -1264,9 +1267,11 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       }
 
       // TODO process the RX2 data rate
+      (void)rx2DataRate;
       uint8_t rx2Ack = 0;
 
       // TODO process the data rate offset
+      (void)rx1DrOffset;
       uint8_t rx1OffsAck = 0;
 
       // send the reply
