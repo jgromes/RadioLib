@@ -144,6 +144,7 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
+  #define RADIOLIB_EEPROM_UNSUPPORTED
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
@@ -176,6 +177,7 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
+  #define RADIOLIB_EEPROM_UNSUPPORTED
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
