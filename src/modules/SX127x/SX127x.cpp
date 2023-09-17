@@ -999,6 +999,13 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   // check active modem
   uint8_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_FSK_OOK) {
+
+    // disable sync word in case len is 0
+    if(len == 0) {
+      int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_SYNC_OFF, 4, 4);
+      return(state);
+    }
+
     RADIOLIB_CHECK_RANGE(len, 1, 8, RADIOLIB_ERR_INVALID_SYNC_WORD);
 
     // sync word must not contain value 0x00
