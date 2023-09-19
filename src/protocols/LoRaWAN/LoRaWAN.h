@@ -309,7 +309,7 @@ class LoRaWANNode {
       \brief Join network by loading information from persistent storage.
       \returns \ref status_codes
     */
-    int16_t begin();
+    int16_t begin(bool otaa = true);
 
     /*!
       \brief Join network by performing over-the-air activation. By this procedure,

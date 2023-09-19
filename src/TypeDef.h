@@ -534,6 +534,11 @@
 #define RADIOLIB_ERR_COMMAND_QUEUE_EMPTY                        (-1110)
 
 /*!
+  \brief Unable to join network because JoinNonce is not higher than saved value.
+*/
+#define RADIOLIB_ERR_JOIN_NONCE_INVALID                         (-1111)
+
+/*!
   \}
 */
 
