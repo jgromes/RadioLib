@@ -17,7 +17,6 @@ on:
           - none
           - arduino:avr:uno
           - arduino:avr:mega
-          - arduino:avr:leonardo
           - arduino:mbed:nano33ble
           - arduino:mbed:envie_m4
           - arduino:megaavr:uno2018
@@ -50,8 +49,6 @@ jobs:
             run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN)" >> $GITHUB_OUTPUT
           - id: arduino:avr:mega
             run: echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
-          - id: arduino:avr:leonardo
-            run: echo "skip-pattern=(STM32WL|SSTV|Pager)" >> $GITHUB_OUTPUT
           - id: arduino:mbed:nano33ble
           - id: arduino:mbed:envie_m4
           - id: arduino:megaavr:uno2018

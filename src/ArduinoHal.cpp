@@ -2,7 +2,9 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
 #include <EEPROM.h>
+#endif
 
 ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
 
@@ -101,27 +103,31 @@ void inline ArduinoHal::spiEnd() {
 }
 
 void ArduinoHal::readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
-  #if defined(RADIOLIB_ESP32)
-    EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
-  #endif
-  for(size_t i = 0; i < len; i++) {
-    buff[i] = EEPROM.read(addr + i);
-  }
-  #if defined(RADIOLIB_ESP32)
-    EEPROM.end();
+  #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+    #if defined(RADIOLIB_ESP32)
+      EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
+    #endif
+    for(size_t i = 0; i < len; i++) {
+      buff[i] = EEPROM.read(addr + i);
+    }
+    #if defined(RADIOLIB_ESP32)
+      EEPROM.end();
+    #endif
   #endif
 }
 
 void ArduinoHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len) {
-  #if defined(RADIOLIB_ESP32)
-    EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
-  #endif
-  for(size_t i = 0; i < len; i++) {
-    EEPROM.write(addr + i, buff[i]);
-  }
-  #if defined(RADIOLIB_ESP32)
-    EEPROM.commit();
-    EEPROM.end();
+  #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+    #if defined(RADIOLIB_ESP32)
+      EEPROM.begin(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE);
+    #endif
+    for(size_t i = 0; i < len; i++) {
+      EEPROM.write(addr + i, buff[i]);
+    }
+    #if defined(RADIOLIB_ESP32)
+      EEPROM.commit();
+      EEPROM.end();
+    #endif
   #endif
 }
 

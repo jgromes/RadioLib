@@ -7,6 +7,10 @@
 // flag to indicate whether we have received a downlink
 static volatile bool downlinkReceived = false;
 
+#if defined(RADIOLIB_EEPROM_UNSUPPORTED)
+  #warning "Persistent storage not supported!"
+#endif
+
 // interrupt service routine to handle downlinks automatically
 #if defined(ESP8266) || defined(ESP32)
   IRAM_ATTR
@@ -1171,6 +1175,8 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t margin = cmd->payload[0];
       uint8_t gwCnt = cmd->payload[1];
       RADIOLIB_DEBUG_PRINTLN("Link check: margin = %d dB, gwCnt = %d", margin, gwCnt);
+      (void)margin;
+      (void)gwCnt;
       return(2);
     } break;
 
@@ -1220,8 +1226,11 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       }
 
       // TODO implement repeated uplinks with nbTrans
+      (void)nbTrans;
       // TODO implement channel mask
       uint8_t chMaskAck = 0;
+      (void)chMask;
+      (void)chMaskCntl;
 
       // send the reply
       cmd->len = 1;
@@ -1236,7 +1245,7 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PRINTLN("Max duty cycle: 1/2^%d", maxDutyCycle);
 
       // TODO implement this
-
+      (void)maxDutyCycle;
       return(1);
     } break;
 
@@ -1258,9 +1267,11 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       }
 
       // TODO process the RX2 data rate
+      (void)rx2DataRate;
       uint8_t rx2Ack = 0;
 
       // TODO process the data rate offset
+      (void)rx1DrOffset;
       uint8_t rx1OffsAck = 0;
 
       // send the reply
@@ -1293,7 +1304,10 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PRINTLN("New channel: index = %d, freq = %f MHz, maxDr = %d, minDr = %d", chIndex, freq, maxDr, minDr);
 
       // TODO implement this
-
+      (void)chIndex;
+      (void)freq;
+      (void)maxDr;
+      (void)minDr;
       return(5);
     } break;
 
@@ -1329,6 +1343,9 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PRINTLN("TX timing: dlDwell = %d, dlDwell = %d, maxEirp = %d dBm", dlDwell, ulDwell, maxEirp);
 
       // TODO implement this
+      (void)dlDwell;
+      (void)ulDwell;
+      (void)maxEirp;
       return(1);
     } break;
 
@@ -1340,6 +1357,8 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PRINTLN("DL channel: index = %d, freq = %f MHz", chIndex, freq);
 
       // TODO implement this
+      (void)chIndex;
+      (void)freq;
       return(4);
     } break;
 
@@ -1359,14 +1378,18 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t limitExp = (cmd->payload[0] & 0xF0) >> 4;
       uint8_t delayExp = cmd->payload[0] & 0x0F;
       RADIOLIB_DEBUG_PRINTLN("ADR param setup: limitExp = %d, delayExp = %d", limitExp, delayExp);
+      (void)limitExp;
+      (void)delayExp;
       return(1);
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_CMD_DEVICE_TIME): {
       // TODO implement this - sent by gateway as reply to node request
       uint32_t gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[0]);
-      uint8_t fraction = cmd->payload[5];
+      uint8_t fraction = cmd->payload[4];
       RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)fraction/256.0f);
+      (void)gpsEpoch;
+      (void)fraction;
       return(5);
     } break;
 
@@ -1378,6 +1401,10 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t rejoinType = (rejoinReq & 0x0070) >> 4;
       uint8_t dr = rejoinReq & 0x000F;
       RADIOLIB_DEBUG_PRINTLN("Force rejoin: period = %d, maxRetries = %d, rejoinType = %d, dr = %d", period, maxRetries, rejoinType, dr);
+      (void)period;
+      (void)maxRetries;
+      (void)rejoinType;
+      (void)dr;
       return(2);
     } break;
 
@@ -1386,6 +1413,8 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t maxTime = (cmd->payload[0] & 0xF0) >> 4;
       uint8_t maxCount = cmd->payload[0] & 0x0F;
       RADIOLIB_DEBUG_PRINTLN("Rejoin setup: maxTime = %d, maxCount = %d", maxTime, maxCount);
+      (void)maxTime;
+      (void)maxCount;
       return(0);
     } break;
   }
