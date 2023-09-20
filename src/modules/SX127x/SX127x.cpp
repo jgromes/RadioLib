@@ -782,6 +782,24 @@ int16_t SX127x::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+int16_t SX127x::setPreamblePolarity(int polarity) {
+  // set mode to standby
+  int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
+
+  // check active modem
+  uint8_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_LORA) {
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    // set preamble polarity
+    state =this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, polarity, 5, 5);
+    return(state);
+  }
+
+  return(RADIOLIB_ERR_UNKNOWN);
+}
+
 float SX127x::getFrequencyError(bool autoCorrect) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
