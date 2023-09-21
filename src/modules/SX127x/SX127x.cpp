@@ -51,6 +51,10 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
+  // set preamble polarity
+  state = setPreamblePolarity(RADIOLIB_SX127X_PREAMBLE_POLARITY_55);
+  RADIOLIB_ASSERT(state);
+
   // disable IQ inversion
   state = SX127x::invertIQ(false);
   RADIOLIB_ASSERT(state);
@@ -116,6 +120,10 @@ int16_t SX127x::beginFSK(uint8_t chipVersion, float freqDev, float rxBw, uint16_
 
   // set preamble length
   state = SX127x::setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  // set preamble polarity
+  state = setPreamblePolarity(RADIOLIB_SX127X_PREAMBLE_POLARITY_55);
   RADIOLIB_ASSERT(state);
 
   // set default sync word
@@ -1451,10 +1459,6 @@ int16_t SX127x::configFSK() {
   // set packet configuration
   state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_PACKET_VARIABLE | RADIOLIB_SX127X_DC_FREE_NONE | RADIOLIB_SX127X_CRC_ON | RADIOLIB_SX127X_CRC_AUTOCLEAR_ON | RADIOLIB_SX127X_ADDRESS_FILTERING_OFF | RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT, 7, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_2, RADIOLIB_SX127X_DATA_MODE_PACKET | RADIOLIB_SX127X_IO_HOME_OFF, 6, 5);
-  RADIOLIB_ASSERT(state);
-
-  // set preamble polarity
-  state =this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_PREAMBLE_POLARITY_55, 5, 5);
   RADIOLIB_ASSERT(state);
 
   // set FIFO threshold
