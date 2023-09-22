@@ -1369,9 +1369,7 @@ int16_t LoRaWANNode::popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQu
   if(queue->commands[index].repeat > 0) {
     queue->commands[index].repeat--;
   } else {
-    queue->len -= (1 + queue->commands[index].len); // 1 byte for command ID, len for payload
-    memset(&queue->commands[index], 0x00, sizeof(LoRaWANMacCommand_t));
-    queue->numCommands--;
+    deleteMacCommand(queue->commands[index].cid, queue);
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -1394,9 +1392,11 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* que
       // queue->commands[index].payload[4],
       // queue->commands[index].repeat);
       queue->len -= (1 + queue->commands[index].len); // 1 byte for command ID, len for payload
+      // move all subsequent commands one forward in the queue
       if(index < RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - 1) {
         memmove(&queue->commands[index], &queue->commands[index + 1], (RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - index) * sizeof(LoRaWANMacCommand_t));
       }
+      // set the latest element to all 0
       memset(&queue->commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - 1], 0x00, sizeof(LoRaWANMacCommand_t));
       queue->numCommands--;
       return(RADIOLIB_ERR_NONE);
