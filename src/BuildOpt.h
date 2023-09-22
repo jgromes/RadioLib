@@ -443,7 +443,7 @@
 
 // the amount of space allocated to the persistent storage
 #if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x60)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0xD0)
 #endif
 
 // This only compiles on STM32 boards with SUBGHZ module, but also

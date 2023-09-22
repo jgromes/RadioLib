@@ -5,6 +5,9 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../../utils/Cryptography.h"
 
+// version of NVM table layout (NOT the LoRaWAN version)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION               (0x01)
+
 // preamble format
 #define RADIOLIB_LORAWAN_LORA_SYNC_WORD                         (0x34)
 #define RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN                      (8)
@@ -257,7 +260,7 @@ struct LoRaWANMacCommand_t {
   uint8_t cid;
 
   /*! \brief Length of the payload */
-  size_t len;
+  uint8_t len;
 
   /*! \brief Payload buffer (5 bytes is the longest possible) */
   uint8_t payload[5];
@@ -269,6 +272,7 @@ struct LoRaWANMacCommand_t {
 struct LoRaWANMacCommandQueue_t {
   LoRaWANMacCommand_t commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE];
   size_t numCommands;
+  size_t len;
 };
 
 /*!
@@ -306,10 +310,10 @@ class LoRaWANNode {
     void wipe();
 
     /*!
-      \brief Join network by loading information from persistent storage.
+      \brief Restore OTAA session by loading information from persistent storage.
       \returns \ref status_codes
     */
-    int16_t begin(bool otaa = true);
+    int16_t restoreOTAA();
 
     /*!
       \brief Join network by performing over-the-air activation. By this procedure,
@@ -333,7 +337,7 @@ class LoRaWANNode {
       \param sNwkSIntKey Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \returns \ref status_codes
     */
-    int16_t beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL);
+    int16_t beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -395,10 +399,12 @@ class LoRaWANNode {
     LoRaWANMacCommandQueue_t commandsUp = { 
       .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
       .numCommands = 0,
+      .len = 0,
     };
     LoRaWANMacCommandQueue_t commandsDown = { 
       .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
       .numCommands = 0,
+      .len = 0,
     };
 
     // the following is either provided by the network server (OTAA)
@@ -438,6 +444,9 @@ class LoRaWANNode {
     // device status - battery level
     uint8_t battLevel = 0xFF;
 
+    // indicates whether an uplink has MAC commands as payload
+    bool isMACPayload = false;
+
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
 
@@ -475,7 +484,10 @@ class LoRaWANNode {
     int16_t pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue);
     
     // pop MAC command from queue, done by copy unless CMD is NULL
-    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, bool force = false);
+    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, size_t index);
+
+    // delete a specific MAC command from queue, indicated by the command ID
+    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue);
 
     // execute mac command, return the number of processed bytes for sequential processing
     size_t execMacCommand(LoRaWANMacCommand_t* cmd);
