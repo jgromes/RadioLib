@@ -5,7 +5,6 @@ var dir_ddb4d7e95cc2d6c8e1ade10a20d7247d =
     [ "nRF24", "dir_8d5439df06ea2679013aa8390703d116.html", "dir_8d5439df06ea2679013aa8390703d116" ],
     [ "RF69", "dir_3a277ada553fbb989028f9b071a02542.html", "dir_3a277ada553fbb989028f9b071a02542" ],
     [ "RFM2x", "dir_1496c164e9c77875dd570f4157f3157f.html", "dir_1496c164e9c77875dd570f4157f3157f" ],
-    [ "RFM9x", "dir_6baa7f88a31cf8c1ad1b651eaa1fd5b9.html", "dir_6baa7f88a31cf8c1ad1b651eaa1fd5b9" ],
     [ "Si443x", "dir_e2961291c878e1b3ab9447d79b865c81.html", "dir_e2961291c878e1b3ab9447d79b865c81" ],
     [ "SX1231", "dir_a758e8e29d8436beff5e1f16d5ed2d65.html", "dir_a758e8e29d8436beff5e1f16d5ed2d65" ],
     [ "SX126x", "dir_747c20e84f9dfe1cc835713177129efc.html", "dir_747c20e84f9dfe1cc835713177129efc" ],

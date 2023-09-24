@@ -46,10 +46,6 @@ var hierarchy =
           [ "SX1273", "class_s_x1273.html", null ]
         ] ],
         [ "SX1278", "class_s_x1278.html", [
-          [ "RFM95", "class_r_f_m95.html", [
-            [ "RFM97", "class_r_f_m97.html", null ]
-          ] ],
-          [ "RFM96", "class_r_f_m96.html", null ],
           [ "SX1276", "class_s_x1276.html", null ],
           [ "SX1277", "class_s_x1277.html", null ],
           [ "SX1279", "class_s_x1279.html", null ]
@@ -82,6 +78,8 @@ var hierarchy =
     ] ],
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
+    [ "RFM96", "class_r_f_m96.html", null ],
+    [ "RFM97", "class_r_f_m97.html", null ],
     [ "RFM98", "class_r_f_m98.html", null ],
     [ "Module::RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", null ],
     [ "SSTVClient", "class_s_s_t_v_client.html", null ],
