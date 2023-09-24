@@ -10,14 +10,14 @@ Module* SX127x::getMod() {
   return(this->mod);
 }
 
-int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength) {
+int16_t SX127x::begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
 
   // try to find the SX127x chip
-  if(!SX127x::findChip(chipVersion)) {
+  if(!SX127x::findChip(chipVersions, numVersions)) {
     RADIOLIB_DEBUG_PRINTLN("No SX127x found!");
     this->mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
@@ -61,14 +61,14 @@ int16_t SX127x::begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLe
   return(state);
 }
 
-int16_t SX127x::beginFSK(uint8_t chipVersion, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
+int16_t SX127x::beginFSK(uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
   this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
 
   // try to find the SX127x chip
-  if(!SX127x::findChip(chipVersion)) {
+  if(!SX127x::findChip(chipVersions, numVersions)) {
     RADIOLIB_DEBUG_PRINTLN("No SX127x found!");
     this->mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
@@ -1473,7 +1473,7 @@ int16_t SX127x::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
-bool SX127x::findChip(uint8_t ver) {
+bool SX127x::findChip(uint8_t* vers, uint8_t num) {
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
@@ -1482,13 +1482,19 @@ bool SX127x::findChip(uint8_t ver) {
 
     // check version register
     int16_t version = getChipVersion();
-    if(version == ver) {
-      flagFound = true;
-    } else {
-      RADIOLIB_DEBUG_PRINTLN("SX127x not found! (%d of 10 tries) RADIOLIB_SX127X_REG_VERSION == 0x%04X, expected 0x00%X", i + 1, version, ver);
+    for(uint8_t i = 0; i < num; i++) {
+      if(version == vers[i]) {
+        flagFound = true;
+        break;
+      }
+    }
+
+    if(!flagFound) {
+      RADIOLIB_DEBUG_PRINTLN("SX127x not found! (%d of 10 tries) RADIOLIB_SX127X_REG_VERSION == 0x%04X", i + 1, version);
       this->mod->hal->delay(10);
       i++;
     }
+  
   }
 
   return(flagFound);

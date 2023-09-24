@@ -7,7 +7,8 @@ SX1279::SX1279(Module* mod) : SX1278(mod) {
 
 int16_t SX1279::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(RADIOLIB_SX1278_CHIP_VERSION, syncWord, preambleLength);
+  uint8_t versions[] = { RADIOLIB_SX1278_CHIP_VERSION, RADIOLIB_SX1278_CHIP_VERSION_ALT, RADIOLIB_SX1278_CHIP_VERSION_RFM9X };
+  int16_t state = SX127x::begin(versions, 3, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -38,7 +39,8 @@ int16_t SX1279::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 
 int16_t SX1279::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, bool enableOOK) {
   // execute common part
-  int16_t state = SX127x::beginFSK(RADIOLIB_SX1278_CHIP_VERSION, freqDev, rxBw, preambleLength, enableOOK);
+  uint8_t versions[] = { RADIOLIB_SX1278_CHIP_VERSION, RADIOLIB_SX1278_CHIP_VERSION_ALT, RADIOLIB_SX1278_CHIP_VERSION_RFM9X };
+  int16_t state = SX127x::beginFSK(versions, 3, freqDev, rxBw, preambleLength, enableOOK);
   RADIOLIB_ASSERT(state);
 
   // configure settings not accessible by API
