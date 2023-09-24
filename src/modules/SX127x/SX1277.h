@@ -83,6 +83,12 @@ class SX1277: public SX1278 {
 
 };
 
+/*!
+  \class RFM97
+  \brief Only exists as alias for SX1277, since there seems to be no difference between %RFM97 and %SX1277 modules.
+*/
+RADIOLIB_TYPE_ALIAS(SX1277, RFM97);
+
 #endif
 
 #endif
