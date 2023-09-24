@@ -118,16 +118,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4c27736905cf848a67d6cbc92df823b8"><td class="memItemLeft" align="right" valign="top"><a id="a4c27736905cf848a67d6cbc92df823b8"></a>
 <a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><b>getMod</b> ()</td></tr>
 <tr class="separator:a4c27736905cf848a67d6cbc92df823b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5da8218f69e3bf52df389a0480f8b430"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a5da8218f69e3bf52df389a0480f8b430">begin</a> (uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength)</td></tr>
-<tr class="memdesc:a5da8218f69e3bf52df389a0480f8b430"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.  <a href="class_s_x127x.html#a5da8218f69e3bf52df389a0480f8b430">More...</a><br /></td></tr>
-<tr class="separator:a5da8218f69e3bf52df389a0480f8b430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeac64ca102a143624993cb7cb5b9e17c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aeac64ca102a143624993cb7cb5b9e17c">begin</a> (uint8_t *chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength)</td></tr>
+<tr class="memdesc:aeac64ca102a143624993cb7cb5b9e17c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.  <a href="class_s_x127x.html#aeac64ca102a143624993cb7cb5b9e17c">More...</a><br /></td></tr>
+<tr class="separator:aeac64ca102a143624993cb7cb5b9e17c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3321ac4a7f65e73004202486db9b1d68"><td class="memItemLeft" align="right" valign="top"><a id="a3321ac4a7f65e73004202486db9b1d68"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a3321ac4a7f65e73004202486db9b1d68">reset</a> ()=0</td></tr>
 <tr class="memdesc:a3321ac4a7f65e73004202486db9b1d68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a> and <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> implementations differ. <br /></td></tr>
 <tr class="separator:a3321ac4a7f65e73004202486db9b1d68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73f2d2fe803e3496026011f0da694cfb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb">beginFSK</a> (uint8_t chipVersion, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
-<tr class="memdesc:a73f2d2fe803e3496026011f0da694cfb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <a href="class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb">More...</a><br /></td></tr>
-<tr class="separator:a73f2d2fe803e3496026011f0da694cfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8530e9d858b155eb5acb764a733bcd4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#af8530e9d858b155eb5acb764a733bcd4">beginFSK</a> (uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</td></tr>
+<tr class="memdesc:af8530e9d858b155eb5acb764a733bcd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.  <a href="class_s_x127x.html#af8530e9d858b155eb5acb764a733bcd4">More...</a><br /></td></tr>
+<tr class="separator:af8530e9d858b155eb5acb764a733bcd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a9c4ea3285922bf01cebd2c8a706d9a29">transmit</a> (uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
 <tr class="memdesc:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using LoRa or up to 63 bytes using FSK modem. For overloads to transmit Arduino String or C-string, see <a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534" title="C-string transmit method.">PhysicalLayer::transmit</a>.  <a href="class_s_x127x.html#a9c4ea3285922bf01cebd2c8a706d9a29">More...</a><br /></td></tr>
 <tr class="separator:a9c4ea3285922bf01cebd2c8a706d9a29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -481,8 +481,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a5da8218f69e3bf52df389a0480f8b430"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5da8218f69e3bf52df389a0480f8b430">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="aeac64ca102a143624993cb7cb5b9e17c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeac64ca102a143624993cb7cb5b9e17c">&#9670;&nbsp;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -490,8 +490,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t SX127x::begin </td>
           <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>chipVersions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>chipVersion</em>, </td>
+          <td class="paramname"><em>numVersions</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -516,7 +522,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method. Will be called with appropriate parameters when calling initialization method from derived class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">chipVersion</td><td>Array of possible values in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">numVersions</td><td>Number of possible chip versions. </td></tr>
     <tr><td class="paramname">syncWord</td><td>LoRa sync word. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. </td></tr>
   </table>
@@ -526,8 +533,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a73f2d2fe803e3496026011f0da694cfb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73f2d2fe803e3496026011f0da694cfb">&#9670;&nbsp;</a></span>beginFSK()</h2>
+<a id="af8530e9d858b155eb5acb764a733bcd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8530e9d858b155eb5acb764a733bcd4">&#9670;&nbsp;</a></span>beginFSK()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -535,8 +542,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t SX127x::beginFSK </td>
           <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>chipVersions</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>chipVersion</em>, </td>
+          <td class="paramname"><em>numVersions</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -573,7 +586,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">chipVersion</td><td>Value in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">chipVersion</td><td>Array of possible values in SPI version register. Used to verify the connection and hardware version. </td></tr>
+    <tr><td class="paramname">numVersions</td><td>Number of possible chip versions. </td></tr>
     <tr><td class="paramname">freqDev</td><td>Frequency deviation of the FSK transmission in kHz. </td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of FSK preamble in bits. </td></tr>

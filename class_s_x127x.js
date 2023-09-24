@@ -1,8 +1,8 @@
 var class_s_x127x =
 [
     [ "SX127x", "class_s_x127x.html#ac74c5914ca429a3892c66b9d98e3ea6c", null ],
-    [ "begin", "class_s_x127x.html#a5da8218f69e3bf52df389a0480f8b430", null ],
-    [ "beginFSK", "class_s_x127x.html#a73f2d2fe803e3496026011f0da694cfb", null ],
+    [ "begin", "class_s_x127x.html#aeac64ca102a143624993cb7cb5b9e17c", null ],
+    [ "beginFSK", "class_s_x127x.html#af8530e9d858b155eb5acb764a733bcd4", null ],
     [ "clearChannelScanAction", "class_s_x127x.html#a703bf22070d42871bb2f9b0c4917c093", null ],
     [ "clearDio0Action", "class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823", null ],
     [ "clearDio1Action", "class_s_x127x.html#a9b6532a25e1730973ac08146008adca5", null ],
