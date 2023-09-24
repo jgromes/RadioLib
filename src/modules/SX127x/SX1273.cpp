@@ -7,7 +7,8 @@ SX1273::SX1273(Module* mod) : SX1272(mod) {
 
 int16_t SX1273::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, uint8_t gain) {
   // execute common part
-  int16_t state = SX127x::begin(RADIOLIB_SX1272_CHIP_VERSION, syncWord, preambleLength);
+  uint8_t version = RADIOLIB_SX1272_CHIP_VERSION;
+  int16_t state = SX127x::begin(&version, 1, syncWord, preambleLength);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings

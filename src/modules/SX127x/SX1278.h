@@ -67,7 +67,9 @@
 #define RADIOLIB_SX1278_AGC_AUTO_ON                             0b00000100  //  2     2   LNA gain set by internal AGC loop
 
 // SX127X_REG_VERSION
-#define RADIOLIB_SX1278_CHIP_VERSION                            0x12
+#define RADIOLIB_SX1278_CHIP_VERSION                            0x12  // this is the "official" version listed in datasheet
+#define RADIOLIB_SX1278_CHIP_VERSION_ALT                        0x13  // appears sometimes 
+#define RADIOLIB_SX1278_CHIP_VERSION_RFM9X                      0x11  // this value is used for the RFM9x
 
 // SX1278 FSK modem settings
 // SX127X_REG_PA_RAMP
@@ -298,6 +300,12 @@ class SX1278: public SX127x {
     bool ldroEnabled = false;
 
 };
+
+/*!
+  \class RFM98
+  \brief Only exists as alias for SX1278, since there seems to be no difference between %RFM98 and %SX1278 modules.
+*/
+RADIOLIB_TYPE_ALIAS(SX1278, RFM98);
 
 #endif
 
