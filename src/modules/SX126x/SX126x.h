@@ -870,11 +870,11 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets FSK whitening parameters.
       \param enabled True = Whitening enabled
-      \param initial Initial value used for the whitening LFSR in FSK mode. Defaults to 0x0100,
-      use 0x01FF for SX127x compatibility.
+      \param initial Initial value used for the whitening LFSR in FSK mode.
+      By default set to 0x01FF for compatibility with SX127x and LoRaWAN.
       \returns \ref status_codes
     */
-    int16_t setWhitening(bool enabled, uint16_t initial = 0x0100);
+    int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
@@ -1020,7 +1020,7 @@ class SX126x: public PhysicalLayer {
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
-      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
+      \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
     void setDirectAction(void (*func)(void));
