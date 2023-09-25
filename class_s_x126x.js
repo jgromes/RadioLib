@@ -64,7 +64,7 @@ var class_s_x126x =
     [ "setSyncWord", "class_s_x126x.html#a827a4754ea53388513d263e5d9171395", null ],
     [ "setSyncWord", "class_s_x126x.html#a9d92dce566f8aefa836fe8f332e9560f", null ],
     [ "setTCXO", "class_s_x126x.html#a57bee6f4b3a3b7ec646ac8de347ee0d6", null ],
-    [ "setWhitening", "class_s_x126x.html#a67702de41ae866b9f9d73234fc9ae376", null ],
+    [ "setWhitening", "class_s_x126x.html#ae500bad45638a47264b7e5955a93107d", null ],
     [ "sleep", "class_s_x126x.html#afb5509f0705cdd971065251ed6b2fb4e", null ],
     [ "spectralScanAbort", "class_s_x126x.html#a865397e1cca38bec2d055c047825ea07", null ],
     [ "spectralScanGetResult", "class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2", null ],
