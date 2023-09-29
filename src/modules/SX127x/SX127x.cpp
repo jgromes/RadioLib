@@ -51,10 +51,6 @@ int16_t SX127x::begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWo
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
-  // set preamble polarity
-  state = setPreamblePolarity(RADIOLIB_SX127X_PREAMBLE_POLARITY_55);
-  RADIOLIB_ASSERT(state);
-
   // disable IQ inversion
   state = SX127x::invertIQ(false);
   RADIOLIB_ASSERT(state);
