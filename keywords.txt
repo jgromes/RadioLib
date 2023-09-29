@@ -124,6 +124,7 @@ setSyncWord	KEYWORD2
 setOutputPower	KEYWORD2
 setCurrentLimit	KEYWORD2
 setPreambleLength	KEYWORD2
+invertPreamble	KEYWORD2
 setGain	KEYWORD2
 getFrequencyError	KEYWORD2
 getRSSI	KEYWORD2

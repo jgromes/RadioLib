@@ -879,6 +879,13 @@ class SX127x: public PhysicalLayer {
     int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
+      \brief Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.
+      \param enable Preamble polarity in FSK mode - 0xAA when true, 0x55 when false.
+      \returns \ref status_codes
+    */
+    int16_t invertPreamble(bool enable);
+
+    /*!
       \brief Gets frequency error of the latest received packet.
       \param autoCorrect When set to true, frequency will be automatically corrected.
       \returns Frequency error in Hz.

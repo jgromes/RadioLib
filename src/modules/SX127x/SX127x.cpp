@@ -118,6 +118,10 @@ int16_t SX127x::beginFSK(uint8_t* chipVersions, uint8_t numVersions, float freqD
   state = SX127x::setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
 
+  // set preamble polarity
+  state = invertPreamble(false);
+  RADIOLIB_ASSERT(state);
+
   // set default sync word
   uint8_t syncWord[] = {0x12, 0xAD};
   state = setSyncWord(syncWord, 2);
@@ -782,6 +786,25 @@ int16_t SX127x::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+int16_t SX127x::invertPreamble(bool enable) {
+  // set mode to standby
+  int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
+  RADIOLIB_ASSERT(state);
+
+  // check active modem
+  uint8_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    // set preamble polarity
+    uint8_t polarity = enable ? RADIOLIB_SX127X_PREAMBLE_POLARITY_AA : RADIOLIB_SX127X_PREAMBLE_POLARITY_55;
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, polarity, 5, 5);
+    return(state);
+  }
+
+  return(RADIOLIB_ERR_UNKNOWN);
+}
+
 float SX127x::getFrequencyError(bool autoCorrect) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
@@ -999,6 +1022,13 @@ int16_t SX127x::setSyncWord(uint8_t* syncWord, size_t len) {
   // check active modem
   uint8_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_FSK_OOK) {
+
+    // disable sync word in case len is 0
+    if(len == 0) {
+      int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_SYNC_OFF, 4, 4);
+      return(state);
+    }
+
     RADIOLIB_CHECK_RANGE(len, 1, 8, RADIOLIB_ERR_INVALID_SYNC_WORD);
 
     // sync word must not contain value 0x00
@@ -1426,10 +1456,6 @@ int16_t SX127x::configFSK() {
   // set packet configuration
   state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, RADIOLIB_SX127X_PACKET_VARIABLE | RADIOLIB_SX127X_DC_FREE_NONE | RADIOLIB_SX127X_CRC_ON | RADIOLIB_SX127X_CRC_AUTOCLEAR_ON | RADIOLIB_SX127X_ADDRESS_FILTERING_OFF | RADIOLIB_SX127X_CRC_WHITENING_TYPE_CCITT, 7, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_2, RADIOLIB_SX127X_DATA_MODE_PACKET | RADIOLIB_SX127X_IO_HOME_OFF, 6, 5);
-  RADIOLIB_ASSERT(state);
-
-  // set preamble polarity
-  state =this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, RADIOLIB_SX127X_PREAMBLE_POLARITY_55, 5, 5);
   RADIOLIB_ASSERT(state);
 
   // set FIFO threshold
