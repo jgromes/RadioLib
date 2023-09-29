@@ -119,7 +119,7 @@ int16_t SX127x::beginFSK(uint8_t* chipVersions, uint8_t numVersions, float freqD
   RADIOLIB_ASSERT(state);
 
   // set preamble polarity
-  state = setPreamblePolarity(RADIOLIB_SX127X_PREAMBLE_POLARITY_55);
+  state = invertPreamble(false);
   RADIOLIB_ASSERT(state);
 
   // set default sync word
@@ -786,7 +786,7 @@ int16_t SX127x::setPreambleLength(size_t preambleLength) {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-int16_t SX127x::setPreamblePolarity(int polarity) {
+int16_t SX127x::invertPreamble(bool enable) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
@@ -794,10 +794,11 @@ int16_t SX127x::setPreamblePolarity(int polarity) {
   // check active modem
   uint8_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
-      return(RADIOLIB_ERR_WRONG_MODEM);
+    return(RADIOLIB_ERR_WRONG_MODEM);
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // set preamble polarity
-    state =this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, polarity, 5, 5);
+    uint8_t polarity = enable ? RADIOLIB_SX127X_PREAMBLE_POLARITY_AA : RADIOLIB_SX127X_PREAMBLE_POLARITY_55;
+    state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYNC_CONFIG, polarity, 5, 5);
     return(state);
   }
 

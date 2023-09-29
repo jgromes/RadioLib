@@ -879,11 +879,11 @@ class SX127x: public PhysicalLayer {
     int16_t setPreambleLength(size_t preambleLength) override;
 
     /*!
-      \brief Sets FSK preamble polarity. Allowed values are RADIOLIB_SX127X_PREAMBLE_POLARITY_55 or RADIOLIB_SX127X_PREAMBLE_POLARITY_AA. Not allowed in LoRa mode.
-      \param polarity Preamble polarity bit in FSK mode).
+      \brief Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.
+      \param enable Preamble polarity in FSK mode - 0xAA when true, 0x55 when false.
       \returns \ref status_codes
     */
-    int16_t setPreamblePolarity(int polarity);
+    int16_t invertPreamble(bool enable);
 
     /*!
       \brief Gets frequency error of the latest received packet.
