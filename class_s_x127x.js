@@ -34,6 +34,7 @@ var class_s_x127x =
     [ "getTempRaw", "class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1", null ],
     [ "getTimeOnAir", "class_s_x127x.html#aca2e782dc6ed44fa77d4d14775d9a4a3", null ],
     [ "invertIQ", "class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9", null ],
+    [ "invertPreamble", "class_s_x127x.html#a5b79dae55315cdf25e530db77eeb140f", null ],
     [ "packetMode", "class_s_x127x.html#a0995088d37689a3c240a1af791df6cf1", null ],
     [ "randomByte", "class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450", null ],
     [ "readBit", "class_s_x127x.html#a1a2dc7554414f0ce2ee0db23087f698a", null ],
