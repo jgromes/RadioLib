@@ -1,5 +1,5 @@
 #include "LoRaWAN.h"
-
+#include "LoRaWANBands.cpp"
 #include <string.h>
 
 #if !defined(RADIOLIB_EXCLUDE_LORAWAN)
@@ -36,7 +36,7 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->FSK = false;
   this->startChannel = -1;
   this->numChannels = -1;
-  this->backupFreq = this->band->backupChannel.freqStart;
+  this->rx2 = this->band->rx2;
 }
 
 void LoRaWANNode::wipe() {
@@ -44,45 +44,86 @@ void LoRaWANNode::wipe() {
   mod->hal->wipePersistentStorage();
 }
 
-int16_t LoRaWANNode::begin() {
-  int16_t state = this->setPhyProperties();
-  RADIOLIB_ASSERT(state);
-
+int16_t LoRaWANNode::restore() {
   // check the magic value
   Module* mod = this->phyLayer->getMod();
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) != RADIOLIB_LORAWAN_MAGIC) {
+  if(mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) != RADIOLIB_LORAWAN_MAGIC) {
     // the magic value is not set, user will have to do perform the join procedure
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
-  // pull all needed information from persistent storage
+  uint16_t nvm_table_version = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION_ID);
+  // if (RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION > nvm_table_version) {
+  //  // set default values for variables that are new or something
+  // }
+  (void)nvm_table_version;
+
+  // pull all authentication keys from persistent storage
   this->devAddr = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID);
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
+
+  this->rev = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION);
+  RADIOLIB_DEBUG_PRINTLN("LoRaWAN session: v1.%d", this->rev);
+  uint8_t txDrRx2Dr = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID);
+  uint8_t txPwrCurMax = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_MAX_ID);
+  uint8_t rx1DrOffDel = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID);
+  uint8_t rx2FreqBuf[3];
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX2FREQ_ID), rx2FreqBuf, 3);
+  uint32_t rx2Freq = LoRaWANNode::ntoh<uint32_t>(&rx2FreqBuf[0], 3);
+  uint8_t adrLimDel = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID);
+  this->nbTrans = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_NBTRANS_ID);
+
+  this->rx2.drMax = (txDrRx2Dr & 0x0F) >> 0;
+  this->rx1DrOffset = (rx1DrOffDel & 0xF0) >> 4;
+  this->rxDelays[0] = ((rx1DrOffDel & 0x0F) >> 0) * 1000;
+  if(this->rxDelays[0] == 0) {
+    this->rxDelays[0] = RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS;
+  }
+  this->rxDelays[1] = this->rxDelays[0] + 1000;
+  this->rx2.freq = (float)rx2Freq / 10000.0;
+  this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = (txDrRx2Dr & 0xF0) >> 4;
+  this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] + this->band->rx1DataRateBase + this->rx1DrOffset;
+
+  uint8_t queueBuff[sizeof(LoRaWANMacCommandQueue_t)] = { 0 };
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FOPTS_ID), queueBuff, sizeof(LoRaWANMacCommandQueue_t));
+  memcpy(&this->commandsUp, queueBuff, sizeof(LoRaWANMacCommandQueue_t));
+  RADIOLIB_DEBUG_PRINTLN("Number of MAC commands: %d", this->commandsUp.numCommands);
+  
+  int16_t state = this->restoreChannels();
+  RADIOLIB_ASSERT(state);
+
+  state = this->setPhyProperties();
+  RADIOLIB_ASSERT(state);
+
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, bool force) {
   // check if we actually need to send the join request
   Module* mod = this->phyLayer->getMod();
-  if(!force && (mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) == RADIOLIB_LORAWAN_MAGIC)) {
+  if(!force && (mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) == RADIOLIB_LORAWAN_MAGIC)) {
     // the device has joined already, we can just pull the data from persistent storage
-    return(this->begin());
+    return(this->restore());
   }
 
   // set the physical layer configuration
   int16_t state = this->setPhyProperties();
   RADIOLIB_ASSERT(state);
 
-  // setup uplink/downlink frequencies and datarates
-  state = this->setupChannels();
-  RADIOLIB_ASSERT(state);
-
   // get dev nonce from persistent storage and increment it
   uint16_t devNonce = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID);
   mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_NONCE_ID, devNonce + 1);
+
+  // setup uplink/downlink frequencies and datarates
+  state = this->selectChannelsJR(devNonce);
+  RADIOLIB_ASSERT(state);
+
+  // configure for uplink with default configuration
+  state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
+  RADIOLIB_ASSERT(state);
 
   // build the join-request message
   uint8_t joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_LEN];
@@ -118,7 +159,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   // start receiving
   uint32_t start = mod->hal->millis();
   downlinkReceived = false;
-  state = this->phyLayer->startReceive();
+  state = this->phyLayer->startReceive(0x00, 0b0000001001100010, 0b0000000000000010, 0);
   RADIOLIB_ASSERT(state);
 
   // wait for the reply or timeout
@@ -175,9 +216,25 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   RADIOLIB_DEBUG_PRINTLN("joinAcceptMsg:");
   RADIOLIB_DEBUG_HEXDUMP(joinAcceptMsg, lenRx);
 
+  // get current JoinNonce from downlink and previous JoinNonce from NVM
+  uint32_t joinNonce = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
+  uint32_t joinNoncePrev = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_JOIN_NONCE_ID);
+  RADIOLIB_DEBUG_PRINTLN("JoinNoncePrev: %d, JoinNonce: %d", joinNoncePrev, joinNonce);
+  
+  // JoinNonce received must be greater than the last JoinNonce heard, else error
+  if((joinNoncePrev > 0) && (joinNonce <= joinNoncePrev)) {
+    return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
+  }
+
   // check LoRaWAN revision (the MIC verification depends on this)
   uint8_t dlSettings = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DL_SETTINGS_POS];
-  if(dlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) {
+  this->rev = (dlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) >> 7;
+  RADIOLIB_DEBUG_PRINTLN("LoRaWAN revision: 1.%d", this->rev);
+  this->rx1DrOffset = (dlSettings & 0x70) >> 4;
+  this->rx2.drMax = dlSettings & 0x0F;
+
+  // verify MIC
+  if(this->rev == 1) {
     // 1.1 version, first we need to derive the join accept integrity key
     uint8_t keyDerivationBuff[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_JS_INT_KEY;
@@ -203,11 +260,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     }
 
   }
-
-  // parse the contents
-  uint32_t joinNonce = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
+  
+  // parse other contents
   uint32_t homeNetId = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], 3);
   this->devAddr = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS]);
+
+  // parse Rx1 delay (and subsequently Rx2)
   this->rxDelays[0] = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_RX_DELAY_POS]*1000;
   if(this->rxDelays[0] == 0) {
     this->rxDelays[0] = RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS;
@@ -216,57 +274,20 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
   // process CFlist if present
   if(lenRx == RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN) {
-    if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES) {
-      // list of frequencies
-      for(uint8_t i = 0; i < 5; i++) {
-        uint32_t freq = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_POS + 3*i], 3);
-        availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i] = (float)freq/10000.0;
-        availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i] = availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i];
-        RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", i, availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i]);
-      }
-
-    } else {
-      // frequency mask, we need to find out which frequencies are actually being used
-      uint8_t channelId = 0;
-      uint8_t chSpan = 0;
-      uint8_t chNum = 0;
-      for(uint8_t i = 0; i < 5; i++) {
-        uint16_t mask = LoRaWANNode::ntoh<uint16_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_POS + 2*i]);
-        RADIOLIB_DEBUG_PRINTLN("mask[%d] = 0x%04x", i, mask);
-        for(uint8_t j = 0; j < 16; j++) {
-          if(chNum >= this->band->defaultChannels[chSpan].numChannels) {
-            chNum -= this->band->defaultChannels[chSpan].numChannels;
-            chSpan++;
-
-            if(chSpan >= this->band->numChannelSpans) {
-              RADIOLIB_DEBUG_PRINTLN("channel bitmask overrun!");
-              return(RADIOLIB_ERR_UNKNOWN);
-            }
-          }
-
-          if(mask & (1UL << j)) {
-            RADIOLIB_DEBUG_PRINTLN("chNum = %d, chSpan = %d", chNum, chSpan);
-            uint8_t dir = this->band->defaultChannels[chSpan].direction;
-            float freq = this->band->defaultChannels[chSpan].freqStart + chNum*this->band->defaultChannels[chSpan].freqStep;
-            availableChannelsFreq[dir][channelId] = freq;
-            RADIOLIB_DEBUG_PRINTLN("Channel %cL %d frequency = %f MHz", dir ? 'U': 'D', channelId, availableChannelsFreq[dir][channelId]);
-            channelId++;
-          }
-
-          chNum++;
-        }
-      }
-
-    }
-  
+    uint8_t cfList[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN] = { 0 };
+    memcpy(&cfList[0], &joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_POS], RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN);
+    this->setupChannels(cfList);
+  } else {
+    this->setupChannels(nullptr);
   }
+  this->saveChannels();
 
   // prepare buffer for key derivation
   uint8_t keyDerivationBuff[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
   LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], joinNonce, 3);
 
   // check protocol version (1.0 vs 1.1)
-  if(dlSettings & RADIOLIB_LORAWAN_JOIN_ACCEPT_R_1_1) {
+  if(this->rev == 1) {
     // 1.1 version, derive the keys
     LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_EUI_POS], joinEUI);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_NONCE_POS], devNonce);
@@ -288,19 +309,17 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
 
     // enqueue the RekeyInd MAC command to be sent in the next uplink
-    this->rev = 1;
     LoRaWANMacCommand_t cmd = {
       .cid = RADIOLIB_LORAWAN_MAC_CMD_REKEY,
       .len = sizeof(uint8_t),
       .payload = { this->rev },
-      .repeat = RADIOLIB_LORAWAN_ADR_ACK_LIMIT,
+      .repeat = 0x01 << RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP,
     };
     state = pushMacCommand(&cmd, &this->commandsUp);
     RADIOLIB_ASSERT(state);
   
   } else {
     // 1.0 version, just derive the keys
-    this->rev = 0;
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], homeNetId, 3);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], devNonce);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
@@ -315,23 +334,56 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     memcpy(this->nwkSEncKey, this->fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
   
   }
+  
+  // store session configuration
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION, this->rev);
+  uint8_t txDrRx2Dr = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4) | this->rx2.drMax;
+  uint8_t txPwrCurMax;
+  uint8_t rx1DrOffDel = (this->rx1DrOffset << 4) | (this->rxDelays[0] / 1000);
+  uint32_t rx2Freq = uint32_t(this->rx2.freq * 10000);
+  uint8_t rx2FreqBuf[3];
+  LoRaWANNode::hton<uint32_t>(&rx2FreqBuf[0], rx2Freq, 3);
+  uint8_t adrLimDel = (RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP << 4) | (RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP << 0);
+  uint8_t nbTrans = (0x01 << 0);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID, txDrRx2Dr);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_MAX_ID, txPwrCurMax);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID, rx1DrOffDel);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX2FREQ_ID), rx2FreqBuf, 3);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID, adrLimDel);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_NBTRANS_ID, nbTrans);
 
-  // save the device address
+  // save the device address & keys
   mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID, this->devAddr);
-
-  // update the keys
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
 
-  // all complete, reset device counters and set the magic number
+  // save uplink parameters
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_HOME_NET_ID, homeNetId);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_JOIN_NONCE_ID, joinNonce);
+
+  // all complete, reset all frame counters and set the magic number
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_A_FCNT_DOWN_ID, 0);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_N_FCNT_DOWN_ID, 0);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_CONF_FCNT_UP_ID, 0);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_CONF_FCNT_DOWN_ID, 0);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_FCNT_ID, 0);
   mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID, 0);
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID, RADIOLIB_LORAWAN_MAGIC);
+  mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID, RADIOLIB_LORAWAN_MAGIC);
+
+  // everything written to NVM, write current table version to NVM
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION_ID, RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION);
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey) {
+int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force) {
+  // check if we actually need to restart from a clean session
+  Module* mod = this->phyLayer->getMod();
+  if(!force && (mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) == RADIOLIB_LORAWAN_MAGIC)) {
+    // the device has joined already, we can just pull the data from persistent storage
+    return(this->restore());
+  }
   this->devAddr = addr;
   memcpy(this->appSKey, appSKey, RADIOLIB_AES128_KEY_SIZE);
   memcpy(this->nwkSEncKey, nwkSKey, RADIOLIB_AES128_KEY_SIZE);
@@ -350,8 +402,13 @@ int16_t LoRaWANNode::beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   RADIOLIB_ASSERT(state);
 
   // setup uplink/downlink frequencies and datarates
-  state = this->setupChannels();
-  return(state);
+  state = this->setupChannels(nullptr);
+  RADIOLIB_ASSERT(state);
+
+  // everything written to NVM, write current version to NVM
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION_ID, RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION);
+
+  return(RADIOLIB_ERR_NONE);
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
@@ -365,30 +422,64 @@ int16_t LoRaWANNode::uplink(const char* str, uint8_t port) {
 }
 
 int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
+  bool adrEn = true;
   // check destination port
   if(port > 0xDF) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
+  // port 0 is only allowed for MAC-only payloads
+  if(port == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
+    if (!isMACPayload) {
+      return(RADIOLIB_ERR_INVALID_PORT);
+    }
+    // if this is MAC only payload, continue and reset for next uplink
+    isMACPayload = false;
+  }
+  
+  Module* mod = this->phyLayer->getMod();
 
-  // check if there are some MAC commands to piggyback
-  size_t foptsLen = 0;
-  if(this->commandsUp.numCommands > 0) {
+  // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
+  uint8_t foptsLen = 0;
+  size_t foptsBufSize = 0;
+  if(this->commandsUp.numCommands > 0 && port != RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
     // there are, assume the maximum possible FOpts len for buffer allocation
-    foptsLen = 15;
+    foptsLen = this->commandsUp.len;
+    foptsBufSize = 15;
   }
 
   // check maximum payload len as defined in phy
-  if(len > this->band->payloadLenMax[this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]]) {
+  if(len > this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]]) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
+  // get frame counter from persistent storage
+  uint32_t fcnt = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID) + 1;
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID, fcnt);
+  uint32_t adrFcnt = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_FCNT_ID);
+  uint8_t adrParams = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID);
+  uint32_t adrLimit = 0x01 << ((adrParams & 0xF0) >> 4);
+  uint32_t adrDelay = 0x01 << ((adrParams & 0x0F) >> 0);
+  bool adrAckReq = false;
+  if((fcnt - adrFcnt) == adrLimit) {
+    adrAckReq = true;
+    // add MAC command to queue
+  } else if ((fcnt - adrFcnt) == (adrLimit + adrDelay)) {
+    // set TX power to max
+
+    // decrease DR if possible
+    if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].drMin) {
+      this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]--;
+    } else {
+      // enable all channels
+    }
+  }
+
   // configure for uplink
-  // TODO select randomly from available channels
+  this->selectChannels();
   int16_t state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
 
   // check if sufficient time has elapsed since the last uplink
-  Module* mod = this->phyLayer->getMod();
   if(mod->hal->millis() - this->rxDelayStart < rxDelays[1]) {
     // not enough time elapsed since the last uplink, we may still be in an RX window
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
@@ -396,7 +487,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
 
   // build the uplink message
   // the first 16 bytes are reserved for MIC calculation blocks
-  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen);
+  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsBufSize);
   #if defined(RADIOLIB_STATIC_ONLY)
   uint8_t uplinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -407,31 +498,48 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] = RADIOLIB_LORAWAN_MHDR_MTYPE_UNCONF_DATA_UP | RADIOLIB_LORAWAN_MHDR_MAJOR_R1;
   LoRaWANNode::hton<uint32_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS], this->devAddr);
 
-  // TODO implement adaptive data rate
   // length of fopts will be added later
   uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] = 0x00;
+  if(adrEn) {
+    uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ENABLED;
+    if(adrAckReq) {
+      uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ACK_REQ;
+    }
+  }
 
-  // get frame counter from persistent storage
-  uint32_t fcnt = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID) + 1;
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID, fcnt);
   LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS], (uint16_t)fcnt);
 
-  // check if we have some MAC command to append
-  // TODO implement appending multiple MAC commands
-  LoRaWANMacCommand_t cmd = { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, };
-  if(popMacCommand(&cmd, &this->commandsUp) == RADIOLIB_ERR_NONE) {
-    // we do, add it to fopts
-    uint8_t foptsBuff[RADIOLIB_AES128_BLOCK_SIZE];
-    foptsBuff[0] = cmd.cid;
-    for(size_t i = 1; i < cmd.len; i++) {
-      foptsBuff[i] = cmd.payload[i];
+  // check if we have some MAC commands to append
+  if(foptsLen > 0) {
+    uint8_t foptsNum = this->commandsUp.numCommands;
+    uint8_t foptsBuff[foptsBufSize];
+    size_t idx = 0;
+    for (size_t i = 0; i < foptsNum; i++) {
+      LoRaWANMacCommand_t cmd = { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, };
+      popMacCommand(&cmd, &this->commandsUp, i);
+      if (cmd.cid == 0) {
+        break;
+      }
+      foptsBuff[idx] = cmd.cid;
+      for(size_t i = 0; i < cmd.len; i++) {
+        foptsBuff[idx + 1 + i] = cmd.payload[i];
+      }
+      idx += cmd.len + 1;
     }
-    foptsLen = 1 + cmd.len;
+
+    RADIOLIB_DEBUG_PRINTLN("Uplink MAC payload (%d commands):", foptsNum);
+    RADIOLIB_DEBUG_HEXDUMP(foptsBuff, foptsBufSize);
+
     uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen);
     uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= foptsLen;
 
     // encrypt it
     processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x01, true);
+    
+    // write the current MAC command queue to nvm for next uplink
+    uint8_t queueBuff[sizeof(LoRaWANMacCommandQueue_t)];
+    memcpy(queueBuff, &this->commandsUp, sizeof(LoRaWANMacCommandQueue_t));
+    mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FOPTS_ID), queueBuff, sizeof(LoRaWANMacCommandQueue_t));
   }
 
   // set the port
@@ -444,6 +552,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   }
 
   // encrypt the frame payload
+  // TODO check ctrId --> erratum says it should be 0x01?
   processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(foptsLen)], fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x00, true);
 
   // create blocks for MIC calculation
@@ -457,8 +566,8 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   uint8_t block1[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
   memcpy(block1, block0, RADIOLIB_AES128_BLOCK_SIZE);
   // TODO implement confirmed frames 
-  block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
-  block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
+  block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
+  block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].idx;
   
   RADIOLIB_DEBUG_PRINTLN("uplinkMsg pre-MIC:");
   RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
@@ -520,7 +629,7 @@ int16_t LoRaWANNode::downlink(String& str) {
 int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   // check if there are any upcoming Rx windows
   Module* mod = this->phyLayer->getMod();
-  const uint32_t scanGuard = 500;
+  const uint32_t scanGuard = 10;
   if(mod->hal->millis() - this->rxDelayStart > (this->rxDelays[1] + scanGuard)) {
     // time since last Tx is greater than RX2 delay + some guard period
     // we have nothing to downlink
@@ -555,7 +664,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     if(waitLen > scanGuard) {
       waitLen -= scanGuard;
     }
+    RADIOLIB_DEBUG_PRINTLN("Waiting for %d ms...", waitLen);
     mod->hal->delay(waitLen);
+    RADIOLIB_DEBUG_PRINTLN("Opening Rx%d window...", (i+1));
 
     // wait until we get a preamble
     uint32_t scanStart = mod->hal->millis();
@@ -579,6 +690,15 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
       state = this->phyLayer->getChannelScanResult();
       if((state == RADIOLIB_PREAMBLE_DETECTED) || (state == RADIOLIB_LORA_DETECTED)) {
         packetDetected = true;
+        
+        // channel scan is finished, swap the actions
+        this->phyLayer->clearChannelScanAction();
+        this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlink);
+
+        // start receiving
+        state = this->phyLayer->startReceive(0x00, 0b0000001001100010, 0b0000000000000010, 0);   // RxSingle
+        RADIOLIB_ASSERT(state);
+
         break;
       }
     
@@ -586,18 +706,18 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
     // check if we have a packet
     if(packetDetected) {
+      RADIOLIB_DEBUG_PRINTLN("Detected a packet...");
       break;
 
     } else if(i == 0) {
       // nothing in the first window, configure for the second
-      state = this->phyLayer->setFrequency(this->backupFreq);
+      state = this->phyLayer->setFrequency(this->rx2.freq);
       RADIOLIB_ASSERT(state);
 
       DataRate_t dataRate;
-      findDataRate(RADIOLIB_LORAWAN_DATA_RATE_UNUSED, &dataRate, &this->band->backupChannel);
+      findDataRate(this->rx2.drMax, &dataRate);
       state = this->phyLayer->setDataRate(dataRate);
       RADIOLIB_ASSERT(state);
-    
     }
     
   }
@@ -609,33 +729,23 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
       this->phyLayer->invertIQ(false);
     }
 
-    // restore the original uplink channel
-    this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
-
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
-
-  // channel scan is finished, swap the actions
-  this->phyLayer->clearChannelScanAction();
-  downlinkReceived = false;
-  this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlink);
-
-  // start receiving
-  state = this->phyLayer->startReceive();
-  RADIOLIB_ASSERT(state);
 
   // wait for reception with some timeout
   uint32_t rxStart = mod->hal->millis();
   while(!downlinkReceived) {
     mod->hal->yield();
-    // let's hope 30 seconds is long enough timeout
-    if(mod->hal->millis() - rxStart >= 30000) {
+    // 3 seconds is maximum airtime
+    if(mod->hal->millis() - rxStart >= 3000) {
       // timed out
+      RADIOLIB_DEBUG_PRINTLN("Packet length: %d", this->phyLayer->getPacketLength());
       this->phyLayer->standby();
       if(!this->FSK) {
         this->phyLayer->invertIQ(false);
       }
-      return(RADIOLIB_ERR_RX_TIMEOUT);
+      // return(RADIOLIB_ERR_RX_TIMEOUT);
+      break;
     }
   }
 
@@ -681,15 +791,6 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   if(state == RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     state = RADIOLIB_ERR_NONE;
   }
-
-  // get the frame counter and set it to the MIC calculation block
-  // TODO this will not handle overflow into 32-bits!
-  // TODO cache the ADR bit?
-  uint16_t fcnt = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS]);
-  LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], fcnt);
-
-  RADIOLIB_DEBUG_PRINTLN("downlinkMsg:");
-  RADIOLIB_DEBUG_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
   
   if(state != RADIOLIB_ERR_NONE) {
     #if !defined(RADIOLIB_STATIC_ONLY)
@@ -698,6 +799,58 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     return(state);
   }
 
+  // get the frame counter and set it to the MIC calculation block
+  // TODO cache the ADR bit?
+  uint16_t fcnt16 = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS]);
+  LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], fcnt16);
+  uint32_t fcnt32 = fcnt16;   // calculate possible rollover once decided if this is network downlink or application downlink
+  
+  RADIOLIB_DEBUG_PRINTLN("downlinkMsg:");
+  RADIOLIB_DEBUG_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
+
+  // calculate length of FOpts and payload
+  uint8_t foptsLen = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK;
+  int payLen = downlinkMsgLen - 8 - foptsLen - sizeof(uint32_t);
+
+  bool isAppDownlink = true;
+  if (payLen <= 0 && this->rev == 1) {  // no payload => MAC commands only => Network frame (LoRaWAN v1.1 only)
+    isAppDownlink = false;
+  }
+
+  // check the FcntDown value (Network or Application)
+  uint32_t fcntDownPrev = 0;
+  if (isAppDownlink) {
+    fcntDownPrev = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_A_FCNT_DOWN_ID);
+  } else {
+    fcntDownPrev = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_N_FCNT_DOWN_ID);
+  }
+
+  // if this is not the first downlink...
+  // assume a 16-bit to 32-bit rollover if difference between counters in LSB is smaller than MAX_FCNT_GAP
+  // if that isn't the case and the received fcnt is smaller or equal to the last heard fcnt, then error
+  if(fcntDownPrev > 0) {
+    if((fcnt16 <= fcntDownPrev) && ((0xFFFF - (uint16_t)fcntDownPrev + fcnt16) > RADIOLIB_LORAWAN_MAX_FCNT_GAP)) {
+      #if !defined(RADIOLIB_STATIC_ONLY)
+        delete[] downlinkMsg;
+      #endif
+      if (isAppDownlink) {
+        return(RADIOLIB_ERR_A_FCNT_DOWN_INVALID);
+      } else {
+        return(RADIOLIB_ERR_N_FCNT_DOWN_INVALID);
+      }
+    } else if (fcnt16 <= fcntDownPrev) {
+      uint16_t msb = (fcntDownPrev >> 16) + 1; // assume a rollover
+      fcnt32 |= (msb << 16);                    // add back the MSB part
+    }
+  }
+  
+  // save current fcnt to NVM
+  if (isAppDownlink) {
+    mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_A_FCNT_DOWN_ID, fcnt32);
+  } else {
+    mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_N_FCNT_DOWN_ID, fcnt32);
+  }
+  
   // check the MIC
   if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, this->sNwkSIntKey)) {
     #if !defined(RADIOLIB_STATIC_ONLY)
@@ -716,15 +869,14 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
-  // check fopts len
-  uint8_t foptsLen = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK;
+  // process FOpts (if there are any)
   if(foptsLen > 0) {
     // there are some Fopts, decrypt them
     uint8_t fopts[RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK];
 
-    // according to the specification, the last two arguments should be 0x00 and false,
-    // but that will fail even for LoRaWAN 1.1.0 server
-    processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x01, true);
+    // TODO it COULD be the case that the assumed rollover is incorrect, if possible figure out a way to catch this and retry with just fcnt16
+    uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
+    processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fcnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, ctrId, true);
 
     RADIOLIB_DEBUG_PRINTLN("fopts:");
     RADIOLIB_DEBUG_HEXDUMP(fopts, foptsLen);
@@ -749,29 +901,65 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
       remLen -= processedLen;
       foptsPtr += processedLen;
     }
+
+    // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
+    if(this->commandsUp.len > 15) {
+      uint8_t foptsNum = this->commandsUp.numCommands;
+      size_t foptsBufSize = this->commandsUp.len;
+      uint8_t foptsBuff[foptsBufSize];
+      size_t idx = 0;
+      for(size_t i = 0; i < foptsNum; i++) {
+        LoRaWANMacCommand_t cmd = { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, };
+        popMacCommand(&cmd, &this->commandsUp, i);
+        if(cmd.cid == 0) {
+          break;
+        }
+        foptsBuff[idx] = cmd.cid;
+        for(size_t i = 1; i < cmd.len; i++) {
+          foptsBuff[idx + i] = cmd.payload[i];
+        }
+        idx += cmd.len + 1;
+      }
+      RADIOLIB_DEBUG_PRINTLN("Uplink MAC payload (%d commands):", foptsNum);
+      RADIOLIB_DEBUG_HEXDUMP(foptsBuff, foptsBufSize);
+
+      isMACPayload = true;
+      this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
+    }
+
+    // write the MAC command queue to nvm for next uplink
+    uint8_t queueBuff[sizeof(LoRaWANMacCommandQueue_t)];
+    memcpy(queueBuff, &this->commandsUp, sizeof(LoRaWANMacCommandQueue_t));
+    mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FOPTS_ID), queueBuff, sizeof(LoRaWANMacCommandQueue_t));
   }
 
-  // fopts are processed or not present, check if there is payload
-  int payLen = downlinkMsgLen - 8 - foptsLen - sizeof(uint32_t);
+  // a downlink was received, so reset the ADR counter to this uplink's fcnt
+  uint32_t fcntUp = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_FCNT_ID, fcntUp);
+
+  // process payload (if there is any)
   if(payLen <= 0) {
     // no payload
     *len = 0;
     #if !defined(RADIOLIB_STATIC_ONLY)
       delete[] downlinkMsg;
     #endif
+
     return(RADIOLIB_ERR_NONE);
   }
 
   // there is payload, and so there should be a port too
   // TODO pass the port?
   *len = payLen - 1;
-  processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], downlinkMsgLen, this->appSKey, data, fcnt, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x00, true);
+  // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fcnt16
+  // TODO does the erratum hold here as well?
+  processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], downlinkMsgLen, this->appSKey, data, fcnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x00, true);
   
   #if !defined(RADIOLIB_STATIC_ONLY)
     delete[] downlinkMsg;
   #endif
 
-  return(state);
+  return(RADIOLIB_ERR_NONE);
 }
 
 void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
@@ -810,20 +998,20 @@ bool LoRaWANNode::verifyMIC(uint8_t* msg, size_t len, uint8_t* key) {
 int16_t LoRaWANNode::setPhyProperties() {
   // set the physical layer configuration
   int16_t state = RADIOLIB_ERR_NONE;
-  if(this->FSK) {
-    // for FSK, configure the channel
-    state = this->phyLayer->setFrequency(this->band->fskFreq);
-    RADIOLIB_ASSERT(state);
-    DataRate_t dr;
-    dr.fsk.bitRate = 50;
-    dr.fsk.freqDev = 25;
-    state = this->phyLayer->setDataRate(dr);
-    RADIOLIB_ASSERT(state);
-    state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
-    RADIOLIB_ASSERT(state);
-    state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
-  }
-  RADIOLIB_ASSERT(state);
+  // if(this->FSK) {
+  //   // for FSK, configure the channel
+  //   state = this->phyLayer->setFrequency(this->band->fskFreq);
+  //   RADIOLIB_ASSERT(state);
+  //   DataRate_t dr;
+  //   dr.fsk.bitRate = 50;
+  //   dr.fsk.freqDev = 25;
+  //   state = this->phyLayer->setDataRate(dr);
+  //   RADIOLIB_ASSERT(state);
+  //   state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
+  //   RADIOLIB_ASSERT(state);
+  //   state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
+  // }
+  // RADIOLIB_ASSERT(state);
   
   // set the maximum power supported by both the module and the band
   int8_t pwr = this->band->powerMax;
@@ -858,67 +1046,167 @@ int16_t LoRaWANNode::setPhyProperties() {
   return(state);
 }
 
-int16_t LoRaWANNode::setupChannels() {
-  // find appropriate channel IDs for uplink and downlink, the uplink channel is random
-  int8_t chMin = -1;
-  int8_t chMax = -1;
-  if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_MASK) {
-    chMin = this->startChannel;
-    chMax = this->startChannel + this->numChannels;
-  }
-  int16_t state = this->findChannelId(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK,
-                              &this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK],
-                              &this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], chMin, chMax);
-  RADIOLIB_ASSERT(state);
-
-  // RX1 channel is not random, but determined by uplink channel
+int16_t LoRaWANNode::setupChannels(uint8_t* cfList) {
+  uint8_t num = 0;
+  LoRaWANChannel_t chnl;
+  
+  // in case of frequency list-type band, copy the default TX channels into the available channels, with RX1 = TX
   if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES) {
-    // for frequency-list type bands, it's just the previous uplink channel
-    this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
-    this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
-    
-  } else {
-    // for mask type bands, it's the uplink mod num_downlink_channels
-    for(uint8_t i = 0; i < this->band->numChannelSpans; i++) {
-      const LoRaWANChannelSpan_t* span = &this->band->defaultChannels[i];
-      if(span->direction == RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK) {
-        this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] % span->numChannels;
-        this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = span->joinRequestDataRate;
-        break;
+    for(uint8_t i = 0; i < 3; i++) {
+      chnl = this->band->txFreqs[i];
+      if(chnl.enabled) {
+        availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = chnl;
+        availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][num] = chnl;
+        RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", num, availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
+        num++;
+      }
+    }
+    // if(cfList != nullptr) {
+    //   for(uint8_t i = 0; i < 5; i++) {
+    //     chnl.enabled = true;
+    //     chnl.idx = num;
+    //     uint32_t freq = LoRaWANNode::ntoh<uint32_t>(&cfList[3*i], 3);
+    //     chnl.freq = (float)freq/10000.0;
+    //     chnl.drMin = this->band->txFreqs[0].drMin;  // drMin is equal for all channels
+    //     chnl.drMax = this->band->txFreqs[0].drMax;  // drMax is equal for all channels
+    //     availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = chnl;
+    //     availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][num] = chnl;
+    //     RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", num, availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
+    //     num++;
+    //   }
+    // }
+  } else {                  // RADIOLIB_LORAWAN_CFLIST_TYPE_MASK
+    uint8_t chSpan = 0;
+    uint8_t chNum = 0;
+    // in case of mask-type bands, copy those frequencies that are masked true into the available TX channels
+    for(uint8_t i = 0; i < 5; i++) {
+      uint16_t mask = LoRaWANNode::ntoh<uint16_t>(&cfList[2*i]);
+      RADIOLIB_DEBUG_PRINTLN("mask[%d] = 0x%04x", i, mask);
+      for(uint8_t j = 0; j < 16; j++) {
+        // if we must roll over to next span, reset chNum and move to next channel span
+        if(chNum >= this->band->txSpans[chSpan].numChannels) {
+          chNum = 0;
+          chSpan++;
+        }
+
+        if(mask & (1UL << j)) {
+          if(chSpan >= this->band->numTxSpans || chNum >= this->band->txSpans[chSpan].numChannels) {
+            RADIOLIB_DEBUG_PRINTLN("channel bitmask overrun!");
+            return(RADIOLIB_ERR_UNKNOWN);
+          }
+          chnl.enabled = true;
+          chnl.idx   = i*16 + j;
+          chnl.freq  = this->band->txSpans[chSpan].freqStart + chNum*this->band->txSpans[chSpan].freqStep;
+          chnl.drMin = this->band->txSpans[chSpan].drMin;
+          chnl.drMax = this->band->txSpans[chSpan].drMax;
+          availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = chnl;
+          RADIOLIB_DEBUG_PRINTLN("Channel UL %d frequency = %f MHz", num, availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
+          num++;
+        }
+        chNum++;
       }
     }
   }
-
-  // based on the channel IDs, find the frequencies
-  state = this->findChannelFreq(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK,
-                                this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], 
-                                &this->channelFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]);
-  RADIOLIB_ASSERT(state);
-  state = this->findChannelFreq(RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK,
-                                this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK], 
-                                &this->channelFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]);
-  RADIOLIB_ASSERT(state);
-
-  // configure channel for uplink
-  state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
-  return(state);
+  return(RADIOLIB_ERR_NONE);
 }
 
-uint8_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate, const LoRaWANChannelSpan_t* span) {
-  uint8_t dataRateBand = 0;
-  uint8_t dataRateFound = 0;
-  if(dr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-    for(uint8_t i = 0; i < RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES; i++) {
-      if(span->dataRates[i] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-        dataRateBand = span->dataRates[i];
-        dataRateFound = i;
-        break;
+int16_t LoRaWANNode::selectChannelsJR(uint16_t devNonce) {
+  LoRaWANChannel_t channelUp;
+  LoRaWANChannel_t channelDn;
+  if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES) {
+    // count the number of available channels for a join-request
+    uint8_t numJRChannels = 0;
+    for(uint8_t i = 0; i < 3; i++) {
+      if(this->band->txFreqs[i].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
+        numJRChannels++;
+      }
+      if(this->band->txJoinReq[i].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
+        numJRChannels++;
       }
     }
-  } else {
-    dataRateBand = span->dataRates[dr];
-    dataRateFound = dr;
+    uint8_t channelId = devNonce % numJRChannels;                 // cycle through channels (seed with devNonce)
+    if(channelId < 3) {
+      channelUp = this->band->txFreqs[channelId];
+    } else {
+      channelUp = this->band->txJoinReq[channelId - 3];
+    }
+    channelDn = channelUp;                                        // RX1 is equal to TX
+
+    // configure data rates for TX and RX1: for TX the (floored) average of min and max; for RX1 identical with base offset
+    this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = int((channelUp.drMax + channelUp.drMin) / 2);
+    // TODO check bounds
+    this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = getDownlinkDataRate(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], 
+                                                                                 this->rx1DrOffset, this->band->rx1DataRateBase, channelDn.drMin, channelDn.drMax);
+  } else {                  // RADIOLIB_LORAWAN_CFLIST_TYPE_MASK
+    channelUp.enabled = true;
+    uint8_t numBlocks = this->band->txSpans[0].numChannels / 8;   // calculate number of 8-channel blocks
+    uint8_t numBlockChannels = 8 + this->band->txSpans[1].numChannels > 0 ? 1 : 0;  // add a 9th channel if there's a second span
+    uint8_t blockID = devNonce % numBlocks;                       // currently selected block (seed with devNonce)
+    uint8_t channelID = this->phyLayer->random(numBlockChannels); // select randomly from these 8 or 9 channels
+    uint8_t spanID;
+    if(channelID < 8) {
+      spanID = 0;
+      channelUp.idx = blockID * numBlockChannels + channelID;
+    } else {
+      spanID = 1;
+      channelUp.idx = blockID;
+    }
+    channelUp.freq = this->band->txSpans[spanID].freqStart + channelUp.idx*this->band->txSpans[spanID].freqStep;
+
+    channelDn.idx = blockID % this->band->rx1Span.numChannels;
+    channelDn.freq = this->band->rx1Span.freqStart + channelDn.idx*this->band->rx1Span.freqStep;
+    
+    // configure data rates for TX and RX1: for TX the specified value for this band; for RX1 identical with base offset
+    this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = this->band->txSpans[spanID].joinRequestDataRate;
+    // TODO check bounds
+    this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = getDownlinkDataRate(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], 
+                                                                                 this->rx1DrOffset, this->band->rx1DataRateBase, channelDn.drMin, channelDn.drMax);
   }
+  this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]   = channelUp;
+  this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = channelDn;
+
+  Module* mod = this->phyLayer->getMod();
+  uint8_t txDrRx2Dr = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4) | this->rx2.drMax;
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID, txDrRx2Dr);
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t LoRaWANNode::selectChannels() {
+  // figure out which channel IDs are enabled (chMask may have disabled some) and are valid for the current datarate
+  uint8_t numChannels = 0;
+  uint8_t channelsEnabled[RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];
+  for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
+      if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] >= this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin
+         && this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] <= this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax) {
+          channelsEnabled[numChannels] = i;
+          numChannels++;
+         }
+    } else {
+      break;
+    }
+  }
+  // select a random ID & channel from the list of enabled and possible channels
+  uint8_t channelID = channelsEnabled[this->phyLayer->random(numChannels)];
+  this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][channelID];
+  
+  // in case of frequency list-type band, downlink is equal to uplink, otherwise retrieve `modulo` numChannels
+  if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES) {
+    this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][channelID];
+  } else {                  // RADIOLIB_LORAWAN_CFLIST_TYPE_MASK
+    LoRaWANChannel_t channelDn;
+    channelDn.enabled = true;
+    channelDn.idx = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].idx % this->band->rx1Span.numChannels;
+    channelDn.freq = this->band->rx1Span.freqStart + channelDn.idx*this->band->rx1Span.freqStep;
+    channelDn.drMin = this->band->rx1Span.drMin;
+    channelDn.drMax = this->band->rx1Span.drMax;
+    this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = channelDn;
+  }
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
+  uint8_t dataRateBand = this->band->dataRates[dr];
 
   if(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
     dataRate->fsk.bitRate = 50;
@@ -942,164 +1230,69 @@ uint8_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate, const LoRaWA
     
     dataRate->lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
     dataRate->lora.codingRate = (dataRateBand & 0x03) + 5;
+    RADIOLIB_DEBUG_PRINTLN("DR %d: LORA (SF: %d, BW: %f, CR: %d)", 
+                            dataRateBand, dataRate->lora.spreadingFactor, dataRate->lora.bandwidth, dataRate->lora.codingRate);
   }
 
-  return(dataRateFound);
-}
-
-int16_t LoRaWANNode::findChannelId(uint8_t dir, uint8_t* ch, uint8_t* dr, int8_t min, int8_t max) {
-  // find the first channel span that supports the requested direction
-  uint8_t spanId = 0;
-  LoRaWANChannelSpan_t* span = NULL;
-  for(; spanId < this->band->numChannelSpans; spanId++) {
-    span = (LoRaWANChannelSpan_t*)&this->band->defaultChannels[spanId];
-    if((span->direction == dir) || (span->direction == RADIOLIB_LORAWAN_CHANNEL_DIR_BOTH)) {
-      break;
-    }
-  }
-
-  // shouldn't happen, but just to be sure
-  if(!span) {
-    RADIOLIB_DEBUG_PRINTLN("findChannelId span not found");
-    return(RADIOLIB_ERR_INVALID_CHANNEL);
-  }
-
-  // if requested, save the data rate
-  if(dr) {
-    *dr = span->joinRequestDataRate;
-  }
-
-  // determine min and max based on number of channels in span and user constraints
-  uint8_t chMin = (min > 0) ? min : 0;
-  uint8_t chMax = (max > 0) ? max : span->numChannels;
-
-  // select channel ID as random number between min and max (global number 0 - N for single direction)
-  int32_t chId = this->phyLayer->random(chMin, chMax);
-  *ch = chId;
-  return(RADIOLIB_ERR_NONE);
-}
-
-LoRaWANChannelSpan_t* LoRaWANNode::findChannelSpan(uint8_t dir, uint8_t ch, uint8_t* spanChannelId) {
-  // find the span based on the channel ID
-  uint8_t chanCtr = 0;
-  *spanChannelId = 0;
-  for(uint8_t span = 0; span < this->band->numChannelSpans; span++) {
-    // check if this channel span can be used
-    uint8_t direction = this->band->defaultChannels[span].direction;
-    if((direction != dir) && (direction != RADIOLIB_LORAWAN_CHANNEL_DIR_BOTH)) {
-      continue;
-    }
-
-    // iterate over the usable spans to the channel ID
-    for(; *spanChannelId < this->band->defaultChannels[span].numChannels; (*spanChannelId)++) {
-      if(chanCtr >= ch) {
-        // we found it, return the pointer (channel ID within the span is already set)
-        return((LoRaWANChannelSpan_t*)&this->band->defaultChannels[span]);
-      }
-      chanCtr++;
-    }
-  }
-
-  return(NULL);
-}
-
-int16_t LoRaWANNode::findChannelFreq(uint8_t dir, uint8_t ch, float* freq) {
-  // find the channel span based on channel ID and direction
-  uint8_t spanChannelId = 0;
-  LoRaWANChannelSpan_t* span = findChannelSpan(dir, ch, &spanChannelId);
-  if(!span) {
-    return(RADIOLIB_ERR_INVALID_CHANNEL);
-  }
-
-  // set the frequency
-  *freq = span->freqStart + span->freqStep * (float)spanChannelId;
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::configureChannel(uint8_t dir) {
   // set the frequency
-  RADIOLIB_DEBUG_PRINTLN("Channel frequency %cL = %f MHz", dir ? 'D' : 'U', this->channelFreq[dir]);
-  int state = this->phyLayer->setFrequency(this->channelFreq[dir]);
+  RADIOLIB_DEBUG_PRINTLN("");
+  RADIOLIB_DEBUG_PRINTLN("Channel frequency %cL = %f MHz", dir ? 'D' : 'U', this->currentChannels[dir].freq);
+  RADIOLIB_DEBUG_PRINTLN("Datarate index: %d", this->dataRates[dir]);
+  int state = this->phyLayer->setFrequency(this->currentChannels[dir].freq);
   RADIOLIB_ASSERT(state);
-
-  // find the channel span based on channel ID and direction
-  uint8_t spanChannelId = 0;
-  LoRaWANChannelSpan_t* span = findChannelSpan(dir, this->chIndex[dir], &spanChannelId);
-  if(!span) {
-    return(RADIOLIB_ERR_INVALID_CHANNEL);
-  }
 
   // set the data rate
   DataRate_t dataRate;
-  this->dataRate[dir] = findDataRate(this->dataRate[dir], &dataRate, span);
+  findDataRate(this->dataRates[dir], &dataRate);
+
   state = this->phyLayer->setDataRate(dataRate);
   return(state);
 }
 
-int16_t LoRaWANNode::sendMacCommand(uint8_t cid, uint8_t* payload, size_t payloadLen, uint8_t* reply, size_t replyLen) {
-  // build the command
-  size_t macReqLen = 1 + payloadLen;
-  #if !defined(RADIOLIB_STATIC_ONLY)
-    uint8_t* macReqBuff = new uint8_t[macReqLen];
-  #else
-    uint8_t macReqBuff[RADIOLIB_STATIC_ARRAY_SIZE];
-  #endif
-  macReqBuff[0] = cid;
-  memcpy(&macReqBuff[1], payload, payloadLen);
-
-  // uplink it
-  int16_t state = this->uplink(macReqBuff, macReqLen, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
-  #if !defined(RADIOLIB_STATIC_ONLY)
-    delete[] macReqBuff;
-  #endif
-  RADIOLIB_ASSERT(state);
-
-  // build the reply buffer
-  size_t macRplLen = 1 + replyLen;
-  #if !defined(RADIOLIB_STATIC_ONLY)
-    uint8_t* macRplBuff = new uint8_t[this->band->payloadLenMax[this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
-  #else
-    uint8_t macRplBuff[RADIOLIB_STATIC_ARRAY_SIZE];
-  #endif
-
-  // wait for reply from the server
-  size_t rxRplLen = 0;
-  state = this->downlink(macRplBuff, &rxRplLen);
-  if(state != RADIOLIB_ERR_NONE) {
-    #if !defined(RADIOLIB_STATIC_ONLY)
-      delete[] macRplBuff;
-    #endif
-    return(state);
+int16_t LoRaWANNode::saveChannels() {
+  uint8_t bytesPerChannel = 5;
+  uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
+  uint8_t buffer[numBytes];
+  for(uint8_t dir = 0; dir < 2; dir++) {
+    for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+      uint8_t chBuff[5] = { 0 };
+      chBuff[0] |= (uint8_t)this->availableChannels[dir][i].enabled << 7;
+      chBuff[0] |= this->availableChannels[dir][i].idx;
+      uint32_t freq = this->availableChannels[dir][i].freq*10000.0;
+      LoRaWANNode::hton<uint32_t>(&chBuff[1], freq, 3);
+      chBuff[4]  = this->availableChannels[dir][i].drMax << 4;
+      chBuff[4] |= this->availableChannels[dir][i].drMin << 0;
+      memcpy(&buffer[(dir * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel) + i * bytesPerChannel], chBuff, bytesPerChannel);
+    }
   }
+  Module* mod = this->phyLayer->getMod();
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FREQS_ID), buffer, numBytes);
+  return(RADIOLIB_ERR_NONE);
+}
 
-  RADIOLIB_DEBUG_PRINTLN("macRplBuff:");
-  RADIOLIB_DEBUG_HEXDUMP(macRplBuff, rxRplLen);
-
-  // check the length - it may be longer than expected
-  // if the server decided to append more MAC commands, but never shorter
-  // TODO how to handle the additional command(s)?
-  if(rxRplLen < macRplLen) {
-    #if !defined(RADIOLIB_STATIC_ONLY)
-      delete[] macRplBuff;
-    #endif
-    return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
+int16_t LoRaWANNode::restoreChannels() {
+  uint8_t bytesPerChannel = 5;
+  uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
+  uint8_t buffer[numBytes];
+  Module* mod = this->phyLayer->getMod();
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FREQS_ID), buffer, numBytes);
+  for(uint8_t dir = 0; dir < 2; dir++) {
+    for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+      uint8_t chBuff[5] = { 0 };
+      memcpy(chBuff, &buffer[(dir * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel) + i * bytesPerChannel], bytesPerChannel);
+      this->availableChannels[dir][i].enabled = (chBuff[0] & 0x80) >> 7;
+      this->availableChannels[dir][i].idx = chBuff[0] & 0x7F;
+      uint32_t freq = LoRaWANNode::ntoh<uint32_t>(&chBuff[1], 3);
+      this->availableChannels[dir][i].freq = (float)freq/10000.0;
+      this->availableChannels[dir][i].drMax = (chBuff[0] & 0xF0) >> 4;
+      this->availableChannels[dir][i].drMin = (chBuff[0] & 0x0F) >> 0;
+    }
   }
-
-  // check the CID
-  if(macRplBuff[0] != cid) {
-    #if !defined(RADIOLIB_STATIC_ONLY)
-      delete[] macRplBuff;
-    #endif
-    return(RADIOLIB_ERR_INVALID_CID);
-  }
-
-  // copy the data
-  memcpy(reply, &macRplBuff[1], replyLen);
-  #if !defined(RADIOLIB_STATIC_ONLY)
-    delete[] macRplBuff;
-  #endif
-
-  return(state);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue) {
@@ -1118,40 +1311,72 @@ int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQ
     queue->commands[queue->numCommands - 1].payload[4],
     queue->commands[queue->numCommands - 1].repeat);*/
   queue->numCommands++;
+  queue->len += 1 + cmd->len; // 1 byte for command ID, len bytes for payload
 
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, bool force) {
+int16_t LoRaWANNode::popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, size_t index) {
   if(queue->numCommands == 0) {
     return(RADIOLIB_ERR_COMMAND_QUEUE_EMPTY);
   }
 
   if(cmd) {
-    /*RADIOLIB_DEBUG_PRINTLN("pop MAC CID = %02x, len = %d, payload = %02x %02x %02x %02x %02x, repeat = %d ", 
-      queue->commands[queue->numCommands - 1].cid,
-      queue->commands[queue->numCommands - 1].len,
-      queue->commands[queue->numCommands - 1].payload[0],
-      queue->commands[queue->numCommands - 1].payload[1],
-      queue->commands[queue->numCommands - 1].payload[2],
-      queue->commands[queue->numCommands - 1].payload[3],
-      queue->commands[queue->numCommands - 1].payload[4],
-      queue->commands[queue->numCommands - 1].repeat);*/
-    memcpy(cmd, &queue->commands[queue->numCommands - 1], sizeof(LoRaWANMacCommand_t));
+    // RADIOLIB_DEBUG_PRINTLN("pop MAC CID = %02x, len = %d, payload = %02x %02x %02x %02x %02x, repeat = %d ", 
+    // queue->commands[index].cid,
+    // queue->commands[index].len,
+    // queue->commands[index].payload[0],
+    // queue->commands[index].payload[1],
+    // queue->commands[index].payload[2],
+    // queue->commands[index].payload[3],
+    // queue->commands[index].payload[4],
+    // queue->commands[index].repeat);
+    memcpy(cmd, &queue->commands[index], sizeof(LoRaWANMacCommand_t));
   }
 
-  if((!force) && (queue->commands[queue->numCommands - 1].repeat > 0)) {
-    queue->commands[queue->numCommands - 1].repeat--;
+  if(queue->commands[index].repeat > 0) {
+    queue->commands[index].repeat--;
   } else {
-    queue->commands[queue->numCommands - 1].repeat = 0;
-    queue->numCommands--;
+    deleteMacCommand(queue->commands[index].cid, queue);
   }
 
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue) {
+  if(queue->numCommands == 0) {
+    return(RADIOLIB_ERR_COMMAND_QUEUE_EMPTY);
+  }
+
+  for(size_t index = 0; index < queue->numCommands; index++) {
+    if(queue->commands[index].cid == cid) {
+      // RADIOLIB_DEBUG_PRINTLN("delete MAC CID = %02x, len = %d, payload = %02x %02x %02x %02x %02x, repeat = %d ", 
+      // queue->commands[index].cid,
+      // queue->commands[index].len,
+      // queue->commands[index].payload[0],
+      // queue->commands[index].payload[1],
+      // queue->commands[index].payload[2],
+      // queue->commands[index].payload[3],
+      // queue->commands[index].payload[4],
+      // queue->commands[index].repeat);
+      queue->len -= (1 + queue->commands[index].len); // 1 byte for command ID, len for payload
+      // move all subsequent commands one forward in the queue
+      if(index < RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - 1) {
+        memmove(&queue->commands[index], &queue->commands[index + 1], (RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - index) * sizeof(LoRaWANMacCommand_t));
+      }
+      // set the latest element to all 0
+      memset(&queue->commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE - 1], 0x00, sizeof(LoRaWANMacCommand_t));
+      queue->numCommands--;
+      return(RADIOLIB_ERR_NONE);
+    }
+  }
+
+  return(RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND);
+}
+
 size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
   RADIOLIB_DEBUG_PRINTLN("exe MAC CID = %02x, len = %d", cmd->cid, cmd->len);
+  Module* mod = this->phyLayer->getMod();
 
   if(cmd->cid >= RADIOLIB_LORAWAN_MAC_CMD_PROPRIETARY) {
     // TODO call user-provided callback for proprietary MAC commands?
@@ -1165,7 +1390,7 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PRINTLN("Server version: 1.%d", srvVersion);
       if(srvVersion == this->rev) {
         // valid server version, stop sending the ResetInd MAC command
-        popMacCommand(NULL, &this->commandsUp, true);
+        deleteMacCommand(RADIOLIB_LORAWAN_MAC_CMD_RESET, &this->commandsUp);
       }
       return(1);
     } break;
@@ -1191,46 +1416,55 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
 
       // apply the configuration
       uint8_t drAck = 0;
-      if(dr != 0x0F) {
-        // first figure out which channel span this data rate applies to
-        // TODO do that by processing the chMask/chMaskCntl?
-        uint8_t spanChannelId = 0;
-        LoRaWANChannelSpan_t* span = findChannelSpan(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, this->chIndex[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], &spanChannelId);
-
-        // seems to be only applicable to uplink
-        if(span) {
-          DataRate_t dataRate;
-          this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = findDataRate(dr, &dataRate, span);
-          if(this->phyLayer->setDataRate(dataRate) == RADIOLIB_ERR_NONE) {
-            RADIOLIB_DEBUG_PRINTLN("ADR set dr = %d channel = %d", dr, spanChannelId);
-            drAck = 1;
-          }
+      if(dr == 0x0F) {
+        drAck = 1;
+      } else if (this->band->dataRates[dr] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = dr;
+        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = dr + this->band->rx1DataRateBase - this->rx1DrOffset;
+        if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] < this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMin) {
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMin;
+        } else if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMax) {
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMax;
         }
 
-      } else {
+        uint8_t txDrRx2Dr = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4) | this->rx2.drMax;
+        mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID, txDrRx2Dr);
         drAck = 1;
-      
-      }
+      } 
 
       // try to apply the power configuration
       uint8_t pwrAck = 0;
-      if(txPower != 0x0F) {
+      if(txPower == 0x0F) {
+        pwrAck = 1;
+      } else {
         int8_t pwr = this->band->powerMax - 2*txPower;
         if(this->phyLayer->setOutputPower(pwr) == RADIOLIB_ERR_NONE) {
           RADIOLIB_DEBUG_PRINTLN("ADR set pwr = %d", pwr);
           pwrAck = 1;
         }
-
-      } else {
-        pwrAck = 1;
       }
 
-      // TODO implement repeated uplinks with nbTrans
-      (void)nbTrans;
+      this->nbTrans = nbTrans;
       // TODO implement channel mask
-      uint8_t chMaskAck = 0;
+      uint8_t chMaskAck = 1;
       (void)chMask;
       (void)chMaskCntl;
+      if(this->band->cfListType == RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES) {
+        for(uint8_t i = 0; i < 16; i++) {
+          // check if this channel ID should be enabled
+          if(chMask & (1UL << i)) {
+            // if it should be enabled but is not currently defined, stop immediately
+            if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled == false) {
+              chMaskAck = 0;
+              break;
+            }
+          } else {
+            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = false;
+          }
+        }
+      } else {
+
+      }
 
       // send the reply
       cmd->len = 1;
@@ -1251,28 +1485,26 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
 
     case(RADIOLIB_LORAWAN_MAC_CMD_RX_PARAM_SETUP): {
       // get the configuration
-      uint8_t rx1DrOffset = (cmd->payload[0] & 0x70) >> 4;
-      uint8_t rx2DataRate = cmd->payload[0] & 0x0F;
+      this->rx1DrOffset = (cmd->payload[0] & 0x70) >> 4;
+      uint8_t rx1OffsAck = 1;
+      this->rx2.drMax = cmd->payload[0] & 0x0F;
+      uint8_t rx2Ack = 1;
       uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
-      float freq = (float)freqRaw/10000.0;
-      RADIOLIB_DEBUG_PRINTLN("RX Param: rx1DrOffset = %d, rx2DataRate = %d, freq = %f", rx1DrOffset, rx2DataRate, freq);
+      this->rx2.freq = (float)freqRaw/10000.0;
+      RADIOLIB_DEBUG_PRINTLN("Rx param REQ: rx1DrOffset = %d, rx2DataRate = %d, freq = %f", this->rx1DrOffset, this->rx2.drMax, this->rx2.freq);
       
       // apply the configuration
-      this->backupFreq = freq;
-      float prevFreq = this->channelFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK];
       uint8_t chanAck = 0;
-      if(this->phyLayer->setFrequency(freq) == RADIOLIB_ERR_NONE) {
+      if(this->phyLayer->setFrequency(this->rx2.freq) == RADIOLIB_ERR_NONE) {
         chanAck = 1;
-        this->phyLayer->setFrequency(prevFreq);
+        this->phyLayer->setFrequency(this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].freq);
       }
 
-      // TODO process the RX2 data rate
-      (void)rx2DataRate;
-      uint8_t rx2Ack = 0;
-
-      // TODO process the data rate offset
-      (void)rx1DrOffset;
-      uint8_t rx1OffsAck = 0;
+      // update saved values
+      uint8_t txDrRx2Dr = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4) | this->rx2.drMax;
+      uint8_t rx1DrOffDel = (this->rx1DrOffset << 4) | (this->rxDelays[0] / 1000);
+      mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID, txDrRx2Dr);
+      mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID, rx1DrOffDel);
 
       // send the reply
       cmd->len = 1;
@@ -1302,13 +1534,79 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t maxDr = (cmd->payload[4] & 0xF0) >> 4;
       uint8_t minDr = cmd->payload[4] & 0x0F;
       RADIOLIB_DEBUG_PRINTLN("New channel: index = %d, freq = %f MHz, maxDr = %d, minDr = %d", chIndex, freq, maxDr, minDr);
+      uint8_t newChAck = 0;
+      uint8_t freqAck = 0;
+      for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+        // find first empty channel and configure this as the new channel
+        if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx == 0) {
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx = chIndex;
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq = freq;
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin = minDr;
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax = maxDr;
+          
+          // downlink channel is identical to uplink channel
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i] = this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i];
+          newChAck = 1;
+          
+          // check if the frequency is possible
+          if(this->phyLayer->setFrequency(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq) == RADIOLIB_ERR_NONE) {
+            freqAck = 1;
+            this->phyLayer->setFrequency(this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].freq);
+          }
 
-      // TODO implement this
-      (void)chIndex;
-      (void)freq;
-      (void)maxDr;
-      (void)minDr;
+          break;
+        }
+      }
+
+      // update saved frequencies
+      this->saveChannels();
+
+      // send the reply
+      cmd->len = 1;
+      cmd->payload[0] = (newChAck << 1) | (freqAck << 0);
+
+      pushMacCommand(cmd, &this->commandsUp);
+
       return(5);
+    } break;
+
+    case(RADIOLIB_LORAWAN_MAC_CMD_DL_CHANNEL): {
+      // get the configuration
+      uint8_t chIndex = cmd->payload[0];
+      uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
+      float freq = (float)freqRaw/10000.0;
+      RADIOLIB_DEBUG_PRINTLN("DL channel: index = %d, freq = %f MHz", chIndex, freq);
+      uint8_t freqDlAck = 0;
+      uint8_t freqUlAck = 0;
+      
+      // check if the frequency is possible
+      if(this->phyLayer->setFrequency(freq) == RADIOLIB_ERR_NONE) {
+        freqDlAck = 1;
+        this->phyLayer->setFrequency(this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].freq);
+      }
+      
+      // update the downlink frequency
+      for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+        if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx == chIndex) {
+          this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq = freq;
+          // check if the corresponding uplink frequency is actually set
+          if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq > 0) {
+            freqUlAck = 1;
+          }
+        }
+      }
+      
+      // update saved frequencies
+      this->saveChannels();
+      
+      // send the reply
+      cmd->len = 1;
+      cmd->payload[0] = (freqUlAck << 1) | (freqDlAck << 0);
+
+      pushMacCommand(cmd, &this->commandsUp);
+
+      return(4);
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_CMD_RX_TIMING_SETUP): {
@@ -1322,6 +1620,10 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       }
       this->rxDelays[0] = delay * 1000;
       this->rxDelays[1] = this->rxDelays[0] + 1000;
+
+      // update saved values
+      uint8_t rx1DrOffDel = (this->rx1DrOffset << 4) | (this->rxDelays[0] / 1000);
+      mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID, rx1DrOffDel);
 
       // send the reply
       cmd->len = 0;
@@ -1349,37 +1651,25 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       return(1);
     } break;
 
-    case(RADIOLIB_LORAWAN_MAC_CMD_DL_CHANNEL): {
-      // get the configuration
-      uint8_t chIndex = cmd->payload[0];
-      uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
-      float freq = (float)freqRaw/10000.0;
-      RADIOLIB_DEBUG_PRINTLN("DL channel: index = %d, freq = %f MHz", chIndex, freq);
-
-      // TODO implement this
-      (void)chIndex;
-      (void)freq;
-      return(4);
-    } break;
-
     case(RADIOLIB_LORAWAN_MAC_CMD_REKEY): {
       // get the server version
       uint8_t srvVersion = cmd->payload[0];
       RADIOLIB_DEBUG_PRINTLN("Server version: 1.%d", srvVersion);
       if((srvVersion > 0) && (srvVersion <= this->rev)) {
         // valid server version, stop sending the ReKey MAC command
-        popMacCommand(NULL, &this->commandsUp, true);
+        deleteMacCommand(RADIOLIB_LORAWAN_MAC_CMD_REKEY, &this->commandsUp);
       }
       return(1);
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_CMD_ADR_PARAM_SETUP): {
-      // TODO implement this
       uint8_t limitExp = (cmd->payload[0] & 0xF0) >> 4;
       uint8_t delayExp = cmd->payload[0] & 0x0F;
       RADIOLIB_DEBUG_PRINTLN("ADR param setup: limitExp = %d, delayExp = %d", limitExp, delayExp);
-      (void)limitExp;
-      (void)delayExp;
+      
+      // update saved values
+      mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID, cmd->payload[0]);
+
       return(1);
     } break;
 

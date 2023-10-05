@@ -5,6 +5,9 @@
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../../utils/Cryptography.h"
 
+// version of NVM table layout (NOT the LoRaWAN version)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_TABLE_VERSION         (0x01)
+
 // preamble format
 #define RADIOLIB_LORAWAN_LORA_SYNC_WORD                         (0x34)
 #define RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN                      (8)
@@ -68,7 +71,8 @@
 #define RADIOLIB_LORAWAN_CHANNEL_DIR_NONE                       (0x03 << 0)
 #define RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES                (0)
 #define RADIOLIB_LORAWAN_CFLIST_TYPE_MASK                       (1)
-#define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (16)
+#define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (15)
+#define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     (0xFF < 0)
 
 // recommended default settings
 #define RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS                     (1000)
@@ -78,8 +82,8 @@
 #define RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS                 (5000)
 #define RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS                 (6000)
 #define RADIOLIB_LORAWAN_MAX_FCNT_GAP                           (16384)
-#define RADIOLIB_LORAWAN_ADR_ACK_LIMIT                          (64)
-#define RADIOLIB_LORAWAN_ADR_ACK_DELAY                          (32)
+#define RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP                      (0x06)
+#define RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP                      (0x05)
 #define RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MIN_MS              (1000)
 #define RADIOLIB_LORAWAN_RETRANSMIT_TIMEOUT_MAX_MS              (3000)
 #define RADIOLIB_LORAWAN_POWER_STEP_SIZE_DBM                    (-2)
@@ -147,7 +151,7 @@
 #define RADIOLIB_LORAWAN_MIC_CH_INDEX_POS                       (4)
 
 // magic word saved in persistent memory upon activation
-#define RADIOLIB_LORAWAN_MAGIC                                  (0x12AD101B)
+#define RADIOLIB_LORAWAN_MAGIC                                  (0x39EA)
 
 // MAC commands
 #define RADIOLIB_LORAWAN_MAC_CMD_RESET                          (0x01)
@@ -171,7 +175,32 @@
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (8)
 
 // the maximum number of simultaneously available channels
-#define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (8)
+#define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (16)
+
+/*!
+  \struct LoRaWANChannelSpan_t
+  \brief Structure to save information about LoRaWAN channels.
+  To save space, adjacent channels are saved in "spans".
+*/
+struct LoRaWANChannel_t {
+  /*! \brief Whether this channel is enabled (can be used) or is disabled */
+  bool enabled;
+
+  /*! \brief The channel number, as specified by defaults or the network */
+  uint8_t idx;
+
+  /*! \brief The channel frequency */
+  float freq;
+
+  /*! \brief Minimum allowed datarate for this channel */
+  uint8_t drMin;
+
+  /*! \brief Maximum allowed datarate for this channel (inclusive) */
+  uint8_t drMax;
+};
+
+// alias for unused channel
+#define RADIOLIB_LORAWAN_CHANNEL_NONE    { .enabled = false, .idx = RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE, .freq = 0, .drMin = 0, .drMax = 0 }
 
 /*!
   \struct LoRaWANChannelSpan_t
@@ -179,12 +208,6 @@
   To save space, adjacent channels are saved in "spans".
 */
 struct LoRaWANChannelSpan_t {
-  /*! \brief Whether this channel span is for uplink, downlink, or both directions*/
-  uint8_t direction;
-
-  /*! \brief Allowed data rates for a join request message */
-  uint8_t joinRequestDataRate;
-
   /*! \brief Total number of channels in the span */
   uint8_t numChannels;
 
@@ -194,24 +217,24 @@ struct LoRaWANChannelSpan_t {
   /*! \brief Frequency step between adjacent channels */
   float freqStep;
 
-  /*! \brief Array of datarates supported by all channels in the span */
-  uint8_t dataRates[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
+  /*! \brief Minimum allowed datarate for all channels in this span */
+  uint8_t drMin;
+
+  /*! \brief Maximum allowed datarate for all channels in this span (inclusive) */
+  uint8_t drMax;
+  
+  /*! \brief Allowed data rates for a join request message */
+  uint8_t joinRequestDataRate;
 };
 
 // alias for unused channel span
-#define RADIOLIB_LORAWAN_CHANNEL_SPAN_NONE    { .direction = RADIOLIB_LORAWAN_CHANNEL_DIR_NONE, .joinRequestDataRate = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, .numChannels = 0, .freqStart = 0, .freqStep = 0, .dataRates = { 0 } }
+#define RADIOLIB_LORAWAN_CHANNEL_SPAN_NONE    { .numChannels = 0, .freqStart = 0, .freqStep = 0, .drMin = 0, .drMax = 0, .joinRequestDataRate = RADIOLIB_LORAWAN_DATA_RATE_UNUSED }
 
 /*!
   \struct LoRaWANBand_t
   \brief Structure to save information about LoRaWAN band
 */
 struct LoRaWANBand_t {
-  /*! \brief The base downlink data rate. Used to calculate data rate changes for adaptive data rate */
-  uint8_t downlinkDataRateBase;
-
-  /*! \brief The minimum allowed downlink data rate. Used to calculate data rate changes for adaptive data rate */
-  uint8_t downlinkDataRateMin;
-
   /*! \brief Array of allowed maximum payload lengths for each data rate */
   uint8_t payloadLenMax[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 
@@ -224,17 +247,29 @@ struct LoRaWANBand_t {
   /*! \brief Whether the optional channels are defined as list of frequencies or bit mask */
   uint8_t cfListType;
 
-  /*! \brief FSK channel frequency */
-  float fskFreq;
-  
-  /*! \brief Number of channel spans in the band */
-  uint8_t numChannelSpans;
+  /*! \brief A set of default uplink (TX) channels for frequency-type bands */
+  LoRaWANChannel_t txFreqs[3];
 
-  /*! \brief Default uplink (TX/RX1) channels defined by LoRaWAN Regional Parameters */
-  LoRaWANChannelSpan_t defaultChannels[3];
+  /*! \brief A set of possible extra channels for the Join-Request message for frequency-type bands */
+  LoRaWANChannel_t txJoinReq[3];
   
-  /*! \brief Backup downlink (RX2) channel - just a single channel, but using the same structure for convenience */
-  LoRaWANChannelSpan_t backupChannel;
+  /*! \brief The number of TX channel spans for mask-type bands */
+  uint8_t numTxSpans;
+
+  /*! \brief Default uplink (TX) channel spans for mask-type bands, including Join-Request parameters */
+  LoRaWANChannelSpan_t txSpans[2];
+
+  /*! \brief Default downlink (RX1) channel span for mask-type bands */
+  LoRaWANChannelSpan_t rx1Span;
+
+  /*! \brief The base downlink data rate. Used to calculate data rate changes for adaptive data rate */
+  uint8_t rx1DataRateBase;
+
+  /*! \brief Backup channel for downlink (RX2) window */
+  LoRaWANChannel_t rx2;
+  
+  /*! \brief The corresponding datarates, bandwidths and coding rates for DR index */
+  uint8_t dataRates[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 };
 
 // supported bands
@@ -257,7 +292,7 @@ struct LoRaWANMacCommand_t {
   uint8_t cid;
 
   /*! \brief Length of the payload */
-  size_t len;
+  uint8_t len;
 
   /*! \brief Payload buffer (5 bytes is the longest possible) */
   uint8_t payload[5];
@@ -267,8 +302,9 @@ struct LoRaWANMacCommand_t {
 };
 
 struct LoRaWANMacCommandQueue_t {
+  uint8_t numCommands;
+  uint8_t len;
   LoRaWANMacCommand_t commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE];
-  size_t numCommands;
 };
 
 /*!
@@ -292,6 +328,15 @@ class LoRaWANNode {
         (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). */
     int8_t numChannels;
 
+    // Offset between TX and RX1 (such that RX1 has equal or lower DR)
+    uint8_t rx1DrOffset;
+
+    // RX2 channel properties - may be changed by MAC command
+    LoRaWANChannel_t rx2;
+
+    // Number of allowed frame retransmissions
+    uint8_t nbTrans;
+
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -306,10 +351,10 @@ class LoRaWANNode {
     void wipe();
 
     /*!
-      \brief Join network by loading information from persistent storage.
+      \brief Restore session by loading information from persistent storage.
       \returns \ref status_codes
     */
-    int16_t begin();
+    int16_t restore();
 
     /*!
       \brief Join network by performing over-the-air activation. By this procedure,
@@ -331,9 +376,10 @@ class LoRaWANNode {
       \param appSKey Pointer to the application session AES-128 key.
       \param fNwkSIntKey Pointer to the network session F key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \param sNwkSIntKey Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0.
+      \param force Set to true to force a new session, even if one exists.
       \returns \ref status_codes
     */
-    int16_t beginAPB(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL);
+    int16_t beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL, bool force = false);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -393,12 +439,14 @@ class LoRaWANNode {
     const LoRaWANBand_t* band = NULL;
 
     LoRaWANMacCommandQueue_t commandsUp = { 
-      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
       .numCommands = 0,
+      .len = 0,
+      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
     };
     LoRaWANMacCommandQueue_t commandsDown = { 
-      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
       .numCommands = 0,
+      .len = 0,
+      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
     };
 
     // the following is either provided by the network server (OTAA)
@@ -411,23 +459,16 @@ class LoRaWANNode {
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
 
     // available channel frequencies from list passed during OTA activation
-    float availableChannelsFreq[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
+    LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
 
-    // currently configured channel frequency
-    float channelFreq[2] = { 0 };
+    // currently configured channels for TX and RX1
+    LoRaWANChannel_t currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };
+
+    // currently configured datarates for TX and RX1
+    uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };
 
     // LoRaWAN revision (1.0 vs 1.1)
     uint8_t rev = 0;
-
-    // currently configured data rate for uplink and downlink: DR0 - DR15 (band-dependent!)
-    uint8_t dataRate[2] = { 0 };
-
-    // currently configured channel for uplink and downlink (band-dependent!)
-    uint8_t chIndex[2] = { 0 };
-
-    // backup channel properties - may be changed by MAC command
-    float backupFreq = 0;
-    uint8_t backupDataRate = 0;
 
     // timestamp to measure the RX1/2 delay (from uplink end)
     uint32_t rxDelayStart = 0;
@@ -437,6 +478,9 @@ class LoRaWANNode {
 
     // device status - battery level
     uint8_t battLevel = 0xFF;
+
+    // indicates whether an uplink has MAC commands as payload
+    bool isMACPayload = false;
 
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
@@ -451,31 +495,34 @@ class LoRaWANNode {
 
     // setup uplink/downlink channel data rates and frequencies
     // will attempt to randomly select based on currently used band plan
-    int16_t setupChannels();
+    int16_t setupChannels(uint8_t* cfList);
 
-    // find the first usable data rate in a given channel span
-    uint8_t findDataRate(uint8_t dr, DataRate_t* dataRate, const LoRaWANChannelSpan_t* span);
+    // select a set of semi-random TX/RX channels for the join-request and -accept message
+    int16_t selectChannelsJR(uint16_t devNonce);
 
-    // find a channel ID that conforms to the requested direction and ID range
-    int16_t findChannelId(uint8_t dir, uint8_t* ch, uint8_t* dr, int8_t min, int8_t max);
+    // select a set of random TX/RX channels for up- and downlink
+    int16_t selectChannels();
 
-    // find a channel span that any given channel id belongs to
-    LoRaWANChannelSpan_t* findChannelSpan(uint8_t dir, uint8_t ch, uint8_t* spanChannelId);
-
-    // calculate channel frequency in MHz based on channel ID and direction
-    int16_t findChannelFreq(uint8_t dir, uint8_t ch, float* freq);
+    // find the first usable data rate for the given band
+    int16_t findDataRate(uint8_t dr, DataRate_t* dataRate);
 
     // configure channel based on cached data rate ID and frequency
     int16_t configureChannel(uint8_t dir);
 
-    // send a MAC command to the network server
-    int16_t sendMacCommand(uint8_t cid, uint8_t* payload, size_t payloadLen, uint8_t* reply, size_t replyLen);
+    // save all available channels to persistent storage
+    int16_t saveChannels();
+
+    // restore all available channels from persistent storage
+    int16_t restoreChannels();
 
     // push MAC command to queue, done by copy
     int16_t pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue);
     
     // pop MAC command from queue, done by copy unless CMD is NULL
-    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, bool force = false);
+    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, size_t index);
+
+    // delete a specific MAC command from queue, indicated by the command ID
+    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue);
 
     // execute mac command, return the number of processed bytes for sequential processing
     size_t execMacCommand(LoRaWANMacCommand_t* cmd);
