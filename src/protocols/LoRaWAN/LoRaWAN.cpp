@@ -222,7 +222,9 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
         uint32_t freq = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_POS + 3*i], 3);
         availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i] = (float)freq/10000.0;
         availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i] = availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i];
-        RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", i, availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i]);
+        RADIOLIB_DEBUG_PRINT("Channel UL/DL %d frequency = ", i);
+        RADIOLIB_DEBUG_PRINT_FLOAT(availableChannelsFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i], 3);
+        RADIOLIB_DEBUG_PRINTLN(" MHz");
       }
 
     } else {
@@ -249,7 +251,9 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
             uint8_t dir = this->band->defaultChannels[chSpan].direction;
             float freq = this->band->defaultChannels[chSpan].freqStart + chNum*this->band->defaultChannels[chSpan].freqStep;
             availableChannelsFreq[dir][channelId] = freq;
-            RADIOLIB_DEBUG_PRINTLN("Channel %cL %d frequency = %f MHz", dir ? 'U': 'D', channelId, availableChannelsFreq[dir][channelId]);
+            RADIOLIB_DEBUG_PRINT("Channel %cL %d frequency = ", dir ? 'U': 'D', channelId);
+            RADIOLIB_DEBUG_PRINT_FLOAT(availableChannelsFreq[dir][channelId], 3);
+            RADIOLIB_DEBUG_PRINTLN(" MHz");
             channelId++;
           }
 
@@ -1018,7 +1022,9 @@ int16_t LoRaWANNode::findChannelFreq(uint8_t dir, uint8_t ch, float* freq) {
 
 int16_t LoRaWANNode::configureChannel(uint8_t dir) {
   // set the frequency
-  RADIOLIB_DEBUG_PRINTLN("Channel frequency %cL = %f MHz", dir ? 'D' : 'U', this->channelFreq[dir]);
+  RADIOLIB_DEBUG_PRINT("Channel frequency %cL = ", dir ? 'D' : 'U');
+  RADIOLIB_DEBUG_PRINT_FLOAT(this->channelFreq[dir], 3);
+  RADIOLIB_DEBUG_PRINTLN(" MHz");
   int state = this->phyLayer->setFrequency(this->channelFreq[dir]);
   RADIOLIB_ASSERT(state);
 
@@ -1254,14 +1260,14 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t rx1DrOffset = (cmd->payload[0] & 0x70) >> 4;
       uint8_t rx2DataRate = cmd->payload[0] & 0x0F;
       uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
-      float freq = (float)freqRaw/10000.0;
-      RADIOLIB_DEBUG_PRINTLN("RX Param: rx1DrOffset = %d, rx2DataRate = %d, freq = %f", rx1DrOffset, rx2DataRate, freq);
-      
+      RADIOLIB_DEBUG_PRINTLN("RX Param: rx1DrOffset = %d, rx2DataRate = %d, freq = %d", rx1DrOffset, rx2DataRate, freqRaw);   
+
       // apply the configuration
-      this->backupFreq = freq;
+      float freq = (float)freqRaw/10000.0;
       float prevFreq = this->channelFreq[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK];
       uint8_t chanAck = 0;
       if(this->phyLayer->setFrequency(freq) == RADIOLIB_ERR_NONE) {
+        this->backupFreq = freq;
         chanAck = 1;
         this->phyLayer->setFrequency(prevFreq);
       }
@@ -1301,7 +1307,9 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       float freq = (float)freqRaw/10000.0;
       uint8_t maxDr = (cmd->payload[4] & 0xF0) >> 4;
       uint8_t minDr = cmd->payload[4] & 0x0F;
-      RADIOLIB_DEBUG_PRINTLN("New channel: index = %d, freq = %f MHz, maxDr = %d, minDr = %d", chIndex, freq, maxDr, minDr);
+      RADIOLIB_DEBUG_PRINT("New channel: index = %d, freq = ", chIndex);
+      RADIOLIB_DEBUG_PRINT_FLOAT(freq, 3);
+      RADIOLIB_DEBUG_PRINTLN(" MHz, maxDr = %d, minDr = %d", maxDr, minDr);
 
       // TODO implement this
       (void)chIndex;
@@ -1354,7 +1362,9 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t chIndex = cmd->payload[0];
       uint32_t freqRaw = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[1], 3);
       float freq = (float)freqRaw/10000.0;
-      RADIOLIB_DEBUG_PRINTLN("DL channel: index = %d, freq = %f MHz", chIndex, freq);
+      RADIOLIB_DEBUG_PRINT("DL channel: index = %d, freq = ", chIndex);
+      RADIOLIB_DEBUG_PRINT_FLOAT(freq, 3);
+      RADIOLIB_DEBUG_PRINTLN(" MHz");
 
       // TODO implement this
       (void)chIndex;
@@ -1387,7 +1397,9 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       // TODO implement this - sent by gateway as reply to node request
       uint32_t gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&cmd->payload[0]);
       uint8_t fraction = cmd->payload[4];
-      RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)fraction/256.0f);
+      RADIOLIB_DEBUG_PRINT("Network time: gpsEpoch = %d s, delayExp = ", gpsEpoch, (float)fraction/256.0f);
+      RADIOLIB_DEBUG_PRINT_FLOAT((float)fraction/256.0f, 2);
+      RADIOLIB_DEBUG_PRINTLN();
       (void)gpsEpoch;
       (void)fraction;
       return(5);
