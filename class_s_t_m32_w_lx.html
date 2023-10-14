@@ -142,6 +142,27 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a54130403f6afbb0924da17c28afb17fc">clearDio1Action</a> ()</td></tr>
 <tr class="memdesc:a54130403f6afbb0924da17c28afb17fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1/2/3 activates. <br /></td></tr>
 <tr class="separator:a54130403f6afbb0924da17c28afb17fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9194a526a32bd4891d59fe2a08641622"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a9194a526a32bd4891d59fe2a08641622">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a9194a526a32bd4891d59fe2a08641622"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="class_s_t_m32_w_lx.html#a9194a526a32bd4891d59fe2a08641622">More...</a><br /></td></tr>
+<tr class="separator:a9194a526a32bd4891d59fe2a08641622"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa910c9bd9ebca6e5eed4192c3b7a2e04"><td class="memItemLeft" align="right" valign="top"><a id="aa910c9bd9ebca6e5eed4192c3b7a2e04"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#aa910c9bd9ebca6e5eed4192c3b7a2e04">clearPacketReceivedAction</a> ()</td></tr>
+<tr class="memdesc:aa910c9bd9ebca6e5eed4192c3b7a2e04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
+<tr class="separator:aa910c9bd9ebca6e5eed4192c3b7a2e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a771bb4b32a6d9a2f44326e85678e3270"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a771bb4b32a6d9a2f44326e85678e3270">setPacketSentAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a771bb4b32a6d9a2f44326e85678e3270"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="class_s_t_m32_w_lx.html#a771bb4b32a6d9a2f44326e85678e3270">More...</a><br /></td></tr>
+<tr class="separator:a771bb4b32a6d9a2f44326e85678e3270"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb1ebf024255f5e14e6f0477c0113945"><td class="memItemLeft" align="right" valign="top"><a id="adb1ebf024255f5e14e6f0477c0113945"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#adb1ebf024255f5e14e6f0477c0113945">clearPacketSentAction</a> ()</td></tr>
+<tr class="memdesc:adb1ebf024255f5e14e6f0477c0113945"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
+<tr class="separator:adb1ebf024255f5e14e6f0477c0113945"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ca0a6cc9f1eebe738681df10fd5de4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#ad0ca0a6cc9f1eebe738681df10fd5de4">setChannelScanAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:ad0ca0a6cc9f1eebe738681df10fd5de4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a channel scan is finished.  <a href="class_s_t_m32_w_lx.html#ad0ca0a6cc9f1eebe738681df10fd5de4">More...</a><br /></td></tr>
+<tr class="separator:ad0ca0a6cc9f1eebe738681df10fd5de4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a934602154a34e45d010c5a29241a2b13"><td class="memItemLeft" align="right" valign="top"><a id="a934602154a34e45d010c5a29241a2b13"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a934602154a34e45d010c5a29241a2b13">clearChannelScanAction</a> ()</td></tr>
+<tr class="memdesc:a934602154a34e45d010c5a29241a2b13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
+<tr class="separator:a934602154a34e45d010c5a29241a2b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb5ed645ebcc6f3f17d77e32c2ccdd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_t_m32_w_lx.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
 <tr class="memdesc:a2cb5ed645ebcc6f3f17d77e32c2ccdd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_s_t_m32_w_lx.html#a2cb5ed645ebcc6f3f17d77e32c2ccdd7">More...</a><br /></td></tr>
 <tr class="separator:a2cb5ed645ebcc6f3f17d77e32c2ccdd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -713,6 +734,42 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ad0ca0a6cc9f1eebe738681df10fd5de4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0ca0a6cc9f1eebe738681df10fd5de4">&#9670;&nbsp;</a></span>setChannelScanAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void STM32WLx::setChannelScanAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a channel scan is finished. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae11c191a7edf3116bf468b9153237260">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a63d61bc5057e9da3d0ea12feae67122e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a63d61bc5057e9da3d0ea12feae67122e">&#9670;&nbsp;</a></span>setDio1Action()</h2>
 
@@ -776,6 +833,78 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>power ramp time configuration </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">SX1262</a>.</p>
+
+</div>
+</div>
+<a id="a9194a526a32bd4891d59fe2a08641622"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9194a526a32bd4891d59fe2a08641622">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void STM32WLx::setPacketReceivedAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is received. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aec928bb26f65752aa20cd236fbabb95c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a771bb4b32a6d9a2f44326e85678e3270"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a771bb4b32a6d9a2f44326e85678e3270">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void STM32WLx::setPacketSentAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a packet is sent. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">PhysicalLayer</a>.</p>
 
 </div>
 </div>
