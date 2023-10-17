@@ -220,7 +220,7 @@ int16_t SX126x::reset(bool verify) {
     }
 
     // wait a bit to not spam the module
-    this->mod->hal->delay(100);
+    this->mod->hal->delay(10);
   }
 }
 
