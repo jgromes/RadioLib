@@ -55,10 +55,12 @@ int16_t LoRaWANNode::restoreOTAA() {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
+  // in case of future revisions of NVM, use a version parameter to allow transitioning from one version to another while keeping session alive
   uint16_t nvm_table_version = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION_ID);
   // if (RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION > nvm_table_version) {
   //  // set default values for variables that are new or something
   // }
+  (void)nvm_table_version;
 
   // pull all needed information from persistent storage
   this->devAddr = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_DEV_ADDR_ID);
@@ -871,7 +873,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
   // assume a 16-bit to 32-bit rollover when difference in LSB is smaller than MAX_FCNT_GAP
   // if that isn't the case and the received fcnt is smaller or equal to the last heard fcnt, then error
-  if (fcnt16 <= fcntDownPrev && 0xFFFF - (uint16_t)fcntDownPrev + fcnt16 > RADIOLIB_LORAWAN_MAX_FCNT_GAP) {
+  if ((fcnt16 <= fcntDownPrev) && ((0xFFFF - (uint16_t)fcntDownPrev + fcnt16) > RADIOLIB_LORAWAN_MAX_FCNT_GAP)) {
     #if !defined(RADIOLIB_STATIC_ONLY)
       delete[] downlinkMsg;
     #endif
@@ -966,6 +968,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
       isMACPayload = true;
       this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
+      String strDown;
+      state = this->downlink(strDown);
+      RADIOLIB_ASSERT(state);
     }
 
     // write the MAC command queue to nvm for next uplink
