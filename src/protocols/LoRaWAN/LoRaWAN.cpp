@@ -968,7 +968,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 
       isMACPayload = true;
       this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
-      uint8_t strDown[this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
+      uint8_t strDown[this->band->payloadLenMax[this->dataRate[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
       size_t lenDown = 0;
       state = this->downlink(strDown, &lenDown);
       RADIOLIB_ASSERT(state);
