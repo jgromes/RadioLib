@@ -222,6 +222,7 @@ spectralScanStart	KEYWORD2
 spectralScanAbort	KEYWORD2
 spectralScanGetStatus	KEYWORD2
 spectralScanGetResult	KEYWORD2
+setPaConfig	KEYWORD2
 
 # nRF24
 setIrqAction	KEYWORD2

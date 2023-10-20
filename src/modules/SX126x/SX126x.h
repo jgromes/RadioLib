@@ -1070,6 +1070,19 @@ class SX126x: public PhysicalLayer {
     */
     int16_t spectralScanGetResult(uint16_t* results);
 
+    /*!
+      \brief Set the PA configuration. Allows user to optimize PA for a specific output power
+      and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower.
+      WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage!
+      \param paDutyCycle PA duty cycle raw value.
+      \param deviceSel Device select, usually RADIOLIB_SX126X_PA_CONFIG_SX1261,
+      RADIOLIB_SX126X_PA_CONFIG_SX1262 or RADIOLIB_SX126X_PA_CONFIG_SX1268.
+      \param hpMax hpMax raw value.
+      \param paLut paLut PA lookup table raw value.
+      \returns \ref status_codes
+    */
+    int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
+
 #if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
