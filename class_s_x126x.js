@@ -52,6 +52,7 @@ var class_s_x126x =
     [ "setNodeAddress", "class_s_x126x.html#a514cabe74bbe3434d7e4f244c4077752", null ],
     [ "setPacketReceivedAction", "class_s_x126x.html#ad2bc2016783a3fcad3ad4e6518ee7fc8", null ],
     [ "setPacketSentAction", "class_s_x126x.html#a0417720a61b2d587e5633360cbecb33c", null ],
+    [ "setPaConfig", "class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208", null ],
     [ "setPreambleLength", "class_s_x126x.html#ad6274222ccf534e98e3cd17dfa1520d4", null ],
     [ "setRegulatorDCDC", "class_s_x126x.html#a5ae69309ca0cf5f13c60f2d162916ff8", null ],
     [ "setRegulatorLDO", "class_s_x126x.html#a21c263ce1a339faa74c568d9afb81cd2", null ],

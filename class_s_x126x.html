@@ -360,6 +360,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae473773e5bed4b08452e80311bdb26f2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2">spectralScanGetResult</a> (uint16_t *results)</td></tr>
 <tr class="memdesc:ae473773e5bed4b08452e80311bdb26f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the result of spectral scan.  <a href="class_s_x126x.html#ae473773e5bed4b08452e80311bdb26f2">More...</a><br /></td></tr>
 <tr class="separator:ae473773e5bed4b08452e80311bdb26f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1623e7d5450c97ca092913ad79d62208"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">setPaConfig</a> (uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax=RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut=RADIOLIB_SX126X_PA_CONFIG_PA_LUT)</td></tr>
+<tr class="memdesc:a1623e7d5450c97ca092913ad79d62208"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PA configuration. Allows user to optimize PA for a specific output power and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower. WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage!  <a href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">More...</a><br /></td></tr>
+<tr class="separator:a1623e7d5450c97ca092913ad79d62208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1945,6 +1948,58 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a1623e7d5450c97ca092913ad79d62208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1623e7d5450c97ca092913ad79d62208">&#9670;&nbsp;</a></span>setPaConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::setPaConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paDutyCycle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>deviceSel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hpMax</em> = <code>RADIOLIB_SX126X_PA_CONFIG_HP_MAX</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>paLut</em> = <code>RADIOLIB_SX126X_PA_CONFIG_PA_LUT</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the PA configuration. Allows user to optimize PA for a specific output power and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower. WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">paDutyCycle</td><td>PA duty cycle raw value. </td></tr>
+    <tr><td class="paramname">deviceSel</td><td>Device select, usually RADIOLIB_SX126X_PA_CONFIG_SX1261, RADIOLIB_SX126X_PA_CONFIG_SX1262 or RADIOLIB_SX126X_PA_CONFIG_SX1268. </td></tr>
+    <tr><td class="paramname">hpMax</td><td>hpMax raw value. </td></tr>
+    <tr><td class="paramname">paLut</td><td>paLut PA lookup table raw value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
