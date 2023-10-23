@@ -534,6 +534,26 @@
 #define RADIOLIB_ERR_COMMAND_QUEUE_EMPTY                        (-1110)
 
 /*!
+  \brief Unable to delete MAC command because it was not found in the queue.
+*/
+#define RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND               (-1111)
+
+/*!
+  \brief Unable to join network because JoinNonce is not higher than saved value.
+*/
+#define RADIOLIB_ERR_JOIN_NONCE_INVALID                         (-1112)
+
+/*!
+  \brief Received downlink Network frame counter is invalid (lower than last heard value).
+*/
+#define RADIOLIB_ERR_N_FCNT_DOWN_INVALID                        (-1113)
+
+/*!
+  \brief Received downlink Application frame counter is invalid (lower than last heard value).
+*/
+#define RADIOLIB_ERR_A_FCNT_DOWN_INVALID                        (-1114)
+
+/*!
   \}
 */
 
