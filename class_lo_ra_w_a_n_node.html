@@ -105,15 +105,15 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea">wipe</a> ()</td></tr>
 <tr class="memdesc:a9613998d071bcf401be9ad57ff8591ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wipe internal persistent parameters. This will reset all counters and saved variables, so the device will have to rejoin the network. <br /></td></tr>
 <tr class="separator:a9613998d071bcf401be9ad57ff8591ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcc515f5c2c7853df596e9096db76d28"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afcc515f5c2c7853df596e9096db76d28">begin</a> ()</td></tr>
-<tr class="memdesc:afcc515f5c2c7853df596e9096db76d28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#afcc515f5c2c7853df596e9096db76d28">More...</a><br /></td></tr>
-<tr class="separator:afcc515f5c2c7853df596e9096db76d28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acb9a128c5d2d252ff057cb0a0b1da00c">restoreOTAA</a> ()</td></tr>
+<tr class="memdesc:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore OTAA session by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#acb9a128c5d2d252ff057cb0a0b1da00c">More...</a><br /></td></tr>
+<tr class="separator:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1c51588ea3b3ca82e2742c7cc9bc2a72">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false)</td></tr>
 <tr class="memdesc:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a1c51588ea3b3ca82e2742c7cc9bc2a72">More...</a><br /></td></tr>
 <tr class="separator:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cc7e7c9dc84c925c81247f4679cbe62"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a4cc7e7c9dc84c925c81247f4679cbe62">beginAPB</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL)</td></tr>
-<tr class="memdesc:a4cc7e7c9dc84c925c81247f4679cbe62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a4cc7e7c9dc84c925c81247f4679cbe62">More...</a><br /></td></tr>
-<tr class="separator:a4cc7e7c9dc84c925c81247f4679cbe62"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acbf3beb97c42072f13d46e06f1d4709b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acbf3beb97c42072f13d46e06f1d4709b">beginABP</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL)</td></tr>
+<tr class="memdesc:acbf3beb97c42072f13d46e06f1d4709b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#acbf3beb97c42072f13d46e06f1d4709b">More...</a><br /></td></tr>
+<tr class="separator:acbf3beb97c42072f13d46e06f1d4709b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">uplink</a> (const char *str, uint8_t port)</td></tr>
 <tr class="memdesc:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">More...</a><br /></td></tr>
 <tr class="separator:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,34 +183,14 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="afcc515f5c2c7853df596e9096db76d28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcc515f5c2c7853df596e9096db76d28">&#9670;&nbsp;</a></span>begin()</h2>
+<a id="acbf3beb97c42072f13d46e06f1d4709b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acbf3beb97c42072f13d46e06f1d4709b">&#9670;&nbsp;</a></span>beginABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANNode::begin </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Join network by loading information from persistent storage. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a4cc7e7c9dc84c925c81247f4679cbe62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cc7e7c9dc84c925c81247f4679cbe62">&#9670;&nbsp;</a></span>beginAPB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::beginAPB </td>
+          <td class="memname">int16_t LoRaWANNode::beginABP </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>addr</em>, </td>
@@ -355,6 +335,26 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="cl
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="acb9a128c5d2d252ff057cb0a0b1da00c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb9a128c5d2d252ff057cb0a0b1da00c">&#9670;&nbsp;</a></span>restoreOTAA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::restoreOTAA </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Restore OTAA session by loading information from persistent storage. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
