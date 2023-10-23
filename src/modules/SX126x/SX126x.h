@@ -56,7 +56,7 @@
 #define RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS                   0x8C
 #define RADIOLIB_SX126X_CMD_SET_CAD_PARAMS                      0x88
 #define RADIOLIB_SX126X_CMD_SET_BUFFER_BASE_ADDRESS             0x8F
-#define RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT           0x0A
+#define RADIOLIB_SX126X_CMD_SET_LORA_SYMB_NUM_TIMEOUT           0xA0
 
 // status commands
 #define RADIOLIB_SX126X_CMD_GET_STATUS                          0xC0
@@ -219,7 +219,7 @@
 #define RADIOLIB_SX126X_IRQ_HEADER_ERR                          0b0000000000100000  //  5     5   LoRa header CRC error
 #define RADIOLIB_SX126X_IRQ_HEADER_VALID                        0b0000000000010000  //  4     4   valid LoRa header received
 #define RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID                     0b0000000000001000  //  3     3   valid sync word detected
-#define RADIOLIB_SX126X_IRQ_RADIOLIB_PREAMBLE_DETECTED          0b0000000000000100  //  2     2   preamble detected
+#define RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED                   0b0000000000000100  //  2     2   preamble detected
 #define RADIOLIB_SX126X_IRQ_RX_DONE                             0b0000000000000010  //  1     1   packet received
 #define RADIOLIB_SX126X_IRQ_TX_DONE                             0b0000000000000001  //  0     0   packet transmission completed
 #define RADIOLIB_SX126X_IRQ_RX_DEFAULT                          0b0000001001100010  //  14    0   default for Rx (RX_DONE, TIMEOUT, CRC_ERR and HEADER_ERR)
@@ -948,6 +948,16 @@ class SX126x: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     uint32_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Get the Rx timeout required to listen to a preamble of a certain number of symbols
+      \param numSymbols Number of symbols to listen for
+      \param datarate The datarate for which to calculate the timeout
+      \param offsetUs Additional offset in microseconds to allow increasing the timeout
+      \param timeoutUs Returns the timeout in microseconds for the host to sleep
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    uint32_t calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUss);
 
     /*!
       \brief Set implicit header mode for future reception/transmission.

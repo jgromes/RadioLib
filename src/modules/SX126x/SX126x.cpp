@@ -1436,6 +1436,36 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
+// Table below defines the size of one symbol as
+//   symtime = 256us * 2^T(sf,bw)
+// 256us is called one symunit.
+//                 SF:
+//      BW:      |__7___8___9__10__11__12
+//      125kHz   |  2   3   4   5   6   7
+//      250kHz   |  1   2   3   4   5   6
+//      500kHz   |  0   1   2   3   4   5
+//
+uint32_t SX126x::calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUs) {
+  uint8_t exponent = 0;
+  exponent += datarate->lora.spreadingFactor - 7;
+
+  switch((int)datarate->lora.bandwidth) {
+    case 125:
+      exponent += 2;
+      break;
+    case 250:
+      exponent += 1;
+      break;
+    default:  // includes 500 kHz
+      exponent += 0;
+      break;
+  }
+  
+  timeoutUs = (uint32_t)numSymbols * 256 * (0x01 << exponent) + offsetUs;
+  uint32_t timeout = timeoutUs / 15.625;
+  return(timeout);
+}
+
 int16_t SX126x::implicitHeader(size_t len) {
   return(setHeaderType(RADIOLIB_SX126X_LORA_HEADER_IMPLICIT, len));
 }

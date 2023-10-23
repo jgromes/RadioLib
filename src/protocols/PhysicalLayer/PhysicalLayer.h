@@ -309,6 +309,16 @@ class PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     virtual uint32_t getTimeOnAir(size_t len);
+
+    /*!
+      \brief Get the Rx timeout required to listen to a preamble of a certain number of symbols
+      \param numSymbols Number of symbols to listen for
+      \param datarate The datarate for which to calculate the timeout
+      \param offsetUs Additional offset in microseconds to allow increasing the timeout
+      \param timeoutUs Returns the timeout in microseconds for the host to sleep
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    virtual uint32_t calculateRxTimeout(uint8_t numSymbols, DataRate_t* datarate, uint32_t offsetUs, uint32_t& timeoutUs);
     
     /*!
       \brief Interrupt-driven channel activity detection method. interrupt will be activated

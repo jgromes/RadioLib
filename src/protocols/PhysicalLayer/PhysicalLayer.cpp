@@ -293,6 +293,14 @@ uint32_t PhysicalLayer::getTimeOnAir(size_t len) {
   (void)len;
   return(0);
 }
+
+uint32_t PhysicalLayer::calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUs) {
+  (void)numSymbols;
+  (void)datarate;
+  (void)offsetUs;
+  (void)timeoutUs;
+  return(RADIOLIB_ERR_UNSUPPORTED); 
+}
     
 int16_t PhysicalLayer::startChannelScan() {
   return(RADIOLIB_ERR_UNSUPPORTED); 
