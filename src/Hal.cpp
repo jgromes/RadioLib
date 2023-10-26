@@ -60,14 +60,14 @@ uint32_t RadioLibHal::getPersistentAddr(uint32_t id) {
 }
 
 template<typename T>
-void RadioLibHal::setPersistentParameter(uint32_t id, T val) {
+void RadioLibHal::setPersistentParameter(uint32_t id, T val, uint32_t offset) {
   uint8_t *ptr = (uint8_t*)&val;
-  this->writePersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + RadioLibPersistentParamTable[id], ptr, sizeof(T));
+  this->writePersistentStorage(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE + RadioLibPersistentParamTable[id] + offset, ptr, sizeof(T));
 }
 
-template void RadioLibHal::setPersistentParameter(uint32_t id, uint8_t val);
-template void RadioLibHal::setPersistentParameter(uint32_t id, uint16_t val);
-template void RadioLibHal::setPersistentParameter(uint32_t id, uint32_t val);
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint8_t val, uint32_t offset);
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint16_t val, uint32_t offset);
+template void RadioLibHal::setPersistentParameter(uint32_t id, uint32_t val, uint32_t offset);
 
 template<typename T>
 T RadioLibHal::getPersistentParameter(uint32_t id) {

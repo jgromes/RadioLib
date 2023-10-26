@@ -960,6 +960,18 @@ class SX126x: public PhysicalLayer {
     uint32_t calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUss);
 
     /*!
+      \brief Check whether there is a RxTimeout flag set
+      \returns RxTimeout flag is set
+    */
+    bool isRxTimeout();
+
+    /*!
+      \brief Check whether there is a RxTimeout flag set
+      \returns RxTimeout flag is set
+    */
+    uint16_t readIrq(bool clear = false);
+
+    /*!
       \brief Set implicit header mode for future reception/transmission.
       \param len Payload length in bytes.
       \returns \ref status_codes

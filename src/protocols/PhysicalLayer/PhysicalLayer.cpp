@@ -299,7 +299,16 @@ uint32_t PhysicalLayer::calculateRxTimeout(uint8_t numSymbols, DataRate_t *datar
   (void)datarate;
   (void)offsetUs;
   (void)timeoutUs;
-  return(RADIOLIB_ERR_UNSUPPORTED); 
+  return(0); 
+}
+
+bool PhysicalLayer::isRxTimeout() {
+  return(0);
+}
+
+uint16_t PhysicalLayer::readIrq(bool clear) {
+  (void)clear;
+  return(0);
 }
     
 int16_t PhysicalLayer::startChannelScan() {

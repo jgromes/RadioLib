@@ -11,7 +11,7 @@
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID           (1)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION            (2)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID      (3)
-#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_MAX_ID   (4)
+#define RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_ID       (4)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID   (5)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX2FREQ_ID         (6)
 #define RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID     (7)
@@ -38,7 +38,7 @@ static const uint32_t RadioLibPersistentParamTable[] = {
   0x01,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID
   0x03,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_VERSION
   0x04,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXDR_RX2DR_ID
-  0x05,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_MAX_ID
+  0x05,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_TXPWR_CUR_ID
   0x06,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX1_DROFF_DEL_ID
   0x07,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_RX2FREQ_ID
   0x0A,   // RADIOLIB_PERSISTENT_PARAM_LORAWAN_ADR_LIM_DEL_ID
@@ -299,9 +299,10 @@ class RadioLibHal {
       will be stored in the system endian!
       \param id Parameter ID to save at.
       \param val Value to set.
+      \param offset An additional offset added to the address.
     */
     template<typename T>
-    void setPersistentParameter(uint32_t id, T val);
+    void setPersistentParameter(uint32_t id, T val, uint32_t offset = 0);
 
     /*!
       \brief Method to get arbitrary parameter from persistent storage.

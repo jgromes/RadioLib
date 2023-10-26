@@ -319,6 +319,18 @@ class PhysicalLayer {
       \returns Timeout value in a unit that is specific for the used module
     */
     virtual uint32_t calculateRxTimeout(uint8_t numSymbols, DataRate_t* datarate, uint32_t offsetUs, uint32_t& timeoutUs);
+
+    /*!
+      \brief Check whether there is a RxTimeout flag set
+      \returns RxTimeout flag is set
+    */
+    virtual bool isRxTimeout();
+
+    /*!
+      \brief Check whether there is a RxTimeout flag set
+      \returns RxTimeout flag is set
+    */
+    virtual uint16_t readIrq(bool clear = false);
     
     /*!
       \brief Interrupt-driven channel activity detection method. interrupt will be activated

@@ -135,6 +135,7 @@
 
 // payload encryption/MIC blocks common layout
 #define RADIOLIB_LORAWAN_BLOCK_MAGIC_POS                        (0)
+#define RADIOLIB_LORAWAN_BLOCK_CONF_FCNT_POS                    (1)
 #define RADIOLIB_LORAWAN_BLOCK_DIR_POS                          (5)
 #define RADIOLIB_LORAWAN_BLOCK_DEV_ADDR_POS                     (6)
 #define RADIOLIB_LORAWAN_BLOCK_FCNT_POS                         (10)
@@ -170,6 +171,9 @@
 #define RADIOLIB_LORAWAN_MAC_CMD_FORCE_REJOIN                   (0x0E)
 #define RADIOLIB_LORAWAN_MAC_CMD_REJOIN_PARAM_SETUP             (0x0F)
 #define RADIOLIB_LORAWAN_MAC_CMD_PROPRIETARY                    (0x80)
+
+// unused frame counter value
+#define RADIOLIB_LORAWAN_FCNT_NONE                              (0xFFFFFFFF)
 
 // the length of internal MAC command queue - hopefully this is enough for most use cases
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (8)
@@ -334,9 +338,6 @@ class LoRaWANNode {
     // RX2 channel properties - may be changed by MAC command
     LoRaWANChannel_t rx2;
 
-    // Number of allowed frame retransmissions
-    uint8_t nbTrans;
-
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -344,6 +345,7 @@ class LoRaWANNode {
     */
     LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band);
 
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
       \brief Wipe internal persistent parameters.
       This will reset all counters and saved variables, so the device will have to rejoin the network.
@@ -355,6 +357,14 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t restore();
+
+    /*!
+      \brief Restore frame counter for uplinks from persistent storage.
+      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
+      \returns \ref status_codes
+    */
+    int16_t restoreFcntUp();
+#endif
 
     /*!
       \brief Join network by performing over-the-air activation. By this procedure,
@@ -381,32 +391,52 @@ class LoRaWANNode {
     */
     int16_t beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL, bool force = false);
 
+    /*!
+      \brief Save the current state of the session.
+      All variables are compared to what is saved and only the differences are rewritten.
+      \returns \ref status_codes
+    */
+    int16_t saveSession();
+
+    /*!
+      \brief Save the current uplink frame counter.
+      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
+      \returns \ref status_codes
+    */
+    int16_t saveFcntUp();
+
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Send a message to the server.
       \param str Address of Arduino String that will be transmitted.
       \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(String& str, uint8_t port);
+    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
     #endif
 
     /*!
       \brief Send a message to the server.
       \param str C-string that will be transmitted.
       \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(const char* str, uint8_t port);
+    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
 
     /*!
       \brief Send a message to the server.
       \param data Data to send.
       \param len Length of the data.
       \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(uint8_t* data, size_t len, uint8_t port);
+    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -457,6 +487,23 @@ class LoRaWANNode {
     uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+    
+    // device-specific parameters, persistent through sessions
+    uint16_t devNonce = 0;
+    uint32_t joinNonce = 0;
+
+    // session-specific parameters
+    uint32_t homeNetId = 0;
+    uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;
+    uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;
+    uint8_t nbTrans = 1;            // Number of allowed frame retransmissions
+    uint8_t txPwrCur = 0;
+    uint32_t fcntUp = 0;
+    uint32_t aFcntDown = 0;
+    uint32_t nFcntDown = 0;
+    uint32_t confFcntUp = RADIOLIB_LORAWAN_FCNT_NONE;
+    uint32_t confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;
+    uint32_t adrFcnt = 0;
 
     // available channel frequencies from list passed during OTA activation
     LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
