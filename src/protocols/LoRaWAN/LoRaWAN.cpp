@@ -637,6 +637,11 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
     LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], micF);
   }
 
+  // perform CSMA if enabled.
+  if (CSMA_ENABLE) {
+    performCSMA();
+  }
+
   RADIOLIB_DEBUG_PRINTLN("uplinkMsg:");
   RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
@@ -1760,6 +1765,54 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
   for(size_t i = 0; i < targetSize; i++) {
     *(buffPtr++) = val >> 8*i;
   }
+}
+
+// The following function enables LMAC, a CSMA scheme for LoRa as specified in the LoRa Alliance Technical Reccomendation #13.
+// A user may enable CSMA to provide frames an additional layer of protection from interference.
+// https://resources.lora-alliance.org/technical-recommendations/tr013-1-0-0-csma
+void LoRaWANNode::performCSMA() {
+    
+    // Compute initial random back-off. 
+    // When BO is reduced to zero, the function returns and the frame is transmitted.
+    uint32_t BO = random(1, BO_MAX + 1);
+
+    while (BO > 0) {
+        // DIFS: Check channel for DIFS_slots
+        bool channelFreeDuringDIFS = true;
+        for (uint8_t i = 0; i < DIFS_SLOTS; i++) {
+            if (performCAD()) {
+                RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING DIFS");
+                channelFreeDuringDIFS = false;
+                // Channel is occupied during DIFS, hop to another.
+                this->setupChannels();
+                break;
+            }
+        }
+
+        // Start reducing BO counter if DIFS slot was free.
+        if (channelFreeDuringDIFS) {
+            // Continue decrementing BO with per each CAD reporting free channel.
+            while (BO > 0) {
+                if (performCAD()) {
+                    RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING BO");
+                    // Channel is busy during CAD, hop to another and return to DIFS state again.
+                    this->setupChannels();
+                    break;  // Exit loop. Go back to DIFS state.
+                }
+                BO--;  // Decrement BO by one if channel is free
+            }
+        }
+    }
+}
+
+
+bool LoRaWANNode::performCAD() {
+    int16_t state = this->phyLayer->scanChannel();
+
+    if ((state == RADIOLIB_PREAMBLE_DETECTED) || (state == RADIOLIB_LORA_DETECTED)) {
+        return true; // Channel is busy
+    }
+    return false; // Channel is free
 }
 
 #endif

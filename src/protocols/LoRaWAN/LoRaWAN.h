@@ -176,6 +176,11 @@
 // the maximum number of simultaneously available channels
 #define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (8)
 
+// CSMA definitions
+#define DIFS_SLOTS                                              (2)     // Number of CADs to estimate a clear channel.
+#define BO_MAX                                                  (6)     // Number of maximum CADs to back-off. Set to 0 to disable.
+#define CSMA_ENABLE                                             (true)  // Enables/disables CSMA functionality.
+
 /*!
   \struct LoRaWANChannelSpan_t
   \brief Structure to save information about LoRaWAN channels.
@@ -502,6 +507,12 @@ class LoRaWANNode {
     // host-to-network conversion method - takes data from host variable and and converts it to network packet endians
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
+
+    // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
+    bool performCAD();
+
+    // Performs CSMA as per LoRa Alliance Technical Reccomendation 13 (TR-013).
+    void performCSMA();
 };
 
 #endif
