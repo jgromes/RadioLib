@@ -37,12 +37,23 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->startChannel = -1;
   this->numChannels = -1;
   this->backupFreq = this->band->backupChannel.freqStart;
+  this->difsSlots = 2;
+  this->backoffMax = 6;
+  this->enableCSMA = false;
+
 }
 
 void LoRaWANNode::wipe() {
   Module* mod = this->phyLayer->getMod();
   mod->hal->wipePersistentStorage();
 }
+
+void LoRaWANNode::setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA) {
+    this->backoffMax = backoffMax;
+    this->difsSlots = difsSlots;
+    this->enableCSMA = enableCSMA;
+}
+
 
 int16_t LoRaWANNode::restoreOTAA() {
   int16_t state = this->setPhyProperties();
@@ -638,7 +649,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   }
 
   // perform CSMA if enabled.
-  if (CSMA_ENABLE) {
+  if (enableCSMA) {
     performCSMA();
   }
 
@@ -1767,19 +1778,20 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
   }
 }
 
-// The following function enables LMAC, a CSMA scheme for LoRa as specified in the LoRa Alliance Technical Reccomendation #13.
+// The following function enables LMAC, a CSMA scheme for LoRa as specified 
+// in the LoRa Alliance Technical Recommendation #13.
 // A user may enable CSMA to provide frames an additional layer of protection from interference.
 // https://resources.lora-alliance.org/technical-recommendations/tr013-1-0-0-csma
 void LoRaWANNode::performCSMA() {
     
     // Compute initial random back-off. 
     // When BO is reduced to zero, the function returns and the frame is transmitted.
-    uint32_t BO = random(1, BO_MAX + 1);
+    uint32_t BO = this->phyLayer->random(1, this->backoffMax + 1);
 
     while (BO > 0) {
         // DIFS: Check channel for DIFS_slots
         bool channelFreeDuringDIFS = true;
-        for (uint8_t i = 0; i < DIFS_SLOTS; i++) {
+        for (uint8_t i = 0; i < this->difsSlots; i++) {
             if (performCAD()) {
                 RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING DIFS");
                 channelFreeDuringDIFS = false;
@@ -1804,7 +1816,6 @@ void LoRaWANNode::performCSMA() {
         }
     }
 }
-
 
 bool LoRaWANNode::performCAD() {
     int16_t state = this->phyLayer->scanChannel();

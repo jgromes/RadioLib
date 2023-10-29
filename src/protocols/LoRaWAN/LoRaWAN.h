@@ -176,11 +176,6 @@
 // the maximum number of simultaneously available channels
 #define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (8)
 
-// CSMA definitions
-#define DIFS_SLOTS                                              (2)     // Number of CADs to estimate a clear channel.
-#define BO_MAX                                                  (6)     // Number of maximum CADs to back-off. Set to 0 to disable.
-#define CSMA_ENABLE                                             (true)  // Enables/disables CSMA functionality.
-
 /*!
   \struct LoRaWANChannelSpan_t
   \brief Structure to save information about LoRaWAN channels.
@@ -301,6 +296,17 @@ class LoRaWANNode {
         (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). */
     int8_t numChannels;
 
+    /*! \brief Num of Back Off(BO) slots to be decremented after DIFS phase. 0 to disable BO.
+        A random BO avoids collisions in the case where two or more nodes start the CSMA
+        process at the same time. */
+    uint8_t backoffMax;
+
+    /*! \brief Num of CADs to estimate a clear CH. */
+    uint8_t difsSlots;
+
+    /*! \brief enable/disable CSMA for LoRaWAN. */
+    bool enableCSMA;
+
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -313,6 +319,14 @@ class LoRaWANNode {
       This will reset all counters and saved variables, so the device will have to rejoin the network.
     */
     void wipe();
+
+    /*!
+      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
+      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
+      \param difsSlots Num of CADs to estimate a clear CH.
+      \param enableCSMA enable/disable CSMA for LoRaWAN.
+    */
+    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
 
     /*!
       \brief Restore OTAA session by loading information from persistent storage.
