@@ -1702,27 +1702,41 @@ int16_t SX126x::setRx(uint32_t timeout) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
+ 
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
-  // default CAD parameters for assigned SF as per Semtech AN1200.48, Rev 2.1, Page 50
-  uint8_t detPeakValues[8] = { 22, 22, 22, 22, 23, 24, 25, 28};
-  uint8_t symbolNumValues[8] = { RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_4_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_4_SYMB };
+  // default CAD parameters are shown in Semtech AN1200.48, page 41.
+  uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
+
+  // CAD parameters aren't available for SF-6. Just to be safe.
+  if(this->spreadingFactor < 7) {
+    this->spreadingFactor = 7;
+  } else if(this->spreadingFactor > 12) {
+    this->spreadingFactor = 12;
+  }
+
   // build the packet
   uint8_t data[7];
-  data[0] = symbolNumValues[this->spreadingFactor - 5];
-  data[1] = detPeakValues[this->spreadingFactor - 5];
+  data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
+  data[1] = detPeakValues[this->spreadingFactor - 7];
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
   data[4] = 0x00;
   data[5] = 0x00;
   data[6] = 0x00;
 
+
+ /*
+  CAD Configuration Note:
+  The default CAD configuration applied by `scanChannel` overrides the optimal SF-specific configurations, leading to suboptimal detection.
+  I.e., anything that is not RADIOLIB_SX126X_CAD_PARAM_DEFAULT is overridden. But CAD settings are SF specific.
+  To address this, the user override has been commented out, ensuring consistent application of the optimal CAD settings as 
+    per Semtech's Application Note AN1200.48 (page 41) for the 125KHz setting. This approach significantly reduces false CAD occurrences.
+    Testing has shown that there is no reason for a user to change CAD settings for anything other than most optimal ones described in AN1200.48 .
+  However, this change deos not respect CAD configs from the LoRaWAN layer. Future considerations or use cases might require revisiting this decision.
+  Hence this note.
+*/
+
+/*
   // set user-provided values
   if(symbolNum != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
     data[0] = symbolNum;
@@ -1735,6 +1749,9 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   if(detMin != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
     data[2] = detMin;
   }
+
+*/
+
 
   // configure parameters
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
@@ -2030,7 +2047,7 @@ int16_t SX126x::config(uint8_t modem) {
   state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_TX_FALLBACK_MODE, data, 1);
   RADIOLIB_ASSERT(state);
 
-  // set some CAD parameters - will be overwritten whel calling CAD anyway
+  // set some CAD parameters - will be overwritten when calling CAD anyway
   data[0] = RADIOLIB_SX126X_CAD_ON_8_SYMB;
   data[1] = this->spreadingFactor + 13;
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
