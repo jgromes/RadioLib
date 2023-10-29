@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['joinrequestdatarate_876',['joinRequestDataRate',['../struct_lo_ra_w_a_n_channel_span__t.html#a09bbd5a4bc1f458769f0d28bdeb4a502',1,'LoRaWANChannelSpan_t']]]
+  ['info_881',['info',['../class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988',1,'AX25Frame']]],
+  ['infolen_882',['infoLen',['../class_a_x25_frame.html#a75e8ad33c2540ede5bb130050f6ffc41',1,'AX25Frame']]],
+  ['init_883',['init',['../class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f',1,'RadioLibCRC']]]
 ];
