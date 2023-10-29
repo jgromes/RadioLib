@@ -1706,12 +1706,6 @@ int16_t SX126x::setRx(uint32_t timeout) {
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // default CAD parameters are shown in Semtech AN1200.48, page 41.
   uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
-  uint8_t symbolNumValues[6] = { RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB,
-                                 RADIOLIB_SX126X_CAD_ON_2_SYMB };
 
   // CAD parameters aren't available for SF-6. Just to be safe.
   if(this->spreadingFactor < 7) {
@@ -1722,7 +1716,7 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
 
   // build the packet
   uint8_t data[7];
-  data[0] = symbolNumValues[this->spreadingFactor - 7];
+  data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
   data[1] = detPeakValues[this->spreadingFactor - 7];
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
