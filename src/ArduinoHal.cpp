@@ -145,10 +145,16 @@ void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long
     // ESP32 tone() emulation
     (void)duration;
     if(prev == -1) {
+      #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
       ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
+      #endif
     }
     if(prev != frequency) {
+      #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
       ledcWriteTone(RADIOLIB_TONE_ESP32_CHANNEL, frequency);
+      #else
+      ledcWriteTone(pin, frequency);
+      #endif
     }
     prev = frequency;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
@@ -178,8 +184,13 @@ void inline ArduinoHal::noTone(uint32_t pin) {
       return;
     }
     // ESP32 tone() emulation
+    #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
     ledcDetachPin(pin);
     ledcWrite(RADIOLIB_TONE_ESP32_CHANNEL, 0);
+    #else
+    ledcDetach(pin);
+    ledcWrite(pin, 0);
+    #endif
     prev = -1;
   #elif defined(RADIOLIB_MBED_TONE_OVERRIDE)
     if(pin == RADIOLIB_NC) {
