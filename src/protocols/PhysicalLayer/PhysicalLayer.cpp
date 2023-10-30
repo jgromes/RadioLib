@@ -294,23 +294,18 @@ uint32_t PhysicalLayer::getTimeOnAir(size_t len) {
   return(0);
 }
 
-uint32_t PhysicalLayer::calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUs) {
+uint32_t PhysicalLayer::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
   (void)numSymbols;
-  (void)datarate;
-  (void)offsetUs;
   (void)timeoutUs;
   return(0); 
 }
 
-bool PhysicalLayer::isRxTimeout() {
-  return(0);
+int16_t PhysicalLayer::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+  (void)irqFlags;
+  (void)irqMask;
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-uint16_t PhysicalLayer::readIrq(bool clear) {
-  (void)clear;
-  return(0);
-}
-    
 int16_t PhysicalLayer::startChannelScan() {
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }

@@ -438,6 +438,12 @@ class LoRaWANNode {
     */
     int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
 
+    /*!
+      \brief Wait for, open and listen during Rx1 and Rx2 windows; only performs listening
+      \returns \ref status_codes
+    */
+    int16_t downlinkCommon();
+
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Wait for downlink from the server in either RX1 or RX2 window.

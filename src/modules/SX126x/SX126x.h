@@ -950,26 +950,20 @@ class SX126x: public PhysicalLayer {
     uint32_t getTimeOnAir(size_t len) override;
 
     /*!
-      \brief Get the Rx timeout required to listen to a preamble of a certain number of symbols
-      \param numSymbols Number of symbols to listen for
-      \param datarate The datarate for which to calculate the timeout
-      \param offsetUs Additional offset in microseconds to allow increasing the timeout
-      \param timeoutUs Returns the timeout in microseconds for the host to sleep
+      \brief Calculate the timeout value for this specific module / series based on number of symbols or time
+      \param numSymbols Number of payload symbols to listen for
+      \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    uint32_t calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUss);
+    uint32_t calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs);
 
     /*!
-      \brief Check whether there is a RxTimeout flag set
-      \returns RxTimeout flag is set
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
+      \param irqFlags The flags for which IRQs must be triggered
+      \param irqMask Mask indicating which IRQ triggers a DIO
+      \returns \ref status_codes
     */
-    bool isRxTimeout();
-
-    /*!
-      \brief Check whether there is a RxTimeout flag set
-      \returns RxTimeout flag is set
-    */
-    uint16_t readIrq(bool clear = false);
+    int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
 
     /*!
       \brief Set implicit header mode for future reception/transmission.

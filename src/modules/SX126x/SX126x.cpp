@@ -1436,27 +1436,18 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-uint32_t SX126x::calculateRxTimeout(uint8_t numSymbols, DataRate_t *datarate, uint32_t offsetUs, uint32_t& timeoutUs) {
-  uint32_t symbolTime = (0x00000001 << datarate->lora.spreadingFactor) * 1000 / datarate->lora.bandwidth;
-  timeoutUs = (uint32_t)numSymbols * symbolTime + offsetUs;
+uint32_t SX126x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
+  (void)numSymbols; // not used for these modules
   uint32_t timeout = timeoutUs / 15.625;
   return(timeout);
 }
 
-bool SX126x::isRxTimeout() {
-  uint16_t irq = getIrqStatus();
-  bool isRxTimeout = false;
-  if(irq & RADIOLIB_SX126X_IRQ_TIMEOUT) {
-    isRxTimeout = true;
-  }
-  return(isRxTimeout);
-}
-
-uint16_t SX126x::readIrq(bool clear) {
-  uint16_t irq = getIrqStatus();
-  if(clear)
-    clearIrqStatus();
-  return(irq);
+int16_t SX126x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+  irqFlags  = 0b0000000000000010; // RxDone
+  irqMask   = 0b0000000000000010;
+  irqFlags |= 0b0000001000000000; // RxTimeout
+  irqMask  |= 0b0000001000000000;
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
