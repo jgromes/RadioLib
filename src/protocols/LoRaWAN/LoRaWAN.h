@@ -363,27 +363,30 @@ class LoRaWANNode {
       \brief Send a message to the server.
       \param str Address of Arduino String that will be transmitted.
       \param port Port number to send the message to.
+      \param confirm Whether or not an ACK is requested for the message.
       \returns \ref status_codes
     */
-    int16_t uplink(String& str, uint8_t port);
+    int16_t uplink(String& str, uint8_t port, bool confirm=false);
     #endif
 
     /*!
       \brief Send a message to the server.
       \param str C-string that will be transmitted.
       \param port Port number to send the message to.
+      \param confirm Whether or not an ACK is requested for the message.
       \returns \ref status_codes
     */
-    int16_t uplink(const char* str, uint8_t port);
+    int16_t uplink(const char* str, uint8_t port, bool confirm=false);
 
     /*!
       \brief Send a message to the server.
       \param data Data to send.
       \param len Length of the data.
       \param port Port number to send the message to.
+      \param confirm Whether or not an ACK is requested for the message.
       \returns \ref status_codes
     */
-    int16_t uplink(uint8_t* data, size_t len, uint8_t port);
+    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool confirm=false);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!

@@ -499,16 +499,16 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::uplink(String& str, uint8_t port) {
-  return(this->uplink(str.c_str(), port));
+int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool confirm) {
+  return(this->uplink(str.c_str(), port, confirm));
 }
 #endif
 
-int16_t LoRaWANNode::uplink(const char* str, uint8_t port) {
-  return(this->uplink((uint8_t*)str, strlen(str), port));
+int16_t LoRaWANNode::uplink(const char* str, uint8_t port, bool confirm) {
+  return(this->uplink((uint8_t*)str, strlen(str), port, confirm));
 }
 
-int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
+int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool confirm) {
   // check destination port
   if(port > 0xDF) {
     return(RADIOLIB_ERR_INVALID_PORT);
@@ -559,7 +559,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port) {
   #endif
   
   // set the packet fields
-  uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] = RADIOLIB_LORAWAN_MHDR_MTYPE_UNCONF_DATA_UP | RADIOLIB_LORAWAN_MHDR_MAJOR_R1;
+  uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] = (confirm ? RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_UP : RADIOLIB_LORAWAN_MHDR_MTYPE_UNCONF_DATA_UP) | RADIOLIB_LORAWAN_MHDR_MAJOR_R1;
   LoRaWANNode::hton<uint32_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS], this->devAddr);
 
   // TODO implement adaptive data rate
