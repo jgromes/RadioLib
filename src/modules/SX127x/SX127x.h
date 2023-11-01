@@ -1040,6 +1040,28 @@ class SX127x: public PhysicalLayer {
     uint32_t getTimeOnAir(size_t len) override;
 
     /*!
+      \brief Calculate the timeout value for this specific module / series based on number of symbols or time
+      \param numSymbols Number of payload symbols to listen for
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    uint32_t calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs);
+
+    /*!
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
+      \param irqFlags The flags for which IRQs must be triggered
+      \param irqMask Mask indicating which IRQ triggers a DIO
+      \returns \ref status_codes
+    */
+    int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
+
+    /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns \ref RxTimeout IRQ is set
+    */
+    bool isRxTimeout();
+
+    /*!
       \brief Enable CRC filtering and generation.
       \param enable Set or unset CRC filtering and generation.
       \returns \ref status_codes

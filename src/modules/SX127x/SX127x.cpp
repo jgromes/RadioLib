@@ -405,6 +405,13 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, RADIOLIB_SX127X_FIFO_RX_BASE_ADDR_MAX);
     RADIOLIB_ASSERT(state);
 
+    // timeout is only used in RxSingle, so when a packet length is defined, force mode to RxSingle
+    // and set the timeout value to the expected number of symbols (usually preamble + header)
+    if(len > 0) {
+      mode = RADIOLIB_SX127X_RXSINGLE;
+      state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, len);
+    }
+
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // set DIO pin mapping
     state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
@@ -1235,6 +1242,28 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
     return(RADIOLIB_ERR_UNKNOWN);
   }
 
+}
+
+uint32_t SX127x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
+  (void)numSymbols; // not used for these modules
+  // numSymbols += (109 / 4) + 1;
+  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+  numSymbols = timeoutUs / symbolLength + 1;
+  return(numSymbols);
+}
+
+int16_t SX127x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+  irqFlags  = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE;
+  irqMask   = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE;
+  irqFlags &= RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
+  irqMask  &= RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
+  return(RADIOLIB_ERR_NONE);
+}
+
+bool SX127x::isRxTimeout() {
+  uint16_t irq = getIRQFlags();
+  bool rxTimedOut = irq & RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_TIMEOUT;
+  return(rxTimedOut);
 }
 
 int16_t SX127x::setCrcFiltering(bool enable) {

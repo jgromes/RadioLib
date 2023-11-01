@@ -295,11 +295,11 @@ struct LoRaWANMacCommand_t {
   /*! \brief The command ID */
   uint8_t cid;
 
-  /*! \brief Length of the payload */
-  uint8_t len;
-
   /*! \brief Payload buffer (5 bytes is the longest possible) */
   uint8_t payload[5];
+
+  /*! \brief Length of the payload */
+  uint8_t len;
 
   /*! \brief Repetition counter (the command will be uplinked repeat + 1 times) */
   uint8_t repeat;
@@ -477,12 +477,12 @@ class LoRaWANNode {
     LoRaWANMacCommandQueue_t commandsUp = { 
       .numCommands = 0,
       .len = 0,
-      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
+      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },
     };
     LoRaWANMacCommandQueue_t commandsDown = { 
       .numCommands = 0,
       .len = 0,
-      .commands = { { .cid = 0, .len = 0, .payload = { 0 }, .repeat = 0, } },
+      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },
     };
 
     // the following is either provided by the network server (OTAA)
@@ -570,9 +570,6 @@ class LoRaWANNode {
 
     // push MAC command to queue, done by copy
     int16_t pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue);
-    
-    // pop MAC command from queue, done by copy unless CMD is NULL
-    int16_t popMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue, size_t index);
 
     // delete a specific MAC command from queue, indicated by the command ID
     int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue);
