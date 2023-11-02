@@ -61,7 +61,7 @@ void inline ArduinoHal::delay(unsigned long ms) {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delay(ms);
 #else
-  ::delay(ms * (1000 - RADIOLIB_CLOCK_DRIFT_MS) / 1000);
+  ::delay(ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
 #endif
 }
 
@@ -69,7 +69,7 @@ void inline ArduinoHal::delayMicroseconds(unsigned long us) {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delayMicroseconds(us);
 #else
-  ::delayMicroseconds(us * (1000 - RADIOLIB_CLOCK_DRIFT_MS) / 1000);
+  ::delayMicroseconds(us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
 #endif
 }
 
@@ -77,7 +77,7 @@ unsigned long inline ArduinoHal::millis() {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::millis());
 #else
-  return(::millis() * (1000 - RADIOLIB_CLOCK_DRIFT_MS) / 1000);
+  return(::millis() * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
 #endif
 }
 
@@ -85,7 +85,7 @@ unsigned long inline ArduinoHal::micros() {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::micros());
 #else
-  return(::micros() * (1000 - RADIOLIB_CLOCK_DRIFT_MS) / 1000);
+  return(::micros() * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
 #endif
 }
 
