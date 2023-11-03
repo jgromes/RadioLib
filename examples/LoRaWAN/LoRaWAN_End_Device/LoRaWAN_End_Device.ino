@@ -111,7 +111,7 @@ void setup() {
   // by calling "begin"
   /*
     Serial.print(F("[LoRaWAN] Resuming previous session ... "));
-    state = node.begin();
+    state = node.restoreOTAA();
     if(state == RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
