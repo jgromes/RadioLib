@@ -131,6 +131,7 @@ void setup() {
       while(true);
     }
   */
+  delay(5000);
 }
 
 // counter to keep track of transmitted packets
