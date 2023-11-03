@@ -327,7 +327,6 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   this->rxDelays[1] = this->rxDelays[0] + 1000;
 
   // process CFlist if present
-  uint8_t cfList[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN] = { 0 };
   if(lenRx == RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN) {
     uint8_t cfList[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN] = { 0 };
     memcpy(&cfList[0], &joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_POS], RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN);
@@ -2095,7 +2094,7 @@ void LoRaWANNode::performCSMA() {
                 RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING DIFS");
                 channelFreeDuringDIFS = false;
                 // Channel is occupied during DIFS, hop to another.
-                this->setupChannels();
+                this->selectChannels();
                 break;
             }
         }
@@ -2107,7 +2106,7 @@ void LoRaWANNode::performCSMA() {
                 if (performCAD()) {
                     RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING BO");
                     // Channel is busy during CAD, hop to another and return to DIFS state again.
-                    this->setupChannels();
+                    this->selectChannels();
                     break;  // Exit loop. Go back to DIFS state.
                 }
                 BO--;  // Decrement BO by one if channel is free
