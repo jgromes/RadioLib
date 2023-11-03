@@ -1309,6 +1309,9 @@ int16_t LoRaWANNode::setupChannels(uint8_t* cfList) {
         RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", chnl.idx, availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
       }
     }
+    for(; num < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; num++) {
+      this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = RADIOLIB_LORAWAN_CHANNEL_NONE;
+    }
     
   } else {                  // RADIOLIB_LORAWAN_BAND_FIXED
     if(cfList != nullptr) {
@@ -1343,6 +1346,9 @@ int16_t LoRaWANNode::setupChannels(uint8_t* cfList) {
           }
           chNum++;
         }
+      }
+      for(; chNum < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; chNum++) {
+        this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][chNum] = RADIOLIB_LORAWAN_CHANNEL_NONE;
       }
     }
   }
@@ -1694,7 +1700,7 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
         for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
           if(chMaskCntl == 0) {
             // if chMaskCntl == 0, apply the mask by looking at each channel bit
-            RADIOLIB_DEBUG_PRINTLN("ADR channel %d: %d --> %d", i, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled, (chMask >> i) & 0x01);
+            RADIOLIB_DEBUG_PRINTLN("ADR channel %d: %d --> %d", this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled, (chMask >> i) & 0x01);
             if(chMask & (1UL << i)) {
               // if it should be enabled but is not currently defined, stop immediately
               if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
@@ -1817,7 +1823,7 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t freqAck = 0;
       for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
         // find first empty channel and configure this as the new channel
-        if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx == 0) {
+        if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
           this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
           this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx   = chIndex;
           this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq  = freq;
