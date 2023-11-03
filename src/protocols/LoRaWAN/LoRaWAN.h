@@ -370,6 +370,7 @@ class LoRaWANNode {
     int16_t restore();
 #endif
 
+    /*!
       \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
       \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
       \param difsSlots Num of CADs to estimate a clear CH.
