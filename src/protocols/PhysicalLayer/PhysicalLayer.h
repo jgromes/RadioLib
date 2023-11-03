@@ -327,6 +327,12 @@ class PhysicalLayer {
     virtual int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
 
     /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns \ref RxTimeout IRQ is set
+    */
+    virtual bool isRxTimeout();
+
+    /*!
       \brief Interrupt-driven channel activity detection method. interrupt will be activated
       when packet is detected. Must be implemented in module class.
       \returns \ref status_codes

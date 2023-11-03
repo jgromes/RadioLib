@@ -69,8 +69,8 @@
 #define RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK                   (0x01 << 0)
 #define RADIOLIB_LORAWAN_CHANNEL_DIR_BOTH                       (0x02 << 0)
 #define RADIOLIB_LORAWAN_CHANNEL_DIR_NONE                       (0x03 << 0)
-#define RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES                (0)
-#define RADIOLIB_LORAWAN_CFLIST_TYPE_MASK                       (1)
+#define RADIOLIB_LORAWAN_BAND_DYNAMIC                           (0)
+#define RADIOLIB_LORAWAN_BAND_FIXED                             (1)
 #define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (15)
 #define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     (0xFF < 0)
 
@@ -239,6 +239,9 @@ struct LoRaWANChannelSpan_t {
   \brief Structure to save information about LoRaWAN band
 */
 struct LoRaWANBand_t {
+  /*! \brief Whether the channels are fixed per specification, or dynamically allocated through the network (plus defaults) */
+  uint8_t bandType;
+
   /*! \brief Array of allowed maximum payload lengths for each data rate */
   uint8_t payloadLenMax[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 
@@ -247,9 +250,6 @@ struct LoRaWANBand_t {
 
   /*! \brief Number of power steps in this band */
   int8_t powerNumSteps;
-
-  /*! \brief Whether the optional channels are defined as list of frequencies or bit mask */
-  uint8_t cfListType;
 
   /*! \brief A set of default uplink (TX) channels for frequency-type bands */
   LoRaWANChannel_t txFreqs[3];
@@ -357,13 +357,6 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t restore();
-
-    /*!
-      \brief Restore frame counter for uplinks from persistent storage.
-      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
-    */
-    int16_t restoreFcntUp();
 #endif
 
     /*!
@@ -373,10 +366,12 @@ class LoRaWANNode {
       \param devEUI 8-byte device identifier.
       \param nwkKey Pointer to the network AES-128 key.
       \param appKey Pointer to the application AES-128 key.
+      \param drJoinSubband (OTAA:) The datarate at which to send the join-request; (ABP:) the subband at which to send the join-request
       \param force Set to true to force joining even if previously joined.
+      
       \returns \ref status_codes
     */
-    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, bool force = false);
+    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, uint8_t joinDrSubband = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, bool force = false);
 
     /*!
       \brief Join network by performing activation by personalization.
@@ -398,23 +393,15 @@ class LoRaWANNode {
     */
     int16_t saveSession();
 
-    /*!
-      \brief Save the current uplink frame counter.
-      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
-    */
-    int16_t saveFcntUp();
-
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Send a message to the server.
       \param str Address of Arduino String that will be transmitted.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
-      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
+    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false);
     #endif
 
     /*!
@@ -422,10 +409,9 @@ class LoRaWANNode {
       \param str C-string that will be transmitted.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
-      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
+    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false);
 
     /*!
       \brief Send a message to the server.
@@ -433,10 +419,9 @@ class LoRaWANNode {
       \param len Length of the data.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
-      \param adrEnabled Whether ADR is enabled or not.
       \returns \ref status_codes
     */
-    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false, bool adrEnabled = true);
+    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false);
 
     /*!
       \brief Wait for, open and listen during Rx1 and Rx2 windows; only performs listening
@@ -467,6 +452,34 @@ class LoRaWANNode {
       254 for highest battery, 255 for unable to measure.
     */
     void setDeviceStatus(uint8_t battLevel);
+
+    /*!
+      \brief Set uplink datarate. This should _not_ be used when ADR is enabled.
+      \param dr Datarate to use for uplinks
+      \returns \ref status_codes
+    */
+    int16_t setDatarate(uint8_t drUp);
+
+    /*!
+      \brief Toggle ADR to on or off
+      \param enable Whether to disable ADR or not
+    */
+    void setADR(bool enable = true);
+
+    /*!
+      \brief Select a single subband (8 channels) for fixed bands such as US915
+      \param idx The subband to be used (starting from 1!)
+      \returns \ref status_codes
+    */
+    int16_t selectSubband(uint8_t idx);
+
+    /*!
+      \brief Select a set of channels for fixed bands such as US915
+      \param startChannel The first channel of the band to be used (inclusive)
+      \param endChannel The last channel of the band to be used (exclusive)
+      \returns \ref status_codes
+    */
+    int16_t selectSubband(uint8_t startChannel, uint8_t endChannel);
 
 #if !defined(RADIOLIB_GODMODE)
   private:
@@ -511,6 +524,9 @@ class LoRaWANNode {
     uint32_t confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t adrFcnt = 0;
 
+    // ADR is enabled by default
+    bool adrEnabled = true;
+
     // available channel frequencies from list passed during OTA activation
     LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
 
@@ -535,6 +551,22 @@ class LoRaWANNode {
     // indicates whether an uplink has MAC commands as payload
     bool isMACPayload = false;
 
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+    /*!
+      \brief Save the current uplink frame counter.
+      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
+      \returns \ref status_codes
+    */
+    int16_t saveFcntUp();
+
+    /*!
+      \brief Restore frame counter for uplinks from persistent storage.
+      Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
+      \returns \ref status_codes
+    */
+    int16_t restoreFcntUp();
+#endif
+
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
 
@@ -551,7 +583,7 @@ class LoRaWANNode {
     int16_t setupChannels(uint8_t* cfList);
 
     // select a set of semi-random TX/RX channels for the join-request and -accept message
-    int16_t selectChannelsJR(uint16_t devNonce);
+    int16_t selectChannelsJR(uint16_t devNonce, uint8_t drJoinSubband);
 
     // select a set of random TX/RX channels for up- and downlink
     int16_t selectChannels();

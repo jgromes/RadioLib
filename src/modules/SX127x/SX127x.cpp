@@ -1245,10 +1245,8 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
 }
 
 uint32_t SX127x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
-  (void)numSymbols; // not used for these modules
-  // numSymbols += (109 / 4) + 1;
-  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-  numSymbols = timeoutUs / symbolLength + 1;
+  (void)timeoutUs;
+  numSymbols = 20;
   return(numSymbols);
 }
 

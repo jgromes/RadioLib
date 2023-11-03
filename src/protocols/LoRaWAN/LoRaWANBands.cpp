@@ -13,10 +13,10 @@ uint8_t getDownlinkDataRate(uint8_t uplink, uint8_t offset, uint8_t base, uint8_
 }
 
 const LoRaWANBand_t EU868 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230, 230,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 16,
   .powerNumSteps = 7,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 868.100, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 868.300, .drMin = 0, .drMax = 5},
@@ -55,10 +55,10 @@ const LoRaWANBand_t EU868 = {
 };
 
 const LoRaWANBand_t US915 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
   .payloadLenMax = {  19,  61, 133, 250, 250,   0,   0,   0,  41, 117, 230, 230, 230, 230,   0 },
   .powerMax = 30,
   .powerNumSteps = 10,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE,
@@ -118,10 +118,10 @@ const LoRaWANBand_t US915 = {
 };
 
 const LoRaWANBand_t CN780 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 250, 230,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 12,
   .powerNumSteps = 5,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 779.500, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 779.700, .drMin = 0, .drMax = 5},
@@ -160,10 +160,10 @@ const LoRaWANBand_t CN780 = {
 };
 
 const LoRaWANBand_t EU433 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230, 230,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 12,
   .powerNumSteps = 5,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 433.175, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 433.375, .drMin = 0, .drMax = 5},
@@ -202,10 +202,10 @@ const LoRaWANBand_t EU433 = {
 };
 
 const LoRaWANBand_t AU915 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230,   0,  41, 117, 230, 230, 230, 230,   0 },
   .powerMax = 30,
   .powerNumSteps = 10,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE,
@@ -265,10 +265,10 @@ const LoRaWANBand_t AU915 = {
 };
 
 const LoRaWANBand_t CN500 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_FIXED,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230,   0,   0,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 19,
   .powerNumSteps = 7,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_MASK,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
     RADIOLIB_LORAWAN_CHANNEL_NONE,
@@ -321,10 +321,10 @@ const LoRaWANBand_t CN500 = {
 };
 
 const LoRaWANBand_t AS923 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230, 230,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 16,
   .powerNumSteps = 7,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 923.200, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 923.400, .drMin = 0, .drMax = 5},
@@ -363,10 +363,10 @@ const LoRaWANBand_t AS923 = {
 };
 
 const LoRaWANBand_t KR920 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230,   0,   0,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 14,
   .powerNumSteps = 7,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 922.100, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 922.300, .drMin = 0, .drMax = 5},
@@ -405,10 +405,10 @@ const LoRaWANBand_t KR920 = {
 };
 
 const LoRaWANBand_t IN865 = {
+  .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230, 230,   0,   0,   0,   0,   0,   0,   0 },
   .powerMax = 30,
   .powerNumSteps = 10,
-  .cfListType = RADIOLIB_LORAWAN_CFLIST_TYPE_FREQUENCIES,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 865.0625, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 865.4025, .drMin = 0, .drMax = 5},

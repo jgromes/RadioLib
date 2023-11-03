@@ -87,17 +87,28 @@ void setup() {
   // and can be set to NULL
 
   // some frequency bands only use a subset of the available channels
-  // you can set the starting channel and their number
-  // for example, the following corresponds to US915 FSB2 in TTN
+  // you can select the specific band or set the first channel and last channel
+  // for example, either of the following corresponds to US915 FSB2 in TTN
   /*
-    node.startChannel = 8;
-    node.numChannels = 8;
+    node.selectSubband(2);
+    node.selectSubband(8, 16);
   */
 
   // now we can start the activation
   // this can take up to 20 seconds, and requires a LoRaWAN gateway in range
+  // a specific starting-datarate can be selected in dynamic bands (e.g. EU868):
+  /* 
+    uint8_t joinDr = 8;
+    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDr);
+  */
+  // a specific band can be selected for joining in fixed bands (e.g. US915):
+  /*
+    uint8_t subband = 2;
+    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, subband);
+  */
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -107,11 +118,11 @@ void setup() {
   }
 
   // after the device has been activated,
-  // network can be rejoined after device power cycle
-  // by calling "begin"
+  // the session can be restored without rejoining after device power cycle
+  // on EEPROM-enabled boards by calling "restore"
   /*
     Serial.print(F("[LoRaWAN] Resuming previous session ... "));
-    state = node.begin();
+    state = node.restore();
     if(state == RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
@@ -178,6 +189,12 @@ void loop() {
     Serial.println(state);
   }
 
+  // on EEPROM enabled boards, you can save the current session
+  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  /*
+    node.saveSession();
+  */
+
   // wait before sending another packet
-  delay(10000);
+  delay(30000);
 }

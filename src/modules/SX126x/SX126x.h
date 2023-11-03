@@ -966,6 +966,12 @@ class SX126x: public PhysicalLayer {
     int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
 
     /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns \ref RxTimeout IRQ is set
+    */
+    bool isRxTimeout();
+
+    /*!
       \brief Set implicit header mode for future reception/transmission.
       \param len Payload length in bytes.
       \returns \ref status_codes

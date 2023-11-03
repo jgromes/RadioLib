@@ -1443,11 +1443,15 @@ uint32_t SX126x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
 }
 
 int16_t SX126x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
-  irqFlags  = 0b0000000000000010; // RxDone
-  irqMask   = 0b0000000000000010;
-  irqFlags |= 0b0000001000000000; // RxTimeout
-  irqMask  |= 0b0000001000000000;
+  irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT;  // flags that can appear in the IRQ register
+  irqMask  = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT; // flags that will trigger DIO0
   return(RADIOLIB_ERR_NONE);
+}
+
+bool SX126x::isRxTimeout() {
+  uint16_t irq = getIrqStatus();
+  bool rxTimedOut = irq & RADIOLIB_SX126X_IRQ_TIMEOUT;
+  return(rxTimedOut);
 }
 
 int16_t SX126x::implicitHeader(size_t len) {

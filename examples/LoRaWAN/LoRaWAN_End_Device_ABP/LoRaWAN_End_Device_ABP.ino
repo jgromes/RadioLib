@@ -83,16 +83,27 @@ void setup() {
   // and can be set to NULL
 
   // some frequency bands only use a subset of the available channels
-  // you can set the starting channel and their number
-  // for example, the following corresponds to US915 FSB2 in TTN
+  // you can select the specific band or set the first channel and last channel
+  // for example, either of the following corresponds to US915 FSB2 in TTN
   /*
-    node.startChannel = 8;
-    node.numChannels = 8;
+    node.selectSubband(2);
+    node.selectSubband(8, 16);
+  */
+
+  // if using EU868 on ABP in TTN, you need to set the SF for RX2 window manually
+	/*
+    node.rx2.drMax = 3;
+  */
+
+  // to start a LoRaWAN v1.1 session, the user should also provide 
+  // fNwkSIntKey and sNwkSIntKey similar to nwkSKey and appSKey
+  /*
+    state = node.beginABP(devAddr, nwkSKey, appSKey, fNwkSIntKey, sNwkSIntKey);
   */
 
   // start the device by directly providing the encryption keys and device address
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
-  state = node.beginAPB(devAddr, (uint8_t*)nwkSKey, (uint8_t*)appSKey);
+  state = node.beginABP(devAddr, nwkSKey, appSKey);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -102,11 +113,11 @@ void setup() {
   }
 
   // after the device has been activated,
-  // network can be rejoined after device power cycle
-  // by calling "begin"
+  // the session can be restored without rejoining after device power cycle
+  // on EEPROM-enabled boards by calling "restore"
   /*
     Serial.print(F("[LoRaWAN] Resuming previous session ... "));
-    state = node.begin();
+    state = node.restore();
     if(state == RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
@@ -172,6 +183,12 @@ void loop() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
+
+  // on EEPROM enabled boards, you can save the current session
+  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  /*
+    node.saveSession();
+  */
 
   // wait before sending another packet
   delay(10000);
