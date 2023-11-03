@@ -1499,11 +1499,11 @@ int16_t SX128x::config(uint8_t modem) {
 }
 
 int16_t SX128x::SPIparseStatus(uint8_t in) {
-  if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_TIMEOUT) {
+  if((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_TIMEOUT) {
     return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
-  } else if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_ERROR) {
+  } else if((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_ERROR) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
-  } else if((in & 0b00001110) == RADIOLIB_SX128X_STATUS_CMD_FAILED) {
+  } else if((in & 0b00011100) == RADIOLIB_SX128X_STATUS_CMD_FAILED) {
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   } else if((in == 0x00) || (in == 0xFF)) {
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);

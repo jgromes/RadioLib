@@ -35,14 +35,14 @@ int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
 }
 
 int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg, char* time) {
+  size_t len = 1 + strlen(lat) + 1 + strlen(lon);
+  if(msg != NULL) {
+    len += 1 + strlen(msg);
+  }
+  if(time != NULL) {
+    len += strlen(time);
+  }
   #if !defined(RADIOLIB_STATIC_ONLY)
-    size_t len = 1 + strlen(lat) + 1 + strlen(lon);
-    if(msg != NULL) {
-      len += 1 + strlen(msg);
-    }
-    if(time != NULL) {
-      len += strlen(time);
-    }
     char* info = new char[len + 1];
   #else
     char info[RADIOLIB_STATIC_ARRAY_SIZE];

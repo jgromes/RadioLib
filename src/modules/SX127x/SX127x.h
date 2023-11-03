@@ -601,12 +601,13 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.
-      \param chipVersion Value in SPI version register. Used to verify the connection and hardware version.
+      \param chipVersion Array of possible values in SPI version register. Used to verify the connection and hardware version.
+      \param numVersions Number of possible chip versions.
       \param syncWord %LoRa sync word.
       \param preambleLength Length of %LoRa transmission preamble in symbols.
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t chipVersion, uint8_t syncWord, uint16_t preambleLength);
+    int16_t begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin. Declared pure virtual since SX1272 and SX1278 implementations differ.
@@ -615,14 +616,15 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
-      \param chipVersion Value in SPI version register. Used to verify the connection and hardware version.
+      \param chipVersion Array of possible values in SPI version register. Used to verify the connection and hardware version.
+      \param numVersions Number of possible chip versions.
       \param freqDev Frequency deviation of the FSK transmission in kHz.
       \param rxBw Receiver bandwidth in kHz.
       \param preambleLength Length of FSK preamble in bits.
       \param enableOOK Flag to specify OOK mode. This modulation is similar to FSK.
       \returns \ref status_codes
     */
-    int16_t beginFSK(uint8_t chipVersion, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK);
+    int16_t beginFSK(uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK);
 
     /*!
       \brief Binary transmit method. Will transmit arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
@@ -875,6 +877,13 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setPreambleLength(size_t preambleLength) override;
+
+    /*!
+      \brief Invert FSK preamble polarity. The default (non-inverted) is 0x55, the inverted is 0xAA.
+      \param enable Preamble polarity in FSK mode - 0xAA when true, 0x55 when false.
+      \returns \ref status_codes
+    */
+    int16_t invertPreamble(bool enable);
 
     /*!
       \brief Gets frequency error of the latest received packet.
@@ -1233,7 +1242,7 @@ class SX127x: public PhysicalLayer {
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;
 
-    bool findChip(uint8_t ver);
+    bool findChip(uint8_t* vers, uint8_t num);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearIRQFlags();

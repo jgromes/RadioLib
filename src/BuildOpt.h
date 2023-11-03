@@ -68,7 +68,6 @@
   //#define RADIOLIB_EXCLUDE_SI443X
   //#define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
   //#define RADIOLIB_EXCLUDE_SX127X
-  //#define RADIOLIB_EXCLUDE_RFM9X      // dependent on RADIOLIB_EXCLUDE_SX127X
   //#define RADIOLIB_EXCLUDE_SX126X
   //#define RADIOLIB_EXCLUDE_STM32WLX   // dependent on RADIOLIB_EXCLUDE_SX126X
   //#define RADIOLIB_EXCLUDE_SX128X
@@ -468,6 +467,9 @@
   #if defined(RADIOLIB_BUILD_ARDUINO)
     #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
     #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
+
+    // some platforms do not support printf("%f"), so it has to be done this way
+    #define RADIOLIB_DEBUG_PRINT_FLOAT(VAL, DECIMALS) RADIOLIB_DEBUG_PORT.print(VAL, DECIMALS)
   #else
     #if !defined(RADIOLIB_DEBUG_PRINT)
       #define RADIOLIB_DEBUG_PRINT(...) fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__)
@@ -475,11 +477,13 @@
     #if !defined(RADIOLIB_DEBUG_PRINTLN)
       #define RADIOLIB_DEBUG_PRINTLN(M, ...) fprintf(RADIOLIB_DEBUG_PORT, M "\n", ##__VA_ARGS__)
     #endif
+    #define RADIOLIB_DEBUG_PRINT_FLOAT(VAL, DECIMALS) RADIOLIB_DEBUG_PRINT("%.3f", VAL)
   #endif
   #define RADIOLIB_DEBUG_HEXDUMP(...) Module::hexdump(__VA_ARGS__)
 #else
   #define RADIOLIB_DEBUG_PRINT(...) {}
   #define RADIOLIB_DEBUG_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_PRINT_FLOAT(VAL, DECIMALS) {}
   #define RADIOLIB_DEBUG_HEXDUMP(...) {}
 #endif
 

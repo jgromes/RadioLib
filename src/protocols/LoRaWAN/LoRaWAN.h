@@ -338,6 +338,17 @@ class LoRaWANNode {
     // RX2 channel properties - may be changed by MAC command
     LoRaWANChannel_t rx2;
 
+    /*! \brief Num of Back Off(BO) slots to be decremented after DIFS phase. 0 to disable BO.
+        A random BO avoids collisions in the case where two or more nodes start the CSMA
+        process at the same time. */
+    uint8_t backoffMax;
+
+    /*! \brief Num of CADs to estimate a clear CH. */
+    uint8_t difsSlots;
+
+    /*! \brief enable/disable CSMA for LoRaWAN. */
+    bool enableCSMA;
+
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -358,6 +369,13 @@ class LoRaWANNode {
     */
     int16_t restore();
 #endif
+
+      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
+      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
+      \param difsSlots Num of CADs to estimate a clear CH.
+      \param enableCSMA enable/disable CSMA for LoRaWAN.
+    */
+    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
 
     /*!
       \brief Join network by performing over-the-air activation. By this procedure,
@@ -619,6 +637,12 @@ class LoRaWANNode {
     // host-to-network conversion method - takes data from host variable and and converts it to network packet endians
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
+
+    // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
+    bool performCAD();
+
+    // Performs CSMA as per LoRa Alliance Technical Reccomendation 13 (TR-013).
+    void performCSMA();
 };
 
 #endif

@@ -870,11 +870,11 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets FSK whitening parameters.
       \param enabled True = Whitening enabled
-      \param initial Initial value used for the whitening LFSR in FSK mode. Defaults to 0x0100,
-      use 0x01FF for SX127x compatibility.
+      \param initial Initial value used for the whitening LFSR in FSK mode.
+      By default set to 0x01FF for compatibility with SX127x and LoRaWAN.
       \returns \ref status_codes
     */
-    int16_t setWhitening(bool enabled, uint16_t initial = 0x0100);
+    int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
 
     /*!
       \brief Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.
@@ -1042,7 +1042,7 @@ class SX126x: public PhysicalLayer {
 
     #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
     /*!
-      \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
+      \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
     void setDirectAction(void (*func)(void));
@@ -1092,6 +1092,19 @@ class SX126x: public PhysicalLayer {
     */
     int16_t spectralScanGetResult(uint16_t* results);
 
+    /*!
+      \brief Set the PA configuration. Allows user to optimize PA for a specific output power
+      and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower.
+      WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage!
+      \param paDutyCycle PA duty cycle raw value.
+      \param deviceSel Device select, usually RADIOLIB_SX126X_PA_CONFIG_SX1261,
+      RADIOLIB_SX126X_PA_CONFIG_SX1262 or RADIOLIB_SX126X_PA_CONFIG_SX1268.
+      \param hpMax hpMax raw value.
+      \param paLut paLut PA lookup table raw value.
+      \returns \ref status_codes
+    */
+    int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
+
 #if !defined(RADIOLIB_GODMODE)
   protected:
 #endif
@@ -1100,7 +1113,6 @@ class SX126x: public PhysicalLayer {
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
     int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
-    int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
