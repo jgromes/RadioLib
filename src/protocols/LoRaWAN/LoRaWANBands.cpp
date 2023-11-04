@@ -2,16 +2,6 @@
 
 #if !defined(RADIOLIB_EXCLUDE_LORAWAN)
 
-uint8_t getDownlinkDataRate(uint8_t uplink, uint8_t offset, uint8_t base, uint8_t min, uint8_t max) {
-  int8_t dr = uplink - offset + base;
-  if(dr < min) {
-    dr = min;
-  } else if (dr > max) {
-    dr = max;
-  }
-  return(dr);
-}
-
 const LoRaWANBand_t EU868 = {
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,
   .payloadLenMax = {  59,  59,  59, 123, 230, 230, 230, 230,   0,   0,   0,   0,   0,   0,   0 },

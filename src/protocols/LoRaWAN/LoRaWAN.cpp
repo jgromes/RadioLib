@@ -132,12 +132,15 @@ int16_t LoRaWANNode::restore() {
 int16_t LoRaWANNode::restoreFcntUp() {
   Module* mod = this->phyLayer->getMod();
 
-  uint8_t fcntBuff[30] = { 0 };
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID), fcntBuff, 30);
+  uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID);
+  uint8_t fcntBuffEnd = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID + 1);
+  uint8_t buffSize = fcntBuffEnd - fcntBuffStart;
+  uint8_t fcntBuff[buffSize] = { 0 };
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID), fcntBuff, buffSize);
 
   // copy the two most significant bytes from the first two bytes
-  uint8_t bits_30_22 = fcntBuff[0];
-  uint8_t bits_22_14 = fcntBuff[1];
+  uint32_t bits_30_22 = (uint32_t)fcntBuff[0];
+  uint32_t bits_22_14 = (uint32_t)fcntBuff[1];
 
   // the next 7 bits must be retrieved from the byte to which was written most recently
   // this is the last byte that has its state bit (most significant bit) set equal to its predecessor
@@ -149,19 +152,19 @@ int16_t LoRaWANNode::restoreFcntUp() {
       break;
     }
   }
-  uint8_t bits_14_7 = fcntBuff[idx-1] & 0x7F;
+  uint32_t bits_14_7 = (uint32_t)fcntBuff[idx-1] & 0x7F;
 
   // equally, the last 7 bits must be retrieved from the byte to which was written most recently
   // this is the last byte that has its state bit (most significant bit) set equal to its predecessor
   // we find the first byte that has its state bit different, and subtract one
   idx = 5;
   state = fcntBuff[idx] >> 7;
-  for(; idx < 30; idx++) {
+  for(; idx < buffSize; idx++) {
     if(fcntBuff[idx] >> 7 != state) {
       break;
     }
   }
-  uint8_t bits_7_0 = fcntBuff[idx-1] & 0x7F;
+  uint32_t bits_7_0 = (uint32_t)fcntBuff[idx-1] & 0x7F;
 
   this->fcntUp = (bits_30_22 << 22) | (bits_22_14 << 14) | (bits_14_7 << 7) | bits_7_0;
 
@@ -1048,6 +1051,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     isConfirmingUp = true;
     LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFcntUp);
   }
+  (void)isConfirmingUp;
   
   RADIOLIB_DEBUG_PRINTLN("downlinkMsg:");
   RADIOLIB_DEBUG_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
@@ -1087,7 +1091,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
       }
     } else if (fcnt16 <= fcntDownPrev) {
       uint16_t msb = (fcntDownPrev >> 16) + 1;  // assume a rollover
-      fcnt32 |= (msb << 16);                    // add back the MSB part
+      fcnt32 |= ((uint32_t)msb << 16);          // add back the MSB part
     }
   }
   
@@ -1110,7 +1114,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   bool isConfirmedDown = false;
   if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS] & 0xFE) == RADIOLIB_LORAWAN_MHDR_MTYPE_CONF_DATA_DOWN) {
     this->confFcntDown = this->aFcntDown;
+    isConfirmedDown = true;
   }
+  (void)isConfirmedDown;
 
   // check the address
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
@@ -1969,9 +1975,9 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_CMD_ADR_PARAM_SETUP): {
-      uint8_t limitExp = (cmd->payload[0] & 0xF0) >> 4;
-      uint8_t delayExp = cmd->payload[0] & 0x0F;
-      RADIOLIB_DEBUG_PRINTLN("ADR param setup: limitExp = %d, delayExp = %d", limitExp, delayExp);
+      this->adrLimitExp = (cmd->payload[0] & 0xF0) >> 4;
+      this->adrDelayExp = cmd->payload[0] & 0x0F;
+      RADIOLIB_DEBUG_PRINTLN("ADR param setup: limitExp = %d, delayExp = %d", this->adrLimitExp, this->adrDelayExp);
 
       return(1);
     } break;
