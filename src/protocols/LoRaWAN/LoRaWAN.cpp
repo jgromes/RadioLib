@@ -1,5 +1,4 @@
 #include "LoRaWAN.h"
-#include "LoRaWANBands.cpp"
 #include <string.h>
 
 #if !defined(RADIOLIB_EXCLUDE_LORAWAN)
@@ -19,6 +18,16 @@ static void LoRaWANNodeOnDownlinkAction(void) {
   downlinkAction = true;
 }
 
+uint8_t getDownlinkDataRate(uint8_t uplink, uint8_t offset, uint8_t base, uint8_t min, uint8_t max) {
+  int8_t dr = uplink - offset + base;
+  if(dr < min) {
+    dr = min;
+  } else if (dr > max) {
+    dr = max;
+  }
+  return(dr);
+}
+
 LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->phyLayer = phy;
   this->band = band;
@@ -29,16 +38,16 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->enableCSMA = false;
 }
 
-#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
-void LoRaWANNode::wipe() {
-  Module* mod = this->phyLayer->getMod();
-  mod->hal->wipePersistentStorage();
-}
-
 void LoRaWANNode::setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA) {
     this->backoffMax = backoffMax;
     this->difsSlots = difsSlots;
     this->enableCSMA = enableCSMA;
+}
+
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+void LoRaWANNode::wipe() {
+  Module* mod = this->phyLayer->getMod();
+  mod->hal->wipePersistentStorage();
 }
 
 int16_t LoRaWANNode::restore() {
@@ -314,7 +323,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     }
 
   }
-
+  
   // parse other contents
   this->homeNetId = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], 3);
   this->devAddr = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS]);
@@ -375,7 +384,6 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     // 1.0 version, just derive the keys
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], this->homeNetId, 3);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], this->devNonce);
-
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
     RadioLibAES128Instance.init(nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
@@ -656,7 +664,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     this->isMACPayload = false;
   }
 
-
   // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
   uint8_t foptsLen = 0;
   size_t foptsBufSize = 0;
@@ -804,7 +811,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // encrypt the frame payload
   processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(foptsLen)], this->fcntUp, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x00, true);
 
-
   // create blocks for MIC calculation
   uint8_t block0[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
   block0[RADIOLIB_LORAWAN_BLOCK_MAGIC_POS] = RADIOLIB_LORAWAN_MIC_BLOCK_MAGIC;
@@ -838,13 +844,13 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], micF);
   }
 
+  RADIOLIB_DEBUG_PRINTLN("uplinkMsg:");
+  RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
+
   // perform CSMA if enabled.
   if (enableCSMA) {
     performCSMA();
   }
-
-  RADIOLIB_DEBUG_PRINTLN("uplinkMsg:");
-  RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
   // send it (without the MIC calculation blocks)
   state = this->phyLayer->transmit(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS], uplinkMsgLen - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS);
@@ -2009,6 +2015,50 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
   return(0);
 }
 
+// The following function enables LMAC, a CSMA scheme for LoRa as specified 
+// in the LoRa Alliance Technical Recommendation #13.
+// A user may enable CSMA to provide frames an additional layer of protection from interference.
+// https://resources.lora-alliance.org/technical-recommendations/tr013-1-0-0-csma
+void LoRaWANNode::performCSMA() {
+    
+    // Compute initial random back-off. 
+    // When BO is reduced to zero, the function returns and the frame is transmitted.
+    uint32_t BO = this->phyLayer->random(1, this->backoffMax + 1);
+    while (BO > 0) {
+        // DIFS: Check channel for DIFS_slots
+        bool channelFreeDuringDIFS = true;
+        for (uint8_t i = 0; i < this->difsSlots; i++) {
+            if (performCAD()) {
+                RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING DIFS");
+                channelFreeDuringDIFS = false;
+                // Channel is occupied during DIFS, hop to another.
+                this->selectChannels();
+                break;
+            }
+        }
+        // Start reducing BO counter if DIFS slot was free.
+        if (channelFreeDuringDIFS) {
+            // Continue decrementing BO with per each CAD reporting free channel.
+            while (BO > 0) {
+                if (performCAD()) {
+                    RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING BO");
+                    // Channel is busy during CAD, hop to another and return to DIFS state again.
+                    this->selectChannels();
+                    break;  // Exit loop. Go back to DIFS state.
+                }
+                BO--;  // Decrement BO by one if channel is free
+            }
+        }
+    }
+}
+bool LoRaWANNode::performCAD() {
+    int16_t state = this->phyLayer->scanChannel();
+    if ((state == RADIOLIB_PREAMBLE_DETECTED) || (state == RADIOLIB_LORA_DETECTED)) {
+        return true; // Channel is busy
+    }
+    return false; // Channel is free
+}
+
 void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter) {
   // figure out how many encryption blocks are there
   size_t numBlocks = len/RADIOLIB_AES128_BLOCK_SIZE;
@@ -2074,54 +2124,6 @@ void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
   for(size_t i = 0; i < targetSize; i++) {
     *(buffPtr++) = val >> 8*i;
   }
-}
-
-// The following function enables LMAC, a CSMA scheme for LoRa as specified 
-// in the LoRa Alliance Technical Recommendation #13.
-// A user may enable CSMA to provide frames an additional layer of protection from interference.
-// https://resources.lora-alliance.org/technical-recommendations/tr013-1-0-0-csma
-void LoRaWANNode::performCSMA() {
-    
-    // Compute initial random back-off. 
-    // When BO is reduced to zero, the function returns and the frame is transmitted.
-    uint32_t BO = this->phyLayer->random(1, this->backoffMax + 1);
-
-    while (BO > 0) {
-        // DIFS: Check channel for DIFS_slots
-        bool channelFreeDuringDIFS = true;
-        for (uint8_t i = 0; i < this->difsSlots; i++) {
-            if (performCAD()) {
-                RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING DIFS");
-                channelFreeDuringDIFS = false;
-                // Channel is occupied during DIFS, hop to another.
-                this->selectChannels();
-                break;
-            }
-        }
-
-        // Start reducing BO counter if DIFS slot was free.
-        if (channelFreeDuringDIFS) {
-            // Continue decrementing BO with per each CAD reporting free channel.
-            while (BO > 0) {
-                if (performCAD()) {
-                    RADIOLIB_DEBUG_PRINTLN("OCCUPIED CHANNEL DURING BO");
-                    // Channel is busy during CAD, hop to another and return to DIFS state again.
-                    this->selectChannels();
-                    break;  // Exit loop. Go back to DIFS state.
-                }
-                BO--;  // Decrement BO by one if channel is free
-            }
-        }
-    }
-}
-
-bool LoRaWANNode::performCAD() {
-    int16_t state = this->phyLayer->scanChannel();
-
-    if ((state == RADIOLIB_PREAMBLE_DETECTED) || (state == RADIOLIB_LORA_DETECTED)) {
-        return true; // Channel is busy
-    }
-    return false; // Channel is free
 }
 
 #endif
