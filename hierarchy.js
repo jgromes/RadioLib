@@ -78,6 +78,7 @@ var hierarchy =
     ] ],
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
+    [ "RFM95", "class_r_f_m95.html", null ],
     [ "RFM96", "class_r_f_m96.html", null ],
     [ "RFM97", "class_r_f_m97.html", null ],
     [ "RFM98", "class_r_f_m98.html", null ],
