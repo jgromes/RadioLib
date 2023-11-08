@@ -1,12 +1,14 @@
 /*
-  RadioLib LoRaWAN End Device ABP Example
+  RadioLib LoRaWAN End Device Example
 
-  This example sets up a LoRaWAN node using ABP (activation
-  by personalization). Before you start, you will have to
+  This example joins a LoRaWAN network and will send
+  uplink packets. Before you start, you will have to
   register your device at https://www.thethingsnetwork.org/
   After your device is registered, you can run this example.
-  The device will start uploading data directly,
-  without having to join the network.
+  The device will join the network and start uploading data.
+
+  Also, most of the possible and available functions are
+  shown here for reference.
 
   LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
   Please refer to the 'persistent' example once you are familiar
@@ -14,7 +16,7 @@
   Running this examples REQUIRES you to check "Resets DevNonces"
   on your LoRaWAN dashboard. Refer to the network's 
   documentation on how to do this.
-  
+
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
@@ -52,22 +54,27 @@ void setup() {
     while(true);
   }
 
-  // device address - this number can be anything
+  // application identifier - pre-LoRaWAN 1.1.0, this was called appEUI
+  // when adding new end device in TTN, you will have to enter this number
+  // you can pick any number you want, but it has to be unique
+  uint64_t joinEUI = 0x12AD1011B0C0FFEE;
+
+  // device identifier - this number can be anything
   // when adding new end device in TTN, you can generate this number,
-  // or you can set any value you want, provided it is unique
-  uint32_t devAddr = 0x12345678;
+  // or you can set any value you want, provided it is also unique
+  uint64_t devEUI = 0x70B3D57ED005E120;
 
   // select some encryption keys which will be used to secure the communication
   // there are two of them - network key and application key
   // because LoRaWAN uses AES-128, the key MUST be 16 bytes (or characters) long
 
   // network key is the ASCII string "topSecretKey1234"
-  uint8_t nwkSKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
-                        0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
+  uint8_t nwkKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
+                       0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
 
   // application key is the ASCII string "aDifferentKeyABC"
-  uint8_t appSKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
-                        0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
+  uint8_t appKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
+                       0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
 
   // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
@@ -81,20 +88,16 @@ void setup() {
     node.selectSubband(8, 15);
   */
 
-  // if using EU868 on ABP in TTN, you need to set the SF for RX2 window manually
-	/*
-    node.rx2.drMax = 3;
+  // now we can start the activation
+  // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
+  // a specific starting-datarate can be selected in dynamic bands (e.g. EU868):
+  /* 
+    uint8_t joinDr = 4;
+    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDr);
   */
-
-  // to start a LoRaWAN v1.1 session, the user should also provide 
-  // fNwkSIntKey and sNwkSIntKey similar to nwkSKey and appSKey
-  /*
-    state = node.beginABP(devAddr, nwkSKey, appSKey, fNwkSIntKey, sNwkSIntKey);
-  */
-
-  // start the device by directly providing the encryption keys and device address
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
-  state = node.beginABP(devAddr, nwkSKey, appSKey);
+  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -103,19 +106,73 @@ void setup() {
     while(true);
   }
 
+  // after the device has been activated,
+  // the session can be restored without rejoining after device power cycle
+  // on EEPROM-enabled boards by calling "restore"
+  /*
+    Serial.print(F("[LoRaWAN] Resuming previous session ... "));
+    state = node.restore();
+    if(state == RADIOLIB_ERR_NONE) {
+      Serial.println(F("success!"));
+    } else {
+      Serial.print(F("failed, code "));
+      Serial.println(state);
+      while(true);
+    }
+  */
+
+  // disable the ADR algorithm
+  node.setADR(false);
+
+  // set a fixed datarate
+  node.setDatarate(5);
+
+  // enable CSMA
+  // this tries to minimize packet loss by searching for a free channel
+  // before actually sending an uplink 
+  node.setCSMA(6, 2, true);
+
 }
 
-// counter to keep track of transmitted packets
-int count = 0;
-
 void loop() {
-  // send uplink to port 10
+  int state = RADIOLIB_ERR_NONE;
+
+  // set battery fill level, 
+  // 0 = external power source
+  // 1 = lowest (empty battery)
+  // 254 = highest (full battery)
+  // 255 = unable to measure
+  uint8_t battLevel = 146;
+  node.setDeviceStatus(battLevel);
+
+  // retrieve the last uplink frame counter
+  uint32_t fcntUp = node.getFcntUp();
+
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String strUp = "Hello World! #" + String(count++);
-  String strDown;
-  int state = node.sendReceive(strUp, 10, strDown);
+  String strUp = "Hello World! #" + String(fcntUp);
+  
+  // send a confirmed uplink to port 10 every 64th frame
+  if(fcntUp / 64 == 0) {
+    state = node.uplink(strUp, 10, true);
+  } else {
+    state = node.uplink(strUp, 10);
+  }
   if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("received a downlink!"));
+    Serial.println(F("success!"));
+  } else {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+  }
+
+  // after uplink, you can call downlink(),
+  // to receive any possible reply from the server
+  // this function must be called within a few seconds
+  // after uplink to receive the downlink!
+  Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
+  String strDown;
+  state = node.downlink(strDown);
+  if(state == RADIOLIB_ERR_NONE) {
+    Serial.println(F("success!"));
 
     // print data of the packet (if there are any)
     Serial.print(F("[LoRaWAN] Data:\t\t"));
@@ -141,12 +198,18 @@ void loop() {
     Serial.println(F(" Hz"));
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("no downlink!"));
+    Serial.println(F("timeout!"));
   
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
+
+  // on EEPROM enabled boards, you can save the current session
+  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  /*
+    node.saveSession();
+  */
 
   // wait before sending another packet
   delay(30000);

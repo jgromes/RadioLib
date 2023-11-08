@@ -294,8 +294,7 @@ uint32_t PhysicalLayer::getTimeOnAir(size_t len) {
   return(0);
 }
 
-uint32_t PhysicalLayer::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
-  (void)numSymbols;
+uint32_t PhysicalLayer::calculateRxTimeout(uint32_t timeoutUs) {
   (void)timeoutUs;
   return(0); 
 }

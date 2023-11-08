@@ -1436,8 +1436,9 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
-uint32_t SX126x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
-  (void)numSymbols; // not used for these modules
+uint32_t SX126x::calculateRxTimeout(uint32_t timeoutUs) {
+  // the timeout value is given in units of 15.625 microseconds
+  // the calling function should provide some extra width, as this number of units is truncated to integer
   uint32_t timeout = timeoutUs / 15.625;
   return(timeout);
 }

@@ -311,12 +311,11 @@ class PhysicalLayer {
     virtual uint32_t getTimeOnAir(size_t len);
 
     /*!
-      \brief Calculate the timeout value for this specific module / series based on number of symbols or time
-      \param numSymbols Number of payload symbols to listen for
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    virtual uint32_t calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs);
+    virtual uint32_t calculateRxTimeout(uint32_t timeoutUs);
 
     /*!
       \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks

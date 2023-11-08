@@ -411,7 +411,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
 
     // timeout is only used in RxSingle, so when a packet length is defined, force mode to RxSingle
     // and set the timeout value to the expected number of symbols (usually preamble + header)
-    if(len > 0) {
+    if((len > 0) && (this->spreadingFactor > 6)) {
       mode = RADIOLIB_SX127X_RXSINGLE;
       state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, len);
     }
@@ -1274,17 +1274,19 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
 
 }
 
-uint32_t SX127x::calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs) {
-  (void)timeoutUs;
-  numSymbols = 20;
+uint32_t SX127x::calculateRxTimeout(uint32_t timeoutUs) {
+  // the timeout is given as the number of symbols
+  // the calling function should provide some extra width, as this number of symbols is truncated to integer
+  // the order of operators is swapped here to decrease the effects of this truncation error
+  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+  uint32_t numSymbols = (timeoutUs / symbolLength) / 1000; 
   return(numSymbols);
 }
 
 int16_t SX127x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
-  irqFlags  = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE;
-  irqMask   = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE;
-  irqFlags &= RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
-  irqMask  &= RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
+  // IRQ flags/masks are inverted to what seems logical for SX127x (0 being activated, 1 being deactivated)
+  irqFlags = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT;
+  irqMask  = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE & RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
   return(RADIOLIB_ERR_NONE);
 }
 

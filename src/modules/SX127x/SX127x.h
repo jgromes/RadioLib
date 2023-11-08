@@ -160,6 +160,7 @@
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DONE                  0b11111011  //  2     2   CAD complete
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_FHSS_CHANGE_CHANNEL       0b11111101  //  1     1   FHSS change channel
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DETECTED              0b11111110  //  0     0   valid LoRa signal detected during CAD operation
+#define RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT                0b00011111  //  7     0   default for Rx (RX_TIMEOUT, RX_DONE, CRC_ERR)
 
 // RADIOLIB_SX127X_REG_FIFO_TX_BASE_ADDR
 #define RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX                   0b00000000  //  7     0   allocate the entire FIFO buffer for TX only
@@ -817,6 +818,7 @@ class SX127x: public PhysicalLayer {
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
       \param len Expected length of packet to be received, or 0 when unused.
       Defaults to 0, non-zero required for LoRa spreading factor 6.
+      If non-zero for LoRa spreading factor > 6, RxSingle is used and value must be given in symbols.
       \param mode Receive mode to be used. Defaults to RxContinuous.
       \returns \ref status_codes
     */
@@ -1049,12 +1051,11 @@ class SX127x: public PhysicalLayer {
     uint32_t getTimeOnAir(size_t len) override;
 
     /*!
-      \brief Calculate the timeout value for this specific module / series based on number of symbols or time
-      \param numSymbols Number of payload symbols to listen for
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    uint32_t calculateRxTimeout(uint8_t numSymbols, uint32_t timeoutUs);
+    uint32_t calculateRxTimeout(uint32_t timeoutUs);
 
     /*!
       \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks

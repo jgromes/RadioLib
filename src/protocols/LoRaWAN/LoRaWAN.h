@@ -72,7 +72,7 @@
 #define RADIOLIB_LORAWAN_BAND_DYNAMIC                           (0)
 #define RADIOLIB_LORAWAN_BAND_FIXED                             (1)
 #define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (15)
-#define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     0xFF
+#define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     (0xFF >> 1) // reserve first bit for enable-flag
 
 // recommended default settings
 #define RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS                     (1000)
@@ -317,39 +317,12 @@ struct LoRaWANMacCommandQueue_t {
 */
 class LoRaWANNode {
   public:
-    /*! \brief Set to true to force the node to only use FSK channels. Set to false by default. */
-    bool FSK;
-
-    /*! \brief Starting channel offset.
-        Some band plans only support a subset of available channels.
-        Set to a positive value to set the first channel that will be used (e.g. 8 for US915 FSB2 used by TTN).
-        By default -1 (no channel offset). */
-    int8_t startChannel;
-
-    /*! \brief Number of supported channels.
-        Some band plans only support a subset of available channels.
-        Set to a positive value to set the number of channels that will be used
-        (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). */
-    int8_t numChannels;
 
     // Offset between TX and RX1 (such that RX1 has equal or lower DR)
     uint8_t rx1DrOffset;
 
     // RX2 channel properties - may be changed by MAC command
     LoRaWANChannel_t rx2;
-
-    /*! 
-      \brief Num of Back Off(BO) slots to be decremented after DIFS phase. 0 to disable BO.
-        A random BO avoids collisions in the case where two or more nodes start the CSMA
-        process at the same time. 
-    */
-    uint8_t backoffMax;
-    
-    /*! \brief Num of CADs to estimate a clear CH. */
-    uint8_t difsSlots;
-    
-    /*! \brief enable/disable CSMA for LoRaWAN. */
-    bool enableCSMA;
 
     /*!
       \brief Default constructor.
@@ -379,12 +352,12 @@ class LoRaWANNode {
       \param devEUI 8-byte device identifier.
       \param nwkKey Pointer to the network AES-128 key.
       \param appKey Pointer to the application AES-128 key.
-      \param drJoinSubband (OTAA:) The datarate at which to send the join-request; (ABP:) the subband at which to send the join-request
+      \param joinDr (OTAA:) The datarate at which to send the join-request; (ABP:) ignored
       \param force Set to true to force joining even if previously joined.
       
       \returns \ref status_codes
     */
-    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, uint8_t joinDrSubband = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, bool force = false);
+    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, uint8_t joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, bool force = false);
 
     /*!
       \brief Join network by performing activation by personalization.
@@ -398,6 +371,9 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL, bool force = false);
+
+    /*! \brief Whether there is an ongoing session active */
+    bool isJoined();
 
     /*!
       \brief Save the current state of the session.
@@ -436,12 +412,6 @@ class LoRaWANNode {
     */
     int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false);
 
-    /*!
-      \brief Wait for, open and listen during Rx1 and Rx2 windows; only performs listening
-      \returns \ref status_codes
-    */
-    int16_t downlinkCommon();
-
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Wait for downlink from the server in either RX1 or RX2 window.
@@ -459,6 +429,41 @@ class LoRaWANNode {
     */
     int16_t downlink(uint8_t* data, size_t* len);
 
+    #if defined(RADIOLIB_BUILD_ARDUINO)
+    /*!
+      \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
+      \param strUp Address of Arduino String that will be transmitted.
+      \param port Port number to send the message to.
+      \param strDown Address of Arduino String to save the received data.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed = false);
+    #endif
+
+    /*!
+      \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
+      \param strUp C-string that will be transmitted.
+      \param port Port number to send the message to.
+      \param dataDown Buffer to save received data into.
+      \param lenDown Pointer to variable that will be used to save the number of received bytes.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false);
+
+    /*!
+      \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
+      \param dataUp Data to send.
+      \param lenUp Length of the data.
+      \param port Port number to send the message to.
+      \param dataDown Buffer to save received data into.
+      \param lenDown Pointer to variable that will be used to save the number of received bytes.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false);
+
     /*!
       \brief Set device status.
       \param battLevel Battery level to set. 0 for external power source, 1 for lowest battery,
@@ -466,9 +471,12 @@ class LoRaWANNode {
     */
     void setDeviceStatus(uint8_t battLevel);
 
+    /*! \brief Returns the last uplink's frame counter */
+    uint32_t getFcntUp();
+
     /*!
-      \brief Set uplink datarate. This should _not_ be used when ADR is enabled.
-      \param dr Datarate to use for uplinks
+      \brief Set uplink datarate. This should not be used when ADR is enabled.
+      \param dr Datarate to use for uplinks.
       \returns \ref status_codes
     */
     int16_t setDatarate(uint8_t drUp);
@@ -480,16 +488,18 @@ class LoRaWANNode {
     void setADR(bool enable = true);
 
     /*!
-      \brief Select a single subband (8 channels) for fixed bands such as US915
+      \brief Select a single subband (8 channels) for fixed bands such as US915.
+      Only available before joining a network.
       \param idx The subband to be used (starting from 1!)
       \returns \ref status_codes
     */
     int16_t selectSubband(uint8_t idx);
 
     /*!
-      \brief Select a set of channels for fixed bands such as US915
+      \brief Select a set of channels for fixed bands such as US915.
+      Only available before joining a network.
       \param startChannel The first channel of the band to be used (inclusive)
-      \param endChannel The last channel of the band to be used (exclusive)
+      \param endChannel The last channel of the band to be used (inclusive)
       \returns \ref status_codes
     */
     int16_t selectSubband(uint8_t startChannel, uint8_t endChannel);
@@ -545,8 +555,25 @@ class LoRaWANNode {
     uint32_t confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t adrFcnt = 0;
 
+    // whether the current configured channel is in FSK mode
+    bool FSK;
+
+    // flag that shows whether the device is joined and there is an ongoing session
+    bool isJoinedFlag = false;
+
     // ADR is enabled by default
     bool adrEnabled = true;
+    
+    // enable/disable CSMA for LoRaWAN
+    bool enableCSMA;
+
+    // number of backoff slots to be decremented after DIFS phase. 0 to disable BO.
+    // A random BO avoids collisions in the case where two or more nodes start the CSMA
+    // process at the same time. 
+    uint8_t backoffMax;
+    
+    // number of CADs to estimate a clear CH
+    uint8_t difsSlots;
 
     // available channel frequencies from list passed during OTA activation
     LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
@@ -562,6 +589,9 @@ class LoRaWANNode {
 
     // timestamp to measure the RX1/2 delay (from uplink end)
     uint32_t rxDelayStart = 0;
+
+    // timestamp when the Rx1/2 windows were closed (timeout or uplink received)
+    uint32_t rxDelayEnd = 0;
 
     // delays between the uplink and RX1/2 windows
     uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };
@@ -587,6 +617,9 @@ class LoRaWANNode {
     */
     int16_t restoreFcntUp();
 #endif
+
+    // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
+    int16_t downlinkCommon();
 
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
