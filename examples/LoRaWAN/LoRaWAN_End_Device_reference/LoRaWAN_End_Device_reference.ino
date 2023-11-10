@@ -152,7 +152,7 @@ void loop() {
   String strUp = "Hello World! #" + String(fcntUp);
   
   // send a confirmed uplink to port 10 every 64th frame
-  if(fcntUp / 64 == 0) {
+  if(fcntUp % 64 == 0) {
     state = node.uplink(strUp, 10, true);
   } else {
     state = node.uplink(strUp, 10);

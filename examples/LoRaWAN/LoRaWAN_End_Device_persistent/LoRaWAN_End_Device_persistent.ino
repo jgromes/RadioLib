@@ -88,14 +88,6 @@ void setup() {
     Serial.println(state);
     while(true);
   }
-  
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while(true);
-  }
 
 }
 
