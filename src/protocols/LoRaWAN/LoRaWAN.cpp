@@ -65,11 +65,13 @@ int16_t LoRaWANNode::restore() {
 
   // check the magic value
   if(mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) != RADIOLIB_LORAWAN_MAGIC) {
-    RADIOLIB_DEBUG_PRINTLN("magic id not set (no saved session)");
-    RADIOLIB_DEBUG_PRINTLN("first 16 bytes of NVM:");
-    uint8_t nvmBuff[16];
-    mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
-    RADIOLIB_DEBUG_HEXDUMP(nvmBuff, 16);
+    #if defined(RADIOLIB_DEBUG)
+      RADIOLIB_DEBUG_PRINTLN("magic id not set (no saved session)");
+      RADIOLIB_DEBUG_PRINTLN("first 16 bytes of NVM:");
+      uint8_t nvmBuff[16];
+      mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
+      RADIOLIB_DEBUG_HEXDUMP(nvmBuff, 16);
+    #endif
     // the magic value is not set, user will have to do perform the join procedure
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
