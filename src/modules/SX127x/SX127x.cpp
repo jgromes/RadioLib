@@ -1268,7 +1268,7 @@ uint32_t SX127x::getTimeOnAir(size_t len) {
     float n_sym = getNumSymbols(len);
 
     // Get time-on-air in us
-    return ceil(symbolLength * n_sym) * 1000;
+    return ceil((double)symbolLength * (double)n_sym) * 1000;
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // Get number of bits preamble
