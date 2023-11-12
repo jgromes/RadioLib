@@ -818,7 +818,6 @@ class SX127x: public PhysicalLayer {
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
       \param len Expected length of packet to be received, or 0 when unused.
       Defaults to 0, non-zero required for LoRa spreading factor 6.
-      If non-zero for LoRa spreading factor > 6, RxSingle is used and value must be given in symbols.
       \param mode Receive mode to be used. Defaults to RxContinuous.
       \returns \ref status_codes
     */
@@ -1045,6 +1044,13 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
+
+    /*!
+      \brief Convert from bytes to LoRa symbols.
+      \param len Payload length in bytes.
+      \returns The total number of LoRa symbols, including preamble, sync and possible header.
+    */
+    float getNumSymbols(size_t len);
 
     /*!
       \brief Get expected time-on-air for a given size of payload.

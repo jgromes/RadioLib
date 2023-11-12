@@ -1231,28 +1231,45 @@ int16_t SX127x::variablePacketLengthMode(uint8_t maxLen) {
   return(SX127x::setPacketMode(RADIOLIB_SX127X_PACKET_VARIABLE, maxLen));
 }
 
+float SX127x::getNumSymbols(size_t len) {
+  // get symbol length in us
+  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+
+  // get Low Data Rate optimization flag
+  float de = 0;
+  if (symbolLength >= 16.0) {
+    de = 1;
+  }
+
+  // get explicit/implicit header enabled flag
+  float ih = (float) this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
+  
+  // get CRC enabled flag
+  float crc = (float) (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
+
+  // get number of preamble symbols
+  float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
+
+  // get number of payload symbols
+  float n_pay = 8.0 + RADIOLIB_MAX(ceil((8.0 * (float) len - 4.0 * (float) this->spreadingFactor + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) this->spreadingFactor - 8.0 * de)) * (float) this->codingRate, 0.0);
+
+  // add 4.25 symbols for the sync
+  return(n_pre + n_pay + 4.25f);
+}
+
 uint32_t SX127x::getTimeOnAir(size_t len) {
   // check active modem
   uint8_t modem = getActiveModem();
   if (modem == RADIOLIB_SX127X_LORA) {
-    // Get symbol length in us
+    // get symbol length in us
     float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-    // Get Low Data Rate optimization flag
-    float de = 0;
-    if (symbolLength >= 16.0) {
-      de = 1;
-    }
-    // Get explicit/implicit header enabled flag
-    float ih = (float) this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, 0, 0);
-    // Get CRC enabled flag
-    float crc = (float) (this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, 2, 2) >> 2);
-    // Get number of bits preamble
-    float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
-    // Get number of bits payload
-    float n_pay = 8.0 + RADIOLIB_MAX(ceil((8.0 * (float) len - 4.0 * (float) this->spreadingFactor + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) this->spreadingFactor - 8.0 * de)) * (float) this->codingRate, 0.0);
+
+    // get number of symbols
+    float n_sym = getNumSymbols(len);
 
     // Get time-on-air in us
-    return ceil(symbolLength * (n_pre + n_pay + 4.25)) * 1000;
+    return ceil(symbolLength * n_sym) * 1000;
+
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // Get number of bits preamble
     float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB_FSK) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB_FSK)) * 8;
