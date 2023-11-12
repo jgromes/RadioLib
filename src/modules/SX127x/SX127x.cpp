@@ -409,13 +409,6 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, RADIOLIB_SX127X_FIFO_RX_BASE_ADDR_MAX);
     RADIOLIB_ASSERT(state);
 
-    // timeout is only used in RxSingle, so when a packet length is defined, force mode to RxSingle
-    // and set the timeout value to the expected number of symbols (usually preamble + header)
-    if((len > 0) && (this->spreadingFactor > 6)) {
-      mode = RADIOLIB_SX127X_RXSINGLE;
-      state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, len);
-    }
-
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // set DIO pin mapping
     state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
@@ -439,10 +432,20 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   return(setMode(mode));
 }
 
-int16_t SX127x::startReceive(uint32_t mode, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t SX127x::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
   (void)irqFlags;
   (void)irqMask;
-  return(startReceive((uint8_t)len, (uint8_t)mode));
+  uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS;
+  if(timeout != 0) {
+    // for non-zero timeout value, change mode to Rx single and set the timeout
+    mode = RADIOLIB_SX127X_RXSINGLE;
+    uint8_t msb_sym = (timeout > 0x3FF) ? 0x3 : (uint8_t)(timeout >> 8);
+    uint8_t lsb_sym = (timeout > 0x3FF) ? 0xFF : (uint8_t)(timeout & 0xFF);
+    int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_2, msb_sym, 1, 0);
+    state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, lsb_sym);
+    RADIOLIB_ASSERT(state);
+  }
+  return(startReceive((uint8_t)len, mode));
 }
 
 void SX127x::setDio0Action(void (*func)(void), uint32_t dir) {
