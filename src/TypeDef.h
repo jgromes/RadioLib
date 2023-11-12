@@ -554,6 +554,11 @@
 #define RADIOLIB_ERR_A_FCNT_DOWN_INVALID                        (-1114)
 
 /*!
+  \brief Datarate requested by user is invalid.
+*/
+#define RADIOLIB_ERR_DATA_RATE_INVALID                          (-1115)
+
+/*!
   \}
 */
 

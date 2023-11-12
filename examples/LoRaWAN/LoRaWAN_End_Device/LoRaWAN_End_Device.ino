@@ -7,14 +7,12 @@
   After your device is registered, you can run this example.
   The device will join the network and start uploading data.
 
-  NOTE: LoRaWAN requires storing some parameters persistently!
-        RadioLib does this by using EEPROM, by default
-        starting at address 0 and using 32 bytes.
-        If you already use EEPROM in your application,
-        you will have to either avoid this range, or change it
-        by setting a different start address by changing the value of
-        RADIOLIB_HAL_PERSISTENT_STORAGE_BASE macro, either
-        during build or in src/BuildOpt.h.
+  LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
+  Please refer to the 'persistent' example once you are familiar
+  with LoRaWAN.
+  Running this examples REQUIRES you to check "Resets DevNonces"
+  on your LoRaWAN dashboard. Refer to the network's 
+  documentation on how to do this.
 
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -53,13 +51,6 @@ void setup() {
     while(true);
   }
 
-  // first we need to initialize the device storage
-  // this will reset all persistently stored parameters
-  // NOTE: This should only be done once prior to first joining a network!
-  //       After wiping persistent storage, you will also have to reset
-  //       the end device in TTN and perform the join procedure again!
-  //node.wipe();
-
   // application identifier - pre-LoRaWAN 1.1.0, this was called appEUI
   // when adding new end device in TTN, you will have to enter this number
   // you can pick any number you want, but it has to be unique
@@ -87,17 +78,23 @@ void setup() {
   // and can be set to NULL
 
   // some frequency bands only use a subset of the available channels
-  // you can set the starting channel and their number
-  // for example, the following corresponds to US915 FSB2 in TTN
+  // you can select the specific band or set the first channel and last channel
+  // for example, either of the following corresponds to US915 FSB2 in TTN
   /*
-    node.startChannel = 8;
-    node.numChannels = 8;
+    node.selectSubband(2);
+    node.selectSubband(8, 15);
   */
 
   // now we can start the activation
-  // this can take up to 20 seconds, and requires a LoRaWAN gateway in range
+  // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
+  // a specific starting-datarate can be selected in dynamic bands (e.g. EU868):
+  /* 
+    uint8_t joinDr = 4;
+    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDr);
+  */
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -106,20 +103,6 @@ void setup() {
     while(true);
   }
 
-  // after the device has been activated,
-  // network can be rejoined after device power cycle
-  // by calling "begin"
-  /*
-    Serial.print(F("[LoRaWAN] Resuming previous session ... "));
-    state = node.begin();
-    if(state == RADIOLIB_ERR_NONE) {
-      Serial.println(F("success!"));
-    } else {
-      Serial.print(F("failed, code "));
-      Serial.println(state);
-      while(true);
-    }
-  */
 }
 
 // counter to keep track of transmitted packets
@@ -129,23 +112,10 @@ void loop() {
   // send uplink to port 10
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
   String strUp = "Hello World! #" + String(count++);
-  int state = node.uplink(strUp, 10);
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-  }
-
-  // after uplink, you can call downlink(),
-  // to receive any possible reply from the server
-  // this function must be called within a few seconds
-  // after uplink to receive the downlink!
-  Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
   String strDown;
-  state = node.downlink(strDown);
+  int state = node.sendReceive(strUp, 10, strDown);
   if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
+    Serial.println(F("received a downlink!"));
 
     // print data of the packet (if there are any)
     Serial.print(F("[LoRaWAN] Data:\t\t"));
@@ -171,7 +141,7 @@ void loop() {
     Serial.println(F(" Hz"));
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("timeout!"));
+    Serial.println(F("no downlink!"));
   
   } else {
     Serial.print(F("failed, code "));
@@ -179,5 +149,5 @@ void loop() {
   }
 
   // wait before sending another packet
-  delay(10000);
+  delay(30000);
 }

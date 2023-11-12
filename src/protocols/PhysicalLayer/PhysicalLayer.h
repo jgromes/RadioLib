@@ -309,7 +309,28 @@ class PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     virtual uint32_t getTimeOnAir(size_t len);
-    
+
+    /*!
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    virtual uint32_t calculateRxTimeout(uint32_t timeoutUs);
+
+    /*!
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
+      \param irqFlags The flags for which IRQs must be triggered
+      \param irqMask Mask indicating which IRQ triggers a DIO
+      \returns \ref status_codes
+    */
+    virtual int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
+
+    /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns \ref RxTimeout IRQ is set
+    */
+    virtual bool isRxTimeout();
+
     /*!
       \brief Interrupt-driven channel activity detection method. interrupt will be activated
       when packet is detected. Must be implemented in module class.

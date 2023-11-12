@@ -442,7 +442,19 @@
 
 // the amount of space allocated to the persistent storage
 #if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0xD0)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x0180)
+#endif
+
+/*
+ * Uncomment on boards whose clock runs too slow or too fast
+ * Set the value according to the following scheme:
+ * Enable timestamps on your terminal
+ * Print something to terminal, wait 1000 milliseconds, print something again
+ * If the difference is e.g. 1014 milliseconds between the prints, set this value to 14
+ * Or, for more accuracy, wait for 100,000 milliseconds and divide the total drift by 100
+ */
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  //#define RADIOLIB_CLOCK_DRIFT_MS                         (0)
 #endif
 
 // This only compiles on STM32 boards with SUBGHZ module, but also

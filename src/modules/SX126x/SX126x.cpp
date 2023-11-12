@@ -1436,6 +1436,25 @@ uint32_t SX126x::getTimeOnAir(size_t len) {
   }
 }
 
+uint32_t SX126x::calculateRxTimeout(uint32_t timeoutUs) {
+  // the timeout value is given in units of 15.625 microseconds
+  // the calling function should provide some extra width, as this number of units is truncated to integer
+  uint32_t timeout = timeoutUs / 15.625;
+  return(timeout);
+}
+
+int16_t SX126x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+  irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT;  // flags that can appear in the IRQ register
+  irqMask  = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT; // flags that will trigger DIO0
+  return(RADIOLIB_ERR_NONE);
+}
+
+bool SX126x::isRxTimeout() {
+  uint16_t irq = getIrqStatus();
+  bool rxTimedOut = irq & RADIOLIB_SX126X_IRQ_TIMEOUT;
+  return(rxTimedOut);
+}
+
 int16_t SX126x::implicitHeader(size_t len) {
   return(setHeaderType(RADIOLIB_SX126X_LORA_HEADER_IMPLICIT, len));
 }

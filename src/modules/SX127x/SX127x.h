@@ -160,6 +160,7 @@
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DONE                  0b11111011  //  2     2   CAD complete
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_FHSS_CHANGE_CHANNEL       0b11111101  //  1     1   FHSS change channel
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DETECTED              0b11111110  //  0     0   valid LoRa signal detected during CAD operation
+#define RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT                0b00011111  //  7     0   default for Rx (RX_TIMEOUT, RX_DONE, CRC_ERR)
 
 // RADIOLIB_SX127X_REG_FIFO_TX_BASE_ADDR
 #define RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX                   0b00000000  //  7     0   allocate the entire FIFO buffer for TX only
@@ -824,13 +825,16 @@ class SX127x: public PhysicalLayer {
     
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
-      \param mode Receive mode to be used.
+      \param timeout Receive mode type and/or raw timeout value in symbols.
+      When set to 0, the timeout will be infinite and the device will remain
+      in Rx mode until explicitly commanded to stop (Rx continuous mode).
+      When non-zero (maximum 1023), the device will be set to Rx single mode and timeout will be set.
       \param irqFlags Ignored.
       \param irqMask Ignored.
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t mode, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -1042,11 +1046,39 @@ class SX127x: public PhysicalLayer {
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
 
     /*!
+      \brief Convert from bytes to LoRa symbols.
+      \param len Payload length in bytes.
+      \returns The total number of LoRa symbols, including preamble, sync and possible header.
+    */
+    float getNumSymbols(size_t len);
+
+    /*!
       \brief Get expected time-on-air for a given size of payload.
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
     uint32_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    uint32_t calculateRxTimeout(uint32_t timeoutUs);
+
+    /*!
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
+      \param irqFlags The flags for which IRQs must be triggered
+      \param irqMask Mask indicating which IRQ triggers a DIO
+      \returns \ref status_codes
+    */
+    int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
+
+    /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns \ref RxTimeout IRQ is set
+    */
+    bool isRxTimeout();
 
     /*!
       \brief Enable CRC filtering and generation.
