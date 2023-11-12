@@ -1,5 +1,5 @@
 /*
-  RadioLib LoRaWAN End Device Example
+  RadioLib LoRaWAN End Device Persistent Example
 
   This example assumes you have tried one of the OTAA or ABP
   examples and are familiar with the required keys and procedures.
@@ -7,7 +7,7 @@
   deepsleep or survive power cycles. Before you start, you will 
   have to register your device at https://www.thethingsnetwork.org/
   and join the network using either OTAA or ABP.
-  Please refer to one of the other examples for more
+  Please refer to one of the other LoRaWAN examples for more
   information regarding joining a network.
 
   NOTE: LoRaWAN requires storing some parameters persistently!

@@ -312,6 +312,34 @@ struct LoRaWANMacCommandQueue_t {
 };
 
 /*!
+  \struct LoRaWANEvent_t
+  \brief Structure to save extra information about uplink/downlink event.
+*/
+struct LoRaWANEvent_t {
+  /*! \brief Event direction, one of RADIOLIB_LORAWAN_CHANNEL_DIR_* */
+  uint8_t dir;
+  
+  /*! \brief Whether the event is confirmed or not (e.g., confirmed uplink sent by user application) */
+  bool confirmed;
+  
+  /*! \brief Whether the event is confirming a previous request
+  (e.g., server downlink reply to confirmed uplink sent by user application)*/
+  bool confirming;
+  
+  /*! \brief Frequency in MHz */
+  float freq;
+  
+  /*! \brief Transmit power in dBm for uplink, or RSSI for downlink */
+  int16_t power;
+  
+  /*! \brief The appropriate frame counter - for different events, different frame counters will be reported! */
+  uint32_t fcnt;
+  
+  /*! \brief Port number */
+  uint8_t port;
+};
+
+/*!
   \class LoRaWANNode
   \brief LoRaWAN-compatible node (class A device).
 */
@@ -388,9 +416,11 @@ class LoRaWANNode {
       \param str Address of Arduino String that will be transmitted.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false);
+    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
     #endif
 
     /*!
@@ -398,9 +428,11 @@ class LoRaWANNode {
       \param str C-string that will be transmitted.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false);
+    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
 
     /*!
       \brief Send a message to the server.
@@ -408,26 +440,32 @@ class LoRaWANNode {
       \param len Length of the data.
       \param port Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false);
+    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Wait for downlink from the server in either RX1 or RX2 window.
       \param str Address of Arduino String to save the received data.
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t downlink(String& str);
+    int16_t downlink(String& str, LoRaWANEvent_t* event = NULL);
     #endif
 
     /*!
       \brief Wait for downlink from the server in either RX1 or RX2 window.
       \param data Buffer to save received data into.
       \param len Pointer to variable that will be used to save the number of received bytes.
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t downlink(uint8_t* data, size_t* len);
+    int16_t downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -436,9 +474,13 @@ class LoRaWANNode {
       \param port Port number to send the message to.
       \param strDown Address of Arduino String to save the received data.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed = false);
+    int16_t sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
     #endif
 
     /*!
@@ -448,9 +490,13 @@ class LoRaWANNode {
       \param dataDown Buffer to save received data into.
       \param lenDown Pointer to variable that will be used to save the number of received bytes.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false);
+    int16_t sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
@@ -460,9 +506,13 @@ class LoRaWANNode {
       \param dataDown Buffer to save received data into.
       \param lenDown Pointer to variable that will be used to save the number of received bytes.
       \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false);
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Set device status.

@@ -58,6 +58,7 @@ ExternalRadio	KEYWORD1
 BellClient	KEYWORD1
 LoRaWANNode	KEYWORD1
 LoRaWANBand_t	KEYWORD1
+LoRaWANEvent_t	KEYWORD1
 
 # SSTV modes
 Scottie1	KEYWORD1

@@ -1,5 +1,5 @@
 /*
-  RadioLib LoRaWAN End Device Example
+  RadioLib LoRaWAN End Device Reference Example
 
   This example joins a LoRaWAN network and will send
   uplink packets. Before you start, you will have to
@@ -131,13 +131,13 @@ void setup() {
   // this tries to minimize packet loss by searching for a free channel
   // before actually sending an uplink 
   node.setCSMA(6, 2, true);
-
 }
 
 void loop() {
   int state = RADIOLIB_ERR_NONE;
 
-  // set battery fill level, 
+  // set battery fill level - the LoRaWAN network server
+  // may periodically request this information
   // 0 = external power source
   // 1 = lowest (empty battery)
   // 254 = highest (full battery)
@@ -170,7 +170,12 @@ void loop() {
   // after uplink to receive the downlink!
   Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
   String strDown;
-  state = node.downlink(strDown);
+
+  // you can also retrieve additional information about 
+  // uplink or downlink by passing a reference to
+  // LoRaWANEvent_t structure
+  LoRaWANEvent_t event;
+  state = node.downlink(strDown, &event);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
 
@@ -196,6 +201,31 @@ void loop() {
     Serial.print(F("[LoRaWAN] Frequency error:\t"));
     Serial.print(radio.getFrequencyError());
     Serial.println(F(" Hz"));
+
+    // print extra information about the event
+    Serial.println(F("[LoRaWAN] Event information:"));
+    Serial.print(F("[LoRaWAN] Direction:\t"));
+    if(event.dir == RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK) {
+      Serial.println(F("uplink"));
+    } else {
+      Serial.println(F("downlink"));
+    }
+    Serial.print(F("[LoRaWAN] Confirmed:\t"));
+    Serial.println(event.confirmed);
+    Serial.print(F("[LoRaWAN] Confirming:\t"));
+    Serial.println(event.confirming);
+    Serial.print(F("[LoRaWAN] Frequency:\t"));
+    Serial.print(event.freq, 3);
+    Serial.println(F(" MHz"));
+    Serial.print(F("[LoRaWAN] Output power:\t"));
+    Serial.print(event.power);
+    Serial.println(F(" dBm"));
+    Serial.print(F("[LoRaWAN] Frame count:\t"));
+    Serial.println(event.fcnt);
+    Serial.print(F("[LoRaWAN] Port:\t\t"));
+    Serial.println(event.port);
+    
+    Serial.print(radio.getFrequencyError());
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
     Serial.println(F("timeout!"));

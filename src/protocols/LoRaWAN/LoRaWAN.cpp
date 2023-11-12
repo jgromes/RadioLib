@@ -657,16 +657,16 @@ int16_t LoRaWANNode::saveChannels() {
 
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed) {
-  return(this->uplink(str.c_str(), port, isConfirmed));
+int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
+  return(this->uplink(str.c_str(), port, isConfirmed, event));
 }
 #endif
 
-int16_t LoRaWANNode::uplink(const char* str, uint8_t port, bool isConfirmed) {
-  return(this->uplink((uint8_t*)str, strlen(str), port, isConfirmed));
+int16_t LoRaWANNode::uplink(const char* str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
+  return(this->uplink((uint8_t*)str, strlen(str), port, isConfirmed, event));
 }
 
-int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed) {
+int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
   Module* mod = this->phyLayer->getMod();
   
   // check if the Rx windows were closed after sending the previous uplink
@@ -783,12 +783,11 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   }
 
   // if the saved confirm-fcnt is set, set the ACK bit
-  bool isConfirmingDown;
+  bool isConfirmingDown = false;
   if(this->confFcntDown != RADIOLIB_LORAWAN_FCNT_NONE) {
     isConfirmingDown = true;
     uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ACK;
   }
-  (void)isConfirmingDown;
 
   LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCNT_POS], (uint16_t)this->fcntUp);
 
@@ -895,13 +894,16 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // the downlink confirmation was acknowledged, so clear the counter value
   this->confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;
 
-  // LoRaWANEvent:
-  // dir = RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK
-  // confirmed = isConfirmed
-  // confirming = isConfirmingDown
-  // power = this->txPwrCur
-  // fcnt = this->fcntUp
-  // port = port
+  // pass the extra info if requested
+  if(event) {
+    event->dir = RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK;
+    event->confirmed = isConfirmed;
+    event->confirming = isConfirmingDown;
+    event->freq = currentChannels[event->dir].freq;
+    event->power = this->txPwrCur;
+    event->fcnt = this->fcntUp;
+    event->port = port;
+  }
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -1012,7 +1014,7 @@ int16_t LoRaWANNode::downlinkCommon() {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::downlink(String& str) {
+int16_t LoRaWANNode::downlink(String& str, LoRaWANEvent_t* event) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // build a temporary buffer
@@ -1021,7 +1023,7 @@ int16_t LoRaWANNode::downlink(String& str) {
   uint8_t data[251];
 
   // wait for downlink
-  state = this->downlink(data, &length);
+  state = this->downlink(data, &length, event);
   if(state == RADIOLIB_ERR_NONE) {
     // add null terminator
     data[length] = '\0';
@@ -1034,8 +1036,7 @@ int16_t LoRaWANNode::downlink(String& str) {
 }
 #endif
 
-int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
-  
+int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event) {
   // handle Rx1 and Rx2 windows - returns RADIOLIB_ERR_NONE if a downlink is received
   int16_t state = downlinkCommon();
   RADIOLIB_ASSERT(state);
@@ -1086,13 +1087,11 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_FCNT_POS], fcnt16);
 
   // if this downlink is confirming an uplink, its MIC was generated with the least-significant 16 bits of that fcntUp
-  // TODO get this to the user somehow
   bool isConfirmingUp = false;
   if((downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_ACK) && (this->rev == 1)) {
     isConfirmingUp = true;
     LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LORAWAN_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFcntUp);
   }
-  (void)isConfirmingUp;
   
   RADIOLIB_DEBUG_PRINTLN("downlinkMsg:");
   RADIOLIB_DEBUG_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
@@ -1157,7 +1156,6 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
     this->confFcntDown = this->aFcntDown;
     isConfirmedDown = true;
   }
-  (void)isConfirmedDown;
 
   // check the address
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
@@ -1242,13 +1240,16 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
   // a downlink was received, so reset the ADR counter to this uplink's fcnt
   this->adrFcnt = this->fcntUp;
 
-  // LoRaWANEvent:
-  // dir = RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK
-  // confirmed = isConfirmedDown
-  // confirming = isConfirmingUp
-  // power = this->txPwrCur
-  // fcnt = isAppDownlink ? this->aFcntDown : this->nFcntDown
-  // port = ...
+  // pass the extra info if requested
+  if(event) {
+    event->dir = RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK;
+    event->confirmed = isConfirmedDown;
+    event->confirming = isConfirmingUp;
+    event->freq = currentChannels[event->dir].freq;
+    event->power = this->txPwrCur;
+    event->fcnt = isAppDownlink ? this->aFcntDown : this->nFcntDown;
+    event->port = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FPORT_POS(foptsLen)];
+  }
 
   // process payload (if there is any)
   if(payLen <= 0) {
@@ -1276,34 +1277,34 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len) {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed) {
+int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(strUp, port, isConfirmed);
+  int16_t state = this->uplink(strUp, port, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
-  state = this->downlink(strDown);
+  state = this->downlink(strDown, eventDown);
   return(state);
 }
 #endif
 
-int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed) {
+int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(strUp, port, isConfirmed);
+  int16_t state = this->uplink(strUp, port, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
-  state = this->downlink(dataDown, lenDown);
+  state = this->downlink(dataDown, lenDown, eventDown);
   return(state);
 }
 
-int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed) {
+int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(dataUp, lenUp, port, isConfirmed);
+  int16_t state = this->uplink(dataUp, lenUp, port, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
-  state = this->downlink(dataDown, lenDown);
+  state = this->downlink(dataDown, lenDown, eventDown);
   return(state);
 }
 
