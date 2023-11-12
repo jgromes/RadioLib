@@ -97,14 +97,6 @@ $(document).ready(function(){initNavTree('struct_lo_ra_w_a_n_channel_span__t.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:acf5d4a1d5a71e4b8b13b7565cb162abb"><td class="memItemLeft" align="right" valign="top"><a id="acf5d4a1d5a71e4b8b13b7565cb162abb"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#acf5d4a1d5a71e4b8b13b7565cb162abb">direction</a></td></tr>
-<tr class="memdesc:acf5d4a1d5a71e4b8b13b7565cb162abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this channel span is for uplink, downlink, or both directions. <br /></td></tr>
-<tr class="separator:acf5d4a1d5a71e4b8b13b7565cb162abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="memItemLeft" align="right" valign="top"><a id="a09bbd5a4bc1f458769f0d28bdeb4a502"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#a09bbd5a4bc1f458769f0d28bdeb4a502">joinRequestDataRate</a></td></tr>
-<tr class="memdesc:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allowed data rates for a join request message. <br /></td></tr>
-<tr class="separator:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a50f5701ae19b79a0c8c487673135b2f2"><td class="memItemLeft" align="right" valign="top"><a id="a50f5701ae19b79a0c8c487673135b2f2"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#a50f5701ae19b79a0c8c487673135b2f2">numChannels</a></td></tr>
 <tr class="memdesc:a50f5701ae19b79a0c8c487673135b2f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Total number of channels in the span. <br /></td></tr>
@@ -117,10 +109,18 @@ float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="str
 float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#aa18000d2e0cde0236e6f984bd782dc02">freqStep</a></td></tr>
 <tr class="memdesc:aa18000d2e0cde0236e6f984bd782dc02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frequency step between adjacent channels. <br /></td></tr>
 <tr class="separator:aa18000d2e0cde0236e6f984bd782dc02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6791d6e9dbde30fa4b394c91aa196138"><td class="memItemLeft" align="right" valign="top"><a id="a6791d6e9dbde30fa4b394c91aa196138"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#a6791d6e9dbde30fa4b394c91aa196138">dataRates</a> [RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES]</td></tr>
-<tr class="memdesc:a6791d6e9dbde30fa4b394c91aa196138"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of datarates supported by all channels in the span. <br /></td></tr>
-<tr class="separator:a6791d6e9dbde30fa4b394c91aa196138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab613b4ca3a2c99ef0aa53f8132f54535"><td class="memItemLeft" align="right" valign="top"><a id="ab613b4ca3a2c99ef0aa53f8132f54535"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#ab613b4ca3a2c99ef0aa53f8132f54535">drMin</a></td></tr>
+<tr class="memdesc:ab613b4ca3a2c99ef0aa53f8132f54535"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum allowed datarate for all channels in this span. <br /></td></tr>
+<tr class="separator:ab613b4ca3a2c99ef0aa53f8132f54535"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a914d2b6f54e9c8d2841acf1d0652fd79"><td class="memItemLeft" align="right" valign="top"><a id="a914d2b6f54e9c8d2841acf1d0652fd79"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#a914d2b6f54e9c8d2841acf1d0652fd79">drMax</a></td></tr>
+<tr class="memdesc:a914d2b6f54e9c8d2841acf1d0652fd79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum allowed datarate for all channels in this span (inclusive) <br /></td></tr>
+<tr class="separator:a914d2b6f54e9c8d2841acf1d0652fd79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="memItemLeft" align="right" valign="top"><a id="a09bbd5a4bc1f458769f0d28bdeb4a502"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html#a09bbd5a4bc1f458769f0d28bdeb4a502">joinRequestDataRate</a></td></tr>
+<tr class="memdesc:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allowed data rates for a join request message. <br /></td></tr>
+<tr class="separator:a09bbd5a4bc1f458769f0d28bdeb4a502"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to save information about LoRaWAN channels. To save space, adjacent channels are saved in "spans". </p>

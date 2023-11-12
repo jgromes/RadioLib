@@ -105,57 +105,68 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea">wipe</a> ()</td></tr>
 <tr class="memdesc:a9613998d071bcf401be9ad57ff8591ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wipe internal persistent parameters. This will reset all counters and saved variables, so the device will have to rejoin the network. <br /></td></tr>
 <tr class="separator:a9613998d071bcf401be9ad57ff8591ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc9cdaa254a27c28403188c90991757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">setCSMA</a> (uint8_t <a class="el" href="class_lo_ra_w_a_n_node.html#abb7030ef70d67efc399fec713b830c58">backoffMax</a>, uint8_t <a class="el" href="class_lo_ra_w_a_n_node.html#a2694697d60eaa176a98875d39de158a0">difsSlots</a>, bool <a class="el" href="class_lo_ra_w_a_n_node.html#a2dc9088d9338800572c270117e93a889">enableCSMA</a>=false)</td></tr>
-<tr class="memdesc:adfc9cdaa254a27c28403188c90991757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">More...</a><br /></td></tr>
-<tr class="separator:adfc9cdaa254a27c28403188c90991757"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acb9a128c5d2d252ff057cb0a0b1da00c">restoreOTAA</a> ()</td></tr>
-<tr class="memdesc:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore OTAA session by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#acb9a128c5d2d252ff057cb0a0b1da00c">More...</a><br /></td></tr>
-<tr class="separator:acb9a128c5d2d252ff057cb0a0b1da00c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1c51588ea3b3ca82e2742c7cc9bc2a72">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false)</td></tr>
-<tr class="memdesc:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a1c51588ea3b3ca82e2742c7cc9bc2a72">More...</a><br /></td></tr>
-<tr class="separator:a1c51588ea3b3ca82e2742c7cc9bc2a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbf3beb97c42072f13d46e06f1d4709b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acbf3beb97c42072f13d46e06f1d4709b">beginABP</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL)</td></tr>
-<tr class="memdesc:acbf3beb97c42072f13d46e06f1d4709b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#acbf3beb97c42072f13d46e06f1d4709b">More...</a><br /></td></tr>
-<tr class="separator:acbf3beb97c42072f13d46e06f1d4709b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">uplink</a> (const char *str, uint8_t port)</td></tr>
-<tr class="memdesc:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#afa61477a27d020ccdf0c7eef1c4d00a9">More...</a><br /></td></tr>
-<tr class="separator:afa61477a27d020ccdf0c7eef1c4d00a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5e6ccffe7a9d633dce21e20760cbe31"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aa5e6ccffe7a9d633dce21e20760cbe31">uplink</a> (uint8_t *data, size_t len, uint8_t port)</td></tr>
-<tr class="memdesc:aa5e6ccffe7a9d633dce21e20760cbe31"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#aa5e6ccffe7a9d633dce21e20760cbe31">More...</a><br /></td></tr>
-<tr class="separator:aa5e6ccffe7a9d633dce21e20760cbe31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9e0dc5118e68b8b766b7d205bd4c784"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae9e0dc5118e68b8b766b7d205bd4c784">restore</a> ()</td></tr>
+<tr class="memdesc:ae9e0dc5118e68b8b766b7d205bd4c784"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore session by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#ae9e0dc5118e68b8b766b7d205bd4c784">More...</a><br /></td></tr>
+<tr class="separator:ae9e0dc5118e68b8b766b7d205bd4c784"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4bdc96a5b4016b6b15d23d32bb5f28d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af4bdc96a5b4016b6b15d23d32bb5f28d">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, uint8_t joinDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED, bool force=false)</td></tr>
+<tr class="memdesc:af4bdc96a5b4016b6b15d23d32bb5f28d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#af4bdc96a5b4016b6b15d23d32bb5f28d">More...</a><br /></td></tr>
+<tr class="separator:af4bdc96a5b4016b6b15d23d32bb5f28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a757f52c10a904a81b54fed70921ed5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5">beginABP</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL, bool force=false)</td></tr>
+<tr class="memdesc:a9a757f52c10a904a81b54fed70921ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5">More...</a><br /></td></tr>
+<tr class="separator:a9a757f52c10a904a81b54fed70921ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memItemLeft" align="right" valign="top"><a id="af7a8ae58391e00b5fcb99f01832cc4fc"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc">isJoined</a> ()</td></tr>
+<tr class="memdesc:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
+<tr class="separator:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">saveSession</a> ()</td></tr>
+<tr class="memdesc:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the current state of the session. All variables are compared to what is saved and only the differences are rewritten.  <a href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">More...</a><br /></td></tr>
+<tr class="separator:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a689f6f83e58126c7c39755f4eddfb4e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a689f6f83e58126c7c39755f4eddfb4e0">uplink</a> (const char *str, uint8_t port, bool isConfirmed=false)</td></tr>
+<tr class="memdesc:a689f6f83e58126c7c39755f4eddfb4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a689f6f83e58126c7c39755f4eddfb4e0">More...</a><br /></td></tr>
+<tr class="separator:a689f6f83e58126c7c39755f4eddfb4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf6abcc204c0d2829052e3f9eea0e08f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aaf6abcc204c0d2829052e3f9eea0e08f">uplink</a> (uint8_t *data, size_t len, uint8_t port, bool isConfirmed=false)</td></tr>
+<tr class="memdesc:aaf6abcc204c0d2829052e3f9eea0e08f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#aaf6abcc204c0d2829052e3f9eea0e08f">More...</a><br /></td></tr>
+<tr class="separator:aaf6abcc204c0d2829052e3f9eea0e08f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a55156cbc6b09da6d4ba7337d1a4136fe">downlink</a> (uint8_t *data, size_t *len)</td></tr>
 <tr class="memdesc:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for downlink from the server in either RX1 or RX2 window.  <a href="class_lo_ra_w_a_n_node.html#a55156cbc6b09da6d4ba7337d1a4136fe">More...</a><br /></td></tr>
 <tr class="separator:a55156cbc6b09da6d4ba7337d1a4136fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93dd0ce4025bf1d54bd640db2503d025"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a93dd0ce4025bf1d54bd640db2503d025">sendReceive</a> (const char *strUp, uint8_t port, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false)</td></tr>
+<tr class="memdesc:a93dd0ce4025bf1d54bd640db2503d025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a93dd0ce4025bf1d54bd640db2503d025">More...</a><br /></td></tr>
+<tr class="separator:a93dd0ce4025bf1d54bd640db2503d025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0e6f746488545f429a411be41118006"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aa0e6f746488545f429a411be41118006">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t port, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false)</td></tr>
+<tr class="memdesc:aa0e6f746488545f429a411be41118006"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#aa0e6f746488545f429a411be41118006">More...</a><br /></td></tr>
+<tr class="separator:aa0e6f746488545f429a411be41118006"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5449e301634dff1838a1b024b4067034"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a> (uint8_t battLevel)</td></tr>
 <tr class="memdesc:a5449e301634dff1838a1b024b4067034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set device status.  <a href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">More...</a><br /></td></tr>
 <tr class="separator:a5449e301634dff1838a1b024b4067034"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ae7c2aa61262d7761236f289889020"><td class="memItemLeft" align="right" valign="top"><a id="a52ae7c2aa61262d7761236f289889020"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a52ae7c2aa61262d7761236f289889020">getFcntUp</a> ()</td></tr>
+<tr class="memdesc:a52ae7c2aa61262d7761236f289889020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last uplink's frame counter. <br /></td></tr>
+<tr class="separator:a52ae7c2aa61262d7761236f289889020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14e8a8a098df28ff5ee294f235500499"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a> (uint8_t drUp)</td></tr>
+<tr class="memdesc:a14e8a8a098df28ff5ee294f235500499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set uplink datarate. This should not be used when ADR is enabled.  <a href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">More...</a><br /></td></tr>
+<tr class="separator:a14e8a8a098df28ff5ee294f235500499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae222275f807f472083ea6100c23c75ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">setADR</a> (bool enable=true)</td></tr>
+<tr class="memdesc:ae222275f807f472083ea6100c23c75ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle ADR to on or off.  <a href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">More...</a><br /></td></tr>
+<tr class="separator:ae222275f807f472083ea6100c23c75ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaccc40080f514015432e47f862ce3b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">selectSubband</a> (uint8_t idx)</td></tr>
+<tr class="memdesc:acaccc40080f514015432e47f862ce3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a single subband (8 channels) for fixed bands such as US915. Only available before joining a network.  <a href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">More...</a><br /></td></tr>
+<tr class="separator:acaccc40080f514015432e47f862ce3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad42f5c17216b235b7f39c99cb96d590c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad42f5c17216b235b7f39c99cb96d590c">selectSubband</a> (uint8_t startChannel, uint8_t endChannel)</td></tr>
+<tr class="memdesc:ad42f5c17216b235b7f39c99cb96d590c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a set of channels for fixed bands such as US915. Only available before joining a network.  <a href="class_lo_ra_w_a_n_node.html#ad42f5c17216b235b7f39c99cb96d590c">More...</a><br /></td></tr>
+<tr class="separator:ad42f5c17216b235b7f39c99cb96d590c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfc9cdaa254a27c28403188c90991757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">setCSMA</a> (uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA=false)</td></tr>
+<tr class="memdesc:adfc9cdaa254a27c28403188c90991757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">More...</a><br /></td></tr>
+<tr class="separator:adfc9cdaa254a27c28403188c90991757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a2335294022dff4bfed27491f7d61e645"><td class="memItemLeft" align="right" valign="top"><a id="a2335294022dff4bfed27491f7d61e645"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2335294022dff4bfed27491f7d61e645">FSK</a></td></tr>
-<tr class="memdesc:a2335294022dff4bfed27491f7d61e645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set to true to force the node to only use FSK channels. Set to false by default. <br /></td></tr>
-<tr class="separator:a2335294022dff4bfed27491f7d61e645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:accc2a98737dba4de0fabb904f053efe3"><td class="memItemLeft" align="right" valign="top"><a id="accc2a98737dba4de0fabb904f053efe3"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#accc2a98737dba4de0fabb904f053efe3">startChannel</a></td></tr>
-<tr class="memdesc:accc2a98737dba4de0fabb904f053efe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starting channel offset. Some band plans only support a subset of available channels. Set to a positive value to set the first channel that will be used (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). <br /></td></tr>
-<tr class="separator:accc2a98737dba4de0fabb904f053efe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a814a0ef01d5a989479631f13ce737754"><td class="memItemLeft" align="right" valign="top"><a id="a814a0ef01d5a989479631f13ce737754"></a>
-int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a814a0ef01d5a989479631f13ce737754">numChannels</a></td></tr>
-<tr class="memdesc:a814a0ef01d5a989479631f13ce737754"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of supported channels. Some band plans only support a subset of available channels. Set to a positive value to set the number of channels that will be used (e.g. 8 for US915 FSB2 used by TTN). By default -1 (no channel offset). <br /></td></tr>
-<tr class="separator:a814a0ef01d5a989479631f13ce737754"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb7030ef70d67efc399fec713b830c58"><td class="memItemLeft" align="right" valign="top"><a id="abb7030ef70d67efc399fec713b830c58"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#abb7030ef70d67efc399fec713b830c58">backoffMax</a></td></tr>
-<tr class="memdesc:abb7030ef70d67efc399fec713b830c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Num of Back Off(BO) slots to be decremented after DIFS phase. 0 to disable BO. A random BO avoids collisions in the case where two or more nodes start the CSMA process at the same time. <br /></td></tr>
-<tr class="separator:abb7030ef70d67efc399fec713b830c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2694697d60eaa176a98875d39de158a0"><td class="memItemLeft" align="right" valign="top"><a id="a2694697d60eaa176a98875d39de158a0"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2694697d60eaa176a98875d39de158a0">difsSlots</a></td></tr>
-<tr class="memdesc:a2694697d60eaa176a98875d39de158a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Num of CADs to estimate a clear CH. <br /></td></tr>
-<tr class="separator:a2694697d60eaa176a98875d39de158a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dc9088d9338800572c270117e93a889"><td class="memItemLeft" align="right" valign="top"><a id="a2dc9088d9338800572c270117e93a889"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2dc9088d9338800572c270117e93a889">enableCSMA</a></td></tr>
-<tr class="memdesc:a2dc9088d9338800572c270117e93a889"><td class="mdescLeft">&#160;</td><td class="mdescRight">enable/disable CSMA for LoRaWAN. <br /></td></tr>
-<tr class="separator:a2dc9088d9338800572c270117e93a889"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd37dd26f6040754b4a9c942b3fb4339"><td class="memItemLeft" align="right" valign="top"><a id="acd37dd26f6040754b4a9c942b3fb4339"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b></td></tr>
+<tr class="separator:acd37dd26f6040754b4a9c942b3fb4339"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae68e77ca38d22867798517d233c0fbc4"><td class="memItemLeft" align="right" valign="top"><a id="ae68e77ca38d22867798517d233c0fbc4"></a>
+<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rx2</b></td></tr>
+<tr class="separator:ae68e77ca38d22867798517d233c0fbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
@@ -198,8 +209,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="acbf3beb97c42072f13d46e06f1d4709b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbf3beb97c42072f13d46e06f1d4709b">&#9670;&nbsp;</a></span>beginABP()</h2>
+<a id="a9a757f52c10a904a81b54fed70921ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a757f52c10a904a81b54fed70921ed5">&#9670;&nbsp;</a></span>beginABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,7 +243,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>sNwkSIntKey</em> = <code>NULL</code>&#160;</td>
+          <td class="paramname"><em>sNwkSIntKey</em> = <code>NULL</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>force</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -250,6 +267,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">appSKey</td><td>Pointer to the application session AES-128 key. </td></tr>
     <tr><td class="paramname">fNwkSIntKey</td><td>Pointer to the network session F key (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
     <tr><td class="paramname">sNwkSIntKey</td><td>Pointer to the network session S key (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
+    <tr><td class="paramname">force</td><td>Set to true to force a new session, even if one exists. </td></tr>
   </table>
   </dd>
 </dl>
@@ -257,8 +275,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a1c51588ea3b3ca82e2742c7cc9bc2a72"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c51588ea3b3ca82e2742c7cc9bc2a72">&#9670;&nbsp;</a></span>beginOTAA()</h2>
+<a id="af4bdc96a5b4016b6b15d23d32bb5f28d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4bdc96a5b4016b6b15d23d32bb5f28d">&#9670;&nbsp;</a></span>beginOTAA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -290,6 +308,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>joinDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">bool&#160;</td>
           <td class="paramname"><em>force</em> = <code>false</code>&#160;</td>
         </tr>
@@ -308,7 +332,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">devEUI</td><td>8-byte device identifier. </td></tr>
     <tr><td class="paramname">nwkKey</td><td>Pointer to the network AES-128 key. </td></tr>
     <tr><td class="paramname">appKey</td><td>Pointer to the application AES-128 key. </td></tr>
-    <tr><td class="paramname">force</td><td>Set to true to force joining even if previously joined. </td></tr>
+    <tr><td class="paramname">joinDr</td><td>(OTAA:) The datarate at which to send the join-request; (ABP:) ignored </td></tr>
+    <tr><td class="paramname">force</td><td>Set to true to force joining even if previously joined.</td></tr>
   </table>
   </dd>
 </dl>
@@ -354,14 +379,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="acb9a128c5d2d252ff057cb0a0b1da00c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb9a128c5d2d252ff057cb0a0b1da00c">&#9670;&nbsp;</a></span>restoreOTAA()</h2>
+<a id="ae9e0dc5118e68b8b766b7d205bd4c784"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9e0dc5118e68b8b766b7d205bd4c784">&#9670;&nbsp;</a></span>restore()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANNode::restoreOTAA </td>
+          <td class="memname">int16_t LoRaWANNode::restore </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -369,8 +394,244 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Restore OTAA session by loading information from persistent storage. </p>
+<p>Restore session by loading information from persistent storage. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a7078a3f1657a2a022bb43f2bd34c93e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7078a3f1657a2a022bb43f2bd34c93e3">&#9670;&nbsp;</a></span>saveSession()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::saveSession </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Save the current state of the session. All variables are compared to what is saved and only the differences are rewritten. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="acaccc40080f514015432e47f862ce3b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaccc40080f514015432e47f862ce3b4">&#9670;&nbsp;</a></span>selectSubband() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::selectSubband </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select a single subband (8 channels) for fixed bands such as US915. Only available before joining a network. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">idx</td><td>The subband to be used (starting from 1!) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad42f5c17216b235b7f39c99cb96d590c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad42f5c17216b235b7f39c99cb96d590c">&#9670;&nbsp;</a></span>selectSubband() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::selectSubband </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>startChannel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>endChannel</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Select a set of channels for fixed bands such as US915. Only available before joining a network. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startChannel</td><td>The first channel of the band to be used (inclusive) </td></tr>
+    <tr><td class="paramname">endChannel</td><td>The last channel of the band to be used (inclusive) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a93dd0ce4025bf1d54bd640db2503d025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93dd0ce4025bf1d54bd640db2503d025">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::sendReceive </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>strUp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>dataDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>lenDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isConfirmed</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">strUp</td><td>C-string that will be transmitted. </td></tr>
+    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">dataDown</td><td>Buffer to save received data into. </td></tr>
+    <tr><td class="paramname">lenDown</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
+    <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa0e6f746488545f429a411be41118006"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0e6f746488545f429a411be41118006">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::sendReceive </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>dataUp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>lenUp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>dataDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t *&#160;</td>
+          <td class="paramname"><em>lenDown</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isConfirmed</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dataUp</td><td>Data to send. </td></tr>
+    <tr><td class="paramname">lenUp</td><td>Length of the data. </td></tr>
+    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">dataDown</td><td>Buffer to save received data into. </td></tr>
+    <tr><td class="paramname">lenDown</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
+    <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae222275f807f472083ea6100c23c75ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae222275f807f472083ea6100c23c75ff">&#9670;&nbsp;</a></span>setADR()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::setADR </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Toggle ADR to on or off. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>Whether to disable ADR or not </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -418,6 +679,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a14e8a8a098df28ff5ee294f235500499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14e8a8a098df28ff5ee294f235500499">&#9670;&nbsp;</a></span>setDatarate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::setDatarate </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>drUp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set uplink datarate. This should not be used when ADR is enabled. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dr</td><td>Datarate to use for uplinks. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a5449e301634dff1838a1b024b4067034"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5449e301634dff1838a1b024b4067034">&#9670;&nbsp;</a></span>setDeviceStatus()</h2>
 
@@ -444,8 +732,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="afa61477a27d020ccdf0c7eef1c4d00a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afa61477a27d020ccdf0c7eef1c4d00a9">&#9670;&nbsp;</a></span>uplink() <span class="overload">[1/2]</span></h2>
+<a id="a689f6f83e58126c7c39755f4eddfb4e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a689f6f83e58126c7c39755f4eddfb4e0">&#9670;&nbsp;</a></span>uplink() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -460,7 +748,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isConfirmed</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -475,6 +769,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">str</td><td>C-string that will be transmitted. </td></tr>
     <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
   </table>
   </dd>
 </dl>
@@ -482,8 +777,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aa5e6ccffe7a9d633dce21e20760cbe31"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa5e6ccffe7a9d633dce21e20760cbe31">&#9670;&nbsp;</a></span>uplink() <span class="overload">[2/2]</span></h2>
+<a id="aaf6abcc204c0d2829052e3f9eea0e08f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf6abcc204c0d2829052e3f9eea0e08f">&#9670;&nbsp;</a></span>uplink() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -504,7 +799,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isConfirmed</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -520,6 +821,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">data</td><td>Data to send. </td></tr>
     <tr><td class="paramname">len</td><td>Length of the data. </td></tr>
     <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
   </table>
   </dd>
 </dl>

@@ -305,6 +305,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a691c960e3fabfb9edcfccbae6eab5b76"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:a691c960e3fabfb9edcfccbae6eab5b76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76">More...</a><br /></td></tr>
 <tr class="separator:a691c960e3fabfb9edcfccbae6eab5b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d3ec87046483c5077343dd5ebd1aa5"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a62d3ec87046483c5077343dd5ebd1aa5">calculateRxTimeout</a> (uint32_t timeoutUs)</td></tr>
+<tr class="memdesc:a62d3ec87046483c5077343dd5ebd1aa5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_s_x126x.html#a62d3ec87046483c5077343dd5ebd1aa5">More...</a><br /></td></tr>
+<tr class="separator:a62d3ec87046483c5077343dd5ebd1aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16a4433b9bebac0aa867e31a74dc258a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a16a4433b9bebac0aa867e31a74dc258a">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask)</td></tr>
+<tr class="memdesc:a16a4433b9bebac0aa867e31a74dc258a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x126x.html#a16a4433b9bebac0aa867e31a74dc258a">More...</a><br /></td></tr>
+<tr class="separator:a16a4433b9bebac0aa867e31a74dc258a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc7d4fc9da64e5cd2517d3432ee6ffe"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a4fc7d4fc9da64e5cd2517d3432ee6ffe">isRxTimeout</a> ()</td></tr>
+<tr class="memdesc:a4fc7d4fc9da64e5cd2517d3432ee6ffe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_s_x126x.html#a4fc7d4fc9da64e5cd2517d3432ee6ffe">More...</a><br /></td></tr>
+<tr class="separator:a4fc7d4fc9da64e5cd2517d3432ee6ffe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adec09cba71494bd927ad1da786606ca6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#adec09cba71494bd927ad1da786606ca6">implicitHeader</a> (size_t len)</td></tr>
 <tr class="memdesc:adec09cba71494bd927ad1da786606ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <a href="class_s_x126x.html#adec09cba71494bd927ad1da786606ca6">More...</a><br /></td></tr>
 <tr class="separator:adec09cba71494bd927ad1da786606ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -614,6 +623,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a62d3ec87046483c5077343dd5ebd1aa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62d3ec87046483c5077343dd5ebd1aa5">&#9670;&nbsp;</a></span>calculateRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SX126x::calculateRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timeoutUs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculate the timeout value for this specific module / series (in number of symbols or units of time) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeoutUs</td><td>Timeout in microseconds to listen for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a50c3c0866faa474ae2ea8d5b79a73358">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1043,6 +1089,84 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a16a4433b9bebac0aa867e31a74dc258a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a16a4433b9bebac0aa867e31a74dc258a">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::irqRxDoneRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>irqFlags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>irqMask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create the flags that make up RxDone and RxTimeout used for receiving downlinks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irqFlags</td><td>The flags for which IRQs must be triggered </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Mask indicating which IRQ triggers a DIO </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a4fc7d4fc9da64e5cd2517d3432ee6ffe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc7d4fc9da64e5cd2517d3432ee6ffe">&#9670;&nbsp;</a></span>isRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool SX126x::isRxTimeout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the IRQ bit for RxTimeout is set. </p>
+<dl class="section return"><dt>Returns</dt><dd>RxTimeout IRQ is set </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">PhysicalLayer</a>.</p>
 
 </div>
 </div>

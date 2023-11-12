@@ -204,6 +204,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e">getTimeOnAir</a> (size_t len)</td></tr>
 <tr class="memdesc:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e">More...</a><br /></td></tr>
 <tr class="separator:a55ccbe60bfc1ab58814dbd5f9cd4939e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50c3c0866faa474ae2ea8d5b79a73358"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a50c3c0866faa474ae2ea8d5b79a73358">calculateRxTimeout</a> (uint32_t timeoutUs)</td></tr>
+<tr class="memdesc:a50c3c0866faa474ae2ea8d5b79a73358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_physical_layer.html#a50c3c0866faa474ae2ea8d5b79a73358">More...</a><br /></td></tr>
+<tr class="separator:a50c3c0866faa474ae2ea8d5b79a73358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d1fe00d107bbc23b0315fd442bc3292"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask)</td></tr>
+<tr class="memdesc:a1d1fe00d107bbc23b0315fd442bc3292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">More...</a><br /></td></tr>
+<tr class="separator:a1d1fe00d107bbc23b0315fd442bc3292"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb8d8182a32439fe91f2806d73e629f4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">isRxTimeout</a> ()</td></tr>
+<tr class="memdesc:acb8d8182a32439fe91f2806d73e629f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">More...</a><br /></td></tr>
+<tr class="separator:acb8d8182a32439fe91f2806d73e629f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">startChannelScan</a> ()</td></tr>
 <tr class="memdesc:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. interrupt will be activated when packet is detected. Must be implemented in module class.  <a href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">More...</a><br /></td></tr>
 <tr class="separator:ae30dfbb5445bb674898fc54f5f90b2f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,6 +372,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 
 <p>Get the number of direct mode bytes currently available in buffer. </p>
 <dl class="section return"><dt>Returns</dt><dd>Number of available bytes. </dd></dl>
+
+</div>
+</div>
+<a id="a50c3c0866faa474ae2ea8d5b79a73358"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50c3c0866faa474ae2ea8d5b79a73358">&#9670;&nbsp;</a></span>calculateRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t PhysicalLayer::calculateRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>timeoutUs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculate the timeout value for this specific module / series (in number of symbols or units of time) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeoutUs</td><td>Timeout in microseconds to listen for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a55e6c443b0e66d8bbfe8588826475090">SX127x</a>, and <a class="el" href="class_s_x126x.html#a62d3ec87046483c5077343dd5ebd1aa5">SX126x</a>.</p>
 
 </div>
 </div>
@@ -614,6 +660,84 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">SX127x</a>, <a class="el" href="class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e">SX126x</a>, and <a class="el" href="class_s_x128x.html#a1463f0769b815e95d789fd708dc2ffe6">SX128x</a>.</p>
+
+</div>
+</div>
+<a id="a1d1fe00d107bbc23b0315fd442bc3292"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d1fe00d107bbc23b0315fd442bc3292">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::irqRxDoneRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>irqFlags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramname"><em>irqMask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create the flags that make up RxDone and RxTimeout used for receiving downlinks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irqFlags</td><td>The flags for which IRQs must be triggered </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Mask indicating which IRQ triggers a DIO </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a399911660ab71520bbda77a6431be8ae">SX127x</a>, and <a class="el" href="class_s_x126x.html#a16a4433b9bebac0aa867e31a74dc258a">SX126x</a>.</p>
+
+</div>
+</div>
+<a id="acb8d8182a32439fe91f2806d73e629f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb8d8182a32439fe91f2806d73e629f4">&#9670;&nbsp;</a></span>isRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool PhysicalLayer::isRxTimeout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the IRQ bit for RxTimeout is set. </p>
+<dl class="section return"><dt>Returns</dt><dd>RxTimeout IRQ is set </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x127x.html#a09bb29746b5de2d1aa88a6778450306e">SX127x</a>, and <a class="el" href="class_s_x126x.html#a4fc7d4fc9da64e5cd2517d3432ee6ffe">SX126x</a>.</p>
 
 </div>
 </div>
@@ -1734,7 +1858,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a0d5ce0a8d2a5b275676d9d98124312ce">SX126x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>, <a class="el" href="class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33">CC1101</a>, and <a class="el" href="class_s_x127x.html#a0ae533401c801f1d4034eb3db8b1f30c">SX127x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a0d5ce0a8d2a5b275676d9d98124312ce">SX126x</a>, <a class="el" href="class_s_x127x.html#ae274d8640bba5c22217db120c51c6bb8">SX127x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>, and <a class="el" href="class_c_c1101.html#a22ebe5b75a09c420cf6e6464dac3fe33">CC1101</a>.</p>
 
 </div>
 </div>

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['backoffmax_851',['backoffMax',['../class_lo_ra_w_a_n_node.html#abb7030ef70d67efc399fec713b830c58',1,'LoRaWANNode']]],
-  ['backupchannel_852',['backupChannel',['../struct_lo_ra_w_a_n_band__t.html#a3918faa9973af7255449d42e9d759746',1,'LoRaWANBand_t']]],
-  ['baudrate_853',['baudRate',['../struct_bell_modem__t.html#a8e16be8997a90db9a4b2482ec7e93171',1,'BellModem_t']]]
+  ['bandtype_876',['bandType',['../struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802',1,'LoRaWANBand_t']]],
+  ['baudrate_877',['baudRate',['../struct_bell_modem__t.html#a8e16be8997a90db9a4b2482ec7e93171',1,'BellModem_t']]]
 ];

@@ -19,6 +19,7 @@ var annotated_dup =
     [ "LLCC68", "class_l_l_c_c68.html", "class_l_l_c_c68" ],
     [ "LoRaRate_t", "struct_lo_ra_rate__t.html", "struct_lo_ra_rate__t" ],
     [ "LoRaWANBand_t", "struct_lo_ra_w_a_n_band__t.html", "struct_lo_ra_w_a_n_band__t" ],
+    [ "LoRaWANChannel_t", "struct_lo_ra_w_a_n_channel__t.html", "struct_lo_ra_w_a_n_channel__t" ],
     [ "LoRaWANChannelSpan_t", "struct_lo_ra_w_a_n_channel_span__t.html", "struct_lo_ra_w_a_n_channel_span__t" ],
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", "struct_lo_ra_w_a_n_mac_command__t" ],
     [ "LoRaWANMacCommandQueue_t", "struct_lo_ra_w_a_n_mac_command_queue__t.html", "struct_lo_ra_w_a_n_mac_command_queue__t" ],

@@ -184,10 +184,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">getPersistentAddr</a> (uint32_t id)</td></tr>
 <tr class="memdesc:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to convert from persistent parameter ID to its physical address.  <a href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">More...</a><br /></td></tr>
 <tr class="separator:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33d918e9e01c069e7d7bb64dbfcad478"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a33d918e9e01c069e7d7bb64dbfcad478"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a33d918e9e01c069e7d7bb64dbfcad478">setPersistentParameter</a> (uint32_t id, T val)</td></tr>
-<tr class="memdesc:a33d918e9e01c069e7d7bb64dbfcad478"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to set arbitrary parameter to persistent storage. This method DOES NOT perform any endianness conversion, so the value will be stored in the system endian!  <a href="class_radio_lib_hal.html#a33d918e9e01c069e7d7bb64dbfcad478">More...</a><br /></td></tr>
-<tr class="separator:a33d918e9e01c069e7d7bb64dbfcad478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a0542dc9daad463836196a72afc47f7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2a0542dc9daad463836196a72afc47f7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a2a0542dc9daad463836196a72afc47f7">setPersistentParameter</a> (uint32_t id, T val, uint32_t offset=0)</td></tr>
+<tr class="memdesc:a2a0542dc9daad463836196a72afc47f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to set arbitrary parameter to persistent storage. This method DOES NOT perform any endianness conversion, so the value will be stored in the system endian!  <a href="class_radio_lib_hal.html#a2a0542dc9daad463836196a72afc47f7">More...</a><br /></td></tr>
+<tr class="separator:a2a0542dc9daad463836196a72afc47f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a216a59fbd4c022a3410a4b1e42059dbe"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a216a59fbd4c022a3410a4b1e42059dbe"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a216a59fbd4c022a3410a4b1e42059dbe">getPersistentParameter</a> (uint32_t id)</td></tr>
 <tr class="memdesc:a216a59fbd4c022a3410a4b1e42059dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to get arbitrary parameter from persistent storage. This method DOES NOT perform any endianness conversion, so the value will be retrieved in the system endian!  <a href="class_radio_lib_hal.html#a216a59fbd4c022a3410a4b1e42059dbe">More...</a><br /></td></tr>
@@ -854,8 +854,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a33d918e9e01c069e7d7bb64dbfcad478"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33d918e9e01c069e7d7bb64dbfcad478">&#9670;&nbsp;</a></span>setPersistentParameter()</h2>
+<a id="a2a0542dc9daad463836196a72afc47f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a0542dc9daad463836196a72afc47f7">&#9670;&nbsp;</a></span>setPersistentParameter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -872,7 +872,13 @@ template&lt;typename T &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>val</em>&#160;</td>
+          <td class="paramname"><em>val</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>offset</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -887,6 +893,7 @@ template&lt;typename T &gt; </div>
   <table class="params">
     <tr><td class="paramname">id</td><td>Parameter ID to save at. </td></tr>
     <tr><td class="paramname">val</td><td>Value to set. </td></tr>
+    <tr><td class="paramname">offset</td><td>An additional offset added to the address. </td></tr>
   </table>
   </dd>
 </dl>

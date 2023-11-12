@@ -2,6 +2,7 @@ var class_physical_layer =
 [
     [ "PhysicalLayer", "class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5", null ],
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
+    [ "calculateRxTimeout", "class_physical_layer.html#a50c3c0866faa474ae2ea8d5b79a73358", null ],
     [ "clearChannelScanAction", "class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6", null ],
     [ "clearPacketReceivedAction", "class_physical_layer.html#a7edf27f03600b96f72f011fc82fa4ef9", null ],
     [ "clearPacketSentAction", "class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce", null ],
@@ -14,6 +15,8 @@ var class_physical_layer =
     [ "getSNR", "class_physical_layer.html#aedddaf9460941b90e43e9005035faa0f", null ],
     [ "getTimeOnAir", "class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e", null ],
     [ "invertIQ", "class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab", null ],
+    [ "irqRxDoneRxTimeout", "class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292", null ],
+    [ "isRxTimeout", "class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4", null ],
     [ "random", "class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53", null ],
     [ "random", "class_physical_layer.html#a76113e10481743094a1cd0280692b0a9", null ],
     [ "randomByte", "class_physical_layer.html#a1a5985308904261dd431f373d47ddee4", null ],

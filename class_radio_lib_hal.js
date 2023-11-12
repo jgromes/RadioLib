@@ -17,7 +17,7 @@ var class_radio_lib_hal =
     [ "pinToInterrupt", "class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00", null ],
     [ "pulseIn", "class_radio_lib_hal.html#a35a6ef1b38553a3516c961872eb411d7", null ],
     [ "readPersistentStorage", "class_radio_lib_hal.html#a467356d0f1b097733da5ba99884cf354", null ],
-    [ "setPersistentParameter", "class_radio_lib_hal.html#a33d918e9e01c069e7d7bb64dbfcad478", null ],
+    [ "setPersistentParameter", "class_radio_lib_hal.html#a2a0542dc9daad463836196a72afc47f7", null ],
     [ "spiBegin", "class_radio_lib_hal.html#aa1f8e5cd323e53ef9fa977734a05d030", null ],
     [ "spiBeginTransaction", "class_radio_lib_hal.html#abe787d5e556190eef2c63e1581235460", null ],
     [ "spiEnd", "class_radio_lib_hal.html#a41c85e560155d644f5b4ce8444dd8b64", null ],
