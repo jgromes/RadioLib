@@ -1751,7 +1751,7 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   To address this, the user override has been commented out, ensuring consistent application of the optimal CAD settings as 
     per Semtech's Application Note AN1200.48 (page 41) for the 125KHz setting. This approach significantly reduces false CAD occurrences.
     Testing has shown that there is no reason for a user to change CAD settings for anything other than most optimal ones described in AN1200.48 .
-  However, this change deos not respect CAD configs from the LoRaWAN layer. Future considerations or use cases might require revisiting this decision.
+  However, this change does not respect CAD configs from the LoRaWAN layer. Future considerations or use cases might require revisiting this decision.
   Hence this note.
 */
 
@@ -1770,7 +1770,9 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   }
 
 */
-
+  (void)symbolNum;
+  (void)detPeak;
+  (void)detMin;
 
   // configure parameters
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
