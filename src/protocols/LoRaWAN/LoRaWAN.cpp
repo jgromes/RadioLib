@@ -797,7 +797,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     uint8_t* foptsPtr = foptsBuff;
 
     // append all MAC replies into fopts buffer
-    size_t i = 0;
+    int16_t i = 0;
     for (; i < this->commandsUp.numCommands; i++) {
       LoRaWANMacCommand_t cmd = this->commandsUp.commands[i];
       memcpy(foptsPtr, &cmd, 1 + cmd.len);
@@ -812,9 +812,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
         this->commandsUp.commands[i].repeat--;
       } else {
         deleteMacCommand(this->commandsUp.commands[i].cid, &this->commandsUp);
-      }
-      if(i == 0) {
-        break;
       }
     }
 
@@ -1206,7 +1203,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       uint8_t foptsBuff[foptsBufSize];
       uint8_t* foptsPtr = foptsBuff;
       // append all MAC replies into fopts buffer
-      size_t i = 0;
+      int16_t i = 0;
       for (; i < this->commandsUp.numCommands; i++) {
         LoRaWANMacCommand_t cmd = this->commandsUp.commands[i];
         memcpy(foptsPtr, &cmd, 1 + cmd.len);
@@ -1221,9 +1218,6 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
           this->commandsUp.commands[i].repeat--;
         } else {
           deleteMacCommand(this->commandsUp.commands[i].cid, &this->commandsUp);
-        }
-        if(i == 0) {
-          break;
         }
       }
 
