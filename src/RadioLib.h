@@ -55,11 +55,11 @@
 #if defined(RADIOLIB_DEBUG)
   #define RADIOLIB_VALUE_TO_STRING(x) #x
   #define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)
-  #pragma message("\nRadioLib Debug Info\nVersion " \
+  #pragma message("\nRadioLib Debug Info\nVersion:  \"" \
   RADIOLIB_VALUE(RADIOLIB_VERSION_MAJOR) "." \
   RADIOLIB_VALUE(RADIOLIB_VERSION_MINOR) "." \
   RADIOLIB_VALUE(RADIOLIB_VERSION_PATCH) "." \
-  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) "\n" \
+  RADIOLIB_VALUE(RADIOLIB_VERSION_EXTRA) "\"\n" \
   "Platform: " RADIOLIB_VALUE(RADIOLIB_PLATFORM) "\n" \
   "Compiled: " RADIOLIB_VALUE(__DATE__) " " RADIOLIB_VALUE(__TIME__) \
   )
