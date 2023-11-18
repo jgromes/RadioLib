@@ -221,6 +221,8 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     // the device has joined already, we can just pull the data from persistent storage
     return(this->restore());
   }
+#else
+  (void)force;
 #endif
 
   // set the physical layer configuration
@@ -461,6 +463,8 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
     // the device has joined already, we can just pull the data from persistent storage
     return(this->restore());
   }
+#else
+  (void)force;
 #endif
 
   this->devAddr = addr;
