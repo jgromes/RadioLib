@@ -148,7 +148,11 @@ int16_t LoRaWANNode::restoreFcntUp() {
   uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID);
   uint8_t fcntBuffEnd = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID + 1);
   uint8_t buffSize = fcntBuffEnd - fcntBuffStart;
-  uint8_t fcntBuff[buffSize] = { 0 };
+  #if defined(RADIOLIB_STATIC_ONLY)
+  uint8_t fcntBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+  uint8_t* fcntBuff = new uint8_t[buffSize];
+  #endif
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID), fcntBuff, buffSize);
 
   // copy the two most significant bytes from the first two bytes
@@ -178,16 +182,18 @@ int16_t LoRaWANNode::restoreFcntUp() {
     }
   }
   uint32_t bits_7_0 = (uint32_t)fcntBuff[idx-1] & 0x7F;
+  #if !defined(RADIOLIB_STATIC_ONLY)
+  delete[] fcntBuff;
+  #endif
 
   this->fcntUp = (bits_30_22 << 22) | (bits_22_14 << 14) | (bits_14_7 << 7) | bits_7_0;
-
   return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::restoreChannels() {
-  uint8_t bytesPerChannel = 5;
-  uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
-  uint8_t buffer[numBytes];
+  const uint8_t bytesPerChannel = 5;
+  const uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
+  uint8_t buffer[numBytes] = { 0 };
   Module* mod = this->phyLayer->getMod();
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FREQS_ID), buffer, numBytes);
   for(uint8_t dir = 0; dir < 2; dir++) {
@@ -634,9 +640,9 @@ int16_t LoRaWANNode::saveFcntUp() {
 }
 
 int16_t LoRaWANNode::saveChannels() {
-  uint8_t bytesPerChannel = 5;
-  uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
-  uint8_t buffer[numBytes];
+  const uint8_t bytesPerChannel = 5;
+  const uint8_t numBytes = 2 * RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * bytesPerChannel;
+  uint8_t buffer[numBytes] = { 0 };
   for(uint8_t dir = 0; dir < 2; dir++) {
     for(uint8_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       uint8_t chBuff[bytesPerChannel] = { 0 };
@@ -654,7 +660,6 @@ int16_t LoRaWANNode::saveChannels() {
   return(RADIOLIB_ERR_NONE);
 }
 #endif  // RADIOLIB_EEPROM_UNSUPPORTED
-
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
