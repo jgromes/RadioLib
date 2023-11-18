@@ -131,6 +131,10 @@ void ArduinoHal::readPersistentStorage(uint32_t addr, uint8_t* buff, size_t len)
     #if defined(RADIOLIB_ESP32) || defined(ARDUINO_ARCH_RP2040)
       EEPROM.end();
     #endif
+  #else
+    (void)addr;
+    (void)buff;
+    (void)len;
   #endif
 }
 
@@ -148,6 +152,10 @@ void ArduinoHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len
       EEPROM.commit();
       EEPROM.end();
     #endif
+  #else
+    (void)addr;
+    (void)buff;
+    (void)len;
   #endif
 }
 
@@ -181,6 +189,10 @@ void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long
     }
     pwmPin->period(1.0 / frequency);
     pwmPin->write(0.5);
+  #else
+    (void)pin;
+    (void)frequency;
+    (void)duration;
   #endif
 }
 
@@ -215,6 +227,8 @@ void inline ArduinoHal::noTone(uint32_t pin) {
     // better tone for mbed OS boards
     (void)pin;
     pwmPin->suspend();
+  #else
+    (void)pin;
   #endif
 }
 
