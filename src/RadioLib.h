@@ -70,6 +70,11 @@
   #warning "RadioLib might not be compatible with this Arduino board - check supported platforms at https://github.com/jgromes/RadioLib!"
 #endif
 
+// print warning for low-end platforms
+#if defined(RADIOLIB_LOWEND_PLATFORM)
+  #warning "Low-end platform detected, stability issues are likely!"
+#endif
+
 #include "modules/CC1101/CC1101.h"
 #include "modules/LLCC68/LLCC68.h"
 #include "modules/nRF24/nRF24.h"

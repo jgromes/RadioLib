@@ -83,6 +83,10 @@
   // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
   #define RADIOLIB_PLATFORM                           "Arduino AVR"
 
+  #if !(defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega1284__) || defined(__AVR_ATmega1284P__))
+  #define RADIOLIB_LOWEND_PLATFORM
+  #endif
+
 #elif defined(ESP8266)
   // ESP8266 boards
   #define RADIOLIB_PLATFORM                           "ESP8266"
