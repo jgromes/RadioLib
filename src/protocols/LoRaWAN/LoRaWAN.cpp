@@ -802,7 +802,8 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // check if we have some MAC commands to append
   if(foptsLen > 0) {
-    uint8_t foptsBuff[foptsBufSize];
+    // assume maximum possible buffer size
+    uint8_t foptsBuff[15];
     uint8_t* foptsPtr = foptsBuff;
 
     // append all MAC replies into fopts buffer
@@ -1209,7 +1210,11 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(this->commandsUp.len > 15) {
       size_t foptsBufSize = this->commandsUp.len;
-      uint8_t foptsBuff[foptsBufSize];
+      #if defined(RADIOLIB_STATIC_ONLY)
+        uint8_t foptsBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+      #else
+        uint8_t* foptsBuff = new uint8_t[foptsBufSize];
+      #endif
       uint8_t* foptsPtr = foptsBuff;
       // append all MAC replies into fopts buffer
       int16_t i = 0;
@@ -1232,9 +1237,20 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
       this->isMACPayload = true;
       this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
-      uint8_t strDown[this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
+      #if !defined(RADIOLIB_STATIC_ONLY)
+        delete[] foptsBuff;
+      #endif
+
+      #if defined(RADIOLIB_STATIC_ONLY)
+        uint8_t strDown[RADIOLIB_STATIC_ARRAY_SIZE];
+      #else
+        uint8_t* strDown = new uint8_t[this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
+      #endif
       size_t lenDown = 0;
       state = this->downlink(strDown, &lenDown);
+      #if !defined(RADIOLIB_STATIC_ONLY)
+        delete[] strDown;
+      #endif
       RADIOLIB_ASSERT(state);
     }
 
