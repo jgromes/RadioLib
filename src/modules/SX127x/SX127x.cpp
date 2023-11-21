@@ -152,43 +152,32 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
   int16_t modem = getActiveModem();
   uint32_t start = 0;
+  uint32_t timeout = 0;
   if(modem == RADIOLIB_SX127X_LORA) {
     // calculate timeout (150 % of expected time-on-air)
-    uint32_t timeout = getTimeOnAir(len) * 1.5;
-
-    // start transmission
-    state = startTransmit(data, len, addr);
-    RADIOLIB_ASSERT(state);
-
-    // wait for packet transmission or timeout
-    start = this->mod->hal->micros();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
-      if(this->mod->hal->micros() - start > timeout) {
-        finishTransmit();
-        return(RADIOLIB_ERR_TX_TIMEOUT);
-      }
-    }
+    timeout = getTimeOnAir(len) * 1.5;
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     // calculate timeout (5ms + 500 % of expected time-on-air)
-    uint32_t timeout = 5000 + getTimeOnAir(len) * 5;
+    timeout = 5000 + getTimeOnAir(len) * 5;
 
-    // start transmission
-    state = startTransmit(data, len, addr);
-    RADIOLIB_ASSERT(state);
-
-    // wait for transmission end or timeout
-    start = this->mod->hal->micros();
-    while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-      this->mod->hal->yield();
-      if(this->mod->hal->micros() - start > timeout) {
-        finishTransmit();
-        return(RADIOLIB_ERR_TX_TIMEOUT);
-      }
-    }
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
+  
+  }
+
+  // start transmission
+  state = startTransmit(data, len, addr);
+  RADIOLIB_ASSERT(state);
+
+  // wait for packet transmission or timeout
+  start = this->mod->hal->micros();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->micros() - start > timeout) {
+      finishTransmit();
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
   }
 
   // update data rate
