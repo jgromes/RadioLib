@@ -149,6 +149,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="memitem:ae222275f807f472083ea6100c23c75ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">setADR</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ae222275f807f472083ea6100c23c75ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle ADR to on or off.  <a href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">More...</a><br /></td></tr>
 <tr class="separator:ae222275f807f472083ea6100c23c75ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">setTxPower</a> (int8_t txPower)</td></tr>
+<tr class="memdesc:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure TX power of the radio module.  <a href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">More...</a><br /></td></tr>
+<tr class="separator:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaccc40080f514015432e47f862ce3b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">selectSubband</a> (uint8_t idx)</td></tr>
 <tr class="memdesc:acaccc40080f514015432e47f862ce3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a single subband (8 channels) for fixed bands such as US915. Only available before joining a network.  <a href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">More...</a><br /></td></tr>
 <tr class="separator:acaccc40080f514015432e47f862ce3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -663,7 +666,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b></t
 <p>Toggle ADR to on or off. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">enable</td><td>Whether to disable ADR or not </td></tr>
+    <tr><td class="paramname">enable</td><td>Whether to disable ADR or not. </td></tr>
   </table>
   </dd>
 </dl>
@@ -764,6 +767,33 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b></t
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a9af613f7d923e7bdcfdbd020132c6d4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9af613f7d923e7bdcfdbd020132c6d4b">&#9670;&nbsp;</a></span>setTxPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::setTxPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>txPower</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure TX power of the radio module. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">txPower</td><td>Output power during TX mode to be set in dBm. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

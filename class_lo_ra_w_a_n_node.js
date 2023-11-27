@@ -16,6 +16,7 @@ var class_lo_ra_w_a_n_node =
     [ "setCSMA", "class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757", null ],
     [ "setDatarate", "class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499", null ],
     [ "setDeviceStatus", "class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034", null ],
+    [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a1b919dc97479294a32b2d0c9dde49be8", null ],
     [ "wipe", "class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea", null ],
