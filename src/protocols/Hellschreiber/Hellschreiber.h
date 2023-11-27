@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
+#if !RADIOLIB_EXCLUDE_HELLSCHREIBER
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
@@ -95,7 +95,7 @@ class HellClient: public RadioLibPrint {
     */
     explicit HellClient(PhysicalLayer* phy);
 
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Constructor for AFSK mode.
       \param audio Pointer to the AFSK instance providing audio.
@@ -132,11 +132,11 @@ class HellClient: public RadioLibPrint {
     */
     size_t write(uint8_t b);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer;
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;
     #endif
 
