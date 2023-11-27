@@ -62,7 +62,7 @@ class ArduinoHal : public RadioLibHal {
     void yield() override;
     uint32_t pinToInterrupt(uint32_t pin) override;
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     SPIClass* spi = NULL;
