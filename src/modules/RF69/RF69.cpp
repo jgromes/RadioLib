@@ -1,6 +1,6 @@
 #include "RF69.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_RF69)
+#if !RADIOLIB_EXCLUDE_RF69
 
 RF69::RF69(Module* module) : PhysicalLayer(RADIOLIB_RF69_FREQUENCY_STEP_SIZE, RADIOLIB_RF69_MAX_PACKET_LENGTH)  {
   this->mod = module;
@@ -960,7 +960,7 @@ uint8_t RF69::randomByte() {
   return(randByte);
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void RF69::setDirectAction(void (*func)(void)) {
   setDio1Action(func);
 }
