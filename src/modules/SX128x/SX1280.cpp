@@ -1,6 +1,6 @@
 #include "SX1280.h"
 #include <string.h>
-#if !defined(RADIOLIB_EXCLUDE_SX128X)
+#if !RADIOLIB_EXCLUDE_SX128X
 
 SX1280::SX1280(Module* mod) : SX1281(mod) {
 
