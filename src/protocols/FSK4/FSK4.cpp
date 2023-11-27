@@ -1,15 +1,15 @@
 #include "FSK4.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_FSK4)
+#if !RADIOLIB_EXCLUDE_FSK4
 
 FSK4Client::FSK4Client(PhysicalLayer* phy) {
   phyLayer = phy;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   audioClient = nullptr;
   #endif
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
  FSK4Client::FSK4Client(AFSKClient* audio) {
    phyLayer = audio->phyLayer;
    audioClient = audio;
@@ -87,7 +87,7 @@ void FSK4Client::tone(uint8_t i) {
 }
 
 int16_t FSK4Client::transmitDirect(uint32_t freq, uint32_t freqHz) {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->tone(freqHz));
   }
@@ -99,7 +99,7 @@ int16_t FSK4Client::standby() {
   // ensure everything is stopped in interrupt timing mode
   Module* mod = phyLayer->getMod();
   mod->waitForMicroseconds(0, 0);
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->noTone());
   }
