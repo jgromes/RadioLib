@@ -325,6 +325,9 @@ struct LoRaWANEvent_t {
   /*! \brief Whether the event is confirming a previous request
   (e.g., server downlink reply to confirmed uplink sent by user application)*/
   bool confirming;
+
+  /*! \brief Datarate */
+  uint8_t datarate;
   
   /*! \brief Frequency in MHz */
   float freq;
