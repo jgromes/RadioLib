@@ -53,10 +53,10 @@ class ITA2String {
     */
     uint8_t* byteArr();
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
-    #if defined(RADIOLIB_STATIC_ONLY)
+    #if RADIOLIB_STATIC_ONLY
       char strAscii[RADIOLIB_STATIC_ARRAY_SIZE];
     #else
       char* strAscii;
