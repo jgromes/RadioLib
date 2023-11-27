@@ -358,13 +358,13 @@
 #endif
 
 /*
- * Uncomment to enable "paranoid" SPI mode
+ * Comment to disable "paranoid" SPI mode, or set RADIOLIB_SPI_PARANOID to 0
  * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
  * This improves reliability, but slightly slows down communication.
  * Note: Enabled by default.
  */
 #if !defined(RADIOLIB_SPI_PARANOID)
-  #define RADIOLIB_SPI_PARANOID
+  #define RADIOLIB_SPI_PARANOID 1
 #endif
 
 /*
