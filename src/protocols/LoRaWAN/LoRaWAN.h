@@ -1,4 +1,4 @@
-#if !defined(_RADIOLIB_LORAWAN_H) && !defined(RADIOLIB_EXCLUDE_LORAWAN)
+#if !defined(_RADIOLIB_LORAWAN_H) && !RADIOLIB_EXCLUDE_LORAWAN
 #define _RADIOLIB_LORAWAN_H
 
 #include "../../TypeDef.h"
@@ -572,7 +572,7 @@ class LoRaWANNode {
     */
     void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer = NULL;
