@@ -75,7 +75,7 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
   uint8_t newValue = (currentValue & ~mask) | (value & mask);
   SPIwriteRegister(reg, newValue);
 
-  #if defined(RADIOLIB_SPI_PARANOID)
+  #if RADIOLIB_SPI_PARANOID
     // check register value each millisecond until check interval is reached
     // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
     uint32_t start = this->hal->micros();
@@ -240,7 +240,7 @@ int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size
 int16_t Module::SPIcheckStream() {
   int16_t state = RADIOLIB_ERR_NONE;
 
-  #if defined(RADIOLIB_SPI_PARANOID)
+  #if RADIOLIB_SPI_PARANOID
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = this->SPIstatusCommand;
