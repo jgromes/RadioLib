@@ -1,6 +1,6 @@
 #include "nRF24.h"
 #include <string.h>
-#if !defined(RADIOLIB_EXCLUDE_NRF24)
+#if !RADIOLIB_EXCLUDE_NRF24
 
 nRF24::nRF24(Module* mod) : PhysicalLayer(RADIOLIB_NRF24_FREQUENCY_STEP_SIZE, RADIOLIB_NRF24_MAX_PACKET_LENGTH) {
   this->mod = mod;
@@ -617,7 +617,7 @@ void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
 void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   // prepare the buffers
   size_t buffLen = 1 + numBytes;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
     uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -648,7 +648,7 @@ void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* data
     memcpy(dataIn, &buffIn[1], numBytes);
   }
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] buffOut;
     delete[] buffIn;
   #endif
