@@ -446,13 +446,13 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00358"></a><span class="lineno">  358</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00359"></a><span class="lineno">  359</span>&#160; </div>
 <div class="line"><a name="l00360"></a><span class="lineno">  360</span>&#160;<span class="comment">/*</span></div>
-<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment"> * Uncomment to enable &quot;paranoid&quot; SPI mode</span></div>
+<div class="line"><a name="l00361"></a><span class="lineno">  361</span>&#160;<span class="comment"> * Comment to disable &quot;paranoid&quot; SPI mode, or set RADIOLIB_SPI_PARANOID to 0</span></div>
 <div class="line"><a name="l00362"></a><span class="lineno">  362</span>&#160;<span class="comment"> * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.</span></div>
 <div class="line"><a name="l00363"></a><span class="lineno">  363</span>&#160;<span class="comment"> * This improves reliability, but slightly slows down communication.</span></div>
 <div class="line"><a name="l00364"></a><span class="lineno">  364</span>&#160;<span class="comment"> * Note: Enabled by default.</span></div>
 <div class="line"><a name="l00365"></a><span class="lineno">  365</span>&#160;<span class="comment"> */</span></div>
 <div class="line"><a name="l00366"></a><span class="lineno">  366</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_SPI_PARANOID)</span></div>
-<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">  #define RADIOLIB_SPI_PARANOID</span></div>
+<div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">  #define RADIOLIB_SPI_PARANOID 1</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
 <div class="line"><a name="l00370"></a><span class="lineno">  370</span>&#160;<span class="comment">/*</span></div>
