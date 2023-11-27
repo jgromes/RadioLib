@@ -904,6 +904,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     event->dir = RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK;
     event->confirmed = isConfirmed;
     event->confirming = isConfirmingDown;
+    event->datarate = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPwrCur;
     event->fcnt = this->fcntUp;
@@ -1262,6 +1263,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     event->dir = RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK;
     event->confirmed = isConfirmedDown;
     event->confirming = isConfirmingUp;
+    event->datarate = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK];
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPwrCur;
     event->fcnt = isAppDownlink ? this->aFcntDown : this->nFcntDown;

@@ -214,6 +214,8 @@ void loop() {
     Serial.println(event.confirmed);
     Serial.print(F("[LoRaWAN] Confirming:\t"));
     Serial.println(event.confirming);
+    Serial.print(F("[LoRaWAN] Datarate:\t"));
+    Serial.print(event.datarate);
     Serial.print(F("[LoRaWAN] Frequency:\t"));
     Serial.print(event.freq, 3);
     Serial.println(F(" MHz"));
