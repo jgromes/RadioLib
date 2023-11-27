@@ -2,17 +2,17 @@
 
 #include <math.h>
 
-#if !defined(RADIOLIB_EXCLUDE_RTTY)
+#if !RADIOLIB_EXCLUDE_RTTY
 
 RTTYClient::RTTYClient(PhysicalLayer* phy) {
   phyLayer = phy;
   lineFeed = "\r\n";
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   audioClient = nullptr;
   #endif
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 RTTYClient::RTTYClient(AFSKClient* audio) {
   phyLayer = audio->phyLayer;
   lineFeed = "\r\n";
@@ -104,7 +104,7 @@ void RTTYClient::space() {
 }
 
 int16_t RTTYClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->tone(freqHz));
   }
@@ -116,7 +116,7 @@ int16_t RTTYClient::standby() {
   // ensure everything is stopped in interrupt timing mode
   Module* mod = phyLayer->getMod();
   mod->waitForMicroseconds(0, 0);
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->noTone());
   }
