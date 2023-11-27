@@ -1,5 +1,5 @@
 #include "LLCC68.h"
-#if !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !RADIOLIB_EXCLUDE_SX126X
 
 LLCC68::LLCC68(Module* mod) : SX1262(mod) {
   chipType = RADIOLIB_LLCC68_CHIP_TYPE;
