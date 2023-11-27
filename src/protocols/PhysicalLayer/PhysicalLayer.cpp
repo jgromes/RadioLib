@@ -4,7 +4,7 @@
 PhysicalLayer::PhysicalLayer(float step, size_t maxLen) {
   this->freqStep = step;
   this->maxPacketLength = maxLen;
-  #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+  #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   this->bufferBitPos = 0;
   this->bufferWritePos = 0;
   #endif
@@ -24,7 +24,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
   }
 
   // dynamically allocate memory
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
@@ -38,7 +38,7 @@ int16_t PhysicalLayer::transmit(__FlashStringHelper* fstr, uint8_t addr) {
 
   // transmit string
   int16_t state = transmit(str, addr);
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] str;
   #endif
   return(state);
@@ -68,7 +68,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   size_t length = len;
 
   // build a temporary buffer
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = NULL;
@@ -101,7 +101,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] data;
   #endif
 
@@ -175,7 +175,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // build a temporary buffer
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
@@ -198,7 +198,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
   }
 
   // deallocate temporary buffer
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] data;
   #endif
 
@@ -366,7 +366,7 @@ int16_t PhysicalLayer::startDirect() {
   return(state);
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 int16_t PhysicalLayer::available() {
   return(this->bufferWritePos);
 }
@@ -477,7 +477,7 @@ void PhysicalLayer::clearChannelScanAction() {
   
 }
 
-#if defined(RADIOLIB_INTERRUPT_TIMING)
+#if RADIOLIB_INTERRUPT_TIMING
 void PhysicalLayer::setInterruptSetup(void (*func)(uint32_t)) {
   Module* mod = getMod();
   mod->TimerSetupCb = func;
