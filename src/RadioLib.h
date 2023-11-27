@@ -52,7 +52,7 @@
 #endif
 
 // print debug info
-#if defined(RADIOLIB_DEBUG)
+#if RADIOLIB_DEBUG
   #define RADIOLIB_VALUE_TO_STRING(x) #x
   #define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)
   #pragma message("\nRadioLib Debug Info\nVersion:  \"" \
