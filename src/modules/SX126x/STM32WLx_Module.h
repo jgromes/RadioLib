@@ -10,7 +10,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#if !RADIOLIB_EXCLUDE_STM32WLX
 
 #include "../../Module.h"
 
@@ -33,6 +33,6 @@ class STM32WLx_Module : public Module {
     STM32WLx_Module();
 };
 
-#endif // !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#endif
 
-#endif // _RADIOLIB_STM32WLX_MODULE_H
+#endif

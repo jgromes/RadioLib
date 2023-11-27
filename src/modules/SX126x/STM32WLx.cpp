@@ -6,7 +6,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 */
 
 #include "STM32WLx.h"
-#if !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#if !RADIOLIB_EXCLUDE_STM32WLX
 
 STM32WLx::STM32WLx(STM32WLx_Module* mod) : SX1262(mod) { }
 
@@ -150,4 +150,4 @@ void STM32WLx::clearChannelScanAction() {
   this->clearDio1Action();
 }
 
-#endif // !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#endif

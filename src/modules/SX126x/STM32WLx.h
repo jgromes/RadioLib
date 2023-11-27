@@ -10,7 +10,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#if !RADIOLIB_EXCLUDE_STM32WLX
 
 #include "../../Module.h"
 #include "SX1262.h"
@@ -153,16 +153,16 @@ class STM32WLx : public SX1262 {
     */
     void clearChannelScanAction();
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams) override;
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
 };
 
-#endif // !defined(RADIOLIB_EXCLUDE_SX126X)
+#endif
 
-#endif // _RADIOLIB_STM32WLX_MODULE_H
+#endif
