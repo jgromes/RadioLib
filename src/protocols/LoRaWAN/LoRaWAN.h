@@ -532,10 +532,17 @@ class LoRaWANNode {
     int16_t setDatarate(uint8_t drUp);
 
     /*!
-      \brief Toggle ADR to on or off
-      \param enable Whether to disable ADR or not
+      \brief Toggle ADR to on or off.
+      \param enable Whether to disable ADR or not.
     */
     void setADR(bool enable = true);
+
+    /*!
+      \brief Configure TX power of the radio module.
+      \param txPower Output power during TX mode to be set in dBm.
+      \returns \ref status_codes
+    */
+    int16_t setTxPower(int8_t txPower);
 
     /*!
       \brief Select a single subband (8 channels) for fixed bands such as US915.

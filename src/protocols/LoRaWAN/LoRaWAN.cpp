@@ -698,6 +698,8 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     this->isMACPayload = false;
   }
 
+  int16_t state = RADIOLIB_ERR_NONE;
+
   // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
   uint8_t foptsLen = 0;
   size_t foptsBufSize = 0;
@@ -722,18 +724,16 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   if((this->fcntUp - this->adrFcnt) >= adrLimit) {
     adrAckReq = true;
   }
+  // if we hit the Limit + Delay, try one of three, in order: 
+  // set TxPower to max, set DR to min, enable all defined channels
   if ((this->fcntUp - this->adrFcnt) == (adrLimit + adrDelay)) {
-    // try one of three, in order: set TxPower to max, set DR to min, enable all defined channels
 
     // set the maximum power supported by both the module and the band
-    int8_t pwr = this->band->powerMax;
-    int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
-    while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-      // go from the highest power in band and lower it until we hit one supported by the module
-      state = this->phyLayer->setOutputPower(pwr--);
-    }
+    int8_t pwrPrev = this->txPwrCur;
+    state = this->setTxPower(this->band->powerMax);
     RADIOLIB_ASSERT(state);
-    if(pwr == this->txPwrCur) {
+
+    if(this->txPwrCur == pwrPrev) {
 
       // failed to increase Tx power, so try to decrease the datarate
       if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].drMin) {
@@ -750,8 +750,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
         }
       }
 
-    } else {
-      this->txPwrCur = pwr;
     }
 
     // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
@@ -760,7 +758,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // configure for uplink
   this->selectChannels();
-  int16_t state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
+  state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
 
   // build the uplink message
@@ -1366,15 +1364,8 @@ bool LoRaWANNode::verifyMIC(uint8_t* msg, size_t len, uint8_t* key) {
 
 int16_t LoRaWANNode::setPhyProperties() {
   // set the physical layer configuration
-
-  // set the maximum power supported by both the module and the band
-  int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
-  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-    // go from the highest power in band and lower it until we hit one supported by the module
-    state = this->phyLayer->setOutputPower(this->txPwrCur--);
-  }
+  int16_t state = this->setTxPower(this->txPwrCur);
   RADIOLIB_ASSERT(state);
-  this->txPwrCur++;
 
   uint8_t syncWord[3] = { 0 };
   uint8_t syncWordLen = 0;
@@ -1688,6 +1679,19 @@ void LoRaWANNode::setADR(bool enable) {
   this->adrEnabled = enable;
 }
 
+int16_t LoRaWANNode::setTxPower(int8_t txPower) {
+  int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
+  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
+    // go from the highest power and lower it until we hit one supported by the module
+    state = this->phyLayer->setOutputPower(txPower--);
+  }
+  if(state == RADIOLIB_ERR_NONE) {
+    txPower++;
+    this->txPwrCur = txPower;
+  }
+  return(state);
+}
+
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   uint8_t dataRateBand = this->band->dataRates[dr];
 
@@ -1838,13 +1842,15 @@ size_t LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t pwrAck = 0;
       if(txPower == 0x0F) {
         pwrAck = 1;
+
       } else {
         int8_t pwr = this->band->powerMax - 2*txPower;
-        if(this->phyLayer->setOutputPower(pwr) == RADIOLIB_ERR_NONE) {
-          RADIOLIB_DEBUG_PRINTLN("ADR set pwr = %d", pwr);
+        int16_t state = this->setTxPower(pwr);
+        // only acknowledge if the requested datarate was succesfully configured
+        if((state == RADIOLIB_ERR_NONE) && (this->txPwrCur == pwr)) {
           pwrAck = 1;
         }
-        this->txPwrCur = pwr;
+
       }
 
       uint8_t chMaskAck = 1;

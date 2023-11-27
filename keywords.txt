@@ -300,6 +300,7 @@ sendReceive	KEYWORD2
 setDeviceStatus	KEYWORD2
 setDatarate	KEYWORD2
 setADR	KEYWORD2
+setTxPower	KEYWORD2
 selectSubband	KEYWORD2
 setCSMA	KEYWORD2
 
