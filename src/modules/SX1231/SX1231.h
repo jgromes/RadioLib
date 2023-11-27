@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX1231)
+#if !RADIOLIB_EXCLUDE_SX1231
 
 #include "../../Module.h"
 #include "../RF69/RF69.h"
@@ -110,7 +110,7 @@ class SX1231: public RF69  {
     */
     int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     uint8_t chipRevision = 0;
