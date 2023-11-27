@@ -1,6 +1,6 @@
 #include "Si443x.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_SI443X)
+#if !RADIOLIB_EXCLUDE_SI443X
 
 Si443x::Si443x(Module* mod) : PhysicalLayer(RADIOLIB_SI443X_FREQUENCY_STEP_SIZE, RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
   this->mod = mod;
@@ -623,7 +623,7 @@ int16_t Si443x::getChipVersion() {
   return(this->mod->SPIgetRegValue(RADIOLIB_SI443X_REG_DEVICE_VERSION));
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void Si443x::setDirectAction(void (*func)(void)) {
   setIrqAction(func);
 }
