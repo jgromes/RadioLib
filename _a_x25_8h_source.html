@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_AX25)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_AX25</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../PhysicalLayer/PhysicalLayer.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#include &quot;../AFSK/AFSK.h&quot;</span></div>
@@ -179,7 +179,7 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
 <div class="line"><a name="l00126"></a><span class="lineno"><a class="line" href="class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2">  126</a></span>&#160;    uint16_t <a class="code" href="class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2">sendSeqNumber</a>;</div>
 <div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_STATIC_ONLY)</span></div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">    #if !RADIOLIB_STATIC_ONLY</span></div>
 <div class="line"><a name="l00132"></a><span class="lineno"><a class="line" href="class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988">  132</a></span>&#160;      uint8_t* <a class="code" href="class_a_x25_frame.html#aa82f006b84b71b9c5d036a4946a65988">info</a>;</div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160; </div>
 <div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94">  137</a></span>&#160;      <span class="keywordtype">char</span>** <a class="code" href="class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94">repeaterCallsigns</a>;</div>
@@ -216,7 +216,7 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">AX25Client</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
 <div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_AFSK</span></div>
 <div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">AX25Client</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
 <div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160; </div>
 <div class="line"><a name="l00261"></a><span class="lineno">  261</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a74a43c60c84e4150b9508c83e461d24e">setCorrection</a>(int16_t mark, int16_t space, <span class="keywordtype">float</span> length = 1.0f);</div>
@@ -234,13 +234,13 @@ $(document).ready(function(){initNavTree('_a_x25_8h_source.html',''); initResiza
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
 <div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    int16_t <a class="code" href="class_a_x25_client.html#a341db993853c6817a8f6c7087ead0ba6">sendFrame</a>(<a class="code" href="class_a_x25_frame.html">AX25Frame</a>* frame);</div>
 <div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160; </div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    <span class="keyword">friend</span> <span class="keyword">class </span><a class="code" href="class_a_p_r_s_client.html">APRSClient</a>;</div>
 <div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160; </div>
 <div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
-<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_AFSK</span></div>
 <div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    <a class="code" href="class_bell_client.html">BellClient</a>* bellModem;</div>
 <div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>

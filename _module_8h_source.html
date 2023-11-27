@@ -154,7 +154,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
 <div class="line"><a name="l00169"></a><span class="lineno"><a class="line" href="class_module.html#af6e89e2bc4976e8c5dc42dedda9fa6a2">  169</a></span>&#160;    <a class="code" href="class_module.html#a9393088249856eab568126aeb2493e4a">SPIparseStatusCb_t</a> <a class="code" href="class_module.html#af6e89e2bc4976e8c5dc42dedda9fa6a2">SPIparseStatusCb</a> = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_INTERRUPT_TIMING)</span></div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="preprocessor">    #if RADIOLIB_INTERRUPT_TIMING</span></div>
 <div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">typedef</span> void (*TimerSetupCb_t)(uint32_t len);</div>
 <div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
@@ -220,17 +220,17 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160; </div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160;    <span class="keyword">static</span> uint32_t <a class="code" href="class_module.html#a4add1a875bb88e91da232118201a78a8">reflect</a>(uint32_t in, uint8_t bits);</div>
 <div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160; </div>
-<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_DEBUG)</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="preprocessor">    #if RADIOLIB_DEBUG</span></div>
 <div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> hexdump(uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t offset = 0, uint8_t width = 1, <span class="keywordtype">bool</span> be = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
 <div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;    <span class="keywordtype">void</span> regdump(uint16_t start, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;<span class="preprocessor">    #if RADIOLIB_DEBUG and defined(RADIOLIB_BUILD_ARDUINO)</span></div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">size_t</span> serialPrintf(<span class="keyword">const</span> <span class="keywordtype">char</span>* format, ...);</div>
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160; </div>
-<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    uint32_t csPin = RADIOLIB_NC;</div>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;    uint32_t rfSwitchPins[<a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };</div>
 <div class="line"><a name="l00503"></a><span class="lineno">  503</span>&#160;    <span class="keyword">const</span> RfSwitchMode_t *rfSwitchTable = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00504"></a><span class="lineno">  504</span>&#160; </div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_INTERRUPT_TIMING)</span></div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;<span class="preprocessor">    #if RADIOLIB_INTERRUPT_TIMING</span></div>
 <div class="line"><a name="l00506"></a><span class="lineno">  506</span>&#160;    uint32_t prevTimingLen = 0;</div>
 <div class="line"><a name="l00507"></a><span class="lineno">  507</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;};</div>

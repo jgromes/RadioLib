@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="title">Morse.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_RADIOLIB_MORSE_H) &amp;&amp; !defined(RADIOLIB_EXCLUDE_MORSE)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_RADIOLIB_MORSE_H) &amp;&amp; !RADIOLIB_EXCLUDE_MORSE</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_RADIOLIB_MORSE_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
@@ -178,7 +178,7 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_AFSK</span></div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a">MorseClient</a>(<a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audio);</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
@@ -190,17 +190,17 @@ $(document).ready(function(){initNavTree('_morse_8h_source.html',''); initResiza
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">char</span> <a class="code" href="class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7">decode</a>(uint8_t symbol, uint8_t len);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_AFSK</span></div>
 <div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    <span class="keywordtype">int</span> <a class="code" href="class_morse_client.html#a77eab03be04ef2d693348d9580ee5d3c">read</a>(uint8_t* symbol, uint8_t* len, <span class="keywordtype">float</span> low = 0.75f, <span class="keywordtype">float</span> high = 1.25f);</div>
 <div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
 <div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_morse_client.html#abd37869212f3338eb7c95c6f16dadbba">write</a>(uint8_t b);</div>
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
-<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
-<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_AFSK)</span></div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_AFSK</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <a class="code" href="class_a_f_s_k_client.html">AFSKClient</a>* audioClient;</div>
 <div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>

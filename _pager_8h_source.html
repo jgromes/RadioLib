@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="title">Pager.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_PAGER_H) &amp;&amp; !defined(RADIOLIB_EXCLUDE_PAGER)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_PAGER_H) &amp;&amp; !RADIOLIB_EXCLUDE_PAGER</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_PAGER_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    int16_t <a class="code" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t <span class="keyword">function</span> = RADIOLIB_PAGER_FUNC_AUTO);</div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a>(uint32_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);</div>
 <div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
 <div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a>();</div>
@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    int16_t <a class="code" href="class_pager_client.html#ad2c6132819a84712b929c0bb22ba172b">readData</a>(uint8_t* data, <span class="keywordtype">size_t</span>* len, uint32_t* addr = NULL);</div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keywordtype">void</span> write(uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160;    <span class="keywordtype">void</span> write(uint32_t codeWord);</div>
 <div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    uint32_t read();</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>

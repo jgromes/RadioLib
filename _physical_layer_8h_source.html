@@ -218,7 +218,7 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
 <div class="line"><a name="l00381"></a><span class="lineno">  381</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a>();</div>
 <div class="line"><a name="l00382"></a><span class="lineno">  382</span>&#160; </div>
-<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00383"></a><span class="lineno">  383</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00390"></a><span class="lineno">  390</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a8e378fe136a498ea485a9c10f5e15aab">setDirectSyncWord</a>(uint32_t syncWord, uint8_t len);</div>
 <div class="line"><a name="l00391"></a><span class="lineno">  391</span>&#160; </div>
 <div class="line"><a name="l00397"></a><span class="lineno">  397</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#abf96cf4f3cb4c82d44be581dbe615966">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
@@ -246,7 +246,7 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160; </div>
 <div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">clearChannelScanAction</a>();</div>
 <div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160; </div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_INTERRUPT_TIMING)</span></div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;<span class="preprocessor">    #if RADIOLIB_INTERRUPT_TIMING</span></div>
 <div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160; </div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <span class="keywordtype">void</span> setInterruptSetup(<span class="keywordtype">void</span> (*func)(uint32_t));</div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160; </div>
@@ -254,18 +254,18 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00485"></a><span class="lineno">  485</span>&#160;    <span class="keywordtype">void</span> updateDirectBuffer(uint8_t bit);</div>
 <div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160; </div>
-<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00488"></a><span class="lineno">  488</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00491"></a><span class="lineno">  491</span>&#160;    <span class="keywordtype">float</span> freqStep;</div>
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;    <span class="keywordtype">size_t</span> maxPacketLength;</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160; </div>
-<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;    uint8_t bufferBitPos;</div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;    uint8_t bufferWritePos;</div>
 <div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;    uint8_t bufferReadPos;</div>

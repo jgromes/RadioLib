@@ -101,7 +101,7 @@ $(document).ready(function(){initNavTree('_radio_lib_8h_source.html',''); initRe
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// warnings are printed in this file since BuildOpt.h is compiled in multiple places</span></div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="comment">// check God mode</span></div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="preprocessor">#if RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">  #warning &quot;God mode active, I hope it was intentional. Buckle up, lads.&quot;</span></div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('_radio_lib_8h_source.html',''); initRe
 <div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;<span class="preprocessor">#include &quot;utils/Cryptography.h&quot;</span></div>
 <div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
 <div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="comment">// only create Radio class when using RadioShield</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_RADIOSHIELD)</span></div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;<span class="preprocessor">#if RADIOLIB_RADIOSHIELD</span></div>
 <div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
 <div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="comment">// RadioShield pin definitions</span></div>
 <div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;<span class="preprocessor">#define RADIOSHIELD_CS_A    10</span></div>
@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('_radio_lib_8h_source.html',''); initRe
 <div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160;      ModuleB = <span class="keyword">new</span> <a class="code" href="class_module.html">Module</a>(RADIOSHIELD_CS_B, RADIOSHIELD_IRQ_B, RADIOSHIELD_RST_B, RADIOSHIELD_GPIO_B);</div>
 <div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    }</div>
 <div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;<span class="preprocessor">#if RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>

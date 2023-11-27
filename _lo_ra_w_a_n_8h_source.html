@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="title">LoRaWAN.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_LORAWAN_H) &amp;&amp; !defined(RADIOLIB_EXCLUDE_LORAWAN)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_LORAWAN_H) &amp;&amp; !RADIOLIB_EXCLUDE_LORAWAN</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_LORAWAN_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
@@ -435,7 +435,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160; </div>
 <div class="line"><a name="l00573"></a><span class="lineno">  573</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">setCSMA</a>(uint8_t backoffMax, uint8_t difsSlots, <span class="keywordtype">bool</span> enableCSMA = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00574"></a><span class="lineno">  574</span>&#160; </div>
-<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer = NULL;</div>

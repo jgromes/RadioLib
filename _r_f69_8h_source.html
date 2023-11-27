@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_RF69)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_RF69</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
@@ -724,7 +724,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160; </div>
 <div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638">getChipVersion</a>();</div>
 <div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160; </div>
-<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_r_f69.html#a7fd34332bec08828080b1b4a0f8c6e28">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
 <div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160; </div>
 <div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_r_f69.html#ab797840275fbccc40162225c32f5ffc3">readBit</a>(uint32_t pin);</div>
@@ -732,12 +732,12 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160; </div>
 <div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a0d7720672c0aa0cf4464d544540cbada">setDIOMapping</a>(uint32_t pin, uint32_t value);</div>
 <div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160; </div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
 <div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160; </div>
-<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160; </div>
@@ -762,7 +762,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;    int16_t directMode();</div>
 <div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
 <div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160; </div>
-<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;    int16_t setMode(uint8_t mode);</div>

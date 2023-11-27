@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('_si443x_8h_source.html',''); initResiz
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_SI443X)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_SI443X</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
@@ -719,7 +719,7 @@ $(document).ready(function(){initNavTree('_si443x_8h_source.html',''); initResiz
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160; </div>
 <div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    int16_t <a class="code" href="class_si443x.html#a55252bda74e8c67636a8c1fa0e9f58d3">getChipVersion</a>();</div>
 <div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#a55fae20e81755c8b014d080741d61913">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160; </div>
 <div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_si443x.html#af23d8eb0f1c436e6cc60361df13c08f7">readBit</a>(uint32_t pin);</div>
@@ -729,12 +729,12 @@ $(document).ready(function(){initNavTree('_si443x_8h_source.html',''); initResiz
 <div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160; </div>
 <div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;   int16_t <a class="code" href="class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a">variablePacketLengthMode</a>(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);</div>
 <div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160; </div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
 <div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
@@ -749,7 +749,7 @@ $(document).ready(function(){initNavTree('_si443x_8h_source.html',''); initResiz
 <div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
 <div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160; </div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <span class="keywordtype">bool</span> findChip();</div>

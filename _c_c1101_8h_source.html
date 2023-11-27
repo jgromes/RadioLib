@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="title">CC1101.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_CC1101_H) &amp;&amp; !defined(RADIOLIB_EXCLUDE_CC1101)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_CC1101_H) &amp;&amp; !RADIOLIB_EXCLUDE_CC1101</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_CC1101_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
@@ -739,7 +739,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160; </div>
 <div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    int16_t <a class="code" href="class_c_c1101.html#a2a4c6e622dffd2788d8ac52d708b0705">getChipVersion</a>();</div>
 <div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160; </div>
-<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_c_c1101.html#a5161fa10b19d857840579601ef565363">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
 <div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160; </div>
 <div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_c_c1101.html#a206e6c6f094aa7e68388fd9412cd969e">readBit</a>(uint32_t pin);</div>
@@ -747,7 +747,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160; </div>
 <div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    int16_t <a class="code" href="class_c_c1101.html#a009c31564866d8d14759f17f29b08ee6">setDIOMapping</a>(uint32_t pin, uint32_t value);</div>
 <div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160; </div>
-<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;<span class="preprocessor">  #if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;<span class="preprocessor">  #if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;<span class="preprocessor">  #endif</span></div>
 <div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;      <a class="code" href="class_module.html">Module</a>* mod;</div>
@@ -762,7 +762,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160; </div>
 <div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;      <span class="keywordtype">void</span> SPIsendCommand(uint8_t cmd);</div>
 <div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160; </div>
-<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;<span class="preprocessor">  #if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;<span class="preprocessor">  #if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;<span class="preprocessor">  #endif</span></div>
 <div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160; </div>

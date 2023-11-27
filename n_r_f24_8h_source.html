@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="title">nRF24.h</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_NRF24_H) &amp;&amp; !defined(RADIOLIB_EXCLUDE_NRF24)</span></div>
+<div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#if !defined(_RADIOLIB_NRF24_H) &amp;&amp; !RADIOLIB_EXCLUDE_NRF24</span></div>
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define _RADIOLIB_NRF24_H</span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
@@ -359,7 +359,7 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160; </div>
 <div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;    int16_t <a class="code" href="classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf">setEncoding</a>(uint8_t encoding) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160; </div>
-<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
@@ -368,7 +368,7 @@ $(document).ready(function(){initNavTree('n_r_f24_8h_source.html',''); initResiz
 <div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;    <span class="keywordtype">void</span> SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);</div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;    <span class="keywordtype">void</span> SPItransfer(uint8_t cmd, <span class="keywordtype">bool</span> write = <span class="keyword">false</span>, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);</div>
 <div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160; </div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160; </div>

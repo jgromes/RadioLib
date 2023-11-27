@@ -91,7 +91,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160; </div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EXCLUDE_SX126X)</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if !RADIOLIB_EXCLUDE_SX126X</span></div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160; </div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#include &quot;../../Module.h&quot;</span></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
@@ -693,7 +693,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160; </div>
 <div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;    int16_t <a class="code" href="class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e">invertIQ</a>(<span class="keywordtype">bool</span> enable) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160; </div>
-<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;<span class="preprocessor">    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)</span></div>
+<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x126x.html#abbf8b4623da8c2caa83a8c3d35a44d0a">setDirectAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
 <div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160; </div>
 <div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_s_x126x.html#a8cdc4f25d4193dc75f9442874131eab3">readBit</a>(uint32_t pin);</div>
@@ -711,7 +711,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160; </div>
 <div class="line"><a name="l01105"></a><span class="lineno"> 1105</span>&#160;    int16_t <a class="code" href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">setPaConfig</a>(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);</div>
 <div class="line"><a name="l01106"></a><span class="lineno"> 1106</span>&#160; </div>
-<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01107"></a><span class="lineno"> 1107</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l01108"></a><span class="lineno"> 1108</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l01109"></a><span class="lineno"> 1109</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01110"></a><span class="lineno"> 1110</span>&#160;    <span class="comment">// SX126x SPI command implementations</span></div>
@@ -753,7 +753,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01146"></a><span class="lineno"> 1146</span>&#160;    int16_t fixImplicitTimeout();</div>
 <div class="line"><a name="l01147"></a><span class="lineno"> 1147</span>&#160;    int16_t fixInvertedIQ(uint8_t iqConfig);</div>
 <div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160; </div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE) &amp;&amp; !defined(RADIOLIB_LOW_LEVEL)</span></div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
 <div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l01151"></a><span class="lineno"> 1151</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01152"></a><span class="lineno"> 1152</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
@@ -761,7 +761,7 @@ $(document).ready(function(){initNavTree('_s_x126x_8h_source.html',''); initResi
 <div class="line"><a name="l01154"></a><span class="lineno"> 1154</span>&#160;    <span class="comment">// common low-level SPI interface</span></div>
 <div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
 <div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160; </div>
-<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_GODMODE)</span></div>
+<div class="line"><a name="l01157"></a><span class="lineno"> 1157</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l01160"></a><span class="lineno"> 1160</span>&#160; </div>

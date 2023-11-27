@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('_f_e_c_8h_source.html',''); initResiza
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_BCH_K                                    (21)</span></div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define RADIOLIB_PAGER_BCH_PRIMITIVE_POLY                       (0x25)</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_STATIC_ONLY)</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#if RADIOLIB_STATIC_ONLY</span></div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define RADIOLIB_BCH_MAX_N                                      (63)</span></div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define RADIOLIB_BCH_MAX_K                                      (31)</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -119,7 +119,7 @@ $(document).ready(function(){initNavTree('_f_e_c_8h_source.html',''); initResiza
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    uint32_t poly;</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    uint8_t m;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    </div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_STATIC_ONLY)</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">    #if RADIOLIB_STATIC_ONLY</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1];</div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1];</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];</div>
