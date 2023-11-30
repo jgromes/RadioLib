@@ -310,7 +310,7 @@
 #define RADIOLIB_SX128X_PACKET_STATUS_SYNC_DET_3                0b00000100  //  2     0                            detected sync word 3
 
 //RADIOLIB_SX128X_CMD_SET_DIO_IRQ_PARAMS
-#define RADIOLIB_SX128X_IRQ_RADIOLIB_PREAMBLE_DETECTED          0x8000      //  15    15  interrupt source: preamble detected
+#define RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED                   0x8000      //  15    15  interrupt source: preamble detected
 #define RADIOLIB_SX128X_IRQ_ADVANCED_RANGING_DONE               0x8000      //  15    15                    advanced ranging done
 #define RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT                       0x4000      //  14    14                    Rx or Tx timeout
 #define RADIOLIB_SX128X_IRQ_CAD_DETECTED                        0x2000      //  13    13                    channel activity detected
