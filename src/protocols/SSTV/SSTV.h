@@ -1,5 +1,5 @@
-#if !defined(_RADIOLIB_RADIOLIB_SSTV_H)
-#define _RADIOLIB_RADIOLIB_SSTV_H
+#if !defined(_RADIOLIB_SSTV_H)
+#define _RADIOLIB_SSTV_H
 
 #include "../../TypeDef.h"
 

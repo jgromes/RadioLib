@@ -1,5 +1,5 @@
-#if !defined(_RADIOLIB_RADIOLIB_AX25_H)
-#define _RADIOLIB_RADIOLIB_AX25_H
+#if !defined(_RADIOLIB_AX25_H)
+#define _RADIOLIB_AX25_H
 
 #include "../../TypeDef.h"
 
