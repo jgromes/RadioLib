@@ -1,5 +1,5 @@
-#if !defined(_RADIOLIB_RADIOLIB_MORSE_H) && !RADIOLIB_EXCLUDE_MORSE
-#define _RADIOLIB_RADIOLIB_MORSE_H
+#if !defined(_RADIOLIB_MORSE_H) && !RADIOLIB_EXCLUDE_MORSE
+#define _RADIOLIB_MORSE_H
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
