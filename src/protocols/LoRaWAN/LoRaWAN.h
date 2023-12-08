@@ -350,7 +350,7 @@ class LoRaWANNode {
   public:
 
     // Offset between TX and RX1 (such that RX1 has equal or lower DR)
-    uint8_t rx1DrOffset;
+    uint8_t rx1DrOffset = 0;
 
     // RX2 channel properties - may be changed by MAC command
     LoRaWANChannel_t rx2;
@@ -616,7 +616,7 @@ class LoRaWANNode {
     uint32_t adrFcnt = 0;
 
     // whether the current configured channel is in FSK mode
-    bool FSK;
+    bool FSK = false;
 
     // flag that shows whether the device is joined and there is an ongoing session
     bool isJoinedFlag = false;
