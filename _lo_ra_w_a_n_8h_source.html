@@ -376,7 +376,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="line"><a name="l00350"></a><span class="lineno">  350</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00351"></a><span class="lineno">  351</span>&#160; </div>
 <div class="line"><a name="l00352"></a><span class="lineno">  352</span>&#160;    <span class="comment">// Offset between TX and RX1 (such that RX1 has equal or lower DR)</span></div>
-<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    uint8_t rx1DrOffset;</div>
+<div class="line"><a name="l00353"></a><span class="lineno">  353</span>&#160;    uint8_t rx1DrOffset = 0;</div>
 <div class="line"><a name="l00354"></a><span class="lineno">  354</span>&#160; </div>
 <div class="line"><a name="l00355"></a><span class="lineno">  355</span>&#160;    <span class="comment">// RX2 channel properties - may be changed by MAC command</span></div>
 <div class="line"><a name="l00356"></a><span class="lineno">  356</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> rx2;</div>
@@ -479,7 +479,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;    uint32_t adrFcnt = 0;</div>
 <div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160; </div>
 <div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;    <span class="comment">// whether the current configured channel is in FSK mode</span></div>
-<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    <span class="keywordtype">bool</span> FSK;</div>
+<div class="line"><a name="l00619"></a><span class="lineno">  619</span>&#160;    <span class="keywordtype">bool</span> FSK = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00620"></a><span class="lineno">  620</span>&#160; </div>
 <div class="line"><a name="l00621"></a><span class="lineno">  621</span>&#160;    <span class="comment">// flag that shows whether the device is joined and there is an ongoing session</span></div>
 <div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    <span class="keywordtype">bool</span> isJoinedFlag = <span class="keyword">false</span>;</div>
