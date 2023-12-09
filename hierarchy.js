@@ -33,7 +33,9 @@ var hierarchy =
       [ "CC1101", "class_c_c1101.html", null ],
       [ "ExternalRadio", "class_external_radio.html", null ],
       [ "RF69", "class_r_f69.html", [
-        [ "SX1231", "class_s_x1231.html", null ]
+        [ "SX1231", "class_s_x1231.html", [
+          [ "SX1233", "class_s_x1233.html", null ]
+        ] ]
       ] ],
       [ "SX126x", "class_s_x126x.html", [
         [ "SX1262", "class_s_x1262.html", [
