@@ -1024,11 +1024,11 @@ class RF69: public PhysicalLayer {
     int16_t config();
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setMode(uint8_t mode);
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    int16_t setMode(uint8_t mode);
     void clearIRQFlags();
     void clearFIFO(size_t count);
 };
