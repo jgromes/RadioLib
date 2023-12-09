@@ -527,6 +527,12 @@ class LoRaWANNode {
     /*! \brief Returns the last uplink's frame counter */
     uint32_t getFcntUp();
 
+    /*! \brief Returns the last network downlink's frame counter */
+    uint32_t getNFcntDown();
+
+    /*! \brief Returns the last application downlink's frame counter */
+    uint32_t getAFcntDown();
+
     /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
       \param dr Datarate to use for uplinks.

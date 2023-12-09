@@ -1335,6 +1335,14 @@ uint32_t LoRaWANNode::getFcntUp() {
   return(this->fcntUp);
 }
 
+uint32_t LoRaWANNode::getNFcntDown() {
+  return(this->nFcntDown);
+}
+
+uint32_t LoRaWANNode::getAFcntDown() {
+  return(this->aFcntDown);
+}
+
 uint32_t LoRaWANNode::generateMIC(uint8_t* msg, size_t len, uint8_t* key) {
   if((msg == NULL) || (len == 0)) {
     return(0);
