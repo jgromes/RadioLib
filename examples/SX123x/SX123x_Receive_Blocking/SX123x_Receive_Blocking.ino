@@ -1,9 +1,10 @@
 /*
-  RadioLib SX1231 Blocking Receive Example
+  RadioLib SX123x Blocking Receive Example
 
   This example receives packets using SX1231 FSK radio module.
+  Other modules from SX123x family can also be used.
 
-  NOTE: SX1231 offers the same features as RF69 and has the same
+  NOTE: SX123x modules offer the same features as RF69 and have the same
         interface. Please see RF69 examples for examples on AES,
         address filtering, interrupts and settings.
 

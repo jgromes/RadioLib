@@ -16,7 +16,7 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     int16_t version = getChipVersion();
-    if((version == 0x21) || (version == 0x22) || (version == 0x23)) {
+    if((version == RADIOLIB_SX123X_CHIP_REVISION_2_A) || (version == RADIOLIB_SX123X_CHIP_REVISION_2_B) || (version == RADIOLIB_SX123X_CHIP_REVISION_2_C)) {
       flagFound = true;
       this->chipRevision = version;
     } else {
@@ -74,8 +74,8 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
     return(state);
   }
 
-  // SX1231 V2a only
-  if(this->chipRevision == RADIOLIB_SX1231_CHIP_REVISION_2_A) {
+  // SX123x V2a only
+  if(this->chipRevision == RADIOLIB_SX123X_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
     state = this->mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
     RADIOLIB_ASSERT(state);

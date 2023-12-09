@@ -25,7 +25,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * __SX126x__ series LoRa modules (SX1261, SX1262, SX1268)
 * __SX127x__ series LoRa modules (SX1272, SX1273, SX1276, SX1277, SX1278, SX1279)
 * __SX128x__ series LoRa/GFSK/BLE/FLRC modules (SX1280, SX1281, SX1282)
-* __SX1231__ FSK/OOK radio module
+* __SX123x__ FSK/OOK radio modules (SX1231, SX1233)
 
 ### Supported protocols and digital modes:
 * [__AX.25__](https://www.sigidwiki.com/wiki/PACKET) using 2-FSK or AFSK for modules:  
