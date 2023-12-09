@@ -1,9 +1,9 @@
 #include "Pager.h"
 #include <string.h>
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_PAGER)
+#if !RADIOLIB_EXCLUDE_PAGER
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 // this is a massive hack, but we need a global-scope ISR to manage the bit reading
 // let's hope nobody ever tries running two POCSAG receivers at the same time
 static PhysicalLayer* readBitInstance = NULL;
@@ -21,7 +21,7 @@ static void PagerClientReadBit(void) {
 
 PagerClient::PagerClient(PhysicalLayer* phy) {
   phyLayer = phy;
-  #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+  #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   readBitInstance = phyLayer;
   #endif
 }
@@ -127,7 +127,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   // calculate message length in 32-bit code words
   size_t msgLen = RADIOLIB_PAGER_PREAMBLE_LENGTH + (1 + RADIOLIB_PAGER_BATCH_LEN) * numBatches;
 
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint32_t msg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint32_t* msg = new uint32_t[msgLen];
@@ -225,7 +225,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   // transmit the message
   PagerClient::write(msg, msgLen);
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] msg;
   #endif
 
@@ -235,7 +235,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   return(RADIOLIB_ERR_NONE);
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
   // save the variables
   readBitPin = pin;
@@ -289,7 +289,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   }
 
   // build a temporary buffer
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
@@ -316,7 +316,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   }
 
   // deallocate temporary buffer
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] data;
   #endif
 
@@ -496,7 +496,7 @@ void PagerClient::write(uint32_t codeWord) {
   }
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 uint32_t PagerClient::read() {
   uint32_t codeWord = 0;
   codeWord |= (uint32_t)phyLayer->read() << 24;

@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
-#if !defined(RADIOLIB_EXCLUDE_APRS)
+#if !RADIOLIB_EXCLUDE_APRS
 
 APRSClient::APRSClient(AX25Client* ax) {
   axClient = ax;
@@ -42,7 +42,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
   if(time != NULL) {
     len += strlen(time);
   }
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     char* info = new char[len + 1];
   #else
     char info[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -66,7 +66,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
 
   // send the frame
   int16_t state = sendFrame(destCallsign, destSSID, info);
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] info;
   #endif
   return(state);
@@ -89,7 +89,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
 
   // prepare buffers
   char destCallsign[7];
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     size_t infoLen = 10;
     if(telemLen > 0) {
       infoLen += 1 + telemLen;
@@ -231,7 +231,7 @@ int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t sp
     destSSID = 1;
   }
   int16_t state = sendFrame(destCallsign, destSSID, info);
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] info;
   #endif
   return(state);

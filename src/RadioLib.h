@@ -47,12 +47,12 @@
 // warnings are printed in this file since BuildOpt.h is compiled in multiple places
 
 // check God mode
-#if defined(RADIOLIB_GODMODE)
+#if RADIOLIB_GODMODE
   #warning "God mode active, I hope it was intentional. Buckle up, lads."
 #endif
 
 // print debug info
-#if defined(RADIOLIB_DEBUG)
+#if RADIOLIB_DEBUG
   #define RADIOLIB_VALUE_TO_STRING(x) #x
   #define RADIOLIB_VALUE(x) RADIOLIB_VALUE_TO_STRING(x)
   #pragma message("\nRadioLib Debug Info\nVersion:  \"" \
@@ -120,7 +120,7 @@
 #include "utils/Cryptography.h"
 
 // only create Radio class when using RadioShield
-#if defined(RADIOLIB_RADIOSHIELD)
+#if RADIOLIB_RADIOSHIELD
 
 // RadioShield pin definitions
 #define RADIOSHIELD_CS_A    10
@@ -152,7 +152,7 @@ class Radio {
       ModuleB = new Module(RADIOSHIELD_CS_B, RADIOSHIELD_IRQ_B, RADIOSHIELD_RST_B, RADIOSHIELD_GPIO_B);
     }
 
-#if defined(RADIOLIB_GODMODE)
+#if RADIOLIB_GODMODE
   private:
 #endif
 

@@ -168,7 +168,7 @@ class Module {
     */
     SPIparseStatusCb_t SPIparseStatusCb = nullptr;
 
-    #if defined(RADIOLIB_INTERRUPT_TIMING)
+    #if RADIOLIB_INTERRUPT_TIMING
 
     /*!
       \brief Timer interrupt setup callback typedef.
@@ -468,7 +468,7 @@ class Module {
     */
     static uint32_t reflect(uint32_t in, uint8_t bits);
 
-    #if defined(RADIOLIB_DEBUG)
+    #if RADIOLIB_DEBUG
     /*!
       \brief Function to dump data as hex into the debug port.
       \param data Data to dump.
@@ -486,11 +486,11 @@ class Module {
     void regdump(uint16_t start, size_t len);
     #endif
 
-    #if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
+    #if RADIOLIB_DEBUG and defined(RADIOLIB_BUILD_ARDUINO)
     static size_t serialPrintf(const char* format, ...);
     #endif
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     uint32_t csPin = RADIOLIB_NC;
@@ -502,7 +502,7 @@ class Module {
     uint32_t rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
     const RfSwitchMode_t *rfSwitchTable = nullptr;
 
-    #if defined(RADIOLIB_INTERRUPT_TIMING)
+    #if RADIOLIB_INTERRUPT_TIMING
     uint32_t prevTimingLen = 0;
     #endif
 };

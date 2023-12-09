@@ -1,9 +1,9 @@
-#if !defined(_RADIOLIB_RADIOLIB_SSTV_H)
-#define _RADIOLIB_RADIOLIB_SSTV_H
+#if !defined(_RADIOLIB_SSTV_H)
+#define _RADIOLIB_SSTV_H
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SSTV)
+#if !RADIOLIB_EXCLUDE_SSTV
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
@@ -122,7 +122,7 @@ class SSTVClient {
     */
     explicit SSTVClient(PhysicalLayer* phy);
 
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Constructor for AFSK mode.
       \param audio Pointer to the AFSK instance providing audio.
@@ -141,7 +141,7 @@ class SSTVClient {
     */
     int16_t begin(float base, const SSTVMode_t& mode);
 
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Initialization method for AFSK.
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2,
@@ -182,11 +182,11 @@ class SSTVClient {
     */
     uint16_t getPictureHeight() const;
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer;
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;
     #endif
 

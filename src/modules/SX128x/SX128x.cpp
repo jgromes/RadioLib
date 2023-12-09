@@ -1,6 +1,6 @@
 #include "SX128x.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_SX128X)
+#if !RADIOLIB_EXCLUDE_SX128X
 
 SX128x::SX128x(Module* mod) : PhysicalLayer(RADIOLIB_SX128X_FREQUENCY_STEP_SIZE, RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
   this->mod = mod;
@@ -1333,7 +1333,7 @@ int16_t SX128x::invertIQ(bool enable) {
   return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->payloadLen, this->crcLoRa, this->invertIQEnabled));
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void SX128x::setDirectAction(void (*func)(void)) {
   // SX128x is unable to perform direct mode reception
   // this method is implemented only for PhysicalLayer compatibility

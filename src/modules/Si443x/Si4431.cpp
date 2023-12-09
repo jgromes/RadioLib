@@ -1,5 +1,5 @@
 #include "Si4431.h"
-#if !defined(RADIOLIB_EXCLUDE_SI443X)
+#if !RADIOLIB_EXCLUDE_SI443X
 
 Si4431::Si4431(Module* mod) : Si4432(mod) {
 

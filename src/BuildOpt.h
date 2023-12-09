@@ -1,6 +1,132 @@
 #if !defined(_RADIOLIB_BUILD_OPTIONS_H)
 #define _RADIOLIB_BUILD_OPTIONS_H
 
+/* RadioLib build configuration options */
+
+/*
+ * Debug output enable.
+ * Warning: Debug output will slow down the whole system significantly.
+ *          Also, it will result in larger compiled binary.
+ * Levels: debug - only main info
+ *         verbose - full transcript of all SPI communication
+ */
+#if !defined(RADIOLIB_DEBUG)
+  #define RADIOLIB_DEBUG (0)
+#endif
+#if !defined(RADIOLIB_VERBOSE)
+  #define RADIOLIB_VERBOSE (0)
+#endif
+
+// set which output port should be used for debug output
+// may be Serial port (on Arduino) or file like stdout or stderr (on generic platforms)
+#if !defined(RADIOLIB_DEBUG_PORT)
+  #define RADIOLIB_DEBUG_PORT   Serial
+#endif
+
+/*
+ * Comment to disable "paranoid" SPI mode, or set RADIOLIB_SPI_PARANOID to 0
+ * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
+ * This improves reliability, but slightly slows down communication.
+ * Note: Enabled by default.
+ */
+#if !defined(RADIOLIB_SPI_PARANOID)
+  #define RADIOLIB_SPI_PARANOID (1)
+#endif
+
+/*
+ * Comment to disable parameter range checking
+ * RadioLib will check provided parameters (such as frequency) against limits determined by the device manufacturer.
+ * It is highly advised to keep this macro defined, removing it will allow invalid values to be set,
+ * possibly leading to bricked module and/or program crashing.
+ * Note: Enabled by default.
+ */
+#if !defined(RADIOLIB_CHECK_PARAMS)
+  #define RADIOLIB_CHECK_PARAMS (1)
+#endif
+
+/*
+ * SX127x errata fix enable
+ * Warning: SX127x errata fix has been reported to cause issues with LoRa bandwidths lower than 62.5 kHz.
+ *          It should only be enabled if you really are observing some errata-related issue.
+ * Note: Disabled by default.
+ */
+#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
+  #define RADIOLIB_FIX_ERRATA_SX127X (0)
+#endif
+
+/*
+ * God mode enable - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
+ * Warning: Come on, it's called GOD mode - obviously only use this if you know what you're doing.
+ *          Failure to heed the above warning may result in bricked module.
+ */
+#if !defined(RADIOLIB_GODMODE)
+  #define RADIOLIB_GODMODE (0)
+#endif
+
+/*
+ * Low-level hardware access enable
+ * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as "god mode lite"
+ * Warning: RadioLib won't stop you from writing invalid stuff into your device, so it's quite easy to brick your module with this.
+ */
+#if !defined(RADIOLIB_LOW_LEVEL)
+  #define RADIOLIB_LOW_LEVEL (0)
+#endif
+
+/*
+ * Enable pre-defined modules when using RadioShield, disabled by default.
+ */
+#if !defined(RADIOLIB_RADIOSHIELD)
+  #define RADIOLIB_RADIOSHIELD  (0)
+#endif
+
+/*
+ * Enable interrupt-based timing control
+ * For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
+ */
+#if !defined(RADIOLIB_INTERRUPT_TIMING)
+  #define RADIOLIB_INTERRUPT_TIMING  (0)
+#endif
+
+/*
+ * Enable static-only memory management: no dynamic allocation will be performed.
+ * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
+ */
+#if !defined(RADIOLIB_STATIC_ONLY)
+  #define RADIOLIB_STATIC_ONLY  (0)
+#endif
+
+// set the size of static arrays to use
+#if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
+  #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
+#endif
+
+// the base address for persistent storage
+// some protocols (e.g. LoRaWAN) require a method
+// to store some data persistently
+// on Arduino, this will use EEPROM, on non-Arduino platform,
+// it will use anything provided by the hardware abstraction layer
+// RadioLib will place these starting at this address
+#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_BASE            (0)
+#endif
+
+// the amount of space allocated to the persistent storage
+#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x0180)
+#endif
+
+/*
+ * Uncomment on boards whose clock runs too slow or too fast
+ * Set the value according to the following scheme:
+ * Enable timestamps on your terminal
+ * Print something to terminal, wait 1000 milliseconds, print something again
+ * If the difference is e.g. 1014 milliseconds between the prints, set this value to 14
+ * Or, for more accuracy, wait for 100,000 milliseconds and divide the total drift by 100
+ */
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+  //#define RADIOLIB_CLOCK_DRIFT_MS                         (0)
+#endif
+
 #if ARDUINO >= 100
   // Arduino build
   #include "Arduino.h"
@@ -61,23 +187,23 @@
   // NOTE: Some of the exclusion macros are dependent on each other. For example, it is not possible to exclude RF69
   //       while keeping SX1231 (because RF69 is the base class for SX1231). The dependency is always uni-directional,
   //       so excluding SX1231 and keeping RF69 is valid.
-  //#define RADIOLIB_EXCLUDE_CC1101
-  //#define RADIOLIB_EXCLUDE_NRF24
-  //#define RADIOLIB_EXCLUDE_RF69
-  //#define RADIOLIB_EXCLUDE_SX1231     // dependent on RADIOLIB_EXCLUDE_RF69
-  //#define RADIOLIB_EXCLUDE_SI443X
-  //#define RADIOLIB_EXCLUDE_RFM2X      // dependent on RADIOLIB_EXCLUDE_SI443X
-  //#define RADIOLIB_EXCLUDE_SX127X
-  //#define RADIOLIB_EXCLUDE_SX126X
-  //#define RADIOLIB_EXCLUDE_STM32WLX   // dependent on RADIOLIB_EXCLUDE_SX126X
-  //#define RADIOLIB_EXCLUDE_SX128X
-  //#define RADIOLIB_EXCLUDE_AFSK
-  //#define RADIOLIB_EXCLUDE_AX25
-  //#define RADIOLIB_EXCLUDE_HELLSCHREIBER
-  //#define RADIOLIB_EXCLUDE_MORSE
-  //#define RADIOLIB_EXCLUDE_RTTY
-  //#define RADIOLIB_EXCLUDE_SSTV
-  //#define RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+  //#define RADIOLIB_EXCLUDE_CC1101           (1)
+  //#define RADIOLIB_EXCLUDE_NRF24            (1)
+  //#define RADIOLIB_EXCLUDE_RF69             (1)
+  //#define RADIOLIB_EXCLUDE_SX1231           (1) // dependent on RADIOLIB_EXCLUDE_RF69
+  //#define RADIOLIB_EXCLUDE_SI443X           (1)
+  //#define RADIOLIB_EXCLUDE_RFM2X            (1) // dependent on RADIOLIB_EXCLUDE_SI443X
+  //#define RADIOLIB_EXCLUDE_SX127X           (1)
+  //#define RADIOLIB_EXCLUDE_SX126X           (1)
+  //#define RADIOLIB_EXCLUDE_STM32WLX         (1) // dependent on RADIOLIB_EXCLUDE_SX126X
+  //#define RADIOLIB_EXCLUDE_SX128X           (1)
+  //#define RADIOLIB_EXCLUDE_AFSK             (1)
+  //#define RADIOLIB_EXCLUDE_AX25             (1)
+  //#define RADIOLIB_EXCLUDE_HELLSCHREIBER    (1)
+  //#define RADIOLIB_EXCLUDE_MORSE            (1)
+  //#define RADIOLIB_EXCLUDE_RTTY             (1)
+  //#define RADIOLIB_EXCLUDE_SSTV             (1)
+  //#define RADIOLIB_EXCLUDE_DIRECT_RECEIVE   (1)
 
 #elif defined(__AVR__) && !(defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(ARDUINO_ARCH_MEGAAVR))
   // Arduino AVR boards (except for megaAVR) - Uno, Mega etc.
@@ -337,137 +463,13 @@
 
 #endif
 
-/*
- * Uncomment to enable debug output.
- * Warning: Debug output will slow down the whole system significantly.
- *          Also, it will result in larger compiled binary.
- * Levels: debug - only main info
- *         verbose - full transcript of all SPI communication
- */
-#if !defined(RADIOLIB_DEBUG)
-  //#define RADIOLIB_DEBUG
-#endif
-#if !defined(RADIOLIB_VERBOSE)
-  //#define RADIOLIB_VERBOSE
-#endif
-
-// set which output port should be used for debug output
-// may be Serial port (on Arduino) or file like stdout or stderr (on generic platforms)
-#if defined(RADIOLIB_BUILD_ARDUINO) && !defined(RADIOLIB_DEBUG_PORT)
-  #define RADIOLIB_DEBUG_PORT   Serial
-#endif
-
-/*
- * Uncomment to enable "paranoid" SPI mode
- * Every write to an SPI register using SPI set function will be verified by a subsequent read operation.
- * This improves reliability, but slightly slows down communication.
- * Note: Enabled by default.
- */
-#if !defined(RADIOLIB_SPI_PARANOID)
-  #define RADIOLIB_SPI_PARANOID
-#endif
-
-/*
- * Uncomment to enable parameter range checking
- * RadioLib will check provided parameters (such as frequency) against limits determined by the device manufacturer.
- * It is highly advised to keep this macro defined, removing it will allow invalid values to be set,
- * possibly leading to bricked module and/or program crashing.
- * Note: Enabled by default.
- */
-#if !defined(RADIOLIB_CHECK_PARAMS)
-  #define RADIOLIB_CHECK_PARAMS
-#endif
-
-/*
- * Uncomment to enable SX127x errata fix
- * Warning: SX127x errata fix has been reported to cause issues with LoRa bandwidths lower than 62.5 kHz.
- *          It should only be enabled if you really are observing some errata-related issue.
- * Note: Disabled by default.
- */
-#if !defined(RADIOLIB_FIX_ERRATA_SX127X)
-  //#define RADIOLIB_FIX_ERRATA_SX127X
-#endif
-
-/*
- * Uncomment to enable god mode - all methods and member variables in all classes will be made public, thus making them accessible from Arduino code.
- * Warning: Come on, it's called GOD mode - obviously only use this if you know what you're doing.
- *          Failure to heed the above warning may result in bricked module.
- */
-#if !defined(RADIOLIB_GODMODE)
-  //#define RADIOLIB_GODMODE
-#endif
-
-/*
- * Uncomment to enable low-level hardware access
- * This will make some hardware methods like SPI get/set accessible from the user sketch - think of it as "god mode lite"
- * Warning: RadioLib won't stop you from writing invalid stuff into your device, so it's quite easy to brick your module with this.
- */
-#if !defined(RADIOLIB_LOW_LEVEL)
-  //#define RADIOLIB_LOW_LEVEL
-#endif
-
-/*
- * Uncomment to enable pre-defined modules when using RadioShield.
- */
-#if !defined(RADIOLIB_RADIOSHIELD)
-  //#define RADIOLIB_RADIOSHIELD
-#endif
-
-/*
- * Uncomment to enable interrupt-based timing control
- * For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
- */
-#if !defined(RADIOLIB_INTERRUPT_TIMING)
-  //#define RADIOLIB_INTERRUPT_TIMING
-#endif
-
-/*
- * Uncomment to enable static-only memory management: no dynamic allocation will be performed.
- * Warning: Large static arrays will be created in some methods. It is not advised to send large packets in this mode.
- */
-#if !defined(RADIOLIB_STATIC_ONLY)
-  //#define RADIOLIB_STATIC_ONLY
-#endif
-
-// set the size of static arrays to use
-#if !defined(RADIOLIB_STATIC_ARRAY_SIZE)
-  #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
-#endif
-
-// the base address for persistent storage
-// some protocols (e.g. LoRaWAN) require a method
-// to store some data persistently
-// on Arduino, this will use EEPROM, on non-Arduino platform,
-// it will use anything provided by the hardware abstraction layer
-// RadioLib will place these starting at this address
-#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_BASE            (0)
-#endif
-
-// the amount of space allocated to the persistent storage
-#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x0180)
-#endif
-
-/*
- * Uncomment on boards whose clock runs too slow or too fast
- * Set the value according to the following scheme:
- * Enable timestamps on your terminal
- * Print something to terminal, wait 1000 milliseconds, print something again
- * If the difference is e.g. 1014 milliseconds between the prints, set this value to 14
- * Or, for more accuracy, wait for 100,000 milliseconds and divide the total drift by 100
- */
-#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
-  //#define RADIOLIB_CLOCK_DRIFT_MS                         (0)
-#endif
-
 // This only compiles on STM32 boards with SUBGHZ module, but also
 // include when generating docs
 #if (!defined(ARDUINO_ARCH_STM32) || !defined(SUBGHZSPI_BASE)) && !defined(DOXYGEN)
-  #define RADIOLIB_EXCLUDE_STM32WLX
+  #define RADIOLIB_EXCLUDE_STM32WLX (1)
 #endif
 
-#if defined(RADIOLIB_DEBUG)
+#if RADIOLIB_DEBUG
   #if defined(RADIOLIB_BUILD_ARDUINO)
     #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
     #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
@@ -491,7 +493,7 @@
   #define RADIOLIB_DEBUG_HEXDUMP(...) {}
 #endif
 
-#if defined(RADIOLIB_VERBOSE)
+#if RADIOLIB_VERBOSE
   #define RADIOLIB_VERBOSE_PRINT(...) RADIOLIB_DEBUG_PRINT(__VA_ARGS__)
   #define RADIOLIB_VERBOSE_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN(__VA_ARGS__)
 #else
@@ -507,13 +509,13 @@
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges. Requires RADIOLIB_CHECK_RANGE to be enabled
 */
-#if defined(RADIOLIB_CHECK_PARAMS)
+#if RADIOLIB_CHECK_PARAMS
   #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) { if(!(((VAR) >= (MIN)) && ((VAR) <= (MAX)))) { return(ERR); } }
 #else
   #define RADIOLIB_CHECK_RANGE(VAR, MIN, MAX, ERR) {}
 #endif
 
-#if defined(RADIOLIB_FIX_ERRATA_SX127X)
+#if RADIOLIB_FIX_ERRATA_SX127X
   #define RADIOLIB_ERRATA_SX127X(...) { errataFix(__VA_ARGS__); }
 #else
   #define RADIOLIB_ERRATA_SX127X(...) {}
@@ -526,7 +528,7 @@
 
 // version definitions
 #define RADIOLIB_VERSION_MAJOR  6
-#define RADIOLIB_VERSION_MINOR  2
+#define RADIOLIB_VERSION_MINOR  3
 #define RADIOLIB_VERSION_PATCH  0
 #define RADIOLIB_VERSION_EXTRA  0
 

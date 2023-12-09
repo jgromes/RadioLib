@@ -53,7 +53,7 @@ class RadioLibPrint {
     size_t println(double, int = 2);
     size_t println(void);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
     uint8_t encoding = RADIOLIB_ASCII_EXTENDED;

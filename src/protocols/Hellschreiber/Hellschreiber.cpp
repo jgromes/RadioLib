@@ -1,16 +1,16 @@
 #include "Hellschreiber.h"
 
-#if !defined(RADIOLIB_EXCLUDE_HELLSCHREIBER)
+#if !RADIOLIB_EXCLUDE_HELLSCHREIBER
 
 HellClient::HellClient(PhysicalLayer* phy) {
   phyLayer = phy;
   lineFeed = " ";
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   audioClient = nullptr;
   #endif
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 HellClient::HellClient(AFSKClient* audio) {
   phyLayer = audio->phyLayer;
   lineFeed = " ";
@@ -82,7 +82,7 @@ size_t HellClient::write(uint8_t b) {
 }
 
 int16_t HellClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->tone(freqHz));
   }
@@ -91,7 +91,7 @@ int16_t HellClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
 }
 
 int16_t HellClient::standby() {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->noTone(invert));
   }

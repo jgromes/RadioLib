@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#if defined(RADIOLIB_DEBUG)
+#if RADIOLIB_DEBUG
 // needed for debug print
 #include <stdarg.h>
 #endif
@@ -75,7 +75,7 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
   uint8_t newValue = (currentValue & ~mask) | (value & mask);
   SPIwriteRegister(reg, newValue);
 
-  #if defined(RADIOLIB_SPI_PARANOID)
+  #if RADIOLIB_SPI_PARANOID
     // check register value each millisecond until check interval is reached
     // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
     uint32_t start = this->hal->micros();
@@ -145,7 +145,7 @@ void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
 void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
   // prepare the buffers
   size_t buffLen = this->SPIaddrWidth/8 + numBytes;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
     uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -182,7 +182,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   }
 
   // print debug information
-  #if defined(RADIOLIB_VERBOSE)
+  #if RADIOLIB_VERBOSE
     uint8_t* debugBuffPtr = NULL;
     if(cmd == SPIwriteCommand) {
       RADIOLIB_VERBOSE_PRINT("W\t%X\t", reg);
@@ -197,7 +197,7 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
     RADIOLIB_VERBOSE_PRINTLN();
   #endif
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] buffOut;
     delete[] buffIn;
   #endif
@@ -240,7 +240,7 @@ int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size
 int16_t Module::SPIcheckStream() {
   int16_t state = RADIOLIB_ERR_NONE;
 
-  #if defined(RADIOLIB_SPI_PARANOID)
+  #if RADIOLIB_SPI_PARANOID
   // get the status
   uint8_t spiStatus = 0;
   uint8_t cmd = this->SPIstatusCommand;
@@ -262,7 +262,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   if(!write) {
     buffLen++;
   }
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
     uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -292,7 +292,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
       this->hal->yield();
       if(this->hal->millis() - start >= timeout) {
         RADIOLIB_DEBUG_PRINTLN("GPIO pre-transfer timeout, is it connected?");
-        #if !defined(RADIOLIB_STATIC_ONLY)
+        #if !RADIOLIB_STATIC_ONLY
           delete[] buffOut;
           delete[] buffIn;
         #endif
@@ -319,7 +319,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
         this->hal->yield();
         if(this->hal->millis() - start >= timeout) {
           RADIOLIB_DEBUG_PRINTLN("GPIO post-transfer timeout, is it connected?");
-          #if !defined(RADIOLIB_STATIC_ONLY)
+          #if !RADIOLIB_STATIC_ONLY
             delete[] buffOut;
             delete[] buffIn;
           #endif
@@ -342,7 +342,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   }
 
   // print debug information
-  #if defined(RADIOLIB_VERBOSE)
+  #if RADIOLIB_VERBOSE
     // print command byte(s)
     RADIOLIB_VERBOSE_PRINT("CMD");
     if(write) {
@@ -369,7 +369,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
     RADIOLIB_VERBOSE_PRINTLN();
   #endif
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] buffOut;
     delete[] buffIn;
   #endif
@@ -378,7 +378,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 }
 
 void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
-  #if defined(RADIOLIB_INTERRUPT_TIMING)
+  #if RADIOLIB_INTERRUPT_TIMING
   (void)start;
   if((this->TimerSetupCb != nullptr) && (len != this->prevTimingLen)) {
     prevTimingLen = len;
@@ -403,7 +403,7 @@ uint32_t Module::reflect(uint32_t in, uint8_t bits) {
   return(res);
 }
 
-#if defined(RADIOLIB_DEBUG)
+#if RADIOLIB_DEBUG
 void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
@@ -450,20 +450,20 @@ void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, 
 }
 
 void Module::regdump(uint16_t start, size_t len) {
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     uint8_t buff[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* buff = new uint8_t[len];
   #endif
   SPIreadRegisterBurst(start, len, buff);
   hexdump(buff, len, start);
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] buff;
   #endif
 }
 #endif
 
-#if defined(RADIOLIB_DEBUG) and defined(RADIOLIB_BUILD_ARDUINO)
+#if RADIOLIB_DEBUG && defined(RADIOLIB_BUILD_ARDUINO)
 // https://github.com/esp8266/Arduino/blob/65579d29081cb8501e4d7f786747bf12e7b37da2/cores/esp8266/Print.cpp#L50
 size_t Module::serialPrintf(const char* format, ...) {
   va_list arg;

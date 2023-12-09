@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !RADIOLIB_EXCLUDE_SX127X
 
 #include "../../Module.h"
 #include "SX127x.h"
@@ -282,7 +282,7 @@ class SX1278: public SX127x {
     */
     int16_t explicitHeader();
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
     int16_t setBandwidthRaw(uint8_t newBandwidth);
@@ -293,7 +293,7 @@ class SX1278: public SX127x {
     int16_t configFSK();
     void errataFix(bool rx);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     bool ldroAuto = true;

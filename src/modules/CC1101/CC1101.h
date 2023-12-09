@@ -1,4 +1,4 @@
-#if !defined(_RADIOLIB_CC1101_H) && !defined(RADIOLIB_EXCLUDE_CC1101)
+#if !defined(_RADIOLIB_CC1101_H) && !RADIOLIB_EXCLUDE_CC1101
 #define _RADIOLIB_CC1101_H
 
 #include "../../TypeDef.h"
@@ -922,7 +922,7 @@ class CC1101: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
       \param func Pointer to interrupt service routine.
@@ -944,7 +944,7 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setDIOMapping(uint32_t pin, uint32_t value);
 
-  #if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+  #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
     protected:
   #endif
       Module* mod;
@@ -959,7 +959,7 @@ class CC1101: public PhysicalLayer {
 
       void SPIsendCommand(uint8_t cmd);
 
-  #if !defined(RADIOLIB_GODMODE)
+  #if !RADIOLIB_GODMODE
     protected:
   #endif
 

@@ -1,9 +1,9 @@
-#if !defined(_RADIOLIB_RADIOLIB_AX25_H)
-#define _RADIOLIB_RADIOLIB_AX25_H
+#if !defined(_RADIOLIB_AX25_H)
+#define _RADIOLIB_AX25_H
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_AX25)
+#if !RADIOLIB_EXCLUDE_AX25
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AFSK/AFSK.h"
@@ -125,7 +125,7 @@ class AX25Frame {
     */
     uint16_t sendSeqNumber;
 
-    #if !defined(RADIOLIB_STATIC_ONLY)
+    #if !RADIOLIB_STATIC_ONLY
       /*!
         \brief The info field.
       */
@@ -243,7 +243,7 @@ class AX25Client {
     */
     explicit AX25Client(PhysicalLayer* phy);
 
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Constructor for AFSK mode.
       \param audio Pointer to the AFSK instance providing audio.
@@ -303,13 +303,13 @@ class AX25Client {
     */
     int16_t sendFrame(AX25Frame* frame);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     friend class APRSClient;
 
     PhysicalLayer* phyLayer;
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     BellClient* bellModem;
     #endif
 

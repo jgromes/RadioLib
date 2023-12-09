@@ -14,7 +14,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
   this->n = n;
   this->k = k;
   this->poly = poly;
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   this->alphaTo = new int32_t[n + 1];
   this->indexOf = new int32_t[n + 1];
   this->generator = new int32_t[n - k + 1];
@@ -115,7 +115,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 
 	// Search for roots 1, 2, ..., m-1 in cycle sets
 	int32_t rdncy = 0;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t min[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
   #else
     int32_t* min = new int32_t[this->n - this->k + 1];
@@ -139,7 +139,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 	}
 
 	int32_t noterms = kaux;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t zeros[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
   #else
     int32_t* zeros = new int32_t[this->n - this->k + 1];
@@ -153,7 +153,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 		}
   }
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] min;
   #endif
 
@@ -173,7 +173,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 		this->generator[0] = this->alphaTo[(this->indexOf[this->generator[0]] + zeros[ii]) % this->n];
 	}
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] zeros;
   #endif
 }
@@ -185,7 +185,7 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 */
 uint32_t RadioLibBCH::encode(uint32_t dataword) {
   // we only use the "k" most significant bits
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t data[RADIOLIB_BCH_MAX_K];
   #else
     int32_t* data = new int32_t[this->k];
@@ -200,7 +200,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
 	}
 
   // reset the M(x)+r array elements
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t Mr[RADIOLIB_BCH_MAX_N];
   #else
     int32_t* Mr = new int32_t[this->n];
@@ -227,7 +227,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     }
   }
 
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t bb[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
   #else
     int32_t* bb = new int32_t[this->n - this->k + 1];
@@ -238,12 +238,12 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     ++j;
   }
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] Mr;
   #endif
 
 	int32_t iEvenParity = 0;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     int32_t recd[RADIOLIB_BCH_MAX_N + 1];
   #else
     int32_t* recd = new int32_t[this->n + 1];
@@ -255,7 +255,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     }
 	}
   
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] data;
   #endif
 
@@ -266,7 +266,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     }
 	}
   
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] bb;
   #endif
 
@@ -283,7 +283,7 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
     }
 	}
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] recd;
   #endif
 

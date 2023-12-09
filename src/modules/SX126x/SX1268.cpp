@@ -1,5 +1,5 @@
 #include "SX1268.h"
-#if !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !RADIOLIB_EXCLUDE_SX126X
 
 SX1268::SX1268(Module* mod) : SX126x(mod) {
   chipType = RADIOLIB_SX1268_CHIP_TYPE;

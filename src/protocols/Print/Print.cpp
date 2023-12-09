@@ -42,7 +42,7 @@ size_t RadioLibPrint::print(const __FlashStringHelper* fstr) {
   }
 
   // dynamically allocate memory
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
     char str[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     char* str = new char[len];
@@ -61,7 +61,7 @@ size_t RadioLibPrint::print(const __FlashStringHelper* fstr) {
   } else {
     n = write((uint8_t*)str, len);
   }
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] str;
   #endif
   return(n);

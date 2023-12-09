@@ -1,6 +1,6 @@
 #include "LoRaWAN.h"
 
-#if !defined(RADIOLIB_EXCLUDE_LORAWAN)
+#if !RADIOLIB_EXCLUDE_LORAWAN
 
 const LoRaWANBand_t EU868 = {
   .bandType = RADIOLIB_LORAWAN_BAND_DYNAMIC,

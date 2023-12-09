@@ -380,7 +380,7 @@ class PhysicalLayer {
     */
     int16_t startDirect();
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set sync word to be used to determine start of packet in direct reception mode.
       \param syncWord Sync word bits.
@@ -463,7 +463,7 @@ class PhysicalLayer {
     */
     virtual void clearChannelScanAction();
 
-    #if defined(RADIOLIB_INTERRUPT_TIMING)
+    #if RADIOLIB_INTERRUPT_TIMING
 
     /*!
       \brief Set function to be called to set up the timing interrupt.
@@ -480,18 +480,18 @@ class PhysicalLayer {
 
     #endif
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   protected:
     void updateDirectBuffer(uint8_t bit);
 #endif
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     float freqStep;
     size_t maxPacketLength;
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint8_t bufferBitPos;
     uint8_t bufferWritePos;
     uint8_t bufferReadPos;

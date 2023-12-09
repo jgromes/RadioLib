@@ -1,7 +1,7 @@
 #include "LoRaWAN.h"
 #include <string.h>
 
-#if !defined(RADIOLIB_EXCLUDE_LORAWAN)
+#if !RADIOLIB_EXCLUDE_LORAWAN
 
 #if defined(RADIOLIB_EEPROM_UNSUPPORTED)
   #warning "Persistent storage not supported!"
@@ -65,7 +65,7 @@ int16_t LoRaWANNode::restore() {
 
   // check the magic value
   if(mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_PERSISTENT_PARAM_LORAWAN_MAGIC_ID) != RADIOLIB_LORAWAN_MAGIC) {
-    #if defined(RADIOLIB_DEBUG)
+    #if RADIOLIB_DEBUG
       RADIOLIB_DEBUG_PRINTLN("magic id not set (no saved session)");
       RADIOLIB_DEBUG_PRINTLN("first 16 bytes of NVM:");
       uint8_t nvmBuff[16];
@@ -148,7 +148,7 @@ int16_t LoRaWANNode::restoreFcntUp() {
   uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID);
   uint8_t fcntBuffEnd = mod->hal->getPersistentAddr(RADIOLIB_PERSISTENT_PARAM_LORAWAN_FCNT_UP_ID + 1);
   uint8_t buffSize = fcntBuffEnd - fcntBuffStart;
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
   uint8_t fcntBuff[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
   uint8_t* fcntBuff = new uint8_t[buffSize];
@@ -182,7 +182,7 @@ int16_t LoRaWANNode::restoreFcntUp() {
     }
   }
   uint32_t bits_7_0 = (uint32_t)fcntBuff[idx-1] & 0x7F;
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] fcntBuff;
   #endif
 
@@ -764,7 +764,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // build the uplink message
   // the first 16 bytes are reserved for MIC calculation blocks
   size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsBufSize);
-  #if defined(RADIOLIB_STATIC_ONLY)
+  #if RADIOLIB_STATIC_ONLY
   uint8_t uplinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
   uint8_t* uplinkMsg = new uint8_t[uplinkMsgLen];
@@ -891,7 +891,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_DEBUG_PRINTLN("Uplink sent <-- Rx Delay start");
 
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
   delete[] uplinkMsg;
   #endif
   RADIOLIB_ASSERT(state);
@@ -1060,7 +1060,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
   // build the buffer for the downlink message
   // the first 16 bytes are reserved for MIC calculation block
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     uint8_t* downlinkMsg = new uint8_t[RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen];
   #else
     uint8_t downlinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -1082,7 +1082,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   }
   
   if(state != RADIOLIB_ERR_NONE) {
-    #if !defined(RADIOLIB_STATIC_ONLY)
+    #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
     return(state);
@@ -1127,7 +1127,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   uint32_t fcnt32 = fcnt16;
   if(fcntDownPrev > 0) {
     if((fcnt16 <= fcntDownPrev) && ((0xFFFF - (uint16_t)fcntDownPrev + fcnt16) > RADIOLIB_LORAWAN_MAX_FCNT_GAP)) {
-      #if !defined(RADIOLIB_STATIC_ONLY)
+      #if !RADIOLIB_STATIC_ONLY
         delete[] downlinkMsg;
       #endif
       if (isAppDownlink) {
@@ -1143,7 +1143,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   
   // check the MIC
   if(!verifyMIC(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen, this->sNwkSIntKey)) {
-    #if !defined(RADIOLIB_STATIC_ONLY)
+    #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
     return(RADIOLIB_ERR_CRC_MISMATCH);
@@ -1167,7 +1167,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
   if(addr != this->devAddr) {
     RADIOLIB_DEBUG_PRINTLN("Device address mismatch, expected 0x%08X, got 0x%08X", this->devAddr, addr);
-    #if !defined(RADIOLIB_STATIC_ONLY)
+    #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
@@ -1209,7 +1209,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(this->commandsUp.len > 15) {
       size_t foptsBufSize = this->commandsUp.len;
-      #if defined(RADIOLIB_STATIC_ONLY)
+      #if RADIOLIB_STATIC_ONLY
         uint8_t foptsBuff[RADIOLIB_STATIC_ARRAY_SIZE];
       #else
         uint8_t* foptsBuff = new uint8_t[foptsBufSize];
@@ -1236,18 +1236,18 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
       this->isMACPayload = true;
       this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
-      #if !defined(RADIOLIB_STATIC_ONLY)
+      #if !RADIOLIB_STATIC_ONLY
         delete[] foptsBuff;
       #endif
 
-      #if defined(RADIOLIB_STATIC_ONLY)
+      #if RADIOLIB_STATIC_ONLY
         uint8_t strDown[RADIOLIB_STATIC_ARRAY_SIZE];
       #else
         uint8_t* strDown = new uint8_t[this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]]];
       #endif
       size_t lenDown = 0;
       state = this->downlink(strDown, &lenDown);
-      #if !defined(RADIOLIB_STATIC_ONLY)
+      #if !RADIOLIB_STATIC_ONLY
         delete[] strDown;
       #endif
       RADIOLIB_ASSERT(state);
@@ -1274,7 +1274,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   if(payLen <= 0) {
     // no payload
     *len = 0;
-    #if !defined(RADIOLIB_STATIC_ONLY)
+    #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
 
@@ -1288,7 +1288,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fcnt16
   processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(foptsLen)], payLen - 1, this->appSKey, data, fcnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x00, true);
   
-  #if !defined(RADIOLIB_STATIC_ONLY)
+  #if !RADIOLIB_STATIC_ONLY
     delete[] downlinkMsg;
   #endif
 

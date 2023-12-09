@@ -1,5 +1,5 @@
 #include "BellModem.h"
-#if !defined(RADIOLIB_EXCLUDE_BELL)
+#if !RADIOLIB_EXCLUDE_BELL
 
 const struct BellModem_t Bell101 {
   .freqMark = 1270,

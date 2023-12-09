@@ -1,6 +1,6 @@
 #include "SX127x.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !RADIOLIB_EXCLUDE_SX127X
 
 SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE, RADIOLIB_SX127X_MAX_PACKET_LENGTH) {
   this->mod = mod;
@@ -1628,7 +1628,7 @@ int16_t SX127x::invertIQ(bool enable) {
   return(state);
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void SX127x::setDirectAction(void (*func)(void)) {
   setDio1Action(func, this->mod->hal->GpioInterruptRising);
 }

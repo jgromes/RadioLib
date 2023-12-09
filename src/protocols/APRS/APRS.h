@@ -1,9 +1,9 @@
-#if !defined(_RADIOLIB_RADIOLIB_APRS_H)
-#define _RADIOLIB_RADIOLIB_APRS_H
+#if !defined(_RADIOLIB_APRS_H)
+#define _RADIOLIB_APRS_H
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_APRS)
+#if !RADIOLIB_EXCLUDE_APRS
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 #include "../AX25/AX25.h"
@@ -128,7 +128,7 @@ class APRSClient {
     */
     int16_t sendFrame(char* destCallsign, uint8_t destSSID, char* info);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     AX25Client* axClient;

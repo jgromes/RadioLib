@@ -5,7 +5,7 @@
 // most commonly, RADIOLIB_EXCLUDE_* macros
 // or enabling debug output
 
-//#define RADIOLIB_DEBUG
-//#define RADIOLIB_VERBOSE
+//#define RADIOLIB_DEBUG    (1)
+//#define RADIOLIB_VERBOSE  (1)
 
 #endif

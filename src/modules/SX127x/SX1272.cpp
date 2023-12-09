@@ -1,6 +1,6 @@
 #include "SX1272.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !RADIOLIB_EXCLUDE_SX127X
 
 SX1272::SX1272(Module* mod) : SX127x(mod) {
 

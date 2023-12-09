@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !RADIOLIB_EXCLUDE_SX127X
 
 #include "SX1272.h"
 
@@ -56,7 +56,7 @@ class SX1273: public SX1272 {
     */
     int16_t setDataRate(DataRate_t dr) override;
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
 

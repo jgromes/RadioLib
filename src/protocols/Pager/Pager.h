@@ -1,4 +1,4 @@
-#if !defined(_RADIOLIB_PAGER_H) && !defined(RADIOLIB_EXCLUDE_PAGER)
+#if !defined(_RADIOLIB_PAGER_H) && !RADIOLIB_EXCLUDE_PAGER
 #define _RADIOLIB_PAGER_H
 
 #include "../../TypeDef.h"
@@ -119,7 +119,7 @@ class PagerClient {
     */
     int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Start reception of POCSAG packets.
       \param pin Pin to receive digital data on (e.g., DIO2 for SX127x).
@@ -162,7 +162,7 @@ class PagerClient {
     int16_t readData(uint8_t* data, size_t* len, uint32_t* addr = NULL);
 #endif
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer;
@@ -180,7 +180,7 @@ class PagerClient {
     void write(uint32_t* data, size_t len);
     void write(uint32_t codeWord);
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     uint32_t read();
 #endif
 

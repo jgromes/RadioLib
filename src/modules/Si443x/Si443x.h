@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SI443X)
+#if !RADIOLIB_EXCLUDE_SI443X
 
 #include "../../Module.h"
 
@@ -797,7 +797,7 @@ class Si443x: public PhysicalLayer {
    */
     int16_t getChipVersion();
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
@@ -825,12 +825,12 @@ class Si443x: public PhysicalLayer {
    */
    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SI443X_MAX_PACKET_LENGTH);
 
-#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
     Module* mod;
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
 
@@ -845,7 +845,7 @@ class Si443x: public PhysicalLayer {
     int16_t setFrequencyRaw(float newFreq);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     bool findChip();

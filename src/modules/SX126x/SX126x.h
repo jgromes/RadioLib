@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !RADIOLIB_EXCLUDE_SX126X
 
 #include "../../Module.h"
 
@@ -1039,7 +1039,7 @@ class SX126x: public PhysicalLayer {
     */
     int16_t invertIQ(bool enable) override;
 
-    #if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
@@ -1104,7 +1104,7 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
     // SX126x SPI command implementations
@@ -1146,7 +1146,7 @@ class SX126x: public PhysicalLayer {
     int16_t fixImplicitTimeout();
     int16_t fixInvertedIQ(uint8_t iqConfig);
 
-#if !defined(RADIOLIB_GODMODE) && !defined(RADIOLIB_LOW_LEVEL)
+#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
     Module* mod;
@@ -1154,7 +1154,7 @@ class SX126x: public PhysicalLayer {
     // common low-level SPI interface
     static int16_t SPIparseStatus(uint8_t in);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   protected:
 #endif
 

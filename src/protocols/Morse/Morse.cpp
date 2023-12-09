@@ -2,17 +2,17 @@
 
 #include <ctype.h>
 
-#if !defined(RADIOLIB_EXCLUDE_MORSE)
+#if !RADIOLIB_EXCLUDE_MORSE
 
 MorseClient::MorseClient(PhysicalLayer* phy) {
   phyLayer = phy;
   lineFeed = "^";
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   audioClient = nullptr;
   #endif
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 MorseClient::MorseClient(AFSKClient* audio) {
   phyLayer = audio->phyLayer;
   lineFeed = "^";
@@ -59,7 +59,7 @@ char MorseClient::decode(uint8_t symbol, uint8_t len) {
   return(RADIOLIB_MORSE_UNSUPPORTED);
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
   Module* mod = phyLayer->getMod();
 
@@ -167,7 +167,7 @@ size_t MorseClient::write(uint8_t b) {
 }
 
 int16_t MorseClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->tone(freqHz));
   }
@@ -176,7 +176,7 @@ int16_t MorseClient::transmitDirect(uint32_t freq, uint32_t freqHz) {
 }
 
 int16_t MorseClient::standby() {
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     return(audioClient->noTone(true));
   }

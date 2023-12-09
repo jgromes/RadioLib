@@ -1,5 +1,5 @@
-#if !defined(_RADIOLIB_RADIOLIB_MORSE_H) && !defined(RADIOLIB_EXCLUDE_MORSE)
-#define _RADIOLIB_RADIOLIB_MORSE_H
+#if !defined(_RADIOLIB_MORSE_H) && !RADIOLIB_EXCLUDE_MORSE
+#define _RADIOLIB_MORSE_H
 
 #include "../../TypeDef.h"
 #include "../PhysicalLayer/PhysicalLayer.h"
@@ -98,7 +98,7 @@ class MorseClient: public RadioLibPrint {
     */
     explicit MorseClient(PhysicalLayer* phy);
 
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Constructor for AFSK mode.
       \param audio Pointer to the AFSK instance providing audio.
@@ -139,7 +139,7 @@ class MorseClient: public RadioLibPrint {
       \returns 0 if not enough symbols were decoded, 1 if inter-character space was detected,
       2 if inter-word space was detected.
     */
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     int read(uint8_t* symbol, uint8_t* len, float low = 0.75f, float high = 1.25f);
     #endif
 
@@ -150,11 +150,11 @@ class MorseClient: public RadioLibPrint {
     */
     size_t write(uint8_t b);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
     PhysicalLayer* phyLayer;
-    #if !defined(RADIOLIB_EXCLUDE_AFSK)
+    #if !RADIOLIB_EXCLUDE_AFSK
     AFSKClient* audioClient;
     #endif
 

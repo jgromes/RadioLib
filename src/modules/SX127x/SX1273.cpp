@@ -1,5 +1,5 @@
 #include "SX1273.h"
-#if !defined(RADIOLIB_EXCLUDE_SX127X)
+#if !RADIOLIB_EXCLUDE_SX127X
 
 SX1273::SX1273(Module* mod) : SX1272(mod) {
 

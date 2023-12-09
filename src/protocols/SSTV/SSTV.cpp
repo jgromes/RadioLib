@@ -1,5 +1,5 @@
 #include "SSTV.h"
-#if !defined(RADIOLIB_EXCLUDE_SSTV)
+#if !RADIOLIB_EXCLUDE_SSTV
 
 const SSTVMode_t Scottie1 {
   .visCode = RADIOLIB_SSTV_SCOTTIE_1,
@@ -156,19 +156,19 @@ const SSTVMode_t PasokonP7 {
 
 SSTVClient::SSTVClient(PhysicalLayer* phy) {
   phyLayer = phy;
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   audioClient = nullptr;
   #endif
 }
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 SSTVClient::SSTVClient(AFSKClient* audio) {
   phyLayer = audio->phyLayer;
   audioClient = audio;
 }
 #endif
 
-#if !defined(RADIOLIB_EXCLUDE_AFSK)
+#if !RADIOLIB_EXCLUDE_AFSK
 int16_t SSTVClient::begin(const SSTVMode_t& mode) {
   if(audioClient == nullptr) {
     // this initialization method can only be used in AFSK mode
@@ -292,7 +292,7 @@ uint16_t SSTVClient::getPictureHeight() const {
 void SSTVClient::tone(float freq, uint32_t len) {
   Module* mod = phyLayer->getMod();
   uint32_t start = mod->hal->micros();
-  #if !defined(RADIOLIB_EXCLUDE_AFSK)
+  #if !RADIOLIB_EXCLUDE_AFSK
   if(audioClient != nullptr) {
     audioClient->tone(freq, false);
   } else {

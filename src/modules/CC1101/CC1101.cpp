@@ -1,6 +1,6 @@
 #include "CC1101.h"
 #include <math.h>
-#if !defined(RADIOLIB_EXCLUDE_CC1101)
+#if !RADIOLIB_EXCLUDE_CC1101
 
 CC1101::CC1101(Module* module) : PhysicalLayer(RADIOLIB_CC1101_FREQUENCY_STEP_SIZE, RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
   this->mod = module;
@@ -935,7 +935,7 @@ int16_t CC1101::getChipVersion() {
   return(SPIgetRegValue(RADIOLIB_CC1101_REG_VERSION));
 }
 
-#if !defined(RADIOLIB_EXCLUDE_DIRECT_RECEIVE)
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void CC1101::setDirectAction(void (*func)(void)) {
   setGdo0Action(func, this->mod->hal->GpioInterruptRising);
 }

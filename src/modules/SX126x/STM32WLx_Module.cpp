@@ -7,7 +7,7 @@ This file is licensed under the MIT License: https://opensource.org/licenses/MIT
 
 #include "STM32WLx_Module.h"
 
-#if !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#if !RADIOLIB_EXCLUDE_STM32WLX
 
 #include "../../ArduinoHal.h"
 
@@ -103,4 +103,4 @@ STM32WLx_Module::STM32WLx_Module():
     RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY
   ) {}
 
-#endif // !defined(RADIOLIB_EXCLUDE_STM32WLX)
+#endif

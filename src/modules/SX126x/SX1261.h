@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !RADIOLIB_EXCLUDE_SX126X
 
 #include "../../Module.h"
 #include "SX126x.h"
@@ -34,7 +34,7 @@ class SX1261 : public SX1262 {
     */
     int16_t setOutputPower(int8_t power);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
 

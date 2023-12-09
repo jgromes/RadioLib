@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if  !defined(RADIOLIB_EXCLUDE_RFM2X)
+#if !RADIOLIB_EXCLUDE_RFM2X
 
 #include "../../Module.h"
 #include "../Si443x/Si443x.h"

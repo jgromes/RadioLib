@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !defined(RADIOLIB_EXCLUDE_SX126X)
+#if !RADIOLIB_EXCLUDE_SX126X
 
 #include "../../Module.h"
 #include "../SX126x/SX1262.h"
@@ -56,7 +56,7 @@ class LLCC68: public SX1262 {
     */
     int16_t setSpreadingFactor(uint8_t sf);
 
-#if !defined(RADIOLIB_GODMODE)
+#if !RADIOLIB_GODMODE
   private:
 #endif
 
