@@ -43,6 +43,8 @@ class SX1233: public SX1231  {
     /*!
       \brief Sets bit rate. Allowed values range from 0.5 to 300.0 kbps.
       SX1233 also allows 500 kbps and 600 kbps operation.
+      NOTE: For 500 kbps rate, the receiver frequency should be offset by 50 kHz from the transmitter.
+            For 600 kbps rate, the receiver frequency should be offset by 40 kHz from the transmitter.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
