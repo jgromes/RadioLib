@@ -209,6 +209,7 @@ int16_t CC1101::transmitDirect(bool sync, uint32_t frf) {
     SPIwriteRegister(RADIOLIB_CC1101_REG_FREQ0, frf & 0x0000FF);
 
     SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
+    return(RADIOLIB_ERR_NONE);
   }
 
   // activate direct mode
