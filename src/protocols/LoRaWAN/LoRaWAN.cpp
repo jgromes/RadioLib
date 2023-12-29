@@ -1194,7 +1194,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   // process FOpts (if there are any)
   if(foptsLen > 0) {
     // there are some Fopts, decrypt them
-    uint8_t fopts[max(RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK, (int)foptsLen)];
+    uint8_t fopts[RADIOLIB_MAX(RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK, (int)foptsLen)];
 
     // TODO it COULD be the case that the assumed FCnt rollover is incorrect, if possible figure out a way to catch this and retry with just fcnt16
     // if there are <= 15 bytes of FOpts, they are in the FHDR, otherwise they are in the payload
@@ -1216,7 +1216,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       LoRaWANMacCommand_t cmd = {
         .cid = *foptsPtr,
         .payload = { 0 },
-        .len = (uint8_t)min((remLen - 1), 5),
+        .len = (uint8_t)RADIOLIB_MIN((remLen - 1), 5),
         .repeat = 0,
       };
       memcpy(cmd.payload, foptsPtr + 1, cmd.len);
