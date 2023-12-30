@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
 
 if(ESP_PLATFORM)
-	# Build RadioLib as an ESP-IDF component
+  # Build RadioLib as an ESP-IDF component
   # required because ESP-IDF runs cmake in script mode
   # and needs idf_component_register()
   file(GLOB_RECURSE RADIOLIB_ESP_SOURCES
     "src/*.*"
   )
 
-	idf_component_register(
+  idf_component_register(
     SRCS ${RADIOLIB_ESP_SOURCES} 
     INCLUDE_DIRS . src 
   )
 
-	return()
+  return()
 endif()
 
 if(CMAKE_SCRIPT_MODE_FILE)
