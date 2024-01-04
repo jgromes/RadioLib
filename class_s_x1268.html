@@ -119,9 +119,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abf338b7036d692a4a8ca6bf305c0cb12"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:abf338b7036d692a4a8ca6bf305c0cb12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.  <a href="class_s_x1268.html#abf338b7036d692a4a8ca6bf305c0cb12">More...</a><br /></td></tr>
 <tr class="separator:abf338b7036d692a4a8ca6bf305c0cb12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59b538f4971525849b7aaa3456de9929"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1268.html#a59b538f4971525849b7aaa3456de9929">setFrequency</a> (float freq, bool calibrate)</td></tr>
-<tr class="memdesc:a59b538f4971525849b7aaa3456de9929"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.  <a href="class_s_x1268.html#a59b538f4971525849b7aaa3456de9929">More...</a><br /></td></tr>
-<tr class="separator:a59b538f4971525849b7aaa3456de9929"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bb9dac1694ca41e7d6b4b93deff2b1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1268.html#a8bb9dac1694ca41e7d6b4b93deff2b1e">setFrequency</a> (float freq, bool calibrate, float band=4)</td></tr>
+<tr class="memdesc:a8bb9dac1694ca41e7d6b4b93deff2b1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1268.html#a8bb9dac1694ca41e7d6b4b93deff2b1e">More...</a><br /></td></tr>
+<tr class="separator:a8bb9dac1694ca41e7d6b4b93deff2b1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b0744aa46fbb4f8c738b010dfcc9b45"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:a5b0744aa46fbb4f8c738b010dfcc9b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm.  <a href="class_s_x1268.html#a5b0744aa46fbb4f8c738b010dfcc9b45">More...</a><br /></td></tr>
 <tr class="separator:a5b0744aa46fbb4f8c738b010dfcc9b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -694,8 +694,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a59b538f4971525849b7aaa3456de9929"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59b538f4971525849b7aaa3456de9929">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
+<a id="a8bb9dac1694ca41e7d6b4b93deff2b1e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bb9dac1694ca41e7d6b4b93deff2b1e">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -710,7 +710,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calibrate</em>&#160;</td>
+          <td class="paramname"><em>calibrate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>band</em> = <code>4</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -720,11 +726,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz. </p>
+<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
     <tr><td class="paramname">calibrate</td><td>Run image calibration. </td></tr>
+    <tr><td class="paramname">band</td><td>Half bandwidth for image calibration. For example, if carrier is 434 MHz and band is set to 4 MHz, then the image will be calibrate for band 430 - 438 MHz. Unused if calibrate is set to false, defaults to 4 MHz </td></tr>
   </table>
   </dd>
 </dl>
