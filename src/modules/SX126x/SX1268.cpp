@@ -52,12 +52,12 @@ int16_t SX1268::setFrequency(float freq) {
 }
 
 /// \todo integers only (all modules - frequency, data rate, bandwidth etc.)
-int16_t SX1268::setFrequency(float freq, bool calibrate) {
+int16_t SX1268::setFrequency(float freq, bool calibrate, float band) {
   RADIOLIB_CHECK_RANGE(freq, 410.0, 810.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
-  // calibrate image rejection - assume band to be the selected frequency +- 4 MHz
+  // calibrate image rejection
   if(calibrate) {
-    int16_t state = SX126x::calibrateImage(freq - 4, freq + 4);
+    int16_t state = SX126x::calibrateImage(freq - band, freq + band);
     RADIOLIB_ASSERT(state);
   }
 

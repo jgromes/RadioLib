@@ -75,9 +75,12 @@ class SX1262: public SX126x {
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
       \param freq Carrier frequency to be set in MHz.
       \param calibrate Run image calibration.
+      \param band Half bandwidth for image calibration. For example,
+      if carrier is 434 MHz and band is set to 4 MHz, then the image will be calibrate
+      for band 430 - 438 MHz. Unused if calibrate is set to false, defaults to 4 MHz
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool calibrate);
+    int16_t setFrequency(float freq, bool calibrate, float band = 4);
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.

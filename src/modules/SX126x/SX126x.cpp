@@ -1836,7 +1836,7 @@ int16_t SX126x::setRfFrequency(uint32_t frf) {
 }
 
 int16_t SX126x::calibrateImage(float freqMin, float freqMax) {
-  uint8_t data[] = { (uint8_t)floor((freqMin - 1.0f) / 4.0f), (uint8_t)floor((freqMax - 1.0f) / 4.0f) };
+  uint8_t data[] = { (uint8_t)floor((freqMin - 1.0f) / 4.0f), (uint8_t)ceil((freqMax + 1.0f) / 4.0f) };
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2);
 
   // if something failed, show the device errors
