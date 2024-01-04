@@ -188,18 +188,6 @@
 #define RADIOLIB_SX126X_CALIBRATE_RC64K_ON                      0b00000001  //  0     0                               enabled
 #define RADIOLIB_SX126X_CALIBRATE_ALL                           0b01111111  //  6     0   calibrate all blocks
 
-//RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE
-#define RADIOLIB_SX126X_CAL_IMG_430_MHZ_1                       0x6B
-#define RADIOLIB_SX126X_CAL_IMG_430_MHZ_2                       0x6F
-#define RADIOLIB_SX126X_CAL_IMG_470_MHZ_1                       0x75
-#define RADIOLIB_SX126X_CAL_IMG_470_MHZ_2                       0x81
-#define RADIOLIB_SX126X_CAL_IMG_779_MHZ_1                       0xC1
-#define RADIOLIB_SX126X_CAL_IMG_779_MHZ_2                       0xC5
-#define RADIOLIB_SX126X_CAL_IMG_863_MHZ_1                       0xD7
-#define RADIOLIB_SX126X_CAL_IMG_863_MHZ_2                       0xDB
-#define RADIOLIB_SX126X_CAL_IMG_902_MHZ_1                       0xE1
-#define RADIOLIB_SX126X_CAL_IMG_902_MHZ_2                       0xE9
-
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_HP_MAX                        0x07
 #define RADIOLIB_SX126X_PA_CONFIG_PA_LUT                        0x01
@@ -1119,7 +1107,7 @@ class SX126x: public PhysicalLayer {
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX126X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX126X_IRQ_NONE);
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
-    int16_t calibrateImage(uint8_t* data);
+    int16_t calibrateImage(float freqMin, float freqMax);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);

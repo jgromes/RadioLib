@@ -54,26 +54,9 @@ int16_t SX1262::setFrequency(float freq) {
 int16_t SX1262::setFrequency(float freq, bool calibrate) {
   RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
-  // calibrate image
+  // calibrate image rejection - assume band to be the selected frequency +- 4 MHz
   if(calibrate) {
-    uint8_t data[2];
-    if(freq > 900.0) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_2;
-    } else if(freq > 850.0) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_2;
-    } else if(freq > 770.0) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
-    } else if(freq > 460.0) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
-    } else {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
-    }
-    int16_t state = SX126x::calibrateImage(data);
+    int16_t state = SX126x::calibrateImage(freq - 4, freq + 4);
     RADIOLIB_ASSERT(state);
   }
 
