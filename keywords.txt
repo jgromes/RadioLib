@@ -295,6 +295,7 @@ restore	KEYWORD2
 beginOTAA	KEYWORD2
 beginABP	KEYWORD2
 saveSession	KEYWORD2
+sendMacCommandReq	KEYWORD2
 uplink	KEYWORD2
 downlink	KEYWORD2
 sendReceive	KEYWORD2
@@ -302,11 +303,19 @@ setDeviceStatus	KEYWORD2
 getFcntUp	KEYWORD2
 getNFcntDown	KEYWORD2
 getAFcntDown	KEYWORD2
+resetFcntDown	KEYWORD2
 setDatarate	KEYWORD2
 setADR	KEYWORD2
+setDutyCycle	KEYWORD2
+dutyCycleInterval	KEYWORD2
+timeUntilUplink	KEYWORD2
+setDwellTime	KEYWORD2
+maxPayloadDwellTime	KEYWORD2
 setTxPower	KEYWORD2
 selectSubband	KEYWORD2
 setCSMA	KEYWORD2
+getMacLinkCheckAns	KEYWORD2
+getMacDeviceTimeAns	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
