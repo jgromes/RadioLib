@@ -307,7 +307,7 @@ int16_t LoRaWANNode::restoreChannels() {
 #endif
 
 void LoRaWANNode::beginCommon() {
-  LoRaWANMacCommand_t cmd;
+  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
   cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
   cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
   cmd.payload[0]  = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
@@ -1449,11 +1449,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     }
 
     RADIOLIB_DEBUG_PRINTLN("MAC response:");
-    for (int x; x < this->commandsUp.numCommands; x++) {
-        LoRaWANMacCommand_t cmd = this->commandsUp.commands[x];
-        RADIOLIB_DEBUG_PRINTLN("[%02x] %02x %02x %02x %02x %02x (%02x)", cmd.cid,
-                                cmd.payload[0], cmd.payload[1], cmd.payload[2], cmd.payload[3], cmd.payload[4], cmd.len);
-      }
+    for (int i = 0; i < this->commandsUp.numCommands; i++) {
+      RADIOLIB_DEBUG_HEXDUMP(&this->commandsUp[i].cid, sizeof(LoRaWANMacCommand_t));
+    }
 
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(this->commandsUp.len > 15) {
@@ -1972,8 +1970,10 @@ uint32_t LoRaWANNode::dutyCycleInterval(uint32_t msPerHour, uint32_t airtime) {
 uint32_t LoRaWANNode::timeUntilUplink() {
   Module* mod = this->phyLayer->getMod();
   uint32_t nextUplink = this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA);
-  uint32_t timeRemaining = RADIOLIB_MAX(0, nextUplink - mod->hal->millis() + 1);
-  return(timeRemaining);
+  if(mod->hal->millis() > nextUplink){
+    return(0);
+  }
+  return(nextUplink - mod->hal->millis() + 1);
 }
 
 void LoRaWANNode::setDwellTime(bool enable, uint32_t msPerUplink) {
