@@ -912,52 +912,54 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // increase frame counter by one
   this->fcntUp += 1;
 
-  // check if we need to do ADR stuff
-  uint32_t adrLimit = 0x01 << this->adrLimitExp;
-  uint32_t adrDelay = 0x01 << this->adrDelayExp;
   bool adrAckReq = false;
-  if((this->fcntUp - this->adrFcnt) >= adrLimit) {
-    adrAckReq = true;
-  }
-  // if we hit the Limit + Delay, try one of three, in order: 
-  // set TxPower to max, set DR to min, enable all defined channels
-  if ((this->fcntUp - this->adrFcnt) == (adrLimit + adrDelay)) {
-    
-    // if the TxPower field has some offset, remove it and switch to maximum power
-    if(this->txPowerCur > 0) {
-      this->txPowerCur = 0;
-      // set the maximum power supported by both the module and the band
-      state = this->setTxPower(this->txPowerMax);
-      RADIOLIB_ASSERT(state);
-    
-    } else {
-      // failed to increase Tx power, so try to decrease the datarate
-      if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].drMin) {
-        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]--;
-        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]--;
+  if(this->adrEnabled) {
+    // check if we need to do ADR stuff
+    uint32_t adrLimit = 0x01 << this->adrLimitExp;
+    uint32_t adrDelay = 0x01 << this->adrDelayExp;
+    if((this->fcntUp - this->adrFcnt) >= adrLimit) {
+      adrAckReq = true;
+    }
+    // if we hit the Limit + Delay, try one of three, in order: 
+    // set TxPower to max, set DR to min, enable all defined channels
+    if ((this->fcntUp - this->adrFcnt) == (adrLimit + adrDelay)) {
+      
+      // if the TxPower field has some offset, remove it and switch to maximum power
+      if(this->txPowerCur > 0) {
+        this->txPowerCur = 0;
+        // set the maximum power supported by both the module and the band
+        state = this->setTxPower(this->txPowerMax);
+        RADIOLIB_ASSERT(state);
+      
       } else {
+        // failed to increase Tx power, so try to decrease the datarate
+        if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].drMin) {
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]--;
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]--;
+        } else {
 
-        // failed to decrease datarate, so enable all available channels
-        for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-          if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
-            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
-            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled = true;
+          // failed to decrease datarate, so enable all available channels
+          for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+            if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
+              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
+              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled = true;
+            }
           }
         }
+
       }
 
+      LoRaWANMacCommand_t cmd;
+      cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+      cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+      cmd.payload[0]  = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
+      cmd.payload[0] |= 0;                // default to max Tx Power
+      cmd.payload[3] |= (1 << 7);         // set the RFU bit, which means that the channel mask gets ignored
+      (void)execMacCommand(&cmd);
+
+      // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
+      this->adrFcnt += adrDelay;
     }
-
-    LoRaWANMacCommand_t cmd;
-    cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-    cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
-    cmd.payload[0]  = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
-    cmd.payload[0] |= 0;                // default to max Tx Power
-    cmd.payload[3] |= (1 << 7);         // set the RFU bit, which means that the channel mask gets ignored
-    (void)execMacCommand(&cmd);
-
-    // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
-    this->adrFcnt += adrDelay;
   }
 
   // configure for uplink
