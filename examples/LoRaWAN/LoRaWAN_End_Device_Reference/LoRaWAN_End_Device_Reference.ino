@@ -129,6 +129,10 @@ void setup() {
 
   // set a fixed datarate
   node.setDatarate(5);
+  // in order to save the datarate persistent across reboot/deepsleep, use the following:
+  /*
+    node.setDatarate(5, true);  
+  */
 
   // enable CSMA
   // this tries to minimize packet loss by searching for a free channel

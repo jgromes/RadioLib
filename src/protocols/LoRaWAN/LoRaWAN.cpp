@@ -151,7 +151,7 @@ int16_t LoRaWANNode::restore() {
   RADIOLIB_ASSERT(state);
 
   // get MAC state
-  LoRaWANMacCommand_t cmd;
+  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
   cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
   cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), cmd.payload, cmd.len);
@@ -260,7 +260,7 @@ int16_t LoRaWANNode::restoreChannels() {
     uint8_t bufferUp[numBytesUp] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), bufferUp, numBytesUp);
     
-    LoRaWANMacCommand_t cmd;
+    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
     cmd.cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
     
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
@@ -276,9 +276,9 @@ int16_t LoRaWANNode::restoreChannels() {
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_DL_CHANNELS_ID), bufferDn, numBytesDn);
     
     cmd.cid = RADIOLIB_LORAWAN_MAC_DL_CHANNEL;
-    cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_DL_CHANNEL].lenDn;
     
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+      cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_DL_CHANNEL].lenDn;
       memcpy(cmd.payload, &bufferDn[i * cmd.len], cmd.len);
       if(memcmp(cmd.payload, bufferZeroes, cmd.len) != 0) { // only execute if it is not all zeroes
         (void)execMacCommand(&cmd, false);
@@ -290,7 +290,7 @@ int16_t LoRaWANNode::restoreChannels() {
     uint8_t buffer[numBytes] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), buffer, numBytes);
     
-    LoRaWANMacCommand_t cmd;
+    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
     cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
     cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
     
@@ -552,7 +552,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
   }
 
-  LoRaWANMacCommand_t cmd;
+  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
   cmd.cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
   cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP].lenDn;
   cmd.payload[0] = dlSettings & 0x7F;
@@ -921,41 +921,53 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
       adrAckReq = true;
     }
     // if we hit the Limit + Delay, try one of three, in order: 
-    // set TxPower to max, set DR to min, enable all defined channels
+    // set TxPower to max, set DR to min, enable all default channels
     if ((this->fcntUp - this->adrFcnt) == (adrLimit + adrDelay)) {
-      
-      // if the TxPower field has some offset, remove it and switch to maximum power
-      if(this->txPowerCur > 0) {
-        this->txPowerCur = 0;
-        // set the maximum power supported by both the module and the band
-        state = this->setTxPower(this->txPowerMax);
-        RADIOLIB_ASSERT(state);
-      
-      } else {
-        // failed to increase Tx power, so try to decrease the datarate
-        if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].drMin) {
-          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]--;
-          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK]--;
-        } else {
-
-          // failed to decrease datarate, so enable all available channels
-          for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-            if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
-              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
-              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled = true;
+      uint8_t adrStage = 1;
+      while(adrStage != 0) {
+        switch(adrStage) {
+          case(1): {
+              // if the TxPower field has some offset, remove it and switch to maximum power
+              if(this->txPowerCur > 0) {
+                // set the maximum power supported by both the module and the band
+                state = this->setTxPower(this->txPowerMax, true);
+                if(state == RADIOLIB_ERR_NONE) {
+                  this->txPowerCur = 0;
+                  adrStage = 0;                         // successfully did some ADR stuff
+                }
+              }
+              if(adrStage == 1) {                       // if nothing succeeded, proceed to stage 2
+                adrStage = 2;
+              }
             }
-          }
+            break;
+          case(2): {
+              // try to decrease the datarate
+              if(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] > 0) {
+                if(this->setDatarate(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] - 1, true) == RADIOLIB_ERR_NONE) {
+                  adrStage = 0;                         // successfully did some ADR stuff
+                }
+              }
+              if(adrStage == 2) {                       // if nothing succeeded, proceed to stage 3
+                adrStage = 3;
+              }
+            }
+            break;
+          case(3): {
+              if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
+                this->setupChannels(nullptr);           // revert to default frequencies
+              } else {
+                // if a subband was selected by user, go back to its default state
+                // hopefully it'll help something, but probably not; at least we tried..
+                if(this->selectedSubband >= 0) {
+                  this->selectSubband(this->selectedSubband);
+                }
+              }
+              adrStage = 0;                             // nothing else to do, so end the cycle
+            }
+            break;
         }
-
       }
-
-      LoRaWANMacCommand_t cmd;
-      cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-      cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
-      cmd.payload[0]  = (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
-      cmd.payload[0] |= 0;                // default to max Tx Power
-      cmd.payload[3] |= (1 << 7);         // set the RFU bit, which means that the channel mask gets ignored
-      (void)execMacCommand(&cmd);
 
       // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
       this->adrFcnt += adrDelay;
@@ -1452,7 +1464,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
     RADIOLIB_DEBUG_PRINTLN("MAC response:");
     for (int i = 0; i < this->commandsUp.numCommands; i++) {
-      RADIOLIB_DEBUG_HEXDUMP(&this->commandsUp[i].cid, sizeof(LoRaWANMacCommand_t));
+      RADIOLIB_DEBUG_HEXDUMP(&(this->commandsUp.commands[i].cid), sizeof(LoRaWANMacCommand_t));
     }
 
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
@@ -1638,7 +1650,11 @@ bool LoRaWANNode::verifyMIC(uint8_t* msg, size_t len, uint8_t* key) {
 int16_t LoRaWANNode::setPhyProperties() {
   // set the physical layer configuration
   int8_t pwr = this->txPowerMax - this->txPowerCur * 2;
-  int16_t state = this->setTxPower(pwr);
+  int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
+  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
+    // go from the highest power and lower it until we hit one supported by the module
+    state = this->phyLayer->setOutputPower(pwr--);
+  }
   RADIOLIB_ASSERT(state);
 
   uint8_t syncWord[3] = { 0 };
@@ -1681,7 +1697,7 @@ int16_t LoRaWANNode::setupChannels(uint8_t* cfList) {
     // if there is a cflist present, parse its frequencies into the next five slots, with datarate range copied from default channel 0
     if(cfList != nullptr) {
       RADIOLIB_DEBUG_PRINTLN("CFList present");
-      LoRaWANMacCommand_t cmd;
+      LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
       cmd.cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_NEW_CHANNEL].lenDn;
       // datarate range for all new channels is equal to the default channels
@@ -1700,7 +1716,7 @@ int16_t LoRaWANNode::setupChannels(uint8_t* cfList) {
   } else {                  // RADIOLIB_LORAWAN_BAND_FIXED
     if(cfList != nullptr) {
       RADIOLIB_DEBUG_PRINTLN("CFList present");
-      LoRaWANMacCommand_t cmd;
+      LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
       cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
       cmd.payload[0] = 0xFF;  // same datarate and payload
@@ -1746,6 +1762,7 @@ int16_t LoRaWANNode::selectSubband(uint8_t startChannel, uint8_t endChannel) {
     RADIOLIB_DEBUG_PRINTLN("This is a dynamic band plan which does not support subbands");
     return(RADIOLIB_ERR_INVALID_CHANNEL);
   }
+  this->selectedSubband = startChannel % 8;   // save selected subband - assumed a block of 8 channels
 
   uint8_t numChannels = endChannel - startChannel + 1;
   if(startChannel > this->band->txSpans[0].numChannels) {
@@ -1923,24 +1940,37 @@ int16_t LoRaWANNode::selectChannels() {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
-  // find the minimum and maximum available datarates by checking the enabled uplink channels
-  uint8_t drMin = RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES;
-  uint8_t drMax = 0;
+int16_t LoRaWANNode::setDatarate(uint8_t drUp, bool saveToEeprom) {
+  // scan through all enabled channels and check if the requested datarate is available
+  bool isValidDR = false;
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
-      drMin = RADIOLIB_MIN(drMin, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin);
-      drMax = RADIOLIB_MAX(drMax, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax);
+    LoRaWANChannel_t *chnl = &(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i]);
+    if(chnl->enabled) {
+      if(drUp > chnl->drMin && drUp < chnl->drMax) {
+        isValidDR = true;
+        break;
+      }
     }
   }
-  if((drUp < drMin) || (drUp > drMax)) {
-    RADIOLIB_DEBUG_PRINTLN("Cannot configure DR %d (min: %d, max: %d)", drUp, drMin, drMax);
+  if(!isValidDR) {
+    RADIOLIB_DEBUG_PRINTLN("No defined channel allows datarate %d", drUp);
     return(RADIOLIB_ERR_DATA_RATE_INVALID);
   }
-  this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = drUp;
 
-  RADIOLIB_DEBUG_PRINTLN("Configured DR up = %d", drUp);
+  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
+  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  cmd.payload[0]  = (drUp << 4);
+  cmd.payload[0] |= 0x0F;               // keep Tx Power the same
+  cmd.payload[3] |= (1 << 7);           // set the RFU bit, which means that the channel mask gets ignored
+  cmd.payload[3] |= 0;                  // keep NbTrans the same
+  (void)execMacCommand(&cmd, saveToEeprom);
 
+  // check if ACK is set for Tx Power
+  if((cmd.payload[0] >> 1) != 1) {
+    return(RADIOLIB_ERR_DATA_RATE_INVALID);
+  }
+  
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -2007,13 +2037,31 @@ uint8_t LoRaWANNode::maxPayloadDwellTime() {
   return(payLen - 13);  // fixed 13-byte header
 }
 
-int16_t LoRaWANNode::setTxPower(int8_t txPower) {
-  int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
-  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-    // go from the highest power and lower it until we hit one supported by the module
-    state = this->phyLayer->setOutputPower(txPower--);
+int16_t LoRaWANNode::setTxPower(int8_t txPower, bool saveToEeprom) {
+  // only allow values within the band's (or MAC state) maximum
+  if(txPower > this->txPowerMax) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
-  return(state);
+  // Tx Power is set in steps of two
+  // the selected value is rounded down to nearest multiple of two away from txPowerMax
+  // e.g. on EU868, max is 16; if 13 is selected then we set to 12
+  uint8_t txPowerNew = (this->txPowerMax - txPower) / 2 + 1;
+
+  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
+  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  cmd.payload[0]  = 0xF0;               // keep datarate the same
+  cmd.payload[0] |= txPowerNew;         // set the Tx Power
+  cmd.payload[3] |= (1 << 7);           // set the RFU bit, which means that the channel mask gets ignored
+  cmd.payload[3] |= 0;                  // keep NbTrans the same
+  (void)execMacCommand(&cmd, saveToEeprom);
+
+  // check if ACK is set for Tx Power
+  if((cmd.payload[0] >> 2) != 1) {
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
@@ -2197,13 +2245,16 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
 
       } else {
         int8_t pwr = this->txPowerMax - 2*txPower;
-        int16_t state = this->setTxPower(pwr);
+        int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
+        while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
+          // go from the highest power and lower it until we hit one supported by the module
+          state = this->phyLayer->setOutputPower(pwr--);
+        }
         // only acknowledge if the requested datarate was succesfully configured
         if(state == RADIOLIB_ERR_NONE) {
           pwrAck = 1;
           this->txPowerCur = txPower;
         }
-
       }
 
       bool isSuccessive = false;

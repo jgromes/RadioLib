@@ -596,9 +596,10 @@ class LoRaWANNode {
     /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
       \param dr Datarate to use for uplinks.
+      \param saveToEeprom Whether to save this setting to EEPROM or not (default false).
       \returns \ref status_codes
     */
-    int16_t setDatarate(uint8_t drUp);
+    int16_t setDatarate(uint8_t drUp, bool saveToEeprom = false);
 
     /*!
       \brief Toggle ADR to on or off.
@@ -644,9 +645,10 @@ class LoRaWANNode {
     /*!
       \brief Configure TX power of the radio module.
       \param txPower Output power during TX mode to be set in dBm.
+      \param saveToEeprom Whether to save this setting to EEPROM or not (default false).
       \returns \ref status_codes
     */
-    int16_t setTxPower(int8_t txPower);
+    int16_t setTxPower(int8_t txPower, bool saveToEeprom = false);
 
     /*!
       \brief Select a single subband (8 channels) for fixed bands such as US915.
@@ -799,6 +801,9 @@ class LoRaWANNode {
 
     // indicates whether an uplink has MAC commands as payload
     bool isMACPayload = false;
+
+    // save the selected subband in case this must be restored in ADR control
+    int8_t selectedSubband = -1;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
