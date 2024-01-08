@@ -362,10 +362,10 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   uint16_t checkSum = 0;
-  checkSum ^= checkSum16((uint8_t*)joinEUI, 8);
-  checkSum ^= checkSum16((uint8_t*)devEUI, 8);
-  checkSum ^= checkSum16(nwkKey, 16);
-  checkSum ^= checkSum16(appKey, 16);
+  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&joinEUI), 8);
+  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&devEUI), 8);
+  checkSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
+  checkSum ^= LoRaWANNode::checkSum16(appKey, 16);
 
   bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
@@ -633,11 +633,11 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   // check if we actually need to restart from a clean session
   uint16_t checkSum = 0;
-  checkSum ^= checkSum16((uint8_t*)addr, 4);
-  checkSum ^= checkSum16(nwkSKey, 16);
-  checkSum ^= checkSum16(appSKey, 16);
-  if(fNwkSIntKey) { checkSum ^= checkSum16(fNwkSIntKey, 16); }
-  if(sNwkSIntKey) { checkSum ^= checkSum16(sNwkSIntKey, 16); }
+  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&addr), 4);
+  checkSum ^= LoRaWANNode::checkSum16(nwkSKey, 16);
+  checkSum ^= LoRaWANNode::checkSum16(appSKey, 16);
+  if(fNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
+  if(sNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
 
   bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_ABP;
@@ -2752,9 +2752,9 @@ void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out
 }
 
 uint16_t LoRaWANNode::checkSum16(uint8_t *key, uint8_t keyLen) {
-  uint16_t buf16[RADIOLIB_AES128_KEY_SIZE/2];
+  uint16_t buf16[RADIOLIB_AES128_KEY_SIZE/2] = { 0 };
   uint8_t bufLen = keyLen / 2;
-  memcpy(buf16, key, bufLen);
+  memcpy(buf16, key, keyLen);
   uint16_t checkSum = 0;
   for(int i = 0; i < bufLen; i++) {
     checkSum ^= buf16[i];
