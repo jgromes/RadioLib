@@ -165,7 +165,7 @@ void loop() {
   // wait before sending another packet
   uint32_t minimumDelay = 60000;                  // try to send once every minute
   uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
-	uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+  uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
 
   delay(delayMs);
 }

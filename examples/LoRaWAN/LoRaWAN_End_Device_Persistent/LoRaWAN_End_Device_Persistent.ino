@@ -77,7 +77,7 @@ void setup() {
   if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
     Serial.print(F("Restored an "));
-		if(state == RADIOLIB_LORAWAN_MODE_OTAA)
+    if(state == RADIOLIB_LORAWAN_MODE_OTAA)
       Serial.println(F("OTAA session."));
     else {
       Serial.println(F("ABP session."));
@@ -142,7 +142,7 @@ void loop() {
   // make sure to send the radio to sleep as well using radio.sleep()
   uint32_t minimumDelay = 60000;                  // try to send once every minute
   uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
-	uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+  uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
 
   delay(delayMs);
 }

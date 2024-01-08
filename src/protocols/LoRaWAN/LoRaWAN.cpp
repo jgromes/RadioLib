@@ -28,39 +28,6 @@ uint8_t getDownlinkDataRate(uint8_t uplink, uint8_t offset, uint8_t base, uint8_
   return(dr);
 }
 
-uint16_t checkSum16(uint32_t key) {
-  uint8_t bufLen = 2;
-  uint16_t buf16[bufLen];
-  memcpy(buf16, &key, bufLen);
-  uint16_t checkSum = 0;
-  for(int i = 0; i < bufLen; i++) {
-    checkSum ^= buf16[i];
-  }
-  return(checkSum);
-}
-
-uint16_t checkSum16(uint64_t key) {
-  uint8_t bufLen = 4;
-  uint16_t buf16[bufLen];
-  memcpy(buf16, &key, bufLen);
-  uint16_t checkSum = 0;
-  for(int i = 0; i < bufLen; i++) {
-    checkSum ^= buf16[i];
-  }
-  return(checkSum);
-}
-
-uint16_t checkSum16(uint8_t *key, uint8_t keyLen) {
-  uint8_t bufLen = keyLen / 2;
-  uint16_t buf16[bufLen];
-  memcpy(buf16, key, bufLen);
-  uint16_t checkSum = 0;
-  for(int i = 0; i < bufLen; i++) {
-    checkSum ^= buf16[i];
-  }
-  return(checkSum);
-}
-
 LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band) {
   this->phyLayer = phy;
   this->band = band;
@@ -395,8 +362,8 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   uint16_t checkSum = 0;
-  checkSum ^= checkSum16(joinEUI);
-  checkSum ^= checkSum16(devEUI);
+  checkSum ^= checkSum16((uint8_t*)joinEUI, 8);
+  checkSum ^= checkSum16((uint8_t*)devEUI, 8);
   checkSum ^= checkSum16(nwkKey, 16);
   checkSum ^= checkSum16(appKey, 16);
 
@@ -666,13 +633,11 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   // check if we actually need to restart from a clean session
   uint16_t checkSum = 0;
-  checkSum ^= checkSum16(addr);
+  checkSum ^= checkSum16((uint8_t*)addr, 4);
   checkSum ^= checkSum16(nwkSKey, 16);
   checkSum ^= checkSum16(appSKey, 16);
-  if(fNwkSIntKey)
-    checkSum ^= checkSum16(fNwkSIntKey, 16);
-  if(sNwkSIntKey)
-    checkSum ^= checkSum16(sNwkSIntKey, 16);
+  if(fNwkSIntKey) { checkSum ^= checkSum16(fNwkSIntKey, 16); }
+  if(sNwkSIntKey) { checkSum ^= checkSum16(sNwkSIntKey, 16); }
 
   bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_ABP;
@@ -904,10 +869,9 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // check maximum payload len as defined in phy
   if(len > this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]]) {
-    len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
-    // return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    // len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
+    return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
-  if(RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen))
 
   // increase frame counter by one
   this->fcntUp += 1;
@@ -2575,10 +2539,10 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
       RADIOLIB_DEBUG_PRINTLN("TX timing: dlDwell = %d, ulDwell = %d, maxEirp = %d dBm", dlDwell, ulDwell, this->txPowerMax);
 
       this->dwellTimeEnabledUp = ulDwell ? true : false;
-      this->dwellTimeUp = ulDwell ? 400 : 0;
+      this->dwellTimeUp = ulDwell ? RADIOLIB_LORAWAN_DWELL_TIME : 0;
 
       this->dwellTimeEnabledDn = dlDwell ? true : false;
-      this->dwellTimeDn = dlDwell ? 400 : 0;
+      this->dwellTimeDn = dlDwell ? RADIOLIB_LORAWAN_DWELL_TIME : 0;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     if(saveToEeprom) {
@@ -2673,31 +2637,32 @@ uint8_t LoRaWANNode::getMacPayloadLength(uint8_t cid) {
   return 0;
 }
 
-bool LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
+int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
   uint8_t payload[5];
   int16_t state = deleteMacCommand(RADIOLIB_LORAWAN_LINK_CHECK_REQ, &this->commandsDown, payload);
-  if(state != RADIOLIB_ERR_NONE)
-    return false;
+  RADIOLIB_ASSERT(state);
 
-  *margin = payload[0];
-  *gwCnt = payload[1];
-  RADIOLIB_DEBUG_PRINTLN("Link check: margin = %d dB, gwCnt = %d", margin, gwCnt);
-  return(true);
+  if(margin) { *margin = payload[0]; }
+  if(gwCnt)  { *gwCnt  = payload[1]; }
+  // RADIOLIB_DEBUG_PRINTLN("Link check: margin = %d dB, gwCnt = %d", margin, gwCnt);
+  return(RADIOLIB_ERR_NONE);
 }
 
-bool LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
+int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
   uint8_t payload[5];
   int16_t state = deleteMacCommand(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &this->commandsDown, payload);
-  if(state != RADIOLIB_ERR_NONE)
-    return false;
+  RADIOLIB_ASSERT(state);
 
-  *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]);
-  *fraction = payload[4];
-  RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)(*fraction)/256.0f);
-
-  uint32_t unixOffset = 315964800;
-  *gpsEpoch += unixOffset;
-  return(true);
+  if(gpsEpoch) { 
+    *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]); 
+    if(returnUnix) {
+      uint32_t unixOffset = 315964800;
+      *gpsEpoch += unixOffset;
+    }
+  }
+  if(fraction) { *fraction = payload[4]; }
+  // RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)(*fraction)/256.0f);
+  return(RADIOLIB_ERR_NONE);
 }
 
 
@@ -2784,6 +2749,17 @@ void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out
     }
     remLen -= xorLen;
   }
+}
+
+uint16_t LoRaWANNode::checkSum16(uint8_t *key, uint8_t keyLen) {
+  uint16_t buf16[RADIOLIB_AES128_KEY_SIZE/2];
+  uint8_t bufLen = keyLen / 2;
+  memcpy(buf16, key, bufLen);
+  uint16_t checkSum = 0;
+  for(int i = 0; i < bufLen; i++) {
+    checkSum ^= buf16[i];
+  }
+  return(checkSum);
 }
 
 template<typename T>

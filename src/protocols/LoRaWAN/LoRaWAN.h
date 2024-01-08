@@ -159,9 +159,6 @@
 #define RADIOLIB_LORAWAN_MIC_DATA_RATE_POS                      (3)
 #define RADIOLIB_LORAWAN_MIC_CH_INDEX_POS                       (4)
 
-// magic word saved in persistent memory upon activation
-#define RADIOLIB_LORAWAN_MAGIC                                  (0x39EA)
-
 // MAC commands
 #define RADIOLIB_LORAWAN_NUM_MAC_COMMANDS                       (16)
 
@@ -191,6 +188,9 @@
 // the maximum number of simultaneously available channels
 #define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (16)
 
+// maximum allowed dwell time on bands that implement dwell time limitations
+#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
+
 struct LoRaWANMacSpec_t {
   const uint8_t cid;
   const uint8_t lenDn;
@@ -199,23 +199,23 @@ struct LoRaWANMacSpec_t {
 };
 
 const LoRaWANMacSpec_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS + 1] = {
-  { 0x00, 0, 0, false }, // not an actual MAC command, exists for offsetting
-  { 0x01, 1, 1, false }, // RADIOLIB_LORAWAN_MAC_RESET
-  { 0x02, 2, 0, true  }, // RADIOLIB_LORAWAN_MAC_LINK_CHECK
-  { 0x03, 4, 1, false }, // RADIOLIB_LORAWAN_MAC_LINK_ADR
-  { 0x04, 1, 0, false }, // RADIOLIB_LORAWAN_MAC_DUTY_CYCLE
-  { 0x05, 4, 1, false }, // RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP
-  { 0x06, 0, 2, false }, // RADIOLIB_LORAWAN_MAC_DEV_STATUS
-  { 0x07, 5, 1, false }, // RADIOLIB_LORAWAN_MAC_NEW_CHANNEL
-  { 0x08, 1, 0, false }, // RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP
-  { 0x09, 1, 0, false }, // RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP
-  { 0x0A, 4, 1, false }, // RADIOLIB_LORAWAN_MAC_DL_CHANNEL
-  { 0x0B, 1, 1, false }, // RADIOLIB_LORAWAN_MAC_REKEY
-  { 0x0C, 1, 0, false }, // RADIOLIB_LORAWAN_MAC_ADR_PARAM_SETUP
-  { 0x0D, 5, 0, true  }, // RADIOLIB_LORAWAN_MAC_DEVICE_TIME
-  { 0x0E, 2, 0, false }, // RADIOLIB_LORAWAN_MAC_FORCE_REJOIN
-  { 0x0F, 1, 1, false }, // RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP
-  { 0x80, 5, 0, true  }  // RADIOLIB_LORAWAN_MAC_PROPRIETARY
+  { 0x00, 0, 0, false }, // not an actual MAC command, exists for index offsetting
+  { RADIOLIB_LORAWAN_MAC_RESET, 1, 1, false },
+  { RADIOLIB_LORAWAN_MAC_LINK_CHECK, 2, 0, true  },
+  { RADIOLIB_LORAWAN_MAC_LINK_ADR, 4, 1, false },
+  { RADIOLIB_LORAWAN_MAC_DUTY_CYCLE, 1, 0, false },
+  { RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP, 4, 1, false },
+  { RADIOLIB_LORAWAN_MAC_DEV_STATUS, 0, 2, false },
+  { RADIOLIB_LORAWAN_MAC_NEW_CHANNEL, 5, 1, false },
+  { RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP, 1, 0, false },
+  { RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP, 1, 0, false },
+  { RADIOLIB_LORAWAN_MAC_DL_CHANNEL, 4, 1, false },
+  { RADIOLIB_LORAWAN_MAC_REKEY, 1, 1, false },
+  { RADIOLIB_LORAWAN_MAC_ADR_PARAM_SETUP, 1, 0, false },
+  { RADIOLIB_LORAWAN_MAC_DEVICE_TIME, 5, 0, true  },
+  { RADIOLIB_LORAWAN_MAC_FORCE_REJOIN, 2, 0, false },
+  { RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP, 1, 1, false },
+  { RADIOLIB_LORAWAN_MAC_PROPRIETARY, 5, 0, true  } 
 };
 
 /*!
@@ -681,9 +681,9 @@ class LoRaWANNode {
       Returns 'false' if there was no network response / parsing failed.
       \param margin Link margin in dB of LinkCheckReq demodulation at gateway side.
       \param gwCnt Number of gateways that received the LinkCheckReq.
-      \returns Whether the parameters where succesfully parsed.
+      \returns \ref status_codes
     */
-    bool getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt);
+    int16_t getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt);
 
     /*!
       \brief Returns the network time after requesting a DeviceTime MAC command.
@@ -692,9 +692,9 @@ class LoRaWANNode {
       \param gpsEpoch Number of seconds since GPS epoch (Jan. 6th 1980)
       \param fraction Fractional-second, in 1/256-second steps
       \param returnUnix If true, returns Unix timestamp instead of GPS (default true)
-      \returns Whether the parameters where succesfully parsed.
+      \returns \ref status_codes
     */
-    bool getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix = true);
+    int16_t getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix = true);
 
 #if !RADIOLIB_GODMODE
   private:
@@ -875,6 +875,9 @@ class LoRaWANNode {
 
     // function to encrypt and decrypt payloads
     void processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter);
+
+    // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
+    static uint16_t checkSum16(uint8_t *key, uint8_t keyLen);
 
     // network-to-host conversion method - takes data from network packet and converts it to the host endians
     template<typename T>

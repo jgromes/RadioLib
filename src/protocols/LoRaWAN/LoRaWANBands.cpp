@@ -53,7 +53,7 @@ const LoRaWANBand_t US915 = {
   .powerMax = 30,
   .powerNumSteps = 10,
   .dutyCycle = 0,
-  .dwellTimeUp = 400,
+  .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
   .dwellTimeDn = 0,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
@@ -334,8 +334,8 @@ const LoRaWANBand_t AS923 = {
   .powerMax = 16,
   .powerNumSteps = 7,
   .dutyCycle = 36000,
-  .dwellTimeUp = 400,
-  .dwellTimeDn = 400,
+  .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
+  .dwellTimeDn = RADIOLIB_LORAWAN_DWELL_TIME,
   .txFreqs = {
     { .enabled = true, .idx = 0, .freq = 923.200, .drMin = 0, .drMax = 5},
     { .enabled = true, .idx = 1, .freq = 923.400, .drMin = 0, .drMax = 5},
