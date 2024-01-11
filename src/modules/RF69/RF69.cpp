@@ -375,7 +375,7 @@ bool RF69::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
 
   // get the data
   this->mod->SPIreadRegisterBurst(RADIOLIB_RF69_REG_FIFO, len, dataPtr);
-  (*rcvLen) += (len);
+  *rcvLen = *rcvLen + len;
 
   // check if we're done
   if(*rcvLen >= totalLen) {
