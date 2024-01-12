@@ -808,7 +808,6 @@ class SX128x: public PhysicalLayer {
     int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX128X_IRQ_ALL);
     int16_t setRangingRole(uint8_t role);
     int16_t setPacketType(uint8_t type);
-    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 
 #if !RADIOLIB_GODMODE
   private:
@@ -837,6 +836,7 @@ class SX128x: public PhysicalLayer {
     uint8_t connectionState = 0, crcBLE = 0, bleTestPayload = 0;
 
     int16_t config(uint8_t modem);
+    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 };
 
 #endif
