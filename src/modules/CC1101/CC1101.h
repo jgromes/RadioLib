@@ -541,8 +541,6 @@ class CC1101: public PhysicalLayer {
     */
     CC1101(Module* module);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -947,21 +945,22 @@ class CC1101: public PhysicalLayer {
   #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
     protected:
   #endif
-      Module* mod;
+    Module* getMod();
 
-      // SPI read overrides to set bit for burst write and status registers access
-      int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
-      int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
-      void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
-      uint8_t SPIreadRegister(uint8_t reg);
-      void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
-      void SPIwriteRegister(uint8_t reg, uint8_t data);
+    // SPI read overrides to set bit for burst write and status registers access
+    int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
+    void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
+    uint8_t SPIreadRegister(uint8_t reg);
+    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
+    void SPIwriteRegister(uint8_t reg, uint8_t data);
 
-      void SPIsendCommand(uint8_t cmd);
+    void SPIsendCommand(uint8_t cmd);
 
   #if !RADIOLIB_GODMODE
-    protected:
+    private:
   #endif
+    Module* mod;
 
     float frequency = RADIOLIB_CC1101_DEFAULT_FREQ;
     float bitRate = RADIOLIB_CC1101_DEFAULT_BR;
