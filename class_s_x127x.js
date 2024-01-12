@@ -27,7 +27,6 @@ var class_s_x127x =
     [ "getFHSSHoppingPeriod", "class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617", null ],
     [ "getFrequencyError", "class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362", null ],
     [ "getIRQFlags", "class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d", null ],
-    [ "getMod", "class_s_x127x.html#a4c27736905cf848a67d6cbc92df823b8", null ],
     [ "getModemStatus", "class_s_x127x.html#a2cf6a5bd8f3257f98ee4f250cbdf8bdc", null ],
     [ "getNumSymbols", "class_s_x127x.html#abcc10ab36404aaaee3fe7a1be6841511", null ],
     [ "getPacketLength", "class_s_x127x.html#a462fa74275e67c296328a01f361892d5", null ],
