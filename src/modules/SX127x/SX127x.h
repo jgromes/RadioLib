@@ -596,8 +596,6 @@ class SX127x: public PhysicalLayer {
     */
     SX127x(Module* mod);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -1221,37 +1219,38 @@ class SX127x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* mod;
+    Module* getMod();
 
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-
     float frequency = 0;
     float bandwidth = 0;
     uint8_t spreadingFactor = 0;
-    uint8_t codingRate = 0;
-    float bitRate = 0;
-    bool ookEnabled = false;
-    bool crcEnabled = false;
-    bool crcOn = true; // default value used in FSK mode
     size_t packetLength = 0;
+    uint8_t codingRate = 0;
+    bool crcEnabled = false;
+    bool ookEnabled = false;
 
-    int16_t setFrequencyRaw(float newFreq);
-    int16_t setBitRateCommon(float br, uint8_t fracRegAddr);
-    int16_t config();
     int16_t configFSK();
     int16_t getActiveModem();
-    int16_t directMode();
-    int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setFrequencyRaw(float newFreq);
+    int16_t setBitRateCommon(float br, uint8_t fracRegAddr);
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
+    Module* mod;
+
+    float bitRate = 0;
+    bool crcOn = true; // default value used in FSK mode
     float dataRate = 0;
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;
 
+    int16_t config();
+    int16_t directMode();
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
     bool findChip(uint8_t* vers, uint8_t num);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);

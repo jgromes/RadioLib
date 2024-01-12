@@ -6,10 +6,6 @@ SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
 }
 
-Module* SX127x::getMod() {
-  return(this->mod);
-}
-
 int16_t SX127x::begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
   this->mod->init();
@@ -1475,6 +1471,10 @@ int8_t SX127x::getTempRaw() {
   this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_OP_MODE, previousOpMode);
 
   return(temp);
+}
+
+Module* SX127x::getMod() {
+  return(this->mod);
 }
 
 int16_t SX127x::config() {
