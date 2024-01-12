@@ -32,7 +32,8 @@ int16_t Si4432::setOutputPower(int8_t power) {
   RADIOLIB_CHECK_RANGE(power, -1, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // set output power
-  return(this->mod->SPIsetRegValue(RADIOLIB_SI443X_REG_TX_POWER, (uint8_t)((power + 1) / 3), 2, 0));
+  Module* mod = this->getMod();
+  return(mod->SPIsetRegValue(RADIOLIB_SI443X_REG_TX_POWER, (uint8_t)((power + 1) / 3), 2, 0));
 }
 
 #endif

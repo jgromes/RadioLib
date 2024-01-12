@@ -566,8 +566,6 @@ class Si443x: public PhysicalLayer {
     */
     Si443x(Module* mod);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -828,11 +826,17 @@ class Si443x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* mod;
+    Module* getMod();
 
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+    int16_t setFrequencyRaw(float newFreq);
+
+#if !RADIOLIB_GODMODE
+  private:
+#endif
+    Module* mod;
 
     float bitRate = 0;
     float frequencyDev = 0;
@@ -842,18 +846,13 @@ class Si443x: public PhysicalLayer {
     bool packetLengthQueried = false;
     uint8_t packetLengthConfig = RADIOLIB_SI443X_FIXED_PACKET_LENGTH_ON;
 
-    int16_t setFrequencyRaw(float newFreq);
-    int16_t setPacketMode(uint8_t mode, uint8_t len);
-
-#if !RADIOLIB_GODMODE
-  private:
-#endif
     bool findChip();
     void clearIRQFlags();
     void clearFIFO(size_t count);
     int16_t config();
     int16_t updateClockRecovery();
     int16_t directMode();
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 };
 
 #endif
