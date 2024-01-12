@@ -361,8 +361,6 @@ class SX128x: public PhysicalLayer {
     */
     SX128x(Module* mod);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -782,11 +780,7 @@ class SX128x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* mod;
-
-#if !RADIOLIB_GODMODE
-  protected:
-#endif
+    Module* getMod();
 
     // cached LoRa parameters
     float bandwidthKhz = 0;
@@ -814,19 +808,16 @@ class SX128x: public PhysicalLayer {
     int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX128X_IRQ_ALL);
     int16_t setRangingRole(uint8_t role);
     int16_t setPacketType(uint8_t type);
-
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
-
-#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
-  private:
-#endif
-
-    // common low-level SPI interface
-    static int16_t SPIparseStatus(uint8_t in);
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
+    Module* mod;
+
+    // common low-level SPI interface
+    static int16_t SPIparseStatus(uint8_t in);
+
     // common parameters
     uint8_t power = 0;
 

@@ -6,10 +6,6 @@ SX128x::SX128x(Module* mod) : PhysicalLayer(RADIOLIB_SX128X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
 }
 
-Module* SX128x::getMod() {
-  return(this->mod);
-}
-
 int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
   // set module properties
   this->mod->init();
@@ -1346,6 +1342,10 @@ void SX128x::readBit(uint32_t pin) {
   (void)pin;
 }
 #endif
+
+Module* SX128x::getMod() {
+  return(this->mod);
+}
 
 uint8_t SX128x::getStatus() {
   uint8_t data = 0;

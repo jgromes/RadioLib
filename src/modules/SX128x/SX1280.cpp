@@ -12,10 +12,11 @@ int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   RADIOLIB_ASSERT(state);
 
   // wait until ranging is finished
-  uint32_t start = this->mod->hal->millis();
-  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
-    this->mod->hal->yield();
-    if(this->mod->hal->millis() - start > 10000) {
+  Module* mod = this->getMod();
+  uint32_t start = mod->hal->millis();
+  while(!mod->hal->digitalRead(mod->getIrq())) {
+    mod->hal->yield();
+    if(mod->hal->millis() - start > 10000) {
       clearIrqStatus();
       standby();
       return(RADIOLIB_ERR_RANGING_TIMEOUT);
