@@ -12,7 +12,6 @@ var class_s_x128x =
     [ "finishTransmit", "class_s_x128x.html#a4587409a9b96a0c496cf12b3acac20c4", null ],
     [ "getFrequencyError", "class_s_x128x.html#a2b424000856a9dc212f571d0e8890635", null ],
     [ "getIrqStatus", "class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22", null ],
-    [ "getMod", "class_s_x128x.html#a69ee7379f4b79abf626df186b2db6441", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],
     [ "getRSSI", "class_s_x128x.html#a94d3003277925e2dc3372548b3311008", null ],
     [ "getSNR", "class_s_x128x.html#a89ebf1f4f227cd35c0799c06d5d9c1d2", null ],
