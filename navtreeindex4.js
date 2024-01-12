@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9":[3,0,27,9],
 "classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8":[3,0,27,23],
 "classn_r_f24.html#a410fb78acb4ed358818c132687b8857a":[3,0,27,12],
 "classn_r_f24.html#a415d86947742e981bfcf7f2371f8605c":[3,0,27,15],
@@ -59,8 +58,8 @@ var NAVTREEINDEX4 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,9],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,8],
 "files.html":[4,0],
-"functions.html":[3,3,0,0],
 "functions.html":[3,3,0],
+"functions.html":[3,3,0,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df":[3,0,17,1],
 "struct_lo_ra_w_a_n_band__t.html":[3,0,18],
 "struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c":[3,0,18,4],
-"struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b":[3,0,18,1]
+"struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b":[3,0,18,1],
+"struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055":[3,0,18,3]
 };
