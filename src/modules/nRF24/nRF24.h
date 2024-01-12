@@ -195,8 +195,6 @@ class nRF24: public PhysicalLayer {
     */
     nRF24(Module* mod);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -470,15 +468,16 @@ class nRF24: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* mod;
+    Module* getMod();
 
     void SPIreadRxPayload(uint8_t* data, uint8_t numBytes);
     void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
     void SPItransfer(uint8_t cmd, bool write = false, uint8_t* dataOut = NULL, uint8_t* dataIn = NULL, uint8_t numBytes = 0);
 
 #if !RADIOLIB_GODMODE
-  protected:
+  private:
 #endif
+    Module* mod;
 
     int16_t frequency = RADIOLIB_NRF24_DEFAULT_FREQ;
     int16_t dataRate = RADIOLIB_NRF24_DEFAULT_DR;

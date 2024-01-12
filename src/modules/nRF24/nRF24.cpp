@@ -6,10 +6,6 @@ nRF24::nRF24(Module* mod) : PhysicalLayer(RADIOLIB_NRF24_FREQUENCY_STEP_SIZE, RA
   this->mod = mod;
 }
 
-Module* nRF24::getMod() {
-  return(this->mod);
-}
-
 int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   // set module properties
   this->mod->SPIreadCommand = RADIOLIB_NRF24_CMD_READ;
@@ -604,6 +600,10 @@ int16_t nRF24::config() {
   this->mod->hal->delay(5);
 
   return(state);
+}
+
+Module* nRF24::getMod() {
+  return(this->mod);
 }
 
 void nRF24::SPIreadRxPayload(uint8_t* data, uint8_t numBytes) {
