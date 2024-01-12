@@ -6,10 +6,6 @@ Si443x::Si443x(Module* mod) : PhysicalLayer(RADIOLIB_SI443X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
 }
 
-Module* Si443x::getMod() {
-  return(this->mod);
-}
-
 int16_t Si443x::begin(float br, float freqDev, float rxBw, uint8_t preambleLen) {
   // set module properties
   this->mod->init();
@@ -639,6 +635,10 @@ int16_t Si443x::fixedPacketLengthMode(uint8_t len) {
 
 int16_t Si443x::variablePacketLengthMode(uint8_t maxLen) {
   return(Si443x::setPacketMode(RADIOLIB_SI443X_FIXED_PACKET_LENGTH_OFF, maxLen));
+}
+
+Module* Si443x::getMod() {
+  return(this->mod);
 }
 
 int16_t Si443x::setFrequencyRaw(float newFreq) {
