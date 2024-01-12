@@ -39,6 +39,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // based on your geographical location!
 LoRaWANNode node(&radio, &EU868);
 
+// for fixed bands with subband selection
+// such as US915 and AU915, you must specify
+// the subband that matches the Frequency Plan
+// that you selected on your LoRaWAN console
+/*
+  LoRaWANNode node(&radio, &US915, 2);
+*/
+
 void setup() {
   Serial.begin(9600);
 
@@ -82,13 +90,6 @@ void setup() {
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
   // and can be set to NULL
 
-  // some frequency bands only use a subset of the available channels
-  // you can select the specific band or set the first channel and last channel
-  // for example, either of the following corresponds to US915 FSB2 in TTN
-  /*
-    node.selectSubband(2);
-    node.selectSubband(8, 15);
-  */
 
   // if using EU868 on ABP in TTN, you need to set the SF for RX2 window manually
 	/*

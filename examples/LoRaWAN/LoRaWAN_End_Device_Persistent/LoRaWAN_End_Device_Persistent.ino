@@ -43,6 +43,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // based on your geographical location!
 LoRaWANNode node(&radio, &EU868);
 
+// for fixed bands with subband selection
+// such as US915 and AU915, you must specify
+// the subband that matches the Frequency Plan
+// that you selected on your LoRaWAN console
+/*
+  LoRaWANNode node(&radio, &US915, 2);
+*/
+
 void setup() {
   Serial.begin(9600);
 
