@@ -6,10 +6,6 @@ RF69::RF69(Module* module) : PhysicalLayer(RADIOLIB_RF69_FREQUENCY_STEP_SIZE, RA
   this->mod = module;
 }
 
-Module* RF69::getMod() {
-  return(this->mod);
-}
-
 int16_t RF69::begin(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLen) {
   // set module properties
   this->mod->init();
@@ -980,6 +976,10 @@ int16_t RF69::setDIOMapping(uint32_t pin, uint32_t value) {
   }
 
   return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_DIO_MAPPING_2, value, 15 - 2 * pin, 14 - 2 * pin));
+}
+
+Module* RF69::getMod() {
+  return(this->mod);
 }
 
 int16_t RF69::getChipVersion() {

@@ -7,9 +7,10 @@ SX1231::SX1231(Module* mod) : RF69(mod) {
 
 int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
+  Module* mod = this->getMod();
+  mod->init();
+  mod->hal->pinMode(mod->getIrq(), mod->hal->GpioModeInput);
+  mod->hal->pinMode(mod->getRst(), mod->hal->GpioModeOutput);
 
   // try to find the SX1231 chip
   uint8_t i = 0;
@@ -21,14 +22,14 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
       this->chipRevision = version;
     } else {
       RADIOLIB_DEBUG_PRINTLN("SX1231 not found! (%d of 10 tries) RF69_REG_VERSION == 0x%04X, expected 0x0021 / 0x0022 / 0x0023", i + 1, version);
-      this->mod->hal->delay(10);
+      mod->hal->delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN("No SX1231 found!");
-    this->mod->term();
+    mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_PRINTLN("M\tSX1231");
@@ -77,11 +78,11 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   // SX123x V2a only
   if(this->chipRevision == RADIOLIB_SX123X_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
-    state = this->mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
+    state = mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
     RADIOLIB_ASSERT(state);
 
     // enable OCP with 95 mA limit
-    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM, 4, 0);
+    state = mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM, 4, 0);
     RADIOLIB_ASSERT(state);
   }
 

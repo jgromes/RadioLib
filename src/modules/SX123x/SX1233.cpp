@@ -8,9 +8,10 @@ SX1233::SX1233(Module* mod) : SX1231(mod) {
 
 int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t power, uint8_t preambleLen) {
   // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
+  Module* mod = this->getMod();
+  mod->init();
+  mod->hal->pinMode(mod->getIrq(), mod->hal->GpioModeInput);
+  mod->hal->pinMode(mod->getRst(), mod->hal->GpioModeOutput);
 
   // try to find the SX1233 chip
   uint8_t i = 0;
@@ -22,14 +23,14 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
       this->chipRevision = version;
     } else {
       RADIOLIB_DEBUG_PRINTLN("SX1231 not found! (%d of 10 tries) RF69_REG_VERSION == 0x%04X, expected 0x0021 / 0x0022 / 0x0023", i + 1, version);
-      this->mod->hal->delay(10);
+      mod->hal->delay(10);
       i++;
     }
   }
 
   if(!flagFound) {
     RADIOLIB_DEBUG_PRINTLN("No SX1233 found!");
-    this->mod->term();
+    mod->term();
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
   RADIOLIB_DEBUG_PRINTLN("M\tSX1233");
@@ -78,11 +79,11 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   // SX123x V2a only
   if(this->chipRevision == RADIOLIB_SX123X_CHIP_REVISION_2_A) {
     // modify default OOK threshold value
-    state = this->mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
+    state = mod->SPIsetRegValue(RADIOLIB_SX1231_REG_TEST_OOK, RADIOLIB_SX1231_OOK_DELTA_THRESHOLD);
     RADIOLIB_ASSERT(state);
 
     // enable OCP with 95 mA limit
-    state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM, 4, 0);
+    state = mod->SPIsetRegValue(RADIOLIB_RF69_REG_OCP, RADIOLIB_RF69_OCP_ON | RADIOLIB_RF69_OCP_TRIM, 4, 0);
     RADIOLIB_ASSERT(state);
   }
 
@@ -109,13 +110,14 @@ int16_t SX1233::setBitRate(float br) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set PLL bandwidth
-  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX1233_REG_TEST_PLL, pllBandwidth, 7, 0);
+  Module* mod = this->getMod();
+  int16_t state = mod->SPIsetRegValue(RADIOLIB_SX1233_REG_TEST_PLL, pllBandwidth, 7, 0);
   RADIOLIB_ASSERT(state);
 
   // set bit rate
   uint16_t bitRate = 32000 / br;
-  state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
-  state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
+  state = mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
+  state |= mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
   if(state == RADIOLIB_ERR_NONE) {
     this->bitRate = br;
   }

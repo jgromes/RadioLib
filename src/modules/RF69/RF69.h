@@ -490,8 +490,6 @@ class RF69: public PhysicalLayer {
     */
     RF69(Module* module);
 
-    Module* getMod();
-
     // basic methods
 
     /*!
@@ -998,15 +996,23 @@ class RF69: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* mod;
+    Module* getMod();
 
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-
-    float frequency = RADIOLIB_RF69_DEFAULT_FREQ;
     float bitRate = RADIOLIB_RF69_DEFAULT_BR;
     float rxBandwidth = RADIOLIB_RF69_DEFAULT_RXBW;
+    
+    int16_t config();
+    int16_t setMode(uint8_t mode);
+
+#if !RADIOLIB_GODMODE
+  private:
+#endif
+    Module* mod;
+
+    float frequency = RADIOLIB_RF69_DEFAULT_FREQ;
     bool ookEnabled = false;
     int16_t tempOffset = 0;
     int8_t power = RADIOLIB_RF69_DEFAULT_POWER;
@@ -1021,14 +1027,8 @@ class RF69: public PhysicalLayer {
 
     bool bitSync = true;
 
-    int16_t config();
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-    int16_t setMode(uint8_t mode);
-
-#if !RADIOLIB_GODMODE
-  private:
-#endif
     void clearIRQFlags();
     void clearFIFO(size_t count);
 };
