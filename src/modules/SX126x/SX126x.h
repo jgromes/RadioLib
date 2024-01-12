@@ -442,8 +442,6 @@ class SX126x: public PhysicalLayer {
     */
     SX126x(Module* mod);
 
-    Module* getMod();
-
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
     */
@@ -1092,9 +1090,11 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
 
-#if !RADIOLIB_GODMODE
+#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
+    Module* getMod();
+    
     // SX126x SPI command implementations
     int16_t setFs();
     int16_t setTx(uint32_t timeout = 0);
@@ -1121,32 +1121,24 @@ class SX126x: public PhysicalLayer {
     uint16_t getDeviceErrors();
     int16_t clearDeviceErrors();
 
-    int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
-    int16_t setFrequencyRaw(float freq);
-    int16_t setPacketMode(uint8_t mode, uint8_t len);
-    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
-    int16_t directMode();
-    int16_t packetMode();
-
-    // fixes to errata
-    int16_t fixSensitivity();
-    int16_t fixPaClamping(bool enable = true);
-    int16_t fixImplicitTimeout();
-    int16_t fixInvertedIQ(uint8_t iqConfig);
-
-#if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
+#if !RADIOLIB_GODMODE
   protected:
 #endif
-    Module* mod;
+    const char* chipType;
+    uint8_t bandwidth = 0;
+
+    int16_t setFrequencyRaw(float freq);
+    int16_t fixPaClamping(bool enable = true);
 
     // common low-level SPI interface
     static int16_t SPIparseStatus(uint8_t in);
 
 #if !RADIOLIB_GODMODE
-  protected:
+  private:
 #endif
+    Module* mod;
 
-    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
+    uint8_t spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;
     uint16_t preambleLengthLoRa = 0;
     float bandwidthKhz = 0;
     bool ldroAuto = true;
@@ -1162,13 +1154,28 @@ class SX126x: public PhysicalLayer {
 
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;
-    const char* chipType;
 
     // Allow subclasses to define different TX modes
     uint8_t txMode = Module::MODE_TX;
 
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
+    int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
+    int16_t directMode();
+    int16_t packetMode();
+
+    // fixes to errata
+    int16_t fixSensitivity();
+    int16_t fixImplicitTimeout();
+    int16_t fixInvertedIQ(uint8_t iqConfig);
+
+
+    void regdump();
+    void effectEvalPre(uint8_t* buff, uint32_t start);
+    void effectEvalPost(uint8_t* buff, uint32_t start);
+    void effectEval();
 };
 
 #endif

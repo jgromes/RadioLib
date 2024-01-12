@@ -8,10 +8,6 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE,
   this->XTAL = false;
 }
 
-Module* SX126x::getMod() {
-  return(this->mod);
-}
-
 int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // set module properties
   this->mod->init();
@@ -2051,6 +2047,10 @@ int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
 
   // update with the new value
   return(writeRegister(RADIOLIB_SX126X_REG_IQ_CONFIG, &iqConfigCurrent, 1));
+}
+
+Module* SX126x::getMod() {
+  return(this->mod);
 }
 
 int16_t SX126x::config(uint8_t modem) {
