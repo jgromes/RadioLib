@@ -79,7 +79,7 @@
 #define RADIOLIB_LORAWAN_BAND_DYNAMIC                           (0)
 #define RADIOLIB_LORAWAN_BAND_FIXED                             (1)
 #define RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES                  (15)
-#define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     (0xFF >> 1) // reserve first bit for enable-flag
+#define RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE                     (0xFF >> 0)
 
 // recommended default settings
 #define RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS                     (1000)
@@ -403,8 +403,9 @@ class LoRaWANNode {
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
       \param band Pointer to the LoRaWAN band to use.
+      \param subBand The subband to be used (starting from 1!)
     */
-    LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band);
+    LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand = 0);
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
@@ -651,23 +652,6 @@ class LoRaWANNode {
     int16_t setTxPower(int8_t txPower, bool saveToEeprom = false);
 
     /*!
-      \brief Select a single subband (8 channels) for fixed bands such as US915.
-      Only available before joining a network.
-      \param idx The subband to be used (starting from 1!)
-      \returns \ref status_codes
-    */
-    int16_t selectSubband(uint8_t idx);
-
-    /*!
-      \brief Select a set of channels for fixed bands such as US915.
-      Only available before joining a network.
-      \param startChannel The first channel of the band to be used (inclusive)
-      \param endChannel The last channel of the band to be used (inclusive)
-      \returns \ref status_codes
-    */
-    int16_t selectSubband(uint8_t startChannel, uint8_t endChannel);
-
-    /*!
       \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
       \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
       \param difsSlots Num of CADs to estimate a clear CH.
@@ -702,7 +686,7 @@ class LoRaWANNode {
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;
 
-    void beginCommon();
+    void beginCommon(uint8_t joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     LoRaWANMacCommandQueue_t commandsUp = { 
       .numCommands = 0,
@@ -803,7 +787,7 @@ class LoRaWANNode {
     bool isMACPayload = false;
 
     // save the selected subband in case this must be restored in ADR control
-    int8_t selectedSubband = -1;
+    int8_t subBand = -1;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
@@ -832,15 +816,20 @@ class LoRaWANNode {
     bool verifyMIC(uint8_t* msg, size_t len, uint8_t* key);
 
     // configure the common physical layer properties (preamble, sync word etc.)
-    // channels must be configured separately by setupChannels()!
+    // channels must be configured separately by setupChannelsDyn()!
     int16_t setPhyProperties();
 
     // setup uplink/downlink channel data rates and frequencies
-    // will attempt to randomly select based on currently used band plan
-    int16_t setupChannels(uint8_t* cfList);
+    // for dynamic channels, there is a small set of predefined channels
+    // in case of JoinRequest, add some optional extra frequencies 
+    int16_t setupChannelsDyn(bool joinRequest = false);
 
-    // select a set of semi-random TX/RX channels for the join-request and -accept message
-    int16_t selectChannelsJR(uint16_t devNonce, uint8_t drJoinSubband);
+    // setup uplink/downlink channel data rates and frequencies
+    // for fixed bands, we only allow one subband at a time to be selected
+    int16_t setupChannelsFix(uint8_t subBand);
+
+    // a join-accept can piggy-back a set of channels or channel masks
+    int16_t processCFList(uint8_t* cfList);
 
     // select a set of random TX/RX channels for up- and downlink
     int16_t selectChannels();
@@ -863,6 +852,12 @@ class LoRaWANNode {
 
     // execute mac command, return the number of processed bytes for sequential processing
     bool execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom = true);
+
+    // apply a channel mask to a set of readily defined channels (dynamic bands only)
+    bool applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask);
+
+    // define or delete channels from a fixed set of channels (fixed bands only)
+    bool applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool clear);
 
     // get the payload length for a specific MAC command
     uint8_t getMacPayloadLength(uint8_t cid);
