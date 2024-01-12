@@ -7,7 +7,6 @@ var classn_r_f24 =
     [ "clearPacketSentAction", "classn_r_f24.html#a5ae45ceec01854226ecce0320f1051e2", null ],
     [ "disablePipe", "classn_r_f24.html#a4dd39e5c0efee1f0c2a14f729eb4426a", null ],
     [ "finishTransmit", "classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f", null ],
-    [ "getMod", "classn_r_f24.html#a03533af894b373fbff01601dd027b36a", null ],
     [ "getPacketLength", "classn_r_f24.html#a23ea1749c21863ebc5bd3a2b08d64f3b", null ],
     [ "getStatus", "classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9", null ],
     [ "isCarrierDetected", "classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37", null ],
