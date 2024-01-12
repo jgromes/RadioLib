@@ -52,9 +52,9 @@ var NAVTREEINDEX =
 "_a_f_s_k_8h_source.html",
 "class_module.html#a4ea888758b4a7784082d513a1e7849a4",
 "class_radio_lib_hal.html#aa4f2bd49aea5a19aa9f85c720b4a883e",
-"class_s_x127x.html",
-"classn_r_f24.html#a3eb45884a5730ac1c339c7ba4f7b5282",
-"struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b"
+"class_s_x127x.html#a098baa351e38f3b4caa19a362bc190d4",
+"classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9",
+"struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

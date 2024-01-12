@@ -19,7 +19,6 @@ var class_s_x126x =
     [ "getDataRate", "class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9", null ],
     [ "getFrequencyError", "class_s_x126x.html#a068d709ffb79ae66d718ffb76ffae997", null ],
     [ "getIrqStatus", "class_s_x126x.html#a9a9b090eddcb811ee19b595debfab1df", null ],
-    [ "getMod", "class_s_x126x.html#aae1af90432c457e5bf8f8f362295399b", null ],
     [ "getPacketLength", "class_s_x126x.html#ac4ef8c8751a3c09d64e431684840c987", null ],
     [ "getRSSI", "class_s_x126x.html#afabefb1b214411198f3537e8afce898f", null ],
     [ "getSNR", "class_s_x126x.html#ae36823d3539667bdf7d2f073bd4fa1ca", null ],
