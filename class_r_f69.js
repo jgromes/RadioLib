@@ -22,7 +22,6 @@ var class_r_f69 =
     [ "getChipVersion", "class_r_f69.html#a0c30202b2d52eb32f43066bc0f938638", null ],
     [ "getFrequency", "class_r_f69.html#a2391eb6e07db3795e993b59b3a85cfed", null ],
     [ "getFrequencyDeviation", "class_r_f69.html#a2bf0d5e045ccfecf9510773148cdd2c9", null ],
-    [ "getMod", "class_r_f69.html#afd3a98c6ff75e1036c9ba6d5423851df", null ],
     [ "getPacketLength", "class_r_f69.html#a86a080086c0228d23e2cb77d2b1915c1", null ],
     [ "getRSSI", "class_r_f69.html#ac4fc3f2b178ef08caec3a9f548f44cd7", null ],
     [ "getTemperature", "class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853", null ],
