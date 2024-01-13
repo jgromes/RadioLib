@@ -27,11 +27,12 @@
 // include the library
 #include <RadioLib.h>
 
-// SX1278 has the following connections:
-// NSS pin:   10
-// DIO0 pin:  2
-// RESET pin: 9
-// DIO1 pin:  3
+// SX1262 has the following pin order:
+// Module(NSS/CS, DIO1, RESET, BUSY)
+// SX1262 radio = new Module(8, 14, 12, 13);
+
+// SX1278 has the following pin order:
+// Module(NSS/CS, DIO0, RESET, DIO1)
 SX1278 radio = new Module(10, 2, 9, 3);
 
 // create the node instance on the EU-868 band
@@ -39,6 +40,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // make sure you are using the correct band
 // based on your geographical location!
 LoRaWANNode node(&radio, &EU868);
+
+// for fixed bands with subband selection
+// such as US915 and AU915, you must specify
+// the subband that matches the Frequency Plan
+// that you selected on your LoRaWAN console
+/*
+  LoRaWANNode node(&radio, &US915, 2);
+*/
 
 void setup() {
   Serial.begin(9600);
@@ -80,13 +89,6 @@ void setup() {
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
   // and can be set to NULL
 
-  // some frequency bands only use a subset of the available channels
-  // you can select the specific band or set the first channel and last channel
-  // for example, either of the following corresponds to US915 FSB2 in TTN
-  /*
-    node.selectSubband(2);
-    node.selectSubband(8, 15);
-  */
 
   // now we can start the activation
   // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
@@ -106,9 +108,11 @@ void setup() {
     while(true);
   }
 
-  // after the device has been activated,
+  // on EEPROM-enabled boards, after the device has been activated,
   // the session can be restored without rejoining after device power cycle
-  // on EEPROM-enabled boards by calling "restore"
+  // this is intrinsically done when calling `beginOTAA()` with the same keys
+  // or if you 'lost' the keys or don't want them included in your sketch
+  // you can call `restore()`
   /*
     Serial.print(F("[LoRaWAN] Resuming previous session ... "));
     state = node.restore();
@@ -126,11 +130,28 @@ void setup() {
 
   // set a fixed datarate
   node.setDatarate(5);
+  // in order to save the datarate persistent across reboot/deepsleep, use the following:
+  /*
+    node.setDatarate(5, true);  
+  */
 
   // enable CSMA
   // this tries to minimize packet loss by searching for a free channel
   // before actually sending an uplink 
   node.setCSMA(6, 2, true);
+
+  // enable or disable the dutycycle
+  // the second argument specific allowed airtime per hour in milliseconds
+  // 1250 = TTN FUP (30 seconds / 24 hours)
+  // if not called, this corresponds to setDutyCycle(true, 0)
+  // setting this to 0 corresponds to the band's maximum allowed dutycycle by law
+  node.setDutyCycle(true, 1250);
+
+  // enable or disable the dwell time limits
+  // the second argument specific allowed airtime per uplink in milliseconds
+  // if not called, this corresponds to setDwellTime(true, 0)
+  // setting this to 0 corresponds to the band's maximum allowed dwell time by law
+  node.setDwellTime(true, 1000);
 }
 
 void loop() {
@@ -152,8 +173,11 @@ void loop() {
   String strUp = "Hello World! #" + String(fcntUp);
   
   // send a confirmed uplink to port 10 every 64th frame
+  // and also request the LinkCheck and DeviceTime MAC commands
   if(fcntUp % 64 == 0) {
     state = node.uplink(strUp, 10, true);
+    node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_LINK_CHECK);
+    node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_DEVICE_TIME);
   } else {
     state = node.uplink(strUp, 10);
   }
@@ -228,6 +252,24 @@ void loop() {
     Serial.println(event.port);
     
     Serial.print(radio.getFrequencyError());
+
+    uint8_t margin = 0;
+    uint8_t gwCnt = 0;
+    if(node.getMacLinkCheckAns(&margin, &gwCnt)) {
+      Serial.print(F("[LoRaWAN] LinkCheck margin:\t"));
+      Serial.println(margin);
+      Serial.print(F("[LoRaWAN] LinkCheck count:\t"));
+      Serial.println(gwCnt);
+    }
+
+    uint32_t networkTime = 0;
+    uint8_t fracSecond = 0;
+    if(node.getMacDeviceTimeAns(&networkTime, &fracSecond, true)) {
+      Serial.print(F("[LoRaWAN] DeviceTime Unix:\t"));
+      Serial.println(networkTime);
+      Serial.print(F("[LoRaWAN] LinkCheck second:\t1/"));
+      Serial.println(fracSecond);
+    }
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
     Serial.println(F("timeout!"));
@@ -244,5 +286,9 @@ void loop() {
   */
 
   // wait before sending another packet
-  delay(30000);
+  uint32_t minimumDelay = 60000;                  // try to send once every minute
+  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
+	uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+
+  delay(delayMs);
 }

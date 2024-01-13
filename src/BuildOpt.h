@@ -112,7 +112,7 @@
 
 // the amount of space allocated to the persistent storage
 #if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x0180)
+  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x01C0)
 #endif
 
 /*

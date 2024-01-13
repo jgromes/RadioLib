@@ -12,7 +12,7 @@
 
   NOTE: LoRaWAN requires storing some parameters persistently!
         RadioLib does this by using EEPROM, by default
-        starting at address 0 and using 384 bytes.
+        starting at address 0 and using 448 bytes.
         If you already use EEPROM in your application,
         you will have to either avoid this range, or change it
         by setting a different start address by changing the value of
@@ -29,11 +29,12 @@
 // include the library
 #include <RadioLib.h>
 
-// SX1278 has the following connections:
-// NSS pin:   10
-// DIO0 pin:  2
-// RESET pin: 9
-// DIO1 pin:  3
+// SX1262 has the following pin order:
+// Module(NSS/CS, DIO1, RESET, BUSY)
+// SX1262 radio = new Module(8, 14, 12, 13);
+
+// SX1278 has the following pin order:
+// Module(NSS/CS, DIO0, RESET, DIO1)
 SX1278 radio = new Module(10, 2, 9, 3);
 
 // create the node instance on the EU-868 band
@@ -41,6 +42,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // make sure you are using the correct band
 // based on your geographical location!
 LoRaWANNode node(&radio, &EU868);
+
+// for fixed bands with subband selection
+// such as US915 and AU915, you must specify
+// the subband that matches the Frequency Plan
+// that you selected on your LoRaWAN console
+/*
+  LoRaWANNode node(&radio, &US915, 2);
+*/
 
 void setup() {
   Serial.begin(9600);
@@ -56,33 +65,31 @@ void setup() {
     while(true);
   }
 
-  // first we need to initialize the device storage
-  // this will reset all persistently stored parameters
-  // NOTE: This should only be done once prior to first joining a network!
-  //       After wiping persistent storage, you will also have to reset
-  //       the end device in TTN and perform the join procedure again!
-  // Here, a delay is added to make sure that during re-flashing
-  // the .wipe() is not triggered and the session is lost
-  //delay(5000);
-  //node.wipe();
-
-  // now we can start the activation
+  // start the activation
   // Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   // uint64_t joinEUI = 0x12AD1011B0C0FFEE;
-  // uint64_t devEUI = 0x70B3D57ED005E120;
+  // uint64_t devEUI  = 0x70B3D57ED005E120;
   // uint8_t nwkKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
   //                      0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
   // uint8_t appKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
   //                      0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
   // state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
 
-  // after the device has been activated,
+  // on EEPROM-enabled boards, after the device has been activated,
   // the session can be restored without rejoining after device power cycle
-  // on EEPROM-enabled boards by calling "restore"
+  // by calling the same `beginOTAA()` or `beginABP()` function with the same keys
+  // or call `restore()` where it will restore any existing session
+  // `restore()` returns the active mode if it succeeded (OTAA or ABP)
   Serial.print(F("[LoRaWAN] Resuming previous session ... "));
   state = node.restore();
-  if(state == RADIOLIB_ERR_NONE) {
+  if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
+    Serial.print(F("Restored an "));
+    if(state == RADIOLIB_LORAWAN_MODE_OTAA)
+      Serial.println(F("OTAA session."));
+    else {
+      Serial.println(F("ABP session."));
+    }
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
@@ -141,5 +148,9 @@ void loop() {
   // wait before sending another packet
   // alternatively, call a deepsleep function here
   // make sure to send the radio to sleep as well using radio.sleep()
-  delay(30000);
+  uint32_t minimumDelay = 60000;                  // try to send once every minute
+  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
+  uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+
+  delay(delayMs);
 }

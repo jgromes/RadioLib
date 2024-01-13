@@ -519,7 +519,7 @@
 #define RADIOLIB_ERR_INVALID_CID                                (-1107)
 
 /*!
-  \brief User requested to start uplink while still inside RX window.
+  \brief User requested to start uplink while still inside RX window or under dutycycle.
 */
 #define RADIOLIB_ERR_UPLINK_UNAVAILABLE                         (-1108)
 
@@ -552,11 +552,6 @@
   \brief Received downlink Application frame counter is invalid (lower than last heard value).
 */
 #define RADIOLIB_ERR_A_FCNT_DOWN_INVALID                        (-1114)
-
-/*!
-  \brief Datarate requested by user is invalid.
-*/
-#define RADIOLIB_ERR_DATA_RATE_INVALID                          (-1115)
 
 /*!
   \}

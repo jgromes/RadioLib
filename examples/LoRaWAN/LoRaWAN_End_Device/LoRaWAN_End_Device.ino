@@ -24,11 +24,12 @@
 // include the library
 #include <RadioLib.h>
 
-// SX1278 has the following connections:
-// NSS pin:   10
-// DIO0 pin:  2
-// RESET pin: 9
-// DIO1 pin:  3
+// SX1262 has the following pin order:
+// Module(NSS/CS, DIO1, RESET, BUSY)
+// SX1262 radio = new Module(8, 14, 12, 13);
+
+// SX1278 has the following pin order:
+// Module(NSS/CS, DIO0, RESET, DIO1)
 SX1278 radio = new Module(10, 2, 9, 3);
 
 // create the node instance on the EU-868 band
@@ -36,6 +37,14 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // make sure you are using the correct band
 // based on your geographical location!
 LoRaWANNode node(&radio, &EU868);
+
+// for fixed bands with subband selection
+// such as US915 and AU915, you must specify
+// the subband that matches the Frequency Plan
+// that you selected on your LoRaWAN console
+/*
+  LoRaWANNode node(&radio, &US915, 2);
+*/
 
 void setup() {
   Serial.begin(9600);
@@ -77,13 +86,11 @@ void setup() {
   // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
   // and can be set to NULL
 
-  // some frequency bands only use a subset of the available channels
-  // you can select the specific band or set the first channel and last channel
-  // for example, either of the following corresponds to US915 FSB2 in TTN
-  /*
-    node.selectSubband(2);
-    node.selectSubband(8, 15);
-  */
+
+  // on EEPROM-enabled boards, after the device has been activated,
+  // the session can be restored without rejoining after device power cycle
+  // this is intrinsically done when calling `beginOTAA()` with the same keys
+  // in that case, the function will not need to transmit a JoinRequest
 
   // now we can start the activation
   // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
@@ -147,7 +154,11 @@ void loop() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
-
+  
   // wait before sending another packet
-  delay(30000);
+  uint32_t minimumDelay = 60000;                  // try to send once every minute
+  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
+  uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+
+  delay(delayMs);
 }
