@@ -182,6 +182,7 @@ setFifoFullAction	KEYWORD2
 clearFifoFullAction	KEYWORD2
 fifoAdd	KEYWORD2
 fifoGet	KEYWORD2
+setLowBatteryThreshold	KEYWORD2
 
 # RF69-specific
 setAESKey	KEYWORD2

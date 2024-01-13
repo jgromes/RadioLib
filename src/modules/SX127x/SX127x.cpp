@@ -1714,4 +1714,26 @@ float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
   }
 }
 
+int16_t SX127x::setLowBatteryThreshold(int8_t level, uint32_t pin) {
+  // check disable
+  if(level < 0) {
+    return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_LOW_BAT, RADIOLIB_SX127X_LOW_BAT_OFF, 3, 3));
+  }
+
+  // enable detector and set the threshold
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_LOW_BAT, RADIOLIB_SX127X_LOW_BAT_ON | level, 3, 0);
+  RADIOLIB_ASSERT(state);
+
+  // set DIO mapping
+  switch(pin) {
+    case(0):
+      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_TEMP_CHANGE_LOW_BAT, 7, 6));
+    case(3):
+      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO3_CONT_TEMP_CHANGE_LOW_BAT, 1, 0));
+    case(4):
+      return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, RADIOLIB_SX127X_DIO4_PACK_TEMP_CHANGE_LOW_BAT, 7, 6));
+  }
+  return(RADIOLIB_ERR_INVALID_DIO_PIN);
+}
+
 #endif
