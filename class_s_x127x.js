@@ -65,6 +65,7 @@ var class_s_x127x =
     [ "setFifoEmptyAction", "class_s_x127x.html#a6fbdfd8e2a2ad1eb7e59a73385847acb", null ],
     [ "setFifoFullAction", "class_s_x127x.html#a201c31366f32c41b801724fb662265c1", null ],
     [ "setFrequencyDeviation", "class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679", null ],
+    [ "setLowBatteryThreshold", "class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472", null ],
     [ "setNodeAddress", "class_s_x127x.html#ab99630d50672b43fc7162ba8f3293f95", null ],
     [ "setOOK", "class_s_x127x.html#a24ef0af19a6b8954f956a3c3ad4286ee", null ],
     [ "setOokFixedOrFloorThreshold", "class_s_x127x.html#a17ff4e4e0afaebed727648e1400be538", null ],
