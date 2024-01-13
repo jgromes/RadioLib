@@ -139,7 +139,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
-  // wait for packet or timeout
+  // wait for packet start or timeout
   uint32_t start = this->mod->hal->micros();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
@@ -151,11 +151,16 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
     }
   }
 
-  // for some reason, blocking receive will sometimes return impossible packet lengths
-  // reading packet length again in readData seems to resolve this
-  size_t length = getPacketLength();
-  if((length == 0) || (length > RADIOLIB_CC1101_MAX_PACKET_LENGTH)) {
-    this->packetLengthQueried = false;
+  // wait for packet end or timeout
+  start = this->mod->hal->micros();
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+
+    if(this->mod->hal->micros() - start > timeout) {
+      standby();
+      SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
+      return(RADIOLIB_ERR_RX_TIMEOUT);
+    }
   }
 
   // read packet data
