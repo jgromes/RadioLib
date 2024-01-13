@@ -98,9 +98,9 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adc52e15b50e39f03c937b2289ad18463"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adc52e15b50e39f03c937b2289ad18463">LoRaWANNode</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *band)</td></tr>
-<tr class="memdesc:adc52e15b50e39f03c937b2289ad18463"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_lo_ra_w_a_n_node.html#adc52e15b50e39f03c937b2289ad18463">More...</a><br /></td></tr>
-<tr class="separator:adc52e15b50e39f03c937b2289ad18463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae05de563f765f14fe267e4d65844f76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *band, uint8_t subBand=0)</td></tr>
+<tr class="memdesc:aae05de563f765f14fe267e4d65844f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">More...</a><br /></td></tr>
+<tr class="separator:aae05de563f765f14fe267e4d65844f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9613998d071bcf401be9ad57ff8591ea"><td class="memItemLeft" align="right" valign="top"><a id="a9613998d071bcf401be9ad57ff8591ea"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea">wipe</a> ()</td></tr>
 <tr class="memdesc:a9613998d071bcf401be9ad57ff8591ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wipe internal persistent parameters. This will reset all counters and saved variables, so the device will have to rejoin the network. <br /></td></tr>
@@ -121,6 +121,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">saveSession</a> ()</td></tr>
 <tr class="memdesc:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the current state of the session. All variables are compared to what is saved and only the differences are rewritten.  <a href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">More...</a><br /></td></tr>
 <tr class="separator:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ff678f9cb57b97eb63886953aca1ba9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a6ff678f9cb57b97eb63886953aca1ba9">sendMacCommandReq</a> (uint8_t cid)</td></tr>
+<tr class="memdesc:a6ff678f9cb57b97eb63886953aca1ba9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <a href="class_lo_ra_w_a_n_node.html#a6ff678f9cb57b97eb63886953aca1ba9">More...</a><br /></td></tr>
+<tr class="separator:a6ff678f9cb57b97eb63886953aca1ba9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a">uplink</a> (const char *str, uint8_t port, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
 <tr class="memdesc:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a">More...</a><br /></td></tr>
 <tr class="separator:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -151,24 +154,45 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8b647b639d1c7f1a2a81397b41c01dd8">getAFcntDown</a> ()</td></tr>
 <tr class="memdesc:a8b647b639d1c7f1a2a81397b41c01dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last application downlink's frame counter. <br /></td></tr>
 <tr class="separator:a8b647b639d1c7f1a2a81397b41c01dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14e8a8a098df28ff5ee294f235500499"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a> (uint8_t drUp)</td></tr>
-<tr class="memdesc:a14e8a8a098df28ff5ee294f235500499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set uplink datarate. This should not be used when ADR is enabled.  <a href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">More...</a><br /></td></tr>
-<tr class="separator:a14e8a8a098df28ff5ee294f235500499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5693065bbb6d1c6c45efbe010d86f417"><td class="memItemLeft" align="right" valign="top"><a id="a5693065bbb6d1c6c45efbe010d86f417"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5693065bbb6d1c6c45efbe010d86f417">resetFcntDown</a> ()</td></tr>
+<tr class="memdesc:a5693065bbb6d1c6c45efbe010d86f417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the downlink frame counters (application and network) This is unsafe and can possibly allow replay attacks using downlinks. It mainly exists as part of the TS008 Specification Verification protocol. <br /></td></tr>
+<tr class="separator:a5693065bbb6d1c6c45efbe010d86f417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a70ae5e359bb228f09b7dc2048ee4a1c5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a70ae5e359bb228f09b7dc2048ee4a1c5">setDatarate</a> (uint8_t drUp, bool saveToEeprom=false)</td></tr>
+<tr class="memdesc:a70ae5e359bb228f09b7dc2048ee4a1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set uplink datarate. This should not be used when ADR is enabled.  <a href="class_lo_ra_w_a_n_node.html#a70ae5e359bb228f09b7dc2048ee4a1c5">More...</a><br /></td></tr>
+<tr class="separator:a70ae5e359bb228f09b7dc2048ee4a1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae222275f807f472083ea6100c23c75ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">setADR</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ae222275f807f472083ea6100c23c75ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle ADR to on or off.  <a href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">More...</a><br /></td></tr>
 <tr class="separator:ae222275f807f472083ea6100c23c75ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">setTxPower</a> (int8_t txPower)</td></tr>
-<tr class="memdesc:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure TX power of the radio module.  <a href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">More...</a><br /></td></tr>
-<tr class="separator:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaccc40080f514015432e47f862ce3b4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">selectSubband</a> (uint8_t idx)</td></tr>
-<tr class="memdesc:acaccc40080f514015432e47f862ce3b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a single subband (8 channels) for fixed bands such as US915. Only available before joining a network.  <a href="class_lo_ra_w_a_n_node.html#acaccc40080f514015432e47f862ce3b4">More...</a><br /></td></tr>
-<tr class="separator:acaccc40080f514015432e47f862ce3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad42f5c17216b235b7f39c99cb96d590c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad42f5c17216b235b7f39c99cb96d590c">selectSubband</a> (uint8_t startChannel, uint8_t endChannel)</td></tr>
-<tr class="memdesc:ad42f5c17216b235b7f39c99cb96d590c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select a set of channels for fixed bands such as US915. Only available before joining a network.  <a href="class_lo_ra_w_a_n_node.html#ad42f5c17216b235b7f39c99cb96d590c">More...</a><br /></td></tr>
-<tr class="separator:ad42f5c17216b235b7f39c99cb96d590c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab16e85446e0a843001d1dabad5223956"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ab16e85446e0a843001d1dabad5223956">setDutyCycle</a> (bool enable=true, uint32_t msPerHour=0)</td></tr>
+<tr class="memdesc:ab16e85446e0a843001d1dabad5223956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle adherence to dutyCycle limits to on or off.  <a href="class_lo_ra_w_a_n_node.html#ab16e85446e0a843001d1dabad5223956">More...</a><br /></td></tr>
+<tr class="separator:ab16e85446e0a843001d1dabad5223956"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a564386d9c15ad71a1a8703809c8a9741"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a564386d9c15ad71a1a8703809c8a9741">dutyCycleInterval</a> (uint32_t msPerHour, uint32_t airtime)</td></tr>
+<tr class="memdesc:a564386d9c15ad71a1a8703809c8a9741"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the minimum interval to adhere to a certain dutyCycle. This interval is based on the ToA of one uplink and does not actually keep track of total airtime.  <a href="class_lo_ra_w_a_n_node.html#a564386d9c15ad71a1a8703809c8a9741">More...</a><br /></td></tr>
+<tr class="separator:a564386d9c15ad71a1a8703809c8a9741"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5571bebeebbece3a6357e1c9868cb8b"><td class="memItemLeft" align="right" valign="top"><a id="ac5571bebeebbece3a6357e1c9868cb8b"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ac5571bebeebbece3a6357e1c9868cb8b">timeUntilUplink</a> ()</td></tr>
+<tr class="memdesc:ac5571bebeebbece3a6357e1c9868cb8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns time in milliseconds until next uplink is available under dutyCycle limits. <br /></td></tr>
+<tr class="separator:ac5571bebeebbece3a6357e1c9868cb8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40c5fdba815b26a44be7af68c184fe49"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a40c5fdba815b26a44be7af68c184fe49">setDwellTime</a> (bool enable, uint32_t msPerUplink=0)</td></tr>
+<tr class="memdesc:a40c5fdba815b26a44be7af68c184fe49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle adherence to dwellTime limits to on or off.  <a href="class_lo_ra_w_a_n_node.html#a40c5fdba815b26a44be7af68c184fe49">More...</a><br /></td></tr>
+<tr class="separator:a40c5fdba815b26a44be7af68c184fe49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3044715beeff759ed47342d532ac3205"><td class="memItemLeft" align="right" valign="top"><a id="a3044715beeff759ed47342d532ac3205"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205">maxPayloadDwellTime</a> ()</td></tr>
+<tr class="memdesc:a3044715beeff759ed47342d532ac3205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum payload given the currently present dwelltime limits. WARNING: the addition of MAC commands may cause uplink errors; if you want to be sure that your payload fits within dwelltime limits, subtract 16 from the result! <br /></td></tr>
+<tr class="separator:a3044715beeff759ed47342d532ac3205"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2264c1d9f8ff0f83dc4000a2c80bc25d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2264c1d9f8ff0f83dc4000a2c80bc25d">setTxPower</a> (int8_t txPower, bool saveToEeprom=false)</td></tr>
+<tr class="memdesc:a2264c1d9f8ff0f83dc4000a2c80bc25d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure TX power of the radio module.  <a href="class_lo_ra_w_a_n_node.html#a2264c1d9f8ff0f83dc4000a2c80bc25d">More...</a><br /></td></tr>
+<tr class="separator:a2264c1d9f8ff0f83dc4000a2c80bc25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfc9cdaa254a27c28403188c90991757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">setCSMA</a> (uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA=false)</td></tr>
 <tr class="memdesc:adfc9cdaa254a27c28403188c90991757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">More...</a><br /></td></tr>
 <tr class="separator:adfc9cdaa254a27c28403188c90991757"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf038f331c1dc954dafc2668e7a31ca0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a> (uint8_t *margin, uint8_t *gwCnt)</td></tr>
+<tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">More...</a><br /></td></tr>
+<tr class="separator:adf038f331c1dc954dafc2668e7a31ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a> (uint32_t *gpsEpoch, uint8_t *fraction, bool returnUnix=true)</td></tr>
+<tr class="memdesc:a9e6e1ce4296364606ff8b10fb5f971de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">More...</a><br /></td></tr>
+<tr class="separator:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -182,8 +206,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="adc52e15b50e39f03c937b2289ad18463"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adc52e15b50e39f03c937b2289ad18463">&#9670;&nbsp;</a></span>LoRaWANNode()</h2>
+<a id="aae05de563f765f14fe267e4d65844f76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae05de563f765f14fe267e4d65844f76">&#9670;&nbsp;</a></span>LoRaWANNode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,7 +222,13 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *&#160;</td>
-          <td class="paramname"><em>band</em>&#160;</td>
+          <td class="paramname"><em>band</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>subBand</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -213,6 +243,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
   <table class="params">
     <tr><td class="paramname">phy</td><td>Pointer to the <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> radio module. </td></tr>
     <tr><td class="paramname">band</td><td>Pointer to the LoRaWAN band to use. </td></tr>
+    <tr><td class="paramname">subBand</td><td>The subband to be used (starting from 1!) </td></tr>
   </table>
   </dd>
 </dl>
@@ -397,6 +428,127 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 
 </div>
 </div>
+<a id="a564386d9c15ad71a1a8703809c8a9741"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a564386d9c15ad71a1a8703809c8a9741">&#9670;&nbsp;</a></span>dutyCycleInterval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t LoRaWANNode::dutyCycleInterval </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>msPerHour</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>airtime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Calculate the minimum interval to adhere to a certain dutyCycle. This interval is based on the ToA of one uplink and does not actually keep track of total airtime. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">msPerHour</td><td>The maximum allowed dutycyle (in milliseconds per hour). </td></tr>
+    <tr><td class="paramname">airtime</td><td>The airtime of the uplink. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Required interval (delay) in milliseconds between consecutive uplinks. </dd></dl>
+
+</div>
+</div>
+<a id="a9e6e1ce4296364606ff8b10fb5f971de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e6e1ce4296364606ff8b10fb5f971de">&#9670;&nbsp;</a></span>getMacDeviceTimeAns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::getMacDeviceTimeAns </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>gpsEpoch</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>fraction</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>returnUnix</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">gpsEpoch</td><td>Number of seconds since GPS epoch (Jan. 6th 1980) </td></tr>
+    <tr><td class="paramname">fraction</td><td>Fractional-second, in 1/256-second steps </td></tr>
+    <tr><td class="paramname">returnUnix</td><td>If true, returns Unix timestamp instead of GPS (default true) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="adf038f331c1dc954dafc2668e7a31ca0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf038f331c1dc954dafc2668e7a31ca0">&#9670;&nbsp;</a></span>getMacLinkCheckAns()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::getMacLinkCheckAns </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>margin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>gwCnt</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">margin</td><td>Link margin in dB of LinkCheckReq demodulation at gateway side. </td></tr>
+    <tr><td class="paramname">gwCnt</td><td>Number of gateways that received the LinkCheckReq. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ae9e0dc5118e68b8b766b7d205bd4c784"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae9e0dc5118e68b8b766b7d205bd4c784">&#9670;&nbsp;</a></span>restore()</h2>
 
@@ -413,7 +565,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 </div><div class="memdoc">
 
 <p>Restore session by loading information from persistent storage. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> in case of error, else LoRaWAN session mode (0 = no active session, 0xAA / 170 = OTAA, 0xAB / 171 = ABP) </dd></dl>
 
 </div>
 </div>
@@ -437,68 +589,30 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 
 </div>
 </div>
-<a id="acaccc40080f514015432e47f862ce3b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acaccc40080f514015432e47f862ce3b4">&#9670;&nbsp;</a></span>selectSubband() <span class="overload">[1/2]</span></h2>
+<a id="a6ff678f9cb57b97eb63886953aca1ba9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ff678f9cb57b97eb63886953aca1ba9">&#9670;&nbsp;</a></span>sendMacCommandReq()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANNode::selectSubband </td>
+          <td class="memname">bool LoRaWANNode::sendMacCommandReq </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>idx</em></td><td>)</td>
+          <td class="paramname"><em>cid</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Select a single subband (8 channels) for fixed bands such as US915. Only available before joining a network. </p>
+<p>Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">idx</td><td>The subband to be used (starting from 1!) </td></tr>
+    <tr><td class="paramname">cid</td><td>ID of the MAC command </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="ad42f5c17216b235b7f39c99cb96d590c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad42f5c17216b235b7f39c99cb96d590c">&#9670;&nbsp;</a></span>selectSubband() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::selectSubband </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>startChannel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>endChannel</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Select a set of channels for fixed bands such as US915. Only available before joining a network. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">startChannel</td><td>The first channel of the band to be used (inclusive) </td></tr>
-    <tr><td class="paramname">endChannel</td><td>The last channel of the band to be used (inclusive) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Whether or not the MAC command was added to the queue. </dd></dl>
 
 </div>
 </div>
@@ -725,8 +839,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 
 </div>
 </div>
-<a id="a14e8a8a098df28ff5ee294f235500499"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14e8a8a098df28ff5ee294f235500499">&#9670;&nbsp;</a></span>setDatarate()</h2>
+<a id="a70ae5e359bb228f09b7dc2048ee4a1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70ae5e359bb228f09b7dc2048ee4a1c5">&#9670;&nbsp;</a></span>setDatarate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -735,8 +849,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
           <td class="memname">int16_t LoRaWANNode::setDatarate </td>
           <td>(</td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>drUp</em></td><td>)</td>
+          <td class="paramname"><em>drUp</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>saveToEeprom</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -745,6 +869,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">dr</td><td>Datarate to use for uplinks. </td></tr>
+    <tr><td class="paramname">saveToEeprom</td><td>Whether to save this setting to EEPROM or not (default false). </td></tr>
   </table>
   </dd>
 </dl>
@@ -778,8 +903,82 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 
 </div>
 </div>
-<a id="a9af613f7d923e7bdcfdbd020132c6d4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9af613f7d923e7bdcfdbd020132c6d4b">&#9670;&nbsp;</a></span>setTxPower()</h2>
+<a id="ab16e85446e0a843001d1dabad5223956"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab16e85446e0a843001d1dabad5223956">&#9670;&nbsp;</a></span>setDutyCycle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::setDutyCycle </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>msPerHour</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Toggle adherence to dutyCycle limits to on or off. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>Whether to adhere to dutyCycle limits or not (default true). </td></tr>
+    <tr><td class="paramname">msPerHour</td><td>The maximum allowed Time-on-Air per hour in milliseconds (default 0 = maximum allowed for configured band). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a40c5fdba815b26a44be7af68c184fe49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40c5fdba815b26a44be7af68c184fe49">&#9670;&nbsp;</a></span>setDwellTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::setDwellTime </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>msPerUplink</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Toggle adherence to dwellTime limits to on or off. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enable</td><td>Whether to adhere to dwellTime limits or not (default true). </td></tr>
+    <tr><td class="paramname">msPerHour</td><td>The maximum allowed Time-on-Air per uplink in milliseconds (default 0 = maximum allowed for configured band). </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2264c1d9f8ff0f83dc4000a2c80bc25d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2264c1d9f8ff0f83dc4000a2c80bc25d">&#9670;&nbsp;</a></span>setTxPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -788,8 +987,18 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
           <td class="memname">int16_t LoRaWANNode::setTxPower </td>
           <td>(</td>
           <td class="paramtype">int8_t&#160;</td>
-          <td class="paramname"><em>txPower</em></td><td>)</td>
+          <td class="paramname"><em>txPower</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>saveToEeprom</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -798,6 +1007,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">txPower</td><td>Output power during TX mode to be set in dBm. </td></tr>
+    <tr><td class="paramname">saveToEeprom</td><td>Whether to save this setting to EEPROM or not (default false). </td></tr>
   </table>
   </dd>
 </dl>

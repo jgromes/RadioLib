@@ -9,7 +9,6 @@ var group__status__codes =
     [ "RADIOLIB_ERR_COMMAND_QUEUE_FULL", "group__status__codes.html#ga442250961d11f2582857cd1eafe0df17", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND", "group__status__codes.html#gac4e026589229f7f737c77c641447d180", null ],
     [ "RADIOLIB_ERR_CRC_MISMATCH", "group__status__codes.html#ga9da949184e940a4fa6f4afb63c315963", null ],
-    [ "RADIOLIB_ERR_DATA_RATE_INVALID", "group__status__codes.html#ga6e26158e75f1d83939b5e457f1f316b8", null ],
     [ "RADIOLIB_ERR_DOWNLINK_MALFORMED", "group__status__codes.html#gab120f980c06c581cd071452464199aac", null ],
     [ "RADIOLIB_ERR_INVALID_ADDRESS_WIDTH", "group__status__codes.html#gafbc04b924d23cba05307e94972d7d607", null ],
     [ "RADIOLIB_ERR_INVALID_BANDWIDTH", "group__status__codes.html#ga0710b406a7e12ab6e0f77fdb3374cd9a", null ],

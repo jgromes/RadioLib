@@ -14,7 +14,7 @@ var searchData=
   ['digitalread_51',['digitalRead',['../class_radio_lib_hal.html#a0c7c2dffd662cefca7bf11e14c56dab2',1,'RadioLibHal']]],
   ['digitalwrite_52',['digitalWrite',['../class_radio_lib_hal.html#a4db0c60f2f6f64003f04cf0e03fea7ab',1,'RadioLibHal']]],
   ['dir_53',['dir',['../struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805',1,'LoRaWANEvent_t']]],
-  ['disableaddressfiltering_54',['disableAddressFiltering',['../class_r_f69.html#a5996fc1751e7542baafa0d6c0a6c78ee',1,'RF69::disableAddressFiltering()'],['../class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2',1,'SX126x::disableAddressFiltering()'],['../class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5',1,'SX127x::disableAddressFiltering()'],['../class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883',1,'CC1101::disableAddressFiltering()']]],
+  ['disableaddressfiltering_54',['disableAddressFiltering',['../class_s_x126x.html#afc3a7a42c401b6c44e00cb6c5b9696f2',1,'SX126x::disableAddressFiltering()'],['../class_c_c1101.html#a9aee5df428d30b9c80b8a8700609a883',1,'CC1101::disableAddressFiltering()'],['../class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5',1,'SX127x::disableAddressFiltering()'],['../class_r_f69.html#a5996fc1751e7542baafa0d6c0a6c78ee',1,'RF69::disableAddressFiltering()']]],
   ['disableaes_55',['disableAES',['../class_r_f69.html#a15fafb6c24a8b5721623be447628bbaa',1,'RF69']]],
   ['disablebitsync_56',['disableBitSync',['../class_s_x127x.html#a8025b05b8f4f2f2abb4cd803b06e2ebd',1,'SX127x']]],
   ['disablecontinuousmodebitsync_57',['disableContinuousModeBitSync',['../class_r_f69.html#a97d3570f4f898dde47e3daf8043e7bad',1,'RF69']]],
@@ -23,5 +23,8 @@ var searchData=
   ['downlink_60',['downlink',['../class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226',1,'LoRaWANNode']]],
   ['drmax_61',['drMax',['../struct_lo_ra_w_a_n_channel__t.html#aeabadf186d7bc105f6d289e3a491412c',1,'LoRaWANChannel_t::drMax()'],['../struct_lo_ra_w_a_n_channel_span__t.html#a914d2b6f54e9c8d2841acf1d0652fd79',1,'LoRaWANChannelSpan_t::drMax()']]],
   ['drmin_62',['drMin',['../struct_lo_ra_w_a_n_channel__t.html#abb028e93f3fe15ed6f95e5fcd8a62f53',1,'LoRaWANChannel_t::drMin()'],['../struct_lo_ra_w_a_n_channel_span__t.html#ab613b4ca3a2c99ef0aa53f8132f54535',1,'LoRaWANChannelSpan_t::drMin()']]],
-  ['dropsync_63',['dropSync',['../class_physical_layer.html#a429796eb2e7ea86781a2e8ca42af43f3',1,'PhysicalLayer']]]
+  ['dropsync_63',['dropSync',['../class_physical_layer.html#a429796eb2e7ea86781a2e8ca42af43f3',1,'PhysicalLayer']]],
+  ['dutycycle_64',['dutyCycle',['../struct_lo_ra_w_a_n_band__t.html#af960a5981e5953d09dda830ddb67de89',1,'LoRaWANBand_t']]],
+  ['dutycycleinterval_65',['dutyCycleInterval',['../class_lo_ra_w_a_n_node.html#a564386d9c15ad71a1a8703809c8a9741',1,'LoRaWANNode']]],
+  ['dwelltimeup_66',['dwellTimeUp',['../struct_lo_ra_w_a_n_band__t.html#a097bc6dc35cf0ba5ba04fd7f88dbaca9',1,'LoRaWANBand_t']]]
 ];
