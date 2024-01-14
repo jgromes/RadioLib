@@ -105,9 +105,12 @@ int16_t LoRaWANNode::restore() {
   RADIOLIB_ASSERT(state);
 
   // get MAC state
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
+    .repeat = 0,
+  };
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), cmd.payload, cmd.len);
   execMacCommand(&cmd, false);
 
@@ -249,8 +252,12 @@ int16_t LoRaWANNode::restoreChannels() {
     uint8_t buffer[numBytes] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), buffer, numBytes);
     
-    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-    cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+    LoRaWANMacCommand_t cmd = {
+      .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+      .payload = { 0 }, 
+      .len = 0,
+      .repeat = 0,
+    };
     
     for(int i = 0; i < numADRCommands; i++) {
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
@@ -266,9 +273,12 @@ int16_t LoRaWANNode::restoreChannels() {
 #endif
 
 void LoRaWANNode::beginCommon(uint8_t joinDr) {
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
+    .repeat = 0,
+  };
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     uint8_t drUp = 0;
     // if join datarate is user-specified and valid, select that value; otherwise use
@@ -538,9 +548,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
   }
 
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP].lenDn,
+    .repeat = 0,
+  };
   cmd.payload[0] = dlSettings & 0x7F;
   uint32_t rx2Freq = uint32_t(this->rx2.freq * 10000);      // default Rx2 frequency
   LoRaWANNode::hton<uint32_t>(&cmd.payload[1], rx2Freq, 3);
@@ -1716,9 +1729,12 @@ int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
   // chMask is set for 16 channels at once, so widen the Cntl value
   uint8_t chMaskCntl = (subBand - 1) / 2;   // compensate the 1 offset
 
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
+    .repeat = 0,
+  };
 
   // if there are two channel spans, first set the channel from second span
   if(this->band->numTxSpans == 2) {
@@ -1765,8 +1781,12 @@ int16_t LoRaWANNode::processCFList(uint8_t* cfList) {
       num++;
     }
 
-    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-    cmd.cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
+    LoRaWANMacCommand_t cmd = {
+      .cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL,
+      .payload = { 0 }, 
+      .len = 0,
+      .repeat = 0,
+    };
     // datarate range for all new channels is equal to the default channels
     cmd.payload[4] = (this->band->txFreqs[0].drMax << 4) | this->band->txFreqs[0].drMin;
     for(uint8_t i = 0; i < 5; i++, num++) {
@@ -1781,8 +1801,12 @@ int16_t LoRaWANNode::processCFList(uint8_t* cfList) {
       this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i] = RADIOLIB_LORAWAN_CHANNEL_NONE;
     }
 
-    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-    cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
+    LoRaWANMacCommand_t cmd = {
+      .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+      .payload = { 0 }, 
+      .len = 0,
+      .repeat = 0,
+    };
     cmd.payload[0] = 0xFF;  // same datarate and payload
 
     // in case of mask-type bands, copy those frequencies that are masked true into the available TX channels
@@ -1862,9 +1886,12 @@ int16_t LoRaWANNode::setDatarate(uint8_t drUp, bool saveToEeprom) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
 
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
+    .repeat = 0,
+  };
   cmd.payload[0]  = (drUp << 4);
   cmd.payload[0] |= 0x0F;               // keep Tx Power the same
   cmd.payload[3]  = (1 << 7);           // set the RFU bit, which means that the channel mask gets ignored
@@ -1952,9 +1979,12 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower, bool saveToEeprom) {
   // e.g. on EU868, max is 16; if 13 is selected then we set to 12
   uint8_t txPowerNew = (this->txPowerMax - txPower) / 2 + 1;
 
-  LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-  cmd.cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
+  LoRaWANMacCommand_t cmd = {
+    .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
+    .payload = { 0 }, 
+    .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
+    .repeat = 0,
+  };
   cmd.payload[0]  = 0xF0;               // keep datarate the same
   cmd.payload[0] |= txPowerNew;         // set the Tx Power
   cmd.payload[3]  = (1 << 7);           // set the RFU bit, which means that the channel mask gets ignored
@@ -2039,7 +2069,12 @@ bool LoRaWANNode::sendMacCommandReq(uint8_t cid) {
   if(!valid)
     return(false);
   
-  LoRaWANMacCommand_t cmd = { cid, 0, 0, 0 };
+  LoRaWANMacCommand_t cmd = {
+    .cid = cid,
+    .payload = { 0 }, 
+    .len = 0,
+    .repeat = 0,
+  };
   pushMacCommand(&cmd, &this->commandsUp);
   return(true);
 }
