@@ -661,9 +661,10 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 }
 
 int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force) {
-  Module* mod = this->phyLayer->getMod();
-  
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+  // only needed for persistent storage
+  Module* mod = this->phyLayer->getMod();
+
   // check if we actually need to restart from a clean session
   uint16_t checkSum = 0;
   checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&addr), 4);
