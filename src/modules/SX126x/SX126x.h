@@ -1126,6 +1126,9 @@ class SX126x: public PhysicalLayer {
 #endif
     const char* chipType;
     uint8_t bandwidth = 0;
+    
+    // Allow subclasses to define different TX modes
+    uint8_t txMode = Module::MODE_TX;
 
     int16_t setFrequencyRaw(float freq);
     int16_t fixPaClamping(bool enable = true);
@@ -1154,9 +1157,6 @@ class SX126x: public PhysicalLayer {
 
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;
-
-    // Allow subclasses to define different TX modes
-    uint8_t txMode = Module::MODE_TX;
 
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
