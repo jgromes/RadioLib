@@ -3,7 +3,7 @@
 
 #include "../../TypeDef.h"
 
-#if !RADIOLIB_EXCLUDE_SX1233
+#if !RADIOLIB_EXCLUDE_SX1231
 
 #include "../../Module.h"
 #include "../RF69/RF69.h"

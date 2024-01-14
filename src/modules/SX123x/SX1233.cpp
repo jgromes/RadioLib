@@ -1,6 +1,6 @@
 #include "SX1233.h"
 #include <math.h>
-#if !RADIOLIB_EXCLUDE_SX1233
+#if !RADIOLIB_EXCLUDE_SX1231
 
 SX1233::SX1233(Module* mod) : SX1231(mod) {
 
