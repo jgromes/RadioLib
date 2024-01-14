@@ -54,7 +54,9 @@ jobs:
           - id: arduino:mbed:envie_m4
             run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: arduino:megaavr:uno2018
-            run: echo "options=':mode=on'" >> $GITHUB_OUTPUT
+            run: |
+              echo "options=':mode=on'" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
           - id: arduino:sam:arduino_due_x
             run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: arduino:samd:arduino_zero_native
