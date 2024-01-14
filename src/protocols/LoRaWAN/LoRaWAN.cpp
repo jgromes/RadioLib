@@ -1884,7 +1884,7 @@ void LoRaWANNode::setADR(bool enable) {
 }
 
 void LoRaWANNode::setDutyCycle(bool enable, uint32_t msPerHour) {
-  this->dutyCycleEnabled = true;
+  this->dutyCycleEnabled = enable;
   if(msPerHour <= 0) {
     this->dutyCycle = this->band->dutyCycle;
   } else {
