@@ -191,6 +191,11 @@
 // maximum allowed dwell time on bands that implement dwell time limitations
 #define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
 
+// Maximum MAC command sizes
+#define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN               (5)
+#define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
+#define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
+
 struct LoRaWANMacSpec_t {
   const uint8_t cid;
   const uint8_t lenDn;

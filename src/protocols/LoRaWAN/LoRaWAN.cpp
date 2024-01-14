@@ -218,12 +218,10 @@ int16_t LoRaWANNode::restoreChannels() {
   uint8_t bufferZeroes[5] = { 0 };
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     uint8_t numBytesUp = RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * MacTable[RADIOLIB_LORAWAN_MAC_NEW_CHANNEL].lenDn;
-    uint8_t bufferUp[numBytesUp] = { 0 };
+    uint8_t bufferUp[RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), bufferUp, numBytesUp);
     
-    LoRaWANMacCommand_t cmd = { 0, 0, 0, 0 };
-    cmd.cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
-    
+    LoRaWANMacCommand_t cmd = { .cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL, .payload = { 0 }, .len = 0, .repeat = 0 };
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_NEW_CHANNEL].lenDn;
       memcpy(cmd.payload, &(bufferUp[i * cmd.len]), cmd.len);
@@ -233,7 +231,7 @@ int16_t LoRaWANNode::restoreChannels() {
     }
 
     uint8_t numBytesDn = RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * MacTable[RADIOLIB_LORAWAN_MAC_DL_CHANNEL].lenDn;
-    uint8_t bufferDn[numBytesDn] = { 0 };
+    uint8_t bufferDn[RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS * RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_DL_CHANNELS_ID), bufferDn, numBytesDn);
     
     cmd.cid = RADIOLIB_LORAWAN_MAC_DL_CHANNEL;
@@ -249,7 +247,7 @@ int16_t LoRaWANNode::restoreChannels() {
   } else {  // RADIOLIB_LORAWAN_BAND_FIXED
     uint8_t numADRCommands = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID);
     uint8_t numBytes = numADRCommands * MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
-    uint8_t buffer[numBytes] = { 0 };
+    uint8_t buffer[RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS * RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), buffer, numBytes);
     
     LoRaWANMacCommand_t cmd = {
