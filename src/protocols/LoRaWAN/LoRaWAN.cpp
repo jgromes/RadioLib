@@ -1898,7 +1898,7 @@ uint32_t LoRaWANNode::dutyCycleInterval(uint32_t msPerHour, uint32_t airtime) {
   if(msPerHour == 0 || airtime == 0) {
     return(0);
   }
-  uint32_t oneHourInMs = 60 * 60 * 1000;
+  uint32_t oneHourInMs = (uint32_t)60 * (uint32_t)60 * (uint32_t)1000;
   float numPackets = msPerHour / airtime;
   uint32_t delayMs = oneHourInMs / numPackets + 1;  // + 1 to prevent rounding problems
   return(delayMs);
@@ -2244,7 +2244,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
       if(maxDutyCycle == 0) {
         this->dutyCycle = this->band->dutyCycle;
       } else {
-        this->dutyCycle = 60 * 60 * 1000 / (1 << maxDutyCycle);
+        this->dutyCycle = (uint32_t)60 * (uint32_t)60 * (uint32_t)1000 / (uint32_t)(1UL << maxDutyCycle);
       }
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
