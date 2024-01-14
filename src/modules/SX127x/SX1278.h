@@ -305,7 +305,7 @@ class SX1278: public SX127x {
   \class RFM98
   \brief Only exists as alias for SX1278, since there seems to be no difference between %RFM98 and %SX1278 modules.
 */
-RADIOLIB_TYPE_ALIAS(SX1278, RFM98);
+RADIOLIB_TYPE_ALIAS(SX1278, RFM98)
 
 #endif
 

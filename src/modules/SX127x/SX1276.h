@@ -73,13 +73,13 @@ class SX1276: public SX1278 {
   \class RFM95
   \brief Only exists as alias for SX1276, since there seems to be no difference between %RFM95 and %SX1276 modules.
 */
-RADIOLIB_TYPE_ALIAS(SX1276, RFM95);
+RADIOLIB_TYPE_ALIAS(SX1276, RFM95)
 
 /*!
   \class RFM96
   \brief Only exists as alias for SX1276, since there seems to be no difference between %RFM96 and %SX1276 modules.
 */
-RADIOLIB_TYPE_ALIAS(SX1276, RFM96);
+RADIOLIB_TYPE_ALIAS(SX1276, RFM96)
 
 #endif
 
