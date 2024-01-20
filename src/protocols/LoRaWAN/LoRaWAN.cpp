@@ -65,17 +65,17 @@ int16_t LoRaWANNode::restore() {
   // }
   (void)nvm_table_version;
 
-  // check the magic value
-  uint8_t lwMode = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID);
+  // check the mode value
+  uint16_t lwMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID);
   if(lwMode == RADIOLIB_LORAWAN_MODE_NONE) {
     #if RADIOLIB_DEBUG
-      RADIOLIB_DEBUG_PRINTLN("magic id not set (no saved session)");
+      RADIOLIB_DEBUG_PRINTLN("mode value not set (no saved session)");
       RADIOLIB_DEBUG_PRINTLN("first 16 bytes of NVM:");
       uint8_t nvmBuff[16];
       mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
       RADIOLIB_DEBUG_HEXDUMP(nvmBuff, 16);
     #endif
-    // the magic value is not set, user will have to do perform the join procedure
+    // the mode value is not set, user will have to do perform the join procedure
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
   
@@ -396,7 +396,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     return(this->restore());
   } else {
     #if RADIOLIB_DEBUG
-      RADIOLIB_DEBUG_PRINTLN("Failed to restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
+      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
       uint8_t nvmBuff[16];
       mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
@@ -683,7 +683,7 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
     return(this->restore());
   } else {
     #if RADIOLIB_DEBUG
-      RADIOLIB_DEBUG_PRINTLN("Failed to restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
+      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
       uint8_t nvmBuff[16];
       mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
