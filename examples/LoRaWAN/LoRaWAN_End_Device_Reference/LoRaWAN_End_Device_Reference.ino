@@ -100,7 +100,7 @@ void setup() {
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
 
-  if(state == RADIOLIB_ERR_NONE) {
+  if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
     Serial.print(F("failed, code "));
