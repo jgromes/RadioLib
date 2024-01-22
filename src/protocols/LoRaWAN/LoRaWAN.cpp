@@ -277,6 +277,11 @@ int16_t LoRaWANNode::restoreChannels() {
 #endif
 
 void LoRaWANNode::beginCommon(uint8_t joinDr) {
+  // in case a new session is started while there is an ongoing session
+  // clear the MAC queues completely
+  memset(&(this->commandsUp), 0, sizeof(LoRaWANMacCommandQueue_t));
+  memset(&(this->commandsDown), 0, sizeof(LoRaWANMacCommandQueue_t));
+
   LoRaWANMacCommand_t cmd = {
     .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
     .payload = { 0 }, 
@@ -1732,6 +1737,11 @@ int16_t LoRaWANNode::setupChannelsDyn(bool joinRequest) {
       this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][num] = this->band->txFreqs[num];
       RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
     }
+  }
+
+  // clear all remaining channels
+  for(; num < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; num++) {
+    this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = RADIOLIB_LORAWAN_CHANNEL_NONE;
   }
   
   return(RADIOLIB_ERR_NONE);
