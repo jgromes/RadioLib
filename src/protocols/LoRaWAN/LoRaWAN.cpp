@@ -1918,7 +1918,7 @@ int16_t LoRaWANNode::setDatarate(uint8_t drUp, bool saveToEeprom) {
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
     LoRaWANChannel_t *chnl = &(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i]);
     if(chnl->enabled) {
-      if(drUp > chnl->drMin && drUp < chnl->drMax) {
+      if(drUp >= chnl->drMin && drUp <= chnl->drMax) {
         isValidDR = true;
         break;
       }
