@@ -2278,6 +2278,10 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         if((cmd->payload[3] >> 7) == 1) {
           mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID) + 1, &(cmd->payload[1]), 3);
         }
+        // if there was no channel mask (all zeroes), we should never apply that channel mask, so set RFU bit again
+        if(cmd->payload[1] == 0 && cmd->payload[2] == 0) {
+          cmd->payload[3] |= (1 << 7);
+        }
 
         // save to the single ADR MAC location
         mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), &(cmd->payload[0]), payLen);
