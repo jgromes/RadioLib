@@ -111,8 +111,12 @@ int16_t LoRaWANNode::restore() {
     .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
     .repeat = 0,
   };
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), cmd.payload, cmd.len);
-  execMacCommand(&cmd, false);
+
+  // only apply the single ADR command on dynamic bands; fixed bands is done through channel restore
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
+    mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), cmd.payload, cmd.len);
+    execMacCommand(&cmd, false);
+  }
 
   cmd.cid = RADIOLIB_LORAWAN_MAC_DUTY_CYCLE;
   cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_DUTY_CYCLE].lenDn;
@@ -207,7 +211,7 @@ int16_t LoRaWANNode::restoreFcntUp() {
 }
 
 int16_t LoRaWANNode::restoreChannels() {
-  // first do the default channels
+  // first do the default channels, in case these are not covered by restored channels
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     this->setupChannelsDyn(false);
   } else {                // RADIOLIB_LORAWAN_BAND_FIXED
@@ -226,6 +230,7 @@ int16_t LoRaWANNode::restoreChannels() {
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_NEW_CHANNEL].lenDn;
       memcpy(cmd.payload, &(bufferUp[i * cmd.len]), cmd.len);
       if(memcmp(cmd.payload, bufferZeroes, cmd.len) != 0) { // only execute if it is not all zeroes
+        cmd.repeat = 1;
         (void)execMacCommand(&cmd, false);
       }
     }
@@ -262,6 +267,7 @@ int16_t LoRaWANNode::restoreChannels() {
       memcpy(cmd.payload, &buffer[i * cmd.len], cmd.len);
       // there COULD, according to spec, be an all zeroes ADR command - meh
       if(memcmp(cmd.payload, bufferZeroes, cmd.len) != 0) {
+        cmd.repeat = (i+1);
         execMacCommand(&cmd, false);
       }
     }
@@ -1436,19 +1442,36 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     RADIOLIB_DEBUG_PRINTLN("fopts:");
     RADIOLIB_DEBUG_HEXDUMP(fopts, foptsLen);
 
+    bool hasADR = false;
+    uint8_t numADR = 0;
+    uint8_t lastCID = 0;
+
     // process the MAC command(s)
     int8_t remLen = foptsLen;
     uint8_t* foptsPtr = fopts;
     while(remLen > 0) {
       uint8_t cid = *foptsPtr;
       uint8_t macLen = getMacPayloadLength(cid);
+      if(cid == RADIOLIB_LORAWAN_MAC_LINK_ADR) {
+        // if there was an earlier ADR command but it was not the last, ignore it
+        if(hasADR && lastCID != RADIOLIB_LORAWAN_MAC_LINK_ADR) {
+          RADIOLIB_DEBUG_PRINTLN("Encountered non-consecutive block of ADR commands - skipping");
+          remLen -= (macLen + 1);
+          foptsPtr += (macLen + 1);
+          lastCID = cid;
+          continue;
+        }
+        // otherwise, set ADR flag to true and increase counter
+        hasADR = true;
+        numADR++;
+      }
       if(macLen + 1 > remLen)
         break;
       LoRaWANMacCommand_t cmd = {
         .cid = cid,
         .payload = { 0 },
         .len = macLen,
-        .repeat = 0,
+        .repeat = (cid == RADIOLIB_LORAWAN_MAC_LINK_ADR ? numADR : (uint8_t)0),
       };
       memcpy(cmd.payload, foptsPtr + 1, macLen);
       RADIOLIB_DEBUG_PRINTLN("[%02X]: %02X %02X %02X %02X %02X (%d)",
@@ -1463,6 +1486,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       // processing succeeded, move in the buffer to the next command
       remLen -= (macLen + 1);
       foptsPtr += (macLen + 1);
+      lastCID = cid;
       RADIOLIB_DEBUG_PRINTLN("Processed: %d, remaining: %d", (macLen + 1), remLen);
     }
 
@@ -1736,6 +1760,8 @@ int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
   // chMask is set for 16 channels at once, so widen the Cntl value
   uint8_t chMaskCntl = (subBand - 1) / 2;   // compensate the 1 offset
 
+  uint8_t numADR = 1;
+
   LoRaWANMacCommand_t cmd = {
     .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
     .payload = { 0 }, 
@@ -1752,6 +1778,7 @@ int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
     cmd.payload[2]  = 0;
     cmd.payload[3]  = (7 << 4);             // set the chMaskCntl value to all channels off
     cmd.payload[3] |= 0;                    // keep NbTrans the same
+    cmd.repeat = numADR++;
     (void)execMacCommand(&cmd, false);
   }
 
@@ -1770,6 +1797,7 @@ int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
   }
   cmd.payload[3]  = (chMaskCntl << 4);      // set the chMaskCntl value
   cmd.payload[3] |= 0;                      // keep NbTrans the same
+  cmd.repeat = numADR++;
   (void)execMacCommand(&cmd, false);
 
   return(RADIOLIB_ERR_NONE);
@@ -2204,7 +2232,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         }
       }
 
-      bool isSuccessive = false;
+
       uint8_t chMaskAck = 1;
       // only apply channel mask when the RFU bit is not set
       // (which is set on the internal MAC command when creating new session)
@@ -2213,13 +2241,17 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
           chMaskAck = (uint8_t)this->applyChannelMaskDyn(chMaskCntl, chMask);
 
         } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-          // if there was already an ADR response in the uplink MAC queue, 
-          // this is a consecutive ADR command, so we delete the prior response
-          int16_t state = deleteMacCommand(RADIOLIB_LORAWAN_MAC_LINK_ADR, &this->commandsUp);
-          if(state == RADIOLIB_ERR_NONE) {
-            isSuccessive = true;
+          bool clearChannels = false;
+          if(cmd->repeat == 1) {
+            // if this is the first ADR command in the queue, clear all saved channels
+            // so we can apply the new channel mask
+            clearChannels = true;
+          } else {
+            // if this is not the first ADR command, clear the ADR response that was in the queue
+            (void)deleteMacCommand(RADIOLIB_LORAWAN_MAC_LINK_ADR, &this->commandsUp);
           }
-          chMaskAck = (uint8_t)this->applyChannelMaskFix(chMaskCntl, chMask, !isSuccessive);
+          RADIOLIB_DEBUG_PRINTLN("ADR mask: clearing channels");
+          chMaskAck = (uint8_t)this->applyChannelMaskFix(chMaskCntl, chMask, clearChannels);
 
         }
       }
@@ -2242,32 +2274,28 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         // save to the single ADR MAC location
         mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), &(cmd->payload[0]), payLen);
       
-      } else {
-        // read how many ADR masks are already stored
-        uint8_t numMacADR = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID);
-        RADIOLIB_DEBUG_PRINTLN("[1] Successive: %d, numMacADR: %d, RFU: %d, payload: %02X %02X %02X %02X",
-                                isSuccessive, numMacADR, (cmd->payload[3] >> 7),
+      } else {                // RADIOLIB_LORAWAN_BAND_FIXED
+        RADIOLIB_DEBUG_PRINTLN("[1] Repeat: %d, RFU: %d, payload: %02X %02X %02X %02X",
+                                cmd->repeat, (cmd->payload[3] >> 7),
                                 cmd->payload[0], cmd->payload[1], cmd->payload[2], cmd->payload[3]);
         // if RFU bit is set, this is just a change in Datarate or TxPower
         // so read bytes 1..3 from last stored ADR command into the current MAC payload and re-store it
         if((cmd->payload[3] >> 7) == 1) {
+          // read how many ADR masks are already stored
+          uint8_t numMacADR = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID);
           if(numMacADR > 0) {
             mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID) + (numMacADR - 1) * payLen + 1, &(cmd->payload[1]), 3);
             mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID) + (numMacADR - 1) * payLen, &(cmd->payload[0]), payLen);
           }
         
         } else {
-          // if no previous mask was processed, reset counter to 0
-          if(!isSuccessive) {
-            numMacADR = 0;
-          }
-          // save to the uplink channel location, to the numMacADR-th slot of 4 bytes
-          mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID) + numMacADR * payLen, &(cmd->payload[0]), payLen);
-          // saved an ADR mask, so increase counter
-          mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID, numMacADR + 1);
+          // save to the uplink channel location, to the cmd->repeat-th slot of 4 bytes
+          mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID) + (cmd->repeat - 1) * payLen, &(cmd->payload[0]), payLen);
+          // saved an ADR mask, so re-store counter
+          mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID, cmd->repeat);
         }
-        RADIOLIB_DEBUG_PRINTLN("[2] Successive: %d, numMacADR: %d, RFU: %d, payload: %02X %02X %02X %02X",
-                                isSuccessive, numMacADR, (cmd->payload[3] >> 7),
+        RADIOLIB_DEBUG_PRINTLN("[2] Repeat: %d, RFU: %d, payload: %02X %02X %02X %02X",
+                                cmd->repeat, (cmd->payload[3] >> 7),
                                 cmd->payload[0], cmd->payload[1], cmd->payload[2], cmd->payload[3]);
       }
     }
@@ -2276,6 +2304,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
       // send the reply
       cmd->len = 1;
       cmd->payload[0] = (pwrAck << 2) | (drAck << 1) | (chMaskAck << 0);
+      cmd->repeat = 0;  // discard any repeat value that may have been set
       RADIOLIB_DEBUG_PRINTLN("ADR ANS: status = 0x%02x", cmd->payload[0]);
       return(true);
     } break;
