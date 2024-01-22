@@ -1849,13 +1849,11 @@ int16_t LoRaWANNode::processCFList(uint8_t* cfList) {
     for(size_t chMaskCntl = 0; chMaskCntl < numChMasks; chMaskCntl++) {
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
       cmd.payload[3] = chMaskCntl << 4;               // NbTrans = 0 -> keep the same
+      cmd.repeat = (chMaskCntl + 1);
       memcpy(&cmd.payload[1], &cfList[chMaskCntl*2], 2);
       (void)execMacCommand(&cmd);
-      // save the response as a MAC answer, as this signals execMacCommand() to store the masks contiguously
-      pushMacCommand(&cmd, &this->commandsUp);
     }
     // delete the ADR response
-    (void)deleteMacCommand(RADIOLIB_LORAWAN_MAC_LINK_ADR, &this->commandsUp);
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -2246,11 +2244,11 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
             // if this is the first ADR command in the queue, clear all saved channels
             // so we can apply the new channel mask
             clearChannels = true;
+            RADIOLIB_DEBUG_PRINTLN("ADR mask: clearing channels");
           } else {
             // if this is not the first ADR command, clear the ADR response that was in the queue
             (void)deleteMacCommand(RADIOLIB_LORAWAN_MAC_LINK_ADR, &this->commandsUp);
           }
-          RADIOLIB_DEBUG_PRINTLN("ADR mask: clearing channels");
           chMaskAck = (uint8_t)this->applyChannelMaskFix(chMaskCntl, chMask, clearChannels);
 
         }
