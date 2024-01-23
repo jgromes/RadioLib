@@ -400,12 +400,21 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
 
-  if(!force && validCheckSum && validMode) {
-    // the device has joined already, we can just pull the data from persistent storage
-    RADIOLIB_DEBUG_PRINTLN("Found existing session; restoring...");
-    
-    return(this->restore());
-  } else {
+  if(validCheckSum && validMode) {
+    if(!force) {
+      // the device has joined already, we can just pull the data from persistent storage
+      RADIOLIB_DEBUG_PRINTLN("Found existing session; restoring...");
+      return(this->restore());
+
+    } else {
+      // the credentials are still the same, so restore only DevNonce and JoinNonce
+      this->devNonce  = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID);
+      this->joinNonce = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID);
+    }
+  }
+  
+  // if forced by user, keys are new or changed mode, wipe the previous session
+  if(force || !validCheckSum || !validMode) {
     #if RADIOLIB_DEBUG
       RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
@@ -657,6 +666,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
   // save join-request parameters
   mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_HOME_NET_ID, this->homeNetId);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID, this->devNonce);
   mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID, this->joinNonce);
 
   this->saveSession();
@@ -766,14 +776,10 @@ bool LoRaWANNode::isJoined() {
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
 int16_t LoRaWANNode::saveSession() {
   Module* mod = this->phyLayer->getMod();
-  
-  // store session configuration (MAC commands)
+
   if(mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_VERSION_ID) != this->rev)
      mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_VERSION_ID, this->rev);
 
-  if(mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID) != this->devNonce)
-     mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID, this->devNonce);
-  
   // store all frame counters
   if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_A_FCNT_DOWN_ID) != this->aFcntDown)
      mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_A_FCNT_DOWN_ID, this->aFcntDown);
