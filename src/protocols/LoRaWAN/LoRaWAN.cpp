@@ -2026,7 +2026,7 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower, bool saveToEeprom) {
   // Tx Power is set in steps of two
   // the selected value is rounded down to nearest multiple of two away from txPowerMax
   // e.g. on EU868, max is 16; if 13 is selected then we set to 12
-  uint8_t txPowerNew = (this->txPowerMax - txPower) / 2 + 1;
+  uint8_t numSteps = (this->txPowerMax - txPower + 1) / (-RADIOLIB_LORAWAN_POWER_STEP_SIZE_DBM);
 
   LoRaWANMacCommand_t cmd = {
     .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
@@ -2035,7 +2035,7 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower, bool saveToEeprom) {
     .repeat = 0,
   };
   cmd.payload[0]  = 0xF0;               // keep datarate the same
-  cmd.payload[0] |= txPowerNew;         // set the Tx Power
+  cmd.payload[0] |= numSteps;           // set the Tx Power
   cmd.payload[3]  = (1 << 7);           // set the RFU bit, which means that the channel mask gets ignored
   cmd.payload[3] |= 0;                  // keep NbTrans the same
   (void)execMacCommand(&cmd, saveToEeprom);
