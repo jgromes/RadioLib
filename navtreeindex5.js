@@ -1,5 +1,12 @@
 var NAVTREEINDEX5 =
 {
+"struct_bell_modem__t.html#ac57de3660aafb52bcf1b3197380c6ce5":[3,0,8,1],
+"struct_f_s_k_rate__t.html":[3,0,13],
+"struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107":[3,0,13,0],
+"struct_f_s_k_rate__t.html#a9d8801cd6a3533922db9410f81e2a244":[3,0,13,1],
+"struct_lo_ra_rate__t.html":[3,0,17],
+"struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076":[3,0,17,2],
+"struct_lo_ra_rate__t.html#a97626ff6c8f659ecad84734cca7a87b1":[3,0,17,0],
 "struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df":[3,0,17,1],
 "struct_lo_ra_w_a_n_band__t.html":[3,0,18],
 "struct_lo_ra_w_a_n_band__t.html#a097bc6dc35cf0ba5ba04fd7f88dbaca9":[3,0,18,4],

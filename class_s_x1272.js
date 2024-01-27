@@ -4,6 +4,7 @@ var class_s_x1272 =
     [ "autoLDRO", "class_s_x1272.html#abb4bbfe8acc6026c833d267d78417b63", null ],
     [ "begin", "class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9", null ],
     [ "beginFSK", "class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260", null ],
+    [ "checkDataRate", "class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0", null ],
     [ "explicitHeader", "class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7", null ],
     [ "forceLDRO", "class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0", null ],
     [ "getRSSI", "class_s_x1272.html#acdf35ee105a327e0e6089615e6f9bb1a", null ],

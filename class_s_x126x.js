@@ -5,6 +5,7 @@ var class_s_x126x =
     [ "begin", "class_s_x126x.html#a936a40038e05740a528f2b53f8e17010", null ],
     [ "beginFSK", "class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c", null ],
     [ "calculateRxTimeout", "class_s_x126x.html#a62d3ec87046483c5077343dd5ebd1aa5", null ],
+    [ "checkDataRate", "class_s_x126x.html#a75c8d32cee712e0c940163446b98e587", null ],
     [ "clearChannelScanAction", "class_s_x126x.html#a7fe0afde9d35c1f860bfc6bf63e8f11e", null ],
     [ "clearDio1Action", "class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd", null ],
     [ "clearPacketReceivedAction", "class_s_x126x.html#acd0306b28b4ce36bab5fc0199aef90f2", null ],

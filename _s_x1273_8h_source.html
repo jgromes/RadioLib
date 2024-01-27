@@ -111,21 +111,24 @@ $(document).ready(function(){initNavTree('_s_x1273_8h_source.html',''); initResi
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    int16_t <a class="code" href="class_s_x1273.html#a1dbc5a0847c2b62d2ec5fc439ddfec3f">setSpreadingFactor</a>(uint8_t sf);</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    int16_t <a class="code" href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">setDataRate</a>(<a class="code" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    </div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    int16_t <a class="code" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">checkDataRate</a>(<a class="code" href="union_data_rate__t.html">DataRate_t</a> dr) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:31</div></div>
 <div class="ttc" id="aclass_s_x1272_html"><div class="ttname"><a href="class_s_x1272.html">SX1272</a></div><div class="ttdoc">Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...</div><div class="ttdef"><b>Definition:</b> SX1272.h:94</div></div>
 <div class="ttc" id="aclass_s_x1273_html"><div class="ttname"><a href="class_s_x1273.html">SX1273</a></div><div class="ttdoc">Derived class for SX1273 modules. Overrides some methods from SX1272 due to different parameter range...</div><div class="ttdef"><b>Definition:</b> SX1273.h:14</div></div>
 <div class="ttc" id="aclass_s_x1273_html_a0fb9d6c58e3576e22e1dda4a9b4a1db2"><div class="ttname"><a href="class_s_x1273.html#a0fb9d6c58e3576e22e1dda4a9b4a1db2">SX1273::begin</a></div><div class="ttdeci">int16_t begin(float freq=915.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_SX127X_SYNC_WORD, int8_t power=10, uint16_t preambleLength=8, uint8_t gain=0)</div><div class="ttdoc">LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the ...</div><div class="ttdef"><b>Definition:</b> SX1273.cpp:8</div></div>
 <div class="ttc" id="aclass_s_x1273_html_a1dbc5a0847c2b62d2ec5fc439ddfec3f"><div class="ttname"><a href="class_s_x1273.html#a1dbc5a0847c2b62d2ec5fc439ddfec3f">SX1273::setSpreadingFactor</a></div><div class="ttdeci">int16_t setSpreadingFactor(uint8_t sf)</div><div class="ttdoc">Sets LoRa link spreading factor. Allowed values range from 6 to 9. Only available in LoRa mode.</div><div class="ttdef"><b>Definition:</b> SX1273.cpp:40</div></div>
+<div class="ttc" id="aclass_s_x1273_html_a5eae1e82596f3a6c4c926c381c2737a7"><div class="ttname"><a href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">SX1273::checkDataRate</a></div><div class="ttdeci">int16_t checkDataRate(DataRate_t dr) override</div><div class="ttdoc">Check the data rate can be configured by this module.</div><div class="ttdef"><b>Definition:</b> SX1273.cpp:95</div></div>
 <div class="ttc" id="aclass_s_x1273_html_acaffc772f70e7db371cbe736dc4a19ab"><div class="ttname"><a href="class_s_x1273.html#acaffc772f70e7db371cbe736dc4a19ab">SX1273::setDataRate</a></div><div class="ttdeci">int16_t setDataRate(DataRate_t dr) override</div><div class="ttdoc">Set data.</div><div class="ttdef"><b>Definition:</b> SX1273.cpp:70</div></div>
 <div class="ttc" id="aclass_s_x1273_html_ad0387b22d6dcc876bc5f85174714149b"><div class="ttname"><a href="class_s_x1273.html#ad0387b22d6dcc876bc5f85174714149b">SX1273::SX1273</a></div><div class="ttdeci">SX1273(Module *mod)</div><div class="ttdoc">Default constructor. Called from Arduino sketch when creating new LoRa instance.</div><div class="ttdef"><b>Definition:</b> SX1273.cpp:4</div></div>
 <div class="ttc" id="aunion_data_rate__t_html"><div class="ttname"><a href="union_data_rate__t.html">DataRate_t</a></div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:21</div></div>
