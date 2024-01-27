@@ -53,23 +53,7 @@ PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK);
 // DIO1 pin:  15
 SX1276 radio = new Module(hal, RFM_NSS, RFM_DIO0, RFM_RST, RFM_DIO1);
 
-
 int main() {
-  stdio_init_all();
-
-  gpio_init(RFM_NSS);
-  gpio_init(RFM_RST);
-
-  gpio_set_dir(RFM_NSS, GPIO_OUT);
-  gpio_set_dir(RFM_RST, GPIO_OUT);
-
-  // reset the RF module
-
-  sleep_ms(10);
-  gpio_put(RFM_RST, 0);
-  sleep_ms(10);
-  gpio_put(RFM_RST, 1);
-
   // initialize just like with Arduino
   printf("[SX1276] Initializing ... ");
   int state = radio.begin();

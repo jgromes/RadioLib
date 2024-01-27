@@ -40,6 +40,7 @@ public:
       return;
     }
 
+    gpio_init(pin);
     gpio_set_dir(pin, mode);
   }
 
