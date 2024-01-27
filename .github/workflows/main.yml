@@ -279,9 +279,9 @@ jobs:
           cd ~/rpi-pico
           git clone https://github.com/raspberrypi/pico-sdk.git
           cd pico-sdk && git checkout 1.5.1
-          export PICO_SDK_PATH=~/rpi-pico/pico-sdk
       
       - name: Build the example
         run: |
+          export PICO_SDK_PATH=~/rpi-pico/pico-sdk
           cd $PWD/examples/NonArduino/Pico
           ./build.sh
