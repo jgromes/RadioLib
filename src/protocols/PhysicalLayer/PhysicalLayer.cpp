@@ -272,6 +272,11 @@ int16_t PhysicalLayer::setDataRate(DataRate_t dr) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::checkDataRate(DataRate_t dr) {
+  (void)dr;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 float PhysicalLayer::getFreqStep() const {
   return(this->freqStep);
 }

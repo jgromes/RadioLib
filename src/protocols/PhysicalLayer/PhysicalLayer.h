@@ -279,6 +279,13 @@ class PhysicalLayer {
     virtual int16_t setDataRate(DataRate_t dr);
 
     /*!
+      \brief Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    virtual int16_t checkDataRate(DataRate_t dr);
+
+    /*!
       \brief Gets the module frequency step size that was set in constructor.
       \returns Synthesizer frequency step size in Hz.
     */
