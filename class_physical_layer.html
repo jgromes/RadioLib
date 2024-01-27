@@ -189,6 +189,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ee1fed6bbb8d3571974153ac6f26751"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">setDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
 <tr class="memdesc:a6ee1fed6bbb8d3571974153ac6f26751"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set data. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751">More...</a><br /></td></tr>
 <tr class="separator:a6ee1fed6bbb8d3571974153ac6f26751"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58d54eeb40fb586013ba48e15318abba"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">checkDataRate</a> (<a class="el" href="union_data_rate__t.html">DataRate_t</a> dr)</td></tr>
+<tr class="memdesc:a58d54eeb40fb586013ba48e15318abba"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check the data rate can be configured by this module. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba">More...</a><br /></td></tr>
+<tr class="separator:a58d54eeb40fb586013ba48e15318abba"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -409,6 +412,41 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x127x.html#a55e6c443b0e66d8bbfe8588826475090">SX127x</a>, and <a class="el" href="class_s_x126x.html#a62d3ec87046483c5077343dd5ebd1aa5">SX126x</a>.</p>
+
+</div>
+</div>
+<a id="a58d54eeb40fb586013ba48e15318abba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a58d54eeb40fb586013ba48e15318abba">&#9670;&nbsp;</a></span>checkDataRate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::checkDataRate </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="union_data_rate__t.html">DataRate_t</a>&#160;</td>
+          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check the data rate can be configured by this module. Must be implemented in module class if the module supports it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dr</td><td>Data rate struct. Interpretation depends on currently active modem (FSK or LoRa). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

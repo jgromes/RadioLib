@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df":[3,0,17,1],
 "struct_lo_ra_w_a_n_band__t.html":[3,0,18],
 "struct_lo_ra_w_a_n_band__t.html#a097bc6dc35cf0ba5ba04fd7f88dbaca9":[3,0,18,4],
 "struct_lo_ra_w_a_n_band__t.html#a19abb8a108ee2145d0d57eb310dd65fb":[3,0,18,3],
