@@ -101,7 +101,9 @@ jobs:
               echo "options=':bootloader_version=original,cpu_speed=speed_72mhz'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
           - id: MegaCoreX:megaavr:4809
-            run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
+            run: |
+              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
           - id: arduino:mbed_rp2040:pico
             run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: rp2040:rp2040:rpipico
