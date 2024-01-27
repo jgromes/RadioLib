@@ -179,7 +179,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="
 <tr class="separator:a40c5fdba815b26a44be7af68c184fe49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3044715beeff759ed47342d532ac3205"><td class="memItemLeft" align="right" valign="top"><a id="a3044715beeff759ed47342d532ac3205"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205">maxPayloadDwellTime</a> ()</td></tr>
-<tr class="memdesc:a3044715beeff759ed47342d532ac3205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum payload given the currently present dwelltime limits. WARNING: the addition of MAC commands may cause uplink errors; if you want to be sure that your payload fits within dwelltime limits, subtract 16 from the result! <br /></td></tr>
+<tr class="memdesc:a3044715beeff759ed47342d532ac3205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum payload given the currently present dwell time limits. WARNING: the addition of MAC commands may cause uplink errors; if you want to be sure that your payload fits within dwell time limits, subtract 16 from the result! <br /></td></tr>
 <tr class="separator:a3044715beeff759ed47342d532ac3205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2264c1d9f8ff0f83dc4000a2c80bc25d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2264c1d9f8ff0f83dc4000a2c80bc25d">setTxPower</a> (int8_t txPower, bool saveToEeprom=false)</td></tr>
 <tr class="memdesc:a2264c1d9f8ff0f83dc4000a2c80bc25d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure TX power of the radio module.  <a href="class_lo_ra_w_a_n_node.html#a2264c1d9f8ff0f83dc4000a2c80bc25d">More...</a><br /></td></tr>
@@ -188,10 +188,10 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memdesc:adfc9cdaa254a27c28403188c90991757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">More...</a><br /></td></tr>
 <tr class="separator:adfc9cdaa254a27c28403188c90991757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf038f331c1dc954dafc2668e7a31ca0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a> (uint8_t *margin, uint8_t *gwCnt)</td></tr>
-<tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">More...</a><br /></td></tr>
+<tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">More...</a><br /></td></tr>
 <tr class="separator:adf038f331c1dc954dafc2668e7a31ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a> (uint32_t *gpsEpoch, uint8_t *fraction, bool returnUnix=true)</td></tr>
-<tr class="memdesc:a9e6e1ce4296364606ff8b10fb5f971de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">More...</a><br /></td></tr>
+<tr class="memdesc:a9e6e1ce4296364606ff8b10fb5f971de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">More...</a><br /></td></tr>
 <tr class="separator:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
@@ -243,7 +243,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
   <table class="params">
     <tr><td class="paramname">phy</td><td>Pointer to the <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> radio module. </td></tr>
     <tr><td class="paramname">band</td><td>Pointer to the LoRaWAN band to use. </td></tr>
-    <tr><td class="paramname">subBand</td><td>The subband to be used (starting from 1!) </td></tr>
+    <tr><td class="paramname">subBand</td><td>The sub-band to be used (starting from 1!) </td></tr>
   </table>
   </dd>
 </dl>
@@ -457,7 +457,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <p>Calculate the minimum interval to adhere to a certain dutyCycle. This interval is based on the ToA of one uplink and does not actually keep track of total airtime. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">msPerHour</td><td>The maximum allowed dutycyle (in milliseconds per hour). </td></tr>
+    <tr><td class="paramname">msPerHour</td><td>The maximum allowed duty cycle (in milliseconds per hour). </td></tr>
     <tr><td class="paramname">airtime</td><td>The airtime of the uplink. </td></tr>
   </table>
   </dd>
@@ -498,7 +498,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
       </table>
 </div><div class="memdoc">
 
-<p>Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<p>Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">gpsEpoch</td><td>Number of seconds since GPS epoch (Jan. 6th 1980) </td></tr>
@@ -537,7 +537,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
       </table>
 </div><div class="memdoc">
 
-<p>Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was succesfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
+<p>Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">margin</td><td>Link margin in dB of LinkCheckReq demodulation at gateway side. </td></tr>
