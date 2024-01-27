@@ -2219,7 +2219,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
 
       } else if (this->band->dataRates[drUp] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
         // check if the module supports this data rate
-        DataRate_t dr = { 0 };
+        DataRate_t dr = { .lora = { .bandwidth = 0, .codingRate = 0, .spreadingFactor = 0 };
         findDataRate(drUp, &dr);
         state = this->phyLayer->checkDataRate(dr);
         if(state == RADIOLIB_ERR_NONE) {
