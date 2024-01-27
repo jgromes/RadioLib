@@ -261,3 +261,27 @@ jobs:
           ./clean.sh
           ./build.sh
           sudo ./build/rpi-sx1261
+
+  rpi-pico-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install git cmake gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+        
+      - name: Clone the SDK
+        run: |
+          mkdir -p ~/rpi-pico
+          cd ~/rpi-pico
+          git clone https://github.com/raspberrypi/pico-sdk.git
+          cd pico-sdk && git checkout 1.5.1
+          export PICO_SDK_PATH=~/rpi-pico/pico-sdk
+      
+      - name: Build the example
+        run: |
+          cd $PWD/examples/NonArduino/Pico
+          ./build.sh
