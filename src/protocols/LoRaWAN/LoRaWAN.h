@@ -408,7 +408,7 @@ class LoRaWANNode {
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
       \param band Pointer to the LoRaWAN band to use.
-      \param subBand The subband to be used (starting from 1!)
+      \param subBand The sub-band to be used (starting from 1!)
     */
     LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand = 0);
 
@@ -624,7 +624,7 @@ class LoRaWANNode {
     /*!
       \brief Calculate the minimum interval to adhere to a certain dutyCycle.
       This interval is based on the ToA of one uplink and does not actually keep track of total airtime.
-      \param msPerHour The maximum allowed dutycyle (in milliseconds per hour).
+      \param msPerHour The maximum allowed duty cycle (in milliseconds per hour).
       \param airtime The airtime of the uplink.
       \returns Required interval (delay) in milliseconds between consecutive uplinks.
     */
@@ -642,9 +642,9 @@ class LoRaWANNode {
     void setDwellTime(bool enable, uint32_t msPerUplink = 0);
 
     /*! 
-      \brief Returns the maximum payload given the currently present dwelltime limits.
+      \brief Returns the maximum payload given the currently present dwell time limits.
       WARNING: the addition of MAC commands may cause uplink errors;
-      if you want to be sure that your payload fits within dwelltime limits, subtract 16 from the result!
+      if you want to be sure that your payload fits within dwell time limits, subtract 16 from the result!
     */
     uint8_t maxPayloadDwellTime();
 
@@ -666,7 +666,7 @@ class LoRaWANNode {
 
     /*!
       \brief Returns the quality of connectivity after requesting a LinkCheck MAC command.
-      Returns 'true' if a network response was succesfully parsed.
+      Returns 'true' if a network response was successfully parsed.
       Returns 'false' if there was no network response / parsing failed.
       \param margin Link margin in dB of LinkCheckReq demodulation at gateway side.
       \param gwCnt Number of gateways that received the LinkCheckReq.
@@ -676,7 +676,7 @@ class LoRaWANNode {
 
     /*!
       \brief Returns the network time after requesting a DeviceTime MAC command.
-      Returns 'true' if a network response was succesfully parsed.
+      Returns 'true' if a network response was successfully parsed.
       Returns 'false' if there was no network response / parsing failed.
       \param gpsEpoch Number of seconds since GPS epoch (Jan. 6th 1980)
       \param fraction Fractional-second, in 1/256-second steps
@@ -791,7 +791,7 @@ class LoRaWANNode {
     // indicates whether an uplink has MAC commands as payload
     bool isMACPayload = false;
 
-    // save the selected subband in case this must be restored in ADR control
+    // save the selected sub-band in case this must be restored in ADR control
     int8_t subBand = -1;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
@@ -830,7 +830,7 @@ class LoRaWANNode {
     int16_t setupChannelsDyn(bool joinRequest = false);
 
     // setup uplink/downlink channel data rates and frequencies
-    // for fixed bands, we only allow one subband at a time to be selected
+    // for fixed bands, we only allow one sub-band at a time to be selected
     int16_t setupChannelsFix(uint8_t subBand);
 
     // a join-accept can piggy-back a set of channels or channel masks
@@ -867,7 +867,7 @@ class LoRaWANNode {
     // get the payload length for a specific MAC command
     uint8_t getMacPayloadLength(uint8_t cid);
     
-    // Performs CSMA as per LoRa Alliance Technical Reccomendation 13 (TR-013).
+    // Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).
     void performCSMA();
 
     // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
