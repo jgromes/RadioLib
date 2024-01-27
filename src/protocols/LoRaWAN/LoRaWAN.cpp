@@ -2198,6 +2198,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_LINK_ADR): {
+      int16_t state = RADIOLIB_ERR_UNKNOWN;
       // get the ADR configuration
       // per spec, all these configuration should only be set if all ACKs are set, otherwise retain previous state
       // but we don't bother and try to set each individual command
@@ -2217,12 +2218,22 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         cmd->payload[0] = (cmd->payload[0] & 0x0F) | (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
 
       } else if (this->band->dataRates[drUp] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-        uint8_t drDown = getDownlinkDataRate(drUp, this->rx1DrOffset, this->band->rx1DataRateBase,
-                                             this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMin, this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMax);
-        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = drUp;
-        this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = drDown;
-        drAck = 1;
-      } 
+        // check if the module supports this data rate
+        DataRate_t dr = { 0 };
+        findDataRate(drUp, &dr);
+        state = this->phyLayer->checkDataRate(dr);
+        if(state == RADIOLIB_ERR_NONE) {
+          uint8_t drDown = getDownlinkDataRate(drUp, this->rx1DrOffset, this->band->rx1DataRateBase,
+                                               this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMin,
+                                               this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMax);
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] = drUp;
+          this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = drDown;
+          drAck = 1;
+        } else {
+          RADIOLIB_DEBUG_PRINTLN("ADR failed to configure dataRate = %d!", drUp);
+        }
+      
+      }
 
       // try to apply the power configuration
       uint8_t pwrAck = 0;
@@ -2234,7 +2245,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
 
       } else {
         int8_t pwr = this->txPowerMax - 2*txPower;
-        int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
+        state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
         while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
           // go from the highest power and lower it until we hit one supported by the module
           state = this->phyLayer->setOutputPower(pwr--);
