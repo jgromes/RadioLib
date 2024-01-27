@@ -92,4 +92,25 @@ int16_t SX1273::setDataRate(DataRate_t dr) {
   return(state);
 }
 
+int16_t SX1273::checkDataRate(DataRate_t dr) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
+  // select interpretation based on active modem
+  int16_t modem = getActiveModem();
+  if(modem == RADIOLIB_SX127X_FSK_OOK) {
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0 <= 250.0) && (dr.fsk.freqDev <= 200.0))) {
+      return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    }
+
+  } else if(modem == RADIOLIB_SX127X_LORA) {
+    RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 6, 9, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+  
+  }
+
+  return(state);
+}
+
 #endif

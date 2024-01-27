@@ -55,6 +55,13 @@ class SX1273: public SX1272 {
       \returns \ref status_codes
     */
     int16_t setDataRate(DataRate_t dr) override;
+    
+    /*!
+      \brief Check the data rate can be configured by this module.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t checkDataRate(DataRate_t dr) override;
 
 #if !RADIOLIB_GODMODE
   private:
