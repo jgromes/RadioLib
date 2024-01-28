@@ -90,6 +90,7 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
     RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
@@ -108,6 +109,7 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
       default:
         return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
+    return(RADIOLIB_ERR_NONE);
   
   }
 
