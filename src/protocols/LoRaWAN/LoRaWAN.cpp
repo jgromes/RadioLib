@@ -2230,7 +2230,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
           this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK] = drDown;
           drAck = 1;
         } else {
-          RADIOLIB_DEBUG_PRINTLN("ADR failed to configure dataRate = %d!", drUp);
+          RADIOLIB_DEBUG_PRINTLN("ADR failed to configure dataRate %d, code %d!", drUp, state);
         }
       
       }
