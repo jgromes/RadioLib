@@ -262,11 +262,13 @@ int16_t SX1272::checkDataRate(DataRate_t dr) {
     if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0 <= 250.0) && (dr.fsk.freqDev <= 200.0))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     }
+    return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_SX127X_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 6, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
     RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    return(RADIOLIB_ERR_NONE);
   
   }
 
