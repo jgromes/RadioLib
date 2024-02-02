@@ -487,8 +487,10 @@ class PhysicalLayer {
 
     #endif
 
-#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+#if !RADIOLIB_GODMODE
   protected:
+#endif
+#if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
 #endif
 
