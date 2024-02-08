@@ -440,7 +440,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 }
 
 void AX25Client::getCallsign(char* buff) {
-  strncpy(buff, sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+  strncpy(buff, sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
 }
 
 uint8_t AX25Client::getSSID() {
