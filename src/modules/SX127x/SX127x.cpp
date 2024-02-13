@@ -198,7 +198,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     uint32_t timeout = 0;
     if(this->mod->getGpio() == RADIOLIB_NC) {
       float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-      timeout = 100*symbolLength;
+      timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
     }
 
     // wait for packet reception or timeout
