@@ -818,8 +818,15 @@ int16_t LoRaWANNode::saveSession() {
 int16_t LoRaWANNode::saveFcntUp() {
   Module* mod = this->phyLayer->getMod();
 
-  uint8_t fcntBuff[30] = { 0 };
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID), fcntBuff, 30);
+  uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID);
+  uint8_t fcntBuffEnd = mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID + 1);
+  uint8_t buffSize = fcntBuffEnd - fcntBuffStart;
+  #if RADIOLIB_STATIC_ONLY
+  uint8_t fcntBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+  uint8_t* fcntBuff = new uint8_t[buffSize];
+  #endif
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID), fcntBuff, buffSize);
 
   // we discard the first two bits - your flash will likely be far dead by the time you reach 2^30 uplinks
   // the first two bytes of the remaining 30 bytes are stored straight into storage without additional wear leveling
@@ -859,12 +866,12 @@ int16_t LoRaWANNode::saveFcntUp() {
   // always flip the state bit of the byte that we write to, to indicate that this is the most recently written byte
   idx = 5;
   state = fcntBuff[idx] >> 7;
-  for(; idx < 30; idx++) {
+  for(; idx < buffSize; idx++) {
     if(fcntBuff[idx] >> 7 != state) {
       break;
     }
   }
-  idx = idx < 30 ? idx : 5;
+  idx = idx < buffSize ? idx : 5;
   uint8_t bits_7_0 = (this->fcntUp >> 0) & 0x7F;
 
   // flip the first bit of this byte to indicate that we just wrote here
