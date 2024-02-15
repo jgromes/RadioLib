@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b":[3,0,28,33],
 "classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf":[3,0,28,21],
 "classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a":[3,0,28,18],
 "classn_r_f24.html#a08b90ae895a6a45bceb11f67237245b4":[3,0,28,26],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "struct_bell_modem__t.html":[3,0,8],
 "struct_bell_modem__t.html#a27c1a411df3d887ca0ce246c3b5521f7":[3,0,8,3],
 "struct_bell_modem__t.html#a40fe8a17a9b4fae3f313fea34077eacc":[3,0,8,4],
-"struct_bell_modem__t.html#a8e16be8997a90db9a4b2482ec7e93171":[3,0,8,0],
-"struct_bell_modem__t.html#aa26b8a2f2ae9722de9a69aab991ce229":[3,0,8,2]
+"struct_bell_modem__t.html#a8e16be8997a90db9a4b2482ec7e93171":[3,0,8,0]
 };

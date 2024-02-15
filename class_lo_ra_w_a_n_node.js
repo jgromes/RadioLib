@@ -6,6 +6,7 @@ var class_lo_ra_w_a_n_node =
     [ "downlink", "class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226", null ],
     [ "dutyCycleInterval", "class_lo_ra_w_a_n_node.html#a564386d9c15ad71a1a8703809c8a9741", null ],
     [ "getAFcntDown", "class_lo_ra_w_a_n_node.html#a8b647b639d1c7f1a2a81397b41c01dd8", null ],
+    [ "getDevAddr", "class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452", null ],
     [ "getFcntUp", "class_lo_ra_w_a_n_node.html#a52ae7c2aa61262d7761236f289889020", null ],
     [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de", null ],
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],

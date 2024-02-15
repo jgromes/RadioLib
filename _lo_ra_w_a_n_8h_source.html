@@ -500,200 +500,202 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="line"><a name="l00676"></a><span class="lineno">  676</span>&#160; </div>
 <div class="line"><a name="l00686"></a><span class="lineno">  686</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a>(uint32_t* gpsEpoch, uint8_t* fraction, <span class="keywordtype">bool</span> returnUnix = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160; </div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00690"></a><span class="lineno">  690</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00691"></a><span class="lineno">  691</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer = NULL;</div>
-<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band = NULL;</div>
+<div class="line"><a name="l00692"></a><span class="lineno">  692</span>&#160;    uint64_t <a class="code" href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">getDevAddr</a>();</div>
 <div class="line"><a name="l00693"></a><span class="lineno">  693</span>&#160; </div>
-<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    <span class="keywordtype">void</span> beginCommon(uint8_t joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);</div>
-<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsUp = { </div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;      .numCommands = 0,</div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;      .len = 0,</div>
-<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
-<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    };</div>
-<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsDown = { </div>
-<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;      .numCommands = 0,</div>
-<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      .len = 0,</div>
-<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
-<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;    };</div>
-<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160; </div>
-<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    <span class="comment">// the following is either provided by the network server (OTAA)</span></div>
-<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;    <span class="comment">// or directly entered by the user (ABP)</span></div>
-<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;    uint32_t devAddr = 0;</div>
-<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;    uint8_t appSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    uint8_t fNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;    uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;    uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;    </div>
-<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    <span class="comment">// device-specific parameters, persistent through sessions</span></div>
-<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    uint16_t devNonce = 0;</div>
-<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    uint32_t joinNonce = 0;</div>
-<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
-<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    <span class="comment">// session-specific parameters</span></div>
-<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    uint32_t homeNetId = 0;</div>
-<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;    uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;</div>
-<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;</div>
-<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    uint8_t nbTrans = 1;            <span class="comment">// Number of allowed frame retransmissions</span></div>
-<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160;    uint8_t txPowerCur = 0;</div>
-<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    uint8_t txPowerMax = 0;</div>
-<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    uint32_t fcntUp = 0;</div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    uint32_t aFcntDown = 0;</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    uint32_t nFcntDown = 0;</div>
-<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    uint32_t confFcntUp = RADIOLIB_LORAWAN_FCNT_NONE;</div>
-<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    uint32_t confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;</div>
-<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    uint32_t adrFcnt = 0;</div>
-<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160; </div>
-<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    <span class="comment">// whether the current configured channel is in FSK mode</span></div>
-<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    <span class="keywordtype">bool</span> FSK = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160; </div>
-<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    <span class="comment">// flag that shows whether the device is joined and there is an ongoing session (none, ABP or OTAA)</span></div>
-<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    uint16_t activeMode = 0;</div>
+<div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer = NULL;</div>
+<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band = NULL;</div>
+<div class="line"><a name="l00699"></a><span class="lineno">  699</span>&#160; </div>
+<div class="line"><a name="l00700"></a><span class="lineno">  700</span>&#160;    <span class="keywordtype">void</span> beginCommon(uint8_t joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);</div>
+<div class="line"><a name="l00701"></a><span class="lineno">  701</span>&#160; </div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsUp = { </div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;      .numCommands = 0,</div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160;      .len = 0,</div>
+<div class="line"><a name="l00705"></a><span class="lineno">  705</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
+<div class="line"><a name="l00706"></a><span class="lineno">  706</span>&#160;    };</div>
+<div class="line"><a name="l00707"></a><span class="lineno">  707</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsDown = { </div>
+<div class="line"><a name="l00708"></a><span class="lineno">  708</span>&#160;      .numCommands = 0,</div>
+<div class="line"><a name="l00709"></a><span class="lineno">  709</span>&#160;      .len = 0,</div>
+<div class="line"><a name="l00710"></a><span class="lineno">  710</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
+<div class="line"><a name="l00711"></a><span class="lineno">  711</span>&#160;    };</div>
+<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160; </div>
+<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160;    <span class="comment">// the following is either provided by the network server (OTAA)</span></div>
+<div class="line"><a name="l00714"></a><span class="lineno">  714</span>&#160;    <span class="comment">// or directly entered by the user (ABP)</span></div>
+<div class="line"><a name="l00715"></a><span class="lineno">  715</span>&#160;    uint32_t devAddr = 0;</div>
+<div class="line"><a name="l00716"></a><span class="lineno">  716</span>&#160;    uint8_t appSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00717"></a><span class="lineno">  717</span>&#160;    uint8_t fNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160;    uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00720"></a><span class="lineno">  720</span>&#160;    uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00721"></a><span class="lineno">  721</span>&#160;    </div>
+<div class="line"><a name="l00722"></a><span class="lineno">  722</span>&#160;    <span class="comment">// device-specific parameters, persistent through sessions</span></div>
+<div class="line"><a name="l00723"></a><span class="lineno">  723</span>&#160;    uint16_t devNonce = 0;</div>
+<div class="line"><a name="l00724"></a><span class="lineno">  724</span>&#160;    uint32_t joinNonce = 0;</div>
+<div class="line"><a name="l00725"></a><span class="lineno">  725</span>&#160; </div>
+<div class="line"><a name="l00726"></a><span class="lineno">  726</span>&#160;    <span class="comment">// session-specific parameters</span></div>
+<div class="line"><a name="l00727"></a><span class="lineno">  727</span>&#160;    uint32_t homeNetId = 0;</div>
+<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;</div>
+<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160;    uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;</div>
+<div class="line"><a name="l00730"></a><span class="lineno">  730</span>&#160;    uint8_t nbTrans = 1;            <span class="comment">// Number of allowed frame retransmissions</span></div>
+<div class="line"><a name="l00731"></a><span class="lineno">  731</span>&#160;    uint8_t txPowerCur = 0;</div>
+<div class="line"><a name="l00732"></a><span class="lineno">  732</span>&#160;    uint8_t txPowerMax = 0;</div>
+<div class="line"><a name="l00733"></a><span class="lineno">  733</span>&#160;    uint32_t fcntUp = 0;</div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    uint32_t aFcntDown = 0;</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160;    uint32_t nFcntDown = 0;</div>
+<div class="line"><a name="l00736"></a><span class="lineno">  736</span>&#160;    uint32_t confFcntUp = RADIOLIB_LORAWAN_FCNT_NONE;</div>
+<div class="line"><a name="l00737"></a><span class="lineno">  737</span>&#160;    uint32_t confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;</div>
+<div class="line"><a name="l00738"></a><span class="lineno">  738</span>&#160;    uint32_t adrFcnt = 0;</div>
 <div class="line"><a name="l00739"></a><span class="lineno">  739</span>&#160; </div>
-<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    <span class="comment">// ADR is enabled by default</span></div>
-<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keywordtype">bool</span> adrEnabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00740"></a><span class="lineno">  740</span>&#160;    <span class="comment">// whether the current configured channel is in FSK mode</span></div>
+<div class="line"><a name="l00741"></a><span class="lineno">  741</span>&#160;    <span class="keywordtype">bool</span> FSK = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160; </div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="comment">// duty cycle is set upon initialization and activated in regions that impose this</span></div>
-<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    <span class="keywordtype">bool</span> dutyCycleEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160;    uint32_t dutyCycle = 0;</div>
-<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160; </div>
-<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    <span class="comment">// dwell time is set upon initialization and activated in regions that impose this</span></div>
-<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledUp = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    uint16_t dwellTimeUp = 0;</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledDn = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    uint16_t dwellTimeDn = 0;</div>
-<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160;    </div>
-<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="comment">// enable/disable CSMA for LoRaWAN</span></div>
-<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    <span class="keywordtype">bool</span> enableCSMA;</div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160; </div>
-<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="comment">// number of backoff slots to be decremented after DIFS phase. 0 to disable BO.</span></div>
-<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    <span class="comment">// A random BO avoids collisions in the case where two or more nodes start the CSMA</span></div>
-<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    <span class="comment">// process at the same time. </span></div>
-<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    uint8_t backoffMax;</div>
-<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    </div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    <span class="comment">// number of CADs to estimate a clear CH</span></div>
-<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    uint8_t difsSlots;</div>
-<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160; </div>
-<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="comment">// available channel frequencies from list passed during OTA activation</span></div>
-<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];</div>
-<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160; </div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="comment">// currently configured channels for TX and RX1</span></div>
-<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };</div>
+<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160;    <span class="comment">// flag that shows whether the device is joined and there is an ongoing session (none, ABP or OTAA)</span></div>
+<div class="line"><a name="l00744"></a><span class="lineno">  744</span>&#160;    uint16_t activeMode = 0;</div>
+<div class="line"><a name="l00745"></a><span class="lineno">  745</span>&#160; </div>
+<div class="line"><a name="l00746"></a><span class="lineno">  746</span>&#160;    <span class="comment">// ADR is enabled by default</span></div>
+<div class="line"><a name="l00747"></a><span class="lineno">  747</span>&#160;    <span class="keywordtype">bool</span> adrEnabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160; </div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    <span class="comment">// duty cycle is set upon initialization and activated in regions that impose this</span></div>
+<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160;    <span class="keywordtype">bool</span> dutyCycleEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00751"></a><span class="lineno">  751</span>&#160;    uint32_t dutyCycle = 0;</div>
+<div class="line"><a name="l00752"></a><span class="lineno">  752</span>&#160; </div>
+<div class="line"><a name="l00753"></a><span class="lineno">  753</span>&#160;    <span class="comment">// dwell time is set upon initialization and activated in regions that impose this</span></div>
+<div class="line"><a name="l00754"></a><span class="lineno">  754</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledUp = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    uint16_t dwellTimeUp = 0;</div>
+<div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledDn = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00757"></a><span class="lineno">  757</span>&#160;    uint16_t dwellTimeDn = 0;</div>
+<div class="line"><a name="l00758"></a><span class="lineno">  758</span>&#160;    </div>
+<div class="line"><a name="l00759"></a><span class="lineno">  759</span>&#160;    <span class="comment">// enable/disable CSMA for LoRaWAN</span></div>
+<div class="line"><a name="l00760"></a><span class="lineno">  760</span>&#160;    <span class="keywordtype">bool</span> enableCSMA;</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160; </div>
+<div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160;    <span class="comment">// number of backoff slots to be decremented after DIFS phase. 0 to disable BO.</span></div>
+<div class="line"><a name="l00763"></a><span class="lineno">  763</span>&#160;    <span class="comment">// A random BO avoids collisions in the case where two or more nodes start the CSMA</span></div>
+<div class="line"><a name="l00764"></a><span class="lineno">  764</span>&#160;    <span class="comment">// process at the same time. </span></div>
+<div class="line"><a name="l00765"></a><span class="lineno">  765</span>&#160;    uint8_t backoffMax;</div>
+<div class="line"><a name="l00766"></a><span class="lineno">  766</span>&#160;    </div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    <span class="comment">// number of CADs to estimate a clear CH</span></div>
+<div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160;    uint8_t difsSlots;</div>
 <div class="line"><a name="l00769"></a><span class="lineno">  769</span>&#160; </div>
-<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="comment">// currently configured datarates for TX and RX1</span></div>
-<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };</div>
+<div class="line"><a name="l00770"></a><span class="lineno">  770</span>&#160;    <span class="comment">// available channel frequencies from list passed during OTA activation</span></div>
+<div class="line"><a name="l00771"></a><span class="lineno">  771</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];</div>
 <div class="line"><a name="l00772"></a><span class="lineno">  772</span>&#160; </div>
-<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    <span class="comment">// LoRaWAN revision (1.0 vs 1.1)</span></div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    uint8_t rev = 0;</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    <span class="comment">// currently configured channels for TX and RX1</span></div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };</div>
 <div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160; </div>
-<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    <span class="comment">// Time on Air of last uplink</span></div>
-<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    uint32_t lastToA = 0;</div>
+<div class="line"><a name="l00776"></a><span class="lineno">  776</span>&#160;    <span class="comment">// currently configured datarates for TX and RX1</span></div>
+<div class="line"><a name="l00777"></a><span class="lineno">  777</span>&#160;    uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };</div>
 <div class="line"><a name="l00778"></a><span class="lineno">  778</span>&#160; </div>
-<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <span class="comment">// timestamp to measure the RX1/2 delay (from uplink end)</span></div>
-<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    uint32_t rxDelayStart = 0;</div>
+<div class="line"><a name="l00779"></a><span class="lineno">  779</span>&#160;    <span class="comment">// LoRaWAN revision (1.0 vs 1.1)</span></div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    uint8_t rev = 0;</div>
 <div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160; </div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    <span class="comment">// timestamp when the Rx1/2 windows were closed (timeout or uplink received)</span></div>
-<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    uint32_t rxDelayEnd = 0;</div>
+<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160;    <span class="comment">// Time on Air of last uplink</span></div>
+<div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160;    uint32_t lastToA = 0;</div>
 <div class="line"><a name="l00784"></a><span class="lineno">  784</span>&#160; </div>
-<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    <span class="comment">// delays between the uplink and RX1/2 windows</span></div>
-<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };</div>
+<div class="line"><a name="l00785"></a><span class="lineno">  785</span>&#160;    <span class="comment">// timestamp to measure the RX1/2 delay (from uplink end)</span></div>
+<div class="line"><a name="l00786"></a><span class="lineno">  786</span>&#160;    uint32_t rxDelayStart = 0;</div>
 <div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160; </div>
-<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="comment">// device status - battery level</span></div>
-<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    uint8_t battLevel = 0xFF;</div>
+<div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160;    <span class="comment">// timestamp when the Rx1/2 windows were closed (timeout or uplink received)</span></div>
+<div class="line"><a name="l00789"></a><span class="lineno">  789</span>&#160;    uint32_t rxDelayEnd = 0;</div>
 <div class="line"><a name="l00790"></a><span class="lineno">  790</span>&#160; </div>
-<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="comment">// indicates whether an uplink has MAC commands as payload</span></div>
-<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    <span class="keywordtype">bool</span> isMACPayload = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="comment">// delays between the uplink and RX1/2 windows</span></div>
+<div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160;    uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };</div>
 <div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160; </div>
-<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    <span class="comment">// save the selected sub-band in case this must be restored in ADR control</span></div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    int8_t subBand = -1;</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160;    <span class="comment">// device status - battery level</span></div>
+<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    uint8_t battLevel = 0xFF;</div>
 <div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160; </div>
-<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)</span></div>
-<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;    int16_t saveFcntUp();</div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160; </div>
-<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    int16_t restoreFcntUp();</div>
-<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00812"></a><span class="lineno">  812</span>&#160; </div>
-<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <span class="comment">// wait for, open and listen during Rx1 and Rx2 windows; only performs listening</span></div>
-<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160;    int16_t downlinkCommon();</div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160; </div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    <span class="comment">// method to generate message integrity code</span></div>
-<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;    uint32_t generateMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l00797"></a><span class="lineno">  797</span>&#160;    <span class="comment">// indicates whether an uplink has MAC commands as payload</span></div>
+<div class="line"><a name="l00798"></a><span class="lineno">  798</span>&#160;    <span class="keywordtype">bool</span> isMACPayload = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00799"></a><span class="lineno">  799</span>&#160; </div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    <span class="comment">// save the selected sub-band in case this must be restored in ADR control</span></div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    int8_t subBand = -1;</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
+<div class="line"><a name="l00803"></a><span class="lineno">  803</span>&#160;<span class="preprocessor">#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)</span></div>
+<div class="line"><a name="l00809"></a><span class="lineno">  809</span>&#160;    int16_t saveFcntUp();</div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160; </div>
+<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160;    int16_t restoreFcntUp();</div>
+<div class="line"><a name="l00817"></a><span class="lineno">  817</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00818"></a><span class="lineno">  818</span>&#160; </div>
-<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="comment">// method to verify message integrity code</span></div>
-<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    <span class="comment">// it assumes that the MIC is the last 4 bytes of the message</span></div>
-<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordtype">bool</span> verifyMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160; </div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    <span class="comment">// configure the common physical layer properties (preamble, sync word etc.)</span></div>
-<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160;    <span class="comment">// channels must be configured separately by setupChannelsDyn()!</span></div>
-<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    int16_t setPhyProperties();</div>
-<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160; </div>
-<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
-<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    <span class="comment">// for dynamic channels, there is a small set of predefined channels</span></div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    <span class="comment">// in case of JoinRequest, add some optional extra frequencies </span></div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    int16_t setupChannelsDyn(<span class="keywordtype">bool</span> joinRequest = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160; </div>
-<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
-<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="comment">// for fixed bands, we only allow one sub-band at a time to be selected</span></div>
-<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    int16_t setupChannelsFix(uint8_t subBand);</div>
-<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160; </div>
-<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    <span class="comment">// a join-accept can piggy-back a set of channels or channel masks</span></div>
-<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160;    int16_t processCFList(uint8_t* cfList);</div>
-<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="comment">// select a set of random TX/RX channels for up- and downlink</span></div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    int16_t selectChannels();</div>
+<div class="line"><a name="l00819"></a><span class="lineno">  819</span>&#160;    <span class="comment">// wait for, open and listen during Rx1 and Rx2 windows; only performs listening</span></div>
+<div class="line"><a name="l00820"></a><span class="lineno">  820</span>&#160;    int16_t downlinkCommon();</div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160; </div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    <span class="comment">// method to generate message integrity code</span></div>
+<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160;    uint32_t generateMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l00824"></a><span class="lineno">  824</span>&#160; </div>
+<div class="line"><a name="l00825"></a><span class="lineno">  825</span>&#160;    <span class="comment">// method to verify message integrity code</span></div>
+<div class="line"><a name="l00826"></a><span class="lineno">  826</span>&#160;    <span class="comment">// it assumes that the MIC is the last 4 bytes of the message</span></div>
+<div class="line"><a name="l00827"></a><span class="lineno">  827</span>&#160;    <span class="keywordtype">bool</span> verifyMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160; </div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    <span class="comment">// configure the common physical layer properties (preamble, sync word etc.)</span></div>
+<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160;    <span class="comment">// channels must be configured separately by setupChannelsDyn()!</span></div>
+<div class="line"><a name="l00831"></a><span class="lineno">  831</span>&#160;    int16_t setPhyProperties();</div>
+<div class="line"><a name="l00832"></a><span class="lineno">  832</span>&#160; </div>
+<div class="line"><a name="l00833"></a><span class="lineno">  833</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
+<div class="line"><a name="l00834"></a><span class="lineno">  834</span>&#160;    <span class="comment">// for dynamic channels, there is a small set of predefined channels</span></div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    <span class="comment">// in case of JoinRequest, add some optional extra frequencies </span></div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160;    int16_t setupChannelsDyn(<span class="keywordtype">bool</span> joinRequest = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00837"></a><span class="lineno">  837</span>&#160; </div>
+<div class="line"><a name="l00838"></a><span class="lineno">  838</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
+<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    <span class="comment">// for fixed bands, we only allow one sub-band at a time to be selected</span></div>
+<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160;    int16_t setupChannelsFix(uint8_t subBand);</div>
 <div class="line"><a name="l00841"></a><span class="lineno">  841</span>&#160; </div>
-<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="comment">// find the first usable data rate for the given band</span></div>
-<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    int16_t findDataRate(uint8_t dr, <a class="code" href="union_data_rate__t.html">DataRate_t</a>* dataRate);</div>
+<div class="line"><a name="l00842"></a><span class="lineno">  842</span>&#160;    <span class="comment">// a join-accept can piggy-back a set of channels or channel masks</span></div>
+<div class="line"><a name="l00843"></a><span class="lineno">  843</span>&#160;    int16_t processCFList(uint8_t* cfList);</div>
 <div class="line"><a name="l00844"></a><span class="lineno">  844</span>&#160; </div>
-<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="comment">// configure channel based on cached data rate ID and frequency</span></div>
-<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    int16_t configureChannel(uint8_t dir);</div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    <span class="comment">// select a set of random TX/RX channels for up- and downlink</span></div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160;    int16_t selectChannels();</div>
 <div class="line"><a name="l00847"></a><span class="lineno">  847</span>&#160; </div>
-<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    <span class="comment">// restore all available channels from persistent storage</span></div>
-<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    int16_t restoreChannels();</div>
+<div class="line"><a name="l00848"></a><span class="lineno">  848</span>&#160;    <span class="comment">// find the first usable data rate for the given band</span></div>
+<div class="line"><a name="l00849"></a><span class="lineno">  849</span>&#160;    int16_t findDataRate(uint8_t dr, <a class="code" href="union_data_rate__t.html">DataRate_t</a>* dataRate);</div>
 <div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160; </div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <span class="comment">// push MAC command to queue, done by copy</span></div>
-<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    int16_t pushMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue);</div>
+<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160;    <span class="comment">// configure channel based on cached data rate ID and frequency</span></div>
+<div class="line"><a name="l00852"></a><span class="lineno">  852</span>&#160;    int16_t configureChannel(uint8_t dir);</div>
 <div class="line"><a name="l00853"></a><span class="lineno">  853</span>&#160; </div>
-<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    <span class="comment">// delete a specific MAC command from queue, indicated by the command ID</span></div>
-<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    <span class="comment">// if a payload pointer is supplied, this returns the payload of the MAC command</span></div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    int16_t deleteMacCommand(uint8_t cid, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue, uint8_t payload[5] = NULL);</div>
-<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160; </div>
-<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    <span class="comment">// execute mac command, return the number of processed bytes for sequential processing</span></div>
-<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160;    <span class="keywordtype">bool</span> execMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <span class="keywordtype">bool</span> saveToEeprom = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160; </div>
-<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    <span class="comment">// apply a channel mask to a set of readily defined channels (dynamic bands only)</span></div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l00854"></a><span class="lineno">  854</span>&#160;    <span class="comment">// restore all available channels from persistent storage</span></div>
+<div class="line"><a name="l00855"></a><span class="lineno">  855</span>&#160;    int16_t restoreChannels();</div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160; </div>
+<div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160;    <span class="comment">// push MAC command to queue, done by copy</span></div>
+<div class="line"><a name="l00858"></a><span class="lineno">  858</span>&#160;    int16_t pushMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue);</div>
+<div class="line"><a name="l00859"></a><span class="lineno">  859</span>&#160; </div>
+<div class="line"><a name="l00860"></a><span class="lineno">  860</span>&#160;    <span class="comment">// delete a specific MAC command from queue, indicated by the command ID</span></div>
+<div class="line"><a name="l00861"></a><span class="lineno">  861</span>&#160;    <span class="comment">// if a payload pointer is supplied, this returns the payload of the MAC command</span></div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    int16_t deleteMacCommand(uint8_t cid, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue, uint8_t payload[5] = NULL);</div>
 <div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160; </div>
-<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <span class="comment">// define or delete channels from a fixed set of channels (fixed bands only)</span></div>
-<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, <span class="keywordtype">bool</span> clear);</div>
+<div class="line"><a name="l00864"></a><span class="lineno">  864</span>&#160;    <span class="comment">// execute mac command, return the number of processed bytes for sequential processing</span></div>
+<div class="line"><a name="l00865"></a><span class="lineno">  865</span>&#160;    <span class="keywordtype">bool</span> execMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <span class="keywordtype">bool</span> saveToEeprom = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00866"></a><span class="lineno">  866</span>&#160; </div>
-<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="comment">// get the payload length for a specific MAC command</span></div>
-<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    uint8_t getMacPayloadLength(uint8_t cid);</div>
-<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160;    </div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="comment">// Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).</span></div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    <span class="keywordtype">void</span> performCSMA();</div>
+<div class="line"><a name="l00867"></a><span class="lineno">  867</span>&#160;    <span class="comment">// apply a channel mask to a set of readily defined channels (dynamic bands only)</span></div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160; </div>
+<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;    <span class="comment">// define or delete channels from a fixed set of channels (fixed bands only)</span></div>
+<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, <span class="keywordtype">bool</span> clear);</div>
 <div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160; </div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <span class="comment">// perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.</span></div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    <span class="keywordtype">bool</span> performCAD();</div>
-<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160; </div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="comment">// function to encrypt and decrypt payloads</span></div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="keywordtype">void</span> processAES(uint8_t* in, <span class="keywordtype">size_t</span> len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, <span class="keywordtype">bool</span> counter);</div>
+<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <span class="comment">// get the payload length for a specific MAC command</span></div>
+<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    uint8_t getMacPayloadLength(uint8_t cid);</div>
+<div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160;    </div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="comment">// Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;    <span class="keywordtype">void</span> performCSMA();</div>
 <div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160; </div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    <span class="comment">// 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum</span></div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="keyword">static</span> uint16_t checkSum16(uint8_t *key, uint8_t keyLen);</div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    <span class="comment">// perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.</span></div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="keywordtype">bool</span> performCAD();</div>
 <div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160; </div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <span class="comment">// network-to-host conversion method - takes data from network packet and converts it to the host endians</span></div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keyword">static</span> T ntoh(uint8_t* buff, <span class="keywordtype">size_t</span> size = 0);</div>
-<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160; </div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <span class="comment">// host-to-network conversion method - takes data from host variable and and converts it to network packet endians</span></div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> hton(uint8_t* buff, T val, <span class="keywordtype">size_t</span> size = 0);</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;};</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160; </div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <span class="comment">// function to encrypt and decrypt payloads</span></div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="keywordtype">void</span> processAES(uint8_t* in, <span class="keywordtype">size_t</span> len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, <span class="keywordtype">bool</span> counter);</div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160; </div>
+<div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160;    <span class="comment">// 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum</span></div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <span class="keyword">static</span> uint16_t checkSum16(uint8_t *key, uint8_t keyLen);</div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160; </div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;    <span class="comment">// network-to-host conversion method - takes data from network packet and converts it to the host endians</span></div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    <span class="keyword">static</span> T ntoh(uint8_t* buff, <span class="keywordtype">size_t</span> size = 0);</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    <span class="comment">// host-to-network conversion method - takes data from host variable and and converts it to network packet endians</span></div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> hton(uint8_t* buff, T val, <span class="keywordtype">size_t</span> size = 0);</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;};</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160; </div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a></div><div class="ttdoc">LoRaWAN-compatible node (class A device).</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:398</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a0e3c2642ebb6e86d6a739ea68d692e6a"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a">LoRaWANNode::uplink</a></div><div class="ttdeci">int16_t uplink(const char *str, uint8_t port, bool isConfirmed=false, LoRaWANEvent_t *event=NULL)</div><div class="ttdoc">Send a message to the server.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:891</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a158f65517fa910ef0cbcd92206dab284"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a158f65517fa910ef0cbcd92206dab284">LoRaWANNode::sendReceive</a></div><div class="ttdeci">int16_t sendReceive(const char *strUp, uint8_t port, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, LoRaWANEvent_t *eventUp=NULL, LoRaWANEvent_t *eventDown=NULL)</div><div class="ttdoc">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1633</div></div>
@@ -712,6 +714,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a9613998d071bcf401be9ad57ff8591ea"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea">LoRaWANNode::wipe</a></div><div class="ttdeci">void wipe()</div><div class="ttdoc">Wipe internal persistent parameters. This will reset all counters and saved variables,...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:52</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a9a757f52c10a904a81b54fed70921ed5"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5">LoRaWANNode::beginABP</a></div><div class="ttdeci">int16_t beginABP(uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL, bool force=false)</div><div class="ttdoc">Join network by performing activation by personalization. In this procedure, all necessary configurat...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:687</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a9e6e1ce4296364606ff8b10fb5f971de"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">LoRaWANNode::getMacDeviceTimeAns</a></div><div class="ttdeci">int16_t getMacDeviceTimeAns(uint32_t *gpsEpoch, uint8_t *fraction, bool returnUnix=true)</div><div class="ttdoc">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network respo...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:2859</div></div>
+<div class="ttc" id="aclass_lo_ra_w_a_n_node_html_aa97378ad7b669718fbef529649d03452"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">LoRaWANNode::getDevAddr</a></div><div class="ttdeci">uint64_t getDevAddr()</div><div class="ttdoc">Returns the DevAddr of the device, regardless of OTAA or ABP mode.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:2876</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_aabced307f6662998608f01fab25e4226"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">LoRaWANNode::downlink</a></div><div class="ttdeci">int16_t downlink(uint8_t *data, size_t *len, LoRaWANEvent_t *event=NULL)</div><div class="ttdoc">Wait for downlink from the server in either RX1 or RX2 window.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1298</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_aae05de563f765f14fe267e4d65844f76"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode::LoRaWANNode</a></div><div class="ttdeci">LoRaWANNode(PhysicalLayer *phy, const LoRaWANBand_t *band, uint8_t subBand=0)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:34</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_ab16e85446e0a843001d1dabad5223956"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#ab16e85446e0a843001d1dabad5223956">LoRaWANNode::setDutyCycle</a></div><div class="ttdeci">void setDutyCycle(bool enable=true, uint32_t msPerHour=0)</div><div class="ttdoc">Toggle adherence to dutyCycle limits to on or off.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1972</div></div>

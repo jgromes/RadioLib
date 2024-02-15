@@ -193,6 +193,9 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a> (uint32_t *gpsEpoch, uint8_t *fraction, bool returnUnix=true)</td></tr>
 <tr class="memdesc:a9e6e1ce4296364606ff8b10fb5f971de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the network time after requesting a DeviceTime MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">More...</a><br /></td></tr>
 <tr class="separator:a9e6e1ce4296364606ff8b10fb5f971de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa97378ad7b669718fbef529649d03452"><td class="memItemLeft" align="right" valign="top">uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">getDevAddr</a> ()</td></tr>
+<tr class="memdesc:aa97378ad7b669718fbef529649d03452"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the DevAddr of the device, regardless of OTAA or ABP mode.  <a href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">More...</a><br /></td></tr>
+<tr class="separator:aa97378ad7b669718fbef529649d03452"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -463,6 +466,26 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Required interval (delay) in milliseconds between consecutive uplinks. </dd></dl>
+
+</div>
+</div>
+<a id="aa97378ad7b669718fbef529649d03452"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa97378ad7b669718fbef529649d03452">&#9670;&nbsp;</a></span>getDevAddr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint64_t LoRaWANNode::getDevAddr </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the DevAddr of the device, regardless of OTAA or ABP mode. </p>
+<dl class="section return"><dt>Returns</dt><dd>8-byte DevAddr </dd></dl>
 
 </div>
 </div>
