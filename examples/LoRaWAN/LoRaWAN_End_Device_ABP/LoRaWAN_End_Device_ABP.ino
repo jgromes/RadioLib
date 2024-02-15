@@ -8,12 +8,14 @@
   The device will start uploading data directly,
   without having to join the network.
 
-  LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
-  Please refer to the 'persistent' example once you are familiar
-  with LoRaWAN.
-  Running this examples REQUIRES you to check "Resets DevNonces"
-  on your LoRaWAN dashboard. Refer to the network's 
-  documentation on how to do this.
+  NOTE: LoRaWAN v1.1 requires storing parameters persistently!
+        RadioLib does this by using EEPROM (persistent storage), 
+        by default starting at address 0 and using 448 bytes.
+        If you already use EEPROM in your application,
+        you will have to either avoid this range, or change it
+        by setting a different start address by changing the value of
+        RADIOLIB_HAL_PERSISTENT_STORAGE_BASE macro, either
+        during build or in src/BuildOpt.h.
   
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
@@ -50,8 +52,8 @@ LoRaWANNode node(&radio, &EU868);
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278 with default settings
-  Serial.print(F("[SX1278] Initializing ... "));
+  // initialize radio (SX1262 / SX1278 / ... ) with default settings
+  Serial.print(F("[Radio] Initializing ... "));
   int state = radio.begin();
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -126,7 +128,7 @@ int count = 0;
 void loop() {
   // send uplink to port 10
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String strUp = "Hello World! #" + String(count++);
+  String strUp = "Hello!" + String(count++);
   String strDown;
   int state = node.sendReceive(strUp, 10, strDown);
   if(state == RADIOLIB_ERR_NONE) {
@@ -162,6 +164,10 @@ void loop() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
+
+  // on EEPROM enabled boards, you can save the current session
+  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  node.saveSession();
 
   // wait before sending another packet
   uint32_t minimumDelay = 60000;                  // try to send once every minute

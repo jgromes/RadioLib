@@ -685,6 +685,12 @@ class LoRaWANNode {
     */
     int16_t getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix = true);
 
+    /*!
+      \brief Returns the DevAddr of the device, regardless of OTAA or ABP mode
+      \returns 8-byte DevAddr
+    */
+    uint64_t getDevAddr();
+
 #if !RADIOLIB_GODMODE
   private:
 #endif

@@ -52,8 +52,8 @@ LoRaWANNode node(&radio, &EU868);
 void setup() {
   Serial.begin(9600);
 
-  // initialize SX1278 with default settings
-  Serial.print(F("[SX1278] Initializing ... "));
+  // initialize radio (SX1262 / SX1278 / ... ) with default settings
+  Serial.print(F("[Radio] Initializing ... "));
   int state = radio.begin();
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -102,11 +102,15 @@ void setup() {
 
   if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
+    delay(2000);	// small delay between joining and uplink
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
     while(true);
   }
+
+  Serial.print("[LoRaWAN] DevAddr: ");
+  Serial.println(node.getDevAddr(), HEX);
 
   // on EEPROM-enabled boards, after the device has been activated,
   // the session can be restored without rejoining after device power cycle
@@ -116,7 +120,7 @@ void setup() {
   /*
     Serial.print(F("[LoRaWAN] Resuming previous session ... "));
     state = node.restore();
-    if(state == RADIOLIB_ERR_NONE) {
+    if(state >= RADIOLIB_ERR_NONE) {
       Serial.println(F("success!"));
     } else {
       Serial.print(F("failed, code "));
@@ -130,7 +134,7 @@ void setup() {
 
   // set a fixed datarate
   node.setDatarate(5);
-  // in order to save the datarate persistent across reboot/deepsleep, use the following:
+  // in order to set the datarate persistent across reboot/deepsleep, use the following:
   /*
     node.setDatarate(5, true);  
   */
@@ -148,10 +152,10 @@ void setup() {
   node.setDutyCycle(true, 1250);
 
   // enable or disable the dwell time limits
-  // the second argument specific allowed airtime per uplink in milliseconds
-  // if not called, this corresponds to setDwellTime(true, 0)
+  // the second argument specifies the allowed airtime per uplink in milliseconds
+  // unless specified, this argument is set to 0
   // setting this to 0 corresponds to the band's maximum allowed dwell time by law
-  node.setDwellTime(true, 1000);
+  node.setDwellTime(true, 400);
 }
 
 void loop() {
@@ -170,14 +174,14 @@ void loop() {
   uint32_t fcntUp = node.getFcntUp();
 
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String strUp = "Hello World! #" + String(fcntUp);
+  String strUp = "Hello!" + String(fcntUp);
   
   // send a confirmed uplink to port 10 every 64th frame
   // and also request the LinkCheck and DeviceTime MAC commands
   if(fcntUp % 64 == 0) {
-    state = node.uplink(strUp, 10, true);
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_LINK_CHECK);
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_DEVICE_TIME);
+    state = node.uplink(strUp, 10, true);
   } else {
     state = node.uplink(strUp, 10);
   }
@@ -239,7 +243,7 @@ void loop() {
     Serial.print(F("[LoRaWAN] Confirming:\t"));
     Serial.println(event.confirming);
     Serial.print(F("[LoRaWAN] Datarate:\t"));
-    Serial.print(event.datarate);
+    Serial.println(event.datarate);
     Serial.print(F("[LoRaWAN] Frequency:\t"));
     Serial.print(event.freq, 3);
     Serial.println(F(" MHz"));
