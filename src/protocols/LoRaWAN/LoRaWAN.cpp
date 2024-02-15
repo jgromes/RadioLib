@@ -2873,6 +2873,9 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
   return(RADIOLIB_ERR_NONE);
 }
 
+uint64_t LoRaWANNode::getDevAddr() {
+  return(this->devAddr);
+}
 
 // The following function enables LMAC, a CSMA scheme for LoRa as specified 
 // in the LoRa Alliance Technical Recommendation #13.
