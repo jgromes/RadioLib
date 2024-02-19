@@ -146,7 +146,9 @@ void ArduinoHal::writePersistentStorage(uint32_t addr, uint8_t* buff, size_t len
       EEPROM.init();
     #endif
     for(size_t i = 0; i < len; i++) {
-      EEPROM.write(addr + i, buff[i]);
+      if(EEPROM.read(addr + i) != buff[i]) {  // only write if value is new
+        EEPROM.write(addr + i, buff[i]);
+      }
     }
     #if defined(RADIOLIB_ESP32) || defined(ARDUINO_ARCH_RP2040)
       EEPROM.commit();
