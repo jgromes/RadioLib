@@ -554,6 +554,11 @@
 #define RADIOLIB_ERR_A_FCNT_DOWN_INVALID                        (-1114)
 
 /*!
+  \brief Uplink payload length at this datarate exceeds the active dwell time limitations.
+*/
+#define RADIOLIB_ERR_DWELL_TIME_EXCEEDED                        (-1115)
+
+/*!
   \}
 */
 
