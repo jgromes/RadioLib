@@ -179,6 +179,12 @@
 #define RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP                 (0x0F)
 #define RADIOLIB_LORAWAN_MAC_PROPRIETARY                        (0x80)
 
+// maximum allowed dwell time on bands that implement dwell time limitations
+#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
+
+// unused LoRaWAN version
+#define RADIOLIB_LORAWAN_VERSION_NONE                           (0xFF)
+
 // unused frame counter value
 #define RADIOLIB_LORAWAN_FCNT_NONE                              (0xFFFFFFFF)
 
@@ -188,10 +194,7 @@
 // the maximum number of simultaneously available channels
 #define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (16)
 
-// maximum allowed dwell time on bands that implement dwell time limitations
-#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
-
-// Maximum MAC command sizes
+// maximum MAC command sizes
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN               (5)
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
 #define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
@@ -804,16 +807,20 @@ class LoRaWANNode {
     /*!
       \brief Save the current uplink frame counter.
       Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
     */
-    int16_t saveFcntUp();
+    void saveFcntUp();
 
     /*!
       \brief Restore frame counter for uplinks from persistent storage.
       Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
     */
-    int16_t restoreFcntUp();
+    void restoreFcntUp();
+
+    // set all keys to zero
+    void clearSession();
+    
+    // test if saved keys are non-zero
+    bool isActiveSession();
 #endif
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening

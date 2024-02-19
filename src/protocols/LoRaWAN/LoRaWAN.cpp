@@ -165,7 +165,7 @@ int16_t LoRaWANNode::restore() {
   return(this->activeMode);
 }
 
-int16_t LoRaWANNode::restoreFcntUp() {
+void LoRaWANNode::restoreFcntUp() {
   Module* mod = this->phyLayer->getMod();
 
   uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID);
@@ -210,7 +210,6 @@ int16_t LoRaWANNode::restoreFcntUp() {
   #endif
 
   this->fcntUp = (bits_30_22 << 22) | (bits_22_14 << 14) | (bits_14_7 << 7) | bits_7_0;
-  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LoRaWANNode::restoreChannels() {
@@ -277,7 +276,41 @@ int16_t LoRaWANNode::restoreChannels() {
   }
   return(RADIOLIB_ERR_NONE);
 }
-#endif
+
+void LoRaWANNode::clearSession() {
+  Module* mod = this->phyLayer->getMod();
+  uint8_t zeroes[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
+}
+
+bool LoRaWANNode::isActiveSession() {
+  Module* mod = this->phyLayer->getMod();
+  this->devAddr = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID);
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
+
+  uint8_t mask = 0;
+  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
+    mask |= this->appSKey[i];
+  }
+  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
+    mask |= this->nwkSEncKey[i];
+  }
+  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
+    mask |= this->fNwkSIntKey[i];
+  }
+  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
+    mask |= this->sNwkSIntKey[i];
+  }
+  return(mask > 0);
+}
+
+#endif  // RADIOLIB_EEPROM_UNSUPPORTED
 
 void LoRaWANNode::beginCommon(uint8_t joinDr) {
   // in case a new session is started while there is an ongoing session
@@ -400,26 +433,21 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   checkSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
   checkSum ^= LoRaWANNode::checkSum16(appKey, 16);
 
-  bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
-  bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
+  bool isValidCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
+  bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
 
-  if(validCheckSum && validMode) {
-    if(!force) {
-      // the device has joined already, we can just pull the data from persistent storage
-      RADIOLIB_DEBUG_PRINTLN("Found existing session; restoring...");
-      return(this->restore());
-
-    } else {
-      // the credentials are still the same, so restore only DevNonce and JoinNonce
-      this->devNonce  = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID);
-      this->joinNonce = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID);
-    }
+  if(isValidCheckSum && isValidMode && !force && this->isActiveSession()) {
+    return(this->restore());
   }
-  
-  // if forced by user, keys are new or changed mode, wipe the previous session
-  if(force || !validCheckSum || !validMode) {
+  if(isValidCheckSum && isValidMode && (force || !this->isActiveSession())) {
+    this->clearSession();
+    // the credentials are still the same, so restore the DevNonce and JoinNonce
+    this->devNonce  = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID);
+    this->joinNonce = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID);
+  }
+  if(!isValidCheckSum || !isValidMode) {
     #if RADIOLIB_DEBUG
-      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
+      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", isValidCheckSum, isValidMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
       uint8_t nvmBuff[16];
       mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
@@ -458,8 +486,14 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
 
+  // copy devNonce currently in use
+  uint16_t devNonceUsed = this->devNonce;
   // increment devNonce as we are sending another join-request
   this->devNonce += 1;
+
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID, this->devNonce);
+#endif
 
   // build the join-request message
   uint8_t joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_LEN];
@@ -468,7 +502,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   joinRequestMsg[0] = RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_REQUEST | RADIOLIB_LORAWAN_MHDR_MAJOR_R1;
   LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_JOIN_EUI_POS], joinEUI);
   LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_DEV_EUI_POS], devEUI);
-  LoRaWANNode::hton<uint16_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_DEV_NONCE_POS], this->devNonce);
+  LoRaWANNode::hton<uint16_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_DEV_NONCE_POS], devNonceUsed);
 
   // add the authentication code
   uint32_t mic = this->generateMIC(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN - sizeof(uint32_t), nwkKey);
@@ -554,7 +588,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     uint8_t micBuff[3*RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     micBuff[0] = RADIOLIB_LORAWAN_JOIN_REQUEST_TYPE;
     LoRaWANNode::hton<uint64_t>(&micBuff[1], joinEUI);
-    LoRaWANNode::hton<uint16_t>(&micBuff[9], this->devNonce);
+    LoRaWANNode::hton<uint16_t>(&micBuff[9], devNonceUsed);
     memcpy(&micBuff[11], joinAcceptMsg, lenRx);
     
     if(!verifyMIC(micBuff, lenRx + 11, this->jSIntKey)) {
@@ -605,7 +639,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   if(this->rev == 1) {
     // 1.1 version, derive the keys
     LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_EUI_POS], joinEUI);
-    LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_NONCE_POS], this->devNonce);
+    LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_NONCE_POS], devNonceUsed);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
 
     RadioLibAES128Instance.init(appKey);
@@ -636,7 +670,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   } else {
     // 1.0 version, just derive the keys
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], this->homeNetId, 3);
-    LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], this->devNonce);
+    LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], devNonceUsed);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
     RadioLibAES128Instance.init(nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
@@ -660,23 +694,10 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   // save the activation keys checksum, device address & keys as well as JoinAccept values; these are only ever set when joining
-  mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID, checkSum);
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID, this->devAddr);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
-
-  // save join-request parameters
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_HOME_NET_ID, this->homeNetId);
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID, this->devNonce);
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID, this->joinNonce);
-
-  this->saveSession();
-
-  // everything written to NVM, write current table version to persistent storage and set mode
   mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_TABLE_VERSION_ID, RADIOLIB_EEPROM_TABLE_VERSION);
+  mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID, checkSum);
   mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID, RADIOLIB_LORAWAN_MODE_OTAA);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID, this->joinNonce);
 #endif
 
   this->activeMode = RADIOLIB_LORAWAN_MODE_OTAA;
@@ -697,17 +718,18 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   if(fNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
   if(sNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
 
-  bool validCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
-  bool validMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_ABP;
+  bool isValidCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
+  bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
 
-  if(!force && validCheckSum && validMode) {
-    // the device has joined already, we can just pull the data from persistent storage
-    RADIOLIB_DEBUG_PRINTLN("Found existing session; restoring...");
-    
+  if(isValidCheckSum && isValidMode && !force && this->isActiveSession()) {
     return(this->restore());
-  } else {
+  }
+  if(isValidCheckSum && isValidMode && (force || !this->isActiveSession())) {
+    this->clearSession();
+  }
+  if(!isValidCheckSum || !isValidMode) {
     #if RADIOLIB_DEBUG
-      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", validCheckSum, validMode);
+      RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", isValidCheckSum, isValidMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
       uint8_t nvmBuff[16];
       mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(0), nvmBuff, 16);
@@ -750,20 +772,18 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   state = this->setPhyProperties();
   RADIOLIB_ASSERT(state);
 
+  // reset all frame counters
+  this->fcntUp = 0;
+  this->aFcntDown = 0;
+  this->nFcntDown = 0;
+  this->confFcntUp = RADIOLIB_LORAWAN_FCNT_NONE;
+  this->confFcntDown = RADIOLIB_LORAWAN_FCNT_NONE;
+  this->adrFcnt = 0;
+
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   // save the activation keys checksum, device address & keys
-  mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID, checkSum);
-  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID, this->devAddr);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
-
-  // save all new frame counters
-  this->saveSession();
-
-  // everything written to NVM, write current table version to persistent storage and set mode
   mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_TABLE_VERSION_ID, RADIOLIB_EEPROM_TABLE_VERSION);
+  mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID, checkSum);
   mod->hal->setPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID, RADIOLIB_LORAWAN_MODE_ABP);
 #endif
 
@@ -780,25 +800,24 @@ bool LoRaWANNode::isJoined() {
 int16_t LoRaWANNode::saveSession() {
   Module* mod = this->phyLayer->getMod();
 
-  if(mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_VERSION_ID) != this->rev)
-     mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_VERSION_ID, this->rev);
+  // store DevAddr and all keys
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID, this->devAddr);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
+  
+  // store network parameters
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_HOME_NET_ID, this->homeNetId);
+  mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_VERSION_ID, this->rev);
 
   // store all frame counters
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_A_FCNT_DOWN_ID) != this->aFcntDown)
-     mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_A_FCNT_DOWN_ID, this->aFcntDown);
-  
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_N_FCNT_DOWN_ID) != this->nFcntDown)
-     mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_N_FCNT_DOWN_ID, this->nFcntDown);
-  
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_UP_ID) != this->confFcntUp)
-     mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_UP_ID, this->confFcntUp);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_A_FCNT_DOWN_ID, this->aFcntDown);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_N_FCNT_DOWN_ID, this->nFcntDown);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_UP_ID, this->confFcntUp);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_DOWN_ID, this->confFcntDown);
+  mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_ADR_FCNT_ID, this->adrFcnt);
 
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_DOWN_ID) != this->confFcntDown)
-     mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_CONF_FCNT_DOWN_ID, this->confFcntDown);
-  
-  if(mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_ADR_FCNT_ID) != this->adrFcnt)
-     mod->hal->setPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_ADR_FCNT_ID, this->adrFcnt);
-  
   // fcntUp is saved using highly efficient wear-leveling as this is by far going to be written most often
   this->saveFcntUp();
 
@@ -815,7 +834,7 @@ int16_t LoRaWANNode::saveSession() {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::saveFcntUp() {
+void LoRaWANNode::saveFcntUp() {
   Module* mod = this->phyLayer->getMod();
 
   uint8_t fcntBuffStart = mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID);
@@ -878,7 +897,6 @@ int16_t LoRaWANNode::saveFcntUp() {
   bits_7_0 |= (~(fcntBuff[idx] >> 7)) << 7;
   mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_FCNT_UP_ID, bits_7_0, idx);
 
-  return(RADIOLIB_ERR_NONE);
 }
 #endif  // RADIOLIB_EEPROM_UNSUPPORTED
 
@@ -1008,7 +1026,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // if dwell time is imposed, calculated expected time on air and cancel if exceeds
   if(this->dwellTimeEnabledUp && this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen) - 16)/1000 > this->dwellTimeUp) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
   }
 
   // build the uplink message
@@ -1109,6 +1127,8 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
   block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].idx;
   
+  RADIOLIB_DEBUG_PRINTLN("FcntUp: %d", this->fcntUp);
+
   RADIOLIB_DEBUG_PRINTLN("uplinkMsg pre-MIC:");
   RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
@@ -1125,9 +1145,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   } else {
     LoRaWANNode::hton<uint32_t>(&uplinkMsg[uplinkMsgLen - sizeof(uint32_t)], micF);
   }
-
-  RADIOLIB_DEBUG_PRINTLN("uplinkMsg:");
-  RADIOLIB_DEBUG_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
   // perform CSMA if enabled.
   if (enableCSMA) {
@@ -1224,7 +1241,7 @@ int16_t LoRaWANNode::downlinkCommon() {
     
     // wait for the timeout to complete (and a small additional delay)
     mod->hal->delay(timeoutHost / 1000 + scanGuard / 2);
-    RADIOLIB_DEBUG_PRINTLN("closing");
+    RADIOLIB_DEBUG_PRINTLN("Closing Rx%d window", i+1);
 
     // check if the IRQ bit for Rx Timeout is set
     if(!this->phyLayer->isRxTimeout()) {
@@ -1233,6 +1250,7 @@ int16_t LoRaWANNode::downlinkCommon() {
     } else if(i == 0) {
       // nothing in the first window, configure for the second
       this->phyLayer->standby();
+      RADIOLIB_DEBUG_PRINTLN("PHY: Frequency %cL = %6.3f MHz", 'D', this->rx2.freq);
       state = this->phyLayer->setFrequency(this->rx2.freq);
       RADIOLIB_ASSERT(state);
 
@@ -1742,7 +1760,6 @@ int16_t LoRaWANNode::setupChannelsDyn(bool joinRequest) {
   for(; num < 3 && this->band->txFreqs[num].enabled; num++) {
     this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = this->band->txFreqs[num];
     this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][num] = this->band->txFreqs[num];
-    RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
   }
 
   // if we're about to send a join-request, copy the join-request channels to the next slots
@@ -1751,13 +1768,28 @@ int16_t LoRaWANNode::setupChannelsDyn(bool joinRequest) {
     for(; numJR < 3 && this->band->txJoinReq[num].enabled; numJR++, num++) {
       this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = this->band->txFreqs[num];
       this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][num] = this->band->txFreqs[num];
-      RADIOLIB_DEBUG_PRINTLN("Channel UL/DL %d frequency = %f MHz", this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num].freq);
     }
   }
 
   // clear all remaining channels
   for(; num < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; num++) {
     this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = RADIOLIB_LORAWAN_CHANNEL_NONE;
+  }
+
+  for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+    RADIOLIB_DEBUG_PRINTLN("UL: %d %d %6.3f (%d - %d) | DL: %d %d %6.3f (%d - %d)",
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax,
+
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMin,
+                            this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMax
+                          );
   }
   
   return(RADIOLIB_ERR_NONE);
@@ -2083,8 +2115,8 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
     
     dataRate->lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
     dataRate->lora.codingRate = (dataRateBand & 0x03) + 5;
-    RADIOLIB_DEBUG_PRINTLN("DR %d: LORA (SF: %d, BW: %f, CR: %d)", 
-                            dataRateBand, dataRate->lora.spreadingFactor, dataRate->lora.bandwidth, dataRate->lora.codingRate);
+    RADIOLIB_DEBUG_PRINTLN("PHY: SF = %d, BW = %6.3f kHz, CR = 4/%d", 
+                            dataRate->lora.spreadingFactor, dataRate->lora.bandwidth, dataRate->lora.codingRate);
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -2093,7 +2125,7 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
 int16_t LoRaWANNode::configureChannel(uint8_t dir) {
   // set the frequency
   RADIOLIB_DEBUG_PRINTLN("");
-  RADIOLIB_DEBUG_PRINTLN("Channel frequency %cL = %f MHz", dir ? 'D' : 'U', this->currentChannels[dir].freq);
+  RADIOLIB_DEBUG_PRINTLN("PHY: Frequency %cL = %6.3f MHz", dir ? 'D' : 'U', this->currentChannels[dir].freq);
   int state = this->phyLayer->setFrequency(this->currentChannels[dir].freq);
   RADIOLIB_ASSERT(state);
 
@@ -2314,9 +2346,6 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_LINK_ADR_ID), &(cmd->payload[0]), payLen);
       
       } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-        RADIOLIB_DEBUG_PRINTLN("[1] Repeat: %d, RFU: %d, payload: %02X %02X %02X %02X",
-                                cmd->repeat, (cmd->payload[3] >> 7),
-                                cmd->payload[0], cmd->payload[1], cmd->payload[2], cmd->payload[3]);
         // if RFU bit is set, this is just a change in Datarate or TxPower
         // so read bytes 1..3 from last stored ADR command into the current MAC payload and re-store it
         if((cmd->payload[3] >> 7) == 1) {
@@ -2333,9 +2362,6 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
           // saved an ADR mask, so re-store counter
           mod->hal->setPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID, cmd->repeat);
         }
-        RADIOLIB_DEBUG_PRINTLN("[2] Repeat: %d, RFU: %d, payload: %02X %02X %02X %02X",
-                                cmd->repeat, (cmd->payload[3] >> 7),
-                                cmd->payload[0], cmd->payload[1], cmd->payload[2], cmd->payload[3]);
       }
     }
 #endif
@@ -2438,7 +2464,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
         this->phyLayer->setFrequency(this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].freq);
       }
       
-      RADIOLIB_DEBUG_PRINTLN("UL: %d %d %5.2f (%d - %d) | DL: %d %d %5.2f (%d - %d)", 
+      RADIOLIB_DEBUG_PRINTLN("UL: %d %d %6.3f (%d - %d) | DL: %d %d %6.3f (%d - %d)", 
                               this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][chIndex].idx,
                               this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][chIndex].enabled,
                               this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][chIndex].freq,
@@ -2641,7 +2667,6 @@ bool LoRaWANNode::applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask) {
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
     if(chMaskCntl == 0) {
       // apply the mask by looking at each channel bit
-      RADIOLIB_DEBUG_PRINTLN("ADR channel %d: %d --> %d", this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled, (chMask >> i) & 0x01);
       if(chMask & (1UL << i)) {
         // if it should be enabled but is not currently defined, stop immediately
         if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
@@ -2662,7 +2687,7 @@ bool LoRaWANNode::applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask) {
   }
 
   for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    RADIOLIB_DEBUG_PRINTLN("UL: %d %d %5.2f (%d - %d) | DL: %d %d %5.2f (%d - %d)",
+    RADIOLIB_DEBUG_PRINTLN("UL: %d %d %6.3f (%d - %d) | DL: %d %d %6.3f (%d - %d)",
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
@@ -2709,7 +2734,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
         chnl.drMin = this->band->txSpans[0].drMin;
         chnl.drMax = this->band->txSpans[0].drMax;
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-        RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
       }
     }
 
@@ -2732,7 +2756,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
         chnl.drMin = this->band->txSpans[1].drMin;
         chnl.drMax = this->band->txSpans[1].drMax;
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-        RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx-1, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
       }
     }
 
@@ -2752,7 +2775,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
           chnl.drMin = this->band->txSpans[0].drMin;
           chnl.drMax = this->band->txSpans[0].drMax;
           this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-          RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
         }
         // enable single channel from second span
         uint8_t chNum = 64 + i;
@@ -2762,7 +2784,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
         chnl.drMin = this->band->txSpans[1].drMin;
         chnl.drMax = this->band->txSpans[1].drMax;
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-        RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
       }
     }
 
@@ -2785,7 +2806,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
         chnl.drMin = this->band->txSpans[1].drMin;
         chnl.drMax = this->band->txSpans[1].drMax;
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-        RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
       }
     }
 
@@ -2810,14 +2830,13 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
         chnl.drMin = this->band->txSpans[1].drMin;
         chnl.drMax = this->band->txSpans[1].drMax;
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx++] = chnl;
-        RADIOLIB_DEBUG_PRINTLN("Channel UL %d (%d) frequency = %f MHz", chnl.idx, idx, this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][idx-1].freq);
       }
     }
 
   }
 
   for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    RADIOLIB_DEBUG_PRINTLN("UL: %d %d %5.2f (%d - %d) | DL: %d %d %5.2f (%d - %d)",
+    RADIOLIB_DEBUG_PRINTLN("UL: %d %d %6.3f (%d - %d) | DL: %d %d %6.3f (%d - %d)",
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
                             this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
