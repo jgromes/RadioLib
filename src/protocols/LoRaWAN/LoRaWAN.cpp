@@ -82,6 +82,10 @@ int16_t LoRaWANNode::restore() {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
   
+  if(!this->isActiveSession()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+  
   // pull all authentication keys from persistent storage
   this->devAddr = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID);
   mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
