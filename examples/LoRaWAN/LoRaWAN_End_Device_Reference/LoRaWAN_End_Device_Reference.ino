@@ -283,11 +283,9 @@ void loop() {
     Serial.println(state);
   }
 
-  // on EEPROM enabled boards, you can save the current session
+  // on EEPROM enabled boards, you should save the current session
   // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
-  /*
-    node.saveSession();
-  */
+  node.saveSession();
 
   // wait before sending another packet
   uint32_t minimumDelay = 60000;                  // try to send once every minute
