@@ -866,7 +866,7 @@ class LoRaWANNode {
 
     // delete a specific MAC command from queue, indicated by the command ID
     // if a payload pointer is supplied, this returns the payload of the MAC command
-    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t payload[5] = NULL);
+    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t* payload = NULL);
 
     // execute mac command, return the number of processed bytes for sequential processing
     bool execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom = true);

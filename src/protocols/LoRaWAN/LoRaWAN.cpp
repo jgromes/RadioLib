@@ -81,7 +81,7 @@ int16_t LoRaWANNode::restore() {
     // the mode value is not set, user will have to do perform the join procedure
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
-  
+
   if(!this->isActiveSession()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
@@ -960,9 +960,6 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     // len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
   }
 
-  // increase frame counter by one
-  this->fcntUp += 1;
-
   bool adrAckReq = false;
   if(this->adrEnabled) {
     // check if we need to do ADR stuff
@@ -1184,6 +1181,9 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     event->fcnt = this->fcntUp;
     event->port = port;
   }
+
+  // increase frame counter by one for the next uplink
+  this->fcntUp += 1;
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -1600,8 +1600,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
   }
 
-  // a downlink was received, so reset the ADR counter to this uplink's fcnt
-  this->adrFcnt = this->fcntUp;
+  // a downlink was received, so reset the ADR counter to the last uplink's fcnt
+  this->adrFcnt = this->fcntUp - 1;
 
   // pass the extra info if requested
   if(event) {
@@ -1677,7 +1677,7 @@ void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
 }
 
 uint32_t LoRaWANNode::getFcntUp() {
-  return(this->fcntUp);
+  return(this->fcntUp - 1);
 }
 
 uint32_t LoRaWANNode::getNFcntDown() {
@@ -2186,7 +2186,7 @@ int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQ
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t payload[5]) {
+int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t* payload) {
   if(queue->numCommands == 0) {
     return(RADIOLIB_ERR_COMMAND_QUEUE_EMPTY);
   }
@@ -2875,7 +2875,7 @@ int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
 
   if(margin) { *margin = payload[0]; }
   if(gwCnt)  { *gwCnt  = payload[1]; }
-  // RADIOLIB_DEBUG_PRINTLN("Link check: margin = %d dB, gwCnt = %d", margin, gwCnt);
+
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -2887,12 +2887,12 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
   if(gpsEpoch) { 
     *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]); 
     if(returnUnix) {
-      uint32_t unixOffset = 315964800;
+      uint32_t unixOffset = 315964800 - 19; // 19 leap seconds between Jan. 6th 1980
       *gpsEpoch += unixOffset;
     }
   }
   if(fraction) { *fraction = payload[4]; }
-  // RADIOLIB_DEBUG_PRINTLN("Network time: gpsEpoch = %d s, delayExp = %f", gpsEpoch, (float)(*fraction)/256.0f);
+
   return(RADIOLIB_ERR_NONE);
 }
 
