@@ -587,18 +587,28 @@ class LoRaWANNode {
     */
     void setDeviceStatus(uint8_t battLevel);
 
-    /*! \brief Returns the last uplink's frame counter */
+    /*! 
+        \brief Returns the last uplink's frame counter; 
+        also 0 if no uplink occured yet. 
+    */
     uint32_t getFcntUp();
 
-    /*! \brief Returns the last network downlink's frame counter */
+    /*! 
+        \brief Returns the last network downlink's frame counter; 
+        also 0 if no network downlink occured yet. 
+    */
     uint32_t getNFcntDown();
 
-    /*! \brief Returns the last application downlink's frame counter */
+    /*! 
+        \brief Returns the last application downlink's frame counter; 
+        also 0 if no application downlink occured yet. 
+    */
     uint32_t getAFcntDown();
 
-    /*! \brief Reset the downlink frame counters (application and network)
+    /*! 
+        \brief Reset the downlink frame counters (application and network)
         This is unsafe and can possibly allow replay attacks using downlinks.
-        It mainly exists as part of the TS008 Specification Verification protocol.
+        It mainly exists as part of the TS009 Specification Verification protocol.
     */
     void resetFcntDown();
 

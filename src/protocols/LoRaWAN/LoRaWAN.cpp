@@ -956,7 +956,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // check maximum payload len as defined in phy
   if(len > this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]]) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
-    // if testing with TS008 specification verification protocol, don't throw error but clip the message
+    // if testing with TS009 specification verification protocol, don't throw error but clip the message
     // len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
   }
 
@@ -1612,7 +1612,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPowerMax - this->txPowerCur * 2;
     event->fcnt = isAppDownlink ? this->aFcntDown : this->nFcntDown;
-    event->port = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FPORT_POS(foptsLen)];
+    event->port = isAppDownlink ? downlinkMsg[RADIOLIB_LORAWAN_FHDR_FPORT_POS(foptsLen)] : RADIOLIB_LORAWAN_FPORT_MAC_COMMAND;
   }
 
   // process Application payload (if there is any)
@@ -1626,8 +1626,6 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     return(RADIOLIB_ERR_NONE);
   }
 
-  // there is payload, and so there should be a port too
-  // TODO pass the port?
   *len = payLen - 1;
 
   // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fcnt16
@@ -1676,7 +1674,11 @@ void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
   this->battLevel = battLevel;
 }
 
+// return Fcnt of last uplink; also return 0 if no uplink occured yet
 uint32_t LoRaWANNode::getFcntUp() {
+  if(this->fcntUp == 0) {
+    return(0);
+  }
   return(this->fcntUp - 1);
 }
 
@@ -2239,6 +2241,10 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_LINK_CHECK): {
+      // delete any existing response (does nothing if there is none)
+      deleteMacCommand(RADIOLIB_LORAWAN_MAC_LINK_CHECK, &this->commandsDown);
+
+      // insert response into MAC downlink queue
       pushMacCommand(cmd, &this->commandsDown);
       return(false);
     } break;
@@ -2623,6 +2629,10 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom) {
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_DEVICE_TIME): {
+      // delete any existing response (does nothing if there is none)
+      deleteMacCommand(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &this->commandsDown);
+
+      // insert response into MAC downlink queue
       pushMacCommand(cmd, &this->commandsDown);
       return(false);
     } break;
@@ -2887,7 +2897,7 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
   if(gpsEpoch) { 
     *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]); 
     if(returnUnix) {
-      uint32_t unixOffset = 315964800 - 19; // 19 leap seconds between Jan. 6th 1980
+      uint32_t unixOffset = 315964800 - 18; // 18 leap seconds between Jan. 6th 1980
       *gpsEpoch += unixOffset;
     }
   }
