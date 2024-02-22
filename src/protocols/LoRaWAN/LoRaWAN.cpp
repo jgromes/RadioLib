@@ -2921,7 +2921,7 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
   if(gpsEpoch) { 
     *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]); 
     if(returnUnix) {
-      uint32_t unixOffset = 315964800 - 18; // 18 leap seconds between Jan. 6th 1980
+      uint32_t unixOffset = 315964800 - 18; // 18 leap seconds since GPS epoch (Jan. 6th 1980)
       *gpsEpoch += unixOffset;
     }
   }
