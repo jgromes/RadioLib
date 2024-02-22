@@ -1317,6 +1317,20 @@ int16_t LoRaWANNode::downlink(String& str, LoRaWANEvent_t* event) {
 }
 #endif
 
+int16_t LoRaWANNode::downlink(LoRaWANEvent_t* event) {
+  int16_t state = RADIOLIB_ERR_NONE;
+
+  // build a temporary buffer
+  // LoRaWAN downlinks can have 250 bytes at most with 1 extra byte for NULL
+  size_t length = 0;
+  uint8_t data[251];
+
+  // wait for downlink
+  state = this->downlink(data, &length, event);
+
+  return(state);
+}
+
 int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event) {
   // handle Rx1 and Rx2 windows - returns RADIOLIB_ERR_NONE if a downlink is received
   int16_t state = downlinkCommon();
@@ -1649,6 +1663,16 @@ int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t port, String& strDown, b
   return(state);
 }
 #endif
+
+int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
+  // send the uplink
+  int16_t state = this->uplink(dataUp, lenUp, port, isConfirmed, eventUp);
+  RADIOLIB_ASSERT(state);
+
+  // wait for the downlink
+  state = this->downlink(eventDown);
+  return(state);
+}
 
 int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink

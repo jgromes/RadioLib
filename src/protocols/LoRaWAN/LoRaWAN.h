@@ -533,6 +533,14 @@ class LoRaWANNode {
     */
     int16_t downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event = NULL);
 
+    /*!
+      \brief Wait for downlink, simplified to allow for simpler sendReceive
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns \ref status_codes
+    */
+    int16_t downlink(LoRaWANEvent_t* event = NULL);
+
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
@@ -579,6 +587,20 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+
+    /*!
+      \brief Send a message to the server and wait for a downlink but don't bother the user with downlink contents
+      \param dataUp Data to send.
+      \param lenUp Length of the data.
+      \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Set device status.
