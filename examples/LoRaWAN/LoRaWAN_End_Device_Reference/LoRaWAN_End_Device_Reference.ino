@@ -271,7 +271,7 @@ void loop() {
     if(node.getMacDeviceTimeAns(&networkTime, &fracSecond, true) == RADIOLIB_ERR_NONE) {
       Serial.print(F("[LoRaWAN] DeviceTime Unix:\t"));
       Serial.println(networkTime);
-      Serial.print(F("[LoRaWAN] LinkCheck second:\t1/"));
+      Serial.print(F("[LoRaWAN] DeviceTime second:\t1/"));
       Serial.println(fracSecond);
     }
   
