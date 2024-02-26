@@ -1,6 +1,6 @@
 #include "LoRaWAN.h"
 #include <string.h>
-#if defined(ESP8266) || defined(ESP32)
+#if defined(ESP_PLATFORM)
 #include "esp_attr.h"
 #endif
 
