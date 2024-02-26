@@ -833,7 +833,7 @@ class LoRaWANNode {
     bool isMACPayload = false;
 
     // save the selected sub-band in case this must be restored in ADR control
-    int8_t subBand = -1;
+    uint8_t subBand = 0;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
@@ -852,7 +852,7 @@ class LoRaWANNode {
     void clearSession();
     
     // test if saved keys are non-zero
-    bool isActiveSession();
+    bool isValidSession();
 #endif
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening

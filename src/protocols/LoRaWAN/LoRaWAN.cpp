@@ -82,7 +82,7 @@ int16_t LoRaWANNode::restore() {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
-  if(!this->isActiveSession()) {
+  if(!this->isValidSession()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
   
@@ -257,6 +257,7 @@ int16_t LoRaWANNode::restoreChannels() {
 
   } else {  // RADIOLIB_LORAWAN_BAND_FIXED
     uint8_t numADRCommands = mod->hal->getPersistentParameter<uint8_t>(RADIOLIB_EEPROM_LORAWAN_NUM_ADR_MASKS_ID);
+    RADIOLIB_DEBUG_PRINTLN("Restoring %d stored channel masks", numADRCommands);
     uint8_t numBytes = numADRCommands * MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
     uint8_t buffer[RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS * RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
     mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_UL_CHANNELS_ID), buffer, numBytes);
@@ -284,33 +285,39 @@ int16_t LoRaWANNode::restoreChannels() {
 void LoRaWANNode::clearSession() {
   Module* mod = this->phyLayer->getMod();
   uint8_t zeroes[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
+  mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID), zeroes, sizeof(uint32_t));
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
   mod->hal->writePersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), zeroes, RADIOLIB_AES128_BLOCK_SIZE);
+  this->activeMode = RADIOLIB_LORAWAN_MODE_NONE;
 }
 
-bool LoRaWANNode::isActiveSession() {
-  Module* mod = this->phyLayer->getMod();
-  this->devAddr = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID);
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
-  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), this->nwkSEncKey, RADIOLIB_AES128_BLOCK_SIZE);
-
+bool LoRaWANNode::isValidSession() {
   uint8_t mask = 0;
-  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
-    mask |= this->appSKey[i];
+  Module* mod = this->phyLayer->getMod();
+  uint8_t dummyBuf[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_DEV_ADDR_ID), dummyBuf, sizeof(uint32_t));
+  for(size_t i = 0; i < sizeof(uint32_t); i++) {
+    mask |= dummyBuf[i];
   }
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_APP_S_KEY_ID), dummyBuf, RADIOLIB_AES128_BLOCK_SIZE);
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
-    mask |= this->nwkSEncKey[i];
+    mask |= dummyBuf[i];
   }
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_FNWK_SINT_KEY_ID), dummyBuf, RADIOLIB_AES128_BLOCK_SIZE);
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
-    mask |= this->fNwkSIntKey[i];
+    mask |= dummyBuf[i];
   }
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_SNWK_SINT_KEY_ID), dummyBuf, RADIOLIB_AES128_BLOCK_SIZE);
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
-    mask |= this->sNwkSIntKey[i];
+    mask |= dummyBuf[i];
   }
+  mod->hal->readPersistentStorage(mod->hal->getPersistentAddr(RADIOLIB_EEPROM_LORAWAN_NWK_SENC_KEY_ID), dummyBuf, RADIOLIB_AES128_BLOCK_SIZE);
+  for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
+    mask |= dummyBuf[i];
+  }
+
   return(mask > 0);
 }
 
@@ -440,16 +447,22 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   bool isValidCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
 
-  if(isValidCheckSum && isValidMode && !force && this->isActiveSession()) {
-    return(this->restore());
-  }
-  if(isValidCheckSum && isValidMode && (force || !this->isActiveSession())) {
+  if(isValidCheckSum && isValidMode) {
+    // if not forced and already joined, don't do anything
+    if(!force && this->isJoined()) {
+      return(this->activeMode);
+    }
+    // if not forced and a valid session is stored, restore it
+    if(!force && this->isValidSession()) {
+      return(this->restore());
+    }
+    // either forced or no active session (a join was issued previously but didn't result in an active session)
     this->clearSession();
     // the credentials are still the same, so restore the DevNonce and JoinNonce
     this->devNonce  = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_DEV_NONCE_ID);
     this->joinNonce = mod->hal->getPersistentParameter<uint32_t>(RADIOLIB_EEPROM_LORAWAN_JOIN_NONCE_ID);
-  }
-  if(!isValidCheckSum || !isValidMode) {
+  } else {
+    // either invalid key checksum or mode, so wipe either way
     #if RADIOLIB_DEBUG
       RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", isValidCheckSum, isValidMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
@@ -723,15 +736,21 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   if(sNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
 
   bool isValidCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
-  bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
+  bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_ABP;
 
-  if(isValidCheckSum && isValidMode && !force && this->isActiveSession()) {
-    return(this->restore());
-  }
-  if(isValidCheckSum && isValidMode && (force || !this->isActiveSession())) {
+  if(isValidCheckSum && isValidMode) {
+    // if not forced and already joined, don't do anything
+    if(!force && this->isJoined()) {
+      return(this->activeMode);
+    }
+    // if not forced and a valid session is stored, restore it
+    if(!force && this->isValidSession()) {
+      return(this->restore());
+    }
+    // either forced or no active session (a join was issued previously but didn't result in an active session)
     this->clearSession();
-  }
-  if(!isValidCheckSum || !isValidMode) {
+  } else {
+    // either invalid key checksum or mode, so wipe either way
     #if RADIOLIB_DEBUG
       RADIOLIB_DEBUG_PRINTLN("Didn't restore session (checksum: %d, mode: %d)", isValidCheckSum, isValidMode);
       RADIOLIB_DEBUG_PRINTLN("First 16 bytes of NVM:");
@@ -1828,7 +1847,7 @@ int16_t LoRaWANNode::setupChannelsDyn(bool joinRequest) {
 // setup a subband and its corresponding join-request datarate
 // WARNING: subBand starts at 1 (corresponds to all populair schemes)
 int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
-  RADIOLIB_DEBUG_PRINTLN("Setting up fixed channels");
+  RADIOLIB_DEBUG_PRINTLN("Setting up fixed channels (subband %d)", subBand);
   // randomly select one of 8 or 9 channels and find corresponding datarate
   uint8_t numChannels = this->band->numTxSpans == 1 ? 8 : 9;
   uint8_t rand = this->phyLayer->random(numChannels) + 1;     // range 1-8 or 1-9
@@ -2765,7 +2784,7 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask, bool 
       uint16_t mask = 1 << i;
       if(mask & chMask) {
         uint8_t chNum = chMaskCntl * 16 + i;  // 0 through 63 or 95
-        this->subBand = chNum % 8;            // keep track of configured subband in case we must reset the channels
+        this->subBand = chNum / 8 + 1;        // save configured subband in case we must reset the channels (1-based)
         chnl.enabled = true;
         chnl.idx   = chNum;
         chnl.freq  = this->band->txSpans[0].freqStart + chNum*this->band->txSpans[0].freqStep;
