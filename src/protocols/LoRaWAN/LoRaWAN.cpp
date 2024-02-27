@@ -434,6 +434,11 @@ void LoRaWANNode::beginCommon(uint8_t joinDr) {
 }
 
 int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, uint8_t joinDr, bool force) {
+  // if not forced and already joined, don't do anything
+  if(!force && this->isJoined()) {
+    return(this->activeMode);
+  }
+  
   // check if we actually need to send the join request
   Module* mod = this->phyLayer->getMod();
 
@@ -447,11 +452,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   bool isValidCheckSum = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_CHECKSUM_ID) == checkSum;
   bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_OTAA;
 
-  if(isValidCheckSum && isValidMode) {
-    // if not forced and already joined, don't do anything
-    if(!force && this->isJoined()) {
-      return(this->activeMode);
-    }
+  if(isValidCheckSum && isValidMode) {  
     // if not forced and a valid session is stored, restore it
     if(!force && this->isValidSession()) {
       return(this->restore());
@@ -723,6 +724,11 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 }
 
 int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force) {
+  // if not forced and already joined, don't do anything
+  if(!force && this->isJoined()) {
+    return(this->activeMode);
+  }
+
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
   // only needed for persistent storage
   Module* mod = this->phyLayer->getMod();
@@ -739,10 +745,6 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   bool isValidMode = mod->hal->getPersistentParameter<uint16_t>(RADIOLIB_EEPROM_LORAWAN_MODE_ID) == RADIOLIB_LORAWAN_MODE_ABP;
 
   if(isValidCheckSum && isValidMode) {
-    // if not forced and already joined, don't do anything
-    if(!force && this->isJoined()) {
-      return(this->activeMode);
-    }
     // if not forced and a valid session is stored, restore it
     if(!force && this->isValidSession()) {
       return(this->restore());
