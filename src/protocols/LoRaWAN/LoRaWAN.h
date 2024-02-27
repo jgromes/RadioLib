@@ -179,6 +179,12 @@
 #define RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP                 (0x0F)
 #define RADIOLIB_LORAWAN_MAC_PROPRIETARY                        (0x80)
 
+// maximum allowed dwell time on bands that implement dwell time limitations
+#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
+
+// unused LoRaWAN version
+#define RADIOLIB_LORAWAN_VERSION_NONE                           (0xFF)
+
 // unused frame counter value
 #define RADIOLIB_LORAWAN_FCNT_NONE                              (0xFFFFFFFF)
 
@@ -188,10 +194,7 @@
 // the maximum number of simultaneously available channels
 #define RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS                 (16)
 
-// maximum allowed dwell time on bands that implement dwell time limitations
-#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
-
-// Maximum MAC command sizes
+// maximum MAC command sizes
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN               (5)
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
 #define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
@@ -530,6 +533,14 @@ class LoRaWANNode {
     */
     int16_t downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event = NULL);
 
+    /*!
+      \brief Wait for downlink, simplified to allow for simpler sendReceive
+      \param event Pointer to a structure to store extra information about the event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns \ref status_codes
+    */
+    int16_t downlink(LoRaWANEvent_t* event = NULL);
+
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
@@ -578,24 +589,48 @@ class LoRaWANNode {
     int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
+      \brief Send a message to the server and wait for a downlink but don't bother the user with downlink contents
+      \param dataUp Data to send.
+      \param lenUp Length of the data.
+      \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+
+    /*!
       \brief Set device status.
       \param battLevel Battery level to set. 0 for external power source, 1 for lowest battery,
       254 for highest battery, 255 for unable to measure.
     */
     void setDeviceStatus(uint8_t battLevel);
 
-    /*! \brief Returns the last uplink's frame counter */
+    /*! 
+        \brief Returns the last uplink's frame counter; 
+        also 0 if no uplink occured yet. 
+    */
     uint32_t getFcntUp();
 
-    /*! \brief Returns the last network downlink's frame counter */
+    /*! 
+        \brief Returns the last network downlink's frame counter; 
+        also 0 if no network downlink occured yet. 
+    */
     uint32_t getNFcntDown();
 
-    /*! \brief Returns the last application downlink's frame counter */
+    /*! 
+        \brief Returns the last application downlink's frame counter; 
+        also 0 if no application downlink occured yet. 
+    */
     uint32_t getAFcntDown();
 
-    /*! \brief Reset the downlink frame counters (application and network)
+    /*! 
+        \brief Reset the downlink frame counters (application and network)
         This is unsafe and can possibly allow replay attacks using downlinks.
-        It mainly exists as part of the TS008 Specification Verification protocol.
+        It mainly exists as part of the TS009 Specification Verification protocol.
     */
     void resetFcntDown();
 
@@ -798,22 +833,26 @@ class LoRaWANNode {
     bool isMACPayload = false;
 
     // save the selected sub-band in case this must be restored in ADR control
-    int8_t subBand = -1;
+    uint8_t subBand = 0;
 
 #if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
     /*!
       \brief Save the current uplink frame counter.
       Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
     */
-    int16_t saveFcntUp();
+    void saveFcntUp();
 
     /*!
       \brief Restore frame counter for uplinks from persistent storage.
       Note that the usable frame counter width is 'only' 30 bits for highly efficient wear-levelling.
-      \returns \ref status_codes
     */
-    int16_t restoreFcntUp();
+    void restoreFcntUp();
+
+    // set all keys to zero
+    void clearSession();
+    
+    // test if saved keys are non-zero
+    bool isValidSession();
 #endif
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
@@ -859,7 +898,7 @@ class LoRaWANNode {
 
     // delete a specific MAC command from queue, indicated by the command ID
     // if a payload pointer is supplied, this returns the payload of the MAC command
-    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t payload[5] = NULL);
+    int16_t deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t* payload = NULL);
 
     // execute mac command, return the number of processed bytes for sequential processing
     bool execMacCommand(LoRaWANMacCommand_t* cmd, bool saveToEeprom = true);
