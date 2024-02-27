@@ -936,6 +936,11 @@ int16_t LoRaWANNode::uplink(const char* str, uint8_t port, bool isConfirmed, LoR
 }
 
 int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
+  // if not joined, don't do anything
+  if(!this->isJoined()) {
+    return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
+  }
+  
   Module* mod = this->phyLayer->getMod();
   
   // check if the Rx windows were closed after sending the previous uplink
