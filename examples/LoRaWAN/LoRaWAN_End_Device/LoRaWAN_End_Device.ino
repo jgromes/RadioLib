@@ -21,6 +21,9 @@
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
+
+  For LoRaWAN details, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/LoRaWAN
 */
 
 // include the library
@@ -28,11 +31,11 @@
 
 // SX1262 has the following pin order:
 // Module(NSS/CS, DIO1, RESET, BUSY)
-// SX1262 radio = new Module(8, 14, 12, 13);
+SX1262 radio = new Module(8, 14, 12, 13);
 
 // SX1278 has the following pin order:
 // Module(NSS/CS, DIO0, RESET, DIO1)
-SX1278 radio = new Module(10, 2, 9, 3);
+// SX1278 radio = new Module(10, 2, 9, 3);
 
 // create the node instance on the EU-868 band
 // using the radio module and the encryption key
@@ -44,13 +47,12 @@ LoRaWANNode node(&radio, &EU868);
 // such as US915 and AU915, you must specify
 // the subband that matches the Frequency Plan
 // that you selected on your LoRaWAN console
-/*
-  LoRaWANNode node(&radio, &US915, 2);
-*/
+// LoRaWANNode node(&radio, &US915, 2);
+
 
 void setup() {
   Serial.begin(9600);
-
+  
   // initialize radio (SX1262 / SX1278 / ... ) with default settings
   Serial.print(F("[Radio] Initializing ... "));
   int state = radio.begin();
@@ -62,48 +64,29 @@ void setup() {
     while(true);
   }
 
-  // application identifier - pre-LoRaWAN 1.1.0, this was called appEUI
-  // when adding new end device in TTN, you will have to enter this number
-  // you can pick any number you want, but it has to be unique
-  uint64_t joinEUI = 0x12AD1011B0C0FFEE;
+  // JoinEUI - previous versions of LoRaWAN called this AppEUI
+  // for development purposes you can use all zeros - see wiki for details
+  uint64_t joinEUI = 0x0000000000000000;
 
-  // device identifier - this number can be anything
-  // when adding new end device in TTN, you can generate this number,
-  // or you can set any value you want, provided it is also unique
-  uint64_t devEUI = 0x70B3D57ED005E120;
+  // DevEUI - The device's Extended Unique Identifier
+  // TTN will generate one for you
+  uint64_t devEUI =  0x----------------;
 
-  // select some encryption keys which will be used to secure the communication
-  // there are two of them - network key and application key
-  // because LoRaWAN uses AES-128, the key MUST be 16 bytes (or characters) long
-
-  // network key is the ASCII string "topSecretKey1234"
-  uint8_t nwkKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
-                       0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
-
-  // application key is the ASCII string "aDifferentKeyABC"
-  uint8_t appKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
-                       0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
-
-  // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
-  // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
-  // and can be set to NULL
+  // encryption keys used to secure the communication
+  // TTN will generate them for you
+  // see wiki for details on copying & pasting them
+  uint8_t nwkKey[] = { 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--,   
+                       0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- };
+  uint8_t appKey[] = { 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--,   
+                       0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- };
 
 
-  // on EEPROM-enabled boards, after the device has been activated,
-  // the session can be restored without rejoining after device power cycle
-  // this is intrinsically done when calling `beginOTAA()` with the same keys
-  // in that case, the function will not need to transmit a JoinRequest
+  // Manages uplink intervals to the TTN Fair Use Policy
+  node.setDutyCycle(true, 1250);
 
-  // now we can start the activation
-  // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
-  // a specific starting-datarate can be selected in dynamic bands (e.g. EU868):
-  /* 
-    uint8_t joinDr = 4;
-    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDr);
-  */
+  // Begin the join to the network
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
   state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
-
   if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
     delay(2000);	// small delay between joining and uplink
@@ -112,8 +95,7 @@ void setup() {
     Serial.println(state);
     while(true);
   }
-
-}
+}   // setup
 
 // counter to keep track of transmitted packets
 int count = 0;
@@ -121,7 +103,7 @@ int count = 0;
 void loop() {
   // send uplink to port 10
   Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String strUp = "Hello!" + String(count++);
+  String strUp = "Hello! " + String(count++);
   String strDown;
   int state = node.sendReceive(strUp, 10, strDown);
   if(state == RADIOLIB_ERR_NONE) {
@@ -151,21 +133,25 @@ void loop() {
     Serial.println(F(" Hz"));
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("no downlink!"));
+    Serial.println(F(""));
   
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
 
-  // on EEPROM enabled boards, you should save the current session
-  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  // on boards that can save to Flash or EEPROMthis saves the session
+  // which allows recall of the session after reboot or deepsleep
   node.saveSession();
   
   // wait before sending another packet
-  uint32_t minimumDelay = 60000;                  // try to send once every minute
-  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
+  uint32_t minimumDelay = 300000;                 // try to send once every 3 minutes
+  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per FUP & law!)
   uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
-
+  
+  Serial.print(F("[LoRaWAN] Next uplink in "));
+  Serial.print(delayMs/60);
+  Serial.println(F("s"));
+  
   delay(delayMs);
-}
+}   // loop
