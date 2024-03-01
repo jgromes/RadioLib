@@ -25,6 +25,10 @@
 
   For LoRaWAN details, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/LoRaWAN
+
+
+  Last updated 1st March 2024 for RadioLib 6.4.2
+
 */
 
 // include the library

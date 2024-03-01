@@ -24,6 +24,10 @@
 
   For LoRaWAN details, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/LoRaWAN
+
+
+  Last updated 1st March 2024 for RadioLib 6.4.2
+
 */
 
 // include the library
@@ -140,7 +144,7 @@ void loop() {
     Serial.println(state);
   }
 
-  // on boards that can save to Flash or EEPROMthis saves the session
+  // on boards that can save to Flash or EEPROM this saves the session
   // which allows recall of the session after reboot or deepsleep
   node.saveSession();
   
