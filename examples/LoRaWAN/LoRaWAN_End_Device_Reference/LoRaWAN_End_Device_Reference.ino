@@ -22,6 +22,9 @@
 
   For full API reference, see the GitHub Pages
   https://jgromes.github.io/RadioLib/
+
+  For LoRaWAN details, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/LoRaWAN
 */
 
 // include the library
@@ -29,11 +32,11 @@
 
 // SX1262 has the following pin order:
 // Module(NSS/CS, DIO1, RESET, BUSY)
-// SX1262 radio = new Module(8, 14, 12, 13);
+SX1262 radio = new Module(8, 14, 12, 13);
 
 // SX1278 has the following pin order:
 // Module(NSS/CS, DIO0, RESET, DIO1)
-SX1278 radio = new Module(10, 2, 9, 3);
+// SX1278 radio = new Module(10, 2, 9, 3);
 
 // create the node instance on the EU-868 band
 // using the radio module and the encryption key
@@ -45,9 +48,8 @@ LoRaWANNode node(&radio, &EU868);
 // such as US915 and AU915, you must specify
 // the subband that matches the Frequency Plan
 // that you selected on your LoRaWAN console
-/*
-  LoRaWANNode node(&radio, &US915, 2);
-*/
+// LoRaWANNode node(&radio, &US915, 2);
+
 
 void setup() {
   Serial.begin(9600);
@@ -63,43 +65,29 @@ void setup() {
     while(true);
   }
 
-  // application identifier - pre-LoRaWAN 1.1.0, this was called appEUI
-  // when adding new end device in TTN, you will have to enter this number
-  // you can pick any number you want, but it has to be unique
-  uint64_t joinEUI = 0x12AD1011B0C0FFEE;
+  // JoinEUI - previous versions of LoRaWAN this was AppEUI
+  // for development purposes you can use all zeros - see wiki for details
+  uint64_t joinEUI = 0x0000000000000000;
 
-  // device identifier - this number can be anything
-  // when adding new end device in TTN, you can generate this number,
-  // or you can set any value you want, provided it is also unique
-  uint64_t devEUI = 0x70B3D57ED005E120;
+  // DevEUI - The device's Extended Unique Identifier
+  // TTN will generate one for you
+  uint64_t devEUI =  0x----------------;
 
-  // select some encryption keys which will be used to secure the communication
-  // there are two of them - network key and application key
-  // because LoRaWAN uses AES-128, the key MUST be 16 bytes (or characters) long
-
-  // network key is the ASCII string "topSecretKey1234"
-  uint8_t nwkKey[] = { 0x74, 0x6F, 0x70, 0x53, 0x65, 0x63, 0x72, 0x65,
-                       0x74, 0x4B, 0x65, 0x79, 0x31, 0x32, 0x33, 0x34 };
-
-  // application key is the ASCII string "aDifferentKeyABC"
-  uint8_t appKey[] = { 0x61, 0x44, 0x69, 0x66, 0x66, 0x65, 0x72, 0x65,
-                       0x6E, 0x74, 0x4B, 0x65, 0x79, 0x41, 0x42, 0x43 };
-
-  // prior to LoRaWAN 1.1.0, only a single "nwkKey" is used
-  // when connecting to LoRaWAN 1.0 network, "appKey" will be disregarded
-  // and can be set to NULL
+  // encryption keys used to secure the communication
+  // TTN will generate them for you
+  // see wiki for details on copying & pasting them
+  uint8_t nwkKey[] = { 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--,   
+                       0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- };
+  uint8_t appKey[] = { 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--,   
+                       0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- };
 
 
-  // now we can start the activation
-  // this can take up to 10 seconds, and requires a LoRaWAN gateway in range
-  // a specific starting-datarate can be selected in dynamic bands (e.g. EU868):
-  /* 
-    uint8_t joinDr = 4;
-    state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDr);
-  */
+  // Override the default join rate
+  uint8_t joinDR = 3;
+
+  // Begin the join to the network
   Serial.print(F("[LoRaWAN] Attempting over-the-air activation ... "));
-  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
-
+  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, joinDR);
   if(state >= RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
     delay(2000);	// small delay between joining and uplink
@@ -112,51 +100,24 @@ void setup() {
   Serial.print("[LoRaWAN] DevAddr: ");
   Serial.println(node.getDevAddr(), HEX);
 
-  // on EEPROM-enabled boards, after the device has been activated,
-  // the session can be restored without rejoining after device power cycle
-  // this is intrinsically done when calling `beginOTAA()` with the same keys
-  // or if you 'lost' the keys or don't want them included in your sketch
-  // you can call `restore()`
-  /*
-    Serial.print(F("[LoRaWAN] Resuming previous session ... "));
-    state = node.restore();
-    if(state >= RADIOLIB_ERR_NONE) {
-      Serial.println(F("success!"));
-    } else {
-      Serial.print(F("failed, code "));
-      Serial.println(state);
-      while(true);
-    }
-  */
-
-  // disable the ADR algorithm
+  // disable the ADR algorithm (on by default which is preferable)
   node.setADR(false);
 
-  // set a fixed datarate
-  node.setDatarate(5);
-  // in order to set the datarate persistent across reboot/deepsleep, use the following:
-  /*
-    node.setDatarate(5, true);  
-  */
+  // set a fixed datarate & make it persistent (not normal)
+  node.setDatarate(5, true);
 
-  // enable CSMA
-  // this tries to minimize packet loss by searching for a free channel
-  // before actually sending an uplink 
+  // enable CSMA which tries to minimize packet loss by searching 
+  // for a free channel before actually sending an uplink 
   node.setCSMA(6, 2, true);
 
-  // enable or disable the dutycycle
-  // the second argument specific allowed airtime per hour in milliseconds
-  // 1250 = TTN FUP (30 seconds / 24 hours)
-  // if not called, this corresponds to setDutyCycle(true, 0)
-  // setting this to 0 corresponds to the band's maximum allowed dutycycle by law
-  node.setDutyCycle(true, 1250);
+  // manages uplink intervals to the TTN Fair Use Policy
+   node.setDutyCycle(true, 1250);
 
-  // enable or disable the dwell time limits
-  // the second argument specifies the allowed airtime per uplink in milliseconds
-  // unless specified, this argument is set to 0
-  // setting this to 0 corresponds to the band's maximum allowed dwell time by law
+  // enable the dwell time limits - 400ms is the limit for the US
   node.setDwellTime(true, 400);
-}
+
+} // setup
+
 
 void loop() {
   int state = RADIOLIB_ERR_NONE;
@@ -173,44 +134,45 @@ void loop() {
   // retrieve the last uplink frame counter
   uint32_t fcntUp = node.getFcntUp();
 
-  Serial.print(F("[LoRaWAN] Sending uplink packet ... "));
-  String strUp = "Hello!" + String(fcntUp);
+  Serial.print(F("[LoRaWAN] Sending uplink packet #"));
+  Serial.println(fcntUp);
+  String strUp = "Hello! " + String(fcntUp);
   
   // send a confirmed uplink to port 10 every 64th frame
   // and also request the LinkCheck and DeviceTime MAC commands
   if(fcntUp % 64 == 0) {
+    Serial.print(F("[LoRaWAN] Requesting LinkCheck and DeviceTime"));
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_LINK_CHECK);
     node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_DEVICE_TIME);
     state = node.uplink(strUp, 10, true);
   } else {
     state = node.uplink(strUp, 10);
   }
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
+  if(state != RADIOLIB_ERR_NONE) {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
 
-  // after uplink, you can call downlink(),
-  // to receive any possible reply from the server
-  // this function must be called within a few seconds
-  // after uplink to receive the downlink!
-  Serial.print(F("[LoRaWAN] Waiting for downlink ... "));
+  // after uplink, you must call downlink() to receive any possible reply
+  // from the server. This function must be called before the Rx1 delay
+  // for the network. Typically this is 5s after end of uplink.
+  Serial.println(F("[LoRaWAN] Waiting for downlink ... "));
   String strDown;
 
-  // you can also retrieve additional information about 
-  // uplink or downlink by passing a reference to
-  // LoRaWANEvent_t structure
-  LoRaWANEvent_t event;
-  state = node.downlink(strDown, &event);
+  // you can also retrieve additional information about an uplink or 
+  // downlink by passing a reference to LoRaWANEvent_t structure
+  LoRaWANEvent_t downlinkDetails;
+  state = node.downlink(strDown, &downlinkDetails);
   if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-
-    // print data of the packet (if there are any)
+    // print data of the packet
     Serial.print(F("[LoRaWAN] Data:\t\t"));
     if(strDown.length() > 0) {
-      Serial.println(strDown);
+      for (uint8_t c = 0; c < strDown.length(); c++) {
+        uint8_t value = strDown[c];
+        if (value < 10) Serial.print(F("0"));
+        Serial.print(value, HEX);
+      }
+      Serial.println();
     } else {
       Serial.println(F("<MAC commands only>"));
     }
@@ -232,30 +194,22 @@ void loop() {
 
     // print extra information about the event
     Serial.println(F("[LoRaWAN] Event information:"));
-    Serial.print(F("[LoRaWAN] Direction:\t"));
-    if(event.dir == RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK) {
-      Serial.println(F("uplink"));
-    } else {
-      Serial.println(F("downlink"));
-    }
     Serial.print(F("[LoRaWAN] Confirmed:\t"));
-    Serial.println(event.confirmed);
+    Serial.println(downlinkDetails.confirmed);
     Serial.print(F("[LoRaWAN] Confirming:\t"));
-    Serial.println(event.confirming);
+    Serial.println(downlinkDetails.confirming);
     Serial.print(F("[LoRaWAN] Datarate:\t"));
-    Serial.println(event.datarate);
+    Serial.println(downlinkDetails.datarate);
     Serial.print(F("[LoRaWAN] Frequency:\t"));
-    Serial.print(event.freq, 3);
+    Serial.print(downlinkDetails.freq, 3);
     Serial.println(F(" MHz"));
     Serial.print(F("[LoRaWAN] Output power:\t"));
-    Serial.print(event.power);
+    Serial.print(downlinkDetails.power);
     Serial.println(F(" dBm"));
     Serial.print(F("[LoRaWAN] Frame count:\t"));
-    Serial.println(event.fcnt);
+    Serial.println(downlinkDetails.fcnt);
     Serial.print(F("[LoRaWAN] Port:\t\t"));
-    Serial.println(event.port);
-    
-    Serial.print(radio.getFrequencyError());
+    Serial.println(downlinkDetails.port);
 
     uint8_t margin = 0;
     uint8_t gwCnt = 0;
@@ -276,21 +230,26 @@ void loop() {
     }
   
   } else if(state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("timeout!"));
+    // Not really necessary to report normal operation
   
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
 
-  // on EEPROM enabled boards, you should save the current session
-  // by calling "saveSession" which allows retrieving the session after reboot or deepsleep
+  // on boards that can save to Flash or EEPROM this saves the session
+  // which allows recall of the session after reboot or deepsleep
   node.saveSession();
 
   // wait before sending another packet
-  uint32_t minimumDelay = 60000;                  // try to send once every minute
-  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per law!)
-	uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+  uint32_t minimumDelay = 3 * 60 * 1000;          // try to send once every 3 minutes
+  uint32_t interval = node.timeUntilUplink();     // calculate minimum duty cycle delay (per FUP & law!)
+  uint32_t delayMs = max(interval, minimumDelay); // cannot send faster than duty cycle allows
+
+  Serial.print(F("[LoRaWAN] Next uplink in "));
+  Serial.print(delayMs/1000);
+  Serial.println(F("s"));
 
   delay(delayMs);
-}
+  
+}   // loop
