@@ -28,6 +28,9 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   readBitInstance = phyLayer;
   #endif
+  filterNumAddresses = 0;
+  filterAddresses = NULL;
+  filterMasks = NULL;
 }
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
