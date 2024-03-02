@@ -20,7 +20,7 @@ void setup() {
 
 
 void loop() {
-  Serial.print(F("Sending uplink #"));
+  Serial.println(F("Sending uplink"));
 
   // Read some inputs
   uint8_t Digital1 = digitalRead(2);
@@ -36,9 +36,6 @@ void loop() {
   int state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
   debug((state != RADIOLIB_ERR_RX_TIMEOUT) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
   
-  // Complete serial line with the uplink counter
-  Serial.println(node.getFcntUp());
-
   // Wait until next uplink - observing legal & TTN FUP constraints
   delay(uplinkInterval);
 }
