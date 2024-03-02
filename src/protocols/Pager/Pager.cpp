@@ -248,22 +248,24 @@ int16_t PagerClient::startReceive(uint32_t pin, uint32_t addr, uint32_t mask) {
   readBitPin = pin;
   filterAddr = addr;
   filterMask = mask;
-
-  return startReceiveCommon();
+  filterAddresses = NULL;
+  filterMasks = NULL;
+  filterNumAddresses = 0;
+  return(startReceiveCommon());
 }
 
 int16_t PagerClient::startReceive(uint32_t pin, uint32_t *addrs, uint32_t *masks, size_t numAddresses) {
   // save the variables
   readBitPin = pin;
-
+  filterAddr = 0;
+  filterMask = 0;
   filterAddresses = addrs;
   filterMasks = masks;
   filterNumAddresses = numAddresses;
-
-  return startReceiveCommon();
+  return(startReceiveCommon());
 }
 
-uint16_t PagerClient::startReceiveCommon() {
+int16_t PagerClient::startReceiveCommon() {
   // set the carrier frequency
   int16_t state = phyLayer->setFrequency(baseFreq);
   RADIOLIB_ASSERT(state);
@@ -478,19 +480,23 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
 #endif
 
 bool PagerClient::addressMatched(uint32_t addr) {
-  if (filterNumAddresses == 0) {
-    return ((addr & filterMask) == (filterAddr & filterMask));
-  } else {
-    if (filterAddresses == NULL || filterMasks == NULL) {
-      return false;
-    }
-    for (size_t i = 0; i < filterNumAddresses; i++) {
-      if ((filterAddresses[i] & filterMasks[i]) == (addr & filterMasks[i])) {
-        return true;
-      }
-    }
-    return false;
+  // check whether to match single or multiple addresses/masks
+  if(filterNumAddresses == 0) {
+    return((addr & filterMask) == (filterAddr & filterMask));
   }
+  
+  // multiple addresses, check there are some to match
+  if((filterAddresses == NULL) || (filterMasks == NULL)) {
+    return(false);
+  }
+
+  for(size_t i = 0; i < filterNumAddresses; i++) {
+    if((filterAddresses[i] & filterMasks[i]) == (addr & filterMasks[i])) {
+      return(true);
+    }
+  }
+
+  return(false);
 }
 
 void PagerClient::write(uint32_t* data, size_t len) {
