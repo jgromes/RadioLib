@@ -115,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac232570ac012ff315a1971ab0422fed3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a> (uint32_t pin, uint32_t addr, uint32_t mask=0xFFFFF)</td></tr>
 <tr class="memdesc:ac232570ac012ff315a1971ab0422fed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start reception of POCSAG packets.  <a href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">More...</a><br /></td></tr>
 <tr class="separator:ac232570ac012ff315a1971ab0422fed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c0f13846fbc333a35a16a98b6575ca6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a9c0f13846fbc333a35a16a98b6575ca6">startReceive</a> (uint32_t pin, uint32_t *addrs, uint32_t *masks, size_t numAddress)</td></tr>
+<tr class="memdesc:a9c0f13846fbc333a35a16a98b6575ca6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start reception of POCSAG packets for multiple addresses and masks.  <a href="class_pager_client.html#a9c0f13846fbc333a35a16a98b6575ca6">More...</a><br /></td></tr>
+<tr class="separator:a9c0f13846fbc333a35a16a98b6575ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aec073fa9e5adcff9730482d9583715e9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">available</a> ()</td></tr>
 <tr class="memdesc:aec073fa9e5adcff9730482d9583715e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of POCSAG batches available in buffer. Limited by the size of direct mode buffer!  <a href="class_pager_client.html#aec073fa9e5adcff9730482d9583715e9">More...</a><br /></td></tr>
 <tr class="separator:aec073fa9e5adcff9730482d9583715e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,8 +307,59 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a9c0f13846fbc333a35a16a98b6575ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c0f13846fbc333a35a16a98b6575ca6">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PagerClient::startReceive </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>pin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>addrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>masks</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>numAddress</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start reception of POCSAG packets for multiple addresses and masks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pin</td><td>Pin to receive digital data on (e.g., DIO2 for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a>). </td></tr>
+    <tr><td class="paramname">addrs</td><td>Array of addresses to receive. </td></tr>
+    <tr><td class="paramname">masks</td><td>Array of address masks to use for filtering. Masks will be applied to corresponding addresses in addr array. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ac232570ac012ff315a1971ab0422fed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac232570ac012ff315a1971ab0422fed3">&#9670;&nbsp;</a></span>startReceive()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac232570ac012ff315a1971ab0422fed3">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
