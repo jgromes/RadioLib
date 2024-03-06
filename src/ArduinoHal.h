@@ -15,6 +15,14 @@
 
 #include <SPI.h>
 
+#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
+  #if defined(RADIOLIB_ESP32)
+    #include "utils/ESP32_RTC_EEPROM.h"
+  #else
+    #include <EEPROM.h>
+  #endif
+#endif
+
 /*!
   \class ArduinoHal
   \brief Arduino default hardware abstraction library implementation.

@@ -2,10 +2,6 @@
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
 
-#if !defined(RADIOLIB_EEPROM_UNSUPPORTED)
-#include <EEPROM.h>
-#endif
-
 ArduinoHal::ArduinoHal(): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&RADIOLIB_DEFAULT_SPI), initInterface(true) {}
 
 ArduinoHal::ArduinoHal(SPIClass& spi, SPISettings spiSettings): RadioLibHal(INPUT, OUTPUT, LOW, HIGH, RISING, FALLING), spi(&spi), spiSettings(spiSettings) {}
