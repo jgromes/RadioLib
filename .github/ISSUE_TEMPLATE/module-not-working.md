@@ -24,7 +24,7 @@ paste the sketch here, even if it is an unmodified example code
 Wiring diagram, schematic, pictures etc.
 
 **Debug mode output**
-Enable all [debug levels](https://github.com/jgromes/RadioLib/wiki/Debug-mode) and paste the Serial monitor output here.
+Enable the appropriate [debug levels](https://github.com/jgromes/RadioLib/wiki/Debug-mode) and paste the Serial monitor output here. For debugging protocols, enable `RADIOLIB_DEBUG_PROTOCOL`. For debugging issues with the radio module itself, enable `RADIOLIB_DEBUG_SPI`.
 
 **Additional info (please complete):**
  - MCU: [e.g. Arduino Uno, ESP8266 etc.]
