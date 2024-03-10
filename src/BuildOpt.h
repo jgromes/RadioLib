@@ -7,14 +7,18 @@
  * Debug output enable.
  * Warning: Debug output will slow down the whole system significantly.
  *          Also, it will result in larger compiled binary.
- * Levels: debug - only main info
- *         verbose - full transcript of all SPI communication
+ * Levels: basic - only main info
+ *         protocol - mainly LoRaWAN stuff, but other protocols as well
+ *         SPI - full transcript of all SPI communication
  */
-#if !defined(RADIOLIB_DEBUG)
-  #define RADIOLIB_DEBUG (0)
+#if !defined(RADIOLIB_DEBUG_BASIC)
+  #define RADIOLIB_DEBUG_BASIC (0)
 #endif
-#if !defined(RADIOLIB_VERBOSE)
-  #define RADIOLIB_VERBOSE (0)
+#if !defined(RADIOLIB_DEBUG_PROTOCOL)
+  #define RADIOLIB_DEBUG_PROTOCOL (0)
+#endif
+#if !defined(RADIOLIB_DEBUG_SPI)
+  #define RADIOLIB_DEBUG_SPI (0)
 #endif
 
 // set which output port should be used for debug output
@@ -469,23 +473,35 @@
   #define RADIOLIB_EXCLUDE_STM32WLX (1)
 #endif
 
+// set the global debug mode flag
+#if RADIOLIB_DEBUG_BASIC || RADIOLIB_DEBUG_PROTOCOL || RADIOLIB_DEBUG_SPI
+  #define RADIOLIB_DEBUG  (1)
+#else
+  #define RADIOLIB_DEBUG  (0)
+#endif
+
 #if RADIOLIB_DEBUG
   #if defined(RADIOLIB_BUILD_ARDUINO)
     #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
     #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL "" M, ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL "" M "\n", ##__VA_ARGS__)
 
     // some platforms do not support printf("%f"), so it has to be done this way
-    #define RADIOLIB_DEBUG_PRINT_FLOAT(VAL, DECIMALS) RADIOLIB_DEBUG_PORT.print(VAL, DECIMALS)
+    #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL); RADIOLIB_DEBUG_PORT.print(VAL, DECIMALS)
   #else
     #if !defined(RADIOLIB_DEBUG_PRINT)
       #define RADIOLIB_DEBUG_PRINT(...) fprintf(RADIOLIB_DEBUG_PORT, __VA_ARGS__)
+      #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) fprintf(RADIOLIB_DEBUG_PORT, LEVEL "" M, ##__VA_ARGS__)
     #endif
     #if !defined(RADIOLIB_DEBUG_PRINTLN)
       #define RADIOLIB_DEBUG_PRINTLN(M, ...) fprintf(RADIOLIB_DEBUG_PORT, M "\n", ##__VA_ARGS__)
+      #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) fprintf(RADIOLIB_DEBUG_PORT, LEVEL "" M "\n", ##__VA_ARGS__)
     #endif
-    #define RADIOLIB_DEBUG_PRINT_FLOAT(VAL, DECIMALS) RADIOLIB_DEBUG_PRINT("%.3f", VAL)
+    #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL "%.3f", VAL)
   #endif
-  #define RADIOLIB_DEBUG_HEXDUMP(...) Module::hexdump(__VA_ARGS__)
+
+  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) RADIOLIB_DEBUG_PRINT(LEVEL); Module::hexdump(__VA_ARGS__)
 #else
   #define RADIOLIB_DEBUG_PRINT(...) {}
   #define RADIOLIB_DEBUG_PRINTLN(...) {}
@@ -493,13 +509,48 @@
   #define RADIOLIB_DEBUG_HEXDUMP(...) {}
 #endif
 
-#if RADIOLIB_VERBOSE
-  #define RADIOLIB_VERBOSE_PRINT(...) RADIOLIB_DEBUG_PRINT(__VA_ARGS__)
-  #define RADIOLIB_VERBOSE_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN(__VA_ARGS__)
+#if RADIOLIB_DEBUG_BASIC
+  #define RADIOLIB_DEBUG_BASIC_PRINT(...) RADIOLIB_DEBUG_PRINT_LVL("RLB_DBG: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_BASIC_PRINT_NOTAG(...) RADIOLIB_DEBUG_PRINT_LVL("", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_BASIC_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN_LVL("RLB_DBG: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_BASIC_PRINT_FLOAT(...) RADIOLIB_DEBUG_PRINT_FLOAT("RLB_DBG: ", __VA_ARGS__);
+  #define RADIOLIB_DEBUG_BASIC_HEXDUMP(...) RADIOLIB_DEBUG_HEXDUMP("RLB_DBG: ", __VA_ARGS__);
 #else
-  #define RADIOLIB_VERBOSE_PRINT(...) {}
-  #define RADIOLIB_VERBOSE_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_BASIC_PRINT(...) {}
+  #define RADIOLIB_DEBUG_BASIC_PRINT_NOTAG(...) {}
+  #define RADIOLIB_DEBUG_BASIC_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_BASIC_PRINT_FLOAT(...) {}
+  #define RADIOLIB_DEBUG_BASIC_HEXDUMP(...) {}
 #endif
+
+#if RADIOLIB_DEBUG_PROTOCOL
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINT(...) RADIOLIB_DEBUG_PRINT_LVL("RLB_PRO: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN_LVL("RLB_PRO: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT(...) RADIOLIB_DEBUG_PRINT_FLOAT("RLB_PRO: ", __VA_ARGS__);
+  #define RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(...) RADIOLIB_DEBUG_HEXDUMP("RLB_PRO: ", __VA_ARGS__);
+#else
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINT(...) {}
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_PROTOCOL_PRINT_FLOAT(...) {}
+  #define RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(...) {}
+#endif
+
+#if RADIOLIB_DEBUG_SPI
+  #define RADIOLIB_DEBUG_SPI_PRINT(...) RADIOLIB_DEBUG_PRINT_LVL("RLB_SPI: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_SPI_PRINT_NOTAG(...) RADIOLIB_DEBUG_PRINT_LVL("", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_SPI_PRINTLN(...) RADIOLIB_DEBUG_PRINTLN_LVL("RLB_SPI: ", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG(...) RADIOLIB_DEBUG_PRINTLN_LVL("", __VA_ARGS__)
+  #define RADIOLIB_DEBUG_SPI_PRINT_FLOAT(...) RADIOLIB_DEBUG_PRINT_FLOAT("RLB_SPI: ", __VA_ARGS__);
+  #define RADIOLIB_DEBUG_SPI_HEXDUMP(...) RADIOLIB_DEBUG_HEXDUMP("RLB_SPI: ", __VA_ARGS__);
+#else
+  #define RADIOLIB_DEBUG_SPI_PRINT(...) {}
+  #define RADIOLIB_DEBUG_SPI_PRINT_NOTAG(...) {}
+  #define RADIOLIB_DEBUG_SPI_PRINTLN(...) {}
+  #define RADIOLIB_DEBUG_SPI_PRINTLN_NOTAG(...) {}
+  #define RADIOLIB_DEBUG_SPI_PRINT_FLOAT(...) {}
+  #define RADIOLIB_DEBUG_SPI_HEXDUMP(...) {}
+#endif
+
 
 /*!
   \brief A simple assert macro, will return on error.
