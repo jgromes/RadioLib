@@ -6,6 +6,7 @@
 SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE, RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
   this->mod = mod;
   this->XTAL = false;
+  this->standbyXOSC = false;
 }
 
 int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
@@ -463,7 +464,7 @@ int16_t SX126x::sleep(bool retainConfig) {
 }
 
 int16_t SX126x::standby() {
-  return(SX126x::standby(RADIOLIB_SX126X_STANDBY_RC));
+  return(SX126x::standby(this->standbyXOSC ? RADIOLIB_SX126X_STANDBY_XOSC : RADIOLIB_SX126X_STANDBY_RC));
 }
 
 int16_t SX126x::standby(uint8_t mode, bool wakeup) {
