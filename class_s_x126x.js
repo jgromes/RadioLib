@@ -91,5 +91,6 @@ var class_s_x126x =
     [ "transmitDirect", "class_s_x126x.html#a921aa8afb8d33b2660731c1f8d67664b", null ],
     [ "uploadPatch", "class_s_x126x.html#a2af78b744b3e61d3857bed93c3b1bde1", null ],
     [ "variablePacketLengthMode", "class_s_x126x.html#a92c157efe751b4ae73d22ff44115285d", null ],
+    [ "standbyXOSC", "class_s_x126x.html#ae731568798d03d9722a440fd6a23faf2", null ],
     [ "XTAL", "class_s_x126x.html#ada0fe6c3d31885952b439135cf0c18f1", null ]
 ];

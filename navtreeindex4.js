@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_stm32wlx_hal.html#acb925afdee4979936ef83a422d13e642":[3,0,52,2],
 "classes.html":[3,1],
 "classn_r_f24.html":[3,0,28],
 "classn_r_f24.html#a033287e33c532638c11e2775a073f297":[3,0,28,31],
@@ -75,8 +76,8 @@ var NAVTREEINDEX4 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,9],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,8],
 "files.html":[4,0],
-"functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
+"functions.html":[3,3,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -84,8 +85,8 @@ var NAVTREEINDEX4 =
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1],
 "functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -227,8 +228,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafc3bca002b982af27b703c30b2d12df3":[2,4,64],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,2],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "struct_bell202.html#a2f837ad9e16e67b72d701cffdc38678a":[3,0,6,0],
 "struct_bell202.html#a321329b4a54725bceb3d91ca0ec57dd5":[3,0,6,3],
 "struct_bell202.html#a842b9a3afaf71303d34f2d479d53ddbe":[3,0,6,4],
-"struct_bell202.html#ad031c51aaa2cf063388fc011a63cc83c":[3,0,6,1],
-"struct_bell202.html#add5f93a5f9ea135afd8f76470383ca15":[3,0,6,2]
+"struct_bell202.html#ad031c51aaa2cf063388fc011a63cc83c":[3,0,6,1]
 };
