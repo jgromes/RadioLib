@@ -555,6 +555,20 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+
+    /*!
+      \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window
+      but don't bother the user with downlink contents
+      \param strUp Address of Arduino String that will be transmitted.
+      \param port Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns \ref status_codes
+    */
+    int16_t sendReceive(String& strUp, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
     #endif
 
     /*!
