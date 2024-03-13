@@ -926,8 +926,8 @@ void LoRaWANNode::saveFcntUp() {
 #endif  // RADIOLIB_EEPROM_UNSUPPORTED
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
-  return(this->uplink(str.c_str(), port, isConfirmed, event));
+int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {  
+  return(this->uplink((uint8_t*)str.c_str(), str.length(), port, isConfirmed, event));
 }
 #endif
 
@@ -1325,18 +1325,20 @@ int16_t LoRaWANNode::downlink(String& str, LoRaWANEvent_t* event) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   // build a temporary buffer
-  // LoRaWAN downlinks can have 250 bytes at most with 1 extra byte for NULL
+  // LoRaWAN downlinks can have 250 bytes
   size_t length = 0;
-  uint8_t data[251];
+  uint8_t data[250];
 
   // wait for downlink
   state = this->downlink(data, &length, event);
   if(state == RADIOLIB_ERR_NONE) {
-    // add null terminator
-    data[length] = '\0';
 
-    // initialize Arduino String class
-    str = String((char*)data);
+    // Copy data by appending so char(0) not lost. 
+    str = ""; // Empty the String that was passed in
+    for (int i = 0; i < length; i++) {
+      str += (char)data[i]; // Append each byte as a char
+    }
+
   }
 
   return(state);
