@@ -1335,6 +1335,7 @@ int16_t LoRaWANNode::downlink(String& str, LoRaWANEvent_t* event) {
 
     // Copy data by appending so char(0) not lost. 
     str = ""; // Empty the String that was passed in
+    str.reserve(length);
     for (int i = 0; i < length; i++) {
       str += (char)data[i]; // Append each byte as a char
     }
