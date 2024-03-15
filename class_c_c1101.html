@@ -129,10 +129,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:af374ad0ecd820a01baef7d177a30132a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby.  <a href="class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a">More...</a><br /></td></tr>
 <tr class="separator:af374ad0ecd820a01baef7d177a30132a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a240eef8fa7d838d76f3c11086dc50e46"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">transmitDirect</a> (uint32_t frf=0) override</td></tr>
-<tr class="memdesc:a240eef8fa7d838d76f3c11086dc50e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode transmission.  <a href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">More...</a><br /></td></tr>
+<tr class="memdesc:a240eef8fa7d838d76f3c11086dc50e46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts synchronous direct mode transmission.  <a href="class_c_c1101.html#a240eef8fa7d838d76f3c11086dc50e46">More...</a><br /></td></tr>
 <tr class="separator:a240eef8fa7d838d76f3c11086dc50e46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab053c185330519d58f364790108d29ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">receiveDirect</a> () override</td></tr>
-<tr class="memdesc:ab053c185330519d58f364790108d29ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts direct mode reception.  <a href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">More...</a><br /></td></tr>
+<tr class="memdesc:ab053c185330519d58f364790108d29ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts synchronous direct mode reception.  <a href="class_c_c1101.html#ab053c185330519d58f364790108d29ac">More...</a><br /></td></tr>
 <tr class="separator:ab053c185330519d58f364790108d29ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef7c152858537a40e71cf133962cb893"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aef7c152858537a40e71cf133962cb893">transmitDirectAsync</a> (uint32_t frf=0)</td></tr>
 <tr class="memdesc:aef7c152858537a40e71cf133962cb893"><td class="mdescLeft">&#160;</td><td class="mdescRight">Starts asynchronous direct mode transmission.  <a href="class_c_c1101.html#aef7c152858537a40e71cf133962cb893">More...</a><br /></td></tr>
@@ -1008,7 +1008,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 </div><div class="memdoc">
 
-<p>Starts direct mode reception. </p>
+<p>Starts synchronous direct mode reception. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ad9d1dbb2041e87af5a80e12f125a60e6">PhysicalLayer</a>.</p>
@@ -2268,7 +2268,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 </div><div class="memdoc">
 
-<p>Starts direct mode transmission. </p>
+<p>Starts synchronous direct mode transmission. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">frf</td><td>Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY. </td></tr>
