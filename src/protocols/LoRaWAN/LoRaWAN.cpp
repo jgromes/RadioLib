@@ -2644,7 +2644,7 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
       uint16_t mask = 1 << i;
       if(mask & chMask) {
         // enable bank of 8 channels from first span
-        for(uint8_t j = 0; j < 8; i++) {
+        for(uint8_t j = 0; j < 8; j++) {
           uint8_t chNum = i * 8 + j;
           chnl.enabled = true;
           chnl.idx   = chNum;
