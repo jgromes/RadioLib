@@ -559,6 +559,11 @@
 #define RADIOLIB_ERR_DWELL_TIME_EXCEEDED                        (-1115)
 
 /*!
+  \brief The buffer integrity check did not match the supplied checksum value.
+*/
+#define RADIOLIB_ERR_CHECKSUM_MISMATCH                          (-1116)
+
+/*!
   \}
 */
 

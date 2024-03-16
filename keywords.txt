@@ -293,6 +293,10 @@ setModem	KEYWORD2
 
 # LoRaWAN
 wipe	KEYWORD2
+getBufferNonces	KEYWORD2
+setBufferNonces	KEYWORD2
+getBufferSession	KEYWORD2
+setBufferSession	KEYWORD2
 restore	KEYWORD2
 beginOTAA	KEYWORD2
 beginABP	KEYWORD2
