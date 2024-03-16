@@ -8,7 +8,6 @@
 // activation mode
 #define RADIOLIB_LORAWAN_MODE_OTAA                              (0x07AA)
 #define RADIOLIB_LORAWAN_MODE_ABP                               (0x0AB9)
-#define RADIOLIB_LORAWAN_MODE_RESTORED                          (0x0001)
 #define RADIOLIB_LORAWAN_MODE_NONE                              (0x0000)
 
 // operation mode
@@ -503,8 +502,7 @@ class LoRaWANNode {
 
     /*!
       \brief Restore session by loading information from persistent storage.
-      \returns \ref status_codes in case of error, else LoRaWAN session mode 
-      (0 = no active session, 0x0001 / 1 = restored a session, 0x07AA / 1962 = new OTAA session, 0x0AB9 / 2745 = new ABP session)
+      \returns \ref status_codes
     */
     int16_t restore(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan);
 
@@ -528,7 +526,7 @@ class LoRaWANNode {
       \param nwkSKey Pointer to the network session AES-128 key (LoRaWAN 1.0) or MAC command network session key (LoRaWAN 1.1).
       \param appSKey Pointer to the application session AES-128 key.
       \param fNwkSIntKey Pointer to the Forwarding network session (LoRaWAN 1.1), unused for LoRaWAN 1.0.
-      \param sNwkSIntKey Pointer to the Severing network session (LoRaWAN 1.1), unused for LoRaWAN 1.0.
+      \param sNwkSIntKey Pointer to the Serving network session (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \param force Set to true to force a new session, even if one exists.
       \returns \ref status_codes
     */
