@@ -804,6 +804,8 @@ class LoRaWANNode {
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;
 
+    static int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);
+
     void beginCommon(uint8_t joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     // a buffer that holds all LW base parameters that should persist at all times!
