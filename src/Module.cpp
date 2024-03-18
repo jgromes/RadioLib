@@ -407,7 +407,7 @@ uint32_t Module::reflect(uint32_t in, uint8_t bits) {
 }
 
 #if RADIOLIB_DEBUG
-void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
+void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
     char str[80];
@@ -446,20 +446,23 @@ void Module::hexdump(uint8_t* data, size_t len, uint32_t offset, uint8_t width, 
     for(size_t j = line_len; j < 16; j++) {
       sprintf(&str[58 + j], "   ");
     }
+    if(level) {
+      RADIOLIB_DEBUG_PRINT(level);
+    }
     RADIOLIB_DEBUG_PRINT(str);
     RADIOLIB_DEBUG_PRINTLN();
     rem_len -= 16;
   }
 }
 
-void Module::regdump(uint16_t start, size_t len) {
+void Module::regdump(const char* level, uint16_t start, size_t len) {
   #if RADIOLIB_STATIC_ONLY
     uint8_t buff[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* buff = new uint8_t[len];
   #endif
   SPIreadRegisterBurst(start, len, buff);
-  hexdump(buff, len, start);
+  hexdump(level, buff, len, start);
   #if !RADIOLIB_STATIC_ONLY
     delete[] buff;
   #endif

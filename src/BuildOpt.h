@@ -479,7 +479,7 @@
     #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL "%.3f", VAL)
   #endif
 
-  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) RADIOLIB_DEBUG_PRINT(LEVEL); Module::hexdump(__VA_ARGS__)
+  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) Module::hexdump(LEVEL, __VA_ARGS__)
 #else
   #define RADIOLIB_DEBUG_PRINT(...) {}
   #define RADIOLIB_DEBUG_PRINTLN(...) {}
