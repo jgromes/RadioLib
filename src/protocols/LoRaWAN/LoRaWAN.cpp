@@ -308,11 +308,64 @@ int16_t LoRaWANNode::restoreChannels() {
   return(RADIOLIB_ERR_NONE);
 }
 
-void LoRaWANNode::beginCommon(uint8_t joinDr) {
+void LoRaWANNode::beginCommon(uint8_t initialDr) {
   // in case a new session is started while there is an ongoing session
   // clear the MAC queues completely
   memset(&(this->commandsUp), 0, sizeof(LoRaWANMacCommandQueue_t));
   memset(&(this->commandsDown), 0, sizeof(LoRaWANMacCommandQueue_t));
+
+  uint8_t drUp = 0;
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
+    // if join datarate is user-specified and valid, select that value
+    if(initialDr != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      if(initialDr >= this->band->txFreqs[0].drMin && initialDr <= this->band->txFreqs[0].drMax) {
+        drUp = initialDr;
+      } else {
+        // if there is no channel that allowed the user-specified datarate, revert to default datarate
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Datarate %d is not valid - using default", initialDr);
+        initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+      }
+    }
+    
+    // if there is no (channel that allowed the) user-specified datarate, use a default datarate
+    // we use the floor of the average datarate of the first default channel
+    if(initialDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      drUp = (this->band->txFreqs[0].drMin + this->band->txFreqs[0].drMax) / 2;
+    }
+
+  } else {
+    // if the user specified a certain datarate, check if any of the configured channels allows it
+    if(initialDr != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      uint8_t i = 0; 
+      for(; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+        if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
+          if(initialDr >= this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin
+            && initialDr <= this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax) {
+              break;
+          }
+        }
+      }
+      // if there is no channel that allowed the user-specified datarate, revert to default datarate
+      if(i == RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS) {
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Datarate %d is not valid - using default", initialDr);
+        initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+      }
+    }
+
+    // if there is no (channel that allowed the) user-specified datarate, use a default datarate
+    // we use the join-request datarate for one of the available channels
+    if(initialDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      // randomly select one of 8 or 9 channels and find corresponding datarate
+      uint8_t numChannels = this->band->numTxSpans == 1 ? 8 : 9;
+      uint8_t rand = this->phyLayer->random(numChannels) + 1;     // range 1-8 or 1-9
+      if(rand <= 8) {
+        drUp = this->band->txSpans[0].joinRequestDataRate;        // if one of the first 8 channels, select datarate of span 0
+      } else {
+        drUp = this->band->txSpans[1].joinRequestDataRate;        // if ninth channel, select datarate of span 1
+      }
+    }
+
+  }
 
   LoRaWANMacCommand_t cmd = {
     .cid = RADIOLIB_LORAWAN_MAC_LINK_ADR,
@@ -320,26 +373,7 @@ void LoRaWANNode::beginCommon(uint8_t joinDr) {
     .len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn,
     .repeat = 0,
   };
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    uint8_t drUp = 0;
-    // if join datarate is user-specified and valid, select that value; otherwise use
-    if(joinDr != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-      if(joinDr >= this->band->txFreqs[0].drMin && joinDr <= this->band->txFreqs[0].drMax) {
-        drUp = joinDr;
-      } else {
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Datarate %d is not valid (min: %d, max %d) - using default", 
-                                joinDr, this->band->txFreqs[0].drMin, this->band->txFreqs[0].drMax);
-        joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
-      }
-    } 
-    if(joinDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-      drUp = (this->band->txFreqs[0].drMin + this->band->txFreqs[0].drMax) / 2;
-    }
-    cmd.payload[0] = (drUp << 4);
-  } else {
-    uint8_t drJr = this->band->txSpans[0].joinRequestDataRate;
-    cmd.payload[0] = (drJr << 4);
-  }
+  cmd.payload[0]  = (drUp << 4);      // set uplink datarate
   cmd.payload[0] |= 0;                // default to max Tx Power
   cmd.payload[3]  = (1 << 7);         // set the RFU bit, which means that the channel mask gets ignored
   (void)execMacCommand(&cmd);
@@ -456,7 +490,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   }
   RADIOLIB_ASSERT(state);
 
-  // setup all MAC properties to default values  
+  // on fixed bands, the join-datarate is specified per specification
+  // therefore, we ignore the value that was specified by the user
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED) {
+    joinDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+  }
+  // setup all MAC properties to default values
   this->beginCommon(joinDr);
 
   // set the physical layer configuration
@@ -693,7 +732,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force) {
+int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force, uint8_t initialDr) {
   // if not forced and already joined, don't do anything
   if(!force && this->isJoined()) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("beginABP(): Did not rejoin: session already active");
@@ -743,7 +782,7 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   }
 
   // setup all MAC properties to default values
-  this->beginCommon();
+  this->beginCommon(initialDr);
 
   // set the physical layer configuration
   state = this->setPhyProperties();
@@ -1801,18 +1840,17 @@ int16_t LoRaWANNode::processCFList(uint8_t* cfList) {
       .len = 0,
       .repeat = 0,
     };
-    cmd.payload[0] = 0xFF;  // same datarate and payload
 
     // in case of mask-type bands, copy those frequencies that are masked true into the available TX channels
-    size_t numChMasks = 3 + this->band->numTxSpans;   // 4 masks for bands with 2 spans, 5 spans for bands with 1 span
+    size_t numChMasks = 3 + this->band->numTxSpans;       // 4 masks for bands with 2 spans, 5 spans for bands with 1 span
     for(size_t chMaskCntl = 0; chMaskCntl < numChMasks; chMaskCntl++) {
       cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_LINK_ADR].lenDn;
-      cmd.payload[3] = chMaskCntl << 4;               // NbTrans = 0 -> keep the same
+      cmd.payload[0] = 0xFF;                              // same datarate and payload
+      memcpy(&cmd.payload[1], &cfList[chMaskCntl*2], 2);  // copy mask
+      cmd.payload[3] = chMaskCntl << 4;                   // set chMaskCntl, set NbTrans = 0 -> keep the same
       cmd.repeat = (chMaskCntl + 1);
-      memcpy(&cmd.payload[1], &cfList[chMaskCntl*2], 2);
       (void)execMacCommand(&cmd);
     }
-    // delete the ADR response
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -2659,7 +2697,7 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   if(this->band->numTxSpans == 2 && chMaskCntl == 6) {
     // all channels on (but we revert to selected subband)
     this->setupChannelsFix(this->subBand);
-
+    
     // a '1' enables a single channel from second span
     LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
