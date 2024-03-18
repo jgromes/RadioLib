@@ -104,21 +104,6 @@
   #define RADIOLIB_STATIC_ARRAY_SIZE   (256)
 #endif
 
-// the base address for persistent storage
-// some protocols (e.g. LoRaWAN) require a method
-// to store some data persistently
-// on Arduino, this will use EEPROM, on non-Arduino platform,
-// it will use anything provided by the hardware abstraction layer
-// RadioLib will place these starting at this address
-#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_BASE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_BASE            (0)
-#endif
-
-// the amount of space allocated to the persistent storage
-#if !defined(RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE)
-  #define RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE            (0x01C0)
-#endif
-
 /*
  * Uncomment on boards whose clock runs too slow or too fast
  * Set the value according to the following scheme:
@@ -238,7 +223,6 @@
 #elif defined(SAMD_SERIES)
   // Adafruit SAMD boards (M0 and M4)
   #define RADIOLIB_PLATFORM                           "Adafruit SAMD"
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif defined(ARDUINO_ARCH_SAMD)
   // Arduino SAMD (Zero, MKR, etc.)
@@ -246,18 +230,15 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)  
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif defined(__SAM3X8E__)
   // Arduino Due
   #define RADIOLIB_PLATFORM                           "Arduino Due"
   #define RADIOLIB_TONE_UNSUPPORTED
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif (defined(NRF52832_XXAA) || defined(NRF52840_XXAA)) && !defined(ARDUINO_ARDUINO_NANO33BLE)
   // Adafruit nRF52 boards
   #define RADIOLIB_PLATFORM                           "Adafruit nRF52"
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
 #elif defined(ARDUINO_ARC32_TOOLS)
   // Intel Curie
@@ -280,7 +261,6 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
@@ -292,7 +272,6 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
@@ -314,7 +293,6 @@
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
   #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
-  #define RADIOLIB_EEPROM_UNSUPPORTED
 
   // Arduino mbed OS boards have a really bad tone implementation which will crash after a couple seconds
   #define RADIOLIB_TONE_UNSUPPORTED
