@@ -171,27 +171,6 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="memItemLeft" align="right" valign="top">virtual uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00">pinToInterrupt</a> (uint32_t pin)</td></tr>
 <tr class="memdesc:a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to convert from pin number to interrupt number.  <a href="class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00">More...</a><br /></td></tr>
 <tr class="separator:a300a47d4d43dbe0c624f6e5dc1cf7a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a467356d0f1b097733da5ba99884cf354"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a467356d0f1b097733da5ba99884cf354">readPersistentStorage</a> (uint32_t addr, uint8_t *buff, size_t len)</td></tr>
-<tr class="memdesc:a467356d0f1b097733da5ba99884cf354"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to read from persistent storage (e.g. EEPROM).  <a href="class_radio_lib_hal.html#a467356d0f1b097733da5ba99884cf354">More...</a><br /></td></tr>
-<tr class="separator:a467356d0f1b097733da5ba99884cf354"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85cb796531c85215fa20f54754f6b4f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a85cb796531c85215fa20f54754f6b4f3">writePersistentStorage</a> (uint32_t addr, uint8_t *buff, size_t len)</td></tr>
-<tr class="memdesc:a85cb796531c85215fa20f54754f6b4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to write to persistent storage (e.g. EEPROM).  <a href="class_radio_lib_hal.html#a85cb796531c85215fa20f54754f6b4f3">More...</a><br /></td></tr>
-<tr class="separator:a85cb796531c85215fa20f54754f6b4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac9d93c46d699b8ece64ec9afe4d3ad71"><td class="memItemLeft" align="right" valign="top"><a id="ac9d93c46d699b8ece64ec9afe4d3ad71"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ac9d93c46d699b8ece64ec9afe4d3ad71">wipePersistentStorage</a> ()</td></tr>
-<tr class="memdesc:ac9d93c46d699b8ece64ec9afe4d3ad71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to wipe the persistent storage by writing to 0. Will write at most RADIOLIB_HAL_PERSISTENT_STORAGE_SIZE bytes. <br /></td></tr>
-<tr class="separator:ac9d93c46d699b8ece64ec9afe4d3ad71"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">getPersistentAddr</a> (uint32_t id)</td></tr>
-<tr class="memdesc:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to convert from persistent parameter ID to its physical address.  <a href="class_radio_lib_hal.html#ae8bda4b34a69c2738eb0b43a59b86f0d">More...</a><br /></td></tr>
-<tr class="separator:ae8bda4b34a69c2738eb0b43a59b86f0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a0542dc9daad463836196a72afc47f7"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a2a0542dc9daad463836196a72afc47f7"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a2a0542dc9daad463836196a72afc47f7">setPersistentParameter</a> (uint32_t id, T val, uint32_t offset=0)</td></tr>
-<tr class="memdesc:a2a0542dc9daad463836196a72afc47f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to set arbitrary parameter to persistent storage. This method DOES NOT perform any endianness conversion, so the value will be stored in the system endian!  <a href="class_radio_lib_hal.html#a2a0542dc9daad463836196a72afc47f7">More...</a><br /></td></tr>
-<tr class="separator:a2a0542dc9daad463836196a72afc47f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a216a59fbd4c022a3410a4b1e42059dbe"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a216a59fbd4c022a3410a4b1e42059dbe"><td class="memTemplItemLeft" align="right" valign="top">T&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a216a59fbd4c022a3410a4b1e42059dbe">getPersistentParameter</a> (uint32_t id)</td></tr>
-<tr class="memdesc:a216a59fbd4c022a3410a4b1e42059dbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to get arbitrary parameter from persistent storage. This method DOES NOT perform any endianness conversion, so the value will be retrieved in the system endian!  <a href="class_radio_lib_hal.html#a216a59fbd4c022a3410a4b1e42059dbe">More...</a><br /></td></tr>
-<tr class="separator:a216a59fbd4c022a3410a4b1e42059dbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -523,62 +502,6 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="ae8bda4b34a69c2738eb0b43a59b86f0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8bda4b34a69c2738eb0b43a59b86f0d">&#9670;&nbsp;</a></span>getPersistentAddr()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">uint32_t RadioLibHal::getPersistentAddr </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Method to convert from persistent parameter ID to its physical address. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>Parameter ID. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Parameter physical address. </dd></dl>
-
-</div>
-</div>
-<a id="a216a59fbd4c022a3410a4b1e42059dbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a216a59fbd4c022a3410a4b1e42059dbe">&#9670;&nbsp;</a></span>getPersistentParameter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template uint32_t RadioLibHal::getPersistentParameter </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Method to get arbitrary parameter from persistent storage. This method DOES NOT perform any endianness conversion, so the value will be retrieved in the system endian! </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>Parameter ID to load from. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The loaded value. </dd></dl>
-
-</div>
-</div>
 <a id="aedf55424bc4aa28379b6f4f6b04151d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aedf55424bc4aa28379b6f4f6b04151d3">&#9670;&nbsp;</a></span>micros()</h2>
 
@@ -802,104 +725,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a467356d0f1b097733da5ba99884cf354"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a467356d0f1b097733da5ba99884cf354">&#9670;&nbsp;</a></span>readPersistentStorage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void RadioLibHal::readPersistentStorage </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>buff</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Method to read from persistent storage (e.g. EEPROM). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">addr</td><td>Address to start reading at. </td></tr>
-    <tr><td class="paramname">buff</td><td>Buffer to read into. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to read. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a2a0542dc9daad463836196a72afc47f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2a0542dc9daad463836196a72afc47f7">&#9670;&nbsp;</a></span>setPersistentParameter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template void RadioLibHal::setPersistentParameter </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>val</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>offset</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Method to set arbitrary parameter to persistent storage. This method DOES NOT perform any endianness conversion, so the value will be stored in the system endian! </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">id</td><td>Parameter ID to save at. </td></tr>
-    <tr><td class="paramname">val</td><td>Value to set. </td></tr>
-    <tr><td class="paramname">offset</td><td>An additional offset added to the address. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="aebcaaf0cefdaaf5b572d4261e472ac8a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aebcaaf0cefdaaf5b572d4261e472ac8a">&#9670;&nbsp;</a></span>spiTransfer()</h2>
 
@@ -998,58 +823,6 @@ template&lt;typename T &gt; </div>
     <tr><td class="paramname">pin</td><td>Pin to be used as the output. </td></tr>
     <tr><td class="paramname">frequency</td><td>Frequency of the square wave. </td></tr>
     <tr><td class="paramname">duration</td><td>Duration of the tone in ms. When set to 0, the tone will be infinite. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a85cb796531c85215fa20f54754f6b4f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85cb796531c85215fa20f54754f6b4f3">&#9670;&nbsp;</a></span>writePersistentStorage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void RadioLibHal::writePersistentStorage </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>addr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>buff</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Method to write to persistent storage (e.g. EEPROM). </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">addr</td><td>Address to start writing to. </td></tr>
-    <tr><td class="paramname">buff</td><td>Buffer to write. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to write. </td></tr>
   </table>
   </dd>
 </dl>

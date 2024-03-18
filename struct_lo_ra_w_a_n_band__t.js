@@ -1,5 +1,6 @@
 var struct_lo_ra_w_a_n_band__t =
 [
+    [ "bandNum", "struct_lo_ra_w_a_n_band__t.html#abb14a7c48ec89a944f441517b1d55986", null ],
     [ "bandType", "struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802", null ],
     [ "dataRates", "struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b", null ],
     [ "dutyCycle", "struct_lo_ra_w_a_n_band__t.html#af960a5981e5953d09dda830ddb67de89", null ],

@@ -4,6 +4,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_A_FCNT_DOWN_INVALID", "group__status__codes.html#ga81bd164044ef4d523464ad17d1e473bb", null ],
     [ "RADIOLIB_ERR_ACK_NOT_RECEIVED", "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063", null ],
     [ "RADIOLIB_ERR_ADDRESS_NOT_FOUND", "group__status__codes.html#ga806183ed238159d317132b0d44d7a0a2", null ],
+    [ "RADIOLIB_ERR_CHECKSUM_MISMATCH", "group__status__codes.html#gace49554c055f7b2d02ef0c39c006529c", null ],
     [ "RADIOLIB_ERR_CHIP_NOT_FOUND", "group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_EMPTY", "group__status__codes.html#ga9fc9d71b0a60dfc859b392a7474521c0", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_FULL", "group__status__codes.html#ga442250961d11f2582857cd1eafe0df17", null ],
