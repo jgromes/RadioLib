@@ -258,7 +258,6 @@ int16_t LoRaWANNode::restoreChannels() {
     this->setupChannelsFix(this->subBand);
   }
 
-  Module* mod = this->phyLayer->getMod();
   uint8_t bufferZeroes[5] = { 0 };
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     uint8_t *startChannelsUp = &this->bufferSession[RADIOLIB_LORAWAN_SESSION_UL_CHANNELS];
@@ -780,8 +779,6 @@ bool LoRaWANNode::isJoined() {
 }
 
 int16_t LoRaWANNode::saveSession() {
-  Module* mod = this->phyLayer->getMod();
-
   // store DevAddr and all keys
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_DEV_ADDR], this->devAddr);
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_APP_SKEY], this->appSKey, RADIOLIB_AES128_BLOCK_SIZE);
@@ -1734,16 +1731,6 @@ int16_t LoRaWANNode::setupChannelsFix(uint8_t subBand) {
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
     this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i] = RADIOLIB_LORAWAN_CHANNEL_NONE;
   }
-  
-  // randomly select one of 8 or 9 channels and find corresponding datarate
-  uint8_t numChannels = this->band->numTxSpans == 1 ? 8 : 9;
-  uint8_t rand = this->phyLayer->random(numChannels) + 1;     // range 1-8 or 1-9
-  uint8_t drJR = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
-  if(rand <= 8) {
-    drJR = this->band->txSpans[0].joinRequestDataRate;        // if one of the first 8 channels, select datarate of span 0
-  } else {
-    drJR = this->band->txSpans[1].joinRequestDataRate;        // if ninth channel, select datarate of span 1
-  }
 
   // if no subband is selected by user, cycle through banks of 8 using devNonce value
   if(subBand == 0) {
@@ -2228,7 +2215,6 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
           chMaskAck = (uint8_t)this->applyChannelMaskDyn(chMaskCntl, chMask);
 
         } else {                // RADIOLIB_LORAWAN_BAND_FIXED
-          bool clearChannels = false;
           if(cmd->repeat == 1) {
             // if this is the first ADR command in the queue, clear all saved channels
             // so we can apply the new channel mask
@@ -2270,7 +2256,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       } else {                // RADIOLIB_LORAWAN_BAND_FIXED
 
         // save Tx/Dr to the Link ADR position in the session buffer 
-        uint8_t bufTxDr[cmd->len] = { 0 };
+        uint8_t bufTxDr[RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
         bufTxDr[0] = cmd->payload[0];
         bufTxDr[3] = 1 << 7;
         memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR], bufTxDr, cmd->len);
@@ -2672,9 +2658,8 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   }
   if(this->band->numTxSpans == 2 && chMaskCntl == 6) {
     // all channels on (but we revert to selected subband)
-    if(this->subBand >= 0) {
-      this->setupChannelsFix(this->subBand);
-    }
+    this->setupChannelsFix(this->subBand);
+
     // a '1' enables a single channel from second span
     LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
