@@ -2148,11 +2148,9 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* que
 }
 
 bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
-  RADIOLIB_DEBUG_PROTOCOL_PRINT("[MAC] 0x%02X %s", cmd->cid, cmd->len ? "= 0x" : "");
-  for(uint8_t i = 0; i < cmd->len; i++) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINT("%02X", cmd->payload[i]);
-  }
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN();
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[MAC] 0x%02X", cmd->cid);
+  RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(cmd->payload, cmd->len);
+
 
   if(cmd->cid >= RADIOLIB_LORAWAN_MAC_PROPRIETARY) {
     // TODO call user-provided callback for proprietary MAC commands?
