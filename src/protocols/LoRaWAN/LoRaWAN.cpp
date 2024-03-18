@@ -2122,10 +2122,6 @@ int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQ
 }
 
 int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t* payload) {
-  if(queue->numCommands == 0) {
-    return(RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND);
-  }
-
   for(size_t index = 0; index < queue->numCommands; index++) {
     if(queue->commands[index].cid == cid) {
       // if a pointer to a payload is supplied, copy the command's payload over
