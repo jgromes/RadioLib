@@ -1,7 +1,7 @@
 var class_lo_ra_w_a_n_node =
 [
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
-    [ "beginABP", "class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5", null ],
+    [ "beginABP", "class_lo_ra_w_a_n_node.html#a54c23c4676905aa17119d5a5dd5fa8a8", null ],
     [ "beginOTAA", "class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#ae532e739ada04ea7463494a426f60b4d", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226", null ],

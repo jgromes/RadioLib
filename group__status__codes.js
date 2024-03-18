@@ -6,7 +6,6 @@ var group__status__codes =
     [ "RADIOLIB_ERR_ADDRESS_NOT_FOUND", "group__status__codes.html#ga806183ed238159d317132b0d44d7a0a2", null ],
     [ "RADIOLIB_ERR_CHECKSUM_MISMATCH", "group__status__codes.html#gace49554c055f7b2d02ef0c39c006529c", null ],
     [ "RADIOLIB_ERR_CHIP_NOT_FOUND", "group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62", null ],
-    [ "RADIOLIB_ERR_COMMAND_QUEUE_EMPTY", "group__status__codes.html#ga9fc9d71b0a60dfc859b392a7474521c0", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_FULL", "group__status__codes.html#ga442250961d11f2582857cd1eafe0df17", null ],
     [ "RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND", "group__status__codes.html#gac4e026589229f7f737c77c641447d180", null ],
     [ "RADIOLIB_ERR_CRC_MISMATCH", "group__status__codes.html#ga9da949184e940a4fa6f4afb63c315963", null ],

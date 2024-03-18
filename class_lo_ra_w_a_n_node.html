@@ -123,9 +123,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a27bbbb946a1676a084841d293499ea87"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false, uint8_t joinDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
 <tr class="memdesc:a27bbbb946a1676a084841d293499ea87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87">More...</a><br /></td></tr>
 <tr class="separator:a27bbbb946a1676a084841d293499ea87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a757f52c10a904a81b54fed70921ed5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5">beginABP</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL, bool force=false)</td></tr>
-<tr class="memdesc:a9a757f52c10a904a81b54fed70921ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a9a757f52c10a904a81b54fed70921ed5">More...</a><br /></td></tr>
-<tr class="separator:a9a757f52c10a904a81b54fed70921ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54c23c4676905aa17119d5a5dd5fa8a8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a54c23c4676905aa17119d5a5dd5fa8a8">beginABP</a> (uint32_t addr, uint8_t *nwkSKey, uint8_t *appSKey, uint8_t *fNwkSIntKey=NULL, uint8_t *sNwkSIntKey=NULL, bool force=false, uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:a54c23c4676905aa17119d5a5dd5fa8a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a54c23c4676905aa17119d5a5dd5fa8a8">More...</a><br /></td></tr>
+<tr class="separator:a54c23c4676905aa17119d5a5dd5fa8a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memItemLeft" align="right" valign="top"><a id="af7a8ae58391e00b5fcb99f01832cc4fc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc">isJoined</a> ()</td></tr>
 <tr class="memdesc:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
@@ -272,8 +272,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9a757f52c10a904a81b54fed70921ed5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a757f52c10a904a81b54fed70921ed5">&#9670;&nbsp;</a></span>beginABP()</h2>
+<a id="a54c23c4676905aa17119d5a5dd5fa8a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54c23c4676905aa17119d5a5dd5fa8a8">&#9670;&nbsp;</a></span>beginABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -312,7 +312,13 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>force</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>force</em> = <code>false</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -331,6 +337,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
     <tr><td class="paramname">fNwkSIntKey</td><td>Pointer to the Forwarding network session (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
     <tr><td class="paramname">sNwkSIntKey</td><td>Pointer to the Serving network session (LoRaWAN 1.1), unused for LoRaWAN 1.0. </td></tr>
     <tr><td class="paramname">force</td><td>Set to true to force a new session, even if one exists. </td></tr>
+    <tr><td class="paramname">initialDr</td><td>The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled) </td></tr>
   </table>
   </dd>
 </dl>

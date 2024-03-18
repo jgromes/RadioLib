@@ -54,7 +54,7 @@ var NAVTREEINDEX =
 "class_radio_lib_hal.html#a300a47d4d43dbe0c624f6e5dc1cf7a00",
 "class_s_x1278.html#a834f26a0bd3fc8a03fa7e68aa4daf9e1",
 "classn_r_f24.html",
-"struct_bell_modem__t.html"
+"struct_bell_modem__t.html#a27c1a411df3d887ca0ce246c3b5521f7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
