@@ -112,13 +112,13 @@ int16_t LoRaWANNode::checkBufferCommon(uint8_t *buffer, uint16_t size) {
       break;
     }
   }
-  if(i < size) {
+  if(i == size) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
 
   // check integrity of the whole buffer (compare checksum to included checksum)
   uint16_t checkSum = LoRaWANNode::checkSum16(buffer, size - 2);
-  uint16_t signature = LoRaWANNode::ntoh<uint16_t>(&buffer[size]);
+  uint16_t signature = LoRaWANNode::ntoh<uint16_t>(&buffer[size - 2]);
   if(signature != checkSum) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Calculated checksum: %04X, expected: %04X", checkSum, signature);
     return(RADIOLIB_ERR_CHECKSUM_MISMATCH);
