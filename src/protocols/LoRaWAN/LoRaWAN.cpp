@@ -2123,7 +2123,7 @@ int16_t LoRaWANNode::pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQ
 
 int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* queue, uint8_t* payload) {
   if(queue->numCommands == 0) {
-    return(RADIOLIB_ERR_COMMAND_QUEUE_EMPTY);
+    return(RADIOLIB_ERR_COMMAND_QUEUE_ITEM_NOT_FOUND);
   }
 
   for(size_t index = 0; index < queue->numCommands; index++) {
@@ -2150,7 +2150,6 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* que
 bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[MAC] 0x%02X", cmd->cid);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(cmd->payload, cmd->len);
-
 
   if(cmd->cid >= RADIOLIB_LORAWAN_MAC_PROPRIETARY) {
     // TODO call user-provided callback for proprietary MAC commands?
@@ -2695,7 +2694,7 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   if(this->band->numTxSpans == 2 && chMaskCntl == 6) {
     // all channels on (but we revert to selected subband)
     this->setupChannelsFix(this->subBand);
-    
+
     // a '1' enables a single channel from second span
     LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
