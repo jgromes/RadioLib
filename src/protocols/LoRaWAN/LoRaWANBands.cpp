@@ -2,17 +2,17 @@
 
 #if !RADIOLIB_EXCLUDE_LORAWAN
 
-enum LoRaWANBandNum_t {
-  BandNone,
-  BandEU868,
-  BandUS915,
-  BandCN780,
-  BandEU433,
-  BandAU915,
-  BandCN500,
-  BandAS923,
-  BandKR920,
-  BandIN865
+// array of pointers to currently supported LoRaWAN bands
+const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
+  &EU868,
+  &US915,
+  &CN780,
+  &EU433,
+  &AU915,
+  &CN500,
+  &AS923,
+  &KR920,
+  &IN865,
 };
 
 const LoRaWANBand_t EU868 = {
