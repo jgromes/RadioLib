@@ -834,6 +834,10 @@ int16_t CC1101::setPromiscuousMode(bool enable) {
   }
 
   if(enable) {
+    // Lets set PQT to 0 with Promiscuous too
+    // We have to set the length to set PQT, but it should get disabled with disableSyncWordFiltering()
+    state = setPreambleLength(16, 0);
+    RADIOLIB_ASSERT(state);
     // disable sync word filtering and insertion
     // this also disables preamble
     state = disableSyncWordFiltering();
