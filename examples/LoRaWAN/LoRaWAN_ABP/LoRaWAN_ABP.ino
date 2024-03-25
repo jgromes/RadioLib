@@ -4,16 +4,19 @@
   ABP = Activation by Personalisation, an alternative
   to OTAA (Over the Air Activation). OTAA is preferable.
 
-  This example joins a LoRaWAN network and will send
-  uplink packets. Before you start, you will have to
-  register your device at https://www.thethingsnetwork.org/
+  This example will send uplink packets to a LoRaWAN network. 
+  Before you start, you will have to register your device at 
+  https://www.thethingsnetwork.org/
   After your device is registered, you can run this example.
   The device will join the network and start uploading data.
 
-  LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
-  Running this examples REQUIRES you to check "Resets frame counters"
-  on your LoRaWAN dashboard. Refer to the network's documentation
-  on how to do this.
+  LoRaWAN v1.1 requires the use of persistent storage.
+  As this example does not use persistent storage, running this 
+  examples REQUIRES you to check "Resets frame counters"
+  on your LoRaWAN dashboard. Refer to the notes or the 
+  network's documentation on how to do this.
+  To comply with LoRaWAN v1.1's persistent storage, refer to
+  https://github.com/radiolib-org/radiolib-persistence
 
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
