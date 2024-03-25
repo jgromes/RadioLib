@@ -12,8 +12,10 @@
 
   LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
   Running this examples REQUIRES you to check "Resets DevNonces"
-  on your LoRaWAN dashboard. Refer to the network's 
-  documentation on how to do this.
+  on your LoRaWAN dashboard. Refer to the notes or the 
+  network's documentation on how to do this.
+  To comply with LoRaWAN v1.1's persistent storage, refer to
+  https://github.com/radiolib-org/radiolib-persistence
 
   For default module settings, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/Default-configuration
