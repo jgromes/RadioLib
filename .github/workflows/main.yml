@@ -50,22 +50,17 @@ jobs:
           - id: arduino:avr:mega
             run: echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
           - id: arduino:mbed:nano33ble
-            run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: arduino:mbed:envie_m4
-            run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: arduino:megaavr:uno2018
             run: |
               echo "options=':mode=on'" >> $GITHUB_OUTPUT
               echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
           - id: arduino:sam:arduino_due_x
-            run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: arduino:samd:arduino_zero_native
-            run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: adafruit:samd:adafruit_feather_m0
             run: |
               echo "options=':usbstack=arduino,debug=off'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: adafruit:nrf52:feather52832
             run: |
               sudo apt-get update
@@ -75,7 +70,6 @@ jobs:
               echo "/home/runner/.local/bin" >> $GITHUB_PATH
               echo "options=':softdevice=s132v6,debug=l0'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://adafruit.github.io/arduino-board-index/package_adafruit_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: esp32:esp32:esp32
             run: |
               python -m pip install pyserial
@@ -102,10 +96,8 @@ jobs:
               echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
           - id: MegaCoreX:megaavr:4809
             run: |
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
           - id: arduino:mbed_rp2040:pico
-            run: echo "skip-pattern=(STM32WL|LoRaWAN_End_Device_Persistent)" >> $GITHUB_OUTPUT
           - id: rp2040:rp2040:rpipico
             run: echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
           - id: CubeCell:CubeCell:CubeCell-Board
@@ -158,7 +150,7 @@ jobs:
 
       - name: Checkout repository
         if: ${{ env.run-build == 'true' }}
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Build examples
         if: ${{ env.run-build == 'true' }}
@@ -186,7 +178,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Install dependencies
         run: |
@@ -214,7 +206,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
 
@@ -235,7 +227,7 @@ jobs:
     runs-on: [self-hosted, ARM64]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Install dependencies
         run: |
@@ -270,7 +262,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       
       - name: Install dependencies
         run: |

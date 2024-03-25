@@ -9,7 +9,7 @@ assignees: ''
 
 **IMPORTANT: Before submitting an issue, please check the following:**
 1. **Read [CONTRIBUTING.md](https://github.com/jgromes/RadioLib/blob/master/CONTRIBUTING.md)!** Issues that do not follow this document will be closed/locked/deleted/ignored.
-2. RadioLib has a [Wiki](https://github.com/jgromes/RadioLib/wiki) and an extensive [API documentation](https://jgromes.github.io/RadioLib/). You might find a solution to your issue there.
+2. RadioLib has a [Troubleshooting Guide](https://github.com/jgromes/RadioLib/wiki/Troubleshooting-Guide) Wiki page and an extensive [API documentation](https://jgromes.github.io/RadioLib/). You might find a solution to your issue there.
 3. Make sure you're using the latest release of the library! Releases can be found [here](https://github.com/jgromes/RadioLib/releases).
 4. Use [Arduino forums](https://forum.arduino.cc/) to ask generic questions about wireless modules, wiring, usage, etc. Only create issues for problems specific to RadioLib!
 5. Error codes, their meaning and how to fix them can be found on [this page](https://jgromes.github.io/RadioLib/group__status__codes.html).
@@ -24,7 +24,7 @@ paste the sketch here, even if it is an unmodified example code
 Wiring diagram, schematic, pictures etc.
 
 **Debug mode output**
-Enable all [debug levels](https://github.com/jgromes/RadioLib/wiki/Debug-mode) and paste the Serial monitor output here.
+Enable the appropriate [debug levels](https://github.com/jgromes/RadioLib/wiki/Debug-mode) and paste the Serial monitor output here. For debugging protocols, enable `RADIOLIB_DEBUG_PROTOCOL`. For debugging issues with the radio module itself, enable `RADIOLIB_DEBUG_SPI`.
 
 **Additional info (please complete):**
  - MCU: [e.g. Arduino Uno, ESP8266 etc.]

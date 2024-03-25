@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **IMPORTANT: Check the wiki**
-Before submitting new issue, please check the [Wiki](https://github.com/jgromes/RadioLib/wiki) and the [API documentation](https://jgromes.github.io/RadioLib/). You might find a solution to your issue there. 
+Before submitting new issue, please check the [Troubleshooting Guide](https://github.com/jgromes/RadioLib/wiki/Troubleshooting-Guide) Wiki page and the [API documentation](https://jgromes.github.io/RadioLib/). You might find a solution to your issue there. 
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
