@@ -105,9 +105,9 @@ The radio frequencies that are used are usually shared with other Industrial, Sc
 
 To ensure that the shared ISM bands are fairly used there are limits defined in law on how often you can transmit, called Duty Cycle. The details vary by region or country but typically you can only transmit for 1% of the time. Some frequencies you can only use 0.1% of the time. See https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/ for more information.
 
-Additionally, as The Things Stack Sandbox aka TTN is an array of servers in three locations around the world paid for by The Things Industries, there is a Fair Use Policy so that those learning LoRaWAN, communities, hobbyists & makers are guided on how much of the resource any one device can use. In short, it's 30 seconds of airtime a day and 10 downlinks. When a gateway is transmitting a downlink it can not hear any uplinks (contributing to the potential uplink loss outlined above). The community concensus is that 1 downlink a fortnight to update or adjust settings is appropriate. See https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/#fair-use-policy for more information.
+Additionally, as The Things Stack Sandbox aka TTN is an array of servers in three locations around the world paid for by The Things Industries, there is a Fair Use Policy so that those learning LoRaWAN, communities, hobbyists & makers are guided on how much of the resource any one device can use. In short, it's 30 seconds of airtime a day and 10 downlinks. When a gateway is transmitting a downlink it can not hear any uplinks (contributing to the potential uplink loss outlined above). The community consensus is that 1 downlink a fortnight to update or adjust settings is appropriate. See https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/#fair-use-policy for more information.
 
-You can see what intervals can be used with this interactive calculator: https://avbentem.github.io/airtime-calculator/ttn/. Devices further away from gateways will have to use a higher Spread Factor to be heard - do not assume everything will happen at SF7. An uplink takes a minimum of 6 seconds from start to end, sometimes longer if the device is further away from the gateway, so 
+You can see what intervals can be used with this interactive calculator: https://avbentem.github.io/airtime-calculator/ttn/. Devices further away from gateways will have to use a higher Spread Factor to be heard - do not assume everything will happen at SF7. An uplink takes a minimum of 6 seconds from start to end, sometimes longer if the device is further away from the gateway, so you will need to be patient for just a short while whilst waiting for feedback after seeing "Sending uplink"
 
 With all these considerations, trying to use LoRaWAN for command & control isn't appropriate and realtime GPS tracking almost always breaches FUP and usually legal limits, leaving aside the challenges of coverage.
 
@@ -141,7 +141,7 @@ If you are using US915 or AU915 then you should change the subBand const to 2.
 
 ### The pinmap
 
-This is the connections between the MCU (ESP32/ATmega/SAMD) and the LoRa radio (SX1276/SX1262).
+This is the connection between the MCU (ESP32/ATmega/SAMD) and the LoRa radio (SX1276/SX1262).
 
 Prebuilt modules are easy - we can detect the board and setup the pinmap for you. These boards are:
 
@@ -152,15 +152,13 @@ Prebuilt modules are easy - we can detect the board and setup the pinmap for you
 * HELTEC_WIFI_LORA_32
 * HELTEC_WIFI_LORA_32_V2
 * HELTEC_WIFI_LORA_32_V3
-* CUBECELL_BOARD
 
 If you have a TTGO T-Beam, you must choose the correct radio from the Board Revision sub-menu found under the main Tools menu.
 
 * TBEAM_USE_RADIO_SX1262
 * TBEAM_USE_RADIO_SX1276
 
-If you have an Adafruit Feather M0 with RFM95 then you must solder a wire or use a jumper to link from pin 6 to io1: https://learn.adafruit.com/the-things-network-for-feather/arduino-wiring
-
+Auto-setup for the Adafruit Feather M0 with RFM95 is included but you must solder a wire or use a jumper to link from pin 6 to io1: https://learn.adafruit.com/the-things-network-for-feather/arduino-wiring
 
 If you have a module that's not on this list, please go to the "Pinmap How-To" below.
 
@@ -199,4 +197,4 @@ The LoRaWAN code base works to a specification and once you are happy your devic
 
 ## Pinmap How-To
 
-
+Coming soon
