@@ -58,7 +58,11 @@ void loop() {
   // Perform an uplink
   int state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
   debug((state != RADIOLIB_ERR_RX_TIMEOUT) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
+
+  Serial.print(F("Uplink complete, next in "));
+  Serial.print(uplinkIntervalSeconds);
+  Serial.println(F(" seconds"));
   
   // Wait until next uplink - observing legal & TTN FUP constraints
-  delay(uplinkIntervalSeconds * 1000UL);
+  delay(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds
 }
