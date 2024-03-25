@@ -1,10 +1,33 @@
-#include <Arduino.h>
+/*
+  RadioLib LoRaWAN Starter Example
+
+  This example joins a LoRaWAN network and will send
+  uplink packets. Before you start, you will have to
+  register your device at https://www.thethingsnetwork.org/
+  After your device is registered, you can run this example.
+  The device will join the network and start uploading data.
+
+  Running this examples REQUIRES you to check "Resets DevNonces"
+  on your LoRaWAN dashboard. Refer to the network's 
+  documentation on how to do this.
+
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
+
+  For LoRaWAN details, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/LoRaWAN
+
+*/
 
 #include "config.h"
 
 void setup() {
   Serial.begin(115200);
   while (!Serial);
+  delay(5000);  // Give time to switch to the serial monitor
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initalise the radio"));

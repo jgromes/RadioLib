@@ -11,8 +11,6 @@
   shown here for reference.
 
   LoRaWAN v1.1 requires the use of EEPROM (persistent storage).
-  Please refer to the 'persistent' example once you are familiar
-  with LoRaWAN.
   Running this examples REQUIRES you to check "Resets DevNonces"
   on your LoRaWAN dashboard. Refer to the network's 
   documentation on how to do this.
@@ -26,7 +24,6 @@
   For LoRaWAN details, see the wiki page
   https://github.com/jgromes/RadioLib/wiki/LoRaWAN
 
-
 */
 
 #include "config.h"
@@ -38,7 +35,7 @@
 void setup() {
   Serial.begin(115200);
   while (!Serial);  // Wait for serial to be initalised
-  delay(2000);  // Give time to switch to the serial monitor
+  delay(5000);  // Give time to switch to the serial monitor
   Serial.println(F("\nSetup"));
 
   int16_t state = 0;  // return value for calls to RadioLib
