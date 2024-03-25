@@ -92,7 +92,7 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
   // SX1262 radio = new Module(8, 14, 12, 13);
 
   // SX1278 pin order: Module(NSS/CS, DIO0, RESET, DIO1);
-  // SX1278 radio = new Module(10, 2, 9, 3);
+  SX1278 radio = new Module(10, 2, 9, 3);
 
 #endif
 

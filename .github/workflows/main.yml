@@ -104,6 +104,8 @@ jobs:
             run: echo "index-url=--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
           - id: MegaCore:avr:1281
             run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
+          - id: teensy:avr:teensy41
+            run: echo "index-url=--additional-urls https://www.pjrc.com/teensy/td_156/package_teensy_index.json" >> $GITHUB_OUTPUT
           - id: arduino:renesas_uno:minima
 
     runs-on: ubuntu-latest
@@ -162,9 +164,19 @@ jobs:
               # skip sketch
               echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-pattern }})\033[0m";
             else
+              # apply special flags for LoRaWAN
+              if [[ ${example} =~ "LoRaWAN" ]]; then
+                flags=\
+                '--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_DEV_ADDR=0\" '\
+                '--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_NWKS_KEY=0\" '\
+                '--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_SNWKSINT_KEY=0\" '\
+                '--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_NWKSENC_KEY=0\" '\
+                '--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_APPS_KEY=0\" '
+              fi
+
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} $example --warnings=${{ steps.prep.outputs.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} $flags $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
