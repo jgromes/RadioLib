@@ -826,7 +826,7 @@ int16_t CC1101::setCrcFiltering(bool enable) {
   }
 }
 
-int16_t CC1101::setPromiscuousMode(bool enable) {
+int16_t CC1101::setPromiscuousMode(bool enable, bool requireCarrierSense) {
   int16_t state = RADIOLIB_ERR_NONE;
 
   if(this->promiscuous == enable) {
@@ -840,7 +840,8 @@ int16_t CC1101::setPromiscuousMode(bool enable) {
     RADIOLIB_ASSERT(state);
     // disable sync word filtering and insertion
     // this also disables preamble
-    state = disableSyncWordFiltering();
+    // Can enable Sync Mode with carriersense when promiscuous is enabled. Default is false: Sync Mode None	
+    state = disableSyncWordFiltering(requireCarrierSense);
     RADIOLIB_ASSERT(state);
 
     // disable CRC filtering
