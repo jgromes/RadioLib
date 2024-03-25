@@ -166,12 +166,12 @@ jobs:
             else
               # apply special flags for LoRaWAN
               if [[ ${example} =~ "LoRaWAN" ]]; then
-                flags="--build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_DEV_ADDR=0\" --build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_NWKS_KEY=0\" --build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_SNWKSINT_KEY=0\" --build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_NWKSENC_KEY=0\" --build-property compiler.cpp.extra_flags=\"-DRADIOLIB_LORAWAN_APPS_KEY=0\""
+                flags="-DRADIOLIB_LORAWAN_DEV_ADDR=0 -DRADIOLIB_LORAWAN_NWKS_KEY=0 -DRADIOLIB_LORAWAN_SNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_NWKSENC_KEY=0 -DRADIOLIB_LORAWAN_APPS_KEY=0"
               fi
 
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} $flags $example --warnings=${{ steps.prep.outputs.warnings }}
+              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} --build-property compiler.cpp.extra_flags="$flags" $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
