@@ -13,7 +13,7 @@ LoRaWAN is an amazing system for small battery powered sensors collecting data f
 
 These notes plus a lot more are available in the wiki: https://github.com/jgromes/RadioLib/wiki/LoRaWAN
 
-For questions about using RadioLib there is the discussions section (https://github.com/jgromes/RadioLib/discussions) and if you believe you've found an issue (aka bug), the issues section (https://github.com/jgromes/RadioLib/issues). If posting an issue please ensure you tell us what hardware you are using and provide a debug log - please do not use verbose mode unless asked to. If the question is more LoRaWAN or firmware related, then you can use the TTN forum: https://www.thethingsnetwork.org/forum/
+For questions about using RadioLib there is the discussions section (https://github.com/jgromes/RadioLib/discussions) and if you believe you've found an issue (aka bug), the issues section (https://github.com/jgromes/RadioLib/issues). If posting an issue please ensure you tell us what hardware you are using and provide a debug log - make sure you enable `RADIOLIB_DEBUG_PROTOCOL`. If the question is more LoRaWAN or firmware related, then you can use the TTN forum: https://www.thethingsnetwork.org/forum/
 
 
 ## Register & setup on TTN
@@ -28,9 +28,9 @@ There will be some instructions that you have to take on face value. You didn't 
 
 Go to https://www.thethingsnetwork.org/get-started and register - just like any other website. These instructions are for TTS Sandbox.
 
-Once you have confirmed your email address, you can login to the console here: https://console.cloud.thethings.network/. If you allow your browser to share you location the best console will be selected. For most users the best one is the obvious one, if you have any doubts you can ask on the forum here: https://www.thethingsnetwork.org/forum/ - you login with the exact same details.
+Once you have confirmed your email address, you can login to the console here: https://console.cloud.thethings.network/. If you allow your browser to share your location the best console will be selected. For most users the best one is the obvious one, if you have any doubts you can ask on the forum here: https://www.thethingsnetwork.org/forum/ - you login with the exact same details.
 
-It is simpler to register your gateway first. If you don't have a gateway, then a The Things Indoor Gateway (TTIG) is a very affordable option. A gateway gives you a console to see if your device is being heard and is hugely useful when debugging a DIY device. If you are in range of a community gateway you may be lucky with your first device creation but you will never know if you are in range unless you have access to that gateways console.
+It is simpler to register your gateway first. If you don't have a gateway, then a The Things Indoor Gateway (TTIG) is a very affordable option. A gateway gives you a console to see if your device is being heard and is hugely useful when debugging a DIY device. If you are in range of a community gateway you may be lucky with your first device creation but you will never know if you are in range unless you have access to that gateway's console.
 
 You can read up on key concepts and troubleshooting here: https://www.thethingsindustries.com/docs/gateways/
 
@@ -38,7 +38,7 @@ LoRa stands for Long Range - having the gateway & device on the same desk tends 
 
 ### Create your application
 
-An application is like a box to keep some devices in - normally doing the same thing - on larger deployments this may be 1,000's of similar devices. Starting out it it is likely to be just a few so there is no need to get concerned about how to divide up your use just yet.
+An application is like a box to keep some devices in - normally doing the same thing - on larger deployments this may be 1,000's of similar devices. Starting out it is likely to be just a few so there is no need to get concerned about how to divide up your use just yet.
 
 Onced logged in to the console you can go in to Applications to create your first application. The ID must be all lower case or numbers, no spaces, dashes are OK and it has to be unique to the entire TTN community - so `first-app` will be rejected - you could use `your-username-first-app` as that's likely to be unique. The name and description are for your own use and are optional.
 
@@ -52,15 +52,15 @@ You are making your own device using a third party LoRaWAN stack so there will n
 
 Choose the Frequency plan appropriate for your region. Consider that almost all countries have laws relating to what frequencies you use so don't get creative. For Europe please use the recommended option. For other regions use the entry marked 'used by TTN'.
 
-Choose LoRaWAN 1.1.0 - the last one in the list - the latest specfication. RadioLib uses RP001 Regional Parameters 1.1 revision B.
+Choose LoRaWAN 1.1.0 - the last one in the list - the latest specfication. RadioLib uses RP001 Regional Parameters 1.1 revision A.
 
-At this point you will be asked for your JoinEUI. As this is a DIY device and we are using RadioLib, you can use all zero's as recommended by The LoRa Alliance TR007 Technical Recommendations document. Once you've put in all zeros and clicked confirm you will be asked for a DevEUI, AppKey and NwkKey. It is preferable to have the cosole generate them so they are properly formatted.
+At this point you will be asked for your JoinEUI. As this is a DIY device and we are using RadioLib, you can use all zero's as recommended by The LoRa Alliance TR007 Technical Recommendations document. Once you've put in all zeros and clicked confirm you will be asked for a DevEUI, AppKey and NwkKey. It is preferable to have the console generate them so they are properly formatted.
 
 Your End device ID can be changed to make the device more identifiable. Something related to your hardware helps - like devicename-01. The you can click the blue 'Register device'.
 
 When many sensors are big deployed, a device is registered, batteries put in, it joins and gets on with sending data for the next few years. For development purposes we need to turn off one of the security settings so that you can join & uplink out of the normal sequence that a device in the field would do.
 
-Click on General Settings, scroll down to Join settings, click the Expand button, scroll down and click the Resets join nonces option. You will see a warning about replay attacks which is entirely proper & correct. If anyone evesdropping in your area on your LoRa transmissions could fake a join and send uplinks from their device but only if they happened to find out your AppKey & NwkKey which is kept securely on the TTN servers and is never transmitted over the air, so they'd also have to login to your account, which is protected by your password. 
+Click on General Settings, scroll down to Join settings, click the Expand button, scroll down and click the 'Resets join nonces' option. You will see a warning about replay attacks which is entirely proper & correct. If anyone eavesdropping in your area on your LoRa transmissions could fake a join and send uplinks from their device but only if they happened to find out your AppKey & NwkKey which is kept securely on the TTN servers and is never transmitted over the air, so they'd also have to login to your account, which is protected by your password. 
 
 You then need to copy over the device details in to the config file for RadioLib. There are buttons to copy items to the clipboard so you don't have to hand type them.
 
@@ -90,7 +90,7 @@ The main menu for a device is the horizontal band: Overview, Live Data, Messagin
 
 ### Explore
 
-Nothing on the console can be upset unless you confirm a warning message, so you are safe to explore the different menus to orientate yourself. This is very good idea so you are have an understanding of the layout of the land and shouldn't take more than 10 or 15 minutes. The documentation & volunteers on GitHub and the TTN forum will make refer to parts of the console without giving blow by blow directions.
+Nothing on the console can be upset unless you confirm a warning message, so you are safe to explore the different menus to orientate yourself. This is very good idea so you have an understanding of the layout of the land and shouldn't take more than 10 or 15 minutes. The documentation & volunteers on GitHub and the TTN forum will make refer to parts of the console without giving blow by blow directions.
 
 
 
@@ -101,22 +101,22 @@ Nothing on the console can be upset unless you confirm a warning message, so you
 
 LoRaWAN devices typically send small amounts of data at intervals between 15 minutes through to once per day. This allows a device to run on two AA batteries for 2 to 5 years. Hoping that LoRaWAN can move lots of data and your device can regularly receive commands to do something on demand is trying to bend the LoRaWAN system in ways it is not designed for and usually ends up with far too many issues to unravel.
 
-The radio frequencies that are used are usually shared with other Industrial, Scientific & Medical, known as ISM, users. The LoRa modulation is particularly resistance to interference due to other simultaneous transmissions on the same frequency but too much local activity will mean that not all uplinks get through. The Things Industries suggest designing a system to a potential packet loss rate of 10%. Typically we see 1 or 2% loss. This is entirely down to shared use of the radio waves, once an uplink is heard by a gateway the system is super reliable through The Things Stack.
+The radio frequencies that are used are usually shared with other Industrial, Scientific & Medical, known as ISM, users. The LoRa modulation is particularly resistant to interference due to other simultaneous transmissions on the same frequency but too much local activity will mean that not all uplinks get through. The Things Industries suggest designing a system to a potential packet loss rate of 10%. Typically we see 1 or 2% loss. This is entirely down to shared use of the radio waves, once an uplink is heard by a gateway the system is super reliable through The Things Stack.
 
 To ensure that the shared ISM bands are fairly used there are limits defined in law on how often you can transmit, called Duty Cycle. The details vary by region or country but typically you can only transmit for 1% of the time. Some frequencies you can only use 0.1% of the time. See https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/ for more information.
 
 Additionally, as The Things Stack Sandbox aka TTN is an array of servers in three locations around the world paid for by The Things Industries, there is a Fair Use Policy so that those learning LoRaWAN, communities, hobbyists & makers are guided on how much of the resource any one device can use. In short, it's 30 seconds of airtime a day and 10 downlinks. When a gateway is transmitting a downlink it can not hear any uplinks (contributing to the potential uplink loss outlined above). The community concensus is that 1 downlink a fortnight to update or adjust settings is appropriate. See https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/#fair-use-policy for more information.
 
-You can see what intervals can be used with this interactive calculator: https://avbentem.github.io/airtime-calculator/ttn/. Devices further away from gateways will have to use a higher Spread Factor to be heard - do not assume everything will happen at SF7. A uplink takes a minimum of 6 seconds from start to end, sometimes longer if the device is further away from the gateway, so 
+You can see what intervals can be used with this interactive calculator: https://avbentem.github.io/airtime-calculator/ttn/. Devices further away from gateways will have to use a higher Spread Factor to be heard - do not assume everything will happen at SF7. An uplink takes a minimum of 6 seconds from start to end, sometimes longer if the device is further away from the gateway, so 
 
-With all thes considerations, trying to use LoRaWAN for command & control isn't appropriate and realtime GPS tracking almost always breaches FUP and usually legal limits, leaving aside the challenges of coverage.
+With all these considerations, trying to use LoRaWAN for command & control isn't appropriate and realtime GPS tracking almost always breaches FUP and usually legal limits, leaving aside the challenges of coverage.
 
 See the hints & tips section on testing your device.
 
 
 ### EUI's & Keys
 
-In the config.h towards the top there are four lines thus:
+In the `config.h` towards the top there are four lines thus:
 
 // replace-with-your-device-id
 uint64_t joinEUI =   0x0000000000000000;
