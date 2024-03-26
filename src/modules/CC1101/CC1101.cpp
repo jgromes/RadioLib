@@ -992,11 +992,11 @@ int16_t CC1101::directMode(bool sync) {
   this->directModeEnabled = sync;
   if(sync) {
     // set GDO0 and GDO2 mapping
-  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
-  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SERIAL_DATA_SYNC , 5, 0);
 
-  	// set continuous mode
-  	state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
+    // set continuous mode
+    state |= SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_PKT_FORMAT_SYNCHRONOUS, 5, 4);
   } else {
     // set GDO0 mapping
     state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_DATA_ASYNC , 5, 0);
@@ -1016,23 +1016,23 @@ void CC1101::getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8
   // iterate over possible exponent values
   for(int8_t e = expMax; e >= 0; e--) {
     // get table column start value (exp = e, mant = 0);
-	  float intervalStart = ((uint32_t)1 << e) * origin;
+    float intervalStart = ((uint32_t)1 << e) * origin;
 
     // check if target value is in this column
-	  if(target >= intervalStart) {
+    if(target >= intervalStart) {
       // save exponent value
       exp = e;
 
       // calculate size of step between table rows
-	    float stepSize = intervalStart/(float)mantOffset;
+      float stepSize = intervalStart/(float)mantOffset;
 
       // get target point position (exp = e, mant = m)
-	    mant = ((target - intervalStart) / stepSize);
+      mant = ((target - intervalStart) / stepSize);
 
       // we only need the first match, terminate
-	    return;
-	  }
-	}
+      return;
+    }
+  }
 }
 
 int16_t CC1101::setPacketMode(uint8_t mode, uint16_t len) {
