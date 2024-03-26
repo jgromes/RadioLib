@@ -19,6 +19,7 @@ var hierarchy =
     [ "ITA2String", "class_i_t_a2_string.html", null ],
     [ "LoRaRate_t", "struct_lo_ra_rate__t.html", null ],
     [ "LoRaWANBand_t", "struct_lo_ra_w_a_n_band__t.html", null ],
+    [ "LoRaWANBandNum_t", "struct_lo_ra_w_a_n_band_num__t.html", null ],
     [ "LoRaWANChannel_t", "struct_lo_ra_w_a_n_channel__t.html", null ],
     [ "LoRaWANChannelSpan_t", "struct_lo_ra_w_a_n_channel_span__t.html", null ],
     [ "LoRaWANEvent_t", "struct_lo_ra_w_a_n_event__t.html", null ],

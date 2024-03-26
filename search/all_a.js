@@ -5,11 +5,12 @@ var searchData=
   ['llcc68_160',['LLCC68',['../class_l_l_c_c68.html',1,'LLCC68'],['../class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261',1,'LLCC68::LLCC68()']]],
   ['lorarate_5ft_161',['LoRaRate_t',['../struct_lo_ra_rate__t.html',1,'']]],
   ['lorawanband_5ft_162',['LoRaWANBand_t',['../struct_lo_ra_w_a_n_band__t.html',1,'']]],
-  ['lorawanchannel_5ft_163',['LoRaWANChannel_t',['../struct_lo_ra_w_a_n_channel__t.html',1,'']]],
-  ['lorawanchannelspan_5ft_164',['LoRaWANChannelSpan_t',['../struct_lo_ra_w_a_n_channel_span__t.html',1,'']]],
-  ['lorawanevent_5ft_165',['LoRaWANEvent_t',['../struct_lo_ra_w_a_n_event__t.html',1,'']]],
-  ['lorawanmaccommand_5ft_166',['LoRaWANMacCommand_t',['../struct_lo_ra_w_a_n_mac_command__t.html',1,'']]],
-  ['lorawanmaccommandqueue_5ft_167',['LoRaWANMacCommandQueue_t',['../struct_lo_ra_w_a_n_mac_command_queue__t.html',1,'']]],
-  ['lorawanmacspec_5ft_168',['LoRaWANMacSpec_t',['../struct_lo_ra_w_a_n_mac_spec__t.html',1,'']]],
-  ['lorawannode_169',['LoRaWANNode',['../class_lo_ra_w_a_n_node.html',1,'LoRaWANNode'],['../class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76',1,'LoRaWANNode::LoRaWANNode()']]]
+  ['lorawanbandnum_5ft_163',['LoRaWANBandNum_t',['../struct_lo_ra_w_a_n_band_num__t.html',1,'']]],
+  ['lorawanchannel_5ft_164',['LoRaWANChannel_t',['../struct_lo_ra_w_a_n_channel__t.html',1,'']]],
+  ['lorawanchannelspan_5ft_165',['LoRaWANChannelSpan_t',['../struct_lo_ra_w_a_n_channel_span__t.html',1,'']]],
+  ['lorawanevent_5ft_166',['LoRaWANEvent_t',['../struct_lo_ra_w_a_n_event__t.html',1,'']]],
+  ['lorawanmaccommand_5ft_167',['LoRaWANMacCommand_t',['../struct_lo_ra_w_a_n_mac_command__t.html',1,'']]],
+  ['lorawanmaccommandqueue_5ft_168',['LoRaWANMacCommandQueue_t',['../struct_lo_ra_w_a_n_mac_command_queue__t.html',1,'']]],
+  ['lorawanmacspec_5ft_169',['LoRaWANMacSpec_t',['../struct_lo_ra_w_a_n_mac_spec__t.html',1,'']]],
+  ['lorawannode_170',['LoRaWANNode',['../class_lo_ra_w_a_n_node.html',1,'LoRaWANNode'],['../class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76',1,'LoRaWANNode::LoRaWANNode()']]]
 ];
