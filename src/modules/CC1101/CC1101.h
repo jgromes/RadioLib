@@ -874,9 +874,10 @@ class CC1101: public PhysicalLayer {
      /*!
       \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
       \param enable Set or unset promiscuous mode.
+      \param defaults to false: no carriersense, true: sets carriersense above threshold
       \returns \ref status_codes
     */
-    int16_t setPromiscuousMode(bool enable = true);
+    int16_t setPromiscuousMode(bool enable = true, bool requireCarrierSense = false);
 
      /*!
       \brief Get whether the modem is in promiscuous mode: no packet filtering 
