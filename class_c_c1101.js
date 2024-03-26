@@ -43,7 +43,7 @@ var class_c_c1101 =
     [ "setPacketReceivedAction", "class_c_c1101.html#a4f47f83e7a1cb6cd014161803db867fb", null ],
     [ "setPacketSentAction", "class_c_c1101.html#aff4ddeb8f8680307079a1e84de1cc676", null ],
     [ "setPreambleLength", "class_c_c1101.html#ae77c828c9c7cc12012fe011e8c4d3570", null ],
-    [ "setPromiscuousMode", "class_c_c1101.html#a047be5159af73374521a26e8f880fe12", null ],
+    [ "setPromiscuousMode", "class_c_c1101.html#ac1155543b27e46fa27aa4c9180da18bb", null ],
     [ "setRfSwitchPins", "class_c_c1101.html#a5ef45183690bb1879f106af079b01140", null ],
     [ "setRfSwitchTable", "class_c_c1101.html#a7b401995be4bc136063a035ce1820634", null ],
     [ "setRxBandwidth", "class_c_c1101.html#a381d0059d7a0ccd8a2f54d7d3376f9b6", null ],

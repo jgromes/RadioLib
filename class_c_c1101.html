@@ -247,9 +247,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a60695681fc74a37f2a31a9638552e877"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a60695681fc74a37f2a31a9638552e877">setCrcFiltering</a> (bool enable=true)</td></tr>
 <tr class="memdesc:a60695681fc74a37f2a31a9638552e877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_c_c1101.html#a60695681fc74a37f2a31a9638552e877">More...</a><br /></td></tr>
 <tr class="separator:a60695681fc74a37f2a31a9638552e877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a047be5159af73374521a26e8f880fe12"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a047be5159af73374521a26e8f880fe12">setPromiscuousMode</a> (bool enable=true)</td></tr>
-<tr class="memdesc:a047be5159af73374521a26e8f880fe12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_c_c1101.html#a047be5159af73374521a26e8f880fe12">More...</a><br /></td></tr>
-<tr class="separator:a047be5159af73374521a26e8f880fe12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1155543b27e46fa27aa4c9180da18bb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ac1155543b27e46fa27aa4c9180da18bb">setPromiscuousMode</a> (bool enable=true, bool requireCarrierSense=false)</td></tr>
+<tr class="memdesc:ac1155543b27e46fa27aa4c9180da18bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_c_c1101.html#ac1155543b27e46fa27aa4c9180da18bb">More...</a><br /></td></tr>
+<tr class="separator:ac1155543b27e46fa27aa4c9180da18bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeea78919ec14d940cda0f213e4fdced6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6">getPromiscuousMode</a> ()</td></tr>
 <tr class="memdesc:aeea78919ec14d940cda0f213e4fdced6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get whether the modem is in promiscuous mode: no packet filtering (e.g., no preamble, sync word, address, CRC).  <a href="class_c_c1101.html#aeea78919ec14d940cda0f213e4fdced6">More...</a><br /></td></tr>
 <tr class="separator:aeea78919ec14d940cda0f213e4fdced6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1616,8 +1616,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a047be5159af73374521a26e8f880fe12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a047be5159af73374521a26e8f880fe12">&#9670;&nbsp;</a></span>setPromiscuousMode()</h2>
+<a id="ac1155543b27e46fa27aa4c9180da18bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1155543b27e46fa27aa4c9180da18bb">&#9670;&nbsp;</a></span>setPromiscuousMode()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1626,8 +1626,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="memname">int16_t CC1101::setPromiscuousMode </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enable</em> = <code>true</code></td><td>)</td>
+          <td class="paramname"><em>enable</em> = <code>true</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>requireCarrierSense</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1636,6 +1646,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enable</td><td>Set or unset promiscuous mode. </td></tr>
+    <tr><td class="paramname">defaults</td><td>to false: no carriersense, true: sets carriersense above threshold </td></tr>
   </table>
   </dd>
 </dl>
