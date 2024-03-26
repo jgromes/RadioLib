@@ -55,7 +55,7 @@ void setup() {
 
   // Print the DevAddr
   Serial.print("[LoRaWAN] DevAddr: ");
-  Serial.println(node.getDevAddr(), HEX);
+  Serial.println((unsigned long)node.getDevAddr(), HEX);
 
   // Disable the ADR algorithm (on by default which is preferable)
   node.setADR(false);
