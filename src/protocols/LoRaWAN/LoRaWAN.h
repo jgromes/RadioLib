@@ -393,6 +393,29 @@ extern const LoRaWANBand_t KR920;
 extern const LoRaWANBand_t IN865;
 
 /*!
+  \struct LoRaWANBandNum_t
+  \brief IDs of all currently supported bands
+*/
+enum LoRaWANBandNum_t {
+  BandEU868,
+  BandUS915,
+  BandCN780,
+  BandEU433,
+  BandAU915,
+  BandCN500,
+  BandAS923,
+  BandKR920,
+  BandIN865,
+  BandLast
+};
+
+// provide easy access to the number of currently supported bands
+#define RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS      (BandLast - BandEU868)
+
+// array of currently supported bands
+extern const LoRaWANBand_t* LoRaWANBands[];
+
+/*!
   \struct LoRaWANMacCommand_t
   \brief Structure to save information about MAC command
 */
