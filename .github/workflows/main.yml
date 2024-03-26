@@ -104,6 +104,8 @@ jobs:
           - id: MegaCore:avr:1281
             run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
           - id: arduino:renesas_uno:minima
+            run: |
+              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
 
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}
