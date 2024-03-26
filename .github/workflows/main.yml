@@ -80,6 +80,7 @@ jobs:
               echo "index-url=--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
           - id: SparkFun:apollo3:sfe_artemis
             run: |
+              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
               echo "warnings='none'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://raw.githubusercontent.com/sparkfun/Arduino_Apollo3/master/package_sparkfun_apollo3_index.json" >> $GITHUB_OUTPUT
           - id: STMicroelectronics:stm32:GenF3:pnum=BLACKPILL_F303CC
