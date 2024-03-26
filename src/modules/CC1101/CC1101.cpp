@@ -422,6 +422,11 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
+float CC1101::getFrequency() {
+  // Get currently set Frequency
+  return (this->frequency);
+}
+
 int16_t CC1101::setFrequency(float freq) {
   // check allowed frequency range
   if(!(((freq > 300.0) && (freq < 348.0)) ||
