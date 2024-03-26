@@ -54,7 +54,7 @@ void loop() {
 
   // Read some inputs
   uint8_t Digital1 = digitalRead(2);
-  uint16_t Analog1 = analogRead(A0);
+  uint16_t Analog1 = analogRead(3);
 
   // Build payload byte array
   uint8_t uplinkPayload[3];
