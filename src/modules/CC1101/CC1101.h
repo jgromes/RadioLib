@@ -730,6 +730,12 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setFrequency(float freq);
 
+     /*!
+      \brief gets carrier frequency. 
+      \returns the freq currently set
+    */
+    float getFrequency();
+
     /*!
       \brief Sets bit rate. Allowed values range from 0.025 to 600.0 kbps.
       \param br Bit rate to be set in kbps.
