@@ -758,6 +758,14 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setRxBandwidth(float rxBw);
 
+     /*!
+      \brief calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty.
+      \Reimplement of atlas0fd00m (RfCat) CalculatePktChanBw function. 
+      \Modified for worse ppm with the CC1101, and adjusted for the supportted CC1101 bw.
+      \returns \ref status_codes
+    */
+    int16_t CalcRxBandwidth();
+
     /*!
       \brief Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.
       \param freqDev Frequency deviation to be set in kHz.
