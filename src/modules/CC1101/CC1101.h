@@ -732,7 +732,7 @@ class CC1101: public PhysicalLayer {
 
      /*!
       \brief gets carrier frequency. 
-      \returns the freq currently set
+      \returns the freq currently set in Mhz
     */
     float getFrequency();
 
@@ -742,6 +742,13 @@ class CC1101: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setBitRate(float br);
+
+    /*!
+      \brief gets the currently set bit rate.
+      \returns the bit rate in kbps
+    */
+    float getBitRate();
+
 
     /*!
       \brief Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162,
