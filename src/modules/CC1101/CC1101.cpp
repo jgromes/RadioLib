@@ -503,7 +503,7 @@ int16_t CC1101::CalcRxBandwidth() {
     // Uncertainty ~ +/- 40ppm for a cheap CC1101
     // Uncertainty * 2 for both transmitter and receiver
     float uncertainty = (getFrequency() * 40 * 2);
-    uncertainty = (uncertainty/1000); //Since bitrate is in khz
+    uncertainty = (uncertainty/1000); //Since bitrate is in kBit
     float minbw = (getBitRate() + uncertainty);
     
     int possibles[16] = {58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812};
