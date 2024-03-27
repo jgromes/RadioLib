@@ -730,25 +730,12 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setFrequency(float freq);
 
-     /*!
-      \brief gets carrier frequency. 
-      \returns the freq currently set in Mhz
-    */
-    float getFrequency();
-
     /*!
       \brief Sets bit rate. Allowed values range from 0.025 to 600.0 kbps.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
     int16_t setBitRate(float br);
-
-    /*!
-      \brief gets the currently set bit rate.
-      \returns the bit rate in kbps
-    */
-    float getBitRate();
-
 
     /*!
       \brief Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162,
@@ -760,11 +747,11 @@ class CC1101: public PhysicalLayer {
 
      /*!
       \brief calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty.
-      \Reimplement of atlas0fd00m (RfCat) CalculatePktChanBw function. 
-      \Modified for worse ppm with the CC1101, and adjusted for the supportted CC1101 bw.
+      Reimplement of atlas0fd00m's (RfCat) CalculatePktChanBw function. 
+      Modified for worse ppm with the CC1101, and adjusted for the supportted CC1101 bw.
       \returns \ref status_codes
     */
-    int16_t CalcRxBandwidth();
+    int16_t autoSetRxBandwidth();
 
     /*!
       \brief Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.
