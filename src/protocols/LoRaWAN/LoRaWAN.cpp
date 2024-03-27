@@ -1226,7 +1226,7 @@ int16_t LoRaWANNode::downlinkCommon() {
       this->phyLayer->invertIQ(false);
     }
 
-    return(RADIOLIB_ERR_RX_TIMEOUT);
+    return(RADIOLIB_LORAWAN_NO_DOWNLINK);
   }
 
   // wait for the DIO to fire indicating a downlink is received

@@ -559,6 +559,11 @@
 #define RADIOLIB_ERR_CHECKSUM_MISMATCH                          (-1115)
 
 /*!
+  \brief No downlink was received - most likely none was sent from the server.
+*/
+#define RADIOLIB_LORAWAN_NO_DOWNLINK                            (-1116)
+
+/*!
   \}
 */
 
