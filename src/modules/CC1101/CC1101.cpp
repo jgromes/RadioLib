@@ -473,6 +473,11 @@ int16_t CC1101::setBitRate(float br) {
   return(state);
 }
 
+float CC1101::getBitRate() {
+  // Get currently set Bit rate
+  return (this->bitRate);
+}
+
 int16_t CC1101::setRxBandwidth(float rxBw) {
   RADIOLIB_CHECK_RANGE(rxBw, 58.0, 812.0, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 
