@@ -422,11 +422,6 @@ int16_t CC1101::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
-float CC1101::getFrequency() {
-  // Get currently set Frequency
-  return (this->frequency);
-}
-
 int16_t CC1101::setFrequency(float freq) {
   // check allowed frequency range
   if(!(((freq > 300.0) && (freq < 348.0)) ||
@@ -473,11 +468,6 @@ int16_t CC1101::setBitRate(float br) {
   return(state);
 }
 
-float CC1101::getBitRate() {
-  // Get currently set Bit rate
-  return (this->bitRate);
-}
-
 int16_t CC1101::setRxBandwidth(float rxBw) {
   RADIOLIB_CHECK_RANGE(rxBw, 58.0, 812.0, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 
@@ -499,12 +489,12 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 }
 
-int16_t CC1101::CalcRxBandwidth() {
+int16_t CC1101::autoSetRxBandwidth() {
     // Uncertainty ~ +/- 40ppm for a cheap CC1101
     // Uncertainty * 2 for both transmitter and receiver
-    float uncertainty = (getFrequency() * 40 * 2);
+    float uncertainty = (this->frequency) * 40 * 2);
     uncertainty = (uncertainty/1000); //Since bitrate is in kBit
-    float minbw = (getBitRate() + uncertainty);
+    float minbw = (this->bitRate) + uncertainty);
     
     int possibles[16] = {58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812};
     
@@ -512,10 +502,9 @@ int16_t CC1101::CalcRxBandwidth() {
       if (possibles[i] > minbw) {
         int16_t state = setRxBandwidth(possibles[i]);
         return(state);
-        break;
       }
     }
-    
+    return(RADIOLIB_ERR_UNKNOWN);
   }
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
