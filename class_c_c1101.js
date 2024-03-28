@@ -1,6 +1,7 @@
 var class_c_c1101 =
 [
     [ "CC1101", "class_c_c1101.html#a6807e4254c4b55fa8d393b2bf8f2db3e", null ],
+    [ "autoSetRxBandwidth", "class_c_c1101.html#a476adec156ae39974e70ef17b9af7db3", null ],
     [ "begin", "class_c_c1101.html#ad86f23bb3d113d20f6238a671f18b565", null ],
     [ "clearGdo0Action", "class_c_c1101.html#ab5e6b3745f80cf61e1ced33303311df8", null ],
     [ "clearGdo2Action", "class_c_c1101.html#ac7a8b1fe7d08dc6db20cf1569b0d37b4", null ],

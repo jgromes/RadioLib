@@ -196,6 +196,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a381d0059d7a0ccd8a2f54d7d3376f9b6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a381d0059d7a0ccd8a2f54d7d3376f9b6">setRxBandwidth</a> (float rxBw)</td></tr>
 <tr class="memdesc:a381d0059d7a0ccd8a2f54d7d3376f9b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650 and 812 kHz.  <a href="class_c_c1101.html#a381d0059d7a0ccd8a2f54d7d3376f9b6">More...</a><br /></td></tr>
 <tr class="separator:a381d0059d7a0ccd8a2f54d7d3376f9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a476adec156ae39974e70ef17b9af7db3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a476adec156ae39974e70ef17b9af7db3">autoSetRxBandwidth</a> ()</td></tr>
+<tr class="memdesc:a476adec156ae39974e70ef17b9af7db3"><td class="mdescLeft">&#160;</td><td class="mdescRight">calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty. Reimplement of atlas0fd00m's (RfCat) CalculatePktChanBw function. Modified for worse ppm with the <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a>, and adjusted for the supportted <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> bw.  <a href="class_c_c1101.html#a476adec156ae39974e70ef17b9af7db3">More...</a><br /></td></tr>
+<tr class="separator:a476adec156ae39974e70ef17b9af7db3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d69713b9f20c9de354c13c3167b18b3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a0d69713b9f20c9de354c13c3167b18b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets frequency deviation. Allowed values range from 1.587 to 380.8 kHz.  <a href="class_c_c1101.html#a0d69713b9f20c9de354c13c3167b18b3">More...</a><br /></td></tr>
 <tr class="separator:a0d69713b9f20c9de354c13c3167b18b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,6 +416,26 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a476adec156ae39974e70ef17b9af7db3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a476adec156ae39974e70ef17b9af7db3">&#9670;&nbsp;</a></span>autoSetRxBandwidth()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::autoSetRxBandwidth </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>calculates and sets Rx bandwidth based on the freq, baud and freq uncertainty. Reimplement of atlas0fd00m's (RfCat) CalculatePktChanBw function. Modified for worse ppm with the <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a>, and adjusted for the supportted <a class="el" href="class_c_c1101.html" title="Control class for CC1101 module.">CC1101</a> bw. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ad86f23bb3d113d20f6238a671f18b565"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad86f23bb3d113d20f6238a671f18b565">&#9670;&nbsp;</a></span>begin()</h2>
 
