@@ -134,6 +134,7 @@ getSNR	KEYWORD2
 getDataRate	KEYWORD2
 setBitRate	KEYWORD2
 setRxBandwidth	KEYWORD2
+autoSetRxBandwidth	KEYWORD2
 setAFCBandwidth	KEYWORD2
 setAFC		KEYWORD2
 setAFCAGCTrigger	KEYWORD2

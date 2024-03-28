@@ -489,6 +489,24 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
   return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 }
 
+int16_t CC1101::autoSetRxBandwidth() {
+    // Uncertainty ~ +/- 40ppm for a cheap CC1101
+    // Uncertainty * 2 for both transmitter and receiver
+    float uncertainty = ((this->frequency) * 40 * 2);
+    uncertainty = (uncertainty/1000); //Since bitrate is in kBit
+    float minbw = ((this->bitRate) + uncertainty);
+    
+    int possibles[16] = {58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812};
+    
+    for (int i = 0; i < 16; i++) {
+      if (possibles[i] > minbw) {
+        int16_t state = setRxBandwidth(possibles[i]);
+        return(state);
+      }
+    }
+    return(RADIOLIB_ERR_UNKNOWN);
+  }
+
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
