@@ -88,7 +88,7 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait until transmission is finished
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
@@ -98,8 +98,8 @@ int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_ACK_NOT_RECEIVED);
     }
 
-    // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
-    if(this->mod->hal->micros() - start >= 60000) {
+    // check timeout: 15 retries * 4ms (max Tx time as per datasheet) + 10 ms
+    if(this->mod->hal->millis() - start >= ((15 * 4) + 10)) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -114,12 +114,12 @@ int16_t nRF24::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for Rx_DataReady or timeout
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    // check timeout: 15 retries * 4ms (max Tx time as per datasheet)
-    if(this->mod->hal->micros() - start >= 60000) {
+    // check timeout: 15 retries * 4ms (max Tx time as per datasheet) + 10 ms
+    if(this->mod->hal->millis() - start >= ((15 * 4) + 10)) {
       standby();
       clearIRQ();
       return(RADIOLIB_ERR_RX_TIMEOUT);
