@@ -122,7 +122,7 @@ int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t RF69::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full 64-byte packets at current bit rate)
-  uint32_t timeout = 500 + (1.0/(this->bitRate))*(RADIOLIB_SI443X_MAX_PACKET_LENGTH*400.0);
+  uint32_t timeout = 500 + (1.0/(this->bitRate))*(RADIOLIB_RF69_MAX_PACKET_LENGTH*400.0);
 
   // start reception
   int16_t state = startReceive();
