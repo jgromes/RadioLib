@@ -100,29 +100,29 @@ void CC1101::reset() {
 
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
-  uint32_t timeout = 5000000 + (uint32_t)((((float)(len * 8)) / (this->bitRate * 1000.0)) * 5000000.0);
+  uint32_t timeout = 5 + (uint32_t)((((float)(len * 8)) / this->bitRate) * 5);
 
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start or timeout
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
 
   // wait for transmission end or timeout
-  start = this->mod->hal->micros();
+  start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
@@ -133,18 +133,18 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t CC1101::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
-  uint32_t timeout = 500000 + (1.0/(this->bitRate*1000.0))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0);
+  uint32_t timeout = 500 + (1.0/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0);
 
   // start reception
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
   // wait for packet start or timeout
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       standby();
       SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
       return(RADIOLIB_ERR_RX_TIMEOUT);
@@ -152,11 +152,11 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   }
 
   // wait for packet end or timeout
-  start = this->mod->hal->micros();
+  start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       standby();
       SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_RX);
       return(RADIOLIB_ERR_RX_TIMEOUT);
