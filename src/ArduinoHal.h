@@ -60,7 +60,7 @@ class ArduinoHal : public RadioLibHal {
     uint32_t pinToInterrupt(uint32_t pin) override;
 
 #if !RADIOLIB_GODMODE
-  private:
+  protected:
 #endif
     SPIClass* spi = NULL;
     SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS;
