@@ -174,7 +174,7 @@ jobs:
 
               # build sketch
               echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} --build-property compiler.cpp.extra_flags="$flags" $example --warnings=${{ steps.prep.outputs.warnings }}
+              arduino-cli compile --libraries /home/runner/work --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} --build-property compiler.cpp.extra_flags="$flags" $example --warnings=${{ steps.prep.outputs.warnings }}
               if [ $? -ne 0 ]; then
                 echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
                 exit 1;
