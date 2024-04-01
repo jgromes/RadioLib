@@ -93,7 +93,7 @@ class BellClient: public AFSKClient, public RadioLibPrint {
 
     /*!
       \brief Set correction coefficient for tone length.
-      \param correction Timing correction factor, used to adjust the length of tones.
+      \param corr Timing correction factor, used to adjust the length of tones.
       Less than 1.0 leads to shorter tones, defaults to 1.0 (no correction).
       \returns \ref status_codes
     */
