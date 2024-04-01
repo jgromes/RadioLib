@@ -113,9 +113,9 @@ class APRSClient {
       \param destCallsign Destination station callsign.
       \param destSSID Destination station SSID.
       \param lat Latitude as a null-terminated string.
-      \param long Longitude as a null-terminated string.
+      \param lon Longitude as a null-terminated string.
       \param msg Message to be transmitted. Defaults to NULL (no message).
-      \param msg Position timestamp. Defaults to NULL (no timestamp).
+      \param time Position timestamp. Defaults to NULL (no timestamp).
       \returns \ref status_codes
     */
     int16_t sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg = NULL, char* time = NULL);
