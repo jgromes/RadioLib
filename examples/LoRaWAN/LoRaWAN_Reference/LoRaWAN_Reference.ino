@@ -122,9 +122,10 @@ void loop() {
   } else {
     state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), Port, downlinkPayload, &downlinkSize);    
   }
-  debug((state != RADIOLIB_ERR_RX_TIMEOUT) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
+  debug((state != RADIOLIB_LORAWAN_NO_DOWNLINK) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
 
-  if(state == RADIOLIB_ERR_NONE) {
+  // Check if downlink was received
+  if(state != RADIOLIB_LORAWAN_NO_DOWNLINK) {
     // Did we get a downlink with data for us
     if (downlinkSize > 0) {
       Serial.println(F("Downlink data: "));

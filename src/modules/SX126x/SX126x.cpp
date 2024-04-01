@@ -231,41 +231,27 @@ int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
-  uint32_t timeout = 0;
-
-  // get currently active modem
-  uint8_t modem = getPacketType();
-  if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    // calculate timeout (150% of expected time-on-air)
-    timeout = (getTimeOnAir(len) * 3) / 2;
-
-  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    // calculate timeout (500% of expected time-on-air)
-    timeout = getTimeOnAir(len) * 5;
-
-  } else {
-    return(RADIOLIB_ERR_UNKNOWN);
-  }
-
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
+  // calculate timeout in ms (500% of expected time-on-air)
+  uint32_t timeout = (getTimeOnAir(len) * 5) / 1000;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start transmission
   state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       finishTransmit();
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  uint32_t elapsed = this->mod->hal->micros() - start;
 
   // update data rate
-  this->dataRateMeasured = (len*8.0)/((float)elapsed/1000000.0);
+  uint32_t elapsed = this->mod->hal->millis() - start;
+  this->dataRateMeasured = (len*8.0)/((float)elapsed/1000.0);
 
   return(finishTransmit());
 }
@@ -282,7 +268,8 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (uint32_t)(symbolLength * 100.0 * 1000.0);
+    timeout = (uint32_t)(symbolLength * 100.0);
+  
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
     size_t maxLen = len;
@@ -290,26 +277,27 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
       maxLen = 0xFF;
     }
     float brBps = ((float)(RADIOLIB_SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)this->bitRate;
-    timeout = (uint32_t)(((maxLen * 8.0) / brBps) * 1000000.0 * 5.0);
+    timeout = (uint32_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
+  
   }
 
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu us", timeout);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
+  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0) / 15.625);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
   bool softTimeout = false;
-  uint32_t start = this->mod->hal->micros();
+  uint32_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
-    if(this->mod->hal->micros() - start > timeout) {
+    if(this->mod->hal->millis() - start > timeout) {
       softTimeout = true;
       break;
     }

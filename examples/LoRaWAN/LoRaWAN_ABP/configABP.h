@@ -3,10 +3,10 @@
 
 #include <RadioLib.h>
 
-// How often to send an uplink - consider legal & FUP constraints - see notes
+// how often to send an uplink - consider legal & FUP constraints - see notes
 const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // minutes x seconds
 
-// Device address - either a development address or one assigned
+// device address - either a development address or one assigned
 // to the LoRaWAN Service Provider - TTN will generate one for you
 #ifndef RADIOLIB_LORAWAN_DEV_ADDR   // Replace with your DevAddr
 #define RADIOLIB_LORAWAN_DEV_ADDR   0x------
@@ -25,11 +25,10 @@ const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // minutes x seconds
 #define RADIOLIB_LORAWAN_APPS_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
 #endif
 
-// For the curious, the #ifndef blocks allow for automated testing &/or you can
+// for the curious, the #ifndef blocks allow for automated testing &/or you can
 // put your EUI & keys in to your platformio.ini - see wiki for more tips
 
-
-// Regional choices: EU868, US915, AU915, AS923, IN865, KR920, CN780, CN500
+// regional choices: EU868, US915, AU915, AS923, IN865, KR920, CN780, CN500
 const LoRaWANBand_t Region = EU868;
 const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
@@ -99,20 +98,17 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 #endif
 
-
-// Copy over the keys in to the something that will not compile if incorrectly formatted
+// copy over the keys in to the something that will not compile if incorrectly formatted
 uint32_t devAddr =        RADIOLIB_LORAWAN_DEV_ADDR;
 uint8_t NwkSKey[] =     { RADIOLIB_LORAWAN_NWKS_KEY };
 uint8_t SNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY }; // Previously sNwkSIntKey
 uint8_t NwkSEncKey[] =  { RADIOLIB_LORAWAN_NWKSENC_KEY }; // Previously fNwkSIntKey
 uint8_t AppSKey[] =     { RADIOLIB_LORAWAN_APPS_KEY };
 
-
-// Create the LoRaWAN node
+// create the LoRaWAN node
 LoRaWANNode node(&radio, &Region, subBand);
 
-
-// Helper function to display any issues
+// helper function to display any issues
 void debug(bool isFail, const __FlashStringHelper* message, int state, bool Freeze) {
   if (isFail) {
     Serial.print(message);
@@ -123,7 +119,7 @@ void debug(bool isFail, const __FlashStringHelper* message, int state, bool Free
   }
 }
 
-// Helper function to display a byte array
+// helper function to display a byte array
 void arrayDump(uint8_t *buffer, uint16_t len) {
   for(uint16_t c = 0; c < len; c++) {
     char b = buffer[c];
@@ -132,6 +128,5 @@ void arrayDump(uint8_t *buffer, uint16_t len) {
   }
   Serial.println();
 }
-
 
 #endif
