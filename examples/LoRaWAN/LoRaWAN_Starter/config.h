@@ -49,8 +49,7 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 #elif defined(ARDUINO_TTGO_LORA32_V2)
    #pragma message ("ARDUINO_TTGO_LORA32_V2 + Display")
-   #pragma message ("Connect DIO1 to GPIO33!")
-   SX1276 radio = new Module(18, 26, 12, 33);
+   SX1276 radio = new Module(18, 26, 12, RADIOLIB_NC);
 
 #elif defined(ARDUINO_TTGO_LoRa32_v21new) // T3_V1.6.1
   #pragma message ("Using TTGO LoRa32 v2.1 marked T3_V1.6.1 + Display")
