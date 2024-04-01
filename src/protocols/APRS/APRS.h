@@ -29,17 +29,33 @@
 
 /*!
   \defgroup mic_e_message_types Mic-E message types.
-
   \{
 */
+
+/*! \brief Mic-E "Off duty" message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_OFF_DUTY                       0b00000111
+
+/*! \brief Mic-E "En route" message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_EN_ROUTE                       0b00000110
+
+/*! \brief Mic-E "In service" message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_IN_SERVICE                     0b00000101
+
+/*! \brief Mic-E "Returning" message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_RETURNING                      0b00000100
+
+/*! \brief Mic-E "Commited" message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_COMMITTED                      0b00000011
+
+/*! \brief Mic-E special message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_SPECIAL                        0b00000010
+
+/*! \brief Mic-E priority message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_PRIORITY                       0b00000001
+
+/*! \brief Mic-E emergency message. */
 #define RADIOLIB_APRS_MIC_E_TYPE_EMERGENCY                      0b00000000
+
 /*!
   \}
 */
