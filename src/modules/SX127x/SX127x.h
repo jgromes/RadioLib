@@ -1074,7 +1074,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set
-      \returns \ref RxTimeout IRQ is set
+      \returns Whether RxTimeout IRQ is set
     */
     bool isRxTimeout();
 

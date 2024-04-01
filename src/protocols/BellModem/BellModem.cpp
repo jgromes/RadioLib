@@ -1,7 +1,7 @@
 #include "BellModem.h"
 #if !RADIOLIB_EXCLUDE_BELL
 
-const struct BellModem_t Bell101 {
+const BellModem_t Bell101 = {
   .freqMark = 1270,
   .freqSpace = 1070,
   .baudRate = 110,
@@ -9,7 +9,7 @@ const struct BellModem_t Bell101 {
   .freqSpaceReply = 2025,
 };
 
-const struct BellModem_t Bell103 {
+const BellModem_t Bell103 = {
   .freqMark = 1270,
   .freqSpace = 1070,
   .baudRate = 300,
@@ -17,7 +17,7 @@ const struct BellModem_t Bell103 {
   .freqSpaceReply = 2025,
 };
 
-const struct BellModem_t Bell202 {
+const BellModem_t Bell202 = {
   .freqMark = 1200,
   .freqSpace = 2200,
   .baudRate = 1200,

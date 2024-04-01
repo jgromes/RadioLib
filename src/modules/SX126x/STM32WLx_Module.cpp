@@ -77,7 +77,7 @@ class Stm32wlxHal : public ArduinoHal {
 
     /*!
       \brief Digital read override to handle STM32WL virtual pins.
-      \param dwPin Pin to set.
+      \param ulPin Pin to read.
       \returns Value read on the pin.
     */
     uint32_t digitalRead(uint32_t ulPin) {

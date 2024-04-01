@@ -13,7 +13,7 @@
 #endif
 
 /*!
-  \brief Value to use as the last element in a mode table to indicate the
+  \def Value to use as the last element in a mode table to indicate the
   end of the table.
   See \ref setRfSwitchTable for details.
 */

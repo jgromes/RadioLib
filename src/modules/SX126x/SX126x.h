@@ -935,7 +935,7 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Set modem in variable packet length mode. Available in FSK mode only.
-      \param len Maximum packet length.
+      \param maxLen Maximum packet length.
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX126X_MAX_PACKET_LENGTH);
