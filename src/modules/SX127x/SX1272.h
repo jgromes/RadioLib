@@ -111,8 +111,7 @@ class SX1272: public SX127x {
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
       \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
-      \param currentLimit Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA.
-      Set to 0 to disable OCP (not recommended).
+      \param power Transmission output power in dBm. Allowed values range from 2 to 17 dBm.
       \param preambleLength Length of %LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number.
       Allowed values range from 6 to 65535.
       \param gain Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
