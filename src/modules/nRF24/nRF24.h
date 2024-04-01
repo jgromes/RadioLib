@@ -460,7 +460,7 @@ class nRF24: public PhysicalLayer {
 
     /*!
       \brief Dummy encoding configuration method, to ensure PhysicalLayer compatibility.
-      \param sh Ignored.
+      \param encoding Ignored.
       \returns \ref status_codes
     */
     int16_t setEncoding(uint8_t encoding) override;

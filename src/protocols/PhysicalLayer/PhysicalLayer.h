@@ -4,22 +4,42 @@
 #include "../../TypeDef.h"
 #include "../../Module.h"
 
-// data rate structure interpretation in case LoRa is used
+/*!
+  \struct LoRaRate_t
+  \brief Data rate structure interpretation in case LoRa is used
+*/
 struct LoRaRate_t {
+  /*! \brief LoRa spreading factor */
   uint8_t spreadingFactor;
+  
+  /*! \brief LoRa bandwidth in kHz */
   float bandwidth;
+  
+  /*! \brief LoRa coding rate */
   uint8_t codingRate;
 };
 
-// data rate structure interpretation in case FSK is used
+/*!
+  \struct FSKRate_t
+  \brief Data rate structure interpretation in case FSK is used
+*/
 struct FSKRate_t {
+  /*! \brief FSK bit rate in kbps */
   float bitRate;
+  
+  /*! \brief FS frequency deviation in kHz*/
   float freqDev;
 };
 
-// common data rate
+/*!
+  \union DataRate_t
+  \brief Common data rate structure
+*/
 union DataRate_t {
+  /*! \brief Interpretation for LoRa modems */
   LoRaRate_t lora;
+
+  /*! \brief Interpretation for FSK modems */
   FSKRate_t fsk;
 };
 
@@ -237,7 +257,7 @@ class PhysicalLayer {
 
     /*!
       \brief Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.
-      \param enc Encoding to be used. See \ref config_encoding for possible values.
+      \param encoding Encoding to be used. See \ref config_encoding for possible values.
       \returns \ref status_codes
     */
     virtual int16_t setEncoding(uint8_t encoding);
@@ -334,7 +354,7 @@ class PhysicalLayer {
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set
-      \returns \ref RxTimeout IRQ is set
+      \returns Whether RxTimeout IRQ is set
     */
     virtual bool isRxTimeout();
 

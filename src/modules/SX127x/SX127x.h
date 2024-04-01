@@ -600,7 +600,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Initialization method. Will be called with appropriate parameters when calling initialization method from derived class.
-      \param chipVersion Array of possible values in SPI version register. Used to verify the connection and hardware version.
+      \param chipVersions Array of possible values in SPI version register. Used to verify the connection and hardware version.
       \param numVersions Number of possible chip versions.
       \param syncWord %LoRa sync word.
       \param preambleLength Length of %LoRa transmission preamble in symbols.
@@ -615,7 +615,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK initialization method from derived class.
-      \param chipVersion Array of possible values in SPI version register. Used to verify the connection and hardware version.
+      \param chipVersions Array of possible values in SPI version register. Used to verify the connection and hardware version.
       \param numVersions Number of possible chip versions.
       \param freqDev Frequency deviation of the FSK transmission in kHz.
       \param rxBw Receiver bandwidth in kHz.
@@ -928,7 +928,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Sets FSK automatic frequency correction bandwidth. Allowed values range from 2.6 to 250 kHz. Only available in FSK mode.
-      \param rxBw Receiver AFC bandwidth to be set (in kHz).
+      \param afcBw Receiver AFC bandwidth to be set (in kHz).
       \returns \ref status_codes
     */
     int16_t setAFCBandwidth(float afcBw);
@@ -1038,7 +1038,7 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Set modem in variable packet length mode. Available in FSK mode only.
-      \param len Maximum packet length.
+      \param maxLen Maximum packet length.
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_SX127X_MAX_PACKET_LENGTH_FSK);
@@ -1202,14 +1202,6 @@ class SX127x: public PhysicalLayer {
     int16_t setDIOPreambleDetect(bool usePreambleDetect);
 
     /*!
-      \brief Gets recorded signal strength indicator.
-      \param packet Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.
-      \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
-      \returns RSSI value in dBm.
-    */
-    float getRSSI(bool packet, bool skipReceive, int16_t offset);
-
-    /*!
       \brief Sets the RSSI value above which the RSSI interrupt is signaled
       \param dbm A dBm value between -127.5 and 0 inclusive
       \returns \ref status_codes
@@ -1246,6 +1238,7 @@ class SX127x: public PhysicalLayer {
     int16_t getActiveModem();
     int16_t setFrequencyRaw(float newFreq);
     int16_t setBitRateCommon(float br, uint8_t fracRegAddr);
+    float getRSSI(bool packet, bool skipReceive, int16_t offset);
 
 #if !RADIOLIB_GODMODE
   private:

@@ -152,7 +152,7 @@ size_t RadioLibPrint::print(double n, int digits) {
   return(RadioLibPrint::printFloat(n, digits));
 }
 
-size_t RadioLibPrint::println(const char* str) {
+size_t RadioLibPrint::println(const char str[]) {
   size_t n = RadioLibPrint::print(str);
   n += RadioLibPrint::println();
   return(n);
