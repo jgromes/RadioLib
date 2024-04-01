@@ -537,7 +537,7 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Default constructor.
-      \param mod Instance of Module that will be used to communicate with the radio.
+      \param module Instance of Module that will be used to communicate with the radio.
     */
     CC1101(Module* module);
 
@@ -797,6 +797,7 @@ class CC1101: public PhysicalLayer {
     /*!
       \brief Sets preamble length.
       \param preambleLength Preamble length to be set (in bits), allowed values: 16, 24, 32, 48, 64, 96, 128 and 192.
+      \param qualityThreshold Preamble quality threshold (PQT) to set.
       \returns \ref status_codes
     */
     int16_t setPreambleLength(uint8_t preambleLength, uint8_t qualityThreshold);
@@ -834,52 +835,52 @@ class CC1101: public PhysicalLayer {
       \brief Gets LQI (Link Quality Indicator) of the last received packet.
       \returns Last packet LQI (lower is better).
     */
-   uint8_t getLQI() const;
+    uint8_t getLQI() const;
 
-     /*!
+    /*!
       \brief Query modem for the packet length of received payload.
       \param update Update received packet length. Will return cached value when set to false.
       \returns Length of last received packet in bytes.
     */
     size_t getPacketLength(bool update = true) override;
 
-     /*!
+    /*!
       \brief Set modem in fixed packet length mode.
       \param len Packet length.
       \returns \ref status_codes
     */
     int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_CC1101_MAX_PACKET_LENGTH);
 
-     /*!
+    /*!
       \brief Set modem in variable packet length mode.
-      \param len Maximum packet length.
+      \param maxLen Maximum packet length.
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_CC1101_MAX_PACKET_LENGTH);
 
-     /*!
+    /*!
       \brief Enable sync word filtering and generation.
-      \param numBits Sync word length in bits.
+      \param maxErrBits Maximum number of allowed error bits in sync word.
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
       \returns \ref status_codes
     */
     int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0, bool requireCarrierSense = false);
 
-     /*!
+    /*!
       \brief Disable preamble and sync word filtering and generation.
       \param requireCarrierSense Require carrier sense above threshold.
       \returns \ref status_codes
     */
     int16_t disableSyncWordFiltering(bool requireCarrierSense = false);
 
-     /*!
+    /*!
       \brief Enable CRC filtering and generation.
       \param enable Set or unset CRC generation and filtering.
       \returns \ref status_codes
     */
     int16_t setCrcFiltering(bool enable = true);
 
-     /*!
+    /*!
       \brief Set modem in "sniff" mode: no packet filtering (e.g., no preamble, sync word, address, CRC).
       \param enable Set or unset promiscuous mode.
       \param requireCarrierSense Set carriersense required above threshold, defaults to false.
@@ -887,7 +888,7 @@ class CC1101: public PhysicalLayer {
     */
     int16_t setPromiscuousMode(bool enable = true, bool requireCarrierSense = false);
 
-     /*!
+    /*!
       \brief Get whether the modem is in promiscuous mode: no packet filtering 
       (e.g., no preamble, sync word, address, CRC).
       \returns Whether the modem is in promiscuous mode.
@@ -917,16 +918,16 @@ class CC1101: public PhysicalLayer {
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
-     \brief Get one truly random byte from RSSI noise.
-     \returns TRNG byte.
-   */
+      \brief Get one truly random byte from RSSI noise.
+      \returns TRNG byte.
+    */
     uint8_t randomByte();
 
     /*!
-     \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or
-    CC1101_VERSION_CURRENT (0x14) if CC1101 is connected and working.
-     \returns Version register contents or \ref status_codes
-   */
+      \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or
+      CC1101_VERSION_CURRENT (0x14) if CC1101 is connected and working.
+      \returns Version register contents or \ref status_codes
+    */
     int16_t getChipVersion();
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
