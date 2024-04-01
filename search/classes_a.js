@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nrf24_565',['nRF24',['../classn_r_f24.html',1,'']]]
+  ['nrf24_589',['nRF24',['../classn_r_f24.html',1,'']]]
 ];

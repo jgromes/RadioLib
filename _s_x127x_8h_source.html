@@ -857,64 +857,63 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l01196"></a><span class="lineno"> 1196</span>&#160; </div>
 <div class="line"><a name="l01202"></a><span class="lineno"> 1202</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">setDIOPreambleDetect</a>(<span class="keywordtype">bool</span> usePreambleDetect);</div>
 <div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160; </div>
-<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a>(<span class="keywordtype">bool</span> packet, <span class="keywordtype">bool</span> skipReceive, int16_t offset);</div>
-<div class="line"><a name="l01211"></a><span class="lineno"> 1211</span>&#160; </div>
-<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">setRSSIThreshold</a>(<span class="keywordtype">float</span> dbm);</div>
-<div class="line"><a name="l01218"></a><span class="lineno"> 1218</span>&#160; </div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472">setLowBatteryThreshold</a>(int8_t level, uint32_t pin = RADIOLIB_NC);</div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160; </div>
-<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
-<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160; </div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    <span class="keywordtype">float</span> frequency = 0;</div>
-<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    <span class="keywordtype">float</span> bandwidth = 0;</div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    uint8_t spreadingFactor = 0;</div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    <span class="keywordtype">size_t</span> packetLength = 0;</div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    uint8_t codingRate = 0;</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    <span class="keywordtype">bool</span> crcEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    <span class="keywordtype">bool</span> ookEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160; </div>
-<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    int16_t configFSK();</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    int16_t getActiveModem();</div>
-<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    int16_t setBitRateCommon(<span class="keywordtype">float</span> br, uint8_t fracRegAddr);</div>
-<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160; </div>
-<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160; </div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    <span class="keywordtype">float</span> bitRate = 0;</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    <span class="keywordtype">bool</span> crcOn = <span class="keyword">true</span>; <span class="comment">// default value used in FSK mode</span></div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    <span class="keywordtype">float</span> dataRate = 0;</div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    <span class="keywordtype">bool</span> packetLengthQueried = <span class="keyword">false</span>; <span class="comment">// FSK packet length is the first byte in FIFO, length can only be queried once</span></div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;</div>
-<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160; </div>
-<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    int16_t config();</div>
-<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;    int16_t directMode();</div>
-<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t* vers, uint8_t num);</div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;    int16_t setMode(uint8_t mode);</div>
-<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    int16_t setActiveModem(uint8_t modem);</div>
-<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count); <span class="comment">// used mostly to clear remaining bytes in FIFO after a packet read</span></div>
+<div class="line"><a name="l01209"></a><span class="lineno"> 1209</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">setRSSIThreshold</a>(<span class="keywordtype">float</span> dbm);</div>
+<div class="line"><a name="l01210"></a><span class="lineno"> 1210</span>&#160; </div>
+<div class="line"><a name="l01219"></a><span class="lineno"> 1219</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472">setLowBatteryThreshold</a>(int8_t level, uint32_t pin = RADIOLIB_NC);</div>
+<div class="line"><a name="l01220"></a><span class="lineno"> 1220</span>&#160; </div>
+<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
+<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
+<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160; </div>
+<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    <span class="keywordtype">float</span> frequency = 0;</div>
+<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    <span class="keywordtype">float</span> bandwidth = 0;</div>
+<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    uint8_t spreadingFactor = 0;</div>
+<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    <span class="keywordtype">size_t</span> packetLength = 0;</div>
+<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    uint8_t codingRate = 0;</div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    <span class="keywordtype">bool</span> crcEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160;    <span class="keywordtype">bool</span> ookEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160; </div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    int16_t configFSK();</div>
+<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    int16_t getActiveModem();</div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    int16_t setFrequencyRaw(<span class="keywordtype">float</span> newFreq);</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    int16_t setBitRateCommon(<span class="keywordtype">float</span> br, uint8_t fracRegAddr);</div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a>(<span class="keywordtype">bool</span> packet, <span class="keywordtype">bool</span> skipReceive, int16_t offset);</div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160; </div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
+<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160; </div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    <span class="keywordtype">float</span> bitRate = 0;</div>
+<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    <span class="keywordtype">bool</span> crcOn = <span class="keyword">true</span>; <span class="comment">// default value used in FSK mode</span></div>
+<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    <span class="keywordtype">float</span> dataRate = 0;</div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    <span class="keywordtype">bool</span> packetLengthQueried = <span class="keyword">false</span>; <span class="comment">// FSK packet length is the first byte in FIFO, length can only be queried once</span></div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;</div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160; </div>
+<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    int16_t config();</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    int16_t directMode();</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t* vers, uint8_t num);</div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    int16_t setMode(uint8_t mode);</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    int16_t setActiveModem(uint8_t modem);</div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    <span class="keywordtype">void</span> clearIRQFlags();</div>
+<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    <span class="keywordtype">void</span> clearFIFO(<span class="keywordtype">size_t</span> count); <span class="comment">// used mostly to clear remaining bytes in FIFO after a packet read</span></div>
+<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160; </div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    <span class="keyword">static</span> uint8_t calculateBWManExp(<span class="keywordtype">float</span> bandwidth);</div>
 <div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160; </div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    <span class="keyword">static</span> uint8_t calculateBWManExp(<span class="keywordtype">float</span> bandwidth);</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160; </div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) = 0;</div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;};</div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160; </div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160; </div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:31</div></div>
-<div class="ttc" id="aclass_module_html_a0c11551e12579bbabf57b19e12555b3c"><div class="ttname"><a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a></div><div class="ttdeci">static const size_t RFSWITCH_MAX_PINS</div><div class="ttdoc">The maximum number of pins supported by the RF switch code.</div><div class="ttdef"><b>Definition:</b> Module.h:42</div></div>
-<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:34</div></div>
+<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) = 0;</div>
+<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;};</div>
+<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160; </div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160; </div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:30</div></div>
+<div class="ttc" id="aclass_module_html_a0c11551e12579bbabf57b19e12555b3c"><div class="ttname"><a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a></div><div class="ttdeci">static const size_t RFSWITCH_MAX_PINS</div><div class="ttdoc">The maximum number of pins supported by the RF switch code. Note: It is not recommended to use this c...</div><div class="ttdef"><b>Definition:</b> Module.h:39</div></div>
+<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:54</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a3563453988a83d22dd07d4691543a300"><div class="ttname"><a href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">PhysicalLayer::readData</a></div><div class="ttdeci">virtual int16_t readData(uint8_t *data, size_t len)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:209</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a492b2d057dd803c3884fa1adc8e22534"><div class="ttname"><a href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">PhysicalLayer::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, uint8_t addr=0)</div><div class="ttdoc">C-string transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:52</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a923654706eff5118ef6e84214e837f27"><div class="ttname"><a href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">PhysicalLayer::startTransmit</a></div><div class="ttdeci">int16_t startTransmit(const char *str, uint8_t addr=0)</div><div class="ttdoc">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method,...</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:149</div></div>
@@ -1007,7 +1006,7 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x127x_html_af6aa854a2668d70f4d3a374a49440362"><div class="ttname"><a href="class_s_x127x.html#af6aa854a2668d70f4d3a374a49440362">SX127x::getFrequencyError</a></div><div class="ttdeci">float getFrequencyError(bool autoCorrect=false)</div><div class="ttdoc">Gets frequency error of the latest received packet.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:805</div></div>
 <div class="ttc" id="aclass_s_x127x_html_af8530e9d858b155eb5acb764a733bcd4"><div class="ttname"><a href="class_s_x127x.html#af8530e9d858b155eb5acb764a733bcd4">SX127x::beginFSK</a></div><div class="ttdeci">int16_t beginFSK(uint8_t *chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK)</div><div class="ttdoc">Initialization method for FSK modem. Will be called with appropriate parameters when calling FSK init...</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:60</div></div>
 <div class="ttc" id="aclass_s_x127x_html_afe6e9bbfd75f9cad26f9f72c34c4ada5"><div class="ttname"><a href="class_s_x127x.html#afe6e9bbfd75f9cad26f9f72c34c4ada5">SX127x::disableAddressFiltering</a></div><div class="ttdeci">int16_t disableAddressFiltering()</div><div class="ttdoc">Disables FSK address filtering.</div><div class="ttdef"><b>Definition:</b> SX127x.cpp:1087</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:49</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

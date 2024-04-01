@@ -89,6 +89,9 @@ $(document).ready(function(){initNavTree('class_stm32wlx_hal.html',''); initResi
 <div class="title">Stm32wlxHal Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Hardware Abstraction Layer for STM32WL.  
+ <a href="class_stm32wlx_hal.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Stm32wlxHal:</div>
 <div class="dyncontent">
@@ -98,16 +101,144 @@ Inheritance diagram for Stm32wlxHal:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a70dd9f6fb6c0307e2d9d363ce6d7f2a2"><td class="memItemLeft" align="right" valign="top"><a id="a70dd9f6fb6c0307e2d9d363ce6d7f2a2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>pinMode</b> (uint32_t dwPin, uint32_t dwMode)</td></tr>
+<tr class="memitem:a70dd9f6fb6c0307e2d9d363ce6d7f2a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stm32wlx_hal.html#a70dd9f6fb6c0307e2d9d363ce6d7f2a2">pinMode</a> (uint32_t dwPin, uint32_t dwMode)</td></tr>
+<tr class="memdesc:a70dd9f6fb6c0307e2d9d363ce6d7f2a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pin mode override to handle STM32WL virtual pins.  <a href="class_stm32wlx_hal.html#a70dd9f6fb6c0307e2d9d363ce6d7f2a2">More...</a><br /></td></tr>
 <tr class="separator:a70dd9f6fb6c0307e2d9d363ce6d7f2a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb925afdee4979936ef83a422d13e642"><td class="memItemLeft" align="right" valign="top"><a id="acb925afdee4979936ef83a422d13e642"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>digitalWrite</b> (uint32_t dwPin, uint32_t dwVal)</td></tr>
+<tr class="memitem:acb925afdee4979936ef83a422d13e642"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stm32wlx_hal.html#acb925afdee4979936ef83a422d13e642">digitalWrite</a> (uint32_t dwPin, uint32_t dwVal)</td></tr>
+<tr class="memdesc:acb925afdee4979936ef83a422d13e642"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digital write override to handle STM32WL virtual pins.  <a href="class_stm32wlx_hal.html#acb925afdee4979936ef83a422d13e642">More...</a><br /></td></tr>
 <tr class="separator:acb925afdee4979936ef83a422d13e642"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fc8af77a85f8f002c7dc6476efa0ad4"><td class="memItemLeft" align="right" valign="top"><a id="a7fc8af77a85f8f002c7dc6476efa0ad4"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>digitalRead</b> (uint32_t ulPin)</td></tr>
+<tr class="memitem:a7fc8af77a85f8f002c7dc6476efa0ad4"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stm32wlx_hal.html#a7fc8af77a85f8f002c7dc6476efa0ad4">digitalRead</a> (uint32_t ulPin)</td></tr>
+<tr class="memdesc:a7fc8af77a85f8f002c7dc6476efa0ad4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Digital read override to handle STM32WL virtual pins.  <a href="class_stm32wlx_hal.html#a7fc8af77a85f8f002c7dc6476efa0ad4">More...</a><br /></td></tr>
 <tr class="separator:a7fc8af77a85f8f002c7dc6476efa0ad4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Hardware Abstraction Layer for STM32WL. </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7fc8af77a85f8f002c7dc6476efa0ad4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fc8af77a85f8f002c7dc6476efa0ad4">&#9670;&nbsp;</a></span>digitalRead()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t Stm32wlxHal::digitalRead </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>ulPin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Digital read override to handle STM32WL virtual pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dwPin</td><td>Pin to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Value read on the pin. </dd></dl>
+
+</div>
+</div>
+<a id="acb925afdee4979936ef83a422d13e642"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb925afdee4979936ef83a422d13e642">&#9670;&nbsp;</a></span>digitalWrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Stm32wlxHal::digitalWrite </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dwPin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dwVal</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Digital write override to handle STM32WL virtual pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dwPin</td><td>Pin to set. </td></tr>
+    <tr><td class="paramname">dwVal</td><td>Value to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a70dd9f6fb6c0307e2d9d363ce6d7f2a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a70dd9f6fb6c0307e2d9d363ce6d7f2a2">&#9670;&nbsp;</a></span>pinMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Stm32wlxHal::pinMode </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dwPin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>dwMode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pin mode override to handle STM32WL virtual pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dwPin</td><td>Pin to set. </td></tr>
+    <tr><td class="paramname">dwMode</td><td>Mode to set. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/modules/SX126x/STM32WLx_Module.cpp</li>
 </ul>

@@ -115,74 +115,82 @@ $(document).ready(function(){initNavTree('_a_p_r_s_8h_source.html',''); initResi
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_DATA_TYPE_USER_DEFINED                    &quot;{&quot;</span></div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_DATA_TYPE_THIRD_PARTY                     &quot;}&quot;</span></div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_OFF_DUTY                       0b00000111</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EN_ROUTE                       0b00000110</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_IN_SERVICE                     0b00000101</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_RETURNING                      0b00000100</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_COMMITTED                      0b00000011</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_SPECIAL                        0b00000010</span></div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_PRIORITY                       0b00000001</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EMERGENCY                      0b00000000</span></div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;<span class="comment">// magic offset applied to encode extra bits in the Mic-E destination field</span></div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET                     25</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#gaa575e4cb70c8a1b3b7dbdc6034a0fd24">   36</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_OFF_DUTY                       0b00000111</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga4f11b914724d2a31eaccb8c863b1a6ef">   39</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EN_ROUTE                       0b00000110</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga44c6990e22d40efb6bfb60cfa60debd9">   42</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_IN_SERVICE                     0b00000101</span></div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga181c0b7ecf6d936e1c6cab13c29e8ee6">   45</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_RETURNING                      0b00000100</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga4f98902a4ba18f048ba716063d8c5534">   48</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_COMMITTED                      0b00000011</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="comment">// Mic-E data types</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_CURRENT                    &#39;`&#39;</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_OLD                        &#39;\&#39;&#39;</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;<span class="comment">// Mic-E telemetry flags</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_2                     &#39;`&#39;</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_5                     &#39;\&#39;&#39;</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="comment">// alias for unused altitude in Mic-E</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED                     -1000000</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="comment">// special header applied for APRS over LoRa</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_LORA_HEADER                               &quot;&lt;\xff\x01&quot;</span></div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_LORA_HEADER_LEN                           (3)</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno"><a class="line" href="class_a_p_r_s_client.html">   69</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_a_p_r_s_client.html">APRSClient</a> {</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_a_x25_client.html">AX25Client</a>* ax);</div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga0d877e52c45bcd651c25a12a08c7c36c">   51</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_SPECIAL                        0b00000010</span></div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga79ad3f863c91bf8000fcd0e8d2fea4b1">   54</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_PRIORITY                       0b00000001</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="group__mic__e__message__types.html#ga935e3277c7eac8c8f7a3797c59034f61">   57</a></span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TYPE_EMERGENCY                      0b00000000</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="comment">// magic offset applied to encode extra bits in the Mic-E destination field</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_DEST_BIT_OFFSET                     25</span></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="comment">// Mic-E data types</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_CURRENT                    &#39;`&#39;</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_GPS_DATA_OLD                        &#39;\&#39;&#39;</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="comment">// Mic-E telemetry flags</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_2                     &#39;`&#39;</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_TELEMETRY_LEN_5                     &#39;\&#39;&#39;</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// alias for unused altitude in Mic-E</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED                     -1000000</span></div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="comment">// basic methods</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">begin</a>(<span class="keywordtype">char</span> sym, <span class="keywordtype">char</span>* callsign = NULL, uint8_t ssid = 0, <span class="keywordtype">bool</span> alt = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* lat, <span class="keywordtype">char</span>* lon, <span class="keywordtype">char</span>* msg = NULL, <span class="keywordtype">char</span>* time = NULL);</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#af8f28eba026b0f0a25c8ba54a96f4743">sendMicE</a>(<span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, <span class="keywordtype">size_t</span> telemLen = 0, <span class="keywordtype">char</span>* grid = NULL, <span class="keywordtype">char</span>* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);</div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160; </div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* info);</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <a class="code" href="class_a_x25_client.html">AX25Client</a>* axClient;</div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
-<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    <span class="comment">// default APRS symbol (car)</span></div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keywordtype">char</span> symbol = <span class="charliteral">&#39;&gt;&#39;</span>;</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;    <span class="keywordtype">char</span> table = <span class="charliteral">&#39;/&#39;</span>;</div>
-<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;    </div>
-<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    <span class="comment">// source callsign when using APRS over LoRa</span></div>
-<div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;    <span class="keywordtype">char</span> src[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };</div>
-<div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    uint8_t <span class="keywordtype">id</span> = 0;</div>
-<div class="line"><a name="l00144"></a><span class="lineno">  144</span>&#160;};</div>
-<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_a_p_r_s_client_html"><div class="ttname"><a href="class_a_p_r_s_client.html">APRSClient</a></div><div class="ttdoc">Client for APRS communication.</div><div class="ttdef"><b>Definition:</b> APRS.h:69</div></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="comment">// special header applied for APRS over LoRa</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_LORA_HEADER                               &quot;&lt;\xff\x01&quot;</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#define RADIOLIB_APRS_LORA_HEADER_LEN                           (3)</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="class_a_p_r_s_client.html">   85</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_a_p_r_s_client.html">APRSClient</a> {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_a_x25_client.html">AX25Client</a>* ax);</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy);</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="comment">// basic methods</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">begin</a>(<span class="keywordtype">char</span> sym, <span class="keywordtype">char</span>* callsign = NULL, uint8_t ssid = 0, <span class="keywordtype">bool</span> alt = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* lat, <span class="keywordtype">char</span>* lon, <span class="keywordtype">char</span>* msg = NULL, <span class="keywordtype">char</span>* time = NULL);</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#af8f28eba026b0f0a25c8ba54a96f4743">sendMicE</a>(<span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, <span class="keywordtype">size_t</span> telemLen = 0, <span class="keywordtype">char</span>* grid = NULL, <span class="keywordtype">char</span>* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);</div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160; </div>
+<div class="line"><a name="l00145"></a><span class="lineno">  145</span>&#160;    int16_t <a class="code" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a>(<span class="keywordtype">char</span>* destCallsign, uint8_t destSSID, <span class="keywordtype">char</span>* info);</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160; </div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    <a class="code" href="class_a_x25_client.html">AX25Client</a>* axClient;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer;</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;    <span class="comment">// default APRS symbol (car)</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keywordtype">char</span> symbol = <span class="charliteral">&#39;&gt;&#39;</span>;</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">char</span> table = <span class="charliteral">&#39;/&#39;</span>;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    </div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;    <span class="comment">// source callsign when using APRS over LoRa</span></div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">char</span> src[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    uint8_t <span class="keywordtype">id</span> = 0;</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;};</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_a_p_r_s_client_html"><div class="ttname"><a href="class_a_p_r_s_client.html">APRSClient</a></div><div class="ttdoc">Client for APRS communication.</div><div class="ttdef"><b>Definition:</b> APRS.h:85</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_a05076f44e5708f1230894c11053707b1"><div class="ttname"><a href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">APRSClient::sendFrame</a></div><div class="ttdeci">int16_t sendFrame(char *destCallsign, uint8_t destSSID, char *info)</div><div class="ttdoc">Transmit generic APRS frame.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:240</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_a08e166ed706d79c66c1d5b48f195724c"><div class="ttname"><a href="class_a_p_r_s_client.html#a08e166ed706d79c66c1d5b48f195724c">APRSClient::APRSClient</a></div><div class="ttdeci">APRSClient(AX25Client *ax)</div><div class="ttdoc">Constructor for &quot;classic&quot; mode using AX.25/AFSK.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:7</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_a4d1468be141940a12fd3964957f79c1a"><div class="ttname"><a href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">APRSClient::begin</a></div><div class="ttdeci">int16_t begin(char sym, char *callsign=NULL, uint8_t ssid=0, bool alt=false)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:17</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_aebc95b926fb3d37f8489f895aa576d0e"><div class="ttname"><a href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">APRSClient::sendPosition</a></div><div class="ttdeci">int16_t sendPosition(char *destCallsign, uint8_t destSSID, char *lat, char *lon, char *msg=NULL, char *time=NULL)</div><div class="ttdoc">Transmit position.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:37</div></div>
 <div class="ttc" id="aclass_a_p_r_s_client_html_af8f28eba026b0f0a25c8ba54a96f4743"><div class="ttname"><a href="class_a_p_r_s_client.html#af8f28eba026b0f0a25c8ba54a96f4743">APRSClient::sendMicE</a></div><div class="ttdeci">int16_t sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t *telem=NULL, size_t telemLen=0, char *grid=NULL, char *status=NULL, int32_t alt=RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED)</div><div class="ttdoc">Transmit position using Mic-E encoding.</div><div class="ttdef"><b>Definition:</b> APRS.cpp:75</div></div>
 <div class="ttc" id="aclass_a_x25_client_html"><div class="ttname"><a href="class_a_x25_client.html">AX25Client</a></div><div class="ttdoc">Client for AX25 communication.</div><div class="ttdef"><b>Definition:</b> AX25.h:238</div></div>
-<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:34</div></div>
+<div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:54</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['width_1007',['width',['../struct_s_s_t_v_mode__t.html#ad8d4e7efb12eb0e0cfa850aeb7353e40',1,'SSTVMode_t']]]
+  ['user_1044',['user',['../struct_lo_ra_w_a_n_mac_spec__t.html#af817794fc458e31a575e8ab782bba584',1,'LoRaWANMacSpec_t']]]
 ];

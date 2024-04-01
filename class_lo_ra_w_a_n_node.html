@@ -218,10 +218,12 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:acd37dd26f6040754b4a9c942b3fb4339"><td class="memItemLeft" align="right" valign="top"><a id="acd37dd26f6040754b4a9c942b3fb4339"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 0</td></tr>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acd37dd26f6040754b4a9c942b3fb4339">rx1DrOffset</a> = 0</td></tr>
+<tr class="memdesc:acd37dd26f6040754b4a9c942b3fb4339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset between TX and RX1 (such that RX1 has equal or lower DR) <br /></td></tr>
 <tr class="separator:acd37dd26f6040754b4a9c942b3fb4339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae68e77ca38d22867798517d233c0fbc4"><td class="memItemLeft" align="right" valign="top"><a id="ae68e77ca38d22867798517d233c0fbc4"></a>
-<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rx2</b></td></tr>
+<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae68e77ca38d22867798517d233c0fbc4">rx2</a></td></tr>
+<tr class="memdesc:ae68e77ca38d22867798517d233c0fbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX2 channel properties - may be changed by MAC command. <br /></td></tr>
 <tr class="separator:ae68e77ca38d22867798517d233c0fbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -1116,7 +1118,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <p>Set uplink datarate. This should not be used when ADR is enabled. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">dr</td><td>Datarate to use for uplinks. </td></tr>
+    <tr><td class="paramname">drUp</td><td>Datarate to use for uplinks. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1217,7 +1219,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrOffset</b> = 
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">enable</td><td>Whether to adhere to dwellTime limits or not (default true). </td></tr>
-    <tr><td class="paramname">msPerHour</td><td>The maximum allowed Time-on-Air per uplink in milliseconds (default 0 = maximum allowed for configured band). </td></tr>
+    <tr><td class="paramname">msPerUplink</td><td>The maximum allowed Time-on-Air per uplink in milliseconds (default 0 = maximum allowed for configured band). </td></tr>
   </table>
   </dd>
 </dl>

@@ -457,7 +457,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Default constructor. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">mod</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> that will be used to communicate with the radio. </td></tr>
+    <tr><td class="paramname">module</td><td>Instance of <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> that will be used to communicate with the radio. </td></tr>
   </table>
   </dd>
 </dl>
@@ -670,7 +670,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Enable sync word filtering and generation. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">numBits</td><td>Sync word length in bits. </td></tr>
+    <tr><td class="paramname">maxErrBits</td><td>Maximum allowed number of error bits in sync word. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1245,7 +1245,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Sets AES key. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">Key</td><td>to be used for AES encryption. Must be exactly 16 bytes long. </td></tr>
+    <tr><td class="paramname">key</td><td>Key to be used for AES encryption. Must be exactly 16 bytes long. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2108,7 +2108,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 <p>The <code>pins</code> array will be copied into the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> object, so the original array can be deallocated after this call. However, a reference to the <code>table</code> array will be stored, so that array must remain valid as long RadioLib is being used.</p>
-<p>The <code>mode</code> field in each table row should normally use any of the <code>MODE_*</code> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
+<p>The <code>mode</code> field in each table row should normally use any of the <code>MODE_*</code> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf" title="Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios,...">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
 <p>The length of the table is variable (to support radios that add additional modes), so the table must always be terminated with the special END_OF_MODE_TABLE value.</p>
 <p>Normally all modes should be listed in the table, but for some radios, modes can be omitted to indicate they are not supported (e.g. when a radio has a high power and low power TX mode but external circuitry only supports low power). If applicable, this is documented in the radio class itself.</p>
 <h4>Example</h4>
@@ -2129,10 +2129,10 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:71</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:49</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition:</b> Module.h:76</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition:</b> Module.h:70</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdoc">Receive mode.</div><div class="ttdef"><b>Definition:</b> Module.h:73</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -2687,7 +2687,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>Set modem in variable packet length mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">len</td><td>Maximum packet length. </td></tr>
+    <tr><td class="paramname">maxLen</td><td>Maximum packet length. </td></tr>
   </table>
   </dd>
 </dl>

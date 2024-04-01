@@ -445,9 +445,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">setDIOPreambleDetect</a> (bool usePreambleDetect)</td></tr>
 <tr class="memdesc:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.  <a href="class_s_x127x.html#a7b85344084b800966a46ace59dcb5277">More...</a><br /></td></tr>
 <tr class="separator:a7b85344084b800966a46ace59dcb5277 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a53d9bd78635a97dc0e3309b675763510">getRSSI</a> (bool packet, bool skipReceive, int16_t offset)</td></tr>
-<tr class="memdesc:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <a href="class_s_x127x.html#a53d9bd78635a97dc0e3309b675763510">More...</a><br /></td></tr>
-<tr class="separator:a53d9bd78635a97dc0e3309b675763510 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">setRSSIThreshold</a> (float dbm)</td></tr>
 <tr class="memdesc:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the RSSI value above which the RSSI interrupt is signaled.  <a href="class_s_x127x.html#a5094d0f471aaa428167816d1ac30bb76">More...</a><br /></td></tr>
 <tr class="separator:a5094d0f471aaa428167816d1ac30bb76 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -631,7 +628,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">sf</td><td>LoRa link spreading factor. Allowed values range from 6 to 12. </td></tr>
     <tr><td class="paramname">cr</td><td>LoRa link coding rate denominator. Allowed values range from 5 to 8. </td></tr>
     <tr><td class="paramname">syncWord</td><td>LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks. </td></tr>
-    <tr><td class="paramname">currentLimit</td><td>Trim value for OCP (over current protection) in mA. Can be set to multiplies of 5 in range 45 to 120 mA and to multiples of 10 in range 120 to 240 mA. Set to 0 to disable OCP (not recommended). </td></tr>
+    <tr><td class="paramname">power</td><td>Transmission output power in dBm. Allowed values range from 2 to 17 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>Length of LoRa transmission preamble in symbols. The actual preamble length is 4.25 symbols longer than the set number. Allowed values range from 6 to 65535. </td></tr>
     <tr><td class="paramname">gain</td><td>Gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain. Set to 0 to enable automatic gain control (recommended). </td></tr>
   </table>

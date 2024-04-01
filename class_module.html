@@ -112,6 +112,7 @@ Inheritance diagram for Module:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Description of RF switch pin states for a single mode. See <a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d">setRfSwitchTable</a> for details.  <a href="struct_module_1_1_rf_switch_mode__t.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
@@ -121,6 +122,7 @@ Public Types</h2></td></tr>
 , <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">MODE_RX</a>
 , <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">MODE_TX</a>
  }</td></tr>
+<tr class="memdesc:a5a67b3a63420d762ecba9448671c99bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead.  <a href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">More...</a><br /></td></tr>
 <tr class="separator:a5a67b3a63420d762ecba9448671c99bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9393088249856eab568126aeb2493e4a"><td class="memItemLeft" align="right" valign="top"><a id="a9393088249856eab568126aeb2493e4a"></a>
 typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a9393088249856eab568126aeb2493e4a">SPIparseStatusCb_t</a>) (uint8_t in)</td></tr>
@@ -260,8 +262,9 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a0c11551e12579bbabf57b19e12555b3c"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 3</td></tr>
-<tr class="memdesc:a0c11551e12579bbabf57b19e12555b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of pins supported by the RF switch code.  <a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">More...</a><br /></td></tr>
+<tr class="memitem:a0c11551e12579bbabf57b19e12555b3c"><td class="memItemLeft" align="right" valign="top"><a id="a0c11551e12579bbabf57b19e12555b3c"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 3</td></tr>
+<tr class="memdesc:a0c11551e12579bbabf57b19e12555b3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of pins supported by the RF switch code. Note: It is not recommended to use this constant in your sketch when defining a rfswitch pins array, to prevent issues when this value is ever increased and such an array gets extra zero elements (that will be interpreted as pin 0). <br /></td></tr>
 <tr class="separator:a0c11551e12579bbabf57b19e12555b3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -278,16 +281,17 @@ Static Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead.</p>
-<p>See <a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d" title="Some modules contain external RF switch controlled by pins. This function gives RadioLib control over...">setRfSwitchTable()</a> for details. </p>
+
+<p>Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead. </p>
+<p>See <a class="el" href="class_module.html#ac308fa817a5c36c5dc724a0d15cefd4d">setRfSwitchTable</a> for details. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770"></a>MODE_END_OF_TABLE&#160;</td><td class="fielddoc"><p>End of table marker, use END_OF_MODE_TABLE constant instead. Value is zero to ensure zero-initialized mode ends the table </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770"></a>MODE_END_OF_TABLE&#160;</td><td class="fielddoc"><p>End of table marker, use END_OF_MODE_TABLE constant instead. Value is zero to ensure zero-initialized mode ends the table. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"></a>MODE_IDLE&#160;</td><td class="fielddoc"><p>Idle mode </p>
+<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"></a>MODE_IDLE&#160;</td><td class="fielddoc"><p>Idle mode. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"></a>MODE_RX&#160;</td><td class="fielddoc"><p>Receive mode </p>
+<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"></a>MODE_RX&#160;</td><td class="fielddoc"><p>Receive mode. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"></a>MODE_TX&#160;</td><td class="fielddoc"><p>Transmission mode </p>
+<tr><td class="fieldname"><a id="a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"></a>MODE_TX&#160;</td><td class="fielddoc"><p>Transmission mode. </p>
 </td></tr>
 </table>
 
@@ -398,11 +402,11 @@ Static Public Attributes</h2></td></tr>
 <p>Find a mode in the RfSwitchTable. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">The</td><td>mode to find. </td></tr>
+    <tr><td class="paramname">mode</td><td>The mode to find. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> struct in the table that matches the passed mode. Returns nullptr if no rfswitch pins are configured, or the passed mode is not listed in the table. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the <a class="el" href="struct_module_1_1_rf_switch_mode__t.html" title="Description of RF switch pin states for a single mode. See setRfSwitchTable for details.">RfSwitchMode_t</a> struct in the table that matches the passed mode. Returns nullptr if no rfswitch pins are configured, or the passed mode is not listed in the table. </dd></dl>
 
 </div>
 </div>
@@ -537,7 +541,7 @@ Static Public Attributes</h2></td></tr>
 <p>Overload for assignment operator. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">frame</td><td>rvalue <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a>. </td></tr>
+    <tr><td class="paramname">mod</td><td>rvalue <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a>. </td></tr>
   </table>
   </dd>
 </dl>
@@ -691,7 +695,7 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <p>The <code>pins</code> array will be copied into the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> object, so the original array can be deallocated after this call. However, a reference to the <code>table</code> array will be stored, so that array must remain valid as long RadioLib is being used.</p>
-<p>The <code>mode</code> field in each table row should normally use any of the <code>MODE_*</code> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
+<p>The <code>mode</code> field in each table row should normally use any of the <code>MODE_*</code> constants from the <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bf" title="Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios,...">Module::OpMode_t</a> enum. However, some radios support additional modes and will define their own OpMode_t enum.</p>
 <p>The length of the table is variable (to support radios that add additional modes), so the table must always be terminated with the special END_OF_MODE_TABLE value.</p>
 <p>Normally all modes should be listed in the table, but for some radios, modes can be omitted to indicate they are not supported (e.g. when a radio has a high power and low power TX mode but external circuitry only supports low power). If applicable, this is documented in the radio class itself.</p>
 <h4>Example</h4>
@@ -712,10 +716,10 @@ Static Public Attributes</h2></td></tr>
 <div class="line">  radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdef"><b>Definition:</b> Module.h:71</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdef"><b>Definition:</b> Module.h:67</div></div>
-<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdef"><b>Definition:</b> Module.h:69</div></div>
-<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdef"><b>Definition:</b> Module.h:49</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">Module::MODE_TX</a></div><div class="ttdeci">@ MODE_TX</div><div class="ttdoc">Transmission mode.</div><div class="ttdef"><b>Definition:</b> Module.h:76</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671">Module::MODE_IDLE</a></div><div class="ttdeci">@ MODE_IDLE</div><div class="ttdoc">Idle mode.</div><div class="ttdef"><b>Definition:</b> Module.h:70</div></div>
+<div class="ttc" id="aclass_module_html_a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f"><div class="ttname"><a href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">Module::MODE_RX</a></div><div class="ttdeci">@ MODE_RX</div><div class="ttdoc">Receive mode.</div><div class="ttdef"><b>Definition:</b> Module.h:73</div></div>
+<div class="ttc" id="astruct_module_1_1_rf_switch_mode__t_html"><div class="ttname"><a href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a></div><div class="ttdoc">Description of RF switch pin states for a single mode. See setRfSwitchTable for details.</div><div class="ttdef"><b>Definition:</b> Module.h:46</div></div>
 </div><!-- fragment --> 
 </div>
 </div>
@@ -1424,32 +1428,6 @@ Static Public Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a0c11551e12579bbabf57b19e12555b3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c11551e12579bbabf57b19e12555b3c">&#9670;&nbsp;</a></span>RFSWITCH_MAX_PINS</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">const size_t Module::RFSWITCH_MAX_PINS = 3</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The maximum number of pins supported by the RF switch code. </p>
-<p>Note: It is not recommended to use this constant in your sketch when defining a rfswitch pins array, to prevent issues when this value is ever increased and such an array gets extra zero elements (that will be interpreted as pin 0). </p>
 
 </div>
 </div>

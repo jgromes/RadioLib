@@ -1,6 +1,6 @@
 var modules =
 [
-    [ "Mic-E message types.", "group__mic__e__message__types.html", null ],
+    [ "Mic-E message types.", "group__mic__e__message__types.html", "group__mic__e__message__types" ],
     [ "Data shaping filter values aliases.", "group__config__shaping.html", "group__config__shaping" ],
     [ "Encoding type aliases.", "group__config__encoding.html", "group__config__encoding" ],
     [ "Standby mode type aliases.", "group__config__standby.html", "group__config__standby" ],

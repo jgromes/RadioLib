@@ -108,6 +108,7 @@ Additional Inherited Members</h2></td></tr>
 , <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa7664838bb0818663f55b3354fec8a18f">MODE_RX</a>
 , <a class="el" href="class_module.html#a5a67b3a63420d762ecba9448671c99bfa269f4bc8ba3eb3d8568feb7b2decf571">MODE_TX</a>
  }</td></tr>
+<tr class="memdesc:a5a67b3a63420d762ecba9448671c99bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead.  <a href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">More...</a><br /></td></tr>
 <tr class="separator:a5a67b3a63420d762ecba9448671c99bf inherit pub_types_class_module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9393088249856eab568126aeb2493e4a inherit pub_types_class_module"><td class="memItemLeft" align="right" valign="top"><a id="a9393088249856eab568126aeb2493e4a"></a>
 typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a9393088249856eab568126aeb2493e4a">SPIparseStatusCb_t</a>) (uint8_t in)</td></tr>
@@ -239,8 +240,9 @@ int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memdesc:af6e89e2bc4976e8c5dc42dedda9fa6a2 inherit pub_attribs_class_module"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback to function that will parse the module-specific status codes to RadioLib status codes. Typically used for modules with SPI stream-type interface (e.g. SX126x/SX128x). <br /></td></tr>
 <tr class="separator:af6e89e2bc4976e8c5dc42dedda9fa6a2 inherit pub_attribs_class_module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_static_attribs_class_module"><td colspan="2" onclick="javascript:toggleInherit('pub_static_attribs_class_module')"><img src="closed.png" alt="-"/>&#160;Static Public Attributes inherited from <a class="el" href="class_module.html">Module</a></td></tr>
-<tr class="memitem:a0c11551e12579bbabf57b19e12555b3c inherit pub_static_attribs_class_module"><td class="memItemLeft" align="right" valign="top">static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 3</td></tr>
-<tr class="memdesc:a0c11551e12579bbabf57b19e12555b3c inherit pub_static_attribs_class_module"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of pins supported by the RF switch code.  <a href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">More...</a><br /></td></tr>
+<tr class="memitem:a0c11551e12579bbabf57b19e12555b3c inherit pub_static_attribs_class_module"><td class="memItemLeft" align="right" valign="top"><a id="a0c11551e12579bbabf57b19e12555b3c"></a>
+static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 3</td></tr>
+<tr class="memdesc:a0c11551e12579bbabf57b19e12555b3c inherit pub_static_attribs_class_module"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of pins supported by the RF switch code. Note: It is not recommended to use this constant in your sketch when defining a rfswitch pins array, to prevent issues when this value is ever increased and such an array gets extra zero elements (that will be interpreted as pin 0). <br /></td></tr>
 <tr class="separator:a0c11551e12579bbabf57b19e12555b3c inherit pub_static_attribs_class_module"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
