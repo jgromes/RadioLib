@@ -809,14 +809,6 @@ class LoRaWANNode {
     int16_t setTxPower(int8_t txPower);
 
     /*!
-      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
-      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
-      \param difsSlots Num of CADs to estimate a clear CH.
-      \param enableCSMA enable/disable CSMA for LoRaWAN.
-    */
-    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
-
-    /*!
       \brief Returns the quality of connectivity after requesting a LinkCheck MAC command.
       Returns 'true' if a network response was successfully parsed.
       Returns 'false' if there was no network response / parsing failed.
@@ -1017,6 +1009,14 @@ class LoRaWANNode {
     // get the payload length for a specific MAC command
     uint8_t getMacPayloadLength(uint8_t cid);
     
+    /*!
+      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
+      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
+      \param difsSlots Num of CADs to estimate a clear CH.
+      \param enableCSMA enable/disable CSMA for LoRaWAN.
+    */
+    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
+
     // Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).
     void performCSMA();
 
