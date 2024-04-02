@@ -1,6 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classn_r_f24.html":[3,0,26],
 "classn_r_f24.html#a033287e33c532638c11e2775a073f297":[3,0,26,31],
 "classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b":[3,0,26,33],
 "classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf":[3,0,26,21],
@@ -74,8 +73,8 @@ var NAVTREEINDEX4 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,9],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,8],
 "files.html":[4,0],
-"functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
+"functions.html":[3,3,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -235,8 +234,8 @@ var NAVTREEINDEX4 =
 "group__status__codes.html#gafc3bca002b982af27b703c30b2d12df3":[2,4,64],
 "group__status__codes.html#gafeff72bd7b618959d86b804a11f09063":[2,4,2],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "modules.html":[2],
 "n_r_f24_8h_source.html":[4,0,0,0,2,0],
 "pages.html":[],
@@ -249,5 +248,6 @@ var NAVTREEINDEX4 =
 "struct_f_s_k_rate__t.html":[3,0,10],
 "struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107":[3,0,10,0],
 "struct_f_s_k_rate__t.html#a9d8801cd6a3533922db9410f81e2a244":[3,0,10,1],
-"struct_lo_ra_rate__t.html":[3,0,14]
+"struct_lo_ra_rate__t.html":[3,0,14],
+"struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076":[3,0,14,2]
 };

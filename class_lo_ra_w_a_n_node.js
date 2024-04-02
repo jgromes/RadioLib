@@ -26,7 +26,6 @@ var class_lo_ra_w_a_n_node =
     [ "setADR", "class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff", null ],
     [ "setBufferNonces", "class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2", null ],
     [ "setBufferSession", "class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49", null ],
-    [ "setCSMA", "class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757", null ],
     [ "setDatarate", "class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499", null ],
     [ "setDeviceStatus", "class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034", null ],
     [ "setDutyCycle", "class_lo_ra_w_a_n_node.html#ab16e85446e0a843001d1dabad5223956", null ],

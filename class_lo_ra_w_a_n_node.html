@@ -202,9 +202,6 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">setTxPower</a> (int8_t txPower)</td></tr>
 <tr class="memdesc:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure TX power of the radio module.  <a href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">More...</a><br /></td></tr>
 <tr class="separator:a9af613f7d923e7bdcfdbd020132c6d4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfc9cdaa254a27c28403188c90991757"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">setCSMA</a> (uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA=false)</td></tr>
-<tr class="memdesc:adfc9cdaa254a27c28403188c90991757"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#adfc9cdaa254a27c28403188c90991757">More...</a><br /></td></tr>
-<tr class="separator:adfc9cdaa254a27c28403188c90991757"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf038f331c1dc954dafc2668e7a31ca0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a> (uint8_t *margin, uint8_t *gwCnt)</td></tr>
 <tr class="memdesc:adf038f331c1dc954dafc2668e7a31ca0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the quality of connectivity after requesting a LinkCheck MAC command. Returns 'true' if a network response was successfully parsed. Returns 'false' if there was no network response / parsing failed.  <a href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">More...</a><br /></td></tr>
 <tr class="separator:adf038f331c1dc954dafc2668e7a31ca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1052,50 +1049,6 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="adfc9cdaa254a27c28403188c90991757"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfc9cdaa254a27c28403188c90991757">&#9670;&nbsp;</a></span>setCSMA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LoRaWANNode::setCSMA </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>backoffMax</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>difsSlots</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>enableCSMA</em> = <code>false</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">backoffMax</td><td>Num of BO slots to be decremented after DIFS phase. 0 to disable BO. </td></tr>
-    <tr><td class="paramname">difsSlots</td><td>Num of CADs to estimate a clear CH. </td></tr>
-    <tr><td class="paramname">enableCSMA</td><td>enable/disable CSMA for LoRaWAN. </td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
