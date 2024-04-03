@@ -10,7 +10,10 @@
 #define RADIOLIB_ASCII_EXTENDED                                 1
 #define RADIOLIB_ITA2                                           2
 
-// based on Arduino Print class
+/*!
+  \class RadioLibPrint
+  \brief Printing class, based on Arduino Print class with additional encodings.
+*/
 class RadioLibPrint {
   public:
     virtual size_t write(uint8_t) = 0;

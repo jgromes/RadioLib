@@ -22,10 +22,19 @@ enum {
   RADIOLIB_STM32WLx_VIRTUAL_PIN_RESET,
 };
 
+/*!
+  \class Stm32wlxHal
+  \brief Hardware Abstraction Layer for STM32WL.
+*/
 class Stm32wlxHal : public ArduinoHal {
   public:
     Stm32wlxHal(): ArduinoHal(SubGhz.SPI, SubGhz.spi_settings) {}
 
+    /*!
+      \brief Pin mode override to handle STM32WL virtual pins.
+      \param dwPin Pin to set.
+      \param dwMode Mode to set.
+    */
     void pinMode(uint32_t dwPin, uint32_t dwMode) {
       switch(dwPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
@@ -40,6 +49,11 @@ class Stm32wlxHal : public ArduinoHal {
       }
     }
 
+    /*!
+      \brief Digital write override to handle STM32WL virtual pins.
+      \param dwPin Pin to set.
+      \param dwVal Value to set.
+    */
     void digitalWrite(uint32_t dwPin, uint32_t dwVal) {
       switch (dwPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_NSS:
@@ -61,6 +75,11 @@ class Stm32wlxHal : public ArduinoHal {
       }
     }
 
+    /*!
+      \brief Digital read override to handle STM32WL virtual pins.
+      \param ulPin Pin to read.
+      \returns Value read on the pin.
+    */
     uint32_t digitalRead(uint32_t ulPin) {
       switch (ulPin) {
         case RADIOLIB_STM32WLx_VIRTUAL_PIN_BUSY:

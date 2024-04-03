@@ -9,6 +9,10 @@
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 
+/*!
+  \class ExternalRadio
+  \brief Class to interface with external radio hardware.
+*/
 class ExternalRadio: public PhysicalLayer {
   public:
     #if defined(RADIOLIB_BUILD_ARDUINO)

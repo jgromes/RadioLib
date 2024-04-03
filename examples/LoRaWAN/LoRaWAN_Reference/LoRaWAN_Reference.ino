@@ -60,12 +60,8 @@ void setup() {
   // Disable the ADR algorithm (on by default which is preferable)
   node.setADR(false);
 
-  // Set a fixed datarate & make it persistent (not normal)
+  // Set a fixed datarate
   node.setDatarate(4);
-
-  // Enable CSMA which tries to minimize packet loss by searching 
-  // for a free channel before actually sending an uplink 
-  node.setCSMA(6, 2, true);
 
   // Manages uplink intervals to the TTN Fair Use Policy
   node.setDutyCycle(true, 1250);

@@ -583,7 +583,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinNoncePrev: %d, JoinNonce: %d", this->joinNonce, joinNonceNew);
-    // JoinNonce received must be greater than the last JoinNonce heard, else error
+  // JoinNonce received must be greater than the last JoinNonce heard, else error
   if((this->joinNonce > 0) && (joinNonceNew <= this->joinNonce)) {
     return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
   }
@@ -898,11 +898,9 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
   uint8_t foptsLen = 0;
-  size_t foptsBufSize = 0;
   if(this->commandsUp.numCommands > 0 && port != RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
     // there are, assume the maximum possible FOpts len for buffer allocation
     foptsLen = this->commandsUp.len;
-    foptsBufSize = 15;
   }
 
   // check maximum payload len as defined in phy
@@ -984,7 +982,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // build the uplink message
   // the first 16 bytes are reserved for MIC calculation blocks
-  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsBufSize);
+  size_t uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, foptsLen);
   #if RADIOLIB_STATIC_ONLY
   uint8_t uplinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -1021,8 +1019,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // check if we have some MAC commands to append
   if(foptsLen > 0) {
+    #if RADIOLIB_STATIC_ONLY
     // assume maximum possible buffer size
-    uint8_t foptsBuff[15];
+    uint8_t foptsBuff[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN];
+    #else
+    uint8_t foptsBuff[foptsLen];
+    #endif
     uint8_t* foptsPtr = foptsBuff;
 
     // append all MAC replies into fopts buffer
@@ -1491,7 +1493,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     #endif
 
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
-    if(this->commandsUp.len > 15) {
+    if(this->commandsUp.len > RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN) {
       size_t foptsBufSize = this->commandsUp.len;
       #if RADIOLIB_STATIC_ONLY
         uint8_t foptsBuff[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -1549,7 +1551,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   }
 
   // a downlink was received, so reset the ADR counter to the last uplink's fcnt
-  this->adrFcnt = this->fcntUp - 1;
+  this->adrFcnt = this->getFcntUp();
 
   // pass the extra info if requested
   if(event) {
@@ -2180,13 +2182,13 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       // per spec, all these configuration should only be set if all ACKs are set, otherwise retain previous state
       // but we don't bother and try to set each individual command
       uint8_t drUp = (cmd->payload[0] & 0xF0) >> 4;
-      uint8_t txPower = cmd->payload[0] & 0x0F;
+      uint8_t txSteps = cmd->payload[0] & 0x0F;
       bool isInternalTxDr = cmd->payload[3] >> 7;
 
       uint16_t chMask = LoRaWANNode::ntoh<uint16_t>(&cmd->payload[1]);
       uint8_t chMaskCntl = (cmd->payload[3] & 0x70) >> 4;
       uint8_t nbTrans = cmd->payload[3] & 0x0F;
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txPower = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txPower, chMask, chMaskCntl, nbTrans);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txSteps = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txSteps, chMask, chMaskCntl, nbTrans);
 
       // apply the configuration
       uint8_t drAck = 0;
@@ -2216,14 +2218,14 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
 
       // try to apply the power configuration
       uint8_t pwrAck = 0;
-      if(txPower == 0x0F) {
+      if(txSteps == 0x0F) {
         pwrAck = 1;
 
         // replace the 'placeholder' with the current actual value for saving
         cmd->payload[0] = (cmd->payload[0] & 0xF0) | this->txPowerCur;
 
       } else {
-        int8_t pwr = this->txPowerMax - 2*txPower;
+        int8_t pwr = this->txPowerMax - 2*txSteps;
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: TX = %d dBm", pwr);
         state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
         while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
@@ -2233,7 +2235,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
         // only acknowledge if the requested datarate was succesfully configured
         if(state == RADIOLIB_ERR_NONE) {
           pwrAck = 1;
-          this->txPowerCur = txPower;
+          this->txPowerCur = txSteps;
         }
       }
 
@@ -2765,7 +2767,7 @@ uint8_t LoRaWANNode::getMacPayloadLength(uint8_t cid) {
 }
 
 int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
-  uint8_t payload[5];
+  uint8_t payload[RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
   int16_t state = deleteMacCommand(RADIOLIB_LORAWAN_LINK_CHECK_REQ, &this->commandsDown, payload);
   RADIOLIB_ASSERT(state);
 
@@ -2776,14 +2778,14 @@ int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
 }
 
 int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
-  uint8_t payload[5];
+  uint8_t payload[RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN] = { 0 };
   int16_t state = deleteMacCommand(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &this->commandsDown, payload);
   RADIOLIB_ASSERT(state);
 
   if(gpsEpoch) { 
     *gpsEpoch = LoRaWANNode::ntoh<uint32_t>(&payload[0]); 
     if(returnUnix) {
-      uint32_t unixOffset = 315964800 - 18; // 18 leap seconds since GPS epoch (Jan. 6th 1980)
+      uint32_t unixOffset = 315964800UL - 18UL; // 18 leap seconds since GPS epoch (Jan. 6th 1980)
       *gpsEpoch += unixOffset;
     }
   }

@@ -13,10 +13,9 @@
 #endif
 
 /*!
-* Value to use as the last element in a mode table to indicate the
-* end of the table.
-*
-* See setRfSwitchTable() for details.
+  \def Value to use as the last element in a mode table to indicate the
+  end of the table.
+  See \ref setRfSwitchTable for details.
 */
 #define END_OF_MODE_TABLE    { Module::MODE_END_OF_TABLE, {} }
 
@@ -31,43 +30,49 @@
 class Module {
   public:
     /*!
-     * \brief The maximum number of pins supported by the RF switch
-     * code.
-     *
-     * Note: It is not recommended to use this constant in your sketch
-     * when defining a rfswitch pins array, to prevent issues when this
-     * value is ever increased and such an array gets extra zero
-     * elements (that will be interpreted as pin 0).
-     */
+      \brief The maximum number of pins supported by the RF switch code.
+      Note: It is not recommended to use this constant in your sketch
+      when defining a rfswitch pins array, to prevent issues when this
+      value is ever increased and such an array gets extra zero
+      elements (that will be interpreted as pin 0).
+    */
     static const size_t RFSWITCH_MAX_PINS = 3;
 
     /*!
-     * Description of RF switch pin states for a single mode.
-     *
-     * See setRfSwitchTable() for details.
-     */
+      \struct RfSwitchMode_t
+      \brief Description of RF switch pin states for a single mode.
+      See \ref setRfSwitchTable for details.
+    */
     struct RfSwitchMode_t {
+      /*! \brief RF switching mode, one of \ref OpMode_t or a custom radio-defined value. */
       uint8_t mode;
+
+      /*! \brief Output pin values */
       uint32_t values[RFSWITCH_MAX_PINS];
     };
 
     /*!
-     * Constants to use in a mode table set be setRfSwitchTable. These
-     * constants work for most radios, but some radios define their own
-     * constants to be used instead.
-     *
-     * See setRfSwitchTable() for details.
-     */
+      \enum OpMode_t
+      \brief Constants to use in a mode table set be setRfSwitchTable. These
+      constants work for most radios, but some radios define their own
+      constants to be used instead.
+     
+      See \ref setRfSwitchTable for details.
+    */
     enum OpMode_t {
-      /*! End of table marker, use \ref END_OF_MODE_TABLE constant
-       * instead. Value is zero to ensure zero-initialized mode ends the
-       * table */
+      /*!
+        \brief End of table marker, use \ref END_OF_MODE_TABLE constant instead.
+        Value is zero to ensure zero-initialized mode ends the table.
+      */
       MODE_END_OF_TABLE = 0,
-      /*! Idle mode */
+
+      /*! \brief Idle mode */
       MODE_IDLE,
-      /*! Receive mode */
+
+      /*! \brief Receive mode */
       MODE_RX,
-      /*! Transmission mode */
+
+      /*! \brief Transmission mode */
       MODE_TX,
     };
 
@@ -111,7 +116,7 @@ class Module {
 
     /*!
       \brief Overload for assignment operator.
-      \param frame rvalue Module.
+      \param mod rvalue Module.
     */
     Module& operator=(const Module& mod);
 
@@ -438,7 +443,7 @@ class Module {
 
     /*!
       \brief Find a mode in the RfSwitchTable.
-      \param The mode to find.
+      \param mode The mode to find.
       \returns A pointer to the RfSwitchMode_t struct in the table that
       matches the passed mode. Returns nullptr if no rfswitch pins are
       configured, or the passed mode is not listed in the table.

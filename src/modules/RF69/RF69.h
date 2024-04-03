@@ -486,7 +486,7 @@ class RF69: public PhysicalLayer {
 
     /*!
       \brief Default constructor.
-      \param mod Instance of Module that will be used to communicate with the radio.
+      \param module Instance of Module that will be used to communicate with the radio.
     */
     RF69(Module* module);
 
@@ -575,7 +575,7 @@ class RF69: public PhysicalLayer {
 
     /*!
       \brief Sets AES key.
-      \param Key to be used for AES encryption. Must be exactly 16 bytes long.
+      \param key Key to be used for AES encryption. Must be exactly 16 bytes long.
     */
     void setAESKey(uint8_t* key);
 
@@ -872,14 +872,14 @@ class RF69: public PhysicalLayer {
 
      /*!
       \brief Set modem in variable packet length mode.
-      \param len Maximum packet length.
+      \param maxLen Maximum packet length.
       \returns \ref status_codes
     */
     int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_RF69_MAX_PACKET_LENGTH);
 
      /*!
       \brief Enable sync word filtering and generation.
-      \param numBits Sync word length in bits.
+      \param maxErrBits Maximum allowed number of error bits in sync word.
       \returns \ref status_codes
     */
     int16_t enableSyncWordFiltering(uint8_t maxErrBits = 0);

@@ -136,7 +136,7 @@
 #define RADIOLIB_LORAWAN_FHDR_FCNT_POS                          (RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS + 6)
 #define RADIOLIB_LORAWAN_FHDR_FOPTS_POS                         (RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS + 8)
 #define RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK                    (0x0F)
-#define RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN                     (RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS + 16)
+#define RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN                     (15)
 #define RADIOLIB_LORAWAN_FHDR_FPORT_POS(FOPTS)                  (RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS + 8 + (FOPTS))
 #define RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(FOPTS)               (RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS + 9 + (FOPTS))
 #define RADIOLIB_LORAWAN_FRAME_LEN(PAYLOAD, FOPTS)              (16 + 13 + (PAYLOAD) + (FOPTS))
@@ -199,11 +199,22 @@
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
 #define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
 
+/*!
+  \struct LoRaWANMacSpec_t
+  \brief MAC command specification structure.
+*/
 struct LoRaWANMacSpec_t {
+  /*! \brief Command ID */
   const uint8_t cid;
+  
+  /*! \brief Uplink message length */
   const uint8_t lenDn;
+  
+  /*! \brief Downlink message length */
   const uint8_t lenUp;
-  const bool user;      // whether this MAC command can be issued by a user or not
+  
+  /*! \brief Whether this MAC command can be issued by the user or not */
+  const bool user;
 };
 
 const LoRaWANMacSpec_t MacTable[RADIOLIB_LORAWAN_NUM_MAC_COMMANDS + 1] = {
@@ -277,7 +288,7 @@ enum LoRaWANSchemeSession_t {
 };
 
 /*!
-  \struct LoRaWANChannelSpan_t
+  \struct LoRaWANChannel_t
   \brief Structure to save information about LoRaWAN channels.
   To save space, adjacent channels are saved in "spans".
 */
@@ -352,8 +363,10 @@ struct LoRaWANBand_t {
   /*! \brief Number of milliseconds per hour of allowed Time-on-Air */
   uint32_t dutyCycle;
 
-  /*! \brief Maximum dwell time per message in milliseconds */
+  /*! \brief Maximum dwell time per uplink message in milliseconds */
   uint32_t dwellTimeUp;
+
+  /*! \brief Maximum dwell time per downlink message in milliseconds */
   uint32_t dwellTimeDn;
 
   /*! \brief A set of default uplink (TX) channels for frequency-type bands */
@@ -432,10 +445,18 @@ struct LoRaWANMacCommand_t {
   /*! \brief Repetition counter (the command will be uplinked repeat + 1 times) */
   uint8_t repeat;
 };
-
+/*!
+  \struct LoRaWANMacCommandQueue_t
+  \brief Structure to hold information about a queue of MAC commands
+*/
 struct LoRaWANMacCommandQueue_t {
+  /*! \brief Number of commands in the queue */
   uint8_t numCommands;
+
+  /*! \brief Total length of the queue */
   uint8_t len;
+
+  /*! \brief MAC command buffer */
   LoRaWANMacCommand_t commands[RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE];
 };
 
@@ -477,10 +498,10 @@ struct LoRaWANEvent_t {
 class LoRaWANNode {
   public:
 
-    // Offset between TX and RX1 (such that RX1 has equal or lower DR)
+    /*! \brief Offset between TX and RX1 (such that RX1 has equal or lower DR) */
     uint8_t rx1DrOffset = 0;
 
-    // RX2 channel properties - may be changed by MAC command
+    /*! \brief RX2 channel properties - may be changed by MAC command */
     LoRaWANChannel_t rx2;
 
     /*!
@@ -734,7 +755,7 @@ class LoRaWANNode {
 
     /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
-      \param dr Datarate to use for uplinks.
+      \param drUp Datarate to use for uplinks.
       \returns \ref status_codes
     */
     int16_t setDatarate(uint8_t drUp);
@@ -768,7 +789,7 @@ class LoRaWANNode {
     /*!
       \brief Toggle adherence to dwellTime limits to on or off.
       \param enable Whether to adhere to dwellTime limits or not (default true).
-      \param msPerHour The maximum allowed Time-on-Air per uplink in milliseconds 
+      \param msPerUplink The maximum allowed Time-on-Air per uplink in milliseconds 
       (default 0 = maximum allowed for configured band).
     */
     void setDwellTime(bool enable, uint32_t msPerUplink = 0);
@@ -786,14 +807,6 @@ class LoRaWANNode {
       \returns \ref status_codes
     */
     int16_t setTxPower(int8_t txPower);
-
-    /*!
-      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
-      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
-      \param difsSlots Num of CADs to estimate a clear CH.
-      \param enableCSMA enable/disable CSMA for LoRaWAN.
-    */
-    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
 
     /*!
       \brief Returns the quality of connectivity after requesting a LinkCheck MAC command.
@@ -996,6 +1009,14 @@ class LoRaWANNode {
     // get the payload length for a specific MAC command
     uint8_t getMacPayloadLength(uint8_t cid);
     
+    /*!
+      \brief Configures CSMA for LoRaWAN as per TR-13, LoRa Alliance.
+      \param backoffMax Num of BO slots to be decremented after DIFS phase. 0 to disable BO.
+      \param difsSlots Num of CADs to estimate a clear CH.
+      \param enableCSMA enable/disable CSMA for LoRaWAN.
+    */
+    void setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA = false);
+
     // Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).
     void performCSMA();
 

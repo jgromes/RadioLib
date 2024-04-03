@@ -48,7 +48,8 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
   SX1276 radio = new Module(18, 26, 14, 33);
 
 #elif defined(ARDUINO_TTGO_LORA32_V2)
-   #pragma error ("ARDUINO_TTGO_LORA32_V2 awaiting pin map")
+   #pragma message ("ARDUINO_TTGO_LORA32_V2 + Display")
+   SX1276 radio = new Module(18, 26, 12, RADIOLIB_NC);
 
 #elif defined(ARDUINO_TTGO_LoRa32_v21new) // T3_V1.6.1
   #pragma message ("Using TTGO LoRa32 v2.1 marked T3_V1.6.1 + Display")
@@ -65,6 +66,14 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 // Heltec
 #elif defined(ARDUINO_HELTEC_WIFI_LORA_32)
   #pragma error ("ARDUINO_HELTEC_WIFI_LORA_32 awaiting pin map")
+
+#elif defined (ARDUINO_heltec_wireless_stick)
+  #pragma message ("Using Heltec Wireless Stick")
+  SX1278 radio = new Module(14, 4, 12, 16);
+
+#elif defined(ARDUINO_heltec_wifi_lora_32_V2)
+  #pragma message ("Using Heltec WiFi LoRa32 v2")
+  SX1278 radio = new Module(14, 4, 12, 16);
 
 #elif defined(ARDUINO_heltec_wifi_kit_32_V2)
   #pragma message ("ARDUINO_heltec_wifi_kit_32_V2 awaiting pin map")
