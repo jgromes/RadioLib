@@ -44,11 +44,11 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 // LilyGo 
 #elif defined(ARDUINO_TTGO_LORA32_V1)
-  #pragma message ("TTGO LoRa32 v1 - no Display")
+  #pragma message ("Using TTGO LoRa32 v1 - no Display")
   SX1276 radio = new Module(18, 26, 14, 33);
 
 #elif defined(ARDUINO_TTGO_LORA32_V2)
-   #pragma message ("ARDUINO_TTGO_LORA32_V2 + Display")
+   #pragma message ("Using TTGO LoRa32 v2 + Display")
    SX1276 radio = new Module(18, 26, 12, RADIOLIB_NC);
 
 #elif defined(ARDUINO_TTGO_LoRa32_v21new) // T3_V1.6.1
@@ -59,32 +59,41 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
   #pragma error ("ARDUINO_TBEAM_USE_RADIO_SX1262 awaiting pin map")
 
 #elif defined(ARDUINO_TBEAM_USE_RADIO_SX1276)
-  #pragma message ("Using TTGO LoRa32 v2.1 marked T3_V1.6.1 + Display")
+  #pragma message ("Using TTGO T-Beam")
   SX1276 radio = new Module(18, 26, 23, 33);
 
 
-// Heltec
+// HelTec: https://github.com/espressif/arduino-esp32/blob/master/variants/heltec_*/pins_arduino.h
 #elif defined(ARDUINO_HELTEC_WIFI_LORA_32)
-  #pragma error ("ARDUINO_HELTEC_WIFI_LORA_32 awaiting pin map")
+  #pragma message ("Using Heltec WiFi LoRa32")
+  SX1276 radio = new Module(18, 26, 14, 33);
 
-#elif defined (ARDUINO_heltec_wireless_stick)
-  #pragma message ("Using Heltec Wireless Stick")
-  SX1278 radio = new Module(14, 4, 12, 16);
-
-#elif defined(ARDUINO_heltec_wifi_lora_32_V2)
+#elif defined(ARDUINO_HELTEC_WIFI_LORA_32_V2)
   #pragma message ("Using Heltec WiFi LoRa32 v2")
-  SX1278 radio = new Module(14, 4, 12, 16);
-
-#elif defined(ARDUINO_heltec_wifi_kit_32_V2)
-  #pragma message ("ARDUINO_heltec_wifi_kit_32_V2 awaiting pin map")
   SX1276 radio = new Module(18, 26, 14, 35);
 
-#elif defined(ARDUINO_heltec_wifi_kit_32_V3)
-  #pragma message ("Using Heltec WiFi LoRa32 v3 - Display + USB-C")
+#elif defined(ARDUINO_HELTEC_WIFI_LORA_32_V3)
+  #pragma message ("Using Heltec WiFi LoRa32 v3")
+   SX1262 radio = new Module(8, 14, 12, 13);
+
+#elif defined (ARDUINO_HELTEC_WIRELESS_STICK)
+  #pragma message ("Using Heltec Wireless Stick")
+  SX1276 radio = new Module(18, 26, 14, 35);
+
+#elif defined (ARDUINO_HELTEC_WIRELESS_STICK_V3)
+  #pragma message ("Using Heltec Wireless Stick v3")
   SX1262 radio = new Module(8, 14, 12, 13);
 
+#elif defined (ARDUINO_HELTEC_WIRELESS_STICK_LITE)
+  #pragma message ("Using Heltec Wireless Stick Lite")
+  SX1276 radio = new Module(18, 26, 14, 35);
+
+#elif defined (ARDUINO_HELTEC_WIRELESS_STICK_LITE_V3)
+  #pragma message ("Using Heltec Wireless Stick Lite v3")
+  SX1262 radio = new Module(34, 14, 12, 13);
+
 #elif defined(ARDUINO_CUBECELL_BOARD)
-  #pragma message ("Using TTGO LoRa32 v2.1 marked T3_V1.6.1 + Display")
+  #pragma message ("Using CubeCell")
   SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
 
 #elif defined(ARDUINO_CUBECELL_BOARD_V2)
