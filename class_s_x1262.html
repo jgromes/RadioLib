@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abb018b820eb71ca6b0cd92c62affa767"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">setFrequency</a> (float freq)</td></tr>
 <tr class="memdesc:abb018b820eb71ca6b0cd92c62affa767"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#abb018b820eb71ca6b0cd92c62affa767">More...</a><br /></td></tr>
 <tr class="separator:abb018b820eb71ca6b0cd92c62affa767"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48794e87684bc70b8e987066d827a0fd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a48794e87684bc70b8e987066d827a0fd">setFrequency</a> (float freq, bool calibrate, float band=4)</td></tr>
-<tr class="memdesc:a48794e87684bc70b8e987066d827a0fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a48794e87684bc70b8e987066d827a0fd">More...</a><br /></td></tr>
-<tr class="separator:a48794e87684bc70b8e987066d827a0fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f70b082116b03d1fafe395fc5a288f6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">setFrequency</a> (float freq, bool calibrate)</td></tr>
+<tr class="memdesc:a1f70b082116b03d1fafe395fc5a288f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">More...</a><br /></td></tr>
+<tr class="separator:a1f70b082116b03d1fafe395fc5a288f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa149463283dc9cddfec836ec6620d4dc"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:aa149463283dc9cddfec836ec6620d4dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm. This method is virtual to allow override from the <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> class.  <a href="class_s_x1262.html#aa149463283dc9cddfec836ec6620d4dc">More...</a><br /></td></tr>
 <tr class="separator:aa149463283dc9cddfec836ec6620d4dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -389,6 +389,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">setPaConfig</a> (uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax=RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut=RADIOLIB_SX126X_PA_CONFIG_PA_LUT)</td></tr>
 <tr class="memdesc:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PA configuration. Allows user to optimize PA for a specific output power and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower. WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage!  <a href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">More...</a><br /></td></tr>
 <tr class="separator:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aa3c90f19cd141738ff013ae72f78f1bb">calibrateImageRejection</a> (float freqMin, float freqMax)</td></tr>
+<tr class="memdesc:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform image rejection calibration for the specified frequency band. WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance.  <a href="class_s_x126x.html#aa3c90f19cd141738ff013ae72f78f1bb">More...</a><br /></td></tr>
+<tr class="separator:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_s_x126x.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -701,8 +704,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a48794e87684bc70b8e987066d827a0fd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48794e87684bc70b8e987066d827a0fd">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
+<a id="a1f70b082116b03d1fafe395fc5a288f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f70b082116b03d1fafe395fc5a288f6">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -717,13 +720,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calibrate</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>band</em> = <code>4</code>&#160;</td>
+          <td class="paramname"><em>calibrate</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -738,7 +735,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
     <tr><td class="paramname">calibrate</td><td>Run image calibration. </td></tr>
-    <tr><td class="paramname">band</td><td>Half bandwidth for image calibration. For example, if carrier is 434 MHz and band is set to 4 MHz, then the image will be calibrate for band 430 - 438 MHz. Unused if calibrate is set to false, defaults to 4 MHz </td></tr>
   </table>
   </dd>
 </dl>

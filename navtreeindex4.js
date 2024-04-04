@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classn_r_f24.html":[3,0,26],
 "classn_r_f24.html#a033287e33c532638c11e2775a073f297":[3,0,26,31],
 "classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b":[3,0,26,33],
 "classn_r_f24.html#a0429a9d6524005065e6fac21aaebdcbf":[3,0,26,21],
@@ -82,8 +83,8 @@ var NAVTREEINDEX4 =
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1],
 "functions_func.html":[3,3,1,0],
+"functions_func.html":[3,3,1],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "struct_f_s_k_rate__t.html":[3,0,10],
 "struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107":[3,0,10,0],
 "struct_f_s_k_rate__t.html#a9d8801cd6a3533922db9410f81e2a244":[3,0,10,1],
-"struct_lo_ra_rate__t.html":[3,0,14],
-"struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076":[3,0,14,2]
+"struct_lo_ra_rate__t.html":[3,0,14]
 };
