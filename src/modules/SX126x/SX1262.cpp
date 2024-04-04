@@ -60,19 +60,19 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 
     // try to match the frequency ranges
     int freqBand = (int)freq;
-    if((freq >= 902) && (freq <= 928)) {
+    if((freqBand >= 902) && (freqBand <= 928)) {
       data[0] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_1;
       data[1] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_2;
-    } else if((freq >= 863) && (freq <= 870)) {
+    } else if((freqBand >= 863) && (freqBand <= 870)) {
       data[0] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_1;
       data[1] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_2;
-    } else if((freq >= 779) && (freq <= 787)) {
+    } else if((freqBand >= 779) && (freqBand <= 787)) {
       data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
       data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
-    } else if((freq >= 470) && (freq <= 510)) {
+    } else if((freqBand >= 470) && (freqBand <= 510)) {
       data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
       data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
-    } else if((freq >= 430) && (freq <= 440)) {
+    } else if((freqBand >= 430) && (freqBand <= 440)) {
       data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
       data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
     }
