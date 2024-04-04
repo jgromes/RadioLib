@@ -51,13 +51,46 @@ int16_t SX1262::setFrequency(float freq) {
   return(setFrequency(freq, true));
 }
 
-int16_t SX1262::setFrequency(float freq, bool calibrate, float band) {
+int16_t SX1262::setFrequency(float freq, bool calibrate) {
   RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // calibrate image rejection
   if(calibrate) {
-    int16_t state = SX126x::calibrateImage(freq - band, freq + band);
+    uint8_t data[2] = { 0, 0 };
+
+    // try to match the frequency ranges
+    int freqBand = (int)freq;
+    if((freq >= 902) && (freq <= 928)) {
+      data[0] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_2;
+    } else if((freq >= 863) && (freq <= 870)) {
+      data[0] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_2;
+    } else if((freq >= 779) && (freq <= 787)) {
+      data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
+    } else if((freq >= 470) && (freq <= 510)) {
+      data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
+    } else if((freq >= 430) && (freq <= 440)) {
+      data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
+      data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
+    }
+
+    int16_t state;
+    if(data[0]) {
+      // matched with predefined ranges, do the calibration
+      state = SX126x::calibrateImage(data);
+    
+    } else {
+      // if nothing matched, try custom calibration - the may or may not work
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to match predefined frequency range, trying custom");
+      state = SX126x::calibrateImageRejection(freq - 4.0f, freq + 4.0f);
+    
+    }
+    
     RADIOLIB_ASSERT(state);
+    
   }
 
   // set frequency
