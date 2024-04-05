@@ -61,7 +61,7 @@ class SX1262: public SX126x {
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U));
     
     // configuration methods
 
@@ -84,9 +84,10 @@ class SX1262: public SX126x {
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
       This method is virtual to allow override from the SX1261 class.
       \param power Output power to be set in dBm.
+      \param rampTime The time delayed to allow the PA to ramp up.
       \returns \ref status_codes
     */
-    virtual int16_t setOutputPower(int8_t power);
+    virtual int16_t setOutputPower(int8_t power, uint8_t rampTime);
 
 #if !RADIOLIB_GODMODE
   private:
