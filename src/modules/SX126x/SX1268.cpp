@@ -104,9 +104,8 @@ int16_t SX1268::setOutputPower(int8_t power) {
   state = SX126x::setPaConfig(0x04, RADIOLIB_SX126X_PA_CONFIG_SX1268);
   RADIOLIB_ASSERT(state);
 
-  // set output power
-  /// \todo power ramp time configuration
-  state = SX126x::setTxParams(power);
+  // set output power with default 200us ramp
+  state = SX126x::setTxParams(power, RADIOLIB_SX126X_PA_RAMP_200U);
   RADIOLIB_ASSERT(state);
 
   // restore OCP configuration

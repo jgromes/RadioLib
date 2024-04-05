@@ -1847,6 +1847,10 @@ int16_t SX126x::calibrateImageRejection(float freqMin, float freqMax) {
   return(this->calibrateImage(data));
 }
 
+int16_t SX126x::setPaRampTime(uint8_t rampTime) {
+  return(this->setTxParams(this->pwr, rampTime));
+}
+
 int16_t SX126x::calibrateImage(uint8_t* data) {
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_CALIBRATE_IMAGE, data, 2);
 
@@ -1870,7 +1874,11 @@ uint8_t SX126x::getPacketType() {
 
 int16_t SX126x::setTxParams(uint8_t pwr, uint8_t rampTime) {
   uint8_t data[] = { pwr, rampTime };
-  return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_PARAMS, data, 2));
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_TX_PARAMS, data, 2);
+  if(state == RADIOLIB_ERR_NONE) {
+    this->pwr = pwr;
+  }
+  return(state);
 }
 
 int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {

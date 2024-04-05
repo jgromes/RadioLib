@@ -1123,6 +1123,12 @@ class SX126x: public PhysicalLayer {
     */
     int16_t calibrateImageRejection(float freqMin, float freqMax);
 
+    /*!
+      \brief Set PA ramp-up time. Set to 200us by default.
+      \returns \ref status_codes
+    */
+    int16_t setPaRampTime(uint8_t rampTime);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -1142,7 +1148,7 @@ class SX126x: public PhysicalLayer {
     int16_t setRfFrequency(uint32_t frf);
     int16_t calibrateImage(uint8_t* data);
     uint8_t getPacketType();
-    int16_t setTxParams(uint8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
+    int16_t setTxParams(uint8_t power, uint8_t rampTime);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);
     int16_t setModulationParamsFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);
     int16_t setPacketParams(uint16_t preambleLen, uint8_t crcType, uint8_t payloadLen, uint8_t hdrType, uint8_t invertIQ);
@@ -1187,6 +1193,7 @@ class SX126x: public PhysicalLayer {
     float dataRateMeasured = 0;
 
     uint32_t tcxoDelay = 0;
+    uint8_t pwr = 0;
 
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;
