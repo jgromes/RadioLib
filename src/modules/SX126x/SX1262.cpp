@@ -23,7 +23,7 @@ int16_t SX1262::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = SX126x::fixPaClamping();
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(power);
+  state = setOutputPower(power, rampTime);
   RADIOLIB_ASSERT(state);
 
   return(state);
@@ -97,7 +97,7 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
   return(SX126x::setFrequencyRaw(freq));
 }
 
-int16_t SX1262::setOutputPower(int8_t power) {
+int16_t SX1262::setOutputPower(int8_t power, uint8_t rampTime) {
   RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   // get current OCP configuration
@@ -109,9 +109,8 @@ int16_t SX1262::setOutputPower(int8_t power) {
   state = SX126x::setPaConfig(0x04, RADIOLIB_SX126X_PA_CONFIG_SX1262);
   RADIOLIB_ASSERT(state);
 
-  // set output power
-  /// \todo power ramp time configuration
-  state = SX126x::setTxParams(power);
+  // set output power and PA ramp time
+  state = SX126x::setTxParams(power, rampTime);
   RADIOLIB_ASSERT(state);
 
   // restore OCP configuration
