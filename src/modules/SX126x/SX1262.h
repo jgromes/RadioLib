@@ -42,9 +42,10 @@ class SX1262: public SX126x {
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \param rampTime The time delayed to allow the PA to ramp up. Defaults to 200 us.
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
 
     /*!
       \brief Initialization method for FSK modem.
