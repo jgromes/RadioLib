@@ -6,7 +6,7 @@ LLCC68::LLCC68(Module* mod) : SX1262(mod) {
   this->XTAL = true;
 }
 
-int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO, uint8_t rampTime) {
   // execute common part
   int16_t state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
   RADIOLIB_ASSERT(state);
@@ -21,7 +21,7 @@ int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
   state = setSpreadingFactor(sf);
   RADIOLIB_ASSERT(state);
 
-  state = setOutputPower(pwr);
+  state = setOutputPower(pwr, rampTime);
   RADIOLIB_ASSERT(state);
 
   state = SX126x::fixPaClamping();
