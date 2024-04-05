@@ -87,7 +87,7 @@ class SX1262: public SX126x {
       \param rampTime The time delayed to allow the PA to ramp up.
       \returns \ref status_codes
     */
-    virtual int16_t setOutputPower(int8_t power, uint8_t rampTime);
+    virtual int16_t setOutputPower(int8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
 
 #if !RADIOLIB_GODMODE
   private:
