@@ -59,6 +59,7 @@ class SX1262: public SX126x {
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
+      \param rampTime The time delayed to allow the PA to ramp up. Defaults to 200 us.
       \returns \ref status_codes
     */
     int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U));
@@ -84,7 +85,7 @@ class SX1262: public SX126x {
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.
       This method is virtual to allow override from the SX1261 class.
       \param power Output power to be set in dBm.
-      \param rampTime The time delayed to allow the PA to ramp up.
+      \param rampTime The time delayed to allow the PA to ramp up. Defaults to 200 us.
       \returns \ref status_codes
     */
     virtual int16_t setOutputPower(int8_t power, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
