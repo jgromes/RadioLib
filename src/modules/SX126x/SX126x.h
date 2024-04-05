@@ -475,7 +475,7 @@ class SX126x: public PhysicalLayer {
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
 
     /*!
       \brief Initialization method for FSK modem.
