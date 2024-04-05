@@ -62,7 +62,7 @@ class SX1262: public SX126x {
       \param rampTime The time delayed to allow the PA to ramp up. Defaults to 200 us.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U));
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false, uint8_t rampTime = RADIOLIB_SX126X_PA_RAMP_200U);
     
     // configuration methods
 
