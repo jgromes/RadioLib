@@ -168,6 +168,13 @@ class Module {
     /*! \brief Callback for validation SPI status. */
     typedef int16_t (*SPIcheckStatusCb_t)(Module* mod);
 
+    enum BitWidth_t {
+      BITS_0 = 0,
+      BITS_8 = 8,
+      BITS_16 = 16,
+      BITS_32 = 32,
+    };
+
     /*!
       \struct SPIConfig_t
       \brief SPI configuration structure.
@@ -183,7 +190,7 @@ class Module {
       uint16_t cmds[4];
 
       /*! \brief Bit widths of SPI addresses, commands and status bytes */
-      size_t widths[3];
+      BitWidth_t widths[3];
 
       /*! \brief Byte position of status command in SPI stream */
       uint8_t statusPos;
@@ -200,7 +207,7 @@ class Module {
       .stream = false,
       .err = RADIOLIB_ERR_UNKNOWN,
       .cmds = { 0x00, 0x80, 0x00, 0x00 },
-      .widths = { 8, 0, 8 },
+      .widths = { Module::BITS_8, Module::BITS_0, Module::BITS_8 },
       .statusPos = 0,
       .parseStatusCb = nullptr,
       .checkStatusCb = nullptr,
