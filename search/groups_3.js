@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['standby_20mode_20type_20aliases_2e_1056',['Standby mode type aliases.',['../group__config__standby.html',1,'']]],
-  ['status_20codes_1057',['Status Codes',['../group__status__codes.html',1,'']]]
+  ['position_20of_20bit_20field_20widths_20in_20module_3a_3aspiconfig_20width_20array_2e_1061',['Position of bit field widths in Module::spiConfig width array.',['../group__module__spi__width__pos.html',1,'']]],
+  ['position_20of_20commands_20in_20module_3a_3aspiconfig_20command_20array_2e_1062',['Position of commands in Module::spiConfig command array.',['../group__module__spi__command__pos.html',1,'']]]
 ];
