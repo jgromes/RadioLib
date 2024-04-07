@@ -31,8 +31,7 @@ Module::Module(const Module& mod) {
 }
 
 Module& Module::operator=(const Module& mod) {
-  this->SPIreadCommand = mod.SPIreadCommand;
-  this->SPIwriteCommand = mod.SPIwriteCommand;
+  memcpy((void*)&mod.spiConfig, &this->spiConfig, sizeof(SPIConfig_t));
   this->csPin = mod.csPin;
   this->irqPin = mod.irqPin;
   this->rstPin = mod.rstPin;
@@ -40,14 +39,12 @@ Module& Module::operator=(const Module& mod) {
   return(*this);
 }
 
+static const char info[] = RADIOLIB_INFO;
 void Module::init() {
   this->hal->init();
   this->hal->pinMode(csPin, this->hal->GpioModeOutput);
   this->hal->digitalWrite(csPin, this->hal->GpioLevelHigh);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("RadioLib Debug Info");
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Version:  %d.%d.%d.%d", RADIOLIB_VERSION_MAJOR, RADIOLIB_VERSION_MINOR, RADIOLIB_VERSION_PATCH, RADIOLIB_VERSION_EXTRA);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Platform: " RADIOLIB_PLATFORM);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Compiled: " __DATE__ " " __TIME__ "\n");
+  RADIOLIB_DEBUG_BASIC_PRINTLN(RADIOLIB_INFO);
 }
 
 void Module::term() {
@@ -55,7 +52,7 @@ void Module::term() {
   this->hal->term();
 }
 
-int16_t Module::SPIgetRegValue(uint16_t reg, uint8_t msb, uint8_t lsb) {
+int16_t Module::SPIgetRegValue(uint32_t reg, uint8_t msb, uint8_t lsb) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(RADIOLIB_ERR_INVALID_BIT_RANGE);
   }
@@ -65,7 +62,7 @@ int16_t Module::SPIgetRegValue(uint16_t reg, uint8_t msb, uint8_t lsb) {
   return(maskedValue);
 }
 
-int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval, uint8_t checkMask) {
+int16_t Module::SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb, uint8_t lsb, uint8_t checkInterval, uint8_t checkMask) {
   if((msb > 7) || (lsb > 7) || (lsb > msb)) {
     return(RADIOLIB_ERR_INVALID_BIT_RANGE);
   }
@@ -104,47 +101,75 @@ int16_t Module::SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb, uint8_t
   #endif
 }
 
-void Module::SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inBytes) {
-  if(!SPIstreamType) {
-    SPItransfer(SPIreadCommand, reg, NULL, inBytes, numBytes);
+void Module::SPIreadRegisterBurst(uint32_t reg, size_t numBytes, uint8_t* inBytes) {
+  if(!this->spiConfig.stream) {
+    SPItransfer(this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ], reg, NULL, inBytes, numBytes);
   } else {
-    uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, false, NULL, inBytes, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+    uint8_t cmd[6];
+    uint8_t* cmdPtr = cmd;
+    for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+      *(cmdPtr++) = (this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] >> 8*i) & 0xFF;
+    }
+    for(int8_t i = (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8) - 1; i >= 0; i--) {
+      *(cmdPtr++) = (reg >> 8*i) & 0xFF;
+    }
+    SPItransferStream(cmd, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8, false, NULL, inBytes, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
-uint8_t Module::SPIreadRegister(uint16_t reg) {
+uint8_t Module::SPIreadRegister(uint32_t reg) {
   uint8_t resp = 0;
-  if(!SPIstreamType) {
-    SPItransfer(SPIreadCommand, reg, NULL, &resp, 1);
+  if(!spiConfig.stream) {
+    SPItransfer(this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ], reg, NULL, &resp, 1);
   } else {
-    uint8_t cmd[] = { SPIreadCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, false, NULL, &resp, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+    uint8_t cmd[6];
+    uint8_t* cmdPtr = cmd;
+    for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+      *(cmdPtr++) = (this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] >> 8*i) & 0xFF;
+    }
+    for(int8_t i = (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8) - 1; i >= 0; i--) {
+      *(cmdPtr++) = (reg >> 8*i) & 0xFF;
+    }
+    SPItransferStream(cmd, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8, false, NULL, &resp, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
   return(resp);
 }
 
-void Module::SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes) {
-  if(!SPIstreamType) {
-    SPItransfer(SPIwriteCommand, reg, data, NULL, numBytes);
+void Module::SPIwriteRegisterBurst(uint32_t reg, uint8_t* data, size_t numBytes) {
+  if(!spiConfig.stream) {
+    SPItransfer(spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE], reg, data, NULL, numBytes);
   } else {
-    uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, true, data, NULL, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+    uint8_t cmd[6];
+    uint8_t* cmdPtr = cmd;
+    for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+      *(cmdPtr++) = (this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] >> 8*i) & 0xFF;
+    }
+    for(int8_t i = (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8) - 1; i >= 0; i--) {
+      *(cmdPtr++) = (reg >> 8*i) & 0xFF;
+    }
+    SPItransferStream(cmd, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8, true, data, NULL, numBytes, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
-void Module::SPIwriteRegister(uint16_t reg, uint8_t data) {
-  if(!SPIstreamType) {
-    SPItransfer(SPIwriteCommand, reg, &data, NULL, 1);
+void Module::SPIwriteRegister(uint32_t reg, uint8_t data) {
+  if(!spiConfig.stream) {
+    SPItransfer(spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE], reg, &data, NULL, 1);
   } else {
-    uint8_t cmd[] = { SPIwriteCommand, (uint8_t)((reg >> 8) & 0xFF), (uint8_t)(reg & 0xFF) };
-    SPItransferStream(cmd, 3, true, &data, NULL, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+    uint8_t cmd[6];
+    uint8_t* cmdPtr = cmd;
+    for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+      *(cmdPtr++) = (this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] >> 8*i) & 0xFF;
+    }
+    for(int8_t i = (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8) - 1; i >= 0; i--) {
+      *(cmdPtr++) = (reg >> 8*i) & 0xFF;
+    }
+    SPItransferStream(cmd, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8, true, &data, NULL, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   }
 }
 
-void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
+void Module::SPItransfer(uint16_t cmd, uint32_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes) {
   // prepare the buffers
-  size_t buffLen = this->SPIaddrWidth/8 + numBytes;
+  size_t buffLen = this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8 + this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8 + numBytes;
   #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
     uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -155,7 +180,8 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   uint8_t* buffOutPtr = buffOut;
 
   // copy the command
-  if(this->SPIaddrWidth <= 8) {
+  // TODO properly handle variable commands and addresses
+  if(this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] <= 8) {
     *(buffOutPtr++) = reg | cmd;
   } else {
     *(buffOutPtr++) = (reg >> 8) | cmd;
@@ -163,10 +189,10 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   }
 
   // copy the data
-  if(cmd == SPIwriteCommand) {
+  if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE]) {
     memcpy(buffOutPtr, dataOut, numBytes);
   } else {
-    memset(buffOutPtr, this->SPInopCommand, numBytes);
+    memset(buffOutPtr, this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP], numBytes);
   }
 
   // do the transfer
@@ -177,19 +203,19 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   this->hal->spiEndTransaction();
   
   // copy the data
-  if(cmd == SPIreadCommand) {
-    memcpy(dataIn, &buffIn[this->SPIaddrWidth/8], numBytes);
+  if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {
+    memcpy(dataIn, &buffIn[this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8], numBytes);
   }
 
   // print debug information
   #if RADIOLIB_DEBUG_SPI
     uint8_t* debugBuffPtr = NULL;
-    if(cmd == SPIwriteCommand) {
+    if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE]) {
       RADIOLIB_DEBUG_SPI_PRINT("W\t%X\t", reg);
-      debugBuffPtr = &buffOut[this->SPIaddrWidth/8];
-    } else if(cmd == SPIreadCommand) {
+      debugBuffPtr = &buffOut[this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8];
+    } else if(cmd == spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ]) {
       RADIOLIB_DEBUG_SPI_PRINT("R\t%X\t", reg);
-      debugBuffPtr = &buffIn[this->SPIaddrWidth/8];
+      debugBuffPtr = &buffIn[this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR]/8];
     }
     for(size_t n = 0; n < numBytes; n++) {
       RADIOLIB_DEBUG_SPI_PRINT_NOTAG("%X\t", debugBuffPtr[n]);
@@ -203,8 +229,13 @@ void Module::SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* d
   #endif
 }
 
-int16_t Module::SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
-  return(this->SPIreadStream(&cmd, 1, data, numBytes, waitForGpio, verify));
+int16_t Module::SPIreadStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
+  uint8_t cmdBuf[2];
+  uint8_t* cmdPtr = cmdBuf;
+  for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+    *(cmdPtr++) = (cmd >> 8*i) & 0xFF;
+  }
+  return(this->SPIreadStream(cmdBuf, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8, data, numBytes, waitForGpio, verify));
 }
 
 int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
@@ -212,16 +243,27 @@ int16_t Module::SPIreadStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_
   int16_t state = this->SPItransferStream(cmd, cmdLen, false, NULL, data, numBytes, waitForGpio, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
+  #if !RADIOLIB_SPI_PARANOID
+  (void)verify;
+  return(RADIOLIB_ERR_NONE);
+  #else
+
   // check the status
-  if(verify) {
-    state = this->SPIcheckStream();
+  if(verify && (this->spiConfig.checkStatusCb != nullptr)) {
+    state = this->spiConfig.checkStatusCb(this);
   }
 
   return(state);
+  #endif
 }
 
-int16_t Module::SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
-  return(this->SPIwriteStream(&cmd, 1, data, numBytes, waitForGpio, verify));
+int16_t Module::SPIwriteStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
+  uint8_t cmdBuf[2];
+  uint8_t* cmdPtr = cmdBuf;
+  for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+    *(cmdPtr++) = (cmd >> 8*i) & 0xFF;
+  }
+  return(this->SPIwriteStream(cmdBuf, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8, data, numBytes, waitForGpio, verify));
 }
 
 int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size_t numBytes, bool waitForGpio, bool verify) {
@@ -229,12 +271,18 @@ int16_t Module::SPIwriteStream(uint8_t* cmd, uint8_t cmdLen, uint8_t* data, size
   int16_t state = this->SPItransferStream(cmd, cmdLen, true, data, NULL, numBytes, waitForGpio, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
+  #if !RADIOLIB_SPI_PARANOID
+  (void)verify;
+  return(RADIOLIB_ERR_NONE);
+  #else
+
   // check the status
-  if(verify) {
-    state = this->SPIcheckStream();
+  if(verify && (this->spiConfig.checkStatusCb != nullptr)) {
+    state = this->spiConfig.checkStatusCb(this);
   }
 
   return(state);
+  #endif
 }
 
 int16_t Module::SPIcheckStream() {
@@ -243,13 +291,17 @@ int16_t Module::SPIcheckStream() {
   #if RADIOLIB_SPI_PARANOID
   // get the status
   uint8_t spiStatus = 0;
-  uint8_t cmd = this->SPIstatusCommand;
-  state = this->SPItransferStream(&cmd, 1, false, NULL, &spiStatus, 0, true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  uint8_t cmdBuf[2];
+  uint8_t* cmdPtr = cmdBuf;
+  for(size_t i = 0; i < this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8; i++) {
+    *(cmdPtr++) = ( this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] >> 8*i) & 0xFF;
+  }
+  state = this->SPItransferStream(cmdBuf, this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD]/8, false, NULL, &spiStatus, 1, true, RADIOLIB_MODULE_SPI_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   // translate to RadioLib status code
-  if(this->SPIparseStatusCb != nullptr) {
-    this->SPIstreamError = this->SPIparseStatusCb(spiStatus);
+  if(this->spiConfig.parseStatusCb != nullptr) {
+    this->spiConfig.err = this->spiConfig.parseStatusCb(spiStatus);
   }
   #endif
 
@@ -260,7 +312,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   // prepare the buffers
   size_t buffLen = cmdLen + numBytes;
   if(!write) {
-    buffLen++;
+    buffLen += (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8);
   }
   #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -280,12 +332,12 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   if(write) {
     memcpy(buffOutPtr, dataOut, numBytes);
   } else {
-    memset(buffOutPtr, this->SPInopCommand, numBytes + 1);
+    memset(buffOutPtr, this->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP], numBytes + (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8));
   }
 
   // ensure GPIO is low
   if(this->gpioPin == RADIOLIB_NC) {
-    this->hal->delay(1);
+    this->hal->delay(50);
   } else {
     uint32_t start = this->hal->millis();
     while(this->hal->digitalRead(this->gpioPin)) {
@@ -331,14 +383,14 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
 
   // parse status
   int16_t state = RADIOLIB_ERR_NONE;
-  if((this->SPIparseStatusCb != nullptr) && (numBytes > 0)) {
-    state = this->SPIparseStatusCb(buffIn[cmdLen]);
+  if((this->spiConfig.parseStatusCb != nullptr) && (numBytes > 0)) {
+    state = this->spiConfig.parseStatusCb(buffIn[this->spiConfig.statusPos]);
   }
   
   // copy the data
   if(!write) {
-    // skip the first byte for read-type commands (status-only)
-    memcpy(dataIn, &buffIn[cmdLen + 1], numBytes);
+    // skip the status bytes if present
+    memcpy(dataIn, &buffIn[cmdLen + (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8)], numBytes);
   }
 
   // print debug information

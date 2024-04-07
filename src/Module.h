@@ -13,14 +13,52 @@
 #endif
 
 /*!
-  \def Value to use as the last element in a mode table to indicate the
-  end of the table.
-  See \ref setRfSwitchTable for details.
+  \def END_OF_MODE_TABLE Value to use as the last element in a mode table to indicate the
+  end of the table. See \ref setRfSwitchTable for details.
 */
 #define END_OF_MODE_TABLE    { Module::MODE_END_OF_TABLE, {} }
 
 // default timeout for SPI transfers
 #define RADIOLIB_MODULE_SPI_TIMEOUT                             (1000)
+
+/*!
+  \defgroup module_spi_command_pos Position of commands in Module::spiConfig command array.
+  \{
+*/
+
+/*! \def RADIOLIB_MODULE_SPI_COMMAND_READ Position of the read command. */
+#define RADIOLIB_MODULE_SPI_COMMAND_READ                        (0)
+
+/*! \def RADIOLIB_MODULE_SPI_COMMAND_WRITE Position of the write command. */
+#define RADIOLIB_MODULE_SPI_COMMAND_WRITE                       (1)
+
+/*! \def RADIOLIB_MODULE_SPI_COMMAND_NOP Position of the no-operation command. */
+#define RADIOLIB_MODULE_SPI_COMMAND_NOP                         (2)
+
+/*! \def RADIOLIB_MODULE_SPI_COMMAND_STATUS Position of the status command. */
+#define RADIOLIB_MODULE_SPI_COMMAND_STATUS                      (3)
+
+/*!
+  \}
+*/
+
+/*!
+  \defgroup module_spi_width_pos Position of bit field widths in Module::spiConfig width array.
+  \{
+*/
+
+/*! \def RADIOLIB_MODULE_SPI_WIDTH_ADDR Position of the address width. */
+#define RADIOLIB_MODULE_SPI_WIDTH_ADDR                          (0)
+
+/*! \def RADIOLIB_MODULE_SPI_WIDTH_CMD Position of the command width. */
+#define RADIOLIB_MODULE_SPI_WIDTH_CMD                           (1)
+
+/*! \def RADIOLIB_MODULE_SPI_WIDTH_STATUS Position of the status width. */
+#define RADIOLIB_MODULE_SPI_WIDTH_STATUS                        (2)
+
+/*!
+  \}
+*/
 
 /*!
   \class Module
@@ -121,57 +159,52 @@ class Module {
     Module& operator=(const Module& mod);
 
     // public member variables
-    /*!
-      \brief Hardware abstraction layer to be used.
-    */
+    /*! \brief Hardware abstraction layer to be used. */
     RadioLibHal* hal = NULL;
 
-    /*!
-      \brief Basic SPI read command. Defaults to 0x00.
-    */
-    uint8_t SPIreadCommand = 0b00000000;
-
-    /*!
-      \brief Basic SPI write command. Defaults to 0x80.
-    */
-    uint8_t SPIwriteCommand = 0b10000000;
-
-    /*!
-      \brief Basic SPI no-operation command. Defaults to 0x00.
-    */
-    uint8_t SPInopCommand = 0x00;
-
-    /*!
-      \brief Basic SPI status read command. Defaults to 0x00.
-    */
-    uint8_t SPIstatusCommand = 0x00;
-
-    /*!
-      \brief SPI address width. Defaults to 8, currently only supports 8 and 16-bit addresses.
-    */
-    uint8_t SPIaddrWidth = 8;
-
-    /*!
-      \brief Whether the SPI interface is stream-type (e.g. SX126x) or register-type (e.g. SX127x).
-      Defaults to register-type SPI interfaces.
-    */
-    bool SPIstreamType = false;
-
-    /*!
-      \brief The last recorded SPI stream error.
-    */
-    int16_t SPIstreamError = RADIOLIB_ERR_UNKNOWN;
-
-    /*!
-      \brief SPI status parsing callback typedef.
-    */
+    /*! \brief Callback for parsing SPI status. */
     typedef int16_t (*SPIparseStatusCb_t)(uint8_t in);
 
+    /*! \brief Callback for validation SPI status. */
+    typedef int16_t (*SPIcheckStatusCb_t)(Module* mod);
+
     /*!
-      \brief Callback to function that will parse the module-specific status codes to RadioLib status codes.
-      Typically used for modules with SPI stream-type interface (e.g. SX126x/SX128x).
+      \struct SPIConfig_t
+      \brief SPI configuration structure.
     */
-    SPIparseStatusCb_t SPIparseStatusCb = nullptr;
+    struct SPIConfig_t {
+      /*! \brief Whether the SPI module is stream-type (SX126x/8x) or registrer access type (SX127x, CC1101 etc). */
+      bool stream;
+
+      /*! \brief Last recorded SPI error - only updated for modules that return status during SPI transfers. */
+      int16_t err;
+
+      /*! \brief SPI commands */
+      uint16_t cmds[4];
+
+      /*! \brief Bit widths of SPI addresses, commands and status bytes */
+      size_t widths[3];
+
+      /*! \brief Byte position of status command in SPI stream */
+      uint8_t statusPos;
+
+      /*! \brief Callback for parsing SPI status. */
+      SPIparseStatusCb_t parseStatusCb;
+
+      /*! \brief Callback for validation SPI status. */
+      SPIcheckStatusCb_t checkStatusCb;
+    };
+
+    /*! \brief SPI configuration structure. The default configuration corresponds to register-access modules, such as SX127x. */
+    SPIConfig_t spiConfig = {
+      .stream = false,
+      .err = RADIOLIB_ERR_UNKNOWN,
+      .cmds = { 0x00, 0x80, 0x00, 0x00 },
+      .widths = { 8, 0, 8 },
+      .statusPos = 0,
+      .parseStatusCb = nullptr,
+      .checkStatusCb = nullptr,
+    };
 
     #if RADIOLIB_INTERRUPT_TIMING
 
@@ -213,7 +246,7 @@ class Module {
       \param lsb Least significant bit of the register variable. Bits below this one will be masked out.
       \returns Masked register value or status code.
     */
-    int16_t SPIgetRegValue(uint16_t reg, uint8_t msb = 7, uint8_t lsb = 0);
+    int16_t SPIgetRegValue(uint32_t reg, uint8_t msb = 7, uint8_t lsb = 0);
 
     /*!
       \brief Overwrite-safe SPI write method with verification. This method is the preferred SPI write mechanism.
@@ -225,7 +258,7 @@ class Module {
       \param checkMask Mask of bits to check, only bits set to 1 will be verified.
       \returns \ref status_codes
     */
-    int16_t SPIsetRegValue(uint16_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
+    int16_t SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
 
     /*!
       \brief SPI burst read method.
@@ -233,14 +266,14 @@ class Module {
       \param numBytes Number of bytes that will be read.
       \param inBytes Pointer to array that will hold the read data.
     */
-    void SPIreadRegisterBurst(uint16_t reg, size_t numBytes, uint8_t* inBytes);
+    void SPIreadRegisterBurst(uint32_t reg, size_t numBytes, uint8_t* inBytes);
 
     /*!
       \brief SPI basic read method. Use of this method is reserved for special cases, SPIgetRegValue should be used instead.
       \param reg Address of SPI register to read.
       \returns Value that was read from register.
     */
-    uint8_t SPIreadRegister(uint16_t reg);
+    uint8_t SPIreadRegister(uint32_t reg);
 
     /*!
       \brief SPI burst write method.
@@ -248,14 +281,14 @@ class Module {
       \param data Pointer to array that holds the data that will be written.
       \param numBytes Number of bytes that will be written.
     */
-    void SPIwriteRegisterBurst(uint16_t reg, uint8_t* data, size_t numBytes);
+    void SPIwriteRegisterBurst(uint32_t reg, uint8_t* data, size_t numBytes);
 
     /*!
       \brief SPI basic write method. Use of this method is reserved for special cases, SPIsetRegValue should be used instead.
       \param reg Address of SPI register to write.
       \param data Value that will be written to the register.
     */
-    void SPIwriteRegister(uint16_t reg, uint8_t data);
+    void SPIwriteRegister(uint32_t reg, uint8_t data);
 
     /*!
       \brief SPI single transfer method.
@@ -265,7 +298,7 @@ class Module {
       \param dataIn Data that was transferred from slave to master.
       \param numBytes Number of bytes to transfer.
     */
-    void SPItransfer(uint8_t cmd, uint16_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes);
+    void SPItransfer(uint16_t cmd, uint32_t reg, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes);
 
     /*!
       \brief Method to check the result of last SPI stream transfer.
@@ -282,7 +315,7 @@ class Module {
       \param verify Whether to verify the result of the transaction after it is finished.
       \returns \ref status_codes
     */
-    int16_t SPIreadStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIreadStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
     
     /*!
       \brief Method to perform a read transaction with SPI stream.
@@ -305,7 +338,7 @@ class Module {
       \param verify Whether to verify the result of the transaction after it is finished.
       \returns \ref status_codes
     */
-    int16_t SPIwriteStream(uint8_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
+    int16_t SPIwriteStream(uint16_t cmd, uint8_t* data, size_t numBytes, bool waitForGpio = true, bool verify = true);
 
     /*!
       \brief Method to perform a write transaction with SPI stream.
