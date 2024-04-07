@@ -8,8 +8,8 @@ nRF24::nRF24(Module* mod) : PhysicalLayer(RADIOLIB_NRF24_FREQUENCY_STEP_SIZE, RA
 
 int16_t nRF24::begin(int16_t freq, int16_t dr, int8_t pwr, uint8_t addrWidth) {
   // set module properties
-  this->mod->SPIreadCommand = RADIOLIB_NRF24_CMD_READ;
-  this->mod->SPIwriteCommand = RADIOLIB_NRF24_CMD_WRITE;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_NRF24_CMD_READ;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_NRF24_CMD_WRITE;
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
 
