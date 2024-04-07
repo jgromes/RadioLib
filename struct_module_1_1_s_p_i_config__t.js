@@ -6,5 +6,5 @@ var struct_module_1_1_s_p_i_config__t =
     [ "parseStatusCb", "struct_module_1_1_s_p_i_config__t.html#a9619dcb8b269bcbd125e5a05e6c0fc77", null ],
     [ "statusPos", "struct_module_1_1_s_p_i_config__t.html#a5b689d2722b8980a211a562ed394d23e", null ],
     [ "stream", "struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681", null ],
-    [ "widths", "struct_module_1_1_s_p_i_config__t.html#aea9de89d206bd4e58dec59a9f63c4190", null ]
+    [ "widths", "struct_module_1_1_s_p_i_config__t.html#a8cd88af331563749f10ac69b63e1755a", null ]
 ];

@@ -127,6 +127,12 @@ Public Types</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a5a67b3a63420d762ecba9448671c99bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constants to use in a mode table set be setRfSwitchTable. These constants work for most radios, but some radios define their own constants to be used instead.  <a href="class_module.html#a5a67b3a63420d762ecba9448671c99bf">More...</a><br /></td></tr>
 <tr class="separator:a5a67b3a63420d762ecba9448671c99bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5e5dd089a3117f6499b818b426e2e0d"><td class="memItemLeft" align="right" valign="top"><a id="af5e5dd089a3117f6499b818b426e2e0d"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>BitWidth_t</b> { <b>BITS_0</b> = 0
+, <b>BITS_8</b> = 8
+, <b>BITS_16</b> = 16
+, <b>BITS_32</b> = 32
+ }</td></tr>
+<tr class="separator:af5e5dd089a3117f6499b818b426e2e0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9393088249856eab568126aeb2493e4a"><td class="memItemLeft" align="right" valign="top"><a id="a9393088249856eab568126aeb2493e4a"></a>
 typedef int16_t(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a9393088249856eab568126aeb2493e4a">SPIparseStatusCb_t</a>) (uint8_t in)</td></tr>
 <tr class="memdesc:a9393088249856eab568126aeb2493e4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback for parsing SPI status. <br /></td></tr>
@@ -1425,7 +1431,7 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <div class="line">      .stream = <span class="keyword">false</span>,</div>
 <div class="line">      .err = <a class="code" href="group__status__codes.html#gacc0baeb3e5fc99760a07d18ba55531b6">RADIOLIB_ERR_UNKNOWN</a>,</div>
 <div class="line">      .cmds = { 0x00, 0x80, 0x00, 0x00 },</div>
-<div class="line">      .widths = { 8, 0, 8 },</div>
+<div class="line">      .widths = { Module::BITS_8, Module::BITS_0, Module::BITS_8 },</div>
 <div class="line">      .statusPos = 0,</div>
 <div class="line">      .parseStatusCb = <span class="keyword">nullptr</span>,</div>
 <div class="line">      .checkStatusCb = <span class="keyword">nullptr</span>,</div>
