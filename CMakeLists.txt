@@ -32,6 +32,12 @@ target_include_directories(RadioLib
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
+# use c++20 standard
+set_property(TARGET RadioLib PROPERTY CXX_STANDARD 20)
+
+# enable most warnings
+target_compile_options(RadioLib PRIVATE -Wall -Wextra)
+
 include(GNUInstallDirs)
 
 install(TARGETS RadioLib
