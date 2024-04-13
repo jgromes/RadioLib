@@ -419,6 +419,10 @@ int16_t SX1272::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
+float SX1272::getRSSI() {
+  return(SX1272::getRSSI(true, false));
+}
+
 float SX1272::getRSSI(bool packet, bool skipReceive) {
   return(SX127x::getRSSI(packet, skipReceive, -139));
 }

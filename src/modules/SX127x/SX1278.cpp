@@ -448,6 +448,10 @@ int16_t SX1278::setDataShapingOOK(uint8_t sh) {
   return(state);
 }
 
+float SX1278::getRSSI() {
+  return(SX1278::getRSSI(true, false));
+}
+
 float SX1278::getRSSI(bool packet, bool skipReceive) {
   int16_t offset = -157;
   if(frequency < 868.0) {

@@ -233,11 +233,18 @@ class SX1272: public SX127x {
 
     /*!
       \brief Gets recorded signal strength indicator.
+      Overload with packet mode enabled for PhysicalLayer compatibility.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI();
+
+    /*!
+      \brief Gets recorded signal strength indicator.
       \param packet Whether to read last packet RSSI, or the current value. LoRa mode only, ignored for FSK.
       \param skipReceive Set to true to skip putting radio in receive mode for the RSSI measurement in FSK/OOK mode.
       \returns RSSI value in dBm.
     */
-    float getRSSI(bool packet = true, bool skipReceive = false);
+    float getRSSI(bool packet, bool skipReceive = false);
 
     /*!
       \brief Enables/disables CRC check of received packets.
