@@ -159,9 +159,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1ccc4d5062f739d534ab22562c7efca4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4">setDataShapingOOK</a> (uint8_t sh)</td></tr>
 <tr class="memdesc:a1ccc4d5062f739d534ab22562c7efca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency equal to bit rate and 2 for frequency equal to 2x bit rate. Set to 0 to disable data shaping. Only available in FSK mode with OOK modulation.  <a href="class_s_x1278.html#a1ccc4d5062f739d534ab22562c7efca4">More...</a><br /></td></tr>
 <tr class="separator:a1ccc4d5062f739d534ab22562c7efca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a260399b893988196771bc5a62d604822"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a260399b893988196771bc5a62d604822">getRSSI</a> (bool packet=true, bool skipReceive=false)</td></tr>
-<tr class="memdesc:a260399b893988196771bc5a62d604822"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <a href="class_s_x1278.html#a260399b893988196771bc5a62d604822">More...</a><br /></td></tr>
-<tr class="separator:a260399b893988196771bc5a62d604822"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b1fe4d0b1acfa454d7bab59cdf319fe"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a0b1fe4d0b1acfa454d7bab59cdf319fe">getRSSI</a> ()</td></tr>
+<tr class="memdesc:a0b1fe4d0b1acfa454d7bab59cdf319fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x1278.html#a0b1fe4d0b1acfa454d7bab59cdf319fe">More...</a><br /></td></tr>
+<tr class="separator:a0b1fe4d0b1acfa454d7bab59cdf319fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab17357254073baeb7490c98faf10d991"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#ab17357254073baeb7490c98faf10d991">getRSSI</a> (bool packet, bool skipReceive=false)</td></tr>
+<tr class="memdesc:ab17357254073baeb7490c98faf10d991"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets recorded signal strength indicator.  <a href="class_s_x1278.html#ab17357254073baeb7490c98faf10d991">More...</a><br /></td></tr>
+<tr class="separator:ab17357254073baeb7490c98faf10d991"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0be7586b8e40355bbd29d78ae9941d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#ac0be7586b8e40355bbd29d78ae9941d1">setCRC</a> (bool enable, bool mode=false)</td></tr>
 <tr class="memdesc:ac0be7586b8e40355bbd29d78ae9941d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables/disables CRC check of received packets.  <a href="class_s_x1278.html#ac0be7586b8e40355bbd29d78ae9941d1">More...</a><br /></td></tr>
 <tr class="separator:ac0be7586b8e40355bbd29d78ae9941d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -484,9 +487,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a> ()</td></tr>
-<tr class="memdesc:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">More...</a><br /></td></tr>
-<tr class="separator:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -797,8 +797,38 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a260399b893988196771bc5a62d604822"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a260399b893988196771bc5a62d604822">&#9670;&nbsp;</a></span>getRSSI()</h2>
+<a id="a0b1fe4d0b1acfa454d7bab59cdf319fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b1fe4d0b1acfa454d7bab59cdf319fe">&#9670;&nbsp;</a></span>getRSSI() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float SX1278::getRSSI </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Gets recorded signal strength indicator. Overload with packet mode enabled for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility. </p>
+<dl class="section return"><dt>Returns</dt><dd>RSSI value in dBm. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ab17357254073baeb7490c98faf10d991"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab17357254073baeb7490c98faf10d991">&#9670;&nbsp;</a></span>getRSSI() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -807,7 +837,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="memname">float SX1278::getRSSI </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>packet</em> = <code>true</code>, </td>
+          <td class="paramname"><em>packet</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
