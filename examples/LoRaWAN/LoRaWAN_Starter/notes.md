@@ -152,6 +152,10 @@ Prebuilt modules are easy - we can detect the board and setup the pinmap for you
 * HELTEC_WIFI_LORA_32
 * HELTEC_WIFI_LORA_32_V2
 * HELTEC_WIFI_LORA_32_V3
+* HELTEC_WIRELESS_STICK
+* HELTEC_WIRELESS_STICK_V3
+* HELTEC_WIRELESS_STICK_LITE
+* HELTEC_WIRELESS_STICK_LITE_V3
 
 If you have a TTGO T-Beam, you must choose the correct radio from the Board Revision sub-menu found under the main Tools menu.
 
