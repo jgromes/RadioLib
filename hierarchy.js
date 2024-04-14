@@ -31,6 +31,9 @@ var hierarchy =
     [ "PhysicalLayer", "class_physical_layer.html", [
       [ "CC1101", "class_c_c1101.html", null ],
       [ "ExternalRadio", "class_external_radio.html", null ],
+      [ "LR11x0", "class_l_r11x0.html", [
+        [ "LR1110", "class_l_r1110.html", null ]
+      ] ],
       [ "RF69", "class_r_f69.html", [
         [ "SX1231", "class_s_x1231.html", [
           [ "SX1233", "class_s_x1233.html", null ]

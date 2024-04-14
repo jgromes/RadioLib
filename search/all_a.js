@@ -15,5 +15,7 @@ var searchData=
   ['lorawanmaccommand_5ft_179',['LoRaWANMacCommand_t',['../struct_lo_ra_w_a_n_mac_command__t.html',1,'']]],
   ['lorawanmaccommandqueue_5ft_180',['LoRaWANMacCommandQueue_t',['../struct_lo_ra_w_a_n_mac_command_queue__t.html',1,'']]],
   ['lorawanmacspec_5ft_181',['LoRaWANMacSpec_t',['../struct_lo_ra_w_a_n_mac_spec__t.html',1,'']]],
-  ['lorawannode_182',['LoRaWANNode',['../class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76',1,'LoRaWANNode::LoRaWANNode()'],['../class_lo_ra_w_a_n_node.html',1,'LoRaWANNode']]]
+  ['lorawannode_182',['LoRaWANNode',['../class_lo_ra_w_a_n_node.html',1,'LoRaWANNode'],['../class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76',1,'LoRaWANNode::LoRaWANNode()']]],
+  ['lr1110_183',['LR1110',['../class_l_r1110.html#a4e492901900ad1d85c818ec473b3d123',1,'LR1110::LR1110()'],['../class_l_r1110.html',1,'LR1110']]],
+  ['lr11x0_184',['LR11x0',['../class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421',1,'LR11x0::LR11x0()'],['../class_l_r11x0.html',1,'LR11x0']]]
 ];

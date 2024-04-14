@@ -24,6 +24,8 @@ var annotated_dup =
     [ "LoRaWANMacCommandQueue_t", "struct_lo_ra_w_a_n_mac_command_queue__t.html", "struct_lo_ra_w_a_n_mac_command_queue__t" ],
     [ "LoRaWANMacSpec_t", "struct_lo_ra_w_a_n_mac_spec__t.html", "struct_lo_ra_w_a_n_mac_spec__t" ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", "class_lo_ra_w_a_n_node" ],
+    [ "LR1110", "class_l_r1110.html", "class_l_r1110" ],
+    [ "LR11x0", "class_l_r11x0.html", "class_l_r11x0" ],
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],
