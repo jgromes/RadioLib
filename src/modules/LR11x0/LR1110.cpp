@@ -48,6 +48,10 @@ int16_t LR1110::setFrequency(float freq, bool calibrate, float band) {
   return(LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f)));
 }
 
+int16_t LR1110::setOutputPower(int8_t power) {
+  return(this->setOutputPower(power, false));
+}
+
 int16_t LR1110::setOutputPower(int8_t power, bool forceHighPower) {
   // determine whether to use HP or LP PA and check range accordingly
   bool useHp = forceHighPower || (power > 14);
