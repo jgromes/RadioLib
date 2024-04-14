@@ -7,6 +7,14 @@
 // include the library for Raspberry GPIO pins
 #include "pigpio.h"
 
+// these should really be swapped, but for some reason,
+// it seems like the change directions are inverted in gpioSetAlert functions
+#define PI_RISING     (FALLING_EDGE)
+#define PI_FALLING    (RISING_EDGE)
+
+// forward declaration of alert handler that will be used to emulate interrupts
+static void pigpioAlertHandler(int event, int level, uint32_t tick, void *userdata);
+
 // create a new Raspberry Pi hardware abstraction layer
 // using the pigpio library
 // the HAL must inherit from the base RadioLibHal class
@@ -15,7 +23,7 @@ class PiHal : public RadioLibHal {
   public:
     // default constructor - initializes the base HAL and any needed private members
     PiHal(uint8_t spiChannel, uint32_t spiSpeed = 2000000)
-      : RadioLibHal(PI_INPUT, PI_OUTPUT, PI_LOW, PI_HIGH, RISING_EDGE, FALLING_EDGE), 
+      : RadioLibHal(PI_INPUT, PI_OUTPUT, PI_LOW, PI_HIGH, PI_RISING, PI_FALLING), 
       _spiChannel(spiChannel),
       _spiSpeed(spiSpeed) {
     }
@@ -71,19 +79,31 @@ class PiHal : public RadioLibHal {
     }
 
     void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override {
-      if(interruptNum == RADIOLIB_NC) {
+      if((interruptNum == RADIOLIB_NC) || (interruptNum > PI_MAX_USER_GPIO)) {
         return;
       }
 
-      gpioSetISRFunc(interruptNum, mode, 0, (gpioISRFunc_t)interruptCb);
+      // enable emulated interrupt
+      interruptEnabled[interruptNum] = true;
+      interruptModes[interruptNum] = mode;
+      interruptCallbacks[interruptNum] = interruptCb;
+
+      // set pigpio alert callback
+      gpioSetAlertFuncEx(interruptNum, pigpioAlertHandler, (void*)this);
     }
 
     void detachInterrupt(uint32_t interruptNum) override {
-      if(interruptNum == RADIOLIB_NC) {
+      if((interruptNum == RADIOLIB_NC) || (interruptNum > PI_MAX_USER_GPIO)) {
         return;
       }
 
-      gpioSetISRFunc(interruptNum, 0, 0, NULL);
+      // clear emulated interrupt
+      interruptEnabled[interruptNum] = false;
+      interruptModes[interruptNum] = 0;
+      interruptCallbacks[interruptNum] = NULL;
+
+      // disable pigpio alert callback
+      gpioSetAlertFuncEx(interruptNum, NULL, NULL);
     }
 
     void delay(unsigned long ms) override {
@@ -120,7 +140,7 @@ class PiHal : public RadioLibHal {
       return(this->micros() - start);
     }
 
-   void spiBegin() {
+    void spiBegin() {
       if(_spiHandle < 0) {
         _spiHandle = spiOpen(_spiChannel, _spiSpeed, 0);
       }
@@ -141,11 +161,34 @@ class PiHal : public RadioLibHal {
       }
     }
 
+    // interrupt emulation
+    bool interruptEnabled[PI_MAX_USER_GPIO + 1];
+    uint32_t interruptModes[PI_MAX_USER_GPIO + 1];
+    typedef void (*RadioLibISR)(void);
+    RadioLibISR interruptCallbacks[PI_MAX_USER_GPIO + 1];
+
   private:
     // the HAL can contain any additional private members
     const unsigned int _spiSpeed;
     const uint8_t _spiChannel;
     int _spiHandle = -1;
 };
+
+// this handler emulates interrupts
+static void pigpioAlertHandler(int event, int level, uint32_t tick, void *userdata) {
+  if((event > PI_MAX_USER_GPIO) || (!userdata)) {
+    return;
+  }
+  
+  // PiHal isntance is passed via the user data
+  PiHal* hal = (PiHal*)userdata;
+
+  // check the interrupt is enabled, the level matches and a callback exists
+  if((hal->interruptEnabled[event]) &&
+     (hal->interruptModes[event] == level) &&
+     (hal->interruptCallbacks[event])) {
+    hal->interruptCallbacks[event]();
+  }
+}
 
 #endif
