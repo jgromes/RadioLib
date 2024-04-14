@@ -111,23 +111,25 @@ $(document).ready(function(){initNavTree('_l_r1110_8h_source.html',''); initResi
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    int16_t <a class="code" href="class_l_r1110.html#a58cfda71b08567a7e98e7d6fd03465b4">setFrequency</a>(<span class="keywordtype">float</span> freq);</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    int16_t <a class="code" href="class_l_r1110.html#a58cfda71b08567a7e98e7d6fd03465b4">setFrequency</a>(<span class="keywordtype">float</span> freq, <span class="keywordtype">bool</span> calibrate, <span class="keywordtype">float</span> band = 4);</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    int16_t <a class="code" href="class_l_r1110.html#acda1ecfbf1ad014fceef1269e82bace7">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160; </div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    int16_t <a class="code" href="class_l_r1110.html#ae22f80cb5f0c8781e1e9435768bd37fb">setOutputPower</a>(int8_t power);</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    int16_t <a class="code" href="class_l_r1110.html#ae22f80cb5f0c8781e1e9435768bd37fb">setOutputPower</a>(int8_t power, <span class="keywordtype">bool</span> forceHighPower);</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_r1110_html"><div class="ttname"><a href="class_l_r1110.html">LR1110</a></div><div class="ttdoc">Derived class for LR1110 modules.</div><div class="ttdef"><b>Definition:</b> LR1110.h:15</div></div>
 <div class="ttc" id="aclass_l_r1110_html_a4e492901900ad1d85c818ec473b3d123"><div class="ttname"><a href="class_l_r1110.html#a4e492901900ad1d85c818ec473b3d123">LR1110::LR1110</a></div><div class="ttdeci">LR1110(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:4</div></div>
 <div class="ttc" id="aclass_l_r1110_html_a58cfda71b08567a7e98e7d6fd03465b4"><div class="ttname"><a href="class_l_r1110.html#a58cfda71b08567a7e98e7d6fd03465b4">LR1110::setFrequency</a></div><div class="ttdeci">int16_t setFrequency(float freq)</div><div class="ttdoc">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. Will also perform calibr...</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:34</div></div>
 <div class="ttc" id="aclass_l_r1110_html_a7656fe337a859388247708aa143d50af"><div class="ttname"><a href="class_l_r1110.html#a7656fe337a859388247708aa143d50af">LR1110::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float bw=125.0, uint8_t sf=9, uint8_t cr=7, uint8_t syncWord=RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, int8_t power=10, uint16_t preambleLength=8, float tcxoVoltage=1.6)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:8</div></div>
-<div class="ttc" id="aclass_l_r1110_html_acda1ecfbf1ad014fceef1269e82bace7"><div class="ttname"><a href="class_l_r1110.html#acda1ecfbf1ad014fceef1269e82bace7">LR1110::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power, bool forceHighPower=false)</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (lo...</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:51</div></div>
+<div class="ttc" id="aclass_l_r1110_html_ae22f80cb5f0c8781e1e9435768bd37fb"><div class="ttname"><a href="class_l_r1110.html#ae22f80cb5f0c8781e1e9435768bd37fb">LR1110::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (lo...</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:51</div></div>
 <div class="ttc" id="aclass_l_r1110_html_afcabcd9b422581cd8a63a63373a98155"><div class="ttname"><a href="class_l_r1110.html#afcabcd9b422581cd8a63a63373a98155">LR1110::beginGFSK</a></div><div class="ttdeci">int16_t beginGFSK(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=156.2, int8_t power=10, uint16_t preambleLength=16, float tcxoVoltage=1.6)</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition:</b> LR1110.cpp:21</div></div>
 <div class="ttc" id="aclass_l_r11x0_html"><div class="ttname"><a href="class_l_r11x0.html">LR11x0</a></div><div class="ttdef"><b>Definition:</b> LR11x0.h:542</div></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>

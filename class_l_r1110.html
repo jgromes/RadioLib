@@ -122,9 +122,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a08c9ba9d02e7e3918f73f090c6d5ed33"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#a08c9ba9d02e7e3918f73f090c6d5ed33">setFrequency</a> (float freq, bool calibrate, float band=4)</td></tr>
 <tr class="memdesc:a08c9ba9d02e7e3918f73f090c6d5ed33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_l_r1110.html#a08c9ba9d02e7e3918f73f090c6d5ed33">More...</a><br /></td></tr>
 <tr class="separator:a08c9ba9d02e7e3918f73f090c6d5ed33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acda1ecfbf1ad014fceef1269e82bace7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#acda1ecfbf1ad014fceef1269e82bace7">setOutputPower</a> (int8_t power, bool forceHighPower=false)</td></tr>
-<tr class="memdesc:acda1ecfbf1ad014fceef1269e82bace7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <a href="class_l_r1110.html#acda1ecfbf1ad014fceef1269e82bace7">More...</a><br /></td></tr>
-<tr class="separator:acda1ecfbf1ad014fceef1269e82bace7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae22f80cb5f0c8781e1e9435768bd37fb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#ae22f80cb5f0c8781e1e9435768bd37fb">setOutputPower</a> (int8_t power)</td></tr>
+<tr class="memdesc:ae22f80cb5f0c8781e1e9435768bd37fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <a href="class_l_r1110.html#ae22f80cb5f0c8781e1e9435768bd37fb">More...</a><br /></td></tr>
+<tr class="separator:ae22f80cb5f0c8781e1e9435768bd37fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r1110.html#ae4eaaa6411bb1eeb131613fb3f43e5d1">setOutputPower</a> (int8_t power, bool forceHighPower)</td></tr>
+<tr class="memdesc:ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).  <a href="class_l_r1110.html#ae4eaaa6411bb1eeb131613fb3f43e5d1">More...</a><br /></td></tr>
+<tr class="separator:ae4eaaa6411bb1eeb131613fb3f43e5d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_l_r11x0"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_l_r11x0')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_l_r11x0.html">LR11x0</a></td></tr>
 <tr class="memitem:a562f34a054e3374b812556df3b6eb421 inherit pub_methods_class_l_r11x0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421">LR11x0</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a562f34a054e3374b812556df3b6eb421 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421">More...</a><br /></td></tr>
@@ -292,9 +295,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488">setEncoding</a> (uint8_t encoding)</td></tr>
 <tr class="memdesc:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets FSK data encoding. Only available in FSK mode. Must be implemented in module class.  <a href="class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488">More...</a><br /></td></tr>
 <tr class="separator:acb45b2342400a03a914a91d2ac7fb488 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
-<tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">More...</a><br /></td></tr>
-<tr class="separator:ad2286dc78dbf8e3084f38e9159b99ae5 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
 <tr class="memdesc:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">More...</a><br /></td></tr>
 <tr class="separator:a6c71cdc1238e1368274670758431a977 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -640,8 +640,45 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="acda1ecfbf1ad014fceef1269e82bace7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acda1ecfbf1ad014fceef1269e82bace7">&#9670;&nbsp;</a></span>setOutputPower()</h2>
+<a id="ae22f80cb5f0c8781e1e9435768bd37fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae22f80cb5f0c8781e1e9435768bd37fb">&#9670;&nbsp;</a></span>setOutputPower() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR1110::setOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power to be set in dBm, output PA is determined automatically preferring the low-power PA. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ae4eaaa6411bb1eeb131613fb3f43e5d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4eaaa6411bb1eeb131613fb3f43e5d1">&#9670;&nbsp;</a></span>setOutputPower() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -656,7 +693,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>forceHighPower</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>forceHighPower</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -670,7 +707,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">power</td><td>Output power to be set in dBm. </td></tr>
-    <tr><td class="paramname">forceHighPower</td><td>Force using the high-power PA. If set to false, PA will be determined automatically based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used. Defaults to false. </td></tr>
+    <tr><td class="paramname">forceHighPower</td><td>Force using the high-power PA. If set to false, PA will be determined automatically based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used. </td></tr>
   </table>
   </dd>
 </dl>
