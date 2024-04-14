@@ -945,17 +945,17 @@ int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   #endif
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_READ_REG_MEM, false, rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] rplBuff;
-  #endif
-  RADIOLIB_ASSERT(state);
 
   // convert endians
-  if(data) {
+  if(data && (state == RADIOLIB_ERR_NONE)) {
     for(size_t i = 0; i < len; i++) {
       data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
     }
   }
+
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] rplBuff;
+  #endif
   
   return(state);
 }
@@ -1202,17 +1202,17 @@ int16_t LR11x0::readInfoPage(uint16_t addr, uint32_t* data, size_t len) {
   #endif
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_READ_INFO_PAGE, false, rplBuff, len*sizeof(uint32_t), reqBuff, sizeof(reqBuff));
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] rplBuff;
-  #endif
-  RADIOLIB_ASSERT(state);
 
   // convert endians
-  if(data) {
+  if(data && (state == RADIOLIB_ERR_NONE)) {
     for(size_t i = 0; i < len; i++) {
       data[i] = ((uint32_t)rplBuff[2 + i*sizeof(uint32_t)] << 24) | ((uint32_t)rplBuff[3 + i*sizeof(uint32_t)] << 16) | ((uint32_t)rplBuff[4 + i*sizeof(uint32_t)] << 8) | (uint32_t)rplBuff[5 + i*sizeof(uint32_t)];
     }
   }
+  
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] rplBuff;
+  #endif
   
   return(state);
 }
