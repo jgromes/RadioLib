@@ -1835,7 +1835,7 @@ int16_t LR11x0::gnssAssisted(uint32_t gpsTime, uint8_t effort, uint8_t resMask, 
 
 int16_t LR11x0::gnssSetAssistancePosition(float lat, float lon) {
   uint16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  uint16_t lonRaw = (lat*2048.0f)/180.0f + 0.5f;
+  uint16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
   uint8_t buff[4] = {
     (uint8_t)((latRaw >> 8) & 0xFF), (uint8_t)(latRaw & 0xFF),
     (uint8_t)((lonRaw >> 8) & 0xFF), (uint8_t)(lonRaw & 0xFF),
@@ -1973,7 +1973,7 @@ int16_t LR11x0::gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac) {
 
 int16_t LR11x0::gnssGetSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv) {
   uint16_t latRaw = (lat*2048.0f)/90.0f + 0.5f;
-  uint16_t lonRaw = (lat*2048.0f)/180.0f + 0.5f;
+  uint16_t lonRaw = (lon*2048.0f)/180.0f + 0.5f;
   uint8_t reqBuff[9] = { 
     (uint8_t)((time >> 24) & 0xFF), (uint8_t)((time >> 16) & 0xFF),
     (uint8_t)((time >> 8) & 0xFF), (uint8_t)(time & 0xFF),
