@@ -108,8 +108,15 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
+  
+  // TODO implement GFSK
+  (void)br;
+  (void)freqDev;
+  (void)rxBw;
+  (void)preambleLength;
+  (void)tcxoVoltage;
 
-  return(RADIOLIB_ERR_NONE);
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t LR11x0::reset() {
@@ -260,6 +267,7 @@ int16_t LR11x0::standby(uint8_t mode, bool wakeup) {
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
   // TODO this will block BUSY forever
+  (void)wakeup;
   /*if(wakeup) {
     // pull NSS low to wake up
     this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
@@ -645,6 +653,14 @@ int16_t LR11x0::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
     this->crcTypeLoRa = len > 0 ? RADIOLIB_LR11X0_LORA_CRC_ENABLED : RADIOLIB_LR11X0_LORA_CRC_DISABLED;
     return(setPacketParamsLoRa(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, (uint8_t)this->invertIQEnabled));
+  
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    // TODO add GFSK support
+    (void)initial;
+    (void)polynomial;
+    (void)inverted;
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  
   }
 
   return(RADIOLIB_ERR_WRONG_MODEM);
@@ -1223,6 +1239,7 @@ int16_t LR11x0::deriveRootKeysAndGetPin(uint8_t* pin) {
 
 int16_t LR11x0::enableSpiCrc(bool en) {
   // TODO implement this
+  (void)en;
   // LR11X0 CRC is gen 0xA6 (0x65 but reflected), init 0xFF, input and result reflected
   /*RadioLibCRCInstance.size = 8;
   RadioLibCRCInstance.poly = 0xA6;
