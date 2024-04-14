@@ -4,6 +4,7 @@
 #include "../../utils/Cryptography.h"
 
 #include <string.h>
+#include <math.h>
 
 #if !RADIOLIB_EXCLUDE_LR11X0
 
