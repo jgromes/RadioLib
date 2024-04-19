@@ -109,15 +109,48 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
-  
-  // TODO implement GFSK
-  (void)br;
-  (void)freqDev;
-  (void)rxBw;
-  (void)preambleLength;
-  (void)tcxoVoltage;
 
-  return(RADIOLIB_ERR_UNSUPPORTED);
+  // set TCXO control, if requested
+  if(!this->XTAL && tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // configure settings not accessible by API
+  state = config(RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setBitRate(br);
+  RADIOLIB_ASSERT(state);
+
+  state = setFrequencyDeviation(freqDev);
+  RADIOLIB_ASSERT(state);
+
+  state = setRxBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+
+  state = setPreambleLength(preambleLength);
+  RADIOLIB_ASSERT(state);
+
+  // set publicly accessible settings that are not a part of begin method
+  uint8_t sync[] = { 0x12, 0xAD };
+  state = setSyncWord(sync, 2);
+  RADIOLIB_ASSERT(state);
+
+  state = setDataShaping(RADIOLIB_SHAPING_NONE);
+  RADIOLIB_ASSERT(state);
+
+  state = setEncoding(RADIOLIB_ENCODING_NRZ);
+  RADIOLIB_ASSERT(state);
+
+  state = variablePacketLengthMode(RADIOLIB_LR11X0_MAX_PACKET_LENGTH);
+  RADIOLIB_ASSERT(state);
+
+  state = setCRC(2);
+  RADIOLIB_ASSERT(state);
+
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t LR11x0::reset() {
@@ -267,12 +300,12 @@ int16_t LR11x0::standby(uint8_t mode, bool wakeup) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
-  // TODO this will block BUSY forever
-  (void)wakeup;
-  /*if(wakeup) {
-    // pull NSS low to wake up
+  if(wakeup) {
+    // pull NSS low for a while to wake up
     this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-  }*/
+    this->mod->hal->delay(1);
+    this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
+  }
 
   uint8_t buff[] = { mode };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_STANDBY, true, buff, 1));
@@ -577,6 +610,327 @@ int16_t LR11x0::setSyncWord(uint8_t syncWord) {
   return(setLoRaSyncWord(syncWord));
 }
 
+int16_t LR11x0::setBitRate(float br) {
+  RADIOLIB_CHECK_RANGE(br, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set bit rate value
+  // TODO implement fractional bit rate configuration
+  this->bitRate = br * 1000.0;
+  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+}
+
+int16_t LR11x0::setFrequencyDeviation(float freqDev) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set frequency deviation to lowest available setting (required for digimodes)
+  float newFreqDev = freqDev;
+  if(freqDev < 0.0) {
+    newFreqDev = 0.6;
+  }
+
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  this->frequencyDev = freqDev * 1000.0;
+  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+}
+
+int16_t LR11x0::setRxBandwidth(float rxBw) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check modulation parameters
+  /*if(2 * this->frequencyDev + this->bitRate > rxBw * 1000.0) {
+    return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
+  }*/
+
+  // check allowed receiver bandwidth values
+  if(fabs(rxBw - 4.8) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_4_8;
+  } else if(fabs(rxBw - 5.8) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_5_8;
+  } else if(fabs(rxBw - 7.3) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_7_3;
+  } else if(fabs(rxBw - 9.7) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_9_7;
+  } else if(fabs(rxBw - 11.7) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_11_7;
+  } else if(fabs(rxBw - 14.6) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_14_6;
+  } else if(fabs(rxBw - 19.5) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_19_5;
+  } else if(fabs(rxBw - 23.4) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_23_4;
+  } else if(fabs(rxBw - 29.3) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_29_3;
+  } else if(fabs(rxBw - 39.0) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_39_0;
+  } else if(fabs(rxBw - 46.9) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_46_9;
+  } else if(fabs(rxBw - 58.6) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_58_6;
+  } else if(fabs(rxBw - 78.2) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_78_2;
+  } else if(fabs(rxBw - 93.8) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_93_8;
+  } else if(fabs(rxBw - 117.3) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_117_3;
+  } else if(fabs(rxBw - 156.2) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_156_2;
+  } else if(fabs(rxBw - 187.2) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_187_2;
+  } else if(fabs(rxBw - 234.3) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_234_3;
+  } else if(fabs(rxBw - 312.0) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_312_0;
+  } else if(fabs(rxBw - 373.6) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_373_6;
+  } else if(fabs(rxBw - 467.0) <= 0.001) {
+    this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_467_0;
+  } else {
+    return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+  }
+
+  // update modulation parameters
+  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+}
+
+int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
+  if((!syncWord) || (!len) || (len > RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN)) {
+    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+  }
+
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // update sync word length
+  this->syncWordLength = len*8;
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+
+  // sync word is passed most-significant byte first
+  uint8_t fullSyncWord[RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN] = { 0 };
+  memcpy(fullSyncWord, syncWord, len);
+  return(setGfskSyncWord(fullSyncWord));
+}
+
+int16_t LR11x0::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
+  if((!syncWord) || (!bitsLen) || (bitsLen > 8*RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN)) {
+    return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+  }
+
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  uint8_t bytesLen = bitsLen / 8;
+  if ((bitsLen % 8) != 0) {
+    bytesLen++;
+  }
+
+  return(setSyncWord(syncWord, bytesLen));
+}
+
+int16_t LR11x0::setNodeAddress(uint8_t nodeAddr) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node only)
+  this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_NODE;
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+  
+  // set node address
+  this->node = nodeAddr;
+  return(setPacketAdrs(this->node, 0));
+}
+
+int16_t LR11x0::setBroadcastAddress(uint8_t broadAddr) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // enable address filtering (node and broadcast)
+  this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_NODE_BROADCAST;
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+  
+  // set node and broadcast address
+  return(setPacketAdrs(this->node, broadAddr));
+}
+
+int16_t LR11x0::disableAddressFiltering() {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // disable address filterin
+  this->addrComp = RADIOLIB_LR11X0_GFSK_ADDR_FILTER_DISABLED;
+  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+}
+
+int16_t LR11x0::setDataShaping(uint8_t sh) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set data shaping
+  switch(sh) {
+    case RADIOLIB_SHAPING_NONE:
+      this->pulseShape = RADIOLIB_LR11X0_GFSK_SHAPING_NONE;
+      break;
+    case RADIOLIB_SHAPING_0_3:
+      this->pulseShape = RADIOLIB_LR11X0_GFSK_SHAPING_GAUSSIAN_BT_0_3;
+      break;
+    case RADIOLIB_SHAPING_0_5:
+      this->pulseShape = RADIOLIB_LR11X0_GFSK_SHAPING_GAUSSIAN_BT_0_5;
+      break;
+    case RADIOLIB_SHAPING_0_7:
+      this->pulseShape = RADIOLIB_LR11X0_GFSK_SHAPING_GAUSSIAN_BT_0_7;
+      break;
+    case RADIOLIB_SHAPING_1_0:
+      this->pulseShape = RADIOLIB_LR11X0_GFSK_SHAPING_GAUSSIAN_BT_1_0;
+      break;
+    default:
+      return(RADIOLIB_ERR_INVALID_DATA_SHAPING);
+  }
+
+  // update modulation parameters
+  return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
+}
+
+int16_t LR11x0::setEncoding(uint8_t encoding) {
+  return(setWhitening(encoding));
+}
+
+int16_t LR11x0::fixedPacketLengthMode(uint8_t len) {
+  return(setPacketMode(RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_FIXED, len));
+}
+
+int16_t LR11x0::variablePacketLengthMode(uint8_t maxLen) {
+  return(setPacketMode(RADIOLIB_LR11X0_GFSK_PACKET_LENGTH_VARIABLE, maxLen));
+}
+
+int16_t LR11x0::setWhitening(bool enabled, uint16_t initial) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  if(!enabled) {
+    // disable whitening
+    this->whitening = RADIOLIB_LR11X0_GFSK_WHITENING_DISABLED;
+
+  } else {
+    // enable whitening
+    this->whitening = RADIOLIB_LR11X0_GFSK_WHITENING_ENABLED;
+
+    // write initial whitening value
+    state = setGfskWhitParams(initial);
+    RADIOLIB_ASSERT(state);
+  }
+
+  return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
+}
+
+int16_t LR11x0::setDataRate(DataRate_t dr) {
+  // select interpretation based on active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  
+  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    // set the bit rate
+    state = this->setBitRate(dr.fsk.bitRate);
+    RADIOLIB_ASSERT(state);
+
+    // set the frequency deviation
+    state = this->setFrequencyDeviation(dr.fsk.freqDev);
+
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    // set the spreading factor
+    state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+    RADIOLIB_ASSERT(state);
+
+    // set the bandwidth
+    state = this->setBandwidth(dr.lora.bandwidth);
+    RADIOLIB_ASSERT(state);
+
+    // set the coding rate
+    state = this->setCodingRate(dr.lora.codingRate);
+  }
+
+  return(state);
+}
+
+int16_t LR11x0::checkDataRate(DataRate_t dr) {
+  // select interpretation based on active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+
+  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    return(RADIOLIB_ERR_NONE);
+
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
+    return(RADIOLIB_ERR_NONE);
+  
+  }
+
+  return(RADIOLIB_ERR_UNKNOWN);
+}
+
 int16_t LR11x0::setPreambleLength(size_t preambleLength) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -585,6 +939,10 @@ int16_t LR11x0::setPreambleLength(size_t preambleLength) {
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     this->preambleLengthLoRa = preambleLength;
     return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType,  this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    this->preambleLengthGFSK = preambleLength;
+    this->preambleDetLength = RADIOLIB_LR11X0_GFSK_PREAMBLE_DETECT_16_BITS;
+    return(setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening));
   }
 
   return(RADIOLIB_ERR_WRONG_MODEM);
@@ -645,7 +1003,7 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   return(setTcxoMode(tune, delayValue));
 }
 
-int16_t LR11x0::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
+int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool inverted) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -653,18 +1011,40 @@ int16_t LR11x0::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
     this->crcTypeLoRa = len > 0 ? RADIOLIB_LR11X0_LORA_CRC_ENABLED : RADIOLIB_LR11X0_LORA_CRC_DISABLED;
-    return(setPacketParamsLoRa(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, (uint8_t)this->invertIQEnabled));
+    state = setPacketParamsLoRa(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, (uint8_t)this->invertIQEnabled);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    // TODO add GFSK support
-    (void)initial;
-    (void)polynomial;
-    (void)inverted;
-    return(RADIOLIB_ERR_UNSUPPORTED);
+    // update packet parameters
+    switch(len) {
+      case 0:
+        this->crcTypeGFSK = RADIOLIB_LR11X0_GFSK_CRC_DISABLED;
+        break;
+      case 1:
+        if(inverted) {
+          this->crcTypeGFSK = RADIOLIB_LR11X0_GFSK_CRC_1_BYTE_INV;
+        } else {
+          this->crcTypeGFSK = RADIOLIB_LR11X0_GFSK_CRC_1_BYTE;
+        }
+        break;
+      case 2:
+        if(inverted) {
+          this->crcTypeGFSK = RADIOLIB_LR11X0_GFSK_CRC_2_BYTE_INV;
+        } else {
+          this->crcTypeGFSK = RADIOLIB_LR11X0_GFSK_CRC_2_BYTE;
+        }
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
+    }
+
+    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+    RADIOLIB_ASSERT(state);
+
+    state = setGfskCrcParams(initial, polynomial);
   
   }
 
-  return(RADIOLIB_ERR_WRONG_MODEM);
+  return(state);
 }
 
 int16_t LR11x0::invertIQ(bool enable) {
@@ -793,7 +1173,7 @@ uint32_t LR11x0::getTimeOnAir(size_t len) {
     return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(((uint32_t)len * 8 * 1000) / this->bitRateKbps);
+    return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
   
   }
 
@@ -908,6 +1288,24 @@ int16_t LR11x0::config(uint8_t modem) {
 
   // set modem
   state = this->setPacketType(modem);
+  return(state);
+}
+
+int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, mode, len, this->crcTypeGFSK, this->whitening);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  this->packetType = mode;
   return(state);
 }
 
@@ -1311,9 +1709,8 @@ int16_t LR11x0::getPacketStatusGFSK(float* rssiSync, float* rssiAvg, uint8_t* rx
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_GET_PACKET_STATUS, false, buff, sizeof(buff));
 
   // pass the replies
-  // TODO do the value conversion for RSSI (fixed point?)
-  if(rssiSync) { *rssiSync = (float)buff[0]; }
-  if(rssiAvg) { *rssiAvg = (float)buff[1]; }
+  if(rssiSync) { *rssiSync = (float)buff[0] / -2.0f; }
+  if(rssiAvg) { *rssiAvg = (float)buff[1] / -2.0f; }
   if(rxLen) { *rxLen = buff[2]; }
   if(stat) { *stat = buff[3]; }
 
@@ -1334,7 +1731,7 @@ int16_t LR11x0::setGfskSyncWord(uint8_t* sync) {
   if(!sync) {
     return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_GFSK_SYNC_WORD, false, sync, RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN));
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_GFSK_SYNC_WORD, true, sync, RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN));
 }
 
 int16_t LR11x0::setLoRaPublicNetwork(bool pub) {

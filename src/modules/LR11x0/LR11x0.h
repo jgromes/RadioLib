@@ -752,8 +752,121 @@ class LR11x0: public PhysicalLayer {
     int16_t setSyncWord(uint8_t syncWord);
 
     /*!
-      \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
-      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK).
+      \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
+      \param br FSK bit rate to be set in kbps.
+      \returns \ref status_codes
+    */
+    int16_t setBitRate(float br);
+
+    /*!
+      \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
+      \param freqDev GFSK frequency deviation to be set in kHz.
+      \returns \ref status_codes
+    */
+    int16_t setFrequencyDeviation(float freqDev) override;
+
+    /*!
+      \brief Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19.5,
+      23.4, 29.3, 39.0, 46.9, 58.6, 78.2, 93.8, 117.3, 156.2, 187.2, 234.3, 312.0, 373.6 and 467.0 kHz.
+      \param rxBw GFSK receiver bandwidth to be set in kHz.
+      \returns \ref status_codes
+    */
+    int16_t setRxBandwidth(float rxBw);
+    
+    /*!
+      \brief Sets GFSK sync word in the form of array of up to 8 bytes.
+      \param syncWord GFSK sync word to be set.
+      \param len GFSK sync word length in bytes.
+      \returns \ref status_codes
+    */
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
+
+    /*!
+      \brief Sets GFSK sync word in the form of array of up to 8 bytes.
+      \param syncWord GFSK sync word to be set.
+      \param bitsLen GFSK sync word length in bits. If length is not divisible by 8,
+      least significant bits of syncWord will be ignored.
+      \returns \ref status_codes
+    */
+    int16_t setSyncBits(uint8_t *syncWord, uint8_t bitsLen);
+
+    /*!
+      \brief Sets node address. Calling this method will also enable address filtering for node address only.
+      \param nodeAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setNodeAddress(uint8_t nodeAddr);
+
+    /*!
+      \brief Sets broadcast address. Calling this method will also enable address
+      filtering for node and broadcast address.
+      \param broadAddr Node address to be set.
+      \returns \ref status_codes
+    */
+    int16_t setBroadcastAddress(uint8_t broadAddr);
+
+    /*!
+      \brief Disables address filtering. Calling this method will also erase previously set addresses.
+      \returns \ref status_codes
+    */
+    int16_t disableAddressFiltering();
+
+    /*!
+      \brief Sets time-bandwidth product of Gaussian filter applied for shaping.
+      Allowed values are RADIOLIB_SHAPING_0_3, RADIOLIB_SHAPING_0_5, RADIOLIB_SHAPING_0_7 or RADIOLIB_SHAPING_1_0.
+      Set to RADIOLIB_SHAPING_NONE to disable data shaping.
+      \param sh Time-bandwidth product of Gaussian filter to be set.
+      \returns \ref status_codes
+    */
+    int16_t setDataShaping(uint8_t sh) override;
+
+    /*!
+      \brief Sets transmission encoding. Available in GFSK mode only. Serves only as alias for PhysicalLayer compatibility.
+      \param encoding Encoding to be used. Set to 0 for NRZ, and 2 for whitening.
+      \returns \ref status_codes
+    */
+    int16_t setEncoding(uint8_t encoding) override;
+
+    /*!
+      \brief Set modem in fixed packet length mode. Available in GFSK mode only.
+      \param len Packet length.
+      \returns \ref status_codes
+    */
+    int16_t fixedPacketLengthMode(uint8_t len = RADIOLIB_LR11X0_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Set modem in variable packet length mode. Available in GFSK mode only.
+      \param maxLen Maximum packet length.
+      \returns \ref status_codes
+    */
+    int16_t variablePacketLengthMode(uint8_t maxLen = RADIOLIB_LR11X0_MAX_PACKET_LENGTH);
+
+    /*!
+      \brief Sets GFSK whitening parameters.
+      \param enabled True = Whitening enabled
+      \param initial Initial value used for the whitening LFSR in GFSK mode.
+      By default set to 0x01FF for compatibility with SX127x and LoRaWAN.
+      \returns \ref status_codes
+    */
+    int16_t setWhitening(bool enabled, uint16_t initial = 0x01FF);
+
+    /*!
+      \brief Set data.
+      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
+
+    /*!
+      \brief Check the data rate can be configured by this module.
+      \param dr Data rate struct. Interpretation depends on currently active modem (GFSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t checkDataRate(DataRate_t dr) override;
+
+    /*!
+      \brief Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.
+      \param preambleLength Preamble length to be set in symbols (LoRa) or bits (GFSK).
       \returns \ref status_codes
     */
     int16_t setPreambleLength(size_t preambleLength) override;
@@ -771,12 +884,12 @@ class LR11x0: public PhysicalLayer {
     /*!
       \brief Sets CRC configuration.
       \param len CRC length in bytes, Allowed values are 1 or 2, set to 0 to disable CRC.
-      \param initial Initial CRC value. FSK only. Defaults to 0x1D0F (CCIT CRC).
-      \param polynomial Polynomial for CRC calculation. FSK only. Defaults to 0x1021 (CCIT CRC).
-      \param inverted Invert CRC bytes. FSK only. Defaults to true (CCIT CRC).
+      \param initial Initial CRC value. GFSK only. Defaults to 0x1D0F (CCIT CRC).
+      \param polynomial Polynomial for CRC calculation. GFSK only. Defaults to 0x1021 (CCIT CRC).
+      \param inverted Invert CRC bytes. GFSK only. Defaults to true (CCIT CRC).
       \returns \ref status_codes
     */
-    int16_t setCRC(uint8_t len, uint16_t initial = 0x1D0F, uint16_t polynomial = 0x1021, bool inverted = true);
+    int16_t setCRC(uint8_t len, uint32_t initial = 0x00001D0FUL, uint32_t polynomial = 0x00001021UL, bool inverted = true);
 
     /*!
       \brief Enable/disable inversion of the I and Q signals
@@ -995,9 +1108,8 @@ class LR11x0: public PhysicalLayer {
     bool invertIQEnabled = false;
 
     // cached GFSK parameters
-    float bitRateKbps = 0;
-    uint8_t bitRate = 0;
-    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0;
+    uint32_t bitRate = 0, frequencyDev = 0;
+    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
     uint16_t preambleLengthGFSK = 0;
 
     float dataRateMeasured = 0;
@@ -1006,6 +1118,7 @@ class LR11x0: public PhysicalLayer {
     static int16_t SPIcheckStatus(Module* mod);
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
+    int16_t setPacketMode(uint8_t mode, uint8_t len);
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len);
