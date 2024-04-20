@@ -292,6 +292,29 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   return(readData(data, len));
 }
 
+int16_t LR11x0::transmitDirect(uint32_t frf) {
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_TX);
+
+  // user requested to start transmitting immediately (required for RTTY)
+  int16_t state = RADIOLIB_ERR_NONE;
+  if(frf != 0) {
+    state = setRfFrequency(frf);
+  }
+  RADIOLIB_ASSERT(state);
+
+  // start transmitting
+  return(setTxCw());
+}
+
+int16_t LR11x0::receiveDirect() {
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_RX);
+
+  // LR11x0 is unable to output received data directly
+  return(RADIOLIB_ERR_UNKNOWN);
+}
+
 int16_t LR11x0::standby() {
   return(LR11x0::standby(RADIOLIB_LR11X0_STANDBY_RC));
 }
@@ -643,7 +666,7 @@ int16_t LR11x0::setFrequencyDeviation(float freqDev) {
   }
 
   RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
-  this->frequencyDev = freqDev * 1000.0;
+  this->frequencyDev = newFreqDev * 1000.0;
   return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 

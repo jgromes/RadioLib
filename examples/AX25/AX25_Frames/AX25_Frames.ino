@@ -12,6 +12,7 @@
     - SX126x
     - nRF24
     - Si443x/RFM2x
+    - LR11x0
 
    Using raw AX.25 frames requires some
    knowledge of the protocol, refer to

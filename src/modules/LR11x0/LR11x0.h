@@ -10,7 +10,7 @@
 #include "../../protocols/PhysicalLayer/PhysicalLayer.h"
 
 // LR11X0 physical layer properties
-#define RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE                     0.9536743164
+#define RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE                     1.0
 #define RADIOLIB_LR11X0_MAX_PACKET_LENGTH                       255
 #define RADIOLIB_LR11X0_CRYSTAL_FREQ                            32.0
 #define RADIOLIB_LR11X0_DIV_EXPONENT                            25
@@ -605,6 +605,20 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t receive(uint8_t* data, size_t len) override;
+
+    /*!
+      \brief Starts direct mode transmission.
+      \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
+      \returns \ref status_codes
+    */
+    int16_t transmitDirect(uint32_t frf = 0) override;
+
+    /*!
+      \brief Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as %SX126x series does not support direct mode reception.
+      Will always return RADIOLIB_ERR_UNKNOWN.
+      \returns \ref status_codes
+    */
+    int16_t receiveDirect() override;
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).

@@ -8,6 +8,7 @@
     - SX127x/RFM9x
     - SX126x/LLCC68
     - SX128x
+    - LR11x0
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
