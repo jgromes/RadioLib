@@ -23,6 +23,7 @@ var class_l_r11x0 =
     [ "readData", "class_l_r11x0.html#a20279f1b267e936991f47fd703924833", null ],
     [ "receive", "class_l_r11x0.html#ab82617fa3fa9f21d4cd427314ecc4af8", null ],
     [ "receive", "class_l_r11x0.html#a377c287f18c939c2b4da3241d8329e58", null ],
+    [ "receiveDirect", "class_l_r11x0.html#ae1a8e8eda78113c47f1a865e63051bb5", null ],
     [ "reset", "class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994", null ],
     [ "setBandwidth", "class_l_r11x0.html#abf961ec7d93feb6472f26b7b976ee0c9", null ],
     [ "setBitRate", "class_l_r11x0.html#a03ab7a24fec379c6ba2d642e1133c4f2", null ],
@@ -56,6 +57,7 @@ var class_l_r11x0 =
     [ "transmit", "class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "class_l_r11x0.html#a3dd42f8d5569487ea74f004ca652a709", null ],
     [ "transmit", "class_l_r11x0.html#a3a1de95be55f7ecc1d26a7aa7983cdba", null ],
+    [ "transmitDirect", "class_l_r11x0.html#ae077957969f6274a53f63b314b6f1359", null ],
     [ "variablePacketLengthMode", "class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451", null ],
     [ "XTAL", "class_l_r11x0.html#a3ccfd35d26960457214d2a0192d6b312", null ]
 ];
