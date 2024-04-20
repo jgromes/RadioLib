@@ -312,6 +312,7 @@
 #define RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC                   (0x00UL << 0)   //  7     0     mode to set after CAD: standby with RC
 #define RADIOLIB_LR11X0_CAD_EXIT_MODE_RX                        (0x01UL << 0)   //  7     0                            receive if activity detected
 #define RADIOLIB_LR11X0_CAD_EXIT_MODE_LBT                       (0x10UL << 0)   //  7     0                            transmit if no activity detected
+#define RADIOLIB_LR11X0_CAD_PARAM_DEFAULT                       (0xFFUL << 0)   //  7     0     used by the CAD methods to specify default parameter value
 
 // RADIOLIB_LR11X0_CMD_SET_PACKET_TYPE
 #define RADIOLIB_LR11X0_PACKET_TYPE_NONE                        (0x00UL << 0)   //  2     0     packet type: none
@@ -621,6 +622,21 @@ class LR11x0: public PhysicalLayer {
     int16_t receiveDirect() override;
 
     /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel() override;
+
+    /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \param symbolNum Number of symbols for CAD detection.
+      \param detPeak Peak value for CAD detection.
+      \param detMin Minimum value for CAD detection.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+
+    /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
       \returns \ref status_codes
     */
@@ -731,6 +747,29 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+    
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan() override;
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout.
+      \param symbolNum Number of symbols for CAD detection. 
+      \param detPeak Peak value for CAD detection.
+      \param detMin Minimum value for CAD detection.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+
+    /*!
+      \brief Read the channel scan result
+      \returns \ref status_codes
+    */
+    int16_t getChannelScanResult() override;
 
     // configuration methods
 
@@ -1133,6 +1172,7 @@ class LR11x0: public PhysicalLayer {
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
+    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len);

@@ -315,6 +315,24 @@ int16_t LR11x0::receiveDirect() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
+int16_t LR11x0::scanChannel() {
+  return(this->scanChannel(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+}
+
+int16_t LR11x0::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+  // set mode to CAD
+  int state = startChannelScan(symbolNum, detPeak, detMin);
+  RADIOLIB_ASSERT(state);
+
+  // wait for channel activity detected or timeout
+  while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
+    this->mod->hal->yield();
+  }
+
+  // check CAD result
+  return(getChannelScanResult());
+}
+
 int16_t LR11x0::standby() {
   return(LR11x0::standby(RADIOLIB_LR11X0_STANDBY_RC));
 }
@@ -537,6 +555,62 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(crcState);
 
   return(state);
+}
+
+int16_t LR11x0::startChannelScan() {
+  return(this->startChannelScan(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+}
+
+int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+  // check active modem
+  int16_t state = RADIOLIB_ERR_NONE;
+  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_RX);
+
+  // set DIO pin mapping
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE, RADIOLIB_LR11X0_IRQ_NONE);
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  RADIOLIB_ASSERT(state);
+
+  // set mode to CAD
+  return(startCad(symbolNum, detPeak, detMin));
+}
+
+int16_t LR11x0::getChannelScanResult() {
+  // check active modem
+  int16_t state = RADIOLIB_ERR_NONE;
+  uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
+  if(modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check CAD result
+  uint32_t cadResult = getIrqStatus();
+  if(cadResult & RADIOLIB_LR11X0_IRQ_CAD_DETECTED) {
+    // detected some LoRa activity
+    return(RADIOLIB_LORA_DETECTED);
+  } else if(cadResult & RADIOLIB_LR11X0_IRQ_CAD_DONE) {
+    // channel is free
+    return(RADIOLIB_CHANNEL_FREE);
+  }
+
+  return(RADIOLIB_ERR_UNKNOWN);
 }
 
 int16_t LR11x0::setBandwidth(float bw) {
@@ -1282,8 +1356,6 @@ int16_t LR11x0::config(uint8_t modem) {
   state = this->setRxTxFallbackMode(RADIOLIB_LR11X0_FALLBACK_MODE_STBY_RC);
   RADIOLIB_ASSERT(state);
 
-  // TODO set some CAD parameters - will be overwritten when calling CAD anyway
-
   // clear IRQ
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE, RADIOLIB_LR11X0_IRQ_NONE);
@@ -1330,6 +1402,42 @@ int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
   // update cached value
   this->packetType = mode;
   return(state);
+}
+
+int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // select CAD parameters
+  // TODO the magic numbers are based on Semtech examples, this is probably suboptimal
+  uint8_t num = symbolNum;
+  if(num == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
+    num = 2;
+  }
+  
+  uint8_t detPeakValues[8] = { 48, 48, 50, 55, 55, 59, 61, 65 };
+  uint8_t peak = detPeak;
+  if(peak == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
+    peak = detPeakValues[this->spreadingFactor - 5];
+  }
+
+  uint8_t min = detMin;
+  if(min == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
+    min = 10;
+  }
+
+  // set CAD parameters
+  // TODO add configurable exit mode and timeout
+  state = setCadParams(num, peak, min, RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC, 0);
+  RADIOLIB_ASSERT(state);
+
+  // start CAD
+  return(setCad());
 }
 
 Module* LR11x0::getMod() {
