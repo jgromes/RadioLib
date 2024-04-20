@@ -30,21 +30,21 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 
 ### Supported protocols and digital modes:
 * [__AX.25__](https://www.sigidwiki.com/wiki/PACKET) using 2-FSK or AFSK for modules:  
-SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x, Si443x, LR11x0 and SX128x
 * [__RTTY__](https://www.sigidwiki.com/wiki/RTTY) using 2-FSK or AFSK for modules:  
-SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
 * [__Morse Code__](https://www.sigidwiki.com/wiki/Morse_Code_(CW)) using 2-FSK or AFSK for modules:  
-SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
 * [__SSTV__](https://www.sigidwiki.com/wiki/SSTV) using 2-FSK or AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, RFM2x and Si443x
 * [__Hellschreiber__](https://www.sigidwiki.com/wiki/Hellschreiber) using 2-FSK or AFSK for modules:  
-SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
+SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and SX128x
 * [__APRS__](https://www.sigidwiki.com/wiki/APRS) using AFSK for modules:  
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:  
 SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
 * [__LoRaWAN__](https://lora-alliance.org/) using LoRa for modules:  
-SX127x, RFM9x, SX126x and SX128x  
+SX127x, RFM9x, SX126x, LR11x0 and SX128x  
   * NOTE: LoRaWAN support is currently in beta, feedback via [Issues](https://github.com/jgromes/RadioLib/issues) and [Discussions](https://github.com/jgromes/RadioLib/discussions) is appreciated!
 
 ### Supported Arduino platforms:
