@@ -194,12 +194,7 @@ int16_t AX25Client::begin(const char* srcCallsign, uint8_t srcSSID, uint8_t preL
   preambleLen = preLen;
 
   // configure for direct mode
-  #if !RADIOLIB_EXCLUDE_AFSK
-  if(bellModem != nullptr) {
-    return(phyLayer->startDirect());
-  }
-  #endif
-  return(RADIOLIB_ERR_NONE);
+  return(phyLayer->startDirect());
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
