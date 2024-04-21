@@ -69,6 +69,8 @@
 #include "modules/CC1101/CC1101.h"
 #include "modules/LLCC68/LLCC68.h"
 #include "modules/LR11x0/LR1110.h"
+#include "modules/LR11x0/LR1120.h"
+#include "modules/LR11x0/LR1121.h"
 #include "modules/nRF24/nRF24.h"
 #include "modules/RF69/RF69.h"
 #include "modules/RFM2x/RFM22.h"

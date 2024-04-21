@@ -13,7 +13,7 @@ LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE,
   this->XTAL = false;
 }
 
-int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
@@ -30,6 +30,9 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
 
   state = setSyncWord(syncWord);
   RADIOLIB_ASSERT(state);
+  
+  state = setOutputPower(power);
+  RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
   RADIOLIB_ASSERT(state);
@@ -44,7 +47,7 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
@@ -57,6 +60,9 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   RADIOLIB_ASSERT(state);
 
   state = setRxBandwidth(rxBw);
+  RADIOLIB_ASSERT(state);
+  
+  state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
@@ -82,13 +88,16 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage) {
+int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, int8_t power, float tcxoVoltage) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
   state = setLrFhssConfig(bw, cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
   RADIOLIB_ASSERT(state);
 
   state = setSyncWord(0x12AD101B);
@@ -577,6 +586,34 @@ int16_t LR11x0::getChannelScanResult() {
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
+}
+
+int16_t LR11x0::setOutputPower(int8_t power) {
+  return(this->setOutputPower(power, false));
+}
+
+int16_t LR11x0::setOutputPower(int8_t power, bool forceHighPower) {
+  // determine whether to use HP or LP PA and check range accordingly
+  bool useHp = forceHighPower || (power > 14);
+  if(useHp) {
+    RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    useHp = true;
+  
+  } else {
+    RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    useHp = false;
+  
+  }
+
+  // TODO how and when to configure OCP?
+
+  // update PA config - always use VBAT for high-power PA
+  int16_t state = setPaConfig((uint8_t)useHp, (uint8_t)useHp, 0x04, 0x07);
+  RADIOLIB_ASSERT(state);
+
+  // set output power
+  state = setTxParams(power, RADIOLIB_LR11X0_PA_RAMP_48U);
+  return(state);
 }
 
 int16_t LR11x0::setBandwidth(float bw) {

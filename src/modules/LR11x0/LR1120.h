@@ -1,5 +1,5 @@
-#if !defined(_RADIOLIB_LR1110_H)
-#define _RADIOLIB_LR1110_H
+#if !defined(_RADIOLIB_LR1120_H)
+#define _RADIOLIB_LR1120_H
 
 #include "../../TypeDef.h"
 
@@ -9,16 +9,16 @@
 #include "LR11x0.h"
 
 /*!
-  \class LR1110
-  \brief Derived class for %LR1110 modules.
+  \class LR1120
+  \brief Derived class for %LR1120 modules.
 */
-class LR1110: public LR11x0 {
+class LR1120: public LR11x0 {
   public:
     /*!
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LR1110(Module* mod);
+    LR1120(Module* mod);
 
     // basic methods
 
@@ -69,15 +69,16 @@ class LR1110: public LR11x0 {
     // configuration methods
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
-      Will also perform calibrations.
+      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      1900 - 2200 MHz and 2400 - 2500 MHz. Will also perform calibrations.
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq);
 
     /*!
-      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
+      \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz,
+      1900 - 2200 MHz and 2400 - 2500 MHz. Will also perform calibrations.
       \param freq Carrier frequency to be set in MHz.
       \param calibrate Run image calibration.
       \param band Half bandwidth for image calibration. For example,
