@@ -14,44 +14,8 @@ LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE,
 }
 
 int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 0;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR11X0_CMD_READ_REG_MEM;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR11X0_CMD_WRITE_REG_MEM;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR11X0_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR11X0_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
-  
-  // try to find the LR11x0 chip - this will also reset the module at least once
-  if(!LR11x0::findChip(this->chipType)) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
-    this->mod->term();
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
-
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
-    state = setTCXO(tcxoVoltage);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_LR11X0_PACKET_TYPE_LORA);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -81,42 +45,8 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
 }
 
 int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 0;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR11X0_CMD_READ_REG_MEM;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR11X0_CMD_WRITE_REG_MEM;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR11X0_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR11X0_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
-  
-  // try to find the LR11x0 chip - this will also reset the module at least once
-  if(!LR11x0::findChip(this->chipType)) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
-    this->mod->term();
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
-
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
-    state = setTCXO(tcxoVoltage);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -152,6 +82,22 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage) {
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setLrFhssConfig(bw, cr);
+  RADIOLIB_ASSERT(state);
+
+  state = setSyncWord(0x12AD101B);
+  RADIOLIB_ASSERT(state);
+
+  // set fixed configuration
+  return(setModulationParamsLrFhss(RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
+}
+
 int16_t LR11x0::reset() {
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
@@ -185,18 +131,17 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
   }
 
-  uint32_t timeout = 0;
-
   // get currently active modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
+  uint32_t timeout = getTimeOnAir(len);
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (150% of expected time-on-air)
-    timeout = (getTimeOnAir(len) * 3) / 2;
+    timeout = (timeout * 3) / 2;
 
-  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  } else if((modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) || (modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
     // calculate timeout (500% of expected time-on-air)
-    timeout = getTimeOnAir(len) * 5;
+    timeout = timeout * 5;
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -248,6 +193,13 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
     }
     float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)this->bitRate;
     timeout = (uint32_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
+  
+  } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    size_t maxLen = len;
+    if(len == 0) { 
+      maxLen = 0xFF;
+    }
+    timeout = (uint32_t)(((maxLen * 8.0) / (RADIOLIB_LR11X0_LR_FHSS_BIT_RATE)) * 1000.0 * 5.0);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -417,10 +369,13 @@ int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, len, this->crcTypeLoRa, this->invertIQEnabled);
+  
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, len, this->crcTypeGFSK, this->whitening);
-  } else {
+  
+  } else if(modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
     return(RADIOLIB_ERR_UNKNOWN);
+  
   }
   RADIOLIB_ASSERT(state);
 
@@ -428,9 +383,17 @@ int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_TX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT, 0);
   RADIOLIB_ASSERT(state);
 
-  // write packet to buffer
-  state = writeBuffer8(data, len);
-  RADIOLIB_ASSERT(state);
+  if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    // in LR-FHSS mode, the packet is built by the device
+    // TODO add configurable grid step and device offset
+    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC, true, this->lrFhssBw, this->lrFhssHopSeq, 0, data, len);
+
+  } else {
+    // write packet to buffer
+    state = writeBuffer8(data, len);
+    RADIOLIB_ASSERT(state);
+
+  }
 
   // clear interrupt flags
   state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
@@ -471,7 +434,9 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, size_t len) {
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
-  if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
+  if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -519,7 +484,9 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
-  if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
+  if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -659,7 +626,7 @@ int16_t LR11x0::setSpreadingFactor(uint8_t sf, bool legacy) {
 
   RADIOLIB_CHECK_RANGE(sf, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
 
-  // enable SF6 legacy mode
+  // TODO enable SF6 legacy mode
   if(legacy && (sf == 6)) {
     //this->mod->SPIsetRegValue(RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT, RADIOLIB_LR11X0_SF6_SX127X, 18, 18);
   }
@@ -702,8 +669,20 @@ int16_t LR11x0::setCodingRate(uint8_t cr, bool longInterleave) {
   return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
-int16_t LR11x0::setSyncWord(uint8_t syncWord) {
-  return(setLoRaSyncWord(syncWord));
+int16_t LR11x0::setSyncWord(uint32_t syncWord) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(setLoRaSyncWord(syncWord & 0xFF));
+  
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    return(lrFhssSetSyncWord(syncWord));
+ 
+  }
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t LR11x0::setBitRate(float br) {
@@ -1271,6 +1250,9 @@ uint32_t LR11x0::getTimeOnAir(size_t len) {
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
   
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    return(((uint32_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
+
   }
 
   return(0);
@@ -1278,6 +1260,65 @@ uint32_t LR11x0::getTimeOnAir(size_t len) {
 
 float LR11x0::getDataRate() const {
   return(this->dataRateMeasured);
+}
+
+int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check and cache all parameters
+  RADIOLIB_CHECK_RANGE((int8_t)cr, (int8_t)RADIOLIB_LR11X0_LR_FHSS_CR_5_6, (int8_t)RADIOLIB_LR11X0_LR_FHSS_CR_1_3, RADIOLIB_ERR_INVALID_CODING_RATE);
+  this->lrFhssCr = cr;
+  RADIOLIB_CHECK_RANGE((int8_t)bw, (int8_t)RADIOLIB_LR11X0_LR_FHSS_BW_39_06, (int8_t)RADIOLIB_LR11X0_LR_FHSS_BW_1574_2, RADIOLIB_ERR_INVALID_BANDWIDTH);
+  this->lrFhssBw = bw;
+  RADIOLIB_CHECK_RANGE(hdrCount, 1, 4, RADIOLIB_ERR_INVALID_BIT_RANGE);
+  this->lrFhssHdrCount = hdrCount;
+  RADIOLIB_CHECK_RANGE((int16_t)hopSeed, (int16_t)0x000, (int16_t)0x1FF, RADIOLIB_ERR_INVALID_DATA_SHAPING);
+  this->lrFhssHopSeq = hopSeed;
+  return(RADIOLIB_ERR_NONE);
+}
+
+int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
+  this->mod->init();
+  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
+  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_32;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 0;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_LR11X0_CMD_READ_REG_MEM;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_LR11X0_CMD_WRITE_REG_MEM;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_LR11X0_CMD_NOP;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_LR11X0_CMD_GET_STATUS;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+  this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
+
+  // try to find the LR11x0 chip - this will also reset the module at least once
+  if(!LR11x0::findChip(this->chipType)) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No LR11x0 found!");
+    this->mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tLR11x0");
+
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set TCXO control, if requested
+  if(!this->XTAL && tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // configure settings not accessible by API
+  return(config(modem));
 }
 
 int16_t LR11x0::SPIparseStatus(uint8_t in) {

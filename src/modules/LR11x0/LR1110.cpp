@@ -31,6 +31,19 @@ int16_t LR1110::beginGFSK(float freq, float br, float freqDev, float rxBw, int8_
   return(state);
 }
 
+int16_t LR1110::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, int8_t power, float tcxoVoltage) {
+  // execute common part
+  int16_t state = LR11x0::beginLRFHSS(bw, cr, tcxoVoltage);
+  RADIOLIB_ASSERT(state);
+
+  // configure publicly accessible settings
+  state = setFrequency(freq);
+  RADIOLIB_ASSERT(state);
+
+  state = setOutputPower(power);
+  return(state);
+}
+
 int16_t LR1110::setFrequency(float freq) {
   return(this->setFrequency(freq, true));
 }

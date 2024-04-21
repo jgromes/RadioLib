@@ -366,7 +366,8 @@
 #define RADIOLIB_LR11X0_GFSK_RX_BW_312_0                        (0x19UL << 0)   //  7     0                        312.0 kHz
 #define RADIOLIB_LR11X0_GFSK_RX_BW_373_6                        (0x11UL << 0)   //  7     0                        373.6 kHz
 #define RADIOLIB_LR11X0_GFSK_RX_BW_467_0                        (0x09UL << 0)   //  7     0                        467.0 kHz
-#define RADIOLIB_LR11X0_LR_FHSS_BIT_RATE                        (0x8001E848UL)  //  31    0     LR FHSS bit rate: 488.28215 bps
+#define RADIOLIB_LR11X0_LR_FHSS_BIT_RATE                        (488.28215)     //  31    0     LR FHSS bit rate: 488.28215 bps
+#define RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW                    (0x8001E848UL)  //  31    0                       488.28215 bps in raw
 #define RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0         (0x0BUL << 0)   //  7     0     shaping filter: Gaussian, BT = 1.0
 #define RADIOLIB_LR11X0_SIGFOX_SHAPING_GAUSSIAN_BT_0_7          (0x16UL << 0)   //  7     0     shaping filter: Gaussian, BT = 0.7
 
@@ -581,6 +582,15 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage);
+
+    /*!
+      \brief Initialization method for LR-FHSS modem.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
+      \param tcxoVoltage TCXO reference voltage to be set.
+      \returns \ref status_codes
+    */
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -798,11 +808,11 @@ class LR11x0: public PhysicalLayer {
     int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
 
     /*!
-      \brief Sets LoRa sync word.
-      \param syncWord LoRa sync word to be set.
+      \brief Sets LoRa or LR-FHSS sync word.
+      \param syncWord LoRa or LR-FHSS sync word to be set. For LoRa, only 8 least significant bits will be used
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t syncWord);
+    int16_t setSyncWord(uint32_t syncWord);
 
     /*!
       \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
@@ -996,6 +1006,16 @@ class LR11x0: public PhysicalLayer {
     */
     float getDataRate() const;
 
+    /*!
+      \brief Sets LR-FHSS configuration.
+      \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
+      \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
+      \param hdrCount Header packet count, 1 - 4. Defaults to 3.
+      \param hopSeed 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
+      \returns \ref status_codes
+    */
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);
+
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -1165,8 +1185,13 @@ class LR11x0: public PhysicalLayer {
     uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;
     uint16_t preambleLengthGFSK = 0;
 
+    // cached LR-FHSS parameters
+    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0;
+    uint16_t lrFhssHopSeq = 0;
+
     float dataRateMeasured = 0;
 
+    int16_t modSetup(float tcxoVoltage, uint8_t modem);
     static int16_t SPIparseStatus(uint8_t in);
     static int16_t SPIcheckStatus(Module* mod);
     bool findChip(uint8_t ver);

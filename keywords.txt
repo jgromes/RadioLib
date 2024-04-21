@@ -239,6 +239,10 @@ disablePipe	KEYWORD2
 getStatus	KEYWORD2
 setAutoAck	KEYWORD2
 
+# LR11x0
+beginLRFHSS	KEYWORD2
+setLrFhssConfig	KEYWORD2
+
 # RTTY
 idle	KEYWORD2
 byteArr	KEYWORD2
