@@ -1,9 +1,9 @@
 var class_l_r11x0 =
 [
     [ "LR11x0", "class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421", null ],
-    [ "begin", "class_l_r11x0.html#a8dc6468762c36c30e9af262014e17942", null ],
-    [ "beginGFSK", "class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d", null ],
-    [ "beginLRFHSS", "class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e", null ],
+    [ "begin", "class_l_r11x0.html#a43318bfbed2be4a46e0b7e678d2e4d23", null ],
+    [ "beginGFSK", "class_l_r11x0.html#ab1ed8eafe4b23843a8b163949af279bb", null ],
+    [ "beginLRFHSS", "class_l_r11x0.html#a3f85d48547ebec0f5e4f2678f3213bc5", null ],
     [ "checkDataRate", "class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448", null ],
     [ "clearIrqAction", "class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98", null ],
     [ "clearPacketReceivedAction", "class_l_r11x0.html#a66a2afc6cef1e94e25efec15094816a8", null ],
@@ -41,6 +41,8 @@ var class_l_r11x0 =
     [ "setIrqAction", "class_l_r11x0.html#a49116d006b60128fe6f73a6a868a6d18", null ],
     [ "setLrFhssConfig", "class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35", null ],
     [ "setNodeAddress", "class_l_r11x0.html#a605f5c74ce523abad256866abe133d2e", null ],
+    [ "setOutputPower", "class_l_r11x0.html#a2522e288732aa77ec4f5a44e724612af", null ],
+    [ "setOutputPower", "class_l_r11x0.html#a549ecc907732bca96dab27c433928740", null ],
     [ "setPacketReceivedAction", "class_l_r11x0.html#a0a4d48bf33fe466ea4c14cd9db228dce", null ],
     [ "setPacketSentAction", "class_l_r11x0.html#a88ff8c277e340c3273fb5715cd743cce", null ],
     [ "setPreambleLength", "class_l_r11x0.html#aa5d7ae65666f8f9abcb7e9b169884a4a", null ],
