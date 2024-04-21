@@ -663,15 +663,15 @@ class LR11x0: public PhysicalLayer {
     // interrupt methods
 
     /*!
-      \brief Sets interrupt service routine to call when DIO1 activates.
+      \brief Sets interrupt service routine to call when IRQ1 activates.
       \param func ISR to call.
     */
-    void setDio1Action(void (*func)(void));
+    void setIrqAction(void (*func)(void));
 
     /*!
-      \brief Clears interrupt service routine to call when DIO1 activates.
+      \brief Clears interrupt service routine to call when IRQ1 activates.
     */
-    void clearDio1Action();
+    void clearIrqAction();
 
     /*!
       \brief Sets interrupt service routine to call when a packet is received.
@@ -720,13 +720,13 @@ class LR11x0: public PhysicalLayer {
     int16_t startReceive();
 
     /*!
-      \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
+      \brief Interrupt-driven receive method. IRQ1 will be activated when full packet is received.
       \param timeout Raw timeout value, expressed as multiples of 1/32.768 kHz (approximately 30.52 us).
       Defaults to RADIOLIB_LR11X0_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode),
       set to RADIOLIB_LR11X0_RX_TIMEOUT_NONE for no timeout (Rx single mode).
-      If timeout other than infinite is set, signal will be generated on DIO1.
+      If timeout other than infinite is set, signal will be generated on IRQ1.
 
-      \param irqFlags Sets the IRQ flags that will trigger DIO1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE.
+      \param irqFlags Sets the IRQ flags that will trigger IRQ1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE.
       \param len Only for PhysicalLayer compatibility, not used.
       \returns \ref status_codes
     */
@@ -749,14 +749,14 @@ class LR11x0: public PhysicalLayer {
     int16_t readData(uint8_t* data, size_t len) override;
     
     /*!
-      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
       when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
       \returns \ref status_codes
     */
     int16_t startChannelScan() override;
 
     /*!
-      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
       when LoRa preamble is detected, or upon timeout.
       \param symbolNum Number of symbols for CAD detection. 
       \param detPeak Peak value for CAD detection.

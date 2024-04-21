@@ -373,28 +373,28 @@ int16_t LR11x0::sleep(bool retainConfig, uint32_t sleepTime) {
   return(state);
 }
 
-void LR11x0::setDio1Action(void (*func)(void)) {
+void LR11x0::setIrqAction(void (*func)(void)) {
   this->mod->hal->attachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()), func, this->mod->hal->GpioInterruptRising);
 }
 
-void LR11x0::clearDio1Action() {
+void LR11x0::clearIrqAction() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getIrq()));
 }
 
 void LR11x0::setPacketReceivedAction(void (*func)(void)) {
-  this->setDio1Action(func);
+  this->setIrqAction(func);
 }
 
 void LR11x0::clearPacketReceivedAction() {
-  this->clearDio1Action();
+  this->clearIrqAction();
 }
 
 void LR11x0::setPacketSentAction(void (*func)(void)) {
-  this->setDio1Action(func);
+  this->setIrqAction(func);
 }
 
 void LR11x0::clearPacketSentAction() {
-  this->clearDio1Action();
+  this->clearIrqAction();
 }
 
 int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {

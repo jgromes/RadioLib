@@ -26,7 +26,7 @@
 
 // LR1110 has the following connections:
 // NSS pin:   10
-// DIO1 pin:  2
+// IRQ pin:   2
 // NRST pin:  3
 // BUSY pin:  9
 LR1110 radio = new Module(10, 2, 3, 9);
