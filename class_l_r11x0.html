@@ -142,13 +142,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64d70a3341a6a8b32f9871cdcb719733"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a64d70a3341a6a8b32f9871cdcb719733">sleep</a> (bool retainConfig=true, uint32_t sleepTime=0)</td></tr>
 <tr class="memdesc:a64d70a3341a6a8b32f9871cdcb719733"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_l_r11x0.html#a74c3f3f8409f1fd0f41347b7d3c7dc24" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>.  <a href="class_l_r11x0.html#a64d70a3341a6a8b32f9871cdcb719733">More...</a><br /></td></tr>
 <tr class="separator:a64d70a3341a6a8b32f9871cdcb719733"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a985a7e01a43dfa20e770d6631d39579d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a985a7e01a43dfa20e770d6631d39579d">setDio1Action</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:a985a7e01a43dfa20e770d6631d39579d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <a href="class_l_r11x0.html#a985a7e01a43dfa20e770d6631d39579d">More...</a><br /></td></tr>
-<tr class="separator:a985a7e01a43dfa20e770d6631d39579d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c55b8cd3ca6b96319bc51446722d635"><td class="memItemLeft" align="right" valign="top"><a id="a2c55b8cd3ca6b96319bc51446722d635"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a2c55b8cd3ca6b96319bc51446722d635">clearDio1Action</a> ()</td></tr>
-<tr class="memdesc:a2c55b8cd3ca6b96319bc51446722d635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
-<tr class="separator:a2c55b8cd3ca6b96319bc51446722d635"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49116d006b60128fe6f73a6a868a6d18"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a49116d006b60128fe6f73a6a868a6d18">setIrqAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:a49116d006b60128fe6f73a6a868a6d18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when IRQ1 activates.  <a href="class_l_r11x0.html#a49116d006b60128fe6f73a6a868a6d18">More...</a><br /></td></tr>
+<tr class="separator:a49116d006b60128fe6f73a6a868a6d18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab167c4dc14e80d19f8b33d68c3f90d98"><td class="memItemLeft" align="right" valign="top"><a id="ab167c4dc14e80d19f8b33d68c3f90d98"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98">clearIrqAction</a> ()</td></tr>
+<tr class="memdesc:ab167c4dc14e80d19f8b33d68c3f90d98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when IRQ1 activates. <br /></td></tr>
+<tr class="separator:ab167c4dc14e80d19f8b33d68c3f90d98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a4d48bf33fe466ea4c14cd9db228dce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a0a4d48bf33fe466ea4c14cd9db228dce">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0a4d48bf33fe466ea4c14cd9db228dce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="class_l_r11x0.html#a0a4d48bf33fe466ea4c14cd9db228dce">More...</a><br /></td></tr>
 <tr class="separator:a0a4d48bf33fe466ea4c14cd9db228dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,7 +173,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:aabc154b86d9159fb5f769f62418d52b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_l_r11x0.html#aabc154b86d9159fb5f769f62418d52b7">More...</a><br /></td></tr>
 <tr class="separator:aabc154b86d9159fb5f769f62418d52b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a437eaf0e0541983751abd28db45efea8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a437eaf0e0541983751abd28db45efea8">startReceive</a> (uint32_t timeout, uint32_t irqFlags=RADIOLIB_LR11X0_IRQ_RX_DONE, size_t len=0)</td></tr>
-<tr class="memdesc:a437eaf0e0541983751abd28db45efea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_l_r11x0.html#a437eaf0e0541983751abd28db45efea8">More...</a><br /></td></tr>
+<tr class="memdesc:a437eaf0e0541983751abd28db45efea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ1 will be activated when full packet is received.  <a href="class_l_r11x0.html#a437eaf0e0541983751abd28db45efea8">More...</a><br /></td></tr>
 <tr class="separator:a437eaf0e0541983751abd28db45efea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">More...</a><br /></td></tr>
@@ -182,10 +182,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a20279f1b267e936991f47fd703924833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="class_l_r11x0.html#a20279f1b267e936991f47fd703924833">More...</a><br /></td></tr>
 <tr class="separator:a20279f1b267e936991f47fd703924833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f3bc362530b85dd643669705f03998d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a4f3bc362530b85dd643669705f03998d">startChannelScan</a> () override</td></tr>
-<tr class="memdesc:a4f3bc362530b85dd643669705f03998d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.  <a href="class_l_r11x0.html#a4f3bc362530b85dd643669705f03998d">More...</a><br /></td></tr>
+<tr class="memdesc:a4f3bc362530b85dd643669705f03998d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. IRQ1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.  <a href="class_l_r11x0.html#a4f3bc362530b85dd643669705f03998d">More...</a><br /></td></tr>
 <tr class="separator:a4f3bc362530b85dd643669705f03998d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa09eb53b0c32a5f229e14c46bfe45a4f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aa09eb53b0c32a5f229e14c46bfe45a4f">startChannelScan</a> (uint8_t symbolNum, uint8_t detPeak, uint8_t detMin)</td></tr>
-<tr class="memdesc:aa09eb53b0c32a5f229e14c46bfe45a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout.  <a href="class_l_r11x0.html#aa09eb53b0c32a5f229e14c46bfe45a4f">More...</a><br /></td></tr>
+<tr class="memdesc:aa09eb53b0c32a5f229e14c46bfe45a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. IRQ1 will be activated when LoRa preamble is detected, or upon timeout.  <a href="class_l_r11x0.html#aa09eb53b0c32a5f229e14c46bfe45a4f">More...</a><br /></td></tr>
 <tr class="separator:aa09eb53b0c32a5f229e14c46bfe45a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ae2cddeb7671d9b71e9c83bf020820f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f">getChannelScanResult</a> () override</td></tr>
 <tr class="memdesc:a1ae2cddeb7671d9b71e9c83bf020820f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <a href="class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f">More...</a><br /></td></tr>
@@ -1474,32 +1474,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a985a7e01a43dfa20e770d6631d39579d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a985a7e01a43dfa20e770d6631d39579d">&#9670;&nbsp;</a></span>setDio1Action()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LR11x0::setDio1Action </td>
-          <td>(</td>
-          <td class="paramtype">void(*)(void)&#160;</td>
-          <td class="paramname"><em>func</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets interrupt service routine to call when DIO1 activates. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a8ae178a17f6e41b545b79cfffd3e2864"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8ae178a17f6e41b545b79cfffd3e2864">&#9670;&nbsp;</a></span>setEncoding()</h2>
 
@@ -1571,6 +1545,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a49116d006b60128fe6f73a6a868a6d18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a49116d006b60128fe6f73a6a868a6d18">&#9670;&nbsp;</a></span>setIrqAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LR11x0::setIrqAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when IRQ1 activates. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -2093,7 +2093,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48. </p>
+<p>Interrupt-driven channel activity detection method. IRQ1 will be activated when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#ae30dfbb5445bb674898fc54f5f90b2f9">PhysicalLayer</a>.</p>
@@ -2132,7 +2132,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven channel activity detection method. DIO1 will be activated when LoRa preamble is detected, or upon timeout. </p>
+<p>Interrupt-driven channel activity detection method. IRQ1 will be activated when LoRa preamble is detected, or upon timeout. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">symbolNum</td><td>Number of symbols for CAD detection. </td></tr>
@@ -2207,11 +2207,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven receive method. DIO1 will be activated when full packet is received. </p>
+<p>Interrupt-driven receive method. IRQ1 will be activated when full packet is received. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 1/32.768 kHz (approximately 30.52 us). Defaults to RADIOLIB_LR11X0_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_LR11X0_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on DIO1.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags that will trigger DIO1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 1/32.768 kHz (approximately 30.52 us). Defaults to RADIOLIB_LR11X0_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_LR11X0_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on IRQ1.</td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags that will trigger IRQ1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE. </td></tr>
     <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
   </table>
   </dd>
