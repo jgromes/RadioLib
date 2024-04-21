@@ -112,6 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abcc4c776d1a09bb002226ac95574766d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d">beginGFSK</a> (float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage)</td></tr>
 <tr class="memdesc:abcc4c776d1a09bb002226ac95574766d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d">More...</a><br /></td></tr>
 <tr class="separator:abcc4c776d1a09bb002226ac95574766d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a858b08fd0e7b00baf3056d32dfabb87e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e">beginLRFHSS</a> (uint8_t bw, uint8_t cr, float tcxoVoltage)</td></tr>
+<tr class="memdesc:a858b08fd0e7b00baf3056d32dfabb87e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem.  <a href="class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e">More...</a><br /></td></tr>
+<tr class="separator:a858b08fd0e7b00baf3056d32dfabb87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a288bcc309d3676bc0bbe620b7d89d994"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">reset</a> ()</td></tr>
 <tr class="memdesc:a288bcc309d3676bc0bbe620b7d89d994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <a href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">More...</a><br /></td></tr>
 <tr class="separator:a288bcc309d3676bc0bbe620b7d89d994"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,9 +202,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a583f2d5ed601a98c609dbf0d57f2f541"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">setCodingRate</a> (uint8_t cr, bool longInterleave=false)</td></tr>
 <tr class="memdesc:a583f2d5ed601a98c609dbf0d57f2f541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.  <a href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">More...</a><br /></td></tr>
 <tr class="separator:a583f2d5ed601a98c609dbf0d57f2f541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee7dbdbd76f4639395af4a0db17025a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7">setSyncWord</a> (uint8_t syncWord)</td></tr>
-<tr class="memdesc:aee7dbdbd76f4639395af4a0db17025a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <a href="class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7">More...</a><br /></td></tr>
-<tr class="separator:aee7dbdbd76f4639395af4a0db17025a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">setSyncWord</a> (uint32_t syncWord)</td></tr>
+<tr class="memdesc:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or LR-FHSS sync word.  <a href="class_l_r11x0.html#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">More...</a><br /></td></tr>
+<tr class="separator:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03ab7a24fec379c6ba2d642e1133c4f2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a03ab7a24fec379c6ba2d642e1133c4f2">setBitRate</a> (float br)</td></tr>
 <tr class="memdesc:a03ab7a24fec379c6ba2d642e1133c4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.  <a href="class_l_r11x0.html#a03ab7a24fec379c6ba2d642e1133c4f2">More...</a><br /></td></tr>
 <tr class="separator:a03ab7a24fec379c6ba2d642e1133c4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,6 +283,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">getDataRate</a> () const</td></tr>
 <tr class="memdesc:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.  <a href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">More...</a><br /></td></tr>
 <tr class="separator:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a> (uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</td></tr>
+<tr class="memdesc:a8c1def9a01021a52f5bb82c119a9ad35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LR-FHSS configuration.  <a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">More...</a><br /></td></tr>
+<tr class="separator:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -529,6 +535,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. </td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>FSK preamble length in bits. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a858b08fd0e7b00baf3056d32dfabb87e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a858b08fd0e7b00baf3056d32dfabb87e">&#9670;&nbsp;</a></span>beginLRFHSS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::beginLRFHSS </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tcxoVoltage</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization method for LR-FHSS modem. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bw</td><td>LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values. </td></tr>
+    <tr><td class="paramname">cr</td><td>LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set. </td></tr>
   </table>
   </dd>
@@ -1574,6 +1625,58 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a8c1def9a01021a52f5bb82c119a9ad35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c1def9a01021a52f5bb82c119a9ad35">&#9670;&nbsp;</a></span>setLrFhssConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setLrFhssConfig </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>hdrCount</em> = <code>3</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>hopSeed</em> = <code>0x13A</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets LR-FHSS configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bw</td><td>LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values. </td></tr>
+    <tr><td class="paramname">cr</td><td>LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values. </td></tr>
+    <tr><td class="paramname">hdrCount</td><td>Header packet count, 1 - 4. Defaults to 3. </td></tr>
+    <tr><td class="paramname">hopSeed</td><td>9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a605f5c74ce523abad256866abe133d2e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a605f5c74ce523abad256866abe133d2e">&#9670;&nbsp;</a></span>setNodeAddress()</h2>
 
@@ -1813,8 +1916,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a7ffa48f1b6aaaa3f48e4b51f8ada59d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setSyncWord </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>syncWord</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets LoRa or LR-FHSS sync word. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">syncWord</td><td>LoRa or LR-FHSS sync word to be set. For LoRa, only 8 least significant bits will be used </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="ab8c54b1b105605ffe0908c5ff9362932"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8c54b1b105605ffe0908c5ff9362932">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8c54b1b105605ffe0908c5ff9362932">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1858,33 +1988,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="aee7dbdbd76f4639395af4a0db17025a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee7dbdbd76f4639395af4a0db17025a7">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LR11x0::setSyncWord </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>syncWord</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets LoRa sync word. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">syncWord</td><td>LoRa sync word to be set. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
