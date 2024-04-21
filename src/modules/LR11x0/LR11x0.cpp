@@ -71,8 +71,7 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
-  // TODO looks like CRC does not work for SX127x
-  state = setCRC(0);
+  state = setCRC(2);
   RADIOLIB_ASSERT(state);
 
   state = invertIQ(false);
@@ -1108,7 +1107,7 @@ int16_t LR11x0::setCRC(uint8_t len, uint32_t initial, uint32_t polynomial, bool 
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // LoRa CRC doesn't allow to set CRC polynomial, initial value, or inversion
     this->crcTypeLoRa = len > 0 ? RADIOLIB_LR11X0_LORA_CRC_ENABLED : RADIOLIB_LR11X0_LORA_CRC_DISABLED;
-    state = setPacketParamsLoRa(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, (uint8_t)this->invertIQEnabled);
+    state = setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     // update packet parameters
@@ -1154,7 +1153,7 @@ int16_t LR11x0::invertIQ(bool enable) {
   }
 
   this->invertIQEnabled = enable;
-  return(setPacketParamsLoRa(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, (uint8_t)this->invertIQEnabled));
+  return(setPacketParamsLoRa(this->preambleLengthLoRa, this->headerType, this->implicitLen, this->crcTypeLoRa, (uint8_t)this->invertIQEnabled));
 }
 
 float LR11x0::getRSSI() {
