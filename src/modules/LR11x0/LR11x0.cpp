@@ -118,7 +118,7 @@ int16_t LR11x0::reset() {
   this->mod->hal->delay(300);
   
   // wait for BUSY to go low
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start >= 3000) {
@@ -163,7 +163,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  uint32_t start = this->mod->hal->micros();
+  unsigned long start = this->mod->hal->micros();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->micros() - start > timeout) {
@@ -171,7 +171,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  uint32_t elapsed = this->mod->hal->micros() - start;
+  unsigned long elapsed = this->mod->hal->micros() - start;
 
   // update data rate
   this->dataRateMeasured = (len*8.0)/((float)elapsed/1000000.0);
@@ -224,7 +224,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
 
   // wait for packet reception or timeout
   bool softTimeout = false;
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio

@@ -81,7 +81,7 @@ size_t FSK4Client::write(uint8_t b) {
 
 void FSK4Client::tone(uint8_t i) {
   Module* mod = phyLayer->getMod();
-  uint32_t start = mod->hal->micros();
+  unsigned long start = mod->hal->micros();
   transmitDirect(baseFreq + tones[i], baseFreqHz + tonesHz[i]);
   mod->waitForMicroseconds(start, bitDuration);
 }

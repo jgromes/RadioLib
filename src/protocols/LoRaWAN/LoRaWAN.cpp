@@ -877,7 +877,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   }
 
   // if adhering to dutyCycle and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled && this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA) > mod->hal->millis()) {
+  if(this->dutyCycleEnabled && this->rxDelayStart + (unsigned long)dutyCycleInterval(this->dutyCycle, this->lastToA) > mod->hal->millis()) {
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
@@ -1965,7 +1965,7 @@ uint32_t LoRaWANNode::dutyCycleInterval(uint32_t msPerHour, uint32_t airtime) {
 
 uint32_t LoRaWANNode::timeUntilUplink() {
   Module* mod = this->phyLayer->getMod();
-  uint32_t nextUplink = this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA);
+  unsigned long nextUplink = this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA);
   if(mod->hal->millis() > nextUplink){
     return(0);
   }

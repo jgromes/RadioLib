@@ -503,7 +503,7 @@ class Module {
       \param start Waiting start timestamp, in microseconds.
       \param len Waiting duration, in microseconds;
     */
-    void waitForMicroseconds(uint32_t start, uint32_t len);
+    void waitForMicroseconds(unsigned long start, unsigned long len);
 
     /*!
       \brief Function to reflect bits within a byte.

@@ -147,7 +147,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   int16_t modem = getActiveModem();
-  uint32_t start = 0;
+  unsigned long start = 0;
   uint32_t timeout = 0;
   uint32_t toa = getTimeOnAir(len);
   if(modem == RADIOLIB_SX127X_LORA) {
@@ -179,7 +179,7 @@ int16_t SX127x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // update data rate
-  uint32_t elapsed = this->mod->hal->millis() - start;
+  unsigned long elapsed = this->mod->hal->millis() - start;
   this->dataRate = (len*8.0)/((float)elapsed/1000.0);
 
   return(finishTransmit());
@@ -204,7 +204,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     }
 
     // wait for packet reception or timeout
-    uint32_t start = this->mod->hal->millis();
+    unsigned long start = this->mod->hal->millis();
     while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
       this->mod->hal->yield();
 
@@ -233,7 +233,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     RADIOLIB_ASSERT(state);
 
     // wait for packet reception or timeout
-    uint32_t start = this->mod->hal->millis();
+    unsigned long start = this->mod->hal->millis();
     while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
       this->mod->hal->yield();
       if(this->mod->hal->millis() - start > timeout) {

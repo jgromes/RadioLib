@@ -91,14 +91,14 @@ size_t RTTYClient::write(uint8_t b) {
 
 void RTTYClient::mark() {
   Module* mod = phyLayer->getMod();
-  uint32_t start = mod->hal->micros();
+  unsigned long start = mod->hal->micros();
   transmitDirect(baseFreq + shiftFreq, baseFreqHz + shiftFreqHz);
   mod->waitForMicroseconds(start, bitDuration);
 }
 
 void RTTYClient::space() {
   Module* mod = phyLayer->getMod();
-  uint32_t start = mod->hal->micros();
+  unsigned long start = mod->hal->micros();
   transmitDirect(baseFreq, baseFreqHz);
   mod->waitForMicroseconds(start, bitDuration);
 }

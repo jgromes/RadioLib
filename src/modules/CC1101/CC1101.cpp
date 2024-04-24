@@ -107,7 +107,7 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start or timeout
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
@@ -140,7 +140,7 @@ int16_t CC1101::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet start or timeout
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
@@ -172,7 +172,7 @@ int16_t CC1101::standby() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   // wait until idle is reached
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != RADIOLIB_CC1101_MARC_STATE_IDLE) {
     mod->hal->yield();
     if(this->mod->hal->millis() - start > 100) {

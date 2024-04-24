@@ -935,10 +935,10 @@ class LoRaWANNode {
     uint32_t lastToA = 0;
 
     // timestamp to measure the RX1/2 delay (from uplink end)
-    uint32_t rxDelayStart = 0;
+    unsigned long rxDelayStart = 0;
 
     // timestamp when the Rx1/2 windows were closed (timeout or uplink received)
-    uint32_t rxDelayEnd = 0;
+    unsigned long rxDelayEnd = 0;
 
     // delays between the uplink and RX1/2 windows
     uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };

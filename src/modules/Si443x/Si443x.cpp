@@ -80,7 +80,7 @@ int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for transmission end or timeout
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > timeout) {
@@ -101,7 +101,7 @@ int16_t Si443x::receive(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet reception or timeout
-  uint32_t start = this->mod->hal->millis();
+  unsigned long start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     if(this->mod->hal->millis() - start > timeout) {
       standby();
