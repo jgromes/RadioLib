@@ -1282,13 +1282,13 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
     }
 
     // get time-on-air in us
-    return(((RadioLibTime_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
+    return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(((RadioLibTime_t)len * 8 * 1000000UL) / this->bitRate);
+    return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    return(((RadioLibTime_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
+    return(((uint32_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
   }
 
   return(0);

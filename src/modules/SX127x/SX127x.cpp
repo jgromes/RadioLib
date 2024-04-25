@@ -199,7 +199,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     // if no DIO1 is provided, use software timeout (100 LoRa symbols, same as hardware timeout)
     RadioLibTime_t timeout = 0;
     if(this->mod->getGpio() == RADIOLIB_NC) {
-      float symbolLength = (float) (RadioLibTime_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+      float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
       timeout = (RadioLibTime_t)(symbolLength * 100.0);
     }
 
@@ -1249,7 +1249,7 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
   uint8_t modem = getActiveModem();
   if (modem == RADIOLIB_SX127X_LORA) {
     // get symbol length in us
-    float symbolLength = (float) (RadioLibTime_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+    float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
 
     // get number of symbols
     float n_sym = getNumSymbols(len);
@@ -1274,7 +1274,7 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
     }
 
     // calculate time-on-air in us {[(length in bytes) * (8 bits / 1 byte)] / [(Bit Rate in kbps) * (1000 bps / 1 kbps)]} * (1000000 us in 1 sec)
-    return((RadioLibTime_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (this->bitRate * 1000.0)) * 1000000.0));
+    return((uint32_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (this->bitRate * 1000.0)) * 1000000.0));
   }
   
   return(RADIOLIB_ERR_UNKNOWN);
@@ -1284,7 +1284,7 @@ RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout is given as the number of symbols
   // the calling function should provide some extra width, as this number of symbols is truncated to integer
   // the order of operators is swapped here to decrease the effects of this truncation error
-  float symbolLength = (float) (RadioLibTime_t(1) << this->spreadingFactor) / (float) this->bandwidth;
+  float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
   RadioLibTime_t numSymbols = (timeoutUs / symbolLength) / 1000; 
   return(numSymbols);
 }

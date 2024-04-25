@@ -1444,7 +1444,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
 
     return((symbolLength_us * nSymbol_x4) / 4);
   } else {
-    return((len * 8 * this->bitRate) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 32));
+    return(((uint32_t)len * 8 * this->bitRate) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 32));
   }
 }
 

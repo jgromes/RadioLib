@@ -1291,10 +1291,10 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     }
 
     // get time-on-air in us
-    return(((RadioLibTime_t(1) << sf) / this->bandwidthKhz) * N_symbol * 1000.0);
+    return(((uint32_t(1) << sf) / this->bandwidthKhz) * N_symbol * 1000.0);
 
   } else {
-    return(((RadioLibTime_t)len * 8 * 1000) / this->bitRateKbps);
+    return(((uint32_t)len * 8 * 1000) / this->bitRateKbps);
   }
 
 }
