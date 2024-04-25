@@ -6,5 +6,6 @@ var modules =
     [ "Data shaping filter values aliases.", "group__config__shaping.html", "group__config__shaping" ],
     [ "Encoding type aliases.", "group__config__encoding.html", "group__config__encoding" ],
     [ "Standby mode type aliases.", "group__config__standby.html", "group__config__standby" ],
-    [ "Status Codes", "group__status__codes.html", "group__status__codes" ]
+    [ "Status Codes", "group__status__codes.html", "group__status__codes" ],
+    [ "Type aliases used by RadioLib.", "group__typedefs.html", "group__typedefs" ]
 ];

@@ -39,7 +39,7 @@ var searchData=
   ['getstatus_141',['getStatus',['../classn_r_f24.html#a3f0b08fd8e58db36f6c1926cc3eac6a9',1,'nRF24']]],
   ['gettemperature_142',['getTemperature',['../class_r_f69.html#a0526ce6ea3722fd258f96d9677a60853',1,'RF69']]],
   ['gettempraw_143',['getTempRaw',['../class_s_x127x.html#a95bc32a555675879ad9e2a9e399dc6c1',1,'SX127x']]],
-  ['gettimeonair_144',['getTimeOnAir',['../class_l_r11x0.html#a33dd234876e6e5dc640302d8456fd7ed',1,'LR11x0::getTimeOnAir()'],['../class_s_x126x.html#a691c960e3fabfb9edcfccbae6eab5b76',1,'SX126x::getTimeOnAir()'],['../class_s_x127x.html#aca2e782dc6ed44fa77d4d14775d9a4a3',1,'SX127x::getTimeOnAir()'],['../class_s_x128x.html#a2361a94f2e12ebc93e750a027d633232',1,'SX128x::getTimeOnAir()'],['../class_physical_layer.html#a55ccbe60bfc1ab58814dbd5f9cd4939e',1,'PhysicalLayer::getTimeOnAir()']]],
+  ['gettimeonair_144',['getTimeOnAir',['../class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d',1,'LR11x0::getTimeOnAir()'],['../class_s_x126x.html#a16eb0bdb051f3cf288db752d18182ae2',1,'SX126x::getTimeOnAir()'],['../class_s_x127x.html#a9e7ecbc92c9d70f93211d21399d237d0',1,'SX127x::getTimeOnAir()'],['../class_s_x128x.html#a9ff92bccb8193937a5484e38c0dad2c7',1,'SX128x::getTimeOnAir()'],['../class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c',1,'PhysicalLayer::getTimeOnAir()']]],
   ['gpiointerruptfalling_145',['GpioInterruptFalling',['../class_radio_lib_hal.html#a01f73b66a632fc9dba41a23f592e0936',1,'RadioLibHal']]],
   ['gpiointerruptrising_146',['GpioInterruptRising',['../class_radio_lib_hal.html#a7ff9f3c608d68575dfc8962ba3669851',1,'RadioLibHal']]],
   ['gpiolevelhigh_147',['GpioLevelHigh',['../class_radio_lib_hal.html#a409c719ef8a11e8765c90e98ba42316d',1,'RadioLibHal']]],

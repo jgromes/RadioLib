@@ -197,9 +197,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7acbe601ebe6398781d0f2de5177305e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7acbe601ebe6398781d0f2de5177305e">SPIwriteStream</a> (uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)</td></tr>
 <tr class="memdesc:a7acbe601ebe6398781d0f2de5177305e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to perform a write transaction with SPI stream.  <a href="class_module.html#a7acbe601ebe6398781d0f2de5177305e">More...</a><br /></td></tr>
 <tr class="separator:a7acbe601ebe6398781d0f2de5177305e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3586c8d4013cbdd22cf34032632c181"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">SPItransferStream</a> (uint8_t *cmd, uint8_t cmdLen, bool write, uint8_t *dataOut, uint8_t *dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout)</td></tr>
-<tr class="memdesc:ac3586c8d4013cbdd22cf34032632c181"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.).  <a href="class_module.html#ac3586c8d4013cbdd22cf34032632c181">More...</a><br /></td></tr>
-<tr class="separator:ac3586c8d4013cbdd22cf34032632c181"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67483fff5d818c7d68dfcfce10e81160"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a67483fff5d818c7d68dfcfce10e81160">SPItransferStream</a> (uint8_t *cmd, uint8_t cmdLen, bool write, uint8_t *dataOut, uint8_t *dataIn, size_t numBytes, bool waitForGpio, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout)</td></tr>
+<tr class="memdesc:a67483fff5d818c7d68dfcfce10e81160"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI single transfer method for modules with stream-type SPI interface (<a class="el" href="class_s_x126x.html" title="Base class for SX126x series. All derived classes for SX126x (e.g. SX1262 or SX1268) inherit from thi...">SX126x</a>, <a class="el" href="class_s_x128x.html" title="Base class for SX128x series. All derived classes for SX128x (e.g. SX1280 or SX1281) inherit from thi...">SX128x</a> etc.).  <a href="class_module.html#a67483fff5d818c7d68dfcfce10e81160">More...</a><br /></td></tr>
+<tr class="separator:a67483fff5d818c7d68dfcfce10e81160"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7">getCs</a> () const</td></tr>
 <tr class="memdesc:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Access method to get the pin number of SPI chip select.  <a href="class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7">More...</a><br /></td></tr>
 <tr class="separator:aa6cac04c7cb6d5278a318db0966ad1a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -224,9 +224,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afbed643f082286012bf44bba22381ae6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#afbed643f082286012bf44bba22381ae6">setRfSwitchState</a> (uint8_t mode)</td></tr>
 <tr class="memdesc:afbed643f082286012bf44bba22381ae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set RF switch state.  <a href="class_module.html#afbed643f082286012bf44bba22381ae6">More...</a><br /></td></tr>
 <tr class="separator:afbed643f082286012bf44bba22381ae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47978200f7e2e408fb64f506c81cee9f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">waitForMicroseconds</a> (uint32_t start, uint32_t len)</td></tr>
-<tr class="memdesc:a47978200f7e2e408fb64f506c81cee9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!  <a href="class_module.html#a47978200f7e2e408fb64f506c81cee9f">More...</a><br /></td></tr>
-<tr class="separator:a47978200f7e2e408fb64f506c81cee9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7df4c687249c07af2594a5f7ad0a946f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_module.html#a7df4c687249c07af2594a5f7ad0a946f">waitForMicroseconds</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> start, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> len)</td></tr>
+<tr class="memdesc:a7df4c687249c07af2594a5f7ad0a946f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for time to elapse, either using the microsecond timer, or the TimerFlag. Note that in interrupt timing mode, it is up to the user to set up the timing interrupt!  <a href="class_module.html#a7df4c687249c07af2594a5f7ad0a946f">More...</a><br /></td></tr>
+<tr class="separator:a7df4c687249c07af2594a5f7ad0a946f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -1092,8 +1092,8 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
 
 </div>
 </div>
-<a id="ac3586c8d4013cbdd22cf34032632c181"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3586c8d4013cbdd22cf34032632c181">&#9670;&nbsp;</a></span>SPItransferStream()</h2>
+<a id="a67483fff5d818c7d68dfcfce10e81160"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67483fff5d818c7d68dfcfce10e81160">&#9670;&nbsp;</a></span>SPItransferStream()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1143,7 +1143,7 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>timeout</em>&#160;</td>
         </tr>
         <tr>
@@ -1378,8 +1378,8 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
 
 </div>
 </div>
-<a id="a47978200f7e2e408fb64f506c81cee9f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47978200f7e2e408fb64f506c81cee9f">&#9670;&nbsp;</a></span>waitForMicroseconds()</h2>
+<a id="a7df4c687249c07af2594a5f7ad0a946f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7df4c687249c07af2594a5f7ad0a946f">&#9670;&nbsp;</a></span>waitForMicroseconds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1387,13 +1387,13 @@ static const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class=
         <tr>
           <td class="memname">void Module::waitForMicroseconds </td>
           <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>start</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>len</em>&#160;</td>
         </tr>
         <tr>

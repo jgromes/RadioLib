@@ -116,21 +116,21 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2ddf72a41b3cfbb63ea7ab5362003b56"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a2ddf72a41b3cfbb63ea7ab5362003b56">detachInterrupt</a> (uint32_t interruptNum)=0</td></tr>
 <tr class="memdesc:a2ddf72a41b3cfbb63ea7ab5362003b56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to detach function from an external interrupt. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a2ddf72a41b3cfbb63ea7ab5362003b56">More...</a><br /></td></tr>
 <tr class="separator:a2ddf72a41b3cfbb63ea7ab5362003b56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8427720749d8c87d17654071dfa5b94e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a8427720749d8c87d17654071dfa5b94e">delay</a> (unsigned long ms)=0</td></tr>
-<tr class="memdesc:a8427720749d8c87d17654071dfa5b94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking wait function. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a8427720749d8c87d17654071dfa5b94e">More...</a><br /></td></tr>
-<tr class="separator:a8427720749d8c87d17654071dfa5b94e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad49128a75a3d7abdc68baa302955f3ac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ad49128a75a3d7abdc68baa302955f3ac">delayMicroseconds</a> (unsigned long us)=0</td></tr>
-<tr class="memdesc:ad49128a75a3d7abdc68baa302955f3ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking microsecond wait function. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#ad49128a75a3d7abdc68baa302955f3ac">More...</a><br /></td></tr>
-<tr class="separator:ad49128a75a3d7abdc68baa302955f3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bc5dbf7c13e6031fb9892075755a023"><td class="memItemLeft" align="right" valign="top">virtual unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a2bc5dbf7c13e6031fb9892075755a023">millis</a> ()=0</td></tr>
-<tr class="memdesc:a2bc5dbf7c13e6031fb9892075755a023"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of milliseconds since start. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a2bc5dbf7c13e6031fb9892075755a023">More...</a><br /></td></tr>
-<tr class="separator:a2bc5dbf7c13e6031fb9892075755a023"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aedf55424bc4aa28379b6f4f6b04151d3"><td class="memItemLeft" align="right" valign="top">virtual unsigned long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aedf55424bc4aa28379b6f4f6b04151d3">micros</a> ()=0</td></tr>
-<tr class="memdesc:aedf55424bc4aa28379b6f4f6b04151d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of microseconds since start. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#aedf55424bc4aa28379b6f4f6b04151d3">More...</a><br /></td></tr>
-<tr class="separator:aedf55424bc4aa28379b6f4f6b04151d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35a6ef1b38553a3516c961872eb411d7"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a35a6ef1b38553a3516c961872eb411d7">pulseIn</a> (uint32_t pin, uint32_t state, unsigned long timeout)=0</td></tr>
-<tr class="memdesc:a35a6ef1b38553a3516c961872eb411d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the length of incoming digital pulse in microseconds. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a35a6ef1b38553a3516c961872eb411d7">More...</a><br /></td></tr>
-<tr class="separator:a35a6ef1b38553a3516c961872eb411d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2de4fcafad28470f7d46073fa29da79"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aa2de4fcafad28470f7d46073fa29da79">delay</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> ms)=0</td></tr>
+<tr class="memdesc:aa2de4fcafad28470f7d46073fa29da79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking wait function. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#aa2de4fcafad28470f7d46073fa29da79">More...</a><br /></td></tr>
+<tr class="separator:aa2de4fcafad28470f7d46073fa29da79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab93dc492291dfe6fc0dd763bee966161"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ab93dc492291dfe6fc0dd763bee966161">delayMicroseconds</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> us)=0</td></tr>
+<tr class="memdesc:ab93dc492291dfe6fc0dd763bee966161"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking microsecond wait function. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#ab93dc492291dfe6fc0dd763bee966161">More...</a><br /></td></tr>
+<tr class="separator:ab93dc492291dfe6fc0dd763bee966161"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b8e36ccf8fe372c259b963666513d37"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a4b8e36ccf8fe372c259b963666513d37">millis</a> ()=0</td></tr>
+<tr class="memdesc:a4b8e36ccf8fe372c259b963666513d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of milliseconds since start. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a4b8e36ccf8fe372c259b963666513d37">More...</a><br /></td></tr>
+<tr class="separator:a4b8e36ccf8fe372c259b963666513d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64d98b48668ced5ba1014f272606f370"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a64d98b48668ced5ba1014f272606f370">micros</a> ()=0</td></tr>
+<tr class="memdesc:a64d98b48668ced5ba1014f272606f370"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of microseconds since start. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a64d98b48668ced5ba1014f272606f370">More...</a><br /></td></tr>
+<tr class="separator:a64d98b48668ced5ba1014f272606f370"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f38db9475dcd0967d6dfe240b8695c9"><td class="memItemLeft" align="right" valign="top">virtual long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a3f38db9475dcd0967d6dfe240b8695c9">pulseIn</a> (uint32_t pin, uint32_t state, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeout)=0</td></tr>
+<tr class="memdesc:a3f38db9475dcd0967d6dfe240b8695c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Measure the length of incoming digital pulse in microseconds. Must be implemented by the platform-specific hardware abstraction!  <a href="class_radio_lib_hal.html#a3f38db9475dcd0967d6dfe240b8695c9">More...</a><br /></td></tr>
+<tr class="separator:a3f38db9475dcd0967d6dfe240b8695c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1f8e5cd323e53ef9fa977734a05d030"><td class="memItemLeft" align="right" valign="top"><a id="aa1f8e5cd323e53ef9fa977734a05d030"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aa1f8e5cd323e53ef9fa977734a05d030">spiBegin</a> ()=0</td></tr>
 <tr class="memdesc:aa1f8e5cd323e53ef9fa977734a05d030"><td class="mdescLeft">&#160;</td><td class="mdescRight">SPI initialization method. <br /></td></tr>
@@ -158,9 +158,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#aa4f2bd49aea5a19aa9f85c720b4a883e">term</a> ()</td></tr>
 <tr class="memdesc:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> termination method. This will be called by all radio modules when the destructor is called. Can be used to e.g., stop SPI interface. <br /></td></tr>
 <tr class="separator:aa4f2bd49aea5a19aa9f85c720b4a883e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4cc3bef7109f00b77b95e84511b0bb9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#ab4cc3bef7109f00b77b95e84511b0bb9">tone</a> (uint32_t pin, unsigned int frequency, unsigned long duration=0)</td></tr>
-<tr class="memdesc:ab4cc3bef7109f00b77b95e84511b0bb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin.  <a href="class_radio_lib_hal.html#ab4cc3bef7109f00b77b95e84511b0bb9">More...</a><br /></td></tr>
-<tr class="separator:ab4cc3bef7109f00b77b95e84511b0bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62c9032e834ba420d81dc3e69df64e17"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a62c9032e834ba420d81dc3e69df64e17">tone</a> (uint32_t pin, unsigned int frequency, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> duration=0)</td></tr>
+<tr class="memdesc:a62c9032e834ba420d81dc3e69df64e17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to produce a square-wave with 50% duty cycle ("tone") of a given frequency at some pin.  <a href="class_radio_lib_hal.html#a62c9032e834ba420d81dc3e69df64e17">More...</a><br /></td></tr>
+<tr class="separator:a62c9032e834ba420d81dc3e69df64e17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6b5341c59728a1932e33216feee04ea5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_hal.html#a6b5341c59728a1932e33216feee04ea5">noTone</a> (uint32_t pin)</td></tr>
 <tr class="memdesc:a6b5341c59728a1932e33216feee04ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to stop producing a tone.  <a href="class_radio_lib_hal.html#a6b5341c59728a1932e33216feee04ea5">More...</a><br /></td></tr>
 <tr class="separator:a6b5341c59728a1932e33216feee04ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -320,8 +320,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="a8427720749d8c87d17654071dfa5b94e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8427720749d8c87d17654071dfa5b94e">&#9670;&nbsp;</a></span>delay()</h2>
+<a id="aa2de4fcafad28470f7d46073fa29da79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2de4fcafad28470f7d46073fa29da79">&#9670;&nbsp;</a></span>delay()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -332,7 +332,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="memname">virtual void RadioLibHal::delay </td>
           <td>(</td>
-          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>ms</em></td><td>)</td>
           <td></td>
         </tr>
@@ -354,8 +354,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="ad49128a75a3d7abdc68baa302955f3ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad49128a75a3d7abdc68baa302955f3ac">&#9670;&nbsp;</a></span>delayMicroseconds()</h2>
+<a id="ab93dc492291dfe6fc0dd763bee966161"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab93dc492291dfe6fc0dd763bee966161">&#9670;&nbsp;</a></span>delayMicroseconds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -366,7 +366,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="memname">virtual void RadioLibHal::delayMicroseconds </td>
           <td>(</td>
-          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>us</em></td><td>)</td>
           <td></td>
         </tr>
@@ -502,8 +502,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="aedf55424bc4aa28379b6f4f6b04151d3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aedf55424bc4aa28379b6f4f6b04151d3">&#9670;&nbsp;</a></span>micros()</h2>
+<a id="a64d98b48668ced5ba1014f272606f370"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64d98b48668ced5ba1014f272606f370">&#9670;&nbsp;</a></span>micros()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -512,7 +512,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual unsigned long RadioLibHal::micros </td>
+          <td class="memname">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> RadioLibHal::micros </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -530,8 +530,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="a2bc5dbf7c13e6031fb9892075755a023"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bc5dbf7c13e6031fb9892075755a023">&#9670;&nbsp;</a></span>millis()</h2>
+<a id="a4b8e36ccf8fe372c259b963666513d37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b8e36ccf8fe372c259b963666513d37">&#9670;&nbsp;</a></span>millis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -540,7 +540,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual unsigned long RadioLibHal::millis </td>
+          <td class="memname">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> RadioLibHal::millis </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -672,8 +672,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="a35a6ef1b38553a3516c961872eb411d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35a6ef1b38553a3516c961872eb411d7">&#9670;&nbsp;</a></span>pulseIn()</h2>
+<a id="a3f38db9475dcd0967d6dfe240b8695c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f38db9475dcd0967d6dfe240b8695c9">&#9670;&nbsp;</a></span>pulseIn()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -696,7 +696,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>timeout</em>&#160;</td>
         </tr>
         <tr>
@@ -777,8 +777,8 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 
 </div>
 </div>
-<a id="ab4cc3bef7109f00b77b95e84511b0bb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4cc3bef7109f00b77b95e84511b0bb9">&#9670;&nbsp;</a></span>tone()</h2>
+<a id="a62c9032e834ba420d81dc3e69df64e17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62c9032e834ba420d81dc3e69df64e17">&#9670;&nbsp;</a></span>tone()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -801,7 +801,7 @@ const uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned long&#160;</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
           <td class="paramname"><em>duration</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>

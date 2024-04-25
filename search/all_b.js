@@ -2,8 +2,8 @@ var searchData=
 [
   ['maxpayloaddwelltime_188',['maxPayloadDwellTime',['../class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205',1,'LoRaWANNode']]],
   ['mic_2de_20message_20types_2e_189',['Mic-E message types.',['../group__mic__e__message__types.html',1,'']]],
-  ['micros_190',['micros',['../class_radio_lib_hal.html#aedf55424bc4aa28379b6f4f6b04151d3',1,'RadioLibHal']]],
-  ['millis_191',['millis',['../class_radio_lib_hal.html#a2bc5dbf7c13e6031fb9892075755a023',1,'RadioLibHal']]],
+  ['micros_190',['micros',['../class_radio_lib_hal.html#a64d98b48668ced5ba1014f272606f370',1,'RadioLibHal']]],
+  ['millis_191',['millis',['../class_radio_lib_hal.html#a4b8e36ccf8fe372c259b963666513d37',1,'RadioLibHal']]],
   ['mode_192',['mode',['../struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462',1,'Module::RfSwitchMode_t']]],
   ['mode_5fend_5fof_5ftable_193',['MODE_END_OF_TABLE',['../class_module.html#a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770',1,'Module::MODE_END_OF_TABLE()'],['../class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a0cffe238c4822ab7f8beddf4ec72052b',1,'STM32WLx::MODE_END_OF_TABLE()']]],
   ['mode_5fidle_194',['MODE_IDLE',['../class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671',1,'Module::MODE_IDLE()'],['../class_s_t_m32_w_lx.html#ac8d380c3d3201015ad35594826975787a8cf0ccad0eec5fde12798e0b0347d6bf',1,'STM32WLx::MODE_IDLE()']]],

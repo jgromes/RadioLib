@@ -19,7 +19,7 @@ var class_l_r11x0 =
     [ "getPacketLength", "class_l_r11x0.html#ac1f541bdee1d983126ceae47940b8f9d", null ],
     [ "getRSSI", "class_l_r11x0.html#a468ee0182883d8af22a0a4202ef7baa5", null ],
     [ "getSNR", "class_l_r11x0.html#ad4f32509aea96de6a7ec08a8e60a6bea", null ],
-    [ "getTimeOnAir", "class_l_r11x0.html#a33dd234876e6e5dc640302d8456fd7ed", null ],
+    [ "getTimeOnAir", "class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d", null ],
     [ "invertIQ", "class_l_r11x0.html#af85c16956c2250dbf338a298c074d28c", null ],
     [ "readData", "class_l_r11x0.html#a3563453988a83d22dd07d4691543a300", null ],
     [ "readData", "class_l_r11x0.html#a20279f1b267e936991f47fd703924833", null ],
