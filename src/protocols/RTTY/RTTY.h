@@ -71,7 +71,7 @@ class RTTYClient: public RadioLibPrint {
 
     uint32_t baseFreq = 0, baseFreqHz = 0;
     uint32_t shiftFreq = 0, shiftFreqHz = 0;
-    uint32_t bitDuration = 0;
+    RadioLibTime_t bitDuration = 0;
     uint8_t stopBitsNum = 0;
 
     void mark();

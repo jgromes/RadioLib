@@ -335,14 +335,14 @@ class PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    virtual uint32_t getTimeOnAir(size_t len);
+    virtual RadioLibTime_t getTimeOnAir(size_t len);
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    virtual uint32_t calculateRxTimeout(uint32_t timeoutUs);
+    virtual RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
 
     /*!
       \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks

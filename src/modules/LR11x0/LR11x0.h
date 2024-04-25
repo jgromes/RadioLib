@@ -1017,7 +1017,7 @@ class LR11x0: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    uint32_t getTimeOnAir(size_t len) override;
+    RadioLibTime_t getTimeOnAir(size_t len) override;
 
     /*!
       \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.

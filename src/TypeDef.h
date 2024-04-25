@@ -567,4 +567,19 @@
   \}
 */
 
+/*!
+  \defgroup typedefs Type aliases used by RadioLib.
+
+  \{
+*/
+
+/*!
+  \brief Type used for durations in RadioLib
+*/
+typedef unsigned long RadioLibTime_t;
+
+/*!
+  \}
+*/
+
 #endif

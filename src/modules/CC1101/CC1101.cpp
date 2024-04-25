@@ -100,14 +100,14 @@ void CC1101::reset() {
 
 int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
-  uint32_t timeout = 5 + (uint32_t)((((float)(len * 8)) / this->bitRate) * 5);
+  RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
 
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
 
   // wait for transmission start or timeout
-  unsigned long start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
 
@@ -133,14 +133,14 @@ int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t CC1101::receive(uint8_t* data, size_t len) {
   // calculate timeout (500 ms + 400 full max-length packets at current bit rate)
-  uint32_t timeout = 500 + (1.0/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0);
+  RadioLibTime_t timeout = 500 + (1.0/(this->bitRate))*(RADIOLIB_CC1101_MAX_PACKET_LENGTH*400.0);
 
   // start reception
   int16_t state = startReceive();
   RADIOLIB_ASSERT(state);
 
   // wait for packet start or timeout
-  unsigned long start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
 
@@ -172,7 +172,7 @@ int16_t CC1101::standby() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   // wait until idle is reached
-  unsigned long start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != RADIOLIB_CC1101_MARC_STATE_IDLE) {
     mod->hal->yield();
     if(this->mod->hal->millis() - start > 100) {

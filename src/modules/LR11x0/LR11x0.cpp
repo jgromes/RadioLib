@@ -118,7 +118,7 @@ int16_t LR11x0::reset() {
   this->mod->hal->delay(300);
   
   // wait for BUSY to go low
-  unsigned long start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(this->mod->hal->digitalRead(this->mod->getGpio())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start >= 3000) {
@@ -143,7 +143,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // get currently active modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
-  uint32_t timeout = getTimeOnAir(len);
+  RadioLibTime_t timeout = getTimeOnAir(len);
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (150% of expected time-on-air)
     timeout = (timeout * 3) / 2;
@@ -163,7 +163,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // wait for packet transmission or timeout
-  unsigned long start = this->mod->hal->micros();
+  RadioLibTime_t start = this->mod->hal->micros();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->micros() - start > timeout) {
@@ -171,7 +171,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
       return(RADIOLIB_ERR_TX_TIMEOUT);
     }
   }
-  unsigned long elapsed = this->mod->hal->micros() - start;
+  RadioLibTime_t elapsed = this->mod->hal->micros() - start;
 
   // update data rate
   this->dataRateMeasured = (len*8.0)/((float)elapsed/1000000.0);
@@ -184,7 +184,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
-  uint32_t timeout = 0;
+  RadioLibTime_t timeout = 0;
 
   // get currently active modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -192,7 +192,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (uint32_t)(symbolLength * 100.0);
+    timeout = (RadioLibTime_t)(symbolLength * 100.0);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
@@ -201,14 +201,14 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
       maxLen = 0xFF;
     }
     float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)this->bitRate;
-    timeout = (uint32_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
+    timeout = (RadioLibTime_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
     size_t maxLen = len;
     if(len == 0) { 
       maxLen = 0xFF;
     }
-    timeout = (uint32_t)(((maxLen * 8.0) / (RADIOLIB_LR11X0_LR_FHSS_BIT_RATE)) * 1000.0 * 5.0);
+    timeout = (RadioLibTime_t)(((maxLen * 8.0) / (RADIOLIB_LR11X0_LR_FHSS_BIT_RATE)) * 1000.0 * 5.0);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -224,7 +224,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
 
   // wait for packet reception or timeout
   bool softTimeout = false;
-  unsigned long start = this->mod->hal->millis();
+  RadioLibTime_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     // safety check, the timeout should be done by the radio
@@ -1226,7 +1226,7 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
   return((size_t)len);
 }
 
-uint32_t LR11x0::getTimeOnAir(size_t len) {
+RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   getPacketType(&type);
@@ -1282,14 +1282,13 @@ uint32_t LR11x0::getTimeOnAir(size_t len) {
     }
 
     // get time-on-air in us
-    return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
+    return(((RadioLibTime_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
+    return(((RadioLibTime_t)len * 8 * 1000000UL) / this->bitRate);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    return(((uint32_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
-
+    return(((RadioLibTime_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
   }
 
   return(0);

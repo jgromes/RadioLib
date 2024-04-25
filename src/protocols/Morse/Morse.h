@@ -167,9 +167,9 @@ class MorseClient: public RadioLibPrint {
 
     // variables to keep decoding state
     uint32_t signalCounter = 0;
-    unsigned long signalStart = 0;
+    RadioLibTime_t signalStart = 0;
     uint32_t pauseCounter = 0;
-    unsigned long pauseStart = 0;
+    RadioLibTime_t pauseStart = 0;
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);

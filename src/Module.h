@@ -371,7 +371,7 @@ class Module {
       \param timeout GPIO wait period timeout in milliseconds.
       \returns \ref status_codes
     */
-    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout);
+    int16_t SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, RadioLibTime_t timeout);
 
     // pin number access methods
 
@@ -503,7 +503,7 @@ class Module {
       \param start Waiting start timestamp, in microseconds.
       \param len Waiting duration, in microseconds;
     */
-    void waitForMicroseconds(unsigned long start, unsigned long len);
+    void waitForMicroseconds(RadioLibTime_t start, RadioLibTime_t len);
 
     /*!
       \brief Function to reflect bits within a byte.

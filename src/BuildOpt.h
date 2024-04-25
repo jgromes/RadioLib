@@ -1,6 +1,8 @@
 #if !defined(_RADIOLIB_BUILD_OPTIONS_H)
 #define _RADIOLIB_BUILD_OPTIONS_H
 
+#include "TypeDef.h"
+
 /* RadioLib build configuration options */
 
 /*
@@ -350,12 +352,12 @@
   // ... and for the grand finale, we have millis() and micros() DEFINED AS MACROS!
   #if defined(millis)
   #undef millis
-  inline unsigned long millis() { return((unsigned long)(STCV / 1000)); };
+  inline RadioLibTime_t millis() { return((RadioLibTime_t)(STCV / 1000)); };
   #endif
 
   #if defined(micros)
   #undef micros
-  inline unsigned long micros() { return((unsigned long)(STCV)); };
+  inline RadioLibTime_t micros() { return((RadioLibTime_t)(STCV)); };
   #endif
 
 #elif defined(TEENSYDUINO)

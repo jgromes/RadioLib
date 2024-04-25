@@ -1055,14 +1055,14 @@ class SX127x: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    uint32_t getTimeOnAir(size_t len) override;
+    RadioLibTime_t getTimeOnAir(size_t len) override;
 
     /*!
       \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    uint32_t calculateRxTimeout(uint32_t timeoutUs);
+    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
 
     /*!
       \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks

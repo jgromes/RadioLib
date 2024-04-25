@@ -86,30 +86,30 @@ class PiHal : public RadioLibHal {
       gpioSetISRFunc(interruptNum, 0, 0, NULL);
     }
 
-    void delay(unsigned long ms) override {
+    void delay(RadioLibTime_t ms) override {
       gpioDelay(ms * 1000);
     }
 
-    void delayMicroseconds(unsigned long us) override {
+    void delayMicroseconds(RadioLibTime_t us) override {
       gpioDelay(us);
     }
 
-    unsigned long millis() override {
+    RadioLibTime_t millis() override {
       return(gpioTick() / 1000);
     }
 
-    unsigned long micros() override {
+    RadioLibTime_t micros() override {
       return(gpioTick());
     }
 
-    long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {
+    long pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) override {
       if(pin == RADIOLIB_NC) {
         return(0);
       }
 
       this->pinMode(pin, PI_INPUT);
-      uint32_t start = this->micros();
-      uint32_t curtick = this->micros();
+      RadioLibTime_t start = this->micros();
+      RadioLibTime_t curtick = this->micros();
 
       while(this->digitalRead(pin) == state) {
         if((this->micros() - curtick) > timeout) {
