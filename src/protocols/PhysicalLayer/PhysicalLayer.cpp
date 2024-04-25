@@ -294,12 +294,12 @@ float PhysicalLayer::getSNR() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-uint32_t PhysicalLayer::getTimeOnAir(size_t len) {
+RadioLibTime_t PhysicalLayer::getTimeOnAir(size_t len) {
   (void)len;
   return(0);
 }
 
-uint32_t PhysicalLayer::calculateRxTimeout(uint32_t timeoutUs) {
+RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   (void)timeoutUs;
   return(0); 
 }

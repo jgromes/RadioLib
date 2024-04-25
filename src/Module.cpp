@@ -75,7 +75,7 @@ int16_t Module::SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb, uint8_t
   #if RADIOLIB_SPI_PARANOID
     // check register value each millisecond until check interval is reached
     // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
-    uint32_t start = this->hal->micros();
+    RadioLibTime_t start = this->hal->micros();
     uint8_t readValue = 0x00;
     while(this->hal->micros() - start < (checkInterval * 1000)) {
       readValue = SPIreadRegister(reg);
@@ -308,7 +308,7 @@ int16_t Module::SPIcheckStream() {
   return(state);
 }
 
-int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, uint32_t timeout) {
+int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, RadioLibTime_t timeout) {
   // prepare the buffers
   size_t buffLen = cmdLen + numBytes;
   if(!write) {
@@ -339,7 +339,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   if(this->gpioPin == RADIOLIB_NC) {
     this->hal->delay(50);
   } else {
-    uint32_t start = this->hal->millis();
+    RadioLibTime_t start = this->hal->millis();
     while(this->hal->digitalRead(this->gpioPin)) {
       this->hal->yield();
       if(this->hal->millis() - start >= timeout) {
@@ -366,7 +366,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
       this->hal->delay(1);
     } else {
       this->hal->delayMicroseconds(1);
-      uint32_t start = this->hal->millis();
+      RadioLibTime_t start = this->hal->millis();
       while(this->hal->digitalRead(this->gpioPin)) {
         this->hal->yield();
         if(this->hal->millis() - start >= timeout) {
@@ -432,7 +432,7 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
   return(state);
 }
 
-void Module::waitForMicroseconds(uint32_t start, uint32_t len) {
+void Module::waitForMicroseconds(RadioLibTime_t start, RadioLibTime_t len) {
   #if RADIOLIB_INTERRUPT_TIMING
   (void)start;
   if((this->TimerSetupCb != nullptr) && (len != this->prevTimingLen)) {

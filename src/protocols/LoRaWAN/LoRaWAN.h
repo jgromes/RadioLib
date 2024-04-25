@@ -361,13 +361,13 @@ struct LoRaWANBand_t {
   int8_t powerNumSteps;
 
   /*! \brief Number of milliseconds per hour of allowed Time-on-Air */
-  uint32_t dutyCycle;
+  RadioLibTime_t dutyCycle;
 
   /*! \brief Maximum dwell time per uplink message in milliseconds */
-  uint32_t dwellTimeUp;
+  RadioLibTime_t dwellTimeUp;
 
   /*! \brief Maximum dwell time per downlink message in milliseconds */
-  uint32_t dwellTimeDn;
+  RadioLibTime_t dwellTimeDn;
 
   /*! \brief A set of default uplink (TX) channels for frequency-type bands */
   LoRaWANChannel_t txFreqs[3];
@@ -772,7 +772,7 @@ class LoRaWANNode {
       \param msPerHour The maximum allowed Time-on-Air per hour in milliseconds 
       (default 0 = maximum allowed for configured band).
     */
-    void setDutyCycle(bool enable = true, uint32_t msPerHour = 0);
+    void setDutyCycle(bool enable = true, RadioLibTime_t msPerHour = 0);
 
     /*!
       \brief Calculate the minimum interval to adhere to a certain dutyCycle.
@@ -781,10 +781,10 @@ class LoRaWANNode {
       \param airtime The airtime of the uplink.
       \returns Required interval (delay) in milliseconds between consecutive uplinks.
     */
-    uint32_t dutyCycleInterval(uint32_t msPerHour, uint32_t airtime);
+    RadioLibTime_t dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime);
 
     /*! \brief Returns time in milliseconds until next uplink is available under dutyCycle limits */
-    uint32_t timeUntilUplink();
+    RadioLibTime_t timeUntilUplink();
 
     /*!
       \brief Toggle adherence to dwellTime limits to on or off.
@@ -792,7 +792,7 @@ class LoRaWANNode {
       \param msPerUplink The maximum allowed Time-on-Air per uplink in milliseconds 
       (default 0 = maximum allowed for configured band).
     */
-    void setDwellTime(bool enable, uint32_t msPerUplink = 0);
+    void setDwellTime(bool enable, RadioLibTime_t msPerUplink = 0);
 
     /*! 
       \brief Returns the maximum payload given the currently present dwell time limits.
@@ -932,16 +932,16 @@ class LoRaWANNode {
     uint8_t rev = 0;
 
     // Time on Air of last uplink
-    uint32_t lastToA = 0;
+    RadioLibTime_t lastToA = 0;
 
     // timestamp to measure the RX1/2 delay (from uplink end)
-    uint32_t rxDelayStart = 0;
+    RadioLibTime_t rxDelayStart = 0;
 
     // timestamp when the Rx1/2 windows were closed (timeout or uplink received)
-    uint32_t rxDelayEnd = 0;
+    RadioLibTime_t rxDelayEnd = 0;
 
     // delays between the uplink and RX1/2 windows
-    uint32_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };
+    RadioLibTime_t rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };
 
     // device status - battery level
     uint8_t battLevel = 0xFF;

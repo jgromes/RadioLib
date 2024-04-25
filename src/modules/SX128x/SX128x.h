@@ -722,7 +722,7 @@ class SX128x: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    uint32_t getTimeOnAir(size_t len);
+    RadioLibTime_t getTimeOnAir(size_t len);
 
     /*!
       \brief Set implicit header mode for future reception/transmission.

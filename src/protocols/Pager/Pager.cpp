@@ -36,7 +36,7 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
   // calculate duration of 1 bit in us
   dataRate = (float)speed/1000.0f;
-  bitDuration = (uint32_t)1000000/speed;
+  bitDuration = (RadioLibTime_t)1000000/speed;
 
   // calculate 24-bit frequency
   baseFreq = base;
@@ -511,7 +511,7 @@ void PagerClient::write(uint32_t codeWord) {
   Module* mod = phyLayer->getMod();
   for(int8_t i = 31; i >= 0; i--) {
     uint32_t mask = (uint32_t)0x01 << i;
-    uint32_t start = mod->hal->micros();
+    RadioLibTime_t start = mod->hal->micros();
 
     // figure out the shift direction - start by assuming the bit is 0
     int16_t change = shiftFreq;
@@ -532,7 +532,7 @@ void PagerClient::write(uint32_t codeWord) {
     // this is pretty silly, while(mod->hal->micros() ... ) would be enough
     // but for some reason, MegaCore throws a linker error on it
     // "relocation truncated to fit: R_AVR_7_PCREL against `no symbol'"
-    uint32_t now = mod->hal->micros();
+    RadioLibTime_t now = mod->hal->micros();
     while(now - start < bitDuration) {
       now = mod->hal->micros();
     }

@@ -53,7 +53,7 @@ void inline ArduinoHal::detachInterrupt(uint32_t interruptNum) {
   ::detachInterrupt(interruptNum);
 }
 
-void inline ArduinoHal::delay(unsigned long ms) {
+void inline ArduinoHal::delay(RadioLibTime_t ms) {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delay(ms);
 #else
@@ -61,7 +61,7 @@ void inline ArduinoHal::delay(unsigned long ms) {
 #endif
 }
 
-void inline ArduinoHal::delayMicroseconds(unsigned long us) {
+void inline ArduinoHal::delayMicroseconds(RadioLibTime_t us) {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   ::delayMicroseconds(us);
 #else
@@ -69,7 +69,7 @@ void inline ArduinoHal::delayMicroseconds(unsigned long us) {
 #endif
 }
 
-unsigned long inline ArduinoHal::millis() {
+RadioLibTime_t inline ArduinoHal::millis() {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::millis());
 #else
@@ -77,7 +77,7 @@ unsigned long inline ArduinoHal::millis() {
 #endif
 }
 
-unsigned long inline ArduinoHal::micros() {
+RadioLibTime_t inline ArduinoHal::micros() {
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
   return(::micros());
 #else
@@ -85,7 +85,7 @@ unsigned long inline ArduinoHal::micros() {
 #endif
 }
 
-long inline ArduinoHal::pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) {
+long inline ArduinoHal::pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) {
   if(pin == RADIOLIB_NC) {
     return 0;
   }
@@ -114,7 +114,7 @@ void inline ArduinoHal::spiEnd() {
   spi->end();
 }
 
-void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, unsigned long duration) {
+void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration) {
   #if !defined(RADIOLIB_TONE_UNSUPPORTED)
     if(pin == RADIOLIB_NC) {
       return;

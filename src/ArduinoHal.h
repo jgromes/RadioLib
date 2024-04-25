@@ -40,11 +40,11 @@ class ArduinoHal : public RadioLibHal {
     uint32_t digitalRead(uint32_t pin) override;
     void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override;
     void detachInterrupt(uint32_t interruptNum) override;
-    void delay(unsigned long ms) override;
-    void delayMicroseconds(unsigned long us) override;
-    unsigned long millis() override;
-    unsigned long micros() override;
-    long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override;
+    void delay(RadioLibTime_t ms) override;
+    void delayMicroseconds(RadioLibTime_t us) override;
+    RadioLibTime_t millis() override;
+    RadioLibTime_t micros() override;
+    long pulseIn(uint32_t pin, uint32_t state, RadioLibTime_t timeout) override;
     void spiBegin() override;
     void spiBeginTransaction() override;
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) override;
@@ -54,7 +54,7 @@ class ArduinoHal : public RadioLibHal {
     // implementations of virtual RadioLibHal methods
     void init() override;
     void term() override;
-    void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) override;
+    void tone(uint32_t pin, unsigned int frequency, RadioLibTime_t duration = 0) override;
     void noTone(uint32_t pin) override;
     void yield() override;
     uint32_t pinToInterrupt(uint32_t pin) override;

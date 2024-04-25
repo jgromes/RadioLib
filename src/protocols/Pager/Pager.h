@@ -182,7 +182,7 @@ class PagerClient {
     uint32_t baseFreqRaw;
     uint16_t shiftFreq;
     uint16_t shiftFreqHz;
-    uint16_t bitDuration;
+    RadioLibTime_t bitDuration;
     uint32_t filterAddr;
     uint32_t filterMask;
     uint32_t *filterAddresses;

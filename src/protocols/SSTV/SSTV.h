@@ -54,7 +54,7 @@ struct tone_t {
   /*!
     \brief Length of tone in us, set to 0 for picture scan tones.
   */
-  uint32_t len;
+  RadioLibTime_t len;
 
   /*!
     \brief Frequency of tone in Hz, set to 0 for picture scan tones.
@@ -194,7 +194,7 @@ class SSTVClient {
     SSTVMode_t txMode = Scottie1;
     bool firstLine = true;
 
-    void tone(float freq, uint32_t len = 0);
+    void tone(float freq, RadioLibTime_t len = 0);
 };
 
 #endif

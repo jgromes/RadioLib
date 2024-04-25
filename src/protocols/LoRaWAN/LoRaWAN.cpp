@@ -877,7 +877,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   }
 
   // if adhering to dutyCycle and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled && this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA) > mod->hal->millis()) {
+  if(this->dutyCycleEnabled && this->rxDelayStart + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > mod->hal->millis()) {
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
@@ -1143,7 +1143,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
 int16_t LoRaWANNode::downlinkCommon() {
   Module* mod = this->phyLayer->getMod();
-  const uint32_t scanGuard = 10;
+  const RadioLibTime_t scanGuard = 10;
 
   // check if there are any upcoming Rx windows
   // if the Rx1 window has already started, you're too late, because most downlinks happen in Rx1
@@ -1181,12 +1181,12 @@ int16_t LoRaWANNode::downlinkCommon() {
     // calculate the Rx timeout
     // according to the spec, this must be at least enough time to effectively detect a preamble
     // but pad it a bit on both sides (start and end) to make sure it is wide enough
-    uint32_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*scanGuard*1000;
-    uint32_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
+    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*scanGuard*1000;
+    RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
 
     // wait for the start of the Rx window
     // the waiting duration is shortened a bit to cover any possible timing errors
-    uint32_t waitLen = this->rxDelays[i] - (mod->hal->millis() - this->rxDelayStart);
+    RadioLibTime_t waitLen = this->rxDelays[i] - (mod->hal->millis() - this->rxDelayStart);
     if(waitLen > scanGuard) {
       waitLen -= scanGuard;
     }
@@ -1942,7 +1942,7 @@ void LoRaWANNode::setADR(bool enable) {
   this->adrEnabled = enable;
 }
 
-void LoRaWANNode::setDutyCycle(bool enable, uint32_t msPerHour) {
+void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   this->dutyCycleEnabled = enable;
   if(msPerHour <= 0) {
     this->dutyCycle = this->band->dutyCycle;
@@ -1953,26 +1953,26 @@ void LoRaWANNode::setDutyCycle(bool enable, uint32_t msPerHour) {
 
 // given an airtime in milliseconds, calculate the minimum uplink interval
 // to adhere to a given dutyCycle
-uint32_t LoRaWANNode::dutyCycleInterval(uint32_t msPerHour, uint32_t airtime) {
+RadioLibTime_t LoRaWANNode::dutyCycleInterval(RadioLibTime_t msPerHour, RadioLibTime_t airtime) {
   if(msPerHour == 0 || airtime == 0) {
     return(0);
   }
-  uint32_t oneHourInMs = (uint32_t)60 * (uint32_t)60 * (uint32_t)1000;
+  RadioLibTime_t oneHourInMs = (RadioLibTime_t)60 * (RadioLibTime_t)60 * (RadioLibTime_t)1000;
   float numPackets = msPerHour / airtime;
-  uint32_t delayMs = oneHourInMs / numPackets + 1;  // + 1 to prevent rounding problems
+  RadioLibTime_t delayMs = oneHourInMs / numPackets + 1;  // + 1 to prevent rounding problems
   return(delayMs);
 }
 
-uint32_t LoRaWANNode::timeUntilUplink() {
+RadioLibTime_t LoRaWANNode::timeUntilUplink() {
   Module* mod = this->phyLayer->getMod();
-  uint32_t nextUplink = this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA);
+  RadioLibTime_t nextUplink = this->rxDelayStart + dutyCycleInterval(this->dutyCycle, this->lastToA);
   if(mod->hal->millis() > nextUplink){
     return(0);
   }
   return(nextUplink - mod->hal->millis() + 1);
 }
 
-void LoRaWANNode::setDwellTime(bool enable, uint32_t msPerUplink) {
+void LoRaWANNode::setDwellTime(bool enable, RadioLibTime_t msPerUplink) {
   this->dwellTimeEnabledUp = enable;
   if(msPerUplink <= 0) {
     this->dwellTimeUp = this->band->dwellTimeUp;
@@ -2320,7 +2320,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       if(maxDutyCycle == 0) {
         this->dutyCycle = this->band->dutyCycle;
       } else {
-        this->dutyCycle = (uint32_t)60 * (uint32_t)60 * (uint32_t)1000 / (uint32_t)(1UL << maxDutyCycle);
+        this->dutyCycle = (RadioLibTime_t)60 * (RadioLibTime_t)60 * (RadioLibTime_t)1000 / (RadioLibTime_t)(1UL << maxDutyCycle);
       }
 
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE], cmd->payload, cmd->len);

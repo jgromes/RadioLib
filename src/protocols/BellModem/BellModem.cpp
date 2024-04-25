@@ -70,7 +70,7 @@ size_t BellClient::write(uint8_t b) {
 
   // iterate over the bits and set correct frequencies
   for(uint16_t mask = 0x80; mask >= 0x01; mask >>= 1) {
-    uint32_t start = mod->hal->micros();
+    RadioLibTime_t start = mod->hal->micros();
     if(b & mask) {
       this->tone(toneMark, false);
     } else {
