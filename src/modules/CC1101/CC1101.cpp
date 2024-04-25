@@ -758,7 +758,7 @@ int16_t CC1101::setOOK(bool enableOOK) {
 float CC1101::getRSSI() {
   float rssi;
 
-  if (this->directModeEnabled) {
+  if(!this->directModeEnabled) {
     if(this->rawRSSI >= 128) {
       rssi = (((float)this->rawRSSI - 256.0)/2.0) - 74.0;
     } else {
@@ -766,12 +766,9 @@ float CC1101::getRSSI() {
     }
   } else {
     uint8_t rawRssi = SPIreadRegister(RADIOLIB_CC1101_REG_RSSI);
-    if (rawRssi >= 128)
-    {
+    if(rawRssi >= 128) {
       rssi = ((rawRssi - 256) / 2) - 74;
-    }
-    else
-    {
+    } else {
       rssi = (rawRssi / 2) - 74;
     }
   }
