@@ -1023,7 +1023,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     // assume maximum possible buffer size
     uint8_t foptsBuff[RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN];
     #else
-    uint8_t foptsBuff[foptsLen];
+    uint8_t* foptsBuff = new uint8_t[foptsLen];
     #endif
     uint8_t* foptsPtr = foptsBuff;
 
@@ -1052,6 +1052,9 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     // encrypt it
     processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fcntUp, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x01, true);
     
+    #if !RADIOLIB_STATIC_ONLY
+    delete[] foptsBuff;
+    #endif
   }
 
   // set the port
