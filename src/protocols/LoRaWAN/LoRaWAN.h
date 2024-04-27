@@ -564,15 +564,16 @@ class LoRaWANNode {
       \brief Join network by performing activation by personalization.
       In this procedure, all necessary configuration must be provided by the user.
       \param addr Device address.
-      \param nwkSKey Pointer to the network session AES-128 key (LoRaWAN 1.0) or MAC command network session key (LoRaWAN 1.1).
+      \param fNwkSIntKey Pointer to the Forwarding network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
+      \param sNwkSIntKey Pointer to the Serving network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
+      \param nwkSEncKey Pointer to the MAC command network session key [NwkSEncKey] (LoRaWAN 1.1) 
+                                    or network session AES-128 key [NwkSKey] (LoRaWAN 1.0).
       \param appSKey Pointer to the application session AES-128 key.
-      \param fNwkSIntKey Pointer to the Forwarding network session (LoRaWAN 1.1), unused for LoRaWAN 1.0.
-      \param sNwkSIntKey Pointer to the Serving network session (LoRaWAN 1.1), unused for LoRaWAN 1.0.
       \param force Set to true to force a new session, even if one exists.
       \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
-    int16_t beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey = NULL, uint8_t* sNwkSIntKey = NULL, bool force = false, uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+    int16_t beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey, bool force = false, uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     /*! \brief Whether there is an ongoing session active */
     bool isJoined();

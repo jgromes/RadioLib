@@ -732,7 +732,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, bool force, uint8_t initialDr) {
+int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey, bool force, uint8_t initialDr) {
   // if not forced and already joined, don't do anything
   if(!force && this->isJoined()) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("beginABP(): Did not rejoin: session already active");
@@ -744,7 +744,7 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
   // check if we actually need to restart from a clean session
   uint16_t checkSum = 0;
   checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&addr), 4);
-  checkSum ^= LoRaWANNode::checkSum16(nwkSKey, 16);
+  checkSum ^= LoRaWANNode::checkSum16(nwkSEncKey, 16);
   checkSum ^= LoRaWANNode::checkSum16(appSKey, 16);
   if(fNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
   if(sNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
@@ -763,12 +763,12 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* nwkSKey, uint8_t* appSKey,
 
   this->devAddr = addr;
   memcpy(this->appSKey, appSKey, RADIOLIB_AES128_KEY_SIZE);
-  memcpy(this->nwkSEncKey, nwkSKey, RADIOLIB_AES128_KEY_SIZE);
+  memcpy(this->nwkSEncKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
   if(fNwkSIntKey) {
     this->rev = 1;
     memcpy(this->fNwkSIntKey, fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
   } else {
-    memcpy(this->fNwkSIntKey, nwkSKey, RADIOLIB_AES128_KEY_SIZE);
+    memcpy(this->fNwkSIntKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
   }
   if(sNwkSIntKey) {
     memcpy(this->sNwkSIntKey, sNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
