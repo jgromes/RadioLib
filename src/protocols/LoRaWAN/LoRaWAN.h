@@ -159,6 +159,12 @@
 #define RADIOLIB_LORAWAN_MIC_DATA_RATE_POS                      (3)
 #define RADIOLIB_LORAWAN_MIC_CH_INDEX_POS                       (4)
 
+// maximum allowed dwell time on bands that implement dwell time limitations
+#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
+
+// unused frame counter value
+#define RADIOLIB_LORAWAN_FCNT_NONE                              (0xFFFFFFFF)
+
 // MAC commands
 #define RADIOLIB_LORAWAN_NUM_MAC_COMMANDS                       (16)
 
@@ -178,15 +184,6 @@
 #define RADIOLIB_LORAWAN_MAC_FORCE_REJOIN                       (0x0E)
 #define RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP                 (0x0F)
 #define RADIOLIB_LORAWAN_MAC_PROPRIETARY                        (0x80)
-
-// maximum allowed dwell time on bands that implement dwell time limitations
-#define RADIOLIB_LORAWAN_DWELL_TIME                             (400)
-
-// unused LoRaWAN version
-#define RADIOLIB_LORAWAN_VERSION_NONE                           (0xFF)
-
-// unused frame counter value
-#define RADIOLIB_LORAWAN_FCNT_NONE                              (0xFFFFFFFF)
 
 // the length of internal MAC command queue - hopefully this is enough for most use cases
 #define RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE                 (9)
@@ -591,9 +588,9 @@ class LoRaWANNode {
       Only LinkCheck and DeviceTime are available to the user. 
       Other commands are ignored; duplicate MAC commands are discarded.
       \param cid ID of the MAC command
-      \returns Whether or not the MAC command was added to the queue.
+      \returns \ref status_codes
     */
-    bool sendMacCommandReq(uint8_t cid);
+    int16_t sendMacCommandReq(uint8_t cid);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -834,6 +831,12 @@ class LoRaWANNode {
       \returns 8-byte DevAddr
     */
     uint64_t getDevAddr();
+
+    /*!
+      \brief Get the Time-on-air of the last uplink message
+      \returns (RadioLibTime_t) time-on-air (ToA) of last uplink message
+    */
+   RadioLibTime_t getLastToA();
 
 #if !RADIOLIB_GODMODE
   private:

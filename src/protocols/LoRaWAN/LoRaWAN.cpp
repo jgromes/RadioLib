@@ -2094,15 +2094,27 @@ int16_t LoRaWANNode::configureChannel(uint8_t dir) {
   return(state);
 }
 
-bool LoRaWANNode::sendMacCommandReq(uint8_t cid) {
+int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
   bool valid = false;
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_MAC_COMMANDS; i++) {
     if(MacTable[i].cid == cid) {
       valid = MacTable[i].user;
     }
   }
-  if(!valid)
-    return(false);
+  if(!valid) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("You are not allowed to request this MAC command");
+    return(RADIOLIB_ERR_INVALID_CID);
+  }
+
+  // if there are already 15 MAC bytes in the uplink queue, we can't add a new one
+  if(this->commandsUp.len + 1 > RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The maximum number of FOpts payload was reached");
+    return(RADIOLIB_ERR_COMMAND_QUEUE_FULL);
+  }
+  if(this->commandsUp.numCommands > RADIOLIB_LORAWAN_MAC_COMMAND_QUEUE_SIZE) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The RadioLib internal MAC command queue was full");
+    return(RADIOLIB_ERR_COMMAND_QUEUE_FULL);
+  }
   
   LoRaWANMacCommand_t cmd = {
     .cid = cid,
@@ -2799,6 +2811,10 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
 
 uint64_t LoRaWANNode::getDevAddr() {
   return(this->devAddr);
+}
+
+RadioLibTime_t LoRaWANNode::getLastToA() {
+  return(this->lastToA);
 }
 
 // The following function enables LMAC, a CSMA scheme for LoRa as specified 
