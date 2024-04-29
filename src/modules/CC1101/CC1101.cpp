@@ -561,7 +561,7 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
 
 int16_t CC1101::setOutputPower(int8_t pwr) {
   // check if power value is configurable
-  int8_t powerRaw = 0;
+  uint8_t powerRaw = 0;
   int16_t state = checkOutputPower(pwr, NULL, &powerRaw);
   RADIOLIB_ASSERT(state);
 
@@ -584,7 +584,7 @@ int16_t CC1101::setOutputPower(int8_t pwr) {
   }
 }
 
-int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, int8_t* raw) {
+int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
   // round to the known frequency settings
   uint8_t f;
   if(this->frequency < 374.0) {
@@ -656,6 +656,7 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, int8_t* raw) {
     default:
       return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {

@@ -781,7 +781,7 @@ class CC1101: public PhysicalLayer {
       \param raw Raw internal value.
       \returns \ref status_codes
     */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, int8_t* raw);
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw);
 
     /*!
       \brief Sets 16-bit sync word as a two byte value.

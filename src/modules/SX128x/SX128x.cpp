@@ -778,6 +778,7 @@ int16_t SX128x::checkOutputPower(int8_t power, int8_t* clipped) {
     *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));
   }
   RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::setPreambleLength(uint32_t preambleLength) {

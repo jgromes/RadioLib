@@ -327,6 +327,7 @@ int16_t SX1272::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
     }
     RADIOLIB_CHECK_RANGE(power, 2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX1272::setGain(uint8_t gain) {

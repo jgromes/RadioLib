@@ -32,6 +32,7 @@ int16_t SX1261::checkOutputPower(int8_t power, int8_t* clipped) {
     *clipped = RADIOLIB_MAX(-17, RADIOLIB_MIN(14, power));
   }
   RADIOLIB_CHECK_RANGE(power, -17, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  return(RADIOLIB_ERR_NONE);
 }
 
 #endif
