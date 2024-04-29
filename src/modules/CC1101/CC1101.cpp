@@ -627,7 +627,6 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
     }
   }
 
-  uint8_t powerRaw;
   switch(power) {
     case -30:
       *raw = paTable[0][f];
