@@ -2108,6 +2108,9 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The RadioLib internal MAC command queue was full");
     return(RADIOLIB_ERR_COMMAND_QUEUE_FULL);
   }
+
+  // delete any prior requests for this MAC command, in case this is requested more than once
+  (void)deleteMacCommand(cid, &this->commandsUp);
   
   LoRaWANMacCommand_t cmd = {
     .cid = cid,
