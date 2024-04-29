@@ -1128,14 +1128,18 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
 int16_t LoRaWANNode::downlinkCommon() {
   Module* mod = this->phyLayer->getMod();
-  const RadioLibTime_t scanGuard = 10;
+
+  // according to the spec, the Rx window must be at least enough time to effectively detect a preamble
+  // but we pad it a bit on both sides (start and end) to make sure it is wide enough
+  const RadioLibTime_t scanGuard = 10;      // Rx window padding in milliseconds
 
   // check if there are any upcoming Rx windows
   // if the Rx1 window has already started, you're too late, because most downlinks happen in Rx1
-  if(mod->hal->millis() - this->rxDelayStart > (this->rxDelays[0] - scanGuard)) {
+  RadioLibTime_t now = mod->hal->millis();  // Fix the current timestamp to prevent negative delays
+  if(now > this->rxDelayStart + this->rxDelays[0] - scanGuard) {
     // if between start of Rx1 and end of Rx2, wait until Rx2 closes
-    if(mod->hal->millis() - this->rxDelayStart < this->rxDelays[1]) {
-      mod->hal->delay(this->rxDelays[1] + this->rxDelayStart - mod->hal->millis());
+    if(now < this->rxDelayStart + this->rxDelays[1]) {
+      mod->hal->delay(this->rxDelays[1] + this->rxDelayStart - now);
     }
     // update the end timestamp in case user got stuck between uplink and downlink
     this->rxDelayEnd = mod->hal->millis();
@@ -1145,12 +1149,6 @@ int16_t LoRaWANNode::downlinkCommon() {
   // set the physical layer configuration for downlink
   int16_t state = this->setPhyProperties(RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK);
   RADIOLIB_ASSERT(state);
-
-  // downlink messages are sent with inverted IQ
-  if(!this->FSK) {
-    state = this->phyLayer->invertIQ(true);
-    RADIOLIB_ASSERT(state);
-  }
 
   // create the masks that are required for receiving downlinks
   uint16_t irqFlags = 0x0000;
@@ -1164,14 +1162,16 @@ int16_t LoRaWANNode::downlinkCommon() {
     downlinkAction = false;
 
     // calculate the Rx timeout
-    // according to the spec, this must be at least enough time to effectively detect a preamble
-    // but pad it a bit on both sides (start and end) to make sure it is wide enough
     RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*scanGuard*1000;
     RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
 
     // wait for the start of the Rx window
+    RadioLibTime_t waitLen = this->rxDelayStart + this->rxDelays[i] - mod->hal->millis();
+    // make sure that no underflow occured; if so, clip the delay (although this will likely miss any downlink)
+    if(waitLen > this->rxDelays[i]) {
+      waitLen = this->rxDelays[i];
+    }
     // the waiting duration is shortened a bit to cover any possible timing errors
-    RadioLibTime_t waitLen = this->rxDelays[i] - (mod->hal->millis() - this->rxDelayStart);
     if(waitLen > scanGuard) {
       waitLen -= scanGuard;
     }
@@ -1704,6 +1704,14 @@ int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
     state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
     RADIOLIB_ASSERT(state);
     state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
+  }
+
+  // downlink messages are sent with inverted IQ
+  if(dir == RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK) {
+    if(!this->FSK) {
+      state = this->phyLayer->invertIQ(true);
+      RADIOLIB_ASSERT(state);
+    }
   }
 
   // this only needs to be done once-ish
