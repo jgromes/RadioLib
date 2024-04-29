@@ -775,6 +775,15 @@ class CC1101: public PhysicalLayer {
     int16_t setOutputPower(int8_t pwr);
 
     /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \param raw Raw internal value.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, int8_t* raw);
+
+    /*!
       \brief Sets 16-bit sync word as a two byte value.
       \param syncH MSB of the sync word.
       \param syncL LSB of the sync word.

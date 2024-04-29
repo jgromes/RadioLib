@@ -256,6 +256,12 @@ int16_t PhysicalLayer::setOutputPower(int8_t power) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped) {
+  (void)power;
+  (void)clipped;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::setSyncWord(uint8_t* sync, size_t len) {
   (void)sync;
   (void)len;

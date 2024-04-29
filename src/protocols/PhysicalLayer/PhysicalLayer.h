@@ -277,6 +277,14 @@ class PhysicalLayer {
     virtual int16_t setOutputPower(int8_t power);
 
     /*!
+      \brief Check if output power is configurable. Must be implemented in module class if the module supports it.
+      \param power Output power in dBm. The allowed range depends on the module used.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    virtual int16_t checkOutputPower(int8_t power, int8_t* clipped);
+
+    /*!
       \brief Set sync word. Must be implemented in module class if the module supports it.
       \param sync Pointer to the sync word.
       \param len Sync word length in bytes. Maximum length depends on the module used.
