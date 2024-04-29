@@ -420,22 +420,24 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
       this->bufferWritePos = 0;
       this->bufferReadPos = 0;
       this->bufferBitPos = 0;
+      this->byteBuff = 0;
     }
 
   } else {
-    // save the bit
+    //read the bit
     if(bit) {
-      this->buffer[this->bufferWritePos] |= 0x01 << this->bufferBitPos;
+      byteBuff |= 0x01 << this->bufferBitPos;
     } else {
-      this->buffer[this->bufferWritePos] &= ~(0x01 << this->bufferBitPos);
+      byteBuff &= ~(0x01 << this->bufferBitPos);
     }
     this->bufferBitPos++;
 
     // check complete byte
     if(this->bufferBitPos == 8) {
-      this->buffer[this->bufferWritePos] = Module::reflect(this->buffer[this->bufferWritePos], 8);
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("R\t%X", this->buffer[this->bufferWritePos]);
+      this->buffer[this->bufferWritePos] = Module::reflect(byteBuff, 8);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("R\t%X", byteBuff);
 
+      this->byteBuff = 0;
       this->bufferWritePos++;
       this->bufferBitPos = 0;
     }
