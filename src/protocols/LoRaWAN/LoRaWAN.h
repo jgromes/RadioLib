@@ -968,7 +968,7 @@ class LoRaWANNode {
 
     // configure the common physical layer properties (preamble, sync word etc.)
     // channels must be configured separately by setupChannelsDyn()!
-    int16_t setPhyProperties();
+    int16_t setPhyProperties(uint8_t dir);
 
     // setup uplink/downlink channel data rates and frequencies
     // for dynamic channels, there is a small set of predefined channels
@@ -987,9 +987,6 @@ class LoRaWANNode {
 
     // find the first usable data rate for the given band
     int16_t findDataRate(uint8_t dr, DataRate_t* dataRate);
-
-    // configure channel based on cached data rate ID and frequency
-    int16_t configureChannel(uint8_t dir);
 
     // restore all available channels from persistent storage
     int16_t restoreChannels();

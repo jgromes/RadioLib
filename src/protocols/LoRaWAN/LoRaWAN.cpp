@@ -241,9 +241,6 @@ int16_t LoRaWANNode::restore(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass
   // copy uplink MAC command queue back in place
   memcpy(&this->commandsUp, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_UL], sizeof(LoRaWANMacCommandQueue_t));
 
-  state = this->setPhyProperties();
-  RADIOLIB_ASSERT(state);
-
   // full session is restored, so set joined flag to whichever mode is restored
   this->activeMode = LoRaWANNode::ntoh<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_MODE]);
 
@@ -498,16 +495,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   // setup all MAC properties to default values
   this->beginCommon(joinDr);
 
-  // set the physical layer configuration
-  state = this->setPhyProperties();
-  RADIOLIB_ASSERT(state);
-
   // select a random pair of Tx/Rx channels
   state = this->selectChannels();
   RADIOLIB_ASSERT(state);
 
-  // configure for uplink with default configuration
-  state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
+  // set the physical layer configuration for uplink
+  state = this->setPhyProperties(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
 
   // copy devNonce currently in use
@@ -784,10 +777,6 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
   // setup all MAC properties to default values
   this->beginCommon(initialDr);
 
-  // set the physical layer configuration
-  state = this->setPhyProperties();
-  RADIOLIB_ASSERT(state);
-
   // reset all frame counters
   this->fcntUp = 0;
   this->aFcntDown = 0;
@@ -970,9 +959,9 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     }
   }
 
-  // configure for uplink
+  // set the physical layer configuration for uplink
   this->selectChannels();
-  state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
+  state = this->setPhyProperties(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
 
   // if dwell time is imposed, calculated expected time on air and cancel if exceeds
@@ -1160,8 +1149,8 @@ int16_t LoRaWANNode::downlinkCommon() {
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
 
-  // configure for downlink
-  int16_t state = this->configureChannel(RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK);
+  // set the physical layer configuration for downlink
+  int16_t state = this->setPhyProperties(RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
   // downlink messages are sent with inverted IQ
@@ -1215,7 +1204,8 @@ int16_t LoRaWANNode::downlinkCommon() {
       RADIOLIB_ASSERT(state);
 
       DataRate_t dataRate;
-      findDataRate(this->rx2.drMax, &dataRate);
+      state = findDataRate(this->rx2.drMax, &dataRate);
+      RADIOLIB_ASSERT(state);
       state = this->phyLayer->setDataRate(dataRate);
       RADIOLIB_ASSERT(state);
     }
@@ -1687,16 +1677,43 @@ bool LoRaWANNode::verifyMIC(uint8_t* msg, size_t len, uint8_t* key) {
   return(true);
 }
 
-int16_t LoRaWANNode::setPhyProperties() {
+int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
   // set the physical layer configuration
-  int8_t pwr = this->txPowerMax - this->txPowerCur * 2;
-  int16_t state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
-  while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-    // go from the highest power and lower it until we hit one supported by the module
-    state = this->phyLayer->setOutputPower(pwr--);
-  }
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("");
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: Frequency %cL = %6.3f MHz", dir ? 'D' : 'U', this->currentChannels[dir].freq);
+  int16_t state = this->phyLayer->setFrequency(this->currentChannels[dir].freq);
   RADIOLIB_ASSERT(state);
 
+  // if this channel is an FSK channel, toggle the FSK switch
+  if(this->band->dataRates[this->dataRates[dir]] == RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
+    this->FSK = true;
+  } else {
+    this->FSK = false;
+  }
+
+  int8_t pwr = this->txPowerMax - this->txPowerCur * 2;
+  
+  // at this point, assume that Tx power value is already checked, so ignore the return value
+  (void)this->phyLayer->checkOutputPower(pwr, &pwr);
+  state = this->phyLayer->setOutputPower(pwr);
+  RADIOLIB_ASSERT(state);
+
+  DataRate_t dr;
+  state = findDataRate(this->dataRates[dir], &dr);
+  RADIOLIB_ASSERT(state);
+  state = this->phyLayer->setDataRate(dr);
+  RADIOLIB_ASSERT(state);
+
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: SF = %d, TX = %d dBm, BW = %6.3f kHz, CR = 4/%d", 
+                            dr.lora.spreadingFactor, pwr, dr.lora.bandwidth, dr.lora.codingRate);
+
+  if(this->FSK) {
+    state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
+    RADIOLIB_ASSERT(state);
+    state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
+  }
+
+  // this only needs to be done once-ish
   uint8_t syncWord[3] = { 0 };
   uint8_t syncWordLen = 0;
   size_t preLen = 0;
@@ -1987,7 +2004,8 @@ void LoRaWANNode::setDwellTime(bool enable, RadioLibTime_t msPerUplink) {
 uint8_t LoRaWANNode::maxPayloadDwellTime() {
   // configure current datarate
   DataRate_t dr;
-  findDataRate(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], &dr);
+  // TODO this may fail horribly?
+  (void)findDataRate(this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK], &dr);
   (void)this->phyLayer->setDataRate(dr);
   uint8_t minPayLen = 0;
   uint8_t maxPayLen = 255;
@@ -2035,6 +2053,8 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower) {
 }
 
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+
   uint8_t dataRateBand = this->band->dataRates[dr];
 
   if(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
@@ -2059,37 +2079,9 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
     
     dataRate->lora.spreadingFactor = ((dataRateBand & 0x70) >> 4) + 6;
     dataRate->lora.codingRate = (dataRateBand & 0x03) + 5;
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: SF = %d, BW = %6.3f kHz, CR = 4/%d", 
-                            dataRate->lora.spreadingFactor, dataRate->lora.bandwidth, dataRate->lora.codingRate);
   }
 
-  return(RADIOLIB_ERR_NONE);
-}
-
-int16_t LoRaWANNode::configureChannel(uint8_t dir) {
-  // set the frequency
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("");
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: Frequency %cL = %6.3f MHz", dir ? 'D' : 'U', this->currentChannels[dir].freq);
-  int state = this->phyLayer->setFrequency(this->currentChannels[dir].freq);
-  RADIOLIB_ASSERT(state);
-
-  // if this channel is an FSK channel, toggle the FSK switch
-  if(this->band->dataRates[this->dataRates[dir]] == RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
-    this->FSK = true;
-  } else {
-    this->FSK = false;
-  }
-
-  DataRate_t dr;
-  findDataRate(this->dataRates[dir], &dr);
-  state = this->phyLayer->setDataRate(dr);
-  RADIOLIB_ASSERT(state);
-
-  if(this->FSK) {
-    state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
-    RADIOLIB_ASSERT(state);
-    state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
-  }
+  state = this->phyLayer->checkDataRate(*dataRate);
 
   return(state);
 }
@@ -2194,8 +2186,6 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
     case(RADIOLIB_LORAWAN_MAC_LINK_ADR): {
       int16_t state = RADIOLIB_ERR_UNKNOWN;
       // get the ADR configuration
-      // per spec, all these configuration should only be set if all ACKs are set, otherwise retain previous state
-      // but we don't bother and try to set each individual command
       uint8_t drUp = (cmd->payload[0] & 0xF0) >> 4;
       uint8_t txSteps = cmd->payload[0] & 0x0F;
       bool isInternalTxDr = cmd->payload[3] >> 7;
@@ -2205,19 +2195,15 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       uint8_t nbTrans = cmd->payload[3] & 0x0F;
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txSteps = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txSteps, chMask, chMaskCntl, nbTrans);
 
-      // apply the configuration
+      // try to apply the datarate configuration
       uint8_t drAck = 0;
       if(drUp == 0x0F) {  // keep the same
         drAck = 1;
 
-        // replace the 'placeholder' with the current actual value for saving
-        cmd->payload[0] = (cmd->payload[0] & 0x0F) | (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
-
       } else if (this->band->dataRates[drUp] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
         // check if the module supports this data rate
         DataRate_t dr;
-        findDataRate(drUp, &dr);
-        state = this->phyLayer->checkDataRate(dr);
+        state = findDataRate(drUp, &dr);
         if(state == RADIOLIB_ERR_NONE) {
           uint8_t drDown = getDownlinkDataRate(drUp, this->rx1DrOffset, this->band->rx1DataRateBase,
                                                this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK].drMin,
@@ -2227,6 +2213,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
           drAck = 1;
         } else {
           RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure dataRate %d, code %d!", drUp, state);
+          drUp = 0x0F;  // set value to 'keep the same'
         }
       
       }
@@ -2236,24 +2223,19 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       if(txSteps == 0x0F) {
         pwrAck = 1;
 
-        // replace the 'placeholder' with the current actual value for saving
-        cmd->payload[0] = (cmd->payload[0] & 0xF0) | this->txPowerCur;
-
       } else {
-        int8_t pwr = this->txPowerMax - 2*txSteps;
-        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: TX = %d dBm", pwr);
-        state = RADIOLIB_ERR_INVALID_OUTPUT_POWER;
-        while(state == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
-          // go from the highest power and lower it until we hit one supported by the module
-          state = this->phyLayer->setOutputPower(pwr--);
-        }
-        // only acknowledge if the requested datarate was succesfully configured
-        if(state == RADIOLIB_ERR_NONE) {
+        int8_t power = this->txPowerMax - 2*txSteps;
+        int8_t powerActual = 0;
+        state = this->phyLayer->checkOutputPower(power, &powerActual);
+        // only acknowledge if the radio is able to operate at or below the requested power level
+        if(state == RADIOLIB_ERR_NONE || (state == RADIOLIB_ERR_INVALID_OUTPUT_POWER && powerActual < power)) {
           pwrAck = 1;
           this->txPowerCur = txSteps;
+        } else {
+          RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d, code %d!", power, state);
+          txSteps = 0x0F;  // set value to 'keep the same'
         }
       }
-
 
       uint8_t chMaskAck = 1;
       // only apply channel mask when the RFU bit is not set
@@ -2281,10 +2263,21 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
         }
       }
 
-      if(nbTrans == 0) {  // keep the same
-        cmd->payload[3] = (cmd->payload[3] & 0xF0) | this->nbTrans; // set current number of retransmissions for saving
-      } else {
+      if(nbTrans) {  // if there is a value for NbTrans, set this value
         this->nbTrans = nbTrans;
+      }
+
+      // replace 'placeholder' or failed values with the current values for saving
+      // per spec, all these configuration should only be set if all ACKs are set, otherwise retain previous state
+      // but we don't bother and try to set each individual command
+      if(drUp == 0x0F || !drAck) {
+        cmd->payload[0] = (cmd->payload[0] & 0x0F) | (this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK] << 4);
+      }
+      if(txSteps == 0x0F || !pwrAck) {
+        cmd->payload[0] = (cmd->payload[0] & 0xF0) | this->txPowerCur;
+      }
+      if(nbTrans == 0) {
+        cmd->payload[3] = (cmd->payload[3] & 0xF0) | this->nbTrans;
       }
 
       if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
