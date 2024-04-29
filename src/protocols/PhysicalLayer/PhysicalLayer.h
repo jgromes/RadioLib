@@ -521,6 +521,7 @@ class PhysicalLayer {
     size_t maxPacketLength;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
+    uint8_t byteBuff;
     uint8_t bufferBitPos;
     uint8_t bufferWritePos;
     uint8_t bufferReadPos;
