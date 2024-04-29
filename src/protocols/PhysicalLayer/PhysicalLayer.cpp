@@ -424,7 +424,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     }
 
   } else {
-    //read the bit
+    //save the bit
     if(bit) {
       byteBuff |= 0x01 << this->bufferBitPos;
     } else {
