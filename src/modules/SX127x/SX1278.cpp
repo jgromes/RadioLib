@@ -346,10 +346,11 @@ int16_t SX1278::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
   } else {
     // PA_BOOST output, check high-power operation
     if(clipped) {
-      if(power == 20) {
+      if(power != 20) {
+        *clipped = RADIOLIB_MAX(2, RADIOLIB_MIN(17, power));
+      } else {
         *clipped = 20;
       }
-      *clipped = RADIOLIB_MAX(2, RADIOLIB_MIN(17, power));
     }
     if(power != 20) {
       RADIOLIB_CHECK_RANGE(power, 2, 17, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
