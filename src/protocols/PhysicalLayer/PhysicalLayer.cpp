@@ -7,6 +7,7 @@ PhysicalLayer::PhysicalLayer(float step, size_t maxLen) {
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   this->bufferBitPos = 0;
   this->bufferWritePos = 0;
+  this->byteBuff = 0;
   #endif
 }
 
@@ -433,16 +434,16 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
   } else {
     //save the bit
     if(bit) {
-      byteBuff |= 0x01 << this->bufferBitPos;
+      this->byteBuff |= 0x01 << this->bufferBitPos;
     } else {
-      byteBuff &= ~(0x01 << this->bufferBitPos);
+      this->byteBuff &= ~(0x01 << this->bufferBitPos);
     }
     this->bufferBitPos++;
 
     // check complete byte
     if(this->bufferBitPos == 8) {
-      this->buffer[this->bufferWritePos] = Module::reflect(byteBuff, 8);
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("R\t%X", byteBuff);
+      this->buffer[this->bufferWritePos] = Module::reflect(this->byteBuff, 8);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("R\t%X", this->byteBuff);
 
       this->byteBuff = 0;
       this->bufferWritePos++;
