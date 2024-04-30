@@ -226,7 +226,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install -y gcc-arm-none-eabi
+          sudo apt-get install -y gcc-arm-none-eabi gcc-riscv64-unknown-elf
           cargo install elf2tab
 
       - name: Build the example

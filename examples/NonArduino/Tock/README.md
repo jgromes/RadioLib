@@ -24,5 +24,5 @@ $ ./build.sh
 Then in the Tock repo you can flash the kernel and app with:
 
 ```shell
-$ make flash; APP=RadioLib/examples/NonArduino/Tock/build/tock-sx1261.tbf make flash-app
+$ make flash; APP=RadioLib/examples/NonArduino/Tock/build-arm/tock-sx1261.tbf make flash-app
 ```

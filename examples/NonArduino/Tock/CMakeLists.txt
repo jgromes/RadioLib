@@ -29,7 +29,11 @@ project(tock-sx1261)
 
 set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/userland_generic.ld)
 
-include("tock.cmake")
+if (RISCV_BUILD)
+    include("tock-riscv.cmake")
+else()
+    include("tock-arm.cmake")
+endif()
 
 # when using debuggers such as gdb, the following line can be used
 #set(CMAKE_BUILD_TYPE Debug)
@@ -43,14 +47,23 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 add_executable(${PROJECT_NAME} main.cpp)
 
 # link with RadioLib and libtock-c
-target_link_libraries(${PROJECT_NAME} PUBLIC
-    RadioLib
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/cortex-m4/libtock.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libgcc.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libstdc++.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libc.a
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libm.a
-)
+if (RISCV_BUILD)
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        RadioLib
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/rv32imc/libtock.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/rv32/rv32i/libc.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/rv32/rv32i/libm.a
+    )
+else()
+    target_link_libraries(${PROJECT_NAME} PUBLIC
+        RadioLib
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/cortex-m4/libtock.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libgcc.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libc++/cortex-m/libstdc++.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libc.a
+        ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/newlib/cortex-m/v7-m/libm.a
+    )
+endif()
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}

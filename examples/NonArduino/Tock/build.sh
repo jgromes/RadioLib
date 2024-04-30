@@ -1,20 +1,28 @@
 #!/bin/bash
 set -e
 
-rm -rf ./build
+rm -rf ./build-*
 
 cd libtock-c/libtock
-make -j4
+make RISCV=1 -j4
 cd ../../
 
-mkdir -p build
-cd build
+mkdir -p build-arm
+cd build-arm
 
 cmake -G "CodeBlocks - Unix Makefiles" ..
 make -j4
 
 cd ..
 
+mkdir -p build-riscv
+cd build-riscv
+
+cmake -G "CodeBlocks - Unix Makefiles" -DRISCV_BUILD=1 ..
+make -j4
+
+cd ..
+
 elf2tab -n radio-lib --stack 4096 --app-heap 2048 --kernel-heap 2048 \
 	--kernel-major 2 --kernel-minor 1 \
-	-v ./build/tock-sx1261
+	-v ./build-arm/tock-sx1261
