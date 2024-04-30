@@ -447,6 +447,15 @@ class PhysicalLayer {
       \returns Byte from direct mode buffer.
     */
     uint8_t read(bool drop = true);
+
+		/*!
+      \brief Get the direct mode buffer.
+      \param drop Drop synchronization on read - next reading will require waiting for the sync word again.
+      Defaults to true.
+      \returns direct mode buffer.
+    */
+
+		uint8_t getDirectBuffer(bool drop = true);
     #endif
 
     /*!
