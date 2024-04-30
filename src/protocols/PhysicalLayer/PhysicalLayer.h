@@ -455,7 +455,7 @@ class PhysicalLayer {
       \returns direct mode buffer.
     */
 
-    uint8_t getDirectBuffer(bool drop = true);
+    uint8_t* getDirectBuffer(bool drop = true);
     #endif
 
     /*!
