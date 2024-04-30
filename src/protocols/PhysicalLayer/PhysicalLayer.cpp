@@ -208,7 +208,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
 
 uint8_t* PhysicalLayer::getDirectBuffer(bool drop) {
   if(drop) {
-    dropsync();
+    dropSync();
   }
   return (this->buffer);
 }
