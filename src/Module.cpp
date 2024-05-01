@@ -76,13 +76,18 @@ int16_t Module::SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb, uint8_t
     // check register value each millisecond until check interval is reached
     // some registers need a bit of time to process the change (e.g. SX127X_REG_OP_MODE)
     RadioLibTime_t start = this->hal->micros();
+    #if RADIOLIB_DEBUG_SPI
     uint8_t readValue = 0x00;
+    #endif
     while(this->hal->micros() - start < (checkInterval * 1000)) {
-      readValue = SPIreadRegister(reg);
-      if((readValue & checkMask) == (newValue & checkMask)) {
+      uint8_t val = SPIreadRegister(reg);
+      if((val & checkMask) == (newValue & checkMask)) {
         // check passed, we can stop the loop
         return(RADIOLIB_ERR_NONE);
       }
+      #if RADIOLIB_DEBUG_SPI
+      readValue = val;
+      #endif
     }
 
     // check failed, print debug info
@@ -309,17 +314,15 @@ int16_t Module::SPIcheckStream() {
 }
 
 int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio, RadioLibTime_t timeout) {
-  // prepare the buffers
+  // prepare the output buffer
   size_t buffLen = cmdLen + numBytes;
   if(!write) {
     buffLen += (this->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] / 8);
   }
   #if RADIOLIB_STATIC_ONLY
     uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
-    uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
     uint8_t* buffOut = new uint8_t[buffLen];
-    uint8_t* buffIn = new uint8_t[buffLen];
   #endif
   uint8_t* buffOutPtr = buffOut;
 
@@ -346,12 +349,18 @@ int16_t Module::SPItransferStream(uint8_t* cmd, uint8_t cmdLen, bool write, uint
         RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO pre-transfer timeout, is it connected?");
         #if !RADIOLIB_STATIC_ONLY
           delete[] buffOut;
-          delete[] buffIn;
         #endif
         return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
       }
     }
   }
+
+  // prepare the input buffer
+  #if RADIOLIB_STATIC_ONLY
+    uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
+  #else
+    uint8_t* buffIn = new uint8_t[buffLen];
+  #endif
 
   // do the transfer
   this->hal->spiBeginTransaction();
@@ -539,7 +548,7 @@ size_t Module::serialPrintf(const char* format, ...) {
     vsnprintf(buffer, len + 1, format, arg);
     va_end(arg);
   }
-  len = RADIOLIB_DEBUG_PORT.write((const uint8_t*)buffer, len);
+  len = RADIOLIB_DEBUG_PORT.write(reinterpret_cast<const uint8_t*>(buffer), len);
   if (buffer != temp) {
     delete[] buffer;
   }
