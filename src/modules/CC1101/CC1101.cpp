@@ -584,6 +584,10 @@ int16_t CC1101::setOutputPower(int8_t pwr) {
   }
 }
 
+int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, NULL));
+}
+
 int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
   constexpr int8_t allowedPwrs[8] = { -30, -20, -15, -10, 0, 5, 7, 10 };
 
