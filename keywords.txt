@@ -127,6 +127,7 @@ setCodingRate	KEYWORD2
 setFrequency	KEYWORD2
 setSyncWord	KEYWORD2
 setOutputPower	KEYWORD2
+checkOutputPower	KEYWORD2
 setCurrentLimit	KEYWORD2
 setPreambleLength	KEYWORD2
 setGain	KEYWORD2
@@ -328,10 +329,10 @@ timeUntilUplink	KEYWORD2
 setDwellTime	KEYWORD2
 maxPayloadDwellTime	KEYWORD2
 setTxPower	KEYWORD2
-setCSMA	KEYWORD2
 getMacLinkCheckAns	KEYWORD2
 getMacDeviceTimeAns	KEYWORD2
 getDevAddr	KEYWORD2
+getLastToA	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

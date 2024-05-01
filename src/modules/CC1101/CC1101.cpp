@@ -560,6 +560,62 @@ int16_t CC1101::getFrequencyDeviation(float *freqDev) {
 }
 
 int16_t CC1101::setOutputPower(int8_t pwr) {
+  // check if power value is configurable
+  uint8_t powerRaw = 0;
+  int16_t state = checkOutputPower(pwr, NULL, &powerRaw);
+  RADIOLIB_ASSERT(state);
+
+  // store the value
+  this->power = pwr;
+
+  if(this->modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK){
+    // Amplitude modulation:
+    // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
+    // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
+
+    uint8_t paValues[2] = {0x00, powerRaw};
+    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_PATABLE, paValues, 2);
+    return(RADIOLIB_ERR_NONE);
+
+  } else {
+    // Freq modulation:
+    // PA_TABLE[0] is the power to be used when transmitting.
+    return(SPIsetRegValue(RADIOLIB_CC1101_REG_PATABLE, powerRaw));
+  }
+}
+
+int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, NULL));
+}
+
+int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
+  constexpr int8_t allowedPwrs[8] = { -30, -20, -15, -10, 0, 5, 7, 10 };
+
+  if(clipped) {
+    if(power <= -30) {
+      *clipped = -30;
+    } else if(power >= 10) {
+      *clipped = 10;
+    } else {
+      for(int i = 0; i < 8; i++) {
+        if(allowedPwrs[i] > power) {
+          break;
+        }
+        *clipped = allowedPwrs[i];
+      }
+    }
+  }
+
+  // if just a check occurs (and not requesting the raw power value), return now
+  if(!raw) {
+    for(int i = 0; i < 8; i++) {
+      if(allowedPwrs[i] == power) {
+        return(RADIOLIB_ERR_NONE);
+      }
+    }
+    return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+
   // round to the known frequency settings
   uint8_t f;
   if(this->frequency < 374.0) {
@@ -586,53 +642,35 @@ int16_t CC1101::setOutputPower(int8_t pwr) {
                            {0xCB, 0xC8, 0xCB, 0xC7},
                            {0xC2, 0xC0, 0xC2, 0xC0}};
 
-  uint8_t powerRaw;
-  switch(pwr) {
-    case -30:
-      powerRaw = paTable[0][f];
+  switch(power) {
+    case allowedPwrs[0]:  // -30
+      *raw = paTable[0][f];
       break;
-    case -20:
-      powerRaw = paTable[1][f];
+    case allowedPwrs[1]:  // -20
+      *raw = paTable[1][f];
       break;
-    case -15:
-      powerRaw = paTable[2][f];
+    case allowedPwrs[2]:  // -15
+      *raw = paTable[2][f];
       break;
-    case -10:
-      powerRaw = paTable[3][f];
+    case allowedPwrs[3]:  // -10
+      *raw = paTable[3][f];
       break;
-    case 0:
-      powerRaw = paTable[4][f];
+    case allowedPwrs[4]:  // 0
+      *raw = paTable[4][f];
       break;
-    case 5:
-      powerRaw = paTable[5][f];
+    case allowedPwrs[5]:  // 5
+      *raw = paTable[5][f];
       break;
-    case 7:
-      powerRaw = paTable[6][f];
+    case allowedPwrs[6]:  // 7
+      *raw = paTable[6][f];
       break;
-    case 10:
-      powerRaw = paTable[7][f];
+    case allowedPwrs[7]:  // 10
+      *raw = paTable[7][f];
       break;
     default:
       return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
-
-  // store the value
-  this->power = pwr;
-
-  if(this->modulation == RADIOLIB_CC1101_MOD_FORMAT_ASK_OOK){
-    // Amplitude modulation:
-    // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
-    // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
-
-    uint8_t paValues[2] = {0x00, powerRaw};
-    SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_PATABLE, paValues, 2);
-    return(RADIOLIB_ERR_NONE);
-
-  } else {
-    // Freq modulation:
-    // PA_TABLE[0] is the power to be used when transmitting.
-    return(SPIsetRegValue(RADIOLIB_CC1101_REG_PATABLE, powerRaw));
-  }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {

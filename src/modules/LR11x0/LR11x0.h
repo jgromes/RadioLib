@@ -803,6 +803,25 @@ class LR11x0: public PhysicalLayer {
     int16_t setOutputPower(int8_t power, bool forceHighPower);
 
     /*!
+      \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, PA will be determined automatically.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
+      based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower);
+
+    /*!
       \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.
       \param bw LoRa bandwidth to be set in kHz.
       \returns \ref status_codes

@@ -85,6 +85,14 @@ class SX1268: public SX126x {
     */
     int16_t setOutputPower(int8_t power);
 
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped);
+
 #if !RADIOLIB_GODMODE
   private:
 #endif

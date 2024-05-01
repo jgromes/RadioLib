@@ -280,15 +280,12 @@ int16_t SX1272::setOutputPower(int8_t power) {
 }
 
 int16_t SX1272::setOutputPower(int8_t power, bool useRfo) {
-  // check allowed power range
-  if(useRfo) {
-    RADIOLIB_CHECK_RANGE(power, -1, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    RADIOLIB_CHECK_RANGE(power, 2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  }
+  // check if power value is configurable
+  int16_t state = checkOutputPower(power, NULL, useRfo);
+  RADIOLIB_ASSERT(state);
 
   // set mode to standby
-  int16_t state = SX127x::standby();
+  state = SX127x::standby();
   Module* mod = this->getMod();
 
   if(useRfo) {
@@ -315,6 +312,26 @@ int16_t SX1272::setOutputPower(int8_t power, bool useRfo) {
   }
 
   return(state);
+}
+
+int16_t SX1272::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, false));
+}
+
+int16_t SX1272::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
+  // check allowed power range
+  if(useRfo) {
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-1, RADIOLIB_MIN(14, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -1, 14, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(2, RADIOLIB_MIN(20, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, 2, 20, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX1272::setGain(uint8_t gain) {

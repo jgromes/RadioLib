@@ -219,6 +219,24 @@ class SX1278: public SX127x {
     int16_t setOutputPower(int8_t power, bool useRfo);
 
     /*!
+      \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, assumes PA_BOOST pin.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool useRfo);
+
+    /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
       Set to 0 to enable automatic gain control (recommended).
       \param gain Gain of receiver LNA (low-noise amplifier) to be set.

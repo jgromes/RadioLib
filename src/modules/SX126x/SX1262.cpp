@@ -98,11 +98,13 @@ int16_t SX1262::setFrequency(float freq, bool calibrate) {
 }
 
 int16_t SX1262::setOutputPower(int8_t power) {
-  RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  // check if power value is configurable
+  int16_t state = checkOutputPower(power, NULL);
+  RADIOLIB_ASSERT(state);
 
   // get current OCP configuration
   uint8_t ocp = 0;
-  int16_t state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
+  state = readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
   RADIOLIB_ASSERT(state);
 
   // set PA config
@@ -115,6 +117,14 @@ int16_t SX1262::setOutputPower(int8_t power) {
 
   // restore OCP configuration
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1));
+}
+
+int16_t SX1262::checkOutputPower(int8_t power, int8_t* clipped) {
+  if(clipped) {
+    *clipped = RADIOLIB_MAX(-9, RADIOLIB_MIN(22, power));
+  }
+  RADIOLIB_CHECK_RANGE(power, -9, 22, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  return(RADIOLIB_ERR_NONE);
 }
 
 #endif

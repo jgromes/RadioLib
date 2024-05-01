@@ -609,6 +609,14 @@ class SX128x: public PhysicalLayer {
     int16_t setOutputPower(int8_t pwr);
 
     /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped);
+
+    /*!
       \brief Sets preamble length for currently active modem. Allowed values range from 1 to 65535.
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK/BLE/FLRC).
       \returns \ref status_codes

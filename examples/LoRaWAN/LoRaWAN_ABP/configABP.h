@@ -12,8 +12,8 @@ const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // minutes x seconds
 #define RADIOLIB_LORAWAN_DEV_ADDR   0x------
 #endif
 
-#ifndef RADIOLIB_LORAWAN_NWKS_KEY   // Replace with your NwkS Key 
-#define RADIOLIB_LORAWAN_NWKS_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
+#ifndef RADIOLIB_LORAWAN_FNWKSINT_KEY   // Replace with your FNwkSInt Key 
+#define RADIOLIB_LORAWAN_FNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
 #endif
 #ifndef RADIOLIB_LORAWAN_SNWKSINT_KEY   // Replace with your SNwkSInt Key 
 #define RADIOLIB_LORAWAN_SNWKSINT_KEY   0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x--, 0x-- 
@@ -118,7 +118,7 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 // copy over the keys in to the something that will not compile if incorrectly formatted
 uint32_t devAddr =        RADIOLIB_LORAWAN_DEV_ADDR;
-uint8_t NwkSKey[] =     { RADIOLIB_LORAWAN_NWKS_KEY };
+uint8_t NwkSKey[] =     { RADIOLIB_LORAWAN_FNWKSINT_KEY };
 uint8_t SNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY }; // Previously sNwkSIntKey
 uint8_t NwkSEncKey[] =  { RADIOLIB_LORAWAN_NWKSENC_KEY }; // Previously fNwkSIntKey
 uint8_t AppSKey[] =     { RADIOLIB_LORAWAN_APPS_KEY };

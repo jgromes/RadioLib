@@ -765,9 +765,20 @@ int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
 }
 
 int16_t SX128x::setOutputPower(int8_t pwr) {
-  RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  // check if power value is configurable
+  int16_t state = checkOutputPower(power, NULL);
+  RADIOLIB_ASSERT(state);
+
   this->power = pwr + 18;
   return(setTxParams(this->power));
+}
+
+int16_t SX128x::checkOutputPower(int8_t power, int8_t* clipped) {
+  if(clipped) {
+    *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));
+  }
+  RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
