@@ -471,7 +471,7 @@ uint32_t Module::reflect(uint32_t in, uint8_t bits) {
 void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
-    char str[80];
+    char str[120];
     sprintf(str, "%07" PRIx32 "  ", i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
@@ -497,15 +497,21 @@ void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offs
     }
     str[56] = '|';
     str[57] = ' ';
+
+    // at this point we need to start escaping "%" characters
+    char* strPtr = &str[58];
     for(size_t j = 0; j < line_len; j++) {
       char c = data[i+j];
       if((c < ' ') || (c > '~')) {
         c = '.';
+      } else if(c == '%') {
+        *strPtr++ = '%';
       }
-      sprintf(&str[58 + j], "%c", c);
+      sprintf(strPtr++, "%c", c);
+      
     }
     for(size_t j = line_len; j < 16; j++) {
-      sprintf(&str[58 + j], "   ");
+      sprintf(strPtr++, "   ");
     }
     if(level) {
       RADIOLIB_DEBUG_PRINT(level);
