@@ -804,6 +804,15 @@ class LR11x0: public PhysicalLayer {
 
     /*!
       \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, PA will be determined automatically.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
       \param power Output power in dBm.
       \param clipped Clipped output power value to what is possible within the module's range.
       \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically

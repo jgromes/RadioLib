@@ -611,6 +611,10 @@ int16_t LR11x0::setOutputPower(int8_t power, bool forceHighPower) {
   return(state);
 }
 
+int16_t LR11x0::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, false));
+}
+
 int16_t LR11x0::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {
   if(forceHighPower || (power > 14)) {
     if(clipped) {
