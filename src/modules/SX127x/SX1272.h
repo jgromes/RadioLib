@@ -208,6 +208,15 @@ class SX1272: public SX127x {
 
     /*!
       \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, assumes PA_BOOST pin.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
       \param power Output power in dBm.
       \param clipped Clipped output power value to what is possible within the module's range.
       \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.

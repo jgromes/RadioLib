@@ -335,6 +335,10 @@ int16_t SX1278::setOutputPower(int8_t power, bool useRfo) {
   return(state);
 }
 
+int16_t SX1278::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, false));
+}
+
 int16_t SX1278::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
   // check allowed power range
   if(useRfo) {
