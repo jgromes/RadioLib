@@ -107,7 +107,7 @@ $(document).ready(function(){initNavTree('_arduino_hal_8h_source.html',''); init
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    ArduinoHal();</div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    ArduinoHal(SPIClass&amp; spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);</div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;    <span class="keyword">explicit</span> ArduinoHal(SPIClass&amp; spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);</div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160; </div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <span class="comment">// implementations of pure virtual RadioLibHal methods</span></div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_radio_lib_hal.html#af01b4e5e01352b99ce4329c9f9f8433b">pinMode</a>(uint32_t pin, uint32_t mode) <span class="keyword">override</span>;</div>
