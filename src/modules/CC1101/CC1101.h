@@ -539,6 +539,7 @@ class CC1101: public PhysicalLayer {
       \brief Default constructor.
       \param module Instance of Module that will be used to communicate with the radio.
     */
+    // cppcheck-suppress noExplicitConstructor
     CC1101(Module* module);
 
     // basic methods
@@ -660,23 +661,23 @@ class CC1101: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Interrupt-driven binary transmit method.
@@ -698,7 +699,7 @@ class CC1101: public PhysicalLayer {
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
@@ -708,7 +709,7 @@ class CC1101: public PhysicalLayer {
       \param len Ignored.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -728,14 +729,14 @@ class CC1101: public PhysicalLayer {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets bit rate. Allowed values range from 0.025 to 600.0 kbps.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162,
@@ -772,7 +773,7 @@ class CC1101: public PhysicalLayer {
       \param pwr Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr);
+    int16_t setOutputPower(int8_t pwr) override;
 
     /*!
       \brief Check if output power is configurable.
@@ -847,7 +848,7 @@ class CC1101: public PhysicalLayer {
       In asynchronous direct mode, returns the current RSSI level.
       \returns RSSI in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Gets LQI (Link Quality Indicator) of the last received packet.
@@ -939,7 +940,7 @@ class CC1101: public PhysicalLayer {
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
     */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
       \brief Read version SPI register. Should return CC1101_VERSION_LEGACY (0x04) or
@@ -953,13 +954,13 @@ class CC1101: public PhysicalLayer {
       \brief Set interrupt service routine function to call when data bit is receveid in direct mode.
       \param func Pointer to interrupt service routine.
     */
-    void setDirectAction(void (*func)(void));
+    void setDirectAction(void (*func)(void)) override;
 
     /*!
       \brief Function to read and process data bit in direct reception mode.
       \param pin Pin on which to read.
     */
-    void readBit(uint32_t pin);
+    void readBit(uint32_t pin) override;
     #endif
 
     /*!
@@ -968,12 +969,12 @@ class CC1101: public PhysicalLayer {
       \param value The value that indicates which function to place on that pin. See chip datasheet for details.
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(uint32_t pin, uint32_t value);
+    int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
 
   #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
     protected:
   #endif
-    Module* getMod();
+    Module* getMod() override;
 
     // SPI read overrides to set bit for burst write and status registers access
     int16_t SPIgetRegValue(uint8_t reg, uint8_t msb = 7, uint8_t lsb = 0);
