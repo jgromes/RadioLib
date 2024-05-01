@@ -181,6 +181,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">setOutputPower</a> (int8_t power)</td></tr>
 <tr class="memdesc:ad2286dc78dbf8e3084f38e9159b99ae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set output power. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#ad2286dc78dbf8e3084f38e9159b99ae5">More...</a><br /></td></tr>
 <tr class="separator:ad2286dc78dbf8e3084f38e9159b99ae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1784cb227d04b3f2846625fda6797536"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">checkOutputPower</a> (int8_t power, int8_t *clipped)</td></tr>
+<tr class="memdesc:a1784cb227d04b3f2846625fda6797536"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">More...</a><br /></td></tr>
+<tr class="separator:a1784cb227d04b3f2846625fda6797536"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c71cdc1238e1368274670758431a977"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">setSyncWord</a> (uint8_t *sync, size_t len)</td></tr>
 <tr class="memdesc:a6c71cdc1238e1368274670758431a977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set sync word. Must be implemented in module class if the module supports it.  <a href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">More...</a><br /></td></tr>
 <tr class="separator:a6c71cdc1238e1368274670758431a977"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -450,6 +453,54 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x1278.html#a7f238fd38f436d9e86aa92a387d48467">SX1278</a>, <a class="el" href="class_s_x1277.html#aef5d9e27edc2173d1b4cc1cb0d9733bc">SX1277</a>, <a class="el" href="class_s_x1273.html#a5eae1e82596f3a6c4c926c381c2737a7">SX1273</a>, <a class="el" href="class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0">SX1272</a>, <a class="el" href="class_s_x126x.html#a75c8d32cee712e0c940163446b98e587">SX126x</a>, <a class="el" href="class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448">LR11x0</a>, and <a class="el" href="class_l_l_c_c68.html#a708183645ec0b9fec54d6369e7b1345f">LLCC68</a>.</p>
+
+</div>
+</div>
+<a id="a1784cb227d04b3f2846625fda6797536"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1784cb227d04b3f2846625fda6797536">&#9670;&nbsp;</a></span>checkOutputPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::checkOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>clipped</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if output power is configurable. Must be implemented in module class if the module supports it. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. The allowed range depends on the module used. </td></tr>
+    <tr><td class="paramname">clipped</td><td>Clipped output power value to what is possible within the module's range. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x1278.html#aac7b585c4a616a1cd6f89a8b46a7d9f8">SX1278</a>, <a class="el" href="class_s_x1272.html#a2510072152c936d9f62557f46a4248d0">SX1272</a>, <a class="el" href="class_l_r11x0.html#a681b20613f9213e98096f0407f8e418d">LR11x0</a>, <a class="el" href="class_c_c1101.html#ab500e75fcf63f123eb3945925f361bd0">CC1101</a>, <a class="el" href="class_s_x128x.html#a6c9116b17c5f795c874c48f6d0b6fbb7">SX128x</a>, <a class="el" href="class_s_x1268.html#a6026252eb8fb880d7f419f7ef3eb04a2">SX1268</a>, <a class="el" href="class_s_x1262.html#abe9f684559042326f359a59e8061157c">SX1262</a>, and <a class="el" href="class_s_x1261.html#ad4659228f61b2c62803f95b3cdbede7d">SX1261</a>.</p>
 
 </div>
 </div>

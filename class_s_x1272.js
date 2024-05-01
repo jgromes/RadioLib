@@ -5,6 +5,8 @@ var class_s_x1272 =
     [ "begin", "class_s_x1272.html#ae7562fe74e7d97bf9cc52b5d63f608f9", null ],
     [ "beginFSK", "class_s_x1272.html#a83b80377ec3b7a4a4dd663409f2f6260", null ],
     [ "checkDataRate", "class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0", null ],
+    [ "checkOutputPower", "class_s_x1272.html#a2510072152c936d9f62557f46a4248d0", null ],
+    [ "checkOutputPower", "class_s_x1272.html#a1e39e8e3b228ca9a805f41a9bbf86c64", null ],
     [ "explicitHeader", "class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7", null ],
     [ "forceLDRO", "class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0", null ],
     [ "getRSSI", "class_s_x1272.html#af5a7dee50a1a7d8261bc62bb869cda92", null ],

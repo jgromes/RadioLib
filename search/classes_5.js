@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['fsk4client_579',['FSK4Client',['../class_f_s_k4_client.html',1,'']]],
-  ['fskrate_5ft_580',['FSKRate_t',['../struct_f_s_k_rate__t.html',1,'']]]
+  ['fsk4client_581',['FSK4Client',['../class_f_s_k4_client.html',1,'']]],
+  ['fskrate_5ft_582',['FSKRate_t',['../struct_f_s_k_rate__t.html',1,'']]]
 ];

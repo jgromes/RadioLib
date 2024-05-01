@@ -205,6 +205,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ad988727ea6c9b4e11562651d312514c0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ad988727ea6c9b4e11562651d312514c0">setOutputPower</a> (int8_t pwr)</td></tr>
 <tr class="memdesc:ad988727ea6c9b4e11562651d312514c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -18 to 13 dBm.  <a href="class_s_x128x.html#ad988727ea6c9b4e11562651d312514c0">More...</a><br /></td></tr>
 <tr class="separator:ad988727ea6c9b4e11562651d312514c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c9116b17c5f795c874c48f6d0b6fbb7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a6c9116b17c5f795c874c48f6d0b6fbb7">checkOutputPower</a> (int8_t power, int8_t *clipped)</td></tr>
+<tr class="memdesc:a6c9116b17c5f795c874c48f6d0b6fbb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable.  <a href="class_s_x128x.html#a6c9116b17c5f795c874c48f6d0b6fbb7">More...</a><br /></td></tr>
+<tr class="separator:a6c9116b17c5f795c874c48f6d0b6fbb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1984a405262f155f16a4759c5f6b0133"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133">setPreambleLength</a> (uint32_t preambleLength)</td></tr>
 <tr class="memdesc:a1984a405262f155f16a4759c5f6b0133"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length for currently active modem. Allowed values range from 1 to 65535.  <a href="class_s_x128x.html#a1984a405262f155f16a4759c5f6b0133">More...</a><br /></td></tr>
 <tr class="separator:a1984a405262f155f16a4759c5f6b0133"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -664,6 +667,54 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6c9116b17c5f795c874c48f6d0b6fbb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c9116b17c5f795c874c48f6d0b6fbb7">&#9670;&nbsp;</a></span>checkOutputPower()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX128x::checkOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>clipped</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if output power is configurable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. </td></tr>
+    <tr><td class="paramname">clipped</td><td>Clipped output power value to what is possible within the module's range. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">PhysicalLayer</a>.</p>
 
 </div>
 </div>

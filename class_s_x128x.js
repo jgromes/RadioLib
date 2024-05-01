@@ -5,6 +5,7 @@ var class_s_x128x =
     [ "beginBLE", "class_s_x128x.html#ace5ede905bf85aada0c61b9cfaaea127", null ],
     [ "beginFLRC", "class_s_x128x.html#a2c4a24623c5fd27b3cc937e55783d709", null ],
     [ "beginGFSK", "class_s_x128x.html#a6ed60dfbd142315bb4e1abd2555a470a", null ],
+    [ "checkOutputPower", "class_s_x128x.html#a6c9116b17c5f795c874c48f6d0b6fbb7", null ],
     [ "clearDio1Action", "class_s_x128x.html#ab8a3fe8e2843fa039ef369668f1a423f", null ],
     [ "clearPacketReceivedAction", "class_s_x128x.html#a20b21a4f804b148fede4b7199c4d1e71", null ],
     [ "clearPacketSentAction", "class_s_x128x.html#a86000239b7f9871168fdfa8f8c73b377", null ],

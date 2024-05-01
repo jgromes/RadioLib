@@ -1,7 +1,7 @@
 var class_lo_ra_w_a_n_node =
 [
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
-    [ "beginABP", "class_lo_ra_w_a_n_node.html#a54c23c4676905aa17119d5a5dd5fa8a8", null ],
+    [ "beginABP", "class_lo_ra_w_a_n_node.html#adb3b744bf17d923ba8361c567b5145cf", null ],
     [ "beginOTAA", "class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#ae532e739ada04ea7463494a426f60b4d", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226", null ],
@@ -11,6 +11,7 @@ var class_lo_ra_w_a_n_node =
     [ "getBufferSession", "class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06", null ],
     [ "getDevAddr", "class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452", null ],
     [ "getFcntUp", "class_lo_ra_w_a_n_node.html#a52ae7c2aa61262d7761236f289889020", null ],
+    [ "getLastToA", "class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305", null ],
     [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de", null ],
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],
     [ "getNFcntDown", "class_lo_ra_w_a_n_node.html#a8ac61997732b3f6d5f33b6568e23be11", null ],
@@ -19,7 +20,7 @@ var class_lo_ra_w_a_n_node =
     [ "resetFcntDown", "class_lo_ra_w_a_n_node.html#a5693065bbb6d1c6c45efbe010d86f417", null ],
     [ "restore", "class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b", null ],
     [ "saveSession", "class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3", null ],
-    [ "sendMacCommandReq", "class_lo_ra_w_a_n_node.html#a6ff678f9cb57b97eb63886953aca1ba9", null ],
+    [ "sendMacCommandReq", "class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a158f65517fa910ef0cbcd92206dab284", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a7bd48e0ef0dfc6b05014e3a2f55cb51c", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#af0eba2805fa72c8d69d8f73118b49431", null ],

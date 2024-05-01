@@ -208,6 +208,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4f89d13ea170157df109eca36674f0aa"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a4f89d13ea170157df109eca36674f0aa">setOutputPower</a> (int8_t pwr)</td></tr>
 <tr class="memdesc:a4f89d13ea170157df109eca36674f0aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are -30, -20, -15, -10, 0, 5, 7 or 10 dBm.  <a href="class_c_c1101.html#a4f89d13ea170157df109eca36674f0aa">More...</a><br /></td></tr>
 <tr class="separator:a4f89d13ea170157df109eca36674f0aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab500e75fcf63f123eb3945925f361bd0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab500e75fcf63f123eb3945925f361bd0">checkOutputPower</a> (int8_t power, int8_t *clipped) override</td></tr>
+<tr class="memdesc:ab500e75fcf63f123eb3945925f361bd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>.  <a href="class_c_c1101.html#ab500e75fcf63f123eb3945925f361bd0">More...</a><br /></td></tr>
+<tr class="separator:ab500e75fcf63f123eb3945925f361bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa86c74ed4339b70be6950e9f92be1d81"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#aa86c74ed4339b70be6950e9f92be1d81">checkOutputPower</a> (int8_t power, int8_t *clipped, uint8_t *raw)</td></tr>
+<tr class="memdesc:aa86c74ed4339b70be6950e9f92be1d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if output power is configurable.  <a href="class_c_c1101.html#aa86c74ed4339b70be6950e9f92be1d81">More...</a><br /></td></tr>
+<tr class="separator:aa86c74ed4339b70be6950e9f92be1d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a> (uint8_t syncH, uint8_t syncL, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 16-bit sync word as a two byte value.  <a href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">More...</a><br /></td></tr>
 <tr class="separator:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -495,6 +501,99 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. Defaults to 135.0 kHz. </td></tr>
     <tr><td class="paramname">pwr</td><td>Output power in dBm. Defaults to 10 dBm. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>Preamble Length in bits. Defaults to 16 bits. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab500e75fcf63f123eb3945925f361bd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab500e75fcf63f123eb3945925f361bd0">&#9670;&nbsp;</a></span>checkOutputPower() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::checkOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>clipped</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check if output power is configurable. This method is needed for compatibility with <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536" title="Check if output power is configurable. Must be implemented in module class if the module supports it.">PhysicalLayer::checkOutputPower</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. </td></tr>
+    <tr><td class="paramname">clipped</td><td>Clipped output power value to what is possible within the module's range. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1784cb227d04b3f2846625fda6797536">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aa86c74ed4339b70be6950e9f92be1d81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa86c74ed4339b70be6950e9f92be1d81">&#9670;&nbsp;</a></span>checkOutputPower() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t CC1101::checkOutputPower </td>
+          <td>(</td>
+          <td class="paramtype">int8_t&#160;</td>
+          <td class="paramname"><em>power</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int8_t *&#160;</td>
+          <td class="paramname"><em>clipped</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>raw</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Check if output power is configurable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">power</td><td>Output power in dBm. </td></tr>
+    <tr><td class="paramname">clipped</td><td>Clipped output power value to what is possible within the module's range. </td></tr>
+    <tr><td class="paramname">raw</td><td>Raw internal value. </td></tr>
   </table>
   </dd>
 </dl>

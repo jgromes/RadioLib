@@ -5,6 +5,8 @@ var class_l_r11x0 =
     [ "beginGFSK", "class_l_r11x0.html#ab1ed8eafe4b23843a8b163949af279bb", null ],
     [ "beginLRFHSS", "class_l_r11x0.html#a3f85d48547ebec0f5e4f2678f3213bc5", null ],
     [ "checkDataRate", "class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448", null ],
+    [ "checkOutputPower", "class_l_r11x0.html#a681b20613f9213e98096f0407f8e418d", null ],
+    [ "checkOutputPower", "class_l_r11x0.html#aede2a1dd742516423d89c2e0645297e7", null ],
     [ "clearIrqAction", "class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98", null ],
     [ "clearPacketReceivedAction", "class_l_r11x0.html#a66a2afc6cef1e94e25efec15094816a8", null ],
     [ "clearPacketSentAction", "class_l_r11x0.html#acd69e3b8825309703e13149b94e49d81", null ],

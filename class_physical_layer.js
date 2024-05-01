@@ -4,6 +4,7 @@ var class_physical_layer =
     [ "available", "class_physical_layer.html#ab57182d32646861ef0d865e2740d6b26", null ],
     [ "calculateRxTimeout", "class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9", null ],
     [ "checkDataRate", "class_physical_layer.html#a58d54eeb40fb586013ba48e15318abba", null ],
+    [ "checkOutputPower", "class_physical_layer.html#a1784cb227d04b3f2846625fda6797536", null ],
     [ "clearChannelScanAction", "class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6", null ],
     [ "clearPacketReceivedAction", "class_physical_layer.html#a7edf27f03600b96f72f011fc82fa4ef9", null ],
     [ "clearPacketSentAction", "class_physical_layer.html#a67ee4ec36f352d06dda0102260f6bfce", null ],
