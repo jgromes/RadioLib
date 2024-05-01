@@ -32,7 +32,7 @@ class ArduinoHal : public RadioLibHal {
       \param spi SPI interface to be used, can also use software SPI implementations.
       \param spiSettings SPI interface settings.
     */
-    ArduinoHal(SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
+    explicit ArduinoHal(SPIClass& spi, SPISettings spiSettings = RADIOLIB_DEFAULT_SPI_SETTINGS);
 
     // implementations of pure virtual RadioLibHal methods
     void pinMode(uint32_t pin, uint32_t mode) override;
