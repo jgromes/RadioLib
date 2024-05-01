@@ -73,4 +73,4 @@ set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} -std=c++20 " CACHE INTERNAL "C++ Compil
 set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} -x assembler-with-cpp " CACHE INTERNAL "ASM Compiler options")
 
 # Linker flags
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections --specs=nano.specs --specs=nosys.specs -march=rv32i -mabi=ilp32 -mcmodel=medlow -T${LINKER_SCRIPT} -Wl,-Map=${CMAKE_PROJECT_NAME}.map -Xlinker --defsym=STACK_SIZE=${STACK_SIZE} -Xlinker --defsym=APP_HEAP_SIZE=${APP_HEAP_SIZE} -Xlinker --defsym=KERNEL_HEAP_SIZE=${KERNEL_HEAP_SIZE} -nostdlib -Wl,--start-group" CACHE INTERNAL "Linker options")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -march=rv32i -mabi=ilp32 -mcmodel=medlow -T${LINKER_SCRIPT} -Wl,-Map=${CMAKE_PROJECT_NAME}.map -Xlinker --defsym=STACK_SIZE=${STACK_SIZE} -Xlinker --defsym=APP_HEAP_SIZE=${APP_HEAP_SIZE} -Xlinker --defsym=KERNEL_HEAP_SIZE=${KERNEL_HEAP_SIZE} -nostdlib -Wl,--start-group" CACHE INTERNAL "Linker options")

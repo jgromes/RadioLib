@@ -1,4 +1,5 @@
 #include "FSK4.h"
+#include <stdlib.h>
 #include <math.h>
 #if !RADIOLIB_EXCLUDE_FSK4
 

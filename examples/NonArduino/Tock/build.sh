@@ -3,9 +3,9 @@ set -e
 
 rm -rf ./build-*
 
-cd libtock-c/libtock
-make RISCV=1 -j4
-cd ../../
+cd libtock-c/examples/cxx_hello
+make -j4
+cd ../../../
 
 mkdir -p build-arm
 cd build-arm
@@ -15,13 +15,15 @@ make -j4
 
 cd ..
 
-mkdir -p build-riscv
-cd build-riscv
+if ! env | grep SKIP_RISCV; then
+	mkdir -p build-riscv
+	cd build-riscv
 
-cmake -G "CodeBlocks - Unix Makefiles" -DRISCV_BUILD=1 ..
-make -j4
+	cmake -G "CodeBlocks - Unix Makefiles" -DRISCV_BUILD=1 ..
+	make -j4
 
-cd ..
+	cd ..
+fi
 
 elf2tab -n radio-lib --stack 4096 --app-heap 2048 --kernel-heap 2048 \
 	--kernel-major 2 --kernel-minor 1 \
