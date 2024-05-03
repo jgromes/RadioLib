@@ -3,7 +3,7 @@ var searchData=
   ['data_20shaping_20filter_20values_20aliases_2e_49',['Data shaping filter values aliases.',['../group__config__shaping.html',1,'']]],
   ['datarate_50',['datarate',['../struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b',1,'LoRaWANEvent_t']]],
   ['datarate_5ft_51',['DataRate_t',['../union_data_rate__t.html',1,'']]],
-  ['datarates_52',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b',1,'LoRaWANBand_t']]],
+  ['datarates_52',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a36f6cb2a3b6916bcbb7702a7317209bb',1,'LoRaWANBand_t']]],
   ['decode_53',['decode',['../class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7',1,'MorseClient']]],
   ['decryptecb_54',['decryptECB',['../class_radio_lib_a_e_s128.html#abe0e368c6a94b2caf1559add1c262a98',1,'RadioLibAES128']]],
   ['delay_55',['delay',['../class_radio_lib_hal.html#aa2de4fcafad28470f7d46073fa29da79',1,'RadioLibHal']]],

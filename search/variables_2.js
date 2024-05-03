@@ -1,7 +1,7 @@
 var searchData=
 [
   ['datarate_984',['datarate',['../struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b',1,'LoRaWANEvent_t']]],
-  ['datarates_985',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b',1,'LoRaWANBand_t']]],
+  ['datarates_985',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a36f6cb2a3b6916bcbb7702a7317209bb',1,'LoRaWANBand_t']]],
   ['destcallsign_986',['destCallsign',['../class_a_x25_frame.html#a7fe9805148e2dd46d163cd989473dbff',1,'AX25Frame']]],
   ['destssid_987',['destSSID',['../class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8',1,'AX25Frame']]],
   ['dir_988',['dir',['../struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805',1,'LoRaWANEvent_t']]],

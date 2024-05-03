@@ -120,12 +120,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a6c0e89befd10c6977031669fd62f127b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b">restore</a> (uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan)</td></tr>
 <tr class="memdesc:a6c0e89befd10c6977031669fd62f127b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore session by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b">More...</a><br /></td></tr>
 <tr class="separator:a6c0e89befd10c6977031669fd62f127b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27bbbb946a1676a084841d293499ea87"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false, uint8_t joinDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
-<tr class="memdesc:a27bbbb946a1676a084841d293499ea87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a27bbbb946a1676a084841d293499ea87">More...</a><br /></td></tr>
-<tr class="separator:a27bbbb946a1676a084841d293499ea87"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb3b744bf17d923ba8361c567b5145cf"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adb3b744bf17d923ba8361c567b5145cf">beginABP</a> (uint32_t addr, uint8_t *fNwkSIntKey, uint8_t *sNwkSIntKey, uint8_t *nwkSEncKey, uint8_t *appSKey, bool force=false, uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
-<tr class="memdesc:adb3b744bf17d923ba8361c567b5145cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#adb3b744bf17d923ba8361c567b5145cf">More...</a><br /></td></tr>
-<tr class="separator:adb3b744bf17d923ba8361c567b5145cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8d3d9f3bf2214d192b83f057a28f5d7c">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false, uint8_t joinDr=RADIOLIB_LW_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a8d3d9f3bf2214d192b83f057a28f5d7c">More...</a><br /></td></tr>
+<tr class="separator:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3525b30a84d3062e16f2925e3b1f6fe0">beginABP</a> (uint32_t addr, uint8_t *fNwkSIntKey, uint8_t *sNwkSIntKey, uint8_t *nwkSEncKey, uint8_t *appSKey, bool force=false, uint8_t initialDr=RADIOLIB_LW_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a3525b30a84d3062e16f2925e3b1f6fe0">More...</a><br /></td></tr>
+<tr class="separator:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memItemLeft" align="right" valign="top"><a id="af7a8ae58391e00b5fcb99f01832cc4fc"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc">isJoined</a> ()</td></tr>
 <tr class="memdesc:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
@@ -274,8 +274,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="adb3b744bf17d923ba8361c567b5145cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb3b744bf17d923ba8361c567b5145cf">&#9670;&nbsp;</a></span>beginABP()</h2>
+<a id="a3525b30a84d3062e16f2925e3b1f6fe0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3525b30a84d3062e16f2925e3b1f6fe0">&#9670;&nbsp;</a></span>beginABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,7 +320,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>&#160;</td>
+          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -347,8 +347,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a27bbbb946a1676a084841d293499ea87"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a27bbbb946a1676a084841d293499ea87">&#9670;&nbsp;</a></span>beginOTAA()</h2>
+<a id="a8d3d9f3bf2214d192b83f057a28f5d7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3d9f3bf2214d192b83f057a28f5d7c">&#9670;&nbsp;</a></span>beginOTAA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -387,7 +387,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>joinDr</em> = <code>RADIOLIB_LORAWAN_DATA_RATE_UNUSED</code>&#160;</td>
+          <td class="paramname"><em>joinDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -539,7 +539,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Returns the pointer to the internal buffer that holds the LW base parameters. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LORAWAN_NONCES_BUF_SIZE </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LW_NONCES_BUF_SIZE </dd></dl>
 
 </div>
 </div>
@@ -559,7 +559,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Returns the pointer to the internal buffer that holds the LW session parameters. </p>
-<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LORAWAN_SESSION_BUF_SIZE </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Pointer to uint8_t array of size RADIOLIB_LW_SESSION_BUF_SIZE </dd></dl>
 
 </div>
 </div>
