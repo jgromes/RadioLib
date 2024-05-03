@@ -18,4 +18,5 @@ add_executable(${PROJECT_NAME} main.cpp)
 target_link_libraries(${PROJECT_NAME} RadioLib pigpio)
 
 # you can also specify RadioLib compile-time flags here
-#target_compile_definitions(${PROJECT_NAME} PUBLIC RADIOLIB_DEBUG RADIOLIB_VERBOSE)
+#target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_BASIC RADIOLIB_DEBUG_SPI)
+#target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_PORT=stdout)
