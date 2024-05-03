@@ -104,7 +104,7 @@ int MorseClient::read(uint8_t* symbol, uint8_t* len, float low, float high) {
       (*symbol) |= (RADIOLIB_MORSE_DASH << (*len));
       (*len)++;
     } else {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("<len=%lums>", signalLen);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("<len=%lums>", (long unsigned int)signalLen);
     }
   }
 

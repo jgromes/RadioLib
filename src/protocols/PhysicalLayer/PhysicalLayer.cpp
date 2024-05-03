@@ -419,7 +419,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     this->syncBuffer <<= 1;
     this->syncBuffer |= bit;
 
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("S\t%lu", this->syncBuffer);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("S\t%lu", (long unsigned int)this->syncBuffer);
 
     if((this->syncBuffer & this->directSyncWordMask) == this->directSyncWord) {
       this->gotSync = true;

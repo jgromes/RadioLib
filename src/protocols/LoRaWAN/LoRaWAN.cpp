@@ -543,7 +543,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   // check received length
   size_t lenRx = this->phyLayer->getPacketLength(true);
   if((lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN) && (lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN)) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAccept reply length mismatch, expected %luB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, lenRx);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAccept reply length mismatch, expected %dB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, lenRx);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -1179,7 +1179,7 @@ int16_t LoRaWANNode::downlinkCommon() {
 
     // open Rx window by starting receive with specified timeout
     state = this->phyLayer->startReceive(timeoutMod, irqFlags, irqMask, 0);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d us timeout)... <-- Rx Delay end ", i+1, timeoutHost);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d us timeout)... <-- Rx Delay end ", i+1, (int)timeoutHost);
     
     // wait for the timeout to complete (and a small additional delay)
     mod->hal->delay(timeoutHost / 1000 + scanGuard / 2);

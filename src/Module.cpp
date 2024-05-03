@@ -472,7 +472,7 @@ void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offs
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
     char str[120];
-    sprintf(str, "%07" PRIx32 "  ", i+offset);
+    sprintf(str, "%07" PRIx32 "  ", (uint32_t)i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
       line_len = rem_len;
