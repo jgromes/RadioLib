@@ -136,46 +136,46 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:adef05650cf4eb92042ca5e2688c1e164"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a> (uint8_t cid)</td></tr>
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <a href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">More...</a><br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a">uplink</a> (const char *str, uint8_t port, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
-<tr class="memdesc:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a0e3c2642ebb6e86d6a739ea68d692e6a">More...</a><br /></td></tr>
-<tr class="separator:a0e3c2642ebb6e86d6a739ea68d692e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b919dc97479294a32b2d0c9dde49be8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1b919dc97479294a32b2d0c9dde49be8">uplink</a> (uint8_t *data, size_t len, uint8_t port, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
-<tr class="memdesc:a1b919dc97479294a32b2d0c9dde49be8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a1b919dc97479294a32b2d0c9dde49be8">More...</a><br /></td></tr>
-<tr class="separator:a1b919dc97479294a32b2d0c9dde49be8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fa484970865e476311bf25969968fff"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a> (const char *str, uint8_t fPort, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
+<tr class="memdesc:a1fa484970865e476311bf25969968fff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">More...</a><br /></td></tr>
+<tr class="separator:a1fa484970865e476311bf25969968fff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66c170a6055e66915d3e94ce43a63e58"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58">uplink</a> (uint8_t *data, size_t len, uint8_t fPort, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
+<tr class="memdesc:a66c170a6055e66915d3e94ce43a63e58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server.  <a href="class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58">More...</a><br /></td></tr>
+<tr class="separator:a66c170a6055e66915d3e94ce43a63e58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabced307f6662998608f01fab25e4226"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a> (uint8_t *data, size_t *len, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
 <tr class="memdesc:aabced307f6662998608f01fab25e4226"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for downlink from the server in either RX1 or RX2 window.  <a href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">More...</a><br /></td></tr>
 <tr class="separator:aabced307f6662998608f01fab25e4226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae532e739ada04ea7463494a426f60b4d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae532e739ada04ea7463494a426f60b4d">downlink</a> (<a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *event=NULL)</td></tr>
 <tr class="memdesc:ae532e739ada04ea7463494a426f60b4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wait for downlink, simplified to allow for simpler sendReceive.  <a href="class_lo_ra_w_a_n_node.html#ae532e739ada04ea7463494a426f60b4d">More...</a><br /></td></tr>
 <tr class="separator:ae532e739ada04ea7463494a426f60b4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a158f65517fa910ef0cbcd92206dab284"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a158f65517fa910ef0cbcd92206dab284">sendReceive</a> (const char *strUp, uint8_t port, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
-<tr class="memdesc:a158f65517fa910ef0cbcd92206dab284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a158f65517fa910ef0cbcd92206dab284">More...</a><br /></td></tr>
-<tr class="separator:a158f65517fa910ef0cbcd92206dab284"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7bd48e0ef0dfc6b05014e3a2f55cb51c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7bd48e0ef0dfc6b05014e3a2f55cb51c">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t port, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
-<tr class="memdesc:a7bd48e0ef0dfc6b05014e3a2f55cb51c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a7bd48e0ef0dfc6b05014e3a2f55cb51c">More...</a><br /></td></tr>
-<tr class="separator:a7bd48e0ef0dfc6b05014e3a2f55cb51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0eba2805fa72c8d69d8f73118b49431"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af0eba2805fa72c8d69d8f73118b49431">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t port=1, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
-<tr class="memdesc:af0eba2805fa72c8d69d8f73118b49431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink but don't bother the user with downlink contents.  <a href="class_lo_ra_w_a_n_node.html#af0eba2805fa72c8d69d8f73118b49431">More...</a><br /></td></tr>
-<tr class="separator:af0eba2805fa72c8d69d8f73118b49431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85cf006ffd97ece3b2d2974b715540cb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a> (const char *strUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:a85cf006ffd97ece3b2d2974b715540cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">More...</a><br /></td></tr>
+<tr class="separator:a85cf006ffd97ece3b2d2974b715540cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07ab107de181bde59c2731a5a64a1e2e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a07ab107de181bde59c2731a5a64a1e2e">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:a07ab107de181bde59c2731a5a64a1e2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a07ab107de181bde59c2731a5a64a1e2e">More...</a><br /></td></tr>
+<tr class="separator:a07ab107de181bde59c2731a5a64a1e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7123f9a907df9224b9b01282c12af459"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7123f9a907df9224b9b01282c12af459">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t fPort=1, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:a7123f9a907df9224b9b01282c12af459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink but don't bother the user with downlink contents.  <a href="class_lo_ra_w_a_n_node.html#a7123f9a907df9224b9b01282c12af459">More...</a><br /></td></tr>
+<tr class="separator:a7123f9a907df9224b9b01282c12af459"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5449e301634dff1838a1b024b4067034"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a> (uint8_t battLevel)</td></tr>
 <tr class="memdesc:a5449e301634dff1838a1b024b4067034"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set device status.  <a href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">More...</a><br /></td></tr>
 <tr class="separator:a5449e301634dff1838a1b024b4067034"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52ae7c2aa61262d7761236f289889020"><td class="memItemLeft" align="right" valign="top"><a id="a52ae7c2aa61262d7761236f289889020"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a52ae7c2aa61262d7761236f289889020">getFcntUp</a> ()</td></tr>
-<tr class="memdesc:a52ae7c2aa61262d7761236f289889020"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last uplink's frame counter; also 0 if no uplink occured yet. <br /></td></tr>
-<tr class="separator:a52ae7c2aa61262d7761236f289889020"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ac61997732b3f6d5f33b6568e23be11"><td class="memItemLeft" align="right" valign="top"><a id="a8ac61997732b3f6d5f33b6568e23be11"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8ac61997732b3f6d5f33b6568e23be11">getNFcntDown</a> ()</td></tr>
-<tr class="memdesc:a8ac61997732b3f6d5f33b6568e23be11"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last network downlink's frame counter; also 0 if no network downlink occured yet. <br /></td></tr>
-<tr class="separator:a8ac61997732b3f6d5f33b6568e23be11"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b647b639d1c7f1a2a81397b41c01dd8"><td class="memItemLeft" align="right" valign="top"><a id="a8b647b639d1c7f1a2a81397b41c01dd8"></a>
-uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8b647b639d1c7f1a2a81397b41c01dd8">getAFcntDown</a> ()</td></tr>
-<tr class="memdesc:a8b647b639d1c7f1a2a81397b41c01dd8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last application downlink's frame counter; also 0 if no application downlink occured yet. <br /></td></tr>
-<tr class="separator:a8b647b639d1c7f1a2a81397b41c01dd8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5693065bbb6d1c6c45efbe010d86f417"><td class="memItemLeft" align="right" valign="top"><a id="a5693065bbb6d1c6c45efbe010d86f417"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a5693065bbb6d1c6c45efbe010d86f417">resetFcntDown</a> ()</td></tr>
-<tr class="memdesc:a5693065bbb6d1c6c45efbe010d86f417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the downlink frame counters (application and network) This is unsafe and can possibly allow replay attacks using downlinks. It mainly exists as part of the TS009 Specification Verification protocol. <br /></td></tr>
-<tr class="separator:a5693065bbb6d1c6c45efbe010d86f417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3217975ef9959ff83ce79dd80b0d777"><td class="memItemLeft" align="right" valign="top"><a id="ad3217975ef9959ff83ce79dd80b0d777"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777">getFCntUp</a> ()</td></tr>
+<tr class="memdesc:ad3217975ef9959ff83ce79dd80b0d777"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last uplink's frame counter; also 0 if no uplink occured yet. <br /></td></tr>
+<tr class="separator:ad3217975ef9959ff83ce79dd80b0d777"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7fabaa6efe9978c3674b1ab187446a1"><td class="memItemLeft" align="right" valign="top"><a id="aa7fabaa6efe9978c3674b1ab187446a1"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1">getNFCntDown</a> ()</td></tr>
+<tr class="memdesc:aa7fabaa6efe9978c3674b1ab187446a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last network downlink's frame counter; also 0 if no network downlink occured yet. <br /></td></tr>
+<tr class="separator:aa7fabaa6efe9978c3674b1ab187446a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6785265f3311ff6bf296f82429c96701"><td class="memItemLeft" align="right" valign="top"><a id="a6785265f3311ff6bf296f82429c96701"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a6785265f3311ff6bf296f82429c96701">getAFCntDown</a> ()</td></tr>
+<tr class="memdesc:a6785265f3311ff6bf296f82429c96701"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the last application downlink's frame counter; also 0 if no application downlink occured yet. <br /></td></tr>
+<tr class="separator:a6785265f3311ff6bf296f82429c96701"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b3d07cd9bf4178d627204bae18b648"><td class="memItemLeft" align="right" valign="top"><a id="af4b3d07cd9bf4178d627204bae18b648"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648">resetFCntDown</a> ()</td></tr>
+<tr class="memdesc:af4b3d07cd9bf4178d627204bae18b648"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset the downlink frame counters (application and network) This is unsafe and can possibly allow replay attacks using downlinks. It mainly exists as part of the TS009 Specification Verification protocol. <br /></td></tr>
+<tr class="separator:af4b3d07cd9bf4178d627204bae18b648"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14e8a8a098df28ff5ee294f235500499"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a> (uint8_t drUp)</td></tr>
 <tr class="memdesc:a14e8a8a098df28ff5ee294f235500499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set uplink datarate. This should not be used when ADR is enabled.  <a href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">More...</a><br /></td></tr>
 <tr class="separator:a14e8a8a098df28ff5ee294f235500499"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -432,7 +432,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Wait for downlink, simplified to allow for simpler sendReceive. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -477,7 +477,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">data</td><td>Buffer to save received data into. </td></tr>
     <tr><td class="paramname">len</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
-    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -776,8 +776,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a158f65517fa910ef0cbcd92206dab284"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a158f65517fa910ef0cbcd92206dab284">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[1/3]</span></h2>
+<a id="a85cf006ffd97ece3b2d2974b715540cb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85cf006ffd97ece3b2d2974b715540cb">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -792,7 +792,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
+          <td class="paramname"><em>fPort</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -836,12 +836,12 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">strUp</td><td>C-string that will be transmitted. </td></tr>
-    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">fPort</td><td>Port number to send the message to. </td></tr>
     <tr><td class="paramname">dataDown</td><td>Buffer to save received data into. </td></tr>
     <tr><td class="paramname">lenDown</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
     <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
-    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
-    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -849,8 +849,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a7bd48e0ef0dfc6b05014e3a2f55cb51c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7bd48e0ef0dfc6b05014e3a2f55cb51c">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[2/3]</span></h2>
+<a id="a07ab107de181bde59c2731a5a64a1e2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07ab107de181bde59c2731a5a64a1e2e">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -871,7 +871,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
+          <td class="paramname"><em>fPort</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -916,12 +916,12 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">dataUp</td><td>Data to send. </td></tr>
     <tr><td class="paramname">lenUp</td><td>Length of the data. </td></tr>
-    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">fPort</td><td>Port number to send the message to. </td></tr>
     <tr><td class="paramname">dataDown</td><td>Buffer to save received data into. </td></tr>
     <tr><td class="paramname">lenDown</td><td>Pointer to variable that will be used to save the number of received bytes. </td></tr>
     <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
-    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
-    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -929,8 +929,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="af0eba2805fa72c8d69d8f73118b49431"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af0eba2805fa72c8d69d8f73118b49431">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[3/3]</span></h2>
+<a id="a7123f9a907df9224b9b01282c12af459"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7123f9a907df9224b9b01282c12af459">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -951,7 +951,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em> = <code>1</code>, </td>
+          <td class="paramname"><em>fPort</em> = <code>1</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -984,10 +984,10 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">dataUp</td><td>Data to send. </td></tr>
     <tr><td class="paramname">lenUp</td><td>Length of the data. </td></tr>
-    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">fPort</td><td>Port number to send the message to. </td></tr>
     <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
-    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
-    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventUp</td><td>Pointer to a structure to store extra information about the uplink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">eventDown</td><td>Pointer to a structure to store extra information about the downlink event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1229,8 +1229,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a0e3c2642ebb6e86d6a739ea68d692e6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e3c2642ebb6e86d6a739ea68d692e6a">&#9670;&nbsp;</a></span>uplink() <span class="overload">[1/2]</span></h2>
+<a id="a1fa484970865e476311bf25969968fff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fa484970865e476311bf25969968fff">&#9670;&nbsp;</a></span>uplink() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1245,7 +1245,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
+          <td class="paramname"><em>fPort</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1271,9 +1271,9 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">str</td><td>C-string that will be transmitted. </td></tr>
-    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">fPort</td><td>Port number to send the message to. </td></tr>
     <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
-    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1281,8 +1281,8 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 
 </div>
 </div>
-<a id="a1b919dc97479294a32b2d0c9dde49be8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b919dc97479294a32b2d0c9dde49be8">&#9670;&nbsp;</a></span>uplink() <span class="overload">[2/2]</span></h2>
+<a id="a66c170a6055e66915d3e94ce43a63e58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66c170a6055e66915d3e94ce43a63e58">&#9670;&nbsp;</a></span>uplink() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1303,7 +1303,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
+          <td class="paramname"><em>fPort</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1330,9 +1330,9 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   <table class="params">
     <tr><td class="paramname">data</td><td>Data to send. </td></tr>
     <tr><td class="paramname">len</td><td>Length of the data. </td></tr>
-    <tr><td class="paramname">port</td><td>Port number to send the message to. </td></tr>
+    <tr><td class="paramname">fPort</td><td>Port number to send the message to. </td></tr>
     <tr><td class="paramname">isConfirmed</td><td>Whether to send a confirmed uplink or not. </td></tr>
-    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
+    <tr><td class="paramname">event</td><td>Pointer to a structure to store extra information about the event (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user. </td></tr>
   </table>
   </dd>
 </dl>

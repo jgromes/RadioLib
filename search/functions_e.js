@@ -15,7 +15,7 @@ var searchData=
   ['receivedirectasync_799',['receiveDirectAsync',['../class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2',1,'CC1101']]],
   ['reflect_800',['reflect',['../class_module.html#a4add1a875bb88e91da232118201a78a8',1,'Module']]],
   ['reset_801',['reset',['../class_si443x.html#ae782ee06e2c463c24f22f5d4c3dd8d97',1,'Si443x::reset()'],['../class_s_x128x.html#a2643ce22176293631fea2169f5e68e66',1,'SX128x::reset()'],['../class_s_x127x.html#a3321ac4a7f65e73004202486db9b1d68',1,'SX127x::reset()'],['../class_s_x1278.html#a6d60902ac59b653a9eb83e82a932f7ad',1,'SX1278::reset()'],['../class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac',1,'SX1272::reset()'],['../class_s_x126x.html#a9aa6dd05dd32ef717a06cc8ba28ff71f',1,'SX126x::reset()'],['../class_r_f69.html#af953ee17aca5392f1e62ea4fe690550a',1,'RF69::reset()'],['../class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994',1,'LR11x0::reset()'],['../class_c_c1101.html#a1fc87275c6f5d7f6927ca51a175eba21',1,'CC1101::reset()']]],
-  ['resetfcntdown_802',['resetFcntDown',['../class_lo_ra_w_a_n_node.html#a5693065bbb6d1c6c45efbe010d86f417',1,'LoRaWANNode']]],
+  ['resetfcntdown_802',['resetFCntDown',['../class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648',1,'LoRaWANNode']]],
   ['restore_803',['restore',['../class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b',1,'LoRaWANNode']]],
   ['rf69_804',['RF69',['../class_r_f69.html#afbc84d4f91502bcbe12ddda2fde51448',1,'RF69']]],
   ['rttyclient_805',['RTTYClient',['../class_r_t_t_y_client.html#ae6bc08fa88457ee00a992448be1d63ea',1,'RTTYClient::RTTYClient(PhysicalLayer *phy)'],['../class_r_t_t_y_client.html#ab0e11944c2f1e2c60fc45bcd2db18570',1,'RTTYClient::RTTYClient(AFSKClient *audio)']]]

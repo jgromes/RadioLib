@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['parsestatuscb_1030',['parseStatusCb',['../struct_module_1_1_s_p_i_config__t.html#a9619dcb8b269bcbd125e5a05e6c0fc77',1,'Module::SPIConfig_t']]],
-  ['payload_1031',['payload',['../struct_lo_ra_w_a_n_mac_command__t.html#ac572044ad659ad7addd50d21f6f2e764',1,'LoRaWANMacCommand_t']]],
-  ['payloadlenmax_1032',['payloadLenMax',['../struct_lo_ra_w_a_n_band__t.html#a75dba867430b104a7243359c6e7564a4',1,'LoRaWANBand_t']]],
-  ['poly_1033',['poly',['../class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d',1,'RadioLibCRC']]],
-  ['port_1034',['port',['../struct_lo_ra_w_a_n_event__t.html#afde0d3bb9fce5dde27c0796d25a3aca3',1,'LoRaWANEvent_t']]],
+  ['parsestatuscb_1031',['parseStatusCb',['../struct_module_1_1_s_p_i_config__t.html#a9619dcb8b269bcbd125e5a05e6c0fc77',1,'Module::SPIConfig_t']]],
+  ['payload_1032',['payload',['../struct_lo_ra_w_a_n_mac_command__t.html#ac572044ad659ad7addd50d21f6f2e764',1,'LoRaWANMacCommand_t']]],
+  ['payloadlenmax_1033',['payloadLenMax',['../struct_lo_ra_w_a_n_band__t.html#a75dba867430b104a7243359c6e7564a4',1,'LoRaWANBand_t']]],
+  ['poly_1034',['poly',['../class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d',1,'RadioLibCRC']]],
   ['power_1035',['power',['../struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff',1,'LoRaWANEvent_t']]],
   ['powermax_1036',['powerMax',['../struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c',1,'LoRaWANBand_t']]],
   ['powernumsteps_1037',['powerNumSteps',['../struct_lo_ra_w_a_n_band__t.html#aa22d7d7670846b36d3104439d18e5f15',1,'LoRaWANBand_t']]],
