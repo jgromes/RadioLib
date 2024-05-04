@@ -887,7 +887,7 @@ class LoRaWANNode {
     uint8_t adrLimitExp = RADIOLIB_LW_ADR_ACK_LIMIT_EXP;
     uint8_t adrDelayExp = RADIOLIB_LW_ADR_ACK_DELAY_EXP;
     uint8_t nbTrans = 1;            // Number of allowed frame retransmissions
-    uint8_t txPowerCur = 0;
+    uint8_t txPowerSteps = 0;
     uint8_t txPowerMax = 0;
     uint32_t fCntUp = 0;
     uint32_t aFCntDown = 0;
@@ -898,9 +898,6 @@ class LoRaWANNode {
 
     // whether the current configured channel is in FSK mode
     bool FSK = false;
-
-    // flag that shows whether the device is joined and there is an ongoing session (none, ABP or OTAA)
-    uint16_t activeMode = RADIOLIB_LW_MODE_NONE;
 
     // ADR is enabled by default
     bool adrEnabled = true;
