@@ -39,6 +39,15 @@ void setup() {
   delay(5000);  // Give time to switch to the serial monitor
   Serial.println(F("\nSetup"));
 
+  #if defined(Pi_Pico_1262_LoRa)
+    SPI1.setSCK(10);            // fix from https://github.com/jgromes/RadioLib/issues/729
+    SPI1.setTX(11);             // ~
+    SPI1.setRX(12);             // ~
+    pinMode(3, OUTPUT);         // ~
+    digitalWrite(3, HIGH);      // ~
+    SPI1.begin(false);          // fix from https://github.com/jgromes/RadioLib/issues/729
+  #endif
+
   int16_t state = 0;  // return value for calls to RadioLib
 
   Serial.println(F("Initialise the radio"));
