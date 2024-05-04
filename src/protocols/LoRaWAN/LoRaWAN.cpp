@@ -886,10 +886,10 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 
   // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
-  uint8_t foptsLen = 0;
+  uint8_t fOptsLen = 0;
   if(this->commandsUp.numCommands > 0 && fPort != RADIOLIB_LW_FPORT_MAC_COMMAND) {
     // there are, assume the maximum possible FOpts len for buffer allocation
-    foptsLen = this->commandsUp.len;
+    fOptsLen = this->commandsUp.len;
   }
 
   // check maximum payload len as defined in phy
@@ -965,13 +965,13 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   RADIOLIB_ASSERT(state);
 
   // if dwell time is imposed, calculated expected time on air and cancel if exceeds
-  if(this->dwellTimeEnabledUp && this->phyLayer->getTimeOnAir(RADIOLIB_LW_FRAME_LEN(len, foptsLen) - 16)/1000 > this->dwellTimeUp) {
+  if(this->dwellTimeEnabledUp && this->phyLayer->getTimeOnAir(RADIOLIB_LW_FRAME_LEN(len, fOptsLen) - 16)/1000 > this->dwellTimeUp) {
     return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
   }
 
   // build the uplink message
   // the first 16 bytes are reserved for MIC calculation blocks
-  size_t uplinkMsgLen = RADIOLIB_LW_FRAME_LEN(len, foptsLen);
+  size_t uplinkMsgLen = RADIOLIB_LW_FRAME_LEN(len, fOptsLen);
   #if RADIOLIB_STATIC_ONLY
   uint8_t uplinkMsg[RADIOLIB_STATIC_ARRAY_SIZE];
   #else
@@ -988,7 +988,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   uplinkMsg[RADIOLIB_LW_FHDR_LEN_START_OFFS] |= RADIOLIB_LW_MHDR_MAJOR_R1;
   LoRaWANNode::hton<uint32_t>(&uplinkMsg[RADIOLIB_LW_FHDR_DEV_ADDR_POS], this->devAddr);
 
-  // length of fopts will be added later
+  // length of fOpts will be added later
   uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] = 0x00;
   if(this->adrEnabled) {
     uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] |= RADIOLIB_LW_FCTRL_ADR_ENABLED;
@@ -1007,20 +1007,20 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LW_FHDR_FCNT_POS], (uint16_t)this->fCntUp);
 
   // check if we have some MAC commands to append
-  if(foptsLen > 0) {
+  if(fOptsLen > 0) {
     // assume maximum possible buffer size
-    uint8_t foptsBuff[RADIOLIB_LW_FHDR_FOPTS_MAX_LEN];
-    uint8_t* foptsPtr = foptsBuff;
+    uint8_t fOptsBuff[RADIOLIB_LW_FHDR_FOPTS_MAX_LEN];
+    uint8_t* fOptsPtr = fOptsBuff;
 
-    // append all MAC replies into fopts buffer
+    // append all MAC replies into fOpts buffer
     int16_t i = 0;
     for (; i < this->commandsUp.numCommands; i++) {
       LoRaWANMacCommand_t cmd = this->commandsUp.commands[i];
-      memcpy(foptsPtr, &cmd, 1 + cmd.len);
-      foptsPtr += cmd.len + 1;
+      memcpy(fOptsPtr, &cmd, 1 + cmd.len);
+      fOptsPtr += cmd.len + 1;
     }
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink MAC payload (%d commands):", this->commandsUp.numCommands);
-    RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(foptsBuff, foptsLen);
+    RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(fOptsBuff, fOptsLen);
 
     // pop the commands from back to front
     for (; i >= 0; i--) {
@@ -1031,16 +1031,16 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
       }
     }
 
-    uplinkMsgLen = RADIOLIB_LW_FRAME_LEN(len, foptsLen);
-    uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] |= foptsLen;
+    uplinkMsgLen = RADIOLIB_LW_FRAME_LEN(len, fOptsLen);
+    uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] |= fOptsLen;
 
     // encrypt it
-    processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x01, true);
+    processAES(fOptsBuff, fOptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x01, true);
     
   }
 
   // set the fPort
-  uplinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] = fPort;
+  uplinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(fOptsLen)] = fPort;
 
   // select encryption key based on the target fPort
   uint8_t* encKey = this->appSKey;
@@ -1049,7 +1049,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   }
 
   // encrypt the frame payload
-  processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x00, true);
+  processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(fOptsLen)], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x00, true);
 
   // create blocks for MIC calculation
   uint8_t block0[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
@@ -1327,8 +1327,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   }
   
   // calculate length of FOpts and payload
-  uint8_t foptsLen = downlinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] & RADIOLIB_LW_FHDR_FOPTS_LEN_MASK;
-  int payLen = downlinkMsgLen - 8 - foptsLen - sizeof(uint32_t);
+  uint8_t fOptsLen = downlinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] & RADIOLIB_LW_FHDR_FOPTS_LEN_MASK;
+  int payLen = downlinkMsgLen - 8 - fOptsLen - sizeof(uint32_t);
 
   // in LoRaWAN v1.1, a frame can be a network frame if there is no Application payload
   // i.e., no payload at all (empty frame or FOpts only), or MAC only payload (FPort = 0)
@@ -1340,8 +1340,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       isAppDownlink = false;
     }
   }
-  else if(downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] == RADIOLIB_LW_FPORT_MAC_COMMAND) {
-    foptsLen = payLen - 1;
+  else if(downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(fOptsLen)] == RADIOLIB_LW_FPORT_MAC_COMMAND) {
+    fOptsLen = payLen - 1;
     if(this->rev == 1) {
       isAppDownlink = false;
     }
@@ -1411,22 +1411,22 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   }
 
   // process FOpts (if there are any)
-  if(foptsLen > 0) {
+  if(fOptsLen > 0) {
     // there are some Fopts, decrypt them
     #if !RADIOLIB_STATIC_ONLY
-      uint8_t* fopts = new uint8_t[RADIOLIB_MAX(RADIOLIB_LW_FHDR_FOPTS_LEN_MASK, (int)foptsLen)];
+      uint8_t* fOpts = new uint8_t[RADIOLIB_MAX(RADIOLIB_LW_FHDR_FOPTS_LEN_MASK, (int)fOptsLen)];
     #else
-      uint8_t fopts[RADIOLIB_STATIC_ARRAY_SIZE];
+      uint8_t fOpts[RADIOLIB_STATIC_ARRAY_SIZE];
     #endif
 
     // TODO it COULD be the case that the assumed FCnt rollover is incorrect, if possible figure out a way to catch this and retry with just fCnt16
     // if there are <= 15 bytes of FOpts, they are in the FHDR, otherwise they are in the payload
     // in case of the latter, process AES is if it were a normal payload but using the NwkSEncKey
-    if(foptsLen <= RADIOLIB_LW_FHDR_FOPTS_LEN_MASK) {
+    if(fOptsLen <= RADIOLIB_LW_FHDR_FOPTS_LEN_MASK) {
       uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
-      processAES(&downlinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, ctrId, true);
+      processAES(&downlinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], (size_t)fOptsLen, this->nwkSEncKey, fOpts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, ctrId, true);
     } else {
-      processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(0)], (size_t)foptsLen, this->nwkSEncKey, fopts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
+      processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(0)], (size_t)fOptsLen, this->nwkSEncKey, fOpts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
     }
 
     bool hasADR = false;
@@ -1434,17 +1434,17 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     uint8_t lastCID = 0;
 
     // process the MAC command(s)
-    int8_t remLen = foptsLen;
-    uint8_t* foptsPtr = fopts;
+    int8_t remLen = fOptsLen;
+    uint8_t* fOptsPtr = fOpts;
     while(remLen > 0) {
-      uint8_t cid = *foptsPtr;
+      uint8_t cid = *fOptsPtr;
       uint8_t macLen = getMacPayloadLength(cid);
       if(cid == RADIOLIB_LW_MAC_LINK_ADR) {
         // if there was an earlier ADR command but it was not the last, ignore it
         if(hasADR && lastCID != RADIOLIB_LW_MAC_LINK_ADR) {
           RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Encountered non-consecutive block of ADR commands - skipping");
           remLen -= (macLen + 1);
-          foptsPtr += (macLen + 1);
+          fOptsPtr += (macLen + 1);
           lastCID = cid;
           continue;
         }
@@ -1460,7 +1460,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
         .len = macLen,
         .repeat = (cid == RADIOLIB_LW_MAC_LINK_ADR ? numADR : (uint8_t)0),
       };
-      memcpy(cmd.payload, foptsPtr + 1, macLen);
+      memcpy(cmd.payload, fOptsPtr + 1, macLen);
 
       // process the MAC command
       bool sendUp = execMacCommand(&cmd);
@@ -1470,32 +1470,32 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
       // processing succeeded, move in the buffer to the next command
       remLen -= (macLen + 1);
-      foptsPtr += (macLen + 1);
+      fOptsPtr += (macLen + 1);
       lastCID = cid;
     }
 
     #if !RADIOLIB_STATIC_ONLY
-      delete[] fopts;
+      delete[] fOpts;
     #endif
 
     // if FOptsLen for the next uplink is larger than can be piggybacked onto an uplink, send separate uplink
     if(this->commandsUp.len > RADIOLIB_LW_FHDR_FOPTS_MAX_LEN) {
-      size_t foptsBufSize = this->commandsUp.len;
+      size_t fOptsBufSize = this->commandsUp.len;
       #if RADIOLIB_STATIC_ONLY
-        uint8_t foptsBuff[RADIOLIB_STATIC_ARRAY_SIZE];
+        uint8_t fOptsBuff[RADIOLIB_STATIC_ARRAY_SIZE];
       #else
-        uint8_t* foptsBuff = new uint8_t[foptsBufSize];
+        uint8_t* fOptsBuff = new uint8_t[fOptsBufSize];
       #endif
-      uint8_t* foptsPtr = foptsBuff;
-      // append all MAC replies into fopts buffer
+      uint8_t* fOptsPtr = fOptsBuff;
+      // append all MAC replies into fOpts buffer
       int16_t i = 0;
       for (; i < this->commandsUp.numCommands; i++) {
         LoRaWANMacCommand_t cmd = this->commandsUp.commands[i];
-        memcpy(foptsPtr, &cmd, 1 + cmd.len);
-        foptsPtr += cmd.len + 1;
+        memcpy(fOptsPtr, &cmd, 1 + cmd.len);
+        fOptsPtr += cmd.len + 1;
       }
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink MAC payload (%d commands):", this->commandsUp.numCommands);
-      RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(foptsBuff, foptsBufSize);
+      RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(fOptsBuff, fOptsBufSize);
 
       // pop the commands from back to front
       for (; i >= 0; i--) {
@@ -1511,12 +1511,12 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       bool prevDC = this->dutyCycleEnabled;
       this->dutyCycleEnabled = false;
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Sending MAC-only uplink .. ");
-      state = this->uplink(foptsBuff, foptsBufSize, RADIOLIB_LW_FPORT_MAC_COMMAND);
+      state = this->uplink(fOptsBuff, fOptsBufSize, RADIOLIB_LW_FPORT_MAC_COMMAND);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN(" .. state: %d", state);
       this->dutyCycleEnabled = prevDC;
 
       #if !RADIOLIB_STATIC_ONLY
-        delete[] foptsBuff;
+        delete[] fOptsBuff;
       #endif
 
       #if RADIOLIB_STATIC_ONLY
@@ -1548,11 +1548,11 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPowerMax - this->txPowerCur * 2;
     event->fCnt = isAppDownlink ? this->aFCntDown : this->nFCntDown;
-    event->fPort = isAppDownlink ? downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] : RADIOLIB_LW_FPORT_MAC_COMMAND;
+    event->fPort = isAppDownlink ? downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(fOptsLen)] : RADIOLIB_LW_FPORT_MAC_COMMAND;
   }
 
   // process Application payload (if there is any)
-  if(payLen <= 0 || foptsLen > RADIOLIB_LW_FHDR_FOPTS_MAX_LEN) {
+  if(payLen <= 0 || fOptsLen > RADIOLIB_LW_FHDR_FOPTS_MAX_LEN) {
     // no payload
     *len = 0;
     #if !RADIOLIB_STATIC_ONLY
@@ -1565,7 +1565,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   *len = payLen - 1;
 
   // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fCnt16
-  processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], payLen - 1, this->appSKey, data, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
+  processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(fOptsLen)], payLen - 1, this->appSKey, data, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
   
   #if !RADIOLIB_STATIC_ONLY
     delete[] downlinkMsg;
