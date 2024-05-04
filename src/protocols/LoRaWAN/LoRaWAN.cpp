@@ -176,12 +176,12 @@ int16_t LoRaWANNode::restore(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass
   this->rev          = LoRaWANNode::ntoh<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION]);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LoRaWAN session: v1.%d", this->rev);
   this->homeNetId    = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_HOMENET_ID]);
-  this->aFcntDown    = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_A_FCNT_DOWN]);
-  this->nFcntDown    = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_N_FCNT_DOWN]);
-  this->confFcntUp   = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_UP]);
-  this->confFcntDown = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_DOWN]);
-  this->adrFcnt      = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_ADR_FCNT]);
-  this->fcntUp       = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_FCNT_UP]);
+  this->aFCntDown    = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_A_FCNT_DOWN]);
+  this->nFCntDown    = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_N_FCNT_DOWN]);
+  this->confFCntUp   = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_UP]);
+  this->confFCntDown = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_DOWN]);
+  this->adrFCnt      = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_ADR_FCNT]);
+  this->fCntUp       = LoRaWANNode::ntoh<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_FCNT_UP]);
   
   int16_t state = RADIOLIB_ERR_UNKNOWN;
 
@@ -700,12 +700,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   }
 
   // reset all frame counters
-  this->fcntUp = 0;
-  this->aFcntDown = 0;
-  this->nFcntDown = 0;
-  this->confFcntUp = RADIOLIB_LW_FCNT_NONE;
-  this->confFcntDown = RADIOLIB_LW_FCNT_NONE;
-  this->adrFcnt = 0;
+  this->fCntUp = 0;
+  this->aFCntDown = 0;
+  this->nFCntDown = 0;
+  this->confFCntUp = RADIOLIB_LW_FCNT_NONE;
+  this->confFCntDown = RADIOLIB_LW_FCNT_NONE;
+  this->adrFCnt = 0;
 
   // save the activation keys checksum, device address & keys as well as JoinAccept values; these are only ever set when joining
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_VERSION], RADIOLIB_LW_NONCES_VERSION_VAL);
@@ -778,12 +778,12 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
   this->beginCommon(initialDr);
 
   // reset all frame counters
-  this->fcntUp = 0;
-  this->aFcntDown = 0;
-  this->nFcntDown = 0;
-  this->confFcntUp = RADIOLIB_LW_FCNT_NONE;
-  this->confFcntDown = RADIOLIB_LW_FCNT_NONE;
-  this->adrFcnt = 0;
+  this->fCntUp = 0;
+  this->aFCntDown = 0;
+  this->nFCntDown = 0;
+  this->confFCntUp = RADIOLIB_LW_FCNT_NONE;
+  this->confFCntDown = RADIOLIB_LW_FCNT_NONE;
+  this->adrFCnt = 0;
 
   // save the activation keys checksum, mode, class, frequency plan
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_VERSION], RADIOLIB_LW_NONCES_VERSION_VAL);
@@ -823,12 +823,12 @@ int16_t LoRaWANNode::saveSession() {
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
   // store all frame counters
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_A_FCNT_DOWN], this->aFcntDown);
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_N_FCNT_DOWN], this->nFcntDown);
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_UP], this->confFcntUp);
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_DOWN], this->confFcntDown);
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_ADR_FCNT], this->adrFcnt);
-  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_FCNT_UP], this->fcntUp);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_A_FCNT_DOWN], this->aFCntDown);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_N_FCNT_DOWN], this->nFCntDown);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_UP], this->confFCntUp);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_CONF_FCNT_DOWN], this->confFCntDown);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_ADR_FCNT], this->adrFCnt);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_FCNT_UP], this->fCntUp);
 
   // save the current uplink MAC command queue
   memcpy(&this->bufferSession[RADIOLIB_LW_SESSION_MAC_QUEUE_UL], &this->commandsUp, sizeof(LoRaWANMacCommandQueue_t));
@@ -841,16 +841,16 @@ int16_t LoRaWANNode::saveSession() {
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::uplink(String& str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
-  return(this->uplink(str.c_str(), port, isConfirmed, event));
+int16_t LoRaWANNode::uplink(String& str, uint8_t fPort, bool isConfirmed, LoRaWANEvent_t* event) {
+  return(this->uplink(str.c_str(), fPort, isConfirmed, event));
 }
 #endif
 
-int16_t LoRaWANNode::uplink(const char* str, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
-  return(this->uplink((uint8_t*)str, strlen(str), port, isConfirmed, event));
+int16_t LoRaWANNode::uplink(const char* str, uint8_t fPort, bool isConfirmed, LoRaWANEvent_t* event) {
+  return(this->uplink((uint8_t*)str, strlen(str), fPort, isConfirmed, event));
 }
 
-int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed, LoRaWANEvent_t* event) {
+int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isConfirmed, LoRaWANEvent_t* event) {
   // if not joined, don't do anything
   if(!this->isJoined()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
@@ -870,12 +870,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
   }
 
-  // check destination port
-  if(port > 0xDF) {
+  // check destination fPort
+  if(fPort > 0xDF) {
     return(RADIOLIB_ERR_INVALID_PORT);
   }
-  // port 0 is only allowed for MAC-only payloads
-  if(port == RADIOLIB_LW_FPORT_MAC_COMMAND) {
+  // fPort 0 is only allowed for MAC-only payloads
+  if(fPort == RADIOLIB_LW_FPORT_MAC_COMMAND) {
     if (!this->isMACPayload) {
       return(RADIOLIB_ERR_INVALID_PORT);
     }
@@ -887,7 +887,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
 
   // check if there are some MAC commands to piggyback (only when piggybacking onto a application-frame)
   uint8_t foptsLen = 0;
-  if(this->commandsUp.numCommands > 0 && port != RADIOLIB_LW_FPORT_MAC_COMMAND) {
+  if(this->commandsUp.numCommands > 0 && fPort != RADIOLIB_LW_FPORT_MAC_COMMAND) {
     // there are, assume the maximum possible FOpts len for buffer allocation
     foptsLen = this->commandsUp.len;
   }
@@ -904,12 +904,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     // check if we need to do ADR stuff
     uint32_t adrLimit = 0x01 << this->adrLimitExp;
     uint32_t adrDelay = 0x01 << this->adrDelayExp;
-    if((this->fcntUp - this->adrFcnt) >= adrLimit) {
+    if((this->fCntUp - this->adrFCnt) >= adrLimit) {
       adrAckReq = true;
     }
     // if we hit the Limit + Delay, try one of three, in order: 
     // set TxPower to max, set DR to min, enable all default channels
-    if ((this->fcntUp - this->adrFcnt) == (adrLimit + adrDelay)) {
+    if ((this->fCntUp - this->adrFCnt) == (adrLimit + adrDelay)) {
       uint8_t adrStage = 1;
       while(adrStage != 0) {
         switch(adrStage) {
@@ -955,7 +955,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
       }
 
       // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
-      this->adrFcnt += adrDelay;
+      this->adrFCnt += adrDelay;
     }
   }
 
@@ -981,7 +981,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   // set the packet fields
   if(isConfirmed) {
     uplinkMsg[RADIOLIB_LW_FHDR_LEN_START_OFFS] = RADIOLIB_LW_MHDR_MTYPE_CONF_DATA_UP;
-    this->confFcntUp = this->fcntUp;
+    this->confFCntUp = this->fCntUp;
   } else {
     uplinkMsg[RADIOLIB_LW_FHDR_LEN_START_OFFS] = RADIOLIB_LW_MHDR_MTYPE_UNCONF_DATA_UP;
   }
@@ -997,14 +997,14 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     }
   }
 
-  // if the saved confirm-fcnt is set, set the ACK bit
+  // if the saved confirm-fCnt is set, set the ACK bit
   bool isConfirmingDown = false;
-  if(this->confFcntDown != RADIOLIB_LW_FCNT_NONE) {
+  if(this->confFCntDown != RADIOLIB_LW_FCNT_NONE) {
     isConfirmingDown = true;
     uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] |= RADIOLIB_LW_FCTRL_ACK;
   }
 
-  LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LW_FHDR_FCNT_POS], (uint16_t)this->fcntUp);
+  LoRaWANNode::hton<uint16_t>(&uplinkMsg[RADIOLIB_LW_FHDR_FCNT_POS], (uint16_t)this->fCntUp);
 
   // check if we have some MAC commands to append
   if(foptsLen > 0) {
@@ -1035,39 +1035,39 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     uplinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] |= foptsLen;
 
     // encrypt it
-    processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], this->fcntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x01, true);
+    processAES(foptsBuff, foptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x01, true);
     
   }
 
-  // set the port
-  uplinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] = port;
+  // set the fPort
+  uplinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] = fPort;
 
-  // select encryption key based on the target port
+  // select encryption key based on the target fPort
   uint8_t* encKey = this->appSKey;
-  if(port == RADIOLIB_LW_FPORT_MAC_COMMAND) {
+  if(fPort == RADIOLIB_LW_FPORT_MAC_COMMAND) {
     encKey = this->nwkSEncKey;
   }
 
   // encrypt the frame payload
-  processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], this->fcntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x00, true);
+  processAES(data, len, encKey, &uplinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], this->fCntUp, RADIOLIB_LW_CHANNEL_DIR_UPLINK, 0x00, true);
 
   // create blocks for MIC calculation
   uint8_t block0[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
   block0[RADIOLIB_LW_BLOCK_MAGIC_POS] = RADIOLIB_LW_MIC_BLOCK_MAGIC;
   block0[RADIOLIB_LW_BLOCK_DIR_POS] = RADIOLIB_LW_CHANNEL_DIR_UPLINK;
   LoRaWANNode::hton<uint32_t>(&block0[RADIOLIB_LW_BLOCK_DEV_ADDR_POS], this->devAddr);
-  LoRaWANNode::hton<uint32_t>(&block0[RADIOLIB_LW_BLOCK_FCNT_POS], this->fcntUp);
+  LoRaWANNode::hton<uint32_t>(&block0[RADIOLIB_LW_BLOCK_FCNT_POS], this->fCntUp);
   block0[RADIOLIB_LW_MIC_BLOCK_LEN_POS] = uplinkMsgLen - RADIOLIB_AES128_BLOCK_SIZE - sizeof(uint32_t);
 
   uint8_t block1[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
   memcpy(block1, block0, RADIOLIB_AES128_BLOCK_SIZE);
-  if(this->confFcntDown != RADIOLIB_LW_FCNT_NONE) {
-    LoRaWANNode::hton<uint16_t>(&block1[RADIOLIB_LW_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFcntDown);
+  if(this->confFCntDown != RADIOLIB_LW_FCNT_NONE) {
+    LoRaWANNode::hton<uint16_t>(&block1[RADIOLIB_LW_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFCntDown);
   }
   block1[RADIOLIB_LW_MIC_DATA_RATE_POS] = this->dataRates[RADIOLIB_LW_CHANNEL_DIR_UPLINK];
   block1[RADIOLIB_LW_MIC_CH_INDEX_POS] = this->currentChannels[RADIOLIB_LW_CHANNEL_DIR_UPLINK].idx;
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FcntUp = %d) decoded:", this->fcntUp);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FcntUp = %d) decoded:", this->fCntUp);
 
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
@@ -1106,7 +1106,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
   RADIOLIB_ASSERT(state);
   
   // the downlink confirmation was acknowledged, so clear the counter value
-  this->confFcntDown = RADIOLIB_LW_FCNT_NONE;
+  this->confFCntDown = RADIOLIB_LW_FCNT_NONE;
 
   // pass the extra info if requested
   if(event) {
@@ -1116,12 +1116,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t port, bool isConf
     event->datarate = this->dataRates[RADIOLIB_LW_CHANNEL_DIR_UPLINK];
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPowerMax - this->txPowerCur * 2;
-    event->fcnt = this->fcntUp;
-    event->port = port;
+    event->fCnt = this->fCntUp;
+    event->fPort = fPort;
   }
 
   // increase frame counter by one for the next uplink
-  this->fcntUp += 1;
+  this->fCntUp += 1;
 
   return(RADIOLIB_ERR_NONE);
 }
@@ -1279,7 +1279,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   size_t downlinkMsgLen = this->phyLayer->getPacketLength();
 
   // check the minimum required frame length
-  // an extra byte is subtracted because downlink frames may not have a port
+  // an extra byte is subtracted because downlink frames may not have a fPort
   if(downlinkMsgLen < RADIOLIB_LW_FRAME_LEN(0, 0) - 1 - RADIOLIB_AES128_BLOCK_SIZE) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink message too short (%lu bytes)", downlinkMsgLen);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
@@ -1316,14 +1316,14 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   }
 
   // get the frame counter and set it to the MIC calculation block
-  uint16_t fcnt16 = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LW_FHDR_FCNT_POS]);
-  LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LW_BLOCK_FCNT_POS], fcnt16);
+  uint16_t fCnt16 = LoRaWANNode::ntoh<uint16_t>(&downlinkMsg[RADIOLIB_LW_FHDR_FCNT_POS]);
+  LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LW_BLOCK_FCNT_POS], fCnt16);
 
-  // if this downlink is confirming an uplink, its MIC was generated with the least-significant 16 bits of that fcntUp
+  // if this downlink is confirming an uplink, its MIC was generated with the least-significant 16 bits of that fCntUp
   bool isConfirmingUp = false;
   if((downlinkMsg[RADIOLIB_LW_FHDR_FCTRL_POS] & RADIOLIB_LW_FCTRL_ACK) && (this->rev == 1)) {
     isConfirmingUp = true;
-    LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LW_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFcntUp);
+    LoRaWANNode::hton<uint16_t>(&downlinkMsg[RADIOLIB_LW_BLOCK_CONF_FCNT_POS], (uint16_t)this->confFCntUp);
   }
   
   // calculate length of FOpts and payload
@@ -1332,7 +1332,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
   // in LoRaWAN v1.1, a frame can be a network frame if there is no Application payload
   // i.e., no payload at all (empty frame or FOpts only), or MAC only payload (FPort = 0)
-  // TODO "NFCntDown is used for MAC communication on port 0 and when the FPort field is missing"
+  // TODO "NFCntDown is used for MAC communication on fPort 0 and when the FPort field is missing"
   // so what about empty frames for ACK? Per TS008, these should be Application downlinks
   bool isAppDownlink = true;
   if(payLen <= 0) {
@@ -1347,23 +1347,23 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     }
   }
 
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFcntDown = %d) encoded:", isAppDownlink ? "A" : "N", fcnt16);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFcntDown = %d) encoded:", isAppDownlink ? "A" : "N", fCnt16);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
   // check the FcntDown value (Network or Application)
-  uint32_t fcntDownPrev = 0;
+  uint32_t fCntDownPrev = 0;
   if (isAppDownlink) {
-    fcntDownPrev = this->aFcntDown;
+    fCntDownPrev = this->aFCntDown;
   } else {
-    fcntDownPrev = this->nFcntDown;
+    fCntDownPrev = this->nFCntDown;
   }
 
   // if this is not the first downlink...
   // assume a 16-bit to 32-bit rollover if difference between counters in LSB is smaller than MAX_FCNT_GAP
-  // if that isn't the case and the received fcnt is smaller or equal to the last heard fcnt, then error
-  uint32_t fcnt32 = fcnt16;
-  if(fcntDownPrev > 0) {
-    if((fcnt16 <= fcntDownPrev) && ((0xFFFF - (uint16_t)fcntDownPrev + fcnt16) > RADIOLIB_LW_MAX_FCNT_GAP)) {
+  // if that isn't the case and the received fCnt is smaller or equal to the last heard fCnt, then error
+  uint32_t fCnt32 = fCnt16;
+  if(fCntDownPrev > 0) {
+    if((fCnt16 <= fCntDownPrev) && ((0xFFFF - (uint16_t)fCntDownPrev + fCnt16) > RADIOLIB_LW_MAX_FCNT_GAP)) {
       #if !RADIOLIB_STATIC_ONLY
         delete[] downlinkMsg;
       #endif
@@ -1372,9 +1372,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       } else {
         return(RADIOLIB_ERR_N_FCNT_DOWN_INVALID);
       }
-    } else if (fcnt16 <= fcntDownPrev) {
-      uint16_t msb = (fcntDownPrev >> 16) + 1;  // assume a rollover
-      fcnt32 |= ((uint32_t)msb << 16);          // add back the MSB part
+    } else if (fCnt16 <= fCntDownPrev) {
+      uint16_t msb = (fCntDownPrev >> 16) + 1;  // assume a rollover
+      fCnt32 |= ((uint32_t)msb << 16);          // add back the MSB part
     }
   }
   
@@ -1386,17 +1386,17 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     return(RADIOLIB_ERR_CRC_MISMATCH);
   }
   
-  // save current fcnt to respective frame counter
+  // save current fCnt to respective frame counter
   if (isAppDownlink) {
-    this->aFcntDown = fcnt32;
+    this->aFCntDown = fCnt32;
   } else {
-    this->nFcntDown = fcnt32;
+    this->nFCntDown = fCnt32;
   }
 
   // if this is a confirmed frame, save the downlink number (only app frames can be confirmed)
   bool isConfirmedDown = false;
   if((downlinkMsg[RADIOLIB_LW_FHDR_LEN_START_OFFS] & 0xFE) == RADIOLIB_LW_MHDR_MTYPE_CONF_DATA_DOWN) {
-    this->confFcntDown = this->aFcntDown;
+    this->confFCntDown = this->aFCntDown;
     isConfirmedDown = true;
   }
 
@@ -1419,14 +1419,14 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       uint8_t fopts[RADIOLIB_STATIC_ARRAY_SIZE];
     #endif
 
-    // TODO it COULD be the case that the assumed FCnt rollover is incorrect, if possible figure out a way to catch this and retry with just fcnt16
+    // TODO it COULD be the case that the assumed FCnt rollover is incorrect, if possible figure out a way to catch this and retry with just fCnt16
     // if there are <= 15 bytes of FOpts, they are in the FHDR, otherwise they are in the payload
     // in case of the latter, process AES is if it were a normal payload but using the NwkSEncKey
     if(foptsLen <= RADIOLIB_LW_FHDR_FOPTS_LEN_MASK) {
       uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
-      processAES(&downlinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fcnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, ctrId, true);
+      processAES(&downlinkMsg[RADIOLIB_LW_FHDR_FOPTS_POS], (size_t)foptsLen, this->nwkSEncKey, fopts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, ctrId, true);
     } else {
-      processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(0)], (size_t)foptsLen, this->nwkSEncKey, fopts, fcnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
+      processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(0)], (size_t)foptsLen, this->nwkSEncKey, fopts, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
     }
 
     bool hasADR = false;
@@ -1536,8 +1536,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
   }
 
-  // a downlink was received, so reset the ADR counter to the last uplink's fcnt
-  this->adrFcnt = this->getFcntUp();
+  // a downlink was received, so reset the ADR counter to the last uplink's fCnt
+  this->adrFCnt = this->getFCntUp();
 
   // pass the extra info if requested
   if(event) {
@@ -1547,8 +1547,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     event->datarate = this->dataRates[RADIOLIB_LW_CHANNEL_DIR_DOWNLINK];
     event->freq = currentChannels[event->dir].freq;
     event->power = this->txPowerMax - this->txPowerCur * 2;
-    event->fcnt = isAppDownlink ? this->aFcntDown : this->nFcntDown;
-    event->port = isAppDownlink ? downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] : RADIOLIB_LW_FPORT_MAC_COMMAND;
+    event->fCnt = isAppDownlink ? this->aFCntDown : this->nFCntDown;
+    event->fPort = isAppDownlink ? downlinkMsg[RADIOLIB_LW_FHDR_FPORT_POS(foptsLen)] : RADIOLIB_LW_FPORT_MAC_COMMAND;
   }
 
   // process Application payload (if there is any)
@@ -1564,8 +1564,8 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
   *len = payLen - 1;
 
-  // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fcnt16
-  processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], payLen - 1, this->appSKey, data, fcnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
+  // TODO it COULD be the case that the assumed rollover is incorrect, then figure out a way to catch this and retry with just fCnt16
+  processAES(&downlinkMsg[RADIOLIB_LW_FRAME_PAYLOAD_POS(foptsLen)], payLen - 1, this->appSKey, data, fCnt32, RADIOLIB_LW_CHANNEL_DIR_DOWNLINK, 0x00, true);
   
   #if !RADIOLIB_STATIC_ONLY
     delete[] downlinkMsg;
@@ -1575,9 +1575,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
+int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t fPort, String& strDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(strUp, port, isConfirmed, eventUp);
+  int16_t state = this->uplink(strUp, fPort, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
@@ -1586,9 +1586,9 @@ int16_t LoRaWANNode::sendReceive(String& strUp, uint8_t port, String& strDown, b
 }
 #endif
 
-int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
+int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(dataUp, lenUp, port, isConfirmed, eventUp);
+  int16_t state = this->uplink(dataUp, lenUp, fPort, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
@@ -1596,9 +1596,9 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, bo
   return(state);
 }
 
-int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
+int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(strUp, port, isConfirmed, eventUp);
+  int16_t state = this->uplink(strUp, fPort, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
@@ -1606,9 +1606,9 @@ int16_t LoRaWANNode::sendReceive(const char* strUp, uint8_t port, uint8_t* dataD
   return(state);
 }
 
-int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
+int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed, LoRaWANEvent_t* eventUp, LoRaWANEvent_t* eventDown) {
   // send the uplink
-  int16_t state = this->uplink(dataUp, lenUp, port, isConfirmed, eventUp);
+  int16_t state = this->uplink(dataUp, lenUp, fPort, isConfirmed, eventUp);
   RADIOLIB_ASSERT(state);
 
   // wait for the downlink
@@ -1621,24 +1621,24 @@ void LoRaWANNode::setDeviceStatus(uint8_t battLevel) {
 }
 
 // return Fcnt of last uplink; also return 0 if no uplink occured yet
-uint32_t LoRaWANNode::getFcntUp() {
-  if(this->fcntUp == 0) {
+uint32_t LoRaWANNode::getFCntUp() {
+  if(this->fCntUp == 0) {
     return(0);
   }
-  return(this->fcntUp - 1);
+  return(this->fCntUp - 1);
 }
 
-uint32_t LoRaWANNode::getNFcntDown() {
-  return(this->nFcntDown);
+uint32_t LoRaWANNode::getNFCntDown() {
+  return(this->nFCntDown);
 }
 
-uint32_t LoRaWANNode::getAFcntDown() {
-  return(this->aFcntDown);
+uint32_t LoRaWANNode::getAFCntDown() {
+  return(this->aFCntDown);
 }
 
-void LoRaWANNode::resetFcntDown() {
-  this->nFcntDown = 0;
-  this->aFcntDown = 0;
+void LoRaWANNode::resetFCntDown() {
+  this->nFCntDown = 0;
+  this->aFCntDown = 0;
 }
 
 uint32_t LoRaWANNode::generateMIC(uint8_t* msg, size_t len, uint8_t* key) {
@@ -2858,7 +2858,7 @@ bool LoRaWANNode::performCAD() {
     return false; // Channel is free
 }
 
-void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter) {
+void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
   // figure out how many encryption blocks are there
   size_t numBlocks = len/RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {
@@ -2872,7 +2872,7 @@ void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out
   encBlock[RADIOLIB_LW_ENC_BLOCK_COUNTER_ID_POS] = ctrId;
   encBlock[RADIOLIB_LW_BLOCK_DIR_POS] = dir;
   LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LW_BLOCK_DEV_ADDR_POS], this->devAddr);
-  LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LW_BLOCK_FCNT_POS], fcnt);
+  LoRaWANNode::hton<uint32_t>(&encBlock[RADIOLIB_LW_BLOCK_FCNT_POS], fCnt);
 
   // now encrypt the input
   // on downlink frames, this has a decryption effect because server actually "decrypts" the plaintext

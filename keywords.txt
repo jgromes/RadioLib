@@ -317,10 +317,10 @@ uplink	KEYWORD2
 downlink	KEYWORD2
 sendReceive	KEYWORD2
 setDeviceStatus	KEYWORD2
-getFcntUp	KEYWORD2
-getNFcntDown	KEYWORD2
-getAFcntDown	KEYWORD2
-resetFcntDown	KEYWORD2
+getFCntUp	KEYWORD2
+getNFCntDown	KEYWORD2
+getAFCntDown	KEYWORD2
+resetFCntDown	KEYWORD2
 setDatarate	KEYWORD2
 setADR	KEYWORD2
 setDutyCycle	KEYWORD2

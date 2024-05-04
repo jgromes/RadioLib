@@ -118,10 +118,10 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 
 // copy over the keys in to the something that will not compile if incorrectly formatted
 uint32_t devAddr =        RADIOLIB_LORAWAN_DEV_ADDR;
-uint8_t NwkSKey[] =     { RADIOLIB_LORAWAN_FNWKSINT_KEY };
-uint8_t SNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY }; // Previously sNwkSIntKey
-uint8_t NwkSEncKey[] =  { RADIOLIB_LORAWAN_NWKSENC_KEY }; // Previously fNwkSIntKey
-uint8_t AppSKey[] =     { RADIOLIB_LORAWAN_APPS_KEY };
+uint8_t fNwkSIntKey[] = { RADIOLIB_LORAWAN_FNWKSINT_KEY };
+uint8_t sNwkSIntKey[] = { RADIOLIB_LORAWAN_SNWKSINT_KEY };
+uint8_t nwkSEncKey[] =  { RADIOLIB_LORAWAN_NWKSENC_KEY };
+uint8_t appSKey[] =     { RADIOLIB_LORAWAN_APPS_KEY };
 
 // create the LoRaWAN node
 LoRaWANNode node(&radio, &Region, subBand);

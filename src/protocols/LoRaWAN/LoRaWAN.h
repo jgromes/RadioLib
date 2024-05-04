@@ -39,9 +39,9 @@
 #define RADIOLIB_LW_FCTRL_ACK                              (0x01 << 5) //  5     5     confirmed message acknowledge
 #define RADIOLIB_LW_FCTRL_FRAME_PENDING                    (0x01 << 4) //  4     4     downlink frame is pending
 
-// port field
+// fPort field
 #define RADIOLIB_LW_FPORT_MAC_COMMAND                      (0x00 << 0) //  7     0     payload contains MAC commands only
-#define RADIOLIB_LW_FPORT_RESERVED                         (0xE0 << 0) //  7     0     reserved port values
+#define RADIOLIB_LW_FPORT_RESERVED                         (0xE0 << 0) //  7     0     reserved fPort values
 
 // MAC commands - only those sent from end-device to gateway
 #define RADIOLIB_LW_LINK_CHECK_REQ                         (0x02 << 0) //  7     0     MAC command: request to check connectivity to network
@@ -485,10 +485,10 @@ struct LoRaWANEvent_t {
   int16_t power;
   
   /*! \brief The appropriate frame counter - for different events, different frame counters will be reported! */
-  uint32_t fcnt;
+  uint32_t fCnt;
   
   /*! \brief Port number */
-  uint8_t port;
+  uint8_t fPort;
 };
 
 /*!
@@ -600,44 +600,44 @@ class LoRaWANNode {
     /*!
       \brief Send a message to the server.
       \param str Address of Arduino String that will be transmitted.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(String& str, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
+    int16_t uplink(String& str, uint8_t fPort, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
     #endif
 
     /*!
       \brief Send a message to the server.
       \param str C-string that will be transmitted.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(const char* str, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
+    int16_t uplink(const char* str, uint8_t fPort, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
 
     /*!
       \brief Send a message to the server.
       \param data Data to send.
       \param len Length of the data.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t uplink(uint8_t* data, size_t len, uint8_t port, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
+    int16_t uplink(uint8_t* data, size_t len, uint8_t fPort, bool isConfirmed = false, LoRaWANEvent_t* event = NULL);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
       \brief Wait for downlink from the server in either RX1 or RX2 window.
       \param str Address of Arduino String to save the received data.
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
     int16_t downlink(String& str, LoRaWANEvent_t* event = NULL);
@@ -648,7 +648,7 @@ class LoRaWANNode {
       \param data Buffer to save received data into.
       \param len Pointer to variable that will be used to save the number of received bytes.
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
     int16_t downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event = NULL);
@@ -656,7 +656,7 @@ class LoRaWANNode {
     /*!
       \brief Wait for downlink, simplified to allow for simpler sendReceive
       \param event Pointer to a structure to store extra information about the event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
     int16_t downlink(LoRaWANEvent_t* event = NULL);
@@ -665,62 +665,62 @@ class LoRaWANNode {
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
       \param strUp Address of Arduino String that will be transmitted.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param strDown Address of Arduino String to save the received data.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param eventUp Pointer to a structure to store extra information about the uplink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(String& strUp, uint8_t port, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    int16_t sendReceive(String& strUp, uint8_t fPort, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
     #endif
 
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
       \param strUp C-string that will be transmitted.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param dataDown Buffer to save received data into.
       \param lenDown Pointer to variable that will be used to save the number of received bytes.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param eventUp Pointer to a structure to store extra information about the uplink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(const char* strUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    int16_t sendReceive(const char* strUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
       \param dataUp Data to send.
       \param lenUp Length of the data.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param dataDown Buffer to save received data into.
       \param lenDown Pointer to variable that will be used to save the number of received bytes.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param eventUp Pointer to a structure to store extra information about the uplink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Send a message to the server and wait for a downlink but don't bother the user with downlink contents
       \param dataUp Data to send.
       \param lenUp Length of the data.
-      \param port Port number to send the message to.
+      \param fPort Port number to send the message to.
       \param isConfirmed Whether to send a confirmed uplink or not.
       \param eventUp Pointer to a structure to store extra information about the uplink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
-      (port, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns \ref status_codes
     */
-    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t port = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Set device status.
@@ -733,26 +733,26 @@ class LoRaWANNode {
         \brief Returns the last uplink's frame counter; 
         also 0 if no uplink occured yet. 
     */
-    uint32_t getFcntUp();
+    uint32_t getFCntUp();
 
     /*! 
         \brief Returns the last network downlink's frame counter; 
         also 0 if no network downlink occured yet. 
     */
-    uint32_t getNFcntDown();
+    uint32_t getNFCntDown();
 
     /*! 
         \brief Returns the last application downlink's frame counter; 
         also 0 if no application downlink occured yet. 
     */
-    uint32_t getAFcntDown();
+    uint32_t getAFCntDown();
 
     /*! 
         \brief Reset the downlink frame counters (application and network)
         This is unsafe and can possibly allow replay attacks using downlinks.
         It mainly exists as part of the TS009 Specification Verification protocol.
     */
-    void resetFcntDown();
+    void resetFCntDown();
 
     /*!
       \brief Set uplink datarate. This should not be used when ADR is enabled.
@@ -889,12 +889,12 @@ class LoRaWANNode {
     uint8_t nbTrans = 1;            // Number of allowed frame retransmissions
     uint8_t txPowerCur = 0;
     uint8_t txPowerMax = 0;
-    uint32_t fcntUp = 0;
-    uint32_t aFcntDown = 0;
-    uint32_t nFcntDown = 0;
-    uint32_t confFcntUp = RADIOLIB_LW_FCNT_NONE;
-    uint32_t confFcntDown = RADIOLIB_LW_FCNT_NONE;
-    uint32_t adrFcnt = 0;
+    uint32_t fCntUp = 0;
+    uint32_t aFCntDown = 0;
+    uint32_t nFCntDown = 0;
+    uint32_t confFCntUp = RADIOLIB_LW_FCNT_NONE;
+    uint32_t confFCntDown = RADIOLIB_LW_FCNT_NONE;
+    uint32_t adrFCnt = 0;
 
     // whether the current configured channel is in FSK mode
     bool FSK = false;
@@ -1028,7 +1028,7 @@ class LoRaWANNode {
     bool performCAD();
 
     // function to encrypt and decrypt payloads
-    void processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fcnt, uint8_t dir, uint8_t ctrId, bool counter);
+    void processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
 
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
     static uint16_t checkSum16(uint8_t *key, uint16_t keyLen);
