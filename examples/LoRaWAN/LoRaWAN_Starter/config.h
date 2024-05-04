@@ -3,6 +3,8 @@
 
 #include <RadioLib.h>
 
+#define Pi_Pico_1262_LoRa   // set to match hardware in-use (see pin maps below!)
+
 // how often to send an uplink - consider legal & FUP constraints - see notes
 const uint32_t uplinkIntervalSeconds = 5UL * 60UL;    // minutes x seconds
 
@@ -41,6 +43,11 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
     #pragma message ("Link required on board")
     SX1276 radio = new Module(8, 3, 4, 6);
 
+// Pi_Pico_1262_LoRa
+#elif defined(Pi_Pico_1262_LoRa)
+  #pragma message ("Pi_Pico_1262_LoRa")
+     // fix from https://github.com/jgromes/RadioLib/issues/729
+  SX1262 radio = new Module(3, 20, 15, 2, SPI1, RADIOLIB_DEFAULT_SPI_SETTINGS);
 
 // LilyGo 
 #elif defined(ARDUINO_TTGO_LORA32_V1)
