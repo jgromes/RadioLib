@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"group__config__shaping.html#gaa9495bc5eb54df04f2ed7b1ccbb4f277":[2,3,4],
+"group__config__standby.html":[2,5],
 "group__config__standby.html#ga37f835c3cd3323e2cde1fe1ab7c635e7":[2,5,0],
 "group__config__standby.html#ga3f3398b244d584ad94c691f60f2d9517":[2,5,1],
 "group__config__standby.html#ga9c4af50dde47d157538b1877190ea7b5":[2,5,2],

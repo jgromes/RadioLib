@@ -54,7 +54,7 @@ var NAVTREEINDEX =
 "class_r_f69.html#a2f5852cf0757e38b56b6208760d9a459",
 "class_s_x126x.html#a865397e1cca38bec2d055c047825ea07",
 "class_s_x128x.html#a3837662441a9eb3f0a71f4f667db9e91",
-"group__config__standby.html#ga37f835c3cd3323e2cde1fe1ab7c635e7"
+"group__config__shaping.html#gaa9495bc5eb54df04f2ed7b1ccbb4f277"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
