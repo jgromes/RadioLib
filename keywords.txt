@@ -91,6 +91,11 @@ AS923	KEYWORD1
 KR920	KEYWORD1
 IN865	KEYWORD1
 
+# LR11x0 scan results
+LR11x0WifiResult_t	KEYWORD1
+LR11x0WifiResultFull_t	KEYWORD1
+LR11x0WifiResultExtended_t	KEYWORD1
+
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
@@ -243,6 +248,12 @@ setAutoAck	KEYWORD2
 # LR11x0
 beginLRFHSS	KEYWORD2
 setLrFhssConfig	KEYWORD2
+startWifiScan	KEYWORD2
+getWifiScanResultsCount	KEYWORD2
+getWifiScanResult	KEYWORD2
+wifiScan	KEYWORD2
+setWiFiScanAction	KEYWORD2
+clearWiFiScanAction	KEYWORD2
 
 # RTTY
 idle	KEYWORD2
