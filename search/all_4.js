@@ -9,6 +9,6 @@ var searchData=
   ['encoding_20type_20aliases_2e_89',['Encoding type aliases.',['../group__config__encoding.html',1,'']]],
   ['encryptecb_90',['encryptECB',['../class_radio_lib_a_e_s128.html#a4c7b49c3ed16f3849d8050a24a11c3c1',1,'RadioLibAES128']]],
   ['err_91',['err',['../struct_module_1_1_s_p_i_config__t.html#ae11c030be96a72cd09fdfe9778ecdd51',1,'Module::SPIConfig_t']]],
-  ['explicitheader_92',['explicitHeader',['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]],
-  ['externalradio_93',['ExternalRadio',['../class_external_radio.html',1,'ExternalRadio'],['../class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda',1,'ExternalRadio::ExternalRadio()']]]
+  ['explicitheader_92',['explicitHeader',['../class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5',1,'LR11x0::explicitHeader()'],['../class_s_x126x.html#a3765f534418d4e0540c179621c019138',1,'SX126x::explicitHeader()'],['../class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7',1,'SX1272::explicitHeader()'],['../class_s_x1278.html#a7c7717f09820a8e9a93621b0a00713f1',1,'SX1278::explicitHeader()'],['../class_s_x128x.html#a94b7fb26cc99385d30b0c98b76d8188d',1,'SX128x::explicitHeader()']]],
+  ['externalradio_93',['ExternalRadio',['../class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda',1,'ExternalRadio::ExternalRadio()'],['../class_external_radio.html',1,'ExternalRadio']]]
 ];

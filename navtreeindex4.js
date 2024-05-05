@@ -1,5 +1,7 @@
 var NAVTREEINDEX4 =
 {
+"class_s_x128x.html#a32b7b674d63c36f15b7f58a2cb837a99":[3,0,74,25],
+"class_s_x128x.html#a3563453988a83d22dd07d4691543a300":[3,0,74,22],
 "class_s_x128x.html#a3837662441a9eb3f0a71f4f667db9e91":[3,0,74,40],
 "class_s_x128x.html#a389aab93e24ec8c7cc9c14de90e5dfae":[3,0,74,54],
 "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735":[3,0,74,14],
@@ -247,7 +249,5 @@ var NAVTREEINDEX4 =
 "group__config__encoding.html#gaffff394bbc47c05ed1bfde2e16a596e8":[2,4,0],
 "group__config__shaping.html":[2,3],
 "group__config__shaping.html#ga677dde0ea956d5e99af30cf501a727ad":[2,3,2],
-"group__config__shaping.html#ga6a562fca42573d39e4a214c293756f64":[2,3,0],
-"group__config__shaping.html#ga80e2185af1123c7632aa40cad1691e6d":[2,3,3],
-"group__config__shaping.html#gaa778d14c29d21fe329137a28a3f54a5d":[2,3,1]
+"group__config__shaping.html#ga6a562fca42573d39e4a214c293756f64":[2,3,0]
 };

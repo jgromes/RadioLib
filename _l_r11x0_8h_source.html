@@ -823,232 +823,238 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a name="l01136"></a><span class="lineno"> 1136</span>&#160; </div>
 <div class="line"><a name="l01142"></a><span class="lineno"> 1142</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">getTimeOnAir</a>(<span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l01143"></a><span class="lineno"> 1143</span>&#160; </div>
-<div class="line"><a name="l01148"></a><span class="lineno"> 1148</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">getDataRate</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160; </div>
-<div class="line"><a name="l01158"></a><span class="lineno"> 1158</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a>(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);</div>
-<div class="line"><a name="l01159"></a><span class="lineno"> 1159</span>&#160;    </div>
-<div class="line"><a name="l01174"></a><span class="lineno"> 1174</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">startWifiScan</a>(<span class="keywordtype">char</span> wifiType, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);</div>
-<div class="line"><a name="l01175"></a><span class="lineno"> 1175</span>&#160; </div>
-<div class="line"><a name="l01180"></a><span class="lineno"> 1180</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">setWiFiScanAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
-<div class="line"><a name="l01181"></a><span class="lineno"> 1181</span>&#160; </div>
-<div class="line"><a name="l01185"></a><span class="lineno"> 1185</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_l_r11x0.html#ad5876b44020a0bd59f73186a912dbb60">clearWiFiScanAction</a>();</div>
-<div class="line"><a name="l01186"></a><span class="lineno"> 1186</span>&#160; </div>
-<div class="line"><a name="l01192"></a><span class="lineno"> 1192</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">getWifiScanResultsCount</a>(uint8_t* count);</div>
-<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160; </div>
-<div class="line"><a name="l01203"></a><span class="lineno"> 1203</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">getWifiScanResult</a>(<a class="code" href="struct_l_r11x0_wifi_result__t.html">LR11x0WifiResult_t</a>* result, uint8_t index, <span class="keywordtype">bool</span> brief = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l01204"></a><span class="lineno"> 1204</span>&#160;    </div>
-<div class="line"><a name="l01221"></a><span class="lineno"> 1221</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a>(uint8_t wifiType, uint8_t* count, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);</div>
-<div class="line"><a name="l01222"></a><span class="lineno"> 1222</span>&#160; </div>
-<div class="line"><a name="l01223"></a><span class="lineno"> 1223</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
-<div class="line"><a name="l01224"></a><span class="lineno"> 1224</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01225"></a><span class="lineno"> 1225</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01226"></a><span class="lineno"> 1226</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
-<div class="line"><a name="l01227"></a><span class="lineno"> 1227</span>&#160; </div>
-<div class="line"><a name="l01228"></a><span class="lineno"> 1228</span>&#160;    <span class="comment">// LR11x0 SPI command implementations</span></div>
-<div class="line"><a name="l01229"></a><span class="lineno"> 1229</span>&#160;    int16_t writeRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01230"></a><span class="lineno"> 1230</span>&#160;    int16_t readRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01231"></a><span class="lineno"> 1231</span>&#160;    int16_t writeBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01232"></a><span class="lineno"> 1232</span>&#160;    int16_t readBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">size_t</span> offset);</div>
-<div class="line"><a name="l01233"></a><span class="lineno"> 1233</span>&#160;    int16_t clearRxBuffer(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);</div>
+<div class="line"><a name="l01149"></a><span class="lineno"> 1149</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">implicitHeader</a>(<span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01150"></a><span class="lineno"> 1150</span>&#160; </div>
+<div class="line"><a name="l01155"></a><span class="lineno"> 1155</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5">explicitHeader</a>();</div>
+<div class="line"><a name="l01156"></a><span class="lineno"> 1156</span>&#160; </div>
+<div class="line"><a name="l01161"></a><span class="lineno"> 1161</span>&#160;    <span class="keywordtype">float</span> <a class="code" href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">getDataRate</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l01162"></a><span class="lineno"> 1162</span>&#160; </div>
+<div class="line"><a name="l01171"></a><span class="lineno"> 1171</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a>(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeed = 0x13A);</div>
+<div class="line"><a name="l01172"></a><span class="lineno"> 1172</span>&#160;    </div>
+<div class="line"><a name="l01187"></a><span class="lineno"> 1187</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">startWifiScan</a>(<span class="keywordtype">char</span> wifiType, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);</div>
+<div class="line"><a name="l01188"></a><span class="lineno"> 1188</span>&#160; </div>
+<div class="line"><a name="l01193"></a><span class="lineno"> 1193</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">setWiFiScanAction</a>(<span class="keywordtype">void</span> (*func)(<span class="keywordtype">void</span>));</div>
+<div class="line"><a name="l01194"></a><span class="lineno"> 1194</span>&#160; </div>
+<div class="line"><a name="l01198"></a><span class="lineno"> 1198</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_l_r11x0.html#ad5876b44020a0bd59f73186a912dbb60">clearWiFiScanAction</a>();</div>
+<div class="line"><a name="l01199"></a><span class="lineno"> 1199</span>&#160; </div>
+<div class="line"><a name="l01205"></a><span class="lineno"> 1205</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">getWifiScanResultsCount</a>(uint8_t* count);</div>
+<div class="line"><a name="l01206"></a><span class="lineno"> 1206</span>&#160; </div>
+<div class="line"><a name="l01216"></a><span class="lineno"> 1216</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">getWifiScanResult</a>(<a class="code" href="struct_l_r11x0_wifi_result__t.html">LR11x0WifiResult_t</a>* result, uint8_t index, <span class="keywordtype">bool</span> brief = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l01217"></a><span class="lineno"> 1217</span>&#160;    </div>
+<div class="line"><a name="l01234"></a><span class="lineno"> 1234</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a>(uint8_t wifiType, uint8_t* count, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);</div>
 <div class="line"><a name="l01235"></a><span class="lineno"> 1235</span>&#160; </div>
-<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);</div>
-<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;    int16_t getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor);</div>
-<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;    int16_t getErrors(uint16_t* err);</div>
-<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    int16_t clearErrors(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160;    int16_t calibrate(uint8_t params);</div>
-<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    int16_t setRegMode(uint8_t mode);</div>
-<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    int16_t calibImage(<span class="keywordtype">float</span> freq1, <span class="keywordtype">float</span> freq2);</div>
-<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t gnssCfg, uint8_t wifiCfg);</div>
-<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;    int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);</div>
-<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    int16_t clearIrq(uint32_t irq);</div>
-<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    int16_t configLfClock(uint8_t setup);</div>
-<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    int16_t setTcxoMode(uint8_t tune, uint32_t delay);</div>
-<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160;    int16_t reboot(<span class="keywordtype">bool</span> stay);</div>
-<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    int16_t getVbat(<span class="keywordtype">float</span>* vbat);</div>
-<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    int16_t getTemp(<span class="keywordtype">float</span>* temp);</div>
-<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    int16_t setFs(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    int16_t getRandomNumber(uint32_t* rnd);</div>
-<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    int16_t eraseInfoPage(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    int16_t writeInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    int16_t readInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    int16_t getChipEui(uint8_t* eui);</div>
-<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    int16_t getSemtechJoinEui(uint8_t* eui);</div>
-<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    int16_t deriveRootKeysAndGetPin(uint8_t* pin);</div>
-<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    int16_t enableSpiCrc(<span class="keywordtype">bool</span> en);</div>
-<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    int16_t driveDiosInSleepMode(<span class="keywordtype">bool</span> en);</div>
-<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160; </div>
-<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;    int16_t resetStats(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;    int16_t getStats(uint16_t* nbPktReceived, uint16_t* nbPktCrcError, uint16_t* data1, uint16_t* data2);</div>
-<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;    int16_t getPacketType(uint8_t* type);</div>
-<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;    int16_t getRxBufferStatus(uint8_t* len, uint8_t* startOffset);</div>
-<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    int16_t getPacketStatusLoRa(<span class="keywordtype">float</span>* rssiPkt, <span class="keywordtype">float</span>* snrPkt, <span class="keywordtype">float</span>* signalRssiPkt);</div>
-<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;    int16_t getPacketStatusGFSK(<span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">float</span>* rssiAvg, uint8_t* rxLen, uint8_t* stat);</div>
-<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    int16_t getRssiInst(<span class="keywordtype">float</span>* rssi);</div>
-<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;    int16_t setGfskSyncWord(uint8_t* sync);</div>
-<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    int16_t setLoRaPublicNetwork(<span class="keywordtype">bool</span> pub);</div>
-<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;    int16_t setRx(uint32_t timeout);</div>
-<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;    int16_t setTx(uint32_t timeout);</div>
-<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;    int16_t setRfFrequency(uint32_t rfFreq);</div>
-<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160;    int16_t autoTxRx(uint32_t delay, uint8_t intMode, uint32_t timeout);</div>
-<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    int16_t setCadParams(uint8_t symNum, uint8_t detPeak, uint8_t detMin, uint8_t cadExitMode, uint32_t timeout);</div>
-<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    int16_t setPacketType(uint8_t type);</div>
-<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    int16_t setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);</div>
-<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;    int16_t setModulationParamsGFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);</div>
-<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    int16_t setModulationParamsLrFhss(uint32_t br, uint8_t sh);</div>
-<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    int16_t setModulationParamsSigfox(uint32_t br, uint8_t sh);</div>
-<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    int16_t setPacketParamsLoRa(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t <a class="code" href="class_l_r11x0.html#af85c16956c2250dbf338a298c074d28c">invertIQ</a>);</div>
-<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;    int16_t setPacketParamsGFSK(uint16_t preambleLen, uint8_t preambleDetectorLen, uint8_t syncWordLen, uint8_t addrCmp, uint8_t packType, uint8_t payloadLen, uint8_t crcType, uint8_t whiten);</div>
-<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    int16_t setPacketParamsSigfox(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t bitNum);</div>
-<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    int16_t setTxParams(int8_t pwr, uint8_t ramp);</div>
-<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;    int16_t setPacketAdrs(uint8_t node, uint8_t broadcast);</div>
-<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;    int16_t setRxTxFallbackMode(uint8_t mode);</div>
-<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;    int16_t setRxDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint8_t mode);</div>
-<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;    int16_t setPaConfig(uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel);</div>
-<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;    int16_t stopTimeoutOnPreamble(<span class="keywordtype">bool</span> stop);</div>
-<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;    int16_t setCad(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;    int16_t setTxCw(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;    int16_t setTxInfinitePreamble(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;    int16_t setLoRaSynchTimeout(uint8_t symbolNum);</div>
-<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;    int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);</div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;    int16_t setRangingReqAddr(uint32_t addr);</div>
-<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;    int16_t getRangingResult(uint8_t type, <span class="keywordtype">float</span>* res);</div>
-<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;    int16_t setRangingTxRxDelay(uint32_t delay);</div>
-<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;    int16_t setGfskCrcParams(uint32_t init, uint32_t poly);</div>
-<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;    int16_t setGfskWhitParams(uint16_t seed);</div>
-<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;    int16_t setRxBoosted(<span class="keywordtype">bool</span> en);</div>
-<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;    int16_t setRangingParameter(uint8_t symbolNum);</div>
-<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;    int16_t setLoRaSyncWord(uint8_t sync);</div>
-<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, <span class="keywordtype">bool</span> hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    int16_t lrFhssSetSyncWord(uint32_t sync);</div>
-<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;    int16_t configBleBeacon(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;    int16_t getLoRaRxHeaderInfos(uint8_t* info);</div>
-<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;    int16_t bleBeaconSend(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160; </div>
-<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a>(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);</div>
-<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;    int16_t wifiScanTimeLimit(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout);</div>
-<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;    int16_t wifiCountryCode(uint16_t mask, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);</div>
-<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;    int16_t wifiCountryCodeTimeLimit(uint16_t mask, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout);</div>
-<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;    int16_t wifiGetNbResults(uint8_t* nbResults);</div>
-<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;    int16_t wifiReadResults(uint8_t index, uint8_t nbResults, uint8_t format, uint8_t* results);</div>
-<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;    int16_t wifiResetCumulTimings(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;    int16_t wifiReadCumulTimings(uint32_t* detection, uint32_t* capture, uint32_t* demodulation);</div>
-<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;    int16_t wifiGetNbCountryCodeResults(uint8_t* nbResults);</div>
-<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    int16_t wifiReadCountryCodeResults(uint8_t index, uint8_t nbResults, uint8_t* results);</div>
-<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;    int16_t wifiCfgTimestampAPphone(uint32_t timestamp);</div>
-<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;    int16_t wifiReadVersion(uint8_t* major, uint8_t* minor);</div>
+<div class="line"><a name="l01236"></a><span class="lineno"> 1236</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE &amp;&amp; !RADIOLIB_LOW_LEVEL</span></div>
+<div class="line"><a name="l01237"></a><span class="lineno"> 1237</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01238"></a><span class="lineno"> 1238</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01239"></a><span class="lineno"> 1239</span>&#160;    <a class="code" href="class_module.html">Module</a>* getMod();</div>
+<div class="line"><a name="l01240"></a><span class="lineno"> 1240</span>&#160; </div>
+<div class="line"><a name="l01241"></a><span class="lineno"> 1241</span>&#160;    <span class="comment">// LR11x0 SPI command implementations</span></div>
+<div class="line"><a name="l01242"></a><span class="lineno"> 1242</span>&#160;    int16_t writeRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01243"></a><span class="lineno"> 1243</span>&#160;    int16_t readRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01244"></a><span class="lineno"> 1244</span>&#160;    int16_t writeBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01245"></a><span class="lineno"> 1245</span>&#160;    int16_t readBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">size_t</span> offset);</div>
+<div class="line"><a name="l01246"></a><span class="lineno"> 1246</span>&#160;    int16_t clearRxBuffer(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01247"></a><span class="lineno"> 1247</span>&#160;    int16_t writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data);</div>
+<div class="line"><a name="l01248"></a><span class="lineno"> 1248</span>&#160; </div>
+<div class="line"><a name="l01249"></a><span class="lineno"> 1249</span>&#160;    int16_t getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq);</div>
+<div class="line"><a name="l01250"></a><span class="lineno"> 1250</span>&#160;    int16_t getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor);</div>
+<div class="line"><a name="l01251"></a><span class="lineno"> 1251</span>&#160;    int16_t getErrors(uint16_t* err);</div>
+<div class="line"><a name="l01252"></a><span class="lineno"> 1252</span>&#160;    int16_t clearErrors(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01253"></a><span class="lineno"> 1253</span>&#160;    int16_t calibrate(uint8_t params);</div>
+<div class="line"><a name="l01254"></a><span class="lineno"> 1254</span>&#160;    int16_t setRegMode(uint8_t mode);</div>
+<div class="line"><a name="l01255"></a><span class="lineno"> 1255</span>&#160;    int16_t calibImage(<span class="keywordtype">float</span> freq1, <span class="keywordtype">float</span> freq2);</div>
+<div class="line"><a name="l01256"></a><span class="lineno"> 1256</span>&#160;    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t gnssCfg, uint8_t wifiCfg);</div>
+<div class="line"><a name="l01257"></a><span class="lineno"> 1257</span>&#160;    int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);</div>
+<div class="line"><a name="l01258"></a><span class="lineno"> 1258</span>&#160;    int16_t clearIrq(uint32_t irq);</div>
+<div class="line"><a name="l01259"></a><span class="lineno"> 1259</span>&#160;    int16_t configLfClock(uint8_t setup);</div>
+<div class="line"><a name="l01260"></a><span class="lineno"> 1260</span>&#160;    int16_t setTcxoMode(uint8_t tune, uint32_t delay);</div>
+<div class="line"><a name="l01261"></a><span class="lineno"> 1261</span>&#160;    int16_t reboot(<span class="keywordtype">bool</span> stay);</div>
+<div class="line"><a name="l01262"></a><span class="lineno"> 1262</span>&#160;    int16_t getVbat(<span class="keywordtype">float</span>* vbat);</div>
+<div class="line"><a name="l01263"></a><span class="lineno"> 1263</span>&#160;    int16_t getTemp(<span class="keywordtype">float</span>* temp);</div>
+<div class="line"><a name="l01264"></a><span class="lineno"> 1264</span>&#160;    int16_t setFs(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01265"></a><span class="lineno"> 1265</span>&#160;    int16_t getRandomNumber(uint32_t* rnd);</div>
+<div class="line"><a name="l01266"></a><span class="lineno"> 1266</span>&#160;    int16_t eraseInfoPage(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01267"></a><span class="lineno"> 1267</span>&#160;    int16_t writeInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01268"></a><span class="lineno"> 1268</span>&#160;    int16_t readInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01269"></a><span class="lineno"> 1269</span>&#160;    int16_t getChipEui(uint8_t* eui);</div>
+<div class="line"><a name="l01270"></a><span class="lineno"> 1270</span>&#160;    int16_t getSemtechJoinEui(uint8_t* eui);</div>
+<div class="line"><a name="l01271"></a><span class="lineno"> 1271</span>&#160;    int16_t deriveRootKeysAndGetPin(uint8_t* pin);</div>
+<div class="line"><a name="l01272"></a><span class="lineno"> 1272</span>&#160;    int16_t enableSpiCrc(<span class="keywordtype">bool</span> en);</div>
+<div class="line"><a name="l01273"></a><span class="lineno"> 1273</span>&#160;    int16_t driveDiosInSleepMode(<span class="keywordtype">bool</span> en);</div>
+<div class="line"><a name="l01274"></a><span class="lineno"> 1274</span>&#160; </div>
+<div class="line"><a name="l01275"></a><span class="lineno"> 1275</span>&#160;    int16_t resetStats(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01276"></a><span class="lineno"> 1276</span>&#160;    int16_t getStats(uint16_t* nbPktReceived, uint16_t* nbPktCrcError, uint16_t* data1, uint16_t* data2);</div>
+<div class="line"><a name="l01277"></a><span class="lineno"> 1277</span>&#160;    int16_t getPacketType(uint8_t* type);</div>
+<div class="line"><a name="l01278"></a><span class="lineno"> 1278</span>&#160;    int16_t getRxBufferStatus(uint8_t* len, uint8_t* startOffset);</div>
+<div class="line"><a name="l01279"></a><span class="lineno"> 1279</span>&#160;    int16_t getPacketStatusLoRa(<span class="keywordtype">float</span>* rssiPkt, <span class="keywordtype">float</span>* snrPkt, <span class="keywordtype">float</span>* signalRssiPkt);</div>
+<div class="line"><a name="l01280"></a><span class="lineno"> 1280</span>&#160;    int16_t getPacketStatusGFSK(<span class="keywordtype">float</span>* rssiSync, <span class="keywordtype">float</span>* rssiAvg, uint8_t* rxLen, uint8_t* stat);</div>
+<div class="line"><a name="l01281"></a><span class="lineno"> 1281</span>&#160;    int16_t getRssiInst(<span class="keywordtype">float</span>* rssi);</div>
+<div class="line"><a name="l01282"></a><span class="lineno"> 1282</span>&#160;    int16_t setGfskSyncWord(uint8_t* sync);</div>
+<div class="line"><a name="l01283"></a><span class="lineno"> 1283</span>&#160;    int16_t setLoRaPublicNetwork(<span class="keywordtype">bool</span> pub);</div>
+<div class="line"><a name="l01284"></a><span class="lineno"> 1284</span>&#160;    int16_t setRx(uint32_t timeout);</div>
+<div class="line"><a name="l01285"></a><span class="lineno"> 1285</span>&#160;    int16_t setTx(uint32_t timeout);</div>
+<div class="line"><a name="l01286"></a><span class="lineno"> 1286</span>&#160;    int16_t setRfFrequency(uint32_t rfFreq);</div>
+<div class="line"><a name="l01287"></a><span class="lineno"> 1287</span>&#160;    int16_t autoTxRx(uint32_t delay, uint8_t intMode, uint32_t timeout);</div>
+<div class="line"><a name="l01288"></a><span class="lineno"> 1288</span>&#160;    int16_t setCadParams(uint8_t symNum, uint8_t detPeak, uint8_t detMin, uint8_t cadExitMode, uint32_t timeout);</div>
+<div class="line"><a name="l01289"></a><span class="lineno"> 1289</span>&#160;    int16_t setPacketType(uint8_t type);</div>
+<div class="line"><a name="l01290"></a><span class="lineno"> 1290</span>&#160;    int16_t setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);</div>
+<div class="line"><a name="l01291"></a><span class="lineno"> 1291</span>&#160;    int16_t setModulationParamsGFSK(uint32_t br, uint8_t sh, uint8_t rxBw, uint32_t freqDev);</div>
+<div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;    int16_t setModulationParamsLrFhss(uint32_t br, uint8_t sh);</div>
+<div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;    int16_t setModulationParamsSigfox(uint32_t br, uint8_t sh);</div>
+<div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;    int16_t setPacketParamsLoRa(uint16_t preambleLen, uint8_t hdrType, uint8_t payloadLen, uint8_t crcType, uint8_t <a class="code" href="class_l_r11x0.html#af85c16956c2250dbf338a298c074d28c">invertIQ</a>);</div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;    int16_t setPacketParamsGFSK(uint16_t preambleLen, uint8_t preambleDetectorLen, uint8_t syncWordLen, uint8_t addrCmp, uint8_t packType, uint8_t payloadLen, uint8_t crcType, uint8_t whiten);</div>
+<div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;    int16_t setPacketParamsSigfox(uint8_t payloadLen, uint16_t rampUpDelay, uint16_t rampDownDelay, uint16_t bitNum);</div>
+<div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;    int16_t setTxParams(int8_t pwr, uint8_t ramp);</div>
+<div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;    int16_t setPacketAdrs(uint8_t node, uint8_t broadcast);</div>
+<div class="line"><a name="l01299"></a><span class="lineno"> 1299</span>&#160;    int16_t setRxTxFallbackMode(uint8_t mode);</div>
+<div class="line"><a name="l01300"></a><span class="lineno"> 1300</span>&#160;    int16_t setRxDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint8_t mode);</div>
+<div class="line"><a name="l01301"></a><span class="lineno"> 1301</span>&#160;    int16_t setPaConfig(uint8_t paSel, uint8_t regPaSupply, uint8_t paDutyCycle, uint8_t paHpSel);</div>
+<div class="line"><a name="l01302"></a><span class="lineno"> 1302</span>&#160;    int16_t stopTimeoutOnPreamble(<span class="keywordtype">bool</span> stop);</div>
+<div class="line"><a name="l01303"></a><span class="lineno"> 1303</span>&#160;    int16_t setCad(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01304"></a><span class="lineno"> 1304</span>&#160;    int16_t setTxCw(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01305"></a><span class="lineno"> 1305</span>&#160;    int16_t setTxInfinitePreamble(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01306"></a><span class="lineno"> 1306</span>&#160;    int16_t setLoRaSynchTimeout(uint8_t symbolNum);</div>
+<div class="line"><a name="l01307"></a><span class="lineno"> 1307</span>&#160;    int16_t setRangingAddr(uint32_t addr, uint8_t checkLen);</div>
+<div class="line"><a name="l01308"></a><span class="lineno"> 1308</span>&#160;    int16_t setRangingReqAddr(uint32_t addr);</div>
+<div class="line"><a name="l01309"></a><span class="lineno"> 1309</span>&#160;    int16_t getRangingResult(uint8_t type, <span class="keywordtype">float</span>* res);</div>
+<div class="line"><a name="l01310"></a><span class="lineno"> 1310</span>&#160;    int16_t setRangingTxRxDelay(uint32_t delay);</div>
+<div class="line"><a name="l01311"></a><span class="lineno"> 1311</span>&#160;    int16_t setGfskCrcParams(uint32_t init, uint32_t poly);</div>
+<div class="line"><a name="l01312"></a><span class="lineno"> 1312</span>&#160;    int16_t setGfskWhitParams(uint16_t seed);</div>
+<div class="line"><a name="l01313"></a><span class="lineno"> 1313</span>&#160;    int16_t setRxBoosted(<span class="keywordtype">bool</span> en);</div>
+<div class="line"><a name="l01314"></a><span class="lineno"> 1314</span>&#160;    int16_t setRangingParameter(uint8_t symbolNum);</div>
+<div class="line"><a name="l01315"></a><span class="lineno"> 1315</span>&#160;    int16_t setLoRaSyncWord(uint8_t sync);</div>
+<div class="line"><a name="l01316"></a><span class="lineno"> 1316</span>&#160;    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, <span class="keywordtype">bool</span> hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01317"></a><span class="lineno"> 1317</span>&#160;    int16_t lrFhssSetSyncWord(uint32_t sync);</div>
+<div class="line"><a name="l01318"></a><span class="lineno"> 1318</span>&#160;    int16_t configBleBeacon(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01319"></a><span class="lineno"> 1319</span>&#160;    int16_t getLoRaRxHeaderInfos(uint8_t* info);</div>
+<div class="line"><a name="l01320"></a><span class="lineno"> 1320</span>&#160;    int16_t bleBeaconSend(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l01321"></a><span class="lineno"> 1321</span>&#160; </div>
-<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;    int16_t gnssSetConstellationToUse(uint8_t mask);</div>
-<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;    int16_t gnssReadConstellationToUse(uint8_t* mask);</div>
-<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;    int16_t gnssSetAlmanacUpdate(uint8_t mask);</div>
-<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;    int16_t gnssReadAlmanacUpdate(uint8_t* mask);</div>
-<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;    int16_t gnssReadVersion(uint8_t* fw, uint8_t* almanac);</div>
-<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;    int16_t gnssReadSupportedConstellations(uint8_t* mask);</div>
-<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;    int16_t gnssSetMode(uint8_t mode);</div>
-<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;    int16_t gnssAutonomous(uint32_t gpsTime, uint8_t resMask, uint8_t nbSvMask);</div>
-<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;    int16_t gnssAssisted(uint32_t gpsTime, uint8_t effort, uint8_t resMask, uint8_t nbSvMask);</div>
-<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;    int16_t gnssSetAssistancePosition(<span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon);</div>
-<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;    int16_t gnssReadAssistancePosition(<span class="keywordtype">float</span>* lat, <span class="keywordtype">float</span>* lon);</div>
-<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;    int16_t gnssPushSolverMsg(uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160;    int16_t gnssPushDmMsg(uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;    int16_t gnssGetContextStatus(uint8_t* fwVersion, uint32_t* almanacCrc, uint8_t* errCode, uint8_t* almUpdMask, uint8_t* freqSpace);</div>
-<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;    int16_t gnssGetNbSvDetected(uint8_t* nbSv);</div>
-<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;    int16_t gnssGetSvDetected(uint8_t* svId, uint8_t* snr, uint16_t* doppler, <span class="keywordtype">size_t</span> nbSv);</div>
-<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    int16_t gnssGetConsumption(uint32_t* cpu, uint32_t* radio);</div>
-<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    int16_t gnssGetResultSize(uint16_t* size);</div>
-<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;    int16_t gnssReadResults(uint8_t* result, uint16_t size);</div>
-<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;    int16_t gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc);</div>
-<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;    int16_t gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac);</div>
-<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    int16_t gnssGetSvVisible(uint32_t time, <span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint8_t constellation, uint8_t* nbSv);</div>
-<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160; </div>
-<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;    int16_t cryptoSetKey(uint8_t keyId, uint8_t* key);</div>
-<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;    int16_t cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key);</div>
-<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    int16_t cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, uint8_t* header, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    int16_t cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t* mic);</div>
-<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    int16_t cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span>* result);</div>
-<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;    int16_t cryptoAesEncrypt01(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    int16_t cryptoAesEncrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;    int16_t cryptoAesDecrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;    int16_t cryptoStoreToFlash(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;    int16_t cryptoRestoreFromFlash(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;    int16_t cryptoSetParam(uint8_t <span class="keywordtype">id</span>, uint32_t value);</div>
-<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;    int16_t cryptoGetParam(uint8_t <span class="keywordtype">id</span>, uint32_t* value);</div>
-<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160;    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;    int16_t cryptoCheckEncryptedFirmwareImageResult(<span class="keywordtype">bool</span>* result);</div>
-<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160; </div>
-<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    int16_t bootEraseFlash(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;    int16_t bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;    int16_t bootReboot(<span class="keywordtype">bool</span> stay);</div>
-<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;    int16_t bootGetPin(uint8_t* pin);</div>
-<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;    int16_t bootGetChipEui(uint8_t* eui);</div>
-<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;    int16_t bootGetJoinEui(uint8_t* eui);</div>
-<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;    </div>
-<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
-<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;    </div>
-<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160;    uint8_t chipType;</div>
-<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160; </div>
-<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
-<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160; </div>
-<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
-<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;</div>
-<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;    uint16_t preambleLengthLoRa = 0;</div>
-<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;    <span class="keywordtype">float</span> bandwidthKhz = 0;</div>
-<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;    <span class="keywordtype">bool</span> ldroAuto = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;    <span class="keywordtype">size_t</span> implicitLen = 0;</div>
-<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;    <span class="keywordtype">bool</span> invertIQEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l01322"></a><span class="lineno"> 1322</span>&#160;    int16_t <a class="code" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a>(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);</div>
+<div class="line"><a name="l01323"></a><span class="lineno"> 1323</span>&#160;    int16_t wifiScanTimeLimit(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout);</div>
+<div class="line"><a name="l01324"></a><span class="lineno"> 1324</span>&#160;    int16_t wifiCountryCode(uint16_t mask, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);</div>
+<div class="line"><a name="l01325"></a><span class="lineno"> 1325</span>&#160;    int16_t wifiCountryCodeTimeLimit(uint16_t mask, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout);</div>
+<div class="line"><a name="l01326"></a><span class="lineno"> 1326</span>&#160;    int16_t wifiGetNbResults(uint8_t* nbResults);</div>
+<div class="line"><a name="l01327"></a><span class="lineno"> 1327</span>&#160;    int16_t wifiReadResults(uint8_t index, uint8_t nbResults, uint8_t format, uint8_t* results);</div>
+<div class="line"><a name="l01328"></a><span class="lineno"> 1328</span>&#160;    int16_t wifiResetCumulTimings(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01329"></a><span class="lineno"> 1329</span>&#160;    int16_t wifiReadCumulTimings(uint32_t* detection, uint32_t* capture, uint32_t* demodulation);</div>
+<div class="line"><a name="l01330"></a><span class="lineno"> 1330</span>&#160;    int16_t wifiGetNbCountryCodeResults(uint8_t* nbResults);</div>
+<div class="line"><a name="l01331"></a><span class="lineno"> 1331</span>&#160;    int16_t wifiReadCountryCodeResults(uint8_t index, uint8_t nbResults, uint8_t* results);</div>
+<div class="line"><a name="l01332"></a><span class="lineno"> 1332</span>&#160;    int16_t wifiCfgTimestampAPphone(uint32_t timestamp);</div>
+<div class="line"><a name="l01333"></a><span class="lineno"> 1333</span>&#160;    int16_t wifiReadVersion(uint8_t* major, uint8_t* minor);</div>
+<div class="line"><a name="l01334"></a><span class="lineno"> 1334</span>&#160; </div>
+<div class="line"><a name="l01335"></a><span class="lineno"> 1335</span>&#160;    int16_t gnssSetConstellationToUse(uint8_t mask);</div>
+<div class="line"><a name="l01336"></a><span class="lineno"> 1336</span>&#160;    int16_t gnssReadConstellationToUse(uint8_t* mask);</div>
+<div class="line"><a name="l01337"></a><span class="lineno"> 1337</span>&#160;    int16_t gnssSetAlmanacUpdate(uint8_t mask);</div>
+<div class="line"><a name="l01338"></a><span class="lineno"> 1338</span>&#160;    int16_t gnssReadAlmanacUpdate(uint8_t* mask);</div>
+<div class="line"><a name="l01339"></a><span class="lineno"> 1339</span>&#160;    int16_t gnssReadVersion(uint8_t* fw, uint8_t* almanac);</div>
+<div class="line"><a name="l01340"></a><span class="lineno"> 1340</span>&#160;    int16_t gnssReadSupportedConstellations(uint8_t* mask);</div>
+<div class="line"><a name="l01341"></a><span class="lineno"> 1341</span>&#160;    int16_t gnssSetMode(uint8_t mode);</div>
+<div class="line"><a name="l01342"></a><span class="lineno"> 1342</span>&#160;    int16_t gnssAutonomous(uint32_t gpsTime, uint8_t resMask, uint8_t nbSvMask);</div>
+<div class="line"><a name="l01343"></a><span class="lineno"> 1343</span>&#160;    int16_t gnssAssisted(uint32_t gpsTime, uint8_t effort, uint8_t resMask, uint8_t nbSvMask);</div>
+<div class="line"><a name="l01344"></a><span class="lineno"> 1344</span>&#160;    int16_t gnssSetAssistancePosition(<span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon);</div>
+<div class="line"><a name="l01345"></a><span class="lineno"> 1345</span>&#160;    int16_t gnssReadAssistancePosition(<span class="keywordtype">float</span>* lat, <span class="keywordtype">float</span>* lon);</div>
+<div class="line"><a name="l01346"></a><span class="lineno"> 1346</span>&#160;    int16_t gnssPushSolverMsg(uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01347"></a><span class="lineno"> 1347</span>&#160;    int16_t gnssPushDmMsg(uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01348"></a><span class="lineno"> 1348</span>&#160;    int16_t gnssGetContextStatus(uint8_t* fwVersion, uint32_t* almanacCrc, uint8_t* errCode, uint8_t* almUpdMask, uint8_t* freqSpace);</div>
+<div class="line"><a name="l01349"></a><span class="lineno"> 1349</span>&#160;    int16_t gnssGetNbSvDetected(uint8_t* nbSv);</div>
+<div class="line"><a name="l01350"></a><span class="lineno"> 1350</span>&#160;    int16_t gnssGetSvDetected(uint8_t* svId, uint8_t* snr, uint16_t* doppler, <span class="keywordtype">size_t</span> nbSv);</div>
+<div class="line"><a name="l01351"></a><span class="lineno"> 1351</span>&#160;    int16_t gnssGetConsumption(uint32_t* cpu, uint32_t* radio);</div>
+<div class="line"><a name="l01352"></a><span class="lineno"> 1352</span>&#160;    int16_t gnssGetResultSize(uint16_t* size);</div>
+<div class="line"><a name="l01353"></a><span class="lineno"> 1353</span>&#160;    int16_t gnssReadResults(uint8_t* result, uint16_t size);</div>
+<div class="line"><a name="l01354"></a><span class="lineno"> 1354</span>&#160;    int16_t gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc);</div>
+<div class="line"><a name="l01355"></a><span class="lineno"> 1355</span>&#160;    int16_t gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac);</div>
+<div class="line"><a name="l01356"></a><span class="lineno"> 1356</span>&#160;    int16_t gnssGetSvVisible(uint32_t time, <span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint8_t constellation, uint8_t* nbSv);</div>
+<div class="line"><a name="l01357"></a><span class="lineno"> 1357</span>&#160; </div>
+<div class="line"><a name="l01358"></a><span class="lineno"> 1358</span>&#160;    int16_t cryptoSetKey(uint8_t keyId, uint8_t* key);</div>
+<div class="line"><a name="l01359"></a><span class="lineno"> 1359</span>&#160;    int16_t cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key);</div>
+<div class="line"><a name="l01360"></a><span class="lineno"> 1360</span>&#160;    int16_t cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, uint8_t* header, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a name="l01361"></a><span class="lineno"> 1361</span>&#160;    int16_t cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t* mic);</div>
+<div class="line"><a name="l01362"></a><span class="lineno"> 1362</span>&#160;    int16_t cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span>* result);</div>
+<div class="line"><a name="l01363"></a><span class="lineno"> 1363</span>&#160;    int16_t cryptoAesEncrypt01(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a name="l01364"></a><span class="lineno"> 1364</span>&#160;    int16_t cryptoAesEncrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a name="l01365"></a><span class="lineno"> 1365</span>&#160;    int16_t cryptoAesDecrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a name="l01366"></a><span class="lineno"> 1366</span>&#160;    int16_t cryptoStoreToFlash(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01367"></a><span class="lineno"> 1367</span>&#160;    int16_t cryptoRestoreFromFlash(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01368"></a><span class="lineno"> 1368</span>&#160;    int16_t cryptoSetParam(uint8_t <span class="keywordtype">id</span>, uint32_t value);</div>
+<div class="line"><a name="l01369"></a><span class="lineno"> 1369</span>&#160;    int16_t cryptoGetParam(uint8_t <span class="keywordtype">id</span>, uint32_t* value);</div>
+<div class="line"><a name="l01370"></a><span class="lineno"> 1370</span>&#160;    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01371"></a><span class="lineno"> 1371</span>&#160;    int16_t cryptoCheckEncryptedFirmwareImageResult(<span class="keywordtype">bool</span>* result);</div>
+<div class="line"><a name="l01372"></a><span class="lineno"> 1372</span>&#160; </div>
+<div class="line"><a name="l01373"></a><span class="lineno"> 1373</span>&#160;    int16_t bootEraseFlash(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l01374"></a><span class="lineno"> 1374</span>&#160;    int16_t bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01375"></a><span class="lineno"> 1375</span>&#160;    int16_t bootReboot(<span class="keywordtype">bool</span> stay);</div>
+<div class="line"><a name="l01376"></a><span class="lineno"> 1376</span>&#160;    int16_t bootGetPin(uint8_t* pin);</div>
+<div class="line"><a name="l01377"></a><span class="lineno"> 1377</span>&#160;    int16_t bootGetChipEui(uint8_t* eui);</div>
+<div class="line"><a name="l01378"></a><span class="lineno"> 1378</span>&#160;    int16_t bootGetJoinEui(uint8_t* eui);</div>
+<div class="line"><a name="l01379"></a><span class="lineno"> 1379</span>&#160;    </div>
+<div class="line"><a name="l01380"></a><span class="lineno"> 1380</span>&#160;    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
+<div class="line"><a name="l01381"></a><span class="lineno"> 1381</span>&#160;    </div>
+<div class="line"><a name="l01382"></a><span class="lineno"> 1382</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l01383"></a><span class="lineno"> 1383</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l01384"></a><span class="lineno"> 1384</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01385"></a><span class="lineno"> 1385</span>&#160;    uint8_t chipType;</div>
 <div class="line"><a name="l01386"></a><span class="lineno"> 1386</span>&#160; </div>
-<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
-<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;    uint32_t bitRate = 0, frequencyDev = 0;</div>
-<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;</div>
-<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    uint16_t preambleLengthGFSK = 0;</div>
+<div class="line"><a name="l01387"></a><span class="lineno"> 1387</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l01388"></a><span class="lineno"> 1388</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l01389"></a><span class="lineno"> 1389</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01390"></a><span class="lineno"> 1390</span>&#160;    <a class="code" href="class_module.html">Module</a>* mod;</div>
 <div class="line"><a name="l01391"></a><span class="lineno"> 1391</span>&#160; </div>
-<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    <span class="comment">// cached LR-FHSS parameters</span></div>
-<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0;</div>
-<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    uint16_t lrFhssHopSeq = 0;</div>
-<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160; </div>
-<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;    <span class="keywordtype">float</span> dataRateMeasured = 0;</div>
-<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160; </div>
-<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;    uint8_t wifiScanMode = 0;</div>
+<div class="line"><a name="l01392"></a><span class="lineno"> 1392</span>&#160;    <span class="comment">// cached LoRa parameters</span></div>
+<div class="line"><a name="l01393"></a><span class="lineno"> 1393</span>&#160;    uint8_t bandwidth = 0, spreadingFactor = 0, codingRate = 0, ldrOptimize = 0, crcTypeLoRa = 0, headerType = 0;</div>
+<div class="line"><a name="l01394"></a><span class="lineno"> 1394</span>&#160;    uint16_t preambleLengthLoRa = 0;</div>
+<div class="line"><a name="l01395"></a><span class="lineno"> 1395</span>&#160;    <span class="keywordtype">float</span> bandwidthKhz = 0;</div>
+<div class="line"><a name="l01396"></a><span class="lineno"> 1396</span>&#160;    <span class="keywordtype">bool</span> ldroAuto = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l01397"></a><span class="lineno"> 1397</span>&#160;    <span class="keywordtype">size_t</span> implicitLen = 0;</div>
+<div class="line"><a name="l01398"></a><span class="lineno"> 1398</span>&#160;    <span class="keywordtype">bool</span> invertIQEnabled = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l01399"></a><span class="lineno"> 1399</span>&#160; </div>
-<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;    int16_t modSetup(<span class="keywordtype">float</span> tcxoVoltage, uint8_t modem);</div>
-<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
-<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;    <span class="keyword">static</span> int16_t SPIcheckStatus(<a class="code" href="class_module.html">Module</a>* mod);</div>
-<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t ver);</div>
-<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160;    int16_t config(uint8_t modem);</div>
-<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
-<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);</div>
-<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160; </div>
-<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160;    <span class="comment">// common methods to avoid some copy-paste</span></div>
-<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;    int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160;    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;    int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160;};</div>
-<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160; </div>
-<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160; </div>
-<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01400"></a><span class="lineno"> 1400</span>&#160;    <span class="comment">// cached GFSK parameters</span></div>
+<div class="line"><a name="l01401"></a><span class="lineno"> 1401</span>&#160;    uint32_t bitRate = 0, frequencyDev = 0;</div>
+<div class="line"><a name="l01402"></a><span class="lineno"> 1402</span>&#160;    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeGFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0, node = 0;</div>
+<div class="line"><a name="l01403"></a><span class="lineno"> 1403</span>&#160;    uint16_t preambleLengthGFSK = 0;</div>
+<div class="line"><a name="l01404"></a><span class="lineno"> 1404</span>&#160; </div>
+<div class="line"><a name="l01405"></a><span class="lineno"> 1405</span>&#160;    <span class="comment">// cached LR-FHSS parameters</span></div>
+<div class="line"><a name="l01406"></a><span class="lineno"> 1406</span>&#160;    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0;</div>
+<div class="line"><a name="l01407"></a><span class="lineno"> 1407</span>&#160;    uint16_t lrFhssHopSeq = 0;</div>
+<div class="line"><a name="l01408"></a><span class="lineno"> 1408</span>&#160; </div>
+<div class="line"><a name="l01409"></a><span class="lineno"> 1409</span>&#160;    <span class="keywordtype">float</span> dataRateMeasured = 0;</div>
+<div class="line"><a name="l01410"></a><span class="lineno"> 1410</span>&#160; </div>
+<div class="line"><a name="l01411"></a><span class="lineno"> 1411</span>&#160;    uint8_t wifiScanMode = 0;</div>
+<div class="line"><a name="l01412"></a><span class="lineno"> 1412</span>&#160; </div>
+<div class="line"><a name="l01413"></a><span class="lineno"> 1413</span>&#160;    int16_t modSetup(<span class="keywordtype">float</span> tcxoVoltage, uint8_t modem);</div>
+<div class="line"><a name="l01414"></a><span class="lineno"> 1414</span>&#160;    <span class="keyword">static</span> int16_t SPIparseStatus(uint8_t in);</div>
+<div class="line"><a name="l01415"></a><span class="lineno"> 1415</span>&#160;    <span class="keyword">static</span> int16_t SPIcheckStatus(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l01416"></a><span class="lineno"> 1416</span>&#160;    <span class="keywordtype">bool</span> findChip(uint8_t ver);</div>
+<div class="line"><a name="l01417"></a><span class="lineno"> 1417</span>&#160;    int16_t config(uint8_t modem);</div>
+<div class="line"><a name="l01418"></a><span class="lineno"> 1418</span>&#160;    int16_t setPacketMode(uint8_t mode, uint8_t len);</div>
+<div class="line"><a name="l01419"></a><span class="lineno"> 1419</span>&#160;    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);</div>
+<div class="line"><a name="l01420"></a><span class="lineno"> 1420</span>&#160;    int16_t setHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a name="l01421"></a><span class="lineno"> 1421</span>&#160; </div>
+<div class="line"><a name="l01422"></a><span class="lineno"> 1422</span>&#160;    <span class="comment">// common methods to avoid some copy-paste</span></div>
+<div class="line"><a name="l01423"></a><span class="lineno"> 1423</span>&#160;    int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01424"></a><span class="lineno"> 1424</span>&#160;    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01425"></a><span class="lineno"> 1425</span>&#160;    int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a name="l01426"></a><span class="lineno"> 1426</span>&#160;};</div>
+<div class="line"><a name="l01427"></a><span class="lineno"> 1427</span>&#160; </div>
+<div class="line"><a name="l01428"></a><span class="lineno"> 1428</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l01429"></a><span class="lineno"> 1429</span>&#160; </div>
+<div class="line"><a name="l01430"></a><span class="lineno"> 1430</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_l_r11x0_html"><div class="ttname"><a href="class_l_r11x0.html">LR11x0</a></div><div class="ttdoc">Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...</div><div class="ttdef"><b>Definition:</b> LR11x0.h:647</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a0309154558a0d88e2e8957e4dbf6a2f8"><div class="ttname"><a href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">LR11x0::getIrqStatus</a></div><div class="ttdeci">uint32_t getIrqStatus()</div><div class="ttdoc">Reads the current IRQ status.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:480</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a03ab7a24fec379c6ba2d642e1133c4f2"><div class="ttname"><a href="class_l_r11x0.html#a03ab7a24fec379c6ba2d642e1133c4f2">LR11x0::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(float br)</div><div class="ttdoc">Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:741</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a056e65c58ff8fb18bd84917512790ee6"><div class="ttname"><a href="class_l_r11x0.html#a056e65c58ff8fb18bd84917512790ee6">LR11x0::setDataRate</a></div><div class="ttdeci">int16_t setDataRate(DataRate_t dr) override</div><div class="ttdoc">Set data.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1010</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a0a4d48bf33fe466ea4c14cd9db228dce"><div class="ttname"><a href="class_l_r11x0.html#a0a4d48bf33fe466ea4c14cd9db228dce">LR11x0::setPacketReceivedAction</a></div><div class="ttdeci">void setPacketReceivedAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when a packet is received.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:344</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a1ae2cddeb7671d9b71e9c83bf020820f"><div class="ttname"><a href="class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f">LR11x0::getChannelScanResult</a></div><div class="ttdeci">int16_t getChannelScanResult() override</div><div class="ttdoc">Read the channel scan result.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:568</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_a1ec81f3625fdc8a3ef6c54a3804c3aa9"><div class="ttname"><a href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">LR11x0::getDataRate</a></div><div class="ttdeci">float getDataRate() const</div><div class="ttdoc">Gets effective data rate for the last transmitted packet. The value is calculated only for payload by...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1313</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a1ec81f3625fdc8a3ef6c54a3804c3aa9"><div class="ttname"><a href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">LR11x0::getDataRate</a></div><div class="ttdeci">float getDataRate() const</div><div class="ttdoc">Gets effective data rate for the last transmitted packet. The value is calculated only for payload by...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1321</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a2522e288732aa77ec4f5a44e724612af"><div class="ttname"><a href="class_l_r11x0.html#a2522e288732aa77ec4f5a44e724612af">LR11x0::setOutputPower</a></div><div class="ttdeci">int16_t setOutputPower(int8_t power)</div><div class="ttdoc">Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (lo...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:591</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a25f5ee68b3c2638ae613c87ed1c3fc64"><div class="ttname"><a href="class_l_r11x0.html#a25f5ee68b3c2638ae613c87ed1c3fc64">LR11x0::setRxBandwidth</a></div><div class="ttdeci">int16_t setRxBandwidth(float rxBw)</div><div class="ttdoc">Sets GFSK receiver bandwidth. Allowed values are 4.8, 5.8, 7.3, 9.7, 11.7, 14.6, 19....</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:778</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a288bcc309d3676bc0bbe620b7d89d994"><div class="ttname"><a href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">LR11x0::reset</a></div><div class="ttdeci">int16_t reset()</div><div class="ttdoc">Reset method. Will reset the chip to the default state using RST pin.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:110</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_a3498e0e621f341e415145879989e0948"><div class="ttname"><a href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">LR11x0::startWifiScan</a></div><div class="ttdeci">int16_t startWifiScan(char wifiType, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</div><div class="ttdoc">Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1338</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a3498e0e621f341e415145879989e0948"><div class="ttname"><a href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">LR11x0::startWifiScan</a></div><div class="ttdeci">int16_t startWifiScan(char wifiType, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</div><div class="ttdoc">Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1346</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a3563453988a83d22dd07d4691543a300"><div class="ttname"><a href="class_l_r11x0.html#a3563453988a83d22dd07d4691543a300">LR11x0::readData</a></div><div class="ttdeci">virtual int16_t readData(uint8_t *data, size_t len)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:209</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a3693359e5d106d6f57c23247c528cdd5"><div class="ttname"><a href="class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5">LR11x0::explicitHeader</a></div><div class="ttdeci">int16_t explicitHeader()</div><div class="ttdoc">Set explicit header mode for future reception/transmission.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1317</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a3ccfd35d26960457214d2a0192d6b312"><div class="ttname"><a href="class_l_r11x0.html#a3ccfd35d26960457214d2a0192d6b312">LR11x0::XTAL</a></div><div class="ttdeci">bool XTAL</div><div class="ttdoc">Whether the module has an XTAL (true) or TCXO (false). Defaults to false.</div><div class="ttdef"><b>Definition:</b> LR11x0.h:664</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a3f85d48547ebec0f5e4f2678f3213bc5"><div class="ttname"><a href="class_l_r11x0.html#a3f85d48547ebec0f5e4f2678f3213bc5">LR11x0::beginLRFHSS</a></div><div class="ttdeci">int16_t beginLRFHSS(uint8_t bw, uint8_t cr, int8_t power, float tcxoVoltage)</div><div class="ttdoc">Initialization method for LR-FHSS modem.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:91</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a43318bfbed2be4a46e0b7e678d2e4d23"><div class="ttname"><a href="class_l_r11x0.html#a43318bfbed2be4a46e0b7e678d2e4d23">LR11x0::begin</a></div><div class="ttdeci">int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage)</div><div class="ttdoc">Initialization method for LoRa modem.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:16</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_a457f5dfe25385a329127f07abc4631a6"><div class="ttname"><a href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">LR11x0::getWifiScanResult</a></div><div class="ttdeci">int16_t getWifiScanResult(LR11x0WifiResult_t *result, uint8_t index, bool brief=false)</div><div class="ttdoc">Retrieve passive WiFi scan result.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1397</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a457f5dfe25385a329127f07abc4631a6"><div class="ttname"><a href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">LR11x0::getWifiScanResult</a></div><div class="ttdeci">int16_t getWifiScanResult(LR11x0WifiResult_t *result, uint8_t index, bool brief=false)</div><div class="ttdoc">Retrieve passive WiFi scan result.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1405</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a468ee0182883d8af22a0a4202ef7baa5"><div class="ttname"><a href="class_l_r11x0.html#a468ee0182883d8af22a0a4202ef7baa5">LR11x0::getRSSI</a></div><div class="ttdeci">float getRSSI()</div><div class="ttdoc">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. Only available for LoRa o...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1191</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a49116d006b60128fe6f73a6a868a6d18"><div class="ttname"><a href="class_l_r11x0.html#a49116d006b60128fe6f73a6a868a6d18">LR11x0::setIrqAction</a></div><div class="ttdeci">void setIrqAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when IRQ1 activates.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:336</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a492b2d057dd803c3884fa1adc8e22534"><div class="ttname"><a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">LR11x0::transmit</a></div><div class="ttdeci">int16_t transmit(const char *str, uint8_t addr=0)</div><div class="ttdoc">C-string transmit method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:52</div></div>
@@ -1059,7 +1065,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="ttc" id="aclass_l_r11x0_html_a583f2d5ed601a98c609dbf0d57f2f541"><div class="ttname"><a href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">LR11x0::setCodingRate</a></div><div class="ttdeci">int16_t setCodingRate(uint8_t cr, bool longInterleave=false)</div><div class="ttdoc">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:692</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a5a33df702da3f5b010e07d5e6fac7aa6"><div class="ttname"><a href="class_l_r11x0.html#a5a33df702da3f5b010e07d5e6fac7aa6">LR11x0::setDataShaping</a></div><div class="ttdeci">int16_t setDataShaping(uint8_t sh) override</div><div class="ttdoc">Sets time-bandwidth product of Gaussian filter applied for shaping. Allowed values are RADIOLIB_SHAPI...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:939</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a5df4c1ed45bf59aa25bc400bcb5dc1ba"><div class="ttname"><a href="class_l_r11x0.html#a5df4c1ed45bf59aa25bc400bcb5dc1ba">LR11x0::fixedPacketLengthMode</a></div><div class="ttdeci">int16_t fixedPacketLengthMode(uint8_t len=RADIOLIB_LR11X0_MAX_PACKET_LENGTH)</div><div class="ttdoc">Set modem in fixed packet length mode. Available in GFSK mode only.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:977</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_a5ef83caa291e2d310d260a8ea140bc8e"><div class="ttname"><a href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">LR11x0::getWifiScanResultsCount</a></div><div class="ttdeci">int16_t getWifiScanResultsCount(uint8_t *count)</div><div class="ttdoc">Get number of WiFi scan results after the scan is finished.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1383</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a5ef83caa291e2d310d260a8ea140bc8e"><div class="ttname"><a href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">LR11x0::getWifiScanResultsCount</a></div><div class="ttdeci">int16_t getWifiScanResultsCount(uint8_t *count)</div><div class="ttdoc">Get number of WiFi scan results after the scan is finished.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1391</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a605f5c74ce523abad256866abe133d2e"><div class="ttname"><a href="class_l_r11x0.html#a605f5c74ce523abad256866abe133d2e">LR11x0::setNodeAddress</a></div><div class="ttdeci">int16_t setNodeAddress(uint8_t nodeAddr)</div><div class="ttdoc">Sets node address. Calling this method will also enable address filtering for node address only.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:888</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a6501ef362df1a5b71927cfe4e43c202d"><div class="ttname"><a href="class_l_r11x0.html#a6501ef362df1a5b71927cfe4e43c202d">LR11x0::setSyncBits</a></div><div class="ttdeci">int16_t setSyncBits(uint8_t *syncWord, uint8_t bitsLen)</div><div class="ttdoc">Sets GFSK sync word in the form of array of up to 8 bytes.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:867</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a66a2afc6cef1e94e25efec15094816a8"><div class="ttname"><a href="class_l_r11x0.html#a66a2afc6cef1e94e25efec15094816a8">LR11x0::clearPacketReceivedAction</a></div><div class="ttdeci">void clearPacketReceivedAction()</div><div class="ttdoc">Clears interrupt service routine to call when a packet is received.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:348</div></div>
@@ -1069,7 +1075,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="ttc" id="aclass_l_r11x0_html_a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><div class="ttname"><a href="class_l_r11x0.html#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">LR11x0::setSyncWord</a></div><div class="ttdeci">int16_t setSyncWord(uint32_t syncWord)</div><div class="ttdoc">Sets LoRa or LR-FHSS sync word.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:725</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a88ff8c277e340c3273fb5715cd743cce"><div class="ttname"><a href="class_l_r11x0.html#a88ff8c277e340c3273fb5715cd743cce">LR11x0::setPacketSentAction</a></div><div class="ttdeci">void setPacketSentAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when a packet is sent.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:352</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a8ae178a17f6e41b545b79cfffd3e2864"><div class="ttname"><a href="class_l_r11x0.html#a8ae178a17f6e41b545b79cfffd3e2864">LR11x0::setEncoding</a></div><div class="ttdeci">int16_t setEncoding(uint8_t encoding) override</div><div class="ttdoc">Sets transmission encoding. Available in GFSK mode only. Serves only as alias for PhysicalLayer compa...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:973</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_a8c1def9a01021a52f5bb82c119a9ad35"><div class="ttname"><a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">LR11x0::setLrFhssConfig</a></div><div class="ttdeci">int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</div><div class="ttdoc">Sets LR-FHSS configuration.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1317</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_a8c1def9a01021a52f5bb82c119a9ad35"><div class="ttname"><a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">LR11x0::setLrFhssConfig</a></div><div class="ttdeci">int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</div><div class="ttdoc">Sets LR-FHSS configuration.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1325</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a923654706eff5118ef6e84214e837f27"><div class="ttname"><a href="class_l_r11x0.html#a923654706eff5118ef6e84214e837f27">LR11x0::startTransmit</a></div><div class="ttdeci">int16_t startTransmit(const char *str, uint8_t addr=0)</div><div class="ttdoc">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method,...</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:149</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_a971b4ccd1d5479e9d72aa9649e8fef55"><div class="ttname"><a href="class_l_r11x0.html#a971b4ccd1d5479e9d72aa9649e8fef55">LR11x0::setTCXO</a></div><div class="ttdeci">int16_t setTCXO(float voltage, uint32_t delay=5000)</div><div class="ttdoc">Sets TCXO (Temperature Compensated Crystal Oscillator) configuration.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1079</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_aa5d7ae65666f8f9abcb7e9b169884a4a"><div class="ttname"><a href="class_l_r11x0.html#aa5d7ae65666f8f9abcb7e9b169884a4a">LR11x0::setPreambleLength</a></div><div class="ttdeci">int16_t setPreambleLength(size_t preambleLength) override</div><div class="ttdoc">Sets preamble length for LoRa or GFSK modem. Allowed values range from 1 to 65535.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1062</div></div>
@@ -1078,24 +1084,25 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="ttc" id="aclass_l_r11x0_html_ab167c4dc14e80d19f8b33d68c3f90d98"><div class="ttname"><a href="class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98">LR11x0::clearIrqAction</a></div><div class="ttdeci">void clearIrqAction()</div><div class="ttdoc">Clears interrupt service routine to call when IRQ1 activates.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:340</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ab1ed8eafe4b23843a8b163949af279bb"><div class="ttname"><a href="class_l_r11x0.html#ab1ed8eafe4b23843a8b163949af279bb">LR11x0::beginGFSK</a></div><div class="ttdeci">int16_t beginGFSK(float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage)</div><div class="ttdoc">Initialization method for FSK modem.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:50</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ab82617fa3fa9f21d4cd427314ecc4af8"><div class="ttname"><a href="class_l_r11x0.html#ab82617fa3fa9f21d4cd427314ecc4af8">LR11x0::receive</a></div><div class="ttdeci">virtual int16_t receive(uint8_t *data, size_t len)</div><div class="ttdoc">Binary receive method. Must be implemented in module class.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:112</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_aba13921d2cf29cc1bc8a648e1f330aa9"><div class="ttname"><a href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">LR11x0::implicitHeader</a></div><div class="ttdeci">int16_t implicitHeader(size_t len)</div><div class="ttdoc">Set implicit header mode for future reception/transmission.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1313</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_abccf5dc80aab71090a5f19bfffa0201d"><div class="ttname"><a href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">LR11x0::getTimeOnAir</a></div><div class="ttdeci">RadioLibTime_t getTimeOnAir(size_t len) override</div><div class="ttdoc">Get expected time-on-air for a given size of payload.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1245</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_abf961ec7d93feb6472f26b7b976ee0c9"><div class="ttname"><a href="class_l_r11x0.html#abf961ec7d93feb6472f26b7b976ee0c9">LR11x0::setBandwidth</a></div><div class="ttdeci">int16_t setBandwidth(float bw)</div><div class="ttdoc">Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:635</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ac003cfe3a4dbd9bad1f01fd0147031d1"><div class="ttname"><a href="class_l_r11x0.html#ac003cfe3a4dbd9bad1f01fd0147031d1">LR11x0::setFrequencyDeviation</a></div><div class="ttdeci">int16_t setFrequencyDeviation(float freqDev) override</div><div class="ttdoc">Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:758</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ac1f541bdee1d983126ceae47940b8f9d"><div class="ttname"><a href="class_l_r11x0.html#ac1f541bdee1d983126ceae47940b8f9d">LR11x0::getPacketLength</a></div><div class="ttdeci">size_t getPacketLength(bool update=true) override</div><div class="ttdoc">Query modem for the packet length of received payload.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1226</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_acd69e3b8825309703e13149b94e49d81"><div class="ttname"><a href="class_l_r11x0.html#acd69e3b8825309703e13149b94e49d81">LR11x0::clearPacketSentAction</a></div><div class="ttdeci">void clearPacketSentAction()</div><div class="ttdoc">Clears interrupt service routine to call when a packet is sent.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:356</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ad4f32509aea96de6a7ec08a8e60a6bea"><div class="ttname"><a href="class_l_r11x0.html#ad4f32509aea96de6a7ec08a8e60a6bea">LR11x0::getSNR</a></div><div class="ttdeci">float getSNR()</div><div class="ttdoc">Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1208</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_ad5876b44020a0bd59f73186a912dbb60"><div class="ttname"><a href="class_l_r11x0.html#ad5876b44020a0bd59f73186a912dbb60">LR11x0::clearWiFiScanAction</a></div><div class="ttdeci">void clearWiFiScanAction()</div><div class="ttdoc">Clears interrupt service routine to call when a WiFi scan is completed.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1379</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_ad5876b44020a0bd59f73186a912dbb60"><div class="ttname"><a href="class_l_r11x0.html#ad5876b44020a0bd59f73186a912dbb60">LR11x0::clearWiFiScanAction</a></div><div class="ttdeci">void clearWiFiScanAction()</div><div class="ttdoc">Clears interrupt service routine to call when a WiFi scan is completed.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1387</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ad9046bccdb4ef60718e2e8ed2bd7f036"><div class="ttname"><a href="class_l_r11x0.html#ad9046bccdb4ef60718e2e8ed2bd7f036">LR11x0::getFrequencyError</a></div><div class="ttdeci">float getFrequencyError()</div><div class="ttdoc">Gets frequency error of the latest received packet.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1221</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_adcd56cf63e91449b6cd03782a69c3451"><div class="ttname"><a href="class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451">LR11x0::variablePacketLengthMode</a></div><div class="ttdeci">int16_t variablePacketLengthMode(uint8_t maxLen=RADIOLIB_LR11X0_MAX_PACKET_LENGTH)</div><div class="ttdoc">Set modem in variable packet length mode. Available in GFSK mode only.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:981</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_adcde55b8660c24cf5783942a4132786d"><div class="ttname"><a href="class_l_r11x0.html#adcde55b8660c24cf5783942a4132786d">LR11x0::setWhitening</a></div><div class="ttdeci">int16_t setWhitening(bool enabled, uint16_t initial=0x01FF)</div><div class="ttdoc">Sets GFSK whitening parameters.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:985</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_ade5478296ebc7e02281c95609d5d75ab"><div class="ttname"><a href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">LR11x0::wifiScan</a></div><div class="ttdeci">int16_t wifiScan(uint8_t wifiType, uint8_t *count, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</div><div class="ttdoc">Blocking WiFi scan method. Performs a full passive WiFi scan. This method may block for several secon...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1473</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_ade5478296ebc7e02281c95609d5d75ab"><div class="ttname"><a href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">LR11x0::wifiScan</a></div><div class="ttdeci">int16_t wifiScan(uint8_t wifiType, uint8_t *count, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</div><div class="ttdoc">Blocking WiFi scan method. Performs a full passive WiFi scan. This method may block for several secon...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1481</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_adf6895cbf7af7e00ea06c5b2b5040cb4"><div class="ttname"><a href="class_l_r11x0.html#adf6895cbf7af7e00ea06c5b2b5040cb4">LR11x0::setSpreadingFactor</a></div><div class="ttdeci">int16_t setSpreadingFactor(uint8_t sf, bool legacy=false)</div><div class="ttdoc">Sets LoRa spreading factor. Allowed values range from 5 to 12.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:671</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ae077957969f6274a53f63b314b6f1359"><div class="ttname"><a href="class_l_r11x0.html#ae077957969f6274a53f63b314b6f1359">LR11x0::transmitDirect</a></div><div class="ttdeci">int16_t transmitDirect(uint32_t frf=0) override</div><div class="ttdoc">Starts direct mode transmission.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:255</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ae1a8e8eda78113c47f1a865e63051bb5"><div class="ttname"><a href="class_l_r11x0.html#ae1a8e8eda78113c47f1a865e63051bb5">LR11x0::receiveDirect</a></div><div class="ttdeci">int16_t receiveDirect() override</div><div class="ttdoc">Starts direct mode reception. Only implemented for PhysicalLayer compatibility, as SX126x series does...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:270</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_ae565dc2423ca7df13bf7ae48cce9ac8b"><div class="ttname"><a href="class_l_r11x0.html#ae565dc2423ca7df13bf7ae48cce9ac8b">LR11x0::disableAddressFiltering</a></div><div class="ttdeci">int16_t disableAddressFiltering()</div><div class="ttdoc">Disables address filtering. Calling this method will also erase previously set addresses.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:925</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_af24ba794f71c4e37cd13d2f4dbec5bf7"><div class="ttname"><a href="class_l_r11x0.html#af24ba794f71c4e37cd13d2f4dbec5bf7">LR11x0::setBroadcastAddress</a></div><div class="ttdeci">int16_t setBroadcastAddress(uint8_t broadAddr)</div><div class="ttdoc">Sets broadcast address. Calling this method will also enable address filtering for node and broadcast...</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:907</div></div>
 <div class="ttc" id="aclass_l_r11x0_html_af85c16956c2250dbf338a298c074d28c"><div class="ttname"><a href="class_l_r11x0.html#af85c16956c2250dbf338a298c074d28c">LR11x0::invertIQ</a></div><div class="ttdeci">int16_t invertIQ(bool enable) override</div><div class="ttdoc">Enable/disable inversion of the I and Q signals.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1178</div></div>
-<div class="ttc" id="aclass_l_r11x0_html_aff6060e116701c60e078d3d930723b4b"><div class="ttname"><a href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">LR11x0::setWiFiScanAction</a></div><div class="ttdeci">void setWiFiScanAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when a WiFi scan is completed.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1375</div></div>
+<div class="ttc" id="aclass_l_r11x0_html_aff6060e116701c60e078d3d930723b4b"><div class="ttname"><a href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">LR11x0::setWiFiScanAction</a></div><div class="ttdeci">void setWiFiScanAction(void(*func)(void))</div><div class="ttdoc">Sets interrupt service routine to call when a WiFi scan is completed.</div><div class="ttdef"><b>Definition:</b> LR11x0.cpp:1383</div></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:68</div></div>
 <div class="ttc" id="aclass_physical_layer_html"><div class="ttname"><a href="class_physical_layer.html">PhysicalLayer</a></div><div class="ttdoc">Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.h:54</div></div>
 <div class="ttc" id="aclass_physical_layer_html_a3563453988a83d22dd07d4691543a300"><div class="ttname"><a href="class_physical_layer.html#a3563453988a83d22dd07d4691543a300">PhysicalLayer::readData</a></div><div class="ttdeci">virtual int16_t readData(uint8_t *data, size_t len)</div><div class="ttdoc">Reads data that was received after calling startReceive method.</div><div class="ttdef"><b>Definition:</b> PhysicalLayer.cpp:209</div></div>

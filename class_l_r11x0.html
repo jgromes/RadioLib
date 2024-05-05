@@ -299,6 +299,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abccf5dc80aab71090a5f19bfffa0201d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:abccf5dc80aab71090a5f19bfffa0201d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">More...</a><br /></td></tr>
 <tr class="separator:abccf5dc80aab71090a5f19bfffa0201d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">implicitHeader</a> (size_t len)</td></tr>
+<tr class="memdesc:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <a href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">More...</a><br /></td></tr>
+<tr class="separator:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3693359e5d106d6f57c23247c528cdd5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5">explicitHeader</a> ()</td></tr>
+<tr class="memdesc:a3693359e5d106d6f57c23247c528cdd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set explicit header mode for future reception/transmission.  <a href="class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5">More...</a><br /></td></tr>
+<tr class="separator:a3693359e5d106d6f57c23247c528cdd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">getDataRate</a> () const</td></tr>
 <tr class="memdesc:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.  <a href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">More...</a><br /></td></tr>
 <tr class="separator:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -796,6 +802,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a3693359e5d106d6f57c23247c528cdd5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3693359e5d106d6f57c23247c528cdd5">&#9670;&nbsp;</a></span>explicitHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::explicitHeader </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set explicit header mode for future reception/transmission. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="aaff9a5b9b7636693c98bd1c93a5863e5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aaff9a5b9b7636693c98bd1c93a5863e5">&#9670;&nbsp;</a></span>finishTransmit()</h2>
 
@@ -1180,6 +1206,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">count</td><td>Pointer to a variable that will hold the number of scan results. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="aba13921d2cf29cc1bc8a648e1f330aa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aba13921d2cf29cc1bc8a648e1f330aa9">&#9670;&nbsp;</a></span>implicitHeader()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::implicitHeader </td>
+          <td>(</td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>len</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set implicit header mode for future reception/transmission. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">len</td><td>Payload length in bytes. </td></tr>
   </table>
   </dd>
 </dl>
