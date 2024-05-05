@@ -1142,6 +1142,19 @@ class LR11x0: public PhysicalLayer {
     RadioLibTime_t getTimeOnAir(size_t len) override;
 
     /*!
+      \brief Set implicit header mode for future reception/transmission.
+      \param len Payload length in bytes.
+      \returns \ref status_codes
+    */
+    int16_t implicitHeader(size_t len);
+
+    /*!
+      \brief Set explicit header mode for future reception/transmission.
+      \returns \ref status_codes
+    */
+    int16_t explicitHeader();
+
+    /*!
       \brief Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.
       \returns Effective data rate in bps.
     */
@@ -1404,6 +1417,7 @@ class LR11x0: public PhysicalLayer {
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len);

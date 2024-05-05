@@ -1310,6 +1310,14 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   return(0);
 }
 
+int16_t LR11x0::implicitHeader(size_t len) {
+  return(this->setHeaderType(RADIOLIB_LR11X0_LORA_HEADER_IMPLICIT, len));
+}
+
+int16_t LR11x0::explicitHeader() {
+  return(this->setHeaderType(RADIOLIB_LR11X0_LORA_HEADER_EXPLICIT));
+}
+
 float LR11x0::getDataRate() const {
   return(this->dataRateMeasured);
 }
@@ -1692,6 +1700,26 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
 
   // start CAD
   return(setCad());
+}
+
+int16_t LR11x0::setHeaderType(uint8_t hdrType, size_t len) {
+  // check active modem
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  state = setPacketParamsLoRa(this->preambleLengthLoRa, hdrType, len, this->crcTypeLoRa, this->invertIQEnabled);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  this->headerType = hdrType;
+  this->implicitLen = len;
+
+  return(state);
 }
 
 Module* LR11x0::getMod() {
