@@ -21,7 +21,7 @@ class LLCC68: public SX1262 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LLCC68(Module* mod);
+    LLCC68(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Initialization method for LoRa modem.
