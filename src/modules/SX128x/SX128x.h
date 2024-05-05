@@ -568,6 +568,19 @@ class SX128x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t readData(uint8_t* data, size_t len) override;
+    
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan() override;
+
+    /*!
+      \brief Read the channel scan result
+      \returns \ref status_codes
+    */
+    int16_t getChannelScanResult() override;
 
     // configuration methods
 
