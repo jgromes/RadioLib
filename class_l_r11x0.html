@@ -90,6 +90,11 @@ $(document).ready(function(){initNavTree('class_l_r11x0.html',''); initResizable
 <div class="title">LR11x0 Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Base class for LR11x0 series. All derived classes for LR11x0 (e.g. <a class="el" href="class_l_r1110.html" title="Derived class for LR1110 modules.">LR1110</a> or <a class="el" href="class_l_r1120.html" title="Derived class for LR1120 modules.">LR1120</a>) inherit from this base class. This class should not be instantiated directly from user code, only from its derived classes.  
+ <a href="class_l_r11x0.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="_l_r11x0_8h_source.html">LR11x0.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for LR11x0:</div>
 <div class="dyncontent">
@@ -300,6 +305,25 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a> (uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</td></tr>
 <tr class="memdesc:a8c1def9a01021a52f5bb82c119a9ad35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LR-FHSS configuration.  <a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">More...</a><br /></td></tr>
 <tr class="separator:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3498e0e621f341e415145879989e0948"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">startWifiScan</a> (char wifiType, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</td></tr>
+<tr class="memdesc:a3498e0e621f341e415145879989e0948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished.  <a href="class_l_r11x0.html#a3498e0e621f341e415145879989e0948">More...</a><br /></td></tr>
+<tr class="separator:a3498e0e621f341e415145879989e0948"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff6060e116701c60e078d3d930723b4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">setWiFiScanAction</a> (void(*func)(void))</td></tr>
+<tr class="memdesc:aff6060e116701c60e078d3d930723b4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a WiFi scan is completed.  <a href="class_l_r11x0.html#aff6060e116701c60e078d3d930723b4b">More...</a><br /></td></tr>
+<tr class="separator:aff6060e116701c60e078d3d930723b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5876b44020a0bd59f73186a912dbb60"><td class="memItemLeft" align="right" valign="top"><a id="ad5876b44020a0bd59f73186a912dbb60"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ad5876b44020a0bd59f73186a912dbb60">clearWiFiScanAction</a> ()</td></tr>
+<tr class="memdesc:ad5876b44020a0bd59f73186a912dbb60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a WiFi scan is completed. <br /></td></tr>
+<tr class="separator:ad5876b44020a0bd59f73186a912dbb60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ef83caa291e2d310d260a8ea140bc8e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">getWifiScanResultsCount</a> (uint8_t *count)</td></tr>
+<tr class="memdesc:a5ef83caa291e2d310d260a8ea140bc8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get number of WiFi scan results after the scan is finished.  <a href="class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e">More...</a><br /></td></tr>
+<tr class="separator:a5ef83caa291e2d310d260a8ea140bc8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a457f5dfe25385a329127f07abc4631a6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">getWifiScanResult</a> (<a class="el" href="struct_l_r11x0_wifi_result__t.html">LR11x0WifiResult_t</a> *result, uint8_t index, bool brief=false)</td></tr>
+<tr class="memdesc:a457f5dfe25385a329127f07abc4631a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve passive WiFi scan result.  <a href="class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6">More...</a><br /></td></tr>
+<tr class="separator:a457f5dfe25385a329127f07abc4631a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade5478296ebc7e02281c95609d5d75ab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a> (uint8_t wifiType, uint8_t *count, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</td></tr>
+<tr class="memdesc:ade5478296ebc7e02281c95609d5d75ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking WiFi scan method. Performs a full passive WiFi scan. This method may block for several seconds!  <a href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">More...</a><br /></td></tr>
+<tr class="separator:ade5478296ebc7e02281c95609d5d75ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,7 +425,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a3ccfd35d26960457214d2a0192d6b312"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the module has an XTAL (true) or TCXO (false). Defaults to false. <br /></td></tr>
 <tr class="separator:a3ccfd35d26960457214d2a0192d6b312"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Base class for LR11x0 series. All derived classes for LR11x0 (e.g. <a class="el" href="class_l_r1110.html" title="Derived class for LR1110 modules.">LR1110</a> or <a class="el" href="class_l_r1120.html" title="Derived class for LR1120 modules.">LR1120</a>) inherit from this base class. This class should not be instantiated directly from user code, only from its derived classes. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a562f34a054e3374b812556df3b6eb421"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a562f34a054e3374b812556df3b6eb421">&#9670;&nbsp;</a></span>LR11x0()</h2>
 
@@ -1086,6 +1112,78 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>implement this mess - <a class="el" href="class_s_x1280.html" title="Derived class for SX1280 modules.">SX1280</a> datasheet v3.0 section 7.4.4.2 </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a457f5dfe25385a329127f07abc4631a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a457f5dfe25385a329127f07abc4631a6">&#9670;&nbsp;</a></span>getWifiScanResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getWifiScanResult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_wifi_result__t.html">LR11x0WifiResult_t</a> *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>index</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>brief</em> = <code>false</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieve passive WiFi scan result. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>Pointer to structure to hold the result data. </td></tr>
+    <tr><td class="paramname">index</td><td>Result index, starting from 0. The number of scan results can be retrieved by calling getWifiScanResultsCount. </td></tr>
+    <tr><td class="paramname">brief</td><td>Whether to only retrieve the results in brief format. If set to false, only information in <a class="el" href="struct_l_r11x0_wifi_result__t.html" title="Structure to save result of passive WiFi scan. This result only saves the basic information.">LR11x0WifiResult_t</a> will be retrieved. If set to true, information in <a class="el" href="struct_l_r11x0_wifi_result_full__t.html" title="Structure to save result of passive WiFi scan. This result saves additional information alongside tha...">LR11x0WifiResultFull_t</a> will be retrieved. In addition, if WiFi scan mode was set to RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, all information in <a class="el" href="struct_l_r11x0_wifi_result_extended__t.html" title="Structure to save result of passive WiFi scan. This result saves additional information alongside tha...">LR11x0WifiResultExtended_t</a> will be retrieved. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a5ef83caa291e2d310d260a8ea140bc8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ef83caa291e2d310d260a8ea140bc8e">&#9670;&nbsp;</a></span>getWifiScanResultsCount()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getWifiScanResultsCount </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>count</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get number of WiFi scan results after the scan is finished. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">count</td><td>Pointer to a variable that will hold the number of scan results. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -2267,6 +2365,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="aff6060e116701c60e078d3d930723b4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff6060e116701c60e078d3d930723b4b">&#9670;&nbsp;</a></span>setWiFiScanAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LR11x0::setWiFiScanAction </td>
+          <td>(</td>
+          <td class="paramtype">void(*)(void)&#160;</td>
+          <td class="paramname"><em>func</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets interrupt service routine to call when a WiFi scan is completed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>ISR to call. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a64d70a3341a6a8b32f9871cdcb719733"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a64d70a3341a6a8b32f9871cdcb719733">&#9670;&nbsp;</a></span>sleep()</h2>
 
@@ -2627,6 +2751,65 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a3498e0e621f341e415145879989e0948"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3498e0e621f341e415145879989e0948">&#9670;&nbsp;</a></span>startWifiScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::startWifiScan </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>wifiType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mode</em> = <code>RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>chanMask</em> = <code>RADIOLIB_LR11X0_WIFI_ALL_CHANNELS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>numScans</em> = <code>16</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>100</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Start passive WiFi scan. BUSY pin will be de-activated when the scan is finished. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wifiType</td><td>Type of WiFi (802.11) signals to scan, 'b', 'n', 'g' or '*' for all signals. </td></tr>
+    <tr><td class="paramname">mode</td><td>Scan acquisition mode, one of RADIOLIB_LR11X0_WIFI_ACQ_MODE_*. The type of results available after the scan depends on this mode. Defaults to RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, which provides the most information. </td></tr>
+    <tr><td class="paramname">chanMask</td><td>Bit mask of WiFi channels to scan, defaults to all channels. More channels leads to longer overall scan duration. </td></tr>
+    <tr><td class="paramname">numScans</td><td>Number of scans to perform per each enabled channel. Defaults to 16 scans. More scans leads to longer overall scan duration. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout of each scan in milliseconds. Defaults to 100 ms Longer timeout leads to longer overall scan duration. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a492b2d057dd803c3884fa1adc8e22534"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a492b2d057dd803c3884fa1adc8e22534">&#9670;&nbsp;</a></span>transmit() <span class="overload">[1/3]</span></h2>
 
@@ -2788,6 +2971,72 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">maxLen</td><td>Maximum packet length. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ade5478296ebc7e02281c95609d5d75ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade5478296ebc7e02281c95609d5d75ab">&#9670;&nbsp;</a></span>wifiScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::wifiScan </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>wifiType</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>mode</em> = <code>RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>chanMask</em> = <code>RADIOLIB_LR11X0_WIFI_ALL_CHANNELS</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>numScans</em> = <code>16</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>timeout</em> = <code>100</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Blocking WiFi scan method. Performs a full passive WiFi scan. This method may block for several seconds! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wifiType</td><td>Type of WiFi (802.11) signals to scan, 'b', 'n', 'g' or '*' for all signals. </td></tr>
+    <tr><td class="paramname">count</td><td>Pointer to a variable that will hold the number of scan results. </td></tr>
+    <tr><td class="paramname">mode</td><td>Scan acquisition mode, one of RADIOLIB_LR11X0_WIFI_ACQ_MODE_*. The type of results available after the scan depends on this mode. Defaults to RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, which provides the most information. </td></tr>
+    <tr><td class="paramname">chanMask</td><td>Bit mask of WiFi channels to scan, defaults to all channels. More channels leads to longer overall scan duration. </td></tr>
+    <tr><td class="paramname">numScans</td><td>Number of scans to perform per each enabled channel. Defaults to 16 scans. More scans leads to longer overall scan duration. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout of each scan in milliseconds. Defaults to 100 ms Longer timeout leads to longer overall scan duration. </td></tr>
   </table>
   </dd>
 </dl>

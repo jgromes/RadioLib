@@ -1,13 +1,17 @@
 var searchData=
 [
-  ['scanpixellen_1051',['scanPixelLen',['../struct_s_s_t_v_mode__t.html#a991e84b2b6f696ec2390f2c3f8cb9694',1,'SSTVMode_t']]],
-  ['sendseqnumber_1052',['sendSeqNumber',['../class_a_x25_frame.html#a4c0fdf148d3b779d48441d45af87add2',1,'AX25Frame']]],
-  ['size_1053',['size',['../class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a',1,'RadioLibCRC']]],
-  ['spiconfig_1054',['spiConfig',['../class_module.html#a3a4fc4101fb3f134152b458c447b8ecb',1,'Module']]],
-  ['spreadingfactor_1055',['spreadingFactor',['../struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076',1,'LoRaRate_t']]],
-  ['srccallsign_1056',['srcCallsign',['../class_a_x25_frame.html#a38f7fb6a4a6344b5892c3a3cdf26c585',1,'AX25Frame']]],
-  ['srcssid_1057',['srcSSID',['../class_a_x25_frame.html#a50c63276facf8126f0f8555b1fc6b2c9',1,'AX25Frame']]],
-  ['standbyxosc_1058',['standbyXOSC',['../class_s_x126x.html#ae731568798d03d9722a440fd6a23faf2',1,'SX126x']]],
-  ['statuspos_1059',['statusPos',['../struct_module_1_1_s_p_i_config__t.html#a5b689d2722b8980a211a562ed394d23e',1,'Module::SPIConfig_t']]],
-  ['stream_1060',['stream',['../struct_module_1_1_s_p_i_config__t.html#a1a088c02ed02361746621ffbc2526681',1,'Module::SPIConfig_t']]]
+  ['rate_1097',['rate',['../struct_l_r11x0_wifi_result_extended__t.html#a16a6732a8af0332f64c0f6bcc0d5257f',1,'LR11x0WifiResultExtended_t']]],
+  ['rcvseqnumber_1098',['rcvSeqNumber',['../class_a_x25_frame.html#adce5294af25f09df752997d33ac0e87f',1,'AX25Frame']]],
+  ['refin_1099',['refIn',['../class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04',1,'RadioLibCRC']]],
+  ['refout_1100',['refOut',['../class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087',1,'RadioLibCRC']]],
+  ['repeat_1101',['repeat',['../struct_lo_ra_w_a_n_mac_command__t.html#abc329424b5a36c95c625619b37dd2681',1,'LoRaWANMacCommand_t']]],
+  ['repeatercallsigns_1102',['repeaterCallsigns',['../class_a_x25_frame.html#a29eb08c9e72bbaced8d37dcb2343ee94',1,'AX25Frame']]],
+  ['repeaterssids_1103',['repeaterSSIDs',['../class_a_x25_frame.html#a5b63c6b6f69e0ac47ba9230ad39c6830',1,'AX25Frame']]],
+  ['reply_1104',['reply',['../class_bell_client.html#a9233e10bc794af85e3e86b4ec2a8746d',1,'BellClient']]],
+  ['rfswitch_5fmax_5fpins_1105',['RFSWITCH_MAX_PINS',['../class_module.html#a0c11551e12579bbabf57b19e12555b3c',1,'Module']]],
+  ['rssi_1106',['rssi',['../struct_l_r11x0_wifi_result__t.html#acac3f837ac4fa56e5fda3221f89f3d9f',1,'LR11x0WifiResult_t']]],
+  ['rx1dataratebase_1107',['rx1DataRateBase',['../struct_lo_ra_w_a_n_band__t.html#aaa9cd9d68c61815da4ae01f7ce312a83',1,'LoRaWANBand_t']]],
+  ['rx1droffset_1108',['rx1DrOffset',['../class_lo_ra_w_a_n_node.html#acd37dd26f6040754b4a9c942b3fb4339',1,'LoRaWANNode']]],
+  ['rx1span_1109',['rx1Span',['../struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529',1,'LoRaWANBand_t']]],
+  ['rx2_1110',['rx2',['../struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f',1,'LoRaWANBand_t::rx2()'],['../class_lo_ra_w_a_n_node.html#ae68e77ca38d22867798517d233c0fbc4',1,'LoRaWANNode::rx2()']]]
 ];

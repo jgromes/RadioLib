@@ -59,6 +59,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_SYMBOL", "group__status__codes.html#ga7f9712de2117b89215410fc18776dc84", null ],
     [ "RADIOLIB_ERR_INVALID_SYNC_WORD", "group__status__codes.html#ga5584a219fcb1a8e1789142b18a3a511e", null ],
     [ "RADIOLIB_ERR_INVALID_TCXO_VOLTAGE", "group__status__codes.html#ga691e968e9f057a6cecb37a5dd5d8bd68", null ],
+    [ "RADIOLIB_ERR_INVALID_WIFI_TYPE", "group__status__codes.html#gac0673e69b893d8f23e339f218d376a52", null ],
     [ "RADIOLIB_ERR_JOIN_NONCE_INVALID", "group__status__codes.html#ga68c7f7b8c699dbd6524da685be476fca", null ],
     [ "RADIOLIB_ERR_LORA_HEADER_DAMAGED", "group__status__codes.html#gab152891bb13f6f70e6631820904e9d90", null ],
     [ "RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED", "group__status__codes.html#ga7afc28738967d4d91c13d1d412d6f5e4", null ],
