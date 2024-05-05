@@ -127,7 +127,7 @@ var searchData=
   ['spisetregvalue_524',['SPIsetRegValue',['../class_module.html#ade75c5403a05156b43cc7562563ae2d7',1,'Module']]],
   ['spitransfer_525',['SPItransfer',['../class_module.html#aa6df70520aa015dd3a1bccdceae67232',1,'Module']]],
   ['spitransfer_526',['spiTransfer',['../class_radio_lib_hal.html#aebcaaf0cefdaaf5b572d4261e472ac8a',1,'RadioLibHal']]],
-  ['spitransferstream_527',['SPItransferStream',['../class_module.html#a67483fff5d818c7d68dfcfce10e81160',1,'Module']]],
+  ['spitransferstream_527',['SPItransferStream',['../class_module.html#a663067b050e944f538a24db7a551f4d0',1,'Module']]],
   ['spiwriteregister_528',['SPIwriteRegister',['../class_module.html#a60ca6b4cae98f7d935191a569d519913',1,'Module']]],
   ['spiwriteregisterburst_529',['SPIwriteRegisterBurst',['../class_module.html#a2826f0fa116eb0a4dd18ddb9b21e4caf',1,'Module']]],
   ['spiwritestream_530',['SPIwriteStream',['../class_module.html#af99b0e74e67417a88f500ab7261ddd20',1,'Module::SPIwriteStream(uint16_t cmd, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)'],['../class_module.html#a7acbe601ebe6398781d0f2de5177305e',1,'Module::SPIwriteStream(uint8_t *cmd, uint8_t cmdLen, uint8_t *data, size_t numBytes, bool waitForGpio=true, bool verify=true)']]],

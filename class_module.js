@@ -36,7 +36,7 @@ var class_module =
     [ "SPIreadStream", "class_module.html#a085415b49ff72238f118b937ad896cbd", null ],
     [ "SPIsetRegValue", "class_module.html#ade75c5403a05156b43cc7562563ae2d7", null ],
     [ "SPItransfer", "class_module.html#aa6df70520aa015dd3a1bccdceae67232", null ],
-    [ "SPItransferStream", "class_module.html#a67483fff5d818c7d68dfcfce10e81160", null ],
+    [ "SPItransferStream", "class_module.html#a663067b050e944f538a24db7a551f4d0", null ],
     [ "SPIwriteRegister", "class_module.html#a60ca6b4cae98f7d935191a569d519913", null ],
     [ "SPIwriteRegisterBurst", "class_module.html#a2826f0fa116eb0a4dd18ddb9b21e4caf", null ],
     [ "SPIwriteStream", "class_module.html#af99b0e74e67417a88f500ab7261ddd20", null ],
