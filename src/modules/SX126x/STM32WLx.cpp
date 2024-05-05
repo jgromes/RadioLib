@@ -87,6 +87,7 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 
   }
+  RADIOLIB_ASSERT(state);
 
   // Apply workaround for HP only
   state = SX126x::fixPaClamping(use_hp);

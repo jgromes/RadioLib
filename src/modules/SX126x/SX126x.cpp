@@ -76,10 +76,11 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   RADIOLIB_ASSERT(state);
 
   if (useRegulatorLDO) {
-      state = setRegulatorLDO();
+    state = setRegulatorLDO();
   } else {
-      state = setRegulatorDCDC();
+    state = setRegulatorDCDC();
   }
+  RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
   state = setCurrentLimit(60.0);
@@ -1577,7 +1578,7 @@ int16_t SX126x::uploadPatch(const uint32_t* patch, size_t len, bool nonvolatile)
   // check the version
   #if RADIOLIB_DEBUG_BASIC
   char ver_pre[16];
-  this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)ver_pre);
+  this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, reinterpret_cast<uint8_t*>(ver_pre));
   RADIOLIB_DEBUG_BASIC_PRINTLN("Pre-update version string: %s", ver_pre);
   #endif
 
@@ -1609,7 +1610,7 @@ int16_t SX126x::uploadPatch(const uint32_t* patch, size_t len, bool nonvolatile)
   // check the version again
   #if RADIOLIB_DEBUG_BASIC
   char ver_post[16];
-  this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)ver_post);
+  this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, reinterpret_cast<uint8_t*>(ver_post));
   RADIOLIB_DEBUG_BASIC_PRINTLN("Post-update version string: %s", ver_post);
   #endif
 
@@ -1736,7 +1737,7 @@ int16_t SX126x::setRx(uint32_t timeout) {
  
 int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
   // default CAD parameters are shown in Semtech AN1200.48, page 41.
-  uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
+  const uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
 
   // CAD parameters aren't available for SF-6. Just to be safe.
   if(this->spreadingFactor < 7) {
@@ -2163,18 +2164,18 @@ bool SX126x::findChip(const char* verStr) {
 
     // read the version string
     char version[16];
-    this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, (uint8_t*)version);
+    this->mod->SPIreadRegisterBurst(RADIOLIB_SX126X_REG_VERSION_STRING, 16, reinterpret_cast<uint8_t*>(version));
 
     // check version register
     if(strncmp(verStr, version, 6) == 0) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found SX126x: RADIOLIB_SX126X_REG_VERSION_STRING:");
-      RADIOLIB_DEBUG_BASIC_HEXDUMP((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+      RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX126X_REG_VERSION_STRING);
       RADIOLIB_DEBUG_BASIC_PRINTLN();
       flagFound = true;
     } else {
       #if RADIOLIB_DEBUG_BASIC
         RADIOLIB_DEBUG_BASIC_PRINTLN("SX126x not found! (%d of 10 tries) RADIOLIB_SX126X_REG_VERSION_STRING:", i + 1);
-        RADIOLIB_DEBUG_BASIC_HEXDUMP((uint8_t*)version, 16, RADIOLIB_SX126X_REG_VERSION_STRING);
+        RADIOLIB_DEBUG_BASIC_HEXDUMP(reinterpret_cast<uint8_t*>(version), 16, RADIOLIB_SX126X_REG_VERSION_STRING);
         RADIOLIB_DEBUG_BASIC_PRINTLN("Expected string: %s", verStr);
       #endif
       this->mod->hal->delay(10);
