@@ -463,7 +463,10 @@ class SX128x: public PhysicalLayer {
       to discard current configuration and data buffer. Defaults to true.
       \returns \ref status_codes
     */
-    int16_t sleep(bool retainConfig = true);
+
+    int16_t sleep();
+
+    int16_t sleep(bool retainConfig);
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).

@@ -552,7 +552,11 @@ class SX126x: public PhysicalLayer {
       or to false to discard current configuration ("cold start"). Defaults to true.
       \returns \ref status_codes
     */
-    int16_t sleep(bool retainConfig = true);
+
+
+    int16_t sleep(); 
+
+    int16_t sleep(bool retainConfig);
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
