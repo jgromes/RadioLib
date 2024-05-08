@@ -419,7 +419,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   return(setMode(mode));
 }
 
-int16_t SX127x::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t SX127x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)irqFlags;
   (void)irqMask;
   uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS;
@@ -1289,7 +1289,7 @@ RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(numSymbols);
 }
 
-int16_t SX127x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+int16_t SX127x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   // IRQ flags/masks are inverted to what seems logical for SX127x (0 being activated, 1 being deactivated)
   irqFlags = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT;
   irqMask  = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE & RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;

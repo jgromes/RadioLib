@@ -832,7 +832,7 @@ class SX127x: public PhysicalLayer {
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -1070,7 +1070,7 @@ class SX127x: public PhysicalLayer {
       \param irqMask Mask indicating which IRQ triggers a DIO
       \returns \ref status_codes
     */
-    int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
+    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set
