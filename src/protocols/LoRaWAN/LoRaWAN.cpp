@@ -1214,8 +1214,16 @@ int16_t LoRaWANNode::downlinkCommon() {
   }
 
   // wait for the DIO to fire indicating a downlink is received
+  now = mod->hal->millis();
+  bool downlinkComplete = true;
   while(!downlinkAction) {
     mod->hal->yield();
+    // this should never happen, but if it does this would be an infinite loop
+    if(mod->hal->millis() - now > 3000UL) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink missing!");
+      downlinkComplete = false;
+      break;
+    }
   }
 
   // we have a message, clear actions, go to standby and reset the IQ inversion
@@ -1226,7 +1234,11 @@ int16_t LoRaWANNode::downlinkCommon() {
     RADIOLIB_ASSERT(state);
   }
 
-  return(RADIOLIB_ERR_NONE);
+  if(!downlinkComplete) {
+    state = RADIOLIB_LORAWAN_NO_DOWNLINK;
+  }
+
+  return(state);
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
