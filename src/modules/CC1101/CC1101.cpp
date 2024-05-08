@@ -361,7 +361,7 @@ int16_t CC1101::startReceive() {
   return(state);
 }
 
-int16_t CC1101::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t CC1101::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)timeout;
   (void)irqFlags;
   (void)irqMask;
