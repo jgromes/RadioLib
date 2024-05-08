@@ -581,7 +581,7 @@ int16_t SX126x::startReceive() {
   return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_SX126X_IRQ_RX_DEFAULT, RADIOLIB_SX126X_IRQ_RX_DONE, 0));
 }
 
-int16_t SX126x::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t SX126x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)len;
   int16_t state = startReceiveCommon(timeout, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
@@ -1456,7 +1456,7 @@ RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(timeout);
 }
 
-int16_t SX126x::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+int16_t SX126x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT;  // flags that can appear in the IRQ register
   irqMask  = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT; // flags that will trigger DIO0
   return(RADIOLIB_ERR_NONE);

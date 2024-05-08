@@ -654,7 +654,7 @@ class SX126x: public PhysicalLayer {
       \param len Only for PhysicalLayer compatibility, not used.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE, size_t len = 0);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint32_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE, size_t len = 0);
 
     /*!
       \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
@@ -972,7 +972,7 @@ class SX126x: public PhysicalLayer {
       \param irqMask Mask indicating which IRQ triggers a DIO
       \returns \ref status_codes
     */
-    int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) override;
+    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set
