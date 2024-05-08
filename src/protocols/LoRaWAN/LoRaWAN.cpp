@@ -1174,6 +1174,7 @@ int16_t LoRaWANNode::downlinkCommon() {
 
     // open Rx window by starting receive with specified timeout
     state = this->phyLayer->startReceive(timeoutMod, irqFlags, irqMask, 0);
+    RADIOLIB_ASSERT(state);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d us timeout)... <-- Rx Delay end ", i+1, (int)timeoutHost);
     
     // wait for the timeout to complete (and a small additional delay)
