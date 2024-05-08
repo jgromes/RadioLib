@@ -2019,7 +2019,7 @@ int16_t LR11x0::writeInfoPage(uint16_t addr, uint32_t* data, size_t len) {
   }
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_WRITE_INFO_PAGE, true, dataBuff, buffLen);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif
   return(state);
@@ -2442,7 +2442,7 @@ int16_t LR11x0::lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, boo
   memcpy(&dataBuff[9], payload, len);
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_LR_FHSS_BUILD_FRAME, true, dataBuff, buffLen);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif
   return(state);
@@ -2493,7 +2493,7 @@ int16_t LR11x0::bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, si
   memcpy(&dataBuff[1], payload, len);
 
   int16_t state = this->SPIcommand(cmd, true, dataBuff, sizeof(uint8_t) + len);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif
   return(state);
@@ -2758,7 +2758,7 @@ int16_t LR11x0::gnssGetSvDetected(uint8_t* svId, uint8_t* snr, uint16_t* doppler
     }
   }
 
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif
   return(state);
@@ -2902,7 +2902,7 @@ int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, size_t len, u
   memcpy(&reqBuff[1], data, len);
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_COMPUTE_AES_CMAC, false, rplBuff, sizeof(rplBuff), reqBuff, reqLen);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] reqBuff;
   #endif
 
@@ -2933,7 +2933,7 @@ int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* dat
   memcpy(&reqBuff[5], data, len);
 
   int16_t state = this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_VERIFY_AES_CMAC, false, rplBuff, sizeof(rplBuff), reqBuff, reqLen);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] reqBuff;
   #endif
 
@@ -3064,7 +3064,7 @@ int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, s
   }
 
   int16_t state = this->SPIcommand(cmd, true, dataBuff, buffLen);
-  #if RADIOLIB_STATIC_ONLY
+  #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif
   return(state);
