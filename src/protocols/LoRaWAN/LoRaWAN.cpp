@@ -1146,8 +1146,8 @@ int16_t LoRaWANNode::downlinkCommon() {
   RADIOLIB_ASSERT(state);
 
   // create the masks that are required for receiving downlinks
-  uint16_t irqFlags = 0x0000;
-  uint16_t irqMask = 0x0000;
+  uint32_t irqFlags = 0;
+  uint32_t irqMask = 0;
   this->phyLayer->irqRxDoneRxTimeout(irqFlags, irqMask);
 
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);

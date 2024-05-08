@@ -132,7 +132,7 @@ int16_t PhysicalLayer::startReceive() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t PhysicalLayer::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)timeout;
   (void)irqFlags;
   (void)irqMask;
@@ -310,7 +310,7 @@ RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(0); 
 }
 
-int16_t PhysicalLayer::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+int16_t PhysicalLayer::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   (void)irqFlags;
   (void)irqMask;
   return(RADIOLIB_ERR_UNSUPPORTED);
