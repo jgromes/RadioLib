@@ -1174,15 +1174,7 @@ int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
     bytesLen++;
   }
 
-  // write sync word
-  int16_t state = writeRegister(RADIOLIB_SX126X_REG_SYNC_WORD_0, syncWord, bytesLen);
-  RADIOLIB_ASSERT(state);
-
-  // update packet parameters
-  this->syncWordLength = bitsLen;
-  state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
-
-  return(state);
+  return(setSyncWord(syncWord, bytesLen));
 }
 
 int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
