@@ -432,10 +432,11 @@ int16_t LR11x0::finishTransmit() {
 }
 
 int16_t LR11x0::startReceive() {
-  return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_LR11X0_IRQ_RX_DONE, 0));
+  return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_LR11X0_IRQ_RX_DONE, 0, 0));
 }
 
-int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, size_t len) {
+int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
+  (void)irqMask;
   (void)len;
   
   // check active modem
@@ -849,8 +850,16 @@ int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+  if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    // with length set to 1 and LoRa modem active, assume it is the LoRa sync word
+    if(len > 1) {
+      return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+    }
+    return(setSyncWord(syncWord[0]));
+
+  } else if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
+  
   }
 
   // update sync word length
@@ -1308,6 +1317,31 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   }
 
   return(0);
+}
+
+RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {
+  // the timeout value is given in units of 30.52 microseconds
+  // the calling function should provide some extra width, as this number of units is truncated to integer
+  RadioLibTime_t timeout = timeoutUs / 30.52;
+  return(timeout);
+}
+
+int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
+  irqFlags = RADIOLIB_LR11X0_IRQ_RX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT;  // flags that can appear in the IRQ register
+  irqMask  = irqFlags; // on LR11x0, these are the same
+  return(RADIOLIB_ERR_NONE);
+}
+
+bool LR11x0::isRxTimeout() {
+  uint32_t irq = getIrqStatus();
+  bool rxTimedOut = irq & RADIOLIB_LR11X0_IRQ_TIMEOUT;
+  return(rxTimedOut);
+}
+  
+uint8_t LR11x0::randomByte() {
+  uint32_t num = 0;
+  (void)getRandomNumber(&num);
+  return((uint8_t)num);
 }
 
 int16_t LR11x0::implicitHeader(size_t len) {

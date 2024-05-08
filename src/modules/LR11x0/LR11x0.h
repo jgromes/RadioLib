@@ -843,10 +843,11 @@ class LR11x0: public PhysicalLayer {
       If timeout other than infinite is set, signal will be generated on IRQ1.
 
       \param irqFlags Sets the IRQ flags that will trigger IRQ1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE.
+      \param irqMask Only for PhysicalLayer compatibility, not used.
       \param len Only for PhysicalLayer compatibility, not used.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags = RADIOLIB_LR11X0_IRQ_RX_DONE, size_t len = 0);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags = RADIOLIB_LR11X0_IRQ_RX_DONE, uint32_t irqMask = 0, size_t len = 0);
 
     /*!
       \brief Reads the current IRQ status.
@@ -1140,6 +1141,33 @@ class LR11x0: public PhysicalLayer {
       \returns Expected time-on-air in microseconds.
     */
     RadioLibTime_t getTimeOnAir(size_t len) override;
+
+    /*!
+      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
+      \param timeoutUs Timeout in microseconds to listen for
+      \returns Timeout value in a unit that is specific for the used module
+    */
+    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
+
+    /*!
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
+      \param irqFlags The flags for which IRQs must be triggered
+      \param irqMask Mask indicating which IRQ triggers a DIO
+      \returns \ref status_codes
+    */
+    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
+
+    /*!
+      \brief Check whether the IRQ bit for RxTimeout is set
+      \returns Whether RxTimeout IRQ is set
+    */
+    bool isRxTimeout() override;
+
+    /*!
+      \brief Get one truly random byte from RSSI noise.
+      \returns TRNG byte.
+    */
+    uint8_t randomByte();
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
