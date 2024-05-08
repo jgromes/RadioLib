@@ -35,7 +35,7 @@ var class_si443x =
     [ "standby", "class_si443x.html#ac45d2776df3ff338db154ead143fb7b8", null ],
     [ "standby", "class_si443x.html#acbc0f95f32ca961294666405596ff529", null ],
     [ "startReceive", "class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2", null ],
-    [ "startReceive", "class_si443x.html#a1070a6cde04a01d4a35da670f65ce539", null ],
+    [ "startReceive", "class_si443x.html#a38c4a47d8192a25667417257084adbf0", null ],
     [ "startTransmit", "class_si443x.html#a923654706eff5118ef6e84214e837f27", null ],
     [ "startTransmit", "class_si443x.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],
     [ "startTransmit", "class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314", null ],

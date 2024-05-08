@@ -136,9 +136,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18664ad615c5507ff1690baaca90b094"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">startReceive</a> ()</td></tr>
 <tr class="memdesc:a18664ad615c5507ff1690baaca90b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to received mode using its default configuration.  <a href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">More...</a><br /></td></tr>
 <tr class="separator:a18664ad615c5507ff1690baaca90b094"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
-<tr class="memdesc:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">More...</a><br /></td></tr>
-<tr class="separator:a13dbafeeb9dd9ede72cc4d907738ac48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab913944238f4dfd950d36651eb3c4892"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len)</td></tr>
+<tr class="memdesc:ab913944238f4dfd950d36651eb3c4892"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">More...</a><br /></td></tr>
+<tr class="separator:ab913944238f4dfd950d36651eb3c4892"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <a href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">More...</a><br /></td></tr>
 <tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,9 +214,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7f8d12a90158864a8ebc471b0ec89dc9"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs)</td></tr>
 <tr class="memdesc:a7f8d12a90158864a8ebc471b0ec89dc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">More...</a><br /></td></tr>
 <tr class="separator:a7f8d12a90158864a8ebc471b0ec89dc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d1fe00d107bbc23b0315fd442bc3292"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask)</td></tr>
-<tr class="memdesc:a1d1fe00d107bbc23b0315fd442bc3292"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">More...</a><br /></td></tr>
-<tr class="separator:a1d1fe00d107bbc23b0315fd442bc3292"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af44a10b29e21d4de7794eefb8b5ade63"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask)</td></tr>
+<tr class="memdesc:af44a10b29e21d4de7794eefb8b5ade63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">More...</a><br /></td></tr>
+<tr class="separator:af44a10b29e21d4de7794eefb8b5ade63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d8182a32439fe91f2806d73e629f4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">isRxTimeout</a> ()</td></tr>
 <tr class="memdesc:acb8d8182a32439fe91f2806d73e629f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">More...</a><br /></td></tr>
 <tr class="separator:acb8d8182a32439fe91f2806d73e629f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -415,7 +415,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">SX126x</a>, and <a class="el" href="class_s_x127x.html#ae98f0c8bef0f49cccc87992639827612">SX127x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">SX126x</a>, <a class="el" href="class_l_r11x0.html#a260c7f4ee4739e532ddb465a276205d3">LR11x0</a>, and <a class="el" href="class_s_x127x.html#ae98f0c8bef0f49cccc87992639827612">SX127x</a>.</p>
 
 </div>
 </div>
@@ -755,8 +755,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 
 </div>
 </div>
-<a id="a1d1fe00d107bbc23b0315fd442bc3292"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d1fe00d107bbc23b0315fd442bc3292">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+<a id="af44a10b29e21d4de7794eefb8b5ade63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af44a10b29e21d4de7794eefb8b5ade63">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -767,13 +767,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
         <tr>
           <td class="memname">int16_t PhysicalLayer::irqRxDoneRxTimeout </td>
           <td>(</td>
-          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
           <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
           <td class="paramname"><em>irqMask</em>&#160;</td>
         </tr>
         <tr>
@@ -799,7 +799,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#aa838526a79ff6928cba6cf64e5707187">SX126x</a>, and <a class="el" href="class_s_x127x.html#a399911660ab71520bbda77a6431be8ae">SX127x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#af441859fbeed4ee5d32519d26e94c68b">LR11x0</a>, <a class="el" href="class_s_x127x.html#ac1438af06aa65f00641672ed9eb21df8">SX127x</a>, and <a class="el" href="class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687">SX126x</a>.</p>
 
 </div>
 </div>
@@ -829,7 +829,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <p>Check whether the IRQ bit for RxTimeout is set. </p>
 <dl class="section return"><dt>Returns</dt><dd>Whether RxTimeout IRQ is set </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">SX126x</a>, and <a class="el" href="class_s_x127x.html#a09bb29746b5de2d1aa88a6778450306e">SX127x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">SX126x</a>, <a class="el" href="class_l_r11x0.html#a8d3e5877dcd784c8e922f32ff773dc61">LR11x0</a>, and <a class="el" href="class_s_x127x.html#a09bb29746b5de2d1aa88a6778450306e">SX127x</a>.</p>
 
 </div>
 </div>
@@ -924,7 +924,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <p>Get one truly random byte from RSSI noise. Must be implemented in module class. </p>
 <dl class="section return"><dt>Returns</dt><dd>TRNG byte. </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a187a616285c5872f9603a86c122deaf2">SX126x</a>, <a class="el" href="class_c_c1101.html#a13cf332824479442cc20fc1c6972b092">CC1101</a>, <a class="el" href="class_s_x128x.html#a95637e8addc48b0e1c30c2cf6f54354a">SX128x</a>, <a class="el" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">SX127x</a>, <a class="el" href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">Si443x</a>, and <a class="el" href="class_r_f69.html#a2023f0f22aad00a702bdf598c2154043">RF69</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#a187a616285c5872f9603a86c122deaf2">SX126x</a>, <a class="el" href="class_c_c1101.html#a13cf332824479442cc20fc1c6972b092">CC1101</a>, <a class="el" href="class_s_x128x.html#a95637e8addc48b0e1c30c2cf6f54354a">SX128x</a>, <a class="el" href="class_s_x127x.html#a68cba1ff1e6bfd9b3034c97f3932e450">SX127x</a>, <a class="el" href="class_si443x.html#a74848176d435227e601c86ff37b0edbe">Si443x</a>, <a class="el" href="class_r_f69.html#a2023f0f22aad00a702bdf598c2154043">RF69</a>, and <a class="el" href="class_l_r11x0.html#aaa0fd2a2f8d2915153b42bf1c8eadd9d">LR11x0</a>.</p>
 
 </div>
 </div>
@@ -1892,8 +1892,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 
 </div>
 </div>
-<a id="a13dbafeeb9dd9ede72cc4d907738ac48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13dbafeeb9dd9ede72cc4d907738ac48">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="ab913944238f4dfd950d36651eb3c4892"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab913944238f4dfd950d36651eb3c4892">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1910,13 +1910,13 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqMask</em>, </td>
         </tr>
         <tr>
@@ -1950,7 +1950,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a0d5ce0a8d2a5b275676d9d98124312ce">SX126x</a>, <a class="el" href="class_c_c1101.html#ad4d274deead2f6ce270810e4cb5b24d2">CC1101</a>, <a class="el" href="class_s_x127x.html#ae274d8640bba5c22217db120c51c6bb8">SX127x</a>, <a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">Si443x</a>, <a class="el" href="class_r_f69.html#ae8b6f87d4b798dc8fcda07bfa5af5a66">RF69</a>, and <a class="el" href="classn_r_f24.html#ad672f45f73267249265044063e19b4fa">nRF24</a>.</p>
+<p>Reimplemented in <a class="el" href="class_s_x126x.html#ad6c81423768480e3bc04d636486241f8">SX126x</a>, <a class="el" href="class_l_r11x0.html#ae79c42c4ceceb7a6897731d01d365281">LR11x0</a>, <a class="el" href="class_c_c1101.html#abf153c8fcf2a0d60439426b03692642e">CC1101</a>, <a class="el" href="class_s_x127x.html#a2d46040624757a5ca50693741c7a4e9a">SX127x</a>, <a class="el" href="class_si443x.html#a38c4a47d8192a25667417257084adbf0">Si443x</a>, <a class="el" href="class_r_f69.html#abb9bc55a6878bb21312599c3e0411eeb">RF69</a>, and <a class="el" href="classn_r_f24.html#a2288ed9242e157bc20ec02fddea30c3e">nRF24</a>.</p>
 
 </div>
 </div>

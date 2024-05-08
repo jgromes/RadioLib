@@ -188,9 +188,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a66ad433561b02fe61b09afd735ce56cc"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc">startReceive</a> () override</td></tr>
 <tr class="memdesc:a66ad433561b02fe61b09afd735ce56cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc">More...</a><br /></td></tr>
 <tr class="separator:a66ad433561b02fe61b09afd735ce56cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d5ce0a8d2a5b275676d9d98124312ce"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0d5ce0a8d2a5b275676d9d98124312ce">startReceive</a> (uint32_t timeout, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE, size_t len=0)</td></tr>
-<tr class="memdesc:a0d5ce0a8d2a5b275676d9d98124312ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#a0d5ce0a8d2a5b275676d9d98124312ce">More...</a><br /></td></tr>
-<tr class="separator:a0d5ce0a8d2a5b275676d9d98124312ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6c81423768480e3bc04d636486241f8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ad6c81423768480e3bc04d636486241f8">startReceive</a> (uint32_t timeout, uint32_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint32_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE, size_t len=0)</td></tr>
+<tr class="memdesc:ad6c81423768480e3bc04d636486241f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO1 will be activated when full packet is received.  <a href="class_s_x126x.html#ad6c81423768480e3bc04d636486241f8">More...</a><br /></td></tr>
+<tr class="separator:ad6c81423768480e3bc04d636486241f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">startReceiveDutyCycle</a> (uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags=RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask=RADIOLIB_SX126X_IRQ_RX_DONE)</td></tr>
 <tr class="memdesc:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen. Note that this function assumes the unit will take 500us + TCXO_delay to change state. See datasheet section 13.1.7, version 1.2.  <a href="class_s_x126x.html#a5b4f8a41b593436b8c7a2a2d46ac387e">More...</a><br /></td></tr>
 <tr class="separator:a5b4f8a41b593436b8c7a2a2d46ac387e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -308,9 +308,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">More...</a><br /></td></tr>
 <tr class="separator:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa838526a79ff6928cba6cf64e5707187"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aa838526a79ff6928cba6cf64e5707187">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask) override</td></tr>
-<tr class="memdesc:aa838526a79ff6928cba6cf64e5707187"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x126x.html#aa838526a79ff6928cba6cf64e5707187">More...</a><br /></td></tr>
-<tr class="separator:aa838526a79ff6928cba6cf64e5707187"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a676bf9622cf84822757c5dc40cc73687"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask)</td></tr>
+<tr class="memdesc:a676bf9622cf84822757c5dc40cc73687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687">More...</a><br /></td></tr>
+<tr class="separator:a676bf9622cf84822757c5dc40cc73687"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34aea9413d71676c7a60fcf24017694a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">isRxTimeout</a> () override</td></tr>
 <tr class="memdesc:a34aea9413d71676c7a60fcf24017694a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">More...</a><br /></td></tr>
 <tr class="separator:a34aea9413d71676c7a60fcf24017694a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1180,8 +1180,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aa838526a79ff6928cba6cf64e5707187"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa838526a79ff6928cba6cf64e5707187">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+<a id="a676bf9622cf84822757c5dc40cc73687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a676bf9622cf84822757c5dc40cc73687">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1192,13 +1192,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t SX126x::irqRxDoneRxTimeout </td>
           <td>(</td>
-          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
           <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t &amp;&#160;</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
           <td class="paramname"><em>irqMask</em>&#160;</td>
         </tr>
         <tr>
@@ -1209,7 +1209,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1224,7 +1224,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -3000,8 +3000,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a0d5ce0a8d2a5b275676d9d98124312ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d5ce0a8d2a5b275676d9d98124312ce">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="ad6c81423768480e3bc04d636486241f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6c81423768480e3bc04d636486241f8">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3018,13 +3018,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_SX126X_IRQ_RX_DEFAULT</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_SX126X_IRQ_RX_DONE</code>, </td>
         </tr>
         <tr>
@@ -3058,7 +3058,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">PhysicalLayer</a>.</p>
 
 </div>
 </div>

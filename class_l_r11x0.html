@@ -182,9 +182,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aabc154b86d9159fb5f769f62418d52b7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aabc154b86d9159fb5f769f62418d52b7">startReceive</a> ()</td></tr>
 <tr class="memdesc:aabc154b86d9159fb5f769f62418d52b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_l_r11x0.html#aabc154b86d9159fb5f769f62418d52b7">More...</a><br /></td></tr>
 <tr class="separator:aabc154b86d9159fb5f769f62418d52b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a437eaf0e0541983751abd28db45efea8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a437eaf0e0541983751abd28db45efea8">startReceive</a> (uint32_t timeout, uint32_t irqFlags=RADIOLIB_LR11X0_IRQ_RX_DONE, size_t len=0)</td></tr>
-<tr class="memdesc:a437eaf0e0541983751abd28db45efea8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ1 will be activated when full packet is received.  <a href="class_l_r11x0.html#a437eaf0e0541983751abd28db45efea8">More...</a><br /></td></tr>
-<tr class="separator:a437eaf0e0541983751abd28db45efea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae79c42c4ceceb7a6897731d01d365281"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ae79c42c4ceceb7a6897731d01d365281">startReceive</a> (uint32_t timeout, uint32_t irqFlags=RADIOLIB_LR11X0_IRQ_RX_DONE, uint32_t irqMask=0, size_t len=0)</td></tr>
+<tr class="memdesc:ae79c42c4ceceb7a6897731d01d365281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ1 will be activated when full packet is received.  <a href="class_l_r11x0.html#ae79c42c4ceceb7a6897731d01d365281">More...</a><br /></td></tr>
+<tr class="separator:ae79c42c4ceceb7a6897731d01d365281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <a href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">More...</a><br /></td></tr>
 <tr class="separator:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,6 +299,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abccf5dc80aab71090a5f19bfffa0201d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">getTimeOnAir</a> (size_t len) override</td></tr>
 <tr class="memdesc:abccf5dc80aab71090a5f19bfffa0201d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get expected time-on-air for a given size of payload.  <a href="class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d">More...</a><br /></td></tr>
 <tr class="separator:abccf5dc80aab71090a5f19bfffa0201d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a260c7f4ee4739e532ddb465a276205d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a260c7f4ee4739e532ddb465a276205d3">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
+<tr class="memdesc:a260c7f4ee4739e532ddb465a276205d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_l_r11x0.html#a260c7f4ee4739e532ddb465a276205d3">More...</a><br /></td></tr>
+<tr class="separator:a260c7f4ee4739e532ddb465a276205d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af441859fbeed4ee5d32519d26e94c68b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#af441859fbeed4ee5d32519d26e94c68b">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask) override</td></tr>
+<tr class="memdesc:af441859fbeed4ee5d32519d26e94c68b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_l_r11x0.html#af441859fbeed4ee5d32519d26e94c68b">More...</a><br /></td></tr>
+<tr class="separator:af441859fbeed4ee5d32519d26e94c68b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d3e5877dcd784c8e922f32ff773dc61"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a8d3e5877dcd784c8e922f32ff773dc61">isRxTimeout</a> () override</td></tr>
+<tr class="memdesc:a8d3e5877dcd784c8e922f32ff773dc61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_l_r11x0.html#a8d3e5877dcd784c8e922f32ff773dc61">More...</a><br /></td></tr>
+<tr class="separator:a8d3e5877dcd784c8e922f32ff773dc61"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa0fd2a2f8d2915153b42bf1c8eadd9d"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aaa0fd2a2f8d2915153b42bf1c8eadd9d">randomByte</a> ()</td></tr>
+<tr class="memdesc:aaa0fd2a2f8d2915153b42bf1c8eadd9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise.  <a href="class_l_r11x0.html#aaa0fd2a2f8d2915153b42bf1c8eadd9d">More...</a><br /></td></tr>
+<tr class="separator:aaa0fd2a2f8d2915153b42bf1c8eadd9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">implicitHeader</a> (size_t len)</td></tr>
 <tr class="memdesc:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set implicit header mode for future reception/transmission.  <a href="class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9">More...</a><br /></td></tr>
 <tr class="separator:aba13921d2cf29cc1bc8a648e1f330aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -361,9 +373,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
 <tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
 <tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
-<tr class="memdesc:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <a href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">More...</a><br /></td></tr>
-<tr class="separator:a13dbafeeb9dd9ede72cc4d907738ac48 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">More...</a><br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -373,24 +382,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">getFreqStep</a> () const</td></tr>
 <tr class="memdesc:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the module frequency step size that was set in constructor.  <a href="class_physical_layer.html#a977e5236693960bb1c79090a201e9e1c">More...</a><br /></td></tr>
 <tr class="separator:a977e5236693960bb1c79090a201e9e1c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs)</td></tr>
-<tr class="memdesc:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">More...</a><br /></td></tr>
-<tr class="separator:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask)</td></tr>
-<tr class="memdesc:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">More...</a><br /></td></tr>
-<tr class="separator:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">isRxTimeout</a> ()</td></tr>
-<tr class="memdesc:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">More...</a><br /></td></tr>
-<tr class="separator:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a76113e10481743094a1cd0280692b0a9">random</a> (int32_t min, int32_t max)</td></tr>
 <tr class="memdesc:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range min - max.  <a href="class_physical_layer.html#a76113e10481743094a1cd0280692b0a9">More...</a><br /></td></tr>
 <tr class="separator:a76113e10481743094a1cd0280692b0a9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a5985308904261dd431f373d47ddee4 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1a5985308904261dd431f373d47ddee4">randomByte</a> ()</td></tr>
-<tr class="memdesc:a1a5985308904261dd431f373d47ddee4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get one truly random byte from RSSI noise. Must be implemented in module class.  <a href="class_physical_layer.html#a1a5985308904261dd431f373d47ddee4">More...</a><br /></td></tr>
-<tr class="separator:a1a5985308904261dd431f373d47ddee4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">startDirect</a> ()</td></tr>
 <tr class="memdesc:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure module parameters for direct modes. Must be called prior to "ham" modes like RTTY or AX.25. Only available in FSK mode.  <a href="class_physical_layer.html#a88a10657bd2215a11a2331f937414b55">More...</a><br /></td></tr>
 <tr class="separator:a88a10657bd2215a11a2331f937414b55 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -649,6 +646,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a260c7f4ee4739e532ddb465a276205d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a260c7f4ee4739e532ddb465a276205d3">&#9670;&nbsp;</a></span>calculateRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> LR11x0::calculateRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>timeoutUs</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Calculate the timeout value for this specific module / series (in number of symbols or units of time) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">timeoutUs</td><td>Timeout in microseconds to listen for </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1274,6 +1308,114 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="af441859fbeed4ee5d32519d26e94c68b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af441859fbeed4ee5d32519d26e94c68b">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::irqRxDoneRxTimeout </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>irqFlags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t &amp;&#160;</td>
+          <td class="paramname"><em>irqMask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Create the flags that make up RxDone and RxTimeout used for receiving downlinks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irqFlags</td><td>The flags for which IRQs must be triggered </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Mask indicating which IRQ triggers a DIO </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a8d3e5877dcd784c8e922f32ff773dc61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d3e5877dcd784c8e922f32ff773dc61">&#9670;&nbsp;</a></span>isRxTimeout()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LR11x0::isRxTimeout </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the IRQ bit for RxTimeout is set. </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether RxTimeout IRQ is set </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aaa0fd2a2f8d2915153b42bf1c8eadd9d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa0fd2a2f8d2915153b42bf1c8eadd9d">&#9670;&nbsp;</a></span>randomByte()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t LR11x0::randomByte </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get one truly random byte from RSSI noise. </p>
+<dl class="section return"><dt>Returns</dt><dd>TRNG byte. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a1a5985308904261dd431f373d47ddee4">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2655,11 +2797,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a437eaf0e0541983751abd28db45efea8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a437eaf0e0541983751abd28db45efea8">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="ae79c42c4ceceb7a6897731d01d365281"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae79c42c4ceceb7a6897731d01d365281">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t LR11x0::startReceive </td>
@@ -2676,6 +2821,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>0</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">size_t&#160;</td>
           <td class="paramname"><em>len</em> = <code>0</code>&#160;</td>
         </tr>
@@ -2685,6 +2836,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Interrupt-driven receive method. IRQ1 will be activated when full packet is received. </p>
@@ -2692,11 +2848,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 1/32.768 kHz (approximately 30.52 us). Defaults to RADIOLIB_LR11X0_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_LR11X0_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on IRQ1.</td></tr>
     <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags that will trigger IRQ1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
     <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">PhysicalLayer</a>.</p>
 
 </div>
 </div>

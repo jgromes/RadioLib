@@ -173,9 +173,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">startReceive</a> ()</td></tr>
 <tr class="memdesc:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full valid packet is received.  <a href="class_si443x.html#a10f886fc534a85bbf8c1aeb9b5ffe4f2">More...</a><br /></td></tr>
 <tr class="separator:a10f886fc534a85bbf8c1aeb9b5ffe4f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1070a6cde04a01d4a35da670f65ce539"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">startReceive</a> (uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len)</td></tr>
-<tr class="memdesc:a1070a6cde04a01d4a35da670f65ce539"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_si443x.html#a1070a6cde04a01d4a35da670f65ce539">More...</a><br /></td></tr>
-<tr class="separator:a1070a6cde04a01d4a35da670f65ce539"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38c4a47d8192a25667417257084adbf0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#a38c4a47d8192a25667417257084adbf0">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len)</td></tr>
+<tr class="memdesc:a38c4a47d8192a25667417257084adbf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_si443x.html#a38c4a47d8192a25667417257084adbf0">More...</a><br /></td></tr>
+<tr class="separator:a38c4a47d8192a25667417257084adbf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad00ff8b58c68118ad74fee82028aa71e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:ad00ff8b58c68118ad74fee82028aa71e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="class_si443x.html#ad00ff8b58c68118ad74fee82028aa71e">More...</a><br /></td></tr>
 <tr class="separator:ad00ff8b58c68118ad74fee82028aa71e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,9 +291,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs)</td></tr>
 <tr class="memdesc:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">More...</a><br /></td></tr>
 <tr class="separator:a7f8d12a90158864a8ebc471b0ec89dc9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">irqRxDoneRxTimeout</a> (uint16_t &amp;irqFlags, uint16_t &amp;irqMask)</td></tr>
-<tr class="memdesc:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#a1d1fe00d107bbc23b0315fd442bc3292">More...</a><br /></td></tr>
-<tr class="separator:a1d1fe00d107bbc23b0315fd442bc3292 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af44a10b29e21d4de7794eefb8b5ade63 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask)</td></tr>
+<tr class="memdesc:af44a10b29e21d4de7794eefb8b5ade63 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">More...</a><br /></td></tr>
+<tr class="separator:af44a10b29e21d4de7794eefb8b5ade63 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">isRxTimeout</a> ()</td></tr>
 <tr class="memdesc:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">More...</a><br /></td></tr>
 <tr class="separator:acb8d8182a32439fe91f2806d73e629f4 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1413,8 +1413,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a1070a6cde04a01d4a35da670f65ce539"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1070a6cde04a01d4a35da670f65ce539">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="a38c4a47d8192a25667417257084adbf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38c4a47d8192a25667417257084adbf0">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1431,13 +1431,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqFlags</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irqMask</em>, </td>
         </tr>
         <tr>
@@ -1471,7 +1471,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a13dbafeeb9dd9ede72cc4d907738ac48">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">PhysicalLayer</a>.</p>
 
 </div>
 </div>
