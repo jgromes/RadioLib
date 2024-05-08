@@ -705,7 +705,7 @@ class Si443x: public PhysicalLayer {
       \param len Ignored.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
