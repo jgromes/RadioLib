@@ -552,10 +552,7 @@ class SX126x: public PhysicalLayer {
       or to false to discard current configuration ("cold start"). Defaults to true.
       \returns \ref status_codes
     */
-
-
     int16_t sleep(); 
-
     int16_t sleep(bool retainConfig);
 
     /*!
