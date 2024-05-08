@@ -435,7 +435,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
 
     // check complete byte
     if(this->bufferBitPos == 8) {
-      if(this->bufferWritePos >= RADIOLIB_STATIC_ARRAY_SIZE) {
+      if(this->bufferWritePos >= RADIOLIB_STATIC_ARRAY_SIZE -1) {
         this->bufferWritePos = 0;
       }
       this->buffer[this->bufferWritePos] = Module::reflect(this->byteBuff, 8);
