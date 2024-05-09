@@ -545,12 +545,6 @@ class LoRaWANNode {
     int16_t setBufferSession(uint8_t* persistentBuffer);
 
     /*!
-      \brief Restore session by loading information from persistent storage.
-      \returns \ref status_codes
-    */
-    int16_t restore(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan);
-
-    /*!
       \brief Join network by performing over-the-air activation. By this procedure,
       the device will perform an exchange with the network server and set all necessary configuration. 
       \param joinEUI 8-byte application identifier.
@@ -580,12 +574,6 @@ class LoRaWANNode {
 
     /*! \brief Whether there is an ongoing session active */
     bool isJoined();
-
-    /*!
-      \brief Save the current state of the session to the session buffer.
-      \returns \ref status_codes
-    */
-    int16_t saveSession();
 
     /*!
       \brief Add a MAC command to the uplink queue.
@@ -955,6 +943,9 @@ class LoRaWANNode {
 
     // save the selected sub-band in case this must be restored in ADR control
     uint8_t subBand = 0;
+
+    // check if restored buffers match the supplied activation info
+    bool verifyBuffers(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan);
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
     int16_t downlinkCommon();
