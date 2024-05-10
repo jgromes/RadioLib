@@ -452,7 +452,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
 
   // if the device is activated with a valid session, and user didn't force a new session, return
   if(this->isJoined() && !force) {
-    return(RADIOLIB_ERR_NONE);
+    return(RADIOLIB_LORAWAN_SESSION_RESTORED);
   }
 
   int16_t state = RADIOLIB_ERR_UNKNOWN;
@@ -718,7 +718,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_HOMENET_ID], this->homeNetId);
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
-  return(RADIOLIB_ERR_NONE);
+  return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 
 int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey, bool force, uint8_t initialDr) {
@@ -1955,6 +1955,9 @@ void LoRaWANNode::setADR(bool enable) {
 
 void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   this->dutyCycleEnabled = enable;
+  if(!enable) {
+    this->dutyCycle = 0;
+  }
   if(msPerHour <= 0) {
     this->dutyCycle = this->band->dutyCycle;
   } else {

@@ -35,8 +35,8 @@ void setup() {
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 
   Serial.println(F("Join ('login') to the LoRaWAN Network"));
-  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, true);
-  debug(state < RADIOLIB_ERR_NONE, F("Join failed"), state, true);
+  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+  debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   Serial.println(F("Ready!\n"));
 }

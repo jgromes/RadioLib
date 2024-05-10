@@ -563,6 +563,16 @@
 */
 #define RADIOLIB_LORAWAN_NO_DOWNLINK                            (-1116)
 
+/*!
+  \brief The LoRaWAN session was successfully re-activated.
+*/
+#define RADIOLIB_LORAWAN_SESSION_RESTORED                       (-1117)
+
+/*!
+  \brief A new LoRaWAN session is started.
+*/
+#define RADIOLIB_LORAWAN_NEW_SESSION                            (-1118)
+
 // LR11x0-specific status codes
 
 /*!
