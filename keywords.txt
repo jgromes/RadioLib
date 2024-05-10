@@ -318,11 +318,9 @@ getBufferNonces	KEYWORD2
 setBufferNonces	KEYWORD2
 getBufferSession	KEYWORD2
 setBufferSession	KEYWORD2
-restore	KEYWORD2
 beginOTAA	KEYWORD2
 beginABP	KEYWORD2
 isJoined	KEYWORD2
-saveSession	KEYWORD2
 sendMacCommandReq	KEYWORD2
 uplink	KEYWORD2
 downlink	KEYWORD2
