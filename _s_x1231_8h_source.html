@@ -176,12 +176,12 @@ $(document).ready(function(){initNavTree('_s_x1231_8h_source.html',''); initResi
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
 <div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="class_s_x1231.html">   93</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s_x1231.html">SX1231</a>: <span class="keyword">public</span> <a class="code" href="class_r_f69.html">RF69</a>  {</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="class_s_x1231.html#a9f39cd41fa0c934fe871b6cbfa7ce269">SX1231</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <a class="code" href="class_s_x1231.html#a9f39cd41fa0c934fe871b6cbfa7ce269">SX1231</a>(<a class="code" href="class_module.html">Module</a>* mod); <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    int16_t <a class="code" href="class_s_x1231.html#a8aa81f8cbe61c4941ac7e3c97a6f5244">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);</div>
 <div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
 <div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    uint8_t chipRevision = 0;</div>
 <div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>

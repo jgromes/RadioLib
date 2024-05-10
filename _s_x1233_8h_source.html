@@ -106,16 +106,16 @@ $(document).ready(function(){initNavTree('_s_x1233_8h_source.html',''); initResi
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno"><a class="line" href="class_s_x1233.html">   23</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_s_x1233.html">SX1233</a>: <span class="keyword">public</span> <a class="code" href="class_s_x1231.html">SX1231</a>  {</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f">SX1233</a>(<a class="code" href="class_module.html">Module</a>* mod);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <a class="code" href="class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f">SX1233</a>(<a class="code" href="class_module.html">Module</a>* mod); <span class="comment">// cppcheck-suppress noExplicitConstructor</span></div>
 <div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    int16_t <a class="code" href="class_s_x1233.html#a10fa64ee432a56b50ea6bd42868693af">begin</a>(<span class="keywordtype">float</span> freq = 434.0, <span class="keywordtype">float</span> br = 4.8, <span class="keywordtype">float</span> freqDev = 5.0, <span class="keywordtype">float</span> rxBw = 125.0, int8_t power = 10, uint8_t preambleLen = 16);</div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    int16_t <a class="code" href="class_s_x1233.html#af245e451dca502ee8975c7ecd291a859">setBitRate</a>(<span class="keywordtype">float</span> br);</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    int16_t <a class="code" href="class_s_x1233.html#a98e0248cfcca7158261f7ebb31e0aa9f">setBitRate</a>(<span class="keywordtype">float</span> br) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    uint8_t chipRevision = 0;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">#endif</span></div>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('_s_x1233_8h_source.html',''); initResi
 <div class="ttc" id="aclass_s_x1233_html"><div class="ttname"><a href="class_s_x1233.html">SX1233</a></div><div class="ttdoc">Control class for SX1233 module. Overrides some methods from SX1231/RF69 due to different register va...</div><div class="ttdef"><b>Definition:</b> SX1233.h:23</div></div>
 <div class="ttc" id="aclass_s_x1233_html_a10fa64ee432a56b50ea6bd42868693af"><div class="ttname"><a href="class_s_x1233.html#a10fa64ee432a56b50ea6bd42868693af">SX1233::begin</a></div><div class="ttdeci">int16_t begin(float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=125.0, int8_t power=10, uint8_t preambleLen=16)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> SX1233.cpp:9</div></div>
 <div class="ttc" id="aclass_s_x1233_html_a23d2fbf2473e48d46e341e6afe31f82f"><div class="ttname"><a href="class_s_x1233.html#a23d2fbf2473e48d46e341e6afe31f82f">SX1233::SX1233</a></div><div class="ttdeci">SX1233(Module *mod)</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> SX1233.cpp:5</div></div>
-<div class="ttc" id="aclass_s_x1233_html_af245e451dca502ee8975c7ecd291a859"><div class="ttname"><a href="class_s_x1233.html#af245e451dca502ee8975c7ecd291a859">SX1233::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(float br)</div><div class="ttdoc">Sets bit rate. Allowed values range from 0.5 to 300.0 kbps. SX1233 also allows 500 kbps and 600 kbps ...</div><div class="ttdef"><b>Definition:</b> SX1233.cpp:93</div></div>
+<div class="ttc" id="aclass_s_x1233_html_a98e0248cfcca7158261f7ebb31e0aa9f"><div class="ttname"><a href="class_s_x1233.html#a98e0248cfcca7158261f7ebb31e0aa9f">SX1233::setBitRate</a></div><div class="ttdeci">int16_t setBitRate(float br) override</div><div class="ttdoc">Sets bit rate. Allowed values range from 0.5 to 300.0 kbps. SX1233 also allows 500 kbps and 600 kbps ...</div><div class="ttdef"><b>Definition:</b> SX1233.cpp:93</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
