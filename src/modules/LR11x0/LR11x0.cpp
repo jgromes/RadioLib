@@ -143,6 +143,7 @@ int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
   // get currently active modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
   RadioLibTime_t timeout = getTimeOnAir(len);
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (150% of expected time-on-air)
@@ -189,6 +190,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   // get currently active modem
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   state = getPacketType(&modem);
+  RADIOLIB_ASSERT(state);
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
@@ -396,6 +398,7 @@ int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     // in LR-FHSS mode, the packet is built by the device
     // TODO add configurable grid step and device offset
     state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC, true, this->lrFhssBw, this->lrFhssHopSeq, 0, data, len);
+    RADIOLIB_ASSERT(state);
 
   } else {
     // write packet to buffer
@@ -1202,12 +1205,12 @@ float LR11x0::getRSSI() {
 
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  getPacketType(&type);
+  (void)getPacketType(&type);
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    getPacketStatusLoRa(&val, NULL, NULL);
+    (void)getPacketStatusLoRa(&val, NULL, NULL);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    getPacketStatusGFSK(NULL, &val, NULL, NULL);
+    (void)getPacketStatusGFSK(NULL, &val, NULL, NULL);
   
   }
 
@@ -1219,9 +1222,9 @@ float LR11x0::getSNR() {
 
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  getPacketType(&type);
+  (void)getPacketType(&type);
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    getPacketStatusLoRa(NULL, &val, NULL);
+    (void)getPacketStatusLoRa(NULL, &val, NULL);
   }
 
   return(val);
@@ -1254,7 +1257,7 @@ size_t LR11x0::getPacketLength(bool update, uint8_t* offset) {
 RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  getPacketType(&type);
+  (void)getPacketType(&type);
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate number of symbols
     float N_symbol = 0;
@@ -1468,7 +1471,7 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
 
   if(!brief) {
     if(this->wifiScanMode == RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON) {
-      LR11x0WifiResultExtended_t* resultExtended = (LR11x0WifiResultExtended_t*)result;
+      LR11x0WifiResultExtended_t* resultExtended = reinterpret_cast<LR11x0WifiResultExtended_t*>(result);
       resultExtended->rate = raw[3];
       resultExtended->service = (((uint16_t)raw[4] << 8) | ((uint16_t)raw[5]));
       resultExtended->length = (((uint16_t)raw[6] << 8) | ((uint16_t)raw[7]));
@@ -1495,7 +1498,7 @@ int16_t LR11x0::getWifiScanResult(LR11x0WifiResult_t* result, uint8_t index, boo
       return(RADIOLIB_ERR_NONE);
     }
 
-    LR11x0WifiResultFull_t* resultFull = (LR11x0WifiResultFull_t*)result;
+    LR11x0WifiResultFull_t* resultFull = reinterpret_cast<LR11x0WifiResultFull_t*>(result);
     resultFull->frameType = raw[3] & 0x03;
     resultFull->frameSubType = (raw[3] & 0x3C) >> 2;
     resultFull->toDistributionSystem = (raw[3] & 0x40) != 0;
@@ -1533,7 +1536,7 @@ int16_t LR11x0::wifiScan(uint8_t wifiType, uint8_t* count, uint8_t mode, uint16_
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi scan done in %d ms", this->mod->hal->millis() - start);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
 
   // read number of results
   return(getWifiScanResultsCount(count));
@@ -1658,7 +1661,7 @@ int16_t LR11x0::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // calibrate all blocks
-  state = this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
+  (void)this->calibrate(RADIOLIB_LR11X0_CALIBRATE_ALL);
 
   // wait for calibration completion
   this->mod->hal->delay(5);
@@ -1716,7 +1719,7 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     num = 2;
   }
   
-  uint8_t detPeakValues[8] = { 48, 48, 50, 55, 55, 59, 61, 65 };
+  const uint8_t detPeakValues[8] = { 48, 48, 50, 55, 55, 59, 61, 65 };
   uint8_t peak = detPeak;
   if(peak == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
     peak = detPeakValues[this->spreadingFactor - 5];

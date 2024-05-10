@@ -18,7 +18,7 @@ class LR1110: public LR11x0 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LR1110(Module* mod);
+    LR1110(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -74,7 +74,7 @@ class LR1110: public LR11x0 {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.

@@ -656,7 +656,7 @@ class LR11x0: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LR11x0(Module* mod);
+    LR11x0(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
@@ -793,23 +793,23 @@ class LR11x0: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Interrupt-driven binary transmit method.
@@ -833,7 +833,7 @@ class LR11x0: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method. IRQ1 will be activated when full packet is received.
@@ -895,7 +895,7 @@ class LR11x0: public PhysicalLayer {
       \param power Output power to be set in dBm, output PA is determined automatically preferring the low-power PA.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t power) override;
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
@@ -961,7 +961,7 @@ class LR11x0: public PhysicalLayer {
       \param br FSK bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets GFSK frequency deviation. Allowed values range from 0.0 to 200.0 kHz.
@@ -1107,13 +1107,13 @@ class LR11x0: public PhysicalLayer {
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet. Only available for LoRa or GFSK modem.
       \returns RSSI of the last received packet in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
       \returns SNR of the last received packet in dB.
     */
-    float getSNR();
+    float getSNR() override;
 
     /*!
       \brief Gets frequency error of the latest received packet.
@@ -1167,7 +1167,7 @@ class LR11x0: public PhysicalLayer {
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
     */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
@@ -1264,7 +1264,7 @@ class LR11x0: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
     // LR11x0 SPI command implementations
     int16_t writeRegMem32(uint32_t addr, uint32_t* data, size_t len);
@@ -1410,7 +1410,7 @@ class LR11x0: public PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-    uint8_t chipType;
+    uint8_t chipType = 0;
 
 #if !RADIOLIB_GODMODE
   private:
