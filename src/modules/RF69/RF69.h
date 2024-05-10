@@ -488,7 +488,7 @@ class RF69: public PhysicalLayer {
       \brief Default constructor.
       \param module Instance of Module that will be used to communicate with the radio.
     */
-    RF69(Module* module);
+    RF69(Module* module); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -538,7 +538,7 @@ class RF69: public PhysicalLayer {
       \brief Sets the module to sleep mode.
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep() override;
 
     /*!
       \brief Sets the module to standby mode.
@@ -619,23 +619,23 @@ class RF69: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Set interrupt service routine function to call when FIFO is empty.
@@ -697,7 +697,7 @@ class RF69: public PhysicalLayer {
       \brief Interrupt-driven receive method. GDO0 will be activated when full packet is received.
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
@@ -707,7 +707,7 @@ class RF69: public PhysicalLayer {
       \param len Ignored.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -727,7 +727,7 @@ class RF69: public PhysicalLayer {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Gets carrier frequency.
@@ -741,7 +741,7 @@ class RF69: public PhysicalLayer {
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets receiver bandwidth. Allowed values are 2.6, 3.1, 3.9, 5.2, 6.3, 7.8, 10.4, 12.5, 15.6,
@@ -944,7 +944,7 @@ class RF69: public PhysicalLayer {
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
       \returns Last packet RSSI in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Sets the RSSI value above which the RSSI interrupt is signaled
@@ -963,7 +963,7 @@ class RF69: public PhysicalLayer {
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
    */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
       \brief Read version SPI register. Should return RF69_CHIP_VERSION (0x24) if SX127x is connected and working.
@@ -976,13 +976,13 @@ class RF69: public PhysicalLayer {
       \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
-    void setDirectAction(void (*func)(void));
+    void setDirectAction(void (*func)(void)) override;
 
     /*!
       \brief Function to read and process data bit in direct reception mode.
       \param pin Pin on which to read.
     */
-    void readBit(uint32_t pin);
+    void readBit(uint32_t pin) override;
     #endif
 
     /*!
@@ -991,12 +991,12 @@ class RF69: public PhysicalLayer {
       \param value The value that indicates which function to place on that pin. See chip datasheet for details.
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(uint32_t pin, uint32_t value);
+    int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
 #if !RADIOLIB_GODMODE
   protected:

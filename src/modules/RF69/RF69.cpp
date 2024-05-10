@@ -566,9 +566,9 @@ int16_t RF69::setBitRate(float br) {
   setMode(RADIOLIB_RF69_STANDBY);
 
   // set bit rate
-  uint16_t bitRate = 32000 / br;
-  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
-  state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
+  uint16_t bitRateRaw = 32000 / br;
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_MSB, (bitRateRaw & 0xFF00) >> 8, 7, 0);
+  state |= this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_BITRATE_LSB, bitRateRaw & 0x00FF, 7, 0);
   if(state == RADIOLIB_ERR_NONE) {
     this->bitRate = br;
   }
