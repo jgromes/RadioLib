@@ -452,7 +452,7 @@ class SX126x: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX126x(Module* mod); // cppcheck-suppress noExplicitConstructor
+    explicit SX126x(Module* mod);
 
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
@@ -972,7 +972,7 @@ class SX126x: public PhysicalLayer {
       \param irqMask Mask indicating which IRQ triggers a DIO
       \returns \ref status_codes
     */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
+    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set

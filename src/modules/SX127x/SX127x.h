@@ -594,7 +594,7 @@ class SX127x: public PhysicalLayer {
       \brief Default constructor. Called internally when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX127x(Module* mod); // cppcheck-suppress noExplicitConstructor
+    explicit SX127x(Module* mod);
 
     // basic methods
 

@@ -359,7 +359,7 @@ class SX128x: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX128x(Module* mod); // cppcheck-suppress noExplicitConstructor
+    explicit SX128x(Module* mod);
 
     // basic methods
 

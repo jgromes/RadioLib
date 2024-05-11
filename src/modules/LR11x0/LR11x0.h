@@ -656,7 +656,7 @@ class LR11x0: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LR11x0(Module* mod); // cppcheck-suppress noExplicitConstructor
+    explicit LR11x0(Module* mod);
 
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
