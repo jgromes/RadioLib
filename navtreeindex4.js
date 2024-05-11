@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"class_s_x128x.html#a2643ce22176293631fea2169f5e68e66":[3,0,74,27],
 "class_s_x128x.html#a26d0d02e5e53a3172df9208fa343a3f1":[3,0,74,39],
 "class_s_x128x.html#a275a9a86934124eab4982ad52bf91aea":[3,0,74,1],
 "class_s_x128x.html#a2b424000856a9dc212f571d0e8890635":[3,0,74,12],
@@ -204,8 +205,8 @@ var NAVTREEINDEX4 =
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
-"functions_func.html":[3,3,1,0],
 "functions_func.html":[3,3,1],
+"functions_func.html":[3,3,1,0],
 "functions_func_b.html":[3,3,1,1],
 "functions_func_c.html":[3,3,1,2],
 "functions_func_d.html":[3,3,1,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "functions_y.html":[3,3,0,22],
 "functions_~.html":[3,3,0,23],
 "group__config__encoding.html":[2,4],
-"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,4,1],
-"group__config__encoding.html#ga0bfc51be5abf0b434a49540bddb65328":[2,4,2]
+"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,4,1]
 };

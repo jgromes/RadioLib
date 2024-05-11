@@ -103,11 +103,11 @@ $(document).ready(function(){initNavTree('_print_8h_source.html',''); initResiza
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> write(uint8_t) = 0;</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">size_t</span> write(<span class="keyword">const</span> <span class="keywordtype">char</span> *str) {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;      <span class="keywordflow">if</span> (str == NULL) <span class="keywordflow">return</span> 0;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="keywordflow">return</span> write((<span class="keyword">const</span> uint8_t *)str, strlen(str));</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;      <span class="keywordflow">return</span> write(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(str), strlen(str));</div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    }</div>
 <div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">size_t</span> write(<span class="keyword">const</span> uint8_t *buffer, <span class="keywordtype">size_t</span> size);</div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">size_t</span> write(<span class="keyword">const</span> <span class="keywordtype">char</span> *buffer, <span class="keywordtype">size_t</span> size) {</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keywordflow">return</span> write((<span class="keyword">const</span> uint8_t *)buffer, size);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;      <span class="keywordflow">return</span> write(<span class="keyword">reinterpret_cast&lt;</span><span class="keyword">const </span>uint8_t *<span class="keyword">&gt;</span>(buffer), size);</div>
 <div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    }</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160; </div>
 <div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">size_t</span> print(<a class="code" href="class_i_t_a2_string.html">ITA2String</a>&amp; ita2);</div>
@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('_print_8h_source.html',''); initResiza
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  <span class="keyword">protected</span>:</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    uint8_t encoding = RADIOLIB_ASCII_EXTENDED;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* lineFeed;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keyword">const</span> <span class="keywordtype">char</span>* lineFeed = <span class="stringliteral">&quot;\r\n&quot;</span>;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">size_t</span> printNumber(<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span>, uint8_t);</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">size_t</span> printFloat(<span class="keywordtype">double</span>, uint8_t);</div>

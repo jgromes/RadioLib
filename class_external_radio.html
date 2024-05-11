@@ -109,9 +109,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a49f10e1b05e7463583ac05b3284b9dda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">ExternalRadio</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal, uint32_t pin=RADIOLIB_NC)</td></tr>
 <tr class="memdesc:a49f10e1b05e7463583ac05b3284b9dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">More...</a><br /></td></tr>
 <tr class="separator:a49f10e1b05e7463583ac05b3284b9dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae6f8473e407cfcba0e1f07c225b5cb50">getMod</a> ()</td></tr>
-<tr class="memdesc:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to retrieve pointer to the underlying <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance.  <a href="class_external_radio.html#ae6f8473e407cfcba0e1f07c225b5cb50">More...</a><br /></td></tr>
-<tr class="separator:ae6f8473e407cfcba0e1f07c225b5cb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#adfb1275ec53dbbd8fde2e8102e8f375d">getMod</a> () override</td></tr>
+<tr class="memdesc:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to retrieve pointer to the underlying <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance.  <a href="class_external_radio.html#adfb1275ec53dbbd8fde2e8102e8f375d">More...</a><br /></td></tr>
+<tr class="separator:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a02928a19eab0eab615c02180cedda3eb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a02928a19eab0eab615c02180cedda3eb">setFrequencyDeviation</a> (float freqDev) override</td></tr>
 <tr class="memdesc:a02928a19eab0eab615c02180cedda3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_external_radio.html#a02928a19eab0eab615c02180cedda3eb">More...</a><br /></td></tr>
 <tr class="separator:a02928a19eab0eab615c02180cedda3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae619f011daea49a97098d2897e5a3c2c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae619f011daea49a97098d2897e5a3c2c">setEncoding</a> (uint8_t encoding) override</td></tr>
 <tr class="memdesc:ae619f011daea49a97098d2897e5a3c2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dummy implementation overriding <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_external_radio.html#ae619f011daea49a97098d2897e5a3c2c">More...</a><br /></td></tr>
 <tr class="separator:ae619f011daea49a97098d2897e5a3c2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8c160da3b82f706b2526af2bac85d69"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#ae8c160da3b82f706b2526af2bac85d69">transmitDirect</a> (uint32_t frf=0)</td></tr>
-<tr class="memdesc:ae8c160da3b82f706b2526af2bac85d69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct transmission to drive external radio.  <a href="class_external_radio.html#ae8c160da3b82f706b2526af2bac85d69">More...</a><br /></td></tr>
-<tr class="separator:ae8c160da3b82f706b2526af2bac85d69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25be77aea48cfbdcae05ed32b660daef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a25be77aea48cfbdcae05ed32b660daef">transmitDirect</a> (uint32_t frf=0) override</td></tr>
+<tr class="memdesc:a25be77aea48cfbdcae05ed32b660daef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Direct transmission to drive external radio.  <a href="class_external_radio.html#a25be77aea48cfbdcae05ed32b660daef">More...</a><br /></td></tr>
+<tr class="separator:a25be77aea48cfbdcae05ed32b660daef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_physical_layer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_physical_layer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_physical_layer.html">PhysicalLayer</a></td></tr>
 <tr class="memitem:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">PhysicalLayer</a> (float step, size_t maxLen)</td></tr>
 <tr class="memdesc:add63d7d4fa8b14df5e185813794a49d5 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_physical_layer.html#add63d7d4fa8b14df5e185813794a49d5">More...</a><br /></td></tr>
@@ -324,8 +324,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ae6f8473e407cfcba0e1f07c225b5cb50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae6f8473e407cfcba0e1f07c225b5cb50">&#9670;&nbsp;</a></span>getMod()</h2>
+<a id="adfb1275ec53dbbd8fde2e8102e8f375d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adfb1275ec53dbbd8fde2e8102e8f375d">&#9670;&nbsp;</a></span>getMod()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -342,7 +342,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -465,8 +465,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="ae8c160da3b82f706b2526af2bac85d69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8c160da3b82f706b2526af2bac85d69">&#9670;&nbsp;</a></span>transmitDirect()</h2>
+<a id="a25be77aea48cfbdcae05ed32b660daef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a25be77aea48cfbdcae05ed32b660daef">&#9670;&nbsp;</a></span>transmitDirect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -484,7 +484,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

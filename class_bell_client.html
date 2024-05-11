@@ -123,9 +123,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90f3f33a09a4cf8d544ca1e9a23beae2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bell_client.html#a90f3f33a09a4cf8d544ca1e9a23beae2">setCorrection</a> (float corr)</td></tr>
 <tr class="memdesc:a90f3f33a09a4cf8d544ca1e9a23beae2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set correction coefficient for tone length.  <a href="class_bell_client.html#a90f3f33a09a4cf8d544ca1e9a23beae2">More...</a><br /></td></tr>
 <tr class="separator:a90f3f33a09a4cf8d544ca1e9a23beae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2874910006a927d07d865e69cfe5c65"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bell_client.html#aa2874910006a927d07d865e69cfe5c65">write</a> (uint8_t b)</td></tr>
-<tr class="memdesc:aa2874910006a927d07d865e69cfe5c65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write one byte. Implementation of interface of the RadioLibPrint/Print class.  <a href="class_bell_client.html#aa2874910006a927d07d865e69cfe5c65">More...</a><br /></td></tr>
-<tr class="separator:aa2874910006a927d07d865e69cfe5c65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69bd78bf3be2724b4f34c80c2bd3a6df"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bell_client.html#a69bd78bf3be2724b4f34c80c2bd3a6df">write</a> (uint8_t b) override</td></tr>
+<tr class="memdesc:a69bd78bf3be2724b4f34c80c2bd3a6df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write one byte. Implementation of interface of the RadioLibPrint/Print class.  <a href="class_bell_client.html#a69bd78bf3be2724b4f34c80c2bd3a6df">More...</a><br /></td></tr>
+<tr class="separator:a69bd78bf3be2724b4f34c80c2bd3a6df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabd170def79cdbfd56a1d243e6227a75"><td class="memItemLeft" align="right" valign="top"><a id="aabd170def79cdbfd56a1d243e6227a75"></a>
 int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_bell_client.html#aabd170def79cdbfd56a1d243e6227a75">idle</a> ()</td></tr>
 <tr class="memdesc:aabd170def79cdbfd56a1d243e6227a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the modem to idle (ready to transmit). <br /></td></tr>
@@ -278,6 +278,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">BellClient::BellClient </td>
@@ -287,6 +290,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Audio-client constructor. Can be used when <a class="el" href="class_a_f_s_k_client.html" title="Client for audio-based transmissions. Requires Arduino tone() function, and a module capable of direc...">AFSKClient</a> instance already exists. </p>
@@ -381,8 +389,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aa2874910006a927d07d865e69cfe5c65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2874910006a927d07d865e69cfe5c65">&#9670;&nbsp;</a></span>write()</h2>
+<a id="a69bd78bf3be2724b4f34c80c2bd3a6df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69bd78bf3be2724b4f34c80c2bd3a6df">&#9670;&nbsp;</a></span>write()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -400,7 +408,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

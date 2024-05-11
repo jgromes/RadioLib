@@ -5,5 +5,5 @@ var class_r_t_t_y_client =
     [ "begin", "class_r_t_t_y_client.html#ae0b25083baf01469786b6242389298fa", null ],
     [ "idle", "class_r_t_t_y_client.html#ac477e65ea756e56bb9043d778a51b4bc", null ],
     [ "standby", "class_r_t_t_y_client.html#a928dd206749d68b8ce450e14c24b9f22", null ],
-    [ "write", "class_r_t_t_y_client.html#a077a21423deee0393cead0b3a239691f", null ]
+    [ "write", "class_r_t_t_y_client.html#a23220f58b7bda1f24b6343875561586a", null ]
 ];

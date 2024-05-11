@@ -5,5 +5,5 @@ var class_hell_client =
     [ "begin", "class_hell_client.html#a225775fe87f9ed3c3a04142697641242", null ],
     [ "printGlyph", "class_hell_client.html#ac527806ef871dc12555afe7c43a72ed9", null ],
     [ "setInversion", "class_hell_client.html#ae43025b9d55ee21a322bb5d7ee1065b0", null ],
-    [ "write", "class_hell_client.html#a5c5117dadbe33da1cda5fd4981b405eb", null ]
+    [ "write", "class_hell_client.html#af557774ad72c24a94faff8c2be30f0d1", null ]
 ];

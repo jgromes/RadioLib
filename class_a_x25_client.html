@@ -101,9 +101,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab074563d4d22a42d5ea9ad1693d6f373"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">AX25Client</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy)</td></tr>
 <tr class="memdesc:ab074563d4d22a42d5ea9ad1693d6f373"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for 2-FSK mode.  <a href="class_a_x25_client.html#ab074563d4d22a42d5ea9ad1693d6f373">More...</a><br /></td></tr>
 <tr class="separator:ab074563d4d22a42d5ea9ad1693d6f373"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a6e81e629817cdf1b377e4b4f7e4d6520">AX25Client</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *audio)</td></tr>
-<tr class="memdesc:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <a href="class_a_x25_client.html#a6e81e629817cdf1b377e4b4f7e4d6520">More...</a><br /></td></tr>
-<tr class="separator:a6e81e629817cdf1b377e4b4f7e4d6520"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c9244abc270891638312745b301b791"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a9c9244abc270891638312745b301b791">AX25Client</a> (<a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *aud)</td></tr>
+<tr class="memdesc:a9c9244abc270891638312745b301b791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for AFSK mode.  <a href="class_a_x25_client.html#a9c9244abc270891638312745b301b791">More...</a><br /></td></tr>
+<tr class="separator:a9c9244abc270891638312745b301b791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af82e0dd3b50d58584e4e4083a53a4419"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#af82e0dd3b50d58584e4e4083a53a4419">AX25Client</a> (const <a class="el" href="class_a_x25_client.html">AX25Client</a> &amp;ax25)</td></tr>
+<tr class="memdesc:af82e0dd3b50d58584e4e4083a53a4419"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="class_a_x25_client.html#af82e0dd3b50d58584e4e4083a53a4419">More...</a><br /></td></tr>
+<tr class="separator:af82e0dd3b50d58584e4e4083a53a4419"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74a43c60c84e4150b9508c83e461d24e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_x25_client.html#a74a43c60c84e4150b9508c83e461d24e">setCorrection</a> (int16_t mark, int16_t space, float length=1.0f)</td></tr>
 <tr class="memdesc:a74a43c60c84e4150b9508c83e461d24e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set AFSK tone correction offset. On some platforms, this is required to get the audio produced by the setup to match the expected 1200/2200 Hz tones.  <a href="class_a_x25_client.html#a74a43c60c84e4150b9508c83e461d24e">More...</a><br /></td></tr>
 <tr class="separator:a74a43c60c84e4150b9508c83e461d24e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,7 +130,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <div class="textblock"><p>Client for AX25 communication. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab074563d4d22a42d5ea9ad1693d6f373"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab074563d4d22a42d5ea9ad1693d6f373">&#9670;&nbsp;</a></span>AX25Client() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab074563d4d22a42d5ea9ad1693d6f373">&#9670;&nbsp;</a></span>AX25Client() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,8 +163,8 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 
 </div>
 </div>
-<a id="a6e81e629817cdf1b377e4b4f7e4d6520"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6e81e629817cdf1b377e4b4f7e4d6520">&#9670;&nbsp;</a></span>AX25Client() <span class="overload">[2/2]</span></h2>
+<a id="a9c9244abc270891638312745b301b791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c9244abc270891638312745b301b791">&#9670;&nbsp;</a></span>AX25Client() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -173,7 +176,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
           <td class="memname">AX25Client::AX25Client </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="class_a_f_s_k_client.html">AFSKClient</a> *&#160;</td>
-          <td class="paramname"><em>audio</em></td><td>)</td>
+          <td class="paramname"><em>aud</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -187,7 +190,33 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>APRSClient</b></td><
 <p>Constructor for AFSK mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">audio</td><td>Pointer to the AFSK instance providing audio. </td></tr>
+    <tr><td class="paramname">aud</td><td>Pointer to the AFSK instance providing audio. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af82e0dd3b50d58584e4e4083a53a4419"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af82e0dd3b50d58584e4e4083a53a4419">&#9670;&nbsp;</a></span>AX25Client() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">AX25Client::AX25Client </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_a_x25_client.html">AX25Client</a> &amp;&#160;</td>
+          <td class="paramname"><em>ax25</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ax25</td><td><a class="el" href="class_a_x25_client.html" title="Client for AX25 communication.">AX25Client</a> instance to copy. </td></tr>
   </table>
   </dd>
 </dl>

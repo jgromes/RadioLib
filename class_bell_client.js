@@ -7,6 +7,6 @@ var class_bell_client =
     [ "setCorrection", "class_bell_client.html#a90f3f33a09a4cf8d544ca1e9a23beae2", null ],
     [ "setModem", "class_bell_client.html#a163f65f3fcce87d9bea558b34c19bd47", null ],
     [ "standby", "class_bell_client.html#a57c19c733b0dfe80bd321f23b18c1e80", null ],
-    [ "write", "class_bell_client.html#aa2874910006a927d07d865e69cfe5c65", null ],
+    [ "write", "class_bell_client.html#a69bd78bf3be2724b4f34c80c2bd3a6df", null ],
     [ "reply", "class_bell_client.html#a9233e10bc794af85e3e86b4ec2a8746d", null ]
 ];

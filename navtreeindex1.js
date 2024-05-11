@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"class_l_r11x0.html#a3498e0e621f341e415145879989e0948":[3,0,27,75],
 "class_l_r11x0.html#a3563453988a83d22dd07d4691543a300":[3,0,27,32],
 "class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5":[3,0,27,13],
 "class_l_r11x0.html#a377c287f18c939c2b4da3241d8329e58":[3,0,27,35],
@@ -155,10 +156,10 @@ var NAVTREEINDEX1 =
 "class_module.html#afbed643f082286012bf44bba22381ae6":[3,0,31,16],
 "class_morse_client.html":[3,0,32],
 "class_morse_client.html#a3c718208786f8fe55f30eee990ec28e3":[3,0,32,4],
+"class_morse_client.html#a4a9cf8bf1a8bd270417a1a9fca660ef1":[3,0,32,5],
 "class_morse_client.html#a516f19bb51b87ead7f7ed149f2ca92cf":[3,0,32,2],
 "class_morse_client.html#a77eab03be04ef2d693348d9580ee5d3c":[3,0,32,3],
 "class_morse_client.html#aa5c8ec6823388877b7acfa0deab689a2":[3,0,32,1],
-"class_morse_client.html#abd37869212f3338eb7c95c6f16dadbba":[3,0,32,5],
 "class_morse_client.html#aeade3a433da40e6a9f28688f2e6e3b5a":[3,0,32,0],
 "class_pager_client.html":[3,0,34],
 "class_pager_client.html#a1a1dc569f9b60b0ddd6ead7af5a8244f":[3,0,34,2],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "class_r_f69.html#a1b7598b87ffaabdbe733c47317fa91d8":[3,0,41,37],
 "class_r_f69.html#a1fd4609f419d8b0213ee39b05dd40b69":[3,0,41,12],
 "class_r_f69.html#a20242499eb926ff7b7da6e3f74a9ece1":[3,0,41,66],
-"class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a":[3,0,41,54],
-"class_r_f69.html#a21ae7524fe573f1a7e74dee342418222":[3,0,41,69]
+"class_r_f69.html#a219a046c10ddcc0a787ad19346ecad6a":[3,0,41,54]
 };
