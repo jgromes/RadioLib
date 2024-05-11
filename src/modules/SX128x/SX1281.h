@@ -18,7 +18,7 @@ class SX1281: public SX128x {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX1281(Module* mod);
+    SX1281(Module* mod); // cppcheck-suppress noExplicitConstructor
 
 #if !RADIOLIB_GODMODE
   private:

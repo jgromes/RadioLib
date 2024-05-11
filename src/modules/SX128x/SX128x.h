@@ -359,7 +359,7 @@ class SX128x: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX128x(Module* mod);
+    SX128x(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -455,7 +455,7 @@ class SX128x: public PhysicalLayer {
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
       \returns \ref status_codes
     */
-    int16_t scanChannel();
+    int16_t scanChannel() override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -497,23 +497,23 @@ class SX128x: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Interrupt-driven binary transmit method.
@@ -537,7 +537,7 @@ class SX128x: public PhysicalLayer {
 
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method. DIO1 will be activated when full packet is received.
@@ -589,7 +589,7 @@ class SX128x: public PhysicalLayer {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 203.125, 406.25, 812.5 and 1625.0 kHz.
@@ -619,7 +619,7 @@ class SX128x: public PhysicalLayer {
       \param pwr Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr);
+    int16_t setOutputPower(int8_t pwr) override;
 
     /*!
       \brief Check if output power is configurable.
@@ -627,7 +627,7 @@ class SX128x: public PhysicalLayer {
       \param clipped Clipped output power value to what is possible within the module's range.
       \returns \ref status_codes
     */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped);
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
 
     /*!
       \brief Sets preamble length for currently active modem. Allowed values range from 1 to 65535.
@@ -642,7 +642,7 @@ class SX128x: public PhysicalLayer {
       \param br FSK/FLRC bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets FSK frequency deviation. Allowed values range from 0.0 to 3200.0 kHz.
@@ -717,13 +717,13 @@ class SX128x: public PhysicalLayer {
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
       \returns RSSI of the last received packet in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa or ranging modem.
       \returns SNR of the last received packet in dB.
     */
-    float getSNR();
+    float getSNR() override;
 
     /*!
       \brief Gets frequency error of the latest received packet.
@@ -743,7 +743,7 @@ class SX128x: public PhysicalLayer {
       \param len Payload length in bytes.
       \returns Expected time-on-air in microseconds.
     */
-    RadioLibTime_t getTimeOnAir(size_t len);
+    RadioLibTime_t getTimeOnAir(size_t len) override;
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
@@ -775,33 +775,33 @@ class SX128x: public PhysicalLayer {
      \brief Dummy random method, to ensure PhysicalLayer compatibility.
      \returns Always returns 0.
    */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
       \brief Enable/disable inversion of the I and Q signals
       \param enable QI inversion enabled (true) or disabled (false);
       \returns \ref status_codes
     */
-    int16_t invertIQ(bool enable);
+    int16_t invertIQ(bool enable) override;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
       \param func Ignored.
     */
-    void setDirectAction(void (*func)(void));
+    void setDirectAction(void (*func)(void)) override;
 
     /*!
       \brief Dummy method, to ensure PhysicalLayer compatibility.
       \param pin Ignored.
     */
-    void readBit(uint32_t pin);
+    void readBit(uint32_t pin) override;
     #endif
 
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
     // cached LoRa parameters
     float bandwidthKhz = 0;
