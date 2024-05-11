@@ -49,22 +49,28 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
   #endif
 
   // build the info field
-  if((msg == NULL) && (time == NULL)) {
-    // no message, no timestamp
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_NO_MSG "%s%c%s%c", lat, table, lon, symbol);
-  } else if((msg != NULL) && (time == NULL)) {
-    // message, no timestamp
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, table, lon, symbol, msg);
-  } else if((msg == NULL) && (time != NULL)) {
-    // timestamp, no message
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_NO_MSG "%s%s%c%s%c", time, lat, table, lon, symbol);
+  if(msg != NULL) {
+    if(time != NULL) {
+      // timestamp and message
+      sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_MSG "%s%s%c%s%c%s", time, lat, table, lon, symbol, msg);
+    } else {
+      // message, no timestamp
+      sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_MSG "%s%c%s%c%s", lat, table, lon, symbol, msg);
+    }
+  
   } else {
-    // timestamp and message
-    sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_MSG "%s%s%c%s%c%s", time, lat, table, lon, symbol, msg);
+    if(time != NULL) {
+      // timestamp, no message
+      sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_TIME_NO_MSG "%s%s%c%s%c", time, lat, table, lon, symbol);
+    } else {
+      // no message, no timestamp
+      sprintf(info, RADIOLIB_APRS_DATA_TYPE_POSITION_NO_TIME_NO_MSG "%s%c%s%c", lat, table, lon, symbol);
+    }
+
   }
-  info[len] = '\0';
 
   // send the frame
+  info[len] = '\0';
   int16_t state = sendFrame(destCallsign, destSSID, info);
   #if !RADIOLIB_STATIC_ONLY
     delete[] info;
@@ -244,9 +250,9 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     char srcCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1];
     axClient->getCallsign(srcCallsign);
 
-    AX25Frame frameUI(destCallsign, destSSID, srcCallsign, axClient->getSSID(), RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION |
-                      RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
-                      RADIOLIB_AX25_PID_NO_LAYER_3, (const char*)info);
+    AX25Frame frameUI(destCallsign, destSSID, srcCallsign, axClient->getSSID(),
+                      RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
+                      RADIOLIB_AX25_PID_NO_LAYER_3, const_cast<char*>(info));
 
     return(axClient->sendFrame(&frameUI));
   
@@ -256,7 +262,7 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
     char* buff = new char[len];
     snprintf(buff, len, RADIOLIB_APRS_LORA_HEADER "%s-%d>%s,WIDE%d-%d:%s", this->src, this->id, destCallsign, destSSID, destSSID, info);
 
-    int16_t res = this->phyLayer->transmit((uint8_t*)buff, strlen(buff));
+    int16_t res = this->phyLayer->transmit(reinterpret_cast<uint8_t*>(buff), strlen(buff));
     delete[] buff;
     return(res);
   } 
