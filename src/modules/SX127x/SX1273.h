@@ -20,7 +20,7 @@ class SX1273: public SX1272 {
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX1273(Module* mod);
+    SX1273(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 

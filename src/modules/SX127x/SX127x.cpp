@@ -905,13 +905,13 @@ int16_t SX127x::setBitRateCommon(float br, uint8_t fracRegAddr) {
   RADIOLIB_ASSERT(state);
 
   // set bit rate
-  uint16_t bitRate = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / br;
-  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_MSB, (bitRate & 0xFF00) >> 8, 7, 0);
-  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_LSB, bitRate & 0x00FF, 7, 0);
+  uint16_t bitRateRaw = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / br;
+  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_MSB, (bitRateRaw & 0xFF00) >> 8, 7, 0);
+  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_LSB, bitRateRaw & 0x00FF, 7, 0);
 
   // set fractional part of bit rate
   if(!ookEnabled) {
-    float bitRateRem = ((RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / (float)br) - (float)bitRate;
+    float bitRateRem = ((RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / (float)br) - (float)bitRateRaw;
     uint8_t bitRateFrac = bitRateRem * 16;
     state |= this->mod->SPIsetRegValue(fracRegAddr, bitRateFrac, 7, 0);
   }
@@ -1335,8 +1335,14 @@ int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
 
   RADIOLIB_CHECK_RANGE(offset, -16, 15, RADIOLIB_ERR_INVALID_RSSI_OFFSET);
 
+  // calculate the two's complement
+  uint8_t offsetRaw = RADIOLIB_ABS(offset);
+  offsetRaw ^= 0x1F;
+  offsetRaw += 1;
+  offsetRaw &= 0x1F;
+
   // set new register values
-  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_CONFIG, offset << 3, 7, 3);
+  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_CONFIG, offsetRaw << 3, 7, 3);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_CONFIG, smoothingSamples, 2, 0);
   return(state);
 }
@@ -1538,7 +1544,7 @@ int16_t SX127x::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
-bool SX127x::findChip(uint8_t* vers, uint8_t num) {
+bool SX127x::findChip(const uint8_t* vers, uint8_t num) {
   uint8_t i = 0;
   bool flagFound = false;
   while((i < 10) && !flagFound) {
@@ -1547,8 +1553,8 @@ bool SX127x::findChip(uint8_t* vers, uint8_t num) {
 
     // check version register
     int16_t version = getChipVersion();
-    for(uint8_t i = 0; i < num; i++) {
-      if(version == vers[i]) {
+    for(uint8_t j = 0; j < num; j++) {
+      if(version == vers[j]) {
         flagFound = true;
         break;
       }

@@ -594,7 +594,7 @@ class SX127x: public PhysicalLayer {
       \brief Default constructor. Called internally when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX127x(Module* mod);
+    SX127x(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -655,7 +655,7 @@ class SX127x: public PhysicalLayer {
       %Module will wake up automatically when methods like transmit or receive are called.
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep() override;
 
     /*!
       \brief Sets the %LoRa module to standby.
@@ -721,34 +721,34 @@ class SX127x: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a channel scan is finished.
       \param func ISR to call.
     */
-    void setChannelScanAction(void (*func)(void));
+    void setChannelScanAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a channel scan is finished.
     */
-    void clearChannelScanAction();
+    void clearChannelScanAction() override;
 
     /*!
       \brief Set interrupt service routine function to call when FIFO is empty.
@@ -810,7 +810,7 @@ class SX127x: public PhysicalLayer {
       Implemented for compatibility with PhysicalLayer.
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
@@ -832,7 +832,7 @@ class SX127x: public PhysicalLayer {
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -904,7 +904,7 @@ class SX127x: public PhysicalLayer {
       \brief Gets signal-to-noise ratio of the latest received packet. Only available in LoRa mode.
       \returns Last packet signal-to-noise ratio (SNR).
     */
-    float getSNR();
+    float getSNR() override;
 
     /*!
       \brief Get data rate of the latest transmitted packet.
@@ -1062,7 +1062,7 @@ class SX127x: public PhysicalLayer {
       \param timeoutUs Timeout in microseconds to listen for
       \returns Timeout value in a unit that is specific for the used module
     */
-    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
+    RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
       \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
@@ -1070,13 +1070,13 @@ class SX127x: public PhysicalLayer {
       \param irqMask Mask indicating which IRQ triggers a DIO
       \returns \ref status_codes
     */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
+    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set
       \returns Whether RxTimeout IRQ is set
     */
-    bool isRxTimeout();
+    bool isRxTimeout() override;
 
     /*!
       \brief Enable CRC filtering and generation.
@@ -1133,7 +1133,7 @@ class SX127x: public PhysicalLayer {
       \brief Get one truly random byte from RSSI noise.
       \returns TRNG byte.
     */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
       \brief Read version SPI register. Should return SX1278_CHIP_VERSION (0x12) or SX1272_CHIP_VERSION (0x22) if SX127x is connected and working.
@@ -1153,13 +1153,13 @@ class SX127x: public PhysicalLayer {
       \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
-    void setDirectAction(void (*func)(void));
+    void setDirectAction(void (*func)(void)) override;
 
     /*!
       \brief Function to read and process data bit in direct reception mode.
       \param pin Pin on which to read.
     */
-    void readBit(uint32_t pin);
+    void readBit(uint32_t pin) override;
     #endif
 
     /*!
@@ -1192,7 +1192,7 @@ class SX127x: public PhysicalLayer {
       \param value The value that indicates which function to place on that pin. See chip datasheet for details.
       \returns \ref status_codes
     */
-    int16_t setDIOMapping(uint32_t pin, uint32_t value);
+    int16_t setDIOMapping(uint32_t pin, uint32_t value) override;
 
     /*!
       \brief Configure DIO mapping to use RSSI or Preamble Detect for pins that support it.
@@ -1221,7 +1221,7 @@ class SX127x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
 #if !RADIOLIB_GODMODE
   protected:
@@ -1254,7 +1254,7 @@ class SX127x: public PhysicalLayer {
     int16_t config();
     int16_t directMode();
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-    bool findChip(uint8_t* vers, uint8_t num);
+    bool findChip(const uint8_t* vers, uint8_t num);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
     void clearIRQFlags();

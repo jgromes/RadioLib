@@ -111,7 +111,7 @@ class SX1278: public SX127x {
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX1278(Module* mod);
+    SX1278(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -157,7 +157,7 @@ class SX1278: public SX127x {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets %LoRa link bandwidth. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
@@ -266,7 +266,7 @@ class SX1278: public SX127x {
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Gets recorded signal strength indicator.
@@ -323,7 +323,7 @@ class SX1278: public SX127x {
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
-    void errataFix(bool rx);
+    void errataFix(bool rx) override;
 
 #if !RADIOLIB_GODMODE
   private:
