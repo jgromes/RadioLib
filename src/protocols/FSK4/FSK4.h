@@ -85,8 +85,8 @@ class FSK4Client {
     uint32_t baseFreq = 0, baseFreqHz = 0;
     uint32_t shiftFreq = 0, shiftFreqHz = 0;
     RadioLibTime_t bitDuration = 0;
-    uint32_t tones[4];
-    uint32_t tonesHz[4];
+    uint32_t tones[4] = { 0 };
+    uint32_t tonesHz[4] = { 0 };
 
     void tone(uint8_t i);
 
