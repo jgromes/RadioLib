@@ -58,7 +58,7 @@ size_t BellClient::write(uint8_t b) {
   uint16_t toneSpace = this->modemType.freqSpace;
   if(this->reply) {
     toneMark = this->modemType.freqMarkReply;
-    toneMark = this->modemType.freqSpaceReply;
+    toneSpace = this->modemType.freqSpaceReply;
   }
 
   // get the Module pointer to access HAL
