@@ -298,14 +298,14 @@ int16_t nRF24::setBitRate(float br) {
   RADIOLIB_ASSERT(state);
 
   // set data rate
-  uint16_t dataRate = (uint16_t)br;
-  if(dataRate == 250) {
+  uint16_t bitRate = (uint16_t)br;
+  if(bitRate == 250) {
     state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 5, 5);
     state |= this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_250_KBPS, 3, 3);
-  } else if(dataRate == 1000) {
+  } else if(bitRate == 1000) {
     state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_1_MBPS, 5, 5);
     state |= this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_1_MBPS, 3, 3);
-  } else if(dataRate == 2000) {
+  } else if(bitRate == 2000) {
     state = this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_2_MBPS, 5, 5);
     state |= this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_RF_SETUP, RADIOLIB_NRF24_DR_2_MBPS, 3, 3);
   } else {
@@ -313,7 +313,7 @@ int16_t nRF24::setBitRate(float br) {
   }
   
   if(state == RADIOLIB_ERR_NONE) {
-    this->dataRate = dataRate;
+    this->dataRate = bitRate;
   }
 
 

@@ -193,7 +193,7 @@ class nRF24: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    nRF24(Module* mod);
+    nRF24(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -215,7 +215,7 @@ class nRF24: public PhysicalLayer {
       \brief Sets the module to sleep mode.
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep() override;
 
     /*!
       \brief Sets the module to standby mode.
@@ -279,23 +279,23 @@ class nRF24: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted.
@@ -317,7 +317,7 @@ class nRF24: public PhysicalLayer {
       \brief Interrupt-driven receive method. IRQ will be activated when full packet is received.
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
@@ -327,7 +327,7 @@ class nRF24: public PhysicalLayer {
       \param len Ignored.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -345,21 +345,21 @@ class nRF24: public PhysicalLayer {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets output power. Allowed values are -18, -12, -6 or 0 dBm.
       \param pwr Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t pwr);
+    int16_t setOutputPower(int8_t pwr) override;
 
     /*!
       \brief Sets address width of transmit and receive pipes in bytes. Allowed values are 3, 4 or 5 bytes.
@@ -468,7 +468,7 @@ class nRF24: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
     void SPIreadRxPayload(uint8_t* data, uint8_t numBytes);
     void SPIwriteTxPayload(uint8_t* data, uint8_t numBytes);
