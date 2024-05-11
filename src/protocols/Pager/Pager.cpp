@@ -28,9 +28,6 @@ PagerClient::PagerClient(PhysicalLayer* phy) {
   #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
   readBitInstance = phyLayer;
   #endif
-  filterNumAddresses = 0;
-  filterAddresses = NULL;
-  filterMasks = NULL;
 }
 
 int16_t PagerClient::begin(float base, uint16_t speed, bool invert, uint16_t shift) {
@@ -206,7 +203,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
           // in BCD mode, pad the rest of the code word with spaces (0xC)
           if(encoding == RADIOLIB_PAGER_BCD) {
             uint8_t numSteps = (symbolPos - RADIOLIB_PAGER_FUNC_BITS_POS + symbolLength)/symbolLength;
-            for(uint8_t i = 0; i < numSteps; i++) {
+            for(uint8_t j = 0; j < numSteps; j++) {
               symbol = encodeBCD(' ');
               symbol = Module::reflect(symbol, 8);
               symbol >>= (8 - symbolLength);
@@ -397,17 +394,15 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
   }
 
   // we have the address, start pulling out the message
-  bool complete = false;
   size_t decodedBytes = 0;
   uint32_t prevCw = 0;
   bool overflow = false;
   int8_t ovfBits = 0;
-  while(!complete && phyLayer->available()) {
+  while(phyLayer->available()) {
     uint32_t cw = read();
 
     // check if it's the idle code word
     if(cw == RADIOLIB_PAGER_IDLE_CODE_WORD) {
-      complete = true;
       break;
     }
 
