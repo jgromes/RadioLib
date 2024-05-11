@@ -308,9 +308,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4">More...</a><br /></td></tr>
 <tr class="separator:a19f3c26d7a7959e302fc8174fc88a6d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676bf9622cf84822757c5dc40cc73687"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask)</td></tr>
-<tr class="memdesc:a676bf9622cf84822757c5dc40cc73687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687">More...</a><br /></td></tr>
-<tr class="separator:a676bf9622cf84822757c5dc40cc73687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab593887ad083a1d5affda7a42656749e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ab593887ad083a1d5affda7a42656749e">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask) override</td></tr>
+<tr class="memdesc:ab593887ad083a1d5affda7a42656749e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x126x.html#ab593887ad083a1d5affda7a42656749e">More...</a><br /></td></tr>
+<tr class="separator:ab593887ad083a1d5affda7a42656749e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34aea9413d71676c7a60fcf24017694a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">isRxTimeout</a> () override</td></tr>
 <tr class="memdesc:a34aea9413d71676c7a60fcf24017694a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a">More...</a><br /></td></tr>
 <tr class="separator:a34aea9413d71676c7a60fcf24017694a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -472,6 +472,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">SX126x::SX126x </td>
@@ -481,6 +484,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Default constructor. </p>
@@ -1180,8 +1188,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a676bf9622cf84822757c5dc40cc73687"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a676bf9622cf84822757c5dc40cc73687">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
+<a id="ab593887ad083a1d5affda7a42656749e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab593887ad083a1d5affda7a42656749e">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1209,7 +1217,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

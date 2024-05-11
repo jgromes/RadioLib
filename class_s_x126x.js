@@ -27,7 +27,7 @@ var class_s_x126x =
     [ "getTimeOnAir", "class_s_x126x.html#a16eb0bdb051f3cf288db752d18182ae2", null ],
     [ "implicitHeader", "class_s_x126x.html#adec09cba71494bd927ad1da786606ca6", null ],
     [ "invertIQ", "class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e", null ],
-    [ "irqRxDoneRxTimeout", "class_s_x126x.html#a676bf9622cf84822757c5dc40cc73687", null ],
+    [ "irqRxDoneRxTimeout", "class_s_x126x.html#ab593887ad083a1d5affda7a42656749e", null ],
     [ "isRxTimeout", "class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a", null ],
     [ "randomByte", "class_s_x126x.html#a187a616285c5872f9603a86c122deaf2", null ],
     [ "readBit", "class_s_x126x.html#acb1a1c51f207439880ae537f5ffeb17c", null ],
