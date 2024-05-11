@@ -21,7 +21,7 @@ class Si4430: public Si4432 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio chip.
     */
-    Si4430(Module* mod);
+    Si4430(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -44,14 +44,14 @@ class Si4430: public Si4432 {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets output power. Allowed values range from -8 to 13 dBm in 3 dBm steps.
       \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t power) override;
 
 #if !RADIOLIB_GODMODE
   protected:
