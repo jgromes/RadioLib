@@ -19,11 +19,11 @@ class RadioLibPrint {
     virtual size_t write(uint8_t) = 0;
     size_t write(const char *str) {
       if (str == NULL) return 0;
-      return write((const uint8_t *)str, strlen(str));
+      return write(reinterpret_cast<const uint8_t *>(str), strlen(str));
     }
     virtual size_t write(const uint8_t *buffer, size_t size);
     size_t write(const char *buffer, size_t size) {
-      return write((const uint8_t *)buffer, size);
+      return write(reinterpret_cast<const uint8_t *>(buffer), size);
     }
 
     size_t print(ITA2String& ita2);
@@ -60,7 +60,7 @@ class RadioLibPrint {
   protected:
 #endif
     uint8_t encoding = RADIOLIB_ASCII_EXTENDED;
-    const char* lineFeed;
+    const char* lineFeed = "\r\n";
 
     size_t printNumber(unsigned long, uint8_t);
     size_t printFloat(double, uint8_t);

@@ -46,6 +46,9 @@ uint8_t* ITA2String::byteArr() {
     uint8_t* temp = new uint8_t[asciiLen*2 + 1];
   #endif
 
+  // ensure the minimum possible array size is always initialized
+  temp[0] = 0;
+  
   size_t arrayLen = 0;
   bool flagFigure = false;
   for(size_t i = 0; i < asciiLen; i++) {
