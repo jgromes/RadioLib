@@ -112,9 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0ef68849f812367432f5a3798f94b8ce"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a0ef68849f812367432f5a3798f94b8ce">begin</a> (int16_t freq=RADIOLIB_NRF24_DEFAULT_FREQ, int16_t dr=RADIOLIB_NRF24_DEFAULT_DR, int8_t pwr=RADIOLIB_NRF24_DEFAULT_POWER, uint8_t addrWidth=RADIOLIB_NRF24_DEFAULT_ADDRWIDTH)</td></tr>
 <tr class="memdesc:a0ef68849f812367432f5a3798f94b8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <a href="classn_r_f24.html#a0ef68849f812367432f5a3798f94b8ce">More...</a><br /></td></tr>
 <tr class="separator:a0ef68849f812367432f5a3798f94b8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a033287e33c532638c11e2775a073f297"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a033287e33c532638c11e2775a073f297">sleep</a> ()</td></tr>
-<tr class="memdesc:a033287e33c532638c11e2775a073f297"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode.  <a href="classn_r_f24.html#a033287e33c532638c11e2775a073f297">More...</a><br /></td></tr>
-<tr class="separator:a033287e33c532638c11e2775a073f297"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69b75e0889c609099487a43c8c3b6721"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a69b75e0889c609099487a43c8c3b6721">sleep</a> () override</td></tr>
+<tr class="memdesc:a69b75e0889c609099487a43c8c3b6721"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode.  <a href="classn_r_f24.html#a69b75e0889c609099487a43c8c3b6721">More...</a><br /></td></tr>
+<tr class="separator:a69b75e0889c609099487a43c8c3b6721"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5957f06a891d3d9c07e87b59c239ce56"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a5957f06a891d3d9c07e87b59c239ce56">standby</a> () override</td></tr>
 <tr class="memdesc:a5957f06a891d3d9c07e87b59c239ce56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <a href="classn_r_f24.html#a5957f06a891d3d9c07e87b59c239ce56">More...</a><br /></td></tr>
 <tr class="separator:a5957f06a891d3d9c07e87b59c239ce56"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -140,44 +140,44 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#aaf5887fe58c4d542cbed80482de1d42d">clearIrqAction</a> ()</td></tr>
 <tr class="memdesc:aaf5887fe58c4d542cbed80482de1d42d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine . <br /></td></tr>
 <tr class="separator:aaf5887fe58c4d542cbed80482de1d42d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08b90ae895a6a45bceb11f67237245b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a08b90ae895a6a45bceb11f67237245b4">setPacketReceivedAction</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:a08b90ae895a6a45bceb11f67237245b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="classn_r_f24.html#a08b90ae895a6a45bceb11f67237245b4">More...</a><br /></td></tr>
-<tr class="separator:a08b90ae895a6a45bceb11f67237245b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4295cfbfe05ec696aae680593f63ff7b"><td class="memItemLeft" align="right" valign="top"><a id="a4295cfbfe05ec696aae680593f63ff7b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a4295cfbfe05ec696aae680593f63ff7b">clearPacketReceivedAction</a> ()</td></tr>
-<tr class="memdesc:a4295cfbfe05ec696aae680593f63ff7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
-<tr class="separator:a4295cfbfe05ec696aae680593f63ff7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e00d6729ee3c869cda8ccb5ae15ba27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a8e00d6729ee3c869cda8ccb5ae15ba27">setPacketSentAction</a> (void(*func)(void))</td></tr>
-<tr class="memdesc:a8e00d6729ee3c869cda8ccb5ae15ba27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="classn_r_f24.html#a8e00d6729ee3c869cda8ccb5ae15ba27">More...</a><br /></td></tr>
-<tr class="separator:a8e00d6729ee3c869cda8ccb5ae15ba27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5ae45ceec01854226ecce0320f1051e2"><td class="memItemLeft" align="right" valign="top"><a id="a5ae45ceec01854226ecce0320f1051e2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a5ae45ceec01854226ecce0320f1051e2">clearPacketSentAction</a> ()</td></tr>
-<tr class="memdesc:a5ae45ceec01854226ecce0320f1051e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
-<tr class="separator:a5ae45ceec01854226ecce0320f1051e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60df9afa489eabe3a3ca193ab7709165"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a60df9afa489eabe3a3ca193ab7709165">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
+<tr class="memdesc:a60df9afa489eabe3a3ca193ab7709165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <a href="classn_r_f24.html#a60df9afa489eabe3a3ca193ab7709165">More...</a><br /></td></tr>
+<tr class="separator:a60df9afa489eabe3a3ca193ab7709165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52c097dc0078fc4e8707c095378aff3d"><td class="memItemLeft" align="right" valign="top"><a id="a52c097dc0078fc4e8707c095378aff3d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a52c097dc0078fc4e8707c095378aff3d">clearPacketReceivedAction</a> () override</td></tr>
+<tr class="memdesc:a52c097dc0078fc4e8707c095378aff3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is received. <br /></td></tr>
+<tr class="separator:a52c097dc0078fc4e8707c095378aff3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26b5f873db167733df143a0608eea3ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a26b5f873db167733df143a0608eea3ac">setPacketSentAction</a> (void(*func)(void)) override</td></tr>
+<tr class="memdesc:a26b5f873db167733df143a0608eea3ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is sent.  <a href="classn_r_f24.html#a26b5f873db167733df143a0608eea3ac">More...</a><br /></td></tr>
+<tr class="separator:a26b5f873db167733df143a0608eea3ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41499cf2c1a6c83a04ff89dd59e3fa56"><td class="memItemLeft" align="right" valign="top"><a id="a41499cf2c1a6c83a04ff89dd59e3fa56"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a41499cf2c1a6c83a04ff89dd59e3fa56">clearPacketSentAction</a> () override</td></tr>
+<tr class="memdesc:a41499cf2c1a6c83a04ff89dd59e3fa56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
+<tr class="separator:a41499cf2c1a6c83a04ff89dd59e3fa56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42fdc828b49f2b8e15457189bd57d917"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr) override</td></tr>
 <tr class="memdesc:a42fdc828b49f2b8e15457189bd57d917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">More...</a><br /></td></tr>
 <tr class="separator:a42fdc828b49f2b8e15457189bd57d917"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">More...</a><br /></td></tr>
 <tr class="separator:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4f443da5d90e032e5f2f65420515f9c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">startReceive</a> ()</td></tr>
-<tr class="memdesc:af4f443da5d90e032e5f2f65420515f9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full packet is received.  <a href="classn_r_f24.html#af4f443da5d90e032e5f2f65420515f9c">More...</a><br /></td></tr>
-<tr class="separator:af4f443da5d90e032e5f2f65420515f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2288ed9242e157bc20ec02fddea30c3e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a2288ed9242e157bc20ec02fddea30c3e">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len)</td></tr>
-<tr class="memdesc:a2288ed9242e157bc20ec02fddea30c3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a2288ed9242e157bc20ec02fddea30c3e">More...</a><br /></td></tr>
-<tr class="separator:a2288ed9242e157bc20ec02fddea30c3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c6aa3622c887118fb8d8cb2689fdff2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a3c6aa3622c887118fb8d8cb2689fdff2">startReceive</a> () override</td></tr>
+<tr class="memdesc:a3c6aa3622c887118fb8d8cb2689fdff2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ will be activated when full packet is received.  <a href="classn_r_f24.html#a3c6aa3622c887118fb8d8cb2689fdff2">More...</a><br /></td></tr>
+<tr class="separator:a3c6aa3622c887118fb8d8cb2689fdff2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38b0084ad11090f918f4f370b9df7514"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override</td></tr>
+<tr class="memdesc:a38b0084ad11090f918f4f370b9df7514"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514">More...</a><br /></td></tr>
+<tr class="separator:a38b0084ad11090f918f4f370b9df7514"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a410fb78acb4ed358818c132687b8857a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a410fb78acb4ed358818c132687b8857a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="classn_r_f24.html#a410fb78acb4ed358818c132687b8857a">More...</a><br /></td></tr>
 <tr class="separator:a410fb78acb4ed358818c132687b8857a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a408278336cdf25fd205ecffea86c26e8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">setFrequency</a> (float freq)</td></tr>
-<tr class="memdesc:a408278336cdf25fd205ecffea86c26e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.  <a href="classn_r_f24.html#a408278336cdf25fd205ecffea86c26e8">More...</a><br /></td></tr>
-<tr class="separator:a408278336cdf25fd205ecffea86c26e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0873f58ae62e41cff99813e21cc8b02a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a">setBitRate</a> (float br)</td></tr>
-<tr class="memdesc:a0873f58ae62e41cff99813e21cc8b02a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.  <a href="classn_r_f24.html#a0873f58ae62e41cff99813e21cc8b02a">More...</a><br /></td></tr>
-<tr class="separator:a0873f58ae62e41cff99813e21cc8b02a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9859fa54aed7d3cd82839bad9d7d33a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ad9859fa54aed7d3cd82839bad9d7d33a">setOutputPower</a> (int8_t pwr)</td></tr>
-<tr class="memdesc:ad9859fa54aed7d3cd82839bad9d7d33a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are -18, -12, -6 or 0 dBm.  <a href="classn_r_f24.html#ad9859fa54aed7d3cd82839bad9d7d33a">More...</a><br /></td></tr>
-<tr class="separator:ad9859fa54aed7d3cd82839bad9d7d33a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f24764b2ecffc076e72dce0b036116"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a18f24764b2ecffc076e72dce0b036116">setFrequency</a> (float freq) override</td></tr>
+<tr class="memdesc:a18f24764b2ecffc076e72dce0b036116"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 2400 MHz to 2525 MHz.  <a href="classn_r_f24.html#a18f24764b2ecffc076e72dce0b036116">More...</a><br /></td></tr>
+<tr class="separator:a18f24764b2ecffc076e72dce0b036116"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a760d3f47f58ddacdf41975447484a47c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a760d3f47f58ddacdf41975447484a47c">setBitRate</a> (float br) override</td></tr>
+<tr class="memdesc:a760d3f47f58ddacdf41975447484a47c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets bit rate. Allowed values are 2000, 1000 or 250 kbps.  <a href="classn_r_f24.html#a760d3f47f58ddacdf41975447484a47c">More...</a><br /></td></tr>
+<tr class="separator:a760d3f47f58ddacdf41975447484a47c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fa66ce5fb6d7b22bbb439c2f9103bf3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a4fa66ce5fb6d7b22bbb439c2f9103bf3">setOutputPower</a> (int8_t pwr) override</td></tr>
+<tr class="memdesc:a4fa66ce5fb6d7b22bbb439c2f9103bf3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are -18, -12, -6 or 0 dBm.  <a href="classn_r_f24.html#a4fa66ce5fb6d7b22bbb439c2f9103bf3">More...</a><br /></td></tr>
+<tr class="separator:a4fa66ce5fb6d7b22bbb439c2f9103bf3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5b01677f5ce6bee54da8fc7098c339f4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4">setAddressWidth</a> (uint8_t addrWidth)</td></tr>
 <tr class="memdesc:a5b01677f5ce6bee54da8fc7098c339f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address width of transmit and receive pipes in bytes. Allowed values are 3, 4 or 5 bytes.  <a href="classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4">More...</a><br /></td></tr>
 <tr class="separator:a5b01677f5ce6bee54da8fc7098c339f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -827,8 +827,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a0873f58ae62e41cff99813e21cc8b02a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0873f58ae62e41cff99813e21cc8b02a">&#9670;&nbsp;</a></span>setBitRate()</h2>
+<a id="a760d3f47f58ddacdf41975447484a47c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a760d3f47f58ddacdf41975447484a47c">&#9670;&nbsp;</a></span>setBitRate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -846,7 +846,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -965,8 +965,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a408278336cdf25fd205ecffea86c26e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a408278336cdf25fd205ecffea86c26e8">&#9670;&nbsp;</a></span>setFrequency()</h2>
+<a id="a18f24764b2ecffc076e72dce0b036116"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f24764b2ecffc076e72dce0b036116">&#9670;&nbsp;</a></span>setFrequency()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -984,7 +984,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1065,8 +1065,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="ad9859fa54aed7d3cd82839bad9d7d33a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9859fa54aed7d3cd82839bad9d7d33a">&#9670;&nbsp;</a></span>setOutputPower()</h2>
+<a id="a4fa66ce5fb6d7b22bbb439c2f9103bf3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fa66ce5fb6d7b22bbb439c2f9103bf3">&#9670;&nbsp;</a></span>setOutputPower()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1084,7 +1084,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1102,8 +1102,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a08b90ae895a6a45bceb11f67237245b4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08b90ae895a6a45bceb11f67237245b4">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
+<a id="a60df9afa489eabe3a3ca193ab7709165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60df9afa489eabe3a3ca193ab7709165">&#9670;&nbsp;</a></span>setPacketReceivedAction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1121,7 +1121,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1138,8 +1138,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a8e00d6729ee3c869cda8ccb5ae15ba27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e00d6729ee3c869cda8ccb5ae15ba27">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
+<a id="a26b5f873db167733df143a0608eea3ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26b5f873db167733df143a0608eea3ac">&#9670;&nbsp;</a></span>setPacketSentAction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1157,7 +1157,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1277,8 +1277,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a033287e33c532638c11e2775a073f297"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a033287e33c532638c11e2775a073f297">&#9670;&nbsp;</a></span>sleep()</h2>
+<a id="a69b75e0889c609099487a43c8c3b6721"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69b75e0889c609099487a43c8c3b6721">&#9670;&nbsp;</a></span>sleep()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1295,7 +1295,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1374,8 +1374,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="af4f443da5d90e032e5f2f65420515f9c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4f443da5d90e032e5f2f65420515f9c">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+<a id="a3c6aa3622c887118fb8d8cb2689fdff2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c6aa3622c887118fb8d8cb2689fdff2">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1392,7 +1392,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1404,8 +1404,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a2288ed9242e157bc20ec02fddea30c3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2288ed9242e157bc20ec02fddea30c3e">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="a38b0084ad11090f918f4f370b9df7514"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38b0084ad11090f918f4f370b9df7514">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1445,7 +1445,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
