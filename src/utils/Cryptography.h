@@ -142,23 +142,23 @@ class RadioLibAES128 {
       \param cmac CMAC to verify.
       \returns True if valid, false otherwise.
     */
-    bool verifyCMAC(uint8_t* in, size_t len, uint8_t* cmac);
+    bool verifyCMAC(uint8_t* in, size_t len, const uint8_t* cmac);
   
   private:
-    uint8_t* keyPtr;
-    uint8_t roundKey[RADIOLIB_AES128_KEY_EXP_SIZE];
+    uint8_t* keyPtr = nullptr;
+    uint8_t roundKey[RADIOLIB_AES128_KEY_EXP_SIZE] = { 0 };
 
-    void keyExpansion(uint8_t* roundKey, uint8_t* key);
+    void keyExpansion(uint8_t* roundKey, const uint8_t* key);
     void cipher(state_t* state, uint8_t* roundKey);
     void decipher(state_t* state, uint8_t* roundKey);
 
     void subWord(uint8_t* word);
     void rotWord(uint8_t* word);
 
-    void addRoundKey(uint8_t round, state_t* state, uint8_t* roundKey);
+    void addRoundKey(uint8_t round, state_t* state, const uint8_t* roundKey);
 
-    void blockXor(uint8_t* dst, uint8_t* a, uint8_t* b);
-    void blockLeftshift(uint8_t* dst, uint8_t* src);
+    void blockXor(uint8_t* dst, const uint8_t* a, const uint8_t* b);
+    void blockLeftshift(uint8_t* dst, const uint8_t* src);
     void generateSubkeys(uint8_t* key1, uint8_t* key2);
 
     void subBytes(state_t* state, const uint8_t* box);

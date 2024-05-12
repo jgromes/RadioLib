@@ -82,7 +82,7 @@ void RadioLibAES128::generateCMAC(uint8_t* in, size_t len, uint8_t* cmac) {
   delete[] buff;
 }
 
-bool RadioLibAES128::verifyCMAC(uint8_t* in, size_t len, uint8_t* cmac) {
+bool RadioLibAES128::verifyCMAC(uint8_t* in, size_t len, const uint8_t* cmac) {
   uint8_t cmacReal[RADIOLIB_AES128_BLOCK_SIZE];
   this->generateCMAC(in, len, cmacReal);
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
@@ -93,7 +93,7 @@ bool RadioLibAES128::verifyCMAC(uint8_t* in, size_t len, uint8_t* cmac) {
   return(true);
 }
 
-void RadioLibAES128::keyExpansion(uint8_t* roundKey, uint8_t* key) {
+void RadioLibAES128::keyExpansion(uint8_t* roundKey, const uint8_t* key) {
   uint8_t tmp[4];
 
   // the first round key is the key itself
@@ -167,7 +167,7 @@ void RadioLibAES128::rotWord(uint8_t* word) {
   }
 }
 
-void RadioLibAES128::addRoundKey(uint8_t round, state_t* state, uint8_t* roundKey) {
+void RadioLibAES128::addRoundKey(uint8_t round, state_t* state, const uint8_t* roundKey) {
   for(size_t row = 0; row < 4; row++) {
     for(size_t col = 0; col < 4; col++) {
       (*state)[row][col] ^= roundKey[(round * RADIOLIB_AES128_N_B * 4) + (row * RADIOLIB_AES128_N_B) + col];
@@ -175,13 +175,13 @@ void RadioLibAES128::addRoundKey(uint8_t round, state_t* state, uint8_t* roundKe
   }
 }
 
-void RadioLibAES128::blockXor(uint8_t* dst, uint8_t* a, uint8_t* b) {
+void RadioLibAES128::blockXor(uint8_t* dst, const uint8_t* a, const uint8_t* b) {
   for(uint8_t j = 0; j < RADIOLIB_AES128_BLOCK_SIZE; j++) {
     dst[j] = a[j] ^ b[j];
   }
 }
 
-void RadioLibAES128::blockLeftshift(uint8_t* dst, uint8_t* src) {
+void RadioLibAES128::blockLeftshift(uint8_t* dst, const uint8_t* src) {
   uint8_t ovf = 0x00;
   for(int8_t i = RADIOLIB_AES128_BLOCK_SIZE - 1; i >= 0; i--) {
     dst[i] = src[i] << 1;
