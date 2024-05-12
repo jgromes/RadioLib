@@ -964,7 +964,7 @@ int16_t SX128x::setDataShaping(uint8_t sh) {
   }
 }
 
-int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
+int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC))) {

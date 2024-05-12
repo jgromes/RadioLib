@@ -666,7 +666,7 @@ class SX128x: public PhysicalLayer {
       \param len Sync word length in bytes.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, uint8_t len);
+    int16_t setSyncWord(const uint8_t* syncWord, uint8_t len);
 
     /*!
       \brief Sets LoRa sync word.
