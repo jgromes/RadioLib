@@ -109,6 +109,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a49f10e1b05e7463583ac05b3284b9dda"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">ExternalRadio</a> (<a class="el" href="class_radio_lib_hal.html">RadioLibHal</a> *hal, uint32_t pin=RADIOLIB_NC)</td></tr>
 <tr class="memdesc:a49f10e1b05e7463583ac05b3284b9dda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_external_radio.html#a49f10e1b05e7463583ac05b3284b9dda">More...</a><br /></td></tr>
 <tr class="separator:a49f10e1b05e7463583ac05b3284b9dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69b6354e92a89c01f3695ec9bdd0b554"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a69b6354e92a89c01f3695ec9bdd0b554">ExternalRadio</a> (const <a class="el" href="class_external_radio.html">ExternalRadio</a> &amp;ext)</td></tr>
+<tr class="memdesc:a69b6354e92a89c01f3695ec9bdd0b554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="class_external_radio.html#a69b6354e92a89c01f3695ec9bdd0b554">More...</a><br /></td></tr>
+<tr class="separator:a69b6354e92a89c01f3695ec9bdd0b554"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee6ca3af0849aed193e96cb0691e89e0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_external_radio.html">ExternalRadio</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#aee6ca3af0849aed193e96cb0691e89e0">operator=</a> (const <a class="el" href="class_external_radio.html">ExternalRadio</a> &amp;ext)</td></tr>
+<tr class="memdesc:aee6ca3af0849aed193e96cb0691e89e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Overload for assignment operator.  <a href="class_external_radio.html#aee6ca3af0849aed193e96cb0691e89e0">More...</a><br /></td></tr>
+<tr class="separator:aee6ca3af0849aed193e96cb0691e89e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46f76689b07d29a626faf917ad264ad0"><td class="memItemLeft" align="right" valign="top"><a id="a46f76689b07d29a626faf917ad264ad0"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#a46f76689b07d29a626faf917ad264ad0">~ExternalRadio</a> ()</td></tr>
+<tr class="memdesc:a46f76689b07d29a626faf917ad264ad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default destructor. <br /></td></tr>
+<tr class="separator:a46f76689b07d29a626faf917ad264ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_module.html">Module</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_external_radio.html#adfb1275ec53dbbd8fde2e8102e8f375d">getMod</a> () override</td></tr>
 <tr class="memdesc:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to retrieve pointer to the underlying <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance.  <a href="class_external_radio.html#adfb1275ec53dbbd8fde2e8102e8f375d">More...</a><br /></td></tr>
 <tr class="separator:adfb1275ec53dbbd8fde2e8102e8f375d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -287,7 +297,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div class="textblock"><p>Class to interface with external radio hardware. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a49f10e1b05e7463583ac05b3284b9dda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a49f10e1b05e7463583ac05b3284b9dda">&#9670;&nbsp;</a></span>ExternalRadio()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a49f10e1b05e7463583ac05b3284b9dda">&#9670;&nbsp;</a></span>ExternalRadio() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,6 +333,32 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="a69b6354e92a89c01f3695ec9bdd0b554"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69b6354e92a89c01f3695ec9bdd0b554">&#9670;&nbsp;</a></span>ExternalRadio() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ExternalRadio::ExternalRadio </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_external_radio.html">ExternalRadio</a> &amp;&#160;</td>
+          <td class="paramname"><em>ext</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ext</td><td><a class="el" href="class_external_radio.html" title="Class to interface with external radio hardware.">ExternalRadio</a> instance to copy. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="adfb1275ec53dbbd8fde2e8102e8f375d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adfb1275ec53dbbd8fde2e8102e8f375d">&#9670;&nbsp;</a></span>getMod()</h2>
@@ -351,6 +387,32 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <dl class="section return"><dt>Returns</dt><dd>Pointer to the <a class="el" href="class_module.html" title="Implements all common low-level methods to control the wireless module. Every module class contains o...">Module</a> instance. </dd></dl>
 
 <p>Implements <a class="el" href="class_physical_layer.html">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aee6ca3af0849aed193e96cb0691e89e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee6ca3af0849aed193e96cb0691e89e0">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="class_external_radio.html">ExternalRadio</a> &amp; ExternalRadio::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="class_external_radio.html">ExternalRadio</a> &amp;&#160;</td>
+          <td class="paramname"><em>ext</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Overload for assignment operator. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ext</td><td>rvalue <a class="el" href="class_external_radio.html" title="Class to interface with external radio hardware.">ExternalRadio</a>. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>

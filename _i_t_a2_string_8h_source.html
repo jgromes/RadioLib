@@ -111,32 +111,37 @@ $(document).ready(function(){initNavTree('_i_t_a2_string_8h_source.html',''); in
 <div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5">ITA2String</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="class_i_t_a2_string.html#afde24c931997581878953660192e09a2">~ITA2String</a>();</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e">length</a>();</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    uint8_t* <a class="code" href="class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d">byteArr</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;<span class="preprocessor">    #if RADIOLIB_STATIC_ONLY</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <span class="keywordtype">char</span> strAscii[RADIOLIB_STATIC_ARRAY_SIZE];</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">    #else</span></div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      <span class="keywordtype">char</span>* strAscii;</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    <span class="keywordtype">size_t</span> asciiLen;</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    <span class="keywordtype">size_t</span> ita2Len;</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160; </div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">static</span> uint16_t getBits(<span class="keywordtype">char</span> c);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5">ITA2String</a>(<span class="keyword">const</span> <a class="code" href="class_i_t_a2_string.html">ITA2String</a>&amp; ita2);</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="class_i_t_a2_string.html">ITA2String</a>&amp; <a class="code" href="class_i_t_a2_string.html#a8b572c54ca3fdd1d8ba7ef6ec0dfd384">operator=</a>(<span class="keyword">const</span> <a class="code" href="class_i_t_a2_string.html">ITA2String</a>&amp; ita2);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160; </div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <a class="code" href="class_i_t_a2_string.html#afde24c931997581878953660192e09a2">~ITA2String</a>();</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <span class="keywordtype">size_t</span> <a class="code" href="class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e">length</a>();</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    uint8_t* <a class="code" href="class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d">byteArr</a>();</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="preprocessor">    #if RADIOLIB_STATIC_ONLY</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;      <span class="keywordtype">char</span> strAscii[RADIOLIB_STATIC_ARRAY_SIZE];</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="preprocessor">    #else</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;      <span class="keywordtype">char</span>* strAscii;</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">size_t</span> asciiLen;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">size_t</span> ita2Len;</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keyword">static</span> uint16_t getBits(<span class="keywordtype">char</span> c);</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_i_t_a2_string_html"><div class="ttname"><a href="class_i_t_a2_string.html">ITA2String</a></div><div class="ttdoc">ITA2-encoded string.</div><div class="ttdef"><b>Definition:</b> ITA2String.h:24</div></div>
-<div class="ttc" id="aclass_i_t_a2_string_html_a3f42f7ad98473dbe36515e676622ed3d"><div class="ttname"><a href="class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d">ITA2String::byteArr</a></div><div class="ttdeci">uint8_t * byteArr()</div><div class="ttdoc">Gets the ITA2 representation of the ASCII string set in constructor.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:41</div></div>
-<div class="ttc" id="aclass_i_t_a2_string_html_a79b48f6e1eab664b841f3fd20c333e8e"><div class="ttname"><a href="class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e">ITA2String::length</a></div><div class="ttdeci">size_t length()</div><div class="ttdoc">Gets the length of the ITA2 string. This number is not the same as the length of ASCII-encoded string...</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:29</div></div>
+<div class="ttc" id="aclass_i_t_a2_string_html_a3f42f7ad98473dbe36515e676622ed3d"><div class="ttname"><a href="class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d">ITA2String::byteArr</a></div><div class="ttdeci">uint8_t * byteArr()</div><div class="ttdoc">Gets the ITA2 representation of the ASCII string set in constructor.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:60</div></div>
+<div class="ttc" id="aclass_i_t_a2_string_html_a79b48f6e1eab664b841f3fd20c333e8e"><div class="ttname"><a href="class_i_t_a2_string.html#a79b48f6e1eab664b841f3fd20c333e8e">ITA2String::length</a></div><div class="ttdeci">size_t length()</div><div class="ttdoc">Gets the length of the ITA2 string. This number is not the same as the length of ASCII-encoded string...</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:48</div></div>
+<div class="ttc" id="aclass_i_t_a2_string_html_a8b572c54ca3fdd1d8ba7ef6ec0dfd384"><div class="ttname"><a href="class_i_t_a2_string.html#a8b572c54ca3fdd1d8ba7ef6ec0dfd384">ITA2String::operator=</a></div><div class="ttdeci">ITA2String &amp; operator=(const ITA2String &amp;ita2)</div><div class="ttdoc">Overload for assignment operator.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:32</div></div>
 <div class="ttc" id="aclass_i_t_a2_string_html_addb6c39167aa5da53fb72e9a94c9c8f5"><div class="ttname"><a href="class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5">ITA2String::ITA2String</a></div><div class="ttdeci">ITA2String(char c)</div><div class="ttdoc">Default single-character constructor.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:5</div></div>
-<div class="ttc" id="aclass_i_t_a2_string_html_afde24c931997581878953660192e09a2"><div class="ttname"><a href="class_i_t_a2_string.html#afde24c931997581878953660192e09a2">ITA2String::~ITA2String</a></div><div class="ttdeci">~ITA2String()</div><div class="ttdoc">Default destructor.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:23</div></div>
+<div class="ttc" id="aclass_i_t_a2_string_html_afde24c931997581878953660192e09a2"><div class="ttname"><a href="class_i_t_a2_string.html#afde24c931997581878953660192e09a2">ITA2String::~ITA2String</a></div><div class="ttdeci">~ITA2String()</div><div class="ttdoc">Default destructor.</div><div class="ttdef"><b>Definition:</b> ITA2String.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

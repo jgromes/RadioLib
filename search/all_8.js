@@ -13,5 +13,5 @@ var searchData=
   ['iscarrierdetected_179',['isCarrierDetected',['../classn_r_f24.html#ad9204ee787b425e2c9e8422bb7939a37',1,'nRF24']]],
   ['isjoined_180',['isJoined',['../class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc',1,'LoRaWANNode']]],
   ['isrxtimeout_181',['isRxTimeout',['../class_l_r11x0.html#a8d3e5877dcd784c8e922f32ff773dc61',1,'LR11x0::isRxTimeout()'],['../class_s_x126x.html#a34aea9413d71676c7a60fcf24017694a',1,'SX126x::isRxTimeout()'],['../class_s_x127x.html#a5bd1d31bb2f69d45525dff0fc1540506',1,'SX127x::isRxTimeout()'],['../class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4',1,'PhysicalLayer::isRxTimeout()']]],
-  ['ita2string_182',['ITA2String',['../class_i_t_a2_string.html#a92ca563bdc2ae4d05ee91ce9372e7a55',1,'ITA2String::ITA2String(const char *str)'],['../class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5',1,'ITA2String::ITA2String(char c)'],['../class_i_t_a2_string.html',1,'ITA2String']]]
+  ['ita2string_182',['ITA2String',['../class_i_t_a2_string.html#ac3c4e36f2a1cad480b045530a19d09d2',1,'ITA2String::ITA2String(const ITA2String &amp;ita2)'],['../class_i_t_a2_string.html#a92ca563bdc2ae4d05ee91ce9372e7a55',1,'ITA2String::ITA2String(const char *str)'],['../class_i_t_a2_string.html#addb6c39167aa5da53fb72e9a94c9c8f5',1,'ITA2String::ITA2String(char c)'],['../class_i_t_a2_string.html',1,'ITA2String']]]
 ];
