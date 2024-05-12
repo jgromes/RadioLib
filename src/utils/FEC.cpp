@@ -5,6 +5,14 @@ RadioLibBCH::RadioLibBCH() {
   
 }
 
+RadioLibBCH::~RadioLibBCH() {
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] this->alphaTo;
+    delete[] this->indexOf;
+    delete[] this->generator;
+  #endif
+}
+
 /*
   BCH Encoder based on https://www.codeproject.com/articles/13189/pocsag-encoder
 
@@ -116,11 +124,14 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 	// Search for roots 1, 2, ..., m-1 in cycle sets
 	int32_t rdncy = 0;
   #if RADIOLIB_STATIC_ONLY
-    int32_t min[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
+    int32_t min[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
   #else
     int32_t* min = new int32_t[this->n - this->k + 1];
   #endif
 	kaux = 0;
+
+  // ensure the first element is always initializer
+  min[0] = 0;
 
 	for(ii = 1; ii <= jj; ii++) {
 		min[kaux] = 0;
@@ -140,11 +151,14 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 
 	int32_t noterms = kaux;
   #if RADIOLIB_STATIC_ONLY
-    int32_t zeros[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
+    int32_t zeros[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
   #else
     int32_t* zeros = new int32_t[this->n - this->k + 1];
   #endif
 	kaux = 1;
+
+  // ensure the first element is always initializer
+  zeros[1] = 0;
 
 	for(ii = 0; ii < noterms; ii++) {
     for(jj = 0; jj < size[min[ii]]; jj++) {
@@ -186,9 +200,10 @@ void RadioLibBCH::begin(uint8_t n, uint8_t k, uint32_t poly) {
 uint32_t RadioLibBCH::encode(uint32_t dataword) {
   // we only use the "k" most significant bits
   #if RADIOLIB_STATIC_ONLY
-    int32_t data[RADIOLIB_BCH_MAX_K];
+    int32_t data[RADIOLIB_BCH_MAX_K] = { 0 };
   #else
     int32_t* data = new int32_t[this->k];
+    memset(data, 0, this->k*sizeof(int32_t));
   #endif
 	int32_t j1 = 0;
 	for(int32_t i = this->n; i > (this->n - this->k); i--) {
@@ -201,11 +216,11 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
 
   // reset the M(x)+r array elements
   #if RADIOLIB_STATIC_ONLY
-    int32_t Mr[RADIOLIB_BCH_MAX_N];
+    int32_t Mr[RADIOLIB_BCH_MAX_N] = { 0 };
   #else
     int32_t* Mr = new int32_t[this->n];
+    memset(Mr, 0x00, this->n*sizeof(int32_t));
   #endif
-  memset(Mr, 0x00, this->n*sizeof(int32_t));
 
   // copy the contents of data into Mr and add the zeros
   memcpy(Mr, data, this->k*sizeof(int32_t));
@@ -228,9 +243,10 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
   }
 
   #if RADIOLIB_STATIC_ONLY
-    int32_t bb[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
+    int32_t bb[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
   #else
     int32_t* bb = new int32_t[this->n - this->k + 1];
+    memset(bb, 0, (this->n - this->k + 1)*sizeof(int32_t));
   #endif
   j = 0;
   for(int32_t i = start; i < end; ++i) {
