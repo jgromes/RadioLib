@@ -117,7 +117,7 @@ class HellClient: public RadioLibPrint {
       \param buff Buffer of pixels to send, in a 7x7 pixel array.
       \returns Always returns the number of printed glyphs (1).
     */
-    size_t printGlyph(uint8_t* buff);
+    size_t printGlyph(const uint8_t* buff);
 
     /*!
       \brief Invert text color.

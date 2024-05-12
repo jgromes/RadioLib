@@ -30,7 +30,7 @@ int16_t HellClient::begin(float base, float rate) {
   return(phyLayer->startDirect());
 }
 
-size_t HellClient::printGlyph(uint8_t* buff) {
+size_t HellClient::printGlyph(const uint8_t* buff) {
   // print the character
   Module* mod = phyLayer->getMod();
   bool transmitting = false;
