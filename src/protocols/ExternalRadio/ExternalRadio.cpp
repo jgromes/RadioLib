@@ -14,6 +14,27 @@ ExternalRadio::ExternalRadio(RadioLibHal *hal, uint32_t pin) : PhysicalLayer(1, 
   this->prevFrf = 0;
 }
 
+ExternalRadio::ExternalRadio(const ExternalRadio& ext) : PhysicalLayer(1, 0) {
+  this->prevFrf = ext.prevFrf;
+  if(ext.mod) {
+    this->mod = new Module(ext.mod->hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, ext.mod->getGpio());
+  }
+}
+
+ExternalRadio& ExternalRadio::operator=(const ExternalRadio& ext) {
+  this->prevFrf = ext.prevFrf;
+  if(ext.mod) {
+    this->mod = new Module(ext.mod->hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, ext.mod->getGpio());
+  }
+  return(*this);
+}
+
+ExternalRadio::~ExternalRadio() {
+  if(this->mod) {
+    delete this->mod;
+  }
+}
+
 Module* ExternalRadio::getMod() {
   return(mod);
 }
