@@ -255,6 +255,12 @@ class AX25Client {
       \param ax25 AX25Client instance to copy.
     */
     AX25Client(const AX25Client& ax25);
+    
+    /*!
+      \brief Overload for assignment operator.
+      \param ax25 rvalue AX25Client.
+    */
+    AX25Client& operator=(const AX25Client& ax25);
 
     /*!
       \brief Set AFSK tone correction offset. On some platforms, this is required to get the audio produced

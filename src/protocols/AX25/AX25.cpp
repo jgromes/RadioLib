@@ -213,6 +213,20 @@ AX25Client::AX25Client(const AX25Client& ax25)
   #endif
 }
 
+AX25Client& AX25Client::operator=(const AX25Client& ax25) {
+  this->phyLayer = ax25.phyLayer;
+  this->sourceSSID = ax25.sourceSSID;
+  this->preambleLen = ax25.preambleLen;
+  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+  #if !RADIOLIB_EXCLUDE_AFSK
+  if(ax25.bellModem) {
+    this->audio = ax25.audio;
+    this->bellModem = new BellClient(ax25.audio);
+  }
+  #endif
+  return(*this);
+}
+
 int16_t AX25Client::setCorrection(int16_t mark, int16_t space, float length) {
   BellModem_t modem;
   modem.freqMark = Bell202.freqMark + mark;
