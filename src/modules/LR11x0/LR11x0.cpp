@@ -1914,8 +1914,8 @@ int16_t LR11x0::calibImage(float freq1, float freq2) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CALIB_IMAGE, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t gnssCfg, uint8_t wifiCfg) {
-  uint8_t buff[7] = { en, stbyCfg, rxCfg, txCfg, txHpCfg, gnssCfg, wifiCfg };
+int16_t LR11x0::setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg) {
+  uint8_t buff[8] = { en, stbyCfg, rxCfg, txCfg, txHpCfg, txHfCfg, gnssCfg, wifiCfg };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_DIO_AS_RF_SWITCH, true, buff, sizeof(buff)));
 }
 

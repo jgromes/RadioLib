@@ -1281,7 +1281,7 @@ class LR11x0: public PhysicalLayer {
     int16_t calibrate(uint8_t params);
     int16_t setRegMode(uint8_t mode);
     int16_t calibImage(float freq1, float freq2);
-    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t gnssCfg, uint8_t wifiCfg);
+    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg);
     int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);
     int16_t clearIrq(uint32_t irq);
     int16_t configLfClock(uint8_t setup);
