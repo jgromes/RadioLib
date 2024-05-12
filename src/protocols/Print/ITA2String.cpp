@@ -20,6 +20,25 @@ ITA2String::ITA2String(const char* str) {
   ita2Len = 0;
 }
 
+ITA2String::ITA2String(const ITA2String& ita2) {
+  this->asciiLen = ita2.asciiLen;
+  this->ita2Len = ita2.ita2Len;
+  #if !RADIOLIB_STATIC_ONLY
+  this->strAscii = new char[asciiLen + 1];
+  #endif
+  strcpy(this->strAscii, ita2.strAscii);
+}
+
+ITA2String& ITA2String::operator=(const ITA2String& ita2) {
+  this->asciiLen = ita2.asciiLen;
+  this->ita2Len = ita2.ita2Len;
+  #if !RADIOLIB_STATIC_ONLY
+  this->strAscii = new char[asciiLen + 1];
+  #endif
+  strcpy(this->strAscii, ita2.strAscii);
+  return(*this);
+}
+
 ITA2String::~ITA2String() {
   #if !RADIOLIB_STATIC_ONLY
     delete[] strAscii;

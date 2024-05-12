@@ -36,6 +36,18 @@ class ITA2String {
     explicit ITA2String(const char* str);
 
     /*!
+      \brief Copy constructor.
+      \param ita2 ITA2String instance to copy.
+    */
+    ITA2String(const ITA2String& ita2);
+    
+    /*!
+      \brief Overload for assignment operator.
+      \param ita2 rvalue ITA2String.
+    */
+    ITA2String& operator=(const ITA2String& ita2);
+
+    /*!
       \brief Default destructor.
     */
     ~ITA2String();
