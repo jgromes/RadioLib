@@ -1292,7 +1292,7 @@ class LR11x0: public PhysicalLayer {
     int16_t setFs(void);
     int16_t getRandomNumber(uint32_t* rnd);
     int16_t eraseInfoPage(void);
-    int16_t writeInfoPage(uint16_t addr, uint32_t* data, size_t len);
+    int16_t writeInfoPage(uint16_t addr, const uint32_t* data, size_t len);
     int16_t readInfoPage(uint16_t addr, uint32_t* data, size_t len);
     int16_t getChipEui(uint8_t* eui);
     int16_t getSemtechJoinEui(uint8_t* eui);
@@ -1449,7 +1449,7 @@ class LR11x0: public PhysicalLayer {
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len);
-    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, size_t len);
+    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len);
     int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut);
 };
 

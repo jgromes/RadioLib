@@ -1993,7 +1993,7 @@ int16_t LR11x0::eraseInfoPage(void) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_ERASE_INFO_PAGE, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::writeInfoPage(uint16_t addr, uint32_t* data, size_t len) {
+int16_t LR11x0::writeInfoPage(uint16_t addr, const uint32_t* data, size_t len) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
@@ -3042,7 +3042,7 @@ int16_t LR11x0::bootGetJoinEui(uint8_t* eui) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_JOIN_EUI, false, eui, RADIOLIB_LR11X0_EUI_LEN));
 }
 
-int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, size_t len) {
+int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len) {
   // build buffers - later we need to ensure endians are correct, 
   // so there is probably no way to do this without copying buffers and iterating
   size_t buffLen = sizeof(uint32_t) + len*sizeof(uint32_t);
