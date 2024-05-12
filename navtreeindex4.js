@@ -46,6 +46,7 @@ var NAVTREEINDEX4 =
 "class_s_x128x.html#ad5789bd27d46b24f54aac9ca55ec9958":[3,0,74,47],
 "class_s_x128x.html#ad59e37ce0606dc8051e40be9d14cfec3":[3,0,74,59],
 "class_s_x128x.html#ad6570f33bae09bc8b7617f9da39033ac":[3,0,74,31],
+"class_s_x128x.html#ad9584464d2e4cc09686cf4e83e65d3e0":[3,0,74,49],
 "class_s_x128x.html#ad98c4526ef971f9aadb30e351a37eaf9":[3,0,74,43],
 "class_s_x128x.html#adce2e6c7215caa7c904b0d8f9cbd107d":[3,0,74,16],
 "class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22":[3,0,74,13],
@@ -196,8 +197,8 @@ var NAVTREEINDEX4 =
 "dir_ed12d23d857ca7061030f8751e72e77c.html":[4,0,0,0,10],
 "dir_f980efad9544c0545d0fa50a84ff12f2.html":[4,0,0,0,9],
 "files.html":[4,0],
-"functions.html":[3,3,0],
 "functions.html":[3,3,0,0],
+"functions.html":[3,3,0],
 "functions_b.html":[3,3,0,1],
 "functions_c.html":[3,3,0,2],
 "functions_d.html":[3,3,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "functions_x.html":[3,3,0,21],
 "functions_y.html":[3,3,0,22],
 "functions_~.html":[3,3,0,23],
-"group__config__encoding.html":[2,4],
-"group__config__encoding.html#ga0253ae0c289d950e36106102a983f9cb":[2,4,1]
+"group__config__encoding.html":[2,4]
 };

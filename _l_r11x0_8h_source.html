@@ -882,7 +882,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a name="l01292"></a><span class="lineno"> 1292</span>&#160;    int16_t setFs(<span class="keywordtype">void</span>);</div>
 <div class="line"><a name="l01293"></a><span class="lineno"> 1293</span>&#160;    int16_t getRandomNumber(uint32_t* rnd);</div>
 <div class="line"><a name="l01294"></a><span class="lineno"> 1294</span>&#160;    int16_t eraseInfoPage(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;    int16_t writeInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01295"></a><span class="lineno"> 1295</span>&#160;    int16_t writeInfoPage(uint16_t addr, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l01296"></a><span class="lineno"> 1296</span>&#160;    int16_t readInfoPage(uint16_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l01297"></a><span class="lineno"> 1297</span>&#160;    int16_t getChipEui(uint8_t* eui);</div>
 <div class="line"><a name="l01298"></a><span class="lineno"> 1298</span>&#160;    int16_t getSemtechJoinEui(uint8_t* eui);</div>
@@ -1039,7 +1039,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a name="l01449"></a><span class="lineno"> 1449</span>&#160; </div>
 <div class="line"><a name="l01450"></a><span class="lineno"> 1450</span>&#160;    <span class="comment">// common methods to avoid some copy-paste</span></div>
 <div class="line"><a name="l01451"></a><span class="lineno"> 1451</span>&#160;    int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l01452"></a><span class="lineno"> 1452</span>&#160;    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l01453"></a><span class="lineno"> 1453</span>&#160;    int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
 <div class="line"><a name="l01454"></a><span class="lineno"> 1454</span>&#160;};</div>
 <div class="line"><a name="l01455"></a><span class="lineno"> 1455</span>&#160; </div>
