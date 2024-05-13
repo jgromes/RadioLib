@@ -27,7 +27,7 @@ cmake_minimum_required(VERSION 3.18)
 # create the project
 project(tock-sx1261)
 
-set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/userland_generic.ld)
+set(LINKER_SCRIPT $ENV{LIBTOCK_C_DIRECTORY}/userland_generic.ld)
 
 if (RISCV_BUILD)
     include("tock-riscv.cmake")
@@ -50,51 +50,51 @@ add_executable(${PROJECT_NAME} main.cpp)
 # The build system for libtock-c is a bit odd and the version of libraries
 # built changes based on compiler version.
 if (RISCV_BUILD)
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0")
+    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/rv32imc/libtock.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0/riscv/lib/gcc/riscv64-unknown-elf/13.2.0/rv32i/ilp32/libgcc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/lib/gcc/riscv64-unknown-elf/13.2.0/rv32i/ilp32/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
         )
 
         target_include_directories(RadioLib AFTER PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/include/
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/include/
         )
     else()
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/rv32imc/libtock.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-10.5.0/riscv/lib/gcc/riscv64-unknown-elf/10.5.0/rv32i/ilp32/libgcc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-10.5.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/lib/gcc/riscv64-unknown-elf/10.5.0/rv32i/ilp32/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
         )
 
         target_include_directories(RadioLib AFTER PUBLIC
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/include/
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/include/
         )
     endif()
 else()
-    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0")
+    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/cortex-m4/libtock.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0/arm/lib/gcc/arm-none-eabi/13.2.0/libgcc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-13.2.0/arm/arm-none-eabi/lib/libstdc++.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libm.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/lib/gcc/arm-none-eabi/13.2.0/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/arm-none-eabi/lib/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libm.a
         )
     else()
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/libtock/build/cortex-m4/libtock.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-10.5.0/arm/lib/gcc/arm-none-eabi/10.5.0/libgcc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-libc++-10.5.0/arm/arm-none-eabi/lib/libstdc++.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libc.a
-            ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libm.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/lib/gcc/arm-none-eabi/10.5.0/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/arm-none-eabi/lib/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libm.a
         )
     endif()
 endif()
@@ -102,7 +102,7 @@ endif()
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/../../../src/
-    ${CMAKE_CURRENT_SOURCE_DIR}/libtock-c
+    $ENV{LIBTOCK_C_DIRECTORY}
 )
 
 # you can also specify RadioLib compile-time flags here
