@@ -142,9 +142,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4bbc29f5dc7253b7743599c68137df48"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a4bbc29f5dc7253b7743599c68137df48">scanChannel</a> (uint8_t symbolNum, uint8_t detPeak, uint8_t detMin)</td></tr>
 <tr class="memdesc:a4bbc29f5dc7253b7743599c68137df48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <a href="class_s_x126x.html#a4bbc29f5dc7253b7743599c68137df48">More...</a><br /></td></tr>
 <tr class="separator:a4bbc29f5dc7253b7743599c68137df48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb5509f0705cdd971065251ed6b2fb4e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afb5509f0705cdd971065251ed6b2fb4e">sleep</a> (bool retainConfig=true)</td></tr>
-<tr class="memdesc:afb5509f0705cdd971065251ed6b2fb4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>.  <a href="class_s_x126x.html#afb5509f0705cdd971065251ed6b2fb4e">More...</a><br /></td></tr>
-<tr class="separator:afb5509f0705cdd971065251ed6b2fb4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aecdecd788d254fdea92fde5037693fef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aecdecd788d254fdea92fde5037693fef">sleep</a> ()</td></tr>
+<tr class="memdesc:aecdecd788d254fdea92fde5037693fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>.  <a href="class_s_x126x.html#aecdecd788d254fdea92fde5037693fef">More...</a><br /></td></tr>
+<tr class="separator:aecdecd788d254fdea92fde5037693fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad7e4df3e1ca20d524e1d776047e1013"><td class="memItemLeft" align="right" valign="top"><a id="aad7e4df3e1ca20d524e1d776047e1013"></a>
+int16_t&#160;</td><td class="memItemRight" valign="bottom"><b>sleep</b> (bool retainConfig)</td></tr>
+<tr class="separator:aad7e4df3e1ca20d524e1d776047e1013"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a1579e2557c36a4a34b09039c0d0c71"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71">standby</a> () override</td></tr>
 <tr class="memdesc:a7a1579e2557c36a4a34b09039c0d0c71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode (overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, uses 13 MHz RC oscillator).  <a href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71">More...</a><br /></td></tr>
 <tr class="separator:a7a1579e2557c36a4a34b09039c0d0c71"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -403,9 +406,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">sleep</a> ()</td></tr>
-<tr class="memdesc:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to sleep.  <a href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">More...</a><br /></td></tr>
-<tr class="separator:af1bb9a5da26da8829795ebb72e9c666e inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">standby</a> (uint8_t mode)</td></tr>
 <tr class="memdesc:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to a specific standby mode.  <a href="class_physical_layer.html#a7d5da4311092e3df6b193ff303a0c5e8">More...</a><br /></td></tr>
 <tr class="separator:a7d5da4311092e3df6b193ff303a0c5e8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2716,20 +2716,27 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="afb5509f0705cdd971065251ed6b2fb4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb5509f0705cdd971065251ed6b2fb4e">&#9670;&nbsp;</a></span>sleep()</h2>
+<a id="aecdecd788d254fdea92fde5037693fef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aecdecd788d254fdea92fde5037693fef">&#9670;&nbsp;</a></span>sleep()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX126x::sleep </td>
           <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>retainConfig</em> = <code>true</code></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x126x.html#a7a1579e2557c36a4a34b09039c0d0c71" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. </p>
@@ -2740,6 +2747,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af1bb9a5da26da8829795ebb72e9c666e">PhysicalLayer</a>.</p>
 
 </div>
 </div>
