@@ -1638,8 +1638,17 @@ bool LR11x0::findChip(uint8_t ver) {
 
     // read the version
     uint8_t device = 0xFF;
-    if((this->getVersion(NULL, &device, NULL, NULL) == RADIOLIB_ERR_NONE) && (device == ver)) {
+    uint8_t major = 0xFF;
+    uint8_t minor = 0xFF;
+    if((this->getVersion(NULL, &device, &major, &minor) == RADIOLIB_ERR_NONE) && (device == ver)) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", device);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Transceiver FW version: %d.%d", (int)major, (int)minor);
+      #if RADIOLIB_DEBUG_BASIC
+      this->wifiReadVersion(&major, &minor);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)major, (int)minor);
+      this->gnssReadVersion(&major, &minor);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)major, (int)minor);
+      #endif
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, device);
