@@ -53,6 +53,7 @@ var class_s_x128x =
     [ "setSyncWord", "class_s_x128x.html#a1bef6b6f3058be6b1681c78334342bc1", null ],
     [ "setWhitening", "class_s_x128x.html#a8b3eea268f21bf911b6eaf37c5eb0b5f", null ],
     [ "sleep", "class_s_x128x.html#a9bf5f068064539c8421a4a20cc3f89ab", null ],
+    [ "sleep", "class_s_x128x.html#a9bf5f068064539c8421a4a20cc3f89ab", null ],
     [ "sleep", "class_s_x128x.html#a98ef7dc21647642b40baf8c0194788c4", null ],
     [ "standby", "class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45", null ],
     [ "standby", "class_s_x128x.html#a389aab93e24ec8c7cc9c14de90e5dfae", null ],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['encoding_20type_20aliases_2e_1152',['Encoding type aliases.',['../group__config__encoding.html',1,'']]]
+  ['encoding_20type_20aliases_2e_1151',['Encoding type aliases.',['../group__config__encoding.html',1,'']]]
 ];
