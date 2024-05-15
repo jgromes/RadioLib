@@ -470,7 +470,6 @@ class SX128x: public PhysicalLayer {
       to discard current configuration and data buffer. Defaults to true.
       \returns \ref status_codes
     */
-    int16_t sleep();
     int16_t sleep(bool retainConfig);
 
     /*!
