@@ -1848,6 +1848,8 @@ int16_t SX126x::setRfFrequency(uint32_t frf) {
 int16_t SX126x::calibrateImageRejection(float freqMin, float freqMax) {
   // calculate the calibration coefficients and calibrate image
   uint8_t data[] = { (uint8_t)floor((freqMin - 1.0f) / 4.0f), (uint8_t)ceil((freqMax + 1.0f) / 4.0f) };
+  data[0] = (data[0] % 2) ? data[0] : data[0] - 1;
+  data[1] = (data[1] % 2) ? data[1] : data[1] + 1;
   return(this->calibrateImage(data));
 }
 
