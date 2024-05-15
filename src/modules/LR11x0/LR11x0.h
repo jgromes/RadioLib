@@ -774,7 +774,10 @@ class LR11x0: public PhysicalLayer {
       \param sleepTime Sleep duration (enables automatic wakeup), in multiples of 30.52 us. Ignored if set to 0.
       \returns \ref status_codes
     */
-    int16_t sleep(bool retainConfig = true, uint32_t sleepTime = 0);
+
+    int16_t sleep();
+
+    int16_t sleep(bool retainConfig, uint32_t sleepTime);
     
     // interrupt methods
 

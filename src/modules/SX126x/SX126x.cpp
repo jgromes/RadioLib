@@ -442,6 +442,11 @@ int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) 
   return(getChannelScanResult());
 }
 
+
+int16_t SX126x::sleep() {
+  return(SX126x::sleep(true));
+}
+
 int16_t SX126x::sleep(bool retainConfig) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_IDLE);
