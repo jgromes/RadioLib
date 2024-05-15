@@ -54,6 +54,7 @@ if (RISCV_BUILD)
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/lib/gcc/riscv64-unknown-elf/13.2.0/rv32i/ilp32/libgcc.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
@@ -67,6 +68,7 @@ if (RISCV_BUILD)
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/lib/gcc/riscv64-unknown-elf/10.5.0/rv32i/ilp32/libgcc.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
@@ -82,6 +84,7 @@ else()
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/lib/gcc/arm-none-eabi/13.2.0/libgcc.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0/arm/arm-none-eabi/lib/libstdc++.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/arm/arm-none-eabi/lib/libc.a
@@ -91,6 +94,7 @@ else()
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/lib/gcc/arm-none-eabi/10.5.0/libgcc.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-10.5.0/arm/arm-none-eabi/lib/libstdc++.a
             $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.2.0.20211231/arm/arm-none-eabi/lib/libc.a

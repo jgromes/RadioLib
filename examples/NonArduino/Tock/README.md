@@ -23,7 +23,7 @@ The RadioLib example can be built with:
 $ git clone https://github.com/jgromes/RadioLib.git
 $ cd RadioLib/examples/NonArduino/Tock/
 $ git clone https://github.com/tock/libtock-c.git
-$ cd libtock-c; git checkout 44bf89c545953d8859faf101d4b4a4b6a151fe6c; cd ../
+$ cd libtock-c; git checkout dbee65a56d74b4bad166317f199e80b959f7c82c; cd ../
 $ LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./build.sh
 ```
 
