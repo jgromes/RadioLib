@@ -31,10 +31,12 @@
 #include <RadioLib.h>
 
 // include all the dependencies
-#include "libtock/lora_phy.h"
-#include "libtock/gpio.h"
-#include "libtock/timer.h"
-#include "libtock/read_only_state.h"
+#include "libtock/net/lora_phy.h"
+#include "libtock/net/syscalls/lora_phy_syscalls.h"
+#include "libtock-sync/net/lora_phy.h"
+#include "libtock/peripherals/gpio.h"
+#include "libtock-sync/services/alarm.h"
+#include "libtock/kernel/read_only_state.h"
 
 #define RADIO_BUSY   1
 #define RADIO_DIO_1  2
@@ -99,9 +101,9 @@ class TockHal : public RadioLibHal {
       }
 
       if (mode == PIN_OUTPUT) {
-          lora_phy_gpio_enable_output(pin);
+          libtock_lora_phy_gpio_enable_output(pin);
       } else if (mode == PIN_INPUT) {
-          lora_phy_gpio_enable_input(pin, PullDown);
+          libtock_lora_phy_gpio_enable_input(pin, libtock_pull_down);
       }
     }
 
@@ -111,9 +113,9 @@ class TockHal : public RadioLibHal {
       }
 
       if (value) {
-          lora_phy_gpio_set(pin);
+          libtock_lora_phy_gpio_set(pin);
       } else {
-          lora_phy_gpio_clear(pin);
+          libtock_lora_phy_gpio_clear(pin);
       }
     }
 
@@ -124,7 +126,7 @@ class TockHal : public RadioLibHal {
         return 0;
       }
 
-      lora_phy_gpio_read(pin, &value);
+      libtock_lora_phy_gpio_read(pin, &value);
 
       return value;
     }
@@ -134,11 +136,11 @@ class TockHal : public RadioLibHal {
         return;
       }
 
-      lora_phy_gpio_interrupt_callback(lora_phy_gpio_Callback, &interruptCb);
+      libtock_lora_phy_gpio_command_interrupt_callback(lora_phy_gpio_Callback, &interruptCb);
 
       // set GPIO as input and enable interrupts on it
-      lora_phy_gpio_enable_input(interruptNum, PullDown);
-      lora_phy_gpio_enable_interrupt(interruptNum, Change);
+      libtock_lora_phy_gpio_enable_input(interruptNum, libtock_pull_down);
+      libtock_lora_phy_gpio_enable_interrupt(interruptNum, libtock_change);
     }
 
     void detachInterrupt(uint32_t interruptNum) override {
@@ -146,15 +148,15 @@ class TockHal : public RadioLibHal {
         return;
       }
 
-      lora_phy_gpio_disable_interrupt(interruptNum);
+      libtock_lora_phy_gpio_disable_interrupt(interruptNum);
     }
 
     void delay(unsigned long ms) override {
-      delay_ms( ms );
+      libtocksync_alarm_delay_ms( ms );
     }
 
     void delayMicroseconds(unsigned long us) override {
-      delay_ms( us / 1000 );
+      libtocksync_alarm_delay_ms( us / 1000 );
     }
 
     unsigned long millis() override {
@@ -181,7 +183,7 @@ class TockHal : public RadioLibHal {
     }
 
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
-      lora_phy_read_write_sync((const char*) out, (char*) in, len);
+      libtocksync_lora_phy_read_write(out, in, len);
     }
 
     void spiEndTransaction() {
