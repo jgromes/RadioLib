@@ -545,6 +545,13 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+
+    /*!
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
+      Overload with warm start enabled for PhysicalLayer compatibility.
+      \returns \ref status_codes
+    */
+    int16_t sleep(); 
     
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -552,7 +559,6 @@ class SX126x: public PhysicalLayer {
       or to false to discard current configuration ("cold start"). Defaults to true.
       \returns \ref status_codes
     */
-    int16_t sleep(); 
     int16_t sleep(bool retainConfig);
 
     /*!

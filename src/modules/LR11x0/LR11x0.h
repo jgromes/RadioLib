@@ -766,7 +766,14 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t standby(uint8_t mode, bool wakeup = true);
-    
+
+    /*!
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
+      Overload with warm start enabled for PhysicalLayer compatibility.
+      \returns \ref status_codes
+    */
+    int16_t sleep();
+
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
       \param retainConfig Set to true to retain configuration of the currently active modem ("warm start")
@@ -774,9 +781,6 @@ class LR11x0: public PhysicalLayer {
       \param sleepTime Sleep duration (enables automatic wakeup), in multiples of 30.52 us. Ignored if set to 0.
       \returns \ref status_codes
     */
-
-    int16_t sleep();
-
     int16_t sleep(bool retainConfig, uint32_t sleepTime);
     
     // interrupt methods

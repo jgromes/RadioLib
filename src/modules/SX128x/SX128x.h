@@ -459,6 +459,13 @@ class SX128x: public PhysicalLayer {
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
+      Overload for PhysicalLayer compatibility.
+      \returns \ref status_codes
+    */
+    int16_t sleep();
+
+    /*!
+      \brief Sets the module to sleep mode. To wake the device up, call standby().
       \param retainConfig Set to true to retain configuration and data buffer or to false
       to discard current configuration and data buffer. Defaults to true.
       \returns \ref status_codes
