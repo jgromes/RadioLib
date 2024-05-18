@@ -313,7 +313,6 @@ checkDataRate	KEYWORD2
 setModem	KEYWORD2
 
 # LoRaWAN
-wipe	KEYWORD2
 getBufferNonces	KEYWORD2
 setBufferNonces	KEYWORD2
 getBufferSession	KEYWORD2

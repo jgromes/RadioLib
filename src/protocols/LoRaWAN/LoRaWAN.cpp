@@ -44,13 +44,19 @@ void LoRaWANNode::setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA
     this->enableCSMA = enableCSMA;
 }
 
-void LoRaWANNode::wipe() {
+void LoRaWANNode::clearNonces() {
+  // clear & set all the device credentials
   memset(this->bufferNonces, 0, RADIOLIB_LW_NONCES_BUF_SIZE);
+  this->keyCheckSum = 0;
+  this->devNonce = 0;
+  this->joinNonce = 0;
+  this->isActive = false;
+}
+
+void LoRaWANNode::clearSession() {
   memset(this->bufferSession, 0, RADIOLIB_LW_SESSION_BUF_SIZE);
   memset(&(this->commandsUp), 0, sizeof(LoRaWANMacCommandQueue_t));
   memset(&(this->commandsDown), 0, sizeof(LoRaWANMacCommandQueue_t));
-  this->devNonce = 0;
-  this->joinNonce = 0;
 }
 
 uint8_t* LoRaWANNode::getBufferNonces() {
@@ -445,6 +451,7 @@ void LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, 
   this->keyCheckSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
   this->keyCheckSum ^= LoRaWANNode::checkSum16(appKey, 16);
 
+  this->clearNonces();
   this->lwMode = RADIOLIB_LW_MODE_OTAA;
   this->lwClass = RADIOLIB_LW_CLASS_A;
 }
@@ -465,7 +472,8 @@ int16_t LoRaWANNode::activateOTAA(bool force, uint8_t joinDr, LoRaWANJoinEvent_t
 
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   
-  // either no valid session was found or user forced a new session, so set active-bit to false
+  // either no valid session was found or user forced a new session, so clear all activity
+  this->clearSession();
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
   this->isActive = false;
 
@@ -764,6 +772,8 @@ void LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIn
   if(fNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
   if(sNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
 
+  // clear & set all the device credentials
+  this->clearNonces();
   this->lwMode = RADIOLIB_LW_MODE_ABP;
   this->lwClass = RADIOLIB_LW_CLASS_A;
 }
@@ -782,7 +792,8 @@ int16_t LoRaWANNode::activateABP(bool force, uint8_t initialDr) {
     }
   }
 
-  // either no valid session was found or user forced a new session, so set active-bit to false
+  // either no valid session was found or user forced a new session, so clear all activity
+  this->clearSession();
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
   this->isActive = false;
 

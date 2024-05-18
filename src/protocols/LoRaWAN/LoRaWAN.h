@@ -528,12 +528,6 @@ class LoRaWANNode {
     LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand = 0);
 
     /*!
-      \brief Wipe internal persistent parameters.
-      This will reset all counters and saved variables, so the device will have to rejoin the network.
-    */
-    void wipe();
-
-    /*!
       \brief Returns the pointer to the internal buffer that holds the LW base parameters
       \returns Pointer to uint8_t array of size RADIOLIB_LW_NONCES_BUF_SIZE
     */
@@ -980,6 +974,12 @@ class LoRaWANNode {
 
     // save the selected sub-band in case this must be restored in ADR control
     uint8_t subBand = 0;
+
+    // this will reset the device credentials, so the device starts completely new
+    void clearNonces();
+
+    // this will reset all counters and saved variables, so the device will have to rejoin the network.
+    void clearSession();
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
     int16_t downlinkCommon();
