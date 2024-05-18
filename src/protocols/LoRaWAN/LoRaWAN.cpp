@@ -130,7 +130,7 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
   uint16_t signatureInSession = LoRaWANNode::ntoh<uint16_t>(&persistentBuffer[RADIOLIB_LW_SESSION_NONCES_SIGNATURE]);
   if(signatureNonces != signatureInSession) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The supplied session buffer does not match the Nonces buffer");
-    return(RADIOLIB_ERR_CHECKSUM_MISMATCH);
+    return(RADIOLIB_LORAWAN_SESSION_DISCARDED);
   }
 
   // copy the whole buffer over
@@ -833,7 +833,7 @@ int16_t LoRaWANNode::activateABP(bool force, uint8_t initialDr) {
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
   this->isActive = true;
-  
+
   return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 

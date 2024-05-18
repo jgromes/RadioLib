@@ -578,6 +578,11 @@
 */
 #define RADIOLIB_LORAWAN_NONCES_DISCARDED                       (-1119)
 
+/*!
+  \brief The supplied Session buffer is discarded as it doesn't match the Nonces.
+*/
+#define RADIOLIB_LORAWAN_SESSION_DISCARDED                       (-1120)
+
 // LR11x0-specific status codes
 
 /*!
