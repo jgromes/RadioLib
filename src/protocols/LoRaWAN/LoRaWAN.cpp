@@ -832,6 +832,8 @@ int16_t LoRaWANNode::activateABP(bool force, uint8_t initialDr) {
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_HOMENET_ID], this->homeNetId);
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
+  this->isActive = true;
+  
   return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 
