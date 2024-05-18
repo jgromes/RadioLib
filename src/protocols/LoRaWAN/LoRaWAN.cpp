@@ -57,6 +57,8 @@ void LoRaWANNode::clearSession() {
   memset(this->bufferSession, 0, RADIOLIB_LW_SESSION_BUF_SIZE);
   memset(&(this->commandsUp), 0, sizeof(LoRaWANMacCommandQueue_t));
   memset(&(this->commandsDown), 0, sizeof(LoRaWANMacCommandQueue_t));
+  this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
+  this->isActive = false;
 }
 
 uint8_t* LoRaWANNode::getBufferNonces() {
@@ -456,26 +458,22 @@ void LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, 
   this->lwClass = RADIOLIB_LW_CLASS_A;
 }
 
-int16_t LoRaWANNode::activateOTAA(bool force, uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent) {
-  // if not forced by the user, check if there is an active session
-  if(!force) {
-    if(this->isActivated()) {
-      // already activated, don't do anything
-      return(RADIOLIB_ERR_NONE);
-    }
-    if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
-      // session restored but not yet activated - do so now
-      this->isActive = true;
-      return(RADIOLIB_LORAWAN_SESSION_RESTORED);
-    }
+int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent) {
+  // check if there is an active session
+  if(this->isActivated()) {
+    // already activated, don't do anything
+    return(RADIOLIB_ERR_NONE);
+  }
+  if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
+    // session restored but not yet activated - do so now
+    this->isActive = true;
+    return(RADIOLIB_LORAWAN_SESSION_RESTORED);
   }
 
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   
   // either no valid session was found or user forced a new session, so clear all activity
   this->clearSession();
-  this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
-  this->isActive = false;
 
   // starting a new session, so make sure to update event fields already
   if(joinEvent) {
@@ -778,24 +776,20 @@ void LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIn
   this->lwClass = RADIOLIB_LW_CLASS_A;
 }
 
-int16_t LoRaWANNode::activateABP(bool force, uint8_t initialDr) {
-    // if not forced by the user, check if there is an active session
-  if(!force) {
-    if(this->isActivated()) {
-      // already activated, don't do anything
-      return(RADIOLIB_ERR_NONE);
-    }
-    if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
-      // session restored but not yet activated - do so now
-      this->isActive = true;
-      return(RADIOLIB_LORAWAN_SESSION_RESTORED);
-    }
+int16_t LoRaWANNode::activateABP(uint8_t initialDr) {
+  // check if there is an active session
+  if(this->isActivated()) {
+    // already activated, don't do anything
+    return(RADIOLIB_ERR_NONE);
+  }
+  if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
+    // session restored but not yet activated - do so now
+    this->isActive = true;
+    return(RADIOLIB_LORAWAN_SESSION_RESTORED);
   }
 
   // either no valid session was found or user forced a new session, so clear all activity
   this->clearSession();
-  this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
-  this->isActive = false;
 
   // setup the uplink/downlink channels and initial datarate
   if(this->band->bandType == RADIOLIB_LW_BAND_DYNAMIC) {

@@ -528,6 +528,11 @@ class LoRaWANNode {
     LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t subBand = 0);
 
     /*!
+      \brief Clear an active session, so that the device will have to rejoin the network.
+    */
+    void clearSession();
+
+    /*!
       \brief Returns the pointer to the internal buffer that holds the LW base parameters
       \returns Pointer to uint8_t array of size RADIOLIB_LW_NONCES_BUF_SIZE
     */
@@ -565,11 +570,10 @@ class LoRaWANNode {
     /*!
       \brief Join network by restoring OTAA session or performing over-the-air activation. By this procedure,
       the device will perform an exchange with the network server and set all necessary configuration. 
-      \param force Set to true to force joining even if previously joined.
       \param joinDr The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
-    int16_t activateOTAA(bool force = false, uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED, LoRaWANJoinEvent_t *joinEvent = NULL);
+    int16_t activateOTAA(uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED, LoRaWANJoinEvent_t *joinEvent = NULL);
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -585,12 +589,10 @@ class LoRaWANNode {
     /*!
       \brief Join network by restoring ABP session or performing over-the-air activation. 
       In this procedure, all necessary configuration must be provided by the user.
-      \param force Set to true to force joining even if previously joined.
       \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
-    int16_t activateABP(bool force = false, uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED);
-
+    int16_t activateABP(uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED);
 
     /*! \brief Whether there is an ongoing session active */
     bool isActivated();
@@ -977,9 +979,6 @@ class LoRaWANNode {
 
     // this will reset the device credentials, so the device starts completely new
     void clearNonces();
-
-    // this will reset all counters and saved variables, so the device will have to rejoin the network.
-    void clearSession();
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
     int16_t downlinkCommon();
