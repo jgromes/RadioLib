@@ -573,6 +573,11 @@
 */
 #define RADIOLIB_LORAWAN_NEW_SESSION                            (-1118)
 
+/*!
+  \brief The supplied Nonces buffer is discarded as its activation information is invalid.
+*/
+#define RADIOLIB_LORAWAN_NONCES_DISCARDED                       (-1119)
+
 // LR11x0-specific status codes
 
 /*!

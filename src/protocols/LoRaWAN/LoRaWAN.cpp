@@ -62,13 +62,27 @@ uint8_t* LoRaWANNode::getBufferNonces() {
 }
 
 int16_t LoRaWANNode::setBufferNonces(uint8_t* persistentBuffer) {
-  if(this->isJoined()) {
+  if(this->isActivated()) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not update buffer: session already active");
     return(RADIOLIB_ERR_NONE);
   }
 
   int16_t state = LoRaWANNode::checkBufferCommon(persistentBuffer, RADIOLIB_LW_NONCES_BUF_SIZE);
   RADIOLIB_ASSERT(state);
+
+  bool isSameKeys = LoRaWANNode::ntoh<uint16_t>(&persistentBuffer[RADIOLIB_LW_NONCES_CHECKSUM]) == this->keyCheckSum;
+  bool isSameMode = LoRaWANNode::ntoh<uint16_t>(&persistentBuffer[RADIOLIB_LW_NONCES_MODE]) == this->lwMode;
+  bool isSameClass = LoRaWANNode::ntoh<uint8_t>(&persistentBuffer[RADIOLIB_LW_NONCES_CLASS]) == this->lwClass;
+  bool isSamePlan  = LoRaWANNode::ntoh<uint8_t>(&persistentBuffer[RADIOLIB_LW_NONCES_PLAN]) == this->band->bandNum;
+
+  // check if Nonces buffer matches the current configuration
+  if(!isSameKeys || !isSameMode || !isSameClass || !isSamePlan) {
+    // if configuration did not match, discard whatever is currently in the buffers and start fresh
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Configuration mismatch (keys: %d, mode: %d, class: %d, plan: %d)", isSameKeys, isSameMode, isSameClass, isSamePlan);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Discarding the Nonces buffer:");
+    RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(persistentBuffer, RADIOLIB_LW_NONCES_BUF_SIZE);
+    return(RADIOLIB_LORAWAN_NONCES_DISCARDED);
+  }
 
   // copy the whole buffer over
   memcpy(this->bufferNonces, persistentBuffer, RADIOLIB_LW_NONCES_BUF_SIZE);
@@ -78,6 +92,7 @@ int16_t LoRaWANNode::setBufferNonces(uint8_t* persistentBuffer) {
 
   // revert to inactive as long as no session is restored
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
+  this->isActive = false;
 
   return(state);
 }
@@ -102,7 +117,7 @@ uint8_t* LoRaWANNode::getBufferSession() {
 }
 
 int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
-  if(this->isJoined()) {
+  if(this->isActivated()) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Did not update buffer: session already active");
     return(RADIOLIB_ERR_NONE);
   }
@@ -279,26 +294,7 @@ int16_t LoRaWANNode::checkBufferCommon(uint8_t *buffer, uint16_t size) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool LoRaWANNode::verifyBuffers(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan) {
-  bool isSameKeys = LoRaWANNode::ntoh<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CHECKSUM]) == checkSum;
-  bool isSameMode = LoRaWANNode::ntoh<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_MODE]) == lwMode;
-  bool isSameClass = LoRaWANNode::ntoh<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CLASS]) == lwClass;
-  bool isSamePlan  = LoRaWANNode::ntoh<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_PLAN]) == freqPlan;
-
-  // check if Nonces buffer matches the current configuration
-  if(!isSameKeys || !isSameMode || !isSameClass || !isSamePlan) {
-    // if configuration did not match, discard whatever is currently in the buffers and start fresh
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Configuration mismatch (checksum: %d, mode: %d, class: %d, plan: %d)", isSameKeys, isSameMode, isSameClass, isSamePlan);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Nonces buffer:");
-    RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(this->bufferNonces, RADIOLIB_LW_NONCES_BUF_SIZE);
-    return(false);
-  }
-
-  return(true);
-}
-
-
-void LoRaWANNode::beginCommon(uint8_t initialDr) {
+void LoRaWANNode::activateCommon(uint8_t initialDr) {
   uint8_t drUp = 0;
   if(this->band->bandType == RADIOLIB_LW_BAND_DYNAMIC) {
     // if join datarate is user-specified and valid, select that value
@@ -437,28 +433,48 @@ void LoRaWANNode::beginCommon(uint8_t initialDr) {
   (void)execMacCommand(&cmd);
 }
 
-int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, bool force, uint8_t joinDr) {
+void LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey) {
+  this->joinEUI = joinEUI;
+  this->devEUI = devEUI;
+  memcpy(this->nwkKey, nwkKey, RADIOLIB_AES128_KEY_SIZE);
+  memcpy(this->appKey, appKey, RADIOLIB_AES128_KEY_SIZE);
+
   // generate activation key checksum
-  uint16_t checkSum = 0;
-  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&joinEUI), 8);
-  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&devEUI), 8);
-  checkSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
-  checkSum ^= LoRaWANNode::checkSum16(appKey, 16);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&joinEUI), 8);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&devEUI), 8);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(appKey, 16);
 
-  // if the supplied activation info doesn't match the restored buffers, discard all contents of previous session
-  if(!this->verifyBuffers(checkSum, RADIOLIB_LW_MODE_OTAA, RADIOLIB_LW_CLASS_A, this->band->bandNum)) {
-    this->wipe();
-  }
+  this->lwMode = RADIOLIB_LW_MODE_OTAA;
+  this->lwClass = RADIOLIB_LW_CLASS_A;
+}
 
-  // if the device is activated with a valid session, and user didn't force a new session, return
-  if(this->isJoined() && !force) {
-    return(RADIOLIB_LORAWAN_SESSION_RESTORED);
+int16_t LoRaWANNode::activateOTAA(bool force, uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent) {
+  // if not forced by the user, check if there is an active session
+  if(!force) {
+    if(this->isActivated()) {
+      // already activated, don't do anything
+      return(RADIOLIB_ERR_NONE);
+    }
+    if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
+      // session restored but not yet activated - do so now
+      this->isActive = true;
+      return(RADIOLIB_LORAWAN_SESSION_RESTORED);
+    }
   }
 
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   
   // either no valid session was found or user forced a new session, so set active-bit to false
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
+  this->isActive = false;
+
+  // starting a new session, so make sure to update event fields already
+  if(joinEvent) {
+    joinEvent->newSession = true;
+    joinEvent->devNonce = this->devNonce;
+    joinEvent->joinNonce = this->joinNonce;
+  }
 
   // setup join-request uplink/downlink frequencies and datarates
   if(this->band->bandType == RADIOLIB_LW_BAND_DYNAMIC) {
@@ -474,7 +490,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     joinDr = RADIOLIB_LW_DATA_RATE_UNUSED;
   }
   // setup all MAC properties to default values
-  this->beginCommon(joinDr);
+  this->activateCommon(joinDr);
 
   // select a random pair of Tx/Rx channels
   state = this->selectChannels();
@@ -492,12 +508,12 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   
   // set the packet fields
   joinRequestMsg[0] = RADIOLIB_LW_MHDR_MTYPE_JOIN_REQUEST | RADIOLIB_LW_MHDR_MAJOR_R1;
-  LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_JOIN_EUI_POS], joinEUI);
-  LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_DEV_EUI_POS], devEUI);
+  LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_JOIN_EUI_POS], this->joinEUI);
+  LoRaWANNode::hton<uint64_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_DEV_EUI_POS], this->devEUI);
   LoRaWANNode::hton<uint16_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_DEV_NONCE_POS], devNonceUsed);
 
   // add the authentication code
-  uint32_t mic = this->generateMIC(joinRequestMsg, RADIOLIB_LW_JOIN_REQUEST_LEN - sizeof(uint32_t), nwkKey);
+  uint32_t mic = this->generateMIC(joinRequestMsg, RADIOLIB_LW_JOIN_REQUEST_LEN - sizeof(uint32_t), this->nwkKey);
   LoRaWANNode::hton<uint32_t>(&joinRequestMsg[RADIOLIB_LW_JOIN_REQUEST_LEN - sizeof(uint32_t)], mic);
 
   // send it
@@ -548,7 +564,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   // the first byte is the MAC header which is not encrypted
   uint8_t joinAcceptMsg[RADIOLIB_LW_JOIN_ACCEPT_MAX_LEN];
   joinAcceptMsg[0] = joinAcceptMsgEnc[0];
-  RadioLibAES128Instance.init(nwkKey);
+  RadioLibAES128Instance.init(this->nwkKey);
   RadioLibAES128Instance.encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LW_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
   
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAcceptMsg:");
@@ -577,14 +593,14 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     // 1.1 version, first we need to derive the join accept integrity key
     uint8_t keyDerivationBuff[RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_JS_INT_KEY;
-    LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[1], devEUI);
-    RadioLibAES128Instance.init(nwkKey);
+    LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[1], this->devEUI);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->jSIntKey);
 
     // prepare the buffer for MIC calculation
     uint8_t micBuff[3*RADIOLIB_AES128_BLOCK_SIZE] = { 0 };
     micBuff[0] = RADIOLIB_LW_JOIN_REQUEST_TYPE;
-    LoRaWANNode::hton<uint64_t>(&micBuff[1], joinEUI);
+    LoRaWANNode::hton<uint64_t>(&micBuff[1], this->joinEUI);
     LoRaWANNode::hton<uint16_t>(&micBuff[9], devNonceUsed);
     memcpy(&micBuff[11], joinAcceptMsg, lenRx);
     
@@ -594,7 +610,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   
   } else {
     // 1.0 version
-    if(!verifyMIC(joinAcceptMsg, lenRx, nwkKey)) {
+    if(!verifyMIC(joinAcceptMsg, lenRx, this->nwkKey)) {
       return(RADIOLIB_ERR_CRC_MISMATCH);
     }
 
@@ -635,23 +651,23 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   // check protocol version (1.0 vs 1.1)
   if(this->rev == 1) {
     // 1.1 version, derive the keys
-    LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[RADIOLIB_LW_JOIN_ACCEPT_JOIN_EUI_POS], joinEUI);
+    LoRaWANNode::hton<uint64_t>(&keyDerivationBuff[RADIOLIB_LW_JOIN_ACCEPT_JOIN_EUI_POS], this->joinEUI);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LW_JOIN_ACCEPT_DEV_NONCE_POS], devNonceUsed);
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_APP_S_KEY;
 
-    RadioLibAES128Instance.init(appKey);
+    RadioLibAES128Instance.init(this->appKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
 
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_F_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(nwkKey);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
 
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_S_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(nwkKey);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->sNwkSIntKey);
 
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_NWK_S_ENC_KEY;
-    RadioLibAES128Instance.init(nwkKey);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
 
     // enqueue the RekeyInd MAC command to be sent in the next uplink
@@ -669,11 +685,11 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LW_JOIN_ACCEPT_HOME_NET_ID_POS], this->homeNetId, 3);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LW_JOIN_ACCEPT_DEV_ADDR_POS], devNonceUsed);
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_APP_S_KEY;
-    RadioLibAES128Instance.init(nwkKey);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
 
     keyDerivationBuff[0] = RADIOLIB_LW_JOIN_ACCEPT_F_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(nwkKey);
+    RadioLibAES128Instance.init(this->nwkKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
 
     memcpy(this->sNwkSIntKey, this->fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
@@ -694,7 +710,7 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_MODE], RADIOLIB_LW_MODE_OTAA);
   LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CLASS], RADIOLIB_LW_CLASS_A);
   LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_PLAN], this->band->bandNum);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CHECKSUM], checkSum);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CHECKSUM], this->keyCheckSum);
   LoRaWANNode::hton<uint32_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_JOIN_NONCE], this->joinNonce, 3);
 
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)true;
@@ -710,39 +726,24 @@ int16_t LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKe
   memcpy(&this->bufferSession[RADIOLIB_LW_SESSION_FNWK_SINT_KEY], this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   memcpy(&this->bufferSession[RADIOLIB_LW_SESSION_SNWK_SINT_KEY], this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   
-  // copy the signature of the Nonces buffer over to the Session buffer
-  uint16_t noncesSignature = LoRaWANNode::ntoh<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_SIGNATURE]);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LW_SESSION_NONCES_SIGNATURE], noncesSignature);
+  // set the signature of the Nonces buffer in the Session buffer
+  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LW_SESSION_NONCES_SIGNATURE], signature);
 
   // store network parameters
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_HOMENET_ID], this->homeNetId);
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
+  this->isActive = true;
+
+  // received join-accept, so update JoinNonce value in event
+  if(joinEvent) {
+    joinEvent->joinNonce = this->joinNonce;
+  }
+
   return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 
-int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey, bool force, uint8_t initialDr) {
-  // generate activation key checksum
-  uint16_t checkSum = 0;
-  checkSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&addr), 4);
-  checkSum ^= LoRaWANNode::checkSum16(nwkSEncKey, 16);
-  checkSum ^= LoRaWANNode::checkSum16(appSKey, 16);
-  if(fNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
-  if(sNwkSIntKey) { checkSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
-
-  // if the supplied activation info doesn't match the restored buffers, discard all contents of previous session
-  if(!this->verifyBuffers(checkSum, RADIOLIB_LW_MODE_OTAA, RADIOLIB_LW_CLASS_A, this->band->bandNum)) {
-    this->wipe();
-  }
-
-  // if the device is activated with a valid session, and user didn't force a new session, return
-  if(this->isJoined() && !force) {
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  // either no valid session was found or user forced a new session, so set active-bit to false
-  this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
-
+void LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey) {
   this->devAddr = addr;
   memcpy(this->appSKey, appSKey, RADIOLIB_AES128_KEY_SIZE);
   memcpy(this->nwkSEncKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
@@ -756,6 +757,35 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
     memcpy(this->sNwkSIntKey, sNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
   }
 
+  // generate activation key checksum
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&addr), 4);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(nwkSEncKey, 16);
+  this->keyCheckSum ^= LoRaWANNode::checkSum16(appSKey, 16);
+  if(fNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
+  if(sNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
+
+  this->lwMode = RADIOLIB_LW_MODE_ABP;
+  this->lwClass = RADIOLIB_LW_CLASS_A;
+}
+
+int16_t LoRaWANNode::activateABP(bool force, uint8_t initialDr) {
+    // if not forced by the user, check if there is an active session
+  if(!force) {
+    if(this->isActivated()) {
+      // already activated, don't do anything
+      return(RADIOLIB_ERR_NONE);
+    }
+    if(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]) {
+      // session restored but not yet activated - do so now
+      this->isActive = true;
+      return(RADIOLIB_LORAWAN_SESSION_RESTORED);
+    }
+  }
+
+  // either no valid session was found or user forced a new session, so set active-bit to false
+  this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)false;
+  this->isActive = false;
+
   // setup the uplink/downlink channels and initial datarate
   if(this->band->bandType == RADIOLIB_LW_BAND_DYNAMIC) {
     this->setupChannelsDyn();
@@ -764,7 +794,7 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
   }
 
   // setup all MAC properties to default values
-  this->beginCommon(initialDr);
+  this->activateCommon(initialDr);
 
   // reset all frame counters
   this->fCntUp = 0;
@@ -779,7 +809,7 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_MODE], RADIOLIB_LW_MODE_ABP);
   LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CLASS], RADIOLIB_LW_CLASS_A);
   LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_PLAN], this->band->bandNum);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CHECKSUM], checkSum);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_CHECKSUM], this->keyCheckSum);
 
   // new session all good, so set active-bit to true
   this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE] = (uint8_t)true;
@@ -795,19 +825,18 @@ int16_t LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwk
   memcpy(&this->bufferSession[RADIOLIB_LW_SESSION_FNWK_SINT_KEY], this->fNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   memcpy(&this->bufferSession[RADIOLIB_LW_SESSION_SNWK_SINT_KEY], this->sNwkSIntKey, RADIOLIB_AES128_BLOCK_SIZE);
   
-  // copy the signature of the Nonces buffer over to the Session buffer
-  uint16_t noncesSignature = LoRaWANNode::ntoh<uint16_t>(&this->bufferNonces[RADIOLIB_LW_NONCES_SIGNATURE]);
-  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LW_SESSION_NONCES_SIGNATURE], noncesSignature);
+  // set the signature of the Nonces buffer in the Session buffer
+  LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LW_SESSION_NONCES_SIGNATURE], signature);
   
   // store network parameters
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LW_SESSION_HOMENET_ID], this->homeNetId);
   LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LW_SESSION_VERSION], this->rev);
 
-  return(RADIOLIB_ERR_NONE);
+  return(RADIOLIB_LORAWAN_NEW_SESSION);
 }
 
-bool LoRaWANNode::isJoined() {
-  return(this->bufferNonces[RADIOLIB_LW_NONCES_ACTIVE]);
+bool LoRaWANNode::isActivated() {
+  return(this->isActive);
 }
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
@@ -822,7 +851,7 @@ int16_t LoRaWANNode::uplink(const char* str, uint8_t fPort, bool isConfirmed, Lo
 
 int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isConfirmed, LoRaWANEvent_t* event) {
   // if not joined, don't do anything
-  if(!this->isJoined()) {
+  if(!this->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
   

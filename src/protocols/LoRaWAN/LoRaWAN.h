@@ -461,6 +461,21 @@ enum LoRaWANBandNum_t {
 extern const LoRaWANBand_t* LoRaWANBands[];
 
 /*!
+  \struct LoRaWANJoinEvent_t
+  \brief Structure to save extra information about activation event.
+*/
+struct LoRaWANJoinEvent_t {
+  /*! \brief Whether a new session was started */
+  bool newSession = false;
+
+  /*! \brief The transmitted Join-Request DevNonce value */
+  uint16_t devNonce = 0;
+
+  /*! \brief The received Join-Request JoinNonce value */
+  uint32_t joinNonce = 0;
+};
+
+/*!
   \struct LoRaWANEvent_t
   \brief Structure to save extra information about uplink/downlink event.
 */
@@ -545,35 +560,46 @@ class LoRaWANNode {
     int16_t setBufferSession(uint8_t* persistentBuffer);
 
     /*!
-      \brief Join network by performing over-the-air activation. By this procedure,
-      the device will perform an exchange with the network server and set all necessary configuration. 
+      \brief Set the device credentials and activation configuration
       \param joinEUI 8-byte application identifier.
       \param devEUI 8-byte device identifier.
       \param nwkKey Pointer to the network AES-128 key.
       \param appKey Pointer to the application AES-128 key.
+    */
+    void beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);
+
+    /*!
+      \brief Join network by restoring OTAA session or performing over-the-air activation. By this procedure,
+      the device will perform an exchange with the network server and set all necessary configuration. 
       \param force Set to true to force joining even if previously joined.
       \param joinDr The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
-    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey, bool force = false, uint8_t joinDr = RADIOLIB_LW_DATA_RATE_UNUSED);
+    int16_t activateOTAA(bool force = false, uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED, LoRaWANJoinEvent_t *joinEvent = NULL);
 
     /*!
-      \brief Join network by performing activation by personalization.
-      In this procedure, all necessary configuration must be provided by the user.
+      \brief Set the device credentials and activation configuration
       \param addr Device address.
       \param fNwkSIntKey Pointer to the Forwarding network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
       \param sNwkSIntKey Pointer to the Serving network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0.
       \param nwkSEncKey Pointer to the MAC command network session key [NwkSEncKey] (LoRaWAN 1.1) 
                                     or network session AES-128 key [NwkSKey] (LoRaWAN 1.0).
       \param appSKey Pointer to the application session AES-128 key.
-      \param force Set to true to force a new session, even if one exists.
+    */
+    void beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);
+
+    /*!
+      \brief Join network by restoring ABP session or performing over-the-air activation. 
+      In this procedure, all necessary configuration must be provided by the user.
+      \param force Set to true to force joining even if previously joined.
       \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled)
       \returns \ref status_codes
     */
-    int16_t beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey, bool force = false, uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED);
+    int16_t activateABP(bool force = false, uint8_t initialDr = RADIOLIB_LW_DATA_RATE_UNUSED);
+
 
     /*! \brief Whether there is an ongoing session active */
-    bool isJoined();
+    bool isActivated();
 
     /*!
       \brief Add a MAC command to the uplink queue.
@@ -838,7 +864,7 @@ class LoRaWANNode {
 
     static int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);
 
-    void beginCommon(uint8_t initialDr);
+    void activateCommon(uint8_t initialDr);
 
     // a buffer that holds all LW base parameters that should persist at all times!
     uint8_t bufferNonces[RADIOLIB_LW_NONCES_BUF_SIZE] = { 0 };
@@ -857,6 +883,15 @@ class LoRaWANNode {
       .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },
     };
 
+    uint16_t lwMode = RADIOLIB_LW_MODE_NONE;
+    uint8_t lwClass = RADIOLIB_LW_CLASS_A;
+    bool isActive = false;
+
+    uint64_t joinEUI = 0;
+    uint64_t devEUI = 0;
+    uint8_t nwkKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+    uint8_t appKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+
     // the following is either provided by the network server (OTAA)
     // or directly entered by the user (ABP)
     uint32_t devAddr = 0;
@@ -865,6 +900,8 @@ class LoRaWANNode {
     uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
     uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };
+
+    uint16_t keyCheckSum = 0;
     
     // device-specific parameters, persistent through sessions
     uint16_t devNonce = 0;
@@ -943,9 +980,6 @@ class LoRaWANNode {
 
     // save the selected sub-band in case this must be restored in ADR control
     uint8_t subBand = 0;
-
-    // check if restored buffers match the supplied activation info
-    bool verifyBuffers(uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan);
 
     // wait for, open and listen during Rx1 and Rx2 windows; only performs listening
     int16_t downlinkCommon();
