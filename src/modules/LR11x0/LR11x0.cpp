@@ -489,7 +489,7 @@ uint32_t LR11x0::getIrqStatus() {
   // there is no dedicated "get IRQ" command, the IRQ bits are sent after the status bytes
   uint8_t buff[6] = { 0 };
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   uint32_t irq = ((uint32_t)(buff[2]) << 24) | ((uint32_t)(buff[3]) << 16) | ((uint32_t)(buff[4]) << 8) | (uint32_t)buff[5];
   return(irq);
@@ -1546,6 +1546,78 @@ int16_t LR11x0::wifiScan(uint8_t wifiType, uint8_t* count, uint8_t mode, uint16_
   return(getWifiScanResultsCount(count));
 }
 
+int16_t LR11x0::getVersionInfo(LR11x0VersionInfo_t* info) {
+  if(!info) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  int16_t state = this->getVersion(&info->hardware, &info->device, &info->fwMajor, &info->fwMinor);
+  RADIOLIB_ASSERT(state);
+  state = this->wifiReadVersion(&info->fwMajorWiFi, &info->fwMinorWiFi);
+  RADIOLIB_ASSERT(state);
+  return(this->gnssReadVersion(&info->fwGNSS, &info->almanacGNSS));
+}
+
+int16_t LR11x0::updateFirmware(const uint32_t* image, size_t size, bool nonvolatile) {
+  if(!image) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  // put the device to bootloader mode
+  int16_t state = this->reboot(true);
+  RADIOLIB_ASSERT(state);
+  this->mod->hal->delay(500);
+
+  // check we're in bootloader
+  uint8_t device = 0xFF;
+  state = this->getVersion(NULL, &device, NULL, NULL);
+  RADIOLIB_ASSERT(state);
+  if(device != RADIOLIB_LR11X0_DEVICE_BOOT) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to put device to bootloader mode, %02x != %02x", device, RADIOLIB_LR11X0_DEVICE_BOOT);
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+
+  // erase the image
+  state = this->bootEraseFlash();
+  RADIOLIB_ASSERT(state);
+
+  // wait for BUSY to go low
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->millis() - start >= 3000) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("BUSY pin timeout after erase!");
+      return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+    }
+  }
+
+  // upload the new image
+  const size_t maxLen = 64;
+  size_t rem = size % maxLen;
+  size_t numWrites = (rem == 0) ? (size / maxLen) : ((size / maxLen) + 1);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Writing image in %lu chunks, last chunk size is %lu words", (unsigned long)numWrites, (unsigned long)rem);
+  for(size_t i = 0; i < numWrites; i ++) {
+    uint32_t offset = i * maxLen;
+    uint32_t len = (i == (numWrites - 1)) ? rem : maxLen;
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Writing chunk %d at offset %08lx (%u words)", (int)i, (unsigned long)offset, (unsigned int)len);
+    this->bootWriteFlashEncrypted(offset*sizeof(uint32_t), (uint32_t*)&image[offset], len, nonvolatile);
+  }
+
+  // kick the device from bootloader
+  state = this->reset();
+  RADIOLIB_ASSERT(state);
+
+  // verify we are no longer in bootloader
+  state = this->getVersion(NULL, &device, NULL, NULL);
+  RADIOLIB_ASSERT(state);
+  if(device == RADIOLIB_LR11X0_DEVICE_BOOT) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to kick device from bootloader mode, %02x == %02x", device, RADIOLIB_LR11X0_DEVICE_BOOT);
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+
+  return(state);
+}
+
 int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -1601,7 +1673,7 @@ int16_t LR11x0::SPIcheckStatus(Module* mod) {
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
   uint8_t buff[6] = { 0 };
   mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
-  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
   mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
   RADIOLIB_ASSERT(state);
   return(LR11x0::SPIparseStatus(buff[0]));
@@ -1637,21 +1709,16 @@ bool LR11x0::findChip(uint8_t ver) {
     reset();
 
     // read the version
-    uint8_t device = 0xFF;
-    uint8_t major = 0xFF;
-    uint8_t minor = 0xFF;
-    if((this->getVersion(NULL, &device, &major, &minor) == RADIOLIB_ERR_NONE) && (device == ver)) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", device);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Transceiver FW version: %d.%d", (int)major, (int)minor);
-      #if RADIOLIB_DEBUG_BASIC
-      this->wifiReadVersion(&major, &minor);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)major, (int)minor);
-      this->gnssReadVersion(&major, &minor);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)major, (int)minor);
-      #endif
+    LR11x0VersionInfo_t info = { 0 };
+    int16_t state = getVersionInfo(&info);
+    if((state == RADIOLIB_ERR_NONE) && (info.device == ver)) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)info.fwMajor, (int)info.fwMinor);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)info.fwMajorWiFi, (int)info.fwMinorWiFi);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)info.fwGNSS, (int)info.almanacGNSS);
       flagFound = true;
     } else {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, device);
+      RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, info.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Expected: 0x%02x", ver);
       this->mod->hal->delay(10);
       i++;
@@ -1781,7 +1848,7 @@ int16_t LR11x0::writeRegMem32(uint32_t addr, uint32_t* data, size_t len) {
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  return(this->writeCommon(RADIOLIB_LR11X0_CMD_WRITE_REG_MEM, addr, data, len));
+  return(this->writeCommon(RADIOLIB_LR11X0_CMD_WRITE_REG_MEM, addr, data, len, false));
 }
 
 int16_t LR11x0::readRegMem32(uint32_t addr, uint32_t* data, size_t len) {
@@ -1874,7 +1941,7 @@ int16_t LR11x0::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
 
   // pass the replies
   if(stat1) { *stat1 = buff[0]; }
@@ -1959,8 +2026,8 @@ int16_t LR11x0::setTcxoMode(uint8_t tune, uint32_t delay) {
 }
 
 int16_t LR11x0::reboot(bool stay) {
-  uint8_t buff[1] = { (uint8_t)stay };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_REBOOT, true, buff, sizeof(buff)));
+  uint8_t buff[1] = { (uint8_t)(stay*3) };
+  return(this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_REBOOT, buff, sizeof(buff), true, false));
 }
 
 int16_t LR11x0::getVbat(float* vbat) {
@@ -2745,7 +2812,7 @@ int16_t LR11x0::gnssGetContextStatus(uint8_t* fwVersion, uint32_t* almanacCrc, u
   // read the result - this requires some magic bytes first, that's why LR11x0::SPIcommand cannot be used
   uint8_t cmd_buff[3] = { 0x00, 0x02, 0x18 };
   uint8_t buff[9] = { 0 };
-  state = this->mod->SPItransferStream(cmd_buff, sizeof(cmd_buff), false, NULL, buff, sizeof(buff), true, RADIOLIB_MODULE_SPI_TIMEOUT);
+  state = this->mod->SPItransferStream(cmd_buff, sizeof(cmd_buff), false, NULL, buff, sizeof(buff), true);
 
   // pass the replies
   if(fwVersion) { *fwVersion = buff[0]; }
@@ -3207,13 +3274,12 @@ int16_t LR11x0::cryptoGetParam(uint8_t id, uint32_t* value) {
   return(state);
 }
 
-int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, size_t len) {
+int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   }
-  
-  return(this->writeCommon(RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE, offset, data, len));
+  return(this->writeCommon(RADIOLIB_LR11X0_CMD_CRYPTO_CHECK_ENCRYPTED_FIRMWARE_IMAGE, offset, data, len, nonvolatile));
 }
 
 int16_t LR11x0::cryptoCheckEncryptedFirmwareImageResult(bool* result) {
@@ -3227,12 +3293,20 @@ int16_t LR11x0::cryptoCheckEncryptedFirmwareImageResult(bool* result) {
 }
 
 int16_t LR11x0::bootEraseFlash(void) {
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_ERASE_FLASH, true, NULL, 0));
+  // erasing flash takes about 2.5 seconds, temporarily tset SPI timeout to 3 seconds
+  RadioLibTime_t timeout = this->mod->spiConfig.timeout;
+  this->mod->spiConfig.timeout = 3000;
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_BOOT_ERASE_FLASH, NULL, 0, false, false);
+  this->mod->spiConfig.timeout = timeout;
+  return(state);
 }
 
-int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, size_t len) {
-  RADIOLIB_CHECK_RANGE(len, 1, 32, RADIOLIB_ERR_SPI_CMD_INVALID);
-  return(this->writeCommon(RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len));
+int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile) {
+  // check maximum size
+  if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
+    return(RADIOLIB_ERR_SPI_CMD_INVALID);
+  }
+  return(this->writeCommon(RADIOLIB_LR11X0_CMD_BOOT_WRITE_FLASH_ENCRYPTED, offset, data, len, nonvolatile));
 }
 
 int16_t LR11x0::bootReboot(bool stay) {
@@ -3261,7 +3335,7 @@ int16_t LR11x0::bootGetJoinEui(uint8_t* eui) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_BOOT_GET_JOIN_EUI, false, eui, RADIOLIB_LR11X0_EUI_LEN));
 }
 
-int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len) {
+int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile) {
   // build buffers - later we need to ensure endians are correct, 
   // so there is probably no way to do this without copying buffers and iterating
   size_t buffLen = sizeof(uint32_t) + len*sizeof(uint32_t);
@@ -3279,13 +3353,19 @@ int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
 
   // convert endians
   for(size_t i = 0; i < len; i++) {
-    dataBuff[4 + i] = (uint8_t)((data[i] >> 24) & 0xFF);
-    dataBuff[5 + i] = (uint8_t)((data[i] >> 16) & 0xFF);
-    dataBuff[6 + i] = (uint8_t)((data[i] >> 8) & 0xFF);
-    dataBuff[7 + i] = (uint8_t)(data[i] & 0xFF);
+    uint32_t bin = 0;
+    if(nonvolatile) {
+      bin = RADIOLIB_NONVOLATILE_READ_DWORD(data + i);
+    } else {
+      bin = data[i];
+    }
+    dataBuff[4 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 24) & 0xFF);
+    dataBuff[5 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 16) & 0xFF);
+    dataBuff[6 + i*sizeof(uint32_t)] = (uint8_t)((bin >> 8) & 0xFF);
+    dataBuff[7 + i*sizeof(uint32_t)] = (uint8_t)(bin & 0xFF);
   }
 
-  int16_t state = this->SPIcommand(cmd, true, dataBuff, buffLen);
+  int16_t state = this->mod->SPIwriteStream(cmd, dataBuff, buffLen, true, false);
   #if !RADIOLIB_STATIC_ONLY
     delete[] dataBuff;
   #endif

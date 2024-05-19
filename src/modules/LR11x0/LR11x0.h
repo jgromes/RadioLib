@@ -662,6 +662,36 @@ struct LR11x0WifiResultExtended_t: public LR11x0WifiResultFull_t {
 };
 
 /*!
+  \struct LR11x0VersionInfo_t
+  \brief Structure to report information about versions of the LR11x0 hardware and firmware.
+*/
+struct LR11x0VersionInfo_t {
+  /*! \brief Hardware revision. */
+  uint8_t hardware;
+
+  /*! \brief Which device this is - one of RADIOLIB_LR11X0_DEVICE_* macros. */
+  uint8_t device;
+  
+  /*! \brief Major revision of the base firmware. */
+  uint8_t fwMajor;
+  
+  /*! \brief Minor revision of the base firmware. */
+  uint8_t fwMinor;
+
+  /*! \brief Major revision of the WiFi firmware. */
+  uint8_t fwMajorWiFi;
+  
+  /*! \brief Minor revision of the WiFi firmware. */
+  uint8_t fwMinorWiFi;
+
+  /*! \brief Revision of the GNSS firmware. */
+  uint8_t fwGNSS;
+  
+  /*! \brief Almanac revision of the GNSS firmware. */
+  uint8_t almanacGNSS;
+};
+
+/*!
   \class LR11x0
   \brief Base class for %LR11x0 series. All derived classes for %LR11x0 (e.g. LR1110 or LR1120) inherit from this base class.
   This class should not be instantiated directly from user code, only from its derived classes.
@@ -1289,7 +1319,26 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t wifiScan(uint8_t wifiType, uint8_t* count, uint8_t mode = RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask = RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans = 16, uint16_t timeout = 100);
-
+   
+    /*!
+      \brief Retrieve LR11x0 hardware, device and firmware version information.
+      \param info Pointer to LR11x0VersionInfo_t structure to populate.
+      \returns \ref status_codes
+    */
+    int16_t getVersionInfo(LR11x0VersionInfo_t* info);
+    
+    /*!
+      \brief Method to upload new firmware image to the device.
+      The device will be automatically erased, a new firmware will be uploaded,
+      written to flash and executed.
+      \param image Pointer to the image to upload.
+      \param size Size of the image in 32-bit words.
+      \param nonvolatile Set to true when the image is saved in non-volatile memory of the host processor,
+      or to false when the patch is in its RAM. Defaults to true.
+      \returns \ref status_codes
+    */
+    int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
+    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
@@ -1445,11 +1494,11 @@ class LR11x0: public PhysicalLayer {
     int16_t cryptoRestoreFromFlash(void);
     int16_t cryptoSetParam(uint8_t id, uint32_t value);
     int16_t cryptoGetParam(uint8_t id, uint32_t* value);
-    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, size_t len);
+    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile);
     int16_t cryptoCheckEncryptedFirmwareImageResult(bool* result);
 
     int16_t bootEraseFlash(void);
-    int16_t bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, size_t len);
+    int16_t bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile);
     int16_t bootReboot(bool stay);
     int16_t bootGetPin(uint8_t* pin);
     int16_t bootGetChipEui(uint8_t* eui);
@@ -1499,7 +1548,7 @@ class LR11x0: public PhysicalLayer {
 
     // common methods to avoid some copy-paste
     int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len);
-    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len);
+    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* data, size_t len, bool nonvolatile);
     int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut);
 };
 
