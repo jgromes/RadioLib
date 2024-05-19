@@ -133,7 +133,7 @@ int16_t PhysicalLayer::startReceive() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t PhysicalLayer::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)timeout;
   (void)irqFlags;
   (void)irqMask;
@@ -257,6 +257,12 @@ int16_t PhysicalLayer::setOutputPower(int8_t power) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped) {
+  (void)power;
+  (void)clipped;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::setSyncWord(uint8_t* sync, size_t len) {
   (void)sync;
   (void)len;
@@ -305,7 +311,7 @@ RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(0); 
 }
 
-int16_t PhysicalLayer::irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask) {
+int16_t PhysicalLayer::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   (void)irqFlags;
   (void)irqMask;
   return(RADIOLIB_ERR_UNSUPPORTED);
@@ -414,7 +420,7 @@ void PhysicalLayer::updateDirectBuffer(uint8_t bit) {
     this->syncBuffer <<= 1;
     this->syncBuffer |= bit;
 
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("S\t%lu", this->syncBuffer);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("S\t%lu", (long unsigned int)this->syncBuffer);
 
     if((this->syncBuffer & this->directSyncWordMask) == this->directSyncWord) {
       this->gotSync = true;

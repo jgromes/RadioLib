@@ -144,7 +144,7 @@ class PhysicalLayer {
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    virtual int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
@@ -277,6 +277,14 @@ class PhysicalLayer {
     virtual int16_t setOutputPower(int8_t power);
 
     /*!
+      \brief Check if output power is configurable. Must be implemented in module class if the module supports it.
+      \param power Output power in dBm. The allowed range depends on the module used.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    virtual int16_t checkOutputPower(int8_t power, int8_t* clipped);
+
+    /*!
       \brief Set sync word. Must be implemented in module class if the module supports it.
       \param sync Pointer to the sync word.
       \param len Sync word length in bytes. Maximum length depends on the module used.
@@ -350,7 +358,7 @@ class PhysicalLayer {
       \param irqMask Mask indicating which IRQ triggers a DIO
       \returns \ref status_codes
     */
-    virtual int16_t irqRxDoneRxTimeout(uint16_t &irqFlags, uint16_t &irqMask);
+    virtual int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
 
     /*!
       \brief Check whether the IRQ bit for RxTimeout is set

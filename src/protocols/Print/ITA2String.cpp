@@ -20,6 +20,25 @@ ITA2String::ITA2String(const char* str) {
   ita2Len = 0;
 }
 
+ITA2String::ITA2String(const ITA2String& ita2) {
+  this->asciiLen = ita2.asciiLen;
+  this->ita2Len = ita2.ita2Len;
+  #if !RADIOLIB_STATIC_ONLY
+  this->strAscii = new char[asciiLen + 1];
+  #endif
+  strcpy(this->strAscii, ita2.strAscii);
+}
+
+ITA2String& ITA2String::operator=(const ITA2String& ita2) {
+  this->asciiLen = ita2.asciiLen;
+  this->ita2Len = ita2.ita2Len;
+  #if !RADIOLIB_STATIC_ONLY
+  this->strAscii = new char[asciiLen + 1];
+  #endif
+  strcpy(this->strAscii, ita2.strAscii);
+  return(*this);
+}
+
 ITA2String::~ITA2String() {
   #if !RADIOLIB_STATIC_ONLY
     delete[] strAscii;
@@ -46,6 +65,9 @@ uint8_t* ITA2String::byteArr() {
     uint8_t* temp = new uint8_t[asciiLen*2 + 1];
   #endif
 
+  // ensure the minimum possible array size is always initialized
+  temp[0] = 0;
+  
   size_t arrayLen = 0;
   bool flagFigure = false;
   for(size_t i = 0; i < asciiLen; i++) {

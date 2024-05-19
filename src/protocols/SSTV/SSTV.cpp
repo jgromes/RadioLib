@@ -246,7 +246,7 @@ void SSTVClient::sendHeader() {
   this->tone(RADIOLIB_SSTV_TONE_BREAK, RADIOLIB_SSTV_HEADER_BIT_LENGTH);
 }
 
-void SSTVClient::sendLine(uint32_t* imgLine) {
+void SSTVClient::sendLine(const uint32_t* imgLine) {
   // check first line flag in Scottie modes
   if(firstLine && ((txMode.visCode == RADIOLIB_SSTV_SCOTTIE_1) || (txMode.visCode == RADIOLIB_SSTV_SCOTTIE_2) || (txMode.visCode == RADIOLIB_SSTV_SCOTTIE_DX))) {
     firstLine = false;

@@ -25,7 +25,7 @@ class SX1262: public SX126x {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX1262(Module* mod);
+    SX1262(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -69,7 +69,7 @@ class SX1262: public SX126x {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
@@ -85,7 +85,15 @@ class SX1262: public SX126x {
       \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
-    virtual int16_t setOutputPower(int8_t power);
+    virtual int16_t setOutputPower(int8_t power) override;
+
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
 
 #if !RADIOLIB_GODMODE
   private:

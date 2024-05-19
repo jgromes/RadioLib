@@ -2,7 +2,7 @@
 #if !RADIOLIB_EXCLUDE_LR11X0
 
 LR1110::LR1110(Module* mod) : LR11x0(mod) {
-  chipType = RADIOLIB_LR11X0_HW_LR1110;
+  chipType = RADIOLIB_LR11X0_DEVICE_LR1110;
 }
 
 int16_t LR1110::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {

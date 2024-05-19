@@ -564,7 +564,7 @@ class Si443x: public PhysicalLayer {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    Si443x(Module* mod);
+    explicit Si443x(Module* mod);
 
     // basic methods
 
@@ -607,7 +607,7 @@ class Si443x: public PhysicalLayer {
       %Module will wake up automatically when methods like transmit or receive are called.
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep() override;
 
     /*!
       \brief Sets the module to standby (with XTAL on).
@@ -658,23 +658,23 @@ class Si443x: public PhysicalLayer {
       \brief Sets interrupt service routine to call when a packet is received.
       \param func ISR to call.
     */
-    void setPacketReceivedAction(void (*func)(void));
+    void setPacketReceivedAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is received.
     */
-    void clearPacketReceivedAction();
+    void clearPacketReceivedAction() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is sent.
       \param func ISR to call.
     */
-    void setPacketSentAction(void (*func)(void));
+    void setPacketSentAction(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when a packet is sent.
     */
-    void clearPacketSentAction();
+    void clearPacketSentAction() override;
 
     /*!
       \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 64 bytes long.
@@ -695,7 +695,7 @@ class Si443x: public PhysicalLayer {
       \brief Interrupt-driven receive method. IRQ will be activated when full valid packet is received.
       \returns \ref status_codes
     */
-    int16_t startReceive();
+    int16_t startReceive() override;
 
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
@@ -705,7 +705,7 @@ class Si443x: public PhysicalLayer {
       \param len Ignored.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len);
+    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -724,7 +724,7 @@ class Si443x: public PhysicalLayer {
       \param br Bit rate to be set (in kbps).
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
     /*!
       \brief Sets FSK frequency deviation from carrier frequency. Allowed values range from 0.625 to 320.0 kHz.
@@ -745,7 +745,7 @@ class Si443x: public PhysicalLayer {
       \param syncWord Pointer to the array of sync word bytes.
       \param len Sync word length in bytes.
     */
-    int16_t setSyncWord(uint8_t* syncWord, size_t len);
+    int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
 
     /*!
       \brief Sets preamble length.
@@ -787,7 +787,7 @@ class Si443x: public PhysicalLayer {
      \brief Get one truly random byte from RSSI noise.
      \returns TRNG byte.
    */
-    uint8_t randomByte();
+    uint8_t randomByte() override;
 
     /*!
      \brief Read version SPI register. Should return RADIOLIB_SI443X_DEVICE_VERSION (0x06) if Si443x is connected and working.
@@ -800,13 +800,13 @@ class Si443x: public PhysicalLayer {
       \brief Set interrupt service routine function to call when data bit is received in direct mode.
       \param func Pointer to interrupt service routine.
     */
-    void setDirectAction(void (*func)(void));
+    void setDirectAction(void (*func)(void)) override;
 
     /*!
       \brief Function to read and process data bit in direct reception mode.
       \param pin Pin on which to read.
     */
-    void readBit(uint32_t pin);
+    void readBit(uint32_t pin) override;
     #endif
 
     /*!
@@ -826,7 +826,7 @@ class Si443x: public PhysicalLayer {
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
-    Module* getMod();
+    Module* getMod() override;
 
 #if !RADIOLIB_GODMODE
   protected:

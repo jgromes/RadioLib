@@ -246,9 +246,21 @@ class AX25Client {
     #if !RADIOLIB_EXCLUDE_AFSK
     /*!
       \brief Constructor for AFSK mode.
-      \param audio Pointer to the AFSK instance providing audio.
+      \param aud Pointer to the AFSK instance providing audio.
     */
-    explicit AX25Client(AFSKClient* audio);
+    explicit AX25Client(AFSKClient* aud);
+
+    /*!
+      \brief Copy constructor.
+      \param ax25 AX25Client instance to copy.
+    */
+    AX25Client(const AX25Client& ax25);
+    
+    /*!
+      \brief Overload for assignment operator.
+      \param ax25 rvalue AX25Client.
+    */
+    AX25Client& operator=(const AX25Client& ax25);
 
     /*!
       \brief Set AFSK tone correction offset. On some platforms, this is required to get the audio produced
@@ -310,10 +322,11 @@ class AX25Client {
 
     PhysicalLayer* phyLayer;
     #if !RADIOLIB_EXCLUDE_AFSK
+    AFSKClient* audio;
     BellClient* bellModem;
     #endif
 
-    char sourceCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = {0, 0, 0, 0, 0, 0, 0};
+    char sourceCallsign[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };
     uint8_t sourceSSID = 0;
     uint16_t preambleLen = 0;
 

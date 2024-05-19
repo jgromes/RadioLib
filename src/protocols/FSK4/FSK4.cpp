@@ -112,12 +112,12 @@ int32_t FSK4Client::getRawShift(int32_t shift) {
   int32_t step = round(phyLayer->getFreqStep());
 
   // check minimum shift value
-  if(abs(shift) < step / 2) {
+  if(RADIOLIB_ABS(shift) < step / 2) {
     return(0);
   }
 
   // round shift to multiples of frequency step size
-  if(abs(shift) % step < (step / 2)) {
+  if(RADIOLIB_ABS(shift) % step < (step / 2)) {
     return(shift / step);
   }
   if(shift < 0) {

@@ -21,32 +21,32 @@ class RadioLibCRC {
     /*!
       \brief CRC size in bits.
     */
-    uint8_t size;
+    uint8_t size = 8;
 
     /*!
       \brief CRC polynomial.
     */
-    uint32_t poly;
+    uint32_t poly = 0;
 
     /*!
       \brief Initial value.
     */
-    uint32_t init;
+    uint32_t init = 0;
 
     /*!
       \brief Final XOR value.
     */
-    uint32_t out;
+    uint32_t out = 0;
 
     /*!
       \brief Whether to reflect input bytes.
     */
-    bool refIn;
+    bool refIn = false;
 
     /*!
       \brief Whether to reflect the result.
     */
-    bool refOut;
+    bool refOut = false;
 
     /*!
       \brief Default constructor.
@@ -59,7 +59,7 @@ class RadioLibCRC {
       \param len Size of the buffer in bytes.
       \returns The resulting checksum.
     */
-    uint32_t checksum(uint8_t* buff, size_t len);
+    uint32_t checksum(const uint8_t* buff, size_t len);
 };
 
 // the global singleton

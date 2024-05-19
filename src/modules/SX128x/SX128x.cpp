@@ -411,28 +411,8 @@ int16_t SX128x::receiveDirect() {
 }
 
 int16_t SX128x::scanChannel() {
-  // check active modem
-  if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
-  }
-
-  // set mode to standby
-  int16_t state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE, RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE);
-  RADIOLIB_ASSERT(state);
-
-  // clear interrupt flags
-  state = clearIrqStatus();
-  RADIOLIB_ASSERT(state);
-
-  // set RF switch (if present)
-  this->mod->setRfSwitchState(Module::MODE_RX);
-
   // set mode to CAD
-  state = setCad();
+  int16_t state = startChannelScan();
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -441,18 +421,11 @@ int16_t SX128x::scanChannel() {
   }
 
   // check CAD result
-  uint16_t cadResult = getIrqStatus();
-  if(cadResult & RADIOLIB_SX128X_IRQ_CAD_DETECTED) {
-    // detected some LoRa activity
-    clearIrqStatus();
-    return(RADIOLIB_LORA_DETECTED);
-  } else if(cadResult & RADIOLIB_SX128X_IRQ_CAD_DONE) {
-    // channel is free
-    clearIrqStatus();
-    return(RADIOLIB_CHANNEL_FREE);
-  }
+  return(getChannelScanResult());
+}
 
-  return(RADIOLIB_ERR_UNKNOWN);
+int16_t SX128x::sleep() {
+  return(SX128x::sleep(true));
 }
 
 int16_t SX128x::sleep(bool retainConfig) {
@@ -588,7 +561,7 @@ int16_t SX128x::startReceive() {
   return(this->startReceive(RADIOLIB_SX128X_RX_TIMEOUT_INF, RADIOLIB_SX128X_IRQ_RX_DEFAULT, RADIOLIB_SX128X_IRQ_RX_DONE, 0));
 }
 
-int16_t SX128x::startReceive(uint16_t timeout, uint16_t irqFlags, uint16_t irqMask, size_t len) {
+int16_t SX128x::startReceive(uint16_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
   (void)len;
   
   // check active modem
@@ -661,6 +634,52 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   // check if CRC failed - this is done after reading data to give user the option to keep them
   RADIOLIB_ASSERT(crcState);
 
+  return(state);
+}
+
+int16_t SX128x::startChannelScan() {
+  // check active modem
+  if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set mode to standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set DIO pin mapping
+  state = setDioIrqParams(RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE, RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE);
+  RADIOLIB_ASSERT(state);
+
+  // clear interrupt flags
+  state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  this->mod->setRfSwitchState(Module::MODE_RX);
+
+  // set mode to CAD
+  return(setCad());
+}
+
+int16_t SX128x::getChannelScanResult() {
+  // check active modem
+  if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // check CAD result
+  uint16_t cadResult = getIrqStatus();
+  int16_t state = RADIOLIB_ERR_UNKNOWN;
+  if(cadResult & RADIOLIB_SX128X_IRQ_CAD_DETECTED) {
+    // detected some LoRa activity
+    state = RADIOLIB_LORA_DETECTED;
+  } else if(cadResult & RADIOLIB_SX128X_IRQ_CAD_DONE) {
+    // channel is free
+    state = RADIOLIB_CHANNEL_FREE;
+  }
+
+  clearIrqStatus();
   return(state);
 }
 
@@ -765,9 +784,20 @@ int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
 }
 
 int16_t SX128x::setOutputPower(int8_t pwr) {
-  RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  // check if power value is configurable
+  int16_t state = checkOutputPower(power, NULL);
+  RADIOLIB_ASSERT(state);
+
   this->power = pwr + 18;
   return(setTxParams(this->power));
+}
+
+int16_t SX128x::checkOutputPower(int8_t power, int8_t* clipped) {
+  if(clipped) {
+    *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));
+  }
+  RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
@@ -898,13 +928,13 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
   }
 
   // update modulation parameters
-  uint8_t modIndex = (uint8_t)((8.0 * (newFreqDev / (float)this->bitRateKbps)) - 1.0);
-  if(modIndex > RADIOLIB_SX128X_BLE_GFSK_MOD_IND_4_00) {
+  uint8_t modInd = (uint8_t)((8.0 * (newFreqDev / (float)this->bitRateKbps)) - 1.0);
+  if(modInd > RADIOLIB_SX128X_BLE_GFSK_MOD_IND_4_00) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }
 
   // update modulation parameters
-  this->modIndex = modIndex;
+  this->modIndex = modInd;
   return(setModulationParams(this->bitRate, this->modIndex, this->shaping));
 }
 
@@ -938,7 +968,7 @@ int16_t SX128x::setDataShaping(uint8_t sh) {
   }
 }
 
-int16_t SX128x::setSyncWord(uint8_t* syncWord, uint8_t len) {
+int16_t SX128x::setSyncWord(const uint8_t* syncWord, uint8_t len) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_GFSK) || (modem == RADIOLIB_SX128X_PACKET_TYPE_FLRC))) {

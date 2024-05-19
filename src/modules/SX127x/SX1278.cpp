@@ -294,19 +294,12 @@ int16_t SX1278::setOutputPower(int8_t power) {
 }
 
 int16_t SX1278::setOutputPower(int8_t power, bool useRfo) {
-  // check allowed power range
-  if(useRfo) {
-    // RFO output
-    RADIOLIB_CHECK_RANGE(power, -3, 15, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-  } else {
-    // PA_BOOST output, check high-power operation
-    if(power != 20) {
-      RADIOLIB_CHECK_RANGE(power, 2, 17, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
-    }
-  }
+  // check if power value is configurable
+  int16_t state = checkOutputPower(power, NULL, useRfo);
+  RADIOLIB_ASSERT(state);
 
   // set mode to standby
-  int16_t state = SX127x::standby();
+  state = SX127x::standby();
   Module* mod = this->getMod();
 
   if(useRfo) {
@@ -340,6 +333,34 @@ int16_t SX1278::setOutputPower(int8_t power, bool useRfo) {
   }
 
   return(state);
+}
+
+int16_t SX1278::checkOutputPower(int8_t power, int8_t* clipped) {
+  return(checkOutputPower(power, clipped, false));
+}
+
+int16_t SX1278::checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) {
+  // check allowed power range
+  if(useRfo) {
+    // RFO output
+    if(clipped) {
+      *clipped = RADIOLIB_MAX(-3, RADIOLIB_MIN(15, power));
+    }
+    RADIOLIB_CHECK_RANGE(power, -3, 15, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  } else {
+    // PA_BOOST output, check high-power operation
+    if(clipped) {
+      if(power != 20) {
+        *clipped = RADIOLIB_MAX(2, RADIOLIB_MIN(17, power));
+      } else {
+        *clipped = 20;
+      }
+    }
+    if(power != 20) {
+      RADIOLIB_CHECK_RANGE(power, 2, 17, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+    }
+  }
+  return(RADIOLIB_ERR_NONE);
 }
 
 int16_t SX1278::setGain(uint8_t gain) {

@@ -105,14 +105,14 @@ void loop() {
   uint8_t Port = 10;
 
   // Retrieve the last uplink frame counter
-  uint32_t fcntUp = node.getFcntUp();
+  uint32_t fcntUp = node.getFCntUp();
 
   // Send a confirmed uplink every 64th frame
   // and also request the LinkCheck and DeviceTime MAC commands
   if(fcntUp % 64 == 0) {
     Serial.println(F("[LoRaWAN] Requesting LinkCheck and DeviceTime"));
-    node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_LINK_CHECK);
-    node.sendMacCommandReq(RADIOLIB_LORAWAN_MAC_DEVICE_TIME);
+    node.sendMacCommandReq(RADIOLIB_LW_MAC_LINK_CHECK);
+    node.sendMacCommandReq(RADIOLIB_LW_MAC_DEVICE_TIME);
     state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), Port, downlinkPayload, &downlinkSize, true, &uplinkDetails, &downlinkDetails); 
   } else {
     state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload), Port, downlinkPayload, &downlinkSize);    
@@ -159,9 +159,9 @@ void loop() {
     Serial.print(downlinkDetails.power);
     Serial.println(F(" dBm"));
     Serial.print(F("[LoRaWAN] Frame count:\t"));
-    Serial.println(downlinkDetails.fcnt);
+    Serial.println(downlinkDetails.fCnt);
     Serial.print(F("[LoRaWAN] Port:\t\t"));
-    Serial.println(downlinkDetails.port);
+    Serial.println(downlinkDetails.fPort);
 
     uint8_t margin = 0;
     uint8_t gwCnt = 0;

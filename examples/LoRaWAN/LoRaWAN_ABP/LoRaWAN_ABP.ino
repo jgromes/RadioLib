@@ -42,7 +42,7 @@ void setup() {
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
   
   Serial.println(F("Initialise LoRaWAN Network credentials"));
-  state = node.beginABP(devAddr, NwkSEncKey, AppSKey, NwkSKey, SNwkSIntKey, true);
+  state = node.beginABP(devAddr, fNwkSIntKey, sNwkSIntKey, nwkSEncKey, appSKey, true);
   debug(state < RADIOLIB_ERR_NONE, F("Session setup failed"), state, true);
 
   Serial.println(F("Ready!\n"));

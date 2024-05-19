@@ -1,0 +1,4 @@
+# ignore all output files
+*.h
+*.png
+!radiolib.png

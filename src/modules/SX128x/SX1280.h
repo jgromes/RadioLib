@@ -19,7 +19,7 @@ class SX1280: public SX1281 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX1280(Module* mod);
+    SX1280(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Blocking ranging method.

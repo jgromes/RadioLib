@@ -100,7 +100,7 @@ class SX1272: public SX127x {
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX1272(Module* mod);
+    SX1272(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -146,7 +146,7 @@ class SX1272: public SX127x {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets %LoRa link bandwidth. Allowed values are 125, 250 and 500 kHz. Only available in %LoRa mode.
@@ -207,6 +207,24 @@ class SX1272: public SX127x {
     int16_t setOutputPower(int8_t power, bool useRfo);
 
     /*!
+      \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, assumes PA_BOOST pin.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool useRfo);
+
+    /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
       Set to 0 to enable automatic gain control (recommended).
       \param gain Gain of receiver LNA (low-noise amplifier) to be set.
@@ -236,7 +254,7 @@ class SX1272: public SX127x {
       Overload with packet mode enabled for PhysicalLayer compatibility.
       \returns RSSI value in dBm.
     */
-    float getRSSI();
+    float getRSSI() override;
 
     /*!
       \brief Gets recorded signal strength indicator.
@@ -293,7 +311,7 @@ class SX1272: public SX127x {
     int16_t setHeaderType(uint8_t headerType, size_t len = 0xFF);
 
     int16_t configFSK();
-    void errataFix(bool rx);
+    void errataFix(bool rx) override;
 
 #if !RADIOLIB_GODMODE
   private:

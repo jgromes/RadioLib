@@ -4,7 +4,7 @@ RadioLibCRC::RadioLibCRC() {
 
 }
 
-uint32_t RadioLibCRC::checksum(uint8_t* buff, size_t len) {
+uint32_t RadioLibCRC::checksum(const uint8_t* buff, size_t len) {
   uint32_t crc = this->init;
   size_t pos = 0;
   for(size_t i = 0; i < 8*len; i++) {

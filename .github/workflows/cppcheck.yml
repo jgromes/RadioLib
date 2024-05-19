@@ -24,4 +24,4 @@ jobs:
 
     - name: Run cppcheck
       run:
-        cppcheck src --enable=all --force
+        cppcheck src --enable=all --force --inline-suppr --quiet --suppress=ConfigurationNotChecked --suppress=unusedFunction

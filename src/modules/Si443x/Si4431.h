@@ -21,7 +21,7 @@ class Si4431: public Si4432 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio chip.
     */
-    Si4431(Module* mod);
+    Si4431(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -44,7 +44,7 @@ class Si4431: public Si4432 {
       \param power Output power to be set in dBm.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power);
+    int16_t setOutputPower(int8_t power) override;
 
 #if !RADIOLIB_GODMODE
   protected:

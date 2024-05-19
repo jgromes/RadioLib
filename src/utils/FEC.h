@@ -31,6 +31,11 @@ class RadioLibBCH {
     RadioLibBCH();
 
     /*!
+      \brief Default detructor.
+    */
+    ~RadioLibBCH();
+
+    /*!
       \brief Initialization method.
       \param n Code word length in bits, up to 32.
       \param k Data portion length in bits, up to "n".
@@ -47,19 +52,19 @@ class RadioLibBCH {
     uint32_t encode(uint32_t dataword);
 
   private:
-    uint8_t n;
-    uint8_t k;
-    uint32_t poly;
-    uint8_t m;
+    uint8_t n = 0;
+    uint8_t k = 0;
+    uint32_t poly = 0;
+    uint8_t m = 0;
     
     #if RADIOLIB_STATIC_ONLY
-      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1];
-      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1];
-      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1];
+      int32_t alphaTo[RADIOLIB_BCH_MAX_N + 1] = { 0 };
+      int32_t indexOf[RADIOLIB_BCH_MAX_N + 1] = { 0 };
+      int32_t generator[RADIOLIB_BCH_MAX_N - RADIOLIB_BCH_MAX_K + 1] = { 0 };
     #else
-      int32_t* alphaTo;
-      int32_t* indexOf;
-      int32_t* generator;
+      int32_t* alphaTo = nullptr;
+      int32_t* indexOf = nullptr;
+      int32_t* generator = nullptr;
     #endif
 };
 

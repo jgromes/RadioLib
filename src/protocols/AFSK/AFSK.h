@@ -26,7 +26,7 @@ class AFSKClient  {
       \brief Copy contructor.
       \param aud Pointer to the AFSKClient instance to copy.
     */
-    AFSKClient(AFSKClient* aud);
+    explicit AFSKClient(AFSKClient* aud);
 
     /*!
       \brief Initialization method.

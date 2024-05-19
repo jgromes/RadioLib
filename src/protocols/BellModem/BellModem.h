@@ -75,7 +75,7 @@ class BellClient: public AFSKClient, public RadioLibPrint {
       \brief Audio-client constructor. Can be used when AFSKClient instance already exists.
       \param aud Audio client to use.
     */
-    BellClient(AFSKClient* aud);
+    explicit BellClient(AFSKClient* aud);
 
     /*!
       \brief Initialization method.
@@ -104,7 +104,7 @@ class BellClient: public AFSKClient, public RadioLibPrint {
       \param b Byte to write.
       \returns 1 if the byte was written, 0 otherwise.
     */
-    size_t write(uint8_t b);
+    size_t write(uint8_t b) override;
 
     /*!
       \brief Set the modem to idle (ready to transmit).
@@ -119,7 +119,7 @@ class BellClient: public AFSKClient, public RadioLibPrint {
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    BellModem_t modemType;
+    BellModem_t modemType = Bell101;
     float correction = 1.0;
     uint16_t toneLen = 0;
     bool autoStart = true;

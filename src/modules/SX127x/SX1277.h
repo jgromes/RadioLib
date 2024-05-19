@@ -20,7 +20,7 @@ class SX1277: public SX1278 {
       \brief Default constructor. Called from Arduino sketch when creating new LoRa instance.
       \param mod Instance of Module that will be used to communicate with the %LoRa chip.
     */
-    SX1277(Module* mod);
+    SX1277(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // basic methods
 
@@ -61,7 +61,7 @@ class SX1277: public SX1278 {
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq);
+    int16_t setFrequency(float freq) override;
 
     /*!
       \brief Sets %LoRa link spreading factor. Allowed values range from 6 to 9. Only available in %LoRa mode.

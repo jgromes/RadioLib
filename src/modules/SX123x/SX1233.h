@@ -26,7 +26,7 @@ class SX1233: public SX1231  {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    SX1233(Module* mod);
+    SX1233(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
       \brief Initialization method.
@@ -48,12 +48,12 @@ class SX1233: public SX1231  {
       \param br Bit rate to be set in kbps.
       \returns \ref status_codes
     */
-    int16_t setBitRate(float br);
+    int16_t setBitRate(float br) override;
 
 #if !RADIOLIB_GODMODE
   private:
 #endif
-    uint8_t chipRevision = 0;
+
 };
 
 #endif

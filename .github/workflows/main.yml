@@ -46,15 +46,16 @@ jobs:
         # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
         include:
           - id: arduino:avr:uno
-            run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN)" >> $GITHUB_OUTPUT
+            run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:avr:mega
             run: echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:mbed:nano33ble
           - id: arduino:mbed:envie_m4
           - id: arduino:megaavr:uno2018
             run: |
               echo "options=':mode=on'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:sam:arduino_due_x
           - id: arduino:samd:arduino_zero_native
           - id: adafruit:samd:adafruit_feather_m0
@@ -110,7 +111,7 @@ jobs:
               echo "index-url=--additional-urls https://www.pjrc.com/teensy/package_teensy_index.json" >> $GITHUB_OUTPUT
           - id: arduino:renesas_uno:minima
             run: |
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
 
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}
@@ -170,7 +171,7 @@ jobs:
             else
               # apply special flags for LoRaWAN
               if [[ ${example} =~ "LoRaWAN" ]]; then
-                flags="-DRADIOLIB_LORAWAN_DEV_ADDR=0 -DRADIOLIB_LORAWAN_NWKS_KEY=0 -DRADIOLIB_LORAWAN_SNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_NWKSENC_KEY=0 -DRADIOLIB_LORAWAN_APPS_KEY=0 -DRADIOLIB_LORAWAN_APP_KEY=0 -DRADIOLIB_LORAWAN_NWK_KEY=0 -DRADIOLIB_LORAWAN_DEV_EUI=0 -DARDUINO_TTGO_LORA32_V1"
+                flags="-DRADIOLIB_LORAWAN_DEV_ADDR=0 -DRADIOLIB_LORAWAN_FNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_SNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_NWKSENC_KEY=0 -DRADIOLIB_LORAWAN_APPS_KEY=0 -DRADIOLIB_LORAWAN_APP_KEY=0 -DRADIOLIB_LORAWAN_NWK_KEY=0 -DRADIOLIB_LORAWAN_DEV_EUI=0 -DARDUINO_TTGO_LORA32_V1"
               fi
 
               # build sketch
@@ -226,13 +227,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          sudo apt-get install -y gcc-arm-none-eabi
+          sudo apt-get install -y gcc-arm-none-eabi gcc-riscv64-unknown-elf
           cargo install elf2tab
 
       - name: Build the example
         run: |
           cd $PWD/examples/NonArduino/Tock
-          ./build.sh
+          git clone https://github.com/tock/libtock-c.git
+          cd libtock-c; git checkout dbee65a56d74b4bad166317f199e80b959f7c82c; cd ../
+          LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./build.sh
 
   rpi-build:
     runs-on: [self-hosted, ARM64]

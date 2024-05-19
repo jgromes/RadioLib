@@ -19,7 +19,7 @@ class LR1121: public LR1120 {
       \brief Default constructor.
       \param mod Instance of Module that will be used to communicate with the radio.
     */
-    LR1121(Module* mod);
+    LR1121(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     // TODO this is where overrides to disable GNSS+WiFi scanning methods on LR1121
     // will be put once those are implemented

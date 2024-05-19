@@ -8,7 +8,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
 }
 
 AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, const char* info)
-  : AX25Frame(destCallsign, destSSID, srcCallsign, srcSSID, control, protocolID, (uint8_t*)info, strlen(info)) {
+  : AX25Frame(destCallsign, destSSID, srcCallsign, srcSSID, control, protocolID, reinterpret_cast<uint8_t*>(const_cast<char*>(info)), strlen(info)) {
 
 }
 
@@ -50,8 +50,41 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
   }
 }
 
-AX25Frame::AX25Frame(const AX25Frame& frame) {
-  *this = frame;
+AX25Frame::AX25Frame(const AX25Frame& frame)
+  : destSSID(frame.destSSID),
+    srcSSID(frame.srcSSID), 
+    numRepeaters(frame.numRepeaters),
+    control(frame.control),
+    protocolID(frame.protocolID),
+    infoLen(frame.infoLen),
+    rcvSeqNumber(frame.rcvSeqNumber),
+    sendSeqNumber(frame.sendSeqNumber) {
+  strncpy(this->destCallsign, frame.destCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
+  strncpy(this->srcCallsign, frame.srcCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
+
+  if(frame.infoLen) {
+    #if !RADIOLIB_STATIC_ONLY
+      this->info = new uint8_t[frame.infoLen];
+    #endif
+    memcpy(this->info, frame.info, frame.infoLen);
+  }
+
+  if(frame.numRepeaters) {
+    #if !RADIOLIB_STATIC_ONLY
+      this->repeaterCallsigns = new char*[frame.numRepeaters];
+      for(uint8_t i = 0; i < frame.numRepeaters; i++) {
+        this->repeaterCallsigns[i] = new char[strlen(frame.repeaterCallsigns[i]) + 1];
+      }
+      this->repeaterSSIDs = new uint8_t[frame.numRepeaters];
+    #endif
+
+    this->numRepeaters = frame.numRepeaters;
+    for(uint8_t i = 0; i < frame.numRepeaters; i++) {
+      memcpy(this->repeaterCallsigns[i], frame.repeaterCallsigns[i], strlen(frame.repeaterCallsigns[i]));
+      this->repeaterCallsigns[i][strlen(frame.repeaterCallsigns[i])] = '\0';
+    }
+    memcpy(this->repeaterSSIDs, frame.repeaterSSIDs, frame.numRepeaters);
+  }
 }
 
 AX25Frame::~AX25Frame() {
@@ -154,15 +187,44 @@ void AX25Frame::setSendSequence(uint8_t seqNumber) {
 AX25Client::AX25Client(PhysicalLayer* phy) {
   phyLayer = phy;
   #if !RADIOLIB_EXCLUDE_AFSK
+  audio = nullptr;
   bellModem = nullptr;
   #endif
 }
 
 #if !RADIOLIB_EXCLUDE_AFSK
-AX25Client::AX25Client(AFSKClient* audio) {
-  phyLayer = audio->phyLayer;
-  bellModem = new BellClient(audio);
+AX25Client::AX25Client(AFSKClient* aud)
+  : audio(aud) {
+  phyLayer = this->audio->phyLayer;
+  bellModem = new BellClient(this->audio);
   bellModem->setModem(Bell202);
+}
+
+AX25Client::AX25Client(const AX25Client& ax25)
+  : phyLayer(ax25.phyLayer),
+    sourceSSID(ax25.sourceSSID),
+    preambleLen(ax25.preambleLen) {
+  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
+  #if !RADIOLIB_EXCLUDE_AFSK
+  if(ax25.bellModem) {
+    this->audio = ax25.audio;
+    this->bellModem = new BellClient(ax25.audio);
+  }
+  #endif
+}
+
+AX25Client& AX25Client::operator=(const AX25Client& ax25) {
+  this->phyLayer = ax25.phyLayer;
+  this->sourceSSID = ax25.sourceSSID;
+  this->preambleLen = ax25.preambleLen;
+  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
+  #if !RADIOLIB_EXCLUDE_AFSK
+  if(ax25.bellModem) {
+    this->audio = ax25.audio;
+    this->bellModem = new BellClient(ax25.audio);
+  }
+  #endif
+  return(*this);
 }
 
 int16_t AX25Client::setCorrection(int16_t mark, int16_t space, float length) {
@@ -205,10 +267,12 @@ int16_t AX25Client::transmit(String& str, const char* destCallsign, uint8_t dest
 
 int16_t AX25Client::transmit(const char* str, const char* destCallsign, uint8_t destSSID) {
   // create control field
-  uint8_t controlField = RADIOLIB_AX25_CONTROL_U_UNNUMBERED_INFORMATION | RADIOLIB_AX25_CONTROL_POLL_FINAL_DISABLED | RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME;
+  uint8_t controlField = RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME;
 
   // build the frame
-  AX25Frame frame(destCallsign, destSSID, sourceCallsign, sourceSSID, controlField, RADIOLIB_AX25_PID_NO_LAYER_3, (uint8_t*)str, strlen(str));
+  AX25Frame frame(destCallsign, destSSID, sourceCallsign, sourceSSID, controlField,
+                  RADIOLIB_AX25_PID_NO_LAYER_3,
+                  reinterpret_cast<uint8_t*>(const_cast<char*>(str)), strlen(str));
 
   // send Unnumbered Information frame
   return(sendFrame(&frame));

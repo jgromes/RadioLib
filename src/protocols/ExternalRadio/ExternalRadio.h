@@ -20,7 +20,7 @@ class ExternalRadio: public PhysicalLayer {
       \brief Default constructor.
       \param pin Output pin when using direct transmission, defaults to unused pin.
     */
-    ExternalRadio(uint32_t pin = RADIOLIB_NC);
+    ExternalRadio(uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
     #endif
     
     /*!
@@ -28,13 +28,30 @@ class ExternalRadio: public PhysicalLayer {
       \param hal Pointer to the hardware abstraction layer to use.
       \param pin Output pin when using direct transmission, defaults to unused pin.
     */
-    ExternalRadio(RadioLibHal *hal, uint32_t pin = RADIOLIB_NC);
+    ExternalRadio(RadioLibHal *hal, uint32_t pin = RADIOLIB_NC); // cppcheck-suppress noExplicitConstructor
+
+    /*!
+      \brief Copy constructor.
+      \param ext ExternalRadio instance to copy.
+    */
+    ExternalRadio(const ExternalRadio& ext);
+    
+    /*!
+      \brief Overload for assignment operator.
+      \param ext rvalue ExternalRadio.
+    */
+    ExternalRadio& operator=(const ExternalRadio& ext);
+
+    /*!
+      \brief Default destructor.
+    */
+    ~ExternalRadio();
 
     /*!
       \brief Method to retrieve pointer to the underlying Module instance.
       \returns Pointer to the Module instance.
     */
-    Module* getMod();
+    Module* getMod() override;
 
     /*!
       \brief Dummy implementation overriding PhysicalLayer.
@@ -63,7 +80,7 @@ class ExternalRadio: public PhysicalLayer {
       the output pin will be set to logic high. Otherwise it will be set to logic low.
       \returns \ref status_codes
     */
-    int16_t transmitDirect(uint32_t frf = 0);
+    int16_t transmitDirect(uint32_t frf = 0) override;
   
   private:
     Module* mod;

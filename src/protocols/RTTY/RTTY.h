@@ -59,7 +59,7 @@ class RTTYClient: public RadioLibPrint {
       \param b Byte to write.
       \returns 1 if the byte was written, 0 otherwise.
     */
-    size_t write(uint8_t b);
+    size_t write(uint8_t b) override;
 
 #if !RADIOLIB_GODMODE
   private:
