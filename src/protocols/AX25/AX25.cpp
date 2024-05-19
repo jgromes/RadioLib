@@ -59,8 +59,8 @@ AX25Frame::AX25Frame(const AX25Frame& frame)
     infoLen(frame.infoLen),
     rcvSeqNumber(frame.rcvSeqNumber),
     sendSeqNumber(frame.sendSeqNumber) {
-  strncpy(this->destCallsign, frame.destCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
-  strncpy(this->srcCallsign, frame.srcCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+  strncpy(this->destCallsign, frame.destCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
+  strncpy(this->srcCallsign, frame.srcCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
 
   if(frame.infoLen) {
     #if !RADIOLIB_STATIC_ONLY
@@ -204,7 +204,7 @@ AX25Client::AX25Client(const AX25Client& ax25)
   : phyLayer(ax25.phyLayer),
     sourceSSID(ax25.sourceSSID),
     preambleLen(ax25.preambleLen) {
-  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
   #if !RADIOLIB_EXCLUDE_AFSK
   if(ax25.bellModem) {
     this->audio = ax25.audio;
@@ -217,7 +217,7 @@ AX25Client& AX25Client::operator=(const AX25Client& ax25) {
   this->phyLayer = ax25.phyLayer;
   this->sourceSSID = ax25.sourceSSID;
   this->preambleLen = ax25.preambleLen;
-  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN);
+  strncpy(sourceCallsign, ax25.sourceCallsign, RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1);
   #if !RADIOLIB_EXCLUDE_AFSK
   if(ax25.bellModem) {
     this->audio = ax25.audio;
