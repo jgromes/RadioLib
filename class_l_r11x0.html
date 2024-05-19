@@ -345,6 +345,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ade5478296ebc7e02281c95609d5d75ab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a> (uint8_t wifiType, uint8_t *count, uint8_t mode=RADIOLIB_LR11X0_WIFI_ACQ_MODE_FULL_BEACON, uint16_t chanMask=RADIOLIB_LR11X0_WIFI_ALL_CHANNELS, uint8_t numScans=16, uint16_t timeout=100)</td></tr>
 <tr class="memdesc:ade5478296ebc7e02281c95609d5d75ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking WiFi scan method. Performs a full passive WiFi scan. This method may block for several seconds!  <a href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">More...</a><br /></td></tr>
 <tr class="separator:ade5478296ebc7e02281c95609d5d75ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6b6b460ba12cd92a08df16e1fe33779"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ac6b6b460ba12cd92a08df16e1fe33779">getVersionInfo</a> (<a class="el" href="struct_l_r11x0_version_info__t.html">LR11x0VersionInfo_t</a> *info)</td></tr>
+<tr class="memdesc:ac6b6b460ba12cd92a08df16e1fe33779"><td class="mdescLeft">&#160;</td><td class="mdescRight">Retrieve <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a> hardware, device and firmware version information.  <a href="class_l_r11x0.html#ac6b6b460ba12cd92a08df16e1fe33779">More...</a><br /></td></tr>
+<tr class="separator:ac6b6b460ba12cd92a08df16e1fe33779"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85">updateFirmware</a> (const uint32_t *image, size_t size, bool nonvolatile=true)</td></tr>
+<tr class="memdesc:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to upload new firmware image to the device. The device will be automatically erased, a new firmware will be uploaded, written to flash and executed.  <a href="class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85">More...</a><br /></td></tr>
+<tr class="separator:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1180,6 +1186,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>implement this mess - <a class="el" href="class_s_x1280.html" title="Derived class for SX1280 modules.">SX1280</a> datasheet v3.0 section 7.4.4.2 </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ac6b6b460ba12cd92a08df16e1fe33779"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6b6b460ba12cd92a08df16e1fe33779">&#9670;&nbsp;</a></span>getVersionInfo()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getVersionInfo </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_version_info__t.html">LR11x0VersionInfo_t</a> *&#160;</td>
+          <td class="paramname"><em>info</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retrieve <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a> hardware, device and firmware version information. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">info</td><td>Pointer to <a class="el" href="struct_l_r11x0_version_info__t.html" title="Structure to report information about versions of the LR11x0 hardware and firmware.">LR11x0VersionInfo_t</a> structure to populate. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -3198,6 +3231,51 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="ab2820cc2b740d6d42a079bbd8bd45b85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2820cc2b740d6d42a079bbd8bd45b85">&#9670;&nbsp;</a></span>updateFirmware()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::updateFirmware </td>
+          <td>(</td>
+          <td class="paramtype">const uint32_t *&#160;</td>
+          <td class="paramname"><em>image</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>nonvolatile</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method to upload new firmware image to the device. The device will be automatically erased, a new firmware will be uploaded, written to flash and executed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">image</td><td>Pointer to the image to upload. </td></tr>
+    <tr><td class="paramname">size</td><td>Size of the image in 32-bit words. </td></tr>
+    <tr><td class="paramname">nonvolatile</td><td>Set to true when the image is saved in non-volatile memory of the host processor, or to false when the patch is in its RAM. Defaults to true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

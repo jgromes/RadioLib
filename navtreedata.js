@@ -42,7 +42,12 @@ var NAVTREE =
       ] ]
     ] ],
     [ "Files", "files.html", [
-      [ "File List", "files.html", "files_dup" ]
+      [ "File List", "files.html", "files_dup" ],
+      [ "File Members", "globals.html", [
+        [ "All", "globals.html", null ],
+        [ "Variables", "globals_vars.html", null ],
+        [ "Macros", "globals_defs.html", null ]
+      ] ]
     ] ]
   ] ]
 ];
@@ -50,11 +55,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
-"class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9",
-"class_r_f69.html#a0de2a07f264839cda945faebf7319e0e",
-"class_s_x126x.html#a5595fff99d76d50d711b8cdad98527c4",
-"class_s_x128x.html#a0759fb31b3ce5bf1c832259c9c2245ed",
-"functions_type.html"
+"class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f",
+"class_r_f69.html#a09ba80f60ee7974011a4b4f6c18c6847",
+"class_s_x126x.html#a4bbc29f5dc7253b7743599c68137df48",
+"class_s_x1282.html",
+"functions_p.html",
+"struct_lo_ra_w_a_n_band__t.html#ae58f859a72e64aa4a6fe218ba7e21c10"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

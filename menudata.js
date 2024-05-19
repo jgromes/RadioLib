@@ -106,4 +106,10 @@ var menudata={children:[
 {text:"Enumerations",url:"functions_enum.html"},
 {text:"Enumerator",url:"functions_eval.html"}]}]},
 {text:"Files",url:"files.html",children:[
-{text:"File List",url:"files.html"}]}]}
+{text:"File List",url:"files.html"},
+{text:"File Members",url:"globals.html",children:[
+{text:"All",url:"globals.html",children:[
+{text:"l",url:"globals.html#index_l"},
+{text:"r",url:"globals.html#index_r"}]},
+{text:"Variables",url:"globals_vars.html"},
+{text:"Macros",url:"globals_defs.html"}]}]}]}

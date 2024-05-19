@@ -17,10 +17,11 @@ var NAVTREEINDEX0 =
 "_hellschreiber_8h_source.html":[4,0,0,1,6,0],
 "_i_t_a2_string_8h_source.html":[4,0,0,1,11,0],
 "_l_l_c_c68_8h_source.html":[4,0,0,0,1,0],
-"_l_r1110_8h_source.html":[4,0,0,0,2,0],
-"_l_r1120_8h_source.html":[4,0,0,0,2,1],
-"_l_r1121_8h_source.html":[4,0,0,0,2,2],
-"_l_r11x0_8h_source.html":[4,0,0,0,2,3],
+"_l_r1110_8h_source.html":[4,0,0,0,2,1],
+"_l_r1120_8h_source.html":[4,0,0,0,2,2],
+"_l_r1121_8h_source.html":[4,0,0,0,2,3],
+"_l_r11x0_8h_source.html":[4,0,0,0,2,4],
+"_l_r11x0__firmware_8h_source.html":[4,0,0,0,2,5],
 "_lo_ra_w_a_n_8h_source.html":[4,0,0,1,7,0],
 "_module_8h_source.html":[4,0,0,7],
 "_morse_8h_source.html":[4,0,0,1,8,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "class_l_r11x0.html":[3,0,27],
 "class_l_r11x0.html#a004782e6e5c6ad213c3b0c677bb8642d":[3,0,27,23],
 "class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8":[3,0,27,19],
-"class_l_r11x0.html#a056e65c58ff8fb18bd84917512790ee6":[3,0,27,45],
-"class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f":[3,0,27,16]
+"class_l_r11x0.html#a056e65c58ff8fb18bd84917512790ee6":[3,0,27,46]
 };

@@ -25,6 +25,7 @@ var class_l_r11x0 =
     [ "getRSSI", "class_l_r11x0.html#a6cd2b2363501b2de064c9d1f32fabaa3", null ],
     [ "getSNR", "class_l_r11x0.html#a004782e6e5c6ad213c3b0c677bb8642d", null ],
     [ "getTimeOnAir", "class_l_r11x0.html#abccf5dc80aab71090a5f19bfffa0201d", null ],
+    [ "getVersionInfo", "class_l_r11x0.html#ac6b6b460ba12cd92a08df16e1fe33779", null ],
     [ "getWifiScanResult", "class_l_r11x0.html#a457f5dfe25385a329127f07abc4631a6", null ],
     [ "getWifiScanResultsCount", "class_l_r11x0.html#a5ef83caa291e2d310d260a8ea140bc8e", null ],
     [ "implicitHeader", "class_l_r11x0.html#aba13921d2cf29cc1bc8a648e1f330aa9", null ],
@@ -81,6 +82,7 @@ var class_l_r11x0 =
     [ "transmit", "class_l_r11x0.html#a3dd42f8d5569487ea74f004ca652a709", null ],
     [ "transmit", "class_l_r11x0.html#a3a1de95be55f7ecc1d26a7aa7983cdba", null ],
     [ "transmitDirect", "class_l_r11x0.html#ae077957969f6274a53f63b314b6f1359", null ],
+    [ "updateFirmware", "class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85", null ],
     [ "variablePacketLengthMode", "class_l_r11x0.html#adcd56cf63e91449b6cd03782a69c3451", null ],
     [ "wifiScan", "class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab", null ],
     [ "XTAL", "class_l_r11x0.html#a3ccfd35d26960457214d2a0192d6b312", null ]
