@@ -49,12 +49,13 @@ jobs:
             run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:avr:mega
             run: echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:mbed:nano33ble
           - id: arduino:mbed:envie_m4
           - id: arduino:megaavr:uno2018
             run: |
               echo "options=':mode=on'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:sam:arduino_due_x
           - id: arduino:samd:arduino_zero_native
           - id: adafruit:samd:adafruit_feather_m0
@@ -110,7 +111,7 @@ jobs:
               echo "index-url=--additional-urls https://www.pjrc.com/teensy/package_teensy_index.json" >> $GITHUB_OUTPUT
           - id: arduino:renesas_uno:minima
             run: |
-              echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
 
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}
