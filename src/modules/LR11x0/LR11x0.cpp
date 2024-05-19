@@ -1709,7 +1709,7 @@ bool LR11x0::findChip(uint8_t ver) {
     reset();
 
     // read the version
-    LR11x0VersionInfo_t info = { 0 };
+    LR11x0VersionInfo_t info;
     int16_t state = getVersionInfo(&info);
     if((state == RADIOLIB_ERR_NONE) && (info.device == ver)) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
