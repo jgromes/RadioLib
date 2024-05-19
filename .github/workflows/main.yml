@@ -99,13 +99,16 @@ jobs:
           - id: MegaCoreX:megaavr:4809
             run: |
               echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: arduino:mbed_rp2040:pico
           - id: rp2040:rp2040:rpipico
             run: echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
           - id: CubeCell:CubeCell:CubeCell-Board
             run: echo "index-url=--additional-urls https://resource.heltec.cn/download/package_CubeCell_index.json" >> $GITHUB_OUTPUT
           - id: MegaCore:avr:1281
-            run: echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
+            run: |
+              echo "index-url=--additional-urls https://mcudude.github.io/MegaCore/package_MCUdude_MegaCore_index.json" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
           - id: teensy:avr:teensy41
             run: |
               echo "skip-pattern=(STM32WL|LoRaWAN)" >> $GITHUB_OUTPUT
