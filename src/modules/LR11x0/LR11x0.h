@@ -200,10 +200,10 @@
 #define RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN                  (256)           //  7     0     maximum length of read/write SPI payload in bytes
 
 // RADIOLIB_LR11X0_CMD_GET_VERSION
-#define RADIOLIB_LR11X0_HW_LR1110                               (0x01UL << 0)   //  7     0     HW version: LR1110
-#define RADIOLIB_LR11X0_HW_LR1120                               (0x02UL << 0)   //  7     0                 LR1120
-#define RADIOLIB_LR11X0_HW_LR1121                               (0x03UL << 0)   //  7     0                 LR1121
-#define RADIOLIB_LR11X0_HW_BOOT                                 (0xDFUL << 0)   //  7     0                 bootloader mode
+#define RADIOLIB_LR11X0_DEVICE_LR1110                           (0x01UL << 0)   //  7     0     HW device: LR1110
+#define RADIOLIB_LR11X0_DEVICE_LR1120                           (0x02UL << 0)   //  7     0                LR1120
+#define RADIOLIB_LR11X0_DEVICE_LR1121                           (0x03UL << 0)   //  7     0                LR1121
+#define RADIOLIB_LR11X0_DEVICE_BOOT                             (0xDFUL << 0)   //  7     0                bootloader mode
 
 // RADIOLIB_LR11X0_CMD_GET_ERRORS
 #define RADIOLIB_LR11X0_ERROR_STAT_LF_RC_CALIB_ERR              (0x01UL << 0)   //  15    0     error: low frequency RC not calibrated

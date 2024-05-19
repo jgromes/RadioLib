@@ -2,7 +2,7 @@
 #if !RADIOLIB_EXCLUDE_LR11X0
 
 LR1121::LR1121(Module* mod) : LR1120(mod) {
-  chipType = RADIOLIB_LR11X0_HW_LR1121;
+  chipType = RADIOLIB_LR11X0_DEVICE_LR1121;
 }
 
 #endif
