@@ -2386,9 +2386,9 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       // set the uplink reply
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DevStatusReq");
       cmd->len = 2;
-      cmd->payload[1] = this->battLevel;
+      cmd->payload[0] = this->battLevel;
       int8_t snr = this->phyLayer->getSNR();
-      cmd->payload[0] = snr & 0x3F;
+      cmd->payload[1] = snr & 0x3F;
 
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DevStatusAns: status = 0x%02x%02x", cmd->payload[0], cmd->payload[1]);
       return(true);
