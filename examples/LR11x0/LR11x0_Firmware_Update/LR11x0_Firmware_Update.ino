@@ -71,7 +71,7 @@ void setup() {
 
   // prompt the user
   Serial.println(F("[LR1110] Send any character to start the update"));
-  while(!Serial.available()) { yield(); }
+  while(!Serial.available()) { delay(1); }
 
   // upload update into LR11x0 non-volatile memory
   Serial.print(F("[LR1110] Updating firmware, this may take several seconds ... "));
