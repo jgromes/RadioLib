@@ -101,7 +101,7 @@ jobs:
           - id: stm32duino:STM32F1:mapleMini
             run: |
               echo "options=':bootloader_version=original,cpu_speed=speed_72mhz'" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)'" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls http://dan.drown.org/stm32duino/package_STM32duino_index.json" >> $GITHUB_OUTPUT
           - id: MegaCoreX:megaavr:4809
             run: |
