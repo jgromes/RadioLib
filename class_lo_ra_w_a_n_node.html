@@ -101,10 +101,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aae05de563f765f14fe267e4d65844f76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *band, uint8_t subBand=0)</td></tr>
 <tr class="memdesc:aae05de563f765f14fe267e4d65844f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">More...</a><br /></td></tr>
 <tr class="separator:aae05de563f765f14fe267e4d65844f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9613998d071bcf401be9ad57ff8591ea"><td class="memItemLeft" align="right" valign="top"><a id="a9613998d071bcf401be9ad57ff8591ea"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea">wipe</a> ()</td></tr>
-<tr class="memdesc:a9613998d071bcf401be9ad57ff8591ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wipe internal persistent parameters. This will reset all counters and saved variables, so the device will have to rejoin the network. <br /></td></tr>
-<tr class="separator:a9613998d071bcf401be9ad57ff8591ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0feeaed200d8f94ad94c3ed49f404847"><td class="memItemLeft" align="right" valign="top"><a id="a0feeaed200d8f94ad94c3ed49f404847"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847">clearSession</a> ()</td></tr>
+<tr class="memdesc:a0feeaed200d8f94ad94c3ed49f404847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an active session, so that the device will have to rejoin the network. <br /></td></tr>
+<tr class="separator:a0feeaed200d8f94ad94c3ed49f404847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84004883006b4a498d4899874952445b"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">getBufferNonces</a> ()</td></tr>
 <tr class="memdesc:a84004883006b4a498d4899874952445b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the internal buffer that holds the LW base parameters.  <a href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">More...</a><br /></td></tr>
 <tr class="separator:a84004883006b4a498d4899874952445b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -117,22 +117,22 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aadebe7a412aec8043aa2f8f57a202f49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">setBufferSession</a> (uint8_t *persistentBuffer)</td></tr>
 <tr class="memdesc:aadebe7a412aec8043aa2f8f57a202f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW session parameters with a supplied buffer.  <a href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">More...</a><br /></td></tr>
 <tr class="separator:aadebe7a412aec8043aa2f8f57a202f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0e89befd10c6977031669fd62f127b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b">restore</a> (uint16_t checkSum, uint16_t lwMode, uint8_t lwClass, uint8_t freqPlan)</td></tr>
-<tr class="memdesc:a6c0e89befd10c6977031669fd62f127b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore session by loading information from persistent storage.  <a href="class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b">More...</a><br /></td></tr>
-<tr class="separator:a6c0e89befd10c6977031669fd62f127b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8d3d9f3bf2214d192b83f057a28f5d7c">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey, bool force=false, uint8_t joinDr=RADIOLIB_LW_DATA_RATE_UNUSED)</td></tr>
-<tr class="memdesc:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a8d3d9f3bf2214d192b83f057a28f5d7c">More...</a><br /></td></tr>
-<tr class="separator:a8d3d9f3bf2214d192b83f057a28f5d7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3525b30a84d3062e16f2925e3b1f6fe0">beginABP</a> (uint32_t addr, uint8_t *fNwkSIntKey, uint8_t *sNwkSIntKey, uint8_t *nwkSEncKey, uint8_t *appSKey, bool force=false, uint8_t initialDr=RADIOLIB_LW_DATA_RATE_UNUSED)</td></tr>
-<tr class="memdesc:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a3525b30a84d3062e16f2925e3b1f6fe0">More...</a><br /></td></tr>
-<tr class="separator:a3525b30a84d3062e16f2925e3b1f6fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memItemLeft" align="right" valign="top"><a id="af7a8ae58391e00b5fcb99f01832cc4fc"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc">isJoined</a> ()</td></tr>
-<tr class="memdesc:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
-<tr class="separator:af7a8ae58391e00b5fcb99f01832cc4fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">saveSession</a> ()</td></tr>
-<tr class="memdesc:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Save the current state of the session to the session buffer.  <a href="class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3">More...</a><br /></td></tr>
-<tr class="separator:a7078a3f1657a2a022bb43f2bd34c93e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2303cbbfc9c18e267c074284a4f1bf68"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2303cbbfc9c18e267c074284a4f1bf68">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey)</td></tr>
+<tr class="memdesc:a2303cbbfc9c18e267c074284a4f1bf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#a2303cbbfc9c18e267c074284a4f1bf68">More...</a><br /></td></tr>
+<tr class="separator:a2303cbbfc9c18e267c074284a4f1bf68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28cd11360e9c3d8fdcdf91a0df1bf597"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a28cd11360e9c3d8fdcdf91a0df1bf597">activateOTAA</a> (uint8_t initialDr=RADIOLIB_LW_DATA_RATE_UNUSED, <a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent=NULL)</td></tr>
+<tr class="memdesc:a28cd11360e9c3d8fdcdf91a0df1bf597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#a28cd11360e9c3d8fdcdf91a0df1bf597">More...</a><br /></td></tr>
+<tr class="separator:a28cd11360e9c3d8fdcdf91a0df1bf597"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92c59b540dee631e7bd8153479328611"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a92c59b540dee631e7bd8153479328611">beginABP</a> (uint32_t addr, uint8_t *fNwkSIntKey, uint8_t *sNwkSIntKey, uint8_t *nwkSEncKey, uint8_t *appSKey)</td></tr>
+<tr class="memdesc:a92c59b540dee631e7bd8153479328611"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#a92c59b540dee631e7bd8153479328611">More...</a><br /></td></tr>
+<tr class="separator:a92c59b540dee631e7bd8153479328611"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb49f11ef6f7f826a72e76d7c48280c8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#afb49f11ef6f7f826a72e76d7c48280c8">activateABP</a> (uint8_t initialDr=RADIOLIB_LW_DATA_RATE_UNUSED)</td></tr>
+<tr class="memdesc:afb49f11ef6f7f826a72e76d7c48280c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#afb49f11ef6f7f826a72e76d7c48280c8">More...</a><br /></td></tr>
+<tr class="separator:afb49f11ef6f7f826a72e76d7c48280c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a44677a1ef7db1216bc482139d6be8d"><td class="memItemLeft" align="right" valign="top"><a id="a9a44677a1ef7db1216bc482139d6be8d"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d">isActivated</a> ()</td></tr>
+<tr class="memdesc:a9a44677a1ef7db1216bc482139d6be8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
+<tr class="separator:a9a44677a1ef7db1216bc482139d6be8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adef05650cf4eb92042ca5e2688c1e164"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a> (uint8_t cid)</td></tr>
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <a href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">More...</a><br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -274,14 +274,78 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3525b30a84d3062e16f2925e3b1f6fe0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3525b30a84d3062e16f2925e3b1f6fe0">&#9670;&nbsp;</a></span>beginABP()</h2>
+<a id="afb49f11ef6f7f826a72e76d7c48280c8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb49f11ef6f7f826a72e76d7c48280c8">&#9670;&nbsp;</a></span>activateABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANNode::beginABP </td>
+          <td class="memname">int16_t LoRaWANNode::activateABP </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">initialDr</td><td>The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a28cd11360e9c3d8fdcdf91a0df1bf597"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28cd11360e9c3d8fdcdf91a0df1bf597">&#9670;&nbsp;</a></span>activateOTAA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::activateOTAA </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *&#160;</td>
+          <td class="paramname"><em>joinEvent</em> = <code>NULL</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">joinDr</td><td>The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a92c59b540dee631e7bd8153479328611"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92c59b540dee631e7bd8153479328611">&#9670;&nbsp;</a></span>beginABP()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void LoRaWANNode::beginABP </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>addr</em>, </td>
@@ -308,19 +372,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>appSKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>force</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>initialDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code>&#160;</td>
+          <td class="paramname"><em>appSKey</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -330,7 +382,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
       </table>
 </div><div class="memdoc">
 
-<p>Join network by performing activation by personalization. In this procedure, all necessary configuration must be provided by the user. </p>
+<p>Set the device credentials and activation configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">addr</td><td>Device address. </td></tr>
@@ -338,23 +390,20 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
     <tr><td class="paramname">sNwkSIntKey</td><td>Pointer to the Serving network session (LoRaWAN 1.1), NULL for LoRaWAN 1.0. </td></tr>
     <tr><td class="paramname">nwkSEncKey</td><td>Pointer to the MAC command network session key <a href="LoRaWAN 1.1">NwkSEncKey</a> or network session AES-128 key <a href="LoRaWAN 1.0">NwkSKey</a>. </td></tr>
     <tr><td class="paramname">appSKey</td><td>Pointer to the application session AES-128 key. </td></tr>
-    <tr><td class="paramname">force</td><td>Set to true to force a new session, even if one exists. </td></tr>
-    <tr><td class="paramname">initialDr</td><td>The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
-<a id="a8d3d9f3bf2214d192b83f057a28f5d7c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d3d9f3bf2214d192b83f057a28f5d7c">&#9670;&nbsp;</a></span>beginOTAA()</h2>
+<a id="a2303cbbfc9c18e267c074284a4f1bf68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2303cbbfc9c18e267c074284a4f1bf68">&#9670;&nbsp;</a></span>beginOTAA()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LoRaWANNode::beginOTAA </td>
+          <td class="memname">void LoRaWANNode::beginOTAA </td>
           <td>(</td>
           <td class="paramtype">uint64_t&#160;</td>
           <td class="paramname"><em>joinEUI</em>, </td>
@@ -375,19 +424,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>appKey</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>force</em> = <code>false</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>joinDr</em> = <code>RADIOLIB_LW_DATA_RATE_UNUSED</code>&#160;</td>
+          <td class="paramname"><em>appKey</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -397,19 +434,16 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
       </table>
 </div><div class="memdoc">
 
-<p>Join network by performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration. </p>
+<p>Set the device credentials and activation configuration. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">joinEUI</td><td>8-byte application identifier. </td></tr>
     <tr><td class="paramname">devEUI</td><td>8-byte device identifier. </td></tr>
     <tr><td class="paramname">nwkKey</td><td>Pointer to the network AES-128 key. </td></tr>
     <tr><td class="paramname">appKey</td><td>Pointer to the application AES-128 key. </td></tr>
-    <tr><td class="paramname">force</td><td>Set to true to force joining even if previously joined. </td></tr>
-    <tr><td class="paramname">joinDr</td><td>The datarate at which to send the join-request and any subsequent uplinks (unless ADR is enabled) </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -682,69 +716,6 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a6c0e89befd10c6977031669fd62f127b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c0e89befd10c6977031669fd62f127b">&#9670;&nbsp;</a></span>restore()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::restore </td>
-          <td>(</td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>checkSum</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
-          <td class="paramname"><em>lwMode</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>lwClass</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>freqPlan</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Restore session by loading information from persistent storage. </p>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
-<a id="a7078a3f1657a2a022bb43f2bd34c93e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7078a3f1657a2a022bb43f2bd34c93e3">&#9670;&nbsp;</a></span>saveSession()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LoRaWANNode::saveSession </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Save the current state of the session to the session buffer. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>

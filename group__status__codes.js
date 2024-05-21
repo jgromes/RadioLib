@@ -83,6 +83,10 @@ var group__status__codes =
     [ "RADIOLIB_ERR_UPLINK_UNAVAILABLE", "group__status__codes.html#ga8b424bb8992a6ac80e2ba46667bf9c6e", null ],
     [ "RADIOLIB_ERR_WRONG_MODEM", "group__status__codes.html#gad95d2455d580745d41ef2f319c6585f8", null ],
     [ "RADIOLIB_LORA_DETECTED", "group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd", null ],
+    [ "RADIOLIB_LORAWAN_NEW_SESSION", "group__status__codes.html#gae99db161b4e00a44c0a60951ddb7c8a6", null ],
     [ "RADIOLIB_LORAWAN_NO_DOWNLINK", "group__status__codes.html#ga54253de08594806b0a6cd8fd0576e6aa", null ],
+    [ "RADIOLIB_LORAWAN_NONCES_DISCARDED", "group__status__codes.html#gaf8ca4fbfe67d1e045e6e2fa80d2348a4", null ],
+    [ "RADIOLIB_LORAWAN_SESSION_DISCARDED", "group__status__codes.html#ga4a1cf58bbf2a0f59a568c1bf2e0553cf", null ],
+    [ "RADIOLIB_LORAWAN_SESSION_RESTORED", "group__status__codes.html#ga633e2f826e44d4575ca67459fda5d660", null ],
     [ "RADIOLIB_PREAMBLE_DETECTED", "group__status__codes.html#ga382dc113e93f196401914853ec176b18", null ]
 ];

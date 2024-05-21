@@ -1,8 +1,11 @@
 var class_lo_ra_w_a_n_node =
 [
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
-    [ "beginABP", "class_lo_ra_w_a_n_node.html#a3525b30a84d3062e16f2925e3b1f6fe0", null ],
-    [ "beginOTAA", "class_lo_ra_w_a_n_node.html#a8d3d9f3bf2214d192b83f057a28f5d7c", null ],
+    [ "activateABP", "class_lo_ra_w_a_n_node.html#afb49f11ef6f7f826a72e76d7c48280c8", null ],
+    [ "activateOTAA", "class_lo_ra_w_a_n_node.html#a28cd11360e9c3d8fdcdf91a0df1bf597", null ],
+    [ "beginABP", "class_lo_ra_w_a_n_node.html#a92c59b540dee631e7bd8153479328611", null ],
+    [ "beginOTAA", "class_lo_ra_w_a_n_node.html#a2303cbbfc9c18e267c074284a4f1bf68", null ],
+    [ "clearSession", "class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#ae532e739ada04ea7463494a426f60b4d", null ],
     [ "downlink", "class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226", null ],
     [ "dutyCycleInterval", "class_lo_ra_w_a_n_node.html#a5bb50904544f331806fd744ab5b99efa", null ],
@@ -15,11 +18,9 @@ var class_lo_ra_w_a_n_node =
     [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de", null ],
     [ "getMacLinkCheckAns", "class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0", null ],
     [ "getNFCntDown", "class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1", null ],
-    [ "isJoined", "class_lo_ra_w_a_n_node.html#af7a8ae58391e00b5fcb99f01832cc4fc", null ],
+    [ "isActivated", "class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d", null ],
     [ "maxPayloadDwellTime", "class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205", null ],
     [ "resetFCntDown", "class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648", null ],
-    [ "restore", "class_lo_ra_w_a_n_node.html#a6c0e89befd10c6977031669fd62f127b", null ],
-    [ "saveSession", "class_lo_ra_w_a_n_node.html#a7078a3f1657a2a022bb43f2bd34c93e3", null ],
     [ "sendMacCommandReq", "class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb", null ],
     [ "sendReceive", "class_lo_ra_w_a_n_node.html#a07ab107de181bde59c2731a5a64a1e2e", null ],
@@ -35,7 +36,6 @@ var class_lo_ra_w_a_n_node =
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58", null ],
-    [ "wipe", "class_lo_ra_w_a_n_node.html#a9613998d071bcf401be9ad57ff8591ea", null ],
     [ "rx1DrOffset", "class_lo_ra_w_a_n_node.html#acd37dd26f6040754b4a9c942b3fb4339", null ],
     [ "rx2", "class_lo_ra_w_a_n_node.html#ae68e77ca38d22867798517d233c0fbc4", null ]
 ];
