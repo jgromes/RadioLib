@@ -563,6 +563,26 @@
 */
 #define RADIOLIB_LORAWAN_NO_DOWNLINK                            (-1116)
 
+/*!
+  \brief The LoRaWAN session was successfully re-activated.
+*/
+#define RADIOLIB_LORAWAN_SESSION_RESTORED                       (-1117)
+
+/*!
+  \brief A new LoRaWAN session is started.
+*/
+#define RADIOLIB_LORAWAN_NEW_SESSION                            (-1118)
+
+/*!
+  \brief The supplied Nonces buffer is discarded as its activation information is invalid.
+*/
+#define RADIOLIB_LORAWAN_NONCES_DISCARDED                       (-1119)
+
+/*!
+  \brief The supplied Session buffer is discarded as it doesn't match the Nonces.
+*/
+#define RADIOLIB_LORAWAN_SESSION_DISCARDED                       (-1120)
+
 // LR11x0-specific status codes
 
 /*!
