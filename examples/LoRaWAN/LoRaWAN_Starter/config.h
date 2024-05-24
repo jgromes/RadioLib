@@ -68,14 +68,11 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
   #pragma message ("Using Heltec WiFi LoRa32")
   SX1276 radio = new Module(18, 26, 14, 33);
 
-#elif defined (ARDUINO_heltec_wireless_stick)
-  #pragma message ("Using Heltec Wireless Stick")
-  SX1278 radio = new Module(14, 4, 12, 16);
-
 #elif defined(ARDUINO_heltec_wifi_lora_32_V2)
   #pragma message ("Using Heltec WiFi LoRa32 v2")
   SX1278 radio = new Module(14, 4, 12, 16);
 
+// Pending verfication of which radio is shipped
 // #elif defined(ARDUINO_heltec_wifi_lora_32_V2)
 //   #pragma message ("ARDUINO_heltec_wifi_kit_32_V2 awaiting pin map")
 //   SX1276 radio = new Module(18, 26, 14, 35);
@@ -84,8 +81,12 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
   #pragma message ("Using Heltec WiFi LoRa32 v3 - Display + USB-C")
   SX1262 radio = new Module(8, 14, 12, 13);
   
-  
+
 // Following not verified  
+#elif defined (ARDUINO_heltec_wireless_stick)
+  #pragma message ("Using Heltec Wireless Stick")
+  SX1278 radio = new Module(14, 4, 12, 16);
+  
 #elif defined (ARDUINO_HELTEC_WIRELESS_STICK)
   #pragma message ("Using Heltec Wireless Stick")
   SX1276 radio = new Module(18, 26, 14, 35);
@@ -101,15 +102,6 @@ const uint8_t subBand = 0;  // For US915, change this to 2, otherwise leave on 0
 #elif defined (ARDUINO_HELTEC_WIRELESS_STICK_LITE_V3)
   #pragma message ("Using Heltec Wireless Stick Lite v3")
   SX1262 radio = new Module(34, 14, 12, 13);
-
-
-// Following may experience timing issues 
-#elif defined(ARDUINO_CUBECELL_BOARD)
-  #pragma message ("Using CubeCell")
-  SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
-
-#elif defined(ARDUINO_CUBECELL_BOARD_V2)
-  #pragma error ("ARDUINO_CUBECELL_BOARD_V2 awaiting pin map")
 
 
 // If we don't recognise the board
