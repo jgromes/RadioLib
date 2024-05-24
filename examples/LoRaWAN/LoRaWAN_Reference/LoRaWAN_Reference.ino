@@ -48,8 +48,11 @@ void setup() {
   // Override the default join rate
   uint8_t joinDR = 4;
 
-  Serial.println(F("Join ('login') to the LoRaWAN Network"));
-  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey, true, joinDR);
+  // Setup the OTAA session information
+  node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+
+  Serial.println(F("Join ('login') the LoRaWAN Network"));
+  state = node.activateOTAA(joinDR);
   debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   // Print the DevAddr
@@ -72,7 +75,7 @@ void setup() {
 }
 
 void loop() {
-  int state = RADIOLIB_ERR_NONE;
+  int16_t state = RADIOLIB_ERR_NONE;
 
   // set battery fill level - the LoRaWAN network server
   // may periodically request this information
