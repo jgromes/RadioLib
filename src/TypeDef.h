@@ -499,7 +499,7 @@
 #define RADIOLIB_ERR_INVALID_REVISION                           (-1103)
 
 /*!
-  \brief Invalid LoRaWAN uplink port requested by user.
+  \brief Invalid LoRaWAN uplink port requested by user, or downlink received at invalid port.
 */
 #define RADIOLIB_ERR_INVALID_PORT                               (-1104)
 

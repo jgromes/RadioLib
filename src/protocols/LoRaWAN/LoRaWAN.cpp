@@ -877,8 +877,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   }
 
   // check destination fPort
-  if(fPort > 0xDF) {
+  if(fPort > RADIOLIB_LORAWAN_FPORT_RESERVED) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Requested uplink at FPort %d - rejected! This FPort is RFU.", fPort);
     return(RADIOLIB_ERR_INVALID_PORT);
+  }
+  if(fPort == RADIOLIB_LORAWAN_FPORT_TS009 && this->TS009 == false) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Requested uplink at FPort %d - rejected! TS009 was not enabled.", fPort);
   }
   // fPort 0 is only allowed for MAC-only payloads
   if(fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
@@ -900,9 +904,12 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
 
   // check maximum payload len as defined in phy
   if(len > this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]]) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
-    // if testing with TS009 specification verification protocol, don't throw error but clip the message
-    // len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
+    // normally, throw an error if the packet is too long
+    if(this->TS009 == false) {
+      return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
+    // if testing with TS009 Specification Verification Protocol, don't throw error but clip the message
+    len = this->band->payloadLenMax[this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK]];
   }
 
   bool adrAckReq = false;
@@ -1383,6 +1390,22 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   if(payLen > 0) {
     payLen -= 1;  // subtract one as fPort is set
     fPort = downlinkMsg[RADIOLIB_LORAWAN_FHDR_FPORT_POS(fOptsLen)];
+    // check if fPort value is actually allowed
+    if(fPort > RADIOLIB_LORAWAN_FPORT_RESERVED) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Received downlink at FPort %d - rejected! This FPort is RFU!", fPort);
+      #if !RADIOLIB_STATIC_ONLY
+        delete[] downlinkMsg;
+      #endif
+      return(RADIOLIB_ERR_INVALID_PORT);
+    }
+    if(fPort == RADIOLIB_LORAWAN_FPORT_TS009 && this->TS009 == false) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Received downlink at FPort %d - rejected! TS009 was not enabled.", fPort);
+      #if !RADIOLIB_STATIC_ONLY
+        delete[] downlinkMsg;
+      #endif
+      return(RADIOLIB_ERR_INVALID_PORT);
+    }
+
     if(fPort > RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
       isAppDownlink = true;
     } else {

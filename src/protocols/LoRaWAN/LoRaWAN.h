@@ -41,7 +41,8 @@
 
 // fPort field
 #define RADIOLIB_LORAWAN_FPORT_MAC_COMMAND                      (0x00 << 0) //  7     0     payload contains MAC commands only
-#define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     reserved fPort values
+#define RADIOLIB_LORAWAN_FPORT_TS009                            (0xE0 << 0) //  7     0     fPort used for TS009 testing
+#define RADIOLIB_LORAWAN_FPORT_RESERVED                         (0xE0 << 0) //  7     0     fPort values equal to and larger than this are reserved
 
 // MAC commands - only those sent from end-device to gateway
 #define RADIOLIB_LORAWAN_LINK_CHECK_REQ                         (0x02 << 0) //  7     0     MAC command: request to check connectivity to network
@@ -849,10 +850,16 @@ class LoRaWANNode {
     uint64_t getDevAddr();
 
     /*!
-      \brief Get the Time-on-air of the last uplink message
-      \returns (RadioLibTime_t) time-on-air (ToA) of last uplink message
+      \brief Get the Time-on-air of the last uplink message.
+      \returns (RadioLibTime_t) time-on-air (ToA) of last uplink message.
     */
-   RadioLibTime_t getLastToA();
+    RadioLibTime_t getLastToA();
+
+    /*! 
+      \brief TS009 Protocol Specification Verification switch
+      (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded).
+    */
+    bool TS009 = false;
 
 #if !RADIOLIB_GODMODE
   private:
