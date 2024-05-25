@@ -527,7 +527,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   state = this->phyLayer->transmit(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN);
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Join-request sent <-- Rx Delay start");
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinRequest sent (DevNonce = %d) <-- Rx Delay start", this->devNonce);
 
   // join-request successfully sent, so increase & save devNonce
   this->devNonce += 1;
@@ -547,7 +547,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // check received length
   size_t lenRx = this->phyLayer->getPacketLength(true);
   if((lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN) && (lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN)) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAccept reply length mismatch, expected %dB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, lenRx);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept reply length mismatch, expected %dB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, lenRx);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -561,7 +561,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
 
   // check reply message type
   if((joinAcceptMsgEnc[0] & RADIOLIB_LORAWAN_MHDR_MTYPE_MASK) != RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_ACCEPT) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAccept reply message type invalid, expected 0x%02x got 0x%02x", RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_ACCEPT, joinAcceptMsgEnc[0]);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept reply message type invalid, expected 0x%02x got 0x%02x", RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_ACCEPT, joinAcceptMsgEnc[0]);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -572,15 +572,14 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   joinAcceptMsg[0] = joinAcceptMsgEnc[0];
   RadioLibAES128Instance.init(this->nwkKey);
   RadioLibAES128Instance.encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
+
+  // get current joinNonce from downlink
+  uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("joinAcceptMsg:");
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %d, previously %d):", joinNonceNew, this->joinNonce);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(joinAcceptMsg, lenRx);
 
-  // get current JoinNonce from downlink and previous JoinNonce from persistent storage
-  uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
-
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinNoncePrev: %d, JoinNonce: %d", this->joinNonce, joinNonceNew);
-  // JoinNonce received must be greater than the last JoinNonce heard, else error
+  // joinNonce received must be greater than the last joinNonce heard, else error
   if((this->joinNonce > 0) && (joinNonceNew <= this->joinNonce)) {
     return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
   }
@@ -1193,7 +1192,7 @@ int16_t LoRaWANNode::downlinkCommon() {
     // open Rx window by starting receive with specified timeout
     state = this->phyLayer->startReceive(timeoutMod, irqFlags, irqMask, 0);
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d us timeout)... <-- Rx Delay end ", i+1, (int)timeoutHost);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", i+1, (int)(timeoutHost / 1000 + scanGuard / 2));
     
     // wait for the timeout to complete (and a small additional delay)
     mod->hal->delay(timeoutHost / 1000 + scanGuard / 2);
