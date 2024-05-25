@@ -792,11 +792,11 @@ int16_t SX128x::setOutputPower(int8_t pwr) {
   return(setTxParams(this->power));
 }
 
-int16_t SX128x::checkOutputPower(int8_t power, int8_t* clipped) {
+int16_t SX128x::checkOutputPower(int8_t pwr, int8_t* clipped) {
   if(clipped) {
-    *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, power));
+    *clipped = RADIOLIB_MAX(-18, RADIOLIB_MIN(13, pwr));
   }
-  RADIOLIB_CHECK_RANGE(power, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
+  RADIOLIB_CHECK_RANGE(pwr, -18, 13, RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   return(RADIOLIB_ERR_NONE);
 }
 
