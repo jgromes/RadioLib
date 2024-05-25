@@ -316,16 +316,16 @@ checkDataRate	KEYWORD2
 setModem	KEYWORD2
 
 # LoRaWAN
-wipe	KEYWORD2
+clearSession	KEYWORD2
 getBufferNonces	KEYWORD2
 setBufferNonces	KEYWORD2
 getBufferSession	KEYWORD2
 setBufferSession	KEYWORD2
-restore	KEYWORD2
 beginOTAA	KEYWORD2
+activateOTAA	KEYWORD2
 beginABP	KEYWORD2
-isJoined	KEYWORD2
-saveSession	KEYWORD2
+activateABP	KEYWORD2
+isActivated	KEYWORD2
 sendMacCommandReq	KEYWORD2
 uplink	KEYWORD2
 downlink	KEYWORD2
