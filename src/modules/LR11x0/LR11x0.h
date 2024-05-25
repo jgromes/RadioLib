@@ -1338,6 +1338,10 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
+
+    int16_t setRegMode(uint8_t mode);
+    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg);
+    int16_t setRxBoosted(bool en);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -1357,9 +1361,7 @@ class LR11x0: public PhysicalLayer {
     int16_t getErrors(uint16_t* err);
     int16_t clearErrors(void);
     int16_t calibrate(uint8_t params);
-    int16_t setRegMode(uint8_t mode);
     int16_t calibImage(float freq1, float freq2);
-    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg);
     int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);
     int16_t clearIrq(uint32_t irq);
     int16_t configLfClock(uint8_t setup);
@@ -1416,7 +1418,6 @@ class LR11x0: public PhysicalLayer {
     int16_t setRangingTxRxDelay(uint32_t delay);
     int16_t setGfskCrcParams(uint32_t init, uint32_t poly);
     int16_t setGfskWhitParams(uint16_t seed);
-    int16_t setRxBoosted(bool en);
     int16_t setRangingParameter(uint8_t symbolNum);
     int16_t setRssiCalibration(int8_t* tune, int16_t gainOffset);
     int16_t setLoRaSyncWord(uint8_t sync);
