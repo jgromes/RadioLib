@@ -243,7 +243,7 @@ struct LoRaWANMacCommand_t {
   uint8_t cid;
 
   /*! \brief Payload buffer (5 bytes is the longest possible) */
-  uint8_t payload[5];
+  uint8_t payload[RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN];
 
   /*! \brief Length of the payload */
   uint8_t len;

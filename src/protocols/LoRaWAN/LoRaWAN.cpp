@@ -634,8 +634,9 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   (void)execMacCommand(&cmd);
 
   cmd.cid = RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP;
-  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP].lenDn;
+  memset(cmd.payload, 0, RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN);
   cmd.payload[0] = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_RX_DELAY_POS];
+  cmd.len = MacTable[RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP].lenDn;
   (void)execMacCommand(&cmd);
   
   // in case of dynamic band, setup the default channels first
@@ -677,12 +678,11 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->nwkSEncKey);
 
     // enqueue the RekeyInd MAC command to be sent in the next uplink
-    LoRaWANMacCommand_t cmd = {
-      .cid = RADIOLIB_LORAWAN_MAC_REKEY,
-      .payload = { this->rev },
-      .len = sizeof(uint8_t),
-      .repeat = 0x01 << RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP,
-    };
+    cmd.cid = RADIOLIB_LORAWAN_MAC_REKEY;
+    memset(cmd.payload, 0, RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN);
+    cmd.payload[0] = this->rev;
+    cmd.len = sizeof(uint8_t);
+    cmd.repeat = 0x01 << RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;
     state = pushMacCommand(&cmd, &this->commandsUp);
     RADIOLIB_ASSERT(state);
   
@@ -1460,16 +1460,16 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
     // process the MAC command(s)
     int8_t remLen = fOptsLen;
-    uint8_t* fOptsPtr = fOpts;
+    uint8_t* fOptsPtrDn = fOpts;
     while(remLen > 0) {
-      uint8_t cid = *fOptsPtr;
+      uint8_t cid = *fOptsPtrDn;
       uint8_t macLen = getMacPayloadLength(cid);
       if(cid == RADIOLIB_LORAWAN_MAC_LINK_ADR) {
         // if there was an earlier ADR command but it was not the last, ignore it
         if(hasADR && lastCID != RADIOLIB_LORAWAN_MAC_LINK_ADR) {
           RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Encountered non-consecutive block of ADR commands - skipping");
           remLen -= (macLen + 1);
-          fOptsPtr += (macLen + 1);
+          fOptsPtrDn += (macLen + 1);
           lastCID = cid;
           continue;
         }
@@ -1485,7 +1485,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
         .len = macLen,
         .repeat = (cid == RADIOLIB_LORAWAN_MAC_LINK_ADR ? numADR : (uint8_t)0),
       };
-      memcpy(cmd.payload, fOptsPtr + 1, macLen);
+      memcpy(cmd.payload, fOptsPtrDn + 1, macLen);
 
       // process the MAC command
       bool sendUp = execMacCommand(&cmd);
@@ -1495,7 +1495,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
 
       // processing succeeded, move in the buffer to the next command
       remLen -= (macLen + 1);
-      fOptsPtr += (macLen + 1);
+      fOptsPtrDn += (macLen + 1);
       lastCID = cid;
     }
 
@@ -1511,13 +1511,13 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       #else
         uint8_t* fOptsBuff = new uint8_t[fOptsBufSize];
       #endif
-      uint8_t* fOptsPtr = fOptsBuff;
+      uint8_t* fOptsPtrUp = fOptsBuff;
       // append all MAC replies into fOpts buffer
       int16_t i = 0;
       for (; i < this->commandsUp.numCommands; i++) {
         LoRaWANMacCommand_t cmd = this->commandsUp.commands[i];
-        memcpy(fOptsPtr, &cmd, 1 + cmd.len);
-        fOptsPtr += cmd.len + 1;
+        memcpy(fOptsPtrUp, &cmd, 1 + cmd.len);
+        fOptsPtrUp += cmd.len + 1;
       }
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink MAC payload (%d commands):", this->commandsUp.numCommands);
       RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(fOptsBuff, fOptsBufSize);
@@ -1539,10 +1539,10 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
       state = this->uplink(fOptsBuff, fOptsBufSize, RADIOLIB_LORAWAN_FPORT_MAC_COMMAND);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN(" .. state: %d", state);
       this->dutyCycleEnabled = prevDC;
-
       #if !RADIOLIB_STATIC_ONLY
         delete[] fOptsBuff;
       #endif
+      RADIOLIB_ASSERT(state);
 
       #if RADIOLIB_STATIC_ONLY
         uint8_t strDown[RADIOLIB_STATIC_ARRAY_SIZE];
@@ -1730,6 +1730,7 @@ int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
     state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
     RADIOLIB_ASSERT(state);
     state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
+    RADIOLIB_ASSERT(state);
   }
 
   // downlink messages are sent with inverted IQ
@@ -1994,7 +1995,7 @@ void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   if(!enable) {
     this->dutyCycle = 0;
   }
-  if(msPerHour <= 0) {
+  if(msPerHour == 0) {
     this->dutyCycle = this->band->dutyCycle;
   } else {
     this->dutyCycle = msPerHour;
@@ -2024,7 +2025,7 @@ RadioLibTime_t LoRaWANNode::timeUntilUplink() {
 
 void LoRaWANNode::setDwellTime(bool enable, RadioLibTime_t msPerUplink) {
   this->dwellTimeEnabledUp = enable;
-  if(msPerUplink <= 0) {
+  if(msPerUplink == 0) {
     this->dwellTimeUp = this->band->dwellTimeUp;
   } else {
     this->dwellTimeUp = msPerUplink;
