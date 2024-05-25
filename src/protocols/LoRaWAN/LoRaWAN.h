@@ -513,12 +513,6 @@ struct LoRaWANEvent_t {
 class LoRaWANNode {
   public:
 
-    /*! \brief Offset between TX and RX1 (such that RX1 has equal or lower DR) */
-    uint8_t rx1DrOffset = 0;
-
-    /*! \brief RX2 channel properties - may be changed by MAC command */
-    LoRaWANChannel_t rx2;
-
     /*!
       \brief Default constructor.
       \param phy Pointer to the PhysicalLayer radio module.
@@ -589,13 +583,21 @@ class LoRaWANNode {
     /*!
       \brief Join network by restoring ABP session or performing over-the-air activation. 
       In this procedure, all necessary configuration must be provided by the user.
-      \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled)
+      \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled).
       \returns \ref status_codes
     */
     int16_t activateABP(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     /*! \brief Whether there is an ongoing session active */
     bool isActivated();
+
+    /*! 
+      \brief Configure the Rx2 datarate for ABP mode.
+      This should not be needed for LoRaWAN 1.1 as it is configured through the first downlink.
+      \param dr The datarate to be used for listening for downlinks in Rx2.
+      \returns \ref status_codes
+    */
+    int16_t setRx2Dr(uint8_t dr);
 
     /*!
       \brief Add a MAC command to the uplink queue.
@@ -952,6 +954,12 @@ class LoRaWANNode {
 
     // currently configured datarates for TX and RX1
     uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };
+
+    // Rx2 channel properties - may be changed by MAC command
+    LoRaWANChannel_t rx2 = RADIOLIB_LORAWAN_CHANNEL_NONE;
+
+    // offset between TX and RX1 (such that RX1 has equal or lower DR)
+    uint8_t rx1DrOffset = 0;
 
     // LoRaWAN revision (1.0 vs 1.1)
     uint8_t rev = 0;

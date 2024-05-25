@@ -326,6 +326,7 @@ activateOTAA	KEYWORD2
 beginABP	KEYWORD2
 activateABP	KEYWORD2
 isActivated	KEYWORD2
+setRx2Dr	KEYWORD2
 sendMacCommandReq	KEYWORD2
 uplink	KEYWORD2
 downlink	KEYWORD2

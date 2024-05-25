@@ -1920,8 +1920,7 @@ int16_t LoRaWANNode::selectChannels() {
     }
   }
   if(numChannels == 0) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("There are no channels defined - are you in ABP mode with no defined subband?");
-    return(RADIOLIB_ERR_INVALID_CHANNEL);
+    return(RADIOLIB_ERR_NO_CHANNEL_AVAILABLE);
   }
   // select a random ID & channel from the list of enabled and possible channels
   uint8_t channelID = channelsEnabled[this->phyLayer->random(numChannels)];
@@ -2113,6 +2112,33 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   }
 
   state = this->phyLayer->checkDataRate(*dataRate);
+
+  return(state);
+}
+
+int16_t LoRaWANNode::setRx2Dr(uint8_t dr) {
+  // this can only be configured in ABP mode
+  if(this->lwMode != RADIOLIB_LORAWAN_MODE_ABP) {
+    return(RADIOLIB_LORAWAN_INVALID_MODE);
+  }
+
+  // can only configure different datarate for dynamic bands
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED) {
+    return(RADIOLIB_ERR_NO_CHANNEL_AVAILABLE);
+  }
+
+  // check if datarate is available in the selected band
+  if(this->band->dataRates[dr] == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+    return(RADIOLIB_ERR_INVALID_DATA_RATE);
+  }
+  
+  // find and check if the datarate is available for this radio module
+  DataRate_t dataRate;
+  int16_t state = findDataRate(dr, &dataRate);
+  RADIOLIB_ASSERT(state);
+
+  // passed all checks, so configure the datarate
+  this->rx2.drMax = dr;
 
   return(state);
 }

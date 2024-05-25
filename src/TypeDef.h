@@ -509,9 +509,9 @@
 #define RADIOLIB_ERR_NO_RX_WINDOW                               (-1105)
 
 /*!
-  \brief No valid channel for the currently active LoRaWAN band was found.
+  \brief There are no channels available for the requested datarate.
 */
-#define RADIOLIB_ERR_INVALID_CHANNEL                            (-1106)
+#define RADIOLIB_ERR_NO_CHANNEL_AVAILABLE                       (-1106)
 
 /*!
   \brief Invalid LoRaWAN MAC command ID.
@@ -582,6 +582,11 @@
   \brief The supplied Session buffer is discarded as it doesn't match the Nonces.
 */
 #define RADIOLIB_LORAWAN_SESSION_DISCARDED                       (-1120)
+
+/*!
+  \brief The requested command is unavailable under the current LoRaWAN mode.
+*/
+#define RADIOLIB_LORAWAN_INVALID_MODE                            (-1121)
 
 // LR11x0-specific status codes
 
