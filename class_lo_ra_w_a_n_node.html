@@ -84,7 +84,6 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_lo_ra_w_a_n_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LoRaWANNode Class Reference</div>  </div>
@@ -133,6 +132,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d">isActivated</a> ()</td></tr>
 <tr class="memdesc:a9a44677a1ef7db1216bc482139d6be8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether there is an ongoing session active. <br /></td></tr>
 <tr class="separator:a9a44677a1ef7db1216bc482139d6be8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addfd8ac3d0bfe5a273e9ba10e51f8025"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025">setRx2Dr</a> (uint8_t dr)</td></tr>
+<tr class="memdesc:addfd8ac3d0bfe5a273e9ba10e51f8025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure the Rx2 datarate for ABP mode. This should not be needed for LoRaWAN 1.1 as it is configured through the first downlink.  <a href="class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025">More...</a><br /></td></tr>
+<tr class="separator:addfd8ac3d0bfe5a273e9ba10e51f8025"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adef05650cf4eb92042ca5e2688c1e164"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a> (uint8_t cid)</td></tr>
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <a href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">More...</a><br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -214,17 +216,6 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a683b02b63867bb7de5df45c94d190305"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">getLastToA</a> ()</td></tr>
 <tr class="memdesc:a683b02b63867bb7de5df45c94d190305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Time-on-air of the last uplink message.  <a href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">More...</a><br /></td></tr>
 <tr class="separator:a683b02b63867bb7de5df45c94d190305"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:acd37dd26f6040754b4a9c942b3fb4339"><td class="memItemLeft" align="right" valign="top"><a id="acd37dd26f6040754b4a9c942b3fb4339"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#acd37dd26f6040754b4a9c942b3fb4339">rx1DrOffset</a> = 0</td></tr>
-<tr class="memdesc:acd37dd26f6040754b4a9c942b3fb4339"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset between TX and RX1 (such that RX1 has equal or lower DR) <br /></td></tr>
-<tr class="separator:acd37dd26f6040754b4a9c942b3fb4339"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae68e77ca38d22867798517d233c0fbc4"><td class="memItemLeft" align="right" valign="top"><a id="ae68e77ca38d22867798517d233c0fbc4"></a>
-<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ae68e77ca38d22867798517d233c0fbc4">rx2</a></td></tr>
-<tr class="memdesc:ae68e77ca38d22867798517d233c0fbc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">RX2 channel properties - may be changed by MAC command. <br /></td></tr>
-<tr class="separator:ae68e77ca38d22867798517d233c0fbc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
@@ -293,7 +284,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <p>Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">initialDr</td><td>The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled) </td></tr>
+    <tr><td class="paramname">initialDr</td><td>The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1170,6 +1161,33 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="addfd8ac3d0bfe5a273e9ba10e51f8025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addfd8ac3d0bfe5a273e9ba10e51f8025">&#9670;&nbsp;</a></span>setRx2Dr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LoRaWANNode::setRx2Dr </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>dr</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure the Rx2 datarate for ABP mode. This should not be needed for LoRaWAN 1.1 as it is configured through the first downlink. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dr</td><td>The datarate to be used for listening for downlinks in Rx2. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
