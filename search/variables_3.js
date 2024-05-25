@@ -2,7 +2,7 @@ var searchData=
 [
   ['datarate_1078',['datarate',['../struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b',1,'LoRaWANEvent_t']]],
   ['datarateid_1079',['dataRateId',['../struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd',1,'LR11x0WifiResult_t']]],
-  ['datarates_1080',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a36f6cb2a3b6916bcbb7702a7317209bb',1,'LoRaWANBand_t']]],
+  ['datarates_1080',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b',1,'LoRaWANBand_t']]],
   ['destcallsign_1081',['destCallsign',['../class_a_x25_frame.html#a7fe9805148e2dd46d163cd989473dbff',1,'AX25Frame']]],
   ['destssid_1082',['destSSID',['../class_a_x25_frame.html#af62935e56dc24bca5d2e2aeb932b63f8',1,'AX25Frame']]],
   ['device_1083',['device',['../struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2',1,'LR11x0VersionInfo_t']]],

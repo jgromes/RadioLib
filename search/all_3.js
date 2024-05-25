@@ -4,7 +4,7 @@ var searchData=
   ['datarate_59',['datarate',['../struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b',1,'LoRaWANEvent_t']]],
   ['datarate_5ft_60',['DataRate_t',['../union_data_rate__t.html',1,'']]],
   ['datarateid_61',['dataRateId',['../struct_l_r11x0_wifi_result__t.html#ac1768e3f878366d2187ffe6d4bc196bd',1,'LR11x0WifiResult_t']]],
-  ['datarates_62',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a36f6cb2a3b6916bcbb7702a7317209bb',1,'LoRaWANBand_t']]],
+  ['datarates_62',['dataRates',['../struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b',1,'LoRaWANBand_t']]],
   ['decode_63',['decode',['../class_morse_client.html#abd1515c8e6c3ddade280be53f612ece7',1,'MorseClient']]],
   ['decryptecb_64',['decryptECB',['../class_radio_lib_a_e_s128.html#abe0e368c6a94b2caf1559add1c262a98',1,'RadioLibAES128']]],
   ['delay_65',['delay',['../class_radio_lib_hal.html#aa2de4fcafad28470f7d46073fa29da79',1,'RadioLibHal']]],
