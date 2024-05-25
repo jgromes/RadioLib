@@ -31,11 +31,14 @@ void setup() {
   Serial.println(F("\nSetup ... "));
 
   Serial.println(F("Initialise the radio"));
-  int state = radio.begin();
+  int16_t state = radio.begin();
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 
-  Serial.println(F("Join ('login') to the LoRaWAN Network"));
-  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+  // Setup the OTAA session information
+  node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+
+  Serial.println(F("Join ('login') the LoRaWAN Network"));
+  state = node.activateOTAA();
   debug(state != RADIOLIB_LORAWAN_NEW_SESSION, F("Join failed"), state, true);
 
   Serial.println(F("Ready!\n"));
@@ -56,7 +59,7 @@ void loop() {
   uplinkPayload[2] = lowByte(value2);
   
   // Perform an uplink
-  int state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
+  int16_t state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
   debug((state != RADIOLIB_LORAWAN_NO_DOWNLINK) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
 
   Serial.print(F("Uplink complete, next in "));
