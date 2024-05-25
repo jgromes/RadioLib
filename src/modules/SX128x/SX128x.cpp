@@ -785,7 +785,7 @@ int16_t SX128x::setCodingRate(uint8_t cr, bool longInterleaving) {
 
 int16_t SX128x::setOutputPower(int8_t pwr) {
   // check if power value is configurable
-  int16_t state = checkOutputPower(power, NULL);
+  int16_t state = checkOutputPower(pwr, NULL);
   RADIOLIB_ASSERT(state);
 
   this->power = pwr + 18;
