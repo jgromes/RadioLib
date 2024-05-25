@@ -84,6 +84,7 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_lo_ra_w_a_n_node-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LoRaWANNode Class Reference</div>  </div>
@@ -216,6 +217,13 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 <tr class="memitem:a683b02b63867bb7de5df45c94d190305"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">getLastToA</a> ()</td></tr>
 <tr class="memdesc:a683b02b63867bb7de5df45c94d190305"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the Time-on-air of the last uplink message.  <a href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">More...</a><br /></td></tr>
 <tr class="separator:a683b02b63867bb7de5df45c94d190305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a8226f4d0329d15da9ffc706e5781403a"><td class="memItemLeft" align="right" valign="top"><a id="a8226f4d0329d15da9ffc706e5781403a"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">TS009</a> = false</td></tr>
+<tr class="memdesc:a8226f4d0329d15da9ffc706e5781403a"><td class="mdescLeft">&#160;</td><td class="mdescRight">TS009 Protocol Specification Verification switch (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded). <br /></td></tr>
+<tr class="separator:a8226f4d0329d15da9ffc706e5781403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
@@ -624,7 +632,7 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c
 </div><div class="memdoc">
 
 <p>Get the Time-on-air of the last uplink message. </p>
-<dl class="section return"><dt>Returns</dt><dd>(RadioLibTime_t) time-on-air (ToA) of last uplink message </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>(RadioLibTime_t) time-on-air (ToA) of last uplink message. </dd></dl>
 
 </div>
 </div>

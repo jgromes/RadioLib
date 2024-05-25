@@ -36,5 +36,6 @@ var class_lo_ra_w_a_n_node =
     [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff", null ],
-    [ "uplink", "class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58", null ]
+    [ "uplink", "class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58", null ],
+    [ "TS009", "class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a", null ]
 ];
