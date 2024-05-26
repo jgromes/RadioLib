@@ -22,9 +22,11 @@ ExternalRadio::ExternalRadio(const ExternalRadio& ext) : PhysicalLayer(1, 0) {
 }
 
 ExternalRadio& ExternalRadio::operator=(const ExternalRadio& ext) {
-  this->prevFrf = ext.prevFrf;
-  if(ext.mod) {
-    this->mod = new Module(ext.mod->hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, ext.mod->getGpio());
+  if(&ext != this) {
+    this->prevFrf = ext.prevFrf;
+    if(ext.mod) {
+      this->mod = new Module(ext.mod->hal, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, ext.mod->getGpio());
+    }
   }
   return(*this);
 }
