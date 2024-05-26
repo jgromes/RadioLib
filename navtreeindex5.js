@@ -1,5 +1,15 @@
 var NAVTREEINDEX5 =
 {
+"functions_func_u.html":[3,3,1,17],
+"functions_func_v.html":[3,3,1,18],
+"functions_func_w.html":[3,3,1,19],
+"functions_func_y.html":[3,3,1,20],
+"functions_func_~.html":[3,3,1,21],
+"functions_g.html":[3,3,0,6],
+"functions_h.html":[3,3,0,7],
+"functions_i.html":[3,3,0,8],
+"functions_j.html":[3,3,0,9],
+"functions_l.html":[3,3,0,10],
 "functions_m.html":[3,3,0,11],
 "functions_n.html":[3,3,0,12],
 "functions_o.html":[3,3,0,13],
@@ -137,8 +147,8 @@ var NAVTREEINDEX5 =
 "group__typedefs.html":[2,7],
 "group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd":[2,7,0],
 "hierarchy.html":[3,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "lr1110__transceiver__0303_8h_source.html":[4,0,0,0,2,0,0],
 "lr1110__transceiver__0304_8h_source.html":[4,0,0,0,2,0,1],
 "lr1110__transceiver__0305_8h.html":[4,0,0,0,2,0,2],
@@ -239,15 +249,5 @@ var NAVTREEINDEX5 =
 "struct_l_r11x0_wifi_result_full__t.html#a4fbd2bfd834c890da47ab94c6f688738":[3,0,32,5],
 "struct_l_r11x0_wifi_result_full__t.html#aac254fd90872d9e3457a0c44409ff9fb":[3,0,32,1],
 "struct_l_r11x0_wifi_result_full__t.html#ab4f5ee1a99afca09242ae31ae8bc75c2":[3,0,32,0],
-"struct_l_r11x0_wifi_result_full__t.html#abe8e8b5e22a75ac988de6f98afa5fd61":[3,0,32,6],
-"struct_lo_ra_rate__t.html":[3,0,14],
-"struct_lo_ra_rate__t.html#a24fcb6220c0577f985478dc109750076":[3,0,14,2],
-"struct_lo_ra_rate__t.html#a97626ff6c8f659ecad84734cca7a87b1":[3,0,14,0],
-"struct_lo_ra_rate__t.html#ae382629257949329b2fcb01d565183df":[3,0,14,1],
-"struct_lo_ra_w_a_n_band__t.html":[3,0,15],
-"struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c":[3,0,15,8],
-"struct_lo_ra_w_a_n_band__t.html#a743d3a23aa5c58e156dff633b830ee4f":[3,0,15,3],
-"struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b":[3,0,15,2],
-"struct_lo_ra_w_a_n_band__t.html#a8bd0d705d9c0dbe87d25e83cc54e922c":[3,0,15,5],
-"struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055":[3,0,15,7]
+"struct_l_r11x0_wifi_result_full__t.html#abe8e8b5e22a75ac988de6f98afa5fd61":[3,0,32,6]
 };

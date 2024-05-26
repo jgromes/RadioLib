@@ -349,6 +349,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab0cf34cc0b67484fbf0f258bff7e9a9a inherit pub_methods_class_l_r11x0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a">setRxBoostedGainMode</a> (bool en)</td></tr>
 <tr class="memdesc:ab0cf34cc0b67484fbf0f258bff7e9a9a inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).  <a href="class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a">More...</a><br /></td></tr>
 <tr class="separator:ab0cf34cc0b67484fbf0f258bff7e9a9a inherit pub_methods_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1981f0dfceca2b6175a69530ea13d643 inherit pub_methods_class_l_r11x0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1981f0dfceca2b6175a69530ea13d643">setRfSwitchTable</a> (const uint32_t(&amp;pins)[<a class="el" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">Module::RFSWITCH_MAX_PINS</a>], const <a class="el" href="struct_module_1_1_rf_switch_mode__t.html">Module::RfSwitchMode_t</a> table[])</td></tr>
+<tr class="memdesc:a1981f0dfceca2b6175a69530ea13d643 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Some modules contain external RF switch controlled by pins. This function gives RadioLib control over those pins to automatically switch between various modes.  <a href="class_l_r11x0.html#a1981f0dfceca2b6175a69530ea13d643">More...</a><br /></td></tr>
+<tr class="separator:a1981f0dfceca2b6175a69530ea13d643 inherit pub_methods_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c1def9a01021a52f5bb82c119a9ad35 inherit pub_methods_class_l_r11x0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a> (uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</td></tr>
 <tr class="memdesc:a8c1def9a01021a52f5bb82c119a9ad35 inherit pub_methods_class_l_r11x0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LR-FHSS configuration.  <a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">More...</a><br /></td></tr>
 <tr class="separator:a8c1def9a01021a52f5bb82c119a9ad35 inherit pub_methods_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -452,6 +455,21 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_class_l_r11x0"><td colspan="2" onclick="javascript:toggleInherit('pub_types_class_l_r11x0')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="class_l_r11x0.html">LR11x0</a></td></tr>
+<tr class="memitem:a2985d66f47882ab46291a4d89f686ca7 inherit pub_types_class_l_r11x0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7">OpMode_t</a> { <br />
+&#160;&#160;<a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a2398f9003962c8dc6d199e69ba850917">MODE_END_OF_TABLE</a> = Module::MODE_END_OF_TABLE
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7ab223e6d6104d722d61e1d2aa22231012">MODE_STBY</a> = Module::MODE_IDLE
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a98f8232e13745eec261cd755c457c034">MODE_RX</a> = Module::MODE_RX
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a71c6230a03a213d3e19185691c6db551">MODE_TX</a> = Module::MODE_TX
+, <br />
+&#160;&#160;<a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a005b9c110df839cd001f82f4660762fd">MODE_TX_HP</a>
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7acbbc5768e10e22bfdf776faffbfced46">MODE_TX_HF</a>
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a5f126b8030f06bb14b1659ccce645bad">MODE_GNSS</a>
+, <a class="el" href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a3bee9db01eab3ac70ff178c95fe8f8ab">MODE_WIFI</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a2985d66f47882ab46291a4d89f686ca7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Custom operation modes for <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a>. Needed because <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a> has several modems (sub-GHz, 2.4 GHz etc.) in one package.  <a href="class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7">More...</a><br /></td></tr>
+<tr class="separator:a2985d66f47882ab46291a4d89f686ca7 inherit pub_types_class_l_r11x0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_class_l_r11x0"><td colspan="2" onclick="javascript:toggleInherit('pub_attribs_class_l_r11x0')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="class_l_r11x0.html">LR11x0</a></td></tr>
 <tr class="memitem:a3ccfd35d26960457214d2a0192d6b312 inherit pub_attribs_class_l_r11x0"><td class="memItemLeft" align="right" valign="top"><a id="a3ccfd35d26960457214d2a0192d6b312"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a3ccfd35d26960457214d2a0192d6b312">XTAL</a></td></tr>

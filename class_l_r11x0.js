@@ -1,5 +1,15 @@
 var class_l_r11x0 =
 [
+    [ "OpMode_t", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7", [
+      [ "MODE_END_OF_TABLE", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a2398f9003962c8dc6d199e69ba850917", null ],
+      [ "MODE_STBY", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7ab223e6d6104d722d61e1d2aa22231012", null ],
+      [ "MODE_RX", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a98f8232e13745eec261cd755c457c034", null ],
+      [ "MODE_TX", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a71c6230a03a213d3e19185691c6db551", null ],
+      [ "MODE_TX_HP", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a005b9c110df839cd001f82f4660762fd", null ],
+      [ "MODE_TX_HF", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7acbbc5768e10e22bfdf776faffbfced46", null ],
+      [ "MODE_GNSS", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a5f126b8030f06bb14b1659ccce645bad", null ],
+      [ "MODE_WIFI", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a3bee9db01eab3ac70ff178c95fe8f8ab", null ]
+    ] ],
     [ "LR11x0", "class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421", null ],
     [ "begin", "class_l_r11x0.html#a43318bfbed2be4a46e0b7e678d2e4d23", null ],
     [ "beginGFSK", "class_l_r11x0.html#ab1ed8eafe4b23843a8b163949af279bb", null ],
@@ -60,6 +70,7 @@ var class_l_r11x0 =
     [ "setPreambleLength", "class_l_r11x0.html#aa5d7ae65666f8f9abcb7e9b169884a4a", null ],
     [ "setRegulatorDCDC", "class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c", null ],
     [ "setRegulatorLDO", "class_l_r11x0.html#a92ae10630cc327f441809ac1406737fd", null ],
+    [ "setRfSwitchTable", "class_l_r11x0.html#a1981f0dfceca2b6175a69530ea13d643", null ],
     [ "setRxBandwidth", "class_l_r11x0.html#a25f5ee68b3c2638ae613c87ed1c3fc64", null ],
     [ "setRxBoostedGainMode", "class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a", null ],
     [ "setSpreadingFactor", "class_l_r11x0.html#adf6895cbf7af7e00ea06c5b2b5040cb4", null ],
