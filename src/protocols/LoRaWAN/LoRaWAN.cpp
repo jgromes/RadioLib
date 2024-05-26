@@ -550,7 +550,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // check received length
   size_t lenRx = this->phyLayer->getPacketLength(true);
   if((lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN) && (lenRx != RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - RADIOLIB_LORAWAN_JOIN_ACCEPT_CFLIST_LEN)) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept reply length mismatch, expected %dB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, lenRx);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept reply length mismatch, expected %dB got %luB", RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN, (unsigned long)lenRx);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -579,7 +579,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // get current joinNonce from downlink
   uint32_t joinNonceNew = LoRaWANNode::ntoh<uint32_t>(&joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_JOIN_NONCE_POS], 3);
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %d, previously %d):", joinNonceNew, this->joinNonce);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %lu, previously %lu):", (unsigned long)joinNonceNew, (unsigned long)this->joinNonce);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(joinAcceptMsg, lenRx);
 
   // joinNonce received must be greater than the last joinNonce heard, else error
@@ -1082,7 +1082,7 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
   block1[RADIOLIB_LORAWAN_MIC_DATA_RATE_POS] = this->dataRates[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK];
   block1[RADIOLIB_LORAWAN_MIC_CH_INDEX_POS] = this->currentChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK].idx;
   
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %d) decoded:", this->fCntUp);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink (FCntUp = %lu) decoded:", (unsigned long)this->fCntUp);
 
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(uplinkMsg, uplinkMsgLen);
 
@@ -1309,7 +1309,7 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
   // check the minimum required frame length
   // an extra byte is subtracted because downlink frames may not have a fPort
   if(downlinkMsgLen < RADIOLIB_LORAWAN_FRAME_LEN(0, 0) - 1 - RADIOLIB_AES128_BLOCK_SIZE) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink message too short (%lu bytes)", downlinkMsgLen);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink message too short (%lu bytes)", (unsigned long)downlinkMsgLen);
     return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
 
@@ -2269,7 +2269,6 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
     } break;
 
     case(RADIOLIB_LORAWAN_MAC_LINK_ADR): {
-      int16_t state = RADIOLIB_ERR_UNKNOWN;
       // get the ADR configuration
       uint8_t drUp = (cmd->payload[0] & 0xF0) >> 4;
       uint8_t txSteps = cmd->payload[0] & 0x0F;
@@ -2281,6 +2280,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txSteps = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txSteps, chMask, chMaskCntl, nbTrans);
 
       // try to apply the datarate configuration
+      int16_t state;
       uint8_t drAck = 0;
       if(drUp == 0x0F) {  // keep the same
         drAck = 1;
@@ -2851,7 +2851,8 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
 
 uint8_t LoRaWANNode::getMacPayloadLength(uint8_t cid) {
   for (LoRaWANMacSpec_t entry : MacTable) {
-    if (entry.cid == cid) {
+    // cppcheck warns here we should use std::find_if, but some platforms may not have that
+    if (entry.cid == cid) { // cppcheck-suppress useStlAlgorithm
       return entry.lenDn;
     }
   }
@@ -2939,7 +2940,7 @@ bool LoRaWANNode::performCAD() {
     return false; // Channel is free
 }
 
-void LoRaWANNode::processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
+void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter) {
   // figure out how many encryption blocks are there
   size_t numBlocks = len/RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {

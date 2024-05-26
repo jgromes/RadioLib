@@ -954,7 +954,7 @@ class LoRaWANNode {
     uint8_t difsSlots;
 
     // available channel frequencies from list passed during OTA activation
-    LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];
+    LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
 
     // currently configured channels for TX and RX1
     LoRaWANChannel_t currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };
@@ -1064,7 +1064,7 @@ class LoRaWANNode {
     bool performCAD();
 
     // function to encrypt and decrypt payloads
-    void processAES(uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
+    void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
 
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
     static uint16_t checkSum16(uint8_t *key, uint16_t keyLen);
