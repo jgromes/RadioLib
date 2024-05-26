@@ -1717,10 +1717,6 @@ int16_t SX126x::setDio2AsRfSwitch(bool enable) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO2_AS_RF_SWITCH_CTRL, &data, 1));
 }
 
-Module* SX126x::getMod() {
-  return(this->mod);
-}
-
 int16_t SX126x::setFs() {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_FS, NULL, 0));
 }
