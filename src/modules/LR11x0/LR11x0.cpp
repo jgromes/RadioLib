@@ -1573,7 +1573,7 @@ int16_t LR11x0::updateFirmware(const uint32_t* image, size_t size, bool nonvolat
   state = this->getVersion(NULL, &device, NULL, NULL);
   RADIOLIB_ASSERT(state);
   if(device != RADIOLIB_LR11X0_DEVICE_BOOT) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to put device to bootloader mode, %02x != %02x", device, RADIOLIB_LR11X0_DEVICE_BOOT);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to put device to bootloader mode, %02x != %02x", (unsigned int)device, (unsigned int)RADIOLIB_LR11X0_DEVICE_BOOT);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
 
@@ -1611,7 +1611,7 @@ int16_t LR11x0::updateFirmware(const uint32_t* image, size_t size, bool nonvolat
   state = this->getVersion(NULL, &device, NULL, NULL);
   RADIOLIB_ASSERT(state);
   if(device == RADIOLIB_LR11X0_DEVICE_BOOT) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to kick device from bootloader mode, %02x == %02x", device, RADIOLIB_LR11X0_DEVICE_BOOT);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to kick device from bootloader mode, %02x == %02x", (unsigned int)device, (unsigned int)RADIOLIB_LR11X0_DEVICE_BOOT);
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
   }
 
@@ -2487,7 +2487,7 @@ int16_t LR11x0::setRangingParameter(uint8_t symbolNum) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RANGING_PARAMETER, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::setRssiCalibration(int8_t* tune, int16_t gainOffset) {
+int16_t LR11x0::setRssiCalibration(const int8_t* tune, int16_t gainOffset) {
   uint8_t buff[11] = {
     (uint8_t)((tune[0] & 0x0F) | (uint8_t)(tune[1] & 0x0F) << 4),
     (uint8_t)((tune[2] & 0x0F) | (uint8_t)(tune[3] & 0x0F) << 4),

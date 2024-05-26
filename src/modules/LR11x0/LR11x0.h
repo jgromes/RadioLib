@@ -1418,7 +1418,7 @@ class LR11x0: public PhysicalLayer {
     int16_t setGfskWhitParams(uint16_t seed);
     int16_t setRxBoosted(bool en);
     int16_t setRangingParameter(uint8_t symbolNum);
-    int16_t setRssiCalibration(int8_t* tune, int16_t gainOffset);
+    int16_t setRssiCalibration(const int8_t* tune, int16_t gainOffset);
     int16_t setLoRaSyncWord(uint8_t sync);
     int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, uint8_t* payload, size_t len);
     int16_t lrFhssSetSyncWord(uint32_t sync);
