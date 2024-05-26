@@ -610,7 +610,7 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
 
   // if just a check occurs (and not requesting the raw power value), return now
   if(!raw) {
-    for(int i = 0; i < sizeof(allowedPwrs); i++) {
+    for(size_t i = 0; i < sizeof(allowedPwrs); i++) {
       if(allowedPwrs[i] == power) {
         return(RADIOLIB_ERR_NONE);
       }
