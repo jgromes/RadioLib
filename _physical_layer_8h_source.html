@@ -273,15 +273,15 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <span class="keywordtype">size_t</span> maxPacketLength;</div>
 <div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160; </div>
 <div class="line"><a name="l00531"></a><span class="lineno">  531</span>&#160;<span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
-<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    uint8_t bufferBitPos;</div>
-<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    uint8_t bufferWritePos;</div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    uint8_t bufferReadPos;</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE];</div>
-<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    uint32_t syncBuffer;</div>
-<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    uint32_t directSyncWord;</div>
-<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    uint8_t directSyncWordLen;</div>
-<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    uint32_t directSyncWordMask;</div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="keywordtype">bool</span> gotSync;</div>
+<div class="line"><a name="l00532"></a><span class="lineno">  532</span>&#160;    uint8_t bufferBitPos = 0;</div>
+<div class="line"><a name="l00533"></a><span class="lineno">  533</span>&#160;    uint8_t bufferWritePos = 0;</div>
+<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    uint8_t bufferReadPos = 0;</div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160;    uint32_t syncBuffer = 0;</div>
+<div class="line"><a name="l00537"></a><span class="lineno">  537</span>&#160;    uint32_t directSyncWord = 0;</div>
+<div class="line"><a name="l00538"></a><span class="lineno">  538</span>&#160;    uint8_t directSyncWordLen = 0;</div>
+<div class="line"><a name="l00539"></a><span class="lineno">  539</span>&#160;    uint32_t directSyncWordMask = 0;</div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="keywordtype">bool</span> gotSync = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160;<span class="preprocessor">    #endif</span></div>
 <div class="line"><a name="l00542"></a><span class="lineno">  542</span>&#160; </div>
 <div class="line"><a name="l00543"></a><span class="lineno">  543</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="class_module.html">Module</a>* getMod() = 0;</div>
