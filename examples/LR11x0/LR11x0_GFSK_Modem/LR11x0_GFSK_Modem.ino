@@ -1,19 +1,19 @@
 /*
-   RadioLib LR11x0 GFSK Modem Example
+  RadioLib LR11x0 GFSK Modem Example
 
-   This example shows how to use GFSK modem in LR11x0 chips.
+  This example shows how to use GFSK modem in LR11x0 chips.
 
-   NOTE: The sketch below is just a guide on how to use
-         GFSK modem, so this code should not be run directly!
-         Instead, modify the other examples to use GFSK
-         modem and use the appropriate configuration
-         methods.
+  NOTE: The sketch below is just a guide on how to use
+        GFSK modem, so this code should not be run directly!
+        Instead, modify the other examples to use GFSK
+        modem and use the appropriate configuration
+        methods.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr11x0---gfsk-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#lr11x0---gfsk-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

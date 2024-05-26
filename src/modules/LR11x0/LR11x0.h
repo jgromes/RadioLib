@@ -240,6 +240,11 @@
 #define RADIOLIB_LR11X0_RFSW_DIO8_DISABLED                      (0x00UL << 3)   //  4     0                DIO8 disabled (default)
 #define RADIOLIB_LR11X0_RFSW_DIO10_ENABLED                      (0x01UL << 4)   //  4     0     RF switch: DIO10 enabled
 #define RADIOLIB_LR11X0_RFSW_DIO10_DISABLED                     (0x00UL << 4)   //  4     0                DIO10 disabled (default)
+#define RADIOLIB_LR11X0_DIO5                                    (0)
+#define RADIOLIB_LR11X0_DIO6                                    (1)
+#define RADIOLIB_LR11X0_DIO7                                    (2)
+#define RADIOLIB_LR11X0_DIO8                                    (3)
+#define RADIOLIB_LR11X0_DIO10                                   (4)
 
 // RADIOLIB_LR11X0_CMD_SET_DIO_IRQ_PARAMS
 #define RADIOLIB_LR11X0_IRQ_TX_DONE                             (0x01UL << 2)   //  31    0     interrupt: packet transmitted
@@ -709,6 +714,29 @@ class LR11x0: public PhysicalLayer {
       \param mod Instance of Module that will be used to communicate with the radio.
     */
     explicit LR11x0(Module* mod);
+
+    /*!
+      \brief Custom operation modes for LR11x0.
+      Needed because LR11x0 has several modems (sub-GHz, 2.4 GHz etc.) in one package
+    */
+    enum OpMode_t {
+        /*! End of table marker, use \ref END_OF_MODE_TABLE constant instead */
+        MODE_END_OF_TABLE = Module::MODE_END_OF_TABLE,
+        /*! Standby/idle mode */
+        MODE_STBY = Module::MODE_IDLE,
+        /*! Receive mode */
+        MODE_RX = Module::MODE_RX,
+        /*! Low power transmission mode */
+        MODE_TX = Module::MODE_TX,
+        /*! High power transmission mode */
+        MODE_TX_HP,
+        /*! High frequency transmission mode */
+        MODE_TX_HF,
+        /*! GNSS scanning mode */
+        MODE_GNSS,
+        /*! WiFi scanning mode */
+        MODE_WIFI,
+    };
 
     /*!
       \brief Whether the module has an XTAL (true) or TCXO (false). Defaults to false.
@@ -1265,6 +1293,9 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t setRxBoostedGainMode(bool en);
+
+    /*! \copydoc Module::setRfSwitchTable */
+    void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
       \brief Sets LR-FHSS configuration.

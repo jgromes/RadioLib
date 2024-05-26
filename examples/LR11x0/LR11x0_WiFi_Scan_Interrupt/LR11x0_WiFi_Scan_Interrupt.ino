@@ -6,6 +6,10 @@
   such as the frequency, country code and SSID.
 
   Other modules from LR11x0 family can also be used.
+  
+  This example assumes Seeed Studio Wio WM1110 is used.
+  For other LR11x0 modules, some configuration such as
+  RF switch control may have to be adjusted.
 
   Using blocking scan is not recommended, as depending
   on the scan settings, the program may be blocked
@@ -28,12 +32,33 @@
 // BUSY pin:  9
 LR1110 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//LR1110 radio = RadioShield.ModuleA;
+// set RF switch configuration for Wio WM1110
+// Wio WM1110 uses DIO5, 6, 7 and 8 for RF switching
+// NOTE: other boards may be different!
+static const uint32_t rfswitch_dio_pins[] = { 
+  RADIOLIB_LR11X0_DIO5, RADIOLIB_LR11X0_DIO6,
+  RADIOLIB_LR11X0_DIO7, RADIOLIB_LR11X0_DIO8,
+  RADIOLIB_NC
+};
+
+static const Module::RfSwitchMode_t rfswitch_table[] = {
+  // mode                  DIO5  DIO6  DIO7  DIO8
+  { LR11x0::MODE_STBY,   { LOW,  LOW,  LOW,  LOW  } },
+  { LR11x0::MODE_RX,     { HIGH, LOW,  LOW,  LOW  } },
+  { LR11x0::MODE_TX,     { HIGH, HIGH, LOW,  LOW  } },
+  { LR11x0::MODE_TX_HP,  { LOW,  HIGH, LOW,  LOW  } },
+  { LR11x0::MODE_TX_HF,  { LOW,  LOW,  LOW,  LOW  } },
+  { LR11x0::MODE_GNSS,   { LOW,  LOW,  HIGH, LOW  } },
+  { LR11x0::MODE_WIFI,   { LOW,  LOW,  LOW,  HIGH } },
+  END_OF_MODE_TABLE,
+};
 
 void setup() {
   Serial.begin(9600);
+
+  // set RF switch control configuration
+  // this has to be done prior to calling begin()
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));

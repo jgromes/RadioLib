@@ -1385,6 +1385,28 @@ int16_t LR11x0::setRxBoostedGainMode(bool en) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RX_BOOSTED, true, buff, sizeof(buff)));
 }
 
+void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]) {
+  // find which pins are used
+  uint8_t enable = 0;
+  for(size_t i = 0; i < Module::RFSWITCH_MAX_PINS; i++) {
+    if((pins[i] == RADIOLIB_NC) || (pins[i] > RADIOLIB_LR11X0_DIO10)) {
+      continue;
+    }
+    enable |= 1UL << pins[i];
+  }
+
+  // now get the configuration
+  uint8_t modes[7] = { 0 };
+  for(size_t i = 0; i < 7; i++) {
+    for(size_t j = 0; j < Module::RFSWITCH_MAX_PINS; j++) {
+      modes[i] |= (table[i].values[j] > 0) ? (1UL << j) : 0;
+    }
+  }
+
+  // set it
+  this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]);
+}
+
 int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
