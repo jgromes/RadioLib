@@ -323,6 +323,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">getDataRate</a> () const</td></tr>
 <tr class="memdesc:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets effective data rate for the last transmitted packet. The value is calculated only for payload bytes.  <a href="class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9">More...</a><br /></td></tr>
 <tr class="separator:a1ec81f3625fdc8a3ef6c54a3804c3aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92ae10630cc327f441809ac1406737fd"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a92ae10630cc327f441809ac1406737fd">setRegulatorLDO</a> ()</td></tr>
+<tr class="memdesc:a92ae10630cc327f441809ac1406737fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set regulator mode to LDO.  <a href="class_l_r11x0.html#a92ae10630cc327f441809ac1406737fd">More...</a><br /></td></tr>
+<tr class="separator:a92ae10630cc327f441809ac1406737fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad485f14a333f06b642f2d60aacf76c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c">setRegulatorDCDC</a> ()</td></tr>
+<tr class="memdesc:a1ad485f14a333f06b642f2d60aacf76c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set regulator mode to DC-DC.  <a href="class_l_r11x0.html#a1ad485f14a333f06b642f2d60aacf76c">More...</a><br /></td></tr>
+<tr class="separator:a1ad485f14a333f06b642f2d60aacf76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a">setRxBoostedGainMode</a> (bool en)</td></tr>
+<tr class="memdesc:ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).  <a href="class_l_r11x0.html#ab0cf34cc0b67484fbf0f258bff7e9a9a">More...</a><br /></td></tr>
+<tr class="separator:ab0cf34cc0b67484fbf0f258bff7e9a9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">setLrFhssConfig</a> (uint8_t bw, uint8_t cr, uint8_t hdrCount=3, uint16_t hopSeed=0x13A)</td></tr>
 <tr class="memdesc:a8c1def9a01021a52f5bb82c119a9ad35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LR-FHSS configuration.  <a href="class_l_r11x0.html#a8c1def9a01021a52f5bb82c119a9ad35">More...</a><br /></td></tr>
 <tr class="separator:a8c1def9a01021a52f5bb82c119a9ad35"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2347,6 +2356,46 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a1ad485f14a333f06b642f2d60aacf76c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ad485f14a333f06b642f2d60aacf76c">&#9670;&nbsp;</a></span>setRegulatorDCDC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setRegulatorDCDC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set regulator mode to DC-DC. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a92ae10630cc327f441809ac1406737fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92ae10630cc327f441809ac1406737fd">&#9670;&nbsp;</a></span>setRegulatorLDO()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setRegulatorLDO </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set regulator mode to LDO. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a25f5ee68b3c2638ae613c87ed1c3fc64"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a25f5ee68b3c2638ae613c87ed1c3fc64">&#9670;&nbsp;</a></span>setRxBandwidth()</h2>
 
@@ -2367,6 +2416,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">rxBw</td><td>GFSK receiver bandwidth to be set in kHz. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab0cf34cc0b67484fbf0f258bff7e9a9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0cf34cc0b67484fbf0f258bff7e9a9a">&#9670;&nbsp;</a></span>setRxBoostedGainMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setRxBoostedGainMode </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>en</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">en</td><td>True for Rx Boosted Gain, false for Rx Power Saving Gain </td></tr>
   </table>
   </dd>
 </dl>
