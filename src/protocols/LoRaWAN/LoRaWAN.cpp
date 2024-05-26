@@ -2277,8 +2277,8 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
 
       uint16_t chMask = LoRaWANNode::ntoh<uint16_t>(&cmd->payload[1]);
       uint8_t chMaskCntl = (cmd->payload[3] & 0x70) >> 4;
-      uint8_t nbTrans = cmd->payload[3] & 0x0F;
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txSteps = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txSteps, chMask, chMaskCntl, nbTrans);
+      uint8_t nbTransMac = cmd->payload[3] & 0x0F;
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkADRReq: dataRate = %d, txSteps = %d, chMask = 0x%04x, chMaskCntl = %d, nbTrans = %d", drUp, txSteps, chMask, chMaskCntl, nbTransMac);
 
       // try to apply the datarate configuration
       int16_t state;
@@ -2349,8 +2349,8 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
         }
       }
 
-      if(nbTrans) {  // if there is a value for NbTrans, set this value
-        this->nbTrans = nbTrans;
+      if(nbTransMac) {  // if there is a value for NbTrans, set this value
+        this->nbTrans = nbTransMac;
       }
 
       // replace 'placeholder' or failed values with the current values for saving
@@ -2362,7 +2362,7 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
       if(txSteps == 0x0F || !pwrAck) {
         cmd->payload[0] = (cmd->payload[0] & 0xF0) | this->txPowerSteps;
       }
-      if(nbTrans == 0) {
+      if(nbTransMac == 0) {
         cmd->payload[3] = (cmd->payload[3] & 0xF0) | this->nbTrans;
       }
 
