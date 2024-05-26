@@ -17,9 +17,9 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install cppcheck
-      run:
-        - sudo apt-get update
-        - sudo apt-get install -y cppcheck
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cppcheck
 
     - name: Run cppcheck
       run: ./extras/cppcheck/cppcheck.sh
