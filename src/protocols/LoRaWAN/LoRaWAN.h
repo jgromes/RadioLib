@@ -954,7 +954,7 @@ class LoRaWANNode {
     uint8_t difsSlots;
 
     // available channel frequencies from list passed during OTA activation
-    LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS] = { { 0 }, { 0 } };
+    LoRaWANChannel_t availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];
 
     // currently configured channels for TX and RX1
     LoRaWANChannel_t currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };

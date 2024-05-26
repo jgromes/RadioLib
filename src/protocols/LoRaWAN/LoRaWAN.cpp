@@ -36,6 +36,7 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->difsSlots = 2;
   this->backoffMax = 6;
   this->enableCSMA = false;
+  memset(this->availableChannels, 0, sizeof(this->availableChannels));
 }
 
 void LoRaWANNode::setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA) {
