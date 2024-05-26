@@ -18,10 +18,8 @@ jobs:
 
     - name: Install cppcheck
       run:
-        |
-        sudo apt-get update
-        sudo apt-get install -y cppcheck
+        - sudo apt-get update
+        - sudo apt-get install -y cppcheck
 
     - name: Run cppcheck
-      run:
-        cppcheck src --enable=all --force --inline-suppr --quiet --suppress=ConfigurationNotChecked --suppress=unusedFunction
+      run: ./extras/cppcheck/cppcheck.sh
