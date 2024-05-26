@@ -142,9 +142,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f8427103d6609f3ac44b23fcca4f301"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a2f8427103d6609f3ac44b23fcca4f301">scanChannel</a> () override</td></tr>
 <tr class="memdesc:a2f8427103d6609f3ac44b23fcca4f301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.  <a href="class_s_x128x.html#a2f8427103d6609f3ac44b23fcca4f301">More...</a><br /></td></tr>
 <tr class="separator:a2f8427103d6609f3ac44b23fcca4f301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bf5f068064539c8421a4a20cc3f89ab"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a9bf5f068064539c8421a4a20cc3f89ab">sleep</a> ()</td></tr>
-<tr class="memdesc:a9bf5f068064539c8421a4a20cc3f89ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. Overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#a9bf5f068064539c8421a4a20cc3f89ab">More...</a><br /></td></tr>
-<tr class="separator:a9bf5f068064539c8421a4a20cc3f89ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0c26aebd432d36974b3066055df6b01"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#ab0c26aebd432d36974b3066055df6b01">sleep</a> () override</td></tr>
+<tr class="memdesc:ab0c26aebd432d36974b3066055df6b01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>. Overload for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility.  <a href="class_s_x128x.html#ab0c26aebd432d36974b3066055df6b01">More...</a><br /></td></tr>
+<tr class="separator:ab0c26aebd432d36974b3066055df6b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98ef7dc21647642b40baf8c0194788c4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x128x.html#a98ef7dc21647642b40baf8c0194788c4">sleep</a> (bool retainConfig)</td></tr>
 <tr class="memdesc:a98ef7dc21647642b40baf8c0194788c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to sleep mode. To wake the device up, call <a class="el" href="class_s_x128x.html#a2be8cc6c3b61b59cb6a6ca4f6a030b45" title="Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator)...">standby()</a>.  <a href="class_s_x128x.html#a98ef7dc21647642b40baf8c0194788c4">More...</a><br /></td></tr>
 <tr class="separator:a98ef7dc21647642b40baf8c0194788c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2150,8 +2150,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a9bf5f068064539c8421a4a20cc3f89ab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9bf5f068064539c8421a4a20cc3f89ab">&#9670;&nbsp;</a></span>sleep() <span class="overload">[1/2]</span></h2>
+<a id="ab0c26aebd432d36974b3066055df6b01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0c26aebd432d36974b3066055df6b01">&#9670;&nbsp;</a></span>sleep() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2168,7 +2168,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
