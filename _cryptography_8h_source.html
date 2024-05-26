@@ -201,17 +201,17 @@ $(document).ready(function(){initNavTree('_cryptography_8h_source.html',''); ini
 <div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keywordtype">void</span> subWord(uint8_t* word);</div>
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keywordtype">void</span> rotWord(uint8_t* word);</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
-<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">void</span> addRoundKey(uint8_t round, state_t* state, <span class="keyword">const</span> uint8_t* roundKey);</div>
-<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160; </div>
-<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> blockXor(uint8_t* dst, <span class="keyword">const</span> uint8_t* a, <span class="keyword">const</span> uint8_t* b);</div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keywordtype">void</span> blockLeftshift(uint8_t* dst, <span class="keyword">const</span> uint8_t* src);</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordtype">void</span> generateSubkeys(uint8_t* key1, uint8_t* key2);</div>
-<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordtype">void</span> subBytes(state_t* state, <span class="keyword">const</span> uint8_t* box);</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;    <span class="keywordtype">void</span> shiftRows(state_t* state, <span class="keywordtype">bool</span> inv);</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="keywordtype">void</span> mixColumns(state_t* state, <span class="keywordtype">bool</span> inv);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    uint8_t mul(uint8_t a, uint8_t b);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;    <span class="keywordtype">void</span> blockXor(uint8_t* dst, <span class="keyword">const</span> uint8_t* a, <span class="keyword">const</span> uint8_t* b);</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;    <span class="keywordtype">void</span> blockLeftshift(uint8_t* dst, <span class="keyword">const</span> uint8_t* src);</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160;    <span class="keywordtype">void</span> generateSubkeys(uint8_t* key1, uint8_t* key2);</div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keywordtype">void</span> subBytes(state_t* state, <span class="keyword">const</span> uint8_t* box);</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keywordtype">void</span> shiftRows(state_t* state, <span class="keywordtype">bool</span> inv);</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;    <span class="keywordtype">void</span> mixColumns(state_t* state, <span class="keywordtype">bool</span> inv);</div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;    <span class="comment">// cppcheck seems convinced these are nut used, which is not true</span></div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    uint8_t mul(uint8_t a, uint8_t b); <span class="comment">// cppcheck-suppress unusedPrivateFunction</span></div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;    <span class="keywordtype">void</span> addRoundKey(uint8_t round, state_t* state, <span class="keyword">const</span> uint8_t* roundKey); <span class="comment">// cppcheck-suppress unusedPrivateFunction</span></div>
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;};</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
 <div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;<span class="comment">// the global singleton</span></div>
