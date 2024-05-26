@@ -155,8 +155,6 @@ class RadioLibAES128 {
     void subWord(uint8_t* word);
     void rotWord(uint8_t* word);
 
-    void addRoundKey(uint8_t round, state_t* state, const uint8_t* roundKey);
-
     void blockXor(uint8_t* dst, const uint8_t* a, const uint8_t* b);
     void blockLeftshift(uint8_t* dst, const uint8_t* src);
     void generateSubkeys(uint8_t* key1, uint8_t* key2);
@@ -165,7 +163,9 @@ class RadioLibAES128 {
     void shiftRows(state_t* state, bool inv);
     void mixColumns(state_t* state, bool inv);
 
-    uint8_t mul(uint8_t a, uint8_t b);
+    // cppcheck seems convinced these are nut used, which is not true
+    uint8_t mul(uint8_t a, uint8_t b); // cppcheck-suppress unusedPrivateFunction
+    void addRoundKey(uint8_t round, state_t* state, const uint8_t* roundKey); // cppcheck-suppress unusedPrivateFunction
 };
 
 // the global singleton
