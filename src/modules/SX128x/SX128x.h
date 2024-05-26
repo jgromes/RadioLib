@@ -462,7 +462,7 @@ class SX128x: public PhysicalLayer {
       Overload for PhysicalLayer compatibility.
       \returns \ref status_codes
     */
-    int16_t sleep();
+    int16_t sleep() override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
