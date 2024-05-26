@@ -529,15 +529,15 @@ class PhysicalLayer {
     size_t maxPacketLength;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
-    uint8_t bufferBitPos;
-    uint8_t bufferWritePos;
-    uint8_t bufferReadPos;
-    uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE];
-    uint32_t syncBuffer;
-    uint32_t directSyncWord;
-    uint8_t directSyncWordLen;
-    uint32_t directSyncWordMask;
-    bool gotSync;
+    uint8_t bufferBitPos = 0;
+    uint8_t bufferWritePos = 0;
+    uint8_t bufferReadPos = 0;
+    uint8_t buffer[RADIOLIB_STATIC_ARRAY_SIZE] = { 0 };
+    uint32_t syncBuffer = 0;
+    uint32_t directSyncWord = 0;
+    uint8_t directSyncWordLen = 0;
+    uint32_t directSyncWordMask = 0;
+    bool gotSync = false;
     #endif
 
     virtual Module* getMod() = 0;
