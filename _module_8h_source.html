@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="class_module.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_module.html">Module</a> {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">   74</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 3;</div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">   74</a></span>&#160;    <span class="keyword">static</span> <span class="keyword">const</span> <span class="keywordtype">size_t</span> <a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a> = 5;</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="struct_module_1_1_rf_switch_mode__t.html">   81</a></span>&#160;    <span class="keyword">struct </span><a class="code" href="struct_module_1_1_rf_switch_mode__t.html">RfSwitchMode_t</a> {</div>
 <div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462">   83</a></span>&#160;      uint8_t <a class="code" href="struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462">mode</a>;</div>
@@ -276,7 +276,7 @@ $(document).ready(function(){initNavTree('_module_8h_source.html',''); initResiz
 <div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;    uint32_t gpioPin = RADIOLIB_NC;</div>
 <div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160; </div>
 <div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160;    <span class="comment">// RF switch pins and table</span></div>
-<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    uint32_t rfSwitchPins[<a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };</div>
+<div class="line"><a name="l00549"></a><span class="lineno">  549</span>&#160;    uint32_t rfSwitchPins[<a class="code" href="class_module.html#a0c11551e12579bbabf57b19e12555b3c">RFSWITCH_MAX_PINS</a>] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };</div>
 <div class="line"><a name="l00550"></a><span class="lineno">  550</span>&#160;    <span class="keyword">const</span> RfSwitchMode_t *rfSwitchTable = <span class="keyword">nullptr</span>;</div>
 <div class="line"><a name="l00551"></a><span class="lineno">  551</span>&#160; </div>
 <div class="line"><a name="l00552"></a><span class="lineno">  552</span>&#160;<span class="preprocessor">    #if RADIOLIB_INTERRUPT_TIMING</span></div>
