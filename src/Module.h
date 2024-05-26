@@ -71,7 +71,7 @@ class Module {
       value is ever increased and such an array gets extra zero
       elements (that will be interpreted as pin 0).
     */
-    static const size_t RFSWITCH_MAX_PINS = 3;
+    static const size_t RFSWITCH_MAX_PINS = 5;
 
     /*!
       \struct RfSwitchMode_t
@@ -546,7 +546,7 @@ class Module {
     uint32_t gpioPin = RADIOLIB_NC;
 
     // RF switch pins and table
-    uint32_t rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
+    uint32_t rfSwitchPins[RFSWITCH_MAX_PINS] = { RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC };
     const RfSwitchMode_t *rfSwitchTable = nullptr;
 
     #if RADIOLIB_INTERRUPT_TIMING

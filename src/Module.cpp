@@ -565,7 +565,7 @@ size_t Module::serialPrintf(const char* format, ...) {
 void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   // This can be on the stack, setRfSwitchTable copies the contents
   const uint32_t pins[] = {
-    rxEn, txEn, RADIOLIB_NC,
+    rxEn, txEn, RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC,
   };
   
   // This must be static, since setRfSwitchTable stores a reference.
@@ -578,7 +578,7 @@ void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
   setRfSwitchTable(pins, table);
 }
 
-void Module::setRfSwitchTable(const uint32_t (&pins)[3], const RfSwitchMode_t table[]) {
+void Module::setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]) {
   memcpy(this->rfSwitchPins, pins, sizeof(this->rfSwitchPins));
   this->rfSwitchTable = table;
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)

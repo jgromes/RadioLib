@@ -35,7 +35,7 @@ STM32WLx radio = new STM32WLx_Module();
 //       Some boards may not have either LP or HP.
 //       For those, do not set the LP/HP entry in the table.
 static const uint32_t rfswitch_pins[] =
-                         {PC3,  PC4,  PC5};
+                         {PC3,  PC4,  PC5, RADIOLIB_NC, RADIOLIB_NC};
 static const Module::RfSwitchMode_t rfswitch_table[] = {
   {STM32WLx::MODE_IDLE,  {LOW,  LOW,  LOW}},
   {STM32WLx::MODE_RX,    {HIGH, HIGH, LOW}},
