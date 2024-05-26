@@ -1248,6 +1248,25 @@ class LR11x0: public PhysicalLayer {
     float getDataRate() const;
 
     /*!
+      \brief Set regulator mode to LDO.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorLDO();
+
+    /*!
+      \brief Set regulator mode to DC-DC.
+      \returns \ref status_codes
+    */
+    int16_t setRegulatorDCDC();
+
+    /*!
+      \brief Enables or disables Rx Boosted Gain mode (additional Rx gain for increased power consumption).
+      \param en True for Rx Boosted Gain, false for Rx Power Saving Gain
+      \returns \ref status_codes
+    */
+    int16_t setRxBoostedGainMode(bool en);
+
+    /*!
       \brief Sets LR-FHSS configuration.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
@@ -1416,7 +1435,6 @@ class LR11x0: public PhysicalLayer {
     int16_t setRangingTxRxDelay(uint32_t delay);
     int16_t setGfskCrcParams(uint32_t init, uint32_t poly);
     int16_t setGfskWhitParams(uint16_t seed);
-    int16_t setRxBoosted(bool en);
     int16_t setRangingParameter(uint8_t symbolNum);
     int16_t setRssiCalibration(const int8_t* tune, int16_t gainOffset);
     int16_t setLoRaSyncWord(uint8_t sync);

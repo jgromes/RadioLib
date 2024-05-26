@@ -44,6 +44,9 @@ int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t
   state = invertIQ(false);
   RADIOLIB_ASSERT(state);
 
+  state = setRegulatorLDO();
+  RADIOLIB_ASSERT(state);
+
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -85,6 +88,9 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, int8_t power, uin
   state = setCRC(2);
   RADIOLIB_ASSERT(state);
 
+  state = setRegulatorLDO();
+  RADIOLIB_ASSERT(state);
+
   return(RADIOLIB_ERR_NONE);
 }
 
@@ -101,6 +107,9 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, int8_t power, float tcxoVolt
   RADIOLIB_ASSERT(state);
 
   state = setSyncWord(0x12AD101B);
+  RADIOLIB_ASSERT(state);
+
+  state = setRegulatorLDO();
   RADIOLIB_ASSERT(state);
 
   // set fixed configuration
@@ -1363,6 +1372,19 @@ float LR11x0::getDataRate() const {
   return(this->dataRateMeasured);
 }
 
+int16_t LR11x0::setRegulatorLDO() {
+  return(this->setRegMode(RADIOLIB_LR11X0_REG_MODE_LDO));
+}
+
+int16_t LR11x0::setRegulatorDCDC() {
+  return(this->setRegMode(RADIOLIB_LR11X0_REG_MODE_DC_DC));
+}
+
+int16_t LR11x0::setRxBoostedGainMode(bool en) {
+  uint8_t buff[1] = { (uint8_t)en };
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RX_BOOSTED, true, buff, sizeof(buff)));
+}
+
 int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -2474,11 +2496,6 @@ int16_t LR11x0::setGfskWhitParams(uint16_t seed) {
     (uint8_t)((seed >> 8) & 0xFF), (uint8_t)(seed & 0xFF)
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_GFSK_WHIT_PARAMS, true, buff, sizeof(buff)));
-}
-
-int16_t LR11x0::setRxBoosted(bool en) {
-  uint8_t buff[1] = { (uint8_t)en };
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_RX_BOOSTED, true, buff, sizeof(buff)));
 }
 
 int16_t LR11x0::setRangingParameter(uint8_t symbolNum) {
