@@ -1227,7 +1227,7 @@ int16_t LoRaWANNode::downlinkCommon() {
   // if we got here due to a timeout, stop ongoing activities
   if(this->phyLayer->isRxTimeout()) {
     this->phyLayer->standby();  // TODO check: this should be done automagically due to RxSingle?
-    if(!this->FSK) {
+    if(this->modulation == RADIOLIB_LORAWAN_MODULATION_LORA) {
       this->phyLayer->invertIQ(false);
     }
 
@@ -1250,7 +1250,7 @@ int16_t LoRaWANNode::downlinkCommon() {
   // we have a message, clear actions, go to standby and reset the IQ inversion
   this->phyLayer->standby();  // TODO check: this should be done automagically due to RxSingle?
   this->phyLayer->clearPacketReceivedAction();
-  if(!this->FSK) {
+  if(this->modulation == RADIOLIB_LORAWAN_MODULATION_LORA) {
     state = this->phyLayer->invertIQ(false);
     RADIOLIB_ASSERT(state);
   }
@@ -1731,9 +1731,7 @@ int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
 
   // if this channel is an FSK channel, toggle the FSK switch
   if(this->band->dataRates[this->dataRates[dir]] == RADIOLIB_LORAWAN_DATA_RATE_FSK_50_K) {
-    this->FSK = true;
-  } else {
-    this->FSK = false;
+    this->modulation = RADIOLIB_LORAWAN_MODULATION_GFSK;
   }
 
   int8_t pwr = this->txPowerMax - this->txPowerSteps * 2;
@@ -1752,7 +1750,7 @@ int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("PHY: SF = %d, TX = %d dBm, BW = %6.3f kHz, CR = 4/%d", 
                             dr.lora.spreadingFactor, pwr, dr.lora.bandwidth, dr.lora.codingRate);
 
-  if(this->FSK) {
+  if(this->modulation == RADIOLIB_LORAWAN_MODULATION_GFSK) {
     state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
     RADIOLIB_ASSERT(state);
     state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
@@ -1761,34 +1759,49 @@ int16_t LoRaWANNode::setPhyProperties(uint8_t dir) {
 
   // downlink messages are sent with inverted IQ
   if(dir == RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK) {
-    if(!this->FSK) {
+    if(this->modulation == RADIOLIB_LORAWAN_MODULATION_LORA) {
       state = this->phyLayer->invertIQ(true);
       RADIOLIB_ASSERT(state);
     }
   }
 
   // this only needs to be done once-ish
-  uint8_t syncWord[3] = { 0 };
+  uint8_t syncWord[4] = { 0 };
   uint8_t syncWordLen = 0;
   size_t preLen = 0;
-  if(this->FSK) {
-    preLen = 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN;
-    syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
-    syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
-    syncWord[2] = (uint8_t)RADIOLIB_LORAWAN_GFSK_SYNC_WORD;
-    syncWordLen = 3;
-  
-  } else {
-    preLen = RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN;
-    syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
-    syncWordLen = 1;
-  
+  switch(this->modulation) {
+    case(RADIOLIB_LORAWAN_MODULATION_GFSK): {
+      preLen = 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN;
+      syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
+      syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
+      syncWord[2] = (uint8_t)RADIOLIB_LORAWAN_GFSK_SYNC_WORD;
+      syncWordLen = 3;
+    } break;
+
+    case(RADIOLIB_LORAWAN_MODULATION_LORA): {
+      preLen = RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN;
+      syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
+      syncWordLen = 1;
+    } break;
+
+    case(RADIOLIB_LORAWAN_MODULATION_LR_FHSS): {
+      syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 24);
+      syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 16);
+      syncWord[2] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 8);
+      syncWord[3] = (uint8_t)RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD;
+      syncWordLen = 4;
+    } break;
+
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
   state = this->phyLayer->setSyncWord(syncWord, syncWordLen);
   RADIOLIB_ASSERT(state);
 
-  state = this->phyLayer->setPreambleLength(preLen);
+  if(this->modulation != RADIOLIB_LORAWAN_MODULATION_LR_FHSS) {
+    state = this->phyLayer->setPreambleLength(preLen);
+  }
   return(state);
 }
 

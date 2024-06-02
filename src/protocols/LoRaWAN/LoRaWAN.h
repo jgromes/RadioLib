@@ -15,11 +15,17 @@
 #define RADIOLIB_LORAWAN_CLASS_B                                (0x0B)
 #define RADIOLIB_LORAWAN_CLASS_C                                (0x0C)
 
+// modulation type
+#define RADIOLIB_LORAWAN_MODULATION_LORA                        (0)
+#define RADIOLIB_LORAWAN_MODULATION_GFSK                        (1)
+#define RADIOLIB_LORAWAN_MODULATION_LR_FHSS                     (2)
+
 // preamble format
 #define RADIOLIB_LORAWAN_LORA_SYNC_WORD                         (0x34)
 #define RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN                      (8)
 #define RADIOLIB_LORAWAN_GFSK_SYNC_WORD                         (0xC194C1)
 #define RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN                      (5)
+#define RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD                      (0x2C0F7995)
 
 // MAC header field encoding                                                    MSB   LSB   DESCRIPTION
 #define RADIOLIB_LORAWAN_MHDR_MTYPE_JOIN_REQUEST                (0x00 << 5) //  7     5     message type: join request
@@ -926,8 +932,8 @@ class LoRaWANNode {
     uint32_t confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t adrFCnt = 0;
 
-    // whether the current configured channel is in FSK mode
-    bool FSK = false;
+    // modulation of the currently configured channel
+    uint8_t modulation = RADIOLIB_LORAWAN_MODULATION_LORA;
 
     // ADR is enabled by default
     bool adrEnabled = true;
