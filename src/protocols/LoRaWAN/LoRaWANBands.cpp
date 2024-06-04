@@ -11,6 +11,9 @@ const LoRaWANBand_t* LoRaWANBands[RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS] = {
   &AU915,
   &CN500,
   &AS923,
+  &AS923_2,
+  &AS923_3,
+  &AS923_4,
   &KR920,
   &IN865,
 };
