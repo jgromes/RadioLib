@@ -227,7 +227,7 @@ const LoRaWANBand_t AU915 = {
   .powerMax = 30,
   .powerNumSteps = 10,
   .dutyCycle = 0,
-  .dwellTimeUp = 0,
+  .dwellTimeUp = RADIOLIB_LORAWAN_DWELL_TIME,
   .dwellTimeDn = 0,
   .txFreqs = {
     RADIOLIB_LORAWAN_CHANNEL_NONE,
@@ -247,7 +247,7 @@ const LoRaWANBand_t AU915 = {
       .freqStep = 0.200,
       .drMin = 0,
       .drMax = 5,
-      .joinRequestDataRate = 0
+      .joinRequestDataRate = 2
     },
     {
       .numChannels = 8,

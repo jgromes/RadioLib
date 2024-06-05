@@ -36,6 +36,8 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->difsSlots = 2;
   this->backoffMax = 6;
   this->enableCSMA = false;
+  this->dwellTimeEnabledUp = this->dwellTimeUp != 0;
+  this->dwellTimeEnabledDn = this->dwellTimeDn != 0;
   memset(this->availableChannels, 0, sizeof(this->availableChannels));
 }
 
@@ -506,6 +508,13 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // set the physical layer configuration for uplink
   state = this->setPhyProperties(RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK);
   RADIOLIB_ASSERT(state);
+
+  if(this->dwellTimeEnabledUp) {
+    RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN);
+    if(toa > this->dwellTimeUp) {
+      return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
+    }
+  }
 
   // copy devNonce currently in use
   uint16_t devNonceUsed = this->devNonce;
