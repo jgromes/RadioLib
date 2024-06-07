@@ -465,358 +465,364 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> AU915;</div>
 <div class="line"><a name="l00442"></a><span class="lineno">  442</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> CN500;</div>
 <div class="line"><a name="l00443"></a><span class="lineno">  443</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> AS923;</div>
-<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> KR920;</div>
-<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> IN865;</div>
-<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160; </div>
-<div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;<span class="keyword">enum</span> <a class="code" href="struct_lo_ra_w_a_n_band_num__t.html">LoRaWANBandNum_t</a> {</div>
-<div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160;  BandEU868,</div>
-<div class="line"><a name="l00453"></a><span class="lineno">  453</span>&#160;  BandUS915,</div>
-<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;  BandCN780,</div>
-<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;  BandEU433,</div>
-<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;  BandAU915,</div>
-<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;  BandCN500,</div>
-<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;  BandAS923,</div>
-<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  BandKR920,</div>
-<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  BandIN865,</div>
-<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  BandLast</div>
-<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;};</div>
-<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160; </div>
-<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;<span class="comment">// provide easy access to the number of currently supported bands</span></div>
-<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;<span class="preprocessor">#define RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS      (BandLast - BandEU868)</span></div>
-<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160; </div>
-<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;<span class="comment">// array of currently supported bands</span></div>
-<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* LoRaWANBands[];</div>
+<div class="line"><a name="l00444"></a><span class="lineno">  444</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> AS923_2;</div>
+<div class="line"><a name="l00445"></a><span class="lineno">  445</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> AS923_3;</div>
+<div class="line"><a name="l00446"></a><span class="lineno">  446</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> AS923_4;</div>
+<div class="line"><a name="l00447"></a><span class="lineno">  447</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> KR920;</div>
+<div class="line"><a name="l00448"></a><span class="lineno">  448</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> IN865;</div>
+<div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160; </div>
+<div class="line"><a name="l00454"></a><span class="lineno">  454</span>&#160;<span class="keyword">enum</span> <a class="code" href="struct_lo_ra_w_a_n_band_num__t.html">LoRaWANBandNum_t</a> {</div>
+<div class="line"><a name="l00455"></a><span class="lineno">  455</span>&#160;  BandEU868,</div>
+<div class="line"><a name="l00456"></a><span class="lineno">  456</span>&#160;  BandUS915,</div>
+<div class="line"><a name="l00457"></a><span class="lineno">  457</span>&#160;  BandCN780,</div>
+<div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;  BandEU433,</div>
+<div class="line"><a name="l00459"></a><span class="lineno">  459</span>&#160;  BandAU915,</div>
+<div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;  BandCN500,</div>
+<div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160;  BandAS923,</div>
+<div class="line"><a name="l00462"></a><span class="lineno">  462</span>&#160;  BandAS923_2,</div>
+<div class="line"><a name="l00463"></a><span class="lineno">  463</span>&#160;  BandAS923_3,</div>
+<div class="line"><a name="l00464"></a><span class="lineno">  464</span>&#160;  BandAS923_4,</div>
+<div class="line"><a name="l00465"></a><span class="lineno">  465</span>&#160;  BandKR920,</div>
+<div class="line"><a name="l00466"></a><span class="lineno">  466</span>&#160;  BandIN865,</div>
+<div class="line"><a name="l00467"></a><span class="lineno">  467</span>&#160;  BandLast</div>
+<div class="line"><a name="l00468"></a><span class="lineno">  468</span>&#160;};</div>
 <div class="line"><a name="l00469"></a><span class="lineno">  469</span>&#160; </div>
-<div class="line"><a name="l00474"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html">  474</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> {</div>
-<div class="line"><a name="l00476"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">  476</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">newSession</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160; </div>
-<div class="line"><a name="l00479"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">  479</a></span>&#160;  uint16_t <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">devNonce</a> = 0;</div>
-<div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
-<div class="line"><a name="l00482"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">  482</a></span>&#160;  uint32_t <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">joinNonce</a> = 0;</div>
-<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;};</div>
-<div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160; </div>
-<div class="line"><a name="l00489"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html">  489</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> {</div>
-<div class="line"><a name="l00491"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">  491</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">dir</a>;</div>
-<div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;  </div>
-<div class="line"><a name="l00494"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">  494</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">confirmed</a>;</div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;  </div>
-<div class="line"><a name="l00498"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">  498</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">confirming</a>;</div>
-<div class="line"><a name="l00499"></a><span class="lineno">  499</span>&#160; </div>
-<div class="line"><a name="l00501"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">  501</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">datarate</a>;</div>
-<div class="line"><a name="l00502"></a><span class="lineno">  502</span>&#160;  </div>
-<div class="line"><a name="l00504"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">  504</a></span>&#160;  <span class="keywordtype">float</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">freq</a>;</div>
-<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160;  </div>
-<div class="line"><a name="l00507"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">  507</a></span>&#160;  int16_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">power</a>;</div>
+<div class="line"><a name="l00470"></a><span class="lineno">  470</span>&#160;<span class="comment">// provide easy access to the number of currently supported bands</span></div>
+<div class="line"><a name="l00471"></a><span class="lineno">  471</span>&#160;<span class="preprocessor">#define RADIOLIB_LORAWAN_NUM_SUPPORTED_BANDS      (BandLast - BandEU868)</span></div>
+<div class="line"><a name="l00472"></a><span class="lineno">  472</span>&#160; </div>
+<div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160;<span class="comment">// array of currently supported bands</span></div>
+<div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="keyword">extern</span> <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* LoRaWANBands[];</div>
+<div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160; </div>
+<div class="line"><a name="l00480"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html">  480</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> {</div>
+<div class="line"><a name="l00482"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">  482</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">newSession</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160; </div>
+<div class="line"><a name="l00485"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">  485</a></span>&#160;  uint16_t <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">devNonce</a> = 0;</div>
+<div class="line"><a name="l00486"></a><span class="lineno">  486</span>&#160; </div>
+<div class="line"><a name="l00488"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">  488</a></span>&#160;  uint32_t <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">joinNonce</a> = 0;</div>
+<div class="line"><a name="l00489"></a><span class="lineno">  489</span>&#160;};</div>
+<div class="line"><a name="l00490"></a><span class="lineno">  490</span>&#160; </div>
+<div class="line"><a name="l00495"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html">  495</a></span>&#160;<span class="keyword">struct </span><a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> {</div>
+<div class="line"><a name="l00497"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">  497</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">dir</a>;</div>
+<div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;  </div>
+<div class="line"><a name="l00500"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">  500</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">confirmed</a>;</div>
+<div class="line"><a name="l00501"></a><span class="lineno">  501</span>&#160;  </div>
+<div class="line"><a name="l00504"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">  504</a></span>&#160;  <span class="keywordtype">bool</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">confirming</a>;</div>
+<div class="line"><a name="l00505"></a><span class="lineno">  505</span>&#160; </div>
+<div class="line"><a name="l00507"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">  507</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">datarate</a>;</div>
 <div class="line"><a name="l00508"></a><span class="lineno">  508</span>&#160;  </div>
-<div class="line"><a name="l00510"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">  510</a></span>&#160;  uint32_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">fCnt</a>;</div>
+<div class="line"><a name="l00510"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">  510</a></span>&#160;  <span class="keywordtype">float</span> <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">freq</a>;</div>
 <div class="line"><a name="l00511"></a><span class="lineno">  511</span>&#160;  </div>
-<div class="line"><a name="l00513"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">  513</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">fPort</a>;</div>
-<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;};</div>
-<div class="line"><a name="l00515"></a><span class="lineno">  515</span>&#160; </div>
-<div class="line"><a name="l00520"></a><span class="lineno"><a class="line" href="class_lo_ra_w_a_n_node.html">  520</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> {</div>
-<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00522"></a><span class="lineno">  522</span>&#160; </div>
-<div class="line"><a name="l00529"></a><span class="lineno">  529</span>&#160;    <a class="code" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy, <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band, uint8_t subBand = 0);</div>
-<div class="line"><a name="l00530"></a><span class="lineno">  530</span>&#160; </div>
-<div class="line"><a name="l00534"></a><span class="lineno">  534</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847">clearSession</a>();</div>
-<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160; </div>
-<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    uint8_t* <a class="code" href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">getBufferNonces</a>();</div>
+<div class="line"><a name="l00513"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">  513</a></span>&#160;  int16_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">power</a>;</div>
+<div class="line"><a name="l00514"></a><span class="lineno">  514</span>&#160;  </div>
+<div class="line"><a name="l00516"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">  516</a></span>&#160;  uint32_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">fCnt</a>;</div>
+<div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160;  </div>
+<div class="line"><a name="l00519"></a><span class="lineno"><a class="line" href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">  519</a></span>&#160;  uint8_t <a class="code" href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">fPort</a>;</div>
+<div class="line"><a name="l00520"></a><span class="lineno">  520</span>&#160;};</div>
+<div class="line"><a name="l00521"></a><span class="lineno">  521</span>&#160; </div>
+<div class="line"><a name="l00526"></a><span class="lineno"><a class="line" href="class_lo_ra_w_a_n_node.html">  526</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a> {</div>
+<div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00528"></a><span class="lineno">  528</span>&#160; </div>
+<div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    <a class="code" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a>(<a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phy, <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band, uint8_t subBand = 0);</div>
+<div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160; </div>
+<div class="line"><a name="l00540"></a><span class="lineno">  540</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847">clearSession</a>();</div>
 <div class="line"><a name="l00541"></a><span class="lineno">  541</span>&#160; </div>
-<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2">setBufferNonces</a>(uint8_t* persistentBuffer);</div>
-<div class="line"><a name="l00548"></a><span class="lineno">  548</span>&#160; </div>
-<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    uint8_t* <a class="code" href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">getBufferSession</a>();</div>
+<div class="line"><a name="l00546"></a><span class="lineno">  546</span>&#160;    uint8_t* <a class="code" href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">getBufferNonces</a>();</div>
+<div class="line"><a name="l00547"></a><span class="lineno">  547</span>&#160; </div>
+<div class="line"><a name="l00553"></a><span class="lineno">  553</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2">setBufferNonces</a>(uint8_t* persistentBuffer);</div>
 <div class="line"><a name="l00554"></a><span class="lineno">  554</span>&#160; </div>
-<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">setBufferSession</a>(uint8_t* persistentBuffer);</div>
-<div class="line"><a name="l00561"></a><span class="lineno">  561</span>&#160; </div>
-<div class="line"><a name="l00569"></a><span class="lineno">  569</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a2303cbbfc9c18e267c074284a4f1bf68">beginOTAA</a>(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);</div>
-<div class="line"><a name="l00570"></a><span class="lineno">  570</span>&#160; </div>
-<div class="line"><a name="l00577"></a><span class="lineno">  577</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">activateOTAA</a>(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent = NULL);</div>
-<div class="line"><a name="l00578"></a><span class="lineno">  578</span>&#160; </div>
-<div class="line"><a name="l00588"></a><span class="lineno">  588</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a92c59b540dee631e7bd8153479328611">beginABP</a>(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);</div>
-<div class="line"><a name="l00589"></a><span class="lineno">  589</span>&#160; </div>
-<div class="line"><a name="l00596"></a><span class="lineno">  596</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">activateABP</a>(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);</div>
-<div class="line"><a name="l00597"></a><span class="lineno">  597</span>&#160; </div>
-<div class="line"><a name="l00599"></a><span class="lineno">  599</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d">isActivated</a>();</div>
-<div class="line"><a name="l00600"></a><span class="lineno">  600</span>&#160; </div>
-<div class="line"><a name="l00607"></a><span class="lineno">  607</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025">setRx2Dr</a>(uint8_t dr);</div>
-<div class="line"><a name="l00608"></a><span class="lineno">  608</span>&#160; </div>
-<div class="line"><a name="l00616"></a><span class="lineno">  616</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a>(uint8_t cid);</div>
-<div class="line"><a name="l00617"></a><span class="lineno">  617</span>&#160; </div>
-<div class="line"><a name="l00618"></a><span class="lineno">  618</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00628"></a><span class="lineno">  628</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(String&amp; str, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00629"></a><span class="lineno">  629</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00630"></a><span class="lineno">  630</span>&#160; </div>
-<div class="line"><a name="l00640"></a><span class="lineno">  640</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00641"></a><span class="lineno">  641</span>&#160; </div>
-<div class="line"><a name="l00652"></a><span class="lineno">  652</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00653"></a><span class="lineno">  653</span>&#160; </div>
-<div class="line"><a name="l00654"></a><span class="lineno">  654</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00662"></a><span class="lineno">  662</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(String&amp; str, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00663"></a><span class="lineno">  663</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00664"></a><span class="lineno">  664</span>&#160; </div>
-<div class="line"><a name="l00673"></a><span class="lineno">  673</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(uint8_t* data, <span class="keywordtype">size_t</span>* len, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00674"></a><span class="lineno">  674</span>&#160; </div>
-<div class="line"><a name="l00681"></a><span class="lineno">  681</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(<a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
-<div class="line"><a name="l00682"></a><span class="lineno">  682</span>&#160; </div>
-<div class="line"><a name="l00683"></a><span class="lineno">  683</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00696"></a><span class="lineno">  696</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(String&amp; strUp, uint8_t fPort, String&amp; strDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
-<div class="line"><a name="l00697"></a><span class="lineno">  697</span>&#160;<span class="preprocessor">    #endif</span></div>
-<div class="line"><a name="l00698"></a><span class="lineno">  698</span>&#160; </div>
-<div class="line"><a name="l00712"></a><span class="lineno">  712</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* strUp, uint8_t fPort, uint8_t* dataDown, <span class="keywordtype">size_t</span>* lenDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
-<div class="line"><a name="l00713"></a><span class="lineno">  713</span>&#160; </div>
-<div class="line"><a name="l00728"></a><span class="lineno">  728</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(uint8_t* dataUp, <span class="keywordtype">size_t</span> lenUp, uint8_t fPort, uint8_t* dataDown, <span class="keywordtype">size_t</span>* lenDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
-<div class="line"><a name="l00729"></a><span class="lineno">  729</span>&#160; </div>
-<div class="line"><a name="l00742"></a><span class="lineno">  742</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(uint8_t* dataUp, <span class="keywordtype">size_t</span> lenUp, uint8_t fPort = 1, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
-<div class="line"><a name="l00743"></a><span class="lineno">  743</span>&#160; </div>
-<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a>(uint8_t battLevel);</div>
-<div class="line"><a name="l00750"></a><span class="lineno">  750</span>&#160; </div>
-<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777">getFCntUp</a>();</div>
+<div class="line"><a name="l00559"></a><span class="lineno">  559</span>&#160;    uint8_t* <a class="code" href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">getBufferSession</a>();</div>
+<div class="line"><a name="l00560"></a><span class="lineno">  560</span>&#160; </div>
+<div class="line"><a name="l00566"></a><span class="lineno">  566</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">setBufferSession</a>(uint8_t* persistentBuffer);</div>
+<div class="line"><a name="l00567"></a><span class="lineno">  567</span>&#160; </div>
+<div class="line"><a name="l00575"></a><span class="lineno">  575</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a2303cbbfc9c18e267c074284a4f1bf68">beginOTAA</a>(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);</div>
+<div class="line"><a name="l00576"></a><span class="lineno">  576</span>&#160; </div>
+<div class="line"><a name="l00583"></a><span class="lineno">  583</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">activateOTAA</a>(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED, <a class="code" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent = NULL);</div>
+<div class="line"><a name="l00584"></a><span class="lineno">  584</span>&#160; </div>
+<div class="line"><a name="l00594"></a><span class="lineno">  594</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a92c59b540dee631e7bd8153479328611">beginABP</a>(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);</div>
+<div class="line"><a name="l00595"></a><span class="lineno">  595</span>&#160; </div>
+<div class="line"><a name="l00602"></a><span class="lineno">  602</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">activateABP</a>(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);</div>
+<div class="line"><a name="l00603"></a><span class="lineno">  603</span>&#160; </div>
+<div class="line"><a name="l00605"></a><span class="lineno">  605</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a9a44677a1ef7db1216bc482139d6be8d">isActivated</a>();</div>
+<div class="line"><a name="l00606"></a><span class="lineno">  606</span>&#160; </div>
+<div class="line"><a name="l00613"></a><span class="lineno">  613</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025">setRx2Dr</a>(uint8_t dr);</div>
+<div class="line"><a name="l00614"></a><span class="lineno">  614</span>&#160; </div>
+<div class="line"><a name="l00622"></a><span class="lineno">  622</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a>(uint8_t cid);</div>
+<div class="line"><a name="l00623"></a><span class="lineno">  623</span>&#160; </div>
+<div class="line"><a name="l00624"></a><span class="lineno">  624</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00634"></a><span class="lineno">  634</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(String&amp; str, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00635"></a><span class="lineno">  635</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160; </div>
+<div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00647"></a><span class="lineno">  647</span>&#160; </div>
+<div class="line"><a name="l00658"></a><span class="lineno">  658</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff">uplink</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t fPort, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00659"></a><span class="lineno">  659</span>&#160; </div>
+<div class="line"><a name="l00660"></a><span class="lineno">  660</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00668"></a><span class="lineno">  668</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(String&amp; str, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00669"></a><span class="lineno">  669</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160; </div>
+<div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(uint8_t* data, <span class="keywordtype">size_t</span>* len, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00680"></a><span class="lineno">  680</span>&#160; </div>
+<div class="line"><a name="l00687"></a><span class="lineno">  687</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#aabced307f6662998608f01fab25e4226">downlink</a>(<a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* event = NULL);</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160; </div>
+<div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00702"></a><span class="lineno">  702</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(String&amp; strUp, uint8_t fPort, String&amp; strDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
+<div class="line"><a name="l00703"></a><span class="lineno">  703</span>&#160;<span class="preprocessor">    #endif</span></div>
+<div class="line"><a name="l00704"></a><span class="lineno">  704</span>&#160; </div>
+<div class="line"><a name="l00718"></a><span class="lineno">  718</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* strUp, uint8_t fPort, uint8_t* dataDown, <span class="keywordtype">size_t</span>* lenDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
+<div class="line"><a name="l00719"></a><span class="lineno">  719</span>&#160; </div>
+<div class="line"><a name="l00734"></a><span class="lineno">  734</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(uint8_t* dataUp, <span class="keywordtype">size_t</span> lenUp, uint8_t fPort, uint8_t* dataDown, <span class="keywordtype">size_t</span>* lenDown, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
+<div class="line"><a name="l00735"></a><span class="lineno">  735</span>&#160; </div>
+<div class="line"><a name="l00748"></a><span class="lineno">  748</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a>(uint8_t* dataUp, <span class="keywordtype">size_t</span> lenUp, uint8_t fPort = 1, <span class="keywordtype">bool</span> isConfirmed = <span class="keyword">false</span>, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventUp = NULL, <a class="code" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a>* eventDown = NULL);</div>
+<div class="line"><a name="l00749"></a><span class="lineno">  749</span>&#160; </div>
+<div class="line"><a name="l00755"></a><span class="lineno">  755</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034">setDeviceStatus</a>(uint8_t battLevel);</div>
 <div class="line"><a name="l00756"></a><span class="lineno">  756</span>&#160; </div>
-<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1">getNFCntDown</a>();</div>
+<div class="line"><a name="l00761"></a><span class="lineno">  761</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777">getFCntUp</a>();</div>
 <div class="line"><a name="l00762"></a><span class="lineno">  762</span>&#160; </div>
-<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#a6785265f3311ff6bf296f82429c96701">getAFCntDown</a>();</div>
+<div class="line"><a name="l00767"></a><span class="lineno">  767</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#aa7fabaa6efe9978c3674b1ab187446a1">getNFCntDown</a>();</div>
 <div class="line"><a name="l00768"></a><span class="lineno">  768</span>&#160; </div>
-<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648">resetFCntDown</a>();</div>
-<div class="line"><a name="l00775"></a><span class="lineno">  775</span>&#160; </div>
-<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a>(uint8_t drUp);</div>
-<div class="line"><a name="l00782"></a><span class="lineno">  782</span>&#160; </div>
-<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">setADR</a>(<span class="keywordtype">bool</span> enable = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00773"></a><span class="lineno">  773</span>&#160;    uint32_t <a class="code" href="class_lo_ra_w_a_n_node.html#a6785265f3311ff6bf296f82429c96701">getAFCntDown</a>();</div>
+<div class="line"><a name="l00774"></a><span class="lineno">  774</span>&#160; </div>
+<div class="line"><a name="l00780"></a><span class="lineno">  780</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#af4b3d07cd9bf4178d627204bae18b648">resetFCntDown</a>();</div>
+<div class="line"><a name="l00781"></a><span class="lineno">  781</span>&#160; </div>
+<div class="line"><a name="l00787"></a><span class="lineno">  787</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">setDatarate</a>(uint8_t drUp);</div>
 <div class="line"><a name="l00788"></a><span class="lineno">  788</span>&#160; </div>
-<div class="line"><a name="l00795"></a><span class="lineno">  795</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77">setDutyCycle</a>(<span class="keywordtype">bool</span> enable = <span class="keyword">true</span>, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour = 0);</div>
-<div class="line"><a name="l00796"></a><span class="lineno">  796</span>&#160; </div>
-<div class="line"><a name="l00804"></a><span class="lineno">  804</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a5bb50904544f331806fd744ab5b99efa">dutyCycleInterval</a>(<a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> airtime);</div>
-<div class="line"><a name="l00805"></a><span class="lineno">  805</span>&#160; </div>
-<div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a">timeUntilUplink</a>();</div>
-<div class="line"><a name="l00808"></a><span class="lineno">  808</span>&#160; </div>
-<div class="line"><a name="l00815"></a><span class="lineno">  815</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f">setDwellTime</a>(<span class="keywordtype">bool</span> enable, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerUplink = 0);</div>
-<div class="line"><a name="l00816"></a><span class="lineno">  816</span>&#160; </div>
-<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160;    uint8_t <a class="code" href="class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205">maxPayloadDwellTime</a>();</div>
-<div class="line"><a name="l00823"></a><span class="lineno">  823</span>&#160; </div>
-<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">setTxPower</a>(int8_t txPower);</div>
-<div class="line"><a name="l00830"></a><span class="lineno">  830</span>&#160; </div>
-<div class="line"><a name="l00839"></a><span class="lineno">  839</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a>(uint8_t* margin, uint8_t* gwCnt);</div>
-<div class="line"><a name="l00840"></a><span class="lineno">  840</span>&#160; </div>
-<div class="line"><a name="l00850"></a><span class="lineno">  850</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a>(uint32_t* gpsEpoch, uint8_t* fraction, <span class="keywordtype">bool</span> returnUnix = <span class="keyword">true</span>);</div>
-<div class="line"><a name="l00851"></a><span class="lineno">  851</span>&#160; </div>
-<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    uint64_t <a class="code" href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">getDevAddr</a>();</div>
+<div class="line"><a name="l00793"></a><span class="lineno">  793</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#ae222275f807f472083ea6100c23c75ff">setADR</a>(<span class="keywordtype">bool</span> enable = <span class="keyword">true</span>);</div>
+<div class="line"><a name="l00794"></a><span class="lineno">  794</span>&#160; </div>
+<div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77">setDutyCycle</a>(<span class="keywordtype">bool</span> enable = <span class="keyword">true</span>, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour = 0);</div>
+<div class="line"><a name="l00802"></a><span class="lineno">  802</span>&#160; </div>
+<div class="line"><a name="l00810"></a><span class="lineno">  810</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a5bb50904544f331806fd744ab5b99efa">dutyCycleInterval</a>(<a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> airtime);</div>
+<div class="line"><a name="l00811"></a><span class="lineno">  811</span>&#160; </div>
+<div class="line"><a name="l00813"></a><span class="lineno">  813</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a">timeUntilUplink</a>();</div>
+<div class="line"><a name="l00814"></a><span class="lineno">  814</span>&#160; </div>
+<div class="line"><a name="l00821"></a><span class="lineno">  821</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f">setDwellTime</a>(<span class="keywordtype">bool</span> enable, <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerUplink = 0);</div>
+<div class="line"><a name="l00822"></a><span class="lineno">  822</span>&#160; </div>
+<div class="line"><a name="l00828"></a><span class="lineno">  828</span>&#160;    uint8_t <a class="code" href="class_lo_ra_w_a_n_node.html#a3044715beeff759ed47342d532ac3205">maxPayloadDwellTime</a>();</div>
+<div class="line"><a name="l00829"></a><span class="lineno">  829</span>&#160; </div>
+<div class="line"><a name="l00835"></a><span class="lineno">  835</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b">setTxPower</a>(int8_t txPower);</div>
+<div class="line"><a name="l00836"></a><span class="lineno">  836</span>&#160; </div>
+<div class="line"><a name="l00845"></a><span class="lineno">  845</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#adf038f331c1dc954dafc2668e7a31ca0">getMacLinkCheckAns</a>(uint8_t* margin, uint8_t* gwCnt);</div>
+<div class="line"><a name="l00846"></a><span class="lineno">  846</span>&#160; </div>
+<div class="line"><a name="l00856"></a><span class="lineno">  856</span>&#160;    int16_t <a class="code" href="class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de">getMacDeviceTimeAns</a>(uint32_t* gpsEpoch, uint8_t* fraction, <span class="keywordtype">bool</span> returnUnix = <span class="keyword">true</span>);</div>
 <div class="line"><a name="l00857"></a><span class="lineno">  857</span>&#160; </div>
-<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">getLastToA</a>();</div>
+<div class="line"><a name="l00862"></a><span class="lineno">  862</span>&#160;    uint64_t <a class="code" href="class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452">getDevAddr</a>();</div>
 <div class="line"><a name="l00863"></a><span class="lineno">  863</span>&#160; </div>
-<div class="line"><a name="l00868"></a><span class="lineno"><a class="line" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">  868</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">TS009</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00868"></a><span class="lineno">  868</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> <a class="code" href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">getLastToA</a>();</div>
 <div class="line"><a name="l00869"></a><span class="lineno">  869</span>&#160; </div>
-<div class="line"><a name="l00870"></a><span class="lineno">  870</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00871"></a><span class="lineno">  871</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00872"></a><span class="lineno">  872</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00873"></a><span class="lineno">  873</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer = NULL;</div>
-<div class="line"><a name="l00874"></a><span class="lineno">  874</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band = NULL;</div>
+<div class="line"><a name="l00874"></a><span class="lineno"><a class="line" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">  874</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">TS009</a> = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l00875"></a><span class="lineno">  875</span>&#160; </div>
-<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;    <span class="keyword">static</span> int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);</div>
-<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160; </div>
-<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;    <span class="keywordtype">void</span> activateCommon(uint8_t initialDr);</div>
-<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160; </div>
-<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="comment">// a buffer that holds all LW base parameters that should persist at all times!</span></div>
-<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160;    uint8_t bufferNonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE] = { 0 };</div>
-<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160; </div>
-<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160;    <span class="comment">// a buffer that holds all LW session parameters that preferably persist, but can be afforded to get lost</span></div>
-<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    uint8_t bufferSession[RADIOLIB_LORAWAN_SESSION_BUF_SIZE] = { 0 };</div>
+<div class="line"><a name="l00876"></a><span class="lineno">  876</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00877"></a><span class="lineno">  877</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00878"></a><span class="lineno">  878</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00879"></a><span class="lineno">  879</span>&#160;    <a class="code" href="class_physical_layer.html">PhysicalLayer</a>* phyLayer = NULL;</div>
+<div class="line"><a name="l00880"></a><span class="lineno">  880</span>&#160;    <span class="keyword">const</span> <a class="code" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a>* band = NULL;</div>
+<div class="line"><a name="l00881"></a><span class="lineno">  881</span>&#160; </div>
+<div class="line"><a name="l00882"></a><span class="lineno">  882</span>&#160;    <span class="keyword">static</span> int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);</div>
+<div class="line"><a name="l00883"></a><span class="lineno">  883</span>&#160; </div>
+<div class="line"><a name="l00884"></a><span class="lineno">  884</span>&#160;    <span class="keywordtype">void</span> activateCommon(uint8_t initialDr);</div>
 <div class="line"><a name="l00885"></a><span class="lineno">  885</span>&#160; </div>
-<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsUp = { </div>
-<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;      .<a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html#ae83622d6039c73d6d7134318bb36edeb">numCommands</a> = 0,</div>
-<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160;      .len = 0,</div>
-<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
-<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    };</div>
-<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsDown = { </div>
-<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;      .<a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html#ae83622d6039c73d6d7134318bb36edeb">numCommands</a> = 0,</div>
-<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;      .len = 0,</div>
-<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
-<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;    };</div>
-<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160; </div>
-<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    uint16_t lwMode = RADIOLIB_LORAWAN_MODE_NONE;</div>
-<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;    uint8_t lwClass = RADIOLIB_LORAWAN_CLASS_A;</div>
-<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;    <span class="keywordtype">bool</span> isActive = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160; </div>
-<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    uint64_t joinEUI = 0;</div>
-<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160;    uint64_t devEUI = 0;</div>
-<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    uint8_t nwkKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    uint8_t appKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160; </div>
-<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160;    <span class="comment">// the following is either provided by the network server (OTAA)</span></div>
-<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;    <span class="comment">// or directly entered by the user (ABP)</span></div>
-<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    uint32_t devAddr = 0;</div>
-<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    uint8_t appSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    uint8_t fNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160;    uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
-<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160; </div>
-<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    uint16_t keyCheckSum = 0;</div>
-<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    </div>
-<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    <span class="comment">// device-specific parameters, persistent through sessions</span></div>
-<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    uint16_t devNonce = 0;</div>
-<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    uint32_t joinNonce = 0;</div>
+<div class="line"><a name="l00886"></a><span class="lineno">  886</span>&#160;    <span class="comment">// a buffer that holds all LW base parameters that should persist at all times!</span></div>
+<div class="line"><a name="l00887"></a><span class="lineno">  887</span>&#160;    uint8_t bufferNonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE] = { 0 };</div>
+<div class="line"><a name="l00888"></a><span class="lineno">  888</span>&#160; </div>
+<div class="line"><a name="l00889"></a><span class="lineno">  889</span>&#160;    <span class="comment">// a buffer that holds all LW session parameters that preferably persist, but can be afforded to get lost</span></div>
+<div class="line"><a name="l00890"></a><span class="lineno">  890</span>&#160;    uint8_t bufferSession[RADIOLIB_LORAWAN_SESSION_BUF_SIZE] = { 0 };</div>
+<div class="line"><a name="l00891"></a><span class="lineno">  891</span>&#160; </div>
+<div class="line"><a name="l00892"></a><span class="lineno">  892</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsUp = { </div>
+<div class="line"><a name="l00893"></a><span class="lineno">  893</span>&#160;      .<a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html#ae83622d6039c73d6d7134318bb36edeb">numCommands</a> = 0,</div>
+<div class="line"><a name="l00894"></a><span class="lineno">  894</span>&#160;      .len = 0,</div>
+<div class="line"><a name="l00895"></a><span class="lineno">  895</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
+<div class="line"><a name="l00896"></a><span class="lineno">  896</span>&#160;    };</div>
+<div class="line"><a name="l00897"></a><span class="lineno">  897</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a> commandsDown = { </div>
+<div class="line"><a name="l00898"></a><span class="lineno">  898</span>&#160;      .<a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html#ae83622d6039c73d6d7134318bb36edeb">numCommands</a> = 0,</div>
+<div class="line"><a name="l00899"></a><span class="lineno">  899</span>&#160;      .len = 0,</div>
+<div class="line"><a name="l00900"></a><span class="lineno">  900</span>&#160;      .commands = { { .cid = 0, .payload = { 0 }, .len = 0, .repeat = 0, } },</div>
+<div class="line"><a name="l00901"></a><span class="lineno">  901</span>&#160;    };</div>
+<div class="line"><a name="l00902"></a><span class="lineno">  902</span>&#160; </div>
+<div class="line"><a name="l00903"></a><span class="lineno">  903</span>&#160;    uint16_t lwMode = RADIOLIB_LORAWAN_MODE_NONE;</div>
+<div class="line"><a name="l00904"></a><span class="lineno">  904</span>&#160;    uint8_t lwClass = RADIOLIB_LORAWAN_CLASS_A;</div>
+<div class="line"><a name="l00905"></a><span class="lineno">  905</span>&#160;    <span class="keywordtype">bool</span> isActive = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00906"></a><span class="lineno">  906</span>&#160; </div>
+<div class="line"><a name="l00907"></a><span class="lineno">  907</span>&#160;    uint64_t joinEUI = 0;</div>
+<div class="line"><a name="l00908"></a><span class="lineno">  908</span>&#160;    uint64_t devEUI = 0;</div>
+<div class="line"><a name="l00909"></a><span class="lineno">  909</span>&#160;    uint8_t nwkKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00910"></a><span class="lineno">  910</span>&#160;    uint8_t appKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00911"></a><span class="lineno">  911</span>&#160; </div>
+<div class="line"><a name="l00912"></a><span class="lineno">  912</span>&#160;    <span class="comment">// the following is either provided by the network server (OTAA)</span></div>
+<div class="line"><a name="l00913"></a><span class="lineno">  913</span>&#160;    <span class="comment">// or directly entered by the user (ABP)</span></div>
+<div class="line"><a name="l00914"></a><span class="lineno">  914</span>&#160;    uint32_t devAddr = 0;</div>
+<div class="line"><a name="l00915"></a><span class="lineno">  915</span>&#160;    uint8_t appSKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00916"></a><span class="lineno">  916</span>&#160;    uint8_t fNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00917"></a><span class="lineno">  917</span>&#160;    uint8_t sNwkSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00918"></a><span class="lineno">  918</span>&#160;    uint8_t nwkSEncKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
+<div class="line"><a name="l00919"></a><span class="lineno">  919</span>&#160;    uint8_t jSIntKey[RADIOLIB_AES128_KEY_SIZE] = { 0 };</div>
 <div class="line"><a name="l00920"></a><span class="lineno">  920</span>&#160; </div>
-<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    <span class="comment">// session-specific parameters</span></div>
-<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    uint32_t homeNetId = 0;</div>
-<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;</div>
-<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;</div>
-<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;    uint8_t nbTrans = 1;            <span class="comment">// Number of allowed frame retransmissions</span></div>
-<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160;    uint8_t txPowerSteps = 0;</div>
-<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;    uint8_t txPowerMax = 0;</div>
-<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;    uint32_t fCntUp = 0;</div>
-<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;    uint32_t aFCntDown = 0;</div>
-<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    uint32_t nFCntDown = 0;</div>
-<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;    uint32_t confFCntUp = RADIOLIB_LORAWAN_FCNT_NONE;</div>
-<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;    uint32_t confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;</div>
-<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;    uint32_t adrFCnt = 0;</div>
-<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160; </div>
-<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;    <span class="comment">// modulation of the currently configured channel</span></div>
-<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    uint8_t modulation = RADIOLIB_LORAWAN_MODULATION_LORA;</div>
-<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160; </div>
-<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    <span class="comment">// ADR is enabled by default</span></div>
-<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    <span class="keywordtype">bool</span> adrEnabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00921"></a><span class="lineno">  921</span>&#160;    uint16_t keyCheckSum = 0;</div>
+<div class="line"><a name="l00922"></a><span class="lineno">  922</span>&#160;    </div>
+<div class="line"><a name="l00923"></a><span class="lineno">  923</span>&#160;    <span class="comment">// device-specific parameters, persistent through sessions</span></div>
+<div class="line"><a name="l00924"></a><span class="lineno">  924</span>&#160;    uint16_t devNonce = 0;</div>
+<div class="line"><a name="l00925"></a><span class="lineno">  925</span>&#160;    uint32_t joinNonce = 0;</div>
+<div class="line"><a name="l00926"></a><span class="lineno">  926</span>&#160; </div>
+<div class="line"><a name="l00927"></a><span class="lineno">  927</span>&#160;    <span class="comment">// session-specific parameters</span></div>
+<div class="line"><a name="l00928"></a><span class="lineno">  928</span>&#160;    uint32_t homeNetId = 0;</div>
+<div class="line"><a name="l00929"></a><span class="lineno">  929</span>&#160;    uint8_t adrLimitExp = RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP;</div>
+<div class="line"><a name="l00930"></a><span class="lineno">  930</span>&#160;    uint8_t adrDelayExp = RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;</div>
+<div class="line"><a name="l00931"></a><span class="lineno">  931</span>&#160;    uint8_t nbTrans = 1;            <span class="comment">// Number of allowed frame retransmissions</span></div>
+<div class="line"><a name="l00932"></a><span class="lineno">  932</span>&#160;    uint8_t txPowerSteps = 0;</div>
+<div class="line"><a name="l00933"></a><span class="lineno">  933</span>&#160;    uint8_t txPowerMax = 0;</div>
+<div class="line"><a name="l00934"></a><span class="lineno">  934</span>&#160;    uint32_t fCntUp = 0;</div>
+<div class="line"><a name="l00935"></a><span class="lineno">  935</span>&#160;    uint32_t aFCntDown = 0;</div>
+<div class="line"><a name="l00936"></a><span class="lineno">  936</span>&#160;    uint32_t nFCntDown = 0;</div>
+<div class="line"><a name="l00937"></a><span class="lineno">  937</span>&#160;    uint32_t confFCntUp = RADIOLIB_LORAWAN_FCNT_NONE;</div>
+<div class="line"><a name="l00938"></a><span class="lineno">  938</span>&#160;    uint32_t confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;</div>
+<div class="line"><a name="l00939"></a><span class="lineno">  939</span>&#160;    uint32_t adrFCnt = 0;</div>
 <div class="line"><a name="l00940"></a><span class="lineno">  940</span>&#160; </div>
-<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;    <span class="comment">// duty cycle is set upon initialization and activated in regions that impose this</span></div>
-<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    <span class="keywordtype">bool</span> dutyCycleEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160;    uint32_t dutyCycle = 0;</div>
-<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160; </div>
-<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    <span class="comment">// dwell time is set upon initialization and activated in regions that impose this</span></div>
-<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledUp = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    uint16_t dwellTimeUp = 0;</div>
-<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledDn = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    uint16_t dwellTimeDn = 0;</div>
-<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160;    </div>
-<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;    <span class="comment">// enable/disable CSMA for LoRaWAN</span></div>
-<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    <span class="keywordtype">bool</span> enableCSMA;</div>
-<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160; </div>
-<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    <span class="comment">// number of backoff slots to be decremented after DIFS phase. 0 to disable BO.</span></div>
-<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    <span class="comment">// A random BO avoids collisions in the case where two or more nodes start the CSMA</span></div>
-<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    <span class="comment">// process at the same time. </span></div>
-<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    uint8_t backoffMax;</div>
-<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    </div>
-<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160;    <span class="comment">// number of CADs to estimate a clear CH</span></div>
-<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;    uint8_t difsSlots;</div>
-<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160; </div>
-<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;    <span class="comment">// available channel frequencies from list passed during OTA activation</span></div>
-<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];</div>
-<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160; </div>
-<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;    <span class="comment">// currently configured channels for TX and RX1</span></div>
-<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };</div>
+<div class="line"><a name="l00941"></a><span class="lineno">  941</span>&#160;    <span class="comment">// modulation of the currently configured channel</span></div>
+<div class="line"><a name="l00942"></a><span class="lineno">  942</span>&#160;    uint8_t modulation = RADIOLIB_LORAWAN_MODULATION_LORA;</div>
+<div class="line"><a name="l00943"></a><span class="lineno">  943</span>&#160; </div>
+<div class="line"><a name="l00944"></a><span class="lineno">  944</span>&#160;    <span class="comment">// ADR is enabled by default</span></div>
+<div class="line"><a name="l00945"></a><span class="lineno">  945</span>&#160;    <span class="keywordtype">bool</span> adrEnabled = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00946"></a><span class="lineno">  946</span>&#160; </div>
+<div class="line"><a name="l00947"></a><span class="lineno">  947</span>&#160;    <span class="comment">// duty cycle is set upon initialization and activated in regions that impose this</span></div>
+<div class="line"><a name="l00948"></a><span class="lineno">  948</span>&#160;    <span class="keywordtype">bool</span> dutyCycleEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00949"></a><span class="lineno">  949</span>&#160;    uint32_t dutyCycle = 0;</div>
+<div class="line"><a name="l00950"></a><span class="lineno">  950</span>&#160; </div>
+<div class="line"><a name="l00951"></a><span class="lineno">  951</span>&#160;    <span class="comment">// dwell time is set upon initialization and activated in regions that impose this</span></div>
+<div class="line"><a name="l00952"></a><span class="lineno">  952</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledUp = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00953"></a><span class="lineno">  953</span>&#160;    uint16_t dwellTimeUp = 0;</div>
+<div class="line"><a name="l00954"></a><span class="lineno">  954</span>&#160;    <span class="keywordtype">bool</span> dwellTimeEnabledDn = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00955"></a><span class="lineno">  955</span>&#160;    uint16_t dwellTimeDn = 0;</div>
+<div class="line"><a name="l00956"></a><span class="lineno">  956</span>&#160;    </div>
+<div class="line"><a name="l00957"></a><span class="lineno">  957</span>&#160;    <span class="comment">// enable/disable CSMA for LoRaWAN</span></div>
+<div class="line"><a name="l00958"></a><span class="lineno">  958</span>&#160;    <span class="keywordtype">bool</span> enableCSMA;</div>
+<div class="line"><a name="l00959"></a><span class="lineno">  959</span>&#160; </div>
+<div class="line"><a name="l00960"></a><span class="lineno">  960</span>&#160;    <span class="comment">// number of backoff slots to be decremented after DIFS phase. 0 to disable BO.</span></div>
+<div class="line"><a name="l00961"></a><span class="lineno">  961</span>&#160;    <span class="comment">// A random BO avoids collisions in the case where two or more nodes start the CSMA</span></div>
+<div class="line"><a name="l00962"></a><span class="lineno">  962</span>&#160;    <span class="comment">// process at the same time. </span></div>
+<div class="line"><a name="l00963"></a><span class="lineno">  963</span>&#160;    uint8_t backoffMax;</div>
+<div class="line"><a name="l00964"></a><span class="lineno">  964</span>&#160;    </div>
+<div class="line"><a name="l00965"></a><span class="lineno">  965</span>&#160;    <span class="comment">// number of CADs to estimate a clear CH</span></div>
+<div class="line"><a name="l00966"></a><span class="lineno">  966</span>&#160;    uint8_t difsSlots;</div>
 <div class="line"><a name="l00967"></a><span class="lineno">  967</span>&#160; </div>
-<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;    <span class="comment">// currently configured datarates for TX and RX1</span></div>
-<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;    uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };</div>
+<div class="line"><a name="l00968"></a><span class="lineno">  968</span>&#160;    <span class="comment">// available channel frequencies from list passed during OTA activation</span></div>
+<div class="line"><a name="l00969"></a><span class="lineno">  969</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> availableChannels[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];</div>
 <div class="line"><a name="l00970"></a><span class="lineno">  970</span>&#160; </div>
-<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;    <span class="comment">// Rx2 channel properties - may be changed by MAC command</span></div>
-<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> rx2 = RADIOLIB_LORAWAN_CHANNEL_NONE;</div>
+<div class="line"><a name="l00971"></a><span class="lineno">  971</span>&#160;    <span class="comment">// currently configured channels for TX and RX1</span></div>
+<div class="line"><a name="l00972"></a><span class="lineno">  972</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> currentChannels[2] = { RADIOLIB_LORAWAN_CHANNEL_NONE, RADIOLIB_LORAWAN_CHANNEL_NONE };</div>
 <div class="line"><a name="l00973"></a><span class="lineno">  973</span>&#160; </div>
-<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;    <span class="comment">// offset between TX and RX1 (such that RX1 has equal or lower DR)</span></div>
-<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;    uint8_t rx1DrOffset = 0;</div>
+<div class="line"><a name="l00974"></a><span class="lineno">  974</span>&#160;    <span class="comment">// currently configured datarates for TX and RX1</span></div>
+<div class="line"><a name="l00975"></a><span class="lineno">  975</span>&#160;    uint8_t dataRates[2] = { RADIOLIB_LORAWAN_DATA_RATE_UNUSED, RADIOLIB_LORAWAN_DATA_RATE_UNUSED };</div>
 <div class="line"><a name="l00976"></a><span class="lineno">  976</span>&#160; </div>
-<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;    <span class="comment">// LoRaWAN revision (1.0 vs 1.1)</span></div>
-<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;    uint8_t rev = 0;</div>
+<div class="line"><a name="l00977"></a><span class="lineno">  977</span>&#160;    <span class="comment">// Rx2 channel properties - may be changed by MAC command</span></div>
+<div class="line"><a name="l00978"></a><span class="lineno">  978</span>&#160;    <a class="code" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a> rx2 = RADIOLIB_LORAWAN_CHANNEL_NONE;</div>
 <div class="line"><a name="l00979"></a><span class="lineno">  979</span>&#160; </div>
-<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;    <span class="comment">// Time on Air of last uplink</span></div>
-<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> lastToA = 0;</div>
+<div class="line"><a name="l00980"></a><span class="lineno">  980</span>&#160;    <span class="comment">// offset between TX and RX1 (such that RX1 has equal or lower DR)</span></div>
+<div class="line"><a name="l00981"></a><span class="lineno">  981</span>&#160;    uint8_t rx1DrOffset = 0;</div>
 <div class="line"><a name="l00982"></a><span class="lineno">  982</span>&#160; </div>
-<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;    <span class="comment">// timestamp to measure the RX1/2 delay (from uplink end)</span></div>
-<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelayStart = 0;</div>
+<div class="line"><a name="l00983"></a><span class="lineno">  983</span>&#160;    <span class="comment">// LoRaWAN revision (1.0 vs 1.1)</span></div>
+<div class="line"><a name="l00984"></a><span class="lineno">  984</span>&#160;    uint8_t rev = 0;</div>
 <div class="line"><a name="l00985"></a><span class="lineno">  985</span>&#160; </div>
-<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;    <span class="comment">// timestamp when the Rx1/2 windows were closed (timeout or uplink received)</span></div>
-<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelayEnd = 0;</div>
+<div class="line"><a name="l00986"></a><span class="lineno">  986</span>&#160;    <span class="comment">// Time on Air of last uplink</span></div>
+<div class="line"><a name="l00987"></a><span class="lineno">  987</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> lastToA = 0;</div>
 <div class="line"><a name="l00988"></a><span class="lineno">  988</span>&#160; </div>
-<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;    <span class="comment">// delays between the uplink and RX1/2 windows</span></div>
-<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };</div>
+<div class="line"><a name="l00989"></a><span class="lineno">  989</span>&#160;    <span class="comment">// timestamp to measure the RX1/2 delay (from uplink end)</span></div>
+<div class="line"><a name="l00990"></a><span class="lineno">  990</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelayStart = 0;</div>
 <div class="line"><a name="l00991"></a><span class="lineno">  991</span>&#160; </div>
-<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;    <span class="comment">// device status - battery level</span></div>
-<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;    uint8_t battLevel = 0xFF;</div>
+<div class="line"><a name="l00992"></a><span class="lineno">  992</span>&#160;    <span class="comment">// timestamp when the Rx1/2 windows were closed (timeout or uplink received)</span></div>
+<div class="line"><a name="l00993"></a><span class="lineno">  993</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelayEnd = 0;</div>
 <div class="line"><a name="l00994"></a><span class="lineno">  994</span>&#160; </div>
-<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;    <span class="comment">// indicates whether an uplink has MAC commands as payload</span></div>
-<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;    <span class="keywordtype">bool</span> isMACPayload = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00995"></a><span class="lineno">  995</span>&#160;    <span class="comment">// delays between the uplink and RX1/2 windows</span></div>
+<div class="line"><a name="l00996"></a><span class="lineno">  996</span>&#160;    <a class="code" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> rxDelays[2] = { RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS, RADIOLIB_LORAWAN_RECEIVE_DELAY_2_MS };</div>
 <div class="line"><a name="l00997"></a><span class="lineno">  997</span>&#160; </div>
-<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;    <span class="comment">// save the selected sub-band in case this must be restored in ADR control</span></div>
-<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;    uint8_t subBand = 0;</div>
+<div class="line"><a name="l00998"></a><span class="lineno">  998</span>&#160;    <span class="comment">// device status - battery level</span></div>
+<div class="line"><a name="l00999"></a><span class="lineno">  999</span>&#160;    uint8_t battLevel = 0xFF;</div>
 <div class="line"><a name="l01000"></a><span class="lineno"> 1000</span>&#160; </div>
-<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;    <span class="comment">// this will reset the device credentials, so the device starts completely new</span></div>
-<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;    <span class="keywordtype">void</span> clearNonces();</div>
+<div class="line"><a name="l01001"></a><span class="lineno"> 1001</span>&#160;    <span class="comment">// indicates whether an uplink has MAC commands as payload</span></div>
+<div class="line"><a name="l01002"></a><span class="lineno"> 1002</span>&#160;    <span class="keywordtype">bool</span> isMACPayload = <span class="keyword">false</span>;</div>
 <div class="line"><a name="l01003"></a><span class="lineno"> 1003</span>&#160; </div>
-<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    <span class="comment">// wait for, open and listen during Rx1 and Rx2 windows; only performs listening</span></div>
-<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;    int16_t downlinkCommon();</div>
+<div class="line"><a name="l01004"></a><span class="lineno"> 1004</span>&#160;    <span class="comment">// save the selected sub-band in case this must be restored in ADR control</span></div>
+<div class="line"><a name="l01005"></a><span class="lineno"> 1005</span>&#160;    uint8_t subBand = 0;</div>
 <div class="line"><a name="l01006"></a><span class="lineno"> 1006</span>&#160; </div>
-<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;    <span class="comment">// method to generate message integrity code</span></div>
-<div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160;    uint32_t generateMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l01007"></a><span class="lineno"> 1007</span>&#160;    <span class="comment">// this will reset the device credentials, so the device starts completely new</span></div>
+<div class="line"><a name="l01008"></a><span class="lineno"> 1008</span>&#160;    <span class="keywordtype">void</span> clearNonces();</div>
 <div class="line"><a name="l01009"></a><span class="lineno"> 1009</span>&#160; </div>
-<div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;    <span class="comment">// method to verify message integrity code</span></div>
-<div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;    <span class="comment">// it assumes that the MIC is the last 4 bytes of the message</span></div>
-<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160;    <span class="keywordtype">bool</span> verifyMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
-<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160; </div>
-<div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;    <span class="comment">// configure the common physical layer properties (preamble, sync word etc.)</span></div>
-<div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160;    <span class="comment">// channels must be configured separately by setupChannelsDyn()!</span></div>
-<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;    int16_t setPhyProperties(uint8_t dir);</div>
-<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160; </div>
-<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
-<div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160;    <span class="comment">// for dynamic channels, there is a small set of predefined channels</span></div>
-<div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;    <span class="comment">// in case of JoinRequest, add some optional extra frequencies </span></div>
-<div class="line"><a name="l01021"></a><span class="lineno"> 1021</span>&#160;    int16_t setupChannelsDyn(<span class="keywordtype">bool</span> joinRequest = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160; </div>
-<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
-<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;    <span class="comment">// for fixed bands, we only allow one sub-band at a time to be selected</span></div>
-<div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;    int16_t setupChannelsFix(uint8_t subBand);</div>
-<div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160; </div>
-<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;    <span class="comment">// a join-accept can piggy-back a set of channels or channel masks</span></div>
-<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160;    int16_t processCFList(uint8_t* cfList);</div>
-<div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160; </div>
-<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;    <span class="comment">// select a set of random TX/RX channels for up- and downlink</span></div>
-<div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;    int16_t selectChannels();</div>
+<div class="line"><a name="l01010"></a><span class="lineno"> 1010</span>&#160;    <span class="comment">// wait for, open and listen during Rx1 and Rx2 windows; only performs listening</span></div>
+<div class="line"><a name="l01011"></a><span class="lineno"> 1011</span>&#160;    int16_t downlinkCommon();</div>
+<div class="line"><a name="l01012"></a><span class="lineno"> 1012</span>&#160; </div>
+<div class="line"><a name="l01013"></a><span class="lineno"> 1013</span>&#160;    <span class="comment">// method to generate message integrity code</span></div>
+<div class="line"><a name="l01014"></a><span class="lineno"> 1014</span>&#160;    uint32_t generateMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l01015"></a><span class="lineno"> 1015</span>&#160; </div>
+<div class="line"><a name="l01016"></a><span class="lineno"> 1016</span>&#160;    <span class="comment">// method to verify message integrity code</span></div>
+<div class="line"><a name="l01017"></a><span class="lineno"> 1017</span>&#160;    <span class="comment">// it assumes that the MIC is the last 4 bytes of the message</span></div>
+<div class="line"><a name="l01018"></a><span class="lineno"> 1018</span>&#160;    <span class="keywordtype">bool</span> verifyMIC(uint8_t* msg, <span class="keywordtype">size_t</span> len, uint8_t* key);</div>
+<div class="line"><a name="l01019"></a><span class="lineno"> 1019</span>&#160; </div>
+<div class="line"><a name="l01020"></a><span class="lineno"> 1020</span>&#160;    <span class="comment">// configure the common physical layer properties (preamble, sync word etc.)</span></div>
+<div class="line"><a name="l01021"></a><span class="lineno"> 1021</span>&#160;    <span class="comment">// channels must be configured separately by setupChannelsDyn()!</span></div>
+<div class="line"><a name="l01022"></a><span class="lineno"> 1022</span>&#160;    int16_t setPhyProperties(uint8_t dir);</div>
+<div class="line"><a name="l01023"></a><span class="lineno"> 1023</span>&#160; </div>
+<div class="line"><a name="l01024"></a><span class="lineno"> 1024</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
+<div class="line"><a name="l01025"></a><span class="lineno"> 1025</span>&#160;    <span class="comment">// for dynamic channels, there is a small set of predefined channels</span></div>
+<div class="line"><a name="l01026"></a><span class="lineno"> 1026</span>&#160;    <span class="comment">// in case of JoinRequest, add some optional extra frequencies </span></div>
+<div class="line"><a name="l01027"></a><span class="lineno"> 1027</span>&#160;    int16_t setupChannelsDyn(<span class="keywordtype">bool</span> joinRequest = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l01028"></a><span class="lineno"> 1028</span>&#160; </div>
+<div class="line"><a name="l01029"></a><span class="lineno"> 1029</span>&#160;    <span class="comment">// setup uplink/downlink channel data rates and frequencies</span></div>
+<div class="line"><a name="l01030"></a><span class="lineno"> 1030</span>&#160;    <span class="comment">// for fixed bands, we only allow one sub-band at a time to be selected</span></div>
+<div class="line"><a name="l01031"></a><span class="lineno"> 1031</span>&#160;    int16_t setupChannelsFix(uint8_t subBand);</div>
 <div class="line"><a name="l01032"></a><span class="lineno"> 1032</span>&#160; </div>
-<div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;    <span class="comment">// find the first usable data rate for the given band</span></div>
-<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;    int16_t findDataRate(uint8_t dr, <a class="code" href="union_data_rate__t.html">DataRate_t</a>* dataRate);</div>
+<div class="line"><a name="l01033"></a><span class="lineno"> 1033</span>&#160;    <span class="comment">// a join-accept can piggy-back a set of channels or channel masks</span></div>
+<div class="line"><a name="l01034"></a><span class="lineno"> 1034</span>&#160;    int16_t processCFList(uint8_t* cfList);</div>
 <div class="line"><a name="l01035"></a><span class="lineno"> 1035</span>&#160; </div>
-<div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;    <span class="comment">// restore all available channels from persistent storage</span></div>
-<div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;    int16_t restoreChannels();</div>
+<div class="line"><a name="l01036"></a><span class="lineno"> 1036</span>&#160;    <span class="comment">// select a set of random TX/RX channels for up- and downlink</span></div>
+<div class="line"><a name="l01037"></a><span class="lineno"> 1037</span>&#160;    int16_t selectChannels();</div>
 <div class="line"><a name="l01038"></a><span class="lineno"> 1038</span>&#160; </div>
-<div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;    <span class="comment">// push MAC command to queue, done by copy</span></div>
-<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;    int16_t pushMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue);</div>
+<div class="line"><a name="l01039"></a><span class="lineno"> 1039</span>&#160;    <span class="comment">// find the first usable data rate for the given band</span></div>
+<div class="line"><a name="l01040"></a><span class="lineno"> 1040</span>&#160;    int16_t findDataRate(uint8_t dr, <a class="code" href="union_data_rate__t.html">DataRate_t</a>* dataRate);</div>
 <div class="line"><a name="l01041"></a><span class="lineno"> 1041</span>&#160; </div>
-<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;    <span class="comment">// delete a specific MAC command from queue, indicated by the command ID</span></div>
-<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;    <span class="comment">// if a payload pointer is supplied, this returns the payload of the MAC command</span></div>
-<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160;    int16_t deleteMacCommand(uint8_t cid, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue, uint8_t* payload = NULL);</div>
-<div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160; </div>
-<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;    <span class="comment">// execute mac command, return the number of processed bytes for sequential processing</span></div>
-<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160;    <span class="keywordtype">bool</span> execMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd);</div>
-<div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160; </div>
-<div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;    <span class="comment">// apply a channel mask to a set of readily defined channels (dynamic bands only)</span></div>
-<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l01042"></a><span class="lineno"> 1042</span>&#160;    <span class="comment">// restore all available channels from persistent storage</span></div>
+<div class="line"><a name="l01043"></a><span class="lineno"> 1043</span>&#160;    int16_t restoreChannels();</div>
+<div class="line"><a name="l01044"></a><span class="lineno"> 1044</span>&#160; </div>
+<div class="line"><a name="l01045"></a><span class="lineno"> 1045</span>&#160;    <span class="comment">// push MAC command to queue, done by copy</span></div>
+<div class="line"><a name="l01046"></a><span class="lineno"> 1046</span>&#160;    int16_t pushMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue);</div>
+<div class="line"><a name="l01047"></a><span class="lineno"> 1047</span>&#160; </div>
+<div class="line"><a name="l01048"></a><span class="lineno"> 1048</span>&#160;    <span class="comment">// delete a specific MAC command from queue, indicated by the command ID</span></div>
+<div class="line"><a name="l01049"></a><span class="lineno"> 1049</span>&#160;    <span class="comment">// if a payload pointer is supplied, this returns the payload of the MAC command</span></div>
+<div class="line"><a name="l01050"></a><span class="lineno"> 1050</span>&#160;    int16_t deleteMacCommand(uint8_t cid, <a class="code" href="struct_lo_ra_w_a_n_mac_command_queue__t.html">LoRaWANMacCommandQueue_t</a>* queue, uint8_t* payload = NULL);</div>
 <div class="line"><a name="l01051"></a><span class="lineno"> 1051</span>&#160; </div>
-<div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;    <span class="comment">// define or delete channels from a fixed set of channels (fixed bands only)</span></div>
-<div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l01052"></a><span class="lineno"> 1052</span>&#160;    <span class="comment">// execute mac command, return the number of processed bytes for sequential processing</span></div>
+<div class="line"><a name="l01053"></a><span class="lineno"> 1053</span>&#160;    <span class="keywordtype">bool</span> execMacCommand(<a class="code" href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a>* cmd);</div>
 <div class="line"><a name="l01054"></a><span class="lineno"> 1054</span>&#160; </div>
-<div class="line"><a name="l01055"></a><span class="lineno"> 1055</span>&#160;    <span class="comment">// get the payload length for a specific MAC command</span></div>
-<div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;    uint8_t getMacPayloadLength(uint8_t cid);</div>
-<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160;    </div>
-<div class="line"><a name="l01064"></a><span class="lineno"> 1064</span>&#160;    <span class="keywordtype">void</span> setCSMA(uint8_t backoffMax, uint8_t difsSlots, <span class="keywordtype">bool</span> enableCSMA = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l01065"></a><span class="lineno"> 1065</span>&#160; </div>
-<div class="line"><a name="l01066"></a><span class="lineno"> 1066</span>&#160;    <span class="comment">// Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).</span></div>
-<div class="line"><a name="l01067"></a><span class="lineno"> 1067</span>&#160;    <span class="keywordtype">void</span> performCSMA();</div>
-<div class="line"><a name="l01068"></a><span class="lineno"> 1068</span>&#160; </div>
-<div class="line"><a name="l01069"></a><span class="lineno"> 1069</span>&#160;    <span class="comment">// perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.</span></div>
-<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;    <span class="keywordtype">bool</span> performCAD();</div>
+<div class="line"><a name="l01055"></a><span class="lineno"> 1055</span>&#160;    <span class="comment">// apply a channel mask to a set of readily defined channels (dynamic bands only)</span></div>
+<div class="line"><a name="l01056"></a><span class="lineno"> 1056</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l01057"></a><span class="lineno"> 1057</span>&#160; </div>
+<div class="line"><a name="l01058"></a><span class="lineno"> 1058</span>&#160;    <span class="comment">// define or delete channels from a fixed set of channels (fixed bands only)</span></div>
+<div class="line"><a name="l01059"></a><span class="lineno"> 1059</span>&#160;    <span class="keywordtype">bool</span> applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask);</div>
+<div class="line"><a name="l01060"></a><span class="lineno"> 1060</span>&#160; </div>
+<div class="line"><a name="l01061"></a><span class="lineno"> 1061</span>&#160;    <span class="comment">// get the payload length for a specific MAC command</span></div>
+<div class="line"><a name="l01062"></a><span class="lineno"> 1062</span>&#160;    uint8_t getMacPayloadLength(uint8_t cid);</div>
+<div class="line"><a name="l01063"></a><span class="lineno"> 1063</span>&#160;    </div>
+<div class="line"><a name="l01070"></a><span class="lineno"> 1070</span>&#160;    <span class="keywordtype">void</span> setCSMA(uint8_t backoffMax, uint8_t difsSlots, <span class="keywordtype">bool</span> enableCSMA = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l01071"></a><span class="lineno"> 1071</span>&#160; </div>
-<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;    <span class="comment">// function to encrypt and decrypt payloads</span></div>
-<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;    <span class="keywordtype">void</span> processAES(<span class="keyword">const</span> uint8_t* in, <span class="keywordtype">size_t</span> len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, <span class="keywordtype">bool</span> counter);</div>
+<div class="line"><a name="l01072"></a><span class="lineno"> 1072</span>&#160;    <span class="comment">// Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).</span></div>
+<div class="line"><a name="l01073"></a><span class="lineno"> 1073</span>&#160;    <span class="keywordtype">void</span> performCSMA();</div>
 <div class="line"><a name="l01074"></a><span class="lineno"> 1074</span>&#160; </div>
-<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;    <span class="comment">// 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum</span></div>
-<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;    <span class="keyword">static</span> uint16_t checkSum16(uint8_t *key, uint16_t keyLen);</div>
+<div class="line"><a name="l01075"></a><span class="lineno"> 1075</span>&#160;    <span class="comment">// perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.</span></div>
+<div class="line"><a name="l01076"></a><span class="lineno"> 1076</span>&#160;    <span class="keywordtype">bool</span> performCAD();</div>
 <div class="line"><a name="l01077"></a><span class="lineno"> 1077</span>&#160; </div>
-<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;    <span class="comment">// network-to-host conversion method - takes data from network packet and converts it to the host endians</span></div>
-<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160;    <span class="keyword">static</span> T ntoh(uint8_t* buff, <span class="keywordtype">size_t</span> size = 0);</div>
-<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160; </div>
-<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;    <span class="comment">// host-to-network conversion method - takes data from host variable and and converts it to network packet endians</span></div>
-<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> hton(uint8_t* buff, T val, <span class="keywordtype">size_t</span> size = 0);</div>
-<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;};</div>
-<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160; </div>
-<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_lo_ra_w_a_n_node_html"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a></div><div class="ttdoc">LoRaWAN-compatible node (class A device).</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:520</div></div>
+<div class="line"><a name="l01078"></a><span class="lineno"> 1078</span>&#160;    <span class="comment">// function to encrypt and decrypt payloads</span></div>
+<div class="line"><a name="l01079"></a><span class="lineno"> 1079</span>&#160;    <span class="keywordtype">void</span> processAES(<span class="keyword">const</span> uint8_t* in, <span class="keywordtype">size_t</span> len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, <span class="keywordtype">bool</span> counter);</div>
+<div class="line"><a name="l01080"></a><span class="lineno"> 1080</span>&#160; </div>
+<div class="line"><a name="l01081"></a><span class="lineno"> 1081</span>&#160;    <span class="comment">// 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum</span></div>
+<div class="line"><a name="l01082"></a><span class="lineno"> 1082</span>&#160;    <span class="keyword">static</span> uint16_t checkSum16(uint8_t *key, uint16_t keyLen);</div>
+<div class="line"><a name="l01083"></a><span class="lineno"> 1083</span>&#160; </div>
+<div class="line"><a name="l01084"></a><span class="lineno"> 1084</span>&#160;    <span class="comment">// network-to-host conversion method - takes data from network packet and converts it to the host endians</span></div>
+<div class="line"><a name="l01085"></a><span class="lineno"> 1085</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l01086"></a><span class="lineno"> 1086</span>&#160;    <span class="keyword">static</span> T ntoh(uint8_t* buff, <span class="keywordtype">size_t</span> size = 0);</div>
+<div class="line"><a name="l01087"></a><span class="lineno"> 1087</span>&#160; </div>
+<div class="line"><a name="l01088"></a><span class="lineno"> 1088</span>&#160;    <span class="comment">// host-to-network conversion method - takes data from host variable and and converts it to network packet endians</span></div>
+<div class="line"><a name="l01089"></a><span class="lineno"> 1089</span>&#160;    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l01090"></a><span class="lineno"> 1090</span>&#160;    <span class="keyword">static</span> <span class="keywordtype">void</span> hton(uint8_t* buff, T val, <span class="keywordtype">size_t</span> size = 0);</div>
+<div class="line"><a name="l01091"></a><span class="lineno"> 1091</span>&#160;};</div>
+<div class="line"><a name="l01092"></a><span class="lineno"> 1092</span>&#160; </div>
+<div class="line"><a name="l01093"></a><span class="lineno"> 1093</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_lo_ra_w_a_n_node_html"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html">LoRaWANNode</a></div><div class="ttdoc">LoRaWAN-compatible node (class A device).</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:526</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a0feeaed200d8f94ad94c3ed49f404847"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847">LoRaWANNode::clearSession</a></div><div class="ttdeci">void clearSession()</div><div class="ttdoc">Clear an active session, so that the device will have to rejoin the network.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:59</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a11701081ac6bd39a8a2b4bdbc248fac2"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2">LoRaWANNode::setBufferNonces</a></div><div class="ttdeci">int16_t setBufferNonces(uint8_t *persistentBuffer)</div><div class="ttdoc">Fill the internal buffer that holds the LW base parameters with a supplied buffer.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:75</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a14e8a8a098df28ff5ee294f235500499"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499">LoRaWANNode::setDatarate</a></div><div class="ttdeci">int16_t setDatarate(uint8_t drUp)</div><div class="ttdoc">Set uplink datarate. This should not be used when ADR is enabled.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1999</div></div>
@@ -831,7 +837,7 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a6785265f3311ff6bf296f82429c96701"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a6785265f3311ff6bf296f82429c96701">LoRaWANNode::getAFCntDown</a></div><div class="ttdeci">uint32_t getAFCntDown()</div><div class="ttdoc">Returns the last application downlink's frame counter; also 0 if no application downlink occured yet.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1696</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a683b02b63867bb7de5df45c94d190305"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305">LoRaWANNode::getLastToA</a></div><div class="ttdeci">RadioLibTime_t getLastToA()</div><div class="ttdoc">Get the Time-on-air of the last uplink message.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:2918</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a77483c51548e48a5dff4b707f7770e86"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">LoRaWANNode::activateABP</a></div><div class="ttdeci">int16_t activateABP(uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</div><div class="ttdoc">Join network by restoring ABP session or performing over-the-air activation. In this procedure,...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:791</div></div>
-<div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a8226f4d0329d15da9ffc706e5781403a"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">LoRaWANNode::TS009</a></div><div class="ttdeci">bool TS009</div><div class="ttdoc">TS009 Protocol Specification Verification switch (allows FPort 224 and cuts off uplink payload instea...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:868</div></div>
+<div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a8226f4d0329d15da9ffc706e5781403a"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">LoRaWANNode::TS009</a></div><div class="ttdeci">bool TS009</div><div class="ttdoc">TS009 Protocol Specification Verification switch (allows FPort 224 and cuts off uplink payload instea...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:874</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a84004883006b4a498d4899874952445b"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">LoRaWANNode::getBufferNonces</a></div><div class="ttdeci">uint8_t * getBufferNonces()</div><div class="ttdoc">Returns the pointer to the internal buffer that holds the LW base parameters.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:67</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a85cf006ffd97ece3b2d2974b715540cb"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">LoRaWANNode::sendReceive</a></div><div class="ttdeci">int16_t sendReceive(const char *strUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, LoRaWANEvent_t *eventUp=NULL, LoRaWANEvent_t *eventDown=NULL)</div><div class="ttdoc">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:1660</div></div>
 <div class="ttc" id="aclass_lo_ra_w_a_n_node_html_a90369a4f2c4da11527872a7bbbf9ab06"><div class="ttname"><a href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">LoRaWANNode::getBufferSession</a></div><div class="ttdeci">uint8_t * getBufferSession()</div><div class="ttdoc">Returns the pointer to the internal buffer that holds the LW session parameters.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.cpp:111</div></div>
@@ -884,19 +890,19 @@ $(document).ready(function(){initNavTree('_lo_ra_w_a_n_8h_source.html',''); init
 <div class="ttc" id="astruct_lo_ra_w_a_n_channel_span__t_html_a914d2b6f54e9c8d2841acf1d0652fd79"><div class="ttname"><a href="struct_lo_ra_w_a_n_channel_span__t.html#a914d2b6f54e9c8d2841acf1d0652fd79">LoRaWANChannelSpan_t::drMax</a></div><div class="ttdeci">uint8_t drMax</div><div class="ttdoc">Maximum allowed datarate for all channels in this span (inclusive)</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:373</div></div>
 <div class="ttc" id="astruct_lo_ra_w_a_n_channel_span__t_html_aa18000d2e0cde0236e6f984bd782dc02"><div class="ttname"><a href="struct_lo_ra_w_a_n_channel_span__t.html#aa18000d2e0cde0236e6f984bd782dc02">LoRaWANChannelSpan_t::freqStep</a></div><div class="ttdeci">float freqStep</div><div class="ttdoc">Frequency step between adjacent channels.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:367</div></div>
 <div class="ttc" id="astruct_lo_ra_w_a_n_channel_span__t_html_ab613b4ca3a2c99ef0aa53f8132f54535"><div class="ttname"><a href="struct_lo_ra_w_a_n_channel_span__t.html#ab613b4ca3a2c99ef0aa53f8132f54535">LoRaWANChannelSpan_t::drMin</a></div><div class="ttdeci">uint8_t drMin</div><div class="ttdoc">Minimum allowed datarate for all channels in this span.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:370</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a></div><div class="ttdoc">Structure to save extra information about uplink/downlink event.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:489</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a01e1843dcd39911a0fbbb86cdca35d33"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">LoRaWANEvent_t::freq</a></div><div class="ttdeci">float freq</div><div class="ttdoc">Frequency in MHz.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:504</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a09079dc76b5367d23766e357d2ddb794"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">LoRaWANEvent_t::confirmed</a></div><div class="ttdeci">bool confirmed</div><div class="ttdoc">Whether the event is confirmed or not (e.g., confirmed uplink sent by user application)</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:494</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a14f360e64ae4a6090c04333567f1a513"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">LoRaWANEvent_t::fPort</a></div><div class="ttdeci">uint8_t fPort</div><div class="ttdoc">Port number.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:513</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a49eebe64d351bb2e91901ef8fae044ff"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">LoRaWANEvent_t::power</a></div><div class="ttdeci">int16_t power</div><div class="ttdoc">Transmit power in dBm for uplink, or RSSI for downlink.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:507</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a506755c4731be16d126bdef873c420f8"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">LoRaWANEvent_t::confirming</a></div><div class="ttdeci">bool confirming</div><div class="ttdoc">Whether the event is confirming a previous request (e.g., server downlink reply to confirmed uplink s...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:498</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a56281d98efee007a0c03e6a6ae8a592b"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">LoRaWANEvent_t::datarate</a></div><div class="ttdeci">uint8_t datarate</div><div class="ttdoc">Datarate.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:501</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a698a1956ffafa152e7c2cada3a2a2805"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">LoRaWANEvent_t::dir</a></div><div class="ttdeci">uint8_t dir</div><div class="ttdoc">Event direction, one of RADIOLIB_LORAWAN_CHANNEL_DIR_*.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:491</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a73ecb624afeda6ddb32c1007d3dcb846"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">LoRaWANEvent_t::fCnt</a></div><div class="ttdeci">uint32_t fCnt</div><div class="ttdoc">The appropriate frame counter - for different events, different frame counters will be reported!</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:510</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a></div><div class="ttdoc">Structure to save extra information about activation event.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:474</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_a5b233f8c9d2841b8db64df7f079ab0ee"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">LoRaWANJoinEvent_t::newSession</a></div><div class="ttdeci">bool newSession</div><div class="ttdoc">Whether a new session was started.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:476</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_a935bc95eb2c02242c61f192fa2c68d8b"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">LoRaWANJoinEvent_t::joinNonce</a></div><div class="ttdeci">uint32_t joinNonce</div><div class="ttdoc">The received Join-Request JoinNonce value.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:482</div></div>
-<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_abdb57ec1e16ea0d1822ba0a5632c9372"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">LoRaWANJoinEvent_t::devNonce</a></div><div class="ttdeci">uint16_t devNonce</div><div class="ttdoc">The transmitted Join-Request DevNonce value.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:479</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a></div><div class="ttdoc">Structure to save extra information about uplink/downlink event.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:495</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a01e1843dcd39911a0fbbb86cdca35d33"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a01e1843dcd39911a0fbbb86cdca35d33">LoRaWANEvent_t::freq</a></div><div class="ttdeci">float freq</div><div class="ttdoc">Frequency in MHz.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:510</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a09079dc76b5367d23766e357d2ddb794"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a09079dc76b5367d23766e357d2ddb794">LoRaWANEvent_t::confirmed</a></div><div class="ttdeci">bool confirmed</div><div class="ttdoc">Whether the event is confirmed or not (e.g., confirmed uplink sent by user application)</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:500</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a14f360e64ae4a6090c04333567f1a513"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a14f360e64ae4a6090c04333567f1a513">LoRaWANEvent_t::fPort</a></div><div class="ttdeci">uint8_t fPort</div><div class="ttdoc">Port number.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:519</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a49eebe64d351bb2e91901ef8fae044ff"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a49eebe64d351bb2e91901ef8fae044ff">LoRaWANEvent_t::power</a></div><div class="ttdeci">int16_t power</div><div class="ttdoc">Transmit power in dBm for uplink, or RSSI for downlink.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:513</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a506755c4731be16d126bdef873c420f8"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a506755c4731be16d126bdef873c420f8">LoRaWANEvent_t::confirming</a></div><div class="ttdeci">bool confirming</div><div class="ttdoc">Whether the event is confirming a previous request (e.g., server downlink reply to confirmed uplink s...</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:504</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a56281d98efee007a0c03e6a6ae8a592b"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a56281d98efee007a0c03e6a6ae8a592b">LoRaWANEvent_t::datarate</a></div><div class="ttdeci">uint8_t datarate</div><div class="ttdoc">Datarate.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:507</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a698a1956ffafa152e7c2cada3a2a2805"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a698a1956ffafa152e7c2cada3a2a2805">LoRaWANEvent_t::dir</a></div><div class="ttdeci">uint8_t dir</div><div class="ttdoc">Event direction, one of RADIOLIB_LORAWAN_CHANNEL_DIR_*.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:497</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_event__t_html_a73ecb624afeda6ddb32c1007d3dcb846"><div class="ttname"><a href="struct_lo_ra_w_a_n_event__t.html#a73ecb624afeda6ddb32c1007d3dcb846">LoRaWANEvent_t::fCnt</a></div><div class="ttdeci">uint32_t fCnt</div><div class="ttdoc">The appropriate frame counter - for different events, different frame counters will be reported!</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:516</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a></div><div class="ttdoc">Structure to save extra information about activation event.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:480</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_a5b233f8c9d2841b8db64df7f079ab0ee"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#a5b233f8c9d2841b8db64df7f079ab0ee">LoRaWANJoinEvent_t::newSession</a></div><div class="ttdeci">bool newSession</div><div class="ttdoc">Whether a new session was started.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:482</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_a935bc95eb2c02242c61f192fa2c68d8b"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#a935bc95eb2c02242c61f192fa2c68d8b">LoRaWANJoinEvent_t::joinNonce</a></div><div class="ttdeci">uint32_t joinNonce</div><div class="ttdoc">The received Join-Request JoinNonce value.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:488</div></div>
+<div class="ttc" id="astruct_lo_ra_w_a_n_join_event__t_html_abdb57ec1e16ea0d1822ba0a5632c9372"><div class="ttname"><a href="struct_lo_ra_w_a_n_join_event__t.html#abdb57ec1e16ea0d1822ba0a5632c9372">LoRaWANJoinEvent_t::devNonce</a></div><div class="ttdeci">uint16_t devNonce</div><div class="ttdoc">The transmitted Join-Request DevNonce value.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:485</div></div>
 <div class="ttc" id="astruct_lo_ra_w_a_n_mac_command__t_html"><div class="ttname"><a href="struct_lo_ra_w_a_n_mac_command__t.html">LoRaWANMacCommand_t</a></div><div class="ttdoc">Structure to save information about MAC command.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:248</div></div>
 <div class="ttc" id="astruct_lo_ra_w_a_n_mac_command__t_html_a2155e7497b6f7ddabceee3d1a236c009"><div class="ttname"><a href="struct_lo_ra_w_a_n_mac_command__t.html#a2155e7497b6f7ddabceee3d1a236c009">LoRaWANMacCommand_t::payload</a></div><div class="ttdeci">uint8_t payload[RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_DOWN]</div><div class="ttdoc">Payload buffer (5 bytes is the longest possible)</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:253</div></div>
 <div class="ttc" id="astruct_lo_ra_w_a_n_mac_command__t_html_a3530cae6be81314da53f9bf75788b5e5"><div class="ttname"><a href="struct_lo_ra_w_a_n_mac_command__t.html#a3530cae6be81314da53f9bf75788b5e5">LoRaWANMacCommand_t::len</a></div><div class="ttdeci">uint8_t len</div><div class="ttdoc">Length of the payload.</div><div class="ttdef"><b>Definition:</b> LoRaWAN.h:256</div></div>
