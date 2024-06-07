@@ -436,7 +436,6 @@ struct LoRaWANBand_t {
 // supported bands
 extern const LoRaWANBand_t EU868;
 extern const LoRaWANBand_t US915;
-extern const LoRaWANBand_t CN780;
 extern const LoRaWANBand_t EU433;
 extern const LoRaWANBand_t AU915;
 extern const LoRaWANBand_t CN500;
@@ -454,7 +453,6 @@ extern const LoRaWANBand_t IN865;
 enum LoRaWANBandNum_t {
   BandEU868,
   BandUS915,
-  BandCN780,
   BandEU433,
   BandAU915,
   BandCN500,
