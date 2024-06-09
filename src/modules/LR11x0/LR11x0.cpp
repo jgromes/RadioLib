@@ -1329,7 +1329,36 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
     return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
   
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    return(((uint32_t)len * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
+    // calculate the number of bits based on coding rate
+    uint16_t N_bits;
+    switch(this->lrFhssCr) {
+      case RADIOLIB_LR11X0_LR_FHSS_CR_5_6:
+        N_bits = ((len * 6) + 4) / 5; // this is from the official LR11xx driver, but why the extra +4?
+        break;
+      case RADIOLIB_LR11X0_LR_FHSS_CR_2_3:
+        N_bits = (len * 3) / 2;
+        break;
+      case RADIOLIB_LR11X0_LR_FHSS_CR_1_2:
+        N_bits = len * 2;
+        break;
+      case RADIOLIB_LR11X0_LR_FHSS_CR_1_3:
+        N_bits = len * 3;
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_CODING_RATE);
+    }
+
+    // calculate number of bits when accounting for unaligned last block
+    uint16_t N_payBits = (N_bits / RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS) * RADIOLIB_LR11X0_LR_FHSS_BLOCK_BITS;
+    uint16_t N_lastBlockBits = N_bits % RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS;
+    if(N_lastBlockBits) {
+      N_payBits += N_lastBlockBits + 2;
+    }
+
+    // add header bits
+    uint16_t N_totalBits = (RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS * this->lrFhssHdrCount) + N_payBits;
+    return(((uint32_t)N_totalBits * 8 * 1000000UL) / RADIOLIB_LR11X0_LR_FHSS_BIT_RATE);
+  
   }
 
   return(0);
