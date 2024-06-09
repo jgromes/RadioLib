@@ -482,6 +482,10 @@
 #define RADIOLIB_LR11X0_LR_FHSS_BW_773_44                       (0x07UL << 0)   //  7     0                        773.44 kHz
 #define RADIOLIB_LR11X0_LR_FHSS_BW_1523_4                       (0x08UL << 0)   //  7     0                        1523.4 kHz
 #define RADIOLIB_LR11X0_LR_FHSS_BW_1574_2                       (0x09UL << 0)   //  7     0                        1574.2 kHz
+#define RADIOLIB_LR11X0_LR_FHSS_HEADER_BITS                     (114)           //  7     0     LR FHSS packet bit widths: header
+#define RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS                       (48)            //  7     0                                payload fragment
+#define RADIOLIB_LR11X0_LR_FHSS_BLOCK_PREAMBLE_BITS             (2)             //  7     0                                block preamble
+#define RADIOLIB_LR11X0_LR_FHSS_BLOCK_BITS                      (RADIOLIB_LR11X0_LR_FHSS_FRAG_BITS + RADIOLIB_LR11X0_LR_FHSS_BLOCK_PREAMBLE_BITS)
 
 // RADIOLIB_LR11X0_CMD_GET_LORA_RX_HEADER_INFOS
 #define RADIOLIB_LR11X0_LAST_HEADER_CRC_ENABLED                 (0x01UL << 4)   //  4     4     last header CRC: enabled
