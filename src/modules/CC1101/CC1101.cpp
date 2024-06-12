@@ -274,6 +274,66 @@ void CC1101::clearPacketSentAction() {
   this->clearGdo2Action();
 }
 
+void CC1101::setFifoEmptyAction(void (*func)(void)) {
+  // set the interrupt
+  //SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, 0x0F, 3, 0);
+  SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_TX_FIFO_ABOVE_THR, 5, 0);
+
+  // set GDO2 to the FIFO full event, but invert the polarity
+  setGdo2Action(func, this->mod->hal->GpioInterruptFalling);
+}
+
+void CC1101::clearFifoEmptyAction() {
+  clearGdo2Action();
+}
+
+void CC1101::setFifoFullAction(void (*func)(void)) {
+  // set the interrupt
+  SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, RADIOLIB_CC1101_FIFO_THR_TX_33_RX_32, 3, 0);
+  SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_TX_FIFO_ABOVE_THR, 5, 0);
+
+  // set GDO2 to the FIFO full event
+  setGdo2Action(func, this->mod->hal->GpioInterruptRising);
+}
+
+void CC1101::clearFifoFullAction() {
+  clearGdo2Action();
+}
+
+bool CC1101::fifoAdd(uint8_t* data, int totalLen, volatile int* remLen) {
+  // subtract first (this may be the first time we get to modify the remaining length)
+  *remLen -= RADIOLIB_CC1101_FIFO_THRESH_TX - 1;
+
+  // check if there is still something left to send
+  if(*remLen <= 0) {
+    // we're done
+    return(true);
+  }
+
+  // calculate the number of bytes we can copy
+  int len = *remLen;
+  if(len > RADIOLIB_CC1101_FIFO_THRESH_TX - 1) {
+    len = RADIOLIB_CC1101_FIFO_THRESH_TX - 1;
+  }
+
+  // clear interrupt flags
+  //clearIRQFlags();
+
+  // copy the bytes to the FIFO
+  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, &data[totalLen - *remLen], len);
+
+  // this is a hack, but it seems Rx FIFO level is getting triggered 1 byte before it should
+  // we just add a padding byte that we can drop without consequence
+  //this->mod->SPIwriteRegister(RADIOLIB_RF69_REG_FIFO, '/');
+
+  // we're not done yet
+  return(false);
+}
+
+bool CC1101::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
+  return(false);
+}
+
 void CC1101::setGdo2Action(void (*func)(void), uint32_t dir) {
   if(this->mod->getGpio() == RADIOLIB_NC) {
     return;
@@ -290,11 +350,6 @@ void CC1101::clearGdo2Action() {
 }
 
 int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
-  // check packet length
-  if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
-    return(RADIOLIB_ERR_PACKET_TOO_LONG);
-  }
-
   // set mode to standby
   standby();
 
@@ -317,7 +372,13 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // fill the FIFO
-  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, len);
+  size_t packetLen = len;
+  if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
+    packetLen = RADIOLIB_CC1101_FIFO_THRESH_TX - 1;
+    SPIsetRegValue(RADIOLIB_CC1101_REG_FIFOTHR, RADIOLIB_CC1101_FIFO_THR_TX_33_RX_32, 3, 0);
+    SPIsetRegValue(RADIOLIB_CC1101_REG_PKTLEN, packetLen % 256);
+  }
+  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, packetLen);
 
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_TX);
@@ -368,6 +429,19 @@ int16_t CC1101::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   (void)len;
   return(startReceive());
 }
+
+/*uint8_t CC1101::readRxBytesSafe() {
+  // workaround of errata "RX FIFO pointer is not properly updated and the last read byte is duplicated"
+  // see CC1101 silicon errata SWRZ020E
+  uint8_t numBytesPrev = 0xFF;
+  uint8_t numBytes = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
+  while(numBytesPrev != numBytes) {
+  //while(numBytes != 0) {
+    numBytesPrev = numBytes;
+    numBytes = SPIgetRegValue(RADIOLIB_CC1101_REG_RXBYTES, 6, 0);
+  }
+  return(numBytes);
+}*/
 
 int16_t CC1101::readData(uint8_t* data, size_t len) {
   // get packet length
@@ -813,12 +887,6 @@ size_t CC1101::getPacketLength(bool update) {
 }
 
 int16_t CC1101::fixedPacketLengthMode(uint8_t len) {
-  if(len == 0) {
-    // infinite packet mode
-    int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTCTRL0, RADIOLIB_CC1101_LENGTH_CONFIG_INFINITE, 1, 0);
-    RADIOLIB_ASSERT(state);
-  }
-
   return(setPacketMode(RADIOLIB_CC1101_LENGTH_CONFIG_FIXED, len));
 }
 
@@ -1080,6 +1148,7 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint16_t len) {
   RADIOLIB_ASSERT(state);
 
   // set length to register
+  // for infinite packet mode, this will be overwritten in startTransmit anyway
   state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTLEN, len);
   RADIOLIB_ASSERT(state);
 

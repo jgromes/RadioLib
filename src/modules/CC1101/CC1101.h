@@ -680,6 +680,46 @@ class CC1101: public PhysicalLayer {
     void clearPacketSentAction() override;
 
     /*!
+      \brief Set interrupt service routine function to call when FIFO is empty.
+      \param func Pointer to interrupt service routine.
+    */
+    void setFifoEmptyAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when  FIFO is empty.
+    */
+    void clearFifoEmptyAction();
+
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is full.
+      \param func Pointer to interrupt service routine.
+    */
+    void setFifoFullAction(void (*func)(void));
+
+    /*!
+      \brief Clears interrupt service routine to call when  FIFO is full.
+    */
+    void clearFifoFullAction();
+
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is empty.
+      \param data Pointer to the transmission buffer.
+      \param totalLen Total number of bytes to transmit.
+      \param remLen Pointer to a counter holding the number of bytes that have been transmitted so far.
+      \returns True when a complete packet is sent, false if more data is needed.
+    */
+    bool fifoAdd(uint8_t* data, int totalLen, volatile int* remLen);
+
+    /*!
+      \brief Set interrupt service routine function to call when FIFO is sufficently full to read.
+      \param data Pointer to a buffer that stores the receive data.
+      \param totalLen Total number of bytes to receive.
+      \param rcvLen Pointer to a counter holding the number of bytes that have been received so far.
+      \returns True when a complete packet is received, false if more data is needed.
+    */
+    bool fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen);
+
+    /*!
       \brief Interrupt-driven binary transmit method.
       Overloads for string-based transmissions are implemented in PhysicalLayer.
       \param data Binary data to be sent.
@@ -1013,6 +1053,7 @@ class CC1101: public PhysicalLayer {
     int16_t directMode(bool sync);
     static void getExpMant(float target, uint16_t mantOffset, uint8_t divExp, uint8_t expMax, uint8_t& exp, uint8_t& mant);
     int16_t setPacketMode(uint8_t mode, uint16_t len);
+    //uint8_t readRxBytesSafe();
 };
 
 #endif
