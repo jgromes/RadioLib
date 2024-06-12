@@ -1083,6 +1083,9 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint16_t len) {
   state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTLEN, len);
   RADIOLIB_ASSERT(state);
 
+  // no longer in a direct mode
+  this->directModeEnabled = false;
+
   // update the cached values
   this->packetLength = len;
   this->packetLengthConfig = mode;
