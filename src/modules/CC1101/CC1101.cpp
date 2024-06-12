@@ -1023,7 +1023,7 @@ int16_t CC1101::directMode(bool sync) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   int16_t state = 0;
-  this->directModeEnabled = sync;
+  this->directModeEnabled = true;
   if(sync) {
     // set GDO0 and GDO2 mapping
     state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
@@ -1082,6 +1082,9 @@ int16_t CC1101::setPacketMode(uint8_t mode, uint16_t len) {
   // set length to register
   state = SPIsetRegValue(RADIOLIB_CC1101_REG_PKTLEN, len);
   RADIOLIB_ASSERT(state);
+
+  // no longer in a direct mode
+  this->directModeEnabled = false;
 
   // update the cached values
   this->packetLength = len;
