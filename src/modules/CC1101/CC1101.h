@@ -845,7 +845,7 @@ class CC1101: public PhysicalLayer {
 
     /*!
       \brief Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.
-      In asynchronous direct mode, returns the current RSSI level.
+      In direct or asynchronous direct mode, returns the current RSSI level.
       \returns RSSI in dBm.
     */
     float getRSSI() override;
@@ -1003,7 +1003,7 @@ class CC1101: public PhysicalLayer {
 
     bool promiscuous = false;
     bool crcOn = true;
-    bool directModeEnabled = true;
+    bool directModeEnabled = false;
 
     int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
 

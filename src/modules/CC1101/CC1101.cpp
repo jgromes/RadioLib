@@ -1023,7 +1023,7 @@ int16_t CC1101::directMode(bool sync) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_IDLE);
 
   int16_t state = 0;
-  this->directModeEnabled = sync;
+  this->directModeEnabled = true;
   if(sync) {
     // set GDO0 and GDO2 mapping
     state |= SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG0, RADIOLIB_CC1101_GDOX_SERIAL_CLOCK , 5, 0);
