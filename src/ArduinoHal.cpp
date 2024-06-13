@@ -126,6 +126,8 @@ void inline ArduinoHal::tone(uint32_t pin, unsigned int frequency, RadioLibTime_
     if(prev == -1) {
       #if !defined(ESP_IDF_VERSION) || (ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5,0,0))
       ledcAttachPin(pin, RADIOLIB_TONE_ESP32_CHANNEL);
+      #else
+      ledcAttach(pin, frequency, 14); // 14-bit resolution should be enough
       #endif
     }
     if(prev != frequency) {
