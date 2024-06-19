@@ -15,7 +15,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/../../../../RadioLib" "${CMAKE_CUR
 add_executable(${PROJECT_NAME} main.cpp)
 
 # link both libraries
-target_link_libraries(${PROJECT_NAME} RadioLib pigpio)
+target_link_libraries(${PROJECT_NAME} RadioLib lgpio)
 
 # you can also specify RadioLib compile-time flags here
 #target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_BASIC RADIOLIB_DEBUG_SPI)
