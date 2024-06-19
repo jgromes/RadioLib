@@ -141,31 +141,12 @@ If you are using US915 or AU915 then you should change the subBand const to 2.
 
 ### The pinmap
 
-This is the connection between the MCU (ESP32/ATmega/SAMD) and the LoRa radio (SX1276/SX1262).
+This is the connection between your microcontroller (ESP32, ATmega, SAMD etc.) and the radio (SX1276, SX1262, LR1110 etc.).
+You have to select the correct module and set the correct pins.
 
-Prebuilt modules are easy - we can detect the board and setup the pinmap for you. These boards are:
+Pin maps for commonly used radio modules are kept in a separate library, called RadioBoards: https://github.com/radiolib-org/RadioBoards
 
-* TTGO_LoRa32
-* TTGO_LoRa32_V1
-* TTGO_LORA32_V2
-* TTGO_LORA32_v21NEW
-* HELTEC_WIFI_LORA_32
-* HELTEC_WIFI_LORA_32_V2
-* HELTEC_WIFI_LORA_32_V3
-* HELTEC_WIRELESS_STICK
-* HELTEC_WIRELESS_STICK_V3
-* HELTEC_WIRELESS_STICK_LITE
-* HELTEC_WIRELESS_STICK_LITE_V3
-
-If you have a TTGO T-Beam, you must choose the correct radio from the Board Revision sub-menu found under the main Tools menu.
-
-* TBEAM_USE_RADIO_SX1262
-* TBEAM_USE_RADIO_SX1276
-
-Auto-setup for the Adafruit Feather M0 with RFM95 is included but you must solder a wire or use a jumper to link from pin 6 to io1: https://learn.adafruit.com/the-things-network-for-feather/arduino-wiring
-
-If you have a module that's not on this list, please go to the "Pinmap How-To" below.
-
+It can automatically detect your microcontroller platform and radio, and configure things for you. If you have a board that is not supported by RadioBoards, feel free to suggest it in the RadioBoards issues, or better yet - open a pull request there!
 
 
 ## Observations on the main sketch
@@ -197,8 +178,3 @@ Coming soon
 ### Device testing
 
 The LoRaWAN code base works to a specification and once you are happy your device is able to join & send a few dozen uplinks, continuing to sit around waiting for an uplink to test your sensor code & payload format is a waste of your time. The solution is to write everything else in a different sketch, output the array to the serial console and then you can copy & paste the hex array in to the TTN console Payload Formatters section to test the decoding.
-
-
-## Pinmap How-To
-
-Coming soon
