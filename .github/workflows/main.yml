@@ -265,6 +265,8 @@ jobs:
           cd lg
           make
           sudo make install
+          cd ..
+          sudo rm -rf lg
       
       - name: Install the library
         run: |
