@@ -86,6 +86,41 @@ class LR1110: public LR11x0 {
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq, bool calibrate, float band = 4);
+    
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
+      \param power Output power to be set in dBm, output PA is determined automatically preferring the low-power PA.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power) override;
+
+    /*!
+      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
+      \param power Output power to be set in dBm.
+      \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
+      based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power, bool forceHighPower);
+
+    /*!
+      \brief Check if output power is configurable.
+      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
+      \param power Output power in dBm, PA will be determined automatically.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
+
+    /*!
+      \brief Check if output power is configurable.
+      \param power Output power in dBm.
+      \param clipped Clipped output power value to what is possible within the module's range.
+      \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
+      based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
+      \returns \ref status_codes
+    */
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower);
 
 #if !RADIOLIB_GODMODE
   private:

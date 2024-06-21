@@ -700,6 +700,10 @@ struct LR11x0VersionInfo_t {
   uint8_t almanacGNSS;
 };
 
+struct LR11x0GnssResult_t {
+
+};
+
 /*!
   \class LR11x0
   \brief Base class for %LR11x0 series. All derived classes for %LR11x0 (e.g. LR1110 or LR1120) inherit from this base class.
@@ -753,34 +757,31 @@ class LR11x0: public PhysicalLayer {
       \param sf LoRa spreading factor.
       \param cr LoRa coding rate denominator.
       \param syncWord 1-byte LoRa sync word.
-      \param power Output power in dBm.
       \param preambleLength LoRa preamble length in symbols
       \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage);
 
     /*!
       \brief Initialization method for FSK modem.
       \param br FSK bit rate in kbps.
       \param freqDev Frequency deviation from carrier frequency in kHz.
       \param rxBw Receiver bandwidth in kHz.
-      \param power Output power in dBm.
       \param preambleLength FSK preamble length in bits.
       \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginGFSK(float br, float freqDev, float rxBw, int8_t power, uint16_t preambleLength, float tcxoVoltage);
+    int16_t beginGFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage);
 
     /*!
       \brief Initialization method for LR-FHSS modem.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
-      \param power Output power in dBm.
       \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, int8_t power, float tcxoVoltage);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -980,41 +981,6 @@ class LR11x0: public PhysicalLayer {
     int16_t getChannelScanResult() override;
 
     // configuration methods
-    
-    /*!
-      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
-      \param power Output power to be set in dBm, output PA is determined automatically preferring the low-power PA.
-      \returns \ref status_codes
-    */
-    int16_t setOutputPower(int8_t power) override;
-
-    /*!
-      \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
-      \param power Output power to be set in dBm.
-      \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
-      based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
-      \returns \ref status_codes
-    */
-    int16_t setOutputPower(int8_t power, bool forceHighPower);
-
-    /*!
-      \brief Check if output power is configurable.
-      This method is needed for compatibility with PhysicalLayer::checkOutputPower.
-      \param power Output power in dBm, PA will be determined automatically.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped) override;
-
-    /*!
-      \brief Check if output power is configurable.
-      \param power Output power in dBm.
-      \param clipped Clipped output power value to what is possible within the module's range.
-      \param forceHighPower Force using the high-power PA. If set to false, PA will be determined automatically
-      based on configured output power, preferring the low-power PA. If set to true, only high-power PA will be used.
-      \returns \ref status_codes
-    */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower);
 
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.
@@ -1392,6 +1358,14 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
+
+    int16_t isGnssScanCapable();
+
+    int16_t gnssScan(uint16_t* resSize);
+
+    int16_t getGnssScanResult(uint16_t size);
+    
+    int16_t getGnssPosition(float* lat, float* lon, bool filtered);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -1514,7 +1488,7 @@ class LR11x0: public PhysicalLayer {
     int16_t gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc);
     int16_t gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac);
     int16_t gnssGetSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv);
-    int16_t gnssScan(uint8_t effort, uint8_t resMask, uint8_t nbSvMax);
+    int16_t gnssPerformScan(uint8_t effort, uint8_t resMask, uint8_t nbSvMax);
     int16_t gnssReadLastScanModeLaunched(uint8_t* lastScanMode);
     int16_t gnssFetchTime(uint8_t effort, uint8_t opt);
     int16_t gnssReadTime(uint8_t* err, uint32_t* time, uint32_t* nbUs, uint32_t* timeAccuracy);
