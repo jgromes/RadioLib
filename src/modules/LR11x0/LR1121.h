@@ -21,6 +21,15 @@ class LR1121: public LR1120 {
     */
     LR1121(Module* mod); // cppcheck-suppress noExplicitConstructor
 
+    /*!
+      \brief Sets output power. Allowed values are in range from -17 to 22 dBm (high-power PA) or -18 to 13 dBm (High-frequency PA).
+      \param power Output power to be set in dBm.
+      \param useHighFreqPa  When using 2.4G frequency, need to switch to High-frequency PA
+      \returns \ref status_codes
+    */
+    int16_t setOutputPower(int8_t power,bool useHighFreqPa = false);
+
+
     // TODO this is where overrides to disable GNSS+WiFi scanning methods on LR1121
     // will be put once those are implemented
 
