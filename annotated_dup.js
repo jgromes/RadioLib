@@ -29,6 +29,7 @@ var annotated_dup =
     [ "LR1120", "class_l_r1120.html", "class_l_r1120" ],
     [ "LR1121", "class_l_r1121.html", "class_l_r1121" ],
     [ "LR11x0", "class_l_r11x0.html", "class_l_r11x0" ],
+    [ "LR11x0GnssResult_t", "struct_l_r11x0_gnss_result__t.html", null ],
     [ "LR11x0VersionInfo_t", "struct_l_r11x0_version_info__t.html", "struct_l_r11x0_version_info__t" ],
     [ "LR11x0WifiResult_t", "struct_l_r11x0_wifi_result__t.html", "struct_l_r11x0_wifi_result__t" ],
     [ "LR11x0WifiResultExtended_t", "struct_l_r11x0_wifi_result_extended__t.html", "struct_l_r11x0_wifi_result_extended__t" ],

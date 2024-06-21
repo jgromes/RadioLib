@@ -25,6 +25,7 @@ var hierarchy =
     [ "LoRaWANMacCommandQueue_t", "struct_lo_ra_w_a_n_mac_command_queue__t.html", null ],
     [ "LoRaWANMacSpec_t", "struct_lo_ra_w_a_n_mac_spec__t.html", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", null ],
+    [ "LR11x0GnssResult_t", "struct_l_r11x0_gnss_result__t.html", null ],
     [ "LR11x0VersionInfo_t", "struct_l_r11x0_version_info__t.html", null ],
     [ "LR11x0WifiResult_t", "struct_l_r11x0_wifi_result__t.html", [
       [ "LR11x0WifiResultFull_t", "struct_l_r11x0_wifi_result_full__t.html", [

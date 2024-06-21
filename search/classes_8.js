@@ -16,8 +16,9 @@ var searchData=
   ['lr1120_672',['LR1120',['../class_l_r1120.html',1,'']]],
   ['lr1121_673',['LR1121',['../class_l_r1121.html',1,'']]],
   ['lr11x0_674',['LR11x0',['../class_l_r11x0.html',1,'']]],
-  ['lr11x0versioninfo_5ft_675',['LR11x0VersionInfo_t',['../struct_l_r11x0_version_info__t.html',1,'']]],
-  ['lr11x0wifiresult_5ft_676',['LR11x0WifiResult_t',['../struct_l_r11x0_wifi_result__t.html',1,'']]],
-  ['lr11x0wifiresultextended_5ft_677',['LR11x0WifiResultExtended_t',['../struct_l_r11x0_wifi_result_extended__t.html',1,'']]],
-  ['lr11x0wifiresultfull_5ft_678',['LR11x0WifiResultFull_t',['../struct_l_r11x0_wifi_result_full__t.html',1,'']]]
+  ['lr11x0gnssresult_5ft_675',['LR11x0GnssResult_t',['../struct_l_r11x0_gnss_result__t.html',1,'']]],
+  ['lr11x0versioninfo_5ft_676',['LR11x0VersionInfo_t',['../struct_l_r11x0_version_info__t.html',1,'']]],
+  ['lr11x0wifiresult_5ft_677',['LR11x0WifiResult_t',['../struct_l_r11x0_wifi_result__t.html',1,'']]],
+  ['lr11x0wifiresultextended_5ft_678',['LR11x0WifiResultExtended_t',['../struct_l_r11x0_wifi_result_extended__t.html',1,'']]],
+  ['lr11x0wifiresultfull_5ft_679',['LR11x0WifiResultFull_t',['../struct_l_r11x0_wifi_result_full__t.html',1,'']]]
 ];

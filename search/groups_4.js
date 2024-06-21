@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['standby_20mode_20type_20aliases_2e_1229',['Standby mode type aliases.',['../group__config__standby.html',1,'']]],
-  ['status_20codes_1230',['Status Codes',['../group__status__codes.html',1,'']]]
+  ['standby_20mode_20type_20aliases_2e_1230',['Standby mode type aliases.',['../group__config__standby.html',1,'']]],
+  ['status_20codes_1231',['Status Codes',['../group__status__codes.html',1,'']]]
 ];
