@@ -1626,6 +1626,16 @@ int16_t LR11x0::getVersionInfo(LR11x0VersionInfo_t* info) {
 
   int16_t state = this->getVersion(&info->hardware, &info->device, &info->fwMajor, &info->fwMinor);
   RADIOLIB_ASSERT(state);
+  
+  // LR1121 does not have GNSS and WiFi scanning
+  if(this->chipType == RADIOLIB_LR11X0_DEVICE_LR1121) {
+    info->fwMajorWiFi = 0;
+    info->fwMinorWiFi = 0;
+    info->fwGNSS = 0;
+    info->almanacGNSS = 0;
+    return(RADIOLIB_ERR_NONE);
+  }
+
   state = this->wifiReadVersion(&info->fwMajorWiFi, &info->fwMinorWiFi);
   RADIOLIB_ASSERT(state);
   return(this->gnssReadVersion(&info->fwGNSS, &info->almanacGNSS));
@@ -1787,8 +1797,10 @@ bool LR11x0::findChip(uint8_t ver) {
     if((state == RADIOLIB_ERR_NONE) && (info.device == ver)) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)info.fwMajor, (int)info.fwMinor);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)info.fwMajorWiFi, (int)info.fwMinorWiFi);
-      RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)info.fwGNSS, (int)info.almanacGNSS);
+      if(this->chipType != RADIOLIB_LR11X0_DEVICE_LR1121) {
+        RADIOLIB_DEBUG_BASIC_PRINTLN("WiFi FW version: %d.%d", (int)info.fwMajorWiFi, (int)info.fwMinorWiFi);
+        RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS FW version: %d.%d", (int)info.fwGNSS, (int)info.almanacGNSS);
+      }
       flagFound = true;
     } else {
       RADIOLIB_DEBUG_BASIC_PRINTLN("LR11x0 not found! (%d of 10 tries) RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", i + 1, info.device);
