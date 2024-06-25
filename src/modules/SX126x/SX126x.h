@@ -917,11 +917,18 @@ class SX126x: public PhysicalLayer {
     float getDataRate() const;
 
     /*!
-      \brief GetsRSSI (Recorded Signal Strength Indicator).
+      \brief Gets recorded signal strength indicator.
+      Overload with packet mode enabled for PhysicalLayer compatibility.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI() override;
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator).
       \param packet Whether to read last packet RSSI, or the current value.
       \returns RSSI value in dBm.
     */
-    float getRSSI(bool packet = true);
+    float getRSSI(bool packet);
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa modem.
