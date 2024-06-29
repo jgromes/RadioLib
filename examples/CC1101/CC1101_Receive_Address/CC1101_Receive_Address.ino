@@ -39,7 +39,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set node address
@@ -56,7 +56,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // address filtering can also be disabled
@@ -70,7 +70,7 @@ void setup() {
     } else {
       Serial.print(F("failed, code "));
       Serial.println(state);
-      while(true);
+      while (true) { delay(10); }
     }
   */
 }

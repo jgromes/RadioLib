@@ -50,7 +50,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // initialize CC1101 with non-default settings
@@ -67,7 +67,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // you can also change the settings at runtime
@@ -76,42 +76,42 @@ void setup() {
   // set carrier frequency to 433.5 MHz
   if (radio1.setFrequency(433.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("[CC1101] Selected frequency is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set bit rate to 100.0 kbps
   state = radio1.setBitRate(100.0);
   if (state == RADIOLIB_ERR_INVALID_BIT_RATE) {
     Serial.println(F("[CC1101] Selected bit rate is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   } else if (state == RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO) {
     Serial.println(F("[CC1101] Selected bit rate to bandwidth ratio is invalid!"));
     Serial.println(F("[CC1101] Increase receiver bandwidth to set this bit rate."));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set receiver bandwidth to 250.0 kHz
   if (radio1.setRxBandwidth(250.0) == RADIOLIB_ERR_INVALID_RX_BANDWIDTH) {
     Serial.println(F("[CC1101] Selected receiver bandwidth is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set allowed frequency deviation to 10.0 kHz
   if (radio1.setFrequencyDeviation(10.0) == RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION) {
     Serial.println(F("[CC1101] Selected frequency deviation is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set output power to 5 dBm
   if (radio1.setOutputPower(5) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("[CC1101] Selected output power is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // 2 bytes can be set as sync word
   if (radio1.setSyncWord(0x01, 0x23) == RADIOLIB_ERR_INVALID_SYNC_WORD) {
     Serial.println(F("[CC1101] Selected sync word is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
 }
