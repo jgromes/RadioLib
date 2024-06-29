@@ -53,7 +53,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // initialize the second LoRa instance with
@@ -74,7 +74,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // you can also change the settings at runtime
@@ -83,43 +83,43 @@ void setup() {
   // set carrier frequency to 2410.5 MHz
   if (radio1.setFrequency(2410.5) == RADIOLIB_ERR_INVALID_FREQUENCY) {
     Serial.println(F("Selected frequency is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set bandwidth to 203.125 kHz
   if (radio1.setBandwidth(203.125) == RADIOLIB_ERR_INVALID_BANDWIDTH) {
     Serial.println(F("Selected bandwidth is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set spreading factor to 10
   if (radio1.setSpreadingFactor(10) == RADIOLIB_ERR_INVALID_SPREADING_FACTOR) {
     Serial.println(F("Selected spreading factor is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set coding rate to 6
   if (radio1.setCodingRate(6) == RADIOLIB_ERR_INVALID_CODING_RATE) {
     Serial.println(F("Selected coding rate is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set output power to -2 dBm
   if (radio1.setOutputPower(-2) == RADIOLIB_ERR_INVALID_OUTPUT_POWER) {
     Serial.println(F("Selected output power is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // set LoRa preamble length to 16 symbols (accepted range is 2 - 65535)
   if (radio1.setPreambleLength(16) == RADIOLIB_ERR_INVALID_PREAMBLE_LENGTH) {
     Serial.println(F("Selected preamble length is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   // disable CRC
   if (radio1.setCRC(false) == RADIOLIB_ERR_INVALID_CRC_CONFIGURATION) {
     Serial.println(F("Selected CRC is invalid for this module!"));
-    while (true);
+    while (true) { delay(10); }
   }
 
   Serial.println(F("All settings succesfully changed!"));
