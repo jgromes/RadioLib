@@ -42,7 +42,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // NOTE: some RF69 modules use high power output,
@@ -58,7 +58,7 @@ void setup() {
     } else {
       Serial.print(F("failed, code "));
       Serial.println(state);
-      while (true);
+      while (true) { delay(10); }
     }
   */
 }
