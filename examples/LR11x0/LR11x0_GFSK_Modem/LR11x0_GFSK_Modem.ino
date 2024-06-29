@@ -41,7 +41,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // if needed, you can switch between any of the modems
@@ -63,7 +63,7 @@ void setup() {
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // GFSK modem on LR11x0 can handle the sync word setting in bits, not just

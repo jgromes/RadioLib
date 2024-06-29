@@ -66,7 +66,7 @@ void setup() {
     Serial.print(F("failed, code "));
     Serial.println(state);
     delay(1000);
-    while (true);
+    while (true) { delay(10); }
   }
 }
 
