@@ -41,7 +41,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // if needed, you can switch between LoRa and FSK modes
@@ -64,7 +64,7 @@ void setup() {
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // FSK modulation can be changed to OOK
@@ -77,7 +77,7 @@ void setup() {
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to change modulation, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   #warning "This sketch is just an API guide! Read the note at line 6."
