@@ -1327,6 +1327,10 @@ float SX126x::getDataRate() const {
   return(this->dataRateMeasured);
 }
 
+float SX126x::getRSSI() {
+  return(this->getRSSI(true));
+}
+
 float SX126x::getRSSI(bool packet) {
   if(packet) { 
     // get last packet RSSI from packet status

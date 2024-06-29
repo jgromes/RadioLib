@@ -510,7 +510,8 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_ASSERT(state);
 
   if(this->dwellTimeEnabledUp) {
-    RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN);
+    // calculate JoinRequest time-on-air in milliseconds
+    RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
     if(toa > this->dwellTimeUp) {
       return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
     }
