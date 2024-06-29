@@ -49,7 +49,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // upload a patch to the SX1262 to enable spectral scan
@@ -62,7 +62,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // configure scan bandwidth to 234.4 kHz
@@ -75,7 +75,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 }
 
@@ -95,7 +95,7 @@ void loop() {
     } else {
       Serial.print(F("failed, code "));
       Serial.println(state);
-      while(true);
+      while (true) { delay(10); }
     }
 
     // wait for spectral scan to finish

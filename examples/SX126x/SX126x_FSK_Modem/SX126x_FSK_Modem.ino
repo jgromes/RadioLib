@@ -44,7 +44,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // if needed, you can switch between LoRa and FSK modes
@@ -67,7 +67,7 @@ void setup() {
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // FSK modem on SX126x can handle the sync word setting in bits, not just
