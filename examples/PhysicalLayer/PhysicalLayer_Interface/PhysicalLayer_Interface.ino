@@ -42,7 +42,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // or we can use the "phy" pointer to access the common layer
@@ -54,7 +54,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // PhysicalLayer also contains basic functionality
@@ -66,7 +66,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // try to receive now - this will almost certainly timeout
@@ -82,7 +82,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // interrupt-driven versions of Rx/Tx are supported as well
@@ -105,7 +105,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // ... or standby
@@ -116,7 +116,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // there are also common SNR/RSSI measurement functions
