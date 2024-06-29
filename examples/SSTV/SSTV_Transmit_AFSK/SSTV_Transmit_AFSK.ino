@@ -103,7 +103,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while (true);
+    while (true) { delay(10); }
   }
 
   // when using one of the non-LoRa modules for SSTV
@@ -119,7 +119,7 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // set correction factor
@@ -138,14 +138,14 @@ void setup() {
   } else {
     Serial.print(F("failed, code "));
     Serial.println(state);
-    while(true);
+    while (true) { delay(10); }
   }
 
   // to help tune the receiver, SSTVClient can send
   // continuous 1900 Hz beep
   /*
     sstv.idle();
-    while(true);
+    while (true) { delay(10); }
   */
 }
 
