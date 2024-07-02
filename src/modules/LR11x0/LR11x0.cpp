@@ -395,7 +395,7 @@ int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // set DIO mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_TX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT, 0);
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_TX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT);
   RADIOLIB_ASSERT(state);
 
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
@@ -463,7 +463,7 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
     irq |= RADIOLIB_LR11X0_IRQ_TIMEOUT;
   }
 
-  state = setDioIrqParams(irq, RADIOLIB_LR11X0_IRQ_NONE);
+  state = setDioIrqParams(irq);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -562,7 +562,7 @@ int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE, RADIOLIB_LR11X0_IRQ_NONE);
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1436,7 +1436,7 @@ int16_t LR11x0::startWifiScan(char wifiType, uint8_t mode, uint16_t chanMask, ui
   RADIOLIB_ASSERT(state);
 
   // set DIO mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_WIFI_DONE, 0);
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_WIFI_DONE);
   RADIOLIB_ASSERT(state);
 
   // start scan with the maximum number of results and abort on timeout
@@ -1675,7 +1675,7 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_ASSERT(state);
 
   // set DIO mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE, 0);
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE);
   RADIOLIB_ASSERT(state);
 
   state = this->gnssSetConstellationToUse(0x03);
@@ -1879,7 +1879,7 @@ int16_t LR11x0::config(uint8_t modem) {
 
   // clear IRQ
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
-  state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE, RADIOLIB_LR11X0_IRQ_NONE);
+  state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE);
   RADIOLIB_ASSERT(state);
 
   // calibrate all blocks
@@ -2147,6 +2147,10 @@ int16_t LR11x0::setDioIrqParams(uint32_t irq1, uint32_t irq2) {
     (uint8_t)((irq2 >> 24) & 0xFF), (uint8_t)((irq2 >> 16) & 0xFF), (uint8_t)((irq2 >> 8) & 0xFF), (uint8_t)(irq2 & 0xFF),
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_DIO_IRQ_PARAMS, true, buff, sizeof(buff)));
+}
+
+int16_t LR11x0::setDioIrqParams(uint32_t irq) {
+  return(setDioIrqParams(irq, irq));
 }
 
 int16_t LR11x0::clearIrq(uint32_t irq) {
