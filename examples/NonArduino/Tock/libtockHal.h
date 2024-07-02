@@ -157,11 +157,19 @@ class TockHal : public RadioLibHal {
     }
 
     void delay(unsigned long ms) override {
-      libtocksync_alarm_delay_ms( ms );
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+      libtocksync_alarm_delay_ms(ms);
+#else
+      libtocksync_alarm_delay_ms(ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
+#endif
     }
 
     void delayMicroseconds(unsigned long us) override {
-      libtocksync_alarm_delay_ms( us / 1000 );
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+      libtocksync_alarm_delay_ms(us / 1000);
+#else
+      libtocksync_alarm_delay_ms((us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS)) / 1000);
+#endif
     }
 
     unsigned long millis() override {
@@ -176,7 +184,11 @@ class TockHal : public RadioLibHal {
 
       ms = now / (frequency / 1000);
 
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
       return ms;
+#else
+      return ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS);
+#endif
     }
 
     unsigned long micros() override {
