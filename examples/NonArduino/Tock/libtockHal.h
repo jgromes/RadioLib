@@ -55,6 +55,9 @@
 
 typedef void (*gpioIrqFn)(void);
 
+gpioIrqFn gpio_funcs[4] = { NULL, NULL, NULL, NULL};
+uint32_t frequency = 0;
+
 /*
  * Get the the timer frequency in Hz.
  */
@@ -73,7 +76,7 @@ static void lora_phy_gpio_Callback (int gpioPin,
                                     __attribute__ ((unused)) int arg3,
                                     void* userdata)
 {
-    gpioIrqFn fn = *(gpioIrqFn*)(&userdata);
+    gpioIrqFn fn = gpio_funcs[gpioPin - 1];
 
     if (fn != NULL ) {
         fn();
@@ -136,7 +139,8 @@ class TockHal : public RadioLibHal {
         return;
       }
 
-      libtock_lora_phy_gpio_command_interrupt_callback(lora_phy_gpio_Callback, &interruptCb);
+      gpio_funcs[interruptNum - 1] = interruptCb;
+      libtock_lora_phy_gpio_command_interrupt_callback(lora_phy_gpio_Callback, NULL);
 
       // set GPIO as input and enable interrupts on it
       libtock_lora_phy_gpio_enable_input(interruptNum, libtock_pull_down);
@@ -148,24 +152,43 @@ class TockHal : public RadioLibHal {
         return;
       }
 
+      gpio_funcs[interruptNum - 1] = NULL;
       libtock_lora_phy_gpio_disable_interrupt(interruptNum);
     }
 
     void delay(unsigned long ms) override {
-      libtocksync_alarm_delay_ms( ms );
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+      libtocksync_alarm_delay_ms(ms);
+#else
+      libtocksync_alarm_delay_ms(ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
+#endif
     }
 
     void delayMicroseconds(unsigned long us) override {
-      libtocksync_alarm_delay_ms( us / 1000 );
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+      libtocksync_alarm_delay_ms(us / 1000);
+#else
+      libtocksync_alarm_delay_ms((us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS)) / 1000);
+#endif
     }
 
     unsigned long millis() override {
-      uint32_t frequency, now;
+      uint32_t now;
+      unsigned long ms;
 
-      alarm_internal_frequency(&frequency);
+      if (frequency == 0) {
+        alarm_internal_frequency(&frequency);
+      }
+
       alarm_internal_read(&now);
 
-      return (now / frequency) / 1000;
+      ms = now / (frequency / 1000);
+
+#if !defined(RADIOLIB_CLOCK_DRIFT_MS)
+      return ms;
+#else
+      return ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS);
+#endif
     }
 
     unsigned long micros() override {
