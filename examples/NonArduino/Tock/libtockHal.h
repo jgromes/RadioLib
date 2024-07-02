@@ -56,6 +56,7 @@
 typedef void (*gpioIrqFn)(void);
 
 gpioIrqFn gpio_funcs[4] = { NULL, NULL, NULL, NULL};
+uint32_t frequency = 0;
 
 /*
  * Get the the timer frequency in Hz.
@@ -164,12 +165,18 @@ class TockHal : public RadioLibHal {
     }
 
     unsigned long millis() override {
-      uint32_t frequency, now;
+      uint32_t now;
+      unsigned long ms;
 
-      alarm_internal_frequency(&frequency);
+      if (frequency == 0) {
+        alarm_internal_frequency(&frequency);
+      }
+
       alarm_internal_read(&now);
 
-      return (now / frequency) / 1000;
+      ms = now / (frequency / 1000);
+
+      return ms;
     }
 
     unsigned long micros() override {
