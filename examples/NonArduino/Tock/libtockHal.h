@@ -59,6 +59,11 @@ gpioIrqFn gpio_funcs[4] = { NULL, NULL, NULL, NULL};
 uint32_t frequency = 0;
 
 /*
+ * Note that this is the CPU frequency, not the alarm frequency
+ */
+#define CPU_FREQUENCY 48000000
+
+/*
  * Get the the timer frequency in Hz.
  */
 int alarm_internal_frequency(uint32_t* frequency) {
@@ -80,6 +85,30 @@ static void lora_phy_gpio_Callback (int gpioPin,
 
     if (fn != NULL ) {
         fn();
+    }
+}
+
+/*
+ * Busy loop for a specified number of nop iterations.
+ *
+ * The Tock `libtocksync_alarm_delay_ms()` functions have too
+ * high of an overhead and not enough accuracy to use for
+ * short (less then 5 seconds) delays with LoRaWAN.
+ *
+ * So instead we just busy loop to ensure we meet timing
+ * requirements.
+ *
+ * This works great when running a single application, but might
+ * cause issues if running multiple applications. A potential fix
+ * to this would be to update the iterations based on time difference.
+ *
+ * For now though this provides us with a lot more accuracy and depending
+ * on the scheduler chosen isn't an issue anyway.
+ */
+static inline void busy_loop_delay(uint32_t iterations)
+{
+    for (int i = 0; i < iterations; i++) {
+        asm("nop");
     }
 }
 
@@ -157,19 +186,49 @@ class TockHal : public RadioLibHal {
     }
 
     void delay(unsigned long ms) override {
+      uint32_t delay, loops;
+
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
-      libtocksync_alarm_delay_ms(ms);
+      delay = ms;
 #else
-      libtocksync_alarm_delay_ms(ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS));
+      delay = ms * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS);
 #endif
+      if (delay < 5 * 1000) {
+        /*
+         * The busy_loop_delay() loop is 5 instructions,
+         * so we divide by 5.
+         */
+        loops = (CPU_FREQUENCY / 5000) * delay;
+
+        if (loops == 0) {
+          return;
+        }
+
+        busy_loop_delay(loops);
+      } else {
+        libtocksync_alarm_delay_ms(delay);
+      }
     }
 
     void delayMicroseconds(unsigned long us) override {
+      uint32_t delay, loops;
+
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
-      libtocksync_alarm_delay_ms(us / 1000);
+      delay = us;
 #else
-      libtocksync_alarm_delay_ms((us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS)) / 1000);
+      delay = us * 1000 / (1000 + RADIOLIB_CLOCK_DRIFT_MS);
 #endif
+        /*
+         * The busy_loop_delay() loop is 5 instructions,
+         * so we divide by 5.
+         */
+      loops = (CPU_FREQUENCY / 5000000) * delay;
+
+      if (loops == 0) {
+        return;
+      }
+
+      busy_loop_delay(loops);
     }
 
     unsigned long millis() override {
