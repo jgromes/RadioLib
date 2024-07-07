@@ -471,7 +471,7 @@ int16_t CC1101::setBitRate(float br) {
 }
 
 int16_t CC1101::setBitRateTolerance(uint8_t brt) {
-  RADIOLIB_CHECK_RANGE(brt, 0x00, 0x03, RADIOLIB_ERR_INVALID_BIT_RATE_TOLERANCE_VALUE);
+  if (brt > 0x03)  return (RADIOLIB_ERR_INVALID_BIT_RATE_TOLERANCE_VALUE);
 
   // Set Bit Rate tolerance
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_BSCFG, brt, 1, 0);
