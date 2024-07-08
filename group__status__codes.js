@@ -16,6 +16,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_BIT_RANGE", "group__status__codes.html#ga508806c18663156b0d00d1a21c957468", null ],
     [ "RADIOLIB_ERR_INVALID_BIT_RATE", "group__status__codes.html#gac192dbf5134a10ed561100b01129224c", null ],
     [ "RADIOLIB_ERR_INVALID_BIT_RATE_BW_RATIO", "group__status__codes.html#ga733a7f3f12109103384522dac4d1146e", null ],
+    [ "RADIOLIB_ERR_INVALID_BIT_RATE_TOLERANCE_VALUE", "group__status__codes.html#ga4482925df56b8fc069c6a418d74380d7", null ],
     [ "RADIOLIB_ERR_INVALID_CALLSIGN", "group__status__codes.html#gac1c27fd5a9ec38601a53c1c5ad428063", null ],
     [ "RADIOLIB_ERR_INVALID_CID", "group__status__codes.html#ga5133c0c17301cfc39ac6121c5851292f", null ],
     [ "RADIOLIB_ERR_INVALID_CODING_RATE", "group__status__codes.html#ga4e64d3ed035b21bfb81cf2bca35b2ecb", null ],

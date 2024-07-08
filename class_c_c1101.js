@@ -31,6 +31,7 @@ var class_c_c1101 =
     [ "receiveDirectAsync", "class_c_c1101.html#a9ec1ff1312d2caaae7e3e0389268fca2", null ],
     [ "reset", "class_c_c1101.html#a1fc87275c6f5d7f6927ca51a175eba21", null ],
     [ "setBitRate", "class_c_c1101.html#a6fd22cdec29e1e34a92aa9854b90fdc9", null ],
+    [ "setBitRateTolerance", "class_c_c1101.html#adc76af01dbc9171b3fdd7570624a4d4f", null ],
     [ "setCrcFiltering", "class_c_c1101.html#a60695681fc74a37f2a31a9638552e877", null ],
     [ "setDataShaping", "class_c_c1101.html#adf96e77f25b7e256891601bef04f35a6", null ],
     [ "setDIOMapping", "class_c_c1101.html#a544bb8d7be9c0e1ff7f7103b30925862", null ],
