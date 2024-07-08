@@ -1660,7 +1660,7 @@ uint8_t SX127x::getFHSSChannel(void) {
 void SX127x::clearFHSSInt(void) {
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
-    this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, getIRQFlags() | RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
+    this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_IRQ_FLAGS, RADIOLIB_SX127X_CLEAR_IRQ_FLAG_FHSS_CHANGE_CHANNEL);
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
     return; //These are not the interrupts you are looking for
   }
