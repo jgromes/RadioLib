@@ -470,6 +470,15 @@ int16_t CC1101::setBitRate(float br) {
   return(state);
 }
 
+int16_t CC1101::setBitRateTolerance(uint8_t brt) {
+  if (brt > 0x03)  return (RADIOLIB_ERR_INVALID_BIT_RATE_TOLERANCE_VALUE);
+
+  // Set Bit Rate tolerance
+  int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_BSCFG, brt, 1, 0);
+
+  return(state);
+}
+
 int16_t CC1101::setRxBandwidth(float rxBw) {
   RADIOLIB_CHECK_RANGE(rxBw, 58.0, 812.0, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 

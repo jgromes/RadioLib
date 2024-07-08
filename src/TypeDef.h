@@ -292,6 +292,11 @@
 */
 #define RADIOLIB_ERR_INVALID_OOK_RSSI_PEAK_TYPE                (-108)
 
+/*!
+  \brief Supplied Bitrate tolerance value is out of Range.
+*/
+#define RADIOLIB_ERR_INVALID_BIT_RATE_TOLERANCE_VALUE          (-109)
+
 // APRS status codes
 
 /*!

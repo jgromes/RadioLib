@@ -739,6 +739,13 @@ class CC1101: public PhysicalLayer {
     int16_t setBitRate(float br) override;
 
     /*!
+      \brief Sets bit rate tolerance in BSCFG register. Allowed values are 0:(0%), 1(3,125%), 2:(6,25%) and 3:(12,5%).
+      \param brt Bit rate tolerance to be set.
+      \returns \ref status_codes
+    */
+    int16_t setBitRateTolerance(uint8_t brt);
+
+    /*!
       \brief Sets receiver bandwidth. Allowed values are 58, 68, 81, 102, 116, 135, 162,
       203, 232, 270, 325, 406, 464, 541, 650 and 812 kHz.
       \param rxBw Receiver bandwidth to be set in kHz.
