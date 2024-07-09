@@ -1002,6 +1002,9 @@ class LoRaWANNode {
     // save the selected sub-band in case this must be restored in ADR control
     uint8_t subBand = 0;
 
+    // initalize the Nonces buffer after beginX() has been called
+    void createNonces();
+
     // this will reset the device credentials, so the device starts completely new
     void clearNonces();
 
@@ -1018,6 +1021,9 @@ class LoRaWANNode {
     // configure the common physical layer properties (preamble, sync word etc.)
     // channels must be configured separately by setupChannelsDyn()!
     int16_t setPhyProperties(uint8_t dir);
+
+    // print the available channels through debug
+    void printChannels();
 
     // setup uplink/downlink channel data rates and frequencies
     // for dynamic channels, there is a small set of predefined channels

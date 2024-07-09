@@ -42,9 +42,18 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
 }
 
 void LoRaWANNode::setCSMA(uint8_t backoffMax, uint8_t difsSlots, bool enableCSMA) {
-    this->backoffMax = backoffMax;
-    this->difsSlots = difsSlots;
-    this->enableCSMA = enableCSMA;
+  this->backoffMax = backoffMax;
+  this->difsSlots = difsSlots;
+  this->enableCSMA = enableCSMA;
+}
+
+void LoRaWANNode::createNonces() {
+  // set the device credentials
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_VERSION], RADIOLIB_LORAWAN_NONCES_VERSION_VAL);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_MODE], this->lwMode);
+  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CLASS], this->lwClass);
+  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_PLAN], this->band->bandNum);
+  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CHECKSUM], this->keyCheckSum);
 }
 
 void LoRaWANNode::clearNonces() {
@@ -54,6 +63,7 @@ void LoRaWANNode::clearNonces() {
   this->devNonce = 0;
   this->joinNonce = 0;
   this->isActive = false;
+  this->rev = 0;
 }
 
 void LoRaWANNode::clearSession() {
@@ -299,7 +309,7 @@ int16_t LoRaWANNode::checkBufferCommon(uint8_t *buffer, uint16_t size) {
   uint16_t checkSum = LoRaWANNode::checkSum16(buffer, size - 2);
   uint16_t signature = LoRaWANNode::ntoh<uint16_t>(&buffer[size - 2]);
   if(signature != checkSum) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Calculated checksum: %04X, expected: %04X", checkSum, signature);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Calculated checksum: %04x, expected: %04x", checkSum, signature);
     return(RADIOLIB_ERR_CHECKSUM_MISMATCH);
   }
   return(RADIOLIB_ERR_NONE);
@@ -445,20 +455,30 @@ void LoRaWANNode::activateCommon(uint8_t initialDr) {
 }
 
 void LoRaWANNode::beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey) {
+  // clear all the device credentials in case there were any
+  this->clearNonces();
+
   this->joinEUI = joinEUI;
   this->devEUI = devEUI;
-  memcpy(this->nwkKey, nwkKey, RADIOLIB_AES128_KEY_SIZE);
   memcpy(this->appKey, appKey, RADIOLIB_AES128_KEY_SIZE);
+  if(nwkKey) {
+    this->rev = 1;
+    memcpy(this->nwkKey, nwkKey, RADIOLIB_AES128_KEY_SIZE);
+  }
 
   // generate activation key checksum
   this->keyCheckSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&joinEUI), 8);
   this->keyCheckSum ^= LoRaWANNode::checkSum16(reinterpret_cast<uint8_t*>(&devEUI), 8);
-  this->keyCheckSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
   this->keyCheckSum ^= LoRaWANNode::checkSum16(appKey, 16);
+  if(nwkKey) {
+    this->keyCheckSum ^= LoRaWANNode::checkSum16(nwkKey, 16);
+  }
 
-  this->clearNonces();
   this->lwMode = RADIOLIB_LORAWAN_MODE_OTAA;
   this->lwClass = RADIOLIB_LORAWAN_CLASS_A;
+
+  // set the device credentials
+  this->createNonces();
 }
 
 int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent) {
@@ -530,7 +550,12 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   LoRaWANNode::hton<uint16_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_DEV_NONCE_POS], devNonceUsed);
 
   // add the authentication code
-  uint32_t mic = this->generateMIC(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN - sizeof(uint32_t), this->nwkKey);
+  uint32_t mic = 0;
+  if(this->rev == 1) {
+    mic =this->generateMIC(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN - sizeof(uint32_t), this->nwkKey);
+  } else {
+    mic =this->generateMIC(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN - sizeof(uint32_t), this->appKey);
+  }
   LoRaWANNode::hton<uint32_t>(&joinRequestMsg[RADIOLIB_LORAWAN_JOIN_REQUEST_LEN - sizeof(uint32_t)], mic);
 
   // send it
@@ -584,7 +609,11 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // the first byte is the MAC header which is not encrypted
   uint8_t joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN];
   joinAcceptMsg[0] = joinAcceptMsgEnc[0];
-  RadioLibAES128Instance.init(this->nwkKey);
+  if(this->rev == 1) {
+    RadioLibAES128Instance.init(this->nwkKey);
+  } else {
+    RadioLibAES128Instance.init(this->appKey);
+  }
   RadioLibAES128Instance.encryptECB(&joinAcceptMsgEnc[1], RADIOLIB_LORAWAN_JOIN_ACCEPT_MAX_LEN - 1, &joinAcceptMsg[1]);
 
   // get current joinNonce from downlink
@@ -593,9 +622,16 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinAccept (JoinNonce = %lu, previously %lu):", (unsigned long)joinNonceNew, (unsigned long)this->joinNonce);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(joinAcceptMsg, lenRx);
 
-  // joinNonce received must be greater than the last joinNonce heard, else error
-  if((this->joinNonce > 0) && (joinNonceNew <= this->joinNonce)) {
-    return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
+  if(this->rev == 1) {
+    // for v1.1, the JoinNonce received must be greater than the last joinNonce heard, else error
+    if((this->joinNonce > 0) && (joinNonceNew <= this->joinNonce)) {
+      return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
+    }
+  } else {
+    // for v1.0.4, the JoinNonce is simply a non-repeating value (we only check the last value)
+    if(joinNonceNew == this->joinNonce) {
+      return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
+    }
   }
   this->joinNonce = joinNonceNew;
 
@@ -629,7 +665,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   
   } else {
     // 1.0 version
-    if(!verifyMIC(joinAcceptMsg, lenRx, this->nwkKey)) {
+    if(!verifyMIC(joinAcceptMsg, lenRx, this->appKey)) {
       return(RADIOLIB_ERR_CRC_MISMATCH);
     }
 
@@ -704,11 +740,11 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
     LoRaWANNode::hton<uint32_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_HOME_NET_ID_POS], this->homeNetId, 3);
     LoRaWANNode::hton<uint16_t>(&keyDerivationBuff[RADIOLIB_LORAWAN_JOIN_ACCEPT_DEV_ADDR_POS], devNonceUsed);
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_APP_S_KEY;
-    RadioLibAES128Instance.init(this->nwkKey);
+    RadioLibAES128Instance.init(this->appKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->appSKey);
 
     keyDerivationBuff[0] = RADIOLIB_LORAWAN_JOIN_ACCEPT_F_NWK_S_INT_KEY;
-    RadioLibAES128Instance.init(this->nwkKey);
+    RadioLibAES128Instance.init(this->appKey);
     RadioLibAES128Instance.encryptECB(keyDerivationBuff, RADIOLIB_AES128_BLOCK_SIZE, this->fNwkSIntKey);
 
     memcpy(this->sNwkSIntKey, this->fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
@@ -724,12 +760,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
   this->adrFCnt = 0;
 
-  // save the activation keys checksum, device address & keys as well as JoinAccept values; these are only ever set when joining
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_VERSION], RADIOLIB_LORAWAN_NONCES_VERSION_VAL);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_MODE], RADIOLIB_LORAWAN_MODE_OTAA);
-  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CLASS], RADIOLIB_LORAWAN_CLASS_A);
-  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_PLAN], this->band->bandNum);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CHECKSUM], this->keyCheckSum);
+  
   LoRaWANNode::hton<uint32_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_JOIN_NONCE], this->joinNonce, 3);
 
   this->bufferNonces[RADIOLIB_LORAWAN_NONCES_ACTIVE] = (uint8_t)true;
@@ -763,17 +794,19 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
 }
 
 void LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey) {
+  // clear all the device credentials in case there were any
+  this->clearNonces();
+
   this->devAddr = addr;
   memcpy(this->appSKey, appSKey, RADIOLIB_AES128_KEY_SIZE);
   memcpy(this->nwkSEncKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
-  if(fNwkSIntKey) {
+  if(fNwkSIntKey && sNwkSIntKey) {
     this->rev = 1;
     memcpy(this->fNwkSIntKey, fNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
+    memcpy(this->sNwkSIntKey, sNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
   } else {
     memcpy(this->fNwkSIntKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
-  }
-  if(sNwkSIntKey) {
-    memcpy(this->sNwkSIntKey, sNwkSIntKey, RADIOLIB_AES128_KEY_SIZE);
+    memcpy(this->sNwkSIntKey, nwkSEncKey, RADIOLIB_AES128_KEY_SIZE);
   }
 
   // generate activation key checksum
@@ -783,10 +816,11 @@ void LoRaWANNode::beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIn
   if(fNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(fNwkSIntKey, 16); }
   if(sNwkSIntKey) { this->keyCheckSum ^= LoRaWANNode::checkSum16(sNwkSIntKey, 16); }
 
-  // clear & set all the device credentials
-  this->clearNonces();
   this->lwMode = RADIOLIB_LORAWAN_MODE_ABP;
   this->lwClass = RADIOLIB_LORAWAN_CLASS_A;
+
+  // set the device credentials
+  this->createNonces();
 }
 
 int16_t LoRaWANNode::activateABP(uint8_t initialDr) {
@@ -821,13 +855,6 @@ int16_t LoRaWANNode::activateABP(uint8_t initialDr) {
   this->confFCntUp = RADIOLIB_LORAWAN_FCNT_NONE;
   this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
   this->adrFCnt = 0;
-
-  // save the activation keys checksum, mode, class, frequency plan
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_VERSION], RADIOLIB_LORAWAN_NONCES_VERSION_VAL);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_MODE], RADIOLIB_LORAWAN_MODE_ABP);
-  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CLASS], RADIOLIB_LORAWAN_CLASS_A);
-  LoRaWANNode::hton<uint8_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_PLAN], this->band->bandNum);
-  LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_CHECKSUM], this->keyCheckSum);
 
   // new session all good, so set active-bit to true
   this->bufferNonces[RADIOLIB_LORAWAN_NONCES_ACTIVE] = (uint8_t)true;
@@ -1060,8 +1087,13 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
     uplinkMsgLen = RADIOLIB_LORAWAN_FRAME_LEN(len, fOptsLen);
     uplinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= fOptsLen;
 
-    // encrypt it
-    processAES(fOptsBuff, fOptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x01, true);
+    if(this->rev == 1) {
+      // in LoRaWAN v1.1, the FOpts are encrypted using the NwkSEncKey
+      processAES(fOptsBuff, fOptsLen, this->nwkSEncKey, &uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], this->fCntUp, RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK, 0x01, true);
+    } else {
+      // in LoRaWAN v1.0.x, the FOpts are unencrypted
+      memcpy(&uplinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], fOptsBuff, fOptsLen);
+    }
     
   }
 
@@ -1484,8 +1516,14 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     // if there are <= 15 bytes of FOpts, they are in the FHDR, otherwise they are in the payload
     // in case of the latter, process AES is if it were a normal payload but using the NwkSEncKey
     if(fOptsLen <= RADIOLIB_LORAWAN_FHDR_FOPTS_LEN_MASK) {
-      uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
-      processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsLen, this->nwkSEncKey, fOpts, fCnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, ctrId, true);
+      if(this->rev == 1) {
+        // in LoRaWAN v1.1, the piggy-backed FOpts are encrypted using the NwkSEncKey
+        uint8_t ctrId = 0x01 + isAppDownlink; // see LoRaWAN v1.1 errata
+        processAES(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsLen, this->nwkSEncKey, fOpts, fCnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, ctrId, true);
+      } else {
+        // in LoRaWAN v1.0.x, the piggy-backed FOpts are unencrypted
+        memcpy(fOpts, &downlinkMsg[RADIOLIB_LORAWAN_FHDR_FOPTS_POS], (size_t)fOptsLen);
+      }
     } else {
       processAES(&downlinkMsg[RADIOLIB_LORAWAN_FRAME_PAYLOAD_POS(0)], (size_t)fOptsLen, this->nwkSEncKey, fOpts, fCnt32, RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK, 0x00, true);
     }
@@ -1839,23 +1877,9 @@ int16_t LoRaWANNode::setupChannelsDyn(bool joinRequest) {
     this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][num] = RADIOLIB_LORAWAN_CHANNEL_NONE;
   }
 
-  for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("UL: %3d %d %7.3f (%d - %d) | DL: %3d %d %7.3f (%d - %d)",
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax,
-
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMax
-                            );
-    }
-  }
+  #if RADIOLIB_DEBUG_PROTOCOL
+  this->printChannels();
+  #endif
   
   return(RADIOLIB_ERR_NONE);
 }
@@ -2262,7 +2286,7 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, LoRaWANMacCommandQueue_t* que
 }
 
 bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[MAC] 0x%02X", cmd->cid);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("[MAC] 0x%02x", cmd->cid);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(cmd->payload, cmd->len);
 
   if(cmd->cid >= RADIOLIB_LORAWAN_MAC_PROPRIETARY) {
@@ -2683,6 +2707,26 @@ bool LoRaWANNode::execMacCommand(LoRaWANMacCommand_t* cmd) {
   return(false);
 }
 
+void LoRaWANNode::printChannels() {
+  for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("UL: %3d %d %7.3f (%d - %d) | DL: %3d %d %7.3f (%d - %d)",
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax,
+
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMin,
+                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMax
+                            );
+    }
+  }
+}
+
 bool LoRaWANNode::applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask) {
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
     if(chMaskCntl == 0) {
@@ -2703,26 +2747,12 @@ bool LoRaWANNode::applyChannelMaskDyn(uint8_t chMaskCntl, uint16_t chMask) {
         this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled = true;
       }
     }
-    
+  
   }
 
-  for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("UL: %3d %d %7.3f (%d - %d) | DL: %3d %d %7.3f (%d - %d)",
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax,
-
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMax
-                            );
-    }
-  }
+  #if RADIOLIB_DEBUG_PROTOCOL
+  this->printChannels();
+  #endif
 
   return(true);
 }
@@ -2738,9 +2768,9 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
     }
   }
   
+  LoRaWANChannel_t chnl;
   if((this->band->numTxSpans == 1 && chMaskCntl <= 5) || (this->band->numTxSpans == 2 && chMaskCntl <= 3)) {
     // select channels from first span
-    LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 16; i++) {
       uint16_t mask = 1 << i;
       if(mask & chMask) {
@@ -2763,7 +2793,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   }
   if(this->band->numTxSpans == 2 && chMaskCntl == 4) {
     // select channels from second span
-    LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
       uint16_t mask = 1 << i;
       if(mask & chMask) {
@@ -2780,7 +2809,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   }
   if(this->band->numTxSpans == 2 && chMaskCntl == 5) {
     // a '1' enables a bank of 8 + 1 channels from 1st and 2nd span respectively
-    LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
       uint16_t mask = 1 << i;
       if(mask & chMask) {
@@ -2811,7 +2839,6 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
     this->setupChannelsFix(this->subBand);
 
     // a '1' enables a single channel from second span
-    LoRaWANChannel_t chnl;
     for(uint8_t i = 0; i < 8; i++) {
       uint16_t mask = 1 << i;
       if(mask & chMask) {
@@ -2829,7 +2856,7 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
   }
   if(this->band->numTxSpans == 2 && chMaskCntl == 7) {
     // all channels off (clear all channels)
-    LoRaWANChannel_t chnl = RADIOLIB_LORAWAN_CHANNEL_NONE;
+    chnl = RADIOLIB_LORAWAN_CHANNEL_NONE;
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i] = chnl;
       // downlink channels are not defined so don't need to reset
@@ -2852,23 +2879,9 @@ bool LoRaWANNode::applyChannelMaskFix(uint8_t chMaskCntl, uint16_t chMask) {
 
   }
 
-  for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-    if(this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("UL: %3d %d %7.3f (%d - %d) | DL: %3d %d %7.3f (%d - %d)",
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_UPLINK][i].drMax,
-
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].idx,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].enabled,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].freq,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMin,
-                              this->availableChannels[RADIOLIB_LORAWAN_CHANNEL_DIR_DOWNLINK][i].drMax
-                            );
-    }
-  }
+  #if RADIOLIB_DEBUG_PROTOCOL
+  this->printChannels();
+  #endif
 
   return(true);
 }
