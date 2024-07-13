@@ -21,6 +21,8 @@
 #define RADIOLIB_SSTV_PASOKON_P3                                113
 #define RADIOLIB_SSTV_PASOKON_P5                                114
 #define RADIOLIB_SSTV_PASOKON_P7                                115
+#define RADIOLIB_SSTV_ROBOT_36                                  8
+#define RADIOLIB_SSTV_ROBOT_72                                  12
 
 // SSTV tones in Hz
 #define RADIOLIB_SSTV_TONE_LEADER                               1900
@@ -46,9 +48,9 @@ struct tone_t {
   */
   enum {
     GENERIC = 0,
-    SCAN_GREEN,
-    SCAN_BLUE,
-    SCAN_RED
+    SCAN_GREEN_Y,
+    SCAN_BLUE_CB,
+    SCAN_RED_CR
   } type;
 
   /*!
@@ -96,7 +98,7 @@ struct SSTVMode_t {
   /*!
     \brief Sequence of tones in each transmission line. This is used to create the correct encoding sequence.
   */
-  tone_t tones[8];
+  tone_t tones[9];
 };
 
 // all currently supported SSTV modes
@@ -109,6 +111,8 @@ extern const SSTVMode_t Wrasse;
 extern const SSTVMode_t PasokonP3;
 extern const SSTVMode_t PasokonP5;
 extern const SSTVMode_t PasokonP7;
+extern const SSTVMode_t Robot36;
+extern const SSTVMode_t Robot72;
 
 /*!
   \class SSTVClient
@@ -136,7 +140,8 @@ class SSTVClient {
       \brief Initialization method for 2-FSK.
       \param base Base "0 Hz tone" RF frequency to be used in MHz.
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2, 
-      ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
+      ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7,
+      Robot36 and Robot37.
       \returns \ref status_codes
     */
     int16_t begin(float base, const SSTVMode_t& mode);
@@ -145,7 +150,8 @@ class SSTVClient {
     /*!
       \brief Initialization method for AFSK.
       \param mode SSTV mode to be used. Currently supported modes are Scottie1, Scottie2,
-      ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7.
+      ScottieDX, Martin1, Martin2, Wrasse, PasokonP3, PasokonP5 and PasokonP7,
+      Robot36 and Robot37.
       \returns \ref status_codes
     */
     int16_t begin(const SSTVMode_t& mode);
@@ -192,7 +198,7 @@ class SSTVClient {
 
     uint32_t baseFreq = 0;
     SSTVMode_t txMode = Scottie1;
-    bool firstLine = true;
+    uint32_t lineCount = 0;
 
     void tone(float freq, RadioLibTime_t len = 0);
 };
