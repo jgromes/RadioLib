@@ -129,7 +129,7 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160; </div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint8_t addr = 0);</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0);</div>
 <div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
 <div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">    #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
 <div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a>(String&amp; str, <span class="keywordtype">size_t</span> len = 0);</div>
@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('_physical_layer_8h_source.html',''); i
 <div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    int16_t <a class="code" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint8_t addr = 0);</div>
 <div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0);</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0);</div>
 <div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
 <div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;    <span class="keyword">virtual</span> int16_t <a class="code" href="class_physical_layer.html#a1de26f68b939f5af79ec29cc34c7be18">finishTransmit</a>();</div>
 <div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>

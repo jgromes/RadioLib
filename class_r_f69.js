@@ -71,11 +71,11 @@ var class_r_f69 =
     [ "startReceive", "class_r_f69.html#a3bece228d369dcc1aab6a5b29d0685a8", null ],
     [ "startReceive", "class_r_f69.html#a21ae7524fe573f1a7e74dee342418222", null ],
     [ "startTransmit", "class_r_f69.html#a923654706eff5118ef6e84214e837f27", null ],
-    [ "startTransmit", "class_r_f69.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],
-    [ "startTransmit", "class_r_f69.html#a855dc194947b095b821ec1524ba6814c", null ],
+    [ "startTransmit", "class_r_f69.html#af79757dbbd62e080c1bad2e608ab940c", null ],
+    [ "startTransmit", "class_r_f69.html#af645f6b5d37812f6bb9ec11788e12066", null ],
     [ "transmit", "class_r_f69.html#a492b2d057dd803c3884fa1adc8e22534", null ],
-    [ "transmit", "class_r_f69.html#a3dd42f8d5569487ea74f004ca652a709", null ],
-    [ "transmit", "class_r_f69.html#a09ba80f60ee7974011a4b4f6c18c6847", null ],
+    [ "transmit", "class_r_f69.html#ada508497ee2e70170da3afe078e2fe0e", null ],
+    [ "transmit", "class_r_f69.html#a8d68f041b20ed765f2ff2fbdff06171f", null ],
     [ "transmitDirect", "class_r_f69.html#a222682569338abb49d6952430b6eebdd", null ],
     [ "variablePacketLengthMode", "class_r_f69.html#af434c67aabe02258ee6696a59973617b", null ]
 ];

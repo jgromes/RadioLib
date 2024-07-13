@@ -683,7 +683,7 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l00615"></a><span class="lineno">  615</span>&#160; </div>
 <div class="line"><a name="l00626"></a><span class="lineno">  626</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#af8530e9d858b155eb5acb764a733bcd4">beginFSK</a>(uint8_t* chipVersions, uint8_t numVersions, <span class="keywordtype">float</span> freqDev, <span class="keywordtype">float</span> rxBw, uint16_t preambleLength, <span class="keywordtype">bool</span> enableOOK);</div>
 <div class="line"><a name="l00627"></a><span class="lineno">  627</span>&#160; </div>
-<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00636"></a><span class="lineno">  636</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00637"></a><span class="lineno">  637</span>&#160; </div>
 <div class="line"><a name="l00645"></a><span class="lineno">  645</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00646"></a><span class="lineno">  646</span>&#160; </div>
@@ -735,7 +735,7 @@ $(document).ready(function(){initNavTree('_s_x127x_8h_source.html',''); initResi
 <div class="line"><a name="l00783"></a><span class="lineno">  783</span>&#160; </div>
 <div class="line"><a name="l00791"></a><span class="lineno">  791</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_s_x127x.html#a25b193b71ddb6015d25b0a161809d75a">fifoGet</a>(<span class="keyword">volatile</span> uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* rcvLen);</div>
 <div class="line"><a name="l00792"></a><span class="lineno">  792</span>&#160; </div>
-<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00800"></a><span class="lineno">  800</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00801"></a><span class="lineno">  801</span>&#160; </div>
 <div class="line"><a name="l00806"></a><span class="lineno">  806</span>&#160;    int16_t <a class="code" href="class_s_x127x.html#a7fd9cec52b7fbd0c69cbd861dc17549f">finishTransmit</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00807"></a><span class="lineno">  807</span>&#160;    </div>

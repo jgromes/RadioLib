@@ -37,10 +37,10 @@ var classn_r_f24 =
     [ "startReceive", "classn_r_f24.html#a3c6aa3622c887118fb8d8cb2689fdff2", null ],
     [ "startReceive", "classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514", null ],
     [ "startTransmit", "classn_r_f24.html#a923654706eff5118ef6e84214e837f27", null ],
-    [ "startTransmit", "classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917", null ],
-    [ "startTransmit", "classn_r_f24.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],
+    [ "startTransmit", "classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2", null ],
+    [ "startTransmit", "classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534", null ],
-    [ "transmit", "classn_r_f24.html#a583d505bd3a638ecc5576dd2dd95f044", null ],
-    [ "transmit", "classn_r_f24.html#a3dd42f8d5569487ea74f004ca652a709", null ],
+    [ "transmit", "classn_r_f24.html#af7c4cf05b992d8a97331b9888e95fc2f", null ],
+    [ "transmit", "classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e", null ],
     [ "transmitDirect", "classn_r_f24.html#a090bb64f65309efabfa1ffd86daa2303", null ]
 ];

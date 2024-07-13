@@ -37,11 +37,11 @@ var class_si443x =
     [ "startReceive", "class_si443x.html#ae188dec3175a3aec96844a613e911500", null ],
     [ "startReceive", "class_si443x.html#ad5adec16d570b0d1b09420919dbe77e4", null ],
     [ "startTransmit", "class_si443x.html#a923654706eff5118ef6e84214e837f27", null ],
-    [ "startTransmit", "class_si443x.html#ad59e37ce0606dc8051e40be9d14cfec3", null ],
-    [ "startTransmit", "class_si443x.html#a402b4f5f11ba79e9cd4fb6ac0bfd9314", null ],
+    [ "startTransmit", "class_si443x.html#af79757dbbd62e080c1bad2e608ab940c", null ],
+    [ "startTransmit", "class_si443x.html#a187ea9ee96a67cd48e5b28be5b237c95", null ],
     [ "transmit", "class_si443x.html#a492b2d057dd803c3884fa1adc8e22534", null ],
-    [ "transmit", "class_si443x.html#a3dd42f8d5569487ea74f004ca652a709", null ],
-    [ "transmit", "class_si443x.html#a782748025e19ec6e597293afb6570bff", null ],
+    [ "transmit", "class_si443x.html#ada508497ee2e70170da3afe078e2fe0e", null ],
+    [ "transmit", "class_si443x.html#a379fb39c9ab79aa67601c84736b1fec4", null ],
     [ "transmitDirect", "class_si443x.html#a5a86a2032c4b876c1c8e4a7cf4730c99", null ],
     [ "variablePacketLengthMode", "class_si443x.html#abcca8ab4a1229efb5e7c6b09e564a48a", null ]
 ];

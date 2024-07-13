@@ -582,7 +582,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00512"></a><span class="lineno">  512</span>&#160; </div>
 <div class="line"><a name="l00516"></a><span class="lineno">  516</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_r_f69.html#af953ee17aca5392f1e62ea4fe690550a">reset</a>();</div>
 <div class="line"><a name="l00517"></a><span class="lineno">  517</span>&#160; </div>
-<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00526"></a><span class="lineno">  526</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00527"></a><span class="lineno">  527</span>&#160; </div>
 <div class="line"><a name="l00535"></a><span class="lineno">  535</span>&#160;    int16_t <a class="code" href="class_r_f69.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a>(uint8_t* data, <span class="keywordtype">size_t</span> len) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00536"></a><span class="lineno">  536</span>&#160; </div>
@@ -636,7 +636,7 @@ $(document).ready(function(){initNavTree('_r_f69_8h_source.html',''); initResiza
 <div class="line"><a name="l00670"></a><span class="lineno">  670</span>&#160; </div>
 <div class="line"><a name="l00678"></a><span class="lineno">  678</span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_r_f69.html#aa6886410230c654400c76ec7710d623c">fifoGet</a>(<span class="keyword">volatile</span> uint8_t* data, <span class="keywordtype">int</span> totalLen, <span class="keyword">volatile</span> <span class="keywordtype">int</span>* rcvLen);</div>
 <div class="line"><a name="l00679"></a><span class="lineno">  679</span>&#160; </div>
-<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00688"></a><span class="lineno">  688</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a923654706eff5118ef6e84214e837f27">startTransmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t addr = 0) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00689"></a><span class="lineno">  689</span>&#160; </div>
 <div class="line"><a name="l00694"></a><span class="lineno">  694</span>&#160;    int16_t <a class="code" href="class_r_f69.html#a3e449fa06c9e76cf69585bfbeed1c46b">finishTransmit</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00695"></a><span class="lineno">  695</span>&#160; </div>

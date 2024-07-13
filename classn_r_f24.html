@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a03e9ae7fbd0d55887acf1996df28ed5b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b">standby</a> (uint8_t mode) override</td></tr>
 <tr class="memdesc:a03e9ae7fbd0d55887acf1996df28ed5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby.  <a href="classn_r_f24.html#a03e9ae7fbd0d55887acf1996df28ed5b">More...</a><br /></td></tr>
 <tr class="separator:a03e9ae7fbd0d55887acf1996df28ed5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a583d505bd3a638ecc5576dd2dd95f044"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a583d505bd3a638ecc5576dd2dd95f044">transmit</a> (uint8_t *data, size_t len, uint8_t addr) override</td></tr>
-<tr class="memdesc:a583d505bd3a638ecc5576dd2dd95f044"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a583d505bd3a638ecc5576dd2dd95f044">More...</a><br /></td></tr>
-<tr class="separator:a583d505bd3a638ecc5576dd2dd95f044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7c4cf05b992d8a97331b9888e95fc2f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af7c4cf05b992d8a97331b9888e95fc2f">transmit</a> (const uint8_t *data, size_t len, uint8_t addr) override</td></tr>
+<tr class="memdesc:af7c4cf05b992d8a97331b9888e95fc2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#af7c4cf05b992d8a97331b9888e95fc2f">More...</a><br /></td></tr>
+<tr class="separator:af7c4cf05b992d8a97331b9888e95fc2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a239e94511d9ee67ad3d64a49a5c4d7ac"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac">receive</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:a239e94511d9ee67ad3d64a49a5c4d7ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking binary receive method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a239e94511d9ee67ad3d64a49a5c4d7ac">More...</a><br /></td></tr>
 <tr class="separator:a239e94511d9ee67ad3d64a49a5c4d7ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,9 +154,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a41499cf2c1a6c83a04ff89dd59e3fa56">clearPacketSentAction</a> () override</td></tr>
 <tr class="memdesc:a41499cf2c1a6c83a04ff89dd59e3fa56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent. <br /></td></tr>
 <tr class="separator:a41499cf2c1a6c83a04ff89dd59e3fa56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a42fdc828b49f2b8e15457189bd57d917"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr) override</td></tr>
-<tr class="memdesc:a42fdc828b49f2b8e15457189bd57d917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a42fdc828b49f2b8e15457189bd57d917">More...</a><br /></td></tr>
-<tr class="separator:a42fdc828b49f2b8e15457189bd57d917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b2365ad11840d1d05b0e17b37ddacd2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr) override</td></tr>
+<tr class="memdesc:a8b2365ad11840d1d05b0e17b37ddacd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. IRQ will be activated when full packet is transmitted. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2">More...</a><br /></td></tr>
+<tr class="separator:a8b2365ad11840d1d05b0e17b37ddacd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <a href="classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f">More...</a><br /></td></tr>
 <tr class="separator:af0c21ff66c011dfdc1ad12bc7dd11c2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,18 +223,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="classn_r_f24.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3dd42f8d5569487ea74f004ca652a709"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a3dd42f8d5569487ea74f004ca652a709">transmit</a> (uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
-<tr class="memdesc:a3dd42f8d5569487ea74f004ca652a709"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Must be implemented in module class.  <a href="classn_r_f24.html#a3dd42f8d5569487ea74f004ca652a709">More...</a><br /></td></tr>
-<tr class="separator:a3dd42f8d5569487ea74f004ca652a709"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada508497ee2e70170da3afe078e2fe0e"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e">transmit</a> (const uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
+<tr class="memdesc:ada508497ee2e70170da3afe078e2fe0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Must be implemented in module class.  <a href="classn_r_f24.html#ada508497ee2e70170da3afe078e2fe0e">More...</a><br /></td></tr>
+<tr class="separator:ada508497ee2e70170da3afe078e2fe0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <a href="classn_r_f24.html#ab82617fa3fa9f21d4cd427314ecc4af8">More...</a><br /></td></tr>
 <tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a923654706eff5118ef6e84214e837f27"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a923654706eff5118ef6e84214e837f27">startTransmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a923654706eff5118ef6e84214e837f27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven Arduino String transmit method. Unlike the standard transmit method, this one is non-blocking. Interrupt pin will be activated when transmission finishes.  <a href="classn_r_f24.html#a923654706eff5118ef6e84214e837f27">More...</a><br /></td></tr>
 <tr class="separator:a923654706eff5118ef6e84214e837f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad59e37ce0606dc8051e40be9d14cfec3"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ad59e37ce0606dc8051e40be9d14cfec3">startTransmit</a> (uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
-<tr class="memdesc:ad59e37ce0606dc8051e40be9d14cfec3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method.  <a href="classn_r_f24.html#ad59e37ce0606dc8051e40be9d14cfec3">More...</a><br /></td></tr>
-<tr class="separator:ad59e37ce0606dc8051e40be9d14cfec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af79757dbbd62e080c1bad2e608ab940c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
+<tr class="memdesc:af79757dbbd62e080c1bad2e608ab940c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method.  <a href="classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c">More...</a><br /></td></tr>
+<tr class="separator:af79757dbbd62e080c1bad2e608ab940c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <a href="classn_r_f24.html#a3563453988a83d22dd07d4691543a300">More...</a><br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1490,8 +1490,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a42fdc828b49f2b8e15457189bd57d917"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a42fdc828b49f2b8e15457189bd57d917">&#9670;&nbsp;</a></span>startTransmit() <span class="overload">[2/3]</span></h2>
+<a id="a8b2365ad11840d1d05b0e17b37ddacd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b2365ad11840d1d05b0e17b37ddacd2">&#9670;&nbsp;</a></span>startTransmit() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1502,7 +1502,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">int16_t nRF24::startTransmit </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
@@ -1541,12 +1541,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ad59e37ce0606dc8051e40be9d14cfec3">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af79757dbbd62e080c1bad2e608ab940c">PhysicalLayer</a>.</p>
 
 </div>
 </div>
-<a id="ad59e37ce0606dc8051e40be9d14cfec3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad59e37ce0606dc8051e40be9d14cfec3">&#9670;&nbsp;</a></span>startTransmit() <span class="overload">[3/3]</span></h2>
+<a id="af79757dbbd62e080c1bad2e608ab940c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af79757dbbd62e080c1bad2e608ab940c">&#9670;&nbsp;</a></span>startTransmit() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1594,8 +1594,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a583d505bd3a638ecc5576dd2dd95f044"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a583d505bd3a638ecc5576dd2dd95f044">&#9670;&nbsp;</a></span>transmit() <span class="overload">[2/3]</span></h2>
+<a id="af7c4cf05b992d8a97331b9888e95fc2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7c4cf05b992d8a97331b9888e95fc2f">&#9670;&nbsp;</a></span>transmit() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1606,7 +1606,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">int16_t nRF24::transmit </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>
@@ -1645,12 +1645,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#a3dd42f8d5569487ea74f004ca652a709">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ada508497ee2e70170da3afe078e2fe0e">PhysicalLayer</a>.</p>
 
 </div>
 </div>
-<a id="a3dd42f8d5569487ea74f004ca652a709"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3dd42f8d5569487ea74f004ca652a709">&#9670;&nbsp;</a></span>transmit() <span class="overload">[3/3]</span></h2>
+<a id="ada508497ee2e70170da3afe078e2fe0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada508497ee2e70170da3afe078e2fe0e">&#9670;&nbsp;</a></span>transmit() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
