@@ -98,7 +98,7 @@ void CC1101::reset() {
   SPIsendCommand(RADIOLIB_CC1101_CMD_RESET);
 }
 
-int16_t CC1101::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t CC1101::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
   RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
 
@@ -289,7 +289,7 @@ void CC1101::clearGdo2Action() {
   this->mod->hal->detachInterrupt(this->mod->hal->pinToInterrupt(this->mod->getGpio()));
 }
 
-int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > RADIOLIB_CC1101_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
@@ -317,7 +317,7 @@ int16_t CC1101::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // fill the FIFO
-  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, data, len);
+  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(data), len);
 
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_TX);

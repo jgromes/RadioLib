@@ -238,7 +238,7 @@ class nRF24: public PhysicalLayer {
       \param addr Dummy address parameter, to ensure PhysicalLayer compatibility.
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr) override;
+    int16_t transmit(const uint8_t* data, size_t len, uint8_t addr) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -305,7 +305,7 @@ class nRF24: public PhysicalLayer {
       \param addr Dummy address parameter, to ensure PhysicalLayer compatibility.
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr) override;
+    int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr) override;
 
     /*!
       \brief Clean up after transmission is done.

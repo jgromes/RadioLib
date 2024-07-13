@@ -130,7 +130,7 @@ int16_t LR11x0::reset() {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
    // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -363,7 +363,7 @@ void LR11x0::clearPacketSentAction() {
   this->clearIrqAction();
 }
 
-int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t LR11x0::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
 
@@ -401,12 +401,12 @@ int16_t LR11x0::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
     // in LR-FHSS mode, the packet is built by the device
     // TODO add configurable grid step and device offset
-    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC, true, this->lrFhssBw, this->lrFhssHopSeq, 0, data, len);
+    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC, true, this->lrFhssBw, this->lrFhssHopSeq, 0, const_cast<uint8_t*>(data), len);
     RADIOLIB_ASSERT(state);
 
   } else {
     // write packet to buffer
-    state = writeBuffer8(data, len);
+    state = writeBuffer8(const_cast<uint8_t*>(data), len);
     RADIOLIB_ASSERT(state);
 
   }

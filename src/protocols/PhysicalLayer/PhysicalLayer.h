@@ -98,7 +98,7 @@ class PhysicalLayer {
       \param addr Node address to transmit the packet to. Only used in FSK mode.
       \returns \ref status_codes
     */
-    virtual int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    virtual int16_t transmit(const uint8_t* data, size_t len, uint8_t addr = 0);
 
     #if defined(RADIOLIB_BUILD_ARDUINO)
     /*!
@@ -181,7 +181,7 @@ class PhysicalLayer {
       \param addr Node address to transmit the packet to. Only used in FSK mode.
       \returns \ref status_codes
     */
-    virtual int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0);
+    virtual int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0);
 
     /*!
       \brief Clean up after transmission is done.

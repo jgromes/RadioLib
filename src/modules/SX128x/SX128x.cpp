@@ -301,7 +301,7 @@ int16_t SX128x::reset(bool verify) {
   }
 }
 
-int16_t SX128x::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t SX128x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
@@ -485,7 +485,7 @@ void SX128x::clearPacketSentAction() {
   this->clearDio1Action();
 }
 
-int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t SX128x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
 
@@ -519,10 +519,10 @@ int16_t SX128x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   // write packet to buffer
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_BLE) {
     // first 2 bytes of BLE payload are PDU header
-    state = writeBuffer(data, len, 2);
+    state = writeBuffer(const_cast<uint8_t*>(data), len, 2);
     RADIOLIB_ASSERT(state);
   } else {
-    state = writeBuffer(data, len);
+    state = writeBuffer(const_cast<uint8_t*>(data), len);
     RADIOLIB_ASSERT(state);
   }
 

@@ -591,7 +591,7 @@ class Si443x: public PhysicalLayer {
       \param addr Node address to transmit the packet to.
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
+    int16_t transmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Binary receive method. Will attempt to receive arbitrary binary data up to 64 bytes long.
@@ -683,7 +683,7 @@ class Si443x: public PhysicalLayer {
       \param addr Node address to transmit the packet to.
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
+    int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Clean up after transmission is done.

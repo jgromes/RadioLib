@@ -228,7 +228,7 @@ int16_t SX126x::reset(bool verify) {
   }
 }
 
-int16_t SX126x::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -512,8 +512,7 @@ void SX126x::clearChannelScanAction() {
   this->clearDio1Action();
 }
 
-
-int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
 
@@ -548,7 +547,7 @@ int16_t SX126x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   RADIOLIB_ASSERT(state);
 
   // write packet to buffer
-  state = writeBuffer(data, len);
+    state = writeBuffer(const_cast<uint8_t*>(data), len);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags

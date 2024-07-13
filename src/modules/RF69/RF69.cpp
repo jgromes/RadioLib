@@ -98,7 +98,7 @@ void RF69::reset() {
   this->mod->hal->delay(10);
 }
 
-int16_t RF69::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t RF69::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
   RadioLibTime_t timeout = 5 + (RadioLibTime_t)((((float)(len * 8)) / this->bitRate) * 5);
 
@@ -380,7 +380,7 @@ bool RF69::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
   return(false);
 }
 
-int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t RF69::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_RF69_STANDBY);
   RADIOLIB_ASSERT(state);
@@ -413,7 +413,7 @@ int16_t RF69::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
     packetLen = RADIOLIB_RF69_FIFO_THRESH - 1;
     this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_TX_START_CONDITION_FIFO_NOT_EMPTY, 7, 7);
   }
-  this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, data, packetLen);
+  this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_FIFO, const_cast<uint8_t*>(data), packetLen);
 
   // this is a hack, but it seems than in Stream mode, Rx FIFO level is getting triggered 1 byte before it should
   // just add a padding byte that can be dropped without consequence

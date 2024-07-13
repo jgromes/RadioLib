@@ -82,7 +82,7 @@ int16_t nRF24::standby(uint8_t mode) {
   return(this->mod->SPIsetRegValue(RADIOLIB_NRF24_REG_CONFIG, mode, 1, 1));
 }
 
-int16_t nRF24::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t nRF24::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // start transmission
   int16_t state = startTransmit(data, len, addr);
   RADIOLIB_ASSERT(state);
@@ -175,7 +175,7 @@ void nRF24::clearPacketSentAction() {
   this->clearIrqAction();
 }
 
-int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t nRF24::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // suppress unused variable warning
   (void)addr;
 
@@ -205,7 +205,7 @@ int16_t nRF24::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   uint8_t buff[32];
   memset(buff, 0x00, 32);
   memcpy(buff, data, len);
-  SPIwriteTxPayload(data, len);
+  SPIwriteTxPayload(const_cast<uint8_t*>(data), len);
 
   // CE high to start transmitting
   this->mod->hal->digitalWrite(this->mod->getRst(), this->mod->hal->GpioLevelHigh);

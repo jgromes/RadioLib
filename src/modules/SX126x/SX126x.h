@@ -506,7 +506,7 @@ class SX126x: public PhysicalLayer {
       \param addr Address to send the data to. Will only be added if address filtering was enabled.
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
+    int16_t transmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Blocking binary receive method.
@@ -630,7 +630,7 @@ class SX126x: public PhysicalLayer {
       \param addr Address to send the data to. Will only be added if address filtering was enabled.
       \returns \ref status_codes
     */
-    int16_t startTransmit(uint8_t* data, size_t len, uint8_t addr = 0) override;
+    int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
 
     /*!
       \brief Clean up after transmission is done.

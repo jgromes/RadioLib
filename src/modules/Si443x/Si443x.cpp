@@ -71,7 +71,7 @@ void Si443x::reset() {
   this->mod->hal->delay(100);
 }
 
-int16_t Si443x::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t Si443x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   // calculate timeout (5ms + 500 % of expected time-on-air)
   RadioLibTime_t timeout = 5 + (uint32_t)((((float)(len * 8)) / this->bitRate) * 5);
 
@@ -226,7 +226,7 @@ void Si443x::clearPacketSentAction() {
   this->clearIrqAction();
 }
 
-int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t Si443x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // check packet length
   if(len > RADIOLIB_SI443X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
@@ -252,7 +252,7 @@ int16_t Si443x::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
   (void)addr;
 
   // write packet to FIFO
-  this->mod->SPIwriteRegisterBurst(RADIOLIB_SI443X_REG_FIFO_ACCESS, data, len);
+  this->mod->SPIwriteRegisterBurst(RADIOLIB_SI443X_REG_FIFO_ACCESS, const_cast<uint8_t*>(data), len);
 
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_TX);

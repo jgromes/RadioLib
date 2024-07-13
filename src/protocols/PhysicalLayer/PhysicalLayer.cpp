@@ -53,7 +53,7 @@ int16_t PhysicalLayer::transmit(const char* str, uint8_t addr) {
   return(transmit((uint8_t*)str, strlen(str), addr));
 }
 
-int16_t PhysicalLayer::transmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t PhysicalLayer::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   (void)data;
   (void)len;
   (void)addr;
@@ -150,7 +150,7 @@ int16_t PhysicalLayer::startTransmit(const char* str, uint8_t addr) {
   return(startTransmit((uint8_t*)str, strlen(str), addr));
 }
 
-int16_t PhysicalLayer::startTransmit(uint8_t* data, size_t len, uint8_t addr) {
+int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   (void)data;
   (void)len;
   (void)addr;
