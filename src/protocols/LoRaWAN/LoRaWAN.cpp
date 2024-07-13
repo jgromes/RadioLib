@@ -1187,14 +1187,10 @@ int16_t LoRaWANNode::uplink(uint8_t* data, size_t len, uint8_t fPort, bool isCon
 int16_t LoRaWANNode::downlinkCommon() {
   Module* mod = this->phyLayer->getMod();
 
-  // according to the spec, the Rx window must be at least enough time to effectively detect a preamble
-  // but we pad it a bit on both sides (start and end) to make sure it is wide enough
-  const RadioLibTime_t scanGuard = 10;      // Rx window padding in milliseconds
-
   // check if there are any upcoming Rx windows
   // if the Rx1 window has already started, you're too late, because most downlinks happen in Rx1
   RadioLibTime_t now = mod->hal->millis();  // fix the current timestamp to prevent negative delays
-  if(now > this->rxDelayStart + this->rxDelays[0] - scanGuard) {
+  if(now > this->rxDelayStart + this->rxDelays[0] - this->scanGuard) {
     // if between start of Rx1 and end of Rx2, wait until Rx2 closes
     if(now < this->rxDelayStart + this->rxDelays[1]) {
       mod->hal->delay(this->rxDelays[1] + this->rxDelayStart - now);
@@ -1220,7 +1216,7 @@ int16_t LoRaWANNode::downlinkCommon() {
     downlinkAction = false;
 
     // calculate the Rx timeout
-    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*scanGuard*1000;
+    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*this->scanGuard*1000;
     RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
 
     // wait for the start of the Rx window
@@ -1230,8 +1226,8 @@ int16_t LoRaWANNode::downlinkCommon() {
       waitLen = this->rxDelays[i];
     }
     // the waiting duration is shortened a bit to cover any possible timing errors
-    if(waitLen > scanGuard) {
-      waitLen -= scanGuard;
+    if(waitLen > this->scanGuard) {
+      waitLen -= this->scanGuard;
     }
     mod->hal->delay(waitLen);
 
@@ -1241,7 +1237,7 @@ int16_t LoRaWANNode::downlinkCommon() {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", i+1, (int)(timeoutHost / 1000 + scanGuard / 2));
     
     // wait for the timeout to complete (and a small additional delay)
-    mod->hal->delay(timeoutHost / 1000 + scanGuard / 2);
+    mod->hal->delay(timeoutHost / 1000 + this->scanGuard / 2);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", i+1);
 
     // check if the IRQ bit for Rx Timeout is set
