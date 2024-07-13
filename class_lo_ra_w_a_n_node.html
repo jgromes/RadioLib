@@ -224,6 +224,9 @@ Public Attributes</h2></td></tr>
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a">TS009</a> = false</td></tr>
 <tr class="memdesc:a8226f4d0329d15da9ffc706e5781403a"><td class="mdescLeft">&#160;</td><td class="mdescRight">TS009 Protocol Specification Verification switch (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded). <br /></td></tr>
 <tr class="separator:a8226f4d0329d15da9ffc706e5781403a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2176aa3d546e6b00e870a7e1e310c403"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403">scanGuard</a> = 10</td></tr>
+<tr class="memdesc:a2176aa3d546e6b00e870a7e1e310c403"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rx window padding in milliseconds according to the spec, the Rx window must be at least enough time to effectively detect a preamble but we pad it a bit on both sides (start and end) to make sure it is wide enough The larger this number the more power will be consumed! So be careful about changing it. For debugging purposes 50 is a reasonable start, but for production devices it should be as low as possible. 0 is a valid time.  <a href="class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403">More...</a><br /></td></tr>
+<tr class="separator:a2176aa3d546e6b00e870a7e1e310c403"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>LoRaWAN-compatible node (class A device). </p>
@@ -1334,6 +1337,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2176aa3d546e6b00e870a7e1e310c403"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2176aa3d546e6b00e870a7e1e310c403">&#9670;&nbsp;</a></span>scanGuard</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> LoRaWANNode::scanGuard = 10</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Rx window padding in milliseconds according to the spec, the Rx window must be at least enough time to effectively detect a preamble but we pad it a bit on both sides (start and end) to make sure it is wide enough The larger this number the more power will be consumed! So be careful about changing it. For debugging purposes 50 is a reasonable start, but for production devices it should be as low as possible. 0 is a valid time. </p>
+<p>500 is the <b>maximum</b> value, but it is not a good idea to go anywhere near that. If you have to go above 50 you probably have a bug somewhere. Check your device timing. </p>
 
 </div>
 </div>

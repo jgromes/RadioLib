@@ -37,5 +37,6 @@ var class_lo_ra_w_a_n_node =
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a1fa484970865e476311bf25969968fff", null ],
     [ "uplink", "class_lo_ra_w_a_n_node.html#a66c170a6055e66915d3e94ce43a63e58", null ],
+    [ "scanGuard", "class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403", null ],
     [ "TS009", "class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a", null ]
 ];
