@@ -103,10 +103,13 @@
 #define RADIOLIB_LR11X0_CMD_WIFI_READ_COUNTRY_CODE_RESULTS      (0x030A)
 #define RADIOLIB_LR11X0_CMD_WIFI_CFG_TIMESTAMP_AP_PHONE         (0x030B)
 #define RADIOLIB_LR11X0_CMD_WIFI_READ_VERSION                   (0x0320)
+#define RADIOLIB_LR11X0_CMD_GNSS_READ_RSSI                      (0x0222)
 #define RADIOLIB_LR11X0_CMD_GNSS_SET_CONSTELLATION_TO_USE       (0x0400)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_CONSTELLATION_TO_USE      (0x0401)
 #define RADIOLIB_LR11X0_CMD_GNSS_SET_ALMANAC_UPDATE             (0x0402)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_UPDATE            (0x0403)
+#define RADIOLIB_LR11X0_CMD_GNSS_SET_FREQ_SEARCH_SPACE          (0x0404)
+#define RADIOLIB_LR11X0_CMD_GNSS_READ_FREQ_SEARCH_SPACE         (0x0405)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_VERSION                   (0x0406)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_SUPPORTED_CONSTELLATIONS  (0x0407)
 #define RADIOLIB_LR11X0_CMD_GNSS_SET_MODE                       (0x0408)
@@ -116,6 +119,7 @@
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_RESULT_SIZE                (0x040C)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_RESULTS                   (0x040D)
 #define RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_FULL_UPDATE            (0x040E)
+#define RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_READ_ADDR_SIZE         (0x040F)
 #define RADIOLIB_LR11X0_CMD_GNSS_SET_ASSISTANCE_POSITION        (0x0410)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_ASSISTANCE_POSITION       (0x0411)
 #define RADIOLIB_LR11X0_CMD_GNSS_PUSH_SOLVER_MSG                (0x0414)
@@ -124,24 +128,28 @@
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_NB_SV_DETECTED             (0x0417)
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_SV_DETECTED                (0x0418)
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_CONSUMPTION                (0x0419)
+#define RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_PER_SATELLITE     (0x041A)
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_SV_VISIBLE                 (0x041F)
+#define RADIOLIB_LR11X0_CMD_GNSS_GET_SV_VISIBLE_DOPPLER         (0x0420)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_LAST_SCAN_MODE_LAUNCHED   (0x0426)
 #define RADIOLIB_LR11X0_CMD_GNSS_FETCH_TIME                     (0x0432)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_TIME                      (0x0434)
 #define RADIOLIB_LR11X0_CMD_GNSS_RESET_TIME                     (0x0435)
 #define RADIOLIB_LR11X0_CMD_GNSS_RESET_POSITION                 (0x0437)
+#define RADIOLIB_LR11X0_CMD_GNSS_READ_WEEK_NUMBER_ROLLOWER      (0x0438)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_DEMOD_STATUS              (0x0439)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_CUMUL_TIMING              (0x044A)
 #define RADIOLIB_LR11X0_CMD_GNSS_SET_TIME                       (0x044B)
+#define RADIOLIB_LR11X0_CMD_GNSS_CONFIG_DELAY_RESET_AP          (0x044D)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_DOPPLER_SOLVER_RES        (0x044F)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_DELAY_RESET_AP            (0x0453)
-#define RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_UPDATE_FROM_SAT        (0x0455)
+#define RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_UPDATE_FROM_SAT        (0x0454)
+#define RADIOLIB_LR11X0_CMD_GNSS_READ_KEEP_SYNC_STATUS          (0x0456)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_STATUS            (0x0457)
 #define RADIOLIB_LR11X0_CMD_GNSS_CONFIG_ALMANAC_UPDATE_PERIOD   (0x0463)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_UPDATE_PERIOD     (0x0464)
-#define RADIOLIB_LR11X0_CMD_GNSS_CONFIG_DELAY_RESET_AP          (0x0465)
 #define RADIOLIB_LR11X0_CMD_GNSS_GET_SV_WARM_START              (0x0466)
-#define RADIOLIB_LR11X0_CMD_GNSS_READ_WN_ROLLOVER               (0x0467)
+#define RADIOLIB_LR11X0_CMD_GNSS_GET_SV_SYNC                    (0x0466)
 #define RADIOLIB_LR11X0_CMD_GNSS_READ_WARM_START_STATUS         (0x0469)
 #define RADIOLIB_LR11X0_CMD_GNSS_WRITE_BIT_MASK_SAT_ACTIVATED   (0x0472)
 #define RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY                      (0x0502)
@@ -1358,14 +1366,39 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
-
+    
+    /*!
+      \brief Method to check whether the device is capable of performing a GNSS scan.
+      CAUTION: Work in progress! Most data is returned via debug prints.
+      \returns \ref status_codes
+    */
     int16_t isGnssScanCapable();
 
+    /*!
+      \brief Performs GNSS scan.
+      CAUTION: Work in progress! Most data is returned via debug prints.
+      \param resSize Pointer to a variable in which the result size will be saved.
+      \returns \ref status_codes
+    */
     int16_t gnssScan(uint16_t* resSize);
 
+    /*!
+      \brief Get GNSS scan result.
+      CAUTION: Work in progress! Most data is returned via debug prints.
+      \param size Result size to read.
+      \returns \ref status_codes
+    */
     int16_t getGnssScanResult(uint16_t size);
     
-    int16_t getGnssPosition(float* lat, float* lon, bool filtered);
+    /*!
+      \brief Get GNSS position.
+      CAUTION: Work in progress! Most data is returned via debug prints.
+      \param lat Pointer to a variable where latitude in degrees will be saved.
+      \param lon Pointer to a variable where longitude in degrees will be saved.
+      \param filtered Whether to save the filtered, or unfiltered value. Defaults to true (filtered).
+      \returns \ref status_codes
+    */
+    int16_t getGnssPosition(float* lat, float* lon, bool filtered = true);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -1467,10 +1500,13 @@ class LR11x0: public PhysicalLayer {
     int16_t wifiCfgTimestampAPphone(uint32_t timestamp);
     int16_t wifiReadVersion(uint8_t* major, uint8_t* minor);
 
+    int16_t gnssReadRssi(int8_t* rssi);
     int16_t gnssSetConstellationToUse(uint8_t mask);
     int16_t gnssReadConstellationToUse(uint8_t* mask);
     int16_t gnssSetAlmanacUpdate(uint8_t mask);
     int16_t gnssReadAlmanacUpdate(uint8_t* mask);
+    int16_t gnssSetFreqSearchSpace(uint8_t freq);
+    int16_t gnssReadFreqSearchSpace(uint8_t* freq);
     int16_t gnssReadVersion(uint8_t* fw, uint8_t* almanac);
     int16_t gnssReadSupportedConstellations(uint8_t* mask);
     int16_t gnssSetMode(uint8_t mode);
@@ -1482,19 +1518,23 @@ class LR11x0: public PhysicalLayer {
     int16_t gnssPushDmMsg(uint8_t* payload, size_t len);
     int16_t gnssGetContextStatus(uint8_t* fwVersion, uint32_t* almanacCrc, uint8_t* errCode, uint8_t* almUpdMask, uint8_t* freqSpace);
     int16_t gnssGetNbSvDetected(uint8_t* nbSv);
-    int16_t gnssGetSvDetected(uint8_t* svId, uint8_t* snr, uint16_t* doppler, size_t nbSv);
+    int16_t gnssGetSvDetected(uint8_t* svId, uint8_t* snr, int16_t* doppler, size_t nbSv);
     int16_t gnssGetConsumption(uint32_t* cpu, uint32_t* radio);
     int16_t gnssGetResultSize(uint16_t* size);
     int16_t gnssReadResults(uint8_t* result, uint16_t size);
     int16_t gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc);
     int16_t gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac);
-    int16_t gnssGetSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv);
+    int16_t gnssAlmanacReadAddrSize(uint32_t* addr, uint16_t* size);
+    int16_t gnssAlmanacReadSV(uint8_t svId, uint8_t* almanac);
+    int16_t gnssGetNbSvVisible(uint32_t time, float lat, float lon, uint8_t constellation, uint8_t* nbSv);
+    int16_t gnssGetSvVisible(uint8_t nbSv, uint8_t** svId, int16_t** doppler, int16_t** dopplerErr);
     int16_t gnssPerformScan(uint8_t effort, uint8_t resMask, uint8_t nbSvMax);
     int16_t gnssReadLastScanModeLaunched(uint8_t* lastScanMode);
     int16_t gnssFetchTime(uint8_t effort, uint8_t opt);
     int16_t gnssReadTime(uint8_t* err, uint32_t* time, uint32_t* nbUs, uint32_t* timeAccuracy);
     int16_t gnssResetTime(void);
     int16_t gnssResetPosition(void);
+    int16_t gnssReadWeekNumberRollover(uint8_t* status, uint8_t* rollover);
     int16_t gnssReadDemodStatus(int8_t* status, uint8_t* info);
     int16_t gnssReadCumulTiming(uint32_t* timing, uint8_t* constDemod);
     int16_t gnssSetTime(uint32_t time, uint16_t accuracy);
@@ -1502,12 +1542,13 @@ class LR11x0: public PhysicalLayer {
     int16_t gnssReadDelayResetAP(uint32_t* delay);
     int16_t gnssAlmanacUpdateFromSat(uint8_t effort, uint8_t bitMask);
     int16_t gnssReadAlmanacStatus(uint8_t* status);
+    int16_t gnssReadKeepSyncStatus(uint8_t mask, uint8_t* nbSvVisible, uint32_t* elapsed);
     int16_t gnssConfigAlmanacUpdatePeriod(uint8_t bitMask, uint8_t svType, uint16_t period);
     int16_t gnssReadAlmanacUpdatePeriod(uint8_t bitMask, uint8_t svType, uint16_t* period);
     int16_t gnssConfigDelayResetAP(uint32_t delay);
     int16_t gnssGetSvWarmStart(uint8_t bitMask, uint8_t* sv, uint8_t nbVisSat);
-    int16_t gnssReadWNRollover(uint8_t* status, uint8_t* rollover);
     int16_t gnssReadWarmStartStatus(uint8_t bitMask, uint8_t* nbVisSat, uint32_t* timeElapsed);
+    int16_t gnssGetSvSync(uint8_t mask, uint8_t nbSv, uint8_t* syncList);
     int16_t gnssWriteBitMaskSatActivated(uint8_t bitMask, uint32_t* bitMaskActivated0, uint32_t* bitMaskActivated1);
 
     int16_t cryptoSetKey(uint8_t keyId, uint8_t* key);
