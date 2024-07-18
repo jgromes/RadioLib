@@ -380,6 +380,7 @@ int16_t SX1278::setGain(uint8_t gain) {
     if(gain == 0) {
       // gain set to 0, enable AGC loop
       state |= mod->SPIsetRegValue(RADIOLIB_SX1278_REG_MODEM_CONFIG_3, RADIOLIB_SX1278_AGC_AUTO_ON, 2, 2);
+      state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_LNA, RADIOLIB_SX127X_LNA_BOOST_ON, 1, 0);
     } else {
       state |= mod->SPIsetRegValue(RADIOLIB_SX1278_REG_MODEM_CONFIG_3, RADIOLIB_SX1278_AGC_AUTO_OFF, 2, 2);
       state |= mod->SPIsetRegValue(RADIOLIB_SX127X_REG_LNA, (gain << 5) | RADIOLIB_SX127X_LNA_BOOST_ON);
