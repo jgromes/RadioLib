@@ -27,7 +27,7 @@ var class_l_r11x0 =
     [ "getChannelScanResult", "class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f", null ],
     [ "getDataRate", "class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9", null ],
     [ "getFrequencyError", "class_l_r11x0.html#ad9046bccdb4ef60718e2e8ed2bd7f036", null ],
-    [ "getGnssPosition", "class_l_r11x0.html#a7242ebe7e9025af0ee2ef82d15068fa4", null ],
+    [ "getGnssPosition", "class_l_r11x0.html#a6f02bff4720b5087f2a68834182651df", null ],
     [ "getGnssScanResult", "class_l_r11x0.html#a3f5a92e557dd580cb27824246a9049c1", null ],
     [ "getIrqStatus", "class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8", null ],
     [ "getPacketLength", "class_l_r11x0.html#af96883b2ca7a36a8921ee1cd222adebf", null ],
