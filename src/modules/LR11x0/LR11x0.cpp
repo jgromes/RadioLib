@@ -1797,7 +1797,6 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   state = this->gnssReadResults(res, size);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("Result type: %02x", (int)res[0]);
-  Module::hexdump(NULL, res, size);
 
   return(state);
 }
