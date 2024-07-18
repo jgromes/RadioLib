@@ -1768,7 +1768,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timing:");
   for(size_t i = 0; i < 31; i++) {
     uint32_t t = (timing[i] * 1000UL) / 32768UL;
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", i*4, t);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", (int)i*4, (unsigned long)t);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("constDemod: %d", constDemod);
 
@@ -1783,7 +1783,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   state = this->gnssGetSvDetected(svId, snr, doppler, nbSv);
   RADIOLIB_ASSERT(state);
   for(size_t i = 0; i < nbSv; i++) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: C/N0 %i dB, Doppler %i Hz", i, snr[i] + 31, doppler[i]);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: C/N0 %i dB, Doppler %i Hz", (int)i, snr[i] + 31, doppler[i]);
   }
 
   float lat = 0;
