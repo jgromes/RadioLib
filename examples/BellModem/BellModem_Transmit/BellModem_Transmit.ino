@@ -33,7 +33,7 @@ SX1278 radio = new Module(10, 2, 9, 3);
 // SX1231:        DIO2
 // CC1101:        GDO2
 // Si443x/RFM2x:  GPIO
-// SX126x/LLCC68: DIO2 (only devices without TCXO!)
+// SX126x/LLCC68: DIO2
 BellClient bell(&radio, 5);
 
 void setup() {

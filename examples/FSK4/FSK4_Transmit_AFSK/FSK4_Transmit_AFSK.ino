@@ -13,7 +13,7 @@
     - SX1231
     - CC1101
     - Si443x/RFM2x
-    - SX126x/LLCC68 (only devices without TCXO!)
+    - SX126x/LLCC68
 
    For default module settings, see the wiki page
    https://github.com/jgromes/RadioLib/wiki/Default-configuration
