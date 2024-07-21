@@ -855,13 +855,13 @@ class LoRaWANNode {
 
     /*!
       \brief Returns the DevAddr of the device, regardless of OTAA or ABP mode
-      \returns 8-byte DevAddr
+      \returns 4-byte DevAddr
     */
-    uint64_t getDevAddr();
+    uint32_t getDevAddr();
 
     /*!
-      \brief Get the Time-on-air of the last uplink message.
-      \returns (RadioLibTime_t) time-on-air (ToA) of last uplink message.
+      \brief Get the Time-on-air of the last uplink message (in milliseconds).
+      \returns (RadioLibTime_t) time-on-air (ToA) of last uplink message (in milliseconds).
     */
     RadioLibTime_t getLastToA();
 
@@ -1059,6 +1059,12 @@ class LoRaWANNode {
 
     // restore all available channels from persistent storage
     int16_t restoreChannels();
+
+    // parse a MAC command queue into a buffer (uplinks)
+    void macQueueToBuff(LoRaWANMacCommandQueue_t* queue, uint8_t* buffer);
+
+    // parse a MAC buffer into a command queue (downlinks)
+    void macBufftoQueue(LoRaWANMacCommandQueue_t* queue, uint8_t* buffer, uint8_t len);
 
     // push MAC command to queue, done by copy
     int16_t pushMacCommand(LoRaWANMacCommand_t* cmd, LoRaWANMacCommandQueue_t* queue);
