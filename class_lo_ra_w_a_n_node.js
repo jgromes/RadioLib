@@ -12,7 +12,7 @@ var class_lo_ra_w_a_n_node =
     [ "getAFCntDown", "class_lo_ra_w_a_n_node.html#a6785265f3311ff6bf296f82429c96701", null ],
     [ "getBufferNonces", "class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b", null ],
     [ "getBufferSession", "class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06", null ],
-    [ "getDevAddr", "class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452", null ],
+    [ "getDevAddr", "class_lo_ra_w_a_n_node.html#aee0590cc9123ceac4c822eabed3150c6", null ],
     [ "getFCntUp", "class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777", null ],
     [ "getLastToA", "class_lo_ra_w_a_n_node.html#a683b02b63867bb7de5df45c94d190305", null ],
     [ "getMacDeviceTimeAns", "class_lo_ra_w_a_n_node.html#a9e6e1ce4296364606ff8b10fb5f971de", null ],

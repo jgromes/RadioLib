@@ -10,7 +10,7 @@ var searchData=
   ['getcs_819',['getCs',['../class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7',1,'Module']]],
   ['getcurrentlimit_820',['getCurrentLimit',['../class_s_x126x.html#aa668babb0bd129b2facee9fd280525ab',1,'SX126x']]],
   ['getdatarate_821',['getDataRate',['../class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9',1,'LR11x0::getDataRate()'],['../class_s_x126x.html#acbe2d75b1e2df8bcc58c4fd9d8e6e4f9',1,'SX126x::getDataRate()'],['../class_s_x127x.html#adc25b685de0859b799488bf7729350b6',1,'SX127x::getDataRate()']]],
-  ['getdevaddr_822',['getDevAddr',['../class_lo_ra_w_a_n_node.html#aa97378ad7b669718fbef529649d03452',1,'LoRaWANNode']]],
+  ['getdevaddr_822',['getDevAddr',['../class_lo_ra_w_a_n_node.html#aee0590cc9123ceac4c822eabed3150c6',1,'LoRaWANNode']]],
   ['getfcntup_823',['getFCntUp',['../class_lo_ra_w_a_n_node.html#ad3217975ef9959ff83ce79dd80b0d777',1,'LoRaWANNode']]],
   ['getfhsschannel_824',['getFHSSChannel',['../class_s_x127x.html#a56340d1bdc69b3efc64636be39445a9c',1,'SX127x']]],
   ['getfhsshoppingperiod_825',['getFHSSHoppingPeriod',['../class_s_x127x.html#ad7600b8b0aac4d8a5e962d631145b617',1,'SX127x']]],
