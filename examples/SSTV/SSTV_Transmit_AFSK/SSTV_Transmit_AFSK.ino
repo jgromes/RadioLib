@@ -12,7 +12,7 @@
     - SX1231
     - CC1101
     - Si443x/RFM2x
-    - SX126x/LLCC68 (only devices without TCXO!)
+    - SX126x/LLCC68
 
    NOTE: Some platforms (such as Arduino Uno)
          might not be fast enough to correctly
