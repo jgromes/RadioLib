@@ -1497,6 +1497,9 @@ int16_t LoRaWANNode::downlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event)
     event->fPort = fPort;
   }
 
+  // clear the previous MAC commands, if any
+  memset(&(this->commandsDown), 0, sizeof(LoRaWANMacCommandQueue_t));
+  
   // process FOpts (if there are any)
   if(fOptsLen > 0) {
     // there are some Fopts, decrypt them
