@@ -8,5 +8,6 @@
 //#define RADIOLIB_DEBUG_BASIC        (1)   // basic debugging (e.g. reporting GPIO timeouts or module not being found)
 //#define RADIOLIB_DEBUG_PROTOCOL     (1)   // protocol information (e.g. LoRaWAN internal information)
 //#define RADIOLIB_DEBUG_SPI          (1)   // verbose transcription of all SPI communication - produces large debug logs!
+//#define RADIOLIB_VERBOSE_ASSERT     (1)   // verbose assertions - will print out print out file and line number on failure
 
 #endif

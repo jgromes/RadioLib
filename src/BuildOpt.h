@@ -22,6 +22,9 @@
 #if !defined(RADIOLIB_DEBUG_SPI)
   #define RADIOLIB_DEBUG_SPI (0)
 #endif
+#if !defined(RADIOLIB_VERBOSE_ASSERT)
+  #define RADIOLIB_VERBOSE_ASSERT (0)
+#endif
 
 // set which output port should be used for debug output
 // may be Serial port (on Arduino) or file like stdout or stderr (on generic platforms)
@@ -453,6 +456,11 @@
   #define RADIOLIB_EXCLUDE_STM32WLX (1)
 #endif
 
+// if verbose assert is enabled, enable basic debug too
+#if RADIOLIB_VERBOSE_ASSERT
+  #define RADIOLIB_DEBUG  (1)
+#endif
+
 // set the global debug mode flag
 #if RADIOLIB_DEBUG_BASIC || RADIOLIB_DEBUG_PROTOCOL || RADIOLIB_DEBUG_SPI
   #define RADIOLIB_DEBUG  (1)
@@ -545,8 +553,14 @@
 
 /*!
   \brief A simple assert macro, will return on error.
+  If RADIOLIB_VERBOSE_ASSERT is enabled, the macro will also print out file and line number trace,
+  at a significant program storage cost.
 */
+#if RADIOLIB_VERBOSE_ASSERT
+#define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { RADIOLIB_DEBUG_BASIC_PRINTLN("%d at %s:%d", STATEVAR, __FILE__, __LINE__); return(STATEVAR); } }
+#else
 #define RADIOLIB_ASSERT(STATEVAR) { if((STATEVAR) != RADIOLIB_ERR_NONE) { return(STATEVAR); } }
+#endif
 
 /*!
   \brief Macro to check variable is within constraints - this is commonly used to check parameter ranges. Requires RADIOLIB_CHECK_RANGE to be enabled
