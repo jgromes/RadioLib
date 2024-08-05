@@ -519,6 +519,7 @@ class Module {
       \param level RadioLib debug level, set to NULL to not print.
       \param data Data to dump.
       \param len Number of bytes to dump.
+      \param offset Address offset to add when printing the data.
       \param width Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).
       \param be Print multi-byte data as big endian. Defaults to false.
     */
