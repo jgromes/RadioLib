@@ -176,6 +176,7 @@
 // LR11X0 register map
 #define RADIOLIB_LR11X0_REG_SF6_SX127X_COMPAT                   (0x00F20414)
 #define RADIOLIB_LR11X0_REG_LORA_HIGH_POWER_FIX                 (0x00F30054)
+#define RADIOLIB_LR11X0_REG_LNA_MODE                            (0x00F3008C)
 // TODO add fix for br 600/1200 bps
 
 // LR11X0 SPI command variables
@@ -579,6 +580,11 @@
 
 // RADIOLIB_LR11X0_REG_LORA_HIGH_POWER_FIX
 #define RADIOLIB_LR11X0_LORA_HIGH_POWER_FIX                     (0x00UL << 30)  //  30    30    fix for errata
+
+// RADIOLIB_LR11X0_REG_LNA_MODE
+#define RADIOLIB_LR11X0_LNA_MODE_SINGLE_RFI_N                   (0x01UL << 4)   //  7     4     LNA mode: single-ended RFI_N
+#define RADIOLIB_LR11X0_LNA_MODE_SINGLE_RFI_P                   (0x02UL << 4)   //  7     4               single-ended RFI_P
+#define RADIOLIB_LR11X0_LNA_MODE_DIFFERENTIAL                   (0x03UL << 4)   //  7     4               differential (default)
 
 /*!
   \struct LR11x0WifiResult_t
