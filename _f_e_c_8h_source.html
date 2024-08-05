@@ -135,7 +135,14 @@ $(document).ready(function(){initNavTree('_f_e_c_8h_source.html',''); initResiza
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;<span class="comment">// the global singleton</span></div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_radio_lib_b_c_h.html">RadioLibBCH</a> RadioLibBCHInstance;</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="comment">// macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY(A, k)                                  ( A[(k/8)] |= (1 &lt;&lt; (k%8)) )</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY(A, k)                                ( A[(k/8)] &amp;= ~(1 &lt;&lt; (k%8)) )</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY(A, k)                                 ( A[(k/8)] &amp; (1 &lt;&lt; (k%8)) )</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY(A, k)                                  ( (A[(k/8)] &amp; (1 &lt;&lt; (k%8))) ? 1 : 0 )</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html"><div class="ttname"><a href="class_radio_lib_b_c_h.html">RadioLibBCH</a></div><div class="ttdoc">Class to calculate Bose–Chaudhuri–Hocquenghem (BCH) class of forward error correction codes....</div><div class="ttdef"><b>Definition:</b> FEC.h:26</div></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html_a39d55c0292e4c9337ee0672cd5241118"><div class="ttname"><a href="class_radio_lib_b_c_h.html#a39d55c0292e4c9337ee0672cd5241118">RadioLibBCH::RadioLibBCH</a></div><div class="ttdeci">RadioLibBCH()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:4</div></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html_aba6f10d4ac2d40eb2222d1081a34c88b"><div class="ttname"><a href="class_radio_lib_b_c_h.html#aba6f10d4ac2d40eb2222d1081a34c88b">RadioLibBCH::begin</a></div><div class="ttdeci">void begin(uint8_t n, uint8_t k, uint32_t poly)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:21</div></div>
