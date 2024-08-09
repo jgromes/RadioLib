@@ -472,7 +472,7 @@ void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offs
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
     char str[120];
-    sprintf(str, "%07" PRIx32 "  ", (uint32_t)i+offset);
+    sprintf(str, "%08" PRIx32 ": ", (uint32_t)i+offset);
     size_t line_len = 16;
     if(rem_len < line_len) {
       line_len = rem_len;
@@ -485,21 +485,21 @@ void Module::hexdump(const char* level, uint8_t* data, size_t len, uint32_t offs
           step *= -1;
         }
         for(int32_t k = width - 1; k >= -width + 1; k+=step) {
-          sprintf(&str[8 + (j+m)*3], "%02x ", data[i+j+k+m]);
+          sprintf(&str[10 + (j+m)*3], "%02x ", data[i+j+k+m]);
           m++;
         }
       } else {
-        sprintf(&str[8 + (j)*3], "%02x ", data[i+j]);
+        sprintf(&str[10 + (j)*3], "%02x ", data[i+j]);
       }
     }
     for(size_t j = line_len; j < 16; j++) {
-      sprintf(&str[8 + j*3], "   ");
+      sprintf(&str[10 + j*3], "   ");
     }
-    str[56] = '|';
-    str[57] = ' ';
+    //str[56] = '|';
+    str[58] = ' ';
 
     // at this point we need to start escaping "%" characters
-    char* strPtr = &str[58];
+    char* strPtr = &str[59];
     for(size_t j = 0; j < line_len; j++) {
       char c = data[i+j];
       if((c < ' ') || (c > '~')) {
