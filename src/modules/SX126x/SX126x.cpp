@@ -1391,7 +1391,6 @@ float SX126x::getFrequencyError() {
 }
 
 size_t SX126x::getPacketLength(bool update) {
-  (void)update;
   return(this->getPacketLength(update, NULL));
 }
 
