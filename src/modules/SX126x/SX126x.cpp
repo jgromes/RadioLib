@@ -709,20 +709,17 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   if((irq & RADIOLIB_SX126X_IRQ_CRC_ERR) || (irq & RADIOLIB_SX126X_IRQ_HEADER_ERR)) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
   }
-
-  // get packet length
-  size_t length = getPacketLength();
+  
+  // get packet length and Rx buffer offset
+  uint8_t offset = 0;
+  size_t length = getPacketLength(true, &offset);
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
     length = len;
   }
 
-  // read packet data
-  state = readBuffer(data, length);
-  RADIOLIB_ASSERT(state);
-
-  // reset the base addresses
-  state = setBufferBaseAddress();
+  // read packet data starting at offset
+  state = readBuffer(data, length, offset);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1394,6 +1391,10 @@ float SX126x::getFrequencyError() {
 }
 
 size_t SX126x::getPacketLength(bool update) {
+  return(this->getPacketLength(update, NULL));
+}
+
+size_t SX126x::getPacketLength(bool update, uint8_t* offset) {
   (void)update;
 
   // in implicit mode, return the cached value
@@ -1403,6 +1404,9 @@ size_t SX126x::getPacketLength(bool update) {
 
   uint8_t rxBufStatus[2] = {0, 0};
   this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+
+  if(offset) { *offset = rxBufStatus[1]; }
+
   return((size_t)rxBufStatus[0]);
 }
 

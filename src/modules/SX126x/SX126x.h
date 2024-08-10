@@ -953,6 +953,14 @@ class SX126x: public PhysicalLayer {
     size_t getPacketLength(bool update = true) override;
 
     /*!
+      \brief Query modem for the packet length of received payload and Rx buffer offset.
+      \param update Update received packet length. Will return cached value when set to false.
+      \param offset Pointer to variable to store the Rx buffer offset.
+      \returns Length of last received packet in bytes.
+    */
+    size_t getPacketLength(bool update, uint8_t* offset);
+
+    /*!
       \brief Set modem in fixed packet length mode. Available in FSK mode only.
       \param len Packet length.
       \returns \ref status_codes

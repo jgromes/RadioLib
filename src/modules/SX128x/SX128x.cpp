@@ -617,15 +617,16 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
   }
 
-  // get packet length
-  size_t length = getPacketLength();
+  // get packet length and Rx buffer offset
+  uint8_t offset = 0;
+  size_t length = getPacketLength(true, &offset);
   if((len != 0) && (len < length)) {
     // user requested less data than we got, only return what was requested
     length = len;
   }
 
-  // read packet data
-  state = readBuffer(data, length);
+  // read packet data starting at offset 
+  state = readBuffer(data, length, offset);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1253,6 +1254,10 @@ float SX128x::getFrequencyError() {
 }
 
 size_t SX128x::getPacketLength(bool update) {
+  return(this->getPacketLength(update, NULL));
+}
+
+size_t SX128x::getPacketLength(bool update, uint8_t* offset) {
   (void)update;
 
   // in implicit mode, return the cached value
@@ -1262,6 +1267,9 @@ size_t SX128x::getPacketLength(bool update) {
 
   uint8_t rxBufStatus[2] = {0, 0};
   this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_RX_BUFFER_STATUS, rxBufStatus, 2);
+
+  if(offset) { *offset = rxBufStatus[1]; }
+
   return((size_t)rxBufStatus[0]);
 }
 
@@ -1412,8 +1420,8 @@ int16_t SX128x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
   return(this->mod->SPIwriteStream(cmd, 2, data, numBytes));
 }
 
-int16_t SX128x::readBuffer(uint8_t* data, uint8_t numBytes) {
-  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_READ_BUFFER, RADIOLIB_SX128X_CMD_NOP };
+int16_t SX128x::readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
+  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_READ_BUFFER, offset };
   return(this->mod->SPIreadStream(cmd, 2, data, numBytes));
 }
 
