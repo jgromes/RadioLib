@@ -14,6 +14,7 @@ var class_s_x128x =
     [ "getChannelScanResult", "class_s_x128x.html#ac39f77b77a2e4124cc30aeae08b4c653", null ],
     [ "getFrequencyError", "class_s_x128x.html#a2b424000856a9dc212f571d0e8890635", null ],
     [ "getIrqStatus", "class_s_x128x.html#ae1f933f767161cc59fdaca816ab93e22", null ],
+    [ "getPacketLength", "class_s_x128x.html#a67ab0acd97f81e509af80a31f1fa7dc4", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],
     [ "getRSSI", "class_s_x128x.html#a260b99d8427e089546e33084803d955a", null ],
     [ "getSNR", "class_s_x128x.html#adce2e6c7215caa7c904b0d8f9cbd107d", null ],

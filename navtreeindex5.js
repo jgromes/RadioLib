@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"functions_func_e.html":[3,3,1,4],
+"functions_func_f.html":[3,3,1,5],
 "functions_func_g.html":[3,3,1,6],
 "functions_func_h.html":[3,3,1,7],
 "functions_func_i.html":[3,3,1,8],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "struct_l_r11x0_wifi_result_extended__t.html#a16a6732a8af0332f64c0f6bcc0d5257f":[3,0,32,7],
 "struct_l_r11x0_wifi_result_extended__t.html#a403e9bde552ca9b07cdf49a2d295c563":[3,0,32,4],
 "struct_l_r11x0_wifi_result_extended__t.html#a45bbafdcc16a5ae8ee52d0ea40b40326":[3,0,32,2],
-"struct_l_r11x0_wifi_result_extended__t.html#a4ffbb47fb23051dfeb2fe7ae52ae6dea":[3,0,32,9],
-"struct_l_r11x0_wifi_result_extended__t.html#a530ba85cf4b0b41e519b2d89e37b2497":[3,0,32,6],
-"struct_l_r11x0_wifi_result_extended__t.html#a640fdd5b33e6ab2f6867cd63da567147":[3,0,32,10]
+"struct_l_r11x0_wifi_result_extended__t.html#a4ffbb47fb23051dfeb2fe7ae52ae6dea":[3,0,32,9]
 };
