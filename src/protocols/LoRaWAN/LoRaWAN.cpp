@@ -1196,6 +1196,8 @@ int16_t LoRaWANNode::downlinkCommon() {
 
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
 
+  int16_t timedOut = 0;
+
   // perform listening in the two Rx windows
   for(uint8_t i = 0; i < 2; i++) {
     downlinkAction = false;
@@ -1226,11 +1228,11 @@ int16_t LoRaWANNode::downlinkCommon() {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", i+1);
 
     // check if the IRQ bit for Rx Timeout is set
-    state = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-    if(state == RADIOLIB_ERR_UNSUPPORTED) {
-      return(state);
+    timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
+    if(timedOut == RADIOLIB_ERR_UNSUPPORTED) {
+      return(timedOut);
     }
-    if(state == 0) {
+    if(!timedOut) {
       break;
 
     } else if(i == 0) {
@@ -1252,11 +1254,7 @@ int16_t LoRaWANNode::downlinkCommon() {
   this->rxDelayEnd = mod->hal->millis();
 
   // if we got here due to a timeout, stop ongoing activities
-  state = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
-  if(state == RADIOLIB_ERR_UNSUPPORTED) {
-    return(state);
-  }
-  if(state == 1) {
+  if(timedOut) {
     this->phyLayer->standby();  // TODO check: this should be done automagically due to RxSingle?
     if(this->modulation == RADIOLIB_LORAWAN_MODULATION_LORA) {
       this->phyLayer->invertIQ(false);
