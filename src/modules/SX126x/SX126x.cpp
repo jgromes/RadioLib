@@ -1466,7 +1466,7 @@ int16_t SX126x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool SX126x::isIrqSet(uint8_t irq) {
+int16_t SX126x::checkIrq(uint8_t irq) {
   uint16_t flags = getIrqStatus();
   switch(irq) {
     case RADIOLIB_IRQ_TX_DONE:
@@ -1489,12 +1489,10 @@ bool SX126x::isIrqSet(uint8_t irq) {
       return(flags & RADIOLIB_SX126X_IRQ_CAD_DETECTED);
     case RADIOLIB_IRQ_TIMEOUT:
       return(flags & RADIOLIB_SX126X_IRQ_TIMEOUT);
-    case RADIOLIB_IRQ_LR_FHSS_HOP:
-      return(flags & RADIOLIB_SX126X_IRQ_LR_FHSS_HOP);
     default:
-      return(false);
+      return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  return(false);
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t SX126x::implicitHeader(size_t len) {

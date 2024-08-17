@@ -638,7 +638,7 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
-bool SX128x::isIrqSet(uint8_t irq) {
+int16_t SX128x::checkIrq(uint8_t irq) {
   uint16_t flags = getIrqStatus();
   switch(irq) {
     case RADIOLIB_IRQ_TX_DONE:
@@ -649,8 +649,6 @@ bool SX128x::isIrqSet(uint8_t irq) {
       return(flags & RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED);
     case RADIOLIB_IRQ_SYNC_WORD_VALID:
       return(flags & RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID);
-    case RADIOLIB_IRQ_SYNC_WORD_ERROR:
-      return(flags & RADIOLIB_SX128X_IRQ_SYNC_WORD_ERROR);
     case RADIOLIB_IRQ_HEADER_VALID:
       return(flags & RADIOLIB_SX128X_IRQ_HEADER_VALID);
     case RADIOLIB_IRQ_HEADER_ERR:
@@ -664,9 +662,9 @@ bool SX128x::isIrqSet(uint8_t irq) {
     case RADIOLIB_IRQ_TIMEOUT:
       return(flags & RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT);
     default:
-      return(false);
+      return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  return(false);
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t SX128x::startChannelScan() {

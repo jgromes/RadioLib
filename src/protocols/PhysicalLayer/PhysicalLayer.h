@@ -9,14 +9,12 @@
 #define RADIOLIB_IRQ_RX_DONE                                    0x01
 #define RADIOLIB_IRQ_PREAMBLE_DETECTED                          0x02
 #define RADIOLIB_IRQ_SYNC_WORD_VALID                            0x03
-#define RADIOLIB_IRQ_SYNC_WORD_ERROR                            0x04
-#define RADIOLIB_IRQ_HEADER_VALID                               0x05
-#define RADIOLIB_IRQ_HEADER_ERR                                 0x06
-#define RADIOLIB_IRQ_CRC_ERR                                    0x07
-#define RADIOLIB_IRQ_CAD_DONE                                   0x08
-#define RADIOLIB_IRQ_CAD_DETECTED                               0x09
-#define RADIOLIB_IRQ_TIMEOUT                                    0x0A
-#define RADIOLIB_IRQ_LR_FHSS_HOP                                0x0B
+#define RADIOLIB_IRQ_HEADER_VALID                               0x04
+#define RADIOLIB_IRQ_HEADER_ERR                                 0x05
+#define RADIOLIB_IRQ_CRC_ERR                                    0x06
+#define RADIOLIB_IRQ_CAD_DONE                                   0x07
+#define RADIOLIB_IRQ_CAD_DETECTED                               0x08
+#define RADIOLIB_IRQ_TIMEOUT                                    0x09
 
 /*!
   \struct LoRaRate_t
@@ -379,7 +377,7 @@ class PhysicalLayer {
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
       \returns Whether requested IRQ is set.
     */
-    virtual bool isIrqSet(uint8_t irq);
+    virtual int16_t checkIrq(uint8_t irq);
 
     /*!
       \brief Interrupt-driven channel activity detection method. Interrupt will be activated

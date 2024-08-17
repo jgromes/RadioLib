@@ -580,7 +580,7 @@ class SX128x: public PhysicalLayer {
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
       \returns Whether requested IRQ is set.
     */
-    bool isIrqSet(uint8_t irq) override;
+    int16_t checkIrq(uint8_t irq) override;
 
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated

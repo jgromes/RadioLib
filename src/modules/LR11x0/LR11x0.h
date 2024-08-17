@@ -1232,7 +1232,7 @@ class LR11x0: public PhysicalLayer {
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
       \returns Whether requested IRQ is set.
     */
-    bool isIrqSet(uint8_t irq) override;
+    int16_t checkIrq(uint8_t irq) override;
 
     /*!
       \brief Get one truly random byte from RSSI noise.

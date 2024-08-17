@@ -1328,7 +1328,7 @@ int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool LR11x0::isIrqSet(uint8_t irq) {
+int16_t LR11x0::checkIrq(uint8_t irq) {
   uint16_t flags = getIrqStatus();
   switch(irq) {
     case RADIOLIB_IRQ_TX_DONE:
@@ -1351,12 +1351,10 @@ bool LR11x0::isIrqSet(uint8_t irq) {
       return(flags & RADIOLIB_LR11X0_IRQ_CAD_DETECTED);
     case RADIOLIB_IRQ_TIMEOUT:
       return(flags & RADIOLIB_LR11X0_IRQ_TIMEOUT);
-    case RADIOLIB_IRQ_LR_FHSS_HOP:
-      return(flags & RADIOLIB_LR11X0_IRQ_LR_FHSS_HOP);
     default:
-      return(false);
+      return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  return(false);
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 uint8_t LR11x0::randomByte() {

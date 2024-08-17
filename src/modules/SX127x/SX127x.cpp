@@ -1302,7 +1302,7 @@ int16_t SX127x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool SX127x::isIrqSet(uint8_t irq) {
+int16_t SX127x::checkIrq(uint8_t irq) {
   uint16_t flags = getIRQFlags();
   switch(irq) {
     case RADIOLIB_IRQ_TX_DONE:
@@ -1320,9 +1320,9 @@ bool SX127x::isIrqSet(uint8_t irq) {
     case RADIOLIB_IRQ_TIMEOUT:
       return(flags & RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_TIMEOUT);
     default:
-      return(false);
+      return(RADIOLIB_ERR_UNSUPPORTED);
   }
-  return(false);
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t SX127x::setCrcFiltering(bool enable) {
