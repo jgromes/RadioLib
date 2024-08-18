@@ -325,11 +325,21 @@ int16_t PhysicalLayer::startChannelScan() {
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }
 
+int16_t PhysicalLayer::startChannelScan(ChannelScanConfig_t config) {
+  (void)config;
+  return(RADIOLIB_ERR_UNSUPPORTED); 
+}
+
 int16_t PhysicalLayer::getChannelScanResult() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::scanChannel() {
+  return(RADIOLIB_ERR_UNSUPPORTED); 
+}
+
+int16_t PhysicalLayer::scanChannel(ChannelScanConfig_t config) {
+  (void)config;
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }
 

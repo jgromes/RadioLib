@@ -56,6 +56,48 @@ union DataRate_t {
 };
 
 /*!
+  \struct CADScanConfig_t
+  \brief Channel scan configuration interpretation in case LoRa CAD is used
+*/
+struct CADScanConfig_t {
+  /*! \brief Number of symbols to consider signal present */
+  uint8_t symNum;
+  
+  /*! \brief Number of peak detection symbols */
+  uint8_t detPeak;
+  
+  /*! \brief Number of minimum detection symbols */
+  uint8_t detMin;
+  
+  /*! \brief Exit mode after signal detection is complete - module-specific value */
+  uint8_t exitMode;
+  
+  /*! \brief Timeout in milliseconds */
+  RadioLibTime_t timeout;
+};
+
+/*!
+  \struct RSSIScanConfig_t
+  \brief Channel scan configuration interpretation in case RSSI threshold is used
+*/
+struct RSSIScanConfig_t {
+  /*! \brief RSSI limit in dBm */
+  float limit;
+};
+
+/*!
+  \union ChannelScanConfig_t
+  \brief Common channel scan configuration structure
+*/
+union ChannelScanConfig_t {
+  /*! \brief Interpretation for modems that use CAD (usually LoRa modems)*/
+  CADScanConfig_t cad;
+
+  /*! \brief Interpretation for modems that use RSSI threshold*/
+  RSSIScanConfig_t rssi;
+};
+
+/*!
   \class PhysicalLayer
 
   \brief Provides common interface for protocols that run on %LoRa/FSK modules, such as RTTY or LoRaWAN.
@@ -387,6 +429,14 @@ class PhysicalLayer {
     virtual int16_t startChannelScan();
 
     /*!
+      \brief Interrupt-driven channel activity detection method. interrupt will be activated
+      when packet is detected. Must be implemented in module class.
+      \param config Scan configuration structure. Interpretation depends on currently active modem.
+      \returns \ref status_codes
+    */
+    virtual int16_t startChannelScan(ChannelScanConfig_t config);
+
+    /*!
       \brief Read the channel scan result
       \returns \ref status_codes
     */
@@ -399,6 +449,15 @@ class PhysicalLayer {
       RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
     */
     virtual int16_t scanChannel();
+
+    /*!
+      \brief Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules,
+      or RSSI measurement for FSK modules.
+      \param config Scan configuration structure. Interpretation depends on currently active modem.
+      \returns RADIOLIB_CHANNEL_FREE when channel is free,
+      RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
+    */
+    virtual int16_t scanChannel(ChannelScanConfig_t config);
 
     /*!
       \brief Get truly random number in range 0 - max.
