@@ -324,9 +324,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a06cd53dda09095181bf6ccf2b496b8a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a06cd53dda09095181bf6ccf2b496b8a7">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask) override</td></tr>
 <tr class="memdesc:a06cd53dda09095181bf6ccf2b496b8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x127x.html#a06cd53dda09095181bf6ccf2b496b8a7">More...</a><br /></td></tr>
 <tr class="separator:a06cd53dda09095181bf6ccf2b496b8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5bd1d31bb2f69d45525dff0fc1540506"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a5bd1d31bb2f69d45525dff0fc1540506">isRxTimeout</a> () override</td></tr>
-<tr class="memdesc:a5bd1d31bb2f69d45525dff0fc1540506"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the IRQ bit for RxTimeout is set.  <a href="class_s_x127x.html#a5bd1d31bb2f69d45525dff0fc1540506">More...</a><br /></td></tr>
-<tr class="separator:a5bd1d31bb2f69d45525dff0fc1540506"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adab87c73772d8ddc9b01d401f792547f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adab87c73772d8ddc9b01d401f792547f">checkIrq</a> (uint8_t irq) override</td></tr>
+<tr class="memdesc:adab87c73772d8ddc9b01d401f792547f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).  <a href="class_s_x127x.html#adab87c73772d8ddc9b01d401f792547f">More...</a><br /></td></tr>
+<tr class="separator:adab87c73772d8ddc9b01d401f792547f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab531ad461b250a060e92d9c744e79070"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">setCrcFiltering</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ab531ad461b250a060e92d9c744e79070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">More...</a><br /></td></tr>
 <tr class="separator:ab531ad461b250a060e92d9c744e79070"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -659,6 +659,37 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="adab87c73772d8ddc9b01d401f792547f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adab87c73772d8ddc9b01d401f792547f">&#9670;&nbsp;</a></span>checkIrq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::checkIrq </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>irq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone). </p>
+<dl class="section return"><dt>Returns</dt><dd>Whether requested IRQ is set. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af9dd85a63fb868e299645aecd8a0bf7e">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1328,36 +1359,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a5bd1d31bb2f69d45525dff0fc1540506"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5bd1d31bb2f69d45525dff0fc1540506">&#9670;&nbsp;</a></span>isRxTimeout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool SX127x::isRxTimeout </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Check whether the IRQ bit for RxTimeout is set. </p>
-<dl class="section return"><dt>Returns</dt><dd>Whether RxTimeout IRQ is set </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#acb8d8182a32439fe91f2806d73e629f4">PhysicalLayer</a>.</p>
 
 </div>
 </div>
