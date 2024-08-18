@@ -316,8 +316,9 @@ int16_t PhysicalLayer::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask)
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-bool PhysicalLayer::isRxTimeout() {
-  return(false);
+int16_t PhysicalLayer::checkIrq(uint8_t irq) {
+  (void)irq;
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
 int16_t PhysicalLayer::startChannelScan() {

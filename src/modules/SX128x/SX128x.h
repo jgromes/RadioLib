@@ -577,6 +577,12 @@ class SX128x: public PhysicalLayer {
     int16_t readData(uint8_t* data, size_t len) override;
     
     /*!
+      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
+      \returns Whether requested IRQ is set.
+    */
+    int16_t checkIrq(uint8_t irq) override;
+
+    /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
       \returns \ref status_codes

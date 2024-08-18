@@ -1073,10 +1073,10 @@ class SX127x: public PhysicalLayer {
     int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
-      \brief Check whether the IRQ bit for RxTimeout is set
-      \returns Whether RxTimeout IRQ is set
+      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
+      \returns Whether requested IRQ is set.
     */
-    bool isRxTimeout() override;
+    int16_t checkIrq(uint8_t irq) override;
 
     /*!
       \brief Enable CRC filtering and generation.

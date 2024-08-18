@@ -1328,12 +1328,35 @@ int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-bool LR11x0::isRxTimeout() {
-  uint32_t irq = getIrqStatus();
-  bool rxTimedOut = irq & RADIOLIB_LR11X0_IRQ_TIMEOUT;
-  return(rxTimedOut);
+int16_t LR11x0::checkIrq(uint8_t irq) {
+  uint16_t flags = getIrqStatus();
+  switch(irq) {
+    case RADIOLIB_IRQ_TX_DONE:
+      return(flags & RADIOLIB_LR11X0_IRQ_TX_DONE);
+    case RADIOLIB_IRQ_RX_DONE:
+      return(flags & RADIOLIB_LR11X0_IRQ_RX_DONE);
+    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
+      return(flags & RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED);
+    case RADIOLIB_IRQ_SYNC_WORD_VALID:
+      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
+    case RADIOLIB_IRQ_HEADER_VALID:
+      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
+    case RADIOLIB_IRQ_HEADER_ERR:
+      return(flags & RADIOLIB_LR11X0_IRQ_HEADER_ERR);
+    case RADIOLIB_IRQ_CRC_ERR:
+      return(flags & RADIOLIB_LR11X0_IRQ_CRC_ERR);
+    case RADIOLIB_IRQ_CAD_DONE:
+      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DONE);
+    case RADIOLIB_IRQ_CAD_DETECTED:
+      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DETECTED);
+    case RADIOLIB_IRQ_TIMEOUT:
+      return(flags & RADIOLIB_LR11X0_IRQ_TIMEOUT);
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+  return(RADIOLIB_ERR_UNSUPPORTED);
 }
-  
+
 uint8_t LR11x0::randomByte() {
   uint32_t num = 0;
   (void)getRandomNumber(&num);

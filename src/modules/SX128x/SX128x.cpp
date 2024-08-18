@@ -638,6 +638,35 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
+int16_t SX128x::checkIrq(uint8_t irq) {
+  uint16_t flags = getIrqStatus();
+  switch(irq) {
+    case RADIOLIB_IRQ_TX_DONE:
+      return(flags & RADIOLIB_SX128X_IRQ_TX_DONE);
+    case RADIOLIB_IRQ_RX_DONE:
+      return(flags & RADIOLIB_SX128X_IRQ_RX_DONE);
+    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
+      return(flags & RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED);
+    case RADIOLIB_IRQ_SYNC_WORD_VALID:
+      return(flags & RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID);
+    case RADIOLIB_IRQ_HEADER_VALID:
+      return(flags & RADIOLIB_SX128X_IRQ_HEADER_VALID);
+    case RADIOLIB_IRQ_HEADER_ERR:
+      return(flags & RADIOLIB_SX128X_IRQ_HEADER_ERROR);
+    case RADIOLIB_IRQ_CRC_ERR:
+      return(flags & RADIOLIB_SX128X_IRQ_CRC_ERROR);
+    case RADIOLIB_IRQ_CAD_DONE:
+      return(flags & RADIOLIB_SX128X_IRQ_CAD_DONE);
+    case RADIOLIB_IRQ_CAD_DETECTED:
+      return(flags & RADIOLIB_SX128X_IRQ_CAD_DETECTED);
+    case RADIOLIB_IRQ_TIMEOUT:
+      return(flags & RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT);
+    default:
+      return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t SX128x::startChannelScan() {
   // check active modem
   if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {

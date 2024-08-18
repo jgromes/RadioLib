@@ -4,6 +4,18 @@
 #include "../../TypeDef.h"
 #include "../../Module.h"
 
+// common IRQ flags
+#define RADIOLIB_IRQ_TX_DONE                                    0x00
+#define RADIOLIB_IRQ_RX_DONE                                    0x01
+#define RADIOLIB_IRQ_PREAMBLE_DETECTED                          0x02
+#define RADIOLIB_IRQ_SYNC_WORD_VALID                            0x03
+#define RADIOLIB_IRQ_HEADER_VALID                               0x04
+#define RADIOLIB_IRQ_HEADER_ERR                                 0x05
+#define RADIOLIB_IRQ_CRC_ERR                                    0x06
+#define RADIOLIB_IRQ_CAD_DONE                                   0x07
+#define RADIOLIB_IRQ_CAD_DETECTED                               0x08
+#define RADIOLIB_IRQ_TIMEOUT                                    0x09
+
 /*!
   \struct LoRaRate_t
   \brief Data rate structure interpretation in case LoRa is used
@@ -346,28 +358,29 @@ class PhysicalLayer {
     virtual RadioLibTime_t getTimeOnAir(size_t len);
 
     /*!
-      \brief Calculate the timeout value for this specific module / series (in number of symbols or units of time)
-      \param timeoutUs Timeout in microseconds to listen for
-      \returns Timeout value in a unit that is specific for the used module
+      \brief Calculate the timeout value for this specific module / series 
+      (in number of symbols or units of time).
+      \param timeoutUs Timeout in microseconds to listen for.
+      \returns Timeout value in a unit that is specific for the used module.
     */
     virtual RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
-      \param irqFlags The flags for which IRQs must be triggered
-      \param irqMask Mask indicating which IRQ triggers a DIO
+      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks.
+      \param irqFlags The flags for which IRQs must be triggered.
+      \param irqMask Mask indicating which IRQ triggers a DIO.
       \returns \ref status_codes
     */
     virtual int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
 
     /*!
-      \brief Check whether the IRQ bit for RxTimeout is set
-      \returns Whether RxTimeout IRQ is set
+      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
+      \returns Whether requested IRQ is set.
     */
-    virtual bool isRxTimeout();
+    virtual int16_t checkIrq(uint8_t irq);
 
     /*!
-      \brief Interrupt-driven channel activity detection method. interrupt will be activated
+      \brief Interrupt-driven channel activity detection method. Interrupt will be activated
       when packet is detected. Must be implemented in module class.
       \returns \ref status_codes
     */
