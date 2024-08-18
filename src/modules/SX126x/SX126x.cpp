@@ -425,12 +425,21 @@ int16_t SX126x::packetMode() {
 }
 
 int16_t SX126x::scanChannel() {
-  return(this->scanChannel(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+    },
+  };
+  return(this->scanChannel(config));
 }
 
-int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::scanChannel(ChannelScanConfig_t config) {
   // set mode to CAD
-  int state = startChannelScan(symbolNum, detPeak, detMin);
+  int state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -732,10 +741,19 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::startChannelScan() {
-  return(this->startChannelScan(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+    },
+  };
+  return(this->startChannelScan(config));
 }
 
-int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::startChannelScan(ChannelScanConfig_t config) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -757,7 +775,7 @@ int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  state = setCad(symbolNum, detPeak, detMin);
+  state = setCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout);
   return(state);
 }
 
@@ -1761,8 +1779,7 @@ int16_t SX126x::setRx(uint32_t timeout) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
- 
-int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
   // default CAD parameters are shown in Semtech AN1200.48, page 41.
   const uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
 
@@ -1773,29 +1790,17 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     this->spreadingFactor = 12;
   }
 
-  // build the packet
+  // build the packet with default configuration
   uint8_t data[7];
   data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
   data[1] = detPeakValues[this->spreadingFactor - 7];
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
-  data[4] = 0x00;
-  data[5] = 0x00;
-  data[6] = 0x00;
+  uint32_t timeout_raw = (float)timeout*1000 / 15.625f;
+  data[4] = (uint8_t)((timeout_raw >> 16) & 0xFF);
+  data[5] = (uint8_t)((timeout_raw >> 8) & 0xFF);
+  data[6] = (uint8_t)(timeout_raw & 0xFF);
 
-
- /*
-  CAD Configuration Note:
-  The default CAD configuration applied by `scanChannel` overrides the optimal SF-specific configurations, leading to suboptimal detection.
-  I.e., anything that is not RADIOLIB_SX126X_CAD_PARAM_DEFAULT is overridden. But CAD settings are SF specific.
-  To address this, the user override has been commented out, ensuring consistent application of the optimal CAD settings as 
-    per Semtech's Application Note AN1200.48 (page 41) for the 125KHz setting. This approach significantly reduces false CAD occurrences.
-    Testing has shown that there is no reason for a user to change CAD settings for anything other than most optimal ones described in AN1200.48 .
-  However, this change does not respect CAD configs from the LoRaWAN layer. Future considerations or use cases might require revisiting this decision.
-  Hence this note.
-*/
-
-/*
   // set user-provided values
   if(symbolNum != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
     data[0] = symbolNum;
@@ -1809,10 +1814,9 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     data[2] = detMin;
   }
 
-*/
-  (void)symbolNum;
-  (void)detPeak;
-  (void)detMin;
+  if(exitMode != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
+    data[3] = exitMode;
+  }
 
   // configure parameters
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);

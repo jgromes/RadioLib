@@ -533,18 +533,17 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      Configuration defaults to the values recommended by AN1200.48.
       \returns \ref status_codes
     */
     int16_t scanChannel() override;
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
-      \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t scanChannel(ChannelScanConfig_t config) override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -717,12 +716,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param symbolNum Number of symbols for CAD detection. 
-      \param detPeak Peak value for CAD detection.
-      \param detMin Minimum value for CAD detection.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t startChannelScan(ChannelScanConfig_t config) override;
 
     /*!
       \brief Read the channel scan result
@@ -1160,7 +1157,7 @@ class SX126x: public PhysicalLayer {
     int16_t setFs();
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
-    int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
