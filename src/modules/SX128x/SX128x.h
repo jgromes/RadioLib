@@ -186,6 +186,7 @@
 #define RADIOLIB_SX128X_CAD_ON_4_SYMB                           0x40        //  7     0                                   4
 #define RADIOLIB_SX128X_CAD_ON_8_SYMB                           0x60        //  7     0                                   8
 #define RADIOLIB_SX128X_CAD_ON_16_SYMB                          0x80        //  7     0                                   16
+#define RADIOLIB_SX128X_CAD_PARAM_DEFAULT                       RADIOLIB_SX128X_CAD_ON_8_SYMB
 
 //RADIOLIB_SX128X_CMD_SET_MODULATION_PARAMS
 #define RADIOLIB_SX128X_BLE_GFSK_BR_2_000_BW_2_4                0x04        //  7     0   GFSK/BLE bit rate and bandwidth setting: 2.0 Mbps   2.4 MHz
@@ -458,6 +459,13 @@ class SX128x: public PhysicalLayer {
     int16_t scanChannel() override;
 
     /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel(ChannelScanConfig_t config) override;
+
+    /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
       Overload for PhysicalLayer compatibility.
       \returns \ref status_codes
@@ -584,10 +592,18 @@ class SX128x: public PhysicalLayer {
 
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
-      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
+      when LoRa preamble is detected, or upon timeout.
       \returns \ref status_codes
     */
     int16_t startChannelScan() override;
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan(ChannelScanConfig_t config) override;
 
     /*!
       \brief Read the channel scan result
@@ -837,7 +853,7 @@ class SX128x: public PhysicalLayer {
     int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
     int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
-    int16_t setCad();
+    int16_t setCad(uint8_t symbolNum);
     uint8_t getPacketType();
     int16_t setRfFrequency(uint32_t frf);
     int16_t setTxParams(uint8_t pwr, uint8_t rampTime = RADIOLIB_SX128X_PA_RAMP_10_US);

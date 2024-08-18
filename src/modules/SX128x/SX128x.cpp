@@ -411,8 +411,17 @@ int16_t SX128x::receiveDirect() {
 }
 
 int16_t SX128x::scanChannel() {
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+    },
+  };
+  return(this->scanChannel(config));
+}
+
+int16_t SX128x::scanChannel(ChannelScanConfig_t config) {
   // set mode to CAD
-  int16_t state = startChannelScan();
+  int16_t state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -668,6 +677,15 @@ int16_t SX128x::checkIrq(uint8_t irq) {
 }
 
 int16_t SX128x::startChannelScan() {
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+    },
+  };
+  return(this->startChannelScan(config));
+}
+
+int16_t SX128x::startChannelScan(ChannelScanConfig_t config) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX128X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -689,7 +707,7 @@ int16_t SX128x::startChannelScan() {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set mode to CAD
-  return(setCad());
+  return(setCad(config.cad.symNum));
 }
 
 int16_t SX128x::getChannelScanResult() {
@@ -1464,7 +1482,12 @@ int16_t SX128x::setRx(uint16_t periodBaseCount, uint8_t periodBase) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_RX, data, 3));
 }
 
-int16_t SX128x::setCad() {
+int16_t SX128x::setCad(uint8_t symbolNum) {
+  // configure parameters
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_CAD_PARAMS, &symbolNum, 1);
+  RADIOLIB_ASSERT(state);
+
+  // start CAD
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_CAD, NULL, 0));
 }
 
