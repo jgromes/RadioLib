@@ -1796,7 +1796,7 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8
   data[1] = detPeakValues[this->spreadingFactor - 7];
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
-  uint32_t timeout_raw = (float)timeout*1000 / 15.625f;
+  uint32_t timeout_raw = (float)timeout / 15.625f;
   data[4] = (uint8_t)((timeout_raw >> 16) & 0xFF);
   data[5] = (uint8_t)((timeout_raw >> 8) & 0xFF);
   data[6] = (uint8_t)(timeout_raw & 0xFF);

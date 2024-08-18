@@ -72,7 +72,7 @@ struct CADScanConfig_t {
   /*! \brief Exit mode after signal detection is complete - module-specific value */
   uint8_t exitMode;
   
-  /*! \brief Timeout in milliseconds */
+  /*! \brief Timeout in microseconds */
   RadioLibTime_t timeout;
 };
 

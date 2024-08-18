@@ -2057,7 +2057,7 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uin
     mode = RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC;
   }
 
-  uint32_t timeout_raw = (float)timeout*1000 / 30.52f;
+  uint32_t timeout_raw = (float)timeout / 30.52f;
 
   // set CAD parameters
   // TODO add configurable exit mode and timeout
