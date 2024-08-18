@@ -844,12 +844,10 @@ class LR11x0: public PhysicalLayer {
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
-      \param symbolNum Number of symbols for CAD detection.
-      \param detPeak Peak value for CAD detection.
-      \param detMin Minimum value for CAD detection.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t scanChannel(ChannelScanConfig_t config) override;
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).
@@ -979,14 +977,12 @@ class LR11x0: public PhysicalLayer {
     int16_t startChannelScan() override;
 
     /*!
-      \brief Interrupt-driven channel activity detection method. IRQ1 will be activated
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param symbolNum Number of symbols for CAD detection. 
-      \param detPeak Peak value for CAD detection.
-      \param detMin Minimum value for CAD detection.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t startChannelScan(ChannelScanConfig_t config) override;
 
     /*!
       \brief Read the channel scan result
@@ -1618,7 +1614,7 @@ class LR11x0: public PhysicalLayer {
     bool findChip(uint8_t ver);
     int16_t config(uint8_t modem);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
-    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
 
     // common methods to avoid some copy-paste

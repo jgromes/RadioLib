@@ -278,12 +278,21 @@ int16_t LR11x0::receiveDirect() {
 }
 
 int16_t LR11x0::scanChannel() {
-  return(this->scanChannel(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+    },
+  };
+  return(this->scanChannel(config));
 }
 
-int16_t LR11x0::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::scanChannel(ChannelScanConfig_t config) {
   // set mode to CAD
-  int state = startChannelScan(symbolNum, detPeak, detMin);
+  int state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -541,10 +550,19 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 }
 
 int16_t LR11x0::startChannelScan() {
-  return(this->startChannelScan(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+    },
+  };
+  return(this->startChannelScan(config));
 }
 
-int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::startChannelScan(ChannelScanConfig_t config) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -570,7 +588,7 @@ int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(symbolNum, detPeak, detMin));
+  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout));
 }
 
 int16_t LR11x0::getChannelScanResult() {
@@ -2007,7 +2025,7 @@ int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
-int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -2034,9 +2052,16 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     min = 10;
   }
 
+  uint8_t mode = exitMode; 
+  if(mode == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
+    mode = RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC;
+  }
+
+  uint32_t timeout_raw = (float)timeout*1000 / 30.52f;
+
   // set CAD parameters
   // TODO add configurable exit mode and timeout
-  state = setCadParams(num, peak, min, RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC, 0);
+  state = setCadParams(num, peak, min, mode, timeout_raw);
   RADIOLIB_ASSERT(state);
 
   // start CAD
