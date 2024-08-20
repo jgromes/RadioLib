@@ -634,7 +634,7 @@ class PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
-    uint32_t irqMap[10];
+    uint32_t irqMap[10] = { 0 };
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
