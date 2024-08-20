@@ -4,6 +4,16 @@
 
 SX128x::SX128x(Module* mod) : PhysicalLayer(RADIOLIB_SX128X_FREQUENCY_STEP_SIZE, RADIOLIB_SX128X_MAX_PACKET_LENGTH) {
   this->mod = mod;
+  this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_SX128X_IRQ_TX_DONE;
+  this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_SX128X_IRQ_RX_DONE;
+  this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_SYNC_WORD_VALID] = RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_VALID] = RADIOLIB_SX128X_IRQ_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_ERR] = RADIOLIB_SX128X_IRQ_HEADER_ERROR;
+  this->irqMap[RADIOLIB_IRQ_CRC_ERR] = RADIOLIB_SX128X_IRQ_CRC_ERROR;
+  this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_SX128X_IRQ_CAD_DONE;
+  this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_SX128X_IRQ_CAD_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
 }
 
 int16_t SX128x::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength) {
@@ -414,6 +424,7 @@ int16_t SX128x::scanChannel() {
   ChannelScanConfig_t config = {
     .cad = {
       .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->scanChannel(config));
@@ -647,39 +658,23 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   return(state);
 }
 
-int16_t SX128x::checkIrq(uint8_t irq) {
-  uint16_t flags = getIrqStatus();
-  switch(irq) {
-    case RADIOLIB_IRQ_TX_DONE:
-      return(flags & RADIOLIB_SX128X_IRQ_TX_DONE);
-    case RADIOLIB_IRQ_RX_DONE:
-      return(flags & RADIOLIB_SX128X_IRQ_RX_DONE);
-    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
-      return(flags & RADIOLIB_SX128X_IRQ_PREAMBLE_DETECTED);
-    case RADIOLIB_IRQ_SYNC_WORD_VALID:
-      return(flags & RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID);
-    case RADIOLIB_IRQ_HEADER_VALID:
-      return(flags & RADIOLIB_SX128X_IRQ_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_ERR:
-      return(flags & RADIOLIB_SX128X_IRQ_HEADER_ERROR);
-    case RADIOLIB_IRQ_CRC_ERR:
-      return(flags & RADIOLIB_SX128X_IRQ_CRC_ERROR);
-    case RADIOLIB_IRQ_CAD_DONE:
-      return(flags & RADIOLIB_SX128X_IRQ_CAD_DONE);
-    case RADIOLIB_IRQ_CAD_DETECTED:
-      return(flags & RADIOLIB_SX128X_IRQ_CAD_DETECTED);
-    case RADIOLIB_IRQ_TIMEOUT:
-      return(flags & RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT);
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-  return(RADIOLIB_ERR_UNSUPPORTED);
+uint32_t SX128x::getIrqFlags() {
+  return((uint32_t)this->getIrqStatus());
+}
+
+int16_t SX128x::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqParams(irq, irq));
+}
+
+int16_t SX128x::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrqStatus(irq));
 }
 
 int16_t SX128x::startChannelScan() {
   ChannelScanConfig_t config = {
     .cad = {
       .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->startChannelScan(config));
@@ -696,7 +691,8 @@ int16_t SX128x::startChannelScan(ChannelScanConfig_t config) {
   RADIOLIB_ASSERT(state);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE, RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE);
+  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE : config.cad.irqFlags;
+  state = setDioIrqParams(irqFlags, irqFlags);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
