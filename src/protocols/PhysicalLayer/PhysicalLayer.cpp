@@ -316,7 +316,40 @@ int16_t PhysicalLayer::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask)
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::checkIrq(uint8_t irq) {
+int16_t PhysicalLayer::checkIrq(RadioIrqFlags_t irq) {
+  if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+  
+  return(getIrqFlags() & this->irqMap[irq]);
+}
+
+int16_t PhysicalLayer::setIrq(RadioIrqFlags_t irq) {
+  if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  return(setIrqFlags(this->irqMap[irq]));
+}
+
+int16_t PhysicalLayer::clearIrq(RadioIrqFlags_t irq) {
+  if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
+  return(clearIrqFlags(this->irqMap[irq]));
+}
+
+uint32_t PhysicalLayer::getIrqFlags() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::setIrqFlags(RadioIrqFlags_t irq) {
+  (void)irq;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::clearIrqFlags(RadioIrqFlags_t irq) {
   (void)irq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }

@@ -15,6 +15,7 @@
 #define RADIOLIB_IRQ_CAD_DONE                                   0x07
 #define RADIOLIB_IRQ_CAD_DETECTED                               0x08
 #define RADIOLIB_IRQ_TIMEOUT                                    0x09
+#define RADIOLIB_IRQ_NOT_SUPPORTED                              0xFF
 
 /*!
   \struct LoRaRate_t
@@ -39,7 +40,7 @@ struct FSKRate_t {
   /*! \brief FSK bit rate in kbps */
   float bitRate;
   
-  /*! \brief FS frequency deviation in kHz*/
+  /*! \brief FSK frequency deviation in kHz */
   float freqDev;
 };
 
@@ -74,6 +75,9 @@ struct CADScanConfig_t {
   
   /*! \brief Timeout in microseconds */
   RadioLibTime_t timeout;
+
+  /*! \brief Optional IRQ flags to set, one of RADIOLIB_IRQ_ */
+  RadioIrqFlags_t irqFlags;
 };
 
 /*!
@@ -417,9 +421,49 @@ class PhysicalLayer {
 
     /*!
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \param irq Flags to check, one of RADIOLIB_IRQ_*.
+      \returns 1 when requested IRQ is set, 0 when it is not or RADIOLIB_ERR_UNSUPPORTED if the IRQ is not supported.
     */
-    virtual int16_t checkIrq(uint8_t irq);
+    int16_t checkIrq(RadioIrqFlags_t irq);
+
+    /*!
+      \brief Set interrupt on specific IRQ bit(s) (e.g. RxTimeout, CadDone).
+      Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
+      \param irq Flags to set, one of RADIOLIB_IRQ_*.
+      \returns \ref status_codes
+    */
+    int16_t setIrq(RadioIrqFlags_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
+      \param irq Flags to clear, one of RADIOLIB_IRQ_*.
+      \returns \ref status_codes
+    */
+    int16_t clearIrq(RadioIrqFlags_t irq);
+
+    /*!
+      \brief Read currently active IRQ flags.
+      Must be implemented in module class.
+      \returns IRQ flags.
+    */
+    virtual uint32_t getIrqFlags();
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Must be implemented in module class.
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    virtual int16_t setIrqFlags(uint32_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Must be implemented in module class.
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    virtual int16_t clearIrqFlags(uint32_t irq);
 
     /*!
       \brief Interrupt-driven channel activity detection method. Interrupt will be activated
@@ -590,6 +634,8 @@ class PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+    uint32_t irqMap[10];
+
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
 #endif
