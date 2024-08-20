@@ -1228,21 +1228,21 @@ class LR11x0: public PhysicalLayer {
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
     */
-    uint32_t getIrqFlags();
+    uint32_t getIrqFlags() override;
 
     /*!
       \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
       \param irq Module-specific IRQ flags.
       \returns \ref status_codes
     */
-    int16_t setIrqFlags(uint32_t irq);
+    int16_t setIrqFlags(uint32_t irq) override;
 
     /*!
       \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
       \param irq Module-specific IRQ flags.
       \returns \ref status_codes
     */
-    int16_t clearIrqFlags(uint32_t irq);
+    int16_t clearIrqFlags(uint32_t irq) override;
 
     /*!
       \brief Get one truly random byte from RSSI noise.
