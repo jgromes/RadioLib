@@ -616,6 +616,11 @@
 typedef unsigned long RadioLibTime_t;
 
 /*!
+  \brief Type used for radio-agnostic IRQ flags.
+*/
+typedef uint8_t RadioIrqFlags_t;
+
+/*!
   \}
 */
 
