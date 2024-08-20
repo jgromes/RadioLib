@@ -424,6 +424,10 @@ int16_t SX128x::scanChannel() {
   ChannelScanConfig_t config = {
     .cad = {
       .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+      .detPeak = 0,
+      .detMin = 0,
+      .exitMode = 0,
+      .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
@@ -674,6 +678,10 @@ int16_t SX128x::startChannelScan() {
   ChannelScanConfig_t config = {
     .cad = {
       .symNum = RADIOLIB_SX128X_CAD_PARAM_DEFAULT,
+      .detPeak = 0,
+      .detMin = 0,
+      .exitMode = 0,
+      .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
