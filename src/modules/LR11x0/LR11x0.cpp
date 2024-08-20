@@ -11,6 +11,16 @@
 LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE, RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
   this->mod = mod;
   this->XTAL = false;
+  this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
+  this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_LR11X0_IRQ_RX_DONE;
+  this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_SYNC_WORD_VALID] = RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_VALID] = RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_ERR] = RADIOLIB_LR11X0_IRQ_HEADER_ERR;
+  this->irqMap[RADIOLIB_IRQ_CRC_ERR] = RADIOLIB_LR11X0_IRQ_CRC_ERR;
+  this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_LR11X0_IRQ_CAD_DONE;
+  this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_LR11X0_IRQ_CAD_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR11X0_IRQ_TIMEOUT;
 }
 
 int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage) {
@@ -285,6 +295,7 @@ int16_t LR11x0::scanChannel() {
       .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->scanChannel(config));
@@ -557,6 +568,7 @@ int16_t LR11x0::startChannelScan() {
       .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->startChannelScan(config));
@@ -580,7 +592,8 @@ int16_t LR11x0::startChannelScan(ChannelScanConfig_t config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE);
+  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE : config.cad.irqFlags;
+  state = setDioIrqParams(irqFlags, irqFlags);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1346,33 +1359,16 @@ int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::checkIrq(uint8_t irq) {
-  uint16_t flags = getIrqStatus();
-  switch(irq) {
-    case RADIOLIB_IRQ_TX_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_TX_DONE);
-    case RADIOLIB_IRQ_RX_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_RX_DONE);
-    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
-      return(flags & RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED);
-    case RADIOLIB_IRQ_SYNC_WORD_VALID:
-      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_VALID:
-      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_ERR:
-      return(flags & RADIOLIB_LR11X0_IRQ_HEADER_ERR);
-    case RADIOLIB_IRQ_CRC_ERR:
-      return(flags & RADIOLIB_LR11X0_IRQ_CRC_ERR);
-    case RADIOLIB_IRQ_CAD_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DONE);
-    case RADIOLIB_IRQ_CAD_DETECTED:
-      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DETECTED);
-    case RADIOLIB_IRQ_TIMEOUT:
-      return(flags & RADIOLIB_LR11X0_IRQ_TIMEOUT);
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-  return(RADIOLIB_ERR_UNSUPPORTED);
+uint32_t LR11x0::getIrqFlags() {
+  return((uint32_t)this->getIrqStatus());
+}
+
+int16_t LR11x0::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqParams(irq, irq));
+}
+
+int16_t LR11x0::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrq(irq));
 }
 
 uint8_t LR11x0::randomByte() {
