@@ -691,12 +691,6 @@ class SX126x: public PhysicalLayer {
     int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
 
     /*!
-      \brief Reads the current IRQ status.
-      \returns IRQ status bits
-    */
-    uint16_t getIrqStatus();
-
-    /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
       getPacketLength method must be called BEFORE calling readData!
       \param data Pointer to array to save the received binary data.
@@ -994,10 +988,24 @@ class SX126x: public PhysicalLayer {
     int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
-      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
     */
-    int16_t checkIrq(uint8_t irq) override;
+    uint32_t getIrqFlags();
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t setIrqFlags(uint32_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq);
 
     /*!
       \brief Set implicit header mode for future reception/transmission.

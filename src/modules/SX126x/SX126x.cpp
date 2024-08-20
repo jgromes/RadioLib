@@ -7,6 +7,16 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
   this->XTAL = false;
   this->standbyXOSC = false;
+  this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_SX126X_IRQ_TX_DONE;
+  this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_SX126X_IRQ_RX_DONE;
+  this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_SYNC_WORD_VALID] = RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_VALID] = RADIOLIB_SX126X_IRQ_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_ERR] = RADIOLIB_SX126X_IRQ_HEADER_ERR;
+  this->irqMap[RADIOLIB_IRQ_CRC_ERR] = RADIOLIB_SX126X_IRQ_CRC_ERR;
+  this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_SX126X_IRQ_CAD_DONE;
+  this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_SX126X_IRQ_CAD_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX126X_IRQ_TIMEOUT;
 }
 
 int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
@@ -317,7 +327,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   }
 
   // check whether this was a timeout or not
-  if((getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
+  if((getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
     standby();
     fixImplicitTimeout();
     clearIrqStatus();
@@ -432,6 +442,7 @@ int16_t SX126x::scanChannel() {
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->scanChannel(config));
@@ -450,7 +461,6 @@ int16_t SX126x::scanChannel(ChannelScanConfig_t config) {
   // check CAD result
   return(getChannelScanResult());
 }
-
 
 int16_t SX126x::sleep() {
   return(SX126x::sleep(true));
@@ -706,14 +716,14 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   // if that's the case, the first call will return "SPI command timeout error"
   // check the IRQ to be sure this really originated from timeout event
   int16_t state = this->mod->SPIcheckStream();
-  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
+  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
     // this is definitely Rx timeout
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
   RADIOLIB_ASSERT(state);
 
   // check integrity CRC
-  uint16_t irq = getIrqStatus();
+  uint16_t irq = getIrqFlags();
   int16_t crcState = RADIOLIB_ERR_NONE;
   if((irq & RADIOLIB_SX126X_IRQ_CRC_ERR) || (irq & RADIOLIB_SX126X_IRQ_HEADER_ERR)) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
@@ -748,6 +758,7 @@ int16_t SX126x::startChannelScan() {
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
     },
   };
   return(this->startChannelScan(config));
@@ -767,7 +778,8 @@ int16_t SX126x::startChannelScan(ChannelScanConfig_t config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE, RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE);
+  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE : config.cad.irqFlags;
+  state = setDioIrqParams(irqFlags, irqFlags);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -786,7 +798,7 @@ int16_t SX126x::getChannelScanResult() {
   }
 
   // check CAD result
-  uint16_t cadResult = getIrqStatus();
+  uint16_t cadResult = getIrqFlags();
   if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DETECTED) {
     // detected some LoRa activity
     return(RADIOLIB_LORA_DETECTED);
@@ -1484,33 +1496,18 @@ int16_t SX126x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t SX126x::checkIrq(uint8_t irq) {
-  uint16_t flags = getIrqStatus();
-  switch(irq) {
-    case RADIOLIB_IRQ_TX_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_TX_DONE);
-    case RADIOLIB_IRQ_RX_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_RX_DONE);
-    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
-      return(flags & RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED);
-    case RADIOLIB_IRQ_SYNC_WORD_VALID:
-      return(flags & RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID);
-    case RADIOLIB_IRQ_HEADER_VALID:
-      return(flags & RADIOLIB_SX126X_IRQ_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_ERR:
-      return(flags & RADIOLIB_SX126X_IRQ_HEADER_ERR);
-    case RADIOLIB_IRQ_CRC_ERR:
-      return(flags & RADIOLIB_SX126X_IRQ_CRC_ERR);
-    case RADIOLIB_IRQ_CAD_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_CAD_DONE);
-    case RADIOLIB_IRQ_CAD_DETECTED:
-      return(flags & RADIOLIB_SX126X_IRQ_CAD_DETECTED);
-    case RADIOLIB_IRQ_TIMEOUT:
-      return(flags & RADIOLIB_SX126X_IRQ_TIMEOUT);
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-  return(RADIOLIB_ERR_UNSUPPORTED);
+uint32_t SX126x::getIrqFlags() {
+  uint8_t data[] = { 0x00, 0x00 };
+  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
+  return(((uint32_t)(data[0]) << 8) | data[1]);
+}
+
+int16_t SX126x::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqParams(irq, irq));
+}
+
+int16_t SX126x::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrqStatus(irq));
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
@@ -1861,12 +1858,6 @@ int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t di
                      (uint8_t)((dio2Mask >> 8) & 0xFF), (uint8_t)(dio2Mask & 0xFF),
                      (uint8_t)((dio3Mask >> 8) & 0xFF), (uint8_t)(dio3Mask & 0xFF)};
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS, data, 8));
-}
-
-uint16_t SX126x::getIrqStatus() {
-  uint8_t data[] = { 0x00, 0x00 };
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
-  return(((uint16_t)(data[0]) << 8) | data[1]);
 }
 
 int16_t SX126x::clearIrqStatus(uint16_t clearIrqParams) {
