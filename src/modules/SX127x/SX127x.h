@@ -500,6 +500,7 @@
 #define RADIOLIB_SX127X_FLAG_PAYLOAD_READY                      0b00000100  //  2     2   packet was successfully received
 #define RADIOLIB_SX127X_FLAG_CRC_OK                             0b00000010  //  1     1   CRC check passed
 #define RADIOLIB_SX127X_FLAG_LOW_BAT                            0b00000001  //  0     0   battery voltage dropped below threshold
+#define RADIOLIB_SX127X_FLAGS_ALL                               0xFFFF
 
 // RADIOLIB_SX127X_REG_DIO_MAPPING_1
 #define RADIOLIB_SX127X_DIO0_LORA_RX_DONE                       0b00000000  //  7     6
@@ -1073,10 +1074,24 @@ class SX127x: public PhysicalLayer {
     int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
-      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
     */
-    int16_t checkIrq(uint8_t irq) override;
+    uint32_t getIrqFlags();
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t setIrqFlags(uint32_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq);
 
     /*!
       \brief Enable CRC filtering and generation.
@@ -1257,7 +1272,6 @@ class SX127x: public PhysicalLayer {
     bool findChip(const uint8_t* vers, uint8_t num);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
-    void clearIRQFlags();
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
 
     /*!
