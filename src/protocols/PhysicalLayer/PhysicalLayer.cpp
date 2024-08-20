@@ -344,12 +344,12 @@ uint32_t PhysicalLayer::getIrqFlags() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::setIrqFlags(RadioIrqFlags_t irq) {
+int16_t PhysicalLayer::setIrqFlags(uint32_t irq) {
   (void)irq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::clearIrqFlags(RadioIrqFlags_t irq) {
+int16_t PhysicalLayer::clearIrqFlags(uint32_t irq) {
   (void)irq;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
