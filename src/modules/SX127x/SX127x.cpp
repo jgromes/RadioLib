@@ -386,21 +386,23 @@ int16_t SX127x::packetMode() {
 }
 
 int16_t SX127x::startReceive() {
-  return(this->startReceive(0, RADIOLIB_SX127X_RXCONTINUOUS));
+  return(this->startReceive(0, RADIOLIB_SX127X_RXCONTINUOUS, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK));
 }
 
-int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
+int16_t SX127x::startReceive(uint8_t len, uint8_t mode, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   // set mode to standby
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
   RADIOLIB_ASSERT(state);
 
+  // set DIO pin mapping
+  state = this->setIrqFlags(irqFlags & irqMask);
+  RADIOLIB_ASSERT(state);
+
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_LORA) {
-    // set DIO pin mapping
+    // in FHSS mode, enable channel change interrupt
     if(this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_HOP_PERIOD) > RADIOLIB_SX127X_HOP_PERIOD_OFF) {
-      state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 7, 4);
-    } else {
-      state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE | RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT, 7, 4);
+      state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 5, 4);
     }
 
     // set expected packet length for SF6
@@ -421,10 +423,6 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
     RADIOLIB_ASSERT(state);
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    // set DIO pin mapping
-    state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6);
-    RADIOLIB_ASSERT(state);
-
     // clear interrupt flags
     clearIrqFlags(RADIOLIB_SX127X_FLAGS_ALL);
 
@@ -443,9 +441,7 @@ int16_t SX127x::startReceive(uint8_t len, uint8_t mode) {
   return(setMode(mode));
 }
 
-int16_t SX127x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
-  (void)irqFlags;
-  (void)irqMask;
+int16_t SX127x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
   uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS;
   if(timeout != 0) {
     // for non-zero timeout value, change mode to Rx single and set the timeout
@@ -456,7 +452,7 @@ int16_t SX127x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
     state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_SYMB_TIMEOUT_LSB, lsb_sym);
     RADIOLIB_ASSERT(state);
   }
-  return(startReceive((uint8_t)len, mode));
+  return(startReceive((uint8_t)len, mode, irqFlags, irqMask));
 }
 
 void SX127x::setDio0Action(void (*func)(void), uint32_t dir) {
@@ -1317,13 +1313,6 @@ RadioLibTime_t SX127x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
   RadioLibTime_t numSymbols = (timeoutUs / symbolLength) / 1000; 
   return(numSymbols);
-}
-
-int16_t SX127x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  // IRQ flags/masks are inverted to what seems logical for SX127x (0 being activated, 1 being deactivated)
-  irqFlags = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT;
-  irqMask  = RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DONE & RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_TIMEOUT;
-  return(RADIOLIB_ERR_NONE);
 }
 
 uint32_t SX127x::getIrqFlags() {

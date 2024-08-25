@@ -160,7 +160,6 @@
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DONE                  0b11111011  //  2     2   CAD complete
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_FHSS_CHANGE_CHANNEL       0b11111101  //  1     1   FHSS change channel
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DETECTED              0b11111110  //  0     0   valid LoRa signal detected during CAD operation
-#define RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT                0b00011111  //  7     0   default for Rx (RX_TIMEOUT, RX_DONE, CRC_ERR)
 
 // RADIOLIB_SX127X_REG_FIFO_TX_BASE_ADDR
 #define RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX                   0b00000000  //  7     0   allocate the entire FIFO buffer for TX only
@@ -820,7 +819,7 @@ class SX127x: public PhysicalLayer {
       \param mode Receive mode to be used. Defaults to RxContinuous.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint8_t len, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS);
+    int16_t startReceive(uint8_t len, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
     
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
@@ -828,12 +827,12 @@ class SX127x: public PhysicalLayer {
       When set to 0, the timeout will be infinite and the device will remain
       in Rx mode until explicitly commanded to stop (Rx continuous mode).
       When non-zero (maximum 1023), the device will be set to Rx single mode and timeout will be set.
-      \param irqFlags Ignored.
-      \param irqMask Ignored.
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
+    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -1064,14 +1063,6 @@ class SX127x: public PhysicalLayer {
       \returns Timeout value in a unit that is specific for the used module
     */
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
-
-    /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
-      \param irqFlags The flags for which IRQs must be triggered
-      \param irqMask Mask indicating which IRQ triggers a DIO
-      \returns \ref status_codes
-    */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
 
     /*!
       \brief Read currently active IRQ flags.
