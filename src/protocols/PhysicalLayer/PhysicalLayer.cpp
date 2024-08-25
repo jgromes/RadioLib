@@ -132,7 +132,7 @@ int16_t PhysicalLayer::startReceive() {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
-int16_t PhysicalLayer::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
+int16_t PhysicalLayer::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
   (void)timeout;
   (void)irqFlags;
   (void)irqMask;
@@ -310,13 +310,19 @@ RadioLibTime_t PhysicalLayer::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(0); 
 }
 
-int16_t PhysicalLayer::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  (void)irqFlags;
-  (void)irqMask;
-  return(RADIOLIB_ERR_UNSUPPORTED);
+uint32_t PhysicalLayer::getIrqMapped(RadioLibIrqFlags_t irq) {
+  // iterate over all set bits and build the module-specific flags
+  uint32_t irqRaw = 0;
+  for(uint8_t i = 0; i < 8*(sizeof(RadioLibIrqFlags_t)); i++) {
+    if((irq & (uint32_t)(1UL << i)) && (this->irqMap[i] != RADIOLIB_IRQ_NOT_SUPPORTED)) {
+      irqRaw |= this->irqMap[i];
+    }
+  }
+
+  return(irqRaw);
 }
 
-int16_t PhysicalLayer::checkIrq(RadioIrqFlags_t irq) {
+int16_t PhysicalLayer::checkIrq(RadioLibIrqType_t irq) {
   if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
     return(RADIOLIB_ERR_UNSUPPORTED);
   }
@@ -324,20 +330,12 @@ int16_t PhysicalLayer::checkIrq(RadioIrqFlags_t irq) {
   return(getIrqFlags() & this->irqMap[irq]);
 }
 
-int16_t PhysicalLayer::setIrq(RadioIrqFlags_t irq) {
-  if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
-    return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-
-  return(setIrqFlags(this->irqMap[irq]));
+int16_t PhysicalLayer::setIrq(RadioLibIrqFlags_t irq) {
+  return(setIrqFlags(getIrqMapped(irq)));
 }
 
-int16_t PhysicalLayer::clearIrq(RadioIrqFlags_t irq) {
-  if((irq > RADIOLIB_IRQ_TIMEOUT) || (this->irqMap[irq] == RADIOLIB_IRQ_NOT_SUPPORTED)) {
-    return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-
-  return(clearIrqFlags(this->irqMap[irq]));
+int16_t PhysicalLayer::clearIrq(RadioLibIrqFlags_t irq) {
+  return(clearIrqFlags(getIrqMapped(irq)));
 }
 
 uint32_t PhysicalLayer::getIrqFlags() {

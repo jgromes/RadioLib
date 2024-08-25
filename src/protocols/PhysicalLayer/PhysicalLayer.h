@@ -4,18 +4,26 @@
 #include "../../TypeDef.h"
 #include "../../Module.h"
 
-// common IRQ flags
-#define RADIOLIB_IRQ_TX_DONE                                    0x00
-#define RADIOLIB_IRQ_RX_DONE                                    0x01
-#define RADIOLIB_IRQ_PREAMBLE_DETECTED                          0x02
-#define RADIOLIB_IRQ_SYNC_WORD_VALID                            0x03
-#define RADIOLIB_IRQ_HEADER_VALID                               0x04
-#define RADIOLIB_IRQ_HEADER_ERR                                 0x05
-#define RADIOLIB_IRQ_CRC_ERR                                    0x06
-#define RADIOLIB_IRQ_CAD_DONE                                   0x07
-#define RADIOLIB_IRQ_CAD_DETECTED                               0x08
-#define RADIOLIB_IRQ_TIMEOUT                                    0x09
-#define RADIOLIB_IRQ_NOT_SUPPORTED                              0xFF
+// common IRQ values - the IRQ flags in RadioLibIrqFlags_t arguments are offset by this value
+enum RadioLibIrqType_t {
+  RADIOLIB_IRQ_TX_DONE = 0x00,
+  RADIOLIB_IRQ_RX_DONE = 0x01,
+  RADIOLIB_IRQ_PREAMBLE_DETECTED = 0x02,
+  RADIOLIB_IRQ_SYNC_WORD_VALID = 0x03,
+  RADIOLIB_IRQ_HEADER_VALID = 0x04,
+  RADIOLIB_IRQ_HEADER_ERR = 0x05,
+  RADIOLIB_IRQ_CRC_ERR = 0x06,
+  RADIOLIB_IRQ_CAD_DONE = 0x07,
+  RADIOLIB_IRQ_CAD_DETECTED = 0x08,
+  RADIOLIB_IRQ_TIMEOUT = 0x09,
+  RADIOLIB_IRQ_NOT_SUPPORTED = 0x1F, // this must be the last value, intentionally set to 31
+};
+
+// some commonly used default values - defined here to ensure all modules have the same default behavior
+#define RADIOLIB_IRQ_RX_DEFAULT_FLAGS       ((1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_TIMEOUT) | (1UL << RADIOLIB_IRQ_CRC_ERR) | (1UL << RADIOLIB_IRQ_HEADER_ERR))
+#define RADIOLIB_IRQ_RX_DEFAULT_MASK        ((1UL << RADIOLIB_IRQ_RX_DONE))
+#define RADIOLIB_IRQ_CAD_DEFAULT_FLAGS      ((1UL << RADIOLIB_IRQ_CAD_DETECTED) | (1UL << RADIOLIB_IRQ_CAD_DONE))
+#define RADIOLIB_IRQ_CAD_DEFAULT_MASK       ((1UL << RADIOLIB_IRQ_CAD_DETECTED) | (1UL << RADIOLIB_IRQ_CAD_DONE))
 
 /*!
   \struct LoRaRate_t
@@ -76,8 +84,11 @@ struct CADScanConfig_t {
   /*! \brief Timeout in microseconds */
   RadioLibTime_t timeout;
 
-  /*! \brief Optional IRQ flags to set, one of RADIOLIB_IRQ_ */
-  RadioIrqFlags_t irqFlags;
+  /*! \brief Optional IRQ flags to set, bits offset by the value of RADIOLIB_IRQ_ */
+  RadioLibIrqFlags_t irqFlags;
+
+  /*! \brief Optional IRQ mask to set, bits offset by the value of RADIOLIB_IRQ_ */
+  RadioLibIrqFlags_t irqMask;
 };
 
 /*!
@@ -198,16 +209,16 @@ class PhysicalLayer {
       \param timeout Raw timeout value. Some modules use this argument to specify operation mode
       (single vs. continuous receive).
       \param irqFlags Sets the IRQ flags.
-      \param irqMask Sets the mask of IRQ flags that will trigger the DIO pin.
+      \param irqMask Sets the mask of IRQ flags that will trigger the radio interrupt pin.
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
+    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
       \param data Pointer to array to save the received binary data.
-      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
     virtual int16_t receive(uint8_t* data, size_t len);
@@ -412,35 +423,36 @@ class PhysicalLayer {
     virtual RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks.
-      \param irqFlags The flags for which IRQs must be triggered.
-      \param irqMask Mask indicating which IRQ triggers a DIO.
-      \returns \ref status_codes
+      \brief Convert from radio-agnostic IRQ flags to radio-specific flags.
+      \param irq Radio-agnostic IRQ flags.
+      \returns Flags for a specific radio module.
     */
-    virtual int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
+    uint32_t getIrqMapped(RadioLibIrqFlags_t irq);
 
     /*!
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \param irq Flags to check, one of RADIOLIB_IRQ_*.
+      \param irq IRQ type to check, one of RADIOLIB_IRQ_*.
       \returns 1 when requested IRQ is set, 0 when it is not or RADIOLIB_ERR_UNSUPPORTED if the IRQ is not supported.
     */
-    int16_t checkIrq(RadioIrqFlags_t irq);
+    int16_t checkIrq(RadioLibIrqType_t irq);
 
     /*!
       \brief Set interrupt on specific IRQ bit(s) (e.g. RxTimeout, CadDone).
       Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
-      \param irq Flags to set, one of RADIOLIB_IRQ_*.
+      \param irq Flags to set, multiple bits may be enabled. IRQ to enable corresponds to the bit index (RadioLibIrq_t).
+      For example, if bit 0 is enabled, the module will enable its RADIOLIB_IRQ_TX_DONE (if it is supported).
       \returns \ref status_codes
     */
-    int16_t setIrq(RadioIrqFlags_t irq);
+    int16_t setIrq(RadioLibIrqFlags_t irq);
 
     /*!
       \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
       Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
-      \param irq Flags to clear, one of RADIOLIB_IRQ_*.
+      \param irq Flags to set, multiple bits may be enabled. IRQ to enable corresponds to the bit index (RadioLibIrq_t).
+      For example, if bit 0 is enabled, the module will enable its RADIOLIB_IRQ_TX_DONE (if it is supported).
       \returns \ref status_codes
     */
-    int16_t clearIrq(RadioIrqFlags_t irq);
+    int16_t clearIrq(RadioLibIrqFlags_t irq);
 
     /*!
       \brief Read currently active IRQ flags.
