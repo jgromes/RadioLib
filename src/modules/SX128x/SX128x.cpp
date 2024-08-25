@@ -428,7 +428,8 @@ int16_t SX128x::scanChannel() {
       .detMin = 0,
       .exitMode = 0,
       .timeout = 0,
-      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
   return(this->scanChannel(config));
@@ -582,10 +583,10 @@ int16_t SX128x::finishTransmit() {
 }
 
 int16_t SX128x::startReceive() {
-  return(this->startReceive(RADIOLIB_SX128X_RX_TIMEOUT_INF, RADIOLIB_SX128X_IRQ_RX_DEFAULT, RADIOLIB_SX128X_IRQ_RX_DONE, 0));
+  return(this->startReceive(RADIOLIB_SX128X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
 
-int16_t SX128x::startReceive(uint16_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
+int16_t SX128x::startReceive(uint16_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
   (void)len;
   
   // check active modem
@@ -595,10 +596,10 @@ int16_t SX128x::startReceive(uint16_t timeout, uint32_t irqFlags, uint32_t irqMa
 
   // set DIO mapping
   if(timeout != RADIOLIB_SX128X_RX_TIMEOUT_INF) {
-    irqMask |= RADIOLIB_SX128X_IRQ_RX_TX_TIMEOUT;
+    irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
 
-  int16_t state = setDioIrqParams(irqFlags, irqMask);
+  int16_t state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqMask));
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers
@@ -682,7 +683,8 @@ int16_t SX128x::startChannelScan() {
       .detMin = 0,
       .exitMode = 0,
       .timeout = 0,
-      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
   return(this->startChannelScan(config));
@@ -699,8 +701,7 @@ int16_t SX128x::startChannelScan(ChannelScanConfig_t config) {
   RADIOLIB_ASSERT(state);
 
   // set DIO pin mapping
-  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_SX128X_IRQ_CAD_DETECTED | RADIOLIB_SX128X_IRQ_CAD_DONE : config.cad.irqFlags;
-  state = setDioIrqParams(irqFlags, irqFlags);
+  state = setDioIrqParams(getIrqMapped(config.cad.irqFlags), getIrqMapped(config.cad.irqMask));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
