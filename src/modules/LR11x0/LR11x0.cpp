@@ -480,10 +480,9 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   // set DIO mapping
   uint32_t irq = irqFlags;
   if(timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
-    irq |= RADIOLIB_LR11X0_IRQ_TIMEOUT;
+    irq |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-
-  state = setDioIrqParams(irq);
+  state = setDioIrqParams(getIrqMapped(irq));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1351,12 +1350,6 @@ RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the calling function should provide some extra width, as this number of units is truncated to integer
   RadioLibTime_t timeout = timeoutUs / 30.52;
   return(timeout);
-}
-
-int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  irqFlags = RADIOLIB_LR11X0_IRQ_RX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT;  // flags that can appear in the IRQ register
-  irqMask  = irqFlags; // on LR11x0, these are the same
-  return(RADIOLIB_ERR_NONE);
 }
 
 uint32_t LR11x0::getIrqFlags() {

@@ -1217,14 +1217,6 @@ class LR11x0: public PhysicalLayer {
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
-      \param irqFlags The flags for which IRQs must be triggered
-      \param irqMask Mask indicating which IRQ triggers a DIO
-      \returns \ref status_codes
-    */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
-
-    /*!
       \brief Read currently active IRQ flags.
       \returns IRQ flags.
     */
