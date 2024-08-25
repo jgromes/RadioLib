@@ -443,6 +443,7 @@ int16_t SX126x::scanChannel() {
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .timeout = 0,
       .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
   return(this->scanChannel(config));
@@ -601,10 +602,10 @@ int16_t SX126x::finishTransmit() {
 }
 
 int16_t SX126x::startReceive() {
-  return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_SX126X_IRQ_RX_DEFAULT, RADIOLIB_SX126X_IRQ_RX_DONE, 0));
+  return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
 
-int16_t SX126x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
+int16_t SX126x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
   (void)len;
   int16_t state = startReceiveCommon(timeout, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
@@ -618,7 +619,7 @@ int16_t SX126x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   return(state);
 }
 
-int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   // datasheet claims time to go to sleep is ~500us, same to wake up, compensate for that with 1 ms + TCXO delay
   uint32_t transitionTime = this->tcxoDelay + 1000;
   sleepPeriod -= transitionTime;
@@ -645,7 +646,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, u
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
-int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   if(senderPreambleLength == 0) {
     senderPreambleLength = this->preambleLengthLoRa;
   }
@@ -683,12 +684,12 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   return(startReceiveDutyCycle(wakePeriod, sleepPeriod, irqFlags, irqMask));
 }
 
-int16_t SX126x::startReceiveCommon(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveCommon(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   // set DIO mapping
   if(timeout != RADIOLIB_SX126X_RX_TIMEOUT_INF) {
-    irqMask |= RADIOLIB_SX126X_IRQ_TIMEOUT;
+    irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-  int16_t state = setDioIrqParams(irqFlags, irqMask);
+  int16_t state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqMask));
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers
@@ -758,7 +759,8 @@ int16_t SX126x::startChannelScan() {
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .timeout = 0,
-      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
   return(this->startChannelScan(config));
@@ -778,8 +780,7 @@ int16_t SX126x::startChannelScan(ChannelScanConfig_t config) {
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE : config.cad.irqFlags;
-  state = setDioIrqParams(irqFlags, irqFlags);
+  state = setDioIrqParams(getIrqMapped(config.cad.irqFlags), getIrqMapped(config.cad.irqMask));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -1488,12 +1489,6 @@ RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the calling function should provide some extra width, as this number of units is truncated to integer
   RadioLibTime_t timeout = timeoutUs / 15.625;
   return(timeout);
-}
-
-int16_t SX126x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT;  // flags that can appear in the IRQ register
-  irqMask  = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT; // flags that will trigger DIO0
-  return(RADIOLIB_ERR_NONE);
 }
 
 uint32_t SX126x::getIrqFlags() {
