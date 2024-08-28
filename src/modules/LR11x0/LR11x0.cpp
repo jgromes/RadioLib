@@ -574,7 +574,7 @@ int16_t LR11x0::startChannelScan() {
   return(this->startChannelScan(config));
 }
 
-int16_t LR11x0::startChannelScan(ChannelScanConfig_t config) {
+int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;

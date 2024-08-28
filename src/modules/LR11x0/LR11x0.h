@@ -982,7 +982,7 @@ class LR11x0: public PhysicalLayer {
       \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(ChannelScanConfig_t config) override;
+    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Read the channel scan result
