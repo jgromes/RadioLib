@@ -295,7 +295,8 @@ int16_t LR11x0::scanChannel() {
       .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .timeout = 0,
-      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
   return(this->scanChannel(config));
