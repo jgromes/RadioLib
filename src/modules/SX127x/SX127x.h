@@ -811,7 +811,7 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t startReceive() override;
-    
+
     /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
       \param timeout Receive mode type and/or raw timeout value in symbols.
@@ -823,7 +823,7 @@ class SX127x: public PhysicalLayer {
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) override;
+    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,

@@ -168,9 +168,9 @@ void loop() {
 
     // check if we got a preamble
     if(detectedFlag) {
-      // LoRa preamble was detected
+      // LoRa preamble was detected, start reception with timeout of 100 LoRa symbols
       Serial.print(F("[SX1278] Preamble detected, starting reception ... "));
-      state = radio.startReceive(0, RADIOLIB_SX127X_RXSINGLE);
+      state = radio.startReceive(100);
       if (state == RADIOLIB_ERR_NONE) {
         Serial.println(F("success!"));
       } else {
