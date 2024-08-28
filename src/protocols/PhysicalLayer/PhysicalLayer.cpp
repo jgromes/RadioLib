@@ -356,7 +356,7 @@ int16_t PhysicalLayer::startChannelScan() {
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }
 
-int16_t PhysicalLayer::startChannelScan(ChannelScanConfig_t config) {
+int16_t PhysicalLayer::startChannelScan(const ChannelScanConfig_t &config) {
   (void)config;
   return(RADIOLIB_ERR_UNSUPPORTED); 
 }

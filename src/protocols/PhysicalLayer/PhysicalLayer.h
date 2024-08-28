@@ -490,7 +490,7 @@ class PhysicalLayer {
       \param config Scan configuration structure. Interpretation depends on currently active modem.
       \returns \ref status_codes
     */
-    virtual int16_t startChannelScan(ChannelScanConfig_t config);
+    virtual int16_t startChannelScan(const ChannelScanConfig_t &config);
 
     /*!
       \brief Read the channel scan result
