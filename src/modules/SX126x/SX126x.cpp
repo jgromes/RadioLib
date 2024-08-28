@@ -766,7 +766,7 @@ int16_t SX126x::startChannelScan() {
   return(this->startChannelScan(config));
 }
 
-int16_t SX126x::startChannelScan(ChannelScanConfig_t config) {
+int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
