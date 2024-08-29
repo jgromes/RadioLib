@@ -1011,47 +1011,47 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   this->rxBandwidthKhz = rxBw;
 
   // check allowed receiver bandwidth values
-  if(fabs(rxBw - 4.8) <= 0.001) {
+  if(fabsf(rxBw - 4.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_4_8;
-  } else if(fabs(rxBw - 5.8) <= 0.001) {
+  } else if(fabsf(rxBw - 5.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_5_8;
-  } else if(fabs(rxBw - 7.3) <= 0.001) {
+  } else if(fabsf(rxBw - 7.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_7_3;
-  } else if(fabs(rxBw - 9.7) <= 0.001) {
+  } else if(fabsf(rxBw - 9.7) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_9_7;
-  } else if(fabs(rxBw - 11.7) <= 0.001) {
+  } else if(fabsf(rxBw - 11.7) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_11_7;
-  } else if(fabs(rxBw - 14.6) <= 0.001) {
+  } else if(fabsf(rxBw - 14.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_14_6;
-  } else if(fabs(rxBw - 19.5) <= 0.001) {
+  } else if(fabsf(rxBw - 19.5) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_19_5;
-  } else if(fabs(rxBw - 23.4) <= 0.001) {
+  } else if(fabsf(rxBw - 23.4) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_23_4;
-  } else if(fabs(rxBw - 29.3) <= 0.001) {
+  } else if(fabsf(rxBw - 29.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_29_3;
-  } else if(fabs(rxBw - 39.0) <= 0.001) {
+  } else if(fabsf(rxBw - 39.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_39_0;
-  } else if(fabs(rxBw - 46.9) <= 0.001) {
+  } else if(fabsf(rxBw - 46.9) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_46_9;
-  } else if(fabs(rxBw - 58.6) <= 0.001) {
+  } else if(fabsf(rxBw - 58.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_58_6;
-  } else if(fabs(rxBw - 78.2) <= 0.001) {
+  } else if(fabsf(rxBw - 78.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_78_2;
-  } else if(fabs(rxBw - 93.8) <= 0.001) {
+  } else if(fabsf(rxBw - 93.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_93_8;
-  } else if(fabs(rxBw - 117.3) <= 0.001) {
+  } else if(fabsf(rxBw - 117.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_117_3;
-  } else if(fabs(rxBw - 156.2) <= 0.001) {
+  } else if(fabsf(rxBw - 156.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
-  } else if(fabs(rxBw - 187.2) <= 0.001) {
+  } else if(fabsf(rxBw - 187.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_187_2;
-  } else if(fabs(rxBw - 234.3) <= 0.001) {
+  } else if(fabsf(rxBw - 234.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_234_3;
-  } else if(fabs(rxBw - 312.0) <= 0.001) {
+  } else if(fabsf(rxBw - 312.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_312_0;
-  } else if(fabs(rxBw - 373.6) <= 0.001) {
+  } else if(fabsf(rxBw - 373.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_373_6;
-  } else if(fabs(rxBw - 467.0) <= 0.001) {
+  } else if(fabsf(rxBw - 467.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_467_0;
   } else {
     return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
@@ -1699,27 +1699,27 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   }
 
   // check 0 V disable
-  if(fabs(voltage - 0.0) <= 0.001) {
+  if(fabsf(voltage - 0.0) <= 0.001) {
     return(reset(true));
   }
 
   // check alowed voltage values
   uint8_t data[4];
-  if(fabs(voltage - 1.6) <= 0.001) {
+  if(fabsf(voltage - 1.6) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_6;
-  } else if(fabs(voltage - 1.7) <= 0.001) {
+  } else if(fabsf(voltage - 1.7) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_7;
-  } else if(fabs(voltage - 1.8) <= 0.001) {
+  } else if(fabsf(voltage - 1.8) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_8;
-  } else if(fabs(voltage - 2.2) <= 0.001) {
+  } else if(fabsf(voltage - 2.2) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_2;
-  } else if(fabs(voltage - 2.4) <= 0.001) {
+  } else if(fabsf(voltage - 2.4) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_4;
-  } else if(fabs(voltage - 2.7) <= 0.001) {
+  } else if(fabsf(voltage - 2.7) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_7;
-  } else if(fabs(voltage - 3.0) <= 0.001) {
+  } else if(fabsf(voltage - 3.0) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_0;
-  } else if(fabs(voltage - 3.3) <= 0.001) {
+  } else if(fabsf(voltage - 3.3) <= 0.001) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_3;
   } else {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
@@ -2038,7 +2038,7 @@ int16_t SX126x::fixSensitivity() {
   RADIOLIB_ASSERT(state);
 
   // fix the value for LoRa with 500 kHz bandwidth
-  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (fabs(this->bandwidthKhz - 500.0) <= 0.001)) {
+  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (fabsf(this->bandwidthKhz - 500.0) <= 0.001)) {
     sensitivityConfig &= 0xFB;
   } else {
     sensitivityConfig |= 0x04;

@@ -102,11 +102,11 @@ int16_t SX1272::setBandwidth(float bw) {
   uint8_t newBandwidth;
 
   // check allowed bandwidth values
-  if(fabs(bw - 125.0) <= 0.001) {
+  if(fabsf(bw - 125.0) <= 0.001) {
     newBandwidth = RADIOLIB_SX1272_BW_125_00_KHZ;
-  } else if(fabs(bw - 250.0) <= 0.001) {
+  } else if(fabsf(bw - 250.0) <= 0.001) {
     newBandwidth = RADIOLIB_SX1272_BW_250_00_KHZ;
-  } else if(fabs(bw - 500.0) <= 0.001) {
+  } else if(fabsf(bw - 500.0) <= 0.001) {
     newBandwidth = RADIOLIB_SX1272_BW_500_00_KHZ;
   } else {
     return(RADIOLIB_ERR_INVALID_BANDWIDTH);

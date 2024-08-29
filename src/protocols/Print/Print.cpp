@@ -248,8 +248,8 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   char code[] = {0x00, 0x00, 0x00, 0x00};
   if (isnan(number)) strcpy(code, "nan");
   if (isinf(number)) strcpy(code, "inf");
-  if (number > 4294967040.0) strcpy(code, "ovf");  // constant determined empirically
-  if (number <-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
+  if (number > (double)4294967040.0) strcpy(code, "ovf");  // constant determined empirically
+  if (number < (double)-4294967040.0) strcpy(code, "ovf");  // constant determined empirically
 
   if(code[0] != 0x00) {
     if(this->encoding == RADIOLIB_ITA2) {
@@ -264,7 +264,7 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   }
 
   // Handle negative numbers
-  if (number < 0.0) {
+  if (number < (double)0.0) {
     if(this->encoding == RADIOLIB_ITA2) {
       ITA2String ita2 = ITA2String("-");
       uint8_t* arr = ita2.byteArr();
@@ -279,7 +279,7 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
   // Round correctly so that print(1.999, 2) prints as "2.00"
   double rounding = 0.5;
   for(uint8_t i = 0; i < digits; ++i) {
-    rounding /= 10.0;
+    rounding /= (double)10.0;
   }
   number += rounding;
 
@@ -302,7 +302,7 @@ size_t RadioLibPrint::printFloat(double number, uint8_t digits)  {
 
   // Extract digits from the remainder one at a time
   while(digits-- > 0) {
-    remainder *= 10.0;
+    remainder *= (double) 10.0;
     unsigned int toPrint = (unsigned int)(remainder);
     n += RadioLibPrint::print(toPrint);
     remainder -= toPrint;
