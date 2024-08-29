@@ -93,7 +93,7 @@ int16_t SX1233::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 int16_t SX1233::setBitRate(float br) {
   // check high bit-rate operation
   uint8_t pllBandwidth = RADIOLIB_SX1233_PLL_BW_LOW_BIT_RATE;
-  if((fabs(br - 500.0f) < 0.1) || (fabs(br - 600.0f) < 0.1)) {
+  if((fabsf(br - 500.0f) < 0.1) || (fabsf(br - 600.0f) < 0.1)) {
     pllBandwidth = RADIOLIB_SX1233_PLL_BW_HIGH_BIT_RATE;
   } else {
     // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine

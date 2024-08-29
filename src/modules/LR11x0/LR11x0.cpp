@@ -754,47 +754,47 @@ int16_t LR11x0::setRxBandwidth(float rxBw) {
   }*/
 
   // check allowed receiver bandwidth values
-  if(fabs(rxBw - 4.8) <= 0.001) {
+  if(fabsf(rxBw - 4.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_4_8;
-  } else if(fabs(rxBw - 5.8) <= 0.001) {
+  } else if(fabsf(rxBw - 5.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_5_8;
-  } else if(fabs(rxBw - 7.3) <= 0.001) {
+  } else if(fabsf(rxBw - 7.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_7_3;
-  } else if(fabs(rxBw - 9.7) <= 0.001) {
+  } else if(fabsf(rxBw - 9.7) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_9_7;
-  } else if(fabs(rxBw - 11.7) <= 0.001) {
+  } else if(fabsf(rxBw - 11.7) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_11_7;
-  } else if(fabs(rxBw - 14.6) <= 0.001) {
+  } else if(fabsf(rxBw - 14.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_14_6;
-  } else if(fabs(rxBw - 19.5) <= 0.001) {
+  } else if(fabsf(rxBw - 19.5) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_19_5;
-  } else if(fabs(rxBw - 23.4) <= 0.001) {
+  } else if(fabsf(rxBw - 23.4) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_23_4;
-  } else if(fabs(rxBw - 29.3) <= 0.001) {
+  } else if(fabsf(rxBw - 29.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_29_3;
-  } else if(fabs(rxBw - 39.0) <= 0.001) {
+  } else if(fabsf(rxBw - 39.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_39_0;
-  } else if(fabs(rxBw - 46.9) <= 0.001) {
+  } else if(fabsf(rxBw - 46.9) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_46_9;
-  } else if(fabs(rxBw - 58.6) <= 0.001) {
+  } else if(fabsf(rxBw - 58.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_58_6;
-  } else if(fabs(rxBw - 78.2) <= 0.001) {
+  } else if(fabsf(rxBw - 78.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_78_2;
-  } else if(fabs(rxBw - 93.8) <= 0.001) {
+  } else if(fabsf(rxBw - 93.8) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_93_8;
-  } else if(fabs(rxBw - 117.3) <= 0.001) {
+  } else if(fabsf(rxBw - 117.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_117_3;
-  } else if(fabs(rxBw - 156.2) <= 0.001) {
+  } else if(fabsf(rxBw - 156.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_156_2;
-  } else if(fabs(rxBw - 187.2) <= 0.001) {
+  } else if(fabsf(rxBw - 187.2) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_187_2;
-  } else if(fabs(rxBw - 234.3) <= 0.001) {
+  } else if(fabsf(rxBw - 234.3) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_234_3;
-  } else if(fabs(rxBw - 312.0) <= 0.001) {
+  } else if(fabsf(rxBw - 312.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_312_0;
-  } else if(fabs(rxBw - 373.6) <= 0.001) {
+  } else if(fabsf(rxBw - 373.6) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_373_6;
-  } else if(fabs(rxBw - 467.0) <= 0.001) {
+  } else if(fabsf(rxBw - 467.0) <= 0.001) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_467_0;
   } else {
     return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
@@ -1070,28 +1070,28 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   }
 
   // check 0 V disable
-  if(fabs(voltage - 0.0) <= 0.001) {
+  if(fabsf(voltage - 0.0) <= 0.001) {
     setTcxoMode(0, 0);
     return(reset());
   }
 
   // check allowed voltage values
   uint8_t tune = 0;
-  if(fabs(voltage - 1.6) <= 0.001) {
+  if(fabsf(voltage - 1.6) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_6;
-  } else if(fabs(voltage - 1.7) <= 0.001) {
+  } else if(fabsf(voltage - 1.7) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_7;
-  } else if(fabs(voltage - 1.8) <= 0.001) {
+  } else if(fabsf(voltage - 1.8) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_8;
-  } else if(fabs(voltage - 2.2) <= 0.001) {
+  } else if(fabsf(voltage - 2.2) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_2;
-  } else if(fabs(voltage - 2.4) <= 0.001) {
+  } else if(fabsf(voltage - 2.4) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_4;
-  } else if(fabs(voltage - 2.7) <= 0.001) {
+  } else if(fabsf(voltage - 2.7) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_7;
-  } else if(fabs(voltage - 3.0) <= 0.001) {
+  } else if(fabsf(voltage - 3.0) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_0;
-  } else if(fabs(voltage - 3.3) <= 0.001) {
+  } else if(fabsf(voltage - 3.3) <= 0.001) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_3;
   } else {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
@@ -1265,7 +1265,7 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
       uint32_t N_symbolPreamble = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
 
       // calculate the number of symbols
-      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0 + ceil(RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRate + 4);
+      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0 + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRate + 4);
 
     } else {
       // long interleaving - abandon hope all ye who enter here
@@ -1791,6 +1791,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timing:");
   for(size_t i = 0; i < 31; i++) {
     uint32_t t = (timing[i] * 1000UL) / 32768UL;
+    (void)t;
     RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", (int)i*4, (unsigned long)t);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("constDemod: %d", constDemod);

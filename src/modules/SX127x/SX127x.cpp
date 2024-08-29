@@ -962,7 +962,7 @@ uint8_t SX127x::calculateBWManExp(float bandwidth)
   for(uint8_t e = 7; e >= 1; e--) {
     for(int8_t m = 2; m >= 0; m--) {
       float point = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
-      if(fabs(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+      if(fabsf(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
         return((m << 3) | e);
       }
     }
@@ -1244,7 +1244,7 @@ float SX127x::getNumSymbols(size_t len) {
   float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
 
   // get number of payload symbols
-  float n_pay = 8.0 + RADIOLIB_MAX(ceil((8.0 * (float) len - 4.0 * (float) this->spreadingFactor + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) this->spreadingFactor - 8.0 * de)) * (float) this->codingRate, 0.0);
+  float n_pay = 8.0 + RADIOLIB_MAX(ceilf((8.0 * (float) len - 4.0 * (float) this->spreadingFactor + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) this->spreadingFactor - 8.0 * de)) * (float) this->codingRate, 0.0);
 
   // add 4.25 symbols for the sync
   return(n_pre + n_pay + 4.25f);
