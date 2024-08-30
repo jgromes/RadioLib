@@ -397,7 +397,7 @@ int16_t SX127x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, Radi
   RADIOLIB_ASSERT(state);
 
   // set DIO pin mapping
-  state = this->setIrqFlags(irqFlags & irqMask);
+  state = this->setIrqFlags(getIrqMapped(irqFlags & irqMask));
   RADIOLIB_ASSERT(state);
 
   int16_t modem = getActiveModem();
