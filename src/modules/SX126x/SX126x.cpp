@@ -442,7 +442,7 @@ int16_t SX126x::scanChannel() {
       .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .timeout = 0,
-      .irqFlags = RADIOLIB_IRQ_NOT_SUPPORTED,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
