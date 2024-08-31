@@ -530,7 +530,8 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   // check integrity CRC
   uint32_t irq = getIrqStatus();
   int16_t crcState = RADIOLIB_ERR_NONE;
-  if((irq & RADIOLIB_LR11X0_IRQ_CRC_ERR) || (irq & RADIOLIB_LR11X0_IRQ_HEADER_ERR)) {
+  // Report CRC mismatch when there's a payload CRC error, or a header error and no valid header (to avoid false alarm from previous packet)
+  if((irq & RADIOLIB_LR11X0_IRQ_CRC_ERR) || ((irq & RADIOLIB_LR11X0_IRQ_HEADER_ERR) && !(irq & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID))) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
   }
 
