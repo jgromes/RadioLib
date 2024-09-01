@@ -977,7 +977,7 @@ class LR11x0: public PhysicalLayer {
     int16_t startChannelScan() override;
 
     /*!
-      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      \brief Interrupt-driven channel activity detection method. IRQ pin will be activated
       when LoRa preamble is detected, or upon timeout.
       \param config CAD configuration structure.
       \returns \ref status_codes
@@ -1223,7 +1223,7 @@ class LR11x0: public PhysicalLayer {
     uint32_t getIrqFlags() override;
 
     /*!
-      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \brief Set interrupt on IRQ pin to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
       \param irq Module-specific IRQ flags.
       \returns \ref status_codes
     */
