@@ -638,7 +638,8 @@ int16_t SX128x::readData(uint8_t* data, size_t len) {
   // check integrity CRC
   uint16_t irq = getIrqStatus();
   int16_t crcState = RADIOLIB_ERR_NONE;
-  if((irq & RADIOLIB_SX128X_IRQ_CRC_ERROR) || (irq & RADIOLIB_SX128X_IRQ_HEADER_ERROR)) {
+  // Report CRC mismatch when there's a payload CRC error, or a header error and no valid header (to avoid false alarm from previous packet)
+  if((irq & RADIOLIB_SX128X_IRQ_CRC_ERROR) || ((irq & RADIOLIB_SX128X_IRQ_HEADER_ERROR) && !(irq & RADIOLIB_SX128X_IRQ_HEADER_VALID))) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
   }
 
