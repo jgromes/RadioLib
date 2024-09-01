@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['radiolibtime_5ft_1222',['RadioLibTime_t',['../group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd',1,'TypeDef.h']]]
+  ['radiolibirqflags_5ft_1255',['RadioLibIrqFlags_t',['../group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77',1,'TypeDef.h']]],
+  ['radiolibtime_5ft_1256',['RadioLibTime_t',['../group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd',1,'TypeDef.h']]]
 ];

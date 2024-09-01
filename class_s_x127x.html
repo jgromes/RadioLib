@@ -216,12 +216,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abbe1076252a366c3c4aa323fdff7d40c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#abbe1076252a366c3c4aa323fdff7d40c">startReceive</a> () override</td></tr>
 <tr class="memdesc:abbe1076252a366c3c4aa323fdff7d40c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x127x.html#abbe1076252a366c3c4aa323fdff7d40c">More...</a><br /></td></tr>
 <tr class="separator:abbe1076252a366c3c4aa323fdff7d40c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa77da235ab59a5066fc51418d4344a02"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa77da235ab59a5066fc51418d4344a02">startReceive</a> (uint8_t len, uint8_t mode=RADIOLIB_SX127X_RXCONTINUOUS)</td></tr>
-<tr class="memdesc:aa77da235ab59a5066fc51418d4344a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.  <a href="class_s_x127x.html#aa77da235ab59a5066fc51418d4344a02">More...</a><br /></td></tr>
-<tr class="separator:aa77da235ab59a5066fc51418d4344a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b6aec8bba3f055b17864d85f94e195d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a5b6aec8bba3f055b17864d85f94e195d">startReceive</a> (uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override</td></tr>
-<tr class="memdesc:a5b6aec8bba3f055b17864d85f94e195d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x127x.html#a5b6aec8bba3f055b17864d85f94e195d">More...</a><br /></td></tr>
-<tr class="separator:a5b6aec8bba3f055b17864d85f94e195d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acaab95d4bf57bf33f6269d2f099e48e0"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#acaab95d4bf57bf33f6269d2f099e48e0">startReceive</a> (uint32_t timeout, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len=0) override</td></tr>
+<tr class="memdesc:acaab95d4bf57bf33f6269d2f099e48e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method, implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <a href="class_s_x127x.html#acaab95d4bf57bf33f6269d2f099e48e0">More...</a><br /></td></tr>
+<tr class="separator:acaab95d4bf57bf33f6269d2f099e48e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfc840e8d6fe5e222f0143be17876745"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">readData</a> (uint8_t *data, size_t len) override</td></tr>
 <tr class="memdesc:abfc840e8d6fe5e222f0143be17876745"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method. When the packet length is not known in advance, getPacketLength method must be called BEFORE calling readData!  <a href="class_s_x127x.html#abfc840e8d6fe5e222f0143be17876745">More...</a><br /></td></tr>
 <tr class="separator:abfc840e8d6fe5e222f0143be17876745"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -321,12 +318,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:adbc4021380dc557114625dc51262cf90"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adbc4021380dc557114625dc51262cf90">calculateRxTimeout</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> timeoutUs) override</td></tr>
 <tr class="memdesc:adbc4021380dc557114625dc51262cf90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate the timeout value for this specific module / series (in number of symbols or units of time)  <a href="class_s_x127x.html#adbc4021380dc557114625dc51262cf90">More...</a><br /></td></tr>
 <tr class="separator:adbc4021380dc557114625dc51262cf90"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06cd53dda09095181bf6ccf2b496b8a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a06cd53dda09095181bf6ccf2b496b8a7">irqRxDoneRxTimeout</a> (uint32_t &amp;irqFlags, uint32_t &amp;irqMask) override</td></tr>
-<tr class="memdesc:a06cd53dda09095181bf6ccf2b496b8a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create the flags that make up RxDone and RxTimeout used for receiving downlinks.  <a href="class_s_x127x.html#a06cd53dda09095181bf6ccf2b496b8a7">More...</a><br /></td></tr>
-<tr class="separator:a06cd53dda09095181bf6ccf2b496b8a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab87c73772d8ddc9b01d401f792547f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#adab87c73772d8ddc9b01d401f792547f">checkIrq</a> (uint8_t irq) override</td></tr>
-<tr class="memdesc:adab87c73772d8ddc9b01d401f792547f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).  <a href="class_s_x127x.html#adab87c73772d8ddc9b01d401f792547f">More...</a><br /></td></tr>
-<tr class="separator:adab87c73772d8ddc9b01d401f792547f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22de05835dda9ed287ec48f60ef91f55"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a22de05835dda9ed287ec48f60ef91f55">getIrqFlags</a> () override</td></tr>
+<tr class="memdesc:a22de05835dda9ed287ec48f60ef91f55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read currently active IRQ flags.  <a href="class_s_x127x.html#a22de05835dda9ed287ec48f60ef91f55">More...</a><br /></td></tr>
+<tr class="separator:a22de05835dda9ed287ec48f60ef91f55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae42b94ab2ecf729f29f101222e97666"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666">setIrqFlags</a> (uint32_t irq) override</td></tr>
+<tr class="memdesc:aae42b94ab2ecf729f29f101222e97666"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).  <a href="class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666">More...</a><br /></td></tr>
+<tr class="separator:aae42b94ab2ecf729f29f101222e97666"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3eae13a7f0558c1bc881abebd958242"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aa3eae13a7f0558c1bc881abebd958242">clearIrqFlags</a> (uint32_t irq) override</td></tr>
+<tr class="memdesc:aa3eae13a7f0558c1bc881abebd958242"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).  <a href="class_s_x127x.html#aa3eae13a7f0558c1bc881abebd958242">More...</a><br /></td></tr>
+<tr class="separator:aa3eae13a7f0558c1bc881abebd958242"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab531ad461b250a060e92d9c744e79070"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">setCrcFiltering</a> (bool enable=true)</td></tr>
 <tr class="memdesc:ab531ad461b250a060e92d9c744e79070"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable CRC filtering and generation.  <a href="class_s_x127x.html#ab531ad461b250a060e92d9c744e79070">More...</a><br /></td></tr>
 <tr class="separator:ab531ad461b250a060e92d9c744e79070"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -446,6 +446,24 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">getRSSI</a> ()</td></tr>
 <tr class="memdesc:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets RSSI (Recorded Signal Strength Indicator) of the last received packet.  <a href="class_physical_layer.html#aabc94ab27a9ee6daaafa9b47dde5f75b">More...</a><br /></td></tr>
 <tr class="separator:aabc94ab27a9ee6daaafa9b47dde5f75b inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9">getIrqMapped</a> (<a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irq)</td></tr>
+<tr class="memdesc:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert from radio-agnostic IRQ flags to radio-specific flags.  <a href="class_physical_layer.html#ae602ebd46d60da8670c9f353cef695d9">More...</a><br /></td></tr>
+<tr class="separator:ae602ebd46d60da8670c9f353cef695d9 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c7dd4704e3df353265010710bd26e83 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a2c7dd4704e3df353265010710bd26e83">checkIrq</a> (RadioLibIrqType_t irq)</td></tr>
+<tr class="memdesc:a2c7dd4704e3df353265010710bd26e83 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).  <a href="class_physical_layer.html#a2c7dd4704e3df353265010710bd26e83">More...</a><br /></td></tr>
+<tr class="separator:a2c7dd4704e3df353265010710bd26e83 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8564f9834a0247e93e7620c23559ceb8 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a8564f9834a0247e93e7620c23559ceb8">setIrq</a> (<a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irq)</td></tr>
+<tr class="memdesc:a8564f9834a0247e93e7620c23559ceb8 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt on specific IRQ bit(s) (e.g. RxTimeout, CadDone). Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!  <a href="class_physical_layer.html#a8564f9834a0247e93e7620c23559ceb8">More...</a><br /></td></tr>
+<tr class="separator:a8564f9834a0247e93e7620c23559ceb8 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af9a7e739e39705a72ffa8b63ec09bb15">clearIrq</a> (<a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irq)</td></tr>
+<tr class="memdesc:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone). Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!  <a href="class_physical_layer.html#af9a7e739e39705a72ffa8b63ec09bb15">More...</a><br /></td></tr>
+<tr class="separator:af9a7e739e39705a72ffa8b63ec09bb15 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a82a52062d9259c2c546d7bf8072b7a72">startChannelScan</a> (const <a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> &amp;config)</td></tr>
+<tr class="memdesc:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven channel activity detection method. interrupt will be activated when packet is detected. Must be implemented in module class.  <a href="class_physical_layer.html#a82a52062d9259c2c546d7bf8072b7a72">More...</a><br /></td></tr>
+<tr class="separator:a82a52062d9259c2c546d7bf8072b7a72 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6925c490f6c075022a72261802731cbb inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a6925c490f6c075022a72261802731cbb">scanChannel</a> (<a class="el" href="union_channel_scan_config__t.html">ChannelScanConfig_t</a> config)</td></tr>
+<tr class="memdesc:a6925c490f6c075022a72261802731cbb inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules, or RSSI measurement for FSK modules.  <a href="class_physical_layer.html#a6925c490f6c075022a72261802731cbb">More...</a><br /></td></tr>
+<tr class="separator:a6925c490f6c075022a72261802731cbb inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">random</a> (int32_t max)</td></tr>
 <tr class="memdesc:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get truly random number in range 0 - max.  <a href="class_physical_layer.html#acd9171bd71aa80fb86113b612c42de53">More...</a><br /></td></tr>
 <tr class="separator:acd9171bd71aa80fb86113b612c42de53 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -662,8 +680,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="adab87c73772d8ddc9b01d401f792547f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adab87c73772d8ddc9b01d401f792547f">&#9670;&nbsp;</a></span>checkIrq()</h2>
+<a id="aa3eae13a7f0558c1bc881abebd958242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3eae13a7f0558c1bc881abebd958242">&#9670;&nbsp;</a></span>clearIrqFlags()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -672,9 +690,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t SX127x::checkIrq </td>
+          <td class="memname">int16_t SX127x::clearIrqFlags </td>
           <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>irq</em></td><td>)</td>
           <td></td>
         </tr>
@@ -686,10 +704,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone). </p>
-<dl class="section return"><dt>Returns</dt><dd>Whether requested IRQ is set. </dd></dl>
+<p>Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irq</td><td>Module-specific IRQ flags. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#af9dd85a63fb868e299645aecd8a0bf7e">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ac282bb78da4f4da4661dce191cbd6d87">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -1079,6 +1103,36 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a22de05835dda9ed287ec48f60ef91f55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a22de05835dda9ed287ec48f60ef91f55">&#9670;&nbsp;</a></span>getIrqFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t SX127x::getIrqFlags </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Read currently active IRQ flags. </p>
+<dl class="section return"><dt>Returns</dt><dd>IRQ flags. </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a2cf6a5bd8f3257f98ee4f250cbdf8bdc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2cf6a5bd8f3257f98ee4f250cbdf8bdc">&#9670;&nbsp;</a></span>getModemStatus()</h2>
 
@@ -1314,54 +1368,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a06cd53dda09095181bf6ccf2b496b8a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06cd53dda09095181bf6ccf2b496b8a7">&#9670;&nbsp;</a></span>irqRxDoneRxTimeout()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX127x::irqRxDoneRxTimeout </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t &amp;&#160;</td>
-          <td class="paramname"><em>irqFlags</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t &amp;&#160;</td>
-          <td class="paramname"><em>irqMask</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Create the flags that make up RxDone and RxTimeout used for receiving downlinks. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">irqFlags</td><td>The flags for which IRQs must be triggered </td></tr>
-    <tr><td class="paramname">irqMask</td><td>Mask indicating which IRQ triggers a DIO </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#af44a10b29e21d4de7794eefb8b5ade63">PhysicalLayer</a>.</p>
-
-</div>
-</div>
 <a id="a0995088d37689a3c240a1af791df6cf1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0995088d37689a3c240a1af791df6cf1">&#9670;&nbsp;</a></span>packetMode()</h2>
 
@@ -1536,7 +1542,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Pointer to array to save the received binary data. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes that will be received. Must be known in advance for binary transmissions. </td></tr>
+    <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). </td></tr>
   </table>
   </dd>
 </dl>
@@ -2185,6 +2191,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aae42b94ab2ecf729f29f101222e97666"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae42b94ab2ecf729f29f101222e97666">&#9670;&nbsp;</a></span>setIrqFlags()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::setIrqFlags </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>irq</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">irq</td><td>Module-specific IRQ flags. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af88dcb54dc8e9a1edaf9f1c3e5ee2b74">PhysicalLayer</a>.</p>
 
 </div>
 </div>
@@ -2895,7 +2938,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </div>
 </div>
 <a id="abbe1076252a366c3c4aa323fdff7d40c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbe1076252a366c3c4aa323fdff7d40c">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#abbe1076252a366c3c4aa323fdff7d40c">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2924,8 +2967,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a5b6aec8bba3f055b17864d85f94e195d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b6aec8bba3f055b17864d85f94e195d">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/3]</span></h2>
+<a id="acaab95d4bf57bf33f6269d2f099e48e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acaab95d4bf57bf33f6269d2f099e48e0">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2942,20 +2985,20 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>irqFlags</em>, </td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_FLAGS</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>irqMask</em>, </td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_MASK</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2974,53 +3017,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">timeout</td><td>Receive mode type and/or raw timeout value in symbols. When set to 0, the timeout will be infinite and the device will remain in Rx mode until explicitly commanded to stop (Rx continuous mode). When non-zero (maximum 1023), the device will be set to Rx single mode and timeout will be set. </td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Ignored. </td></tr>
-    <tr><td class="paramname">irqMask</td><td>Ignored. </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done. </td></tr>
     <tr><td class="paramname">len</td><td>Expected length of packet to be received. Required for LoRa spreading factor 6. </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ab913944238f4dfd950d36651eb3c4892">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="aa77da235ab59a5066fc51418d4344a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa77da235ab59a5066fc51418d4344a02">&#9670;&nbsp;</a></span>startReceive() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t SX127x::startReceive </td>
-          <td>(</td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>mode</em> = <code>RADIOLIB_SX127X_RXCONTINUOUS</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Interrupt-driven receive method. DIO0 will be activated when full valid packet is received. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">len</td><td>Expected length of packet to be received, or 0 when unused. Defaults to 0, non-zero required for LoRa spreading factor 6. </td></tr>
-    <tr><td class="paramname">mode</td><td>Receive mode to be used. Defaults to RxContinuous. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ac88f9185b5e9fdc1d89df9797dcdd9b7">PhysicalLayer</a>.</p>
 
 </div>
 </div>
