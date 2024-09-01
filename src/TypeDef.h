@@ -616,6 +616,12 @@
 typedef unsigned long RadioLibTime_t;
 
 /*!
+  \brief Type used for radio-agnostic IRQ flags. IRQ to enable corresponds to the bit index (RadioLibIrq_t).
+  For example, if bit 0 is set, the module will enable its RADIOLIB_IRQ_TX_DONE (if it is supported).
+*/
+typedef uint32_t RadioLibIrqFlags_t;
+
+/*!
   \}
 */
 

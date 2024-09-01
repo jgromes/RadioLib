@@ -222,7 +222,6 @@
 #define RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED                   0b0000000000000100  //  2     2   preamble detected
 #define RADIOLIB_SX126X_IRQ_RX_DONE                             0b0000000000000010  //  1     1   packet received
 #define RADIOLIB_SX126X_IRQ_TX_DONE                             0b0000000000000001  //  0     0   packet transmission completed
-#define RADIOLIB_SX126X_IRQ_RX_DEFAULT                          0b0000001001100010  //  14    0   default for Rx (RX_DONE, TIMEOUT, CRC_ERR and HEADER_ERR)
 #define RADIOLIB_SX126X_IRQ_ALL                                 0b0100001111111111  //  14    0   all interrupts
 #define RADIOLIB_SX126X_IRQ_NONE                                0b0000000000000000  //  14    0   no interrupts
 
@@ -533,18 +532,17 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      Configuration defaults to the values recommended by AN1200.48.
       \returns \ref status_codes
     */
     int16_t scanChannel() override;
 
     /*!
       \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
-      \param symbolNum Number of symbols for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detPeak Peak value for CAD detection. Defaults to the value recommended by AN1200.48.
-      \param detMin Minimum value for CAD detection. Defaults to the value recommended by AN1200.48.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t scanChannel(ChannelScanConfig_t config) override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -656,24 +654,26 @@ class SX126x: public PhysicalLayer {
       For any other value, timeout will be applied and signal will be generated on DIO1 for conditions
       defined by irqFlags and irqMask.
 
-      \param irqFlags Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error.
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \param len Only for PhysicalLayer compatibility, not used.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint32_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE, size_t len = 0);
+    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0);
 
     /*!
       \brief Interrupt-driven receive method where the device mostly sleeps and periodically wakes to listen.
       Note that this function assumes the unit will take 500us + TCXO_delay to change state.
       See datasheet section 13.1.7, version 1.2.
+
       \param rxPeriod The duration the receiver will be in Rx mode, in microseconds.
       \param sleepPeriod The duration the receiver will not be in Rx mode, in microseconds.
-      \param irqFlags Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.
+
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
+    int16_t startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
 
     /*!
       \brief Calls \ref startReceiveDutyCycle with rxPeriod and sleepPeriod set so the unit shouldn't miss any messages.
@@ -685,17 +685,11 @@ class SX126x: public PhysicalLayer {
       According to Semtech, receiver requires 8 symbols to reliably latch a preamble.
       This makes this method redundant when transmitter preamble length is less than 17 (2*minSymbols + 1).
 
-      \param irqFlags Sets the IRQ flags, defaults to RADIOLIB_SX126X_IRQ_RX_DEFAULT.
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX126X_IRQ_RX_DONE.
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error.
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \returns \ref status_codes
     */
-    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
-
-    /*!
-      \brief Reads the current IRQ status.
-      \returns IRQ status bits
-    */
-    uint16_t getIrqStatus();
+    int16_t startReceiveDutyCycleAuto(uint16_t senderPreambleLength = 0, uint16_t minSymbols = 8, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
 
     /*!
       \brief Reads data received after calling startReceive method. When the packet length is not known in advance,
@@ -717,12 +711,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
       when LoRa preamble is detected, or upon timeout.
-      \param symbolNum Number of symbols for CAD detection. 
-      \param detPeak Peak value for CAD detection.
-      \param detMin Minimum value for CAD detection.
+      \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Read the channel scan result
@@ -989,18 +981,24 @@ class SX126x: public PhysicalLayer {
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
-      \param irqFlags The flags for which IRQs must be triggered
-      \param irqMask Mask indicating which IRQ triggers a DIO
-      \returns \ref status_codes
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
     */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
+    uint32_t getIrqFlags() override;
 
     /*!
-      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
     */
-    int16_t checkIrq(uint8_t irq) override;
+    int16_t setIrqFlags(uint32_t irq) override;
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq) override;
 
     /*!
       \brief Set implicit header mode for future reception/transmission.
@@ -1160,7 +1158,7 @@ class SX126x: public PhysicalLayer {
     int16_t setFs();
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
-    int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin);
+    int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
     int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
     int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
@@ -1222,7 +1220,7 @@ class SX126x: public PhysicalLayer {
 
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
-    int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, uint16_t irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT, uint16_t irqMask = RADIOLIB_SX126X_IRQ_RX_DONE);
+    int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
     int16_t setPacketMode(uint8_t mode, uint8_t len);
     int16_t setHeaderType(uint8_t hdrType, size_t len = 0xFF);
     int16_t directMode();

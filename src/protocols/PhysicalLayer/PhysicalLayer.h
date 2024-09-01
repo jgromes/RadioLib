@@ -4,17 +4,26 @@
 #include "../../TypeDef.h"
 #include "../../Module.h"
 
-// common IRQ flags
-#define RADIOLIB_IRQ_TX_DONE                                    0x00
-#define RADIOLIB_IRQ_RX_DONE                                    0x01
-#define RADIOLIB_IRQ_PREAMBLE_DETECTED                          0x02
-#define RADIOLIB_IRQ_SYNC_WORD_VALID                            0x03
-#define RADIOLIB_IRQ_HEADER_VALID                               0x04
-#define RADIOLIB_IRQ_HEADER_ERR                                 0x05
-#define RADIOLIB_IRQ_CRC_ERR                                    0x06
-#define RADIOLIB_IRQ_CAD_DONE                                   0x07
-#define RADIOLIB_IRQ_CAD_DETECTED                               0x08
-#define RADIOLIB_IRQ_TIMEOUT                                    0x09
+// common IRQ values - the IRQ flags in RadioLibIrqFlags_t arguments are offset by this value
+enum RadioLibIrqType_t {
+  RADIOLIB_IRQ_TX_DONE = 0x00,
+  RADIOLIB_IRQ_RX_DONE = 0x01,
+  RADIOLIB_IRQ_PREAMBLE_DETECTED = 0x02,
+  RADIOLIB_IRQ_SYNC_WORD_VALID = 0x03,
+  RADIOLIB_IRQ_HEADER_VALID = 0x04,
+  RADIOLIB_IRQ_HEADER_ERR = 0x05,
+  RADIOLIB_IRQ_CRC_ERR = 0x06,
+  RADIOLIB_IRQ_CAD_DONE = 0x07,
+  RADIOLIB_IRQ_CAD_DETECTED = 0x08,
+  RADIOLIB_IRQ_TIMEOUT = 0x09,
+  RADIOLIB_IRQ_NOT_SUPPORTED = 0x1F, // this must be the last value, intentionally set to 31
+};
+
+// some commonly used default values - defined here to ensure all modules have the same default behavior
+#define RADIOLIB_IRQ_RX_DEFAULT_FLAGS       ((1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_TIMEOUT) | (1UL << RADIOLIB_IRQ_CRC_ERR) | (1UL << RADIOLIB_IRQ_HEADER_ERR))
+#define RADIOLIB_IRQ_RX_DEFAULT_MASK        ((1UL << RADIOLIB_IRQ_RX_DONE))
+#define RADIOLIB_IRQ_CAD_DEFAULT_FLAGS      ((1UL << RADIOLIB_IRQ_CAD_DETECTED) | (1UL << RADIOLIB_IRQ_CAD_DONE))
+#define RADIOLIB_IRQ_CAD_DEFAULT_MASK       ((1UL << RADIOLIB_IRQ_CAD_DETECTED) | (1UL << RADIOLIB_IRQ_CAD_DONE))
 
 /*!
   \struct LoRaRate_t
@@ -39,7 +48,7 @@ struct FSKRate_t {
   /*! \brief FSK bit rate in kbps */
   float bitRate;
   
-  /*! \brief FS frequency deviation in kHz*/
+  /*! \brief FSK frequency deviation in kHz */
   float freqDev;
 };
 
@@ -53,6 +62,54 @@ union DataRate_t {
 
   /*! \brief Interpretation for FSK modems */
   FSKRate_t fsk;
+};
+
+/*!
+  \struct CADScanConfig_t
+  \brief Channel scan configuration interpretation in case LoRa CAD is used
+*/
+struct CADScanConfig_t {
+  /*! \brief Number of symbols to consider signal present */
+  uint8_t symNum;
+  
+  /*! \brief Number of peak detection symbols */
+  uint8_t detPeak;
+  
+  /*! \brief Number of minimum detection symbols */
+  uint8_t detMin;
+  
+  /*! \brief Exit mode after signal detection is complete - module-specific value */
+  uint8_t exitMode;
+  
+  /*! \brief Timeout in microseconds */
+  RadioLibTime_t timeout;
+
+  /*! \brief Optional IRQ flags to set, bits offset by the value of RADIOLIB_IRQ_ */
+  RadioLibIrqFlags_t irqFlags;
+
+  /*! \brief Optional IRQ mask to set, bits offset by the value of RADIOLIB_IRQ_ */
+  RadioLibIrqFlags_t irqMask;
+};
+
+/*!
+  \struct RSSIScanConfig_t
+  \brief Channel scan configuration interpretation in case RSSI threshold is used
+*/
+struct RSSIScanConfig_t {
+  /*! \brief RSSI limit in dBm */
+  float limit;
+};
+
+/*!
+  \union ChannelScanConfig_t
+  \brief Common channel scan configuration structure
+*/
+union ChannelScanConfig_t {
+  /*! \brief Interpretation for modems that use CAD (usually LoRa modems)*/
+  CADScanConfig_t cad;
+
+  /*! \brief Interpretation for modems that use RSSI threshold*/
+  RSSIScanConfig_t rssi;
 };
 
 /*!
@@ -152,16 +209,16 @@ class PhysicalLayer {
       \param timeout Raw timeout value. Some modules use this argument to specify operation mode
       (single vs. continuous receive).
       \param irqFlags Sets the IRQ flags.
-      \param irqMask Sets the mask of IRQ flags that will trigger the DIO pin.
+      \param irqMask Sets the mask of IRQ flags that will trigger the radio interrupt pin.
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len);
+    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
       \param data Pointer to array to save the received binary data.
-      \param len Number of bytes that will be received. Must be known in advance for binary transmissions.
+      \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
     virtual int16_t receive(uint8_t* data, size_t len);
@@ -366,18 +423,59 @@ class PhysicalLayer {
     virtual RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs);
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks.
-      \param irqFlags The flags for which IRQs must be triggered.
-      \param irqMask Mask indicating which IRQ triggers a DIO.
-      \returns \ref status_codes
+      \brief Convert from radio-agnostic IRQ flags to radio-specific flags.
+      \param irq Radio-agnostic IRQ flags.
+      \returns Flags for a specific radio module.
     */
-    virtual int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask);
+    uint32_t getIrqMapped(RadioLibIrqFlags_t irq);
 
     /*!
       \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \param irq IRQ type to check, one of RADIOLIB_IRQ_*.
+      \returns 1 when requested IRQ is set, 0 when it is not or RADIOLIB_ERR_UNSUPPORTED if the IRQ is not supported.
     */
-    virtual int16_t checkIrq(uint8_t irq);
+    int16_t checkIrq(RadioLibIrqType_t irq);
+
+    /*!
+      \brief Set interrupt on specific IRQ bit(s) (e.g. RxTimeout, CadDone).
+      Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
+      \param irq Flags to set, multiple bits may be enabled. IRQ to enable corresponds to the bit index (RadioLibIrq_t).
+      For example, if bit 0 is enabled, the module will enable its RADIOLIB_IRQ_TX_DONE (if it is supported).
+      \returns \ref status_codes
+    */
+    int16_t setIrq(RadioLibIrqFlags_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Keep in mind that not all radio modules support all RADIOLIB_IRQ_ flags!
+      \param irq Flags to set, multiple bits may be enabled. IRQ to enable corresponds to the bit index (RadioLibIrq_t).
+      For example, if bit 0 is enabled, the module will enable its RADIOLIB_IRQ_TX_DONE (if it is supported).
+      \returns \ref status_codes
+    */
+    int16_t clearIrq(RadioLibIrqFlags_t irq);
+
+    /*!
+      \brief Read currently active IRQ flags.
+      Must be implemented in module class.
+      \returns IRQ flags.
+    */
+    virtual uint32_t getIrqFlags();
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Must be implemented in module class.
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    virtual int16_t setIrqFlags(uint32_t irq);
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      Must be implemented in module class.
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    virtual int16_t clearIrqFlags(uint32_t irq);
 
     /*!
       \brief Interrupt-driven channel activity detection method. Interrupt will be activated
@@ -385,6 +483,14 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t startChannelScan();
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. interrupt will be activated
+      when packet is detected. Must be implemented in module class.
+      \param config Scan configuration structure. Interpretation depends on currently active modem.
+      \returns \ref status_codes
+    */
+    virtual int16_t startChannelScan(const ChannelScanConfig_t &config);
 
     /*!
       \brief Read the channel scan result
@@ -399,6 +505,15 @@ class PhysicalLayer {
       RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
     */
     virtual int16_t scanChannel();
+
+    /*!
+      \brief Check whether the current communication channel is free or occupied. Performs CAD for LoRa modules,
+      or RSSI measurement for FSK modules.
+      \param config Scan configuration structure. Interpretation depends on currently active modem.
+      \returns RADIOLIB_CHANNEL_FREE when channel is free,
+      RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
+    */
+    virtual int16_t scanChannel(ChannelScanConfig_t config);
 
     /*!
       \brief Get truly random number in range 0 - max.
@@ -531,6 +646,8 @@ class PhysicalLayer {
 #if !RADIOLIB_GODMODE
   protected:
 #endif
+    uint32_t irqMap[10] = { 0 };
+
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
 #endif

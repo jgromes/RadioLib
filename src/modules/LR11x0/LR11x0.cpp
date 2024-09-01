@@ -11,6 +11,16 @@
 LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE, RADIOLIB_LR11X0_MAX_PACKET_LENGTH) {
   this->mod = mod;
   this->XTAL = false;
+  this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_LR11X0_IRQ_TX_DONE;
+  this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_LR11X0_IRQ_RX_DONE;
+  this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_SYNC_WORD_VALID] = RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_VALID] = RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_ERR] = RADIOLIB_LR11X0_IRQ_HEADER_ERR;
+  this->irqMap[RADIOLIB_IRQ_CRC_ERR] = RADIOLIB_LR11X0_IRQ_CRC_ERR;
+  this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_LR11X0_IRQ_CAD_DONE;
+  this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_LR11X0_IRQ_CAD_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR11X0_IRQ_TIMEOUT;
 }
 
 int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage) {
@@ -278,12 +288,23 @@ int16_t LR11x0::receiveDirect() {
 }
 
 int16_t LR11x0::scanChannel() {
-  return(this->scanChannel(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->scanChannel(config));
 }
 
-int16_t LR11x0::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::scanChannel(ChannelScanConfig_t config) {
   // set mode to CAD
-  int state = startChannelScan(symbolNum, detPeak, detMin);
+  int state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -460,10 +481,9 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   // set DIO mapping
   uint32_t irq = irqFlags;
   if(timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
-    irq |= RADIOLIB_LR11X0_IRQ_TIMEOUT;
+    irq |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-
-  state = setDioIrqParams(irq);
+  state = setDioIrqParams(getIrqMapped(irq));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -541,10 +561,21 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 }
 
 int16_t LR11x0::startChannelScan() {
-  return(this->startChannelScan(RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT, RADIOLIB_LR11X0_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->startChannelScan(config));
 }
 
-int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
   // check active modem
   int16_t state = RADIOLIB_ERR_NONE;
   uint8_t modem = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -562,7 +593,8 @@ int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE);
+  uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE : config.cad.irqFlags;
+  state = setDioIrqParams(irqFlags, irqFlags);
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -570,7 +602,7 @@ int16_t LR11x0::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  return(startCad(symbolNum, detPeak, detMin));
+  return(startCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout));
 }
 
 int16_t LR11x0::getChannelScanResult() {
@@ -1322,39 +1354,16 @@ RadioLibTime_t LR11x0::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(timeout);
 }
 
-int16_t LR11x0::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  irqFlags = RADIOLIB_LR11X0_IRQ_RX_DONE | RADIOLIB_LR11X0_IRQ_TIMEOUT;  // flags that can appear in the IRQ register
-  irqMask  = irqFlags; // on LR11x0, these are the same
-  return(RADIOLIB_ERR_NONE);
+uint32_t LR11x0::getIrqFlags() {
+  return((uint32_t)this->getIrqStatus());
 }
 
-int16_t LR11x0::checkIrq(uint8_t irq) {
-  uint16_t flags = getIrqStatus();
-  switch(irq) {
-    case RADIOLIB_IRQ_TX_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_TX_DONE);
-    case RADIOLIB_IRQ_RX_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_RX_DONE);
-    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
-      return(flags & RADIOLIB_LR11X0_IRQ_PREAMBLE_DETECTED);
-    case RADIOLIB_IRQ_SYNC_WORD_VALID:
-      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_VALID:
-      return(flags & RADIOLIB_LR11X0_IRQ_SYNC_WORD_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_ERR:
-      return(flags & RADIOLIB_LR11X0_IRQ_HEADER_ERR);
-    case RADIOLIB_IRQ_CRC_ERR:
-      return(flags & RADIOLIB_LR11X0_IRQ_CRC_ERR);
-    case RADIOLIB_IRQ_CAD_DONE:
-      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DONE);
-    case RADIOLIB_IRQ_CAD_DETECTED:
-      return(flags & RADIOLIB_LR11X0_IRQ_CAD_DETECTED);
-    case RADIOLIB_IRQ_TIMEOUT:
-      return(flags & RADIOLIB_LR11X0_IRQ_TIMEOUT);
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-  return(RADIOLIB_ERR_UNSUPPORTED);
+int16_t LR11x0::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqParams(irq, irq));
+}
+
+int16_t LR11x0::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrq(irq));
 }
 
 uint8_t LR11x0::randomByte() {
@@ -2008,7 +2017,7 @@ int16_t LR11x0::setPacketMode(uint8_t mode, uint8_t len) {
   return(state);
 }
 
-int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -2035,9 +2044,16 @@ int16_t LR11x0::startCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     min = 10;
   }
 
+  uint8_t mode = exitMode; 
+  if(mode == RADIOLIB_LR11X0_CAD_PARAM_DEFAULT) {
+    mode = RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC;
+  }
+
+  uint32_t timeout_raw = (float)timeout / 30.52f;
+
   // set CAD parameters
   // TODO add configurable exit mode and timeout
-  state = setCadParams(num, peak, min, RADIOLIB_LR11X0_CAD_EXIT_MODE_STBY_RC, 0);
+  state = setCadParams(num, peak, min, mode, timeout_raw);
   RADIOLIB_ASSERT(state);
 
   // start CAD

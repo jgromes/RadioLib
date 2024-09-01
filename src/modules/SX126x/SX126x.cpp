@@ -7,6 +7,16 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
   this->XTAL = false;
   this->standbyXOSC = false;
+  this->irqMap[RADIOLIB_IRQ_TX_DONE] = RADIOLIB_SX126X_IRQ_TX_DONE;
+  this->irqMap[RADIOLIB_IRQ_RX_DONE] = RADIOLIB_SX126X_IRQ_RX_DONE;
+  this->irqMap[RADIOLIB_IRQ_PREAMBLE_DETECTED] = RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_SYNC_WORD_VALID] = RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_VALID] = RADIOLIB_SX126X_IRQ_HEADER_VALID;
+  this->irqMap[RADIOLIB_IRQ_HEADER_ERR] = RADIOLIB_SX126X_IRQ_HEADER_ERR;
+  this->irqMap[RADIOLIB_IRQ_CRC_ERR] = RADIOLIB_SX126X_IRQ_CRC_ERR;
+  this->irqMap[RADIOLIB_IRQ_CAD_DONE] = RADIOLIB_SX126X_IRQ_CAD_DONE;
+  this->irqMap[RADIOLIB_IRQ_CAD_DETECTED] = RADIOLIB_SX126X_IRQ_CAD_DETECTED;
+  this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_SX126X_IRQ_TIMEOUT;
 }
 
 int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
@@ -317,7 +327,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   }
 
   // check whether this was a timeout or not
-  if((getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
+  if((getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT) || softTimeout) {
     standby();
     fixImplicitTimeout();
     clearIrqStatus();
@@ -425,12 +435,23 @@ int16_t SX126x::packetMode() {
 }
 
 int16_t SX126x::scanChannel() {
-  return(this->scanChannel(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->scanChannel(config));
 }
 
-int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::scanChannel(ChannelScanConfig_t config) {
   // set mode to CAD
-  int state = startChannelScan(symbolNum, detPeak, detMin);
+  int state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
 
   // wait for channel activity detected or timeout
@@ -441,7 +462,6 @@ int16_t SX126x::scanChannel(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) 
   // check CAD result
   return(getChannelScanResult());
 }
-
 
 int16_t SX126x::sleep() {
   return(SX126x::sleep(true));
@@ -582,10 +602,10 @@ int16_t SX126x::finishTransmit() {
 }
 
 int16_t SX126x::startReceive() {
-  return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_SX126X_IRQ_RX_DEFAULT, RADIOLIB_SX126X_IRQ_RX_DONE, 0));
+  return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
 
-int16_t SX126x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
+int16_t SX126x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
   (void)len;
   int16_t state = startReceiveCommon(timeout, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
@@ -599,7 +619,7 @@ int16_t SX126x::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   return(state);
 }
 
-int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   // datasheet claims time to go to sleep is ~500us, same to wake up, compensate for that with 1 ms + TCXO delay
   uint32_t transitionTime = this->tcxoDelay + 1000;
   sleepPeriod -= transitionTime;
@@ -626,7 +646,7 @@ int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, u
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX_DUTY_CYCLE, data, 6));
 }
 
-int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_t minSymbols, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   if(senderPreambleLength == 0) {
     senderPreambleLength = this->preambleLengthLoRa;
   }
@@ -664,12 +684,12 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
   return(startReceiveDutyCycle(wakePeriod, sleepPeriod, irqFlags, irqMask));
 }
 
-int16_t SX126x::startReceiveCommon(uint32_t timeout, uint16_t irqFlags, uint16_t irqMask) {
+int16_t SX126x::startReceiveCommon(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
   // set DIO mapping
   if(timeout != RADIOLIB_SX126X_RX_TIMEOUT_INF) {
-    irqMask |= RADIOLIB_SX126X_IRQ_TIMEOUT;
+    irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-  int16_t state = setDioIrqParams(irqFlags, irqMask);
+  int16_t state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqMask));
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers
@@ -697,14 +717,14 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   // if that's the case, the first call will return "SPI command timeout error"
   // check the IRQ to be sure this really originated from timeout event
   int16_t state = this->mod->SPIcheckStream();
-  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqStatus() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
+  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
     // this is definitely Rx timeout
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
   RADIOLIB_ASSERT(state);
 
   // check integrity CRC
-  uint16_t irq = getIrqStatus();
+  uint16_t irq = getIrqFlags();
   int16_t crcState = RADIOLIB_ERR_NONE;
   if((irq & RADIOLIB_SX126X_IRQ_CRC_ERR) || (irq & RADIOLIB_SX126X_IRQ_HEADER_ERR)) {
     crcState = RADIOLIB_ERR_CRC_MISMATCH;
@@ -732,10 +752,21 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::startChannelScan() {
-  return(this->startChannelScan(RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT, RADIOLIB_SX126X_CAD_PARAM_DEFAULT));
+  ChannelScanConfig_t config = {
+    .cad = {
+      .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .detMin = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .exitMode = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
+      .timeout = 0,
+      .irqFlags = RADIOLIB_IRQ_CAD_DEFAULT_FLAGS,
+      .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
+    },
+  };
+  return(this->startChannelScan(config));
 }
 
-int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -749,7 +780,7 @@ int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   this->mod->setRfSwitchState(Module::MODE_RX);
 
   // set DIO pin mapping
-  state = setDioIrqParams(RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE, RADIOLIB_SX126X_IRQ_CAD_DETECTED | RADIOLIB_SX126X_IRQ_CAD_DONE);
+  state = setDioIrqParams(getIrqMapped(config.cad.irqFlags), getIrqMapped(config.cad.irqMask));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
@@ -757,7 +788,7 @@ int16_t SX126x::startChannelScan(uint8_t symbolNum, uint8_t detPeak, uint8_t det
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
-  state = setCad(symbolNum, detPeak, detMin);
+  state = setCad(config.cad.symNum, config.cad.detPeak, config.cad.detMin, config.cad.exitMode, config.cad.timeout);
   return(state);
 }
 
@@ -768,7 +799,7 @@ int16_t SX126x::getChannelScanResult() {
   }
 
   // check CAD result
-  uint16_t cadResult = getIrqStatus();
+  uint16_t cadResult = getIrqFlags();
   if(cadResult & RADIOLIB_SX126X_IRQ_CAD_DETECTED) {
     // detected some LoRa activity
     return(RADIOLIB_LORA_DETECTED);
@@ -1460,39 +1491,18 @@ RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   return(timeout);
 }
 
-int16_t SX126x::irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) {
-  irqFlags = RADIOLIB_SX126X_IRQ_RX_DEFAULT;  // flags that can appear in the IRQ register
-  irqMask  = RADIOLIB_SX126X_IRQ_RX_DONE | RADIOLIB_SX126X_IRQ_TIMEOUT; // flags that will trigger DIO0
-  return(RADIOLIB_ERR_NONE);
+uint32_t SX126x::getIrqFlags() {
+  uint8_t data[] = { 0x00, 0x00 };
+  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
+  return(((uint32_t)(data[0]) << 8) | data[1]);
 }
 
-int16_t SX126x::checkIrq(uint8_t irq) {
-  uint16_t flags = getIrqStatus();
-  switch(irq) {
-    case RADIOLIB_IRQ_TX_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_TX_DONE);
-    case RADIOLIB_IRQ_RX_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_RX_DONE);
-    case RADIOLIB_IRQ_PREAMBLE_DETECTED:
-      return(flags & RADIOLIB_SX126X_IRQ_PREAMBLE_DETECTED);
-    case RADIOLIB_IRQ_SYNC_WORD_VALID:
-      return(flags & RADIOLIB_SX126X_IRQ_SYNC_WORD_VALID);
-    case RADIOLIB_IRQ_HEADER_VALID:
-      return(flags & RADIOLIB_SX126X_IRQ_HEADER_VALID);
-    case RADIOLIB_IRQ_HEADER_ERR:
-      return(flags & RADIOLIB_SX126X_IRQ_HEADER_ERR);
-    case RADIOLIB_IRQ_CRC_ERR:
-      return(flags & RADIOLIB_SX126X_IRQ_CRC_ERR);
-    case RADIOLIB_IRQ_CAD_DONE:
-      return(flags & RADIOLIB_SX126X_IRQ_CAD_DONE);
-    case RADIOLIB_IRQ_CAD_DETECTED:
-      return(flags & RADIOLIB_SX126X_IRQ_CAD_DETECTED);
-    case RADIOLIB_IRQ_TIMEOUT:
-      return(flags & RADIOLIB_SX126X_IRQ_TIMEOUT);
-    default:
-      return(RADIOLIB_ERR_UNSUPPORTED);
-  }
-  return(RADIOLIB_ERR_UNSUPPORTED);
+int16_t SX126x::setIrqFlags(uint32_t irq) {
+  return(this->setDioIrqParams(irq, irq));
+}
+
+int16_t SX126x::clearIrqFlags(uint32_t irq) {
+  return(this->clearIrqStatus(irq));
 }
 
 int16_t SX126x::implicitHeader(size_t len) {
@@ -1761,8 +1771,7 @@ int16_t SX126x::setRx(uint32_t timeout) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RX, data, 3, true, false));
 }
 
- 
-int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
+int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout) {
   // default CAD parameters are shown in Semtech AN1200.48, page 41.
   const uint8_t detPeakValues[6] = { 22, 22, 24, 25, 26, 30};
 
@@ -1773,29 +1782,17 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     this->spreadingFactor = 12;
   }
 
-  // build the packet
+  // build the packet with default configuration
   uint8_t data[7];
   data[0] = RADIOLIB_SX126X_CAD_ON_2_SYMB;
   data[1] = detPeakValues[this->spreadingFactor - 7];
   data[2] = RADIOLIB_SX126X_CAD_PARAM_DET_MIN;
   data[3] = RADIOLIB_SX126X_CAD_GOTO_STDBY;
-  data[4] = 0x00;
-  data[5] = 0x00;
-  data[6] = 0x00;
+  uint32_t timeout_raw = (float)timeout / 15.625f;
+  data[4] = (uint8_t)((timeout_raw >> 16) & 0xFF);
+  data[5] = (uint8_t)((timeout_raw >> 8) & 0xFF);
+  data[6] = (uint8_t)(timeout_raw & 0xFF);
 
-
- /*
-  CAD Configuration Note:
-  The default CAD configuration applied by `scanChannel` overrides the optimal SF-specific configurations, leading to suboptimal detection.
-  I.e., anything that is not RADIOLIB_SX126X_CAD_PARAM_DEFAULT is overridden. But CAD settings are SF specific.
-  To address this, the user override has been commented out, ensuring consistent application of the optimal CAD settings as 
-    per Semtech's Application Note AN1200.48 (page 41) for the 125KHz setting. This approach significantly reduces false CAD occurrences.
-    Testing has shown that there is no reason for a user to change CAD settings for anything other than most optimal ones described in AN1200.48 .
-  However, this change does not respect CAD configs from the LoRaWAN layer. Future considerations or use cases might require revisiting this decision.
-  Hence this note.
-*/
-
-/*
   // set user-provided values
   if(symbolNum != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
     data[0] = symbolNum;
@@ -1809,10 +1806,9 @@ int16_t SX126x::setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin) {
     data[2] = detMin;
   }
 
-*/
-  (void)symbolNum;
-  (void)detPeak;
-  (void)detMin;
+  if(exitMode != RADIOLIB_SX126X_CAD_PARAM_DEFAULT) {
+    data[3] = exitMode;
+  }
 
   // configure parameters
   int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_CAD_PARAMS, data, 7);
@@ -1857,12 +1853,6 @@ int16_t SX126x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t di
                      (uint8_t)((dio2Mask >> 8) & 0xFF), (uint8_t)(dio2Mask & 0xFF),
                      (uint8_t)((dio3Mask >> 8) & 0xFF), (uint8_t)(dio3Mask & 0xFF)};
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_DIO_IRQ_PARAMS, data, 8));
-}
-
-uint16_t SX126x::getIrqStatus() {
-  uint8_t data[] = { 0x00, 0x00 };
-  this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_IRQ_STATUS, data, 2);
-  return(((uint16_t)(data[0]) << 8) | data[1]);
 }
 
 int16_t SX126x::clearIrqStatus(uint16_t clearIrqParams) {

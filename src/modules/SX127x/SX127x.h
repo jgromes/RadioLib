@@ -160,7 +160,6 @@
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DONE                  0b11111011  //  2     2   CAD complete
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_FHSS_CHANGE_CHANNEL       0b11111101  //  1     1   FHSS change channel
 #define RADIOLIB_SX127X_MASK_IRQ_FLAG_CAD_DETECTED              0b11111110  //  0     0   valid LoRa signal detected during CAD operation
-#define RADIOLIB_SX127X_MASK_IRQ_FLAG_RX_DEFAULT                0b00011111  //  7     0   default for Rx (RX_TIMEOUT, RX_DONE, CRC_ERR)
 
 // RADIOLIB_SX127X_REG_FIFO_TX_BASE_ADDR
 #define RADIOLIB_SX127X_FIFO_TX_BASE_ADDR_MAX                   0b00000000  //  7     0   allocate the entire FIFO buffer for TX only
@@ -500,6 +499,7 @@
 #define RADIOLIB_SX127X_FLAG_PAYLOAD_READY                      0b00000100  //  2     2   packet was successfully received
 #define RADIOLIB_SX127X_FLAG_CRC_OK                             0b00000010  //  1     1   CRC check passed
 #define RADIOLIB_SX127X_FLAG_LOW_BAT                            0b00000001  //  0     0   battery voltage dropped below threshold
+#define RADIOLIB_SX127X_FLAGS_ALL                               0xFFFF
 
 // RADIOLIB_SX127X_REG_DIO_MAPPING_1
 #define RADIOLIB_SX127X_DIO0_LORA_RX_DONE                       0b00000000  //  7     6
@@ -813,26 +813,17 @@ class SX127x: public PhysicalLayer {
     int16_t startReceive() override;
 
     /*!
-      \brief Interrupt-driven receive method. DIO0 will be activated when full valid packet is received.
-      \param len Expected length of packet to be received, or 0 when unused.
-      Defaults to 0, non-zero required for LoRa spreading factor 6.
-      \param mode Receive mode to be used. Defaults to RxContinuous.
-      \returns \ref status_codes
-    */
-    int16_t startReceive(uint8_t len, uint8_t mode = RADIOLIB_SX127X_RXCONTINUOUS);
-    
-    /*!
       \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
       \param timeout Receive mode type and/or raw timeout value in symbols.
       When set to 0, the timeout will be infinite and the device will remain
       in Rx mode until explicitly commanded to stop (Rx continuous mode).
       When non-zero (maximum 1023), the device will be set to Rx single mode and timeout will be set.
-      \param irqFlags Ignored.
-      \param irqMask Ignored.
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) override;
+    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -1065,18 +1056,24 @@ class SX127x: public PhysicalLayer {
     RadioLibTime_t calculateRxTimeout(RadioLibTime_t timeoutUs) override;
 
     /*!
-      \brief Create the flags that make up RxDone and RxTimeout used for receiving downlinks
-      \param irqFlags The flags for which IRQs must be triggered
-      \param irqMask Mask indicating which IRQ triggers a DIO
-      \returns \ref status_codes
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
     */
-    int16_t irqRxDoneRxTimeout(uint32_t &irqFlags, uint32_t &irqMask) override;
+    uint32_t getIrqFlags() override;
 
     /*!
-      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
     */
-    int16_t checkIrq(uint8_t irq) override;
+    int16_t setIrqFlags(uint32_t irq) override;
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq) override;
 
     /*!
       \brief Enable CRC filtering and generation.
@@ -1257,7 +1254,6 @@ class SX127x: public PhysicalLayer {
     bool findChip(const uint8_t* vers, uint8_t num);
     int16_t setMode(uint8_t mode);
     int16_t setActiveModem(uint8_t modem);
-    void clearIRQFlags();
     void clearFIFO(size_t count); // used mostly to clear remaining bytes in FIFO after a packet read
 
     /*!

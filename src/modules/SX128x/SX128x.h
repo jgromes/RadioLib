@@ -186,6 +186,7 @@
 #define RADIOLIB_SX128X_CAD_ON_4_SYMB                           0x40        //  7     0                                   4
 #define RADIOLIB_SX128X_CAD_ON_8_SYMB                           0x60        //  7     0                                   8
 #define RADIOLIB_SX128X_CAD_ON_16_SYMB                          0x80        //  7     0                                   16
+#define RADIOLIB_SX128X_CAD_PARAM_DEFAULT                       RADIOLIB_SX128X_CAD_ON_8_SYMB
 
 //RADIOLIB_SX128X_CMD_SET_MODULATION_PARAMS
 #define RADIOLIB_SX128X_BLE_GFSK_BR_2_000_BW_2_4                0x04        //  7     0   GFSK/BLE bit rate and bandwidth setting: 2.0 Mbps   2.4 MHz
@@ -327,7 +328,6 @@
 #define RADIOLIB_SX128X_IRQ_SYNC_WORD_VALID                     0x0004      //  2     2                     sync word valid
 #define RADIOLIB_SX128X_IRQ_RX_DONE                             0x0002      //  1     1                     Rx done
 #define RADIOLIB_SX128X_IRQ_TX_DONE                             0x0001      //  0     0                     Tx done
-#define RADIOLIB_SX128X_IRQ_RX_DEFAULT                          0x4062      //  15    0                     default for Rx (RX_DONE, RX_TX_TIMEOUT, CRC_ERROR and HEADER_ERROR)
 #define RADIOLIB_SX128X_IRQ_NONE                                0x0000      //  15    0                     none
 #define RADIOLIB_SX128X_IRQ_ALL                                 0xFFFF      //  15    0                     all
 
@@ -458,6 +458,13 @@ class SX128x: public PhysicalLayer {
     int16_t scanChannel() override;
 
     /*!
+      \brief Performs scan for LoRa transmission in the current channel. Detects both preamble and payload.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t scanChannel(ChannelScanConfig_t config) override;
+
+    /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
       Overload for PhysicalLayer compatibility.
       \returns \ref status_codes
@@ -553,12 +560,12 @@ class SX128x: public PhysicalLayer {
       set to RADIOLIB_SX128X_RX_TIMEOUT_NONE for no timeout (Rx single mode).
       If timeout other than infinite is set, signal will be generated on DIO1.
 
-      \param irqFlags Sets the IRQ flags, defaults to RADIOLIB_SX128X_IRQ_RX_DEFAULT.
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RADIOLIB_SX128X_IRQ_RX_DONE.
+      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
+      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
       \param len Only for PhysicalLayer compatibility, not used.
       \returns \ref status_codes
     */
-    int16_t startReceive(uint16_t timeout, uint32_t irqFlags = RADIOLIB_SX128X_IRQ_RX_DEFAULT, uint32_t irqMask = RADIOLIB_SX128X_IRQ_RX_DONE, size_t len = 0);
+    int16_t startReceive(uint16_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0);
 
     /*!
       \brief Reads the current IRQ status.
@@ -577,17 +584,39 @@ class SX128x: public PhysicalLayer {
     int16_t readData(uint8_t* data, size_t len) override;
     
     /*!
-      \brief Check whether a specific IRQ bit is set (e.g. RxTimeout, CadDone).
-      \returns Whether requested IRQ is set.
+      \brief Read currently active IRQ flags.
+      \returns IRQ flags.
     */
-    int16_t checkIrq(uint8_t irq) override;
+    uint32_t getIrqFlags() override;
+
+    /*!
+      \brief Set interrupt on DIO1 to be sent on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t setIrqFlags(uint32_t irq) override;
+
+    /*!
+      \brief Clear interrupt on a specific IRQ bit (e.g. RxTimeout, CadDone).
+      \param irq Module-specific IRQ flags.
+      \returns \ref status_codes
+    */
+    int16_t clearIrqFlags(uint32_t irq) override;
 
     /*!
       \brief Interrupt-driven channel activity detection method. DIO1 will be activated
-      when LoRa preamble is detected, or upon timeout. Defaults to CAD parameter values recommended by AN1200.48.
+      when LoRa preamble is detected, or upon timeout.
       \returns \ref status_codes
     */
     int16_t startChannelScan() override;
+
+    /*!
+      \brief Interrupt-driven channel activity detection method. DIO1 will be activated
+      when LoRa preamble is detected, or upon timeout.
+      \param config CAD configuration structure.
+      \returns \ref status_codes
+    */
+    int16_t startChannelScan(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Read the channel scan result
@@ -837,7 +866,7 @@ class SX128x: public PhysicalLayer {
     int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
     int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);
-    int16_t setCad();
+    int16_t setCad(uint8_t symbolNum);
     uint8_t getPacketType();
     int16_t setRfFrequency(uint32_t frf);
     int16_t setTxParams(uint8_t pwr, uint8_t rampTime = RADIOLIB_SX128X_PA_RAMP_10_US);
