@@ -918,18 +918,18 @@ class LoRaWANNode {
     RadioLibTime_t tDownlink = 0; // time at end of downlink reception
 
     // enable/disable CSMA for LoRaWAN
-    bool csmaEnabled;
+    bool csmaEnabled = false;
 
     // maximum number of channel hops during CSMA
-    uint8_t maxChanges;
+    uint8_t maxChanges = RADIOLIB_LORAWAN_MAX_CHANGES_DEFAULT;
 
     // number of backoff slots to be checked after DIFS phase.
     // A random BO avoids collisions in the case where two or more nodes start the CSMA
     // process at the same time. 
-    uint8_t backoffMax;
+    uint8_t backoffMax = RADIOLIB_LORAWAN_BACKOFF_MAX_DEFAULT;
     
     // number of CADs to estimate a clear CH
-    uint8_t difsSlots;
+    uint8_t difsSlots = RADIOLIB_LORAWAN_DIFS_DEFAULT;
 
     // available channel frequencies from list passed during OTA activation
     LoRaWANChannel_t channelPlan[2][RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS];
@@ -990,7 +990,7 @@ class LoRaWANNode {
     void adrBackoff();
 
     // create an encrypted uplink buffer, composing metadata, user data and MAC data
-    void composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t lenOut, uint8_t fPort, bool isConfirmed);
+    void composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed);
 
     // generate and set the MIC of an uplink buffer (depends on selected channels)
     void micUplink(uint8_t* inOut, uint8_t lenInOut);
