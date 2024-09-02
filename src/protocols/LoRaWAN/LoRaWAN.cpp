@@ -68,7 +68,7 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
   Module* mod = this->phyLayer->getMod();
   
   // if after (at) ADR_ACK_LIMIT frames no RekeyConf was received, revert to Join state
-  if(this->fCntUp == (1 << this->adrLimitExp)) {
+  if(this->fCntUp == (1UL << this->adrLimitExp)) {
     state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_REKEY, this->fOptsUp, this->fOptsUpLen, NULL, RADIOLIB_LORAWAN_UPLINK);
     if(state == RADIOLIB_ERR_NONE) {
       this->clearSession();
@@ -1585,7 +1585,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     this->nFCntDown = fCnt32;
   }
 
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %d) encoded:", 
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:", 
                                   isAppDownlink ? "A" : "N", isAppDownlink ? this->aFCntDown : this->nFCntDown);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
