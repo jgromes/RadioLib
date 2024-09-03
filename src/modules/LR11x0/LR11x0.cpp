@@ -464,7 +464,6 @@ int16_t LR11x0::startReceive() {
 }
 
 int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
-  (void)irqMask;
   (void)len;
   
   // check active modem
@@ -479,11 +478,11 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   }
 
   // set DIO mapping
-  uint32_t irq = irqFlags;
+  uint32_t irq = irqMask;
   if(timeout != RADIOLIB_LR11X0_RX_TIMEOUT_INF) {
     irq |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-  state = setDioIrqParams(getIrqMapped(irq));
+  state = setDioIrqParams(getIrqMapped(irqFlags & irq));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
