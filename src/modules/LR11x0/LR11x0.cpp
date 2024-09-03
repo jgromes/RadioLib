@@ -460,7 +460,7 @@ int16_t LR11x0::finishTransmit() {
 }
 
 int16_t LR11x0::startReceive() {
-  return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_LR11X0_IRQ_RX_DONE, 0, 0));
+  return(this->startReceive(RADIOLIB_LR11X0_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
 }
 
 int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMask, size_t len) {
