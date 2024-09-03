@@ -1061,13 +1061,17 @@ int16_t LoRaWANNode::isValidUplink(uint8_t* len, uint8_t fPort) {
   }
 
   // check maximum payload len as defined in band
-  if(*len > this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr]) {
+  uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
+  if(this->TS011) {
+    maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
+  }
+  if(*len > maxPayLen) {
     // normally, throw an error if the packet is too long
     if(this->TS009 == false) {
       return(RADIOLIB_ERR_PACKET_TOO_LONG);
     }
     // if testing with TS009 Specification Verification Protocol, don't throw error but clip the message
-    *len = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
+    *len = maxPayLen;
   }
 
   return(RADIOLIB_ERR_NONE);
@@ -1380,7 +1384,11 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
   }
 
   // get the maximum allowed Time-on-Air of a packet given the current datarate
-  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr]);
+  uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
+  if(this->TS011) {
+    maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
+  }
+  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(maxPayLen);
   bool downlinkComplete = true;
   
   // wait for the DIO to fire indicating a downlink is received
@@ -1586,7 +1594,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   }
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:", 
-                                  isAppDownlink ? "A" : "N", isAppDownlink ? this->aFCntDown : this->nFCntDown);
+                                  isAppDownlink ? "A" : "N", 
+                                  isAppDownlink ? (uint32_t)this->aFCntDown : (uint32_t)this->nFCntDown);
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
   // if this is a confirmed frame, save the downlink number (only app frames can be confirmed)
@@ -3159,6 +3168,9 @@ uint8_t LoRaWANNode::maxUplinkLen() {
 
   uint8_t minPayLen = 0;
   uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
+  if(this->TS011) {
+    maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
+  }
   maxPayLen -= 13;                // FHDR is 13 bytes
   maxPayLen -= this->fOptsUpLen;  // uplink MAC commands
 
