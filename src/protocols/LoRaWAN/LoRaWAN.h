@@ -420,7 +420,7 @@ struct LoRaWANBand_t {
   LoRaWANChannel_t rx2;
 
   /*! \brief Relay channels for WoR uplink */
-  LoRaWANChannel_t txWor[2];
+  LoRaWANChannel_t txWoR[2];
 
   /*! \brief Relay channels for ACK downlink */
   LoRaWANChannel_t txAck[2];
@@ -612,7 +612,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \returns \ref status_codes
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(String& strUp, uint8_t fPort, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
     #endif
@@ -628,7 +628,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \returns \ref status_codes
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(const char* strUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
@@ -644,7 +644,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \returns \ref status_codes
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
@@ -658,7 +658,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \param eventDown Pointer to a structure to store extra information about the downlink event
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \returns \ref status_codes
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
@@ -838,7 +838,7 @@ class LoRaWANNode {
     RadioLibTime_t scanGuard = 10;
 
 #if !RADIOLIB_GODMODE
-  private:
+  protected:
 #endif
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;

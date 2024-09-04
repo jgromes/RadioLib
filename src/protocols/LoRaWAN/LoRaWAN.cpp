@@ -142,29 +142,33 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
       RADIOLIB_ASSERT(state);
     }
 
-    // handle Rx1 and Rx2 windows - returns RADIOLIB_ERR_NONE if a downlink is received
+    // handle Rx1 and Rx2 windows - returns window > 0 if a downlink is received
     state = receiveCommon(RADIOLIB_LORAWAN_DOWNLINK, this->channels, this->rxDelays, 2, this->rxDelayStart);
 
-    // RETRANSMIT_TIMEOUT is 2s +/- 1s
+    // RETRANSMIT_TIMEOUT is 2s +/- 1s (RP v1.0.4)
     // must be present after any confirmed frame, so we force this here
     if(isConfirmed) {
       mod->hal->delay(this->phyLayer->random(1000, 3000));
     }
 
-    // if a downlink was received, stop retransmission
-    if(state == RADIOLIB_ERR_NONE) {
+    // if an error occured or a downlink was received, stop retransmission
+    if(state != RADIOLIB_ERR_NONE) {
       break;
     }
-    // if a hardware error occurred, return
-    if(state != RADIOLIB_LORAWAN_NO_DOWNLINK) {
-      #if !RADIOLIB_STATIC_ONLY
-      delete[] uplinkMsg;
-      #endif
-      RADIOLIB_ASSERT(state);
-    }
+    // if no downlink was received, go on
 
-  } // end of transmission
-  
+  } // end of transmission & reception
+
+  // note: if an error occured, it may still be the case that a transmission occured
+  // therefore, we act as if a transmission occured before throwing the actual error
+  // this feels to be the best way to comply to spec
+
+  // increase frame counter by one for the next uplink
+  this->fCntUp += 1;
+
+  // the downlink confirmation was acknowledged, so clear the counter value
+  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
+
   // pass the uplink info if requested
   if(eventUp) {
     eventUp->dir = RADIOLIB_LORAWAN_UPLINK;
@@ -178,17 +182,21 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
     eventUp->nbTrans = trans;
   }
 
-  // the downlink confirmation was acknowledged, so clear the counter value
-  this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
+  // if a hardware error occurred, return
+  if(state < RADIOLIB_ERR_NONE) {
+    #if !RADIOLIB_STATIC_ONLY
+    delete[] uplinkMsg;
+    #endif
+    RADIOLIB_ASSERT(state);
+  }
 
-  // increase frame counter by one for the next uplink
-  this->fCntUp += 1;
+  uint8_t rxWindow = state;
 
   // if no downlink was received, remove only non-persistent MAC commands
   // the other commands should be re-sent until downlink is received
-  if(state == RADIOLIB_LORAWAN_NO_DOWNLINK) {
+  if(rxWindow == 0) {
     LoRaWANNode::clearMacCommands(this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
-    return(state);
+    return(rxWindow);
   }
 
   // a downlink was received, so we can clear the whole MAC uplink buffer
@@ -196,7 +204,10 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
   this->fOptsUpLen = 0;
 
   state = this->parseDownlink(dataDown, lenDown, eventDown);
-  return(state);
+  
+  // return an error code, if any, otherwise return Rx window (which is > 0)
+  RADIOLIB_ASSERT(state);
+  return(rxWindow);
 }
 
 void LoRaWANNode::clearNonces() {
@@ -1321,22 +1332,20 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
     return(RADIOLIB_ERR_NO_RX_WINDOW);
   }
 
-  // create the masks that are required for receiving downlinks
-  RadioLibIrqFlags_t irqFlags = (1UL << RADIOLIB_IRQ_RX_DONE) | (1UL << RADIOLIB_IRQ_TIMEOUT);
-  RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
-
+  // setup interrupt
   this->phyLayer->setPacketReceivedAction(LoRaWANNodeOnDownlinkAction);
 
   RadioLibTime_t tOpen = 0;
   int16_t timedOut = 0;
 
   // listen during the specified windows
-  for(uint8_t i = 1; i <= numWindows; i++) {
+  uint8_t window = 1;
+  for(; window <= numWindows; window++) {
     downlinkAction = false;
 
     // set the physical layer configuration for downlink
     this->phyLayer->standby();
-    state = this->setPhyProperties(&dlChannels[i], dir, this->txPowerMax - 2*this->txPowerSteps);
+    state = this->setPhyProperties(&dlChannels[window], dir, this->txPowerMax - 2*this->txPowerSteps);
     RADIOLIB_ASSERT(state);
 
     // calculate the Rx timeout
@@ -1344,10 +1353,10 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
     RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
 
     // wait for the start of the Rx window
-    RadioLibTime_t waitLen = tReference + dlDelays[i] - mod->hal->millis();
+    RadioLibTime_t waitLen = tReference + dlDelays[window] - mod->hal->millis();
     // make sure that no underflow occured; if so, clip the delay (although this will likely miss any downlink)
-    if(waitLen > dlDelays[i]) {
-      waitLen = dlDelays[i];
+    if(waitLen > dlDelays[window]) {
+      waitLen = dlDelays[window];
     }
     // the waiting duration is shortened a bit to cover any possible timing errors
     if(waitLen > this->scanGuard) {
@@ -1356,14 +1365,15 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
     mod->hal->delay(waitLen);
 
     // open Rx window by starting receive with specified timeout
-    state = this->phyLayer->startReceive(timeoutMod, irqFlags, irqMask, 0);
+    // TODO remove default arguments
+    state = this->phyLayer->startReceive(timeoutMod, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0);
     tOpen = mod->hal->millis();
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", i, (int)(timeoutHost / 1000 + scanGuard / 2));
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + scanGuard / 2));
     
     // wait for the timeout to complete (and a small additional delay)
     mod->hal->delay(timeoutHost / 1000 + this->scanGuard / 2);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", i);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", window);
 
     // if the IRQ bit for Rx Timeout is not set, something is received, so stop the windows
     timedOut = this->phyLayer->checkIrq(RADIOLIB_IRQ_TIMEOUT);
@@ -1380,7 +1390,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
   // if we got here due to a timeout, stop ongoing activities
   if(timedOut) {
     this->phyLayer->standby();
-    return(RADIOLIB_LORAWAN_NO_DOWNLINK);
+    return(RADIOLIB_ERR_NONE);
   }
 
   // get the maximum allowed Time-on-Air of a packet given the current datarate
@@ -1411,8 +1421,13 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, Ra
   this->phyLayer->clearPacketReceivedAction();
   this->phyLayer->standby();
 
+  // if all windows passed without receiving anything, return so
   if(!downlinkComplete) {
-    state = RADIOLIB_LORAWAN_NO_DOWNLINK;
+    state = RADIOLIB_ERR_NONE;
+
+  // if we received something during a window, return the window number
+  } else {
+    state = window;
   }
 
   return(state);
@@ -1595,7 +1610,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
 
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Downlink (%sFCntDown = %lu) encoded:", 
                                   isAppDownlink ? "A" : "N", 
-                                  isAppDownlink ? (uint32_t)this->aFCntDown : (uint32_t)this->nFCntDown);
+                                  (unsigned long)(isAppDownlink ? this->aFCntDown : this->nFCntDown));
   RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(downlinkMsg, RADIOLIB_AES128_BLOCK_SIZE + downlinkMsgLen);
 
   // if this is a confirmed frame, save the downlink number (only app frames can be confirmed)
