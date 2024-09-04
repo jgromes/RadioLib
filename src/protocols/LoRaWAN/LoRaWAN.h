@@ -1012,25 +1012,25 @@ class LoRaWANNode {
 
     void postprocessMacLinkAdr(uint8_t* ack, uint8_t cLen);
 
-    static int16_t getMacCommand(uint8_t cid, LoRaWANMacCommand_t* cmd);
+    int16_t getMacCommand(uint8_t cid, LoRaWANMacCommand_t* cmd);
 
     // possible override for additional MAC commands that are not in the base specification
-    static int16_t derivedMacFinder(uint8_t cid, LoRaWANMacCommand_t* cmd);
+    virtual int16_t derivedMacFinder(uint8_t cid, LoRaWANMacCommand_t* cmd);
 
     //
-    static int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false);
+    int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false);
 
-    static bool isPersistentMacCommand(uint8_t cid, uint8_t dir);
+    bool isPersistentMacCommand(uint8_t cid, uint8_t dir);
 
     // push MAC command to queue, done by copy
-    static int16_t pushMacCommand(uint8_t cid, uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir);
+    int16_t pushMacCommand(uint8_t cid, uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir);
 
-    static int16_t getMacPayload(uint8_t cid, uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t dir);
+    int16_t getMacPayload(uint8_t cid, uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t dir);
 
     // delete a specific MAC command from queue, indicated by the command ID
-    static int16_t deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
+    int16_t deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
 
-    static void clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
+    void clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
 
     // configure the common physical layer properties (frequency, sync word etc.)
     int16_t setPhyProperties(LoRaWANChannel_t* chnl, uint8_t dir, int8_t pwr, size_t pre = 0);
@@ -1060,7 +1060,7 @@ class LoRaWANNode {
     void setAvailableChannels(uint16_t mask);
 
     // select a set of random TX/RX channels for up- and downlink
-    virtual int16_t selectChannels();
+    int16_t selectChannels();
 
     bool applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45);
 

@@ -359,7 +359,7 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_DUTY_CYCLE;
-  LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   uint8_t maxDCyclePower;
   switch(this->band->dutyCycle) {
     case(0):
@@ -379,19 +379,19 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0]  = (RADIOLIB_LORAWAN_RX1_DR_OFFSET << 4);
   cOcts[0] |= this->channels[RADIOLIB_LORAWAN_DIR_RX2].dr; // may be set by user, otherwise band's default upon initialization
   LoRaWANNode::hton<uint32_t>(&cOcts[1], this->channels[RADIOLIB_LORAWAN_DIR_RX2].freq, 3);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0]  = (RADIOLIB_LORAWAN_RECEIVE_DELAY_1_MS / 1000);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0]  = (this->band->dwellTimeDn > 0 ? 1 : 0) << 5;
   cOcts[0] |= (this->band->dwellTimeUp > 0 ? 1 : 0) << 4;
   uint8_t maxEIRPRaw;
@@ -419,13 +419,13 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_ADR_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0]  = (RADIOLIB_LORAWAN_ADR_ACK_LIMIT_EXP << 4);
   cOcts[0] |= RADIOLIB_LORAWAN_ADR_ACK_DELAY_EXP;
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0]  = (RADIOLIB_LORAWAN_REJOIN_MAX_TIME_N << 4);
   cOcts[0] |= RADIOLIB_LORAWAN_REJOIN_MAX_COUNT_N;
   (void)execMacCommand(cid, cOcts, cLen);
@@ -520,7 +520,7 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
     uint8_t *startChannelsUp = &this->bufferSession[RADIOLIB_LORAWAN_SESSION_UL_CHANNELS];
 
     cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
-    (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+    (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       memcpy(cOcts, startChannelsUp + (i * cLen), cLen);
       if(memcmp(cOcts, bufferZeroes, cLen) != 0) { // only execute if it is not all zeroes
@@ -531,7 +531,7 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
     uint8_t *startChannelsDown = &this->bufferSession[RADIOLIB_LORAWAN_SESSION_DL_CHANNELS];
 
     cid = RADIOLIB_LORAWAN_MAC_DL_CHANNEL;
-    (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+    (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       memcpy(cOcts, startChannelsDown + (i * cLen), cLen);
       if(memcmp(cOcts, bufferZeroes, cLen) != 0) { // only execute if it is not all zeroes
@@ -546,32 +546,32 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_DUTY_CYCLE;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_DUTY_CYCLE], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_RX_PARAM_SETUP], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_RX_TIMING_SETUP], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_TX_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_ADR_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_ADR_PARAM_SETUP], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_REJOIN_PARAM_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   memcpy(cOcts, &this->bufferSession[RADIOLIB_LORAWAN_SESSION_REJOIN_PARAM_SETUP], cLen);
   (void)execMacCommand(cid, cOcts, cLen);
 
@@ -761,13 +761,13 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   uint8_t cOcts[5];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_RX_PARAM_SETUP;
   uint8_t cLen = 0;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0] = dlSettings & 0x7F;
   LoRaWANNode::hton<uint32_t>(&cOcts[1], this->channels[RADIOLIB_LORAWAN_DIR_RX2].freq, 3);
   (void)execMacCommand(cid, cOcts, cLen);
 
   cid = RADIOLIB_LORAWAN_MAC_RX_TIMING_SETUP;
-  (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
   cOcts[0] = joinAcceptMsg[RADIOLIB_LORAWAN_JOIN_ACCEPT_RX_DELAY_POS];
   (void)execMacCommand(cid, cOcts, cLen);
 
@@ -823,7 +823,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   if(this->rev == 1) {
     // enqueue the RekeyInd MAC command to be sent in the next uplink
     cid = RADIOLIB_LORAWAN_MAC_REKEY;
-    LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_UPLINK);
+    this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_UPLINK);
     cOcts[0] = this->rev;
     state = LoRaWANNode::pushMacCommand(cid, cOcts, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
     RADIOLIB_ASSERT(state);
@@ -935,7 +935,9 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
 
   // handle Rx1 and Rx2 windows - returns RADIOLIB_ERR_NONE if a downlink is received
   state = receiveCommon(RADIOLIB_LORAWAN_DOWNLINK, this->channels, this->rxDelays, 2, this->rxDelayStart);
-  RADIOLIB_ASSERT(state);
+  if(state < RADIOLIB_ERR_NONE) {
+    RADIOLIB_ASSERT(state);
+  }
 
   // process JoinAccept message
   state = this->processJoinAccept(joinEvent);
@@ -1012,7 +1014,7 @@ void LoRaWANNode::processCFList(uint8_t* cfList) {
         break;
       }
       cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
-      (void)LoRaWANNode::getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+      (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
       cOcts[0] = num;
       memcpy(&cOcts[1], &cfList[i*3], 3);
       (void)execMacCommand(cid, cOcts, cLen);
@@ -1703,10 +1705,10 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
 
   while(procLen < fOptsLen) {
     cid = *mPtr;      // MAC id is the first byte
-    state = LoRaWANNode::getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true);
+    state = this->getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true);
     RADIOLIB_ASSERT(state);
     uint8_t fLenRe = 0;
-    state = LoRaWANNode::getMacLen(cid, &fLenRe, RADIOLIB_LORAWAN_UPLINK, true);
+    state = this->getMacLen(cid, &fLenRe, RADIOLIB_LORAWAN_UPLINK, true);
     RADIOLIB_ASSERT(state);
 
     if(procLen + fLen > fOptsLen) {
@@ -2343,7 +2345,7 @@ int16_t LoRaWANNode::getMacCommand(uint8_t cid, LoRaWANMacCommand_t* cmd) {
     }
   }
   // didn't find this CID, check if derived class can help (if any)
-  int16_t state = LoRaWANNode::derivedMacFinder(cid, cmd);
+  int16_t state = this->derivedMacFinder(cid, cmd);
   return(state);
 }
 
@@ -2355,7 +2357,7 @@ int16_t LoRaWANNode::derivedMacFinder(uint8_t cid, LoRaWANMacCommand_t* cmd) {
 
 int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
   LoRaWANMacCommand_t cmd = RADIOLIB_LORAWAN_MAC_COMMAND_NONE;
-  int16_t state = LoRaWANNode::getMacCommand(cid, &cmd);
+  int16_t state = this->getMacCommand(cid, &cmd);
   RADIOLIB_ASSERT(state);
   if(!cmd.user) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("You are not allowed to request this MAC command");
@@ -2369,7 +2371,7 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
   }
 
   // if this MAC command is already in the queue, silently stop
-  if(LoRaWANNode::getMacPayload(cid, this->fOptsUp, this->fOptsUpLen, NULL, RADIOLIB_LORAWAN_UPLINK) == RADIOLIB_ERR_NONE) {
+  if(this->getMacPayload(cid, this->fOptsUp, this->fOptsUpLen, NULL, RADIOLIB_LORAWAN_UPLINK) == RADIOLIB_ERR_NONE) {
     return(RADIOLIB_ERR_NONE);
   }
 
@@ -2379,9 +2381,9 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
 
 int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
   uint8_t len = 0;
-  (void)LoRaWANNode::getMacLen(RADIOLIB_LORAWAN_MAC_LINK_CHECK, &len, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(RADIOLIB_LORAWAN_MAC_LINK_CHECK, &len, RADIOLIB_LORAWAN_DOWNLINK);
   uint8_t payload[len] = { 0 };
-  int16_t state = LoRaWANNode::getMacPayload(RADIOLIB_LORAWAN_MAC_LINK_CHECK, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
+  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_LINK_CHECK, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
   if(margin) { *margin = payload[0]; }
@@ -2392,9 +2394,9 @@ int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
 
 int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
   uint8_t len = 0;
-  (void)LoRaWANNode::getMacLen(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &len, RADIOLIB_LORAWAN_DOWNLINK);
+  (void)this->getMacLen(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &len, RADIOLIB_LORAWAN_DOWNLINK);
   uint8_t payload[len] = { 0 };
-  int16_t state = LoRaWANNode::getMacPayload(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
+  int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
   if(gpsEpoch) { 
@@ -2411,7 +2413,7 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
 
 int16_t LoRaWANNode::getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive) {
   LoRaWANMacCommand_t cmd = RADIOLIB_LORAWAN_MAC_COMMAND_NONE;
-  int16_t state = LoRaWANNode::getMacCommand(cid, &cmd);
+  int16_t state = this->getMacCommand(cid, &cmd);
   RADIOLIB_ASSERT(state);
   if(dir == RADIOLIB_LORAWAN_UPLINK) {
     *len = cmd.lenUp;
@@ -2427,7 +2429,7 @@ int16_t LoRaWANNode::getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool incl
 bool LoRaWANNode::isPersistentMacCommand(uint8_t cid, uint8_t dir) {
   // if this MAC command doesn't exist, it wouldn't even get into the queue, so don't care about outcome
   LoRaWANMacCommand_t cmd = RADIOLIB_LORAWAN_MAC_COMMAND_NONE;
-  (void)LoRaWANNode::getMacCommand(cid, &cmd);
+  (void)this->getMacCommand(cid, &cmd);
   
   // in the uplink direction, MAC payload should persist per spec
   if(dir == RADIOLIB_LORAWAN_UPLINK) {
@@ -2443,7 +2445,7 @@ bool LoRaWANNode::isPersistentMacCommand(uint8_t cid, uint8_t dir) {
 
 int16_t LoRaWANNode::pushMacCommand(uint8_t cid, uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir) {
   uint8_t fLen = 0;
-  int16_t state = LoRaWANNode::getMacLen(cid, &fLen, dir, true);
+  int16_t state = this->getMacLen(cid, &fLen, dir, true);
   RADIOLIB_ASSERT(state);
 
   // check if we can even append the MAC command into the buffer
@@ -2464,7 +2466,7 @@ int16_t LoRaWANNode::getMacPayload(uint8_t cid, uint8_t* in, uint8_t lenIn, uint
   while(i < lenIn) {
     uint8_t id = in[i];
     uint8_t fLen = 0;
-    int16_t state = LoRaWANNode::getMacLen(id, &fLen, dir, true);
+    int16_t state = this->getMacLen(id, &fLen, dir, true);
     RADIOLIB_ASSERT(state);
     if(lenIn < i + fLen) {
       return(RADIOLIB_ERR_INVALID_CID);
@@ -2491,7 +2493,7 @@ int16_t LoRaWANNode::deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenI
   while(i < *lenInOut) {
     uint8_t id = inOut[i];
     uint8_t fLen = 0;
-    int16_t state = LoRaWANNode::getMacLen(id, &fLen, dir);
+    int16_t state = this->getMacLen(id, &fLen, dir);
     RADIOLIB_ASSERT(state);
     if(*lenInOut < i + fLen) {
       return(RADIOLIB_ERR_INVALID_CID);
@@ -2522,10 +2524,10 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
   while(i < *lenInOut) {
     uint8_t id = inOut[i];
     uint8_t fLen = 1; // if there is an incorrect MAC command, we should at least move forward by one byte
-    (void)LoRaWANNode::getMacLen(id, &fLen, dir, true);
+    (void)this->getMacLen(id, &fLen, dir, true);
 
     // only clear MAC command if it should not persist until a downlink is received
-    if(!LoRaWANNode::isPersistentMacCommand(id, dir)) {
+    if(!this->isPersistentMacCommand(id, dir)) {
       // remove it by moving the rest of the payload forward
       memmove(&inOut[i], &inOut[i + fLen], *lenInOut - i - fLen);
 
