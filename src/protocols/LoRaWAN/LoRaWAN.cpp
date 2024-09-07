@@ -215,6 +215,8 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
 }
 
 void LoRaWANNode::clearNonces() {
+  // not a real version number, but helps debugging
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("This line was updated on 2024-09-08 at 00:01+2");
   // clear & set all the device credentials
   memset(this->bufferNonces, 0, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
   this->keyCheckSum = 0;
@@ -1194,23 +1196,9 @@ void LoRaWANNode::composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_
   out[RADIOLIB_LORAWAN_FHDR_FPORT_POS(this->fOptsUpLen)] = fPort;
 
   // select encryption key based on the target fPort
-  uint8_t* encKey;
-  switch(fPort) {
-    case RADIOLIB_LORAWAN_FPORT_MAC_COMMAND:
-      encKey = this->nwkSEncKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN ... RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX:
-      encKey = this->appSKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_TS009:
-      encKey = this->appSKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_TS011:
-      encKey = this->nwkSEncKey;
-      break;
-    default:
-      encKey = this->appSKey;
-      break;
+  uint8_t* encKey = this->appSKey;
+  if((fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) || (fPort == RADIOLIB_LORAWAN_FPORT_TS011)) {
+    encKey = this->nwkSEncKey;
   }
 
   // encrypt the frame payload
@@ -1648,23 +1636,9 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   }
 
   // figure out which key to use to decrypt the payload
-  uint8_t* encKey;
-  switch(fPort) {
-    case RADIOLIB_LORAWAN_FPORT_MAC_COMMAND:
-      encKey = this->nwkSEncKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_PAYLOAD_MIN ... RADIOLIB_LORAWAN_FPORT_PAYLOAD_MAX:
-      encKey = this->appSKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_TS009:
-      encKey = this->appSKey;
-      break;
-    case RADIOLIB_LORAWAN_FPORT_TS011:
-      encKey = this->nwkSEncKey;
-      break;
-    default:
-      encKey = this->appSKey;
-      break;
+  uint8_t* encKey = this->appSKey;
+    if((fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) || (fPort == RADIOLIB_LORAWAN_FPORT_TS011)) {
+    encKey = this->nwkSEncKey;
   }
 
   // decrypt the frame payload
@@ -3112,6 +3086,7 @@ bool LoRaWANNode::applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45)
   return(true);
 }
 
+#if RADIOLIB_DEBUG_PROTOCOL
 void LoRaWANNode::printChannels() {
   for (int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
     if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
@@ -3131,6 +3106,7 @@ void LoRaWANNode::printChannels() {
     }
   }
 }
+#endif
 
 uint32_t LoRaWANNode::generateMIC(uint8_t* msg, size_t len, uint8_t* key) {
   if((msg == NULL) || (len == 0)) {

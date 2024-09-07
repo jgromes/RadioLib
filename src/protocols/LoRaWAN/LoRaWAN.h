@@ -1057,6 +1057,7 @@ class LoRaWANNode {
     // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
     bool cadChannelClear();
 
+    // get or create a complete 80-bit channel mask for current configuration
     void getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGrp45);
 
     // setup uplink/downlink channel data rates and frequencies
@@ -1080,8 +1081,10 @@ class LoRaWANNode {
 
     bool applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45);
 
+#if RADIOLIB_DEBUG_PROTOCOL
     // print the available channels through debug
     void printChannels();
+#endif
 
     // method to generate message integrity code
     uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
@@ -1107,8 +1110,7 @@ class LoRaWANNode {
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
 
-    friend class LoRaWANRelay;
-    friend class LoRaWANRelayedNode;
+    friend class LoRaWANNodeR;
 };
 
 #endif
