@@ -1996,7 +1996,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         rx1DrOsAck = 1;
       }
       if(this->band->dataRates[macRx2Dr] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-        rx2DrAck = 1;
+        if(macRx2Dr >= this->band->rx2.drMin && macRx2Dr <= this->band->rx2.drMax) {
+          rx2DrAck = 1;
+        }
       }
       if(this->phyLayer->setFrequency(macRx2Freq / 10000.0) == RADIOLIB_ERR_NONE) {
         rx2FreqAck = 1;
