@@ -297,8 +297,9 @@ enum LoRaWANSchemeSession_t {
   RADIOLIB_LORAWAN_SESSION_LAST_TIME          = RADIOLIB_LORAWAN_SESSION_PERIODICITY + 1, 	      // 4 bytes
   RADIOLIB_LORAWAN_SESSION_UL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_LAST_TIME + 4, 	        // 16*5 bytes
   RADIOLIB_LORAWAN_SESSION_DL_CHANNELS        = RADIOLIB_LORAWAN_SESSION_UL_CHANNELS + RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS*5, // 16*4 bytes
-  RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_UL       = RADIOLIB_LORAWAN_SESSION_DL_CHANNELS + RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS*4, // 15 bytes
-  RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_UL + RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN,      // 4 bytes
+  RADIOLIB_LORAWAN_SESSION_MAC_QUEUE          = RADIOLIB_LORAWAN_SESSION_DL_CHANNELS + RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS*4, // 15 bytes
+  RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN      = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE + 1,           // 1 byte
+  RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN        = RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN + RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN,      // 4 bytes
   RADIOLIB_LORAWAN_SESSION_ADR_FCNT           = RADIOLIB_LORAWAN_SESSION_N_FCNT_DOWN + sizeof(uint32_t),      // 4 bytes
   RADIOLIB_LORAWAN_SESSION_LINK_ADR           = RADIOLIB_LORAWAN_SESSION_ADR_FCNT + sizeof(uint32_t),         // 14 bytes
   RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS = RADIOLIB_LORAWAN_SESSION_LINK_ADR + 14,                       // 2 bytes
@@ -568,8 +569,9 @@ class LoRaWANNode {
       \param devEUI 8-byte device identifier.
       \param nwkKey Pointer to the network AES-128 key.
       \param appKey Pointer to the application AES-128 key.
+      \returns \ref status_codes
     */
-    void beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);
+    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -579,8 +581,9 @@ class LoRaWANNode {
       \param nwkSEncKey Pointer to the MAC command network session key [NwkSEncKey] (LoRaWAN 1.1) 
                                     or network session AES-128 key [NwkSKey] (LoRaWAN 1.0).
       \param appSKey Pointer to the application session AES-128 key.
+      \returns \ref status_codes
     */
-    void beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);
+    int16_t beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);
 
     /*!
       \brief Join network by restoring OTAA session or performing over-the-air activation. By this procedure,
@@ -621,6 +624,19 @@ class LoRaWANNode {
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
       \param strUp C-string that will be transmitted.
       \param fPort Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
+    */
+    virtual int16_t sendReceive(const char* strUp, uint8_t fPort, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+
+    /*!
+      \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
+      \param strUp C-string that will be transmitted.
+      \param fPort Port number to send the message to.
       \param dataDown Buffer to save received data into.
       \param lenDown Pointer to variable that will be used to save the number of received bytes.
       \param isConfirmed Whether to send a confirmed uplink or not.
@@ -631,6 +647,20 @@ class LoRaWANNode {
       \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(const char* strUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+
+    /*!
+      \brief Send a message to the server and wait for a downlink but don't bother the user with downlink contents
+      \param dataUp Data to send.
+      \param lenUp Length of the data.
+      \param fPort Port number to send the message to.
+      \param isConfirmed Whether to send a confirmed uplink or not.
+      \param eventUp Pointer to a structure to store extra information about the uplink event
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \param eventDown Pointer to a structure to store extra information about the downlink event
+      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
+      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
+    */
+    virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
@@ -647,20 +677,6 @@ class LoRaWANNode {
       \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
     virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
-
-    /*!
-      \brief Send a message to the server and wait for a downlink but don't bother the user with downlink contents
-      \param dataUp Data to send.
-      \param lenUp Length of the data.
-      \param fPort Port number to send the message to.
-      \param isConfirmed Whether to send a confirmed uplink or not.
-      \param eventUp Pointer to a structure to store extra information about the uplink event
-      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \param eventDown Pointer to a structure to store extra information about the downlink event
-      (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
-      \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
-    */
-    virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Add a MAC command to the uplink queue.
@@ -996,7 +1012,7 @@ class LoRaWANNode {
     int16_t transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len);
 
     // wait for, open and listen during receive windows; only performs listening
-    int16_t receiveCommon(uint8_t dir, LoRaWANChannel_t* dlChannels, RadioLibTime_t* dlDelays, uint8_t numWindows, RadioLibTime_t tReference);
+    int16_t receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChannels, const RadioLibTime_t* dlDelays, uint8_t numWindows, RadioLibTime_t tReference);
 
     // extract downlink payload and process MAC commands
     int16_t parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* event = NULL);
@@ -1033,7 +1049,7 @@ class LoRaWANNode {
     void clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
 
     // configure the common physical layer properties (frequency, sync word etc.)
-    int16_t setPhyProperties(LoRaWANChannel_t* chnl, uint8_t dir, int8_t pwr, size_t pre = 0);
+    int16_t setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir, int8_t pwr, size_t pre = 0);
 
     // Performs CSMA as per LoRa Alliance Technical Recommendation 13 (TR-013).
     bool csmaChannelClear(uint8_t difs, uint8_t numBackoff);
