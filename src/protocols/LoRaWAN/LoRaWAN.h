@@ -1097,7 +1097,7 @@ class LoRaWANNode {
     void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
 
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
-    static uint16_t checkSum16(uint8_t *key, uint16_t keyLen);
+    static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);
 
     // network-to-host conversion method - takes data from network packet and converts it to the host endians
     template<typename T>

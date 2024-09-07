@@ -3313,7 +3313,7 @@ int16_t LoRaWANNode::checkBufferCommon(uint8_t *buffer, uint16_t size) {
   return(RADIOLIB_ERR_NONE);
 }
 
-uint16_t LoRaWANNode::checkSum16(uint8_t *key, uint16_t keyLen) {
+uint16_t LoRaWANNode::checkSum16(const uint8_t *key, uint16_t keyLen) {
   uint16_t checkSum = 0;
   for(uint16_t i = 0; i < keyLen; i += 2) {
     uint16_t word = (key[i] << 8);
