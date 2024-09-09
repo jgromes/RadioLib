@@ -504,9 +504,9 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
   
   // restore the complete MAC state
 
-  uint8_t cOcts[14]; // TODO explain
-  uint8_t cid;
-  uint8_t cLen;
+  uint8_t cOcts[14] = { 0 }; // TODO explain
+  uint8_t cid = 0;
+  uint8_t cLen = 0;
 
   // setup the default channels
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
@@ -995,9 +995,9 @@ int16_t LoRaWANNode::activateABP(uint8_t initialDr) {
 void LoRaWANNode::processCFList(uint8_t* cfList) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Processing CFList");
   
-  uint8_t cOcts[14]; // TODO explain
-  uint8_t cid;
-  uint8_t cLen;
+  uint8_t cOcts[14] = { 0 }; // TODO explain
+  uint8_t cid = 0;
+  uint8_t cLen = 0;
 
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     // retrieve number of existing (default) channels
@@ -1659,8 +1659,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   memset(this->fOptsDown, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
 
   // process FOpts (if there are any)
-  uint8_t cid;
-  uint8_t fLen;
+  uint8_t cid = 0;
+  uint8_t fLen = 1;
   uint8_t* mPtr = fOpts;
   uint8_t procLen = 0;
 
@@ -1929,7 +1929,9 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // but first re-set the Dr/Tx/NbTrans field to make sure they're not set to 0xF
       optIn[0]  = (this->channels[RADIOLIB_LORAWAN_UPLINK].dr) << 4;
       optIn[0] |= this->txPowerSteps;
-      optIn[13] = this->nbTrans;
+      if(lenIn > 1) {
+        optIn[13] = this->nbTrans;
+      }
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR], optIn, lenIn);
       
       return(true);
@@ -2568,12 +2570,12 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower) {
   // e.g. on EU868, max is 16; if 13 is selected then we set to 12
   uint8_t numSteps = (this->txPowerMax - txPower + 1) / (-RADIOLIB_LORAWAN_POWER_STEP_SIZE_DBM);
 
-  uint8_t cOcts[5];
+  uint8_t cOcts[1];
   uint8_t cAck[1];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  uint8_t cLen = 1;                     // only apply Dr/Tx field
-  cOcts[0]  = 0xF0;                      // keep datarate the same
-  cOcts[0] |= numSteps;                  // set requested Tx Power
+  uint8_t cLen = 1;                       // only apply Dr/Tx field
+  cOcts[0]  = 0xF0;                       // keep datarate the same
+  cOcts[0] |= numSteps;                   // set requested Tx Power
   (void)execMacCommand(cid, cOcts, cLen, cAck);
 
   // check if ACK is set for Tx Power
