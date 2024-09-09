@@ -379,6 +379,12 @@ struct LoRaWANBand_t {
   /*! \brief Whether the channels are fixed per specification, or dynamically allocated through the network (plus defaults) */
   uint8_t bandType;
 
+  /*! \brief Minimum allowed frequency (coded in 100 Hz steps) */
+  uint32_t freqMin;
+
+  /*! \brief Maximum allowed frequency (coded in 100 Hz steps) */
+  uint32_t freqMax;
+
   /*! \brief Array of allowed maximum payload lengths for each data rate (global maximum) */
   uint8_t payloadLenMax[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 
@@ -859,8 +865,6 @@ class LoRaWANNode {
     PhysicalLayer* phyLayer = NULL;
     const LoRaWANBand_t* band = NULL;
 
-    static int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);
-
     // a buffer that holds all LW base parameters that should persist at all times!
     uint8_t bufferNonces[RADIOLIB_LORAWAN_NONCES_BUF_SIZE] = { 0 };
 
@@ -997,6 +1001,7 @@ class LoRaWANNode {
     // a join-accept can piggy-back a set of channels or channel masks
     void processCFList(uint8_t* cfList);
 
+    // check whether payload length and fport are allowed
     int16_t isValidUplink(uint8_t* len, uint8_t fPort);
     
     // perform ADR backoff
@@ -1009,7 +1014,7 @@ class LoRaWANNode {
     void micUplink(uint8_t* inOut, uint8_t lenInOut);
 
     // transmit uplink buffer on a specified channel
-    int16_t transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len);
+    int16_t transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans);
 
     // wait for, open and listen during receive windows; only performs listening
     int16_t receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChannels, const RadioLibTime_t* dlDelays, uint8_t numWindows, RadioLibTime_t tReference);
@@ -1024,28 +1029,37 @@ class LoRaWANNode {
     // possible override for additional MAC commands that are not in the base specification
     virtual bool derivedMacHandler(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uint8_t* optOut);
 
+    // pre-process a (set of) LinkAdrReq commands into one super-channel-mask + Tx/Dr/NbTrans fields
     void preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAdrOpt);
 
+    // post-process a (set of) LinkAdrAns commands depending on LoRaWAN version
     void postprocessMacLinkAdr(uint8_t* ack, uint8_t cLen);
 
+    // get the properties of a MAC command given a certain command ID
     int16_t getMacCommand(uint8_t cid, LoRaWANMacCommand_t* cmd);
 
     // possible override for additional MAC commands that are not in the base specification
     virtual int16_t derivedMacFinder(uint8_t cid, LoRaWANMacCommand_t* cmd);
 
-    //
+    // get the length of a certain MAC command in a specific direction (up/down)
+    // if inclusive is true, add one for the CID byte
     int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false);
 
+    // find out of a MAC command should persist destruction
+    // in uplink direction, some commands must persist if no downlink is received
+    // in downlink direction, the user-accessible MAC commands remain available for retrieval
     bool isPersistentMacCommand(uint8_t cid, uint8_t dir);
 
     // push MAC command to queue, done by copy
     int16_t pushMacCommand(uint8_t cid, uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir);
 
+    // retrieve the payload of a certain MAC command, if present in the buffer
     int16_t getMacPayload(uint8_t cid, uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t dir);
 
     // delete a specific MAC command from queue, indicated by the command ID
     int16_t deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
 
+    // clear a MAC buffer, possible retaining persistent MAC commands
     void clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
 
     // configure the common physical layer properties (frequency, sync word etc.)
@@ -1079,6 +1093,7 @@ class LoRaWANNode {
     // select a set of random TX/RX channels for up- and downlink
     int16_t selectChannels();
 
+    // apply a 96-bit channel mask
     bool applyChannelMask(uint64_t chMaskGrp0123, uint32_t chMaskGrp45);
 
 #if RADIOLIB_DEBUG_PROTOCOL
@@ -1102,6 +1117,9 @@ class LoRaWANNode {
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
     static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);
 
+    // check the integrity of a buffer using a 16-bit checksum located in the last two bytes of the buffer
+    static int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);
+
     // network-to-host conversion method - takes data from network packet and converts it to the host endians
     template<typename T>
     static T ntoh(uint8_t* buff, size_t size = 0);
@@ -1109,8 +1127,6 @@ class LoRaWANNode {
     // host-to-network conversion method - takes data from host variable and and converts it to network packet endians
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
-
-    friend class LoRaWANNodeR;
 };
 
 #endif

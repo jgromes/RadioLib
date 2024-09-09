@@ -564,9 +564,9 @@
 #define RADIOLIB_ERR_CHECKSUM_MISMATCH                          (-1115)
 
 /*!
-  \brief No downlink was received - most likely none was sent from the server.
+  \brief No JoinAccept was received - check your keys, or otherwise likely a range issue!
 */
-#define RADIOLIB_LORAWAN_NO_DOWNLINK                            (-1116)
+#define RADIOLIB_LORAWAN_NO_JOIN_ACCEPT                         (-1116)
 
 /*!
   \brief The LoRaWAN session was successfully re-activated.

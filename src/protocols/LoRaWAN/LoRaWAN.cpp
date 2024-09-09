@@ -138,7 +138,8 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
     // send it (without the MIC calculation blocks)
     state = this->transmitUplink(&this->channels[RADIOLIB_LORAWAN_UPLINK],
                                 &uplinkMsg[RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS], 
-                                (uint8_t)(uplinkMsgLen - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS));
+                                (uint8_t)(uplinkMsgLen - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS),
+                                trans > 0);
     if(state != RADIOLIB_ERR_NONE) {
       #if !RADIOLIB_STATIC_ONLY
       delete[] uplinkMsg;
@@ -934,10 +935,12 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
   this->rxDelays[2] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_2_MS;
 
-  // handle Rx1 and Rx2 windows - returns RADIOLIB_ERR_NONE if a downlink is received
+  // handle Rx1 and Rx2 windows - returns window > 0 if a downlink is received
   state = receiveCommon(RADIOLIB_LORAWAN_DOWNLINK, this->channels, this->rxDelays, 2, this->rxDelayStart);
   if(state < RADIOLIB_ERR_NONE) {
     return(state);
+  } else if (state == RADIOLIB_ERR_NONE) {
+    return(RADIOLIB_LORAWAN_NO_JOIN_ACCEPT);
   }
 
   // process JoinAccept message
@@ -1100,53 +1103,39 @@ void LoRaWANNode::adrBackoff() {
   } else {
     this->adrAckReq = false;
   }
+
+  if ((this->fCntUp - this->adrFCnt) < (adrLimit + adrDelay)) {
+    return;
+  }
+
   // if we hit the Limit + Delay, try one of three, in order: 
   // set TxPower to max, set DR to min, enable all default channels
-  if ((this->fCntUp - this->adrFCnt) == (adrLimit + adrDelay)) {
-    uint8_t adrStage = 1;
-    while(adrStage != 0) {
-      switch(adrStage) {
-        case(1): {
-          // if the TxPower field has some offset, remove it and switch to maximum power
-          if(this->txPowerSteps > 0) {
-            // set the maximum power supported by both the module and the band
-            if(this->setTxPower(this->txPowerMax) == RADIOLIB_ERR_NONE) {
-              this->txPowerSteps = 0;
-              adrStage = 0;                         // successfully did some ADR stuff
-            }
-          }
-          if(adrStage == 1) {                       // if nothing succeeded, proceed to stage 2
-            adrStage = 2;
-          }
-        } break;
-        case(2): {
-          // try to decrease the datarate
-          if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > 0) {
-            if(this->setDatarate(this->channels[RADIOLIB_LORAWAN_UPLINK].dr - 1) == RADIOLIB_ERR_NONE) {
-              adrStage = 0;                         // successfully did some ADR stuff
-            }
-          }
-          if(adrStage == 2) {                       // if nothing succeeded, proceed to stage 3
-            adrStage = 3;
-          }
-        } break;
-        case(3): {
-          if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-            this->selectChannelPlanDyn(false);      // revert to default frequencies
-          } else {
-            // go back to default selected subband
-            // hopefully it'll help something, but probably not; at least we tried..
-            this->selectChannelPlanFix();
-          }
-          this->nbTrans = 1;
-          adrStage = 0;                             // nothing else to do, so end the cycle
-        } break;
-      }
-    }
 
-    // we tried something to improve the range, so increase the ADR frame counter by 'ADR delay'
-    this->adrFCnt += adrDelay;
+  // as we try to do something to improve the range, increase the ADR frame counter by 'ADR delay'
+  this->adrFCnt += adrDelay;
+
+  // if the TxPower field has some offset, remove it and switch to maximum power
+  if(this->txPowerSteps > 0) {
+    // set the maximum power supported by both the module and the band
+    if(this->setTxPower(this->txPowerMax) == RADIOLIB_ERR_NONE) {
+      return;
+    }
   }
+
+  // try to decrease the datarate
+  if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > this->channels[RADIOLIB_LORAWAN_UPLINK].drMin) {
+    if(this->setDatarate(this->channels[RADIOLIB_LORAWAN_UPLINK].dr - 1) == RADIOLIB_ERR_NONE) {
+      return;
+    }
+  }
+
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
+    this->selectChannelPlanDyn(false);      // revert to default frequencies
+  } else {
+    this->selectChannelPlanFix();           // go back to default selected subband
+  }
+  this->nbTrans = 1;
+  return;                                   // nothing else to do
 }
 
 void LoRaWANNode::composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed) {
@@ -1240,7 +1229,7 @@ void LoRaWANNode::micUplink(uint8_t* inOut, uint8_t lenInOut) {
   }
 }
 
-int16_t LoRaWANNode::transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len) {
+int16_t LoRaWANNode::transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   Module* mod = this->phyLayer->getMod();
 
@@ -1257,8 +1246,9 @@ int16_t LoRaWANNode::transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t
     this->tUplink = tNow;
   }
 
-  // if adhering to dutyCycle and the time since last uplink + interval has not elapsed, return an error
-  if(this->dutyCycleEnabled) {
+  // if dutycycle is enabled and the time since last uplink + interval has not elapsed, return an error
+  // but: don't check this for retransmissions
+  if(!retrans && this->dutyCycleEnabled) {
     if(this->rxDelayStart + (RadioLibTime_t)dutyCycleInterval(this->dutyCycle, this->lastToA) > this->tUplink) {
       return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
     }
@@ -1828,7 +1818,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t macDrUp = (optIn[0] & 0xF0) >> 4;
       uint8_t macTxSteps = optIn[0] & 0x0F;
       
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkAdrReq: dataRate = %d, txSteps = %d", macDrUp, macTxSteps);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LinkAdrReq: dataRate = %d, txSteps = %d, nbTrans = %d", macDrUp, macTxSteps, lenIn > 1 ? optIn[13] : 0);
 
       uint8_t chMaskAck = 0;
       uint8_t drAck = 0;
@@ -1966,18 +1956,24 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       
       // check the requested configuration
       uint8_t uplinkDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
+      DataRate_t dr;
       if(this->band->rx1DrTable[uplinkDr][macRx1DrOffset] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-        rx1DrOsAck = 1;
-      }
-      if(this->band->dataRates[macRx2Dr] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-        if(macRx2Dr >= this->band->rx2.drMin && macRx2Dr <= this->band->rx2.drMax) {
-          rx2DrAck = 1;
+        if(this->findDataRate(this->band->rx1DrTable[uplinkDr][macRx1DrOffset], &dr) == RADIOLIB_ERR_NONE) {
+          rx1DrOsAck = 1;
         }
       }
-      if(this->phyLayer->setFrequency(macRx2Freq / 10000.0) == RADIOLIB_ERR_NONE) {
-        rx2FreqAck = 1;
+      if(macRx2Dr >= this->band->rx2.drMin && macRx2Dr <= this->band->rx2.drMax) {
+        if(this->band->dataRates[macRx2Dr] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+          if(this->findDataRate(macRx2Dr, &dr) == RADIOLIB_ERR_NONE) {
+            rx2DrAck = 1;
+          }
+        }
       }
-
+      if(macRx2Freq >= this->band->freqMin && macRx2Freq <= this->band->freqMax) {
+        if(this->phyLayer->setFrequency(macRx2Freq / 10000.0) == RADIOLIB_ERR_NONE) {
+          rx2FreqAck = 1;
+        }
+      }
       optOut[0] = (rx1DrOsAck << 2) | (rx2DrAck << 1) | (rx2FreqAck << 0);
 
       // if not fully acknowledged, return now without applying the requested configuration
@@ -2026,10 +2022,11 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         newChAck = 1;
       }
 
-      // check if the frequency is possible
-      if(this->phyLayer->setFrequency((float)macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
-        freqAck = 1;
-
+      // check if the frequency is allowed and possible
+      if(macFreq >= this->band->freqMin && macFreq <= this->band->freqMax) {
+        if(this->phyLayer->setFrequency((float)macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
+          freqAck = 1;
+        }
       // otherwise, if frequency is 0, disable the channel which is also a valid option
       } else if(macFreq == 0) {
         freqAck = 1;
@@ -2091,9 +2088,11 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t freqDlAck = 0;
       uint8_t freqUlAck = 0;
       
-      // check if the frequency is possible
-      if(this->phyLayer->setFrequency(macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
-        freqDlAck = 1;
+      // check if the frequency is allowed possible
+      if(macFreq >= this->band->freqMin && macFreq <= this->band->freqMax) { 
+        if(this->phyLayer->setFrequency(macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
+          freqDlAck = 1;
+        }
       }
       
       // check if the corresponding uplink frequency is actually set
@@ -2539,16 +2538,16 @@ int16_t LoRaWANNode::setDatarate(uint8_t drUp) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
 
-  uint8_t cOcts[5];
+  uint8_t cOcts[1];
   uint8_t cAck[1];
   uint8_t cid = RADIOLIB_LORAWAN_MAC_LINK_ADR;
-  uint8_t cLen = 1;                     // only apply Dr/Tx field
-  cOcts[0]  = (drUp << 4);               // set requested datarate
-  cOcts[0] |= 0x0F;                      // keep Tx Power the same
+  uint8_t cLen = 1;                       // only apply Dr/Tx field
+  cOcts[0]  = (drUp << 4);                // set requested datarate
+  cOcts[0] |= 0x0F;                       // keep Tx Power the same
   (void)execMacCommand(cid, cOcts, cLen, cAck);
 
   // check if ACK is set for Datarate
-  if((cAck[0] >> 1) != 1) {
+  if(!(cAck[0] & 0x02)) {
     return(RADIOLIB_ERR_INVALID_DATA_RATE);
   }
   
@@ -2574,7 +2573,7 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower) {
   (void)execMacCommand(cid, cOcts, cLen, cAck);
 
   // check if ACK is set for Tx Power
-  if((cAck[0] >> 2) != 1) {
+  if(!(cAck[0] & 0x04)) {
     return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
   }
   
