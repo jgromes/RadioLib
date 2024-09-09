@@ -2366,9 +2366,7 @@ int16_t LoRaWANNode::sendMacCommandReq(uint8_t cid) {
 }
 
 int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
-  uint8_t len = 0;
-  (void)this->getMacLen(RADIOLIB_LORAWAN_MAC_LINK_CHECK, &len, RADIOLIB_LORAWAN_DOWNLINK);
-  uint8_t payload[len] = { 0 };
+  uint8_t payload[2] = { 0 };
   int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_LINK_CHECK, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
@@ -2379,9 +2377,7 @@ int16_t LoRaWANNode::getMacLinkCheckAns(uint8_t* margin, uint8_t* gwCnt) {
 }
 
 int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, bool returnUnix) {
-  uint8_t len = 0;
-  (void)this->getMacLen(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, &len, RADIOLIB_LORAWAN_DOWNLINK);
-  uint8_t payload[len] = { 0 };
+  uint8_t payload[5] = { 0 };
   int16_t state = this->getMacPayload(RADIOLIB_LORAWAN_MAC_DEVICE_TIME, this->fOptsDown, fOptsDownLen, payload, RADIOLIB_LORAWAN_DOWNLINK);
   RADIOLIB_ASSERT(state);
 
