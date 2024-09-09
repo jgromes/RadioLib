@@ -505,7 +505,7 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
   // restore the complete MAC state
 
   uint8_t cOcts[14] = { 0 }; // TODO explain
-  uint8_t cid = 0;
+  uint8_t cid;
   uint8_t cLen = 0;
 
   // setup the default channels
@@ -996,7 +996,7 @@ void LoRaWANNode::processCFList(uint8_t* cfList) {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Processing CFList");
   
   uint8_t cOcts[14] = { 0 }; // TODO explain
-  uint8_t cid = 0;
+  uint8_t cid;
   uint8_t cLen = 0;
 
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
@@ -1659,7 +1659,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   memset(this->fOptsDown, 0, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
 
   // process FOpts (if there are any)
-  uint8_t cid = 0;
+  uint8_t cid;
   uint8_t fLen = 1;
   uint8_t* mPtr = fOpts;
   uint8_t procLen = 0;
