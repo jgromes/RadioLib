@@ -1401,13 +1401,20 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   this->phyLayer->clearPacketReceivedAction();
   this->phyLayer->standby();
 
-  // if all windows passed without receiving anything, return so
+  // if all windows passed without receiving anything, return 0
   if(!downlinkComplete) {
-    state = RADIOLIB_ERR_NONE;
+    state = 0;
 
   // if we received something during a window, return the window number
   } else {
     state = window;
+  }
+
+  // Any frame received by an end-device containing a MACPayload greater than 
+  // the specified maximum length M over the data rate used to receive the frame 
+  // SHALL be silently discarded.
+  if(this->phyLayer->getPacketLength() > maxPayLen) {
+    return(0);  // act as if no downlink was received
   }
 
   return(state);
