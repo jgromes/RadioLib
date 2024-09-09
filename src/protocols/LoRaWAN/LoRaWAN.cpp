@@ -180,7 +180,7 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
     eventUp->confirmed = isConfirmed;
     eventUp->confirming = (this->confFCntDown != RADIOLIB_LORAWAN_FCNT_NONE);
     eventUp->datarate = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
-    eventUp->freq = this->channels[RADIOLIB_LORAWAN_UPLINK].freq;
+    eventUp->freq = this->channels[RADIOLIB_LORAWAN_UPLINK].freq / 10000.0;
     eventUp->power = this->txPowerMax - this->txPowerSteps * 2;
     eventUp->fCnt = this->fCntUp;
     eventUp->fPort = fPort;
@@ -325,35 +325,36 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
     } else {
       drUp = this->band->txSpans[1].drJoinRequest;        // if ninth channel, select datarate of span 1
     }
-  }
-
-  // on dynamic bands, the first OTAA uplink (JoinRequest) can be any available datarate
-  // this is also true for ABP where there is no JoinRequest
-  if(initialDr != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-    uint8_t i = 0; 
-    for(; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-      if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
-        if(initialDr >= this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMin
-          && initialDr <= this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMax) {
-            break;
+  } else {
+    // on dynamic bands, the first OTAA uplink (JoinRequest) can be any available datarate
+    // this is also true for ABP on both dynamic and fixed bands, as there is no JoinRequest
+    if(initialDr != RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      uint8_t i = 0; 
+      for(; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+        if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
+          if(initialDr >= this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMin
+            && initialDr <= this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMax) {
+              drUp = initialDr;
+              break;
+          }
         }
       }
+      // if there is no channel that allowed the user-specified datarate, revert to default datarate
+      if(i == RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS) {
+        RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Datarate %d is not valid - using default", initialDr);
+        initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
+      }
     }
-    // if there is no channel that allowed the user-specified datarate, revert to default datarate
-    if(i == RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Datarate %d is not valid - using default", initialDr);
-      initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED;
-    }
-  }
-
-  // if there is no (channel that allowed the) user-specified datarate, use a default datarate
-  // we use the floor of the average datarate of the first enabled channel
-  if(initialDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-    for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-      if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
-        uint8_t drMin = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMin;
-        uint8_t drMax = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMax;
-        drUp = (drMin + drMax) / 2;
+  
+    // if there is no (channel that allowed the) user-specified datarate, use a default datarate
+    // we use the floor of the average datarate of the first enabled channel
+    if(initialDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
+      for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
+        if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
+          uint8_t drMin = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMin;
+          uint8_t drMax = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMax;
+          drUp = (drMin + drMax) / 2;
+        }
       }
     }
   }
@@ -1276,7 +1277,7 @@ int16_t LoRaWANNode::transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink sent <-- Rx Delay start");
 
   // increase Time on Air of the uplink sequence
-  this->lastToA += this->phyLayer->getTimeOnAir(len - RADIOLIB_LORAWAN_FHDR_LEN_START_OFFS) / 1000;
+  this->lastToA += this->phyLayer->getTimeOnAir(len) / 1000;
 
   return(state);
 }
@@ -1766,7 +1767,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     event->confirmed = isConfirmedDown;
     event->confirming = isConfirmingUp;
     event->datarate = this->channels[RADIOLIB_LORAWAN_DOWNLINK].dr;
-    event->freq = channels[event->dir].freq;
+    event->freq = channels[event->dir].freq / 10000.0;
     event->power = this->txPowerMax - this->txPowerSteps * 2;
     event->fCnt = isAppDownlink ? this->aFCntDown : this->nFCntDown;
     event->fPort = fPort;

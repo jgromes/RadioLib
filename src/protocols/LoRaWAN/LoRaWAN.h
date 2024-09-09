@@ -519,7 +519,7 @@ struct LoRaWANEvent_t {
   /*! \brief Port number */
   uint8_t fPort;
 
-  /*! \brief Number of uplink transmissions (ADR)*/
+  /*! \brief Number of times this uplink was transmitted (ADR)*/
   uint8_t nbTrans;
 };
 
