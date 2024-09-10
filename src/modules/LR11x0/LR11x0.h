@@ -1375,39 +1375,6 @@ class LR11x0: public PhysicalLayer {
     */
     int16_t updateFirmware(const uint32_t* image, size_t size, bool nonvolatile = true);
     
-    /*!
-      \brief Method to check whether the device is capable of performing a GNSS scan.
-      CAUTION: Work in progress! Most data is returned via debug prints.
-      \returns \ref status_codes
-    */
-    int16_t isGnssScanCapable();
-
-    /*!
-      \brief Performs GNSS scan.
-      CAUTION: Work in progress! Most data is returned via debug prints.
-      \param resSize Pointer to a variable in which the result size will be saved.
-      \returns \ref status_codes
-    */
-    int16_t gnssScan(uint16_t* resSize);
-
-    /*!
-      \brief Get GNSS scan result.
-      CAUTION: Work in progress! Most data is returned via debug prints.
-      \param size Result size to read.
-      \returns \ref status_codes
-    */
-    int16_t getGnssScanResult(uint16_t size);
-    
-    /*!
-      \brief Get GNSS position.
-      CAUTION: Work in progress! Most data is returned via debug prints.
-      \param lat Pointer to a variable where latitude in degrees will be saved.
-      \param lon Pointer to a variable where longitude in degrees will be saved.
-      \param filtered Whether to save the filtered, or unfiltered value. Defaults to true (filtered).
-      \returns \ref status_codes
-    */
-    int16_t getGnssPosition(float* lat, float* lon, bool filtered = true);
-    
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
 #endif
