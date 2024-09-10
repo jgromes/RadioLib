@@ -1822,6 +1822,8 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
+  this->clearErrors();
+
   // set DIO mapping
   state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE);
   RADIOLIB_ASSERT(state);
@@ -1839,16 +1841,34 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_ASSERT(state);
 
   // wait for scan finished or timeout
-  RadioLibTime_t softTimeout = 300UL * 1000UL;
+  RadioLibTime_t softTimeout = 80UL * 1000UL; // LBM uses 80s for autonomous and 20 for assisted
   RadioLibTime_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for IRQ");
+      RADIOLIB_DEBUG_BASIC_PRINTLN("*** Timeout waiting for IRQ");
+      Serial.print("Busy is "); Serial.println(this->mod->hal->digitalRead(this->mod->gpioPin));
       this->standby();
+      {
+        uint16_t errs;
+        this->getErrors(&errs);
+        if (errs != 0) RADIOLIB_DEBUG_BASIC_PRINTLN("*** Errors after GNSS scan time-out: 0x%x", errs);
+      }
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
+
+  this->standby(); // prob redundant
+  uint16_t errs;
+  state = this->getErrors(&errs);
+  RADIOLIB_ASSERT(state);
+  if (errs != 0) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Errors after GNSS scan: 0x%x", errs);
+    if (errs & 0x40) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("*** LF XTAL failed to start");
+      return RADIOLIB_ERR_INVALID_TCXO_VOLTAGE; // need a proper error code...
+    }
+  } else RADIOLIB_DEBUG_BASIC_PRINTLN("No errors after GNSS scan");
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
   

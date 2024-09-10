@@ -28,7 +28,39 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
 
 // =====
 
-bool startScan;
+bool startScan; // time to start next scan
+volatile bool scanFlag = false; // scan completed flag
+
+void configRadio() {
+  Serial.print(F("[LR1110] Initializing ... "));
+  int state = radio.begin(915, 125, 9, 7, RADIOLIB_LR11X0_LORA_SYNC_WORD_PRIVATE, 10, 8, 1.8); // 1.8V TCXO
+  if (state != RADIOLIB_ERR_NONE) {
+    Serial.print(F("failed, code "));
+    Serial.println(state);
+    while (true) { delay(10); }
+  }
+
+  state = radio.isGnssScanCapable();
+  if (state == RADIOLIB_ERR_NONE) {
+    Serial.println("Can do GNSS scan!");
+  } else {
+    Serial.print("CANNOT perform GNSS scan, code ");
+    Serial.println(state);
+    while (true) { delay(10); }
+  }
+
+  // configure the 32kHz clock
+  uint8_t lf_clock = 1;
+  Serial.print("LF clock config: "); Serial.println(lf_clock);
+  state = radio.configLfClock(lf_clock); // 32kHz Xtal, when doing gnssScan do not hold busy 'til xtal ready
+  if (state != RADIOLIB_ERR_NONE) Serial.println("Failed to init 32kHz xtal");
+
+  // set the function that will be called when scan completes
+  radio.setIrqAction(setFlag);
+
+  startScan = true;
+  scanFlag = false;
+}
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT); // red LED
@@ -49,42 +81,11 @@ void setup() {
   digitalWrite(PIN_GNSS_LNA, 1);
 
   // initialize LR1110 with default settings
-  Serial.print(F("[LR1110] Initializing ... "));
   SPI.setPins(47, 45, 46);
   SPI.begin();
-  int state = radio.begin();
-  if (state != RADIOLIB_ERR_NONE) {
-    Serial.print(F("failed, code "));
-    Serial.println(state);
-    while (true) { delay(10); }
-  }
 
-  state = radio.isGnssScanCapable();
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println("Can do GNSS scan!");
-  } else {
-    Serial.print("CANNOT perform GNSS scan, code ");
-    Serial.println(state);
-    while (true) { delay(10); }
-  }
-
-  state = radio.configLfClock(0x5); // 32kHz Xtal, busy 'til xtal ready
-  if (state != RADIOLIB_ERR_NONE) Serial.println("Failed to init 32kHz xtal");
-  // wait for xtal to start-up
-  radio.mod->hal->delay(5);
-  while(radio.mod->hal->digitalRead(radio.mod->getGpio())) {
-    radio.mod->hal->yield();
-  }
-
-  // set the function that will be called when scan completes
-  radio.setIrqAction(setFlag);
-
-  startScan = true;
+  configRadio();
 }
-
-// flag to indicate that a scan was completed
-volatile bool scanFlag = false;
-uint16_t gnssCount = 0;
 
 // this function is called when a scan is completed
 // IMPORTANT: this function MUST be 'void' type and MUST NOT have any arguments!
@@ -97,6 +98,31 @@ void setFlag(void) {
 
 void loop() {
   int state;
+  uint16_t gnssCount = 0;
+#if 0
+    while (true) {
+      Serial.println(F("\n[LR1110] ***** Starting GNSS time fetch ... "));
+      radio.clearErrors();
+      state = radio.gnssFetchTime(1, 1);
+      if (state == RADIOLIB_ERR_NONE) {
+        uint16_t errors = 0;
+        state = radio.getErrors(&errors);
+        Serial.print("Errors: "); Serial.println(errors, 16);
+        break;
+      } else {
+        Serial.print(F("failed, code "));
+        Serial.println(state);
+        Serial.print("Busy is "); Serial.println(radio.mod->hal->digitalRead(radio.mod->gpioPin);
+        uint16_t errors = 0;
+        state = radio.getErrors(&errors);
+        Serial.print("Errors: "); Serial.println(errors, 16);
+        delay(1000);
+        setup();
+      }
+    }
+
+
+#else
 
   // check if the flag is set
   if(scanFlag) {
@@ -113,22 +139,23 @@ void loop() {
       Serial.println(state);
     }
 
-    delay(1000);
+    delay(1000); // minor spacing out of scans
   }
 
   if (startScan) {
     startScan = false;    
     // start scanning again
-    Serial.println(F("\n[LR1110] ***** Starting GNSS scan ... "));
     while (true) {
+      Serial.println(F("\n[LR1110] ***** Starting GNSS scan ... "));
       state = radio.gnssScan(&gnssCount);
       if (state == RADIOLIB_ERR_NONE) {
         break;
       } else {
         Serial.print(F("failed, code "));
         Serial.println(state);
-        delay(1000);
+        configRadio();
       }
     }
   }
+#endif
 }
