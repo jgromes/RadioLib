@@ -2328,7 +2328,7 @@ void LoRaWANNode::postprocessMacLinkAdr(uint8_t* ack, uint8_t cLen) {
 int16_t LoRaWANNode::getMacCommand(uint8_t cid, LoRaWANMacCommand_t* cmd) {
   for(size_t i = 0; i < RADIOLIB_LORAWAN_NUM_MAC_COMMANDS; i++) {
     if(MacTable[i].cid == cid) {
-      memcpy(cmd, &MacTable[i], sizeof(LoRaWANMacCommand_t));
+      memcpy((void*)cmd, (void*)&MacTable[i], sizeof(LoRaWANMacCommand_t));
       return(RADIOLIB_ERR_NONE);
     }
   }
