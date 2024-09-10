@@ -561,6 +561,13 @@
 #define RADIOLIB_LR11X0_GNSS_ALMANAC_HEADER_ID                  (0x80UL << 0)   //  7     0     starting byte of GNSS almanac header
 #define RADIOLIB_LR11X0_GNSS_ALMANAC_BLOCK_SIZE                 (20)
 
+// RADIOLIB_LR11X0_CMD_GNSS_FETCH_TIME
+#define RADIOLIB_LR11X0_GNSS_EFFORT_LOW                         (0x00UL << 0)   //  7     0     GNSS effort mode: low sensitivity
+#define RADIOLIB_LR11X0_GNSS_EFFORT_MID                         (0x01UL << 0)   //  7     0                        medium sensitivity
+#define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW                 (0x00UL << 0)   //  7     0     time fetch options: ToW only, requires WN to demodulated beforehand
+#define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN              (0x01UL << 0)   //  7     0                         ToW and WN
+#define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN_ROLL         (0x02UL << 0)   //  7     0                         ToW, WN and rollover
+
 // RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS                   (0x00UL << 0)   //  7     0     crypto engine status: success
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_FAIL_CMAC                 (0x01UL << 0)   //  7     0                           MIC check failed
@@ -716,6 +723,25 @@ struct LR11x0VersionInfo_t {
 
 struct LR11x0GnssResult_t {
 
+};
+
+struct LR11x0GnssAlmanacStatusPart_t {
+  int8_t status;
+  uint32_t timeUntilSubframe;
+  uint8_t numSubframes;
+  uint8_t nextSubframe4SvId;
+  uint8_t nextSubframe5SvId;
+  uint8_t nextSubframeStart;
+  uint8_t numUpdateNeeded;
+  uint32_t flagsUpdateNeeded[2];
+  uint32_t flagsActive[2];
+};
+
+struct LR11x0GnssAlmanacStatus_t {
+  LR11x0GnssAlmanacStatusPart_t gps;
+  LR11x0GnssAlmanacStatusPart_t beidou;
+  uint32_t beidouSvNoAlmanacFlags[2];
+  uint8_t nextAlmanacId;
 };
 
 /*!
@@ -1407,6 +1433,12 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getGnssPosition(float* lat, float* lon, bool filtered = true);
+
+    int16_t getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat);
+
+    int16_t updateGnssAlmanac();
+
+    int16_t beginGNSS(float tcxoVoltage = 1.6);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

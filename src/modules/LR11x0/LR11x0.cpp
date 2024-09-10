@@ -117,6 +117,23 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage) {
   return(setModulationParamsLrFhss(RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
 }
 
+int16_t LR11x0::beginGNSS(float tcxoVoltage) {
+  // set module properties and perform initial setup - packet type does not matter
+  int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
+  RADIOLIB_ASSERT(state);
+
+  state = this->configLfClock(RADIOLIB_LR11X0_LF_CLK_RC | RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED);
+  RADIOLIB_ASSERT(state);
+
+  state = this->gnssSetConstellationToUse(RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU);
+  RADIOLIB_ASSERT(state);
+
+  state = setRegulatorLDO();
+  RADIOLIB_ASSERT(state);
+
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LR11x0::reset() {
   // run the reset sequence
   this->mod->hal->pinMode(this->mod->getRst(), this->mod->hal->GpioModeOutput);
@@ -1739,16 +1756,13 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE);
   RADIOLIB_ASSERT(state);
 
-  state = this->gnssSetConstellationToUse(0x03);
-  RADIOLIB_ASSERT(state);
-
   // set scan mode (single vs multiple)
   state = this->gnssSetMode(0x03);
   RADIOLIB_ASSERT(state);
 
   // start scan with high effort
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan start");
-  state = this->gnssPerformScan(0x01, 0x3C, 8);
+  state = this->gnssPerformScan(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x3C, 8);
   RADIOLIB_ASSERT(state);
 
   // wait for scan finished or timeout
@@ -1784,11 +1798,6 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
     (int)fwVersion, (unsigned long)almanacCrc, (int)errCode, (int)almUpdMask, (int)freqSpace);
   RADIOLIB_ASSERT(state);
 
-  uint8_t stat[53] = { 0 };
-  state = this->gnssReadAlmanacStatus(stat);
-  RADIOLIB_ASSERT(state);
-  //Module::hexdump(NULL, stat, 53);
-
   return(this->gnssGetResultSize(resSize));
 }
 
@@ -1816,7 +1825,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   state = this->gnssGetSvDetected(svId, snr, doppler, nbSv);
   RADIOLIB_ASSERT(state);
   for(size_t i = 0; i < nbSv; i++) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: C/N0 %i dB, Doppler %i Hz", (int)i, snr[i] + 31, doppler[i]);
+    RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: SNR %i dB, Doppler %i Hz", (int)i, snr[i], doppler[i]);
   }
 
   float lat = 0;
@@ -1830,6 +1839,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   state = this->gnssReadResults(res, size);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("Result type: %02x", (int)res[0]);
+  //Module::hexdump(NULL, res, size);
 
   return(state);
 }
@@ -1846,6 +1856,128 @@ int16_t LR11x0::getGnssPosition(float* lat, float* lon, bool filtered) {
   }
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("Solver error %d, nbSvUsed %d, accuracy = %u", (int)error, (int)nbSvUsed, (unsigned int)accuracy);
+
+  return(state);
+}
+
+int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
+  if(!stat) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  // get the raw data
+  uint8_t raw[53] = { 0 };
+  int16_t state = this->gnssReadAlmanacStatus(raw);
+  RADIOLIB_ASSERT(state);
+
+  //Module::hexdump(NULL, raw, 53);
+
+  // parse the reply
+  stat->gps.status = (int8_t)raw[0];
+  stat->gps.timeUntilSubframe = ((uint32_t)(raw[1]) << 24) | ((uint32_t)(raw[2]) << 16) | ((uint32_t)(raw[3]) << 8) | (uint32_t)raw[4];
+  stat->gps.numSubframes = raw[5];
+  stat->gps.nextSubframe4SvId = raw[6];
+  stat->gps.nextSubframe5SvId = raw[7];
+  stat->gps.nextSubframeStart = raw[8];
+  stat->gps.numUpdateNeeded = raw[9];
+  stat->gps.flagsUpdateNeeded[0] = ((uint32_t)(raw[10]) << 24) | ((uint32_t)(raw[11]) << 16) | ((uint32_t)(raw[12]) << 8) | (uint32_t)raw[13];
+  stat->gps.flagsActive[0] = ((uint32_t)(raw[14]) << 24) | ((uint32_t)(raw[15]) << 16) | ((uint32_t)(raw[16]) << 8) | (uint32_t)raw[17];
+  stat->beidou.status = (int8_t)raw[18];
+  stat->beidou.timeUntilSubframe = ((uint32_t)(raw[19]) << 24) | ((uint32_t)(raw[20]) << 16) | ((uint32_t)(raw[21]) << 8) | (uint32_t)raw[22];
+  stat->beidou.numSubframes = raw[23];
+  stat->beidou.nextSubframe4SvId = raw[24];
+  stat->beidou.nextSubframe5SvId = raw[25];
+  stat->beidou.nextSubframeStart = raw[26];
+  stat->beidou.numUpdateNeeded = raw[27];
+  stat->beidou.flagsUpdateNeeded[0] = ((uint32_t)(raw[28]) << 24) | ((uint32_t)(raw[29]) << 16) | ((uint32_t)(raw[30]) << 8) | (uint32_t)raw[31];
+  stat->beidou.flagsUpdateNeeded[1] = ((uint32_t)(raw[32]) << 24) | ((uint32_t)(raw[33]) << 16) | ((uint32_t)(raw[34]) << 8) | (uint32_t)raw[35];
+  stat->beidou.flagsActive[0] = ((uint32_t)(raw[36]) << 24) | ((uint32_t)(raw[37]) << 16) | ((uint32_t)(raw[38]) << 8) | (uint32_t)raw[39];
+  stat->beidou.flagsActive[1] = ((uint32_t)(raw[40]) << 24) | ((uint32_t)(raw[41]) << 16) | ((uint32_t)(raw[42]) << 8) | (uint32_t)raw[43];
+  stat->beidouSvNoAlmanacFlags[0] = ((uint32_t)(raw[44]) << 24) | ((uint32_t)(raw[45]) << 16) | ((uint32_t)(raw[46]) << 8) | (uint32_t)raw[47];
+  stat->beidouSvNoAlmanacFlags[1] = ((uint32_t)(raw[18]) << 24) | ((uint32_t)(raw[49]) << 16) | ((uint32_t)(raw[50]) << 8) | (uint32_t)raw[51];
+  stat->nextAlmanacId = raw[52];
+
+  return(state);
+}
+
+int16_t LR11x0::updateGnssAlmanac() {
+  // fetch time from satellite signal
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS time fetch start");
+  int16_t state = this->gnssFetchTime(RADIOLIB_LR11X0_GNSS_EFFORT_MID, RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN);
+  RADIOLIB_ASSERT(state);
+
+  // wait for fetch finished or timeout
+  RadioLibTime_t softTimeout = 150UL * 1000UL;
+  RadioLibTime_t start = this->mod->hal->millis();
+  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->millis() - start > softTimeout) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for BUSY");
+      this->standby();
+      return(RADIOLIB_ERR_RX_TIMEOUT);
+    }
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS time fetch done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
+
+  // check time was successfully received
+  uint8_t err = 0;
+  uint32_t time = 0;
+  state = this->gnssReadTime(&err, &time, NULL, NULL);
+  RADIOLIB_ASSERT(state);
+  if(err != 0) {
+    RADIOLIB_DEBUG_PRINTLN("Failed to fetch time, error %02x", (int)err);
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
+  RADIOLIB_DEBUG_PRINTLN("GNSS time is %ld UTC", (long)time);
+  return(state);
+
+  // read almanac status
+  LR11x0GnssAlmanacStatus_t almStat = { 0 };
+  state = this->getGnssAlmanacStatus(&almStat);
+  RADIOLIB_ASSERT(state);
+  start = this->mod->hal->millis();
+
+  RADIOLIB_DEBUG_PRINTLN("GNSS Almanac status");
+  RADIOLIB_DEBUG_PRINTLN("GPS status %d", (int)almStat.gps.status);
+  RADIOLIB_DEBUG_PRINTLN("GPS update needed 0x%08lx", (long)almStat.gps.flagsUpdateNeeded[0]);
+  RADIOLIB_DEBUG_PRINTLN("GPS time until almanac %lu ms", (long)almStat.gps.timeUntilSubframe);
+  RADIOLIB_DEBUG_PRINTLN("BeiDou status %d", (int)almStat.beidou.status);
+  RADIOLIB_DEBUG_PRINTLN("BeiDou update needed 0x%08lx 0x%08lx", (long)almStat.beidou.flagsUpdateNeeded[0], (long)almStat.beidou.flagsUpdateNeeded[1]);
+  RADIOLIB_DEBUG_PRINTLN("BeiDou time until almanac %lu ms", (long)almStat.beidou.timeUntilSubframe);
+
+  // check whether update is needed
+  if(!(almStat.gps.numUpdateNeeded || almStat.beidou.numUpdateNeeded)) {
+    RADIOLIB_DEBUG_PRINTLN("Almanac update not needed");
+    return(RADIOLIB_ERR_NONE);
+  }
+
+  // wait until almanac is available in GPS signal
+  this->mod->hal->delay(almStat.gps.timeUntilSubframe - (this->mod->hal->millis() - start) );
+
+  // start almanac update for GPS satellites
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update start");
+  state = this->gnssAlmanacUpdateFromSat(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x01);
+  RADIOLIB_ASSERT(state);
+
+  // wait for scan finished or timeout
+  softTimeout = 300UL * 1000UL;
+  start = this->mod->hal->millis();
+  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+    this->mod->hal->yield();
+    if(this->mod->hal->millis() - start > softTimeout) {
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for BUSY");
+      this->standby();
+      return(RADIOLIB_ERR_RX_TIMEOUT);
+    }
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
+
+  int8_t status = 0;
+  uint8_t info = 0;
+  state = this->gnssReadDemodStatus(&status, &info);
+  RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("foo");
 
   return(state);
 }
@@ -1943,7 +2075,9 @@ bool LR11x0::findChip(uint8_t ver) {
     // read the version
     LR11x0VersionInfo_t info;
     int16_t state = getVersionInfo(&info);
-    if((state == RADIOLIB_ERR_NONE) && (info.device == ver)) {
+    RADIOLIB_ASSERT(state);
+
+    if(info.device == ver) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("Found LR11x0: RADIOLIB_LR11X0_CMD_GET_VERSION = 0x%02x", info.device);
       RADIOLIB_DEBUG_BASIC_PRINTLN("Base FW version: %d.%d", (int)info.fwMajor, (int)info.fwMinor);
       if(this->chipType != RADIOLIB_LR11X0_DEVICE_LR1121) {
