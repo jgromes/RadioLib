@@ -83,10 +83,6 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
   if(!this->isActivated()) {
     return(RADIOLIB_ERR_NETWORK_NOT_JOINED);
   }
-  
-  if(this->adrEnabled) {
-    this->adrBackoff();
-  }
 
   // check if the requested payload + fPort are allowed, also given dutycycle
   uint8_t totalLen = lenUp + this->fOptsUpLen;
@@ -197,9 +193,13 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
 
   uint8_t rxWindow = state;
 
-  // if no downlink was received, remove only non-persistent MAC commands
-  // the other commands should be re-sent until downlink is received
+  // if no downlink was received, do an early exit
   if(rxWindow == 0) {
+    // check if ADR backoff must occur
+    if(this->adrEnabled) {
+      this->adrBackoff();
+    }
+    // remove only non-persistent MAC commands, the other commands should be re-sent until downlink is received
     LoRaWANNode::clearMacCommands(this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
     return(rxWindow);
   }
@@ -3163,7 +3163,7 @@ RadioLibTime_t LoRaWANNode::timeUntilUplink() {
   return(nextUplink - mod->hal->millis() + 1);
 }
 
-uint8_t LoRaWANNode::maxUplinkLen() {
+uint8_t LoRaWANNode::getMaxPayloadLen() {
   // configure the uplink channel properties
   this->setPhyProperties(&this->channels[RADIOLIB_LORAWAN_UPLINK], 
                          RADIOLIB_LORAWAN_UPLINK,
@@ -3174,11 +3174,21 @@ uint8_t LoRaWANNode::maxUplinkLen() {
   if(this->TS011) {
     maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
   }
-  maxPayLen -= 13;                // FHDR is 13 bytes
-  maxPayLen -= this->fOptsUpLen;  // uplink MAC commands
 
-  uint8_t payLen = (minPayLen + maxPayLen) / 2;
+  // if not limited by dwell-time, just return maximum
+  if(!this->dwellTimeEnabledUp) {
+    // subtract FHDR (13 bytes) as well as any FOpts
+    return(maxPayLen - 13 - this->fOptsUpLen);
+  }
+
+  // fast exit in case upper limit is already good
+  if(this->phyLayer->getTimeOnAir(maxPayLen) / 1000 <= this->dwellTimeUp) {
+    // subtract FHDR (13 bytes) as well as any FOpts
+    return(maxPayLen - 13 - this->fOptsUpLen);
+  }
+
   // do some binary search to find maximum allowed payload length
+  uint8_t payLen = (minPayLen + maxPayLen) / 2;
   while(payLen != minPayLen && payLen != maxPayLen) {
     if(this->phyLayer->getTimeOnAir(payLen) / 1000 > this->dwellTimeUp) {
       maxPayLen = payLen;
@@ -3187,6 +3197,7 @@ uint8_t LoRaWANNode::maxUplinkLen() {
     }
     payLen = (minPayLen + maxPayLen) / 2;
   }
+  // subtract FHDR (13 bytes) as well as any FOpts
   return(payLen - 13 - this->fOptsUpLen);
 }
 

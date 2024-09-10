@@ -833,11 +833,10 @@ class LoRaWANNode {
     RadioLibTime_t timeUntilUplink();
 
     /*! 
-      \brief Returns the maximum payload given the currently present dwell time limits.
-      WARNING: the addition of MAC commands may cause uplink errors;
-      if you want to be sure that your payload fits within dwell time limits, subtract 16 from the result!
+      \brief Returns the maximum allowed uplink payload size given the current MAC state.
+      Most importantly, this includes dwell time limitations and ADR.
     */
-    uint8_t maxUplinkLen();
+    uint8_t getMaxPayloadLen();
 
     /*! 
       \brief TS009 Protocol Specification Verification switch
