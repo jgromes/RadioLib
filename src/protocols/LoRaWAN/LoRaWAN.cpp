@@ -2800,7 +2800,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
 // in the LoRa Alliance Technical Recommendation #13.
 bool LoRaWANNode::csmaChannelClear(uint8_t difs, uint8_t numBackoff) {
   // DIFS phase: perform #DIFS CAD operations
-  uint8_t numCads = 0;
+  uint16_t numCads = 0;
   for (; numCads < difs; numCads++) {
     if (!this->cadChannelClear()) {
       return(false);
