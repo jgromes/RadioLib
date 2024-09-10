@@ -262,7 +262,7 @@ int16_t LoRaWANNode::setBufferNonces(uint8_t* persistentBuffer) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Configuration mismatch (keys: %d, mode: %d, class: %d, plan: %d)", isSameKeys, isSameMode, isSameClass, isSamePlan);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Discarding the Nonces buffer:");
     RADIOLIB_DEBUG_PROTOCOL_HEXDUMP(persistentBuffer, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
-    return(RADIOLIB_LORAWAN_NONCES_DISCARDED);
+    return(RADIOLIB_ERR_NONCES_DISCARDED);
   }
 
   // copy the whole buffer over
@@ -472,7 +472,7 @@ int16_t LoRaWANNode::setBufferSession(uint8_t* persistentBuffer) {
   if(signatureNonces != signatureInSession) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("The Session buffer (%04x) does not match the Nonces buffer (%04x)",
                                     signatureInSession, signatureNonces);
-    return(RADIOLIB_LORAWAN_SESSION_DISCARDED);
+    return(RADIOLIB_ERR_SESSION_DISCARDED);
   }
 
   // copy the whole buffer over
@@ -941,7 +941,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   if(state < RADIOLIB_ERR_NONE) {
     return(state);
   } else if (state == RADIOLIB_ERR_NONE) {
-    return(RADIOLIB_LORAWAN_NO_JOIN_ACCEPT);
+    return(RADIOLIB_ERR_NO_JOIN_ACCEPT);
   }
 
   // process JoinAccept message
@@ -2589,7 +2589,7 @@ int16_t LoRaWANNode::setTxPower(int8_t txPower) {
 int16_t LoRaWANNode::setRx2Dr(uint8_t dr) {
   // this can only be configured in ABP mode
   if(this->lwMode != RADIOLIB_LORAWAN_MODE_ABP) {
-    return(RADIOLIB_LORAWAN_INVALID_MODE);
+    return(RADIOLIB_ERR_INVALID_MODE);
   }
 
   // can only configure different datarate for dynamic bands
