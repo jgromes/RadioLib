@@ -435,7 +435,7 @@ int16_t SX128x::scanChannel() {
   return(this->scanChannel(config));
 }
 
-int16_t SX128x::scanChannel(ChannelScanConfig_t config) {
+int16_t SX128x::scanChannel(const ChannelScanConfig_t &config) {
   // set mode to CAD
   int16_t state = startChannelScan(config);
   RADIOLIB_ASSERT(state);
