@@ -302,7 +302,7 @@ int16_t LR11x0::scanChannel() {
   return(this->scanChannel(config));
 }
 
-int16_t LR11x0::scanChannel(ChannelScanConfig_t config) {
+int16_t LR11x0::scanChannel(const ChannelScanConfig_t &config) {
   // set mode to CAD
   int state = startChannelScan(config);
   RADIOLIB_ASSERT(state);

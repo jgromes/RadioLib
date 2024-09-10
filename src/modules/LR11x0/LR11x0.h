@@ -847,7 +847,7 @@ class LR11x0: public PhysicalLayer {
       \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(ChannelScanConfig_t config) override;
+    int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Sets the module to standby mode (overload for PhysicalLayer compatibility, uses 13 MHz RC oscillator).

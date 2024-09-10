@@ -542,7 +542,7 @@ class SX126x: public PhysicalLayer {
       \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(ChannelScanConfig_t config) override;
+    int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
