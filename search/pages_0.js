@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['radiolib_20documentation_1281',['RadioLib Documentation',['../index.html',1,'']]]
+  ['radiolib_20documentation_1272',['RadioLib Documentation',['../index.html',1,'']]]
 ];
