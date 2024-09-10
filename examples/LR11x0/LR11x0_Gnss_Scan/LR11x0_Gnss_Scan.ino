@@ -69,7 +69,12 @@ void setup() {
   }
 
   state = radio.configLfClock(0x5); // 32kHz Xtal, busy 'til xtal ready
-  RADIOLIB_ASSERT(state);
+  if (state != RADIOLIB_ERR_NONE) Serial.println("Failed to init 32kHz xtal");
+  // wait for xtal to start-up
+  radio.mod->hal->delay(5);
+  while(radio.mod->hal->digitalRead(radio.mod->getGpio())) {
+    radio.mod->hal->yield();
+  }
 
   // set the function that will be called when scan completes
   radio.setIrqAction(setFlag);

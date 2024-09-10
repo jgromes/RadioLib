@@ -17,6 +17,7 @@ fi
 # arduino-cli lib install RadioLib@6.6.0 CRC@1.0.3 "Arduino Low Power@1.2.2"
 
 PORT=$(echo /dev/serial/by-id/*Wio_Tracker*)
+NAME=$(basename $PWD)
 arduino-cli compile --fqbn Seeeduino:nrf52:wio_tracker_1110 --quiet --output-dir ./build
 
 echo >/tmp/adanrf
@@ -25,7 +26,7 @@ while ! grep -q 'Device programmed' /tmp/adanrf; do
     sleep 1
     while ! [ -c $PORT ]; do echo "waiting for bootloder"; sleep 1; done
     sleep 1
-    adafruit-nrfutil dfu serial -pkg build/WIOTracker.ino.zip -p $PORT -b 115200 -sb >/tmp/adanrf
+    adafruit-nrfutil dfu serial -pkg build/$NAME.ino.zip -p $PORT -b 115200 -sb >/tmp/adanrf
     head -2 /tmp/adanrf
     sleep 1
 done
