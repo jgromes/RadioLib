@@ -105,9 +105,17 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#ad7ab17cc0b530fb99c3be39fd6411802">bandType</a></td></tr>
 <tr class="memdesc:ad7ab17cc0b530fb99c3be39fd6411802"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether the channels are fixed per specification, or dynamically allocated through the network (plus defaults) <br /></td></tr>
 <tr class="separator:ad7ab17cc0b530fb99c3be39fd6411802"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92195dec46b60a55913cd3af43f410f9"><td class="memItemLeft" align="right" valign="top"><a id="a92195dec46b60a55913cd3af43f410f9"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a92195dec46b60a55913cd3af43f410f9">freqMin</a></td></tr>
+<tr class="memdesc:a92195dec46b60a55913cd3af43f410f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum allowed frequency (coded in 100 Hz steps) <br /></td></tr>
+<tr class="separator:a92195dec46b60a55913cd3af43f410f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6b39e29fe554cd53349d80dfff1f479"><td class="memItemLeft" align="right" valign="top"><a id="ac6b39e29fe554cd53349d80dfff1f479"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#ac6b39e29fe554cd53349d80dfff1f479">freqMax</a></td></tr>
+<tr class="memdesc:ac6b39e29fe554cd53349d80dfff1f479"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum allowed frequency (coded in 100 Hz steps) <br /></td></tr>
+<tr class="separator:ac6b39e29fe554cd53349d80dfff1f479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b8143ac9bbf3ed45e7cc80fc71ce055"><td class="memItemLeft" align="right" valign="top"><a id="a9b8143ac9bbf3ed45e7cc80fc71ce055"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055">payloadLenMax</a> [RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES]</td></tr>
-<tr class="memdesc:a9b8143ac9bbf3ed45e7cc80fc71ce055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of allowed maximum payload lengths for each data rate. <br /></td></tr>
+<tr class="memdesc:a9b8143ac9bbf3ed45e7cc80fc71ce055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of allowed maximum payload lengths for each data rate (global maximum) <br /></td></tr>
 <tr class="separator:a9b8143ac9bbf3ed45e7cc80fc71ce055"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a43fdafd540c93348f9b4a8958e021a4c"><td class="memItemLeft" align="right" valign="top"><a id="a43fdafd540c93348f9b4a8958e021a4c"></a>
 int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c">powerMax</a></td></tr>
@@ -129,34 +137,45 @@ int8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="st
 <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#aef289b63007a6e085c7c66f71209d84c">dwellTimeDn</a></td></tr>
 <tr class="memdesc:aef289b63007a6e085c7c66f71209d84c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum dwell time per downlink message in milliseconds. <br /></td></tr>
 <tr class="separator:aef289b63007a6e085c7c66f71209d84c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bbc7445702c32199f0bbd011d6f4da6"><td class="memItemLeft" align="right" valign="top"><a id="a4bbc7445702c32199f0bbd011d6f4da6"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6">txParamSupported</a></td></tr>
+<tr class="memdesc:a4bbc7445702c32199f0bbd011d6f4da6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this band implements the MAC command TxParamSetupReq. <br /></td></tr>
+<tr class="separator:a4bbc7445702c32199f0bbd011d6f4da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bd952022473cb08e067c763325d689c"><td class="memItemLeft" align="right" valign="top"><a id="a9bd952022473cb08e067c763325d689c"></a>
 <a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c">txFreqs</a> [3]</td></tr>
-<tr class="memdesc:a9bd952022473cb08e067c763325d689c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of default uplink (TX) channels for frequency-type bands. <br /></td></tr>
+<tr class="memdesc:a9bd952022473cb08e067c763325d689c"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of default uplink (TX) channels for dynamic bands. <br /></td></tr>
 <tr class="separator:a9bd952022473cb08e067c763325d689c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f6f43346f7c2e281b90d58a44565d38"><td class="memItemLeft" align="right" valign="top"><a id="a9f6f43346f7c2e281b90d58a44565d38"></a>
 <a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a9f6f43346f7c2e281b90d58a44565d38">txJoinReq</a> [3]</td></tr>
-<tr class="memdesc:a9f6f43346f7c2e281b90d58a44565d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of possible extra channels for the Join-Request message for frequency-type bands. <br /></td></tr>
+<tr class="memdesc:a9f6f43346f7c2e281b90d58a44565d38"><td class="mdescLeft">&#160;</td><td class="mdescRight">A set of possible extra channels for the Join-Request message for dynamic bands. <br /></td></tr>
 <tr class="separator:a9f6f43346f7c2e281b90d58a44565d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae58f859a72e64aa4a6fe218ba7e21c10"><td class="memItemLeft" align="right" valign="top"><a id="ae58f859a72e64aa4a6fe218ba7e21c10"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#ae58f859a72e64aa4a6fe218ba7e21c10">numTxSpans</a></td></tr>
-<tr class="memdesc:ae58f859a72e64aa4a6fe218ba7e21c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of TX channel spans for mask-type bands. <br /></td></tr>
+<tr class="memdesc:ae58f859a72e64aa4a6fe218ba7e21c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">The number of TX channel spans for fixed bands. <br /></td></tr>
 <tr class="separator:ae58f859a72e64aa4a6fe218ba7e21c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa37a3cae13a68c2deb2968de26ad9bd3"><td class="memItemLeft" align="right" valign="top"><a id="aa37a3cae13a68c2deb2968de26ad9bd3"></a>
 <a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html">LoRaWANChannelSpan_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3">txSpans</a> [2]</td></tr>
-<tr class="memdesc:aa37a3cae13a68c2deb2968de26ad9bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default uplink (TX) channel spans for mask-type bands, including Join-Request parameters. <br /></td></tr>
+<tr class="memdesc:aa37a3cae13a68c2deb2968de26ad9bd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default uplink (TX) channel spans for fixed bands, including Join-Request parameters. <br /></td></tr>
 <tr class="separator:aa37a3cae13a68c2deb2968de26ad9bd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8def1e0b5c3dc122557f71f5637a529"><td class="memItemLeft" align="right" valign="top"><a id="af8def1e0b5c3dc122557f71f5637a529"></a>
 <a class="el" href="struct_lo_ra_w_a_n_channel_span__t.html">LoRaWANChannelSpan_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529">rx1Span</a></td></tr>
-<tr class="memdesc:af8def1e0b5c3dc122557f71f5637a529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default downlink (RX1) channel span for mask-type bands. <br /></td></tr>
+<tr class="memdesc:af8def1e0b5c3dc122557f71f5637a529"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default downlink (RX1) channel span for fixed bands. <br /></td></tr>
 <tr class="separator:af8def1e0b5c3dc122557f71f5637a529"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa9cd9d68c61815da4ae01f7ce312a83"><td class="memItemLeft" align="right" valign="top"><a id="aaa9cd9d68c61815da4ae01f7ce312a83"></a>
-uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#aaa9cd9d68c61815da4ae01f7ce312a83">rx1DataRateBase</a></td></tr>
-<tr class="memdesc:aaa9cd9d68c61815da4ae01f7ce312a83"><td class="mdescLeft">&#160;</td><td class="mdescRight">The base downlink data rate. Used to calculate data rate changes for adaptive data rate. <br /></td></tr>
-<tr class="separator:aaa9cd9d68c61815da4ae01f7ce312a83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f4fae45f4f53b843c5ccd9a03c7ce78"><td class="memItemLeft" align="right" valign="top"><a id="a6f4fae45f4f53b843c5ccd9a03c7ce78"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx1DrTable</b> [RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES][8]</td></tr>
+<tr class="separator:a6f4fae45f4f53b843c5ccd9a03c7ce78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3ed10eddc647a6f770121a1662a854f"><td class="memItemLeft" align="right" valign="top"><a id="ae3ed10eddc647a6f770121a1662a854f"></a>
 <a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f">rx2</a></td></tr>
 <tr class="memdesc:ae3ed10eddc647a6f770121a1662a854f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backup channel for downlink (RX2) window. <br /></td></tr>
 <tr class="separator:ae3ed10eddc647a6f770121a1662a854f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a918f643c1fc6df722efd8f969c68cf7e"><td class="memItemLeft" align="right" valign="top"><a id="a918f643c1fc6df722efd8f969c68cf7e"></a>
+<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e">txWoR</a> [2]</td></tr>
+<tr class="memdesc:a918f643c1fc6df722efd8f969c68cf7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relay channels for WoR uplink. <br /></td></tr>
+<tr class="separator:a918f643c1fc6df722efd8f969c68cf7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a709fdad617bd9138eef52bc7220c29f2"><td class="memItemLeft" align="right" valign="top"><a id="a709fdad617bd9138eef52bc7220c29f2"></a>
+<a class="el" href="struct_lo_ra_w_a_n_channel__t.html">LoRaWANChannel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2">txAck</a> [2]</td></tr>
+<tr class="memdesc:a709fdad617bd9138eef52bc7220c29f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Relay channels for ACK downlink. <br /></td></tr>
+<tr class="separator:a709fdad617bd9138eef52bc7220c29f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b518a570756048dec56bec703a0b25b"><td class="memItemLeft" align="right" valign="top"><a id="a8b518a570756048dec56bec703a0b25b"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_band__t.html#a8b518a570756048dec56bec703a0b25b">dataRates</a> [RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES]</td></tr>
 <tr class="memdesc:a8b518a570756048dec56bec703a0b25b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The corresponding datarates, bandwidths and coding rates for DR index. <br /></td></tr>

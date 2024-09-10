@@ -105,10 +105,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="stru
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#a9fc4b7ec0b298df267cc2c39ef12cfa0">idx</a></td></tr>
 <tr class="memdesc:a9fc4b7ec0b298df267cc2c39ef12cfa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The channel number, as specified by defaults or the network. <br /></td></tr>
 <tr class="separator:a9fc4b7ec0b298df267cc2c39ef12cfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6817d72e21bdfb11ee857fc54cc022e8"><td class="memItemLeft" align="right" valign="top"><a id="a6817d72e21bdfb11ee857fc54cc022e8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#a6817d72e21bdfb11ee857fc54cc022e8">freq</a></td></tr>
-<tr class="memdesc:a6817d72e21bdfb11ee857fc54cc022e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The channel frequency. <br /></td></tr>
-<tr class="separator:a6817d72e21bdfb11ee857fc54cc022e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96620451b311ba0126b9575aec81ec2f"><td class="memItemLeft" align="right" valign="top"><a id="a96620451b311ba0126b9575aec81ec2f"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#a96620451b311ba0126b9575aec81ec2f">freq</a></td></tr>
+<tr class="memdesc:a96620451b311ba0126b9575aec81ec2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The channel frequency (coded in 100 Hz steps) <br /></td></tr>
+<tr class="separator:a96620451b311ba0126b9575aec81ec2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb028e93f3fe15ed6f95e5fcd8a62f53"><td class="memItemLeft" align="right" valign="top"><a id="abb028e93f3fe15ed6f95e5fcd8a62f53"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#abb028e93f3fe15ed6f95e5fcd8a62f53">drMin</a></td></tr>
 <tr class="memdesc:abb028e93f3fe15ed6f95e5fcd8a62f53"><td class="mdescLeft">&#160;</td><td class="mdescRight">Minimum allowed datarate for this channel. <br /></td></tr>
@@ -117,6 +117,14 @@ uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="s
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#aeabadf186d7bc105f6d289e3a491412c">drMax</a></td></tr>
 <tr class="memdesc:aeabadf186d7bc105f6d289e3a491412c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum allowed datarate for this channel (inclusive) <br /></td></tr>
 <tr class="separator:aeabadf186d7bc105f6d289e3a491412c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8332e2b32f822524c6a1ed04de3144bf"><td class="memItemLeft" align="right" valign="top"><a id="a8332e2b32f822524c6a1ed04de3144bf"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#a8332e2b32f822524c6a1ed04de3144bf">dr</a></td></tr>
+<tr class="memdesc:a8332e2b32f822524c6a1ed04de3144bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Datarate currently in use on this channel. <br /></td></tr>
+<tr class="separator:a8332e2b32f822524c6a1ed04de3144bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8fc9046c6351b3bc54825052c471dd"><td class="memItemLeft" align="right" valign="top"><a id="a5d8fc9046c6351b3bc54825052c471dd"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_lo_ra_w_a_n_channel__t.html#a5d8fc9046c6351b3bc54825052c471dd">available</a></td></tr>
+<tr class="memdesc:a5d8fc9046c6351b3bc54825052c471dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether this channel is available for channel selection. <br /></td></tr>
+<tr class="separator:a5d8fc9046c6351b3bc54825052c471dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Structure to save information about LoRaWAN channels. To save space, adjacent channels are saved in "spans". </p>

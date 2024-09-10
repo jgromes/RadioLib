@@ -24,8 +24,6 @@ var annotated_dup =
     [ "LoRaWANEvent_t", "struct_lo_ra_w_a_n_event__t.html", "struct_lo_ra_w_a_n_event__t" ],
     [ "LoRaWANJoinEvent_t", "struct_lo_ra_w_a_n_join_event__t.html", "struct_lo_ra_w_a_n_join_event__t" ],
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", "struct_lo_ra_w_a_n_mac_command__t" ],
-    [ "LoRaWANMacCommandQueue_t", "struct_lo_ra_w_a_n_mac_command_queue__t.html", "struct_lo_ra_w_a_n_mac_command_queue__t" ],
-    [ "LoRaWANMacSpec_t", "struct_lo_ra_w_a_n_mac_spec__t.html", "struct_lo_ra_w_a_n_mac_spec__t" ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", "class_lo_ra_w_a_n_node" ],
     [ "LR1110", "class_l_r1110.html", "class_l_r1110" ],
     [ "LR1120", "class_l_r1120.html", "class_l_r1120" ],

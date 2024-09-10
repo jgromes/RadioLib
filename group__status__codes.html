@@ -422,10 +422,10 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gace49554c055f7b2d02ef0c39c006529c">RADIOLIB_ERR_CHECKSUM_MISMATCH</a>&#160;&#160;&#160;(-1115)</td></tr>
 <tr class="memdesc:gace49554c055f7b2d02ef0c39c006529c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffer integrity check did not match the supplied checksum value. <br /></td></tr>
 <tr class="separator:gace49554c055f7b2d02ef0c39c006529c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga54253de08594806b0a6cd8fd0576e6aa"><td class="memItemLeft" align="right" valign="top"><a id="ga54253de08594806b0a6cd8fd0576e6aa"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga54253de08594806b0a6cd8fd0576e6aa">RADIOLIB_LORAWAN_NO_DOWNLINK</a>&#160;&#160;&#160;(-1116)</td></tr>
-<tr class="memdesc:ga54253de08594806b0a6cd8fd0576e6aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">No downlink was received - most likely none was sent from the server. <br /></td></tr>
-<tr class="separator:ga54253de08594806b0a6cd8fd0576e6aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3f645f530e74765d4ef6ab5e3b01dd52"><td class="memItemLeft" align="right" valign="top"><a id="ga3f645f530e74765d4ef6ab5e3b01dd52"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga3f645f530e74765d4ef6ab5e3b01dd52">RADIOLIB_ERR_NO_JOIN_ACCEPT</a>&#160;&#160;&#160;(-1116)</td></tr>
+<tr class="memdesc:ga3f645f530e74765d4ef6ab5e3b01dd52"><td class="mdescLeft">&#160;</td><td class="mdescRight">No JoinAccept was received - check your keys, or otherwise likely a range issue! <br /></td></tr>
+<tr class="separator:ga3f645f530e74765d4ef6ab5e3b01dd52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga633e2f826e44d4575ca67459fda5d660"><td class="memItemLeft" align="right" valign="top"><a id="ga633e2f826e44d4575ca67459fda5d660"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga633e2f826e44d4575ca67459fda5d660">RADIOLIB_LORAWAN_SESSION_RESTORED</a>&#160;&#160;&#160;(-1117)</td></tr>
 <tr class="memdesc:ga633e2f826e44d4575ca67459fda5d660"><td class="mdescLeft">&#160;</td><td class="mdescRight">The LoRaWAN session was successfully re-activated. <br /></td></tr>
@@ -434,18 +434,18 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gae99db161b4e00a44c0a60951ddb7c8a6">RADIOLIB_LORAWAN_NEW_SESSION</a>&#160;&#160;&#160;(-1118)</td></tr>
 <tr class="memdesc:gae99db161b4e00a44c0a60951ddb7c8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">A new LoRaWAN session is started. <br /></td></tr>
 <tr class="separator:gae99db161b4e00a44c0a60951ddb7c8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf8ca4fbfe67d1e045e6e2fa80d2348a4"><td class="memItemLeft" align="right" valign="top"><a id="gaf8ca4fbfe67d1e045e6e2fa80d2348a4"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gaf8ca4fbfe67d1e045e6e2fa80d2348a4">RADIOLIB_LORAWAN_NONCES_DISCARDED</a>&#160;&#160;&#160;(-1119)</td></tr>
-<tr class="memdesc:gaf8ca4fbfe67d1e045e6e2fa80d2348a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied Nonces buffer is discarded as its activation information is invalid. <br /></td></tr>
-<tr class="separator:gaf8ca4fbfe67d1e045e6e2fa80d2348a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4a1cf58bbf2a0f59a568c1bf2e0553cf"><td class="memItemLeft" align="right" valign="top"><a id="ga4a1cf58bbf2a0f59a568c1bf2e0553cf"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga4a1cf58bbf2a0f59a568c1bf2e0553cf">RADIOLIB_LORAWAN_SESSION_DISCARDED</a>&#160;&#160;&#160;(-1120)</td></tr>
-<tr class="memdesc:ga4a1cf58bbf2a0f59a568c1bf2e0553cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied Session buffer is discarded as it doesn't match the Nonces. <br /></td></tr>
-<tr class="separator:ga4a1cf58bbf2a0f59a568c1bf2e0553cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaee2d26cfcad40eb3abb7ad067d6ae5c3"><td class="memItemLeft" align="right" valign="top"><a id="gaee2d26cfcad40eb3abb7ad067d6ae5c3"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gaee2d26cfcad40eb3abb7ad067d6ae5c3">RADIOLIB_LORAWAN_INVALID_MODE</a>&#160;&#160;&#160;(-1121)</td></tr>
-<tr class="memdesc:gaee2d26cfcad40eb3abb7ad067d6ae5c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requested command is unavailable under the current LoRaWAN mode. <br /></td></tr>
-<tr class="separator:gaee2d26cfcad40eb3abb7ad067d6ae5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43dcb8186ad075dd1386da167480b396"><td class="memItemLeft" align="right" valign="top"><a id="ga43dcb8186ad075dd1386da167480b396"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga43dcb8186ad075dd1386da167480b396">RADIOLIB_ERR_NONCES_DISCARDED</a>&#160;&#160;&#160;(-1119)</td></tr>
+<tr class="memdesc:ga43dcb8186ad075dd1386da167480b396"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied Nonces buffer is discarded as its activation information is invalid. <br /></td></tr>
+<tr class="separator:ga43dcb8186ad075dd1386da167480b396"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadf08d3de797fe01de54f7d26cc0b0d48"><td class="memItemLeft" align="right" valign="top"><a id="gadf08d3de797fe01de54f7d26cc0b0d48"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gadf08d3de797fe01de54f7d26cc0b0d48">RADIOLIB_ERR_SESSION_DISCARDED</a>&#160;&#160;&#160;(-1120)</td></tr>
+<tr class="memdesc:gadf08d3de797fe01de54f7d26cc0b0d48"><td class="mdescLeft">&#160;</td><td class="mdescRight">The supplied Session buffer is discarded as it doesn't match the Nonces. <br /></td></tr>
+<tr class="separator:gadf08d3de797fe01de54f7d26cc0b0d48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4871133fa9b6d7cdbee82daf2226d373"><td class="memItemLeft" align="right" valign="top"><a id="ga4871133fa9b6d7cdbee82daf2226d373"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga4871133fa9b6d7cdbee82daf2226d373">RADIOLIB_ERR_INVALID_MODE</a>&#160;&#160;&#160;(-1121)</td></tr>
+<tr class="memdesc:ga4871133fa9b6d7cdbee82daf2226d373"><td class="mdescLeft">&#160;</td><td class="mdescRight">The requested command is unavailable under the current LoRaWAN mode. <br /></td></tr>
+<tr class="separator:ga4871133fa9b6d7cdbee82daf2226d373"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac0673e69b893d8f23e339f218d376a52"><td class="memItemLeft" align="right" valign="top"><a id="gac0673e69b893d8f23e339f218d376a52"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gac0673e69b893d8f23e339f218d376a52">RADIOLIB_ERR_INVALID_WIFI_TYPE</a>&#160;&#160;&#160;(-1200)</td></tr>
 <tr class="memdesc:gac0673e69b893d8f23e339f218d376a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected 802.11 WiFi type is invalid. <br /></td></tr>

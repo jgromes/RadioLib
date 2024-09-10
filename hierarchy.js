@@ -24,8 +24,6 @@ var hierarchy =
     [ "LoRaWANEvent_t", "struct_lo_ra_w_a_n_event__t.html", null ],
     [ "LoRaWANJoinEvent_t", "struct_lo_ra_w_a_n_join_event__t.html", null ],
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", null ],
-    [ "LoRaWANMacCommandQueue_t", "struct_lo_ra_w_a_n_mac_command_queue__t.html", null ],
-    [ "LoRaWANMacSpec_t", "struct_lo_ra_w_a_n_mac_spec__t.html", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", null ],
     [ "LR11x0GnssResult_t", "struct_l_r11x0_gnss_result__t.html", null ],
     [ "LR11x0VersionInfo_t", "struct_l_r11x0_version_info__t.html", null ],
