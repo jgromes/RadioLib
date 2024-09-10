@@ -1718,7 +1718,7 @@ int16_t LR11x0::isGnssScanCapable() {
   RADIOLIB_ASSERT(state);
 
   // in debug mode, dump the almanac
-  #if RADIOLIB_DEBUG_BASIC
+  #if RADIOLIB_DEBUG_BASIC && 0
   uint32_t addr = 0;
   uint16_t sz = 0;
   state = this->gnssAlmanacReadAddrSize(&addr, &sz);
@@ -1747,6 +1747,76 @@ int16_t LR11x0::isGnssScanCapable() {
   return(state);
 }
 
+#define VERBOSE_STATUS 1
+#if VERBOSE_STATUS
+constexpr int lr1110_demod_status_offset = 21; // add to demosStatus to index into this array
+static const char* lr1110_demod_status_pos[] = {
+  "Impossible to demodulate BDS almanac SV31-43",
+  "The satellite selected for demodulation lost",
+  "Almanac demod error",
+  "Wake up after preamble (demodulation launched too late to get time information from the satellite signal)",
+  "20 ms real time failure",
+  "Wake up sync Failure",
+  "Week Number not validated",
+  "No activated satellite in satellite list at least for one constellation",
+  "Sleep time too long",
+  "Wrong Time Of Week demodulated",
+  "Preamble not validated",
+  "Demod disable",
+  "Demod extraction failure",
+  "No bit change found during start demod",
+  "No bit change found during advanced scan",
+  "No satellite found",
+  "Word sync lost",
+  "Reserved",
+  "Not enough parity check found",
+  "Too many parity check found",
+  "No parity check found",
+  "word sync search not started",
+  "Word sync potentially found",
+  "Word sync found",
+  "Time Of Week found",
+  "Week Number found (Time Of Week as well)",
+  "Almanac found but no saved in retention memory",
+  "Half Almanac found saved in retention memory",
+  "All Almanac found saved in retention memory",
+};
+
+static const char *getDemodStatus(int8_t demodStatus) {
+  static const char *invalid = "Invalid demod status";
+  int8_t ix = demodStatus + lr1110_demod_status_offset;
+  if (ix < 0) return invalid;
+  if (ix >= sizeof(lr1110_demod_status_pos)/4) return invalid;
+  return lr1110_demod_status_pos[ix];
+}
+
+static const char* lr1110_scan_mode[] = {
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Assisted mode (Time and Assisted Position known)",
+  "Cold start mode (Time and Assisted Position unknown)",
+  "Cold start mode (Time known and Assisted Position unknown)",
+  "Fetch time or integrated 2D command launched",
+  "Almanac update command launched without flash at the end",
+  "Keep sync launched",
+  "Almanac Update command launched with 1 constellation flashed at the end",
+  "Almanac Update command launched with 2 constellation flashed at the end",
+  "Invalid",
+};
+
+constexpr int lr1110_almanac_status_offset = 4;
+static const char* lr1110_almanac_status[] = {
+  "Internal time accuracy too low",
+  "No time set",
+  "Impossible to find next time",
+  "No page id known",
+  "No satellite to update",
+  "At least 1 satellite must be updated",
+  "Invalid",
+};
+#endif
+
 int16_t LR11x0::gnssScan(uint16_t* resSize) {
   // go to standby
   int16_t state = standby();
@@ -1759,6 +1829,9 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   // set scan mode (single vs multiple)
   state = this->gnssSetMode(0x03);
   RADIOLIB_ASSERT(state);
+
+  // set RF switch (if present)
+  // this->mod->setRfSwitchState(LR11x0::MODE_GNSS); // doesn't work...
 
   // start scan with high effort
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan start");
@@ -1779,6 +1852,9 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
   
+  // set RF switch (if present)
+  // this->mod->setRfSwitchState(LR11x0::MODE_STBY);
+
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
@@ -1786,7 +1862,11 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   uint8_t info = 0;
   state = this->gnssReadDemodStatus(&status, &info);
   RADIOLIB_ASSERT(state);
+  #if VERBOSE_STATUS
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status '%s' (%d), info %02x", getDemodStatus(status), (int)status, (unsigned int)info);
+  #else
   RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
+  #endif
 
   uint8_t fwVersion = 0;
   uint32_t almanacCrc = 0;
@@ -1798,13 +1878,41 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
     (int)fwVersion, (unsigned long)almanacCrc, (int)errCode, (int)almUpdMask, (int)freqSpace);
   RADIOLIB_ASSERT(state);
 
+#if 0 // TvE
+  uint8_t stat[53] = { 0 };
+  state = this->gnssReadAlmanacStatus(stat);
+  RADIOLIB_ASSERT(state);
+
+  #if VERBOSE_STATUS
+  uint8_t gpsStatus = (int8_t)stat[1] + lr1110_almanac_status_offset;
+  if (gpsStatus > sizeof(lr1110_almanac_status)/4) gpsStatus = sizeof(lr1110_almanac_status)/4-1;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac status: '%s' (%d), SVs needing update: %d",
+    lr1110_almanac_status[gpsStatus], int8_t(stat[1]), stat[10]);
+  uint32_t almDelay = ((uint32_t)stat[5]<<24) | ((uint32_t)stat[4] << 16) | ((uint32_t)stat[3] << 8) | stat[2];
+  RADIOLIB_DEBUG_BASIC_PRINTLN("    delay: %d; subframes: %d; SVs: %d,%d; next subframe: %d",
+    almDelay, stat[6], stat[7], stat[8], stat[9]);
+
+  uint8_t bduStatus = (int8_t)stat[19] + lr1110_almanac_status_offset;
+  if (bduStatus > sizeof(lr1110_almanac_status)/4) bduStatus = sizeof(lr1110_almanac_status)/4-1;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("bdu almanac status: '%s' (%d), SVs needing update: %d",
+    lr1110_almanac_status[bduStatus], int8_t(stat[19]), stat[28]);
+  almDelay = ((uint32_t)stat[23]<<24) | ((uint32_t)stat[22] << 16) | ((uint32_t)stat[21] << 8) | stat[20];
+  RADIOLIB_DEBUG_BASIC_PRINTLN("    delay: %d; subframes: %d; SVs: %d %d; next subframe: %d",
+    almDelay, stat[24], stat[25], stat[26], stat[27]);
+  #else
+  //Module::hexdump(NULL, stat, 53);
+  #endif
+#endif
+
   return(this->gnssGetResultSize(resSize));
 }
 
 int16_t LR11x0::getGnssScanResult(uint16_t size) {
+  int16_t state;
+#if 0
   uint32_t timing[31] = { 0 };
   uint8_t constDemod = 0;
-  int16_t state = this->gnssReadCumulTiming(timing, &constDemod);
+  state = this->gnssReadCumulTiming(timing, &constDemod);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timing:");
   for(size_t i = 0; i < 31; i++) {
@@ -1813,6 +1921,17 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", (int)i*4, (unsigned long)t);
   }
   RADIOLIB_DEBUG_BASIC_PRINTLN("constDemod: %d", constDemod);
+#endif
+
+  uint8_t lsMode;
+  state = this->gnssReadLastScanModeLaunched(&lsMode);
+  RADIOLIB_ASSERT(state);
+  #if VERBOSE_STATUS
+  if (lsMode > 10) lsMode = 11;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Last scan mode '%s' (%d)", lr1110_scan_mode[lsMode], lsMode);
+  #else
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Last scan mode %d", lsMode);
+  #endif
 
   uint8_t nbSv = 0;
   state = this->gnssGetNbSvDetected(&nbSv);
@@ -1828,18 +1947,33 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: SNR %i dB, Doppler %i Hz", (int)i, snr[i], doppler[i]);
   }
 
+#if 1 // TvE
+  uint8_t timeErr;
+  uint32_t gpsTime, nbUs, timeAcc;
+  state = this->gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
+  RADIOLIB_ASSERT(state);
+  if (timeErr == 0) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time=%d %dus accuracy=%dus", gpsTime, nbUs<<4, timeAcc<<4);
+  } else {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time not available (%s)",
+      timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
+  }
+#endif
+
   float lat = 0;
   float lon = 0;
   state = this->gnssReadAssistancePosition(&lat, &lon);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("lat = %.5f, lon = %.5f", lat, lon);
 
+#if 0
   // read the result
   uint8_t res[256] = { 0 };
   state = this->gnssReadResults(res, size);
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_BASIC_PRINTLN("Result type: %02x", (int)res[0]);
   //Module::hexdump(NULL, res, size);
+#endif
 
   return(state);
 }
@@ -3347,6 +3481,8 @@ int16_t LR11x0::gnssGetSvVisible(uint8_t nbSv, uint8_t** svId, int16_t** doppler
 
 int16_t LR11x0::gnssPerformScan(uint8_t effort, uint8_t resMask, uint8_t nbSvMax) {
   uint8_t buff[3] = { effort, resMask, nbSvMax };
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Starting GNSS scan with effort=%d resMask=%x nbsvMax=%d", effort, resMask, nbSvMax);
+
   // call the SPI write stream directly to skip waiting for BUSY - it will be set to high once the scan starts
   return(this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_GNSS_SCAN, buff, sizeof(buff), false, false));
 }
