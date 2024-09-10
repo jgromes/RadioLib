@@ -32,7 +32,7 @@ var class_s_x128x =
     [ "receiveDirect", "class_s_x128x.html#aff7d86352c98771595375e17d19a2a97", null ],
     [ "reset", "class_s_x128x.html#a2643ce22176293631fea2169f5e68e66", null ],
     [ "scanChannel", "class_s_x128x.html#a2f8427103d6609f3ac44b23fcca4f301", null ],
-    [ "scanChannel", "class_s_x128x.html#a4ae775bde3a8c0608bc24f28d024911c", null ],
+    [ "scanChannel", "class_s_x128x.html#ab55112682432f369fb17f8107ba5158b", null ],
     [ "setAccessAddress", "class_s_x128x.html#a9346490a6c56edcff2e12ae0369a8df5", null ],
     [ "setBandwidth", "class_s_x128x.html#ae93c99c85deb950fe9bc7101142b5f6a", null ],
     [ "setBitRate", "class_s_x128x.html#ad6570f33bae09bc8b7617f9da39033ac", null ],

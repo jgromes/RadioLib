@@ -15,5 +15,6 @@ var searchData=
   ['bellclient_24',['BellClient',['../class_bell_client.html#a20fcf0322ef40c31b3bc329f7d89a177',1,'BellClient::BellClient(PhysicalLayer *phy, uint32_t pin)'],['../class_bell_client.html#ab9d0d76bb88fc8bdc995ab800063c149',1,'BellClient::BellClient(AFSKClient *aud)'],['../class_bell_client.html',1,'BellClient']]],
   ['bellmodem_5ft_25',['BellModem_t',['../struct_bell_modem__t.html',1,'']]],
   ['bitrate_26',['bitRate',['../struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107',1,'FSKRate_t']]],
-  ['bytearr_27',['byteArr',['../class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d',1,'ITA2String']]]
+  ['bw_27',['bw',['../struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21',1,'LrFhssRate_t']]],
+  ['bytearr_28',['byteArr',['../class_i_t_a2_string.html#a3f42f7ad98473dbe36515e676622ed3d',1,'ITA2String']]]
 ];

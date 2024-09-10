@@ -39,7 +39,7 @@ var class_s_x126x =
     [ "receiveDirect", "class_s_x126x.html#a8a18aee2bf05793aa29b5cf6b47bb435", null ],
     [ "reset", "class_s_x126x.html#a9aa6dd05dd32ef717a06cc8ba28ff71f", null ],
     [ "scanChannel", "class_s_x126x.html#acb8611a9c3862dd1bfa73ef47b8f9b20", null ],
-    [ "scanChannel", "class_s_x126x.html#ab18fafe6b23b8fe32b0297895c23a819", null ],
+    [ "scanChannel", "class_s_x126x.html#a373012fb3276872238f654b66879a710", null ],
     [ "setBandwidth", "class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08", null ],
     [ "setBitRate", "class_s_x126x.html#ac38a19db6b8b9aff438d6e23051d487d", null ],
     [ "setBroadcastAddress", "class_s_x126x.html#abd8eea7e468db3d6064c19d4934d5034", null ],

@@ -34,6 +34,7 @@ var hierarchy =
         [ "LR11x0WifiResultExtended_t", "struct_l_r11x0_wifi_result_extended__t.html", null ]
       ] ]
     ] ],
+    [ "LrFhssRate_t", "struct_lr_fhss_rate__t.html", null ],
     [ "Module", "class_module.html", [
       [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ]
     ] ],

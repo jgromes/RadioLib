@@ -31,7 +31,7 @@ var class_physical_layer =
     [ "receive", "class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8", null ],
     [ "receiveDirect", "class_physical_layer.html#ad9d1dbb2041e87af5a80e12f125a60e6", null ],
     [ "scanChannel", "class_physical_layer.html#abd9e39cc745acbf084cfa0d3f4d10718", null ],
-    [ "scanChannel", "class_physical_layer.html#a6925c490f6c075022a72261802731cbb", null ],
+    [ "scanChannel", "class_physical_layer.html#af788cf83ceb0222cd0fa4a1323b9041b", null ],
     [ "setBitRate", "class_physical_layer.html#aedd39ad84b45c6392087b12d59192d8c", null ],
     [ "setChannelScanAction", "class_physical_layer.html#ae11c191a7edf3116bf468b9153237260", null ],
     [ "setDataRate", "class_physical_layer.html#a6ee1fed6bbb8d3571974153ac6f26751", null ],

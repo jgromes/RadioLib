@@ -48,7 +48,7 @@ var class_l_r11x0 =
     [ "receiveDirect", "class_l_r11x0.html#ae1a8e8eda78113c47f1a865e63051bb5", null ],
     [ "reset", "class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994", null ],
     [ "scanChannel", "class_l_r11x0.html#a6a3034c91f5bce70c853ab1620725b3c", null ],
-    [ "scanChannel", "class_l_r11x0.html#a9a54e2c28e86752d2dac00d61e0e3610", null ],
+    [ "scanChannel", "class_l_r11x0.html#a5e8f21878bdab1439805aea1e9da168d", null ],
     [ "setBandwidth", "class_l_r11x0.html#abf961ec7d93feb6472f26b7b976ee0c9", null ],
     [ "setBitRate", "class_l_r11x0.html#ab1954e4733a7fbea4129d9a2de2285d9", null ],
     [ "setBroadcastAddress", "class_l_r11x0.html#af24ba794f71c4e37cd13d2f4dbec5bf7", null ],
