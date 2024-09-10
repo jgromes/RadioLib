@@ -53,6 +53,18 @@ struct FSKRate_t {
 };
 
 /*!
+  \struct LrFhssRate_t
+  \brief Data rate structure interpretation in case LR-FHSS is used
+*/
+struct LrFhssRate_t {
+  /*! \brief Bandwidth */
+  uint8_t bw;
+
+  /*! \brief Coding rate */
+  uint8_t cr;
+};
+
+/*!
   \union DataRate_t
   \brief Common data rate structure
 */
