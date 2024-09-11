@@ -18,20 +18,28 @@ fi
 
 PORT=$(echo /dev/serial/by-id/*Wio_Tracker*)
 NAME=$(basename $PWD)
+stty -F $PORT 1200; sleep 0.5
 arduino-cli compile --fqbn Seeeduino:nrf52:wio_tracker_1110 --quiet --output-dir ./build
 
-echo >/tmp/adanrf
-while ! grep -q 'Device programmed' /tmp/adanrf; do
+while true; do
+    DEV=$(lsusb | grep 'Wio Tracker' | cut '-d ' -f4)
+    echo -n "'Touching' port (dev=$DEV) ..."
     stty -F $PORT 1200
-    sleep 1
+    # sleep 1
+    # while true; do
+    #     DEV2=$(lsusb | grep 'Wio Tracker' | cut '-d ' -f4)
+    #     if [[ -n "$DEV2" ]] && [[ "$DEV2" != "$DEV" ]]; then echo -n " (dev=$DEV2) ... "; break; fi
+    #     sleep 0.2
+    # done
+    # sleep 3
     while ! [ -c $PORT ]; do echo "waiting for bootloder"; sleep 1; done
-    sleep 1
+    # sleep 1
+    # lsusb | grep Seeed
+    echo "Starting download"
     adafruit-nrfutil dfu serial -pkg build/$NAME.ino.zip -p $PORT -b 115200 -sb >/tmp/adanrf
     head -2 /tmp/adanrf
-    sleep 1
+    grep -q 'Device programmed' /tmp/adanrf && break
+    sleep 5
 done
-sleep 2
-while ! [ -c $PORT ]; do echo "waiting for console"; sleep 1; done
-sleep 1
-# while ! [[ -e $(echo $PORT) ]]; do echo ls /dev/ttyACM0 $PORT; sleep 1; done
+sleep 3
 arduino-cli monitor --fqbn Seeeduino:nrf52:wio_tracker_1110 -p $PORT -c 115200

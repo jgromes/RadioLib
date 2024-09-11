@@ -274,7 +274,8 @@
 #define RADIOLIB_LR11X0_IRQ_FSK_LEN_ERROR                       (0x01UL << 24)  //  31    0                FSK packet received with length error
 #define RADIOLIB_LR11X0_IRQ_FSK_ADDR_ERROR                      (0x01UL << 25)  //  31    0                FSK packet received with address error
 #define RADIOLIB_LR11X0_IRQ_LORA_RX_TIMESTAMP                   (0x01UL << 27)  //  31    0                last LoRa symbol was received (timestamp source)
-#define RADIOLIB_LR11X0_IRQ_ALL                                 (0x0BF80FFCUL)  //  31    0                all interrupts
+#define RADIOLIB_LR11X0_IRQ_GNSS_ABORT                          (0x01UL << 28)  //  31    0                last LoRa symbol was received (timestamp source)
+#define RADIOLIB_LR11X0_IRQ_ALL                                 (0x1BF80FFCUL)  //  31    0                all interrupts
 #define RADIOLIB_LR11X0_IRQ_NONE                                (0x00UL << 0)   //  31    0                no interrupts
 
 // RADIOLIB_LR11X0_CMD_CONFIG_LF_LOCK
@@ -568,6 +569,16 @@
 #define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN              (0x01UL << 0)   //  7     0                         ToW and WN
 #define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN_ROLL         (0x02UL << 0)   //  7     0                         ToW, WN and rollover
 
+// RADIOLIB_LR11X0_CMD_GNSS_READ_LAST_SCAN_MODE
+#define RADIOLIB_LR11X0_GNSS_SCAN_ASSISTED                      (3)             //  7     0     Assisted mode (Time and Assisted Position known)
+#define RADIOLIB_LR11X0_GNSS_SCAN_COLD                          (4)             //  7     0     Cold start mode (Time and Assisted Position unknown)
+#define RADIOLIB_LR11X0_GNSS_SCAN_SEMICOLD                      (5)             //  7     0     Cold start mode (Time known and Assisted Position unknown)
+#define RADIOLIB_LR11X0_GNSS_SCAN_FETCH                         (6)             //  7     0     Fetch time or integrated 2D command launched
+#define RADIOLIB_LR11X0_GNSS_SCAN_ALMANAC_NOFLASH               (7)             //  7     0     Almanac update command launched without flash at the end
+#define RADIOLIB_LR11X0_GNSS_SCAN_KEEPSYNC                      (8)             //  7     0     Keep sync launched
+#define RADIOLIB_LR11X0_GNSS_SCAN_ALMANAC_1FLASH                (9)             //  7     0     Almanac Update command launched with 1 constellation flashed at the end
+#define RADIOLIB_LR11X0_GNSS_SCAN_ALMANAC_2FLASH                (10)            //  7     0     Almanac Update command launched with 2 constellation flashed at the end
+
 // RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS                   (0x00UL << 0)   //  7     0     crypto engine status: success
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_FAIL_CMAC                 (0x01UL << 0)   //  7     0                           MIC check failed
@@ -725,6 +736,11 @@ struct LR11x0GnssResult_t {
 
 };
 
+/*!
+  \struct LR11x0GnssAlmanacStatusPart_t
+  \brief Almanac status info, https://en.wikipedia.org/wiki/GPS_signals 'Navigation Message'
+  is helpful to understand the subframes. SubFrames 4 & 5 hold almanac info for one sat each.
+*/
 struct LR11x0GnssAlmanacStatusPart_t {
   int8_t status;
   uint32_t timeUntilSubframe;
@@ -822,6 +838,14 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage);
+
+    /*!
+      \brief Initialization method for GNSS scanning.
+      \param tcxoVoltage TCXO reference voltage to be set.
+      \param constellations which constellations to use, union of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*
+      \returns \ref status_codes
+    */
+    int16_t beginGNSS(float tcxoVoltage = 1.6, uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS|RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -1434,11 +1458,29 @@ class LR11x0: public PhysicalLayer {
     */
     int16_t getGnssPosition(float* lat, float* lon, bool filtered = true);
 
+    /*!
+      \brief Get the status of the stored almanac data.
+      The status has information about both constellations and specifies when the next almanac
+      update could/should be performed and how long it will take. See updateGnssAlmanac.
+      \param stat Pointer to a struct to hold the status information.
+      \returns \ref status_codes
+    */
     int16_t getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat);
 
-    int16_t updateGnssAlmanac();
-
-    int16_t beginGNSS(float tcxoVoltage = 1.6);
+    /*!
+      \brief Perform an almanac update from satellite.
+      This function must be called at the right time for the radio to receive the satellite signals.
+      This timing information can be gathered from getGnssAlmanacStatus.
+      Tips: For GPS, updateGnssAlmanac should be called 1.3-2.3 seconds before the indicated due
+      time to allow the radio to lock onto the signal.
+      The expected duration of the update is the number of subframes * 6 seconds (plus the pre-roll
+      and some calculation/flashing time at the end).
+      \param constellation which constellation's almanac to update, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*
+      \param outcome (optional) provides info on whether the almanac data was saved to flash,
+        one of RADIOLIB_LR11X0_GNSS_SCAN_*
+      \returns \ref status_codes
+    */
+    int16_t updateGnssAlmanac(uint8_t constellation, uint8_t *outcome);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -1457,6 +1499,7 @@ class LR11x0: public PhysicalLayer {
     int16_t getVersion(uint8_t* hw, uint8_t* device, uint8_t* major, uint8_t* minor);
     int16_t getErrors(uint16_t* err);
     int16_t clearErrors(void);
+    int16_t showStatusErrors(void);
     int16_t calibrate(uint8_t params);
     int16_t setRegMode(uint8_t mode);
     int16_t calibImage(float freq1, float freq2);

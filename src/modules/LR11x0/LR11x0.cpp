@@ -117,15 +117,29 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage) {
   return(setModulationParamsLrFhss(RADIOLIB_LR11X0_LR_FHSS_BIT_RATE_RAW, RADIOLIB_LR11X0_LR_FHSS_SHAPING_GAUSSIAN_BT_1_0));
 }
 
-int16_t LR11x0::beginGNSS(float tcxoVoltage) {
+int16_t LR11x0::beginGNSS(float tcxoVoltage, uint8_t constellations) {
   // set module properties and perform initial setup - packet type does not matter
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
-  state = this->configLfClock(RADIOLIB_LR11X0_LF_CLK_RC | RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED);
+  // error checking inspired by mw_radio_configure_for_scan
+  // https://github.com/Lora-net/SWL2001/blob/master/lbm_lib/smtc_modem_core/geolocation_services/mw_common.c#L84
+  // experience here indicates this is pointless, the error occurs when running GnssScan
+  this->clearErrors();
+  uint8_t lf_config = RADIOLIB_LR11X0_LF_CLK_XOSC | RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("LF clock config: %x", lf_config); // debug while we're having issues with this
+  state = this->configLfClock(lf_config);
   RADIOLIB_ASSERT(state);
+  uint16_t errs = 0;
+  state = this->getErrors(&errs);
+  RADIOLIB_ASSERT(state);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Got errs %x", errs);
+  if (errs & 0x40) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("*** LF_XOSC_START_ERR");
+    return RADIOLIB_LR11X0_ERROR_STAT_LF_XOSC_START_ERR;
+  }
 
-  state = this->gnssSetConstellationToUse(RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU);
+  state = this->gnssSetConstellationToUse(constellations);
   RADIOLIB_ASSERT(state);
 
   state = setRegulatorLDO();
@@ -1824,19 +1838,19 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
 
   this->clearErrors();
 
+  // set RF switch (if present)
+  // FIXME: need to turn on LNA
+
   // set DIO mapping
-  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE);
+  state = setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE|RADIOLIB_LR11X0_IRQ_GNSS_ABORT);
   RADIOLIB_ASSERT(state);
 
   // set scan mode (single vs multiple)
   state = this->gnssSetMode(0x03);
   RADIOLIB_ASSERT(state);
 
-  // set RF switch (if present)
-  // this->mod->setRfSwitchState(LR11x0::MODE_GNSS); // doesn't work...
-
   // start scan with high effort
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan start");
+  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan start 'medium effort'");
   state = this->gnssPerformScan(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x3C, 8);
   RADIOLIB_ASSERT(state);
 
@@ -1847,33 +1861,27 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
       RADIOLIB_DEBUG_BASIC_PRINTLN("*** Timeout waiting for IRQ");
-      Serial.print("Busy is "); Serial.println(this->mod->hal->digitalRead(this->mod->gpioPin));
       this->standby();
+      showStatusErrors();
       {
         uint16_t errs;
         this->getErrors(&errs);
-        if (errs != 0) RADIOLIB_DEBUG_BASIC_PRINTLN("*** Errors after GNSS scan time-out: 0x%x", errs);
+        if (errs & 0x40) {
+          RADIOLIB_DEBUG_BASIC_PRINTLN("*** LF XTAL failed to start");
+          return RADIOLIB_ERR_INVALID_TCXO_VOLTAGE; // need a proper error code...
+        }
       }
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
 
+  showStatusErrors();
   this->standby(); // prob redundant
-  uint16_t errs;
-  state = this->getErrors(&errs);
-  RADIOLIB_ASSERT(state);
-  if (errs != 0) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Errors after GNSS scan: 0x%x", errs);
-    if (errs & 0x40) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("*** LF XTAL failed to start");
-      return RADIOLIB_ERR_INVALID_TCXO_VOLTAGE; // need a proper error code...
-    }
-  } else RADIOLIB_DEBUG_BASIC_PRINTLN("No errors after GNSS scan");
 
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
   
   // set RF switch (if present)
-  // this->mod->setRfSwitchState(LR11x0::MODE_STBY);
+  // FIXME: need to turn off LNA
 
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
@@ -1888,6 +1896,7 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
   #endif
 
+#if 0
   uint8_t fwVersion = 0;
   uint32_t almanacCrc = 0;
   uint8_t errCode = 0;
@@ -1897,31 +1906,6 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Context status fwVersion %d, almanacCrc %lx, errCode %d, almUpdMask %d, freqSpace %d", 
     (int)fwVersion, (unsigned long)almanacCrc, (int)errCode, (int)almUpdMask, (int)freqSpace);
   RADIOLIB_ASSERT(state);
-
-#if 0 // TvE
-  uint8_t stat[53] = { 0 };
-  state = this->gnssReadAlmanacStatus(stat);
-  RADIOLIB_ASSERT(state);
-
-  #if VERBOSE_STATUS
-  uint8_t gpsStatus = (int8_t)stat[1] + lr1110_almanac_status_offset;
-  if (gpsStatus > sizeof(lr1110_almanac_status)/4) gpsStatus = sizeof(lr1110_almanac_status)/4-1;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac status: '%s' (%d), SVs needing update: %d",
-    lr1110_almanac_status[gpsStatus], int8_t(stat[1]), stat[10]);
-  uint32_t almDelay = ((uint32_t)stat[5]<<24) | ((uint32_t)stat[4] << 16) | ((uint32_t)stat[3] << 8) | stat[2];
-  RADIOLIB_DEBUG_BASIC_PRINTLN("    delay: %d; subframes: %d; SVs: %d,%d; next subframe: %d",
-    almDelay, stat[6], stat[7], stat[8], stat[9]);
-
-  uint8_t bduStatus = (int8_t)stat[19] + lr1110_almanac_status_offset;
-  if (bduStatus > sizeof(lr1110_almanac_status)/4) bduStatus = sizeof(lr1110_almanac_status)/4-1;
-  RADIOLIB_DEBUG_BASIC_PRINTLN("bdu almanac status: '%s' (%d), SVs needing update: %d",
-    lr1110_almanac_status[bduStatus], int8_t(stat[19]), stat[28]);
-  almDelay = ((uint32_t)stat[23]<<24) | ((uint32_t)stat[22] << 16) | ((uint32_t)stat[21] << 8) | stat[20];
-  RADIOLIB_DEBUG_BASIC_PRINTLN("    delay: %d; subframes: %d; SVs: %d %d; next subframe: %d",
-    almDelay, stat[24], stat[25], stat[26], stat[27]);
-  #else
-  //Module::hexdump(NULL, stat, 53);
-  #endif
 #endif
 
   return(this->gnssGetResultSize(resSize));
@@ -1973,7 +1957,8 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   state = this->gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
   RADIOLIB_ASSERT(state);
   if (timeErr == 0) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time=%d %dus accuracy=%dus", gpsTime, nbUs<<4, timeAcc<<4);
+    uint32_t unixTime = gpsTime + 315964800 - 18; // 18 leap seconds since 1980
+    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time=%d %dus accuracy=%dus unix=%d", gpsTime, nbUs<<4, timeAcc<<4, unixTime);
   } else {
     RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time not available (%s)",
       timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
@@ -2054,42 +2039,13 @@ int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
   return(state);
 }
 
-int16_t LR11x0::updateGnssAlmanac() {
-  // fetch time from satellite signal
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS time fetch start");
-  int16_t state = this->gnssFetchTime(RADIOLIB_LR11X0_GNSS_EFFORT_MID, RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN);
-  RADIOLIB_ASSERT(state);
-
-  // wait for fetch finished or timeout
-  RadioLibTime_t softTimeout = 150UL * 1000UL;
-  RadioLibTime_t start = this->mod->hal->millis();
-  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
-    this->mod->hal->yield();
-    if(this->mod->hal->millis() - start > softTimeout) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for BUSY");
-      this->standby();
-      return(RADIOLIB_ERR_RX_TIMEOUT);
-    }
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS time fetch done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
-
-  // check time was successfully received
-  uint8_t err = 0;
-  uint32_t time = 0;
-  state = this->gnssReadTime(&err, &time, NULL, NULL);
-  RADIOLIB_ASSERT(state);
-  if(err != 0) {
-    RADIOLIB_DEBUG_PRINTLN("Failed to fetch time, error %02x", (int)err);
-    return(RADIOLIB_ERR_RX_TIMEOUT);
-  }
-  RADIOLIB_DEBUG_PRINTLN("GNSS time is %ld UTC", (long)time);
-  return(state);
-
+int16_t LR11x0::updateGnssAlmanac(uint8_t constellation, uint8_t *outcome) {
+#if 0
   // read almanac status
   LR11x0GnssAlmanacStatus_t almStat = { 0 };
-  state = this->getGnssAlmanacStatus(&almStat);
+  uint32_t start = this->mod->hal->millis();
+  int16_t state = this->getGnssAlmanacStatus(&almStat);
   RADIOLIB_ASSERT(state);
-  start = this->mod->hal->millis();
 
   RADIOLIB_DEBUG_PRINTLN("GNSS Almanac status");
   RADIOLIB_DEBUG_PRINTLN("GPS status %d", (int)almStat.gps.status);
@@ -2105,33 +2061,35 @@ int16_t LR11x0::updateGnssAlmanac() {
     return(RADIOLIB_ERR_NONE);
   }
 
-  // wait until almanac is available in GPS signal
+  // wait until almanac is available in GPS signal (needs to be done for Beidou as well)
   this->mod->hal->delay(almStat.gps.timeUntilSubframe - (this->mod->hal->millis() - start) );
+#endif
+  this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE|RADIOLIB_LR11X0_IRQ_GNSS_ABORT);
 
   // start almanac update for GPS satellites
-  RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update start");
-  state = this->gnssAlmanacUpdateFromSat(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x01);
+  uint16_t state = this->gnssAlmanacUpdateFromSat(RADIOLIB_LR11X0_GNSS_EFFORT_MID, constellation);
   RADIOLIB_ASSERT(state);
 
-  // wait for scan finished or timeout
-  softTimeout = 300UL * 1000UL;
-  start = this->mod->hal->millis();
-  while(this->mod->hal->digitalRead(this->mod->getGpio())) {
+  // wait for scan finished or timeout, assumes 2 subframes and up to 2.3s pre-roll
+  uint32_t softTimeout = 16UL * 1000UL;
+  uint32_t start = this->mod->hal->millis();
+  while (!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for BUSY");
-      this->standby();
+      RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for almanac update");
+      this->standby(); // FIXME: really need to use the correct abort procedure
       return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("done, busy=%d", this->mod->hal->digitalRead(this->mod->getGpio()));
+  // FIXME: distinguish between GNSS-done and GNSS-abort outcomes
+  this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
 
-  int8_t status = 0;
-  uint8_t info = 0;
-  state = this->gnssReadDemodStatus(&status, &info);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("foo");
+  if (outcome) {
+    state = this->gnssReadLastScanModeLaunched(outcome);
+    RADIOLIB_ASSERT(state);
+  }
 
   return(state);
 }
@@ -2465,12 +2423,14 @@ int16_t LR11x0::writeRegMemMask32(uint32_t addr, uint32_t mask, uint32_t data) {
 }
 
 int16_t LR11x0::getStatus(uint8_t* stat1, uint8_t* stat2, uint32_t* irq) {
-  uint8_t buff[6] = { 0 };
-
   // the status check command doesn't return status in the same place as other read commands
   // but only as the first byte (as with any other command), hence LR11x0::SPIcommand can't be used
   // it also seems to ignore the actual command, and just sending in bunch of NOPs will work 
-  int16_t state = this->mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  uint8_t buff[6] = { 0 };
+  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_0;
+  int16_t state = mod->SPItransferStream(NULL, 0, false, NULL, buff, sizeof(buff), true);
+  mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_STATUS] = Module::BITS_8;
+  RADIOLIB_ASSERT(state);
 
   // pass the replies
   if(stat1) { *stat1 = buff[0]; }
@@ -2503,6 +2463,28 @@ int16_t LR11x0::getErrors(uint16_t* err) {
   return(state);
 }
 
+int16_t LR11x0::showStatusErrors() {
+  uint8_t stat1, stat2;
+  uint32_t status = 0xdeadbeef;
+  uint16_t state = getStatus(&stat1, &stat2, &status);
+  static const char* CMD[] = {"FAIL","PERR","OK","DATA"};
+  uint8_t cmd_status = (stat1>>1)&7;
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Status: %x CMD_%s, %s, mode=%d",
+    stat1, cmd_status < 4 ? CMD[cmd_status] : "??", stat1&1?"INTR":"no-intr", (stat2>>1)&7);
+  uint16_t errs = 0xdead;
+  getErrors(&errs);
+  if (status != 0 || errs != 0) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("IRQstatus=%08x errors=0x%04x", status, errs);
+    for (int i=0; i<32; i++)
+      if ((1<<i) & status)
+        RADIOLIB_DEBUG_BASIC_PRINTLN("    IRQ bit %d set", i);
+    for (int i=0; i<16; i++)
+      if ((1<<i) & errs)
+        RADIOLIB_DEBUG_BASIC_PRINTLN("    err bit %d set", i);
+  }
+  return state;
+}
+
 int16_t LR11x0::clearErrors(void) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CLEAR_ERRORS, true, NULL, 0));
 }
@@ -2524,6 +2506,8 @@ int16_t LR11x0::calibImage(float freq1, float freq2) {
 }
 
 int16_t LR11x0::setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg) {
+  // RADIOLIB_DEBUG_BASIC_PRINTLN("DioAsRfSw: %x %x %x %x %x %x %x %x IRQpin=%d",
+  //   en, stbyCfg, rxCfg, txCfg, txHpCfg, txHfCfg, gnssCfg, wifiCfg, this->mod->getIrq());
   uint8_t buff[8] = { en, stbyCfg, rxCfg, txCfg, txHpCfg, txHfCfg, gnssCfg, wifiCfg };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_DIO_AS_RF_SWITCH, true, buff, sizeof(buff)));
 }
@@ -2533,11 +2517,18 @@ int16_t LR11x0::setDioIrqParams(uint32_t irq1, uint32_t irq2) {
     (uint8_t)((irq1 >> 24) & 0xFF), (uint8_t)((irq1 >> 16) & 0xFF), (uint8_t)((irq1 >> 8) & 0xFF), (uint8_t)(irq1 & 0xFF),
     (uint8_t)((irq2 >> 24) & 0xFF), (uint8_t)((irq2 >> 16) & 0xFF), (uint8_t)((irq2 >> 8) & 0xFF), (uint8_t)(irq2 & 0xFF),
   };
+
+  // RADIOLIB_DEBUG_BASIC_PRINTLN("DioIRQParams: %02x %02x %02x %02x  %02x%02x%02x%02x",
+  //   buff[0], buff[1], buff[2], buff[3], buff[4], buff[5], buff[6], buff[7]);
+  // for (int i=0; i<32; i++)
+  //   if ((1<<i) & irq1)
+  //     RADIOLIB_DEBUG_BASIC_PRINTLN("    IRQ1 bit %d set", i);
+
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_DIO_IRQ_PARAMS, true, buff, sizeof(buff)));
 }
 
 int16_t LR11x0::setDioIrqParams(uint32_t irq) {
-  return(setDioIrqParams(irq, irq));
+  return(setDioIrqParams(irq, 0)); // we normally don't use IRQ2/DIO11 (it's also used for xtal)
 }
 
 int16_t LR11x0::clearIrq(uint32_t irq) {
@@ -3334,11 +3325,11 @@ int16_t LR11x0::gnssReadAssistancePosition(float* lat, float* lon) {
 
   // pass the replies
   if(lat) {
-    uint16_t latRaw = ((uint16_t)(buff[0]) << 8) | (uint16_t)(buff[1]);
+    int16_t latRaw = ((uint16_t)(buff[0]) << 8) | (uint16_t)(buff[1]);
     *lat = ((float)latRaw*90.0f)/2048.0f;
   }
   if(lon) {
-    uint16_t lonRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)(buff[3]);
+    int16_t lonRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)(buff[3]);
     *lon = ((float)lonRaw*180.0f)/2048.0f;
   }
 
