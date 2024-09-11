@@ -108,15 +108,20 @@ void loop() {
   Serial.print(F("[APRS] Sending position ... "));
   
   // send a location without message or timestamp
-  int state = aprs.sendPosition("N0CALL", 0, "4911.67N", "01635.96E");
+  char destination[] = "N0CALL";
+  char latitude[] = "4911.67N";
+  char longitude[] = "01635.96E";
+  int state = aprs.sendPosition(destination, 0, latitude, longitude);
   delay(500);
   
   // send a location with message and without timestamp
-  state |= aprs.sendPosition("N0CALL", 0, "4911.67N", "01635.96E", "I'm here!");
+  char message[] = "I'm here!";
+  state |= aprs.sendPosition(destination, 0, latitude, longitude, message);
   delay(500);
   
   // send a location with message and timestamp
-  state |= aprs.sendPosition("N0CALL", 0, "4911.67N", "01635.96E", "I'm here!", "093045z");
+  char timestamp[] = "093045z";
+  state |= aprs.sendPosition(destination, 0, latitude, longitude, message, timestamp);
   delay(500);
 
   if(state == RADIOLIB_ERR_NONE) {

@@ -62,7 +62,8 @@ void setup() {
   // symbol:                      '>' (car)
   // callsign                     "N7LEM"
   // SSID                         1
-  state = aprs.begin('>', "N7LEM", 1);
+  char source[] = "N7LEM";
+  state = aprs.begin('>', source, 1);
   if(state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
   } else {
@@ -77,7 +78,12 @@ void loop() {
   
   // send a location with message and timestamp
   // SSID is set to 1, as APRS over LoRa uses WIDE1-1 path by default
-  int state = aprs.sendPosition("GPS", 1, "4911.67N", "01635.96E", "I'm here!", "093045z");
+  char destination[] = "GPS";
+  char latitude[] = "4911.67N";
+  char longitude[] = "01635.96E";
+  char message[] = "I'm here!";
+  char timestamp[] = "093045z";
+  int state = aprs.sendPosition(destination, 1, latitude, longitude, message, timestamp);
   delay(500);
 
   // you can also send Mic-E encoded messages
