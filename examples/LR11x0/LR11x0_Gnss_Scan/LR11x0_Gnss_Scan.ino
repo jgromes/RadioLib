@@ -49,8 +49,8 @@ void printAlmStatusPart(const char *gnss, LR11x0GnssAlmanacStatusPart_t &alm) {
   printf("%s almanac status: '%s' (%d)\n", gnss, lr1110_almanac_status[st], alm.status);
   printf("  SVs needing update: %d (SVs %d %d)\n",
     alm.numUpdateNeeded, alm.nextSubframe4SvId, alm.nextSubframe5SvId);
-  printf("  Delay: %dms, subframe: %d, subframe num: %d\n",
-    alm.timeUntilSubframe, alm.nextSubframeStart, alm.numSubframes);
+  printf("  Update in %.1fs, first subframe %d, %d subframes\n",
+    float(alm.timeUntilSubframe)/1000, alm.nextSubframeStart, alm.numSubframes);
 }
 
 void printAlmStatus(LR11x0GnssAlmanacStatus_t &alm) {
@@ -73,6 +73,8 @@ static const char* lr1110_scan_mode[] = {
   "Invalid",
 };
 
+// ===== Power consumption information
+
 // Power consumed by the lr1110 in each phase as returned by GNSSReadCumulTiming
 // the values here get multiplied by millisecs.
 // The sample values come from the EVK board in DC-DC mode and are in mA·V, which
@@ -87,39 +89,50 @@ static float lr1110_phase_power[12] = {
 
 // Print most of the info in the power consumption report, gleaned from
 // https://github.com/Lora-net/SWL2001 lr11xx_gnss.c lr11xx_gnss_compute_power_consumption
+// For more info, see the LR1110 User Manual, GnssReadCumulTiming command; also AN1200.70
 void printPowerInfo(uint32_t *timing, uint8_t constDemod) {
   float power[11];
   for (int i=0; i<11; i++) {
     power[i] = float(timing[i]) * float(lr1110_phase_power[i]) / 32.768; // 32.768kHz
   }
-  printf("Last scan timing and power:\n");
+  printf("Last scan timing, power, and %% of power:\n");
   float gpsTime = float(timing[1]+timing[2]+timing[3]+timing[4]+timing[5]) / 32768; // s
   float gpsPower = (power[1]+power[2]+power[3]+power[4]+power[5]) / 1000; // mJ
   float gpsCap = (power[1]+power[3])/10/gpsPower;
   float gpsCPU = (power[2]+power[4])/10/gpsPower;
   float gpsSleep = (power[5])/10/gpsPower;
-  printf("  GPS: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
-    gpsTime, gpsPower, gpsCap, gpsCPU, gpsSleep);
+  float gpsP1 = (power[1]+power[2])/10/gpsPower; // "phase 1"
+  float gpsAdv = (power[3]+power[4]+power[5])/10/gpsPower; // "advanced scan" / "multi-scan"
+  printf("  GPS: total %.1fs/%.1fmJ | P1:%.1f%% Adv:%.1f%% | capture:%.1f%% cpu:%.1f%% sleep:%.1f%%\n",
+    gpsTime, gpsPower, gpsP1, gpsAdv, gpsCap, gpsCPU, gpsSleep);
+
   float bduTime = float(timing[6]+timing[7]+timing[8]+timing[9]+timing[10]) / 32768; // ms
   float bduPower = (power[6]+power[7]+power[8]+power[9]+power[10]) / 1000; // mJ
   float bduCap = (power[6]+power[8])/10/bduPower;
   float bduCPU = (power[7]+power[9])/10/bduPower;
   float bduSleep = (power[10])/10/bduPower;
-  printf("  Beidou: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
-    bduTime, bduPower, bduCap, bduCPU, bduSleep);
+  float bduP1 = (power[6]+power[7])/10/bduPower;
+  float bduAdv = (power[8]+power[9]+power[10])/10/bduPower;
+  printf("  Beidou: total %.1fs/%.1fmJ | P1:%.1f%% Adv:%.1f%% | capture:%.1f%% cpu:%.1f%% sleep:%.1f%%\n",
+    bduTime, bduPower, bduP1, bduAdv, bduCap, bduCPU, bduSleep);
+
   uint8_t off = constDemod == 0 ? 1 : 6; // GPS vs. Beidou
   float demodTime = float(timing[11]+timing[12]+timing[13]+timing[14]) / 32768; // ms
   float demodCap = (timing[11] * lr1110_phase_power[off+2]) / 32768; // mJ
   float demodCPU = (timing[12] * lr1110_phase_power[off+3]) / 32768; // mJ
   float demodSleep = (timing[13] * lr1110_phase_power[off+4] + timing[14] * lr1110_phase_power[11]) / 32768; // mJ
   float demodPower = demodCap + demodCPU + demodSleep; // mJ
-  printf("  %s demod: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
+  printf("  %s demod: total %.1fs/%.1fmJ | capture:%.1f%% cpu:%.1f%% sleep:%.1f%%\n",
     constDemod == 0 ? "GPS" : "Beidou",
     demodTime, demodPower, demodCap*100/demodPower, demodCPU*100/demodPower, demodSleep*100/demodPower);
-  printf("  TOTAL: %.1fs/%.1fmJ\n", float(timing[29])/32768, power[0]/1000+gpsPower+bduPower+demodPower);
+
+  float totalPower = power[0]/1000+gpsPower+bduPower+demodPower;
+  printf("  TOTAL: %.1fs/%.1fmJ | GPS:%.1f%% Beidou:%.1f%% Demod:%.1f%% Init:%.1f%%\n",
+    float(timing[29])/32768, totalPower,
+    gpsPower*100/totalPower, bduPower*100/totalPower, demodPower*100/totalPower, power[0]/10/totalPower);
 }
 
-// =====
+// ===== Initialization
 
 bool startScan; // time to start next scan
 volatile bool scanFlag = false; // scan completed flag
@@ -176,6 +189,8 @@ void setup() {
   configRadio();
 }
 
+// ===== Loop
+
 // this function is called when a scan is completed
 // IMPORTANT: this function MUST be 'void' type and MUST NOT have any arguments!
 #if defined(ESP8266) || defined(ESP32)
@@ -190,7 +205,7 @@ void loop() {
   int state;
   uint16_t gnssCount = 0;
 
-  // check if the flag is set
+  // check if the scan-complete flag is set
   if(scanFlag) {
     // reset flag
     scanFlag = false;
@@ -205,6 +220,8 @@ void loop() {
       return;
     }
 
+    // ===== Print various information about the scan
+
     uint8_t timeErr;
     uint32_t gpsTime, nbUs, timeAcc;
     state = radio.gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
@@ -218,10 +235,24 @@ void loop() {
       }
     }
 
-    float lat, lon;
-    state = radio.getGnssPosition(&lat, &lon, true);
-    if (state == RADIOLIB_ERR_NONE) {
-      printf("Lat %f, lon %f\n", lat, lon);
+    // print position
+    {
+      uint8_t error=9;
+      uint8_t numSV=0;
+      float oneLat=0, oneLon=0, filtLat=0, filtLon=0;
+      uint16_t oneAcc=0, filtAcc=0;
+      uint16_t oneXtal=0, filtXtal=0;
+      state = radio.gnssReadDopplerSolverRes(&error, &numSV,
+        &oneLat, &oneLon, &oneAcc, &oneXtal, &filtLat, &filtLon, &filtAcc, &filtXtal);
+      if (state != RADIOLIB_ERR_NONE) {
+        printf("Reading position failed, code %d", state);
+      } else if (error > 0) {
+        printf("Position demodulation error %d\n", error);
+      } else {
+        printf("Demodulated position (using %d SVs):\n", numSV);
+        printf("  One-shot: %f %f | accuracy:%d[?] xtal:%dppb\n", oneLat, oneLon, oneAcc, oneXtal);
+        printf("  Filtered: %f %f | accuracy:%d[?] xtal:%dppb\n", filtLat, filtLon, filtAcc, filtXtal);
+      }
     }
 
     // print info about the timing and power consumption
@@ -232,6 +263,8 @@ void loop() {
       printPowerInfo(timing, constDemod);
     }
 
+    // ===== Print and check the almanac status and perform an almanac update if appropriate
+
     LR11x0GnssAlmanacStatus_t almStatus;
     uint32_t start = millis();
     state = radio.getGnssAlmanacStatus(&almStatus);
@@ -241,10 +274,10 @@ void loop() {
     }
     printAlmStatus(almStatus);
     uint32_t dly = almStatus.gps.timeUntilSubframe;
-    if (almStatus.gps.numUpdateNeeded > 0 && dly < 60000) {
+    if (almStatus.gps.numUpdateNeeded > 0 && dly < 60000) { // needed and possible soon
       printf("\n[LR1110] Updating almanac in ~%dms\n", dly);
       dly -= millis()-start + 2300;
-      if (dly < 60000) delay(dly);
+      if (dly < 60000) delay(dly); // >60k means less than 2.3s left (or we missed it)
 
       uint8_t outcome;
       state = radio.updateGnssAlmanac(RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS, &outcome);
@@ -276,7 +309,7 @@ void loop() {
       } else {
         Serial.print(F("failed, code "));
         Serial.println(state);
-        configRadio();
+        configRadio(); // reset radio
       }
     }
   }

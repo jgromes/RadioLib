@@ -124,7 +124,7 @@ int16_t LR11x0::beginGNSS(float tcxoVoltage, uint8_t constellations) {
 
   // error checking inspired by mw_radio_configure_for_scan
   // https://github.com/Lora-net/SWL2001/blob/master/lbm_lib/smtc_modem_core/geolocation_services/mw_common.c#L84
-  // experience here indicates this is pointless, the error occurs when running GnssScan
+  // FIXME: experience indicates this is pointless, the error occurs when running GnssScan
   this->clearErrors();
   uint8_t lf_config = RADIOLIB_LR11X0_LF_CLK_XOSC | RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED;
   RADIOLIB_DEBUG_BASIC_PRINTLN("LF clock config: %x", lf_config); // debug while we're having issues with this
@@ -1731,38 +1731,13 @@ int16_t LR11x0::isGnssScanCapable() {
   }
   RADIOLIB_ASSERT(state);
 
-  // in debug mode, dump the almanac
-  #if RADIOLIB_DEBUG_BASIC && 0
-  uint32_t addr = 0;
-  uint16_t sz = 0;
-  state = this->gnssAlmanacReadAddrSize(&addr, &sz);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Almanac@%08x, %d bytes", addr, sz);
-  uint32_t buff[32] = { 0 };
-  while(sz > 0) {
-    size_t len = sz > 32 ? 32 : sz/sizeof(uint32_t);
-    state = this->readRegMem32(addr, buff, len);
-    RADIOLIB_ASSERT(state);
-    Module::hexdump(NULL, (uint8_t*)buff, len*sizeof(uint32_t), addr);
-    addr += len*sizeof(uint32_t);
-    sz -= len*sizeof(uint32_t);
-  }
-
-  uint8_t almanac[22] = { 0 };
-  for(uint8_t i = 0; i < 128; i++) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("Almanac[%d]:", i);
-    state = this->gnssAlmanacReadSV(i, almanac);
-    RADIOLIB_ASSERT(state);
-    Module::hexdump(NULL, almanac, 22);
-  }
-
-  #endif
-
   return(state);
 }
 
 #define VERBOSE_STATUS 1
 #if VERBOSE_STATUS
+// FIXME: move this into the example sketch
+
 constexpr int lr1110_demod_status_offset = 21; // add to demosStatus to index into this array
 static const char* lr1110_demod_status_pos[] = {
   "Impossible to demodulate BDS almanac SV31-43",
@@ -1886,6 +1861,7 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
+  // FIXME: move this into the example sketch
   int8_t status = 0;
   uint8_t info = 0;
   state = this->gnssReadDemodStatus(&status, &info);
@@ -1896,24 +1872,13 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
   #endif
 
-#if 0
-  uint8_t fwVersion = 0;
-  uint32_t almanacCrc = 0;
-  uint8_t errCode = 0;
-  uint8_t almUpdMask = 0;
-  uint8_t freqSpace = 0;
-  state = this->gnssGetContextStatus(&fwVersion, &almanacCrc, &errCode, &almUpdMask, &freqSpace);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Context status fwVersion %d, almanacCrc %lx, errCode %d, almUpdMask %d, freqSpace %d", 
-    (int)fwVersion, (unsigned long)almanacCrc, (int)errCode, (int)almUpdMask, (int)freqSpace);
-  RADIOLIB_ASSERT(state);
-#endif
-
   return(this->gnssGetResultSize(resSize));
 }
 
 int16_t LR11x0::getGnssScanResult(uint16_t size) {
   int16_t state;
 
+  // FIXME: move into example sketch
   uint8_t lsMode;
   state = this->gnssReadLastScanModeLaunched(&lsMode);
   RADIOLIB_ASSERT(state);
@@ -1924,6 +1889,7 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Last scan mode %d", lsMode);
   #endif
 
+  // FIXME: move into example sketch
   uint8_t nbSv = 0;
   state = this->gnssGetNbSvDetected(&nbSv);
   RADIOLIB_ASSERT(state);
@@ -1978,8 +1944,6 @@ int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
   int16_t state = this->gnssReadAlmanacStatus(raw);
   RADIOLIB_ASSERT(state);
 
-  //Module::hexdump(NULL, raw, 53);
-
   // parse the reply
   stat->gps.status = (int8_t)raw[0];
   stat->gps.timeUntilSubframe = ((uint32_t)(raw[1]) << 24) | ((uint32_t)(raw[2]) << 16) | ((uint32_t)(raw[3]) << 8) | (uint32_t)raw[4];
@@ -2009,30 +1973,6 @@ int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
 }
 
 int16_t LR11x0::updateGnssAlmanac(uint8_t constellation, uint8_t *outcome) {
-#if 0
-  // read almanac status
-  LR11x0GnssAlmanacStatus_t almStat = { 0 };
-  uint32_t start = this->mod->hal->millis();
-  int16_t state = this->getGnssAlmanacStatus(&almStat);
-  RADIOLIB_ASSERT(state);
-
-  RADIOLIB_DEBUG_PRINTLN("GNSS Almanac status");
-  RADIOLIB_DEBUG_PRINTLN("GPS status %d", (int)almStat.gps.status);
-  RADIOLIB_DEBUG_PRINTLN("GPS update needed 0x%08lx", (long)almStat.gps.flagsUpdateNeeded[0]);
-  RADIOLIB_DEBUG_PRINTLN("GPS time until almanac %lu ms", (long)almStat.gps.timeUntilSubframe);
-  RADIOLIB_DEBUG_PRINTLN("BeiDou status %d", (int)almStat.beidou.status);
-  RADIOLIB_DEBUG_PRINTLN("BeiDou update needed 0x%08lx 0x%08lx", (long)almStat.beidou.flagsUpdateNeeded[0], (long)almStat.beidou.flagsUpdateNeeded[1]);
-  RADIOLIB_DEBUG_PRINTLN("BeiDou time until almanac %lu ms", (long)almStat.beidou.timeUntilSubframe);
-
-  // check whether update is needed
-  if(!(almStat.gps.numUpdateNeeded || almStat.beidou.numUpdateNeeded)) {
-    RADIOLIB_DEBUG_PRINTLN("Almanac update not needed");
-    return(RADIOLIB_ERR_NONE);
-  }
-
-  // wait until almanac is available in GPS signal (needs to be done for Beidou as well)
-  this->mod->hal->delay(almStat.gps.timeUntilSubframe - (this->mod->hal->millis() - start) );
-#endif
   this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE|RADIOLIB_LR11X0_IRQ_GNSS_ABORT);
 
   // start almanac update for GPS satellites
