@@ -76,7 +76,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
 
   // send the frame
   info[len] = '\0';
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("APRS Info: %s, length = %d", (void*)info, info, (int)len);
+  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("APRS Info: %s, length = %d", info, (int)len);
   int16_t state = sendFrame(destCallsign, destSSID, info);
   #if !RADIOLIB_STATIC_ONLY
     delete[] info;
