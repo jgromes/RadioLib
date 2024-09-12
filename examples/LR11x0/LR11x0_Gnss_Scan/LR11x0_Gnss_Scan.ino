@@ -2,6 +2,10 @@
 // The configuration is for a Seeed WIO Tracker 1110 dev board (red)
 #include <RadioLib.h>
 
+// Real position of GPS in order to calculate real error (assumes stationary GPS)
+#define REAL_LAT (34.499360)
+#define REAL_LON (-119.818190)
+
 // From https://github.com/jgromes/RadioLib/discussions/1101#discussioncomment-9576099
 //                        cs, irq, rst busy
 LR1110 radio = new Module(44,  2,   42, 43, SPI);
@@ -132,6 +136,16 @@ void printPowerInfo(uint32_t *timing, uint8_t constDemod) {
     gpsPower*100/totalPower, bduPower*100/totalPower, demodPower*100/totalPower, power[0]/10/totalPower);
 }
 
+// ===== Geographic distance
+
+float haversine(float lat1, float lon1, float lat2, float lon2) { // radians -> meters
+  constexpr float r = 6371; // km
+  float avgLat = sin((lat1-lat2)/2);
+  float avgLon = sin((lon1-lon2)/2);
+  float a = avgLat*avgLat + cos(lat1)*cos(lat2)*avgLon*avgLon;
+  return 12742000 * atan2(sqrt(a), sqrt(1-a));
+}
+
 // ===== Initialization
 
 bool startScan; // time to start next scan
@@ -228,7 +242,7 @@ void loop() {
     if (state == RADIOLIB_ERR_NONE) {
       if (timeErr == 0) {
         uint32_t unixTime = gpsTime + 315964800 - 18; // 18 leap seconds since 1980
-        printf("GPS time=%d %dus accuracy=%dus unix=%d\n", gpsTime, nbUs<<4, timeAcc<<4, unixTime);
+        printf("GPS time=%d %dus accuracy=%dus unix=%d\n", gpsTime, nbUs, timeAcc, unixTime);
       } else {
         printf("GPS time not available (%s)\n",
           timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
@@ -250,8 +264,12 @@ void loop() {
         printf("Position demodulation error %d\n", error);
       } else {
         printf("Demodulated position (using %d SVs):\n", numSV);
-        printf("  One-shot: %f %f | accuracy:%d[?] xtal:%dppb\n", oneLat, oneLon, oneAcc, oneXtal);
-        printf("  Filtered: %f %f | accuracy:%d[?] xtal:%dppb\n", filtLat, filtLon, filtAcc, filtXtal);
+        #define R(x) (x*3.141593/180)
+        float oneErr = haversine(R(REAL_LAT), R(REAL_LON), R(oneLat), R(oneLon));
+        printf("  One-shot: %f %f | accuracy:%d[?] xtal:%dppb | real err: %.0fm\n", oneLat, oneLon, oneAcc, oneXtal, oneErr);
+        float filtErr = haversine(R(REAL_LAT), R(REAL_LON), R(filtLat), R(filtLon));
+        printf("  Filtered: %f %f | accuracy:%d[?] xtal:%dppb | real err: %.0fm\n", filtLat, filtLon, filtAcc, filtXtal, filtErr);
+        #undef R
       }
     }
 
@@ -292,6 +310,15 @@ void loop() {
       if (state == RADIOLIB_ERR_NONE) {
         printAlmStatus(almStatus);
       }
+
+      // print info about the timing and power consumption
+      uint32_t timing[31] = { 0 };
+      uint8_t constDemod = 0;
+      state = radio.gnssReadCumulTiming(timing, &constDemod);
+      if (state == RADIOLIB_ERR_NONE) {
+        printPowerInfo(timing, constDemod);
+      }
+
     }
 
     delay(1000); // minor spacing out of scans
