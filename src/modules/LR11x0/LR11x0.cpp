@@ -1913,19 +1913,6 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
 
 int16_t LR11x0::getGnssScanResult(uint16_t size) {
   int16_t state;
-#if 0
-  uint32_t timing[31] = { 0 };
-  uint8_t constDemod = 0;
-  state = this->gnssReadCumulTiming(timing, &constDemod);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timing:");
-  for(size_t i = 0; i < 31; i++) {
-    uint32_t t = (timing[i] * 1000UL) / 32768UL;
-    (void)t;
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", (int)i*4, (unsigned long)t);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("constDemod: %d", constDemod);
-#endif
 
   uint8_t lsMode;
   state = this->gnssReadLastScanModeLaunched(&lsMode);
@@ -1951,26 +1938,6 @@ int16_t LR11x0::getGnssScanResult(uint16_t size) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: SNR %i dB, Doppler %i Hz", (int)i, snr[i], doppler[i]);
   }
 
-#if 1 // TvE
-  uint8_t timeErr;
-  uint32_t gpsTime, nbUs, timeAcc;
-  state = this->gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
-  RADIOLIB_ASSERT(state);
-  if (timeErr == 0) {
-    uint32_t unixTime = gpsTime + 315964800 - 18; // 18 leap seconds since 1980
-    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time=%d %dus accuracy=%dus unix=%d", gpsTime, nbUs<<4, timeAcc<<4, unixTime);
-  } else {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("GPS time not available (%s)",
-      timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
-  }
-#endif
-
-  float lat = 0;
-  float lon = 0;
-  state = this->gnssReadAssistancePosition(&lat, &lon);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("lat = %.5f, lon = %.5f", lat, lon);
-
 #if 0
   // read the result
   uint8_t res[256] = { 0 };
@@ -1987,14 +1954,16 @@ int16_t LR11x0::getGnssPosition(float* lat, float* lon, bool filtered) {
   uint8_t error = 0;
   uint8_t nbSvUsed = 0;
   uint16_t accuracy = 0;
+  uint16_t xtal = 0;
   int16_t state;
   if(filtered) {
-    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, NULL, NULL, NULL, NULL, lat, lon, &accuracy, NULL);
+    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, NULL, NULL, NULL, NULL, lat, lon, &accuracy, &xtal);
   } else {
-    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, lat, lon, &accuracy, NULL, NULL, NULL, NULL, NULL);
+    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, lat, lon, &accuracy, &xtal, NULL, NULL, NULL, NULL);
   }
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Solver error %d, nbSvUsed %d, accuracy = %u", (int)error, (int)nbSvUsed, (unsigned int)accuracy);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Solver error %d, nbSvUsed %d, accuracy %u[?], xtal %d[ppb]",
+    (int)error, (int)nbSvUsed, (unsigned int)accuracy, (unsigned int)xtal);
 
   return(state);
 }
@@ -3601,21 +3570,21 @@ int16_t LR11x0::gnssReadDopplerSolverRes(uint8_t* error, uint8_t* nbSvUsed, floa
   if(error) { *error = buff[0]; }
   if(nbSvUsed) { *nbSvUsed = buff[1]; }
   if(lat) {
-    uint16_t latRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3];
+    int16_t latRaw = ((uint16_t)(buff[2]) << 8) | (uint16_t)buff[3];
     *lat = ((float)latRaw * 90.0f)/2048.0f;
   }
   if(lon) {
-    uint16_t lonRaw = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5];
+    int16_t lonRaw = ((uint16_t)(buff[4]) << 8) | (uint16_t)buff[5];
     *lon = ((float)lonRaw * 180.0f)/2048.0f;
   }
   if(accuracy) { *accuracy = ((uint16_t)(buff[6]) << 8) | (uint16_t)buff[7]; }
   if(xtal) { *xtal = ((uint16_t)(buff[8]) << 8) | (uint16_t)buff[9]; }
   if(latFilt) {
-    uint16_t latRaw = ((uint16_t)(buff[10]) << 8) | (uint16_t)buff[11];
+    int16_t latRaw = ((uint16_t)(buff[10]) << 8) | (uint16_t)buff[11];
     *latFilt = ((float)latRaw * 90.0f)/2048.0f;
   }
   if(lonFilt) {
-    uint16_t lonRaw = ((uint16_t)(buff[12]) << 8) | (uint16_t)buff[13];
+    int16_t lonRaw = ((uint16_t)(buff[12]) << 8) | (uint16_t)buff[13];
     *lonFilt = ((float)lonRaw * 180.0f)/2048.0f;
   }
   if(accuracyFilt) { *accuracyFilt = ((uint16_t)(buff[14]) << 8) | (uint16_t)buff[15]; }

@@ -46,10 +46,11 @@ static const char* lr1110_almanac_status[] = {
 void printAlmStatusPart(const char *gnss, LR11x0GnssAlmanacStatusPart_t &alm) {
   uint8_t st = alm.status + lr1110_almanac_status_offset;
   if (st > sizeof(lr1110_almanac_status)/4) st = sizeof(lr1110_almanac_status)/4-1;
-  printf("%s almanac status: '%s' (%d), SVs needing update: %d\n",
-    gnss, lr1110_almanac_status[st], alm.status, alm.numUpdateNeeded);
-  printf("    delay: %dms; subframes: %d; SVs: %d,%d; next subframe: %d\n",
-    alm.timeUntilSubframe, alm.numSubframes, alm.nextSubframe4SvId, alm.nextSubframe5SvId, alm.nextSubframeStart);
+  printf("%s almanac status: '%s' (%d)\n", gnss, lr1110_almanac_status[st], alm.status);
+  printf("  SVs needing update: %d (SVs %d %d)\n",
+    alm.numUpdateNeeded, alm.nextSubframe4SvId, alm.nextSubframe5SvId);
+  printf("  Delay: %dms, subframe: %d, subframe num: %d\n",
+    alm.timeUntilSubframe, alm.nextSubframeStart, alm.numSubframes);
 }
 
 void printAlmStatus(LR11x0GnssAlmanacStatus_t &alm) {
@@ -72,6 +73,51 @@ static const char* lr1110_scan_mode[] = {
   "Invalid",
 };
 
+// Power consumed by the lr1110 in each phase as returned by GNSSReadCumulTiming
+// the values here get multiplied by millisecs.
+// The sample values come from the EVK board in DC-DC mode and are in mA·V, which
+// multiplied by ms results in mA·ms or µAs, i.e. µJ (microJoules).
+#define V (3.3) // 3.3V
+static float lr1110_phase_power[12] = {
+  3.15*V, // init
+  11.9*V, 3.34*V, 10.7*V, 4.18*V, 1.21*V,  // GPS: capture, processing; adv scan: capture, processing, sleep
+  13.5*V, 3.19*V, 12.6*V, 3.43*V, 1.21*V,  // Beidou: capture, processing; adv scan: capture, processing, sleep
+  2.53*V,                                  // Demod: sleep(32Mhz)
+};
+
+// Print most of the info in the power consumption report, gleaned from
+// https://github.com/Lora-net/SWL2001 lr11xx_gnss.c lr11xx_gnss_compute_power_consumption
+void printPowerInfo(uint32_t *timing, uint8_t constDemod) {
+  float power[11];
+  for (int i=0; i<11; i++) {
+    power[i] = float(timing[i]) * float(lr1110_phase_power[i]) / 32.768; // 32.768kHz
+  }
+  printf("Last scan timing and power:\n");
+  float gpsTime = float(timing[1]+timing[2]+timing[3]+timing[4]+timing[5]) / 32768; // s
+  float gpsPower = (power[1]+power[2]+power[3]+power[4]+power[5]) / 1000; // mJ
+  float gpsCap = (power[1]+power[3])/10/gpsPower;
+  float gpsCPU = (power[2]+power[4])/10/gpsPower;
+  float gpsSleep = (power[5])/10/gpsPower;
+  printf("  GPS: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
+    gpsTime, gpsPower, gpsCap, gpsCPU, gpsSleep);
+  float bduTime = float(timing[6]+timing[7]+timing[8]+timing[9]+timing[10]) / 32768; // ms
+  float bduPower = (power[6]+power[7]+power[8]+power[9]+power[10]) / 1000; // mJ
+  float bduCap = (power[6]+power[8])/10/bduPower;
+  float bduCPU = (power[7]+power[9])/10/bduPower;
+  float bduSleep = (power[10])/10/bduPower;
+  printf("  Beidou: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
+    bduTime, bduPower, bduCap, bduCPU, bduSleep);
+  uint8_t off = constDemod == 0 ? 1 : 6; // GPS vs. Beidou
+  float demodTime = float(timing[11]+timing[12]+timing[13]+timing[14]) / 32768; // ms
+  float demodCap = (timing[11] * lr1110_phase_power[off+2]) / 32768; // mJ
+  float demodCPU = (timing[12] * lr1110_phase_power[off+3]) / 32768; // mJ
+  float demodSleep = (timing[13] * lr1110_phase_power[off+4] + timing[14] * lr1110_phase_power[11]) / 32768; // mJ
+  float demodPower = demodCap + demodCPU + demodSleep; // mJ
+  printf("  %s demod: total %.1fs/%.1fmJ, capture:%.1f%% cpu:%.1f%% sleep:%.1f%% [%% power]\n",
+    constDemod == 0 ? "GPS" : "Beidou",
+    demodTime, demodPower, demodCap*100/demodPower, demodCPU*100/demodPower, demodSleep*100/demodPower);
+  printf("  TOTAL: %.1fs/%.1fmJ\n", float(timing[29])/32768, power[0]/1000+gpsPower+bduPower+demodPower);
+}
 
 // =====
 
@@ -143,30 +189,6 @@ void setFlag(void) {
 void loop() {
   int state;
   uint16_t gnssCount = 0;
-#if 0
-    while (true) {
-      Serial.println(F("\n[LR1110] ***** Starting GNSS time fetch ... "));
-      radio.clearErrors();
-      state = radio.gnssFetchTime(1, 1);
-      if (state == RADIOLIB_ERR_NONE) {
-        uint16_t errors = 0;
-        state = radio.getErrors(&errors);
-        Serial.print("Errors: "); Serial.println(errors, 16);
-        break;
-      } else {
-        Serial.print(F("failed, code "));
-        Serial.println(state);
-        Serial.print("Busy is "); Serial.println(radio.mod->hal->digitalRead(radio.mod->gpioPin);
-        uint16_t errors = 0;
-        state = radio.getErrors(&errors);
-        Serial.print("Errors: "); Serial.println(errors, 16);
-        delay(1000);
-        setup();
-      }
-    }
-
-
-#else
 
   // check if the flag is set
   if(scanFlag) {
@@ -174,19 +196,47 @@ void loop() {
     scanFlag = false;
     startScan = true;
 
-    Serial.println(F("[LR1110] Reading GNSS scan result ... "));
+    printf("[LR1110] Reading GNSS scan result ...\n");
 
+    // Fetch the scan result (doesn't do much yet)
     state = radio.getGnssScanResult(256);
     if(state != RADIOLIB_ERR_NONE) {
-      Serial.print(F("failed, code ")); Serial.println(state);
+      printf("failed, code %d\n", state);
       return;
+    }
+
+    uint8_t timeErr;
+    uint32_t gpsTime, nbUs, timeAcc;
+    state = radio.gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
+    if (state == RADIOLIB_ERR_NONE) {
+      if (timeErr == 0) {
+        uint32_t unixTime = gpsTime + 315964800 - 18; // 18 leap seconds since 1980
+        printf("GPS time=%d %dus accuracy=%dus unix=%d\n", gpsTime, nbUs<<4, timeAcc<<4, unixTime);
+      } else {
+        printf("GPS time not available (%s)\n",
+          timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
+      }
+    }
+
+    float lat, lon;
+    state = radio.getGnssPosition(&lat, &lon, true);
+    if (state == RADIOLIB_ERR_NONE) {
+      printf("Lat %f, lon %f\n", lat, lon);
+    }
+
+    // print info about the timing and power consumption
+    uint32_t timing[31] = { 0 };
+    uint8_t constDemod = 0;
+    state = radio.gnssReadCumulTiming(timing, &constDemod);
+    if (state == RADIOLIB_ERR_NONE) {
+      printPowerInfo(timing, constDemod);
     }
 
     LR11x0GnssAlmanacStatus_t almStatus;
     uint32_t start = millis();
     state = radio.getGnssAlmanacStatus(&almStatus);
     if(state != RADIOLIB_ERR_NONE) {
-      Serial.print(F("getGnssAlmanacStatus failed, code ")); Serial.println(state);
+      printf("getGnssAlmanacStatus failed, code %d\n", state);
       return;
     }
     printAlmStatus(almStatus);
@@ -195,52 +245,20 @@ void loop() {
       printf("\n[LR1110] Updating almanac in ~%dms\n", dly);
       dly -= millis()-start + 2300;
       if (dly < 60000) delay(dly);
-#if 1
+
       uint8_t outcome;
       state = radio.updateGnssAlmanac(RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS, &outcome);
       if (state == RADIOLIB_ERR_NONE) {
         if (outcome > 10) outcome = 11;
         printf("Outcome: '%s' (%d)\n", lr1110_scan_mode[outcome], outcome);
       }
-#else
-      radio.setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE|RADIOLIB_LR11X0_IRQ_GNSS_ABORT);
-      state = radio.gnssAlmanacUpdateFromSat(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x01);
-      if(state != RADIOLIB_ERR_NONE) {
-        printf("gnssAlmanacUpdateFromSat failed, code %d\n", state);
-        return;
-      }
-
-      // wait for scan finished or timeout
-      uint32_t timeout = almStatus.gps.numSubframes * 6000 + 4000; // 6 seconds per subframe
-      start = millis();
-      while (!digitalRead(radio.mod->getIrq())) {
-        yield();
-        if (millis() - start > timeout) {
-          printf("Timeout waiting for almanac update\n");
-          radio.standby(); // will fail but abort command
-          return;
-        }
-      }
-      // radio.showStatusErrors();
-      radio.clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
-      printf("GPS almanac update done in %lu ms\n", millis() - start);
-
-      uint8_t lsMode;
-      state = radio.gnssReadLastScanModeLaunched(&lsMode);
-      if (state == RADIOLIB_ERR_NONE) {
-        if (lsMode > 10) lsMode = 11;
-        printf("Outcome: '%s' (%d)\n", lr1110_scan_mode[lsMode], lsMode);
-      }
-#endif
 
       // see what the almanac status is now
       printf("Almanac update done\n");
       state = radio.getGnssAlmanacStatus(&almStatus);
-      if(state != RADIOLIB_ERR_NONE) {
-        Serial.print(F("getGnssAlmanacStatus failed, code ")); Serial.println(state);
-        return;
+      if (state == RADIOLIB_ERR_NONE) {
+        printAlmStatus(almStatus);
       }
-      printAlmStatus(almStatus);
     }
 
     delay(1000); // minor spacing out of scans
@@ -262,5 +280,4 @@ void loop() {
       }
     }
   }
-#endif
 }
