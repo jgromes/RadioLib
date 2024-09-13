@@ -252,6 +252,9 @@
 #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(PORTDUINO)
   // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
   #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
 #elif defined(ARDUINO_ARCH_APOLLO3)
   // Sparkfun Apollo3 boards
