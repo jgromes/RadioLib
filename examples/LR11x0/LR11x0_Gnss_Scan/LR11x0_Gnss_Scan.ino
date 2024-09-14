@@ -1,10 +1,7 @@
 // Semtech LR11x0 GNSS scanner, by Thorsten von Eicken, derived from WiFi scanner example
 // The configuration is for a Seeed WIO Tracker 1110 dev board (red)
 #include <RadioLib.h>
-
-// Real position of GPS in order to calculate real error (assumes stationary GPS)
-#define REAL_LAT (34.499360)
-#define REAL_LON (-119.818190)
+#include "location.h"
 
 // From https://github.com/jgromes/RadioLib/discussions/1101#discussioncomment-9576099
 //                        cs, irq, rst busy
@@ -139,7 +136,6 @@ void printPowerInfo(uint32_t *timing, uint8_t constDemod) {
 // ===== Geographic distance
 
 float haversine(float lat1, float lon1, float lat2, float lon2) { // radians -> meters
-  constexpr float r = 6371; // km
   float avgLat = sin((lat1-lat2)/2);
   float avgLon = sin((lon1-lon2)/2);
   float a = avgLat*avgLat + cos(lat1)*cos(lat2)*avgLon*avgLon;
@@ -150,6 +146,7 @@ float haversine(float lat1, float lon1, float lat2, float lon2) { // radians -> 
 
 bool startScan; // time to start next scan
 volatile bool scanFlag = false; // scan completed flag
+uint32_t scanStartAt = 0; // millis() when starting scan
 
 void configRadio() {
   Serial.println(F("\n[LR1110] Initializing ... "));
@@ -234,10 +231,10 @@ void loop() {
       return;
     }
 
-    // ===== Print various information about the scan
-
+    // see whether we have the time
     uint8_t timeErr;
     uint32_t gpsTime, nbUs, timeAcc;
+    uint32_t gotTimeAt = millis();
     state = radio.gnssReadTime(&timeErr, &gpsTime, &nbUs, &timeAcc);
     if (state == RADIOLIB_ERR_NONE) {
       if (timeErr == 0) {
@@ -248,6 +245,41 @@ void loop() {
           timeErr == 1 ? "No 32kHz clock" : timeErr == 2 ? "WN or ToW missing" : "unknown");
       }
     }
+
+    uint16_t rsize=0;
+    state = radio.gnssGetResultSize(&rsize);
+    if (state == RADIOLIB_ERR_NONE && rsize > 0) {
+      uint8_t *buf = (uint8_t *)calloc(rsize, 1);
+      state = radio.gnssReadResults(buf, rsize); // handles buf==nullptr
+      if (state == RADIOLIB_ERR_NONE) {
+        switch (buf[0]) {
+        case 1:
+          if (timeErr == 0 && timeAcc < 2000000) {
+            // we got reasonably accurate time info, include in printf
+            // adjust to start of scan with 1s fudget, LoRaCloud is not explicit when to measure
+            // and this seems to get very close to the time it ends up reporting
+            uint32_t adjTime = gpsTime - (gotTimeAt-scanStartAt)/1000 + 1;
+            printf("NAV @%d: ", adjTime);
+          } else {
+            printf("NAV: ");
+          }
+          for (int i=1; i<rsize; i++) printf("%02x", buf[i]);
+          printf("\n");
+          break;
+        case 0:
+          printf("Scan result status: %d\n", buf[1]);
+          break;
+        case 2:
+          printf("Almanac update message (%d bytes)\n", rsize-1);
+          break;
+        default:
+          printf("Unknown result message (dest=%d, size=%d)\n", buf[0], rsize);
+          break;
+        }
+      }
+    }
+
+    // ===== Print various information about the scan
 
     // print position
     {
@@ -329,6 +361,7 @@ void loop() {
     // start scanning again
     while (true) {
       Serial.println(F("\n[LR1110] Starting GNSS scan ... "));
+      scanStartAt = millis();
       state = radio.gnssScan(&gnssCount);
       if (state == RADIOLIB_ERR_NONE) {
         scanFlag = 1;

@@ -2045,6 +2045,7 @@ int16_t LR11x0::SPIparseStatus(uint8_t in) {
   if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_PERR) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
   } else if((in & 0b00001110) == RADIOLIB_LR11X0_STAT_1_CMD_FAIL) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Stat1=CMD_FAIL: 0x%x", in);
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   } else if((in == 0x00) || (in == 0xFF)) {
     return(RADIOLIB_ERR_CHIP_NOT_FOUND);
@@ -3433,7 +3434,7 @@ int16_t LR11x0::gnssReadTime(uint8_t* err, uint32_t* time, uint32_t* nbUs, uint3
   if(time) {
     *time = ((uint32_t)(buff[1]) << 24) | ((uint32_t)(buff[2]) << 16) | ((uint32_t)(buff[3]) << 8) | (uint32_t)buff[4];
     *time += 2UL*1024UL*7UL*24UL*3600UL; // assume WN rollover is at 2, this will fail sometime in 2038
-    *time += 315964800UL; // convert to UTC
+    // *time += 315964800UL; // convert to UTC
   }
 
   if(nbUs) {
