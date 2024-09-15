@@ -216,8 +216,6 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
 }
 
 void LoRaWANNode::clearNonces() {
-  // not a real version number, but helps debugging
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN("This line was updated on 2024-09-08 at 00:01+2");
   // clear & set all the device credentials
   memset(this->bufferNonces, 0, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
   this->keyCheckSum = 0;
@@ -2207,10 +2205,27 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // get the server version
       uint8_t srvVersion = optIn[0];
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("RekeyConf: server version = 1.%d", srvVersion);
+
+      // If the server’s version is invalid the device SHALL discard the RekeyConf command and retransmit the RekeyInd in the next uplink frame
       if((srvVersion > 0) && (srvVersion <= this->rev)) {
-        // valid server version, stop sending the ReKey MAC command
-        LoRaWANNode::deleteMacCommand(RADIOLIB_LORAWAN_MAC_REKEY, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
+        // valid server version, accept
+        this->rev = srvVersion;
+        
+      } else {
+        // if not a valid server version, retransmit RekeyInd
+        uint8_t cid = RADIOLIB_LORAWAN_MAC_REKEY;
+        uint8_t cLen = 0;
+        this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_UPLINK);
+        uint8_t cOcts[1] = { this->rev };
+        (void)LoRaWANNode::pushMacCommand(cid, cOcts, this->fOptsUp, &this->fOptsUpLen, RADIOLIB_LORAWAN_UPLINK);
+        
+        // discard RekeyConf, therefore return false so it doesn't send a reply
+        return(false);
       }
+
+      optOut[0] = this->rev;
+
+      LoRaWANNode::hton<uint8_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_VERSION], this->rev);
       return(false);
     } break;
 
