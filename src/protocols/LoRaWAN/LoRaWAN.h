@@ -918,7 +918,6 @@ class LoRaWANNode {
 
     // ADR is enabled by default
     bool adrEnabled = true;
-    bool adrAckReq = false;
 
     // duty cycle is set upon initialization and activated in regions that impose this
     bool dutyCycleEnabled = false;

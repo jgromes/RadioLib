@@ -1009,6 +1009,9 @@ void LoRaWANNode::processCFList(uint8_t* cfList) {
       num++;
     }
 
+    cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
+    (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
+
     uint8_t freqZero[3] = { 0 };
 
     // datarate range for all new channels is equal to the default channels
@@ -1018,8 +1021,6 @@ void LoRaWANNode::processCFList(uint8_t* cfList) {
       if(memcmp(&cfList[i*3], freqZero, 3) == 0) {
         break;
       }
-      cid = RADIOLIB_LORAWAN_MAC_NEW_CHANNEL;
-      (void)this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_DOWNLINK);
       cOcts[0] = num;
       memcpy(&cOcts[1], &cfList[i*3], 3);
       (void)execMacCommand(cid, cOcts, cLen);
@@ -1099,21 +1100,19 @@ void LoRaWANNode::adrBackoff() {
   // check if we need to do ADR stuff
   uint32_t adrLimit = 0x01 << this->adrLimitExp;
   uint32_t adrDelay = 0x01 << this->adrDelayExp;
-  if((this->fCntUp - this->adrFCnt) >= adrLimit) {
-    this->adrAckReq = true;
-  } else {
-    this->adrAckReq = false;
+
+  // don't need to do any backoff for first Limit+Delay uplinks
+  if((this->fCntUp - this->adrFCnt) < (adrLimit + adrDelay)) {
+    return;
   }
 
-  if ((this->fCntUp - this->adrFCnt) < (adrLimit + adrDelay)) {
+  // only perform backoff every Delay uplinks
+  if((this->fCntUp - this->adrFCnt - adrLimit) % adrDelay != 0) {
     return;
   }
 
   // if we hit the Limit + Delay, try one of three, in order: 
   // set TxPower to max, set DR to min, enable all default channels
-
-  // as we try to do something to improve the range, increase the ADR frame counter by 'ADR delay'
-  this->adrFCnt += adrDelay;
 
   // if the TxPower field has some offset, remove it and switch to maximum power
   if(this->txPowerSteps > 0) {
@@ -1136,7 +1135,11 @@ void LoRaWANNode::adrBackoff() {
     this->selectChannelPlanFix();           // go back to default selected subband
   }
   this->nbTrans = 1;
-  return;                                   // nothing else to do
+
+  // as there is nothing more to do, set ADR counter to maximum value to indicate that we've tried everything
+  this->adrFCnt = RADIOLIB_LORAWAN_FCNT_NONE;
+
+  return;
 }
 
 void LoRaWANNode::composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed) {
@@ -1153,7 +1156,11 @@ void LoRaWANNode::composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_
   out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] = 0x00;
   if(this->adrEnabled) {
     out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ENABLED;
-    if(adrAckReq) {
+    
+    // AdrAckReq is set if no downlink has been received for >=Limit uplinks
+    // but it is unset once backoff has been completed (which is internally denoted by adrFCnt == FCNT_NONE)
+    uint32_t adrLimit = 0x01 << this->adrLimitExp;
+    if(this->adrFCnt != RADIOLIB_LORAWAN_FCNT_NONE && (this->fCntUp - this->adrFCnt) >= adrLimit) {
       out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ACK_REQ;
     }
   }
@@ -1378,7 +1385,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(this->TS011) {
     maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
   }
-  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(maxPayLen);
+  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(maxPayLen + 13); // mandatory FHDR is 12/13 bytes
   bool downlinkComplete = true;
   
   // wait for the DIO to fire indicating a downlink is received
@@ -1401,11 +1408,11 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   this->phyLayer->clearPacketReceivedAction();
   this->phyLayer->standby();
 
-  // if all windows passed without receiving anything, return 0
+  // if all windows passed without receiving anything, set return value to 0
   if(!downlinkComplete) {
     state = 0;
 
-  // if we received something during a window, return the window number
+  // if we received something during a window, set return value to the window number
   } else {
     state = window;
   }
@@ -1413,7 +1420,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // Any frame received by an end-device containing a MACPayload greater than 
   // the specified maximum length M over the data rate used to receive the frame 
   // SHALL be silently discarded.
-  if(this->phyLayer->getPacketLength() > maxPayLen) {
+  if(this->phyLayer->getPacketLength() > maxPayLen + 13) {  // mandatory FHDR is 12/13 bytes
     return(0);  // act as if no downlink was received
   }
 
@@ -1528,6 +1535,15 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
       } break;
     }
 
+  }
+
+  // MAC commands SHALL NOT be present in the payload field and the frame options field simultaneously. 
+  // Should this occur, the end-device SHALL silently discard the frame.
+  if(fOptsPbLen > 0 && payLen > 0 && fPort == RADIOLIB_LORAWAN_FPORT_MAC_COMMAND) {
+    #if !RADIOLIB_STATIC_ONLY
+      delete[] downlinkMsg;
+    #endif
+    return(RADIOLIB_ERR_INVALID_PORT);
   }
   
   // get the frame counter
@@ -1917,9 +1933,19 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       this->txPowerSteps = macTxSteps;
       if(lenIn > 1) {
         uint8_t macNbTrans = optIn[13] & 0x0F;
-        if(macNbTrans) {  // if there is a value for NbTrans, set this value
+
+        // if there is a value for NbTrans > 0, apply it
+        if(macNbTrans) {
           this->nbTrans = macNbTrans;
+        } else {
+          // for LoRaWAN v1.0.4, if NbTrans == 0, the end-device SHALL use the default value (being 1)
+          if(this->rev == 0) {
+            this->nbTrans = 1;
+          }
+          // for LoRaWAN v1.1, if NbTrans == 0, the end-device SHALL keep the current NbTrans value unchanged
+          // so, don't do anything
         }
+        
       }
 
       // restore original active channels
@@ -2022,14 +2048,22 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       uint8_t macDrMax = (optIn[4] & 0xF0) >> 4;
       uint8_t macDrMin = optIn[4] & 0x0F;
       
-      uint8_t newChAck = 0;
+      uint8_t drAck = 0;
       uint8_t freqAck = 0;
 
-      // on LoRaWAN v1.1, the default channels may be modified - not on v1.0.x.
-      // in that case, only allow non-default channels to be modified
-      // there are at most three default channels, so either check for >2 or else if index is used 
-      if(this->rev == 1 || macChIndex > 2 || this->band->txFreqs[macChIndex].idx == RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
-        newChAck = 1;
+      // the default channels shall not be modified, so check if this is a default channel
+      // if the channel index is set, this channel is defined, so return a NACK
+      if(macChIndex < 3 && this->band->txFreqs[macChIndex].idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
+        optOut[0] = 0;
+        return(true);
+      }
+
+      // check if the outermost datarates are defined and if the device supports them
+      DataRate_t dr;
+      if(this->band->dataRates[macDrMin] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED && this->findDataRate(macDrMin, &dr) == RADIOLIB_ERR_NONE) {
+        if(this->band->dataRates[macDrMax] != RADIOLIB_LORAWAN_DATA_RATE_UNUSED && this->findDataRate(macDrMax, &dr) == RADIOLIB_ERR_NONE) {
+          drAck = 1;
+        }
       }
 
       // check if the frequency is allowed and possible
@@ -2043,7 +2077,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       }
 
       // set ACK bits
-      optOut[0] = (newChAck << 1) | (freqAck << 0);
+      optOut[0] = (drAck << 1) | (freqAck << 0);
 
       // if not fully acknowledged, return now without applying the requested configuration
       if(optOut[0] != 0x03) {
@@ -3169,36 +3203,37 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
                          RADIOLIB_LORAWAN_UPLINK,
                          this->txPowerMax - 2*this->txPowerSteps);
 
-  uint8_t minPayLen = 0;
-  uint8_t maxPayLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr];
+  // mandatory FHDR is 12/13, so add & subtract 13 from calculations where necessary
+  uint8_t minLen = 0;
+  uint8_t maxLen = this->band->payloadLenMax[this->channels[RADIOLIB_LORAWAN_UPLINK].dr] + 13;
   if(this->TS011) {
-    maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
+    maxLen = RADIOLIB_MIN(maxLen, 230 + 13); // payload length is limited to 230 if under repeater
   }
 
   // if not limited by dwell-time, just return maximum
   if(!this->dwellTimeEnabledUp) {
     // subtract FHDR (13 bytes) as well as any FOpts
-    return(maxPayLen - 13 - this->fOptsUpLen);
+    return(maxLen - 13 - this->fOptsUpLen);
   }
 
   // fast exit in case upper limit is already good
-  if(this->phyLayer->getTimeOnAir(maxPayLen) / 1000 <= this->dwellTimeUp) {
+  if(this->phyLayer->getTimeOnAir(maxLen) / 1000 <= this->dwellTimeUp) {
     // subtract FHDR (13 bytes) as well as any FOpts
-    return(maxPayLen - 13 - this->fOptsUpLen);
+    return(maxLen - 13 - this->fOptsUpLen);
   }
 
-  // do some binary search to find maximum allowed payload length
-  uint8_t payLen = (minPayLen + maxPayLen) / 2;
-  while(payLen != minPayLen && payLen != maxPayLen) {
-    if(this->phyLayer->getTimeOnAir(payLen) / 1000 > this->dwellTimeUp) {
-      maxPayLen = payLen;
+  // do some binary search to find maximum allowed length
+  uint8_t curLen = (minLen + maxLen) / 2;
+  while(curLen != minLen && curLen != maxLen) {
+    if(this->phyLayer->getTimeOnAir(curLen) / 1000 > this->dwellTimeUp) {
+      maxLen = curLen;
     } else {
-      minPayLen = payLen;
+      minLen = curLen;
     }
-    payLen = (minPayLen + maxPayLen) / 2;
+    curLen = (minLen + maxLen) / 2;
   }
   // subtract FHDR (13 bytes) as well as any FOpts
-  return(payLen - 13 - this->fOptsUpLen);
+  return(curLen - 13 - this->fOptsUpLen);
 }
 
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
@@ -3234,7 +3269,7 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
       break;
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
       // not yet supported by DataRate_t
-      break;
+      return(RADIOLIB_ERR_UNSUPPORTED);
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }
