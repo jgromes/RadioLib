@@ -2213,7 +2213,6 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
         
       } else {
         // if not a valid server version, retransmit RekeyInd
-        uint8_t cid = RADIOLIB_LORAWAN_MAC_REKEY;
         uint8_t cLen = 0;
         this->getMacLen(cid, &cLen, RADIOLIB_LORAWAN_UPLINK);
         uint8_t cOcts[1] = { this->rev };
