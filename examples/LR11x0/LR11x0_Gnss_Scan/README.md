@@ -101,3 +101,35 @@ Last scan timing, power, and % of power:
   GPS demod: total 14.5s/261.6mJ | capture:70.2% cpu:6.2% sleep:23.7%                     
   TOTAL: 15.0s/270.4mJ | GPS:3.2% Beidou:0.0% Demod:96.7% Init:0.1%                       
 ```
+## Open questions
+
+The following questions have come up during the development of the sample sketch and no support
+has been received from Semtech. They all relate to LR1110 firmware v4.1
+
+### About the LR1110
+
+- In GnssScan what does "bit change" refer to and where is it used?
+- In GnssScan what is the signficance of the dopplers config in the resultMask? Is this purely a
+  message length vs. accuracy tradeoff, e.e. using the doppler information as a sort of triangulation
+  complement to the PR-based trilateration? Experimentally, it does not seem that omitting the
+  dopplers reduces the accuracy...
+- In GnssScan if the resultmask is set to 0 the position returned by GnssReadDopplerSolverRes is
+  often updated, how come?
+- In GnssReadDopplerSolverRes what are the units for the returned accuracy?
+- In GnssReadDopplerSolverRes what is the filtered position, i.e., how is it filtered?
+  It doesn't seem to be a simple function of the last N positions...
+- How can the almanac data be reset in an LR1110 device so one can test the cold start and initial
+  almanac acquisition phase?
+
+### About LoRaCloud
+
+Questions about `POST /api/v1/solve/gnss_lora_edge_singleframe`:
+- The description of `gnss_capture_time` states that local server time is used if `gnss_capture_time`
+  is not specified, however `gnss_capture_time_accuracy` implies that the time encoded in the binary
+  payload is used. Which is it?
+- What exact point in time does the returned `capture_time_gps` refer to relative to the invocation of
+  the `gnssScan` command in the LR1110? To the start of the command? The end of the command? Or some other point in time?
+- Related to the last question, if one measures the exact time of invoking `GnssScan` on the LR1110
+  and passes that into the API then the `capture_time_gps` tends to be 1-2 seconds later. This means
+  that passing a `gnss_capture_time_accuracy` lower than 3 seconds seems self-defeting because it will cause perfectly valid locations to be filtered out. Is there any real value in passing `gnss_capture_time_accuracy` lower than 15? Or any real value in passing it at all since the binary
+  payload already has the time? (Maybe this parameter is primarily useful for older LR1110 firmware?)
