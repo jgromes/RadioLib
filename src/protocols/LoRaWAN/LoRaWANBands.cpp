@@ -64,12 +64,12 @@ const LoRaWANBand_t EU868 = {
   },
   .rx2 = { .enabled = true, .idx = 0, .freq = 8695250, .drMin = 0, .drMax = 7, .dr = 0, .available = true },
   .txWoR = {
-    { .enabled = true, .idx = 0, .freq = 8651000, .drMin = 2, .drMax = 2, .dr = 2, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8655000, .drMin = 2, .drMax = 2, .dr = 2, .available = true }
+    { .enabled = true, .idx = 0, .freq = 8651000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .enabled = true, .idx = 1, .freq = 8655000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
   },
   .txAck = {
-    { .enabled = true, .idx = 0, .freq = 8653000, .drMin = 2, .drMax = 2, .dr = 2, .available = true },
-    { .enabled = true, .idx = 1, .freq = 8659000, .drMin = 2, .drMax = 2, .dr = 2, .available = true }
+    { .enabled = true, .idx = 0, .freq = 8653000, .drMin = 3, .drMax = 3, .dr = 3, .available = true },
+    { .enabled = true, .idx = 1, .freq = 8659000, .drMin = 3, .drMax = 3, .dr = 3, .available = true }
   },
   .dataRates = {
     RADIOLIB_LORAWAN_DATA_RATE_LORA | RADIOLIB_LORAWAN_DATA_RATE_SF_12 | RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ,
