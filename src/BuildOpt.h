@@ -586,8 +586,8 @@
 #define RADIOLIB_ABS(x)         ((x)>0?(x):-(x))
 
 // version definitions
-#define RADIOLIB_VERSION_MAJOR  6
-#define RADIOLIB_VERSION_MINOR  6
+#define RADIOLIB_VERSION_MAJOR  7
+#define RADIOLIB_VERSION_MINOR  0
 #define RADIOLIB_VERSION_PATCH  0
 #define RADIOLIB_VERSION_EXTRA  0
 
