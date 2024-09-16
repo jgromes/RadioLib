@@ -1423,7 +1423,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   // Any frame received by an end-device containing a MACPayload greater than 
   // the specified maximum length M over the data rate used to receive the frame 
   // SHALL be silently discarded.
-  if(this->phyLayer->getPacketLength() > maxPayLen + 13) {  // mandatory FHDR is 12/13 bytes
+  if(this->phyLayer->getPacketLength() > (size_t)(maxPayLen + 13)) {  // mandatory FHDR is 12/13 bytes
     return(0);  // act as if no downlink was received
   }
 
