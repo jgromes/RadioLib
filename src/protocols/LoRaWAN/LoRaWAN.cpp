@@ -1099,7 +1099,12 @@ void LoRaWANNode::adrBackoff() {
   uint32_t adrLimit = 0x01 << this->adrLimitExp;
   uint32_t adrDelay = 0x01 << this->adrDelayExp;
 
-  // don't need to do any backoff for first Limit+Delay uplinks
+  // check if we already tried everything (adrFCnt == FCNT_NONE)
+  if(this->adrFCnt == RADIOLIB_LORAWAN_FCNT_NONE) {
+    return;
+  }
+
+  // no need to do any backoff for first Limit+Delay uplinks
   if((this->fCntUp - this->adrFCnt) < (adrLimit + adrDelay)) {
     return;
   }
@@ -1121,7 +1126,7 @@ void LoRaWANNode::adrBackoff() {
   }
 
   // try to decrease the datarate
-  if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > this->channels[RADIOLIB_LORAWAN_UPLINK].drMin) {
+  if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > 0) {
     if(this->setDatarate(this->channels[RADIOLIB_LORAWAN_UPLINK].dr - 1) == RADIOLIB_ERR_NONE) {
       return;
     }
