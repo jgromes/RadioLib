@@ -762,6 +762,13 @@ class SX128x: public PhysicalLayer {
     float getRSSI() override;
 
     /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \param packet Whether to read last packet RSSI, or the current value.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI(bool packet);
+
+    /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa or ranging modem.
       \returns SNR of the last received packet in dB.
     */
