@@ -19,6 +19,7 @@ var class_s_x128x =
     [ "getPacketLength", "class_s_x128x.html#a67ab0acd97f81e509af80a31f1fa7dc4", null ],
     [ "getPacketLength", "class_s_x128x.html#a390fd0749b316eed67da7b54f4f24735", null ],
     [ "getRSSI", "class_s_x128x.html#a260b99d8427e089546e33084803d955a", null ],
+    [ "getRSSI", "class_s_x128x.html#acaee753f0736774efc25e38f58e0cb26", null ],
     [ "getSNR", "class_s_x128x.html#adce2e6c7215caa7c904b0d8f9cbd107d", null ],
     [ "getTimeOnAir", "class_s_x128x.html#ae7d3676df8f28c79b9bee23df884fa55", null ],
     [ "implicitHeader", "class_s_x128x.html#ac69cc622020419cb3393eac5cc88915b", null ],

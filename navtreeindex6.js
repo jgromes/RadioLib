@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d":[3,0,30,7],
 "struct_l_r11x0_version_info__t.html#a93ffc624cb2545411a409e7879a6d597":[3,0,30,5],
 "struct_l_r11x0_version_info__t.html#aba5ac25e1acff5678991483d3a56084a":[3,0,30,2],
 "struct_l_r11x0_version_info__t.html#ad1839f1cb6a067cc21651d95908cff67":[3,0,30,0],

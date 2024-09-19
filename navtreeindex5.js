@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"functions_e.html":[3,3,0,4],
 "functions_enum.html":[3,3,4],
 "functions_eval.html":[3,3,5],
 "functions_f.html":[3,3,0,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "struct_l_r11x0_version_info__t.html":[3,0,30],
 "struct_l_r11x0_version_info__t.html#a50d3cf257fb187c00a6290c8c7d95edc":[3,0,30,3],
 "struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f":[3,0,30,6],
-"struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2":[3,0,30,1],
-"struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d":[3,0,30,7]
+"struct_l_r11x0_version_info__t.html#a6686a59a55b567b11b325b7087d682b2":[3,0,30,1]
 };
