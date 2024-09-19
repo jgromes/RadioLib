@@ -1253,6 +1253,17 @@ float SX128x::getRSSI() {
   }
 }
 
+float SX128x::getRSSI(bool packet) {
+    if (!packet) {
+        // get instantaneous RSSI value
+        uint8_t data[3] = {0, 0, 0}; // RssiInst, Status, RFU
+        this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_RSSI_INST, data, 3);
+        return ((float)data[0] / (-2.0));
+    } else {
+        return this->getRSSI();
+    }
+}
+
 float SX128x::getSNR() {
   // check active modem
   uint8_t modem = getPacketType();
