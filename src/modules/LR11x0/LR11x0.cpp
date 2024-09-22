@@ -216,11 +216,8 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
     timeout = (RadioLibTime_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    size_t maxLen = len;
-    if(len == 0) { 
-      maxLen = 0xFF;
-    }
-    timeout = (RadioLibTime_t)(((maxLen * 8.0) / (RADIOLIB_LR11X0_LR_FHSS_BIT_RATE)) * 1000.0 * 5.0);
+    // this modem cannot receive
+    return(RADIOLIB_ERR_WRONG_MODEM);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -472,8 +469,7 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -521,8 +517,7 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
