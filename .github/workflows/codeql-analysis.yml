@@ -10,7 +10,7 @@ on:
 jobs:
   analyze:
     name: Analyze
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, ARM64]
     permissions:
       security-events: write
 
@@ -29,32 +29,30 @@ jobs:
       with:
          languages: ${{ matrix.language }}
 
-    - name: Install arduino-cli
-      run:
-        |
-        mkdir -p ~/.local/bin
-        echo "~/.local/bin" >> $GITHUB_PATH
-        curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | BINDIR=~/.local/bin sh
-
-    - name: Install platform
-      run:
-        |
-        arduino-cli core update-index
-        arduino-cli core install arduino:avr
-
-    - name: Static link
-      run:
-        |
-        # static link fix from https://github.com/github/securitylab/discussions/171
-        for i in ~/.arduino*/packages/arduino/tools/avr-gcc/*/bin/*; do
-          mv "$i" "$i.real";
-          printf '#!/bin/bash\nexec "'"$i"'.real" ${1+"$@"}\n' > "$i";
-          chmod +x "$i";
-        done
-
-    - name: Build example
-      run:
-        arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $PWD/examples/SX126x/SX126x_Transmit_Blocking/SX126x_Transmit_Blocking.ino --warnings=all
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake wget swig python-dev python3-dev python-setuptools python3-setuptools
+        wget http://abyz.me.uk/lg/lg.zip
+        unzip lg.zip
+        cd lg
+        make
+        sudo make install
+        cd ..
+        sudo rm -rf lg
+    
+    - name: Install the library
+      run: |
+        cd $PWD
+        mkdir build
+        cd build
+        cmake ..
+        sudo make install
+    
+    - name: Build the example
+      run: |
+        cd $PWD/examples/NonArduino/Raspberry
+        ./build.sh
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
