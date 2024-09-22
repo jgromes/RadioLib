@@ -322,7 +322,7 @@ int16_t RadioLibViterbi::encode(const uint8_t* in, size_t in_bits, uint8_t* out,
     return(RADIOLIB_ERR_UNKNOWN);
   }
 
-  uint16_t ind_bit;
+  size_t ind_bit;
   uint16_t data_out_bitcount = 0;
   uint32_t bin_out_word = 0;
 
