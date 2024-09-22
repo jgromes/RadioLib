@@ -288,7 +288,7 @@ int16_t LR11x0::receiveDirect() {
 }
 
 int16_t LR11x0::scanChannel() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
@@ -299,7 +299,7 @@ int16_t LR11x0::scanChannel() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->scanChannel(config));
+  return(this->scanChannel(cfg));
 }
 
 int16_t LR11x0::scanChannel(const ChannelScanConfig_t &config) {
@@ -561,7 +561,7 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 }
 
 int16_t LR11x0::startChannelScan() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
@@ -572,7 +572,7 @@ int16_t LR11x0::startChannelScan() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->startChannelScan(config));
+  return(this->startChannelScan(cfg));
 }
 
 int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
