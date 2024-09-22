@@ -317,7 +317,7 @@ void RadioLibViterbi::begin(uint8_t rt) {
   this->rate = rt;
 }
 
-int16_t RadioLibViterbi::encode(uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits) {
+int16_t RadioLibViterbi::encode(const uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits) {
   if(!in || !out) {
     return(RADIOLIB_ERR_UNKNOWN);
   }

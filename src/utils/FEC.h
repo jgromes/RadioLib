@@ -143,7 +143,7 @@ class RadioLibViterbi {
       Ignored if set to NULL.
       \returns \ref status_codes 
     */
-    int16_t encode(uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits = NULL);
+    int16_t encode(const uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits = NULL);
 
   private:
     uint8_t enc_state = 0;
