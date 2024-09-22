@@ -347,7 +347,7 @@ int16_t SX126x::setLRFHSSHop(uint8_t index) {
 
   uint16_t hop = stepLRFHSS();
   int16_t freq_table = hop - 1;
-  if(freq_table >= (this->lrFhssNgrid >> 1)) {
+  if(freq_table >= (int16_t)(this->lrFhssNgrid >> 1)) {
     freq_table -= this->lrFhssNgrid;
   }
 
