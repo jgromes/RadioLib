@@ -2017,6 +2017,55 @@ Module* SX126x::getMod() {
   return(this->mod);
 }
 
+int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem) {
+  // set module properties
+  this->mod->init();
+  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
+  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 1;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX126X_CMD_READ_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX126X_CMD_NOP;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX126X_CMD_GET_STATUS;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+  
+  // try to find the SX126x chip
+  if(!SX126x::findChip(this->chipType)) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
+    this->mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
+
+  // reset the module and verify startup
+  int16_t state = reset();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set TCXO control, if requested
+  if(!this->XTAL && tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // configure settings not accessible by API
+  state = config(modem);
+  RADIOLIB_ASSERT(state);
+
+  if (useRegulatorLDO) {
+    state = setRegulatorLDO();
+  } else {
+    state = setRegulatorDCDC();
+  }
+  return(state);
+}
+
 int16_t SX126x::config(uint8_t modem) {
   // reset buffer base address
   int16_t state = setBufferBaseAddress();
