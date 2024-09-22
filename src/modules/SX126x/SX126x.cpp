@@ -349,7 +349,7 @@ int16_t SX126x::packetMode() {
 }
 
 int16_t SX126x::scanChannel() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
@@ -360,7 +360,7 @@ int16_t SX126x::scanChannel() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->scanChannel(config));
+  return(this->scanChannel(cfg));
 }
 
 int16_t SX126x::scanChannel(const ChannelScanConfig_t &config) {
@@ -667,7 +667,7 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::startChannelScan() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
@@ -678,7 +678,7 @@ int16_t SX126x::startChannelScan() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->startChannelScan(config));
+  return(this->startChannelScan(cfg));
 }
 
 int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
