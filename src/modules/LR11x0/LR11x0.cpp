@@ -216,11 +216,8 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
     timeout = (RadioLibTime_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    size_t maxLen = len;
-    if(len == 0) { 
-      maxLen = 0xFF;
-    }
-    timeout = (RadioLibTime_t)(((maxLen * 8.0) / (RADIOLIB_LR11X0_LR_FHSS_BIT_RATE)) * 1000.0 * 5.0);
+    // this modem cannot receive
+    return(RADIOLIB_ERR_WRONG_MODEM);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -288,7 +285,7 @@ int16_t LR11x0::receiveDirect() {
 }
 
 int16_t LR11x0::scanChannel() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
@@ -299,7 +296,7 @@ int16_t LR11x0::scanChannel() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->scanChannel(config));
+  return(this->scanChannel(cfg));
 }
 
 int16_t LR11x0::scanChannel(const ChannelScanConfig_t &config) {
@@ -472,8 +469,7 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -521,8 +517,7 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   state = getPacketType(&modem);
   RADIOLIB_ASSERT(state);
   if((modem != RADIOLIB_LR11X0_PACKET_TYPE_LORA) && 
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) &&
-     (modem != RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS)) {
+     (modem != RADIOLIB_LR11X0_PACKET_TYPE_GFSK)) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
@@ -561,7 +556,7 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
 }
 
 int16_t LR11x0::startChannelScan() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_LR11X0_CAD_PARAM_DEFAULT,
@@ -572,7 +567,7 @@ int16_t LR11x0::startChannelScan() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->startChannelScan(config));
+  return(this->startChannelScan(cfg));
 }
 
 int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {

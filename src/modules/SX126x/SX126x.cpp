@@ -20,35 +20,13 @@ SX126x::SX126x(Module* mod) : PhysicalLayer(RADIOLIB_SX126X_FREQUENCY_STEP_SIZE,
 }
 
 int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX126X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX126X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX126X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  
-  // try to find the SX126x chip
-  if(!SX126x::findChip(this->chipType)) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
-    this->mod->term();
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
-
   // BW in kHz and SF are required in order to calculate LDRO for setModulationParams
   // set the defaults, this will get overwritten later anyway
   this->bandwidthKhz = 500.0;
   this->spreadingFactor = 9;
 
   // initialize configuration variables (will be overwritten during public settings configuration)
-  this->bandwidth = RADIOLIB_SX126X_LORA_BW_500_0;  // initialized to 500 kHz, since lower valeus will interfere with LLCC68
+  this->bandwidth = RADIOLIB_SX126X_LORA_BW_500_0;  // initialized to 500 kHz, since lower values will interfere with LLCC68
   this->codingRate = RADIOLIB_SX126X_LORA_CR_4_7;
   this->ldrOptimize = 0x00;
   this->crcTypeLoRa = RADIOLIB_SX126X_LORA_CRC_ON;
@@ -57,22 +35,8 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   this->headerType = RADIOLIB_SX126X_LORA_HEADER_EXPLICIT;
   this->implicitLen = 0xFF;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
-    state = setTCXO(tcxoVoltage);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX126X_PACKET_TYPE_LORA);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -83,13 +47,6 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
-  RADIOLIB_ASSERT(state);
-
-  if (useRegulatorLDO) {
-    state = setRegulatorLDO();
-  } else {
-    state = setRegulatorDCDC();
-  }
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -109,54 +66,18 @@ int16_t SX126x::begin(uint8_t cr, uint8_t syncWord, uint16_t preambleLength, flo
 }
 
 int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
-  // set module properties
-  this->mod->init();
-  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
-  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
-  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
-  this->mod->spiConfig.statusPos = 1;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX126X_CMD_READ_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX126X_CMD_NOP;
-  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX126X_CMD_GET_STATUS;
-  this->mod->spiConfig.stream = true;
-  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
-  
-  // try to find the SX126x chip
-  if(!SX126x::findChip(this->chipType)) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
-    this->mod->term();
-    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
-
   // initialize configuration variables (will be overwritten during public settings configuration)
   this->bitRate = 21333;                                  // 48.0 kbps
   this->frequencyDev = 52428;                             // 50.0 kHz
   this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
   this->rxBandwidthKhz = 156.2;
   this->pulseShape = RADIOLIB_SX126X_GFSK_FILTER_GAUSS_0_5;
-  this->crcTypeFSK = RADIOLIB_SX126X_GFSK_CRC_2_BYTE_INV;     // CCIT CRC configuration
+  this->crcTypeFSK = RADIOLIB_SX126X_GFSK_CRC_2_BYTE_INV;     // CCITT CRC configuration
   this->preambleLengthFSK = preambleLength;
   this->addrComp = RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF;
 
-  // reset the module and verify startup
-  int16_t state = reset();
-  RADIOLIB_ASSERT(state);
-
-  // set mode to standby
-  state = standby();
-  RADIOLIB_ASSERT(state);
-
-  // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
-    state = setTCXO(tcxoVoltage);
-    RADIOLIB_ASSERT(state);
-  }
-
-  // configure settings not accessible by API
-  state = config(RADIOLIB_SX126X_PACKET_TYPE_GFSK);
+  // set module properties and perform initial setup
+  int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_GFSK);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -173,13 +94,6 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   RADIOLIB_ASSERT(state);
 
   state = setPreambleLength(preambleLength);
-  RADIOLIB_ASSERT(state);
-
-  if(useRegulatorLDO) {
-    state = setRegulatorLDO();
-  } else {
-    state = setRegulatorDCDC();
-  }
   RADIOLIB_ASSERT(state);
 
   // set publicly accessible settings that are not a part of begin method
@@ -435,7 +349,7 @@ int16_t SX126x::packetMode() {
 }
 
 int16_t SX126x::scanChannel() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
@@ -446,7 +360,7 @@ int16_t SX126x::scanChannel() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->scanChannel(config));
+  return(this->scanChannel(cfg));
 }
 
 int16_t SX126x::scanChannel(const ChannelScanConfig_t &config) {
@@ -753,7 +667,7 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
 }
 
 int16_t SX126x::startChannelScan() {
-  ChannelScanConfig_t config = {
+  ChannelScanConfig_t cfg = {
     .cad = {
       .symNum = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
       .detPeak = RADIOLIB_SX126X_CAD_PARAM_DEFAULT,
@@ -764,7 +678,7 @@ int16_t SX126x::startChannelScan() {
       .irqMask = RADIOLIB_IRQ_CAD_DEFAULT_MASK,
     },
   };
-  return(this->startChannelScan(config));
+  return(this->startChannelScan(cfg));
 }
 
 int16_t SX126x::startChannelScan(const ChannelScanConfig_t &config) {
@@ -2091,6 +2005,55 @@ int16_t SX126x::fixInvertedIQ(uint8_t iqConfig) {
 
 Module* SX126x::getMod() {
   return(this->mod);
+}
+
+int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem) {
+  // set module properties
+  this->mod->init();
+  this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
+  this->mod->hal->pinMode(this->mod->getGpio(), this->mod->hal->GpioModeInput);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_ADDR] = Module::BITS_16;
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
+  this->mod->spiConfig.statusPos = 1;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_READ] = RADIOLIB_SX126X_CMD_READ_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_WRITE] = RADIOLIB_SX126X_CMD_WRITE_REGISTER;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_NOP] = RADIOLIB_SX126X_CMD_NOP;
+  this->mod->spiConfig.cmds[RADIOLIB_MODULE_SPI_COMMAND_STATUS] = RADIOLIB_SX126X_CMD_GET_STATUS;
+  this->mod->spiConfig.stream = true;
+  this->mod->spiConfig.parseStatusCb = SPIparseStatus;
+  
+  // try to find the SX126x chip
+  if(!SX126x::findChip(this->chipType)) {
+    RADIOLIB_DEBUG_BASIC_PRINTLN("No SX126x found!");
+    this->mod->term();
+    return(RADIOLIB_ERR_CHIP_NOT_FOUND);
+  }
+  RADIOLIB_DEBUG_BASIC_PRINTLN("M\tSX126x");
+
+  // reset the module and verify startup
+  int16_t state = reset();
+  RADIOLIB_ASSERT(state);
+
+  // set mode to standby
+  state = standby();
+  RADIOLIB_ASSERT(state);
+
+  // set TCXO control, if requested
+  if(!this->XTAL && tcxoVoltage > 0.0) {
+    state = setTCXO(tcxoVoltage);
+    RADIOLIB_ASSERT(state);
+  }
+
+  // configure settings not accessible by API
+  state = config(modem);
+  RADIOLIB_ASSERT(state);
+
+  if (useRegulatorLDO) {
+    state = setRegulatorLDO();
+  } else {
+    state = setRegulatorDCDC();
+  }
+  return(state);
 }
 
 int16_t SX126x::config(uint8_t modem) {
