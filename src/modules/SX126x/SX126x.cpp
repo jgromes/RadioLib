@@ -1113,18 +1113,8 @@ int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
   // add Rx Gain register to retention memory if requested
   if(persist) {
     // values and registers below are specified in SX126x datasheet v2.1 section 9.6, just below table 9-3
-    uint8_t value0 = 0x01;
-    uint8_t value1 = 0x08;
-    uint8_t value2 = 0xAC;
-
-    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0, &value0, 1);
-    RADIOLIB_ASSERT(state);
-
-    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_1, &value1, 1);
-    RADIOLIB_ASSERT(state);
-
-    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_2, &value2, 1);
-    RADIOLIB_ASSERT(state);
+    uint8_t data[] = { 0x01, (uint8_t)((RADIOLIB_SX126X_REG_RX_GAIN >> 8) & 0xFF), (uint8_t)(RADIOLIB_SX126X_REG_RX_GAIN & 0xFF) };
+    state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN_RETENTION_0, data, 3);
   }
 
   return(state);
