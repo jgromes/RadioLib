@@ -1260,9 +1260,9 @@ float SX126x::getRSSI(bool packet) {
     return(-1.0 * rssiPkt/2.0);
   } else {
     // get instantaneous RSSI value
-    uint8_t data[3] = {0, 0, 0};  // RssiInst, Status, RFU
-    this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, data, 3);
-    return((float)data[0] / (-2.0));
+    uint8_t rssiRaw = 0;
+    this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, &rssiRaw, 1);
+    return((float)rssiRaw / (-2.0));
   }
 }
 
