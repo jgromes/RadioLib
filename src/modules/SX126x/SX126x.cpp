@@ -1008,20 +1008,9 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
 }
 
 int16_t SX126x::setRxBoostedGainMode(bool rxbgm, bool persist) {
-  // read the current register value
-  uint8_t rxGain = 0;
-  int16_t state = readRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
-  RADIOLIB_ASSERT(state);
-
-  // gain mode register value (SX1261/2 datasheet v2.1 section 9.6)
-  if(rxbgm) {
-    rxGain = RADIOLIB_SX126X_RX_GAIN_BOOSTED;
-  } else {
-    rxGain = RADIOLIB_SX126X_RX_GAIN_POWER_SAVING;
-  }
-
   // update RX gain setting register
-  state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
+  uint8_t rxGain = rxbgm ? RADIOLIB_SX126X_RX_GAIN_BOOSTED : RADIOLIB_SX126X_RX_GAIN_POWER_SAVING;
+  int16_t state = writeRegister(RADIOLIB_SX126X_REG_RX_GAIN, &rxGain, 1);
   RADIOLIB_ASSERT(state);
 
   // add Rx Gain register to retention memory if requested
