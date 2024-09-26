@@ -776,7 +776,7 @@ class LR11x0: public PhysicalLayer {
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
       \param tcxoVoltage TCXO reference voltage to be set.
-      \param high defaults to false for Sub-GHz band, true for frequencies above 1.8GHz
+      \param high defaults to false for Sub-GHz band, true for frequencies above 1GHz
       \returns \ref status_codes
     */
     int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high = false);
@@ -999,7 +999,7 @@ class LR11x0: public PhysicalLayer {
     /*!
       \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz. (default, high = false)
       \param bw LoRa bandwidth to be set in kHz.
-      \param high if set to true, allowed bandwidth is 203.125, 406.25 and 812.5 kHz, frequency must be above 1.8GHz
+      \param high if set to true, allowed bandwidth is 203.125, 406.25 and 812.5 kHz, frequency must be above 1GHz
       \returns \ref status_codes
     */
     int16_t setBandwidth(float bw, bool high = false);
