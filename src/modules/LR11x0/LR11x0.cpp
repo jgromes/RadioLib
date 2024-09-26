@@ -2121,7 +2121,7 @@ int16_t LR11x0::getTemp(float* temp) {
   // pass the replies
   if(temp) {
     uint16_t raw = ((uint16_t)(buff[0]) << 8) | (uint16_t)buff[1];
-    *temp = 25.0f - (1000.0f/1.7f)*(((float)raw/2047.0f)*1350.0f - 0.7295f);
+    *temp = 25.0f + (1000.0f/1.7f)*(((float)raw/2047.0f)*1.3500f - 0.7295f);
   }
 
   return(state);
