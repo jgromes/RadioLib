@@ -1284,6 +1284,21 @@ class LR11x0: public PhysicalLayer {
     void setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS], const Module::RfSwitchMode_t table[]);
 
     /*!
+      \brief Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method, LDRO will always be set to
+      the provided value, regardless of symbol length. To re-enable automatic LDRO configuration, call LR11x0::autoLDRO()
+      \param enable Force LDRO to be always enabled (true) or disabled (false).
+      \returns \ref status_codes
+    */
+    int16_t forceLDRO(bool enable);
+
+    /*!
+      \brief Re-enables automatic LDRO configuration. Only available in LoRa mode. After calling this method, LDRO will be enabled automatically
+      when symbol length exceeds 16 ms.
+      \returns \ref status_codes
+    */
+    int16_t autoLDRO();
+
+    /*!
       \brief Sets LR-FHSS configuration.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
