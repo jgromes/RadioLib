@@ -364,6 +364,9 @@
 #define RADIOLIB_LR11X0_LORA_BW_125_0                           (0x04UL << 0)   //  7     0                     125.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_250_0                           (0x05UL << 0)   //  7     0                     250.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_500_0                           (0x06UL << 0)   //  7     0                     500.0 kHz
+#define RADIOLIB_LR11X0_LORA_BW_203_125                         (0x0DUL << 0)   //  7     0                     203.0 kHz (2.4GHz only)
+#define RADIOLIB_LR11X0_LORA_BW_406_25                          (0x0EUL << 0)   //  7     0                     406.0 kHz (2.4GHz only)
+#define RADIOLIB_LR11X0_LORA_BW_812_50                          (0x0FUL << 0)   //  7     0                     812.0 kHz (2.4GHz only)
 #define RADIOLIB_LR11X0_LORA_CR_4_5_SHORT                       (0x01UL << 0)   //  7     0     coding rate: 4/5 with short interleaver
 #define RADIOLIB_LR11X0_LORA_CR_4_6_SHORT                       (0x02UL << 0)   //  7     0                  4/6 with short interleaver
 #define RADIOLIB_LR11X0_LORA_CR_4_7_SHORT                       (0x03UL << 0)   //  7     0                  4/7 with short interleaver
@@ -775,7 +778,7 @@ class LR11x0: public PhysicalLayer {
       \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high = false);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -997,7 +1000,7 @@ class LR11x0: public PhysicalLayer {
       \param bw LoRa bandwidth to be set in kHz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(float bw, bool high = false);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.

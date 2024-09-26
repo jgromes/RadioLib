@@ -7,7 +7,7 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
 
 int16_t LR1120::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
   // execute common part
-  int16_t state = LR11x0::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage);
+  int16_t state = LR11x0::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage, freq > 1000.0);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
