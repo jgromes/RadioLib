@@ -56,11 +56,11 @@ var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
 "class_l_r1120.html#a981be5384416833dcb6c09ad5be47aa6",
-"class_physical_layer.html#acbcaf6aefcb77a354797e66222fe5018",
-"class_s_x126x.html#a001c4637f01ed6f0216cd6c4d7e10da3",
-"class_s_x127x.html#ac5d2ddb517e474a699b4539653b3754d",
-"functions_e.html",
-"struct_l_r11x0_version_info__t.html#a8c572580b8dba18d46ae50b4a4dd5a8d"
+"class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488",
+"class_s_x1268.html#af6b041392136b599eec57085e2067a6f",
+"class_s_x127x.html#ac23c2b384ae8611d59e10ef6a14fe7e4",
+"functions_c.html",
+"struct_l_r11x0_version_info__t.html#a5505724d8dd4b361a30cc4afd7fba19f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

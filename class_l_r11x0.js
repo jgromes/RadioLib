@@ -11,6 +11,7 @@ var class_l_r11x0 =
       [ "MODE_WIFI", "class_l_r11x0.html#a2985d66f47882ab46291a4d89f686ca7a3bee9db01eab3ac70ff178c95fe8f8ab", null ]
     ] ],
     [ "LR11x0", "class_l_r11x0.html#a562f34a054e3374b812556df3b6eb421", null ],
+    [ "autoLDRO", "class_l_r11x0.html#aa9a8db401189ba0ce5117512b5db6a58", null ],
     [ "begin", "class_l_r11x0.html#a8dc6468762c36c30e9af262014e17942", null ],
     [ "beginGFSK", "class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d", null ],
     [ "beginLRFHSS", "class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e", null ],
@@ -25,6 +26,7 @@ var class_l_r11x0 =
     [ "explicitHeader", "class_l_r11x0.html#a3693359e5d106d6f57c23247c528cdd5", null ],
     [ "finishTransmit", "class_l_r11x0.html#aaff9a5b9b7636693c98bd1c93a5863e5", null ],
     [ "fixedPacketLengthMode", "class_l_r11x0.html#a5df4c1ed45bf59aa25bc400bcb5dc1ba", null ],
+    [ "forceLDRO", "class_l_r11x0.html#ae0a47e772fe24c7b3f3d3288c4cd0941", null ],
     [ "getChannelScanResult", "class_l_r11x0.html#a1ae2cddeb7671d9b71e9c83bf020820f", null ],
     [ "getDataRate", "class_l_r11x0.html#a1ec81f3625fdc8a3ef6c54a3804c3aa9", null ],
     [ "getFrequencyError", "class_l_r11x0.html#ad9046bccdb4ef60718e2e8ed2bd7f036", null ],
