@@ -1414,6 +1414,33 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
   this->setDioAsRfSwitch(enable, modes[0], modes[1], modes[2], modes[3], modes[4], modes[5], modes[6]);
 }
 
+int16_t LR11x0::forceLDRO(bool enable) {
+  // check packet type
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // update modulation parameters
+  this->ldroAuto = false;
+  this->ldrOptimize = (uint8_t)enable;
+  return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
+}
+
+int16_t LR11x0::autoLDRO() {
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
+  RADIOLIB_ASSERT(state);
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  this->ldroAuto = true;
+  return(RADIOLIB_ERR_NONE);
+}
+
 int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16_t hopSeed) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -2388,7 +2415,19 @@ int16_t LR11x0::setPacketType(uint8_t type) {
 }
 
 int16_t LR11x0::setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro) {
-  uint8_t buff[4] = { sf, bw, cr, ldro };
+  // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
+  if(this->ldroAuto) {
+    float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
+    if(symbolLength >= 16.0) {
+      this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_ENABLED;
+    } else {
+      this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_DISABLED;
+    }
+  } else {
+    this->ldrOptimize = ldro;
+  }
+
+  uint8_t buff[4] = { sf, bw, cr, this->ldrOptimize };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_MODULATION_PARAMS, true, buff, sizeof(buff)));
 }
 
