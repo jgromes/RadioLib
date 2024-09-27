@@ -21,6 +21,10 @@ unsigned long toneLoopDuration;
 #define SLEEP_1200 416.666
 #define SLEEP_2200 227.272
 
+// === NOTE ===
+// The tone(...) implementation uses the second core on the RPi Pico. This is to diminish as much 
+// jitter in the output tones as possible.
+
 void toneLoop(){
   gpio_set_dir(toneLoopPin, GPIO_OUT);
 
@@ -50,20 +54,13 @@ void toneLoop(){
 // and implement all of its virtual methods
 class PicoHal : public RadioLibHal {
 public:
-  PicoHal(spi_inst_t *spiChannel, uint32_t misoPin, uint32_t mosiPin, uint32_t sckPin, uint32_t pwmPin, uint32_t spiSpeed = 500 * 1000)
+  PicoHal(spi_inst_t *spiChannel, uint32_t misoPin, uint32_t mosiPin, uint32_t sckPin, uint32_t spiSpeed = 500 * 1000)
     : RadioLibHal(GPIO_IN, GPIO_OUT, 0, 1, GPIO_IRQ_EDGE_RISE, GPIO_IRQ_EDGE_FALL),
     _spiChannel(spiChannel),
     _spiSpeed(spiSpeed),
     _misoPin(misoPin),
     _mosiPin(mosiPin),
-    _sckPin(sckPin){
-      if (pwmPin == RADIOLIB_NC){
-        return;
-      }
-      // for AFSK
-      gpio_init(pwmPin);
-      gpio_set_dir(pwmPin, GPIO_OUT);
-    }
+    _sckPin(sckPin){}
 
   void init() override {
     stdio_init_all();
