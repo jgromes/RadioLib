@@ -364,6 +364,9 @@
 #define RADIOLIB_LR11X0_LORA_BW_125_0                           (0x04UL << 0)   //  7     0                     125.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_250_0                           (0x05UL << 0)   //  7     0                     250.0 kHz
 #define RADIOLIB_LR11X0_LORA_BW_500_0                           (0x06UL << 0)   //  7     0                     500.0 kHz
+#define RADIOLIB_LR11X0_LORA_BW_203_125                         (0x0DUL << 0)   //  7     0                     203.0 kHz (2.4GHz only)
+#define RADIOLIB_LR11X0_LORA_BW_406_25                          (0x0EUL << 0)   //  7     0                     406.0 kHz (2.4GHz only)
+#define RADIOLIB_LR11X0_LORA_BW_812_50                          (0x0FUL << 0)   //  7     0                     812.0 kHz (2.4GHz only)
 #define RADIOLIB_LR11X0_LORA_CR_4_5_SHORT                       (0x01UL << 0)   //  7     0     coding rate: 4/5 with short interleaver
 #define RADIOLIB_LR11X0_LORA_CR_4_6_SHORT                       (0x02UL << 0)   //  7     0                  4/6 with short interleaver
 #define RADIOLIB_LR11X0_LORA_CR_4_7_SHORT                       (0x03UL << 0)   //  7     0                  4/7 with short interleaver
@@ -773,9 +776,10 @@ class LR11x0: public PhysicalLayer {
       \param syncWord 1-byte LoRa sync word.
       \param preambleLength LoRa preamble length in symbols
       \param tcxoVoltage TCXO reference voltage to be set.
+      \param high defaults to false for Sub-GHz band, true for frequencies above 1GHz
       \returns \ref status_codes
     */
-    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage);
+    int16_t begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high = false);
 
     /*!
       \brief Initialization method for FSK modem.
@@ -993,11 +997,12 @@ class LR11x0: public PhysicalLayer {
     // configuration methods
 
     /*!
-      \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz.
+      \brief Sets LoRa bandwidth. Allowed values are 62.5, 125.0, 250.0 and 500.0 kHz. (default, high = false)
       \param bw LoRa bandwidth to be set in kHz.
+      \param high if set to true, allowed bandwidth is 203.125, 406.25 and 812.5 kHz, frequency must be above 1GHz
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(float bw, bool high = false);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.

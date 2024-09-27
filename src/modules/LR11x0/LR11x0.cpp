@@ -23,13 +23,13 @@ LR11x0::LR11x0(Module* mod) : PhysicalLayer(RADIOLIB_LR11X0_FREQUENCY_STEP_SIZE,
   this->irqMap[RADIOLIB_IRQ_TIMEOUT] = RADIOLIB_LR11X0_IRQ_TIMEOUT;
 }
 
-int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage) {
+int16_t LR11x0::begin(float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, uint16_t preambleLength, float tcxoVoltage, bool high) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LORA);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
-  state = setBandwidth(bw);
+  state = setBandwidth(bw, high);
   RADIOLIB_ASSERT(state);
 
   state = setSpreadingFactor(sf);
@@ -623,7 +623,7 @@ int16_t LR11x0::getChannelScanResult() {
   return(RADIOLIB_ERR_UNKNOWN);
 }
 
-int16_t LR11x0::setBandwidth(float bw) {
+int16_t LR11x0::setBandwidth(float bw, bool high) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
@@ -633,25 +633,39 @@ int16_t LR11x0::setBandwidth(float bw) {
   }
 
   // ensure byte conversion doesn't overflow
-  RADIOLIB_CHECK_RANGE(bw, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+  if (high) {
+    RADIOLIB_CHECK_RANGE(bw, 203.125, 815.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
 
-  // check allowed bandwidth values
-  uint8_t bw_div2 = bw / 2 + 0.01;
-  switch (bw_div2)  {
-    case 31: // 62.5:
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
-      break;
-    case 62: // 125.0:
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
-      break;
-    case 125: // 250.0
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
-      break;
-    case 250: // 500.0
-      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
-      break;
-    default:
+    if(fabsf(bw - 203.125) <= 0.001) {
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
+    } else if(fabsf(bw - 406.25) <= 0.001) {
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
+    } else if(fabsf(bw - 812.5) <= 0.001) {
+      this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
+    } else {
       return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+    }
+  } else {
+    RADIOLIB_CHECK_RANGE(bw, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    
+    // check allowed bandwidth values
+    uint8_t bw_div2 = bw / 2 + 0.01;
+    switch (bw_div2)  {
+      case 31: // 62.5:
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
+        break;
+      case 62: // 125.0:
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_125_0;
+        break;
+      case 125: // 250.0
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_250_0;
+        break;
+      case 250: // 500.0
+        this->bandwidth = RADIOLIB_LR11X0_LORA_BW_500_0;
+        break;
+      default:
+        return(RADIOLIB_ERR_INVALID_BANDWIDTH);
+    }
   }
 
   // update modulation parameters
