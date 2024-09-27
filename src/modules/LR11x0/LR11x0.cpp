@@ -589,7 +589,7 @@ int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
 
   // set DIO pin mapping
   uint16_t irqFlags = (config.cad.irqFlags == RADIOLIB_IRQ_NOT_SUPPORTED) ? RADIOLIB_LR11X0_IRQ_CAD_DETECTED | RADIOLIB_LR11X0_IRQ_CAD_DONE : config.cad.irqFlags;
-  state = setDioIrqParams(irqFlags, irqFlags);
+  state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqFlags));
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
