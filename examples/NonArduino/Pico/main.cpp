@@ -44,7 +44,7 @@
 #include "PicoHal.h"
 
 // create a new instance of the HAL class
-PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK);
+PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, RADIOLIB_NC);
 
 // now we can create the radio module
 // NSS pin:  26
