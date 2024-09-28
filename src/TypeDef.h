@@ -250,6 +250,11 @@
 */
 #define RADIOLIB_ERR_NULL_POINTER                              (-28)
 
+/*!
+  \brief The requested IRQ configuration is not valid for this module.
+*/
+#define RADIOLIB_ERR_INVALID_IRQ                               (-29)
+
 // RF69-specific status codes
 
 /*!
