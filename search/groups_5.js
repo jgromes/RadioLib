@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['type_20aliases_20used_20by_20radiolib_2e_1281',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]]
+  ['type_20aliases_20used_20by_20radiolib_2e_1282',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]]
 ];

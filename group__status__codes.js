@@ -32,6 +32,7 @@ var group__status__codes =
     [ "RADIOLIB_ERR_INVALID_GAIN", "group__status__codes.html#ga908f3a5ab6937d28536791c96cf9de23", null ],
     [ "RADIOLIB_ERR_INVALID_IMAGE_QUALITY", "group__status__codes.html#gad195c8d9ba523944ecf41dbb7cb9baa3", null ],
     [ "RADIOLIB_ERR_INVALID_IMAGE_SIZE", "group__status__codes.html#ga44f09021bdc7fdd4b57db3ab8725b5a1", null ],
+    [ "RADIOLIB_ERR_INVALID_IRQ", "group__status__codes.html#ga9473a1146463e7f6cd4f0a06ef7c7b77", null ],
     [ "RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY", "group__status__codes.html#gaeafdfcb2b10b08385feea93163fc3918", null ],
     [ "RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY_LENGTH", "group__status__codes.html#ga85e34d08b298a4125f77ddede011db3b", null ],
     [ "RADIOLIB_ERR_INVALID_MODE", "group__status__codes.html#ga4871133fa9b6d7cdbee82daf2226d373", null ],
