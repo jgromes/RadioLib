@@ -440,11 +440,19 @@ uint8_t* LoRaWANNode::getBufferSession() {
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_ADR_FCNT], this->adrFCnt);
   LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_FCNT_UP], this->fCntUp);
 
+  // store the enabled channels
+  uint64_t chMaskGrp0123 = 0;
+  uint32_t chMaskGrp45 = 0;
+  this->getChannelPlanMask(&chMaskGrp0123, &chMaskGrp45);
+  LoRaWANNode::hton<uint64_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 1, chMaskGrp0123);
+  LoRaWANNode::hton<uint32_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_LINK_ADR] + 9, chMaskGrp45);
+
+  // store the available/unused channels
   uint16_t chMask = 0x0000;
   (void)this->getAvailableChannels(&chMask);
   LoRaWANNode::hton<uint16_t>(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_AVAILABLE_CHANNELS], chMask);
 
-  // save the current uplink MAC command queue
+  // store the current uplink MAC command queue
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_MAC_QUEUE], this->fOptsUp, RADIOLIB_LORAWAN_FHDR_FOPTS_MAX_LEN);
   memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_MAC_QUEUE_LEN], &this->fOptsUpLen, 1);
 
@@ -2340,11 +2348,11 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
         }
         break;
       case 6:
-        // for dynamic bands: all channels ON (currently defined)
+        // for dynamic bands: all channels ON (that are currently defined)
         // for fixed bands:   all 125kHz channels ON, channel mask similar to ChMask = 4
         // except for CN500:  all 125kHz channels ON
 
-        // for dynamic bands: retrieve all defined channels
+        // for dynamic bands: retrieve all currently defined channels
         // for fixed bands:   cannot store all defined channels, so select a random one from each bank
         this->getChannelPlanMask(&chMaskGrp0123, &chMaskGrp45);
         if(this->band->bandType == RADIOLIB_LORAWAN_BAND_FIXED && this->band->bandNum != BandCN500) {
@@ -2896,6 +2904,7 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
         }
       }
     }
+
   } else {    // bandType == RADIOLIB_LORAWAN_BAND_FIXED
     // if a subband is set, we can set the channel indices straight from subband
     if(this->subBand > 0 && this->subBand <= 8) {

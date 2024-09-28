@@ -1069,7 +1069,7 @@ class LoRaWANNode {
     // perform a single CAD operation for the under SF/CH combination. Returns either busy or otherwise.
     bool cadChannelClear();
 
-    // get or create a complete 80-bit channel mask for current configuration
+    // (dynamic bands:) get or (fixed bands:) create a complete 80-bit channel mask for current configuration
     void getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGrp45);
 
     // setup uplink/downlink channel data rates and frequencies
