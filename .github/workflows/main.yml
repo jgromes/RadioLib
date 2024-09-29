@@ -134,6 +134,9 @@ jobs:
       run-build: ${{ (inputs.id != 'none' && matrix.id == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.id)) || inputs.id == 'all' || inputs.id == matrix.id }}
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+
       - name: Install arduino-cli
         if: ${{ env.run-build == 'true' }}
         run:
