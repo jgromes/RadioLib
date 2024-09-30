@@ -1400,7 +1400,7 @@ int16_t SX127x::setIrqFlags(uint32_t irq) {
 
     // DIO pin is unused, set the flag and configure it
     usedPinFlags |= (1UL << dioNum);
-    uint8_t addr = (dioNum > 3) ? RADIOLIB_SX127X_REG_DIO_MAPPING_1 : RADIOLIB_SX127X_REG_DIO_MAPPING_2;
+    uint8_t addr = (dioNum > 3) ? RADIOLIB_SX127X_REG_DIO_MAPPING_2 : RADIOLIB_SX127X_REG_DIO_MAPPING_1;
     uint8_t msb = 7 - 2*(dioNum % 4);
     state = this->mod->SPIsetRegValue(addr, regVal, msb, msb - 1);
     RADIOLIB_ASSERT(state);
