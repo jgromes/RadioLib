@@ -679,6 +679,13 @@ class SX128x: public PhysicalLayer {
     int16_t setPreambleLength(uint32_t preambleLength);
 
     /*!
+      \brief Set data rate.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
+
+    /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,
       1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).
       \param br FSK/FLRC bit rate to be set in kbps.
