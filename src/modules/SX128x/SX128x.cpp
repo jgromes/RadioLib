@@ -461,7 +461,9 @@ int16_t SX128x::sleep(bool retainConfig) {
   if(!retainConfig) {
     sleepConfig = RADIOLIB_SX128X_SLEEP_DATA_BUFFER_FLUSH | RADIOLIB_SX128X_SLEEP_DATA_RAM_FLUSH;
   }
-  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_SLEEP, &sleepConfig, 1, false, false);
+  int16_t state = this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SAVE_CONTEXT, 0, 1, false, false);
+  RADIOLIB_ASSERT(state);
+  state = this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_SLEEP, &sleepConfig, 1, false, false);
 
   // wait for SX128x to safely enter sleep mode
   this->mod->hal->delay(1);
