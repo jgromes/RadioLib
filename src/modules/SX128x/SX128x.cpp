@@ -904,6 +904,22 @@ int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
+int16_t SX128x::setDataRate(DataRate_t dr) {
+  // check active modem
+  uint8_t modem = getPacketType();
+  int16_t state = RADIOLIB_ERR_NONE;
+  if (modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
+      state = this->setBandwidth(dr.lora.bandwidth);
+      RADIOLIB_ASSERT(state);
+      state = this->setSpreadingFactor(dr.lora.spreadingFactor);
+      RADIOLIB_ASSERT(state);
+      state = this->setCodingRate(dr.lora.codingRate);
+  } else {
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+  return(state);
+}
+
 int16_t SX128x::setBitRate(float br) {
   // check active modem
   uint8_t modem = getPacketType();
