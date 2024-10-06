@@ -62,6 +62,9 @@ struct LrFhssRate_t {
 
   /*! \brief Coding rate */
   uint8_t cr;
+
+  /*! \brief Grid spacing */
+  bool narrowGrid;
 };
 
 /*!
@@ -74,6 +77,9 @@ union DataRate_t {
 
   /*! \brief Interpretation for FSK modems */
   FSKRate_t fsk;
+
+  /*! \brief Interpretation for LR-FHSS modems */
+  LrFhssRate_t lrFhss;
 };
 
 /*!

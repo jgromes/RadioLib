@@ -98,10 +98,13 @@ int16_t LR11x0::beginGFSK(float br, float freqDev, float rxBw, uint16_t preamble
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage) {
+int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage) {
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);
+
+  // set grid spacing
+  this->lrFhssGrid = narrowGrid ? RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC;
 
   // configure publicly accessible settings
   state = setLrFhssConfig(bw, cr);
@@ -418,8 +421,8 @@ int16_t LR11x0::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
     // in LR-FHSS mode, the packet is built by the device
-    // TODO add configurable grid step and device offset
-    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, RADIOLIB_LR11X0_LR_FHSS_GRID_STEP_FCC, true, this->lrFhssBw, this->lrFhssHopSeq, 0, const_cast<uint8_t*>(data), len);
+    // TODO add configurable device offset
+    state = lrFhssBuildFrame(this->lrFhssHdrCount, this->lrFhssCr, this->lrFhssGrid, true, this->lrFhssBw, this->lrFhssHopSeq, 0, const_cast<uint8_t*>(data), len);
     RADIOLIB_ASSERT(state);
 
   } else {

@@ -796,10 +796,11 @@ class LR11x0: public PhysicalLayer {
       \brief Initialization method for LR-FHSS modem.
       \param bw LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values.
+      \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing.
       \param tcxoVoltage TCXO reference voltage to be set.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -1594,7 +1595,7 @@ class LR11x0: public PhysicalLayer {
     uint16_t preambleLengthGFSK = 0;
 
     // cached LR-FHSS parameters
-    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0;
+    uint8_t lrFhssCr = 0, lrFhssBw = 0, lrFhssHdrCount = 0, lrFhssGrid = 0;
     uint16_t lrFhssHopSeq = 0;
 
     float dataRateMeasured = 0;
