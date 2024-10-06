@@ -274,7 +274,8 @@
 #define RADIOLIB_LR11X0_IRQ_FSK_LEN_ERROR                       (0x01UL << 24)  //  31    0                FSK packet received with length error
 #define RADIOLIB_LR11X0_IRQ_FSK_ADDR_ERROR                      (0x01UL << 25)  //  31    0                FSK packet received with address error
 #define RADIOLIB_LR11X0_IRQ_LORA_RX_TIMESTAMP                   (0x01UL << 27)  //  31    0                last LoRa symbol was received (timestamp source)
-#define RADIOLIB_LR11X0_IRQ_ALL                                 (0x0BF80FFCUL)  //  31    0                all interrupts
+#define RADIOLIB_LR11X0_IRQ_GNSS_ABORT                          (0x01UL << 28)  //  31    0                GNSS scan aborted
+#define RADIOLIB_LR11X0_IRQ_ALL                                 (0x1BF80FFCUL)  //  31    0                all interrupts
 #define RADIOLIB_LR11X0_IRQ_NONE                                (0x00UL << 0)   //  31    0                no interrupts
 
 // RADIOLIB_LR11X0_CMD_CONFIG_LF_LOCK
@@ -552,7 +553,7 @@
 #define RADIOLIB_LR11X0_GNSS_CONTEXT_ERR_FLASH                  (0x03UL << 0)   //  7     4                 flash integrity error
 #define RADIOLIB_LR11X0_GNSS_CONTEXT_ERR_ALMANAC_UPD            (0x04UL << 0)   //  7     4                 almanac update not allowed
 #define RADIOLIB_LR11X0_GNSS_CONTEXT_FREQ_SPACE_250_HZ          (0x00UL << 0)   //  8     7     frequency search space: 250 Hz
-#define RADIOLIB_LR11X0_GNSS_CONTEXT_FREQ_SPACE_500_HZ          (0x01UL << 0)   //  8     7                             500 H
+#define RADIOLIB_LR11X0_GNSS_CONTEXT_FREQ_SPACE_500_HZ          (0x01UL << 0)   //  8     7                             500 Hz
 #define RADIOLIB_LR11X0_GNSS_CONTEXT_FREQ_SPACE_1000_HZ         (0x02UL << 0)   //  8     7                             1000 Hz
 #define RADIOLIB_LR11X0_GNSS_CONTEXT_FREQ_SPACE_2000_HZ         (0x03UL << 0)   //  8     7                             2000 Hz
 
@@ -570,6 +571,20 @@
 #define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW                 (0x00UL << 0)   //  7     0     time fetch options: ToW only, requires WN to demodulated beforehand
 #define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN              (0x01UL << 0)   //  7     0                         ToW and WN
 #define RADIOLIB_LR11X0_GNSS_FETCH_TIME_OPT_TOW_WN_ROLL         (0x02UL << 0)   //  7     0                         ToW, WN and rollover
+
+// RADIOLIB_LR11X0_CMD_GNSS_READ_DEMOD_STATUS
+#define RADIOLIB_LR11X0_GNSS_DEMOD_STATUS_WN_FOUND              (4)             //  7     0     GNSS demodulation status: Week number and time-of-week found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_WORD_SYNC_FOUND         (0x01UL << 0)   //  7     0     GNSS demodulation info: word synchronization found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_TOW_FOUND               (0x01UL << 1)   //  7     0                             time-of-week found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_WN_DEMODED              (0x01UL << 2)   //  7     0                             week number demodulated
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_WN_FOUND                (0x01UL << 3)   //  7     0                             week number found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_SUBFRAME_1_FOUND        (0x01UL << 4)   //  7     0                             subframe 1 found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_SUBFRAME_4_FOUND        (0x01UL << 5)   //  7     0                             subframe 4 found
+#define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_SUBFRAME_5_FOUND        (0x01UL << 6)   //  7     0                             subframe 5 found
+
+// RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_STATUS
+#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_GPS_UP_TO_DATE      (0)             //  7     0     GPS almanac status: all satellites up-to-date
+#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_GPS_OUTDATED        (1)             //  7     0                         at least one satellite needs update
 
 // RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS                   (0x00UL << 0)   //  7     0     crypto engine status: success
@@ -745,6 +760,7 @@ struct LR11x0GnssAlmanacStatus_t {
   LR11x0GnssAlmanacStatusPart_t beidou;
   uint32_t beidouSvNoAlmanacFlags[2];
   uint8_t nextAlmanacId;
+  RadioLibTime_t start;
 };
 
 /*!
@@ -827,6 +843,14 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage);
+
+    /*!
+      \brief Initialization method for GNSS scanning.
+      \param constellations GNSS constellations to use (GPS, BeiDou or both). Defaults to both.
+      \param tcxoVoltage TCXO reference voltage to be set.
+      \returns \ref status_codes
+    */
+    int16_t beginGNSS(uint8_t constellations = RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS | RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU, float tcxoVoltage = 1.6);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -1437,6 +1461,12 @@ class LR11x0: public PhysicalLayer {
     */
     int16_t gnssScan(uint16_t* resSize);
 
+    int16_t getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat);
+
+    int16_t gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat);
+
+    int16_t updateGnssAlmanac(uint8_t constellation);
+
     /*!
       \brief Get GNSS scan result.
       CAUTION: Work in progress! Most data is returned via debug prints.
@@ -1454,12 +1484,6 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getGnssPosition(float* lat, float* lon, bool filtered = true);
-
-    int16_t getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat);
-
-    int16_t updateGnssAlmanac();
-
-    int16_t beginGNSS(float tcxoVoltage = 1.6);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

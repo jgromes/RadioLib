@@ -606,6 +606,11 @@
 #define RADIOLIB_ERR_INVALID_WIFI_TYPE                          (-1200)
 
 /*!
+  \brief GNSS subframe not available in the next 2.3 seconds.
+*/
+#define RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE                 (-1201)
+
+/*!
   \}
 */
 
