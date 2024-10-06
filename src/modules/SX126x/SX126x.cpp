@@ -119,7 +119,9 @@ int16_t SX126x::beginFSK(float br, float freqDev, float rxBw, uint16_t preambleL
   return(state);
 }
 
-int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage, bool useRegulatorLDO) {
+int16_t SX126x::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO) {
+  this->lrFhssGridNonFcc = narrowGrid;
+  
   // set module properties and perform initial setup
   int16_t state = this->modSetup(tcxoVoltage, useRegulatorLDO, RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS);
   RADIOLIB_ASSERT(state);

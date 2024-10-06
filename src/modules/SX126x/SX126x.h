@@ -525,11 +525,12 @@ class SX126x: public PhysicalLayer {
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
       \param bw LR-FHSS bandwidth, one of RADIOLIB_SX126X_LR_FHSS_BW_* values.
       \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values.
+      \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing.
       \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V, set to 0 to skip.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, float tcxoVoltage, bool useRegulatorLDO = false);
+    int16_t beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage, bool useRegulatorLDO = false);
 
     /*!
       \brief Sets LR-FHSS configuration.
@@ -539,7 +540,7 @@ class SX126x: public PhysicalLayer {
       \param hopSeqId 9-bit seed number for PRNG generation of the hopping sequence. Defaults to 0x13A.
       \returns \ref status_codes
     */
-    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeqId = 0x13A);
+    int16_t setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount = 3, uint16_t hopSeqId = 0x100);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
