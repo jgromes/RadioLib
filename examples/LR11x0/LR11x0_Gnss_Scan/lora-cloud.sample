@@ -1,0 +1,4 @@
+# Replace the data below with yours and rename this file to lora-cloud.auth, used by lora-cloud.sh
+AUTH_TOKEN='AQE000000000000000000000/0000000CQ'
+REAL_LAT=35.12345
+REAL_LON=-119.12345
