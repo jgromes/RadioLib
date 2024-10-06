@@ -137,9 +137,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:abcc4c776d1a09bb002226ac95574766d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d">beginGFSK</a> (float br, float freqDev, float rxBw, uint16_t preambleLength, float tcxoVoltage)</td></tr>
 <tr class="memdesc:abcc4c776d1a09bb002226ac95574766d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for FSK modem.  <a href="class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d">More...</a><br /></td></tr>
 <tr class="separator:abcc4c776d1a09bb002226ac95574766d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a858b08fd0e7b00baf3056d32dfabb87e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e">beginLRFHSS</a> (uint8_t bw, uint8_t cr, float tcxoVoltage)</td></tr>
-<tr class="memdesc:a858b08fd0e7b00baf3056d32dfabb87e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem.  <a href="class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e">More...</a><br /></td></tr>
-<tr class="separator:a858b08fd0e7b00baf3056d32dfabb87e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a244ee48075d44c7064b454eb9c4afdb8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8">beginLRFHSS</a> (uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage)</td></tr>
+<tr class="memdesc:a244ee48075d44c7064b454eb9c4afdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem.  <a href="class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8">More...</a><br /></td></tr>
+<tr class="separator:a244ee48075d44c7064b454eb9c4afdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a288bcc309d3676bc0bbe620b7d89d994"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">reset</a> ()</td></tr>
 <tr class="memdesc:a288bcc309d3676bc0bbe620b7d89d994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <a href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">More...</a><br /></td></tr>
 <tr class="separator:a288bcc309d3676bc0bbe620b7d89d994"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -704,8 +704,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a858b08fd0e7b00baf3056d32dfabb87e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a858b08fd0e7b00baf3056d32dfabb87e">&#9670;&nbsp;</a></span>beginLRFHSS()</h2>
+<a id="a244ee48075d44c7064b454eb9c4afdb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a244ee48075d44c7064b454eb9c4afdb8">&#9670;&nbsp;</a></span>beginLRFHSS()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -721,6 +721,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
           <td class="paramtype">uint8_t&#160;</td>
           <td class="paramname"><em>cr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>narrowGrid</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -741,6 +747,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramname">bw</td><td>LR-FHSS bandwidth, one of RADIOLIB_LR11X0_LR_FHSS_BW_* values. </td></tr>
     <tr><td class="paramname">cr</td><td>LR-FHSS coding rate, one of RADIOLIB_LR11X0_LR_FHSS_CR_* values. </td></tr>
+    <tr><td class="paramname">narrowGrid</td><td>Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set. </td></tr>
   </table>
   </dd>

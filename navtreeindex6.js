@@ -100,6 +100,7 @@ var NAVTREEINDEX6 =
 "struct_lo_ra_w_a_n_mac_command__t.html#a89f71b4d17ad16089772ed070cc0949e":[3,0,23,2],
 "struct_lo_ra_w_a_n_mac_command__t.html#aa253350bc95c821bf42eaee170922355":[3,0,23,3],
 "struct_lr_fhss_rate__t.html":[3,0,34],
+"struct_lr_fhss_rate__t.html#a29dec307a472c34e9fafb10af3c4fb9c":[3,0,34,2],
 "struct_lr_fhss_rate__t.html#a3eb7a2c2f4f23face4d6706aa8084c6b":[3,0,34,1],
 "struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21":[3,0,34,0],
 "struct_module_1_1_rf_switch_mode__t.html":[3,0,35,0],
@@ -132,6 +133,7 @@ var NAVTREEINDEX6 =
 "union_channel_scan_config__t.html#ad728b1bd8f0410660f51df0b27f2797e":[3,0,8,1],
 "union_channel_scan_config__t.html#ad9cdc4ce1a4664a12802d1e652c9e098":[3,0,8,0],
 "union_data_rate__t.html":[3,0,9],
+"union_data_rate__t.html#aa11056b982f023a4572dee8d6ac5f9ef":[3,0,9,2],
 "union_data_rate__t.html#ab25c3fcaf1934cd9d6d5e9820749137d":[3,0,9,1],
 "union_data_rate__t.html#abfa0cbc4b33c49435e67662b6e6027cf":[3,0,9,0]
 };

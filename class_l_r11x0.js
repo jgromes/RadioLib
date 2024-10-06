@@ -14,7 +14,7 @@ var class_l_r11x0 =
     [ "autoLDRO", "class_l_r11x0.html#aa9a8db401189ba0ce5117512b5db6a58", null ],
     [ "begin", "class_l_r11x0.html#aa2b69f68ff6171b11a1141c8615240fd", null ],
     [ "beginGFSK", "class_l_r11x0.html#abcc4c776d1a09bb002226ac95574766d", null ],
-    [ "beginLRFHSS", "class_l_r11x0.html#a858b08fd0e7b00baf3056d32dfabb87e", null ],
+    [ "beginLRFHSS", "class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8", null ],
     [ "calculateRxTimeout", "class_l_r11x0.html#a260c7f4ee4739e532ddb465a276205d3", null ],
     [ "checkDataRate", "class_l_r11x0.html#a4d18ad719be79c083f2b0ce77bbaa448", null ],
     [ "clearIrqAction", "class_l_r11x0.html#ab167c4dc14e80d19f8b33d68c3f90d98", null ],

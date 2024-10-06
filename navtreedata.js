@@ -55,7 +55,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "_a_f_s_k_8h_source.html",
-"class_l_r1120.html#a981be5384416833dcb6c09ad5be47aa6",
+"class_l_r1120.html#acf6ea475643c6eba63133641a8681a8f",
 "class_physical_layer.html#acb45b2342400a03a914a91d2ac7fb488",
 "class_s_x1268.html#af6b041392136b599eec57085e2067a6f",
 "class_s_x127x.html#ac23c2b384ae8611d59e10ef6a14fe7e4",
