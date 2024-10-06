@@ -53,6 +53,21 @@ struct FSKRate_t {
 };
 
 /*!
+  \struct LrFhssRate_t
+  \brief Data rate structure interpretation in case LR-FHSS is used
+*/
+struct LrFhssRate_t {
+  /*! \brief Bandwidth */
+  uint8_t bw;
+
+  /*! \brief Coding rate */
+  uint8_t cr;
+
+  /*! \brief Grid spacing */
+  bool narrowGrid;
+};
+
+/*!
   \union DataRate_t
   \brief Common data rate structure
 */
@@ -62,6 +77,9 @@ union DataRate_t {
 
   /*! \brief Interpretation for FSK modems */
   FSKRate_t fsk;
+
+  /*! \brief Interpretation for LR-FHSS modems */
+  LrFhssRate_t lrFhss;
 };
 
 /*!
@@ -513,7 +531,7 @@ class PhysicalLayer {
       \returns RADIOLIB_CHANNEL_FREE when channel is free,
       RADIOLIB_PREAMBLE_DETECTEDwhen occupied or other \ref status_codes.
     */
-    virtual int16_t scanChannel(ChannelScanConfig_t config);
+    virtual int16_t scanChannel(const ChannelScanConfig_t &config);
 
     /*!
       \brief Get truly random number in range 0 - max.

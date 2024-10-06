@@ -1,16 +1,33 @@
 # LoRaWAN examples
-RadioLib LoRaWAN v1.1 examples.
+RadioLib LoRaWAN examples.
 
 * [LoRaWAN_Starter](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_Starter): this is the recommended entry point for new users. Please read the [`notes`](https://github.com/jgromes/RadioLib/blob/master/examples/LoRaWAN/LoRaWAN_Starter/notes.md) that come with this example to learn more about LoRaWAN and how to use it in RadioLib!
 * [LoRaWAN_Reference](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_Reference): this sketch showcases most of the available API for LoRaWAN in RadioLib. Be frightened by the possibilities! It is recommended you have read all the [`notes`](https://github.com/jgromes/RadioLib/blob/master/examples/LoRaWAN/LoRaWAN_Starter/notes.md) for the Starter sketch first, as well as the [Learn section on The Things Network](https://www.thethingsnetwork.org/docs/lorawan/)!
 * [LoRaWAN_ABP](https://github.com/jgromes/RadioLib/tree/master/examples/LoRaWAN/LoRaWAN_ABP): if you wish to use ABP instead of OTAA (but why?), this example shows how you can do this using RadioLib.
 
----
+## LoRaWAN versions & regional parameters
+RadioLib implements both LoRaWAN v1.1 and v1.0.4. Confusingly, v1.0.4 is newer than v1.1, but v1.1 includes more security checks and as such **LoRaWAN v1.1 is preferred**.  
+The catch is in the Regional Parameters: as v1.0.4 is newer, it is more up to date regarding local laws & regulations. Therefore, RadioLib implements 1.0.4 as baseline and 1.1 as fallback, but **Regional Parameters v1.0.4 is preferred**.  
+_Note: the CN500 band is implemented as specified in RP v1.1, as the RP v1.0.4 version is much too complex._
 
+To activate a LoRaWAN v1.1 session, supply all the required keys:
+```cpp
+node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+node.beginABP(devAddr, fNwkSIntKey, sNwkSIntKey, nwkSEncKey, appSKey);
+```
+
+To activate a LoRaWAN v1.0.4 session, set the keys that are not available to `NULL`:
+```cpp
+node.beginOTAA(joinEUI, devEUI, NULL, appKey);
+node.beginABP(devAddr, NULL, NULL, nwkSEncKey, appSKey);
+```
+
+The device doesn't need to know the Regional Parameters version - that is of importance on the console.
+
+## LoRaWAN persistence
 > [!WARNING]
-> These examples do not fully comply with LoRaWAN v1.1: for that, persistent storage is necessary. As the implementation of persistent storage differs between different platforms, these are not given here, but in a separate repository, see below:
+> These examples do not actually comply with LoRaWAN v1.0.4/v1.1: for that, persistent storage is necessary. As the implementation of persistent storage differs between different platforms, these are not given here, but in a separate repository, see below:
 
-## RadioLib persistence
 In [this repository](https://github.com/radiolib-org/radiolib-persistence), examples are provided that do comply with the required persistence of certain parameters for LoRaWAN v1.1. Examples are (or will become) available for some of the most popular platforms. **These examples assume you have successfully used the Starter sketch and understood (most of) the accompanying notes!**
 Currently, examples are available for the following platforms:
 

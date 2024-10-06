@@ -22,6 +22,7 @@
 #define RADIOLIB_SX128X_CMD_READ_REGISTER                       0x19
 #define RADIOLIB_SX128X_CMD_WRITE_BUFFER                        0x1A
 #define RADIOLIB_SX128X_CMD_READ_BUFFER                         0x1B
+#define RADIOLIB_SX128X_CMD_SAVE_CONTEXT                        0xD5
 #define RADIOLIB_SX128X_CMD_SET_SLEEP                           0x84
 #define RADIOLIB_SX128X_CMD_SET_STANDBY                         0x80
 #define RADIOLIB_SX128X_CMD_SET_FS                              0xC1
@@ -462,7 +463,7 @@ class SX128x: public PhysicalLayer {
       \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(ChannelScanConfig_t config) override;
+    int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -679,6 +680,13 @@ class SX128x: public PhysicalLayer {
     int16_t setPreambleLength(uint32_t preambleLength);
 
     /*!
+      \brief Set data rate.
+      \param dr Data rate struct. Interpretation depends on currently active modem (FSK or LoRa).
+      \returns \ref status_codes
+    */
+    int16_t setDataRate(DataRate_t dr) override;
+
+    /*!
       \brief Sets FSK or FLRC bit rate. Allowed values are 125, 250, 400, 500, 800, 1000,
       1600 and 2000 kbps (for FSK modem) or 260, 325, 520, 650, 1000 and 1300 (for FLRC modem).
       \param br FSK/FLRC bit rate to be set in kbps.
@@ -760,6 +768,13 @@ class SX128x: public PhysicalLayer {
       \returns RSSI of the last received packet in dBm.
     */
     float getRSSI() override;
+
+    /*!
+      \brief Gets RSSI (Recorded Signal Strength Indicator).
+      \param packet Whether to read last packet RSSI, or the current value.
+      \returns RSSI value in dBm.
+    */
+    float getRSSI(bool packet);
 
     /*!
       \brief Gets SNR (Signal to Noise Ratio) of the last received packet. Only available for LoRa or ranging modem.

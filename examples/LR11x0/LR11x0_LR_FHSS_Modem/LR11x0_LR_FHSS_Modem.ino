@@ -2,6 +2,7 @@
   RadioLib LR11x0 LR-FHSS Modem Example
 
   This example shows how to use LR-FHSS modem in LR11x0 chips.
+  This modem can only transmit data, and is not able to receive.
 
   NOTE: The sketch below is just a guide on how to use
         LR-FHSS modem, so this code should not be run directly!
@@ -68,9 +69,7 @@ void setup() {
 }
 
 void loop() {
-  // LR-FHSS modem can use the same transmit/receive methods
-  // as the LoRa modem, even their interrupt-driven versions
-
+  // LR-FHSS modem can only transmit!
   // transmit LR-FHSS packet
   int state = radio.transmit("Hello World!");
   /*
@@ -86,24 +85,6 @@ void loop() {
     Serial.println(F("[LR1110] Timed out while transmitting!"));
   } else {
     Serial.println(F("[LR1110] Failed to transmit packet, code "));
-    Serial.println(state);
-  }
-
-  // receive LR-FHSS packet
-  String str;
-  state = radio.receive(str);
-  /*
-    byte byteArr[8];
-    int state = radio.receive(byteArr, 8);
-  */
-  if (state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("[LR1110] Received packet!"));
-    Serial.print(F("[LR1110] Data:\t"));
-    Serial.println(str);
-  } else if (state == RADIOLIB_ERR_RX_TIMEOUT) {
-    Serial.println(F("[LR1110] Timed out while waiting for packet!"));
-  } else {
-    Serial.print(F("[LR1110] Failed to receive packet, code "));
     Serial.println(state);
   }
 

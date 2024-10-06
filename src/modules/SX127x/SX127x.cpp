@@ -672,12 +672,11 @@ int16_t SX127x::readData(uint8_t* data, size_t len) {
       // CRC is disabled according to packet header and enabled according to user
       // most likely damaged packet header
       state = RADIOLIB_ERR_LORA_HEADER_DAMAGED;
-    } else {
-      // set FIFO read pointer to the start of the current packet
-      state = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FIFO_RX_CURRENT_ADDR);
-      if (state >= 0) {
-        state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, state);
-      }
+    } 
+    // set FIFO read pointer to the start of the current packet
+    int16_t addr = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_FIFO_RX_CURRENT_ADDR);
+    if (addr >= 0) {
+      this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_ADDR_PTR, addr);
     }
 
   } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
@@ -1315,43 +1314,104 @@ uint32_t SX127x::getIrqFlags() {
 
 int16_t SX127x::setIrqFlags(uint32_t irq) {
   // this is a bit convoluted, but unfortunately SX127x IRQ flags are not used to enable/disable that IRQ ...
+  // in addition, the configuration is often mutually exclusive, so we iterate over the set bits in a loop
+  uint8_t usedPinFlags = 0;
+  bool conflict = false;
   int16_t modem = getActiveModem();
-  if(modem == RADIOLIB_SX127X_LORA) {
-    switch(irq) {
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_TX_DONE):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT, 7, 6));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_DONE):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_RX_DONE, 7, 6));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_VALID_HEADER):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO3_LORA_VALID_HEADER, 1, 0));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO3_LORA_PAYLOAD_CRC_ERROR, 1, 0));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DONE):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_LORA_CAD_DONE, 7, 6));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED, 5, 4));
-      case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_TIMEOUT):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT, 5, 4));
+  int16_t state;
+  for(uint8_t i = 0; i <= 31; i++) {
+    // check if the bit is set
+    uint32_t irqBit = irq & (1UL << i);
+    if(!irqBit) {
+      continue;
     }
-    return(RADIOLIB_ERR_UNSUPPORTED);
-  
-  } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    switch(irq) {
-      case(RADIOLIB_SX127X_FLAG_PACKET_SENT << 8):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT, 7, 6));
-      case(RADIOLIB_SX127X_FLAG_PAYLOAD_READY << 8):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY, 7, 6));
-      case(RADIOLIB_SX127X_FLAG_PREAMBLE_DETECT << 0):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_2, RADIOLIB_SX127X_DIO4_PACK_RSSI_PREAMBLE_DETECT, 7, 6));
-      case(RADIOLIB_SX127X_FLAG_SYNC_ADDRESS_MATCH << 0):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO2_PACK_SYNC_ADDRESS, 3, 2));
-      case(RADIOLIB_SX127X_FLAG_TIMEOUT << 0):
-        return(this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO2_PACK_TIMEOUT, 3, 2));
+
+    // if not, decode it
+    uint8_t dioNum = 0; // DIO pin number and register value to set (address and MSB/LSB can be inferred)
+    uint8_t regVal = 0;
+    if(modem == RADIOLIB_SX127X_LORA) {
+      switch(irqBit) {
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_TX_DONE):
+          dioNum = 0;
+          regVal = RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_DONE):
+          dioNum = 0;
+          regVal = RADIOLIB_SX127X_DIO0_LORA_RX_DONE;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_VALID_HEADER):
+          dioNum = 3;
+          regVal = RADIOLIB_SX127X_DIO3_LORA_VALID_HEADER;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_PAYLOAD_CRC_ERROR):
+          dioNum = 3;
+          regVal = RADIOLIB_SX127X_DIO3_LORA_PAYLOAD_CRC_ERROR;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DONE):
+          dioNum = 0;
+          regVal = RADIOLIB_SX127X_DIO0_LORA_CAD_DONE;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_CAD_DETECTED):
+          dioNum = 1;
+          regVal = RADIOLIB_SX127X_DIO1_LORA_CAD_DETECTED;
+          break;
+        case(RADIOLIB_SX127X_CLEAR_IRQ_FLAG_RX_TIMEOUT):
+          dioNum = 1;
+          regVal = RADIOLIB_SX127X_DIO1_LORA_RX_TIMEOUT;
+          break;
+        default:
+          return(RADIOLIB_ERR_UNSUPPORTED);
+      }
+    
+    } else if(modem == RADIOLIB_SX127X_FSK_OOK) {
+      switch(irqBit) {
+        case(RADIOLIB_SX127X_FLAG_PACKET_SENT << 8):
+          dioNum = 0;
+          regVal = RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT;
+          break;
+        case(RADIOLIB_SX127X_FLAG_PAYLOAD_READY << 8):
+          dioNum = 0;
+          regVal = RADIOLIB_SX127X_DIO0_PACK_PAYLOAD_READY;
+          break;
+        case(RADIOLIB_SX127X_FLAG_PREAMBLE_DETECT << 0):
+          dioNum = 4;
+          regVal = RADIOLIB_SX127X_DIO4_PACK_RSSI_PREAMBLE_DETECT;
+          break;
+        case(RADIOLIB_SX127X_FLAG_SYNC_ADDRESS_MATCH << 0):
+          dioNum = 2;
+          regVal = RADIOLIB_SX127X_DIO2_PACK_SYNC_ADDRESS;
+          break;
+        case(RADIOLIB_SX127X_FLAG_TIMEOUT << 0):
+          dioNum = 2;
+          regVal = RADIOLIB_SX127X_DIO2_PACK_TIMEOUT;
+          break;
+        default:
+          return(RADIOLIB_ERR_UNSUPPORTED);
+      }
     }
-    return(RADIOLIB_ERR_UNSUPPORTED);
+
+    // check if this DIO pin has been set already
+    if(usedPinFlags & (1UL << dioNum)) {
+      // uh oh, this pin is used!
+      RADIOLIB_DEBUG_PRINTLN("Unable to set IRQ %04x on DIO%d due to conflict!", irqBit, (int)dioNum);
+      conflict = true;
+      continue;
+    }
+
+    // DIO pin is unused, set the flag and configure it
+    usedPinFlags |= (1UL << dioNum);
+    uint8_t addr = (dioNum > 3) ? RADIOLIB_SX127X_REG_DIO_MAPPING_2 : RADIOLIB_SX127X_REG_DIO_MAPPING_1;
+    uint8_t msb = 7 - 2*(dioNum % 4);
+    state = this->mod->SPIsetRegValue(addr, regVal, msb, msb - 1);
+    RADIOLIB_ASSERT(state);
   }
 
-  return(RADIOLIB_ERR_UNSUPPORTED);
+  // if there was at least one conflict, this flag is set
+  if(conflict) {
+    return(RADIOLIB_ERR_INVALID_IRQ);
+  }
+
+  return(state);
 }
 
 int16_t SX127x::clearIrqFlags(uint32_t irq) {

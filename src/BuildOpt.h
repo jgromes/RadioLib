@@ -252,6 +252,9 @@
 #elif defined(ARDUINO_AVR_UNO_WIFI_REV2) || defined(ARDUINO_AVR_NANO_EVERY) || defined(PORTDUINO)
   // Arduino megaAVR boards - Uno Wifi Rev.2, Nano Every
   #define RADIOLIB_PLATFORM                           "Arduino megaAVR"
+  #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PinMode)
+  #define RADIOLIB_ARDUINOHAL_PIN_STATUS_CAST         (PinStatus)
+  #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (PinStatus)
 
 #elif defined(ARDUINO_ARCH_APOLLO3)
   // Sparkfun Apollo3 boards
@@ -583,9 +586,9 @@
 #define RADIOLIB_ABS(x)         ((x)>0?(x):-(x))
 
 // version definitions
-#define RADIOLIB_VERSION_MAJOR  6
-#define RADIOLIB_VERSION_MINOR  6
-#define RADIOLIB_VERSION_PATCH  0
+#define RADIOLIB_VERSION_MAJOR  7
+#define RADIOLIB_VERSION_MINOR  0
+#define RADIOLIB_VERSION_PATCH  2
 #define RADIOLIB_VERSION_EXTRA  0
 
 #define RADIOLIB_VERSION (((RADIOLIB_VERSION_MAJOR) << 24) | ((RADIOLIB_VERSION_MINOR) << 16) | ((RADIOLIB_VERSION_PATCH) << 8) | (RADIOLIB_VERSION_EXTRA))

@@ -79,9 +79,11 @@ jobs:
           - id: esp32:esp32:esp32
             run: |
               python -m pip install pyserial
+              echo "version=2.0.17" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json" >> $GITHUB_OUTPUT
           - id: esp8266:esp8266:generic
             run: |
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
               echo "options=':xtal=80,ResetMethod=ck,CrystalFreq=26,FlashFreq=40,FlashMode=qio,eesz=512K'" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls http://arduino.esp8266.com/stable/package_esp8266com_index.json" >> $GITHUB_OUTPUT
           - id: SparkFun:apollo3:sfe_artemis
@@ -106,7 +108,7 @@ jobs:
           - id: MegaCoreX:megaavr:4809
             run: |
               echo "index-url=--additional-urls https://mcudude.github.io/MegaCoreX/package_MCUdude_MegaCoreX_index.json" >> $GITHUB_OUTPUT
-              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(STM32WL|LR11x0_Firmware_Update|LoRaWAN)" >> $GITHUB_OUTPUT
           - id: arduino:mbed_rp2040:pico
           - id: rp2040:rp2040:rpipico
             run: echo "index-url=--additional-urls https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json" >> $GITHUB_OUTPUT
@@ -132,6 +134,9 @@ jobs:
       run-build: ${{ (inputs.id != 'none' && matrix.id == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.id)) || inputs.id == 'all' || inputs.id == matrix.id }}
 
     steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@v1.3.1
+
       - name: Install arduino-cli
         if: ${{ env.run-build == 'true' }}
         run:
@@ -166,7 +171,11 @@ jobs:
         run:
           |
           arduino-cli core update-index ${{ format('{0}', steps.prep.outputs.index-url) }}
-          arduino-cli core install ${{ format('{0}:{1} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url) }}
+          if [ -z '${{ steps.prep.outputs.version }}' ]; then
+            arduino-cli core install ${{ format('{0}:{1} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url) }}
+          else
+            arduino-cli core install ${{ format('{0}:{1}@{3} {2}', steps.split.outputs._0, steps.split.outputs._1, steps.prep.outputs.index-url, steps.prep.outputs.version) }}
+          fi
 
       - name: Checkout repository
         if: ${{ env.run-build == 'true' }}

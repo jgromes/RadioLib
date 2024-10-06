@@ -1,6 +1,8 @@
 /*
   RadioLib LoRaWAN Starter Example
 
+  ! Please refer to the included notes to get started !
+
   This example joins a LoRaWAN network and will send
   uplink packets. Before you start, you will have to
   register your device at https://www.thethingsnetwork.org/
@@ -35,7 +37,8 @@ void setup() {
   debug(state != RADIOLIB_ERR_NONE, F("Initialise radio failed"), state, true);
 
   // Setup the OTAA session information
-  node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+  state = node.beginOTAA(joinEUI, devEUI, nwkKey, appKey);
+  debug(state != RADIOLIB_ERR_NONE, F("Initialise node failed"), state, true);
 
   Serial.println(F("Join ('login') the LoRaWAN Network"));
   state = node.activateOTAA();
@@ -60,11 +63,19 @@ void loop() {
   
   // Perform an uplink
   int16_t state = node.sendReceive(uplinkPayload, sizeof(uplinkPayload));    
-  debug((state != RADIOLIB_LORAWAN_NO_DOWNLINK) && (state != RADIOLIB_ERR_NONE), F("Error in sendReceive"), state, false);
+  debug(state < RADIOLIB_ERR_NONE, F("Error in sendReceive"), state, false);
 
-  Serial.print(F("Uplink complete, next in "));
+  // Check if a downlink was received 
+  // (state 0 = no downlink, state 1/2 = downlink in window Rx1/Rx2)
+  if(state > 0) {
+    Serial.println(F("Received a downlink"));
+  } else {
+    Serial.println(F("No downlink received"));
+  }
+
+  Serial.print(F("Next uplink in "));
   Serial.print(uplinkIntervalSeconds);
-  Serial.println(F(" seconds"));
+  Serial.println(F(" seconds\n"));
   
   // Wait until next uplink - observing legal & TTN FUP constraints
   delay(uplinkIntervalSeconds * 1000UL);  // delay needs milli-seconds

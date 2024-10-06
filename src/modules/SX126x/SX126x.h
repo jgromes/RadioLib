@@ -542,7 +542,7 @@ class SX126x: public PhysicalLayer {
       \param config CAD configuration structure.
       \returns \ref status_codes
     */
-    int16_t scanChannel(ChannelScanConfig_t config) override;
+    int16_t scanChannel(const ChannelScanConfig_t &config) override;
 
     /*!
       \brief Sets the module to sleep mode. To wake the device up, call standby().
@@ -1218,6 +1218,7 @@ class SX126x: public PhysicalLayer {
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;
 
+    int16_t modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem);
     int16_t config(uint8_t modem);
     bool findChip(const char* verStr);
     int16_t startReceiveCommon(uint32_t timeout = RADIOLIB_SX126X_RX_TIMEOUT_INF, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK);
