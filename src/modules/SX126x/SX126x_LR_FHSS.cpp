@@ -65,12 +65,12 @@ int16_t SX126x::buildLRFHSSPacket(uint8_t* in, size_t in_len, uint8_t* out, size
     lfsr = (lfsr << 1) | (((lfsr & 0x80) >> 7) ^ (((lfsr & 0x20) >> 5) ^ (((lfsr & 0x10) >> 4) ^ ((lfsr & 0x08) >> 3))));
   }
 
-  // calculate the CRC-16, looks like something custom
+  // calculate the CRC-16 over the whitened data, looks like something custom
   RadioLibCRCInstance.size = 16;
   RadioLibCRCInstance.poly = 0x755B;
   RadioLibCRCInstance.init = 0xFFFF;
   RadioLibCRCInstance.out = 0x0000;
-  uint16_t crc16 = RadioLibCRCInstance.checksum(in, in_len);
+  uint16_t crc16 = RadioLibCRCInstance.checksum(out, in_len);
 
   // add payload CRC
   out[in_len] = (crc16 >> 8) & 0xFF;
