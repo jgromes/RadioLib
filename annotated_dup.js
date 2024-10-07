@@ -42,6 +42,7 @@ var annotated_dup =
     [ "PhysicalLayer", "class_physical_layer.html", "class_physical_layer" ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", "class_radio_lib_a_e_s128" ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", "class_radio_lib_b_c_h" ],
+    [ "RadioLibConvCode", "class_radio_lib_conv_code.html", "class_radio_lib_conv_code" ],
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", "class_radio_lib_c_r_c" ],
     [ "RadioLibHal", "class_radio_lib_hal.html", "class_radio_lib_hal" ],
     [ "RadioLibPrint", "class_radio_lib_print.html", "class_radio_lib_print" ],

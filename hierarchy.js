@@ -86,6 +86,7 @@ var hierarchy =
     ] ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", null ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", null ],
+    [ "RadioLibConvCode", "class_radio_lib_conv_code.html", null ],
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", null ],
     [ "RadioLibHal", "class_radio_lib_hal.html", null ],
     [ "RadioLibPrint", "class_radio_lib_print.html", [

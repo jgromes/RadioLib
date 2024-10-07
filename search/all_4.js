@@ -5,7 +5,7 @@ var searchData=
   ['enablecontinuousmodebitsync_101',['enableContinuousModeBitSync',['../class_r_f69.html#a7e2201b5bc389a68765400b70439f3f0',1,'RF69']]],
   ['enabled_102',['enabled',['../struct_lo_ra_w_a_n_channel__t.html#acde186d519eca4dc43d053f2146b75a0',1,'LoRaWANChannel_t']]],
   ['enablesyncwordfiltering_103',['enableSyncWordFiltering',['../class_c_c1101.html#a6fe55d0217bf5218865198ef8d6fdab4',1,'CC1101::enableSyncWordFiltering()'],['../class_r_f69.html#a643a711bcb4b7771a7ab1f457e61a417',1,'RF69::enableSyncWordFiltering()']]],
-  ['encode_104',['encode',['../class_radio_lib_b_c_h.html#afa0a2eb58245715536acb781cd351d8a',1,'RadioLibBCH']]],
+  ['encode_104',['encode',['../class_radio_lib_b_c_h.html#afa0a2eb58245715536acb781cd351d8a',1,'RadioLibBCH::encode()'],['../class_radio_lib_conv_code.html#a64c324098fab2c5521b3f4e965503ca8',1,'RadioLibConvCode::encode()']]],
   ['encoding_20type_20aliases_2e_105',['Encoding type aliases.',['../group__config__encoding.html',1,'']]],
   ['encryptecb_106',['encryptECB',['../class_radio_lib_a_e_s128.html#a4c7b49c3ed16f3849d8050a24a11c3c1',1,'RadioLibAES128']]],
   ['err_107',['err',['../struct_module_1_1_s_p_i_config__t.html#ae11c030be96a72cd09fdfe9778ecdd51',1,'Module::SPIConfig_t']]],

@@ -140,14 +140,48 @@ $(document).ready(function(){initNavTree('_f_e_c_8h_source.html',''); initResiza
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_MSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; ((k)%8)) )</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_MSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8)) )</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_MSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8))) ? 1 : 0 )</span></div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY_LSB(A, k)                              ( A[((k)/8)] |= (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_LSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_LSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8)))) ? 1 : 0 )</span></div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="class_radio_lib_conv_code.html">  123</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_radio_lib_conv_code.html">RadioLibConvCode</a> {</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <a class="code" href="class_radio_lib_conv_code.html#a4fbe7c4e90969f0be10b8484b405df78">RadioLibConvCode</a>();</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="class_radio_lib_conv_code.html#af350f0a8b4d01e54e9d7eac9056c56c3">begin</a>(uint8_t rt);</div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;    int16_t <a class="code" href="class_radio_lib_conv_code.html#a64c324098fab2c5521b3f4e965503ca8">encode</a>(<span class="keyword">const</span> uint8_t* in, <span class="keywordtype">size_t</span> in_bits, uint8_t* out, <span class="keywordtype">size_t</span>* out_bits = NULL);</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  <span class="keyword">private</span>:</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    uint8_t enc_state = 0;</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;    uint8_t rate = 0;</div>
+<div class="line"><a name="l00151"></a><span class="lineno">  151</span>&#160;};</div>
+<div class="line"><a name="l00152"></a><span class="lineno">  152</span>&#160; </div>
+<div class="line"><a name="l00153"></a><span class="lineno">  153</span>&#160;<span class="comment">// each 32-bit word stores 8 values, one per each nibble</span></div>
+<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint32_t ConvCodeTable1_3[16] = {</div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;  0x07347043, 0x61521625, 0x16256152, 0x70430734,</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;  0x43703407, 0x25165261, 0x52612516, 0x34074370,</div>
+<div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160;  0x70430734, 0x16256152, 0x61521625, 0x07347043,</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160;  0x34074370, 0x52612516, 0x25165261, 0x43703407,</div>
+<div class="line"><a name="l00159"></a><span class="lineno">  159</span>&#160;};</div>
+<div class="line"><a name="l00160"></a><span class="lineno">  160</span>&#160; </div>
+<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;<span class="keyword">static</span> <span class="keyword">const</span> uint32_t ConvCodeTable1_2[4] = { </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;  0x03122130, 0x21300312, 0x30211203, 0x12033021,</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;};</div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_radio_lib_conv_code.html">RadioLibConvCode</a> RadioLibConvCodeInstance;</div>
+<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html"><div class="ttname"><a href="class_radio_lib_b_c_h.html">RadioLibBCH</a></div><div class="ttdoc">Class to calculate Bose–Chaudhuri–Hocquenghem (BCH) class of forward error correction codes....</div><div class="ttdef"><b>Definition:</b> FEC.h:26</div></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html_a39d55c0292e4c9337ee0672cd5241118"><div class="ttname"><a href="class_radio_lib_b_c_h.html#a39d55c0292e4c9337ee0672cd5241118">RadioLibBCH::RadioLibBCH</a></div><div class="ttdeci">RadioLibBCH()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:4</div></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html_aba6f10d4ac2d40eb2222d1081a34c88b"><div class="ttname"><a href="class_radio_lib_b_c_h.html#aba6f10d4ac2d40eb2222d1081a34c88b">RadioLibBCH::begin</a></div><div class="ttdeci">void begin(uint8_t n, uint8_t k, uint32_t poly)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:21</div></div>
-<div class="ttc" id="aclass_radio_lib_b_c_h_html_ac4ceca6f132ff2047e2ca13d8d00a9e5"><div class="ttname"><a href="class_radio_lib_b_c_h.html#ac4ceca6f132ff2047e2ca13d8d00a9e5">RadioLibBCH::~RadioLibBCH</a></div><div class="ttdeci">~RadioLibBCH()</div><div class="ttdoc">Default detructor.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:8</div></div>
+<div class="ttc" id="aclass_radio_lib_b_c_h_html_ac4ceca6f132ff2047e2ca13d8d00a9e5"><div class="ttname"><a href="class_radio_lib_b_c_h.html#ac4ceca6f132ff2047e2ca13d8d00a9e5">RadioLibBCH::~RadioLibBCH</a></div><div class="ttdeci">~RadioLibBCH()</div><div class="ttdoc">Default destructor.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:8</div></div>
 <div class="ttc" id="aclass_radio_lib_b_c_h_html_afa0a2eb58245715536acb781cd351d8a"><div class="ttname"><a href="class_radio_lib_b_c_h.html#afa0a2eb58245715536acb781cd351d8a">RadioLibBCH::encode</a></div><div class="ttdeci">uint32_t encode(uint32_t dataword)</div><div class="ttdoc">Encoding method - encodes one data word (without check bits) into a code word (with check bits).</div><div class="ttdef"><b>Definition:</b> FEC.cpp:200</div></div>
+<div class="ttc" id="aclass_radio_lib_conv_code_html"><div class="ttname"><a href="class_radio_lib_conv_code.html">RadioLibConvCode</a></div><div class="ttdoc">Class to perform convolutional coding wtih variable rates. Only 1/2 and 1/3 rate is currently support...</div><div class="ttdef"><b>Definition:</b> FEC.h:123</div></div>
+<div class="ttc" id="aclass_radio_lib_conv_code_html_a4fbe7c4e90969f0be10b8484b405df78"><div class="ttname"><a href="class_radio_lib_conv_code.html#a4fbe7c4e90969f0be10b8484b405df78">RadioLibConvCode::RadioLibConvCode</a></div><div class="ttdeci">RadioLibConvCode()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:311</div></div>
+<div class="ttc" id="aclass_radio_lib_conv_code_html_a64c324098fab2c5521b3f4e965503ca8"><div class="ttname"><a href="class_radio_lib_conv_code.html#a64c324098fab2c5521b3f4e965503ca8">RadioLibConvCode::encode</a></div><div class="ttdeci">int16_t encode(const uint8_t *in, size_t in_bits, uint8_t *out, size_t *out_bits=NULL)</div><div class="ttdoc">Encoding method.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:320</div></div>
+<div class="ttc" id="aclass_radio_lib_conv_code_html_af350f0a8b4d01e54e9d7eac9056c56c3"><div class="ttname"><a href="class_radio_lib_conv_code.html#af350f0a8b4d01e54e9d7eac9056c56c3">RadioLibConvCode::begin</a></div><div class="ttdeci">void begin(uint8_t rt)</div><div class="ttdoc">Initialization method.</div><div class="ttdef"><b>Definition:</b> FEC.cpp:315</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
