@@ -82,11 +82,11 @@ extern RadioLibBCH RadioLibBCHInstance;
 #define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] & (1 << (7 - ((k)%8)))) ? 1 : 0 )
 
 /*!
-  \class RadioLibViterbi
-  \brief Class to perform Viterbi encoding wtih variable rates.
-  Only 1/2 and 1/3 encoding is currently supported.
+  \class RadioLibConvCode
+  \brief Class to perform convolutional coding wtih variable rates.
+  Only 1/2 and 1/3 rate is currently supported.
 
-  Viterbi Encoder implementation in this class is adapted from Setmech's LR-FHSS demo:
+  Copnvolutional coder implementation in this class is adapted from Setmech's LR-FHSS demo:
   https://github.com/Lora-net/SWDM001/tree/master/lib/sx126x_driver
 
   Its SX126x driver is distributed under the Clear BSD License,
@@ -120,12 +120,12 @@ extern RadioLibBCH RadioLibBCHInstance;
   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
   POSSIBILITY OF SUCH DAMAGE.
 */
-class RadioLibViterbi {
+class RadioLibConvCode {
   public:
     /*!
       \brief Default constructor.
     */
-    RadioLibViterbi();
+    RadioLibConvCode();
 
     /*!
       \brief Initialization method.
@@ -151,17 +151,17 @@ class RadioLibViterbi {
 };
 
 // each 32-bit word stores 8 values, one per each nibble
-static const uint32_t ViterbiTable1_3[16] = {
+static const uint32_t ConvCodeTable1_3[16] = {
   0x07347043, 0x61521625, 0x16256152, 0x70430734,
   0x43703407, 0x25165261, 0x52612516, 0x34074370,
   0x70430734, 0x16256152, 0x61521625, 0x07347043,
   0x34074370, 0x52612516, 0x25165261, 0x43703407,
 };
 
-static const uint32_t ViterbiTable1_2[4] = { 
+static const uint32_t ConvCodeTable1_2[4] = { 
   0x03122130, 0x21300312, 0x30211203, 0x12033021,
 };
 
-extern RadioLibViterbi RadioLibViterbiInstance;
+extern RadioLibConvCode RadioLibConvCodeInstance;
 
 #endif

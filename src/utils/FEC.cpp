@@ -308,16 +308,16 @@ uint32_t RadioLibBCH::encode(uint32_t dataword) {
 
 RadioLibBCH RadioLibBCHInstance;
 
-RadioLibViterbi::RadioLibViterbi() {
+RadioLibConvCode::RadioLibConvCode() {
 
 }
 
-void RadioLibViterbi::begin(uint8_t rt) {
+void RadioLibConvCode::begin(uint8_t rt) {
   this->enc_state = 0;
   this->rate = rt;
 }
 
-int16_t RadioLibViterbi::encode(const uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits) {
+int16_t RadioLibConvCode::encode(const uint8_t* in, size_t in_bits, uint8_t* out, size_t* out_bits) {
   if(!in || !out) {
     return(RADIOLIB_ERR_UNKNOWN);
   }
@@ -329,7 +329,7 @@ int16_t RadioLibViterbi::encode(const uint8_t* in, size_t in_bits, uint8_t* out,
   // iterate over the provided bits
   for(ind_bit = 0; ind_bit < in_bits; ind_bit++) {
     uint8_t cur_bit = GET_BIT_IN_ARRAY_LSB(in, ind_bit);
-    const uint32_t* lut_ptr = (this->rate == 2) ? ViterbiTable1_2 : ViterbiTable1_3;
+    const uint32_t* lut_ptr = (this->rate == 2) ? ConvCodeTable1_2 : ConvCodeTable1_3;
     uint8_t word_pos = this->enc_state / 4;
     uint8_t byte_pos = (3 - (this->enc_state % 4)) * 8;
     uint8_t nibble_pos = (1 - cur_bit) * 4;
@@ -362,4 +362,4 @@ int16_t RadioLibViterbi::encode(const uint8_t* in, size_t in_bits, uint8_t* out,
   return(RADIOLIB_ERR_NONE);
 }
 
-RadioLibViterbi RadioLibViterbiInstance;
+RadioLibConvCode RadioLibConvCodeInstance;

@@ -77,13 +77,14 @@ int16_t SX126x::buildLRFHSSPacket(uint8_t* in, size_t in_len, uint8_t* out, size
   out[in_len + 1] = crc16 & 0xFF;
   out[in_len + 2] = 0;
 
-  // encode the payload with CRC using Viterbi 1/3 into a temporary buffer
+  // encode the payload with CRC using convolutional coding with 1/3 rate into a temporary buffer
   uint8_t tmp[RADIOLIB_SX126X_LR_FHSS_MAX_ENC_SIZE] = { 0 };
   size_t nb_bits = 0;
-  RadioLibViterbiInstance.begin(3);
-  RadioLibViterbiInstance.encode(out, 8 * (in_len + 2) + 6, tmp, &nb_bits);
+  RadioLibConvCodeInstance.begin(3);
+  RadioLibConvCodeInstance.encode(out, 8 * (in_len + 2) + 6, tmp, &nb_bits);
   memset(out, 0, RADIOLIB_SX126X_MAX_PACKET_LENGTH);
 
+  // for rates other than the 1/3 base, puncture the code
   if(this->lrFhssCr != RADIOLIB_SX126X_LR_FHSS_CR_1_3) {
     uint32_t matrix_index = 0;
     uint8_t  matrix[15]   = { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0 };
@@ -193,10 +194,10 @@ int16_t SX126x::buildLRFHSSPacket(uint8_t* in, size_t in_len, uint8_t* out, size
 
     // convolutional encode
     uint8_t coded_header[RADIOLIB_SX126X_LR_FHSS_HDR_BYTES] = { 0 };
-    RadioLibViterbiInstance.begin(2);
-    RadioLibViterbiInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
+    RadioLibConvCodeInstance.begin(2);
+    RadioLibConvCodeInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
     // tail-biting seems to just do this twice ...?
-    RadioLibViterbiInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
+    RadioLibConvCodeInstance.encode(raw_header, 8*RADIOLIB_SX126X_LR_FHSS_HDR_BYTES/2, coded_header);
 
     // clear guard bits
     CLEAR_BIT_IN_ARRAY_LSB(out, header_offset);
