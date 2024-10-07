@@ -126,7 +126,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">activateOTAA</a> (uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED, <a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent=NULL)</td></tr>
 <tr class="memdesc:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">More...</a><br /></td></tr>
 <tr class="separator:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77483c51548e48a5dff4b707f7770e86"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">activateABP</a> (uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
+<tr class="memitem:a77483c51548e48a5dff4b707f7770e86"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">activateABP</a> (uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED)</td></tr>
 <tr class="memdesc:a77483c51548e48a5dff4b707f7770e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user.  <a href="class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86">More...</a><br /></td></tr>
 <tr class="separator:a77483c51548e48a5dff4b707f7770e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a44677a1ef7db1216bc482139d6be8d"><td class="memItemLeft" align="right" valign="top"><a id="a9a44677a1ef7db1216bc482139d6be8d"></a>
@@ -278,6 +278,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t LoRaWANNode::activateABP </td>
@@ -287,6 +290,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Join network by restoring ABP session or performing over-the-air activation. In this procedure, all necessary configuration must be provided by the user. </p>
