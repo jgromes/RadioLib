@@ -1303,7 +1303,7 @@ class SX126x: public PhysicalLayer {
     int16_t fixInvertedIQ(uint8_t iqConfig);
 
     // LR-FHSS utilities
-    int16_t buildLRFHSSPacket(uint8_t* in, size_t in_len, uint8_t* out, size_t* out_len, size_t* out_bits, size_t* out_hops);
+    int16_t buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out, size_t* out_len, size_t* out_bits, size_t* out_hops);
     int16_t resetLRFHSS();
     uint16_t stepLRFHSS();
     int16_t setLRFHSSHop(uint8_t index);

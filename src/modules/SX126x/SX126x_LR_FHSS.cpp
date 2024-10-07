@@ -53,7 +53,7 @@ static const uint8_t LrFhssHeaderInterleaver[80] = {
   11, 29, 47, 65, 15, 33, 51, 69,
 };
 
-int16_t SX126x::buildLRFHSSPacket(uint8_t* in, size_t in_len, uint8_t* out, size_t* out_len, size_t* out_bits, size_t* out_hops) {
+int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out, size_t* out_len, size_t* out_bits, size_t* out_hops) {
   // perform payload whitening
   uint8_t lfsr = 0xFF;
   for(size_t i = 0; i < in_len; i++) {
