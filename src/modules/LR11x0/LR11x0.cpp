@@ -3654,11 +3654,17 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
   // check the crypto engine state
   if(rplBuff[0] != RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS) {
     RADIOLIB_DEBUG_BASIC_PRINTLN("Crypto Engine error: %02x", rplBuff[0]);
+    #if !RADIOLIB_STATIC_ONLY
+      delete[] rplBuff;
+    #endif
     return(RADIOLIB_ERR_SPI_CMD_FAILED);
   }
 
   // pass the data
   memcpy(dataOut, &rplBuff[1], len);
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] rplBuff;
+  #endif
   return(state);
 }
 
@@ -3889,6 +3895,9 @@ int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, size_
 
   // pass the data
   memcpy(dataOut, &rplBuff[1], len);
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] rplBuff;
+  #endif
   return(state);
 }
 
