@@ -688,6 +688,8 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   // we can ignore that error
   if(state != RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     RADIOLIB_ASSERT(state);
+  } else {
+    state = RADIOLIB_ERR_NONE;
   }
 
   // check reply message type
