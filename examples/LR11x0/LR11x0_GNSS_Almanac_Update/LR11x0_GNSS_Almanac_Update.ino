@@ -26,9 +26,6 @@
 // include the library
 #include <RadioLib.h>
 
-#define RADIO_BOARD_AUTO
-#include <RadioBoards.h>
-
 // LR1110 has the following connections:
 // NSS pin:   10
 // DIO1 pin:  2
@@ -63,11 +60,6 @@ LR11x0GnssAlmanacStatus_t almStatus;
 
 void setup() {
   Serial.begin(9600);
-
-  //RadioEnableRfSwitch(radio);
-  RadioBeginSPI();
-  
-  while(!Serial.available()) { yield(); }
 
   // set RF switch control configuration
   // this has to be done prior to calling begin()
@@ -119,7 +111,7 @@ void setup() {
     }
 
     // we have the status, check if we have demodulated time
-    if(almStatus.gps.status < RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_GPS_UP_TO_DATE) {
+    if(almStatus.gps.status < RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_UP_TO_DATE) {
       Serial.println(F("time unknown, another scan needed."));
     
     } else if(almStatus.gps.numUpdateNeeded > 0) {
@@ -136,12 +128,12 @@ void setup() {
 }
 
 void loop() {
-  // wait until alamanac data is available in the signal
+  // wait until almanac data is available in the signal
   // multiple attempts are needed for this
   Serial.print(F("[LR1110] Waiting for subframe ... "));
-  int state = radio.gnssDelayUntilSubframe(&almStatus);
+  int state = radio.gnssDelayUntilSubframe(&almStatus, RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS);
   if(state == RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE) {
-    Serial.print(F("not enough time left."));
+    Serial.println(F("not enough time left."));
 
     // wait until the next update window
     delay(2000);

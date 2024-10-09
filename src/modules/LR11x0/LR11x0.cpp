@@ -1768,7 +1768,7 @@ int16_t LR11x0::isGnssScanCapable() {
   RADIOLIB_ASSERT(state);
 
   // in debug mode, dump the almanac
-  /*#if RADIOLIB_DEBUG_BASIC
+  #if RADIOLIB_DEBUG_PROTOCOL
   uint32_t addr = 0;
   uint16_t sz = 0;
   state = this->gnssAlmanacReadAddrSize(&addr, &sz);
@@ -1792,7 +1792,7 @@ int16_t LR11x0::isGnssScanCapable() {
     Module::hexdump(NULL, almanac, 22);
   }
 
-  #endif*/
+  #endif
 
   return(state);
 }
@@ -1819,7 +1819,8 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
   RADIOLIB_ASSERT(state);
 
   // wait for scan finished or timeout
-  RadioLibTime_t softTimeout = 80UL * 1000UL;
+  // this can take very long if both GPS and BeiDou are enabled
+  RadioLibTime_t softTimeout = 300UL * 1000UL;
   RadioLibTime_t start = this->mod->hal->millis();
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
@@ -1897,20 +1898,27 @@ int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
   return(state);
 }
 
-int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat) {
+int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t constellation) {
   if(!stat) {
     return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
 
-  RadioLibTime_t delay = stat->gps.timeUntilSubframe;
-  if(delay < 2300) {
-    // less than 2.3s left
+  // almanac update has to be called at least 1.3 seconds before the subframe
+  // we use 2.3 seconds to be on the safe side
+
+  // calculate absolute times
+  RadioLibTime_t window = stat->start + stat->gps.timeUntilSubframe - 2300;
+  if(constellation == RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU) {
+    window = stat->start + stat->beidou.timeUntilSubframe - 2300;
+  }
+  RadioLibTime_t now = this->mod->hal->millis();
+  if(now > window) {
+    // we missed the window
     return(RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE);
   }
 
-  delay -= ((this->mod->hal->millis() - stat->start) + 2300);
+  RadioLibTime_t delay = window - now;
   RADIOLIB_DEBUG_BASIC_PRINTLN("Time until subframe %lu ms", delay);
-
   this->mod->hal->delay(delay); 
   return(RADIOLIB_ERR_NONE);
 }

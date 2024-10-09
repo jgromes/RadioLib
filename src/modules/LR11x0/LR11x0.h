@@ -583,8 +583,8 @@
 #define RADIOLIB_LR11X0_GNSS_DEMOD_INFO_SUBFRAME_5_FOUND        (0x01UL << 6)   //  7     0                             subframe 5 found
 
 // RADIOLIB_LR11X0_CMD_GNSS_READ_ALMANAC_STATUS
-#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_GPS_UP_TO_DATE      (0)             //  7     0     GPS almanac status: all satellites up-to-date
-#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_GPS_OUTDATED        (1)             //  7     0                         at least one satellite needs update
+#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_UP_TO_DATE          (0)             //  7     0     GPS/BeiDou almanac status: all satellites up-to-date
+#define RADIOLIB_LR11X0_GNSS_ALMANAC_STATUS_OUTDATED            (1)             //  7     0                                at least one satellite needs update
 
 // RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY
 #define RADIOLIB_LR11X0_CRYPTO_STATUS_SUCCESS                   (0x00UL << 0)   //  7     0     crypto engine status: success
@@ -1463,7 +1463,7 @@ class LR11x0: public PhysicalLayer {
 
     int16_t getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat);
 
-    int16_t gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat);
+    int16_t gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t constellation);
 
     int16_t updateGnssAlmanac(uint8_t constellation);
 
