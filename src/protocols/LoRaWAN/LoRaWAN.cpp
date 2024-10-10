@@ -3390,30 +3390,4 @@ uint16_t LoRaWANNode::checkSum16(const uint8_t *key, uint16_t keyLen) {
   return(checkSum);
 }
 
-template<typename T>
-T LoRaWANNode::ntoh(uint8_t* buff, size_t size) {
-  uint8_t* buffPtr = buff;
-  size_t targetSize = sizeof(T);
-  if(size != 0) {
-    targetSize = size;
-  }
-  T res = 0;
-  for(size_t i = 0; i < targetSize; i++) {
-    res |= (uint32_t)(*(buffPtr++)) << 8*i;
-  }
-  return(res);
-}
-
-template<typename T>
-void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
-  uint8_t* buffPtr = buff;
-  size_t targetSize = sizeof(T);
-  if(size != 0) {
-    targetSize = size;
-  }
-  for(size_t i = 0; i < targetSize; i++) {
-    *(buffPtr++) = val >> 8*i;
-  }
-}
-
 #endif
