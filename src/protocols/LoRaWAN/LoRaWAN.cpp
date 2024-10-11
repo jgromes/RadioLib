@@ -1807,6 +1807,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     event->dir = RADIOLIB_LORAWAN_DOWNLINK;
     event->confirmed = isConfirmedDown;
     event->confirming = isConfirmingUp;
+    event->frmPending = (downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING) != 0;
     event->datarate = this->channels[RADIOLIB_LORAWAN_DOWNLINK].dr;
     event->freq = channels[event->dir].freq / 10000.0;
     event->power = this->txPowerMax - this->txPowerSteps * 2;
