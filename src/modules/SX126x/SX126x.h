@@ -901,10 +901,10 @@ class SX126x: public PhysicalLayer {
 
     /*!
       \brief Sets node address. Calling this method will also enable address filtering for node address only.
-      \param nodeAddr Node address to be set.
+      \param addr Node address to be set.
       \returns \ref status_codes
     */
-    int16_t setNodeAddress(uint8_t nodeAddr);
+    int16_t setNodeAddress(uint8_t addr);
 
     /*!
       \brief Sets broadcast address. Calling this method will also enable address
@@ -1263,6 +1263,7 @@ class SX126x: public PhysicalLayer {
     uint8_t rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0;
     uint16_t preambleLengthFSK = 0;
     float rxBandwidthKhz = 0;
+    uint8_t nodeAddr = 0;
 
     float dataRateMeasured = 0;
 
