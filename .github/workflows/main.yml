@@ -46,7 +46,7 @@ jobs:
         # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
         include:
           - id: arduino:avr:uno
-            run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN|LR11x0_Firmware_Update|Pager|APRS|Morse)" >> $GITHUB_OUTPUT
+            run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN|LR11x0_Firmware_Update|Pager|APRS|Morse|SX126x)" >> $GITHUB_OUTPUT
           - id: arduino:avr:mega
             run: |
               echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT

@@ -504,6 +504,9 @@ struct LoRaWANEvent_t {
   (e.g., server downlink reply to confirmed uplink sent by user application)*/
   bool confirming;
 
+  /*! \brief Whether further downlink messages are pending on the server side. */
+  bool frmPending;
+
   /*! \brief Datarate */
   uint8_t datarate;
   
@@ -605,7 +608,7 @@ class LoRaWANNode {
       \param initialDr The datarate at which to send the first uplink and any subsequent uplinks (unless ADR is enabled).
       \returns \ref status_codes
     */
-    int16_t activateABP(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
+    virtual int16_t activateABP(uint8_t initialDr = RADIOLIB_LORAWAN_DATA_RATE_UNUSED);
 
     /*! \brief Whether there is an ongoing session active */
     bool isActivated();
@@ -1126,5 +1129,31 @@ class LoRaWANNode {
     template<typename T>
     static void hton(uint8_t* buff, T val, size_t size = 0);
 };
+
+template<typename T>
+T LoRaWANNode::ntoh(uint8_t* buff, size_t size) {
+  uint8_t* buffPtr = buff;
+  size_t targetSize = sizeof(T);
+  if(size != 0) {
+    targetSize = size;
+  }
+  T res = 0;
+  for(size_t i = 0; i < targetSize; i++) {
+    res |= (uint32_t)(*(buffPtr++)) << 8*i;
+  }
+  return(res);
+}
+
+template<typename T>
+void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
+  uint8_t* buffPtr = buff;
+  size_t targetSize = sizeof(T);
+  if(size != 0) {
+    targetSize = size;
+  }
+  for(size_t i = 0; i < targetSize; i++) {
+    *(buffPtr++) = val >> 8*i;
+  }
+}
 
 #endif

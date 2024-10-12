@@ -54,7 +54,7 @@ jobs:
 
     - name: Build example
       run:
-        arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $PWD/examples/SX126x/SX126x_Transmit_Blocking/SX126x_Transmit_Blocking.ino --warnings=all
+        arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn arduino:avr:uno $PWD/examples/SX123x/SX123x_Transmit_Blocking/SX123x_Transmit_Blocking.ino --warnings=all
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3

@@ -183,11 +183,12 @@ int16_t LoRaWANNode::sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, u
     eventUp->nbTrans = trans;
   }
 
+  #if !RADIOLIB_STATIC_ONLY
+    delete[] uplinkMsg;
+  #endif
+
   // if a hardware error occurred, return
   if(state < RADIOLIB_ERR_NONE) {
-    #if !RADIOLIB_STATIC_ONLY
-    delete[] uplinkMsg;
-    #endif
     return(state);
   }
 
@@ -687,6 +688,8 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   // we can ignore that error
   if(state != RADIOLIB_ERR_LORA_HEADER_DAMAGED) {
     RADIOLIB_ASSERT(state);
+  } else {
+    state = RADIOLIB_ERR_NONE;
   }
 
   // check reply message type
@@ -937,6 +940,9 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   // JoinRequest successfully sent, so increase & save devNonce
   this->devNonce += 1;
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_DEV_NONCE], this->devNonce);
+
+  // set the Time on Air of the JoinRequest
+  this->lastToA = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
 
   // configure Rx1 and Rx2 delay for JoinAccept message - these are re-configured once a valid JoinAccept is received
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
@@ -1481,7 +1487,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
   // check the address
   uint32_t addr = LoRaWANNode::ntoh<uint32_t>(&downlinkMsg[RADIOLIB_LORAWAN_FHDR_DEV_ADDR_POS]);
   if(addr != this->devAddr) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Device address mismatch, expected 0x%08X, got 0x%08X", this->devAddr, addr);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Device address mismatch, expected 0x%08lX, got 0x%08lX", 
+                                    (unsigned long)this->devAddr, (unsigned long)addr);
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
@@ -1800,6 +1807,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     event->dir = RADIOLIB_LORAWAN_DOWNLINK;
     event->confirmed = isConfirmedDown;
     event->confirming = isConfirmingUp;
+    event->frmPending = (downlinkMsg[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] & RADIOLIB_LORAWAN_FCTRL_FRAME_PENDING) != 0;
     event->datarate = this->channels[RADIOLIB_LORAWAN_DOWNLINK].dr;
     event->freq = channels[event->dir].freq / 10000.0;
     event->power = this->txPowerMax - this->txPowerSteps * 2;
@@ -3197,7 +3205,8 @@ bool LoRaWANNode::verifyMIC(uint8_t* msg, size_t len, uint8_t* key) {
   // calculate the expected value and compare
   uint32_t micCalculated = generateMIC(msg, len - sizeof(uint32_t), key);
   if(micCalculated != micReceived) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("MIC mismatch, expected %08x, got %08x", micCalculated, micReceived);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("MIC mismatch, expected %08lx, got %08lx", 
+                                    (unsigned long)micCalculated, (unsigned long)micReceived);
     return(false);
   }
 
@@ -3380,32 +3389,6 @@ uint16_t LoRaWANNode::checkSum16(const uint8_t *key, uint16_t keyLen) {
     checkSum ^= word;
   }
   return(checkSum);
-}
-
-template<typename T>
-T LoRaWANNode::ntoh(uint8_t* buff, size_t size) {
-  uint8_t* buffPtr = buff;
-  size_t targetSize = sizeof(T);
-  if(size != 0) {
-    targetSize = size;
-  }
-  T res = 0;
-  for(size_t i = 0; i < targetSize; i++) {
-    res |= (uint32_t)(*(buffPtr++)) << 8*i;
-  }
-  return(res);
-}
-
-template<typename T>
-void LoRaWANNode::hton(uint8_t* buff, T val, size_t size) {
-  uint8_t* buffPtr = buff;
-  size_t targetSize = sizeof(T);
-  if(size != 0) {
-    targetSize = size;
-  }
-  for(size_t i = 0; i < targetSize; i++) {
-    *(buffPtr++) = val >> 8*i;
-  }
 }
 
 #endif
