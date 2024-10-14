@@ -504,6 +504,9 @@ struct LoRaWANEvent_t {
   (e.g., server downlink reply to confirmed uplink sent by user application)*/
   bool confirming;
 
+  /*! \brief Whether further downlink messages are pending on the server side. */
+  bool frmPending;
+
   /*! \brief Datarate */
   uint8_t datarate;
   

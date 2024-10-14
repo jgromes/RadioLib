@@ -509,9 +509,6 @@ void SX126x::clearChannelScanAction() {
 }
 
 int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
-  // suppress unused variable warning
-  (void)addr;
-
   // check packet length
   if(len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
@@ -527,10 +524,19 @@ int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, len, this->headerType, this->invertIQEnabled);
+  
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType, len);
+    
+    // address is taken from the register
+    if(this->addrComp != RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF) {
+      RADIOLIB_ASSERT(state);
+      state = writeRegister(RADIOLIB_SX126X_REG_NODE_ADDRESS, &addr, 1);
+    }
+
   } else if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
     return(RADIOLIB_ERR_UNKNOWN);
+  
   }
   RADIOLIB_ASSERT(state);
 
@@ -617,7 +623,14 @@ int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t SX126x::finishTransmit() {
   // clear interrupt flags
-  clearIrqStatus();
+  int16_t state = clearIrqStatus();
+  RADIOLIB_ASSERT(state);
+
+  // restore the original node address
+  if(getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
+    state = writeRegister(RADIOLIB_SX126X_REG_NODE_ADDRESS, &this->nodeAddr, 1);
+    RADIOLIB_ASSERT(state);
+  }
 
   // set mode to standby to disable transmitter/RF switch
   return(standby());
@@ -739,14 +752,14 @@ int16_t SX126x::readData(uint8_t* data, size_t len) {
   // if that's the case, the first call will return "SPI command timeout error"
   // check the IRQ to be sure this really originated from timeout event
   int16_t state = this->mod->SPIcheckStream();
-  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (getIrqFlags() & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
+  uint16_t irq = getIrqFlags();
+  if((state == RADIOLIB_ERR_SPI_CMD_TIMEOUT) && (irq & RADIOLIB_SX126X_IRQ_TIMEOUT)) {
     // this is definitely Rx timeout
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
   RADIOLIB_ASSERT(state);
 
   // check integrity CRC
-  uint16_t irq = getIrqFlags();
   int16_t crcState = RADIOLIB_ERR_NONE;
   // Report CRC mismatch when there's a payload CRC error, or a header error and no valid header (to avoid false alarm from previous packet)
   if((irq & RADIOLIB_SX126X_IRQ_CRC_ERR) || ((irq & RADIOLIB_SX126X_IRQ_HEADER_ERR) && !(irq & RADIOLIB_SX126X_IRQ_HEADER_VALID))) {
@@ -1220,7 +1233,7 @@ int16_t SX126x::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {
   return(setSyncWord(syncWord, bytesLen));
 }
 
-int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
+int16_t SX126x::setNodeAddress(uint8_t addr) {
   // check active modem
   if(getPacketType() != RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     return(RADIOLIB_ERR_WRONG_MODEM);
@@ -1232,7 +1245,8 @@ int16_t SX126x::setNodeAddress(uint8_t nodeAddr) {
   RADIOLIB_ASSERT(state);
 
   // set node address
-  state = writeRegister(RADIOLIB_SX126X_REG_NODE_ADDRESS, &nodeAddr, 1);
+  this->nodeAddr = addr;
+  state = writeRegister(RADIOLIB_SX126X_REG_NODE_ADDRESS, &addr, 1);
 
   return(state);
 }

@@ -605,16 +605,18 @@ int16_t SX127x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
       this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO0_PACK_PACKET_SENT, 7, 6);
     }
 
-    // set packet length
-    if (this->packetLengthConfig == RADIOLIB_SX127X_PACKET_VARIABLE) {
-      this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, len);
-    }
-
-    // check address filtering
+    // set packet length - increased by 1 when address filter is enabled
     uint8_t filter = this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PACKET_CONFIG_1, 2, 1);
-    if((filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE) || (filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
-      this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, addr);
+    if(this->packetLengthConfig == RADIOLIB_SX127X_PACKET_VARIABLE) {
+      if((filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE) || (filter == RADIOLIB_SX127X_ADDRESS_FILTERING_NODE_BROADCAST)) {
+        this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, len + 1);
+        this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, addr);
+      } else {
+        this->mod->SPIwriteRegister(RADIOLIB_SX127X_REG_FIFO, len);
+      }
+    
     }
+  
   }
 
   // write packet to FIFO
