@@ -154,8 +154,5 @@ void loop() {
       Serial.println(state);
 
     }
-
-    // put module back to listen mode
-    radio.startReceive();
   }
 }
