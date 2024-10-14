@@ -720,11 +720,15 @@ int16_t SX126x::startReceiveDutyCycleAuto(uint16_t senderPreambleLength, uint16_
 }
 
 int16_t SX126x::startReceiveCommon(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
+  // ensure we are in standby
+  int16_t state = standby();
+  RADIOLIB_ASSERT(state);
+
   // set DIO mapping
   if(timeout != RADIOLIB_SX126X_RX_TIMEOUT_INF) {
     irqMask |= (1UL << RADIOLIB_IRQ_TIMEOUT);
   }
-  int16_t state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqMask));
+  state = setDioIrqParams(getIrqMapped(irqFlags), getIrqMapped(irqMask));
   RADIOLIB_ASSERT(state);
 
   // set buffer pointers

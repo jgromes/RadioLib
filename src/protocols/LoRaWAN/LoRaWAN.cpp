@@ -1402,7 +1402,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
   if(this->TS011) {
     maxPayLen = RADIOLIB_MIN(maxPayLen, 230); // payload length is limited to 230 if under repeater
   }
-  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(maxPayLen + 13); // mandatory FHDR is 12/13 bytes
+  RadioLibTime_t tMax = this->phyLayer->getTimeOnAir(maxPayLen + 13) / 1000; // mandatory FHDR is 12/13 bytes
   bool downlinkComplete = true;
   
   // wait for the DIO to fire indicating a downlink is received
