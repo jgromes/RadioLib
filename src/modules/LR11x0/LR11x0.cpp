@@ -1797,7 +1797,11 @@ int16_t LR11x0::isGnssScanCapable() {
   return(state);
 }
 
-int16_t LR11x0::gnssScan(uint16_t* resSize) {
+int16_t LR11x0::gnssScan(LR11x0GnssResult_t* res) {
+   if(!res) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
   // go to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -1815,7 +1819,7 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
 
   // start scan with high effort
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan start");
-  state = this->gnssPerformScan(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x3C, 8);
+  state = this->gnssPerformScan(RADIOLIB_LR11X0_GNSS_EFFORT_MID, 0x3C, 16);
   RADIOLIB_ASSERT(state);
 
   // wait for scan finished or timeout
@@ -1832,29 +1836,34 @@ int16_t LR11x0::gnssScan(uint16_t* resSize) {
     }
   }
 
+  // restore the switch
   this->mod->setRfSwitchState(Module::MODE_IDLE);
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
   
+  // drop all IRQ
   state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
-  int8_t status = 0;
+  // retrieve the demodulator status
   uint8_t info = 0;
-  state = this->gnssReadDemodStatus(&status, &info);
+  state = this->gnssReadDemodStatus(&res->demodStat, &info);
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)status, (unsigned int)info);
+  RADIOLIB_DEBUG_BASIC_PRINTLN("Demod status %d, info %02x", (int)res->demodStat, (unsigned int)info);
 
-  uint8_t fwVersion = 0;
-  uint32_t almanacCrc = 0;
-  uint8_t errCode = 0;
-  uint8_t almUpdMask = 0;
-  uint8_t freqSpace = 0;
-  state = this->gnssGetContextStatus(&fwVersion, &almanacCrc, &errCode, &almUpdMask, &freqSpace);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Context status fwVersion %d, almanacCrc %lx, errCode %d, almUpdMask %d, freqSpace %d", 
-    (int)fwVersion, (unsigned long)almanacCrc, (int)errCode, (int)almUpdMask, (int)freqSpace);
+  // retrieve the number of detected satellites
+  state = this->gnssGetNbSvDetected(&res->numSatsDet);
   RADIOLIB_ASSERT(state);
 
-  return(this->gnssGetResultSize(resSize));
+  // retrieve the result size
+  state = this->gnssGetResultSize(&res->resSize);
+  RADIOLIB_ASSERT(state);
+
+  // check and return demodulator status
+  if(res->demodStat < RADIOLIB_LR11X0_GNSS_DEMOD_STATUS_TOW_FOUND) {
+    return(RADIOLIB_ERR_GNSS_DEMOD(res->demodStat));
+  }
+  
+  return(state);
 }
 
 int16_t LR11x0::getGnssAlmanacStatus(LR11x0GnssAlmanacStatus_t *stat) {
@@ -1950,61 +1959,43 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
   return(this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL));
 }
 
-int16_t LR11x0::getGnssScanResult(uint16_t size) {
-  uint32_t timing[31] = { 0 };
-  uint8_t constDemod = 0;
-  int16_t state = this->gnssReadCumulTiming(timing, &constDemod);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Timing:");
-  for(size_t i = 0; i < 31; i++) {
-    uint32_t t = (timing[i] * 1000UL) / 32768UL;
-    (void)t;
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  %d: %lu ms", (int)i*4, (unsigned long)t);
-  }
-  RADIOLIB_DEBUG_BASIC_PRINTLN("constDemod: %d", constDemod);
-
-  uint8_t nbSv = 0;
-  state = this->gnssGetNbSvDetected(&nbSv);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Detected %d SVs:", nbSv);
-
-  uint8_t svId[32] = { 0 };
-  uint8_t snr[32] = { 0 };
-  int16_t doppler[32] = { 0 };
-  state = this->gnssGetSvDetected(svId, snr, doppler, nbSv);
-  RADIOLIB_ASSERT(state);
-  for(size_t i = 0; i < nbSv; i++) {
-    RADIOLIB_DEBUG_BASIC_PRINTLN("  SV %d: SNR %i dB, Doppler %i Hz", (int)i, snr[i], doppler[i]);
+int16_t LR11x0::getGnssPosition(LR11x0GnssPosition_t* pos, bool filtered) {
+  if(!pos) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
 
-  float lat = 0;
-  float lon = 0;
-  state = this->gnssReadAssistancePosition(&lat, &lon);
+  uint8_t error = 0;
+  int16_t state;
+  if(filtered) {
+    state = this->gnssReadDopplerSolverRes(&error, &pos->numSatsUsed, NULL, NULL, NULL, NULL, &pos->latitude, &pos->longitude, &pos->accuracy, NULL);
+  } else {
+    state = this->gnssReadDopplerSolverRes(&error, &pos->numSatsUsed, &pos->latitude, &pos->longitude, &pos->accuracy, NULL, NULL, NULL, NULL, NULL);
+  }
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("lat = %.5f, lon = %.5f", lat, lon);
 
-  // read the result
-  uint8_t res[256] = { 0 };
-  state = this->gnssReadResults(res, size);
-  RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Result type: %02x", (int)res[0]);
-  //Module::hexdump(NULL, res, size);
+  // check the solver error
+  if(error != 0) {
+    return(RADIOLIB_ERR_GNSS_SOLVER(error));
+  }
 
   return(state);
 }
 
-int16_t LR11x0::getGnssPosition(float* lat, float* lon, bool filtered) {
-  uint8_t error = 0;
-  uint8_t nbSvUsed = 0;
-  uint16_t accuracy = 0;
-  int16_t state;
-  if(filtered) {
-    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, NULL, NULL, NULL, NULL, lat, lon, &accuracy, NULL);
-  } else {
-    state = this->gnssReadDopplerSolverRes(&error, &nbSvUsed, lat, lon, &accuracy, NULL, NULL, NULL, NULL, NULL);
+int16_t LR11x0::getGnssSatellites(LR11x0GnssSatellite_t* sats, uint8_t numSats) {
+  if((!sats) || (numSats >= 32)) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
   }
+
+  uint8_t svId[32] = { 0 };
+  uint8_t snr[32] = { 0 };
+  int16_t doppler[32] = { 0 };
+  int16_t state = this->gnssGetSvDetected(svId, snr, doppler, numSats);
   RADIOLIB_ASSERT(state);
-  RADIOLIB_DEBUG_BASIC_PRINTLN("Solver error %d, nbSvUsed %d, accuracy = %u", (int)error, (int)nbSvUsed, (unsigned int)accuracy);
+  for(size_t i = 0; i < numSats; i++) {
+    sats[i].svId = svId[i];
+    sats[i].c_n0 = snr[i] + 31;
+    sats[i].doppler = doppler[i];
+  }
 
   return(state);
 }
