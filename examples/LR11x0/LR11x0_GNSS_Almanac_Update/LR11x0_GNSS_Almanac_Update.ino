@@ -33,37 +33,11 @@
 // BUSY pin:  9
 LR1110 radio = new Module(10, 2, 3, 9);
 
-// set RF switch configuration for Wio WM1110
-// Wio WM1110 uses DIO5 and DIO6 for RF switching,
-// as well as a dedicated GPIO pin PIN_GNSS_LNA
-// for enabling GNSS LNA
-// NOTE: other boards will be different!
-static const uint32_t rfswitch_dio_pins[] = { 
-  RADIOLIB_LR11X0_DIO5, RADIOLIB_LR11X0_DIO6,
-  PIN_GNSS_LNA, RADIOLIB_NC, RADIOLIB_NC
-};
-
-static const Module::RfSwitchMode_t rfswitch_table[] = {
-  // mode                  DIO5  DIO6  PIN_GNSS_LNA 
-  { LR11x0::MODE_STBY,   { LOW,  LOW,  LOW  } },
-  { LR11x0::MODE_RX,     { HIGH, LOW,  LOW  } },
-  { LR11x0::MODE_TX,     { HIGH, HIGH, LOW  } },
-  { LR11x0::MODE_TX_HP,  { LOW,  HIGH, LOW  } },
-  { LR11x0::MODE_TX_HF,  { LOW,  LOW,  LOW  } },
-  { LR11x0::MODE_GNSS,   { LOW,  LOW,  HIGH } },
-  { LR11x0::MODE_WIFI,   { LOW,  LOW,  LOW  } },
-  END_OF_MODE_TABLE,
-};
-
 // structure to save information about the GNSS almanac
 LR11x0GnssAlmanacStatus_t almStatus;
 
 void setup() {
   Serial.begin(9600);
-
-  // set RF switch control configuration
-  // this has to be done prior to calling begin()
-  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));
