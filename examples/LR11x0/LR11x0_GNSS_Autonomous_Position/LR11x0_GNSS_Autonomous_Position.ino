@@ -67,7 +67,7 @@ void loop() {
   int state = radio.gnssScan(&gnssResult);
   if(state == RADIOLIB_ERR_NONE) {
     // success!
-    Serial.print(gnssResult.scanResult); Serial.print("\t\t| ");
+    Serial.print(gnssResult.demodStat); Serial.print("\t\t| ");
 
     // get the actual data
     state = radio.getGnssPosition(&gnssPosition);
