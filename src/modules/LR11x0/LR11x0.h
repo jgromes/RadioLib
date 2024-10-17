@@ -617,7 +617,7 @@
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_NONE                    (0)             //  7     0     internal 2D solver error: no error
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_RES_HIGH                (1)             //  7     0                               residue too high
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_NOT_CONVERGED           (2)             //  7     0                               not converged on solution
-#define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_NOT_ENOUG_SV            (3)             //  7     0                               not enough satellites
+#define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_NOT_ENOUGH_SV           (3)             //  7     0                               not enough satellites
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_ILL_MATRIX              (4)             //  7     0                               matrix error (?)
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_TIME                    (5)             //  7     0                               time error
 #define RADIOLIB_LR11X0_GNSS_SOLVER_ERR_ALM_PART_OLD            (6)             //  7     0                               part of almanac too old or not available
@@ -1753,6 +1753,7 @@ class LR11x0: public PhysicalLayer {
     int16_t gnssReadWarmStartStatus(uint8_t bitMask, uint8_t* nbVisSat, uint32_t* timeElapsed);
     int16_t gnssGetSvSync(uint8_t mask, uint8_t nbSv, uint8_t* syncList);
     int16_t gnssWriteBitMaskSatActivated(uint8_t bitMask, uint32_t* bitMaskActivated0, uint32_t* bitMaskActivated1);
+    void gnssAbort();
 
     int16_t cryptoSetKey(uint8_t keyId, uint8_t* key);
     int16_t cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key);
