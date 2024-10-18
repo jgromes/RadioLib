@@ -1829,20 +1829,21 @@ int16_t LR11x0::gnssScan(LR11x0GnssResult_t* res) {
   while(!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
+      this->gnssAbort();
       RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for IRQ");
-      this->standby();
-      this->mod->setRfSwitchState(Module::MODE_IDLE);
-      return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
 
   // restore the switch
   this->mod->setRfSwitchState(Module::MODE_IDLE);
   RADIOLIB_DEBUG_BASIC_PRINTLN("GNSS scan done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
-  
-  // drop all IRQ
-  state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
-  RADIOLIB_ASSERT(state);
+
+  // distinguish between GNSS-done and GNSS-abort outcomes and clear the flags
+  uint32_t irq = this->getIrqStatus();
+  this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  if(irq & RADIOLIB_LR11X0_IRQ_GNSS_ABORT) {
+    return(RADIOLIB_ERR_RX_TIMEOUT);
+  }
 
   // retrieve the demodulator status
   uint8_t info = 0;
@@ -1932,6 +1933,7 @@ int16_t LR11x0::gnssDelayUntilSubframe(LR11x0GnssAlmanacStatus_t *stat, uint8_t 
   return(RADIOLIB_ERR_NONE);
 }
 
+// TODO fix last satellite always out of date
 int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
   int16_t state = this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_GNSS_DONE | RADIOLIB_LR11X0_IRQ_GNSS_ABORT);
   RADIOLIB_ASSERT(state);
@@ -1945,18 +1947,21 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
   while (!this->mod->hal->digitalRead(this->mod->getIrq())) {
     this->mod->hal->yield();
     if(this->mod->hal->millis() - start > softTimeout) {
+      this->gnssAbort();
       RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout waiting for almanac update");
-
-      // FIXME: really need to use the correct abort procedure
-      this->standby(); 
-      return(RADIOLIB_ERR_RX_TIMEOUT);
     }
   }
 
-  // FIXME: distinguish between GNSS-done and GNSS-abort outcomes
   RADIOLIB_DEBUG_BASIC_PRINTLN("GPS almanac update done in %lu ms", (long unsigned int)(this->mod->hal->millis() - start));
 
-  return(this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL));
+  // distinguish between GNSS-done and GNSS-abort outcomes and clear the flags
+  uint32_t irq = this->getIrqStatus();
+  this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  if(irq & RADIOLIB_LR11X0_IRQ_GNSS_ABORT) {
+    state = RADIOLIB_ERR_RX_TIMEOUT;
+  }
+  
+  return(state);
 }
 
 int16_t LR11x0::getGnssPosition(LR11x0GnssPosition_t* pos, bool filtered) {
@@ -3591,6 +3596,16 @@ int16_t LR11x0::gnssWriteBitMaskSatActivated(uint8_t bitMask, uint32_t* bitMaskA
   if(bitMaskActivated1) { *bitMaskActivated1 = ((uint32_t)(rplBuff[4]) << 24) | ((uint32_t)(rplBuff[5]) << 16) | ((uint32_t)(rplBuff[6]) << 8) | (uint32_t)rplBuff[7]; }
 
   return(state);
+}
+
+void LR11x0::gnssAbort() {
+  // send the abort signal (single NOP)
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
+  this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_NOP, NULL, 0, false, false);
+  this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
+
+  // wait for at least 2.9 seconds as specified by the user manual
+  this->mod->hal->delay(3000);
 }
 
 int16_t LR11x0::cryptoSetKey(uint8_t keyId, uint8_t* key) {
