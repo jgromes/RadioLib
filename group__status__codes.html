@@ -454,6 +454,30 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#gac0673e69b893d8f23e339f218d376a52">RADIOLIB_ERR_INVALID_WIFI_TYPE</a>&#160;&#160;&#160;(-1200)</td></tr>
 <tr class="memdesc:gac0673e69b893d8f23e339f218d376a52"><td class="mdescLeft">&#160;</td><td class="mdescRight">The selected 802.11 WiFi type is invalid. <br /></td></tr>
 <tr class="separator:gac0673e69b893d8f23e339f218d376a52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga01584876f01c1815ab27afc364649966"><td class="memItemLeft" align="right" valign="top"><a id="ga01584876f01c1815ab27afc364649966"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga01584876f01c1815ab27afc364649966">RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE</a>&#160;&#160;&#160;(-1201)</td></tr>
+<tr class="memdesc:ga01584876f01c1815ab27afc364649966"><td class="mdescLeft">&#160;</td><td class="mdescRight">GNSS subframe not available in the next 2.3 seconds. <br /></td></tr>
+<tr class="separator:ga01584876f01c1815ab27afc364649966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga95f44b9fd5db8220158e8dad73506cd9"><td class="memItemLeft" align="right" valign="top"><a id="ga95f44b9fd5db8220158e8dad73506cd9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a>&#160;&#160;&#160;(-1210)</td></tr>
+<tr class="memdesc:ga95f44b9fd5db8220158e8dad73506cd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Offset of GNSS demodulator errors. See <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a> datasheet for details on the actual demodulator error. <br /></td></tr>
+<tr class="separator:ga95f44b9fd5db8220158e8dad73506cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d2e3cd42065565646b7417ab3a7eb2a"><td class="memItemLeft" align="right" valign="top"><a id="ga7d2e3cd42065565646b7417ab3a7eb2a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_GNSS_DEMOD</b>(X)&#160;&#160;&#160;(<a class="el" href="group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a> + (X))</td></tr>
+<tr class="separator:ga7d2e3cd42065565646b7417ab3a7eb2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1d19b99ac926a4274afefeac1de073bb"><td class="memItemLeft" align="right" valign="top"><a id="ga1d19b99ac926a4274afefeac1de073bb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_GET_GNSS_DEMOD_ERROR</b>(X)&#160;&#160;&#160;((X) - <a class="el" href="group__status__codes.html#ga95f44b9fd5db8220158e8dad73506cd9">RADIOLIB_ERR_GNSS_DEMOD_OFFSET</a>)</td></tr>
+<tr class="separator:ga1d19b99ac926a4274afefeac1de073bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga25700f55a8dfaa3aa8076b51528d74f9"><td class="memItemLeft" align="right" valign="top"><a id="ga25700f55a8dfaa3aa8076b51528d74f9"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__status__codes.html#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a>&#160;&#160;&#160;(-1230)</td></tr>
+<tr class="memdesc:ga25700f55a8dfaa3aa8076b51528d74f9"><td class="mdescLeft">&#160;</td><td class="mdescRight">GNSS solver errors. See <a class="el" href="class_l_r11x0.html" title="Base class for LR11x0 series. All derived classes for LR11x0 (e.g. LR1110 or LR1120) inherit from thi...">LR11x0</a> datasheet for details on the actual solver error. <br /></td></tr>
+<tr class="separator:ga25700f55a8dfaa3aa8076b51528d74f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0a37b9a4a05b63ed7efc9c8b7efa7adf"><td class="memItemLeft" align="right" valign="top"><a id="ga0a37b9a4a05b63ed7efc9c8b7efa7adf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_ERR_GNSS_SOLVER</b>(X)&#160;&#160;&#160;(<a class="el" href="group__status__codes.html#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a> - (X))</td></tr>
+<tr class="separator:ga0a37b9a4a05b63ed7efc9c8b7efa7adf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac885e9d1fe4fbc2fde012d0ed857d840"><td class="memItemLeft" align="right" valign="top"><a id="gac885e9d1fe4fbc2fde012d0ed857d840"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>RADIOLIB_GET_GNSS_SOLVER_ERROR</b>(X)&#160;&#160;&#160;(-((X) - <a class="el" href="group__status__codes.html#ga25700f55a8dfaa3aa8076b51528d74f9">RADIOLIB_ERR_GNSS_SOLVER_OFFSET</a>))</td></tr>
+<tr class="separator:gac885e9d1fe4fbc2fde012d0ed857d840"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Macro Definition Documentation</h2>

@@ -140,6 +140,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a244ee48075d44c7064b454eb9c4afdb8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8">beginLRFHSS</a> (uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoVoltage)</td></tr>
 <tr class="memdesc:a244ee48075d44c7064b454eb9c4afdb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem.  <a href="class_l_r11x0.html#a244ee48075d44c7064b454eb9c4afdb8">More...</a><br /></td></tr>
 <tr class="separator:a244ee48075d44c7064b454eb9c4afdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7f31060cbab41ad53ee6fa7126cd17b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ad7f31060cbab41ad53ee6fa7126cd17b">beginGNSS</a> (uint8_t constellations=RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS|RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU, float tcxoVoltage=1.6)</td></tr>
+<tr class="memdesc:ad7f31060cbab41ad53ee6fa7126cd17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for GNSS scanning.  <a href="class_l_r11x0.html#ad7f31060cbab41ad53ee6fa7126cd17b">More...</a><br /></td></tr>
+<tr class="separator:ad7f31060cbab41ad53ee6fa7126cd17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a288bcc309d3676bc0bbe620b7d89d994"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">reset</a> ()</td></tr>
 <tr class="memdesc:a288bcc309d3676bc0bbe620b7d89d994"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset method. Will reset the chip to the default state using RST pin.  <a href="class_l_r11x0.html#a288bcc309d3676bc0bbe620b7d89d994">More...</a><br /></td></tr>
 <tr class="separator:a288bcc309d3676bc0bbe620b7d89d994"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -378,6 +381,27 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85">updateFirmware</a> (const uint32_t *image, size_t size, bool nonvolatile=true)</td></tr>
 <tr class="memdesc:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to upload new firmware image to the device. The device will be automatically erased, a new firmware will be uploaded, written to flash and executed.  <a href="class_l_r11x0.html#ab2820cc2b740d6d42a079bbd8bd45b85">More...</a><br /></td></tr>
 <tr class="separator:ab2820cc2b740d6d42a079bbd8bd45b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a79818dae19d69d33a5a1facbb91c3774"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a79818dae19d69d33a5a1facbb91c3774">isGnssScanCapable</a> ()</td></tr>
+<tr class="memdesc:a79818dae19d69d33a5a1facbb91c3774"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to check whether the device is capable of performing a GNSS scan.  <a href="class_l_r11x0.html#a79818dae19d69d33a5a1facbb91c3774">More...</a><br /></td></tr>
+<tr class="separator:a79818dae19d69d33a5a1facbb91c3774"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9bfaf0bdd7045f5d41f18f3f953c294"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ad9bfaf0bdd7045f5d41f18f3f953c294">gnssScan</a> (<a class="el" href="struct_l_r11x0_gnss_result__t.html">LR11x0GnssResult_t</a> *res=NULL)</td></tr>
+<tr class="memdesc:ad9bfaf0bdd7045f5d41f18f3f953c294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs GNSS scan.  <a href="class_l_r11x0.html#ad9bfaf0bdd7045f5d41f18f3f953c294">More...</a><br /></td></tr>
+<tr class="separator:ad9bfaf0bdd7045f5d41f18f3f953c294"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a748d30cb7a0b419066f6361a966b306f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a748d30cb7a0b419066f6361a966b306f">getGnssAlmanacStatus</a> (<a class="el" href="struct_l_r11x0_gnss_almanac_status__t.html">LR11x0GnssAlmanacStatus_t</a> *stat)</td></tr>
+<tr class="memdesc:a748d30cb7a0b419066f6361a966b306f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read information about the almanac.  <a href="class_l_r11x0.html#a748d30cb7a0b419066f6361a966b306f">More...</a><br /></td></tr>
+<tr class="separator:a748d30cb7a0b419066f6361a966b306f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2dbab0fe3433e914c19a8d03fe32358"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab2dbab0fe3433e914c19a8d03fe32358">gnssDelayUntilSubframe</a> (<a class="el" href="struct_l_r11x0_gnss_almanac_status__t.html">LR11x0GnssAlmanacStatus_t</a> *stat, uint8_t constellation)</td></tr>
+<tr class="memdesc:ab2dbab0fe3433e914c19a8d03fe32358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking wait until the next subframe with almanac data is available. Used to control timing during almanac update from satellite.  <a href="class_l_r11x0.html#ab2dbab0fe3433e914c19a8d03fe32358">More...</a><br /></td></tr>
+<tr class="separator:ab2dbab0fe3433e914c19a8d03fe32358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96aa9566399e46fc03f2b73b44058e3f"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a96aa9566399e46fc03f2b73b44058e3f">updateGnssAlmanac</a> (uint8_t constellation)</td></tr>
+<tr class="memdesc:a96aa9566399e46fc03f2b73b44058e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform almanac update. Must be called immediately after gnssDelayUntilSubframe.  <a href="class_l_r11x0.html#a96aa9566399e46fc03f2b73b44058e3f">More...</a><br /></td></tr>
+<tr class="separator:a96aa9566399e46fc03f2b73b44058e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19a4b4a138dbd0e5c8f980de0f6419e4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a19a4b4a138dbd0e5c8f980de0f6419e4">getGnssPosition</a> (<a class="el" href="struct_l_r11x0_gnss_position__t.html">LR11x0GnssPosition_t</a> *pos, bool filtered=true)</td></tr>
+<tr class="memdesc:a19a4b4a138dbd0e5c8f980de0f6419e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get GNSS position. Called after gnssScan to retrieve the position calculated by the internal solver.  <a href="class_l_r11x0.html#a19a4b4a138dbd0e5c8f980de0f6419e4">More...</a><br /></td></tr>
+<tr class="separator:a19a4b4a138dbd0e5c8f980de0f6419e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a97a3f23b796257135a9afd33c28e8ed5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a97a3f23b796257135a9afd33c28e8ed5">getGnssSatellites</a> (<a class="el" href="struct_l_r11x0_gnss_satellite__t.html">LR11x0GnssSatellite_t</a> *sats, uint8_t numSats)</td></tr>
+<tr class="memdesc:a97a3f23b796257135a9afd33c28e8ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get GNSS satellites found during the last scan.  <a href="class_l_r11x0.html#a97a3f23b796257135a9afd33c28e8ed5">More...</a><br /></td></tr>
+<tr class="separator:a97a3f23b796257135a9afd33c28e8ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -696,6 +720,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">freqDev</td><td>Frequency deviation from carrier frequency in kHz. </td></tr>
     <tr><td class="paramname">rxBw</td><td>Receiver bandwidth in kHz. </td></tr>
     <tr><td class="paramname">preambleLength</td><td>FSK preamble length in bits. </td></tr>
+    <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad7f31060cbab41ad53ee6fa7126cd17b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7f31060cbab41ad53ee6fa7126cd17b">&#9670;&nbsp;</a></span>beginGNSS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::beginGNSS </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>constellations</em> = <code>RADIOLIB_LR11X0_GNSS_CONSTELLATION_GPS&#160;|&#160;RADIOLIB_LR11X0_GNSS_CONSTELLATION_BEIDOU</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>tcxoVoltage</em> = <code>1.6</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialization method for GNSS scanning. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">constellations</td><td>GNSS constellations to use (GPS, BeiDou or both). Defaults to both. </td></tr>
     <tr><td class="paramname">tcxoVoltage</td><td>TCXO reference voltage to be set. </td></tr>
   </table>
   </dd>
@@ -1061,6 +1123,109 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="a748d30cb7a0b419066f6361a966b306f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a748d30cb7a0b419066f6361a966b306f">&#9670;&nbsp;</a></span>getGnssAlmanacStatus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getGnssAlmanacStatus </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_gnss_almanac_status__t.html">LR11x0GnssAlmanacStatus_t</a> *&#160;</td>
+          <td class="paramname"><em>stat</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read information about the almanac. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stat</td><td>Pointer to structure to save the almanac status into. This is not the actual almanac, just a structure providing information about it. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a19a4b4a138dbd0e5c8f980de0f6419e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19a4b4a138dbd0e5c8f980de0f6419e4">&#9670;&nbsp;</a></span>getGnssPosition()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getGnssPosition </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_gnss_position__t.html">LR11x0GnssPosition_t</a> *&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>filtered</em> = <code>true</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get GNSS position. Called after gnssScan to retrieve the position calculated by the internal solver. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pos</td><td>Pointer to <a class="el" href="struct_l_r11x0_gnss_position__t.html" title="Structure to report position from LR11x0 internal solver.">LR11x0GnssPosition_t</a> structure to populate. </td></tr>
+    <tr><td class="paramname">filtered</td><td>Whether to save the filtered, or unfiltered values. Defaults to true (filtered). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a97a3f23b796257135a9afd33c28e8ed5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97a3f23b796257135a9afd33c28e8ed5">&#9670;&nbsp;</a></span>getGnssSatellites()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getGnssSatellites </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_gnss_satellite__t.html">LR11x0GnssSatellite_t</a> *&#160;</td>
+          <td class="paramname"><em>sats</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>numSats</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get GNSS satellites found during the last scan. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sats</td><td>Pointer to array of <a class="el" href="struct_l_r11x0_gnss_satellite__t.html" title="Structure to save information about a satellite found during GNSS scan.">LR11x0GnssSatellite_t</a> structures to populate. </td></tr>
+    <tr><td class="paramname">numSats</td><td>Number of satellites to read. Can be retrieved from <a class="el" href="struct_l_r11x0_gnss_result__t.html" title="Structure to report information results of a GNSS scan.">LR11x0GnssResult_t</a> passed to gnssScan. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="a205364e65d54f3f87b9b8f5972cdcb99"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a205364e65d54f3f87b9b8f5972cdcb99">&#9670;&nbsp;</a></span>getIrqFlags()</h2>
 
@@ -1382,6 +1547,71 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a id="ab2dbab0fe3433e914c19a8d03fe32358"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2dbab0fe3433e914c19a8d03fe32358">&#9670;&nbsp;</a></span>gnssDelayUntilSubframe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::gnssDelayUntilSubframe </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_gnss_almanac_status__t.html">LR11x0GnssAlmanacStatus_t</a> *&#160;</td>
+          <td class="paramname"><em>stat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>constellation</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Blocking wait until the next subframe with almanac data is available. Used to control timing during almanac update from satellite. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stat</td><td>Pointer to structure containing the almanac status read by getGnssAlmanacStatus. This is not the actual almanac, just a structure providing information about it. </td></tr>
+    <tr><td class="paramname">constellation</td><td>Constellation to wait for, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*. Constellations cannot be updated at the same time, but rather must be updated sequentially! </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad9bfaf0bdd7045f5d41f18f3f953c294"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad9bfaf0bdd7045f5d41f18f3f953c294">&#9670;&nbsp;</a></span>gnssScan()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::gnssScan </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_l_r11x0_gnss_result__t.html">LR11x0GnssResult_t</a> *&#160;</td>
+          <td class="paramname"><em>res</em> = <code>NULL</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Performs GNSS scan. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">res</td><td>Pointer to <a class="el" href="struct_l_r11x0_gnss_position__t.html" title="Structure to report position from LR11x0 internal solver.">LR11x0GnssPosition_t</a> structure to populate. Will not be saved if set to NULL, defaults to NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
 <a id="aba13921d2cf29cc1bc8a648e1f330aa9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba13921d2cf29cc1bc8a648e1f330aa9">&#9670;&nbsp;</a></span>implicitHeader()</h2>
 
@@ -1443,6 +1673,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a11b4c6d0bf3ae7b9ca04e9434180feab">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a79818dae19d69d33a5a1facbb91c3774"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79818dae19d69d33a5a1facbb91c3774">&#9670;&nbsp;</a></span>isGnssScanCapable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::isGnssScanCapable </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Method to check whether the device is capable of performing a GNSS scan. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
@@ -3376,6 +3626,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
     <tr><td class="paramname">image</td><td>Pointer to the image to upload. </td></tr>
     <tr><td class="paramname">size</td><td>Size of the image in 32-bit words. </td></tr>
     <tr><td class="paramname">nonvolatile</td><td>Set to true when the image is saved in non-volatile memory of the host processor, or to false when the patch is in its RAM. Defaults to true. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a96aa9566399e46fc03f2b73b44058e3f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96aa9566399e46fc03f2b73b44058e3f">&#9670;&nbsp;</a></span>updateGnssAlmanac()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::updateGnssAlmanac </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>constellation</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Perform almanac update. Must be called immediately after gnssDelayUntilSubframe. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">constellation</td><td>Constellation to update, one of RADIOLIB_LR11X0_GNSS_CONSTELLATION_*. Constellations cannot be updated at the same time, but rather must be updated sequentially! </td></tr>
   </table>
   </dd>
 </dl>

@@ -25,7 +25,11 @@ var hierarchy =
     [ "LoRaWANJoinEvent_t", "struct_lo_ra_w_a_n_join_event__t.html", null ],
     [ "LoRaWANMacCommand_t", "struct_lo_ra_w_a_n_mac_command__t.html", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html", null ],
+    [ "LR11x0GnssAlmanacStatus_t", "struct_l_r11x0_gnss_almanac_status__t.html", null ],
+    [ "LR11x0GnssAlmanacStatusPart_t", "struct_l_r11x0_gnss_almanac_status_part__t.html", null ],
+    [ "LR11x0GnssPosition_t", "struct_l_r11x0_gnss_position__t.html", null ],
     [ "LR11x0GnssResult_t", "struct_l_r11x0_gnss_result__t.html", null ],
+    [ "LR11x0GnssSatellite_t", "struct_l_r11x0_gnss_satellite__t.html", null ],
     [ "LR11x0VersionInfo_t", "struct_l_r11x0_version_info__t.html", null ],
     [ "LR11x0WifiResult_t", "struct_l_r11x0_wifi_result__t.html", [
       [ "LR11x0WifiResultFull_t", "struct_l_r11x0_wifi_result_full__t.html", [
