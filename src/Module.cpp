@@ -339,18 +339,20 @@ int16_t Module::SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write
   }
 
   // ensure GPIO is low
-  if(this->gpioPin == RADIOLIB_NC) {
-    this->hal->delay(50);
-  } else {
-    RadioLibTime_t start = this->hal->millis();
-    while(this->hal->digitalRead(this->gpioPin)) {
-      this->hal->yield();
-      if(this->hal->millis() - start >= this->spiConfig.timeout) {
-        RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO pre-transfer timeout, is it connected?");
-        #if !RADIOLIB_STATIC_ONLY
-          delete[] buffOut;
-        #endif
-        return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+  if(waitForGpio) {
+    if(this->gpioPin == RADIOLIB_NC) {
+      this->hal->delay(50);
+    } else {
+      RadioLibTime_t start = this->hal->millis();
+      while(this->hal->digitalRead(this->gpioPin)) {
+        this->hal->yield();
+        if(this->hal->millis() - start >= this->spiConfig.timeout) {
+          RADIOLIB_DEBUG_BASIC_PRINTLN("GPIO pre-transfer timeout, is it connected?");
+          #if !RADIOLIB_STATIC_ONLY
+            delete[] buffOut;
+          #endif
+          return(RADIOLIB_ERR_SPI_CMD_TIMEOUT);
+        }
       }
     }
   }

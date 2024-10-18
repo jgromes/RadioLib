@@ -606,6 +606,27 @@
 #define RADIOLIB_ERR_INVALID_WIFI_TYPE                          (-1200)
 
 /*!
+  \brief GNSS subframe not available in the next 2.3 seconds.
+*/
+#define RADIOLIB_ERR_GNSS_SUBFRAME_NOT_AVAILABLE                (-1201)
+
+/*!
+  \brief Offset of GNSS demodulator errors.
+  See LR11x0 datasheet for details on the actual demodulator error
+*/
+#define RADIOLIB_ERR_GNSS_DEMOD_OFFSET                          (-1210)
+#define RADIOLIB_ERR_GNSS_DEMOD(X)                              (RADIOLIB_ERR_GNSS_DEMOD_OFFSET + (X))
+#define RADIOLIB_GET_GNSS_DEMOD_ERROR(X)                        ((X) - RADIOLIB_ERR_GNSS_DEMOD_OFFSET)
+
+/*!
+  \brief GNSS solver errors.
+  See LR11x0 datasheet for details on the actual solver error
+*/
+#define RADIOLIB_ERR_GNSS_SOLVER_OFFSET                         (-1230)
+#define RADIOLIB_ERR_GNSS_SOLVER(X)                             (RADIOLIB_ERR_GNSS_SOLVER_OFFSET - (X))
+#define RADIOLIB_GET_GNSS_SOLVER_ERROR(X)                       (-((X) - RADIOLIB_ERR_GNSS_SOLVER_OFFSET))
+
+/*!
   \}
 */
 
