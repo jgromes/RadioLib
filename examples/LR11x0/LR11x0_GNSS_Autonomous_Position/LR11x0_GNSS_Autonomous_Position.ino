@@ -88,6 +88,13 @@ void loop() {
       Serial.print(RADIOLIB_GET_GNSS_SOLVER_ERROR(state));
       Serial.println(F(")"));
     }
+  
+  } else {
+    Serial.print(F("Scan failed, code "));
+    Serial.print(state);
+    Serial.print(F(" (demodulator error "));
+    Serial.print(RADIOLIB_GET_GNSS_DEMOD_ERROR(state));
+    Serial.println(F(")"));
     
   }
   
