@@ -83,10 +83,10 @@ extern RadioLibBCH RadioLibBCHInstance;
 
 /*!
   \class RadioLibConvCode
-  \brief Class to perform convolutional coding wtih variable rates.
+  \brief Class to perform convolutional coding with variable rates.
   Only 1/2 and 1/3 rate is currently supported.
 
-  Copnvolutional coder implementation in this class is adapted from Setmech's LR-FHSS demo:
+  Convolutional coder implementation in this class is adapted from Semtech's LR-FHSS demo:
   https://github.com/Lora-net/SWDM001/tree/master/lib/sx126x_driver
 
   Its SX126x driver is distributed under the Clear BSD License,
