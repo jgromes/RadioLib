@@ -92,7 +92,12 @@ var hierarchy =
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", null ],
     [ "RadioLibConvCode", "class_radio_lib_conv_code.html", null ],
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", null ],
-    [ "RadioLibHal", "class_radio_lib_hal.html", null ],
+    [ "RadioLibHal", "class_radio_lib_hal.html", [
+      [ "EspHal", "class_esp_hal.html", null ],
+      [ "PiHal", "class_pi_hal.html", null ],
+      [ "PicoHal", "class_pico_hal.html", null ],
+      [ "TockHal", "class_tock_hal.html", null ]
+    ] ],
     [ "RadioLibPrint", "class_radio_lib_print.html", [
       [ "BellClient", "class_bell_client.html", null ],
       [ "HellClient", "class_hell_client.html", null ],
@@ -107,6 +112,7 @@ var hierarchy =
     [ "RFM98", "class_r_f_m98.html", null ],
     [ "Module::RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", null ],
     [ "RSSIScanConfig_t", "struct_r_s_s_i_scan_config__t.html", null ],
+    [ "spiClk_t", "unionspi_clk__t.html", null ],
     [ "Module::SPIConfig_t", "struct_module_1_1_s_p_i_config__t.html", null ],
     [ "SSTVClient", "class_s_s_t_v_client.html", null ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", null ],

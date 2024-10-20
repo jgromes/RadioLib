@@ -10,6 +10,7 @@ var annotated_dup =
     [ "CC1101", "class_c_c1101.html", "class_c_c1101" ],
     [ "ChannelScanConfig_t", "union_channel_scan_config__t.html", "union_channel_scan_config__t" ],
     [ "DataRate_t", "union_data_rate__t.html", "union_data_rate__t" ],
+    [ "EspHal", "class_esp_hal.html", "class_esp_hal" ],
     [ "ExternalRadio", "class_external_radio.html", "class_external_radio" ],
     [ "FSK4Client", "class_f_s_k4_client.html", "class_f_s_k4_client" ],
     [ "FSKRate_t", "struct_f_s_k_rate__t.html", "struct_f_s_k_rate__t" ],
@@ -44,6 +45,8 @@ var annotated_dup =
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],
     [ "PagerClient", "class_pager_client.html", "class_pager_client" ],
     [ "PhysicalLayer", "class_physical_layer.html", "class_physical_layer" ],
+    [ "PicoHal", "class_pico_hal.html", "class_pico_hal" ],
+    [ "PiHal", "class_pi_hal.html", "class_pi_hal" ],
     [ "RadioLibAES128", "class_radio_lib_a_e_s128.html", "class_radio_lib_a_e_s128" ],
     [ "RadioLibBCH", "class_radio_lib_b_c_h.html", "class_radio_lib_b_c_h" ],
     [ "RadioLibConvCode", "class_radio_lib_conv_code.html", "class_radio_lib_conv_code" ],
@@ -63,6 +66,7 @@ var annotated_dup =
     [ "Si4431", "class_si4431.html", "class_si4431" ],
     [ "Si4432", "class_si4432.html", "class_si4432" ],
     [ "Si443x", "class_si443x.html", "class_si443x" ],
+    [ "spiClk_t", "unionspi_clk__t.html", "unionspi_clk__t" ],
     [ "SSTVClient", "class_s_s_t_v_client.html", "class_s_s_t_v_client" ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", "struct_s_s_t_v_mode__t" ],
     [ "STM32WLx", "class_s_t_m32_w_lx.html", "class_s_t_m32_w_lx" ],
@@ -85,5 +89,6 @@ var annotated_dup =
     [ "SX1281", "class_s_x1281.html", "class_s_x1281" ],
     [ "SX1282", "class_s_x1282.html", "class_s_x1282" ],
     [ "SX128x", "class_s_x128x.html", "class_s_x128x" ],
+    [ "TockHal", "class_tock_hal.html", "class_tock_hal" ],
     [ "tone_t", "structtone__t.html", "structtone__t" ]
 ];

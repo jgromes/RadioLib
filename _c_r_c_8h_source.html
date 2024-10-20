@@ -91,47 +91,44 @@ $(document).ready(function(){initNavTree('_c_r_c_8h_source.html',''); initResiza
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160; </div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;../TypeDef.h&quot;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;../Module.h&quot;</span></div>
-<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;<span class="preprocessor">#if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../ArduinoHal.h&quot;</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160; </div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="comment">// CCITT CRC properties (used by AX.25)</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_POLY                                 (0x1021)</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_INIT                                 (0xFFFF)</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_OUT                                  (0xFFFF)</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160; </div>
-<div class="line"><a name="l00019"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html">   19</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_radio_lib_c_r_c.html">RadioLibCRC</a> {</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;  <span class="keyword">public</span>:</div>
-<div class="line"><a name="l00024"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">   24</a></span>&#160;    uint8_t <a class="code" href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">size</a> = 8;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">   29</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">poly</a> = 0;</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">   34</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">init</a> = 0;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00039"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">   39</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">out</a> = 0;</div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">   44</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">refIn</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">   49</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">refOut</a> = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    <a class="code" href="class_radio_lib_c_r_c.html#a4f4042a369d55e234f4fc28f189139d5">RadioLibCRC</a>();</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a92328d778fe59c046c6e74296eb5fb23">checksum</a>(<span class="keyword">const</span> uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// CCITT CRC properties (used by AX.25)</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_POLY                                 (0x1021)</span></div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_INIT                                 (0xFFFF)</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define RADIOLIB_CRC_CCITT_OUT                                  (0xFFFF)</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160; </div>
+<div class="line"><a name="l00016"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html">   16</a></span>&#160;<span class="keyword">class </span><a class="code" href="class_radio_lib_c_r_c.html">RadioLibCRC</a> {</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;  <span class="keyword">public</span>:</div>
+<div class="line"><a name="l00021"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">   21</a></span>&#160;    uint8_t <a class="code" href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">size</a> = 8;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">   26</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">poly</a> = 0;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">   31</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">init</a> = 0;</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">   36</a></span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">out</a> = 0;</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">   41</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">refIn</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">   46</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">refOut</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <a class="code" href="class_radio_lib_c_r_c.html#a4f4042a369d55e234f4fc28f189139d5">RadioLibCRC</a>();</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    uint32_t <a class="code" href="class_radio_lib_c_r_c.html#a92328d778fe59c046c6e74296eb5fb23">checksum</a>(<span class="keyword">const</span> uint8_t* buff, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="comment">// the global singleton</span></div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_radio_lib_c_r_c.html">RadioLibCRC</a> RadioLibCRCInstance;</div>
 <div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="comment">// the global singleton</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">extern</span> <a class="code" href="class_radio_lib_c_r_c.html">RadioLibCRC</a> RadioLibCRCInstance;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html"><div class="ttname"><a href="class_radio_lib_c_r_c.html">RadioLibCRC</a></div><div class="ttdoc">Class to calculate CRCs of varying formats.</div><div class="ttdef"><b>Definition:</b> CRC.h:19</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_a46616ef58e9eeeca646de0c9fe681050"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">RadioLibCRC::out</a></div><div class="ttdeci">uint32_t out</div><div class="ttdoc">Final XOR value.</div><div class="ttdef"><b>Definition:</b> CRC.h:39</div></div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html"><div class="ttname"><a href="class_radio_lib_c_r_c.html">RadioLibCRC</a></div><div class="ttdoc">Class to calculate CRCs of varying formats.</div><div class="ttdef"><b>Definition:</b> CRC.h:16</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_a46616ef58e9eeeca646de0c9fe681050"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a46616ef58e9eeeca646de0c9fe681050">RadioLibCRC::out</a></div><div class="ttdeci">uint32_t out</div><div class="ttdoc">Final XOR value.</div><div class="ttdef"><b>Definition:</b> CRC.h:36</div></div>
 <div class="ttc" id="aclass_radio_lib_c_r_c_html_a4f4042a369d55e234f4fc28f189139d5"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a4f4042a369d55e234f4fc28f189139d5">RadioLibCRC::RadioLibCRC</a></div><div class="ttdeci">RadioLibCRC()</div><div class="ttdoc">Default constructor.</div><div class="ttdef"><b>Definition:</b> CRC.cpp:3</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_a579acc51fe7a01b0b9b3f2e0e57b7d5f"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">RadioLibCRC::init</a></div><div class="ttdeci">uint32_t init</div><div class="ttdoc">Initial value.</div><div class="ttdef"><b>Definition:</b> CRC.h:34</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_a579acc51fe7a01b0b9b3f2e0e57b7d5f"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a579acc51fe7a01b0b9b3f2e0e57b7d5f">RadioLibCRC::init</a></div><div class="ttdeci">uint32_t init</div><div class="ttdoc">Initial value.</div><div class="ttdef"><b>Definition:</b> CRC.h:31</div></div>
 <div class="ttc" id="aclass_radio_lib_c_r_c_html_a92328d778fe59c046c6e74296eb5fb23"><div class="ttname"><a href="class_radio_lib_c_r_c.html#a92328d778fe59c046c6e74296eb5fb23">RadioLibCRC::checksum</a></div><div class="ttdeci">uint32_t checksum(const uint8_t *buff, size_t len)</div><div class="ttdoc">Calculate checksum of a buffer.</div><div class="ttdef"><b>Definition:</b> CRC.cpp:7</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_ab1b5aa578ed5818a7618df8c6cf98087"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">RadioLibCRC::refOut</a></div><div class="ttdeci">bool refOut</div><div class="ttdoc">Whether to reflect the result.</div><div class="ttdef"><b>Definition:</b> CRC.h:49</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_ac65a358753efd05067c19fcf1098ec04"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">RadioLibCRC::refIn</a></div><div class="ttdeci">bool refIn</div><div class="ttdoc">Whether to reflect input bytes.</div><div class="ttdef"><b>Definition:</b> CRC.h:44</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_ad09b067c00cda1cc676c13602dee2f5a"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">RadioLibCRC::size</a></div><div class="ttdeci">uint8_t size</div><div class="ttdoc">CRC size in bits.</div><div class="ttdef"><b>Definition:</b> CRC.h:24</div></div>
-<div class="ttc" id="aclass_radio_lib_c_r_c_html_af3942e08bde9d9d127f735bd10392f6d"><div class="ttname"><a href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">RadioLibCRC::poly</a></div><div class="ttdeci">uint32_t poly</div><div class="ttdoc">CRC polynomial.</div><div class="ttdef"><b>Definition:</b> CRC.h:29</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_ab1b5aa578ed5818a7618df8c6cf98087"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ab1b5aa578ed5818a7618df8c6cf98087">RadioLibCRC::refOut</a></div><div class="ttdeci">bool refOut</div><div class="ttdoc">Whether to reflect the result.</div><div class="ttdef"><b>Definition:</b> CRC.h:46</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_ac65a358753efd05067c19fcf1098ec04"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ac65a358753efd05067c19fcf1098ec04">RadioLibCRC::refIn</a></div><div class="ttdeci">bool refIn</div><div class="ttdoc">Whether to reflect input bytes.</div><div class="ttdef"><b>Definition:</b> CRC.h:41</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_ad09b067c00cda1cc676c13602dee2f5a"><div class="ttname"><a href="class_radio_lib_c_r_c.html#ad09b067c00cda1cc676c13602dee2f5a">RadioLibCRC::size</a></div><div class="ttdeci">uint8_t size</div><div class="ttdoc">CRC size in bits.</div><div class="ttdef"><b>Definition:</b> CRC.h:21</div></div>
+<div class="ttc" id="aclass_radio_lib_c_r_c_html_af3942e08bde9d9d127f735bd10392f6d"><div class="ttname"><a href="class_radio_lib_c_r_c.html#af3942e08bde9d9d127f735bd10392f6d">RadioLibCRC::poly</a></div><div class="ttdeci">uint32_t poly</div><div class="ttdoc">CRC polynomial.</div><div class="ttdef"><b>Definition:</b> CRC.h:26</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
