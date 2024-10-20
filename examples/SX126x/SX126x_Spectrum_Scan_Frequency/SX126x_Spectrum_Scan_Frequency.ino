@@ -1,24 +1,24 @@
 /*
-   RadioLib SX126x Spectrum Scan Example
+  RadioLib SX126x Spectrum Scan Example
 
-   This example shows how to perform a spectrum power scan using SX126x.
-   The output is in the form of scan lines, each line has 33 power bins.
-   First power bin corresponds to -11 dBm, the second to -15 dBm and so on.
-   Higher number of samples in a bin corresponds to more power received
-   at that level. The example performs frequency sweep over a given range.
+  This example shows how to perform a spectrum power scan using SX126x.
+  The output is in the form of scan lines, each line has 33 power bins.
+  First power bin corresponds to -11 dBm, the second to -15 dBm and so on.
+  Higher number of samples in a bin corresponds to more power received
+  at that level. The example performs frequency sweep over a given range.
 
-   To show the results in a plot, run the Python script
-   RadioLib/extras/SX126x_Spectrum_Scan/SpectrumScan.py
+  To show the results in a plot, run the Python script
+  RadioLib/extras/SX126x_Spectrum_Scan/SpectrumScan.py
 
-   WARNING: This functionality is experimental and requires a binary patch
-   to be uploaded to the SX126x device. There may be some undocumented
-   side effects!
+  WARNING: This functionality is experimental and requires a binary patch
+  to be uploaded to the SX126x device. There may be some undocumented
+  side effects!
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -33,6 +33,14 @@
 // NRST pin:  3
 // BUSY pin:  9
 SX1262 radio = new Module(10, 2, 3, 9);
+
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // frequency range in MHz to scan
 const float freqStart = 431;

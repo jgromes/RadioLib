@@ -1,7 +1,7 @@
 /*
-   Note definitions, melody and melody-related functions
-   adapted from https://github.com/robsoncouto/arduino-songs
-   by Robson Couto, 2019
+  Note definitions, melody and melody-related functions
+  adapted from https://github.com/robsoncouto/arduino-songs
+  by Robson Couto, 2019
 */
 
 #define NOTE_B0  31

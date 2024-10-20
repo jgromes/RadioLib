@@ -1,18 +1,18 @@
 /*
-   RadioLib Bell Modem Transmit Example
+  RadioLib Bell Modem Transmit Example
 
-   This example shows how to transmit binary data
-   using audio Bell 202 tones.
+  This example shows how to transmit binary data
+  using audio Bell 202 tones.
 
-   Other implemented Bell modems
-    - Bell 101
-    - Bell 103
+  Other implemented Bell modems
+  - Bell 101
+  - Bell 103
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

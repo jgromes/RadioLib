@@ -1,23 +1,23 @@
 /*
-   RadioLib SX127x Morse Receive AM Example
+  RadioLib SX127x Morse Receive AM Example
 
-   This example receives Morse code message using
-   SX1278's FSK modem. The signal is expected to be
-   modulated as OOK, to be demodulated in AM mode.
+  This example receives Morse code message using
+  SX1278's FSK modem. The signal is expected to be
+  modulated as OOK, to be demodulated in AM mode.
 
-   Other modules that can be used for Morse Code
-   with AFSK modulation:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
-    - Si443x/RFM2x
+  Other modules that can be used for Morse Code
+  with AFSK modulation:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
+  - Si443x/RFM2x
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -30,9 +30,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create AFSK client instance using the FSK module
 // pin 5 is connected to SX1278 DIO2

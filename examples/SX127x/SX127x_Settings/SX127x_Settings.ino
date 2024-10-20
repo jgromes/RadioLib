@@ -1,23 +1,23 @@
 /*
-   RadioLib SX127x Settings Example
+  RadioLib SX127x Settings Example
 
-   This example shows how to change all the properties of LoRa transmission.
-   RadioLib currently supports the following settings:
-    - pins (SPI slave select, digital IO 0, digital IO 1)
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-    - output power during transmission
+  This example shows how to change all the properties of LoRa transmission.
+  RadioLib currently supports the following settings:
+  - pins (SPI slave select, digital IO 0, digital IO 1)
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
+  - output power during transmission
 
-    Other modules from SX127x/RFM9x family can also be used.
+  Other modules from SX127x/RFM9x family can also be used.
 
-    For default module settings, see the wiki page
-    https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
 
-    For full API reference, see the GitHub Pages
-    https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -37,9 +37,13 @@ SX1278 radio1 = new Module(10, 2, 9, 3);
 // DIO1 pin:  6
 SX1272 radio2 = new Module(9, 4, 5, 6);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1276 radio3 = RadioShield.ModuleB;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio3 = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

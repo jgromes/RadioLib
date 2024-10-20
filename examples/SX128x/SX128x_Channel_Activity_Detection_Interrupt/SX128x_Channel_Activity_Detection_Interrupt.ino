@@ -1,16 +1,16 @@
 /*
-   RadioLib SX128x Channel Activity Detection Example
+  RadioLib SX128x Channel Activity Detection Example
 
-   This example uses SX1280 to scan the current LoRa
-   channel and detect ongoing LoRa transmissions.
+  This example uses SX1280 to scan the current LoRa
+  channel and detect ongoing LoRa transmissions.
 
-   Other modules from SX128x family can also be used.
+  Other modules from SX128x family can also be used.
 
-   For default module settings, see the wiki page
-  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+  For default module settings, see the wiki page
+https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -23,9 +23,13 @@
 // BUSY pin:  9
 SX1280 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1280 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

@@ -1,21 +1,21 @@
 /*
-   RadioLib RF69 Settings Example
+  RadioLib RF69 Settings Example
 
-   This example shows how to change all the properties of RF69 radio.
-   RadioLib currently supports the following settings:
-    - pins (SPI slave select, digital IO 0, digital IO 1)
-    - carrier frequency
-    - bit rate
-    - receiver bandwidth
-    - allowed frequency deviation
-    - output power during transmission
-    - sync word
+  This example shows how to change all the properties of RF69 radio.
+  RadioLib currently supports the following settings:
+  - pins (SPI slave select, digital IO 0, digital IO 1)
+  - carrier frequency
+  - bit rate
+  - receiver bandwidth
+  - allowed frequency deviation
+  - output power during transmission
+  - sync word
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -33,9 +33,13 @@ RF69 radio1 = new Module(10, 2, 3);
 // RESET pin: 5
 RF69 radio2 = new Module(9, 4, 5);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//RF69 radio3 = RadioShield.ModuleB;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio3 = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

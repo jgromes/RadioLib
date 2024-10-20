@@ -1,19 +1,19 @@
 /*
-   RadioLib SX127x FSK Modem Example
+  RadioLib SX127x FSK Modem Example
 
-   This example shows how to use FSK modem in SX127x chips.
+  This example shows how to use FSK modem in SX127x chips.
 
-   NOTE: The sketch below is just a guide on how to use
-         FSK modem, so this code should not be run directly!
-         Instead, modify the other examples to use FSK
-         modem and use the appropriate configuration
-         methods.
+  NOTE: The sketch below is just a guide on how to use
+        FSK modem, so this code should not be run directly!
+        Instead, modify the other examples to use FSK
+        modem and use the appropriate configuration
+        methods.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---fsk-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---fsk-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -26,9 +26,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

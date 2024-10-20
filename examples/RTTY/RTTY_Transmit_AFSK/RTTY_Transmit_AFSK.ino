@@ -1,22 +1,22 @@
 /*
-   RadioLib RTTY Transmit AFSK Example
+  RadioLib RTTY Transmit AFSK Example
 
-   This example sends RTTY message using SX1278's
-   FSK modem. The data is modulated as AFSK.
+  This example sends RTTY message using SX1278's
+  FSK modem. The data is modulated as AFSK.
 
-   Other modules that can be used for RTTY:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
-    - Si443x/RFM2x
-    - SX126x/LLCC68
+  Other modules that can be used for RTTY:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
+  - Si443x/RFM2x
+  - SX126x/LLCC68
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -29,9 +29,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create AFSK client instance using the FSK module
 // this requires connection to the module direct

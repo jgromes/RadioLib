@@ -1,19 +1,19 @@
 /*
-   RadioLib AFSK External Radio example
+  RadioLib AFSK External Radio example
 
-   This example shows how to use your Arduino
-   as modulator for an external analogue FM radio.
-   
-   The example sends APRS position reports with
-   audio modulated as AFSK at 1200 baud using
-   Bell 202 tones. However, any other AFSK
-   protocol (RTTY, SSTV, etc.) may be used as well.
+  This example shows how to use your Arduino
+  as modulator for an external analogue FM radio.
+  
+  The example sends APRS position reports with
+  audio modulated as AFSK at 1200 baud using
+  Bell 202 tones. However, any other AFSK
+  protocol (RTTY, SSTV, etc.) may be used as well.
 
-   DO NOT transmit in APRS bands unless
-   you have a ham radio license!
+  DO NOT transmit in APRS bands unless
+  you have a ham radio license!
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

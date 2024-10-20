@@ -1,12 +1,12 @@
 /*
-   RadioLib PhysicalLayer Interface Example
+  RadioLib PhysicalLayer Interface Example
 
-   This example shows how to use the common PhysicalLayer
-   to interface with different radio modules using the same
-   methods.
+  This example shows how to use the common PhysicalLayer
+  to interface with different radio modules using the same
+  methods.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -22,6 +22,14 @@
 // reset pin:                 9 (unused on some modules)
 // extra GPIO/interrupt pin:  3 (unused on some modules)
 RADIO_TYPE radio = new Module(10, 2, 9, 3);
+
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // get pointer to the common layer
 PhysicalLayer* phy = (PhysicalLayer*)&radio;

@@ -1,28 +1,28 @@
 /*
-   RadioLib SX126x Blocking Receive Example
+  RadioLib SX126x Blocking Receive Example
 
-   This example listens for LoRa transmissions using SX126x Lora modules.
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-    - preamble length
+  This example listens for LoRa transmissions using SX126x Lora modules.
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
+  - preamble length
 
-   Other modules from SX126x family can also be used.
+  Other modules from SX126x family can also be used.
 
-  Using blocking receive is not recommended, as it will lead
-  to significant amount of timeouts, inefficient use of processor
-  time and can some miss packets!
-  Instead, interrupt receive is recommended.
+Using blocking receive is not recommended, as it will lead
+to significant amount of timeouts, inefficient use of processor
+time and can some miss packets!
+Instead, interrupt receive is recommended.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -35,12 +35,13 @@
 // BUSY pin:  9
 SX1262 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1262 radio = RadioShield.ModuleA;
-
-// or using CubeCell
-//SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

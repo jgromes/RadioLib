@@ -1,11 +1,14 @@
 /*
-   RadioLib SX126x Ping-Pong Example
+  RadioLib SX126x Ping-Pong Example
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  This example is intended to run on two SX126x radios,
+  and send packets between the two.
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -22,12 +25,13 @@
 // BUSY pin:  9
 SX1262 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1262 radio = RadioShield.ModuleA;
-
-// or using CubeCell
-//SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // save transmission states between loops
 int transmissionState = RADIOLIB_ERR_NONE;

@@ -1,27 +1,27 @@
 /*
-   RadioLib SX126x Settings Example
+  RadioLib SX126x Settings Example
 
-   This example shows how to change all the properties of LoRa transmission.
-   RadioLib currently supports the following settings:
-    - pins (SPI slave select, DIO1, DIO2, BUSY pin)
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-    - output power during transmission
-    - CRC
-    - preamble length
-    - TCXO voltage
-    - DIO2 RF switch control
+  This example shows how to change all the properties of LoRa transmission.
+  RadioLib currently supports the following settings:
+  - pins (SPI slave select, DIO1, DIO2, BUSY pin)
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
+  - output power during transmission
+  - CRC
+  - preamble length
+  - TCXO voltage
+  - DIO2 RF switch control
 
-   Other modules from SX126x family can also be used.
+  Other modules from SX126x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -41,12 +41,13 @@ SX1262 radio1 = new Module(10, 2, 3, 9);
 // BUSY pin:  6
 SX1268 radio2 = new Module(8, 4, 5, 6);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1261 radio3 = RadioShield.ModuleB;
-
-// or using CubeCell
-//SX1262 radio = new Module(RADIOLIB_BUILTIN_MODULE);
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio3 = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

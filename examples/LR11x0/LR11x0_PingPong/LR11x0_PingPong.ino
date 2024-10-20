@@ -22,6 +22,14 @@
 // BUSY pin:  9
 LR1110 radio = new Module(10, 2, 3, 9);
 
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
+
 // set RF switch configuration for Wio WM1110
 // Wio WM1110 uses DIO5 and DIO6 for RF switching
 // NOTE: other boards may be different!

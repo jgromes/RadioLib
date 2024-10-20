@@ -1,24 +1,24 @@
 /*
-   RadioLib SX128x Receive with Interrupts Example
+  RadioLib SX128x Receive with Interrupts Example
 
-   This example listens for LoRa transmissions and tries to
-   receive them. Once a packet is received, an interrupt is
-   triggered. To successfully receive data, the following
-   settings have to be the same on both transmitter
-   and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
+  This example listens for LoRa transmissions and tries to
+  receive them. Once a packet is received, an interrupt is
+  triggered. To successfully receive data, the following
+  settings have to be the same on both transmitter
+  and receiver:
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
 
-   Other modules from SX128x family can also be used.
+  Other modules from SX128x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -31,9 +31,13 @@
 // BUSY pin:  9
 SX1280 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1280 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

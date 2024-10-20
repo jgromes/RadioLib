@@ -1,35 +1,35 @@
 /*
-   RadioLib SSTV Transmit Example
+  RadioLib SSTV Transmit Example
 
-   The following example sends SSTV picture using
-   SX1278's FSK modem.
+  The following example sends SSTV picture using
+  SX1278's FSK modem.
 
-   Other modules that can be used for SSTV:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - SX126x
+  Other modules that can be used for SSTV:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - SX126x
 
-   NOTE: SSTV is an analog modulation, and
-         requires precise frequency control.
-         Some of the above modules can only
-         set their frequency in rough steps,
-         so the result can be distorted.
-         Using high-precision radio with TCXO
-         (like SX126x) is recommended.
+  NOTE: SSTV is an analog modulation, and
+        requires precise frequency control.
+        Some of the above modules can only
+        set their frequency in rough steps,
+        so the result can be distorted.
+        Using high-precision radio with TCXO
+        (like SX126x) is recommended.
 
-   NOTE: Some platforms (such as Arduino Uno)
-         might not be fast enough to correctly
-         send pictures via high-speed modes
-         like Scottie2 or Martin2. For those,
-         lower speed modes such as Wrasse,
-         Scottie1 or Martin1 are recommended.
+  NOTE: Some platforms (such as Arduino Uno)
+        might not be fast enough to correctly
+        send pictures via high-speed modes
+        like Scottie2 or Martin2. For those,
+        lower speed modes such as Wrasse,
+        Scottie1 or Martin1 are recommended.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -42,9 +42,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create SSTV client instance using the FSK module
 SSTVClient sstv(&radio);

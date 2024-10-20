@@ -27,9 +27,13 @@
 // BUSY pin:  9
 SX1280 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1280 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // save transmission state between loops
 int transmissionState = RADIOLIB_ERR_NONE;

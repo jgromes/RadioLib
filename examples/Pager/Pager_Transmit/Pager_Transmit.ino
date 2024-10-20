@@ -1,24 +1,24 @@
 /*
-   RadioLib Pager (POCSAG) Transmit Example
+  RadioLib Pager (POCSAG) Transmit Example
 
-   This example sends POCSAG messages using SX1278's
-   FSK modem.
+  This example sends POCSAG messages using SX1278's
+  FSK modem.
 
-   Other modules that can be used to send POCSAG:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
-    - SX126x
-    - nRF24
-    - Si443x/RFM2x
-    - SX128x
+  Other modules that can be used to send POCSAG:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
+  - SX126x
+  - nRF24
+  - Si443x/RFM2x
+  - SX128x
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -31,9 +31,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create Pager client instance using the FSK module
 PagerClient pager(&radio);

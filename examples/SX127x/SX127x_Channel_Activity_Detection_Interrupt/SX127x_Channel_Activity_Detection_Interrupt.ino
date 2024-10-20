@@ -1,19 +1,19 @@
 /*
-   RadioLib SX127x Channel Activity Detection with Interrupts Example
+  RadioLib SX127x Channel Activity Detection with Interrupts Example
 
-   This example scans the current LoRa channel and detects
-   valid LoRa preambles. Preamble is the first part of
-   LoRa transmission, so this can be used to check
-   if the LoRa channel is free, or if you should start
-   receiving a message.
+  This example scans the current LoRa channel and detects
+  valid LoRa preambles. Preamble is the first part of
+  LoRa transmission, so this can be used to check
+  if the LoRa channel is free, or if you should start
+  receiving a message.
 
-   Other modules from SX127x/RFM9x family can also be used.
+  Other modules from SX127x/RFM9x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx127xrfm9x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -26,9 +26,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   // Serial port speed must be high enough for this example

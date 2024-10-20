@@ -1,27 +1,27 @@
 /*
-   RadioLib FSK4 Transmit Example
+  RadioLib FSK4 Transmit Example
 
-   This example sends an example FSK-4 'Horus Binary' message
-   using SX1278's FSK modem.
+  This example sends an example FSK-4 'Horus Binary' message
+  using SX1278's FSK modem.
 
-   This signal can be demodulated using a SSB demodulator (SDR or otherwise),
-   and horusdemodlib: https://github.com/projecthorus/horusdemodlib/wiki
+  This signal can be demodulated using a SSB demodulator (SDR or otherwise),
+  and horusdemodlib: https://github.com/projecthorus/horusdemodlib/wiki
 
-   Other modules that can be used for FSK4:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
-    - SX126x
-    - nRF24
-    - Si443x/RFM2x
-    - SX128x
+  Other modules that can be used for FSK4:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
+  - SX126x
+  - nRF24
+  - Si443x/RFM2x
+  - SX128x
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -34,9 +34,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create FSK4 client instance using the FSK module
 FSK4Client fsk4(&radio);

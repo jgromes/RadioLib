@@ -1,21 +1,21 @@
 /*
-   RadioLib SX128x Ranging Example
+  RadioLib SX128x Ranging Example
 
-   This example performs ranging exchange between two
-   SX1280 LoRa radio modules. Ranging allows to measure
-   distance between the modules using time-of-flight
-   measurement.
+  This example performs ranging exchange between two
+  SX1280 LoRa radio modules. Ranging allows to measure
+  distance between the modules using time-of-flight
+  measurement.
 
-   Only SX1280 and SX1282 without external RF switch support ranging!
+  Only SX1280 and SX1282 without external RF switch support ranging!
 
-   Note that to get accurate ranging results, calibration is needed!
-   The process is described in Semtech SX1280 Application Note AN1200.29
+  Note that to get accurate ranging results, calibration is needed!
+  The process is described in Semtech SX1280 Application Note AN1200.29
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx128x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -28,9 +28,13 @@
 // BUSY pin:  9
 SX1280 radio = new Module(10, 2, 3, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1280 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

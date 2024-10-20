@@ -1,17 +1,17 @@
 /*
-   RadioLib RF69 Transmit to Address Example
+  RadioLib RF69 Transmit to Address Example
 
-   This example transmits packets using RF69 FSK radio module.
-   Packets can have 1-byte address of the destination node.
-   After setting node (or broadcast) address, this node will
-   automatically filter out any packets that do not contain
-   either node address or broadcast address.
+  This example transmits packets using RF69 FSK radio module.
+  Packets can have 1-byte address of the destination node.
+  After setting node (or broadcast) address, this node will
+  automatically filter out any packets that do not contain
+  either node address or broadcast address.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -23,9 +23,13 @@
 // RESET pin: 3
 RF69 radio = new Module(10, 2, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//RF69 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

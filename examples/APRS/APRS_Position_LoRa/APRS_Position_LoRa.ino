@@ -1,20 +1,20 @@
 /*
-   RadioLib APRS Position over LoRa Example
+  RadioLib APRS Position over LoRa Example
 
-   This example sends APRS position reports 
-   using SX1278's LoRa modem.
+  This example sends APRS position reports 
+  using SX1278's LoRa modem.
 
-   Other modules that can be used for APRS:
-    - SX127x/RFM9x
-    - SX126x/LLCC68
-    - SX128x
-    - LR11x0
+  Other modules that can be used for APRS:
+  - SX127x/RFM9x
+  - SX126x/LLCC68
+  - SX128x
+  - LR11x0
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -27,9 +27,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create APRS client instance using the LoRa radio
 APRSClient aprs(&radio);

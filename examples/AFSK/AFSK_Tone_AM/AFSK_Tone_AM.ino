@@ -1,20 +1,20 @@
 /*
-   RadioLib AM-modulated AFSK Example
+  RadioLib AM-modulated AFSK Example
 
-   This example shows hot to send AM-modulated
-   audio FSK tones using SX1278's OOK modem.
+  This example shows hot to send AM-modulated
+  audio FSK tones using SX1278's OOK modem.
 
-   Other modules that can be used for AFSK:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
+  Other modules that can be used for AFSK:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

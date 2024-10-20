@@ -1,26 +1,26 @@
 /*
-   RadioLib STM32WLx Receive with Interrupts Example
+  RadioLib STM32WLx Receive with Interrupts Example
 
-   This example listens for LoRa transmissions and tries to
-   receive them. Once a packet is received, an interrupt is
-   triggered. To successfully receive data, the following
-   settings have to be the same on both transmitter
-   and receiver:
-    - carrier frequency
-    - bandwidth
-    - spreading factor
-    - coding rate
-    - sync word
-   
-   This example assumes Nucleo WL55JC1 is used. For other Nucleo boards
-   or standalone STM32WL, some configuration such as TCXO voltage and
-   RF switch control may have to be adjusted.
+  This example listens for LoRa transmissions and tries to
+  receive them. Once a packet is received, an interrupt is
+  triggered. To successfully receive data, the following
+  settings have to be the same on both transmitter
+  and receiver:
+  - carrier frequency
+  - bandwidth
+  - spreading factor
+  - coding rate
+  - sync word
+  
+  This example assumes Nucleo WL55JC1 is used. For other Nucleo boards
+  or standalone STM32WL, some configuration such as TCXO voltage and
+  RF switch control may have to be adjusted.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#sx126x---lora-modem
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library

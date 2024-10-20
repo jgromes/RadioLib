@@ -1,21 +1,21 @@
 /*
-   RadioLib Si443x Settings Example
+  RadioLib Si443x Settings Example
 
-   This example shows how to change all the properties of RF69 radio.
-   RadioLib currently supports the following settings:
-    - pins (SPI slave select, nIRQ, shutdown)
-    - carrier frequency
-    - bit rate
-    - receiver bandwidth
-    - frequency deviation
-    - output power during transmission
-    - sync word
+  This example shows how to change all the properties of RF69 radio.
+  RadioLib currently supports the following settings:
+  - pins (SPI slave select, nIRQ, shutdown)
+  - carrier frequency
+  - bit rate
+  - receiver bandwidth
+  - frequency deviation
+  - output power during transmission
+  - sync word
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -33,9 +33,13 @@ Si4432 radio1 = new Module(10, 2, 9);
 // SDN pin:   7
 Si4432 radio2 = new Module(8, 3, 7);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//Si4432 radio3 = RadioShield.ModuleB;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio3 = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

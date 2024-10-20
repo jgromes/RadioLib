@@ -1,15 +1,15 @@
 /*
-   RadioLib RF69 Receive with AES Example
+  RadioLib RF69 Receive with AES Example
 
-   This example receives packets using RF69 FSK radio module.
-   Packets are decrypted using hardware AES.
-   NOTE: When using address filtering, the address byte is NOT encrypted!
+  This example receives packets using RF69 FSK radio module.
+  Packets are decrypted using hardware AES.
+  NOTE: When using address filtering, the address byte is NOT encrypted!
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#rf69sx1231
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -21,9 +21,13 @@
 // RESET pin: 3
 RF69 radio = new Module(10, 2, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//RF69 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

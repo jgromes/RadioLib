@@ -1,17 +1,17 @@
 /*
-   RadioLib Si443x Receive with Interrupts Example
+  RadioLib Si443x Receive with Interrupts Example
 
-   This example listens for FSK transmissions and tries to
-   receive them. Once a packet is received, an interrupt is
-   triggered.
+  This example listens for FSK transmissions and tries to
+  receive them. Once a packet is received, an interrupt is
+  triggered.
 
-   Other modules from Si443x/RFM2x family can also be used.
+  Other modules from Si443x/RFM2x family can also be used.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#si443xrfm2x
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -23,9 +23,13 @@
 // SDN pin:   9
 Si4432 radio = new Module(10, 2, 9);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//Si4432 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);

@@ -29,6 +29,14 @@
 // BUSY pin:  9
 LR1110 radio = new Module(10, 2, 3, 9);
 
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
+
 // structure to save information about the GNSS scan result
 LR11x0GnssResult_t gnssResult;
 

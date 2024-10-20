@@ -1,31 +1,31 @@
 /*
-   RadioLib SSTV Transmit AFSK Example
+  RadioLib SSTV Transmit AFSK Example
 
-   The following example sends SSTV picture using
-   SX1278's FSK modem. The data is modulated
-   as AFSK.
+  The following example sends SSTV picture using
+  SX1278's FSK modem. The data is modulated
+  as AFSK.
 
-   Other modules that can be used for SSTV:
-   with AFSK modulation:
-    - SX127x/RFM9x
-    - RF69
-    - SX1231
-    - CC1101
-    - Si443x/RFM2x
-    - SX126x/LLCC68
+  Other modules that can be used for SSTV:
+  with AFSK modulation:
+  - SX127x/RFM9x
+  - RF69
+  - SX1231
+  - CC1101
+  - Si443x/RFM2x
+  - SX126x/LLCC68
 
-   NOTE: Some platforms (such as Arduino Uno)
-         might not be fast enough to correctly
-         send pictures via high-speed modes
-         like Scottie2 or Martin2. For those,
-         lower speed modes such as Wrasse,
-         Scottie1 or Martin1 are recommended.
+  NOTE: Some platforms (such as Arduino Uno)
+        might not be fast enough to correctly
+        send pictures via high-speed modes
+        like Scottie2 or Martin2. For those,
+        lower speed modes such as Wrasse,
+        Scottie1 or Martin1 are recommended.
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -38,9 +38,13 @@
 // DIO1 pin:  3
 SX1278 radio = new Module(10, 2, 9, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//SX1278 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 // create AFSK client instance using the FSK module
 // this requires connection to the module direct

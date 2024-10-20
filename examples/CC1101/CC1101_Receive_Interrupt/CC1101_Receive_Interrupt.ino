@@ -1,22 +1,22 @@
 /*
-   RadioLib CC1101 Receive with Interrupts Example
+  RadioLib CC1101 Receive with Interrupts Example
 
-   This example listens for FSK transmissions and tries to
-   receive them. Once a packet is received, an interrupt is
-   triggered.
+  This example listens for FSK transmissions and tries to
+  receive them. Once a packet is received, an interrupt is
+  triggered.
 
-   To successfully receive data, the following settings have to be the same
-   on both transmitter and receiver:
-    - carrier frequency
-    - bit rate
-    - frequency deviation
-    - sync word
+  To successfully receive data, the following settings have to be the same
+  on both transmitter and receiver:
+  - carrier frequency
+  - bit rate
+  - frequency deviation
+  - sync word
 
-   For default module settings, see the wiki page
-   https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
+  For default module settings, see the wiki page
+  https://github.com/jgromes/RadioLib/wiki/Default-configuration#cc1101
 
-   For full API reference, see the GitHub Pages
-   https://jgromes.github.io/RadioLib/
+  For full API reference, see the GitHub Pages
+  https://jgromes.github.io/RadioLib/
 */
 
 // include the library
@@ -29,9 +29,13 @@
 // GDO2 pin:  3 (optional)
 CC1101 radio = new Module(10, 2, RADIOLIB_NC, 3);
 
-// or using RadioShield
-// https://github.com/jgromes/RadioShield
-//CC1101 radio = RadioShield.ModuleA;
+// or detect the pinout automatically using RadioBoards
+// https://github.com/radiolib-org/RadioBoards
+/*
+#define RADIO_BOARD_AUTO
+#include <RadioBoards.h>
+Radio radio = new RadioModule();
+*/
 
 void setup() {
   Serial.begin(9600);
