@@ -30,6 +30,7 @@ on:
           - SparkFun:apollo3:sfe_artemis
           - STMicroelectronics:stm32:GenF3:pnum=BLACKPILL_F303CC
           - STMicroelectronics:stm32:Nucleo_64:pnum=NUCLEO_WL55JC1
+          - stm32duino:STM32F1:mapleMini
           - MegaCoreX:megaavr:4809
           - arduino:mbed_rp2040:pico
           - rp2040:rp2040:rpipico
