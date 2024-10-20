@@ -561,10 +561,10 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00473"></a><span class="lineno">  473</span>&#160; </div>
 <div class="line"><a name="l00474"></a><span class="lineno">  474</span>&#160;<span class="preprocessor">#if RADIOLIB_DEBUG</span></div>
 <div class="line"><a name="l00475"></a><span class="lineno">  475</span>&#160;<span class="preprocessor">  #if defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)</span></div>
-<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M &quot;\n&quot;</span>, ##__VA_ARGS__)</div>
-<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL &quot;&quot;</span> M, ##__VA_ARGS__)</div>
-<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL &quot;&quot;</span> M &quot;\n&quot;, ##__VA_ARGS__)</div>
+<div class="line"><a name="l00476"></a><span class="lineno">  476</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT(...) rlb_printf(__VA_ARGS__)</span></div>
+<div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN(M, ...) rlb_printf(M &quot;\n&quot;</span>, ##__VA_ARGS__)</div>
+<div class="line"><a name="l00478"></a><span class="lineno">  478</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) rlb_printf(LEVEL &quot;&quot;</span> M, ##__VA_ARGS__)</div>
+<div class="line"><a name="l00479"></a><span class="lineno">  479</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) rlb_printf(LEVEL &quot;&quot;</span> M &quot;\n&quot;, ##__VA_ARGS__)</div>
 <div class="line"><a name="l00480"></a><span class="lineno">  480</span>&#160; </div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;    <span class="comment">// some platforms do not support printf(&quot;%f&quot;), so it has to be done this way</span></div>
 <div class="line"><a name="l00482"></a><span class="lineno">  482</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL); RADIOLIB_DEBUG_PORT.print(VAL, DECIMALS)</span></div>
@@ -580,7 +580,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00492"></a><span class="lineno">  492</span>&#160;<span class="preprocessor">    #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL &quot;%.3f&quot;</span>, VAL)</div>
 <div class="line"><a name="l00493"></a><span class="lineno">  493</span>&#160;<span class="preprocessor">  #endif</span></div>
 <div class="line"><a name="l00494"></a><span class="lineno">  494</span>&#160; </div>
-<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) Module::hexdump(LEVEL, __VA_ARGS__)</span></div>
+<div class="line"><a name="l00495"></a><span class="lineno">  495</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) rlb_hexdump(LEVEL, __VA_ARGS__)</span></div>
 <div class="line"><a name="l00496"></a><span class="lineno">  496</span>&#160;<span class="preprocessor">#else</span></div>
 <div class="line"><a name="l00497"></a><span class="lineno">  497</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINT(...) {}</span></div>
 <div class="line"><a name="l00498"></a><span class="lineno">  498</span>&#160;<span class="preprocessor">  #define RADIOLIB_DEBUG_PRINTLN(...) {}</span></div>
