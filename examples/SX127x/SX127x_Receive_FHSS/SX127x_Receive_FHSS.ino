@@ -86,6 +86,7 @@ void setup() {
 
   // set hop period in symbols
   // this will also enable FHSS
+  Serial.print(F("[SX1278] Setting hopping period ... "));
   state = radio.setFHSSHoppingPeriod(9);
   if (state == RADIOLIB_ERR_NONE) {
     Serial.println(F("success!"));
@@ -152,6 +153,9 @@ void loop() {
 
     // reset the counter
     hopsCompleted = 0;
+
+    // return to home channel before the next transaction
+    radio.setFrequency(channels[0]);
 
     // put the module back to listen mode
     radio.startReceive();
