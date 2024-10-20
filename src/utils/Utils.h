@@ -1,8 +1,6 @@
 #if !defined(_RADIOLIB_UTILS_H)
 #define _RADIOLIB_UTILS_H
 
-#include "TypeDef.h"
-
 #include <stdint.h>
 #include <stdlib.h>
 
