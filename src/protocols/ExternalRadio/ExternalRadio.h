@@ -3,9 +3,6 @@
 
 #include "../../TypeDef.h"
 #include "../../Module.h"
-#if defined(RADIOLIB_BUILD_ARDUINO)
-#include "../../ArduinoHal.h"
-#endif
 
 #include "../PhysicalLayer/PhysicalLayer.h"
 

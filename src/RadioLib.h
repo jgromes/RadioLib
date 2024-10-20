@@ -40,7 +40,7 @@
 
 #include "Hal.h"
 #if defined(RADIOLIB_BUILD_ARDUINO)
-#include "ArduinoHal.h"
+#include "hal/Arduino/ArduinoHal.h"
 #endif
 
 

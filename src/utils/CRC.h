@@ -3,9 +3,6 @@
 
 #include "../TypeDef.h"
 #include "../Module.h"
-#if defined(RADIOLIB_BUILD_ARDUINO)
-#include "../ArduinoHal.h"
-#endif
 
 // CCITT CRC properties (used by AX.25)
 #define RADIOLIB_CRC_CCITT_POLY                                 (0x1021)

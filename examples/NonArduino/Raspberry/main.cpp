@@ -18,7 +18,7 @@
 #include <RadioLib.h>
 
 // include the hardware abstraction layer
-#include "PiHal.h"
+#include "hal/RPi/PiHal.h"
 
 // create a new instance of the HAL class
 // use SPI channel 1, because on Waveshare LoRaWAN Hat,
