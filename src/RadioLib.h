@@ -114,46 +114,4 @@
 #include "utils/CRC.h"
 #include "utils/Cryptography.h"
 
-// only create Radio class when using RadioShield
-#if RADIOLIB_RADIOSHIELD
-
-// RadioShield pin definitions
-#define RADIOSHIELD_CS_A    10
-#define RADIOSHIELD_IRQ_A   2
-#define RADIOSHIELD_RST_A   9
-#define RADIOSHIELD_GPIO_A  8
-#define RADIOSHIELD_CS_B    5
-#define RADIOSHIELD_IRQ_B   3
-#define RADIOSHIELD_RST_B   7
-#define RADIOSHIELD_GPIO_B  6
-
-/*!
-  \class Radio
-
-  \brief Library control object when using RadioShield.
-  Contains two pre-configured "modules", which correspond to the slots on shield.
-*/
-class Radio {
-  public:
-
-    Module* ModuleA;
-    Module* ModuleB;
-
-    /*!
-      \brief Default constructor. Only used to set ModuleA and ModuleB configuration.
-    */
-    Radio() {
-      ModuleA = new Module(RADIOSHIELD_CS_A, RADIOSHIELD_IRQ_A, RADIOSHIELD_RST_A, RADIOSHIELD_GPIO_A);
-      ModuleB = new Module(RADIOSHIELD_CS_B, RADIOSHIELD_IRQ_B, RADIOSHIELD_RST_B, RADIOSHIELD_GPIO_B);
-    }
-
-#if RADIOLIB_GODMODE
-  private:
-#endif
-
-};
-
-Radio RadioShield;
-#endif
-
 #endif

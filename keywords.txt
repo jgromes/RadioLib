@@ -7,7 +7,6 @@
 #######################################
 
 RadioLib	KEYWORD1
-RadioShield	KEYWORD1
 Module	KEYWORD1
 RadioLibHal	KEYWORD1
 ArduinoHal	KEYWORD1

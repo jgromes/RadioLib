@@ -82,13 +82,6 @@
 #endif
 
 /*
- * Enable pre-defined modules when using RadioShield, disabled by default.
- */
-#if !defined(RADIOLIB_RADIOSHIELD)
-  #define RADIOLIB_RADIOSHIELD  (0)
-#endif
-
-/*
  * Enable interrupt-based timing control
  * For details, see https://github.com/jgromes/RadioLib/wiki/Interrupt-Based-Timing
  */
@@ -142,7 +135,6 @@
  * RADIOLIB_NONVOLATILE_READ_BYTE - function/macro to read variables saved in program storage (usually Flash).
  * RADIOLIB_TYPE_ALIAS - construct to create an alias for a type, usually vai the `using` keyword.
  * RADIOLIB_TONE_UNSUPPORTED - some platforms do not have tone()/noTone(), which is required for AFSK.
- * RADIOLIB_BUILTIN_MODULE - some platforms have a builtin radio module on fixed pins, this macro is used to specify that pinout.
  *
  * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  *
@@ -319,10 +311,6 @@
   #define RADIOLIB_DEFAULT_SPI_SETTINGS               SPISettings(1000000, MSBFIRST, SPI_MODE0) // see issue #709
   #define RADIOLIB_ARDUINOHAL_PIN_MODE_CAST           (PINMODE)
   #define RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST     (IrqModes)
-
-  // provide an easy access to the on-board module
-  #include "board-config.h"
-  #define RADIOLIB_BUILTIN_MODULE                      RADIO_NSS, RADIO_DIO_1, RADIO_RESET, RADIO_BUSY
 
   // CubeCell doesn't seem to define nullptr, let's do something like that now
   #define nullptr                                     NULL
