@@ -1,5 +1,7 @@
 #include "AX25.h"
+
 #include <string.h>
+
 #if !RADIOLIB_EXCLUDE_AX25
 
 AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control)
@@ -369,7 +371,7 @@ int16_t AX25Client::sendFrame(AX25Frame* frame) {
 
   // flip bit order
   for(size_t i = 0; i < frameBuffLen; i++) {
-    frameBuff[i] = Module::reflect(frameBuff[i], 8);
+    frameBuff[i] = rlb_reflect(frameBuff[i], 8);
   }
 
   // calculate

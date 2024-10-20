@@ -1,6 +1,8 @@
 #include "Pager.h"
+
 #include <string.h>
 #include <math.h>
+
 #if defined(ESP_PLATFORM)
 #include "esp_attr.h"
 #endif
@@ -177,7 +179,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
       // first insert the remainder from previous code word (if any)
       if(remBits > 0) {
         // this doesn't apply to BCD messages, so no need to check that here
-        uint8_t prev = Module::reflect(data[dataPos - 1], 8);
+        uint8_t prev = rlb_reflect(data[dataPos - 1], 8);
         prev >>= 1;
         msg[blockPos] |= (uint32_t)prev << (RADIOLIB_PAGER_CODE_WORD_LEN - 1 - remBits);
       }
@@ -191,7 +193,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
         if(encoding == RADIOLIB_PAGER_BCD) {
           symbol = encodeBCD(symbol);
         }
-        symbol = Module::reflect(symbol, 8);
+        symbol = rlb_reflect(symbol, 8);
         symbol >>= (8 - symbolLength);
 
         // insert the next message symbol
@@ -205,7 +207,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
             uint8_t numSteps = (symbolPos - RADIOLIB_PAGER_FUNC_BITS_POS + symbolLength)/symbolLength;
             for(uint8_t j = 0; j < numSteps; j++) {
               symbol = encodeBCD(' ');
-              symbol = Module::reflect(symbol, 8);
+              symbol = rlb_reflect(symbol, 8);
               symbol >>= (8 - symbolLength);
               msg[blockPos] |= (uint32_t)symbol << symbolPos;
               symbolPos -= symbolLength;
@@ -428,7 +430,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
       uint32_t symbol = prevSymbol << (symbolLength - ovfBits) | currSymbol;
 
       // finally, we can flip the bits
-      symbol = Module::reflect((uint8_t)symbol, 8);
+      symbol = rlb_reflect((uint8_t)symbol, 8);
       symbol >>= (8 - symbolLength);
 
       // decode BCD and we're done
@@ -446,7 +448,7 @@ int16_t PagerClient::readData(uint8_t* data, size_t* len, uint32_t* addr) {
     while(bitPos >= RADIOLIB_PAGER_MESSAGE_END_POS) {
       // get the message symbol from the code word and reverse bits
       uint32_t symbol = (cw & (0x7FUL << bitPos)) >> bitPos;
-      symbol = Module::reflect((uint8_t)symbol, 8);
+      symbol = rlb_reflect((uint8_t)symbol, 8);
       symbol >>= (8 - symbolLength);
 
       // decode BCD if needed

@@ -11,7 +11,7 @@ uint32_t RadioLibCRC::checksum(const uint8_t* buff, size_t len) {
     if(i % 8 == 0) {
       uint32_t in = buff[pos++];
       if(this->refIn) {
-        in = Module::reflect(in, 8);
+        in = rlb_reflect(in, 8);
       }
       crc ^= (in << (this->size - 8));
     }
@@ -26,7 +26,7 @@ uint32_t RadioLibCRC::checksum(const uint8_t* buff, size_t len) {
 
   crc ^= this->out;
   if(this->refOut) {
-    crc = Module::reflect(crc, this->size);
+    crc = rlb_reflect(crc, this->size);
   }
   crc &= (uint32_t)0xFFFFFFFF >> (32 - this->size);
   return(crc);

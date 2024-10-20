@@ -1779,7 +1779,7 @@ int16_t LR11x0::isGnssScanCapable() {
     size_t len = sz > 32 ? 32 : sz/sizeof(uint32_t);
     state = this->readRegMem32(addr, buff, len);
     RADIOLIB_ASSERT(state);
-    Module::hexdump(NULL, (uint8_t*)buff, len*sizeof(uint32_t), addr);
+    RADIOLIB_DEBUG_HEXDUMP(NULL, (uint8_t*)buff, len*sizeof(uint32_t), addr);
     addr += len*sizeof(uint32_t);
     sz -= len*sizeof(uint32_t);
   }
@@ -1789,7 +1789,7 @@ int16_t LR11x0::isGnssScanCapable() {
     RADIOLIB_DEBUG_BASIC_PRINTLN("Almanac[%d]:", i);
     state = this->gnssAlmanacReadSV(i, almanac);
     RADIOLIB_ASSERT(state);
-    Module::hexdump(NULL, almanac, 22);
+    RADIOLIB_DEBUG_HEXDUMP(NULL, almanac, 22);
   }
 
   #endif

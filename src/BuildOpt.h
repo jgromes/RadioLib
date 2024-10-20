@@ -473,10 +473,10 @@
 
 #if RADIOLIB_DEBUG
   #if defined(RADIOLIB_BUILD_ARDUINO)
-    #define RADIOLIB_DEBUG_PRINT(...) Module::serialPrintf(__VA_ARGS__)
-    #define RADIOLIB_DEBUG_PRINTLN(M, ...) Module::serialPrintf(M "\n", ##__VA_ARGS__)
-    #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL "" M, ##__VA_ARGS__)
-    #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) Module::serialPrintf(LEVEL "" M "\n", ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINT(...) rlb_printf(__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINTLN(M, ...) rlb_printf(M "\n", ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINT_LVL(LEVEL, M, ...) rlb_printf(LEVEL "" M, ##__VA_ARGS__)
+    #define RADIOLIB_DEBUG_PRINTLN_LVL(LEVEL, M, ...) rlb_printf(LEVEL "" M "\n", ##__VA_ARGS__)
 
     // some platforms do not support printf("%f"), so it has to be done this way
     #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL); RADIOLIB_DEBUG_PORT.print(VAL, DECIMALS)
@@ -492,7 +492,7 @@
     #define RADIOLIB_DEBUG_PRINT_FLOAT(LEVEL, VAL, DECIMALS) RADIOLIB_DEBUG_PRINT(LEVEL "%.3f", VAL)
   #endif
 
-  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) Module::hexdump(LEVEL, __VA_ARGS__)
+  #define RADIOLIB_DEBUG_HEXDUMP(LEVEL, ...) rlb_hexdump(LEVEL, __VA_ARGS__)
 #else
   #define RADIOLIB_DEBUG_PRINT(...) {}
   #define RADIOLIB_DEBUG_PRINTLN(...) {}

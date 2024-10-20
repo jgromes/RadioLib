@@ -71,16 +71,6 @@ class RadioLibBCH {
 // the global singleton
 extern RadioLibBCH RadioLibBCHInstance;
 
-// macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
-#define SET_BIT_IN_ARRAY_MSB(A, k)                              ( A[((k)/8)] |= (1 << ((k)%8)) )
-#define CLEAR_BIT_IN_ARRAY_MSB(A, k)                            ( A[((k)/8)] &= ~(1 << ((k)%8)) )
-#define TEST_BIT_IN_ARRAY_MSB(A, k)                             ( A[((k)/8)] & (1 << ((k)%8)) )
-#define GET_BIT_IN_ARRAY_MSB(A, k)                              ( (A[((k)/8)] & (1 << ((k)%8))) ? 1 : 0 )
-#define SET_BIT_IN_ARRAY_LSB(A, k)                              ( A[((k)/8)] |= (1 << (7 - ((k)%8))) )
-#define CLEAR_BIT_IN_ARRAY_LSB(A, k)                            ( A[((k)/8)] &= ~(1 << (7 - ((k)%8))) )
-#define TEST_BIT_IN_ARRAY_LSB(A, k)                             ( A[((k)/8)] & (1 << (7 - ((k)%8))) )
-#define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] & (1 << (7 - ((k)%8)))) ? 1 : 0 )
-
 /*!
   \class RadioLibConvCode
   \brief Class to perform convolutional coding with variable rates.
