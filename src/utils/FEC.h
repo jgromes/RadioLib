@@ -3,9 +3,6 @@
 
 #include "../TypeDef.h"
 #include "../Module.h"
-#if defined(RADIOLIB_BUILD_ARDUINO)
-#include "../ArduinoHal.h"
-#endif
 
 // BCH(31, 21) code constants
 #define RADIOLIB_PAGER_BCH_N                                    (31)

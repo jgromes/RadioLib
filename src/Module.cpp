@@ -5,7 +5,7 @@
 #include <string.h>
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
-#include "ArduinoHal.h"
+#include "hal/Arduino/ArduinoHal.h"
 
 Module::Module(uint32_t cs, uint32_t irq, uint32_t rst, uint32_t gpio) : csPin(cs), irqPin(irq), rstPin(rst), gpioPin(gpio) {
   this->hal = new ArduinoHal();

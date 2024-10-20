@@ -3,9 +3,6 @@
 
 #include "../../TypeDef.h"
 #include "../../Module.h"
-#if defined(RADIOLIB_BUILD_ARDUINO)
-#include "../../ArduinoHal.h"
-#endif
 
 #if !RADIOLIB_EXCLUDE_BELL
 

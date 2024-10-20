@@ -28,7 +28,7 @@
 #include <RadioLib.h>
 
 // include the hardware abstraction layer
-#include "libtockHal.h"
+#include "hal/Tock/libtockHal.h"
 
 // the entry point for the program
 int main(void) {

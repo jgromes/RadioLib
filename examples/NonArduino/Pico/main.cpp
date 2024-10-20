@@ -41,7 +41,7 @@
 #include <RadioLib.h>
 
 // include the hardware abstraction layer
-#include "PicoHal.h"
+#include "hal/RPiPico/PicoHal.h"
 
 // create a new instance of the HAL class
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK);
