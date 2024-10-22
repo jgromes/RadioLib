@@ -92,25 +92,27 @@ $(document).ready(function(){initNavTree('_utils_8h_source.html',''); initResiza
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160; </div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="comment">// macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html</span></div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY_MSB(A, k)                              ( A[((k)/8)] |= (1 &lt;&lt; ((k)%8)) )</span></div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_MSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; ((k)%8)) )</span></div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_MSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8)) )</span></div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_MSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8))) ? 1 : 0 )</span></div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY_LSB(A, k)                              ( A[((k)/8)] |= (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_LSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; (7 - ((k)%8))) )</span></div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_LSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8)))) ? 1 : 0 )</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;uint32_t rlb_reflect(uint32_t in, uint8_t bits);</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="keywordtype">void</span> rlb_hexdump(<span class="keyword">const</span> <span class="keywordtype">char</span>* level, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t offset = 0, uint8_t width = 1, <span class="keywordtype">bool</span> be = <span class="keyword">false</span>);</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#if RADIOLIB_DEBUG and defined(RADIOLIB_BUILD_ARDUINO)</span></div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">size_t</span> rlb_printf(<span class="keyword">const</span> <span class="keywordtype">char</span>* format, ...);</div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
+<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="preprocessor">#include &quot;../BuildOpt.h&quot;</span></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160; </div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="comment">// macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html</span></div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY_MSB(A, k)                              ( A[((k)/8)] |= (1 &lt;&lt; ((k)%8)) )</span></div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_MSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; ((k)%8)) )</span></div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_MSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8)) )</span></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_MSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; ((k)%8))) ? 1 : 0 )</span></div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor">#define SET_BIT_IN_ARRAY_LSB(A, k)                              ( A[((k)/8)] |= (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#define CLEAR_BIT_IN_ARRAY_LSB(A, k)                            ( A[((k)/8)] &amp;= ~(1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#define TEST_BIT_IN_ARRAY_LSB(A, k)                             ( A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8))) )</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#define GET_BIT_IN_ARRAY_LSB(A, k)                              ( (A[((k)/8)] &amp; (1 &lt;&lt; (7 - ((k)%8)))) ? 1 : 0 )</span></div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;uint32_t rlb_reflect(uint32_t in, uint8_t bits);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> rlb_hexdump(<span class="keyword">const</span> <span class="keywordtype">char</span>* level, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t offset = 0, uint8_t width = 1, <span class="keywordtype">bool</span> be = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#if RADIOLIB_DEBUG &amp;&amp; defined(RADIOLIB_BUILD_ARDUINO)</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">size_t</span> rlb_printf(<span class="keyword">const</span> <span class="keywordtype">char</span>* format, ...);</div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
