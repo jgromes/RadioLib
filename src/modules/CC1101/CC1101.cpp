@@ -234,8 +234,12 @@ int16_t CC1101::receiveDirect(bool sync) {
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_RX);
 
+  // enable promiscuous mode - needed for protocols that decode in software (e.g. PagerClient)
+  int16_t state = setPromiscuousMode(true);
+  RADIOLIB_ASSERT(state);
+
   // activate direct mode
-  int16_t state = directMode(sync);
+  state = directMode(sync);
   RADIOLIB_ASSERT(state);
 
   // start receiving
