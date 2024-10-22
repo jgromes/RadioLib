@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include "../BuildOpt.h"
+
 // macros to access bits in byte array, from http://www.mathcs.emory.edu/~cheung/Courses/255/Syllabus/1-C-intro/bit-array.html
 #define SET_BIT_IN_ARRAY_MSB(A, k)                              ( A[((k)/8)] |= (1 << ((k)%8)) )
 #define CLEAR_BIT_IN_ARRAY_MSB(A, k)                            ( A[((k)/8)] &= ~(1 << ((k)%8)) )
@@ -33,7 +35,7 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits);
 */
 void rlb_hexdump(const char* level, uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
 
-#if RADIOLIB_DEBUG and defined(RADIOLIB_BUILD_ARDUINO)
+#if RADIOLIB_DEBUG && defined(RADIOLIB_BUILD_ARDUINO)
 size_t rlb_printf(const char* format, ...);
 #endif
 
