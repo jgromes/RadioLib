@@ -385,7 +385,7 @@ struct LoRaWANBand_t {
   /*! \brief Maximum allowed frequency (coded in 100 Hz steps) */
   uint32_t freqMax;
 
-  /*! \brief Array of allowed maximum payload lengths for each data rate (global maximum) */
+  /*! \brief Array of allowed maximum application payload lengths for each data rate (N-value) */
   uint8_t payloadLenMax[RADIOLIB_LORAWAN_CHANNEL_NUM_DATARATES];
 
   /*! \brief Maximum allowed output power in this band in dBm */
