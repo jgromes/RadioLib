@@ -144,6 +144,21 @@ class APRSClient {
     */
     int16_t sendFrame(char* destCallsign, uint8_t destSSID, char* info);
 
+    /*!
+      \brief Set the repeater callsigns and SSIDs to be used by the frames sent by sendPosition, sendMicE or sendFrame.
+      \param repeaterCallsigns Array of repeater callsigns in the form of null-terminated C-strings.
+      \param repeaterSSIDs Array of repeater SSIDs.
+      \param numRepeaters Number of repeaters, maximum is 8.
+      \returns \ref status_codes
+    */
+    void useRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs, uint8_t numRepeaters);
+
+    /*!
+      \brief Stop using repeaters.
+      \returns \ref status_codes
+    */
+    void dropRepeaters();
+
 #if !RADIOLIB_GODMODE
   private:
 #endif
@@ -153,6 +168,11 @@ class APRSClient {
     // default APRS symbol (car)
     char symbol = '>';
     char table = '/';
+
+    // repeaters
+    char** repCalls = NULL;
+    uint8_t* repSSIDs = NULL;
+    uint8_t numReps = 0;
     
     // source callsign when using APRS over LoRa
     char src[RADIOLIB_AX25_MAX_CALLSIGN_LEN + 1] = { 0 };

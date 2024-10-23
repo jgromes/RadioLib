@@ -313,6 +313,8 @@ noTone	KEYWORD2
 # APRS
 sendPosition	KEYWORD2
 sendMicE	KEYWORD2
+useRepeaters	KEYWORD2
+dropRepeaters	KEYWORD2
 
 # Pager
 sendTone	KEYWORD2

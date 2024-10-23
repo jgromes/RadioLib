@@ -260,6 +260,12 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
                       RADIOLIB_AX25_CONTROL_UNNUMBERED_FRAME,
                       RADIOLIB_AX25_PID_NO_LAYER_3, const_cast<char*>(info));
 
+    // optionally set repeaters
+    if(this->repCalls && this->repSSIDs && this->numReps) {
+      int16_t state = frameUI.setRepeaters(this->repCalls, this->repSSIDs, this->numReps);
+      RADIOLIB_ASSERT(state);
+    }
+
     return(axClient->sendFrame(&frameUI));
   
   } else if(this->phyLayer != nullptr) {
@@ -274,6 +280,18 @@ int16_t APRSClient::sendFrame(char* destCallsign, uint8_t destSSID, char* info) 
   } 
   
   return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
+void APRSClient::useRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs, uint8_t numRepeaters) {
+  this->repCalls = repeaterCallsigns;
+  this->repSSIDs = repeaterSSIDs;
+  this->numReps = numRepeaters;
+}
+
+void APRSClient::dropRepeaters() {
+  this->repCalls = NULL;
+  this->repSSIDs = NULL;
+  this->numReps = 0;
 }
 
 #endif

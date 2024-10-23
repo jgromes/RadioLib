@@ -109,32 +109,49 @@ void setup() {
 }
 
 void loop() {
-  Serial.print(F("[APRS] Sending position ... "));
+  Serial.println(F("[APRS] Sending location reports"));
   
   // send a location without message or timestamp
   char destination[] = "N0CALL";
   char latitude[] = "4911.67N";
   char longitude[] = "01635.96E";
   int state = aprs.sendPosition(destination, 0, latitude, longitude);
+  if(state != RADIOLIB_ERR_NONE) {
+    Serial.print(F("[APRS] Failed to send location, code "));
+    Serial.println(state);
+  }
   delay(500);
   
   // send a location with message and without timestamp
   char message[] = "I'm here!";
-  state |= aprs.sendPosition(destination, 0, latitude, longitude, message);
+  state = aprs.sendPosition(destination, 0, latitude, longitude, message);
+  if(state != RADIOLIB_ERR_NONE) {
+    Serial.print(F("[APRS] Failed to send location and message code "));
+    Serial.println(state);
+  }
   delay(500);
+
+  // you can also set repeater callsigns and SSIDs
+  // up to 8 repeaters may be used
+  // sendPosition will be sent with "WIDE2-2" path
+  char* repeaterCallsigns[] = { "WIDE2" };
+  uint8_t repeaterSSIDs[] = { 2 };
+  aprs.useRepeaters(repeaterCallsigns, repeaterSSIDs, 1);
   
   // send a location with message and timestamp
   char timestamp[] = "093045z";
-  state |= aprs.sendPosition(destination, 0, latitude, longitude, message, timestamp);
-  delay(500);
-
-  if(state == RADIOLIB_ERR_NONE) {
-    Serial.println(F("success!"));
-  } else {
-    Serial.print(F("failed, code "));
+  state = aprs.sendPosition(destination, 0, latitude, longitude, message, timestamp);
+  if(state != RADIOLIB_ERR_NONE) {
+    Serial.print(F("[APRS] Failed to send location, message and timestamp code "));
     Serial.println(state);
   }
+  delay(500);
+
+  // when repeaters are no longer needed, they can be dropped
+  aprs.dropRepeaters();
 
   // wait one minute before transmitting again
+  Serial.println(F("[APRS] All done!"));
   delay(60000);
 }
+
