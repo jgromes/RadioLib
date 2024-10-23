@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"group__status__codes.html#ga96db1938b39b1b9cb7e8229718f08ff2":[2,6,48],
+"group__status__codes.html#ga9a098ceda0c3f153515c8cc36f1d683e":[2,6,25],
 "group__status__codes.html#ga9da949184e940a4fa6f4afb63c315963":[2,6,8],
 "group__status__codes.html#ga9dc55947447ed9c91217f86a9bca75bb":[2,6,49],
 "group__status__codes.html#ga9f80eb00fad12bb0bec384ad83b6941b":[2,6,29],
@@ -42,8 +44,8 @@ var NAVTREEINDEX6 =
 "group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd":[2,7,1],
 "group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77":[2,7,0],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "libtock_hal_8h_source.html":[4,0,0,0,4,0],
 "lr1110__transceiver__0303_8h_source.html":[4,0,0,1,2,0,0],
 "lr1110__transceiver__0304_8h_source.html":[4,0,0,1,2,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "struct_lo_ra_w_a_n_mac_command__t.html#a89f71b4d17ad16089772ed070cc0949e":[3,0,24,2],
 "struct_lo_ra_w_a_n_mac_command__t.html#aa253350bc95c821bf42eaee170922355":[3,0,24,3],
 "struct_lr_fhss_rate__t.html":[3,0,39],
-"struct_lr_fhss_rate__t.html#a29dec307a472c34e9fafb10af3c4fb9c":[3,0,39,2],
-"struct_lr_fhss_rate__t.html#a3eb7a2c2f4f23face4d6706aa8084c6b":[3,0,39,1],
-"struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21":[3,0,39,0]
+"struct_lr_fhss_rate__t.html#a29dec307a472c34e9fafb10af3c4fb9c":[3,0,39,2]
 };

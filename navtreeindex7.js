@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"struct_lr_fhss_rate__t.html#a3eb7a2c2f4f23face4d6706aa8084c6b":[3,0,39,1],
+"struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21":[3,0,39,0],
 "struct_module_1_1_rf_switch_mode__t.html":[3,0,40,0],
 "struct_module_1_1_rf_switch_mode__t.html#a2442217bfabfb124a3f46bb128aa7462":[3,0,40,0,0],
 "struct_module_1_1_rf_switch_mode__t.html#a694fecae172f868d8ca400319920ed66":[3,0,40,0,1],

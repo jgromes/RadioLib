@@ -115,6 +115,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a05076f44e5708f1230894c11053707b1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a> (char *destCallsign, uint8_t destSSID, char *info)</td></tr>
 <tr class="memdesc:a05076f44e5708f1230894c11053707b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit generic APRS frame.  <a href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">More...</a><br /></td></tr>
 <tr class="separator:a05076f44e5708f1230894c11053707b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a454fb0a3423f75e909b16640b27b176a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a">useRepeaters</a> (char **repeaterCallsigns, uint8_t *repeaterSSIDs, uint8_t numRepeaters)</td></tr>
+<tr class="memdesc:a454fb0a3423f75e909b16640b27b176a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the repeater callsigns and SSIDs to be used by the frames sent by sendPosition, sendMicE or sendFrame.  <a href="class_a_p_r_s_client.html#a454fb0a3423f75e909b16640b27b176a">More...</a><br /></td></tr>
+<tr class="separator:a454fb0a3423f75e909b16640b27b176a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb2f43bc16cd406a079163f44d2a2d01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#afb2f43bc16cd406a079163f44d2a2d01">dropRepeaters</a> ()</td></tr>
+<tr class="memdesc:afb2f43bc16cd406a079163f44d2a2d01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop using repeaters.  <a href="class_a_p_r_s_client.html#afb2f43bc16cd406a079163f44d2a2d01">More...</a><br /></td></tr>
+<tr class="separator:afb2f43bc16cd406a079163f44d2a2d01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Client for APRS communication. </p>
@@ -236,6 +242,26 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="afb2f43bc16cd406a079163f44d2a2d01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb2f43bc16cd406a079163f44d2a2d01">&#9670;&nbsp;</a></span>dropRepeaters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APRSClient::dropRepeaters </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stop using repeaters. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
@@ -437,6 +463,51 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">lon</td><td>Longitude as a null-terminated string. </td></tr>
     <tr><td class="paramname">msg</td><td>Message to be transmitted. Defaults to NULL (no message). </td></tr>
     <tr><td class="paramname">time</td><td>Position timestamp. Defaults to NULL (no timestamp). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+</div>
+</div>
+<a id="a454fb0a3423f75e909b16640b27b176a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a454fb0a3423f75e909b16640b27b176a">&#9670;&nbsp;</a></span>useRepeaters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void APRSClient::useRepeaters </td>
+          <td>(</td>
+          <td class="paramtype">char **&#160;</td>
+          <td class="paramname"><em>repeaterCallsigns</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>repeaterSSIDs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>numRepeaters</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the repeater callsigns and SSIDs to be used by the frames sent by sendPosition, sendMicE or sendFrame. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">repeaterCallsigns</td><td>Array of repeater callsigns in the form of null-terminated C-strings. </td></tr>
+    <tr><td class="paramname">repeaterSSIDs</td><td>Array of repeater SSIDs. </td></tr>
+    <tr><td class="paramname">numRepeaters</td><td>Number of repeaters, maximum is 8. </td></tr>
   </table>
   </dd>
 </dl>
