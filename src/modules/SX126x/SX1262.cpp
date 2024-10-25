@@ -145,4 +145,19 @@ int16_t SX1262::checkOutputPower(int8_t power, int8_t* clipped) {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t SX1262::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::LoRa): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::FSK): {
+      return(this->beginFSK());
+    } break;
+    case(ModemType_t::LRFHSS): {
+      return(this->beginLRFHSS());
+    } break;
+  }
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 #endif
