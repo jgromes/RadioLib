@@ -32,6 +32,10 @@ class PiHal : public RadioLibHal {
     }
 
     void init() override {
+      if(_gpioHandle != -1) {
+        return;
+      }
+
       // first initialise lgpio library
       if((_gpioHandle = lgGpiochipOpen(_gpioDevice)) < 0) {
         fprintf(stderr, "Could not open GPIO chip: %s\n", lguErrorText(_gpioHandle));
@@ -48,6 +52,7 @@ class PiHal : public RadioLibHal {
 
       // finally, stop the lgpio library
       lgGpiochipClose(_gpioHandle);
+      _gpioHandle = -1;
     }
 
     // GPIO-related methods (pinMode, digitalWrite etc.) should check
