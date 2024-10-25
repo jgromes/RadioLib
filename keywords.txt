@@ -329,6 +329,7 @@ setPacketSentAction	KEYWORD2
 clearPacketSentAction	KEYWORD2
 setDataRate	KEYWORD2
 checkDataRate	KEYWORD2
+setModem	KEYWORD2
 
 # BellModem
 setModem	KEYWORD2
