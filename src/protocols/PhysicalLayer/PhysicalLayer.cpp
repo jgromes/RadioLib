@@ -531,6 +531,11 @@ void PhysicalLayer::clearChannelScanAction() {
   
 }
 
+int16_t PhysicalLayer::setModem(ModemType_t modem) {
+  (void)modem;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 #if RADIOLIB_INTERRUPT_TIMING
 void PhysicalLayer::setInterruptSetup(void (*func)(uint32_t)) {
   Module* mod = getMod();

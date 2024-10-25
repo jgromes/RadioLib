@@ -131,6 +131,16 @@ union ChannelScanConfig_t {
 };
 
 /*!
+  \enum ModemType_t
+  \brief Type of modem, used by setModem.
+*/
+enum ModemType_t {
+  FSK = 0,
+  LoRa,
+  LRFHSS,
+};
+
+/*!
   \class PhysicalLayer
 
   \brief Provides common interface for protocols that run on %LoRa/FSK modules, such as RTTY or LoRaWAN.
@@ -643,6 +653,14 @@ class PhysicalLayer {
       \brief Clears interrupt service routine to call when a channel scan is finished.
     */
     virtual void clearChannelScanAction();
+
+    /*!
+      \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
+      using its default parameters.
+      \param modem Modem type to set. Not all modems are implemented by all radio modules!
+      \returns \ref status_codes
+    */
+    virtual int16_t setModem(ModemType_t modem);
 
     #if RADIOLIB_INTERRUPT_TIMING
 
