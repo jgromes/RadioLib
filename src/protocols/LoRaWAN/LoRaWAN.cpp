@@ -2768,10 +2768,13 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
     return(state);
   }
 
-  // TODO implement PhysicalLayer::setModem()
   // set modem-dependent functions
   switch(this->band->dataRates[chnl->dr] & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
     case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
+      if(this->modulation != RADIOLIB_LORAWAN_MODULATION_LORA) {
+        state = this->phyLayer->setModem(ModemType_t::LoRa);
+        RADIOLIB_ASSERT(state);
+      }
       this->modulation = RADIOLIB_LORAWAN_MODULATION_LORA;
       // downlink messages are sent with inverted IQ
       if(dir == RADIOLIB_LORAWAN_DOWNLINK) {
@@ -2781,16 +2784,27 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       }
       RADIOLIB_ASSERT(state);
       break;
+    
     case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
+      if(this->modulation != RADIOLIB_LORAWAN_MODULATION_GFSK) {
+        state = this->phyLayer->setModem(ModemType_t::FSK);
+        RADIOLIB_ASSERT(state);
+      }
       this->modulation = RADIOLIB_LORAWAN_MODULATION_GFSK;
       state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
       RADIOLIB_ASSERT(state);
       state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
       RADIOLIB_ASSERT(state);
       break;
+    
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
+      if(this->modulation != RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS) {
+        state = this->phyLayer->setModem(ModemType_t::LRFHSS);
+        RADIOLIB_ASSERT(state);
+      }
       this->modulation = RADIOLIB_LORAWAN_MODULATION_LR_FHSS;
       break;
+    
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }
