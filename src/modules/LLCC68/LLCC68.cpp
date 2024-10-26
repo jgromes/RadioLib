@@ -127,8 +127,9 @@ int16_t LLCC68::setModem(ModemType_t modem) {
     case(ModemType_t::LRFHSS): {
       return(this->beginLRFHSS());
     } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
   }
-  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 #endif

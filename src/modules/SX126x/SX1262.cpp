@@ -156,8 +156,9 @@ int16_t SX1262::setModem(ModemType_t modem) {
     case(ModemType_t::LRFHSS): {
       return(this->beginLRFHSS());
     } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
   }
-  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 #endif
