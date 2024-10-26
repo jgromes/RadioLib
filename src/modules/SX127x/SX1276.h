@@ -62,6 +62,14 @@ class SX1276: public SX1278 {
       \returns \ref status_codes
     */
     int16_t setFrequency(float freq) override;
+    
+    /*!
+      \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
+      using its default parameters.
+      \param modem Modem type to set - FSK or LoRa.
+      \returns \ref status_codes
+    */
+    int16_t setModem(ModemType_t modem) override;
 
 #if !RADIOLIB_GODMODE
   private:
