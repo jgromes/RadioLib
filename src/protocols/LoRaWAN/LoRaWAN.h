@@ -15,11 +15,6 @@
 #define RADIOLIB_LORAWAN_CLASS_B                                (0x0B)
 #define RADIOLIB_LORAWAN_CLASS_C                                (0x0C)
 
-// modulation type
-#define RADIOLIB_LORAWAN_MODULATION_LORA                        (0)
-#define RADIOLIB_LORAWAN_MODULATION_GFSK                        (1)
-#define RADIOLIB_LORAWAN_MODULATION_LR_FHSS                     (2)
-
 // preamble format
 #define RADIOLIB_LORAWAN_LORA_SYNC_WORD                         (0x34)
 #define RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN                      (8)
@@ -915,9 +910,6 @@ class LoRaWANNode {
     uint32_t confFCntUp = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
     uint32_t adrFCnt = 0;
-
-    // modulation of the currently configured channel
-    uint8_t modulation = RADIOLIB_LORAWAN_MODULATION_LORA;
 
     // ADR is enabled by default
     bool adrEnabled = true;
