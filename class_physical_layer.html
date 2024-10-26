@@ -305,6 +305,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">clearChannelScanAction</a> ()</td></tr>
 <tr class="memdesc:a169a4d04c5c50d3336e274d70930d9f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
 <tr class="separator:a169a4d04c5c50d3336e274d70930d9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
+<tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">More...</a><br /></td></tr>
+<tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af061879bf694735297593c048d04a196"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">getModem</a> (ModemType_t *modem)</td></tr>
+<tr class="memdesc:af061879bf694735297593c048d04a196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_physical_layer.html#af061879bf694735297593c048d04a196">More...</a><br /></td></tr>
+<tr class="separator:af061879bf694735297593c048d04a196"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="friends"></a>
 Friends</h2></td></tr>
@@ -341,6 +347,9 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>FT8Client</b></td></
 <tr class="memitem:a9ec0776e58831979405850594429e2d2"><td class="memItemLeft" align="right" valign="top"><a id="a9ec0776e58831979405850594429e2d2"></a>
 class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td></tr>
 <tr class="separator:a9ec0776e58831979405850594429e2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a831cdfbf3895309806bef744d4bc77c6"><td class="memItemLeft" align="right" valign="top"><a id="a831cdfbf3895309806bef744d4bc77c6"></a>
+class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></tr>
+<tr class="separator:a831cdfbf3895309806bef744d4bc77c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN. Also extracts some common module-independent methods. Using this interface class allows to use the protocols on various modules without much code duplicity. Because this class is used mainly as interface, all of its virtual members must be implemented in the module class. </p>
@@ -750,6 +759,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Flags for a specific radio module. </dd></dl>
+
+</div>
+</div>
+<a id="af061879bf694735297593c048d04a196"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af061879bf694735297593c048d04a196">&#9670;&nbsp;</a></span>getModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::getModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t *&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get modem currently in use by the radio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Pointer to a variable to save the retrieved configuration into. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#ad7bb0f4aa60a600d24d6268b430e719d">SX128x</a>, <a class="el" href="class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d">SX127x</a>, <a class="el" href="class_s_x126x.html#a867b111d21308319e117695051e157ae">SX126x</a>, and <a class="el" href="class_l_r11x0.html#afe8684b336a8137cde591283297a869c">LR11x0</a>.</p>
 
 </div>
 </div>
@@ -1716,6 +1762,43 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>LoRaWANNode</b></td>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_s_x128x.html#a6a2ec5d316975f390f20b4e0a2e11e98">SX128x</a>, <a class="el" href="class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666">SX127x</a>, <a class="el" href="class_s_x126x.html#a50e757c2a63e5c7da5b0d0d6c00f91b5">SX126x</a>, and <a class="el" href="class_l_r11x0.html#a62c715ab18ea8a2e08a2791d3e764ee9">LR11x0</a>.</p>
+
+</div>
+</div>
+<a id="a77415bf4ed34be18c92c0cf4b2de7149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77415bf4ed34be18c92c0cf4b2de7149">&#9670;&nbsp;</a></span>setModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::setModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Modem type to set. Not all modems are implemented by all radio modules! </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_s_x128x.html#a209d69e710a785da2c69474f94fdccf3">SX128x</a>, <a class="el" href="class_s_x1279.html#aea8bd74e7c5d7b97d4fe4a8182680d5c">SX1279</a>, <a class="el" href="class_s_x1278.html#a609dd3faf2036e8c2d046fd191e0137d">SX1278</a>, <a class="el" href="class_s_x1277.html#aec55de7c6622936ff48384bb33424b84">SX1277</a>, <a class="el" href="class_s_x1276.html#a36a526b6c8540cda36d058fb47a9e099">SX1276</a>, <a class="el" href="class_s_x1273.html#af9f0969764fde3e12b6b05409718fa83">SX1273</a>, <a class="el" href="class_s_x1272.html#a2c99afea2bb3bbb1146c8a4536b4843c">SX1272</a>, <a class="el" href="class_s_x1268.html#ae66e37a6897315f36a13c8d5cefe521b">SX1268</a>, <a class="el" href="class_s_x1262.html#a7cdbfc39c779b3846aa5fd04d50d3eb8">SX1262</a>, <a class="el" href="class_l_r1120.html#a6cd250e0145ed19f2f91ed96a57a825e">LR1120</a>, <a class="el" href="class_l_r1110.html#a18f525740237b023056a8ca6f3671c6a">LR1110</a>, and <a class="el" href="class_l_l_c_c68.html#aee4457d48c708f05154e931eed05c691">LLCC68</a>.</p>
 
 </div>
 </div>

@@ -232,35 +232,38 @@ $(document).ready(function(){initNavTree('_s_x1272_8h_source.html',''); initResi
 <div class="line"><a name="l00297"></a><span class="lineno">  297</span>&#160;    int16_t <a class="code" href="class_s_x1272.html#a4ee36122f8aca42b27a8412e0c362dd3">implicitHeader</a>(<span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a name="l00298"></a><span class="lineno">  298</span>&#160; </div>
 <div class="line"><a name="l00303"></a><span class="lineno">  303</span>&#160;    int16_t <a class="code" href="class_s_x1272.html#ae3c9704cb58232f696b5f90f69c115f7">explicitHeader</a>();</div>
-<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160; </div>
-<div class="line"><a name="l00305"></a><span class="lineno">  305</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00306"></a><span class="lineno">  306</span>&#160;  <span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00307"></a><span class="lineno">  307</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00308"></a><span class="lineno">  308</span>&#160;    int16_t setBandwidthRaw(uint8_t newBandwidth);</div>
-<div class="line"><a name="l00309"></a><span class="lineno">  309</span>&#160;    int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);</div>
-<div class="line"><a name="l00310"></a><span class="lineno">  310</span>&#160;    int16_t setCodingRateRaw(uint8_t newCodingRate);</div>
-<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a name="l00304"></a><span class="lineno">  304</span>&#160;    </div>
+<div class="line"><a name="l00311"></a><span class="lineno">  311</span>&#160;    int16_t <a class="code" href="class_s_x1272.html#a2c99afea2bb3bbb1146c8a4536b4843c">setModem</a>(ModemType_t modem) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00312"></a><span class="lineno">  312</span>&#160; </div>
-<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;    int16_t configFSK();</div>
-<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;    <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160; </div>
-<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
-<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;  <span class="keyword">private</span>:</div>
-<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    <span class="keywordtype">bool</span> ldroAuto = <span class="keyword">true</span>;</div>
-<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160;    <span class="keywordtype">bool</span> ldroEnabled = <span class="keyword">false</span>;</div>
-<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160; </div>
-<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;};</div>
+<div class="line"><a name="l00313"></a><span class="lineno">  313</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00314"></a><span class="lineno">  314</span>&#160;  <span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00315"></a><span class="lineno">  315</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00316"></a><span class="lineno">  316</span>&#160;    int16_t setBandwidthRaw(uint8_t newBandwidth);</div>
+<div class="line"><a name="l00317"></a><span class="lineno">  317</span>&#160;    int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);</div>
+<div class="line"><a name="l00318"></a><span class="lineno">  318</span>&#160;    int16_t setCodingRateRaw(uint8_t newCodingRate);</div>
+<div class="line"><a name="l00319"></a><span class="lineno">  319</span>&#160;    int16_t setHeaderType(uint8_t headerType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
+<div class="line"><a name="l00320"></a><span class="lineno">  320</span>&#160; </div>
+<div class="line"><a name="l00321"></a><span class="lineno">  321</span>&#160;    int16_t configFSK();</div>
+<div class="line"><a name="l00322"></a><span class="lineno">  322</span>&#160;    <span class="keywordtype">void</span> errataFix(<span class="keywordtype">bool</span> rx) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00323"></a><span class="lineno">  323</span>&#160; </div>
-<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160; </div>
+<div class="line"><a name="l00324"></a><span class="lineno">  324</span>&#160;<span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
+<div class="line"><a name="l00325"></a><span class="lineno">  325</span>&#160;  <span class="keyword">private</span>:</div>
 <div class="line"><a name="l00326"></a><span class="lineno">  326</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00327"></a><span class="lineno">  327</span>&#160;    <span class="keywordtype">bool</span> ldroAuto = <span class="keyword">true</span>;</div>
+<div class="line"><a name="l00328"></a><span class="lineno">  328</span>&#160;    <span class="keywordtype">bool</span> ldroEnabled = <span class="keyword">false</span>;</div>
+<div class="line"><a name="l00329"></a><span class="lineno">  329</span>&#160; </div>
+<div class="line"><a name="l00330"></a><span class="lineno">  330</span>&#160;};</div>
+<div class="line"><a name="l00331"></a><span class="lineno">  331</span>&#160; </div>
+<div class="line"><a name="l00332"></a><span class="lineno">  332</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00333"></a><span class="lineno">  333</span>&#160; </div>
+<div class="line"><a name="l00334"></a><span class="lineno">  334</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="aclass_module_html"><div class="ttname"><a href="class_module.html">Module</a></div><div class="ttdoc">Implements all common low-level methods to control the wireless module. Every module class contains o...</div><div class="ttdef"><b>Definition:</b> Module.h:66</div></div>
 <div class="ttc" id="aclass_s_x1272_html"><div class="ttname"><a href="class_s_x1272.html">SX1272</a></div><div class="ttdoc">Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...</div><div class="ttdef"><b>Definition:</b> SX1272.h:94</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a0978cc9ecbb7b9d3a017c133506e57ac"><div class="ttname"><a href="class_s_x1272.html#a0978cc9ecbb7b9d3a017c133506e57ac">SX1272::reset</a></div><div class="ttdeci">void reset() override</div><div class="ttdoc">Reset method. Will reset the chip to the default state using RST pin.</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:76</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a0cc8eeb00241031796fc73b08711469b"><div class="ttname"><a href="class_s_x1272.html#a0cc8eeb00241031796fc73b08711469b">SX1272::setBandwidth</a></div><div class="ttdeci">int16_t setBandwidth(float bw)</div><div class="ttdoc">Sets LoRa link bandwidth. Allowed values are 125, 250 and 500 kHz. Only available in LoRa mode.</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:96</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a2510072152c936d9f62557f46a4248d0"><div class="ttname"><a href="class_s_x1272.html#a2510072152c936d9f62557f46a4248d0">SX1272::checkOutputPower</a></div><div class="ttdeci">int16_t checkOutputPower(int8_t power, int8_t *clipped) override</div><div class="ttdoc">Check if output power is configurable. This method is needed for compatibility with PhysicalLayer::ch...</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:317</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a2a36487740f15731c6e508428e4b11f0"><div class="ttname"><a href="class_s_x1272.html#a2a36487740f15731c6e508428e4b11f0">SX1272::checkDataRate</a></div><div class="ttdeci">int16_t checkDataRate(DataRate_t dr) override</div><div class="ttdoc">Check the data rate can be configured by this module.</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:255</div></div>
+<div class="ttc" id="aclass_s_x1272_html_a2c99afea2bb3bbb1146c8a4536b4843c"><div class="ttname"><a href="class_s_x1272.html#a2c99afea2bb3bbb1146c8a4536b4843c">SX1272::setModem</a></div><div class="ttdeci">int16_t setModem(ModemType_t modem) override</div><div class="ttdoc">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default p...</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:588</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a3a377445cb4b8fd41781a3210a819a47"><div class="ttname"><a href="class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47">SX1272::setDataShapingOOK</a></div><div class="ttdeci">int16_t setDataShapingOOK(uint8_t sh)</div><div class="ttdoc">Sets filter cutoff frequency that will be used for data shaping. Allowed values are 1 for frequency e...</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:405</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a4aaf9d61310fa7b4fce413ae53d30ac0"><div class="ttname"><a href="class_s_x1272.html#a4aaf9d61310fa7b4fce413ae53d30ac0">SX1272::forceLDRO</a></div><div class="ttdeci">int16_t forceLDRO(bool enable)</div><div class="ttdoc">Forces LoRa low data rate optimization. Only available in LoRa mode. After calling this method,...</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:476</div></div>
 <div class="ttc" id="aclass_s_x1272_html_a4ee36122f8aca42b27a8412e0c362dd3"><div class="ttname"><a href="class_s_x1272.html#a4ee36122f8aca42b27a8412e0c362dd3">SX1272::implicitHeader</a></div><div class="ttdeci">int16_t implicitHeader(size_t len)</div><div class="ttdoc">Set implicit header mode for future reception/transmission. Required for spreading factor 6.</div><div class="ttdef"><b>Definition:</b> SX1272.cpp:499</div></div>

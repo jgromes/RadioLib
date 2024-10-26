@@ -362,6 +362,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a269c8e4ae0d21af88e9422ccf9708c1e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e">invertIQ</a> (bool enable) override</td></tr>
 <tr class="memdesc:a269c8e4ae0d21af88e9422ccf9708c1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e">More...</a><br /></td></tr>
 <tr class="separator:a269c8e4ae0d21af88e9422ccf9708c1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a867b111d21308319e117695051e157ae"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a867b111d21308319e117695051e157ae">getModem</a> (ModemType_t *modem) override</td></tr>
+<tr class="memdesc:a867b111d21308319e117695051e157ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_s_x126x.html#a867b111d21308319e117695051e157ae">More...</a><br /></td></tr>
+<tr class="separator:a867b111d21308319e117695051e157ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f514b341b8982650526c6d8e20fd1a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a4f514b341b8982650526c6d8e20fd1a4">setDirectAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a4f514b341b8982650526c6d8e20fd1a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is received in direct mode.  <a href="class_s_x126x.html#a4f514b341b8982650526c6d8e20fd1a4">More...</a><br /></td></tr>
 <tr class="separator:a4f514b341b8982650526c6d8e20fd1a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -473,6 +476,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">setDIOMapping</a> (uint32_t pin, uint32_t value)</td></tr>
 <tr class="memdesc:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configure DIO pin mapping to get a given signal on a DIO pin (if available).  <a href="class_physical_layer.html#a349e8a22cd28ad89d45460fdeeefc05c">More...</a><br /></td></tr>
 <tr class="separator:a349e8a22cd28ad89d45460fdeeefc05c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
+<tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">More...</a><br /></td></tr>
+<tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1117,6 +1123,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>IRQ flags. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a867b111d21308319e117695051e157ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a867b111d21308319e117695051e157ae">&#9670;&nbsp;</a></span>getModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::getModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t *&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get modem currently in use by the radio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Pointer to a variable to save the retrieved configuration into. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">PhysicalLayer</a>.</p>
 
 </div>
 </div>

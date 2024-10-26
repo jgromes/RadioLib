@@ -472,6 +472,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">clearChannelScanAction</a> ()</td></tr>
 <tr class="memdesc:a169a4d04c5c50d3336e274d70930d9f6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
 <tr class="separator:a169a4d04c5c50d3336e274d70930d9f6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
+<tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">More...</a><br /></td></tr>
+<tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af061879bf694735297593c048d04a196 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">getModem</a> (ModemType_t *modem)</td></tr>
+<tr class="memdesc:af061879bf694735297593c048d04a196 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_physical_layer.html#af061879bf694735297593c048d04a196">More...</a><br /></td></tr>
+<tr class="separator:af061879bf694735297593c048d04a196 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Control class for SX1233 module. Overrides some methods from SX1231/RF69 due to different register values. </p>

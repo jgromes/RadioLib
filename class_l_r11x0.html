@@ -402,6 +402,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a97a3f23b796257135a9afd33c28e8ed5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a97a3f23b796257135a9afd33c28e8ed5">getGnssSatellites</a> (<a class="el" href="struct_l_r11x0_gnss_satellite__t.html">LR11x0GnssSatellite_t</a> *sats, uint8_t numSats)</td></tr>
 <tr class="memdesc:a97a3f23b796257135a9afd33c28e8ed5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get GNSS satellites found during the last scan.  <a href="class_l_r11x0.html#a97a3f23b796257135a9afd33c28e8ed5">More...</a><br /></td></tr>
 <tr class="separator:a97a3f23b796257135a9afd33c28e8ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe8684b336a8137cde591283297a869c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#afe8684b336a8137cde591283297a869c">getModem</a> (ModemType_t *modem) override</td></tr>
+<tr class="memdesc:afe8684b336a8137cde591283297a869c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_l_r11x0.html#afe8684b336a8137cde591283297a869c">More...</a><br /></td></tr>
+<tr class="separator:afe8684b336a8137cde591283297a869c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -495,6 +498,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">clearChannelScanAction</a> ()</td></tr>
 <tr class="memdesc:a169a4d04c5c50d3336e274d70930d9f6 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a channel scan is finished. <br /></td></tr>
 <tr class="separator:a169a4d04c5c50d3336e274d70930d9f6 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
+<tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">More...</a><br /></td></tr>
+<tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1273,6 +1279,43 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 <p>Reads the current IRQ status. </p>
 <dl class="section return"><dt>Returns</dt><dd>IRQ status bits </dd></dl>
+
+</div>
+</div>
+<a id="afe8684b336a8137cde591283297a869c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe8684b336a8137cde591283297a869c">&#9670;&nbsp;</a></span>getModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::getModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t *&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get modem currently in use by the radio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Pointer to a variable to save the retrieved configuration into. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">PhysicalLayer</a>.</p>
 
 </div>
 </div>

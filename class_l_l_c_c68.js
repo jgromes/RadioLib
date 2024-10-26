@@ -5,5 +5,6 @@ var class_l_l_c_c68 =
     [ "checkDataRate", "class_l_l_c_c68.html#a708183645ec0b9fec54d6369e7b1345f", null ],
     [ "setBandwidth", "class_l_l_c_c68.html#a6f6c206657304809ee30bd9761ef79bf", null ],
     [ "setDataRate", "class_l_l_c_c68.html#ac630770441cadc547892173bde7504f9", null ],
+    [ "setModem", "class_l_l_c_c68.html#aee4457d48c708f05154e931eed05c691", null ],
     [ "setSpreadingFactor", "class_l_l_c_c68.html#ad59d1a1cb32c7c89c13ebf46051d26e4", null ]
 ];

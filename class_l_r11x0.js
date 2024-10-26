@@ -36,6 +36,7 @@ var class_l_r11x0 =
     [ "getGnssSatellites", "class_l_r11x0.html#a97a3f23b796257135a9afd33c28e8ed5", null ],
     [ "getIrqFlags", "class_l_r11x0.html#a205364e65d54f3f87b9b8f5972cdcb99", null ],
     [ "getIrqStatus", "class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8", null ],
+    [ "getModem", "class_l_r11x0.html#afe8684b336a8137cde591283297a869c", null ],
     [ "getPacketLength", "class_l_r11x0.html#af96883b2ca7a36a8921ee1cd222adebf", null ],
     [ "getPacketLength", "class_l_r11x0.html#ac1f541bdee1d983126ceae47940b8f9d", null ],
     [ "getRSSI", "class_l_r11x0.html#a6cd2b2363501b2de064c9d1f32fabaa3", null ],

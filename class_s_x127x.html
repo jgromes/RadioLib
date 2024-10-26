@@ -360,6 +360,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a363a436978ba990e1bf7d73f648ad7e9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">invertIQ</a> (bool enable) override</td></tr>
 <tr class="memdesc:a363a436978ba990e1bf7d73f648ad7e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">More...</a><br /></td></tr>
 <tr class="separator:a363a436978ba990e1bf7d73f648ad7e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a333a9004cc05ff8aba2e9610db31109d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d">getModem</a> (ModemType_t *modem) override</td></tr>
+<tr class="memdesc:a333a9004cc05ff8aba2e9610db31109d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d">More...</a><br /></td></tr>
+<tr class="separator:a333a9004cc05ff8aba2e9610db31109d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4b99d1bc67ac2c81eeb11dd6793a8c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae4b99d1bc67ac2c81eeb11dd6793a8c5">setDirectAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:ae4b99d1bc67ac2c81eeb11dd6793a8c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is received in direct mode.  <a href="class_s_x127x.html#ae4b99d1bc67ac2c81eeb11dd6793a8c5">More...</a><br /></td></tr>
 <tr class="separator:ae4b99d1bc67ac2c81eeb11dd6793a8c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -486,6 +489,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">read</a> (bool drop=true)</td></tr>
 <tr class="memdesc:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data from direct mode buffer.  <a href="class_physical_layer.html#a4d5b30493c8d7fcfb784e128362d596c">More...</a><br /></td></tr>
 <tr class="separator:a4d5b30493c8d7fcfb784e128362d596c inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">setModem</a> (ModemType_t modem)</td></tr>
+<tr class="memdesc:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_physical_layer.html#a77415bf4ed34be18c92c0cf4b2de7149">More...</a><br /></td></tr>
+<tr class="separator:a77415bf4ed34be18c92c0cf4b2de7149 inherit pub_methods_class_physical_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> series. All derived classes for <a class="el" href="class_s_x127x.html" title="Base class for SX127x series. All derived classes for SX127x (e.g. SX1278 or SX1272) inherit from thi...">SX127x</a> (e.g. <a class="el" href="class_s_x1278.html" title="Derived class for SX1278 modules. Also used as base class for SX1276, SX1277, SX1279,...">SX1278</a> or <a class="el" href="class_s_x1272.html" title="Derived class for SX1272 modules. Also used as base class for SX1273. Both modules use the same basic...">SX1272</a>) inherit from this base class. This class should not be instantiated directly from Arduino sketch, only from its derived classes. </p>
@@ -1130,6 +1136,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>IRQ flags. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#af1caeed34b2e2ff0355467507106a1a2">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a333a9004cc05ff8aba2e9610db31109d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a333a9004cc05ff8aba2e9610db31109d">&#9670;&nbsp;</a></span>getModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX127x::getModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t *&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get modem currently in use by the radio. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Pointer to a variable to save the retrieved configuration into. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">PhysicalLayer</a>.</p>
 
 </div>
 </div>

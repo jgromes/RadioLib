@@ -22,6 +22,7 @@ var class_s_x1272 =
     [ "setDataShapingOOK", "class_s_x1272.html#a3a377445cb4b8fd41781a3210a819a47", null ],
     [ "setFrequency", "class_s_x1272.html#ac1467a23e1f1bfdbd02f6d30654ed850", null ],
     [ "setGain", "class_s_x1272.html#ae1c57ad5e8496dc28cd3ba9852809852", null ],
+    [ "setModem", "class_s_x1272.html#a2c99afea2bb3bbb1146c8a4536b4843c", null ],
     [ "setOutputPower", "class_s_x1272.html#aec51f08c0902145ff5f11e27e7cab638", null ],
     [ "setOutputPower", "class_s_x1272.html#a03f7073d710f18aad79b7d46f2fda659", null ],
     [ "setSpreadingFactor", "class_s_x1272.html#a82084ac58502c83d2ada998410307490", null ]

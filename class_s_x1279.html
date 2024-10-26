@@ -120,6 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1279.html#ab60691d073ca75ef09dab7a8f28fb7fb">setFrequency</a> (float freq) override</td></tr>
 <tr class="memdesc:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values range from 137.0 MHz to 960.0 MHz.  <a href="class_s_x1279.html#ab60691d073ca75ef09dab7a8f28fb7fb">More...</a><br /></td></tr>
 <tr class="separator:ab60691d073ca75ef09dab7a8f28fb7fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea8bd74e7c5d7b97d4fe4a8182680d5c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1279.html#aea8bd74e7c5d7b97d4fe4a8182680d5c">setModem</a> (ModemType_t modem) override</td></tr>
+<tr class="memdesc:aea8bd74e7c5d7b97d4fe4a8182680d5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters.  <a href="class_s_x1279.html#aea8bd74e7c5d7b97d4fe4a8182680d5c">More...</a><br /></td></tr>
+<tr class="separator:aea8bd74e7c5d7b97d4fe4a8182680d5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_s_x1278"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_s_x1278')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="class_s_x1278.html">SX1278</a></td></tr>
 <tr class="memitem:a00ebd3e60a66056940b241b13da0c68e inherit pub_methods_class_s_x1278"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1278.html#a00ebd3e60a66056940b241b13da0c68e">SX1278</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:a00ebd3e60a66056940b241b13da0c68e inherit pub_methods_class_s_x1278"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor. Called from Arduino sketch when creating new LoRa instance.  <a href="class_s_x1278.html#a00ebd3e60a66056940b241b13da0c68e">More...</a><br /></td></tr>
@@ -439,6 +442,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">invertIQ</a> (bool enable) override</td></tr>
 <tr class="memdesc:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable inversion of the I and Q signals.  <a href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">More...</a><br /></td></tr>
 <tr class="separator:a363a436978ba990e1bf7d73f648ad7e9 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a333a9004cc05ff8aba2e9610db31109d inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d">getModem</a> (ModemType_t *modem) override</td></tr>
+<tr class="memdesc:a333a9004cc05ff8aba2e9610db31109d inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_s_x127x.html#a333a9004cc05ff8aba2e9610db31109d">More...</a><br /></td></tr>
+<tr class="separator:a333a9004cc05ff8aba2e9610db31109d inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4b99d1bc67ac2c81eeb11dd6793a8c5 inherit pub_methods_class_s_x127x"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#ae4b99d1bc67ac2c81eeb11dd6793a8c5">setDirectAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:ae4b99d1bc67ac2c81eeb11dd6793a8c5 inherit pub_methods_class_s_x127x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when data bit is received in direct mode.  <a href="class_s_x127x.html#ae4b99d1bc67ac2c81eeb11dd6793a8c5">More...</a><br /></td></tr>
 <tr class="separator:ae4b99d1bc67ac2c81eeb11dd6793a8c5 inherit pub_methods_class_s_x127x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -759,6 +765,43 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_s_x1278.html#adb4d95d3b2798cf8ea94890ae71dcc59">SX1278</a>.</p>
+
+</div>
+</div>
+<a id="aea8bd74e7c5d7b97d4fe4a8182680d5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea8bd74e7c5d7b97d4fe4a8182680d5c">&#9670;&nbsp;</a></span>setModem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX1279::setModem </td>
+          <td>(</td>
+          <td class="paramtype">ModemType_t&#160;</td>
+          <td class="paramname"><em>modem</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set modem for the radio to use. Will perform full reset and reconfigure the radio using its default parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">modem</td><td>Modem type to set - FSK or LoRa. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_s_x1278.html#a609dd3faf2036e8c2d046fd191e0137d">SX1278</a>.</p>
 
 </div>
 </div>
