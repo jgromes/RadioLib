@@ -320,6 +320,15 @@ dropRepeaters	KEYWORD2
 sendTone	KEYWORD2
 
 # PhysicalLayer
+RadioLibIrqType_t	KEYWORD1
+LoRaRate_t	KEYWORD1
+FSKRate_t	KEYWORD1
+LrFhssRate_t	KEYWORD1
+DataRate_t	KEYWORD1
+CADScanConfig_t	KEYWORD1
+RSSIScanConfig_t	KEYWORD1
+ChannelScanConfig_t	KEYWORD1
+ModemType_t	KEYWORD1
 dropSync	KEYWORD2
 setTimerFlag	KEYWORD2
 setInterruptSetup	KEYWORD2
@@ -330,9 +339,7 @@ clearPacketSentAction	KEYWORD2
 setDataRate	KEYWORD2
 checkDataRate	KEYWORD2
 setModem	KEYWORD2
-
-# BellModem
-setModem	KEYWORD2
+getModem	KEYWORD2
 
 # LoRaWAN
 getBufferNonces	KEYWORD2
