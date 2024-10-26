@@ -316,9 +316,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
     uint8_t data[RADIOLIB_STATIC_ARRAY_SIZE + 1];
   #else
     uint8_t* data = new uint8_t[length + 1];
-    if(!data) {
-      return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
-    }
+    RADIOLIB_ASSERT_PTR(data);
   #endif
 
   // read the received data

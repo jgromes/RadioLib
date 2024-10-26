@@ -1663,9 +1663,7 @@ int16_t SX126x::invertIQ(bool enable) {
 }
 
 int16_t SX126x::getModem(ModemType_t* modem) {
-  if(!modem) {
-    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
-  }
+  RADIOLIB_ASSERT_PTR(modem);
 
   uint8_t packetType = getPacketType();
   switch(packetType) {

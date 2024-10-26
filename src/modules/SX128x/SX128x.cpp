@@ -870,9 +870,7 @@ int16_t SX128x::setModem(ModemType_t modem) {
 }
 
 int16_t SX128x::getModem(ModemType_t* modem) {
-  if(!modem) {
-    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
-  }
+  RADIOLIB_ASSERT_PTR(modem);
 
   uint8_t packetType = getPacketType();
   switch(packetType) {
