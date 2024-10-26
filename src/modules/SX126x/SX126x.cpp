@@ -968,7 +968,12 @@ int16_t SX126x::setPreambleLength(size_t preambleLength) {
     return(setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled));
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     this->preambleLengthFSK = preambleLength;
-    return(setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType));
+    this->preambleDetLength = preambleLength >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
+                              preambleLength >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
+                              preambleLength >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
+                              preambleLength >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
+                              RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
+    return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType));
   }
 
   return(RADIOLIB_ERR_UNKNOWN);
@@ -1195,7 +1200,7 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, size_t len) {
 
     // update packet parameters
     this->syncWordLength = len * 8;
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
 
     return(state);
   
@@ -1245,7 +1250,7 @@ int16_t SX126x::setNodeAddress(uint8_t addr) {
 
   // enable address filtering (node only)
   this->addrComp = RADIOLIB_SX126X_GFSK_ADDRESS_FILT_NODE;
-  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
   RADIOLIB_ASSERT(state);
 
   // set node address
@@ -1263,7 +1268,7 @@ int16_t SX126x::setBroadcastAddress(uint8_t broadAddr) {
 
   // enable address filtering (node and broadcast)
   this->addrComp = RADIOLIB_SX126X_GFSK_ADDRESS_FILT_NODE_BROADCAST;
-  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
   RADIOLIB_ASSERT(state);
 
   // set broadcast address
@@ -1280,7 +1285,7 @@ int16_t SX126x::disableAddressFiltering() {
 
   // disable address filtering
   this->addrComp = RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF;
-  return(setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening));
+  return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening));
 }
 
 int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool inverted) {
@@ -1311,7 +1316,7 @@ int16_t SX126x::setCRC(uint8_t len, uint16_t initial, uint16_t polynomial, bool 
         return(RADIOLIB_ERR_INVALID_CRC_CONFIGURATION);
     }
 
-    int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+    int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
     RADIOLIB_ASSERT(state);
 
     // write initial CRC value
@@ -1353,7 +1358,7 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
     // disable whitening
     this->whitening = RADIOLIB_SX126X_GFSK_WHITENING_OFF;
 
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
     RADIOLIB_ASSERT(state);
 
   } else {
@@ -1373,7 +1378,7 @@ int16_t SX126x::setWhitening(bool enabled, uint16_t initial) {
     state = writeRegister(RADIOLIB_SX126X_REG_WHITENING_INITIAL_MSB, data, 2);
     RADIOLIB_ASSERT(state);
 
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
     RADIOLIB_ASSERT(state);
   }
   return(state);
@@ -1998,7 +2003,7 @@ int16_t SX126x::setPacketMode(uint8_t mode, uint8_t len) {
   }
 
   // set requested packet mode
-  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, mode, len);
+  int16_t state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, mode, len);
   RADIOLIB_ASSERT(state);
 
   // update cached value
@@ -2055,7 +2060,7 @@ int16_t SX126x::setPacketParams(uint16_t preambleLen, uint8_t crcType, uint8_t p
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_PACKET_PARAMS, data, 6));
 }
 
-int16_t SX126x::setPacketParamsFSK(uint16_t preambleLen, uint8_t crcType, uint8_t syncWordLen, uint8_t addrCmp, uint8_t whiten, uint8_t packType, uint8_t payloadLen, uint8_t preambleDetectorLen) {
+int16_t SX126x::setPacketParamsFSK(uint16_t preambleLen, uint8_t preambleDetectorLen, uint8_t crcType, uint8_t syncWordLen, uint8_t addrCmp, uint8_t whiten, uint8_t packType, uint8_t payloadLen) {
   uint8_t data[9] = {(uint8_t)((preambleLen >> 8) & 0xFF), (uint8_t)(preambleLen & 0xFF),
                      preambleDetectorLen, syncWordLen, addrCmp,
                      packType, payloadLen, crcType, whiten};
