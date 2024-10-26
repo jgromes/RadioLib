@@ -662,6 +662,13 @@ class PhysicalLayer {
     */
     virtual int16_t setModem(ModemType_t modem);
 
+    /*!
+      \brief Get modem currently in use by the radio.
+      \param modem Pointer to a variable to save the retrieved configuration into.
+      \returns \ref status_codes
+    */
+    virtual int16_t getModem(ModemType_t* modem);
+
     #if RADIOLIB_INTERRUPT_TIMING
 
     /*!
@@ -720,6 +727,7 @@ class PhysicalLayer {
     friend class BellClient;
     friend class FT8Client;
     friend class LoRaWANNode;
+    friend class M17Client;
 };
 
 #endif
