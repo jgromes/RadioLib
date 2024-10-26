@@ -10,12 +10,11 @@ on:
       id:
         description: The ID of the platform on which the build is run
         required: true
-        default: arduino:avr:uno
+        default: arduino:avr:mega
         type: choice
         options:
           - all
           - none
-          - arduino:avr:uno
           - arduino:avr:mega
           - arduino:mbed:nano33ble
           - arduino:mbed:envie_m4
@@ -45,8 +44,6 @@ jobs:
       matrix:
         # platform-dependent settings - extra board options, board index URLs, skip patterns etc.
         include:
-          - id: arduino:avr:uno
-            run: echo "skip-pattern=(STM32WL|SSTV|LoRaWAN|LR11x0_Firmware_Update|Pager|APRS|Morse|SX126x|Hellschreiber)" >> $GITHUB_OUTPUT
           - id: arduino:avr:mega
             run: |
               echo "options=':cpu=atmega2560'" >> $GITHUB_OUTPUT
@@ -131,7 +128,7 @@ jobs:
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}
     env:
-      run-build: ${{ (inputs.id != 'none' && matrix.id == 'arduino:avr:uno') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.id)) || inputs.id == 'all' || inputs.id == matrix.id }}
+      run-build: ${{ (inputs.id != 'none' && matrix.id == 'arduino:avr:mega') || contains(github.event.head_commit.message, 'CI_BUILD_ALL') || contains(github.event.head_commit.message, 'Bump version to') || contains(github.event.head_commit.message, format('{0}', matrix.id)) || inputs.id == 'all' || inputs.id == matrix.id }}
 
     steps:
       - name: Free Disk Space (Ubuntu)
