@@ -21,9 +21,6 @@ class LR1121: public LR1120 {
     */
     LR1121(Module* mod); // cppcheck-suppress noExplicitConstructor
 
-    // TODO this is where overrides to disable GNSS+WiFi scanning methods on LR1121
-    // will be put once those are implemented
-
 #if !RADIOLIB_GODMODE
   private:
 #endif

@@ -1512,6 +1512,11 @@ int16_t LR11x0::setLrFhssConfig(uint8_t bw, uint8_t cr, uint8_t hdrCount, uint16
 }
 
 int16_t LR11x0::startWifiScan(char wifiType, uint8_t mode, uint16_t chanMask, uint8_t numScans, uint16_t timeout) {
+  // LR1121 cannot do WiFi scanning
+  if(this->chipType == RADIOLIB_LR11X0_DEVICE_LR1121) {
+    return(RADIOLIB_ERR_UNSUPPORTED);
+  }
+
   uint8_t type;
   switch(wifiType) {
     case('b'):
