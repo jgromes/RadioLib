@@ -856,6 +856,37 @@ int16_t SX128x::checkOutputPower(int8_t pwr, int8_t* clipped) {
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t SX128x::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::LoRa): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::FSK): {
+      return(this->beginGFSK());
+    } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+}
+
+int16_t SX128x::getModem(ModemType_t* modem) {
+  if(!modem) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  uint8_t packetType = getPacketType();
+  switch(packetType) {
+    case(RADIOLIB_SX128X_PACKET_TYPE_LORA):
+      *modem = ModemType_t::LoRa;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_SX128X_PACKET_TYPE_GFSK):
+      *modem = ModemType_t::FSK;
+      return(RADIOLIB_ERR_NONE);
+  }
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 int16_t SX128x::setPreambleLength(uint32_t preambleLength) {
   uint8_t modem = getPacketType();
   if((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING)) {
