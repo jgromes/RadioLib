@@ -79,4 +79,17 @@ int16_t SX1276::setFrequency(float freq) {
   return(state);
 }
 
+int16_t SX1276::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::LoRa): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::FSK): {
+      return(this->beginFSK());
+    } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+}
+
 #endif

@@ -105,4 +105,19 @@ int16_t LR1110::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPo
   return(RADIOLIB_ERR_NONE);
 }
 
+int16_t LR1110::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::LoRa): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::FSK): {
+      return(this->beginGFSK());
+    } break;
+    case(ModemType_t::LRFHSS): {
+      return(this->beginLRFHSS());
+    } break;
+  }
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 #endif

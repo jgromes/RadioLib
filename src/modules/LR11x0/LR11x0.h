@@ -1602,6 +1602,13 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getGnssSatellites(LR11x0GnssSatellite_t* sats, uint8_t numSats);
+
+    /*!
+      \brief Get modem currently in use by the radio.
+      \param modem Pointer to a variable to save the retrieved configuration into.
+      \returns \ref status_codes
+    */
+    int16_t getModem(ModemType_t* modem) override;
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:

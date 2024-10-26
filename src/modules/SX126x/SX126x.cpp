@@ -1662,6 +1662,27 @@ int16_t SX126x::invertIQ(bool enable) {
   return(setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled));
 }
 
+int16_t SX126x::getModem(ModemType_t* modem) {
+  if(!modem) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  uint8_t packetType = getPacketType();
+  switch(packetType) {
+    case(RADIOLIB_SX126X_PACKET_TYPE_LORA):
+      *modem = ModemType_t::LoRa;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_SX126X_PACKET_TYPE_GFSK):
+      *modem = ModemType_t::FSK;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS):
+      *modem = ModemType_t::LRFHSS;
+      return(RADIOLIB_ERR_NONE);
+  }
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void SX126x::setDirectAction(void (*func)(void)) {
   setDio1Action(func);

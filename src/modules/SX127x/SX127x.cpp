@@ -1754,6 +1754,24 @@ int16_t SX127x::invertIQ(bool enable) {
   return(state);
 }
 
+int16_t SX127x::getModem(ModemType_t* modem) {
+  if(!modem) {
+    return(RADIOLIB_ERR_MEMORY_ALLOCATION_FAILED);
+  }
+
+  int16_t packetType = getActiveModem();
+  switch(packetType) {
+    case(RADIOLIB_SX127X_LORA):
+      *modem = ModemType_t::LoRa;
+      return(RADIOLIB_ERR_NONE);
+    case(RADIOLIB_SX127X_FSK_OOK):
+      *modem = ModemType_t::FSK;
+      return(RADIOLIB_ERR_NONE);
+  }
+  
+  return(RADIOLIB_ERR_WRONG_MODEM);
+}
+
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
 void SX127x::setDirectAction(void (*func)(void)) {
   setDio1Action(func, this->mod->hal->GpioInterruptRising);

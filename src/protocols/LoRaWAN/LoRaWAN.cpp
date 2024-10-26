@@ -2768,11 +2768,19 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
     return(state);
   }
 
-  // TODO implement PhysicalLayer::setModem()
+  // get the currently configured modem from the radio
+  ModemType_t modem;
+  state = this->phyLayer->getModem(&modem);
+  RADIOLIB_ASSERT(state);
+
   // set modem-dependent functions
   switch(this->band->dataRates[chnl->dr] & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
     case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
-      this->modulation = RADIOLIB_LORAWAN_MODULATION_LORA;
+      if(modem != ModemType_t::LoRa) {
+        state = this->phyLayer->setModem(ModemType_t::LoRa);
+        RADIOLIB_ASSERT(state);
+      }
+      modem = ModemType_t::LoRa;
       // downlink messages are sent with inverted IQ
       if(dir == RADIOLIB_LORAWAN_DOWNLINK) {
         state = this->phyLayer->invertIQ(true);
@@ -2781,16 +2789,27 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       }
       RADIOLIB_ASSERT(state);
       break;
+    
     case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
-      this->modulation = RADIOLIB_LORAWAN_MODULATION_GFSK;
+      if(modem != ModemType_t::FSK) {
+        state = this->phyLayer->setModem(ModemType_t::FSK);
+        RADIOLIB_ASSERT(state);
+      }
+      modem = ModemType_t::FSK;
       state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
       RADIOLIB_ASSERT(state);
       state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
       RADIOLIB_ASSERT(state);
       break;
+    
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
-      this->modulation = RADIOLIB_LORAWAN_MODULATION_LR_FHSS;
+      if(modem != ModemType_t::LRFHSS) {
+        state = this->phyLayer->setModem(ModemType_t::LRFHSS);
+        RADIOLIB_ASSERT(state);
+      }
+      modem = ModemType_t::LRFHSS;
       break;
+    
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }
@@ -2812,40 +2831,37 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   state = this->phyLayer->setDataRate(dr);
   RADIOLIB_ASSERT(state);
 
-  if(this->modulation == RADIOLIB_LORAWAN_MODULATION_GFSK) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("FSK:  BR = %4.1f, FD = %4.1f kHz", 
-                                    dr.fsk.bitRate, dr.fsk.freqDev);
-  }
-  if(this->modulation == RADIOLIB_LORAWAN_MODULATION_LORA) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LoRa: SF = %d, BW = %5.1f kHz, CR = 4/%d, IQ: %c", 
-                                    dr.lora.spreadingFactor, dr.lora.bandwidth, dr.lora.codingRate, dir ? 'D' : 'U');
-  }
-
   // this only needs to be done once-ish
   uint8_t syncWord[4] = { 0 };
   uint8_t syncWordLen = 0;
   size_t preLen = 0;
-  switch(this->modulation) {
-    case(RADIOLIB_LORAWAN_MODULATION_GFSK): {
+  switch(modem) {
+    case(ModemType_t::FSK): {
       preLen = 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN;
       syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
       syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
       syncWord[2] = (uint8_t)RADIOLIB_LORAWAN_GFSK_SYNC_WORD;
       syncWordLen = 3;
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("FSK:  BR = %4.1f, FD = %4.1f kHz", 
+                                      dr.fsk.bitRate, dr.fsk.freqDev);
     } break;
 
-    case(RADIOLIB_LORAWAN_MODULATION_LORA): {
+    case(ModemType_t::LoRa): {
       preLen = RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN;
       syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
       syncWordLen = 1;
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LoRa: SF = %d, BW = %5.1f kHz, CR = 4/%d, IQ: %c", 
+                                    dr.lora.spreadingFactor, dr.lora.bandwidth, dr.lora.codingRate, dir ? 'D' : 'U');
     } break;
 
-    case(RADIOLIB_LORAWAN_MODULATION_LR_FHSS): {
+    case(ModemType_t::LRFHSS): {
       syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 24);
       syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 16);
       syncWord[2] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 8);
       syncWord[3] = (uint8_t)RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD;
       syncWordLen = 4;
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LR-FHSS: BW = 0x%02x, CR = 0x%02x kHz, grid = %c", 
+                                    dr.lrfhss.bw, dr.lrfhss.cr, dr.lrFhss.narrowGrid ? 'N' : 'W');
     } break;
 
     default:
@@ -2859,7 +2875,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   if(pre) {
     preLen = pre;
   }
-  if(this->modulation != RADIOLIB_LORAWAN_MODULATION_LR_FHSS) {
+  if(modem != ModemType_t::LRFHSS) {
     state = this->phyLayer->setPreambleLength(preLen);
   }
   return(state);

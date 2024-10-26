@@ -705,4 +705,17 @@ void SX1278::errataFix(bool rx) {
   mod->SPIsetRegValue(0x30, fixedRegs[2]);
 }
 
+int16_t SX1278::setModem(ModemType_t modem) {
+  switch(modem) {
+    case(ModemType_t::LoRa): {
+      return(this->begin());
+    } break;
+    case(ModemType_t::FSK): {
+      return(this->beginFSK());
+    } break;
+    default:
+      return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+}
+
 #endif

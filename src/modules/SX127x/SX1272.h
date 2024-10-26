@@ -301,6 +301,14 @@ class SX1272: public SX127x {
       \returns \ref status_codes
     */
     int16_t explicitHeader();
+    
+    /*!
+      \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio
+      using its default parameters.
+      \param modem Modem type to set - FSK or LoRa.
+      \returns \ref status_codes
+    */
+    int16_t setModem(ModemType_t modem) override;
 
 #if !RADIOLIB_GODMODE
   protected:
