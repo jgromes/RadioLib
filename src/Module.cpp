@@ -489,15 +489,17 @@ void Module::setRfSwitchPins(uint32_t rxEn, uint32_t txEn) {
 void Module::setRfSwitchTable(const uint32_t (&pins)[RFSWITCH_MAX_PINS], const RfSwitchMode_t table[]) {
   memcpy(this->rfSwitchPins, pins, sizeof(this->rfSwitchPins));
   this->rfSwitchTable = table;
-  for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++)
+  for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
     this->hal->pinMode(pins[i], this->hal->GpioModeOutput);
+  }
 }
 
 const Module::RfSwitchMode_t *Module::findRfSwitchMode(uint8_t mode) const {
   const RfSwitchMode_t *row = this->rfSwitchTable;
-  while (row && row->mode != MODE_END_OF_TABLE) {
-    if (row->mode == mode)
+  while(row && row->mode != MODE_END_OF_TABLE) {
+    if(row->mode == mode) {
       return row;
+    }
     ++row;
   }
   return nullptr;
@@ -514,8 +516,9 @@ void Module::setRfSwitchState(uint8_t mode) {
   const uint32_t *value = &row->values[0];
   for(size_t i = 0; i < RFSWITCH_MAX_PINS; i++) {
     uint32_t pin = this->rfSwitchPins[i];
-    if (pin != RADIOLIB_NC)
+    if(!(pin & RFSWITCH_PIN_FLAG)) {
       this->hal->digitalWrite(pin, *value);
+    }
     ++value;
   }
 }

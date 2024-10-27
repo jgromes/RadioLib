@@ -20,6 +20,13 @@
 #define END_OF_MODE_TABLE    { Module::MODE_END_OF_TABLE, {} }
 
 /*!
+  \def RFSWITCH_PIN_FLAG Bit flag used to mark unused pins in RF switch pin map. This can be either
+  unconnected pin marked with RADIOLIB_NC, or a pin controlled by the radio (e.g. DIOx pins on LR11x0),
+  as opposed to an MCU-controlled GPIO pin.
+*/
+#define RFSWITCH_PIN_FLAG                                       (0x01UL << 31)
+
+/*!
   \defgroup module_spi_command_pos Position of commands in Module::spiConfig command array.
   \{
 */
