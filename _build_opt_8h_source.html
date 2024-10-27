@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="comment"> * Platform-specific configuration.</span></div>
 <div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="comment"> *</span></div>
 <div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="comment"> * RADIOLIB_PLATFORM - platform name, used in debugging to quickly check the correct platform is detected.</span></div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"> * RADIOLIB_NC - alias for unused pin, usually the largest possible value of uint8_t.</span></div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="comment"> * RADIOLIB_NC - alias for unused pin, usually the largest possible value of uint32_t.</span></div>
 <div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;<span class="comment"> * RADIOLIB_DEFAULT_SPI - default SPIClass instance to use.</span></div>
 <div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="comment"> * RADIOLIB_NONVOLATILE - macro to place variable into program storage (usually Flash).</span></div>
 <div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="comment"> * RADIOLIB_NONVOLATILE_READ_BYTE - function/macro to read variables saved in program storage (usually Flash).</span></div>
@@ -510,7 +510,7 @@ $(document).ready(function(){initNavTree('_build_opt_8h_source.html',''); initRe
 <div class="line"><a name="l00422"></a><span class="lineno">  422</span>&#160;  <span class="comment">// generic non-Arduino platform</span></div>
 <div class="line"><a name="l00423"></a><span class="lineno">  423</span>&#160;<span class="preprocessor">  #define RADIOLIB_PLATFORM                           &quot;Generic&quot;</span></div>
 <div class="line"><a name="l00424"></a><span class="lineno">  424</span>&#160; </div>
-<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="preprocessor">  #define RADIOLIB_NC                                 (0xFF)</span></div>
+<div class="line"><a name="l00425"></a><span class="lineno">  425</span>&#160;<span class="preprocessor">  #define RADIOLIB_NC                                 (0xFFFFFFFF)</span></div>
 <div class="line"><a name="l00426"></a><span class="lineno">  426</span>&#160;<span class="preprocessor">  #define RADIOLIB_NONVOLATILE</span></div>
 <div class="line"><a name="l00427"></a><span class="lineno">  427</span>&#160;<span class="preprocessor">  #define RADIOLIB_NONVOLATILE_READ_BYTE(addr)        (*((uint8_t *)(void *)(addr)))</span></div>
 <div class="line"><a name="l00428"></a><span class="lineno">  428</span>&#160;<span class="preprocessor">  #define RADIOLIB_NONVOLATILE_READ_DWORD(addr)       (*((uint32_t *)(void *)(addr)))</span></div>
