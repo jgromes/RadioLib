@@ -2400,10 +2400,10 @@ int16_t LR11x0::setRegMode(uint8_t mode) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_REG_MODE, true, &mode, 1));
 }
 
-int16_t LR11x0::calibImage(float freq1, float freq2) {
+int16_t LR11x0::calibrateImageRejection(float freqMin, float freqMax) {
   uint8_t buff[2] = {
-    (uint8_t)floor((freq1 - 1.0f) / 4.0f),
-    (uint8_t)ceil((freq2 + 1.0f) / 4.0f)
+    (uint8_t)floor((freqMin - 1.0f) / 4.0f),
+    (uint8_t)ceil((freqMax + 1.0f) / 4.0f)
   };
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CALIB_IMAGE, true, buff, sizeof(buff)));
 }

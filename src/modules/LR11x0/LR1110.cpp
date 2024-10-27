@@ -1,4 +1,6 @@
 #include "LR1110.h"
+#include <math.h>
+
 #if !RADIOLIB_EXCLUDE_LR11X0
 
 LR1110::LR1110(Module* mod) : LR11x0(mod) {
@@ -45,20 +47,24 @@ int16_t LR1110::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid,
 }
 
 int16_t LR1110::setFrequency(float freq) {
-  return(this->setFrequency(freq, true));
+  return(this->setFrequency(freq, false));
 }
 
-int16_t LR1110::setFrequency(float freq, bool calibrate, float band) {
+int16_t LR1110::setFrequency(float freq, bool skipCalibration, float band) {
   RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
-
-  // calibrate image rejection
-  if(calibrate) {
-    int16_t state = LR11x0::calibImage(freq - band, freq + band);
+  
+  // check if we need to recalibrate image
+  int16_t state;
+  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ)) {
+    state = LR11x0::calibrateImageRejection(freq - band, freq + band);
     RADIOLIB_ASSERT(state);
   }
 
   // set frequency
-  return(LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f)));
+  state = LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f));
+  RADIOLIB_ASSERT(state);
+  this->freqMHz = freq;
+  return(state);
 }
 
 int16_t LR1110::setOutputPower(int8_t power) {

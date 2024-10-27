@@ -71,7 +71,8 @@ class LR1110: public LR11x0 {
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
-      Will also perform calibrations.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG MHz.
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
@@ -79,14 +80,16 @@ class LR1110: public LR11x0 {
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG MHz.
       \param freq Carrier frequency to be set in MHz.
-      \param calibrate Run image calibration.
+      \param skipCalibration Skip automated image calibration.
       \param band Half bandwidth for image calibration. For example,
       if carrier is 434 MHz and band is set to 4 MHz, then the image will be calibrate
       for band 430 - 438 MHz. Unused if calibrate is set to false, defaults to 4 MHz
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool calibrate, float band = 4);
+    int16_t setFrequency(float freq, bool skipCalibration, float band = 4);
     
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).

@@ -233,6 +233,7 @@
 #define RADIOLIB_LR11X0_CALIBRATE_HF_RC                         (0x01UL << 1)   //  1     1                high frequency RC
 #define RADIOLIB_LR11X0_CALIBRATE_LF_RC                         (0x01UL << 0)   //  0     0                low frequency RC
 #define RADIOLIB_LR11X0_CALIBRATE_ALL                           (0x3FUL << 0)   //  5     0                everything
+#define RADIOLIB_LR11X0_CAL_IMG_FREQ_TRIG_MHZ                   (20.0)
 
 // RADIOLIB_LR11X0_CMD_SET_REG_MODE
 #define RADIOLIB_LR11X0_REG_MODE_LDO                            (0x00UL << 0)   //  0     0     regulator mode: LDO in all modes
@@ -1609,6 +1610,15 @@ class LR11x0: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getModem(ModemType_t* modem) override;
+
+    /*!
+      \brief Perform image rejection calibration for the specified frequency band.
+      WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance
+      \param freqMin Frequency band lower bound.
+      \param freqMax Frequency band upper bound.
+      \returns \ref status_codes
+    */
+    int16_t calibrateImageRejection(float freqMin, float freqMax);
     
 #if !RADIOLIB_GODMODE && !RADIOLIB_LOW_LEVEL
   protected:
@@ -1629,7 +1639,6 @@ class LR11x0: public PhysicalLayer {
     int16_t clearErrors(void);
     int16_t calibrate(uint8_t params);
     int16_t setRegMode(uint8_t mode);
-    int16_t calibImage(float freq1, float freq2);
     int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg);
     int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);
     int16_t setDioIrqParams(uint32_t irq);
@@ -1790,6 +1799,7 @@ class LR11x0: public PhysicalLayer {
   protected:
 #endif
     uint8_t chipType = 0;
+    float freqMHz = 0;
 
 #if !RADIOLIB_GODMODE
   private:
