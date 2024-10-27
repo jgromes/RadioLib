@@ -1445,17 +1445,36 @@ void LR11x0::setRfSwitchTable(const uint32_t (&pins)[Module::RFSWITCH_MAX_PINS],
   // find which pins are used
   uint8_t enable = 0;
   for(size_t i = 0; i < Module::RFSWITCH_MAX_PINS; i++) {
-    if((pins[i] == RADIOLIB_NC) || (pins[i] > RADIOLIB_LR11X0_DIO10)) {
+    // check if this pin is unused
+    if(pins[i] == RADIOLIB_NC) {
       continue;
     }
-    enable |= 1UL << pins[i];
+
+    // only keep DIO pins, there may be some GPIOs in the switch tabke
+    if(pins[i] & RFSWITCH_PIN_FLAG) {
+      enable |= 1UL << RADIOLIB_LR11X0_DIOx_VAL(pins[i]);
+    }
+    
   }
 
   // now get the configuration
   uint8_t modes[7] = { 0 };
   for(size_t i = 0; i < 7; i++) {
+    // check end of table
+    if(table[i].mode == LR11x0::MODE_END_OF_TABLE) {
+      break;
+    }
+
+    // get the mode ID in case the modes are out-of-order
+    uint8_t index = table[i].mode - LR11x0::MODE_STBY;
+
+    // iterate over the pins
     for(size_t j = 0; j < Module::RFSWITCH_MAX_PINS; j++) {
-      modes[i] |= (table[i].values[j] > 0) ? (1UL << j) : 0;
+      // only process modes for the DIOx pins, skip GPIO pins
+      if(!(pins[j] & RFSWITCH_PIN_FLAG)) {
+        continue;
+      }
+      modes[index] |= (table[i].values[j] == this->mod->hal->GpioLevelHigh) ? (1UL << j) : 0;
     }
   }
 
