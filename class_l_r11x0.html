@@ -405,6 +405,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:afe8684b336a8137cde591283297a869c"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#afe8684b336a8137cde591283297a869c">getModem</a> (ModemType_t *modem) override</td></tr>
 <tr class="memdesc:afe8684b336a8137cde591283297a869c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <a href="class_l_r11x0.html#afe8684b336a8137cde591283297a869c">More...</a><br /></td></tr>
 <tr class="separator:afe8684b336a8137cde591283297a869c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc8fbcfff7cd3b801dcee22e87bc2598"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#adc8fbcfff7cd3b801dcee22e87bc2598">calibrateImageRejection</a> (float freqMin, float freqMax)</td></tr>
+<tr class="memdesc:adc8fbcfff7cd3b801dcee22e87bc2598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform image rejection calibration for the specified frequency band. WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance.  <a href="class_l_r11x0.html#adc8fbcfff7cd3b801dcee22e87bc2598">More...</a><br /></td></tr>
+<tr class="separator:adc8fbcfff7cd3b801dcee22e87bc2598"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <a href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">More...</a><br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -858,6 +861,44 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd>Timeout value in a unit that is specific for the used module </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a7f8d12a90158864a8ebc471b0ec89dc9">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="adc8fbcfff7cd3b801dcee22e87bc2598"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc8fbcfff7cd3b801dcee22e87bc2598">&#9670;&nbsp;</a></span>calibrateImageRejection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::calibrateImageRejection </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqMin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>freqMax</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Perform image rejection calibration for the specified frequency band. WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">freqMin</td><td>Frequency band lower bound. </td></tr>
+    <tr><td class="paramname">freqMax</td><td>Frequency band upper bound. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

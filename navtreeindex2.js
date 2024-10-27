@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"class_physical_layer.html#a2c7dd4704e3df353265010710bd26e83":[3,0,44,4],
 "class_physical_layer.html#a2f4f9b428d9ea9af886ca85e5088ed7b":[3,0,44,42],
 "class_physical_layer.html#a2fe95169b5cdc8cabe1f2af66cad6ef6":[3,0,44,18],
 "class_physical_layer.html#a32b512b34f6575b2109ae3c3f35d1369":[3,0,44,48],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "class_radio_lib_hal.html#a4b8e36ccf8fe372c259b963666513d37":[3,0,51,9],
 "class_radio_lib_hal.html#a4db0c60f2f6f64003f04cf0e03fea7ab":[3,0,51,6],
 "class_radio_lib_hal.html#a62c9032e834ba420d81dc3e69df64e17":[3,0,51,20],
-"class_radio_lib_hal.html#a64d98b48668ced5ba1014f272606f370":[3,0,51,8],
-"class_radio_lib_hal.html#a68d9271c76f8c96afb734a4634bf92e9":[3,0,51,17]
+"class_radio_lib_hal.html#a64d98b48668ced5ba1014f272606f370":[3,0,51,8]
 };

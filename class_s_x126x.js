@@ -6,6 +6,7 @@ var class_s_x126x =
     [ "beginFSK", "class_s_x126x.html#a2e500e5b6044ccab8f6b19af4ffa917c", null ],
     [ "beginLRFHSS", "class_s_x126x.html#af404471ef9d379c58b5b08757593fe6d", null ],
     [ "calculateRxTimeout", "class_s_x126x.html#a19f3c26d7a7959e302fc8174fc88a6d4", null ],
+    [ "calibrateImage", "class_s_x126x.html#a356052e39138cabc41358f5728bbbe70", null ],
     [ "calibrateImageRejection", "class_s_x126x.html#aa3c90f19cd141738ff013ae72f78f1bb", null ],
     [ "checkDataRate", "class_s_x126x.html#a75c8d32cee712e0c940163446b98e587", null ],
     [ "clearChannelScanAction", "class_s_x126x.html#a37dab0ab3c4cab82e367971fc31588a6", null ],

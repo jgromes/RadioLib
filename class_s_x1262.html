@@ -123,11 +123,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:aeeea8315c04afccc8cae8ec0dba2e426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method for LR-FHSS modem. This modem only supports transmission!  <a href="class_s_x1262.html#aeeea8315c04afccc8cae8ec0dba2e426">More...</a><br /></td></tr>
 <tr class="separator:aeeea8315c04afccc8cae8ec0dba2e426"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2122feee1a3bffaaa20e85b24dc8a899"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a2122feee1a3bffaaa20e85b24dc8a899">setFrequency</a> (float freq) override</td></tr>
-<tr class="memdesc:a2122feee1a3bffaaa20e85b24dc8a899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a2122feee1a3bffaaa20e85b24dc8a899">More...</a><br /></td></tr>
+<tr class="memdesc:a2122feee1a3bffaaa20e85b24dc8a899"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. Will automatically perform image calibration if the frequency changes by more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG MHz.  <a href="class_s_x1262.html#a2122feee1a3bffaaa20e85b24dc8a899">More...</a><br /></td></tr>
 <tr class="separator:a2122feee1a3bffaaa20e85b24dc8a899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f70b082116b03d1fafe395fc5a288f6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">setFrequency</a> (float freq, bool calibrate)</td></tr>
-<tr class="memdesc:a1f70b082116b03d1fafe395fc5a288f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.  <a href="class_s_x1262.html#a1f70b082116b03d1fafe395fc5a288f6">More...</a><br /></td></tr>
-<tr class="separator:a1f70b082116b03d1fafe395fc5a288f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87e496bf7f1ac2857e3f67438ea754db"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#a87e496bf7f1ac2857e3f67438ea754db">setFrequency</a> (float freq, bool skipCalibration)</td></tr>
+<tr class="memdesc:a87e496bf7f1ac2857e3f67438ea754db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. Will automatically perform image calibration if the frequency changes by more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ.  <a href="class_s_x1262.html#a87e496bf7f1ac2857e3f67438ea754db">More...</a><br /></td></tr>
+<tr class="separator:a87e496bf7f1ac2857e3f67438ea754db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa455a7f0e69abdcca55cf35388d9dc52"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1262.html#aa455a7f0e69abdcca55cf35388d9dc52">setOutputPower</a> (int8_t power) override</td></tr>
 <tr class="memdesc:aa455a7f0e69abdcca55cf35388d9dc52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets output power. Allowed values are in range from -9 to 22 dBm. This method is virtual to allow override from the <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> class.  <a href="class_s_x1262.html#aa455a7f0e69abdcca55cf35388d9dc52">More...</a><br /></td></tr>
 <tr class="separator:aa455a7f0e69abdcca55cf35388d9dc52"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -416,6 +416,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">setPaConfig</a> (uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax=RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut=RADIOLIB_SX126X_PA_CONFIG_PA_LUT)</td></tr>
 <tr class="memdesc:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the PA configuration. Allows user to optimize PA for a specific output power and matching network. Any calls to this method must be done after calling begin/beginFSK and/or setOutputPower. WARNING: Use at your own risk! Setting invalid values can and will lead to permanent damage!  <a href="class_s_x126x.html#a1623e7d5450c97ca092913ad79d62208">More...</a><br /></td></tr>
 <tr class="separator:a1623e7d5450c97ca092913ad79d62208 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a356052e39138cabc41358f5728bbbe70 inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a356052e39138cabc41358f5728bbbe70">calibrateImage</a> (float freq)</td></tr>
+<tr class="memdesc:a356052e39138cabc41358f5728bbbe70 inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform image rejection calibration for the specified frequency. Will try to use Semtech-defined presets first, and if none of them matches, custom iamge calibration will be attempted using calibrateImageRejection.  <a href="class_s_x126x.html#a356052e39138cabc41358f5728bbbe70">More...</a><br /></td></tr>
+<tr class="separator:a356052e39138cabc41358f5728bbbe70 inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#aa3c90f19cd141738ff013ae72f78f1bb">calibrateImageRejection</a> (float freqMin, float freqMax)</td></tr>
 <tr class="memdesc:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform image rejection calibration for the specified frequency band. WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance.  <a href="class_s_x126x.html#aa3c90f19cd141738ff013ae72f78f1bb">More...</a><br /></td></tr>
 <tr class="separator:aa3c90f19cd141738ff013ae72f78f1bb inherit pub_methods_class_s_x126x"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -848,7 +851,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. </p>
+<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. Will automatically perform image calibration if the frequency changes by more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG MHz. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
@@ -861,8 +864,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a1f70b082116b03d1fafe395fc5a288f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f70b082116b03d1fafe395fc5a288f6">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
+<a id="a87e496bf7f1ac2857e3f67438ea754db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87e496bf7f1ac2857e3f67438ea754db">&#9670;&nbsp;</a></span>setFrequency() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -877,7 +880,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>calibrate</em>&#160;</td>
+          <td class="paramname"><em>skipCalibration</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -887,11 +890,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
       </table>
 </div><div class="memdoc">
 
-<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. </p>
+<p>Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz. Will automatically perform image calibration if the frequency changes by more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">freq</td><td>Carrier frequency to be set in MHz. </td></tr>
-    <tr><td class="paramname">calibrate</td><td>Run image calibration. </td></tr>
+    <tr><td class="paramname">skipCalibration</td><td>Skip automated image calibration. </td></tr>
   </table>
   </dd>
 </dl>

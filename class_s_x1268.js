@@ -6,7 +6,7 @@ var class_s_x1268 =
     [ "beginLRFHSS", "class_s_x1268.html#a4f990f9e58d35cefa560c4fc767198fd", null ],
     [ "checkOutputPower", "class_s_x1268.html#ae1b1f56336fcef9ce31d9408fbbbfe3c", null ],
     [ "setFrequency", "class_s_x1268.html#af412a9361fe413b2d0c426100056d8c2", null ],
-    [ "setFrequency", "class_s_x1268.html#a59b538f4971525849b7aaa3456de9929", null ],
+    [ "setFrequency", "class_s_x1268.html#ad721d6feb4a8f62f2651049a68fe019b", null ],
     [ "setModem", "class_s_x1268.html#ae66e37a6897315f36a13c8d5cefe521b", null ],
     [ "setOutputPower", "class_s_x1268.html#a6b6adaee1c8d76c3d766225298d84709", null ]
 ];

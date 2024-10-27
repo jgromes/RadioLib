@@ -7,7 +7,7 @@ var class_l_r1110 =
     [ "checkOutputPower", "class_l_r1110.html#af1f6dddd12805fdecb55ef5703d23ef1", null ],
     [ "checkOutputPower", "class_l_r1110.html#ae084d4503b2abcdc508edef40b0cadb3", null ],
     [ "setFrequency", "class_l_r1110.html#ade94d20ea438cbd92c61e28d2232d7e8", null ],
-    [ "setFrequency", "class_l_r1110.html#a08c9ba9d02e7e3918f73f090c6d5ed33", null ],
+    [ "setFrequency", "class_l_r1110.html#a4f9272d078b79d76315be7a57be3e547", null ],
     [ "setModem", "class_l_r1110.html#a18f525740237b023056a8ca6f3671c6a", null ],
     [ "setOutputPower", "class_l_r1110.html#a65c08f0475f888537e55401b75e58b23", null ],
     [ "setOutputPower", "class_l_r1110.html#ae4eaaa6411bb1eeb131613fb3f43e5d1", null ]
