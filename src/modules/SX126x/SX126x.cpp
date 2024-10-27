@@ -1954,6 +1954,43 @@ int16_t SX126x::setRfFrequency(uint32_t frf) {
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_RF_FREQUENCY, data, 4));
 }
 
+int16_t SX126x::calibrateImage(float freq) {
+  uint8_t data[2] = { 0, 0 };
+
+  // try to match the frequency ranges
+  int freqBand = (int)freq;
+  if((freqBand >= 902) && (freqBand <= 928)) {
+    data[0] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_1;
+    data[1] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_2;
+  } else if((freqBand >= 863) && (freqBand <= 870)) {
+    data[0] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_1;
+    data[1] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_2;
+  } else if((freqBand >= 779) && (freqBand <= 787)) {
+    data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
+    data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
+  } else if((freqBand >= 470) && (freqBand <= 510)) {
+    data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
+    data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
+  } else if((freqBand >= 430) && (freqBand <= 440)) {
+    data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
+    data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
+  }
+
+  int16_t state;
+  if(data[0]) {
+    // matched with predefined ranges, do the calibration
+    state = SX126x::calibrateImage(data);
+  
+  } else {
+    // if nothing matched, try custom calibration - the may or may not work
+    RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to match predefined frequency range, trying custom");
+    state = SX126x::calibrateImageRejection(freq - 4.0f, freq + 4.0f);
+  
+  }
+  
+  return(state);
+}
+
 int16_t SX126x::calibrateImageRejection(float freqMin, float freqMax) {
   // calculate the calibration coefficients and calibrate image
   uint8_t data[] = { (uint8_t)floor((freqMin - 1.0f) / 4.0f), (uint8_t)ceil((freqMax + 1.0f) / 4.0f) };
@@ -2103,8 +2140,9 @@ int16_t SX126x::clearDeviceErrors() {
 
 int16_t SX126x::setFrequencyRaw(float freq) {
   // calculate raw value
-  this->frf = (freq * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
-  return(setRfFrequency(this->frf));
+  this->freqMHz = freq;
+  uint32_t frf = (this->freqMHz * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
+  return(setRfFrequency(frf));
 }
 
 int16_t SX126x::fixSensitivity() {

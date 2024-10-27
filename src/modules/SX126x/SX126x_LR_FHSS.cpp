@@ -355,7 +355,8 @@ int16_t SX126x::setLRFHSSHop(uint8_t index) {
   uint32_t nb_channel_in_grid = this->lrFhssGridNonFcc ? 8 : 52;
   uint32_t grid_offset = (1 + (this->lrFhssNgrid % 2)) * (nb_channel_in_grid / 2);
   uint32_t grid_in_pll_steps = this->lrFhssGridNonFcc ? 4096 : 26624;
-  uint32_t freq_raw = this->frf - freq_table * grid_in_pll_steps - grid_offset * 512;
+  uint32_t frf = (this->freqMHz * (uint32_t(1) << RADIOLIB_SX126X_DIV_EXPONENT)) / RADIOLIB_SX126X_CRYSTAL_FREQ;
+  uint32_t freq_raw = frf - freq_table * grid_in_pll_steps - grid_offset * 512;
 
   if((this->lrFhssHopNum < this->lrFhssHdrCount)) {
     if((((this->lrFhssHdrCount - this->lrFhssHopNum) % 2) == 0)) {

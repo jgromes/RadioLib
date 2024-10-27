@@ -80,6 +80,8 @@ class SX1268: public SX126x {
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 410.0 to 810.0 MHz.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG MHz.
       \param freq Carrier frequency to be set in MHz.
       \returns \ref status_codes
     */
@@ -87,11 +89,13 @@ class SX1268: public SX126x {
 
     /*!
       \brief Sets carrier frequency. Allowed values are in range from 150.0 to 960.0 MHz.
+      Will automatically perform image calibration if the frequency changes by
+      more than RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ.
       \param freq Carrier frequency to be set in MHz.
-      \param calibrate Run image calibration.
+      \param skipCalibration Skip automated image calibration.
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool calibrate);
+    int16_t setFrequency(float freq, bool skipCalibration);
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm.

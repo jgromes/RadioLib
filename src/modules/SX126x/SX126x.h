@@ -201,6 +201,7 @@
 #define RADIOLIB_SX126X_CAL_IMG_863_MHZ_2                       0xDB
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_1                       0xE1
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_2                       0xE9
+#define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   (20.0)
 
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_HP_MAX                        0x07
@@ -1195,6 +1196,15 @@ class SX126x: public PhysicalLayer {
     */
     int16_t setPaConfig(uint8_t paDutyCycle, uint8_t deviceSel, uint8_t hpMax = RADIOLIB_SX126X_PA_CONFIG_HP_MAX, uint8_t paLut = RADIOLIB_SX126X_PA_CONFIG_PA_LUT);
 
+     /*!
+      \brief Perform image rejection calibration for the specified frequency.
+      Will try to use Semtech-defined presets first, and if none of them matches,
+      custom iamge calibration will be attempted using calibrateImageRejection.
+      \param freq Frequency to perform the calibration for.
+      \returns \ref status_codes
+    */
+    int16_t calibrateImage(float freq);
+
     /*!
       \brief Perform image rejection calibration for the specified frequency band.
       WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance
@@ -1246,6 +1256,7 @@ class SX126x: public PhysicalLayer {
 #endif
     const char* chipType = NULL;
     uint8_t bandwidth = 0;
+    float freqMHz = 0;
     
     // Allow subclasses to define different TX modes
     uint8_t txMode = Module::MODE_TX;
@@ -1276,7 +1287,6 @@ class SX126x: public PhysicalLayer {
 
     uint32_t tcxoDelay = 0;
     uint8_t pwr = 0;
-    uint32_t frf = 0;
 
     size_t implicitLen = 0;
     uint8_t invertIQEnabled = RADIOLIB_SX126X_LORA_IQ_STANDARD;

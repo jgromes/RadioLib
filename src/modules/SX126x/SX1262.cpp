@@ -1,4 +1,6 @@
 #include "SX1262.h"
+#include <math.h>
+
 #if !RADIOLIB_EXCLUDE_SX126X
 
 SX1262::SX1262(Module* mod) : SX126x(mod) {
@@ -66,49 +68,16 @@ int16_t SX1262::beginLRFHSS(float freq, uint8_t bw, uint8_t cr, bool narrowGrid,
 }
 
 int16_t SX1262::setFrequency(float freq) {
-  return(setFrequency(freq, true));
+  return(setFrequency(freq, false));
 }
 
-int16_t SX1262::setFrequency(float freq, bool calibrate) {
+int16_t SX1262::setFrequency(float freq, bool skipCalibration) {
   RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
 
-  // calibrate image rejection
-  if(calibrate) {
-    uint8_t data[2] = { 0, 0 };
-
-    // try to match the frequency ranges
-    int freqBand = (int)freq;
-    if((freqBand >= 902) && (freqBand <= 928)) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_902_MHZ_2;
-    } else if((freqBand >= 863) && (freqBand <= 870)) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_863_MHZ_2;
-    } else if((freqBand >= 779) && (freqBand <= 787)) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_779_MHZ_2;
-    } else if((freqBand >= 470) && (freqBand <= 510)) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_470_MHZ_2;
-    } else if((freqBand >= 430) && (freqBand <= 440)) {
-      data[0] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_1;
-      data[1] = RADIOLIB_SX126X_CAL_IMG_430_MHZ_2;
-    }
-
-    int16_t state;
-    if(data[0]) {
-      // matched with predefined ranges, do the calibration
-      state = SX126x::calibrateImage(data);
-    
-    } else {
-      // if nothing matched, try custom calibration - the may or may not work
-      RADIOLIB_DEBUG_BASIC_PRINTLN("Failed to match predefined frequency range, trying custom");
-      state = SX126x::calibrateImageRejection(freq - 4.0f, freq + 4.0f);
-    
-    }
-    
+  // check if we need to recalibrate image
+  if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {
+    int16_t state = this->calibrateImage(freq);
     RADIOLIB_ASSERT(state);
-    
   }
 
   // set frequency
