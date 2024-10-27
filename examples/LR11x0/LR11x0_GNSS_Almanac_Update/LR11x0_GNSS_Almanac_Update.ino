@@ -41,6 +41,26 @@ LR1110 radio = new Module(10, 2, 3, 9);
 Radio radio = new RadioModule();
 */
 
+// set RF switch configuration for Wio WM1110
+// Wio WM1110 uses DIO5 and DIO6 for RF switching
+// NOTE: other boards may be different!
+static const uint32_t rfswitch_dio_pins[] = { 
+  RADIOLIB_LR11X0_DIO5, RADIOLIB_LR11X0_DIO6,
+  RADIOLIB_NC, RADIOLIB_NC, RADIOLIB_NC
+};
+
+static const Module::RfSwitchMode_t rfswitch_table[] = {
+  // mode                  DIO5  DIO6 
+  { LR11x0::MODE_STBY,   { LOW,  LOW  } },
+  { LR11x0::MODE_RX,     { HIGH, LOW  } },
+  { LR11x0::MODE_TX,     { HIGH, HIGH } },
+  { LR11x0::MODE_TX_HP,  { LOW,  HIGH } },
+  { LR11x0::MODE_TX_HF,  { LOW,  LOW  } },
+  { LR11x0::MODE_GNSS,   { LOW,  LOW  } },
+  { LR11x0::MODE_WIFI,   { LOW,  LOW  } },
+  END_OF_MODE_TABLE,
+};
+
 // structure to save information about the GNSS almanac
 LR11x0GnssAlmanacStatus_t almStatus;
 
@@ -57,6 +77,9 @@ void setup() {
     Serial.println(state);
     while (true) { delay(10); }
   }
+
+  // set RF switch control configuration
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 
   // check the firmware version
   Serial.print(F("[LR1110] Checking firmware version ... "));

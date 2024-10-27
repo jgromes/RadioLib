@@ -61,10 +61,6 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
 void setup() {
   Serial.begin(9600);
 
-  // set RF switch control configuration
-  // this has to be done prior to calling begin()
-  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
-
   // initialize LR1110 with default settings
   Serial.print(F("[LR1110] Initializing ... "));
   int state = radio.begin();
@@ -76,6 +72,9 @@ void setup() {
     delay(1000);
     while (true) { delay(10); }
   }
+
+  // set RF switch control configuration
+  radio.setRfSwitchTable(rfswitch_dio_pins, rfswitch_table);
 }
 
 // counter to keep track of transmitted packets
