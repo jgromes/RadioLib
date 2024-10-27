@@ -2861,7 +2861,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       syncWord[3] = (uint8_t)RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD;
       syncWordLen = 4;
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("LR-FHSS: BW = 0x%02x, CR = 0x%02x kHz, grid = %c", 
-                                    dr.lrfhss.bw, dr.lrfhss.cr, dr.lrFhss.narrowGrid ? 'N' : 'W');
+                                    dr.lrFhss.bw, dr.lrFhss.cr, dr.lrFhss.narrowGrid ? 'N' : 'W');
     } break;
 
     default:
