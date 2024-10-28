@@ -58,7 +58,7 @@ struct FSKRate_t {
 */
 struct LrFhssRate_t {
   /*! \brief Bandwidth */
-  uint8_t bw;
+  float bw;
 
   /*! \brief Coding rate */
   uint8_t cr;
