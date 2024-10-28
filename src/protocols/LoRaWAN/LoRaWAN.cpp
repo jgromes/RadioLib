@@ -3299,10 +3299,13 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
     return(state);
   }
 
+  ModemType_t modemNew;
+
   uint8_t dataRateBand = this->band->dataRates[dr];
 
   switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
     case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
+      modemNew = ModemType_t::LoRa;
       dataRate->lora.spreadingFactor = ((dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_SF) >> 3) + 7;
       switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
@@ -3320,18 +3323,55 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
       dataRate->lora.codingRate = 5;
       break;
     case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
+      modemNew = ModemType_t::FSK;
       dataRate->fsk.bitRate = 50;
       dataRate->fsk.freqDev = 25;
       break;
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
-      // not yet supported by DataRate_t
-      return(RADIOLIB_ERR_UNSUPPORTED);
+      modemNew = ModemType_t::LRFHSS;
+      switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
+        case(RADIOLIB_LORAWAN_DATA_RATE_BW_137_KHZ):
+          dataRate->lrFhss.bw = 137.0;
+          dataRate->lrFhss.narrowGrid = 1;
+          break;
+        case(RADIOLIB_LORAWAN_DATA_RATE_BW_336_KHZ):
+          dataRate->lrFhss.bw = 336.0;
+          dataRate->lrFhss.narrowGrid = 1;
+          break;
+        case(RADIOLIB_LORAWAN_DATA_RATE_BW_1523_KHZ):
+          dataRate->lrFhss.bw = 1523.0;
+          dataRate->lrFhss.narrowGrid = 0;
+          break;
+        default:
+          return(RADIOLIB_ERR_UNSUPPORTED);
+      }
+      switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_CR) {
+        case(RADIOLIB_LORAWAN_DATA_RATE_CR_1_3):
+          dataRate->lrFhss.bw = 1;
+          break;
+        case(RADIOLIB_LORAWAN_DATA_RATE_CR_2_3):
+          dataRate->lrFhss.bw = 2;
+          break;
+        default:
+          return(RADIOLIB_ERR_UNSUPPORTED);;
+      }
+      break;
     default:
       return(RADIOLIB_ERR_UNSUPPORTED);
   }
 
-  state = this->phyLayer->checkDataRate(*dataRate);
+  // get the currently configured modem from the radio
+  ModemType_t modemCurrent;
+  state = this->phyLayer->getModem(&modemCurrent);
+  RADIOLIB_ASSERT(state);
 
+  // if the required modem is different than the current one, change over
+  if(modemNew != modemCurrent) {
+    state = this->phyLayer->setModem(modemNew);
+    RADIOLIB_ASSERT(state);
+  }
+
+  state = this->phyLayer->checkDataRate(*dataRate);
   return(state);
 }
 
