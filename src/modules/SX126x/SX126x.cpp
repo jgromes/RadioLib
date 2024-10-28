@@ -1048,6 +1048,15 @@ int16_t SX126x::setDataRate(DataRate_t dr) {
 
     // set the coding rate
     state = this->setCodingRate(dr.lora.codingRate);
+  
+  } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
+    // set the basic config
+    state = this->setLrFhssConfig(dr.lrFhss.bw, dr.lrFhss.cr);
+    RADIOLIB_ASSERT(state);
+
+    // set hopping grid
+    this->lrFhssGrid = dr.lrFhss.narrowGrid ? RADIOLIB_SX126X_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_SX126X_LR_FHSS_GRID_STEP_FCC;
+
   }
 
   return(state);
