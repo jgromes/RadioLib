@@ -233,9 +233,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a583f2d5ed601a98c609dbf0d57f2f541"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">setCodingRate</a> (uint8_t cr, bool longInterleave=false)</td></tr>
 <tr class="memdesc:a583f2d5ed601a98c609dbf0d57f2f541"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa coding rate denominator. Allowed values range from 5 to 8.  <a href="class_l_r11x0.html#a583f2d5ed601a98c609dbf0d57f2f541">More...</a><br /></td></tr>
 <tr class="separator:a583f2d5ed601a98c609dbf0d57f2f541"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">setSyncWord</a> (uint32_t syncWord)</td></tr>
-<tr class="memdesc:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa or LR-FHSS sync word.  <a href="class_l_r11x0.html#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">More...</a><br /></td></tr>
-<tr class="separator:a7ffa48f1b6aaaa3f48e4b51f8ada59d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7dbdbd76f4639395af4a0db17025a7"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7">setSyncWord</a> (uint8_t syncWord)</td></tr>
+<tr class="memdesc:aee7dbdbd76f4639395af4a0db17025a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa sync word.  <a href="class_l_r11x0.html#aee7dbdbd76f4639395af4a0db17025a7">More...</a><br /></td></tr>
+<tr class="separator:aee7dbdbd76f4639395af4a0db17025a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1954e4733a7fbea4129d9a2de2285d9"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ab1954e4733a7fbea4129d9a2de2285d9">setBitRate</a> (float br) override</td></tr>
 <tr class="memdesc:ab1954e4733a7fbea4129d9a2de2285d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.  <a href="class_l_r11x0.html#ab1954e4733a7fbea4129d9a2de2285d9">More...</a><br /></td></tr>
 <tr class="separator:ab1954e4733a7fbea4129d9a2de2285d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2896,35 +2896,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a7ffa48f1b6aaaa3f48e4b51f8ada59d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ffa48f1b6aaaa3f48e4b51f8ada59d8">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LR11x0::setSyncWord </td>
-          <td>(</td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>syncWord</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sets LoRa or LR-FHSS sync word. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">syncWord</td><td>LoRa or LR-FHSS sync word to be set. For LoRa, only 8 least significant bits will be used </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-</div>
-</div>
 <a id="ab8c54b1b105605ffe0908c5ff9362932"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8c54b1b105605ffe0908c5ff9362932">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ab8c54b1b105605ffe0908c5ff9362932">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2968,6 +2941,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a6c71cdc1238e1368274670758431a977">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="aee7dbdbd76f4639395af4a0db17025a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee7dbdbd76f4639395af4a0db17025a7">&#9670;&nbsp;</a></span>setSyncWord() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::setSyncWord </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>syncWord</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets LoRa sync word. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">syncWord</td><td>LoRa sync word to be set. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>
