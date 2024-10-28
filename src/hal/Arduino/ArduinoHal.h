@@ -1,5 +1,5 @@
 // make sure this is always compiled
-#include "TypeDef.h"
+#include "../../TypeDef.h"
 
 #if !defined(_RADIOLIB_ARDUINOHAL_H)
 #define _RADIOLIB_ARDUINOHAL_H
