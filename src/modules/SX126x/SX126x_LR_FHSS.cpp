@@ -123,7 +123,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
 
   // interleave the payload into output buffer
   uint16_t step = 0;
-  while(step * step < nb_bits) {
+  while((size_t)(step * step) < nb_bits) {
     // probably the silliest sqrt() I ever saw
     step++;
   }
