@@ -110,7 +110,8 @@ int16_t LR11x0::beginLRFHSS(uint8_t bw, uint8_t cr, bool narrowGrid, float tcxoV
   state = setLrFhssConfig(bw, cr);
   RADIOLIB_ASSERT(state);
 
-  state = setSyncWord(0x12AD101B);
+  uint8_t syncWord[] = { 0x12, 0xAD, 0x10, 0x1B };
+  state = setSyncWord(syncWord, 4);
   RADIOLIB_ASSERT(state);
 
   state = setRegulatorLDO();
@@ -758,20 +759,16 @@ int16_t LR11x0::setCodingRate(uint8_t cr, bool longInterleave) {
   return(setModulationParamsLoRa(this->spreadingFactor, this->bandwidth, this->codingRate, this->ldrOptimize));
 }
 
-int16_t LR11x0::setSyncWord(uint32_t syncWord) {
+int16_t LR11x0::setSyncWord(uint8_t syncWord) {
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
-    return(setLoRaSyncWord(syncWord & 0xFF));
-  
-  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
-    return(lrFhssSetSyncWord(syncWord));
- 
+  if(type != RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
   }
   
-  return(RADIOLIB_ERR_WRONG_MODEM);
+  return(setLoRaSyncWord(syncWord));
 }
 
 int16_t LR11x0::setBitRate(float br) {
@@ -885,27 +882,36 @@ int16_t LR11x0::setSyncWord(uint8_t* syncWord, size_t len) {
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
   int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
-  if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
+  if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
+    // update sync word length
+    this->syncWordLength = len*8;
+    state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
+    RADIOLIB_ASSERT(state);
+
+    // sync word is passed most-significant byte first
+    uint8_t fullSyncWord[RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN] = { 0 };
+    memcpy(fullSyncWord, syncWord, len);
+    return(setGfskSyncWord(fullSyncWord));
+
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // with length set to 1 and LoRa modem active, assume it is the LoRa sync word
     if(len > 1) {
       return(RADIOLIB_ERR_INVALID_SYNC_WORD);
     }
     return(setSyncWord(syncWord[0]));
 
-  } else if(type != RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    return(RADIOLIB_ERR_WRONG_MODEM);
+  } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
+    // with length set to 4 and LR-FHSS modem active, assume it is the LR-FHSS sync word
+    if(len != sizeof(uint32_t)) {
+      return(RADIOLIB_ERR_INVALID_SYNC_WORD);
+    }
+    uint32_t sync = 0;
+    memcpy(&sync, syncWord, sizeof(uint32_t));
+    return(lrFhssSetSyncWord(sync));
   
   }
 
-  // update sync word length
-  this->syncWordLength = len*8;
-  state = setPacketParamsGFSK(this->preambleLengthGFSK, this->preambleDetLength, this->syncWordLength, this->addrComp, this->packetType, RADIOLIB_LR11X0_MAX_PACKET_LENGTH, this->crcTypeGFSK, this->whitening);
-  RADIOLIB_ASSERT(state);
-
-  // sync word is passed most-significant byte first
-  uint8_t fullSyncWord[RADIOLIB_LR11X0_GFSK_SYNC_WORD_LEN] = { 0 };
-  memcpy(fullSyncWord, syncWord, len);
-  return(setGfskSyncWord(fullSyncWord));
+  return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
 int16_t LR11x0::setSyncBits(uint8_t *syncWord, uint8_t bitsLen) {

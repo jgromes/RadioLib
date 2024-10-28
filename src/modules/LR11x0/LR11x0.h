@@ -1176,11 +1176,11 @@ class LR11x0: public PhysicalLayer {
     int16_t setCodingRate(uint8_t cr, bool longInterleave = false);
 
     /*!
-      \brief Sets LoRa or LR-FHSS sync word.
-      \param syncWord LoRa or LR-FHSS sync word to be set. For LoRa, only 8 least significant bits will be used
+      \brief Sets LoRa sync word.
+      \param syncWord LoRa sync word to be set.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint32_t syncWord);
+    int16_t setSyncWord(uint8_t syncWord);
 
     /*!
       \brief Sets GFSK bit rate. Allowed values range from 0.6 to 300.0 kbps.
