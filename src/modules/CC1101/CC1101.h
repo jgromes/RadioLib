@@ -563,6 +563,24 @@ class CC1101: public PhysicalLayer {
       uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
     
     /*!
+      \brief Initialization method for 4-FSK modulation.
+      \param freq Carrier frequency in MHz. Defaults to 434 MHz.
+      \param br Bit rate to be used in kbps. Defaults to 4.8 kbps.
+      \param freqDev Frequency deviation from carrier frequency in kHz Defaults to 5.0 kHz.
+      \param rxBw Receiver bandwidth in kHz. Defaults to 135.0 kHz.
+      \param pwr Output power in dBm. Defaults to 10 dBm.
+      \param preambleLength Preamble Length in bits. Defaults to 16 bits.
+      \returns \ref status_codes
+    */
+    int16_t beginFSK4(
+      float freq = RADIOLIB_CC1101_DEFAULT_FREQ,
+      float br = RADIOLIB_CC1101_DEFAULT_BR,
+      float freqDev = RADIOLIB_CC1101_DEFAULT_FREQDEV,
+      float rxBw = RADIOLIB_CC1101_DEFAULT_RXBW,
+      int8_t pwr = RADIOLIB_CC1101_DEFAULT_POWER,
+      uint8_t preambleLength = RADIOLIB_CC1101_DEFAULT_PREAMBLELEN);
+
+    /*!
       \brief Reset method - resets the chip using manual reset sequence (without RESET pin).
     */
     void reset();
@@ -1014,6 +1032,7 @@ class CC1101: public PhysicalLayer {
 
     int8_t power = RADIOLIB_CC1101_DEFAULT_POWER;
 
+    int16_t beginCommon(float freq, float br, float freqDev, float rxBw, int8_t pwr, uint8_t preambleLength);
     int16_t config();
     int16_t transmitDirect(bool sync, uint32_t frf);
     int16_t receiveDirect(bool sync);
