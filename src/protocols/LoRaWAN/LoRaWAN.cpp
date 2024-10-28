@@ -3331,15 +3331,15 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
       modemNew = ModemType_t::LRFHSS;
       switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_137_KHZ):
-          dataRate->lrFhss.bw = 137.0;
+          dataRate->lrFhss.bw = 0x02; // specific encoding
           dataRate->lrFhss.narrowGrid = 1;
           break;
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_336_KHZ):
-          dataRate->lrFhss.bw = 336.0;
+          dataRate->lrFhss.bw = 0x04; // specific encoding
           dataRate->lrFhss.narrowGrid = 1;
           break;
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_1523_KHZ):
-          dataRate->lrFhss.bw = 1523.0;
+          dataRate->lrFhss.bw = 0x08; // specific encoding
           dataRate->lrFhss.narrowGrid = 0;
           break;
         default:
