@@ -62,7 +62,8 @@ void setup() {
                                 3,                                  // header count
                                 0x13A);                             // hopping sequence seed
   state = radio.setOutputPower(10.0);
-  state = radio.setSyncWord(0x12345678);
+  uint8_t syncWord[] = {0x01, 0x23, 0x45, 0x67};
+  state = radio.setSyncWord(syncWord, 4);
   if (state != RADIOLIB_ERR_NONE) {
     Serial.print(F("Unable to set configuration, code "));
     Serial.println(state);
