@@ -2917,10 +2917,9 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
   *chMaskGrp0123 = 0;
   *chMaskGrp45 = 0;
 
-  uint8_t numCh = this->getAvailableChannels(NULL);
-
   // if there are any channels selected, create the mask from those channels
-  if(numCh > 0) {
+  // channels are always selected for dynamic bands and/or when a device is active
+  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC || this->isActivated()) {
     for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
       uint8_t idx = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].idx;
       if(idx != RADIOLIB_LORAWAN_CHANNEL_INDEX_NONE) {
@@ -2931,12 +2930,6 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
         }
       }
     }
-    return;
-  }
-
-  // it should not happen that no channels are set for dynamic band
-  // but in that case, simply return
-  if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
     return;
 
   } else {    // bandType == RADIOLIB_LORAWAN_BAND_FIXED
