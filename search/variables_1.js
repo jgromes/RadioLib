@@ -7,5 +7,5 @@ var searchData=
   ['beidou_1176',['beidou',['../struct_l_r11x0_gnss_almanac_status__t.html#a6ecc7d7bbc090f380ca6d2d8774f7ca0',1,'LR11x0GnssAlmanacStatus_t']]],
   ['beidousvnoalmanacflags_1177',['beidouSvNoAlmanacFlags',['../struct_l_r11x0_gnss_almanac_status__t.html#ab040b1d9ccf9c6497b008d11a93ebfdf',1,'LR11x0GnssAlmanacStatus_t']]],
   ['bitrate_1178',['bitRate',['../struct_f_s_k_rate__t.html#a2500c6dee65326b52d4e58ecf4b6d107',1,'FSKRate_t']]],
-  ['bw_1179',['bw',['../struct_lr_fhss_rate__t.html#a965dcb7da1b9adc4818ae9e908585f21',1,'LrFhssRate_t']]]
+  ['bw_1179',['bw',['../struct_lr_fhss_rate__t.html#afb7412c51412d19e9d3cc1534b5a7e90',1,'LrFhssRate_t']]]
 ];
