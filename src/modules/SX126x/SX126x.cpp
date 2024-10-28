@@ -1055,7 +1055,7 @@ int16_t SX126x::setDataRate(DataRate_t dr) {
     RADIOLIB_ASSERT(state);
 
     // set hopping grid
-    this->lrFhssGrid = dr.lrFhss.narrowGrid ? RADIOLIB_SX126X_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_SX126X_LR_FHSS_GRID_STEP_FCC;
+    this->lrFhssGridNonFcc = dr.lrFhss.narrowGrid ? RADIOLIB_SX126X_LR_FHSS_GRID_STEP_NON_FCC : RADIOLIB_SX126X_LR_FHSS_GRID_STEP_FCC;
 
   }
 
