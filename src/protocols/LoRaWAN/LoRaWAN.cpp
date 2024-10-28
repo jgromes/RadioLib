@@ -3347,13 +3347,13 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
       }
       switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_CR) {
         case(RADIOLIB_LORAWAN_DATA_RATE_CR_1_3):
-          dataRate->lrFhss.bw = 1;
+          dataRate->lrFhss.cr = 0x03;
           break;
         case(RADIOLIB_LORAWAN_DATA_RATE_CR_2_3):
-          dataRate->lrFhss.bw = 2;
+          dataRate->lrFhss.cr = 0x01;
           break;
         default:
-          return(RADIOLIB_ERR_UNSUPPORTED);;
+          return(RADIOLIB_ERR_UNSUPPORTED);
       }
       break;
     default:
