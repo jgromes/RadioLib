@@ -118,13 +118,13 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
 
 int16_t LLCC68::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::LoRa): {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::FSK): {
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
-    case(ModemType_t::LRFHSS): {
+    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
       return(this->beginLRFHSS());
     } break;
     default:

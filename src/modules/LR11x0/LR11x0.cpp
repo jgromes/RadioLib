@@ -2038,13 +2038,13 @@ int16_t LR11x0::getModem(ModemType_t* modem) {
 
   switch(packetType) {
     case(RADIOLIB_LR11X0_PACKET_TYPE_LORA):
-      *modem = ModemType_t::LoRa;
+      *modem = ModemType_t::RADIOLIB_MODEM_LORA;
       return(RADIOLIB_ERR_NONE);
     case(RADIOLIB_LR11X0_PACKET_TYPE_GFSK):
-      *modem = ModemType_t::FSK;
+      *modem = ModemType_t::RADIOLIB_MODEM_FSK;
       return(RADIOLIB_ERR_NONE);
     case(RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS):
-      *modem = ModemType_t::LRFHSS;
+      *modem = ModemType_t::RADIOLIB_MODEM_LRFHSS;
       return(RADIOLIB_ERR_NONE);
   }
   

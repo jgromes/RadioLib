@@ -135,9 +135,9 @@ union ChannelScanConfig_t {
   \brief Type of modem, used by setModem.
 */
 enum ModemType_t {
-  FSK = 0,
-  LoRa,
-  LRFHSS,
+  RADIOLIB_MODEM_FSK = 0,
+  RADIOLIB_MODEM_LORA,
+  RADIOLIB_MODEM_LRFHSS,
 };
 
 /*!

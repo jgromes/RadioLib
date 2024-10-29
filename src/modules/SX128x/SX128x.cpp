@@ -858,10 +858,10 @@ int16_t SX128x::checkOutputPower(int8_t pwr, int8_t* clipped) {
 
 int16_t SX128x::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::LoRa): {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::FSK): {
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginGFSK());
     } break;
     default:
@@ -875,10 +875,10 @@ int16_t SX128x::getModem(ModemType_t* modem) {
   uint8_t packetType = getPacketType();
   switch(packetType) {
     case(RADIOLIB_SX128X_PACKET_TYPE_LORA):
-      *modem = ModemType_t::LoRa;
+      *modem = ModemType_t::RADIOLIB_MODEM_LORA;
       return(RADIOLIB_ERR_NONE);
     case(RADIOLIB_SX128X_PACKET_TYPE_GFSK):
-      *modem = ModemType_t::FSK;
+      *modem = ModemType_t::RADIOLIB_MODEM_FSK;
       return(RADIOLIB_ERR_NONE);
   }
   

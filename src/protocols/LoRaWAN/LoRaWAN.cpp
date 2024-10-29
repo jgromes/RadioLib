@@ -2776,11 +2776,11 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   // set modem-dependent functions
   switch(this->band->dataRates[chnl->dr] & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
     case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
-      if(modem != ModemType_t::LoRa) {
-        state = this->phyLayer->setModem(ModemType_t::LoRa);
+      if(modem != ModemType_t::RADIOLIB_MODEM_LORA) {
+        state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_LORA);
         RADIOLIB_ASSERT(state);
       }
-      modem = ModemType_t::LoRa;
+      modem = ModemType_t::RADIOLIB_MODEM_LORA;
       // downlink messages are sent with inverted IQ
       if(dir == RADIOLIB_LORAWAN_DOWNLINK) {
         state = this->phyLayer->invertIQ(true);
@@ -2791,11 +2791,11 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       break;
     
     case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
-      if(modem != ModemType_t::FSK) {
-        state = this->phyLayer->setModem(ModemType_t::FSK);
+      if(modem != ModemType_t::RADIOLIB_MODEM_FSK) {
+        state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_FSK);
         RADIOLIB_ASSERT(state);
       }
-      modem = ModemType_t::FSK;
+      modem = ModemType_t::RADIOLIB_MODEM_FSK;
       state = this->phyLayer->setDataShaping(RADIOLIB_SHAPING_1_0);
       RADIOLIB_ASSERT(state);
       state = this->phyLayer->setEncoding(RADIOLIB_ENCODING_WHITENING);
@@ -2803,11 +2803,11 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
       break;
     
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
-      if(modem != ModemType_t::LRFHSS) {
-        state = this->phyLayer->setModem(ModemType_t::LRFHSS);
+      if(modem != ModemType_t::RADIOLIB_MODEM_LRFHSS) {
+        state = this->phyLayer->setModem(ModemType_t::RADIOLIB_MODEM_LRFHSS);
         RADIOLIB_ASSERT(state);
       }
-      modem = ModemType_t::LRFHSS;
+      modem = ModemType_t::RADIOLIB_MODEM_LRFHSS;
       break;
     
     default:
@@ -2836,7 +2836,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   uint8_t syncWordLen = 0;
   size_t preLen = 0;
   switch(modem) {
-    case(ModemType_t::FSK): {
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
       preLen = 8*RADIOLIB_LORAWAN_GFSK_PREAMBLE_LEN;
       syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 16);
       syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_GFSK_SYNC_WORD >> 8);
@@ -2846,7 +2846,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
                                       dr.fsk.bitRate, dr.fsk.freqDev);
     } break;
 
-    case(ModemType_t::LoRa): {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
       preLen = RADIOLIB_LORAWAN_LORA_PREAMBLE_LEN;
       syncWord[0] = RADIOLIB_LORAWAN_LORA_SYNC_WORD;
       syncWordLen = 1;
@@ -2854,7 +2854,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
                                     dr.lora.spreadingFactor, dr.lora.bandwidth, dr.lora.codingRate, dir ? 'D' : 'U');
     } break;
 
-    case(ModemType_t::LRFHSS): {
+    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
       syncWord[0] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 24);
       syncWord[1] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 16);
       syncWord[2] = (uint8_t)(RADIOLIB_LORAWAN_LR_FHSS_SYNC_WORD >> 8);
@@ -2875,7 +2875,7 @@ int16_t LoRaWANNode::setPhyProperties(const LoRaWANChannel_t* chnl, uint8_t dir,
   if(pre) {
     preLen = pre;
   }
-  if(modem != ModemType_t::LRFHSS) {
+  if(modem != ModemType_t::RADIOLIB_MODEM_LRFHSS) {
     state = this->phyLayer->setPreambleLength(preLen);
   }
   return(state);
@@ -3305,7 +3305,7 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
 
   switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_MODEM) {
     case(RADIOLIB_LORAWAN_DATA_RATE_LORA):
-      modemNew = ModemType_t::LoRa;
+      modemNew = ModemType_t::RADIOLIB_MODEM_LORA;
       dataRate->lora.spreadingFactor = ((dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_SF) >> 3) + 7;
       switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_125_KHZ):
@@ -3323,12 +3323,12 @@ int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
       dataRate->lora.codingRate = 5;
       break;
     case(RADIOLIB_LORAWAN_DATA_RATE_FSK):
-      modemNew = ModemType_t::FSK;
+      modemNew = ModemType_t::RADIOLIB_MODEM_FSK;
       dataRate->fsk.bitRate = 50;
       dataRate->fsk.freqDev = 25;
       break;
     case(RADIOLIB_LORAWAN_DATA_RATE_LR_FHSS):
-      modemNew = ModemType_t::LRFHSS;
+      modemNew = ModemType_t::RADIOLIB_MODEM_LRFHSS;
       switch(dataRateBand & RADIOLIB_LORAWAN_DATA_RATE_BW) {
         case(RADIOLIB_LORAWAN_DATA_RATE_BW_137_KHZ):
           dataRate->lrFhss.bw = 0x02; // specific encoding

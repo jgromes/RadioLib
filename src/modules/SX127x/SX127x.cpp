@@ -1760,10 +1760,10 @@ int16_t SX127x::getModem(ModemType_t* modem) {
   int16_t packetType = getActiveModem();
   switch(packetType) {
     case(RADIOLIB_SX127X_LORA):
-      *modem = ModemType_t::LoRa;
+      *modem = ModemType_t::RADIOLIB_MODEM_LORA;
       return(RADIOLIB_ERR_NONE);
     case(RADIOLIB_SX127X_FSK_OOK):
-      *modem = ModemType_t::FSK;
+      *modem = ModemType_t::RADIOLIB_MODEM_FSK;
       return(RADIOLIB_ERR_NONE);
   }
   

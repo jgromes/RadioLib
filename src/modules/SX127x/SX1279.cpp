@@ -81,10 +81,10 @@ int16_t SX1279::setFrequency(float freq) {
 
 int16_t SX1279::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::LoRa): {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::FSK): {
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
     default:

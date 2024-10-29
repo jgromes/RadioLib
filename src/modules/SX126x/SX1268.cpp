@@ -117,13 +117,13 @@ int16_t SX1268::checkOutputPower(int8_t power, int8_t* clipped) {
 
 int16_t SX1268::setModem(ModemType_t modem) {
   switch(modem) {
-    case(ModemType_t::LoRa): {
+    case(ModemType_t::RADIOLIB_MODEM_LORA): {
       return(this->begin());
     } break;
-    case(ModemType_t::FSK): {
+    case(ModemType_t::RADIOLIB_MODEM_FSK): {
       return(this->beginFSK());
     } break;
-    case(ModemType_t::LRFHSS): {
+    case(ModemType_t::RADIOLIB_MODEM_LRFHSS): {
       return(this->beginLRFHSS());
     } break;
     default:
