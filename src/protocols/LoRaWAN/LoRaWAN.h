@@ -548,7 +548,7 @@ class LoRaWANNode {
       \param persistentBuffer Buffer that should match the internal format (previously extracted using getBufferNonces)
       \returns \ref status_codes
     */
-    int16_t setBufferNonces(uint8_t* persistentBuffer);
+    int16_t setBufferNonces(const uint8_t* persistentBuffer);
 
     /*!
       \brief Clear an active session, so that the device will have to rejoin the network.
@@ -566,7 +566,7 @@ class LoRaWANNode {
       \param persistentBuffer Buffer that should match the internal format (previously extracted using getBufferSession)
       \returns \ref status_codes
     */
-    int16_t setBufferSession(uint8_t* persistentBuffer);
+    int16_t setBufferSession(const uint8_t* persistentBuffer);
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -576,7 +576,7 @@ class LoRaWANNode {
       \param appKey Pointer to the application AES-128 key.
       \returns \ref status_codes
     */
-    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, uint8_t* nwkKey, uint8_t* appKey);
+    int16_t beginOTAA(uint64_t joinEUI, uint64_t devEUI, const uint8_t* nwkKey, const uint8_t* appKey);
 
     /*!
       \brief Set the device credentials and activation configuration
@@ -588,7 +588,7 @@ class LoRaWANNode {
       \param appSKey Pointer to the application session AES-128 key.
       \returns \ref status_codes
     */
-    int16_t beginABP(uint32_t addr, uint8_t* fNwkSIntKey, uint8_t* sNwkSIntKey, uint8_t* nwkSEncKey, uint8_t* appSKey);
+    int16_t beginABP(uint32_t addr, const uint8_t* fNwkSIntKey, const uint8_t* sNwkSIntKey, const uint8_t* nwkSEncKey, const uint8_t* appSKey);
 
     /*!
       \brief Join network by restoring OTAA session or performing over-the-air activation. By this procedure,
@@ -622,7 +622,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
-    virtual int16_t sendReceive(String& strUp, uint8_t fPort, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    virtual int16_t sendReceive(const String& strUp, uint8_t fPort, String& strDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
     #endif
 
     /*!
@@ -665,7 +665,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
-    virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    virtual int16_t sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fPort = 1, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.
@@ -681,7 +681,7 @@ class LoRaWANNode {
       (fPort, frame counter, etc.). If set to NULL, no extra information will be passed to the user.
       \returns Window number > 0 if downlink was received, 0 is no downlink was received, otherwise \ref status_codes
     */
-    virtual int16_t sendReceive(uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
+    virtual int16_t sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fPort, uint8_t* dataDown, size_t* lenDown, bool isConfirmed = false, LoRaWANEvent_t* eventUp = NULL, LoRaWANEvent_t* eventDown = NULL);
 
     /*!
       \brief Add a MAC command to the uplink queue.
@@ -1002,7 +1002,7 @@ class LoRaWANNode {
     void adrBackoff();
 
     // create an encrypted uplink buffer, composing metadata, user data and MAC data
-    void composeUplink(uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed);
+    void composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t fPort, bool isConfirmed);
 
     // generate and set the MIC of an uplink buffer (depends on selected channels)
     void micUplink(uint8_t* inOut, uint8_t lenInOut);
@@ -1112,11 +1112,11 @@ class LoRaWANNode {
     static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);
 
     // check the integrity of a buffer using a 16-bit checksum located in the last two bytes of the buffer
-    static int16_t checkBufferCommon(uint8_t *buffer, uint16_t size);
+    static int16_t checkBufferCommon(const uint8_t *buffer, uint16_t size);
 
     // network-to-host conversion method - takes data from network packet and converts it to the host endians
     template<typename T>
-    static T ntoh(uint8_t* buff, size_t size = 0);
+    static T ntoh(const uint8_t* buff, size_t size = 0);
 
     // host-to-network conversion method - takes data from host variable and and converts it to network packet endians
     template<typename T>
@@ -1124,8 +1124,8 @@ class LoRaWANNode {
 };
 
 template<typename T>
-T LoRaWANNode::ntoh(uint8_t* buff, size_t size) {
-  uint8_t* buffPtr = buff;
+T LoRaWANNode::ntoh(const uint8_t* buff, size_t size) {
+  const uint8_t* buffPtr = buff;
   size_t targetSize = sizeof(T);
   if(size != 0) {
     targetSize = size;
