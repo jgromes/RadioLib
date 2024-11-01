@@ -33,7 +33,7 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits);
   \param width Word width (1 for uint8_t, 2 for uint16_t, 4 for uint32_t).
   \param be Print multi-byte data as big endian. Defaults to false.
 */
-void rlb_hexdump(const char* level, uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
+void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t offset = 0, uint8_t width = 1, bool be = false);
 
 #if RADIOLIB_DEBUG && defined(RADIOLIB_BUILD_ARDUINO)
 size_t rlb_printf(const char* format, ...);

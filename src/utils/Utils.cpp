@@ -13,7 +13,7 @@ uint32_t rlb_reflect(uint32_t in, uint8_t bits) {
   return(res);
 }
 
-void rlb_hexdump(const char* level, uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
+void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t offset, uint8_t width, bool be) {
   #if RADIOLIB_DEBUG
   size_t rem_len = len;
   for(size_t i = 0; i < len; i+=16) {
