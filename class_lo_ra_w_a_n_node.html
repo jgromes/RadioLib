@@ -104,9 +104,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a84004883006b4a498d4899874952445b"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">getBufferNonces</a> ()</td></tr>
 <tr class="memdesc:a84004883006b4a498d4899874952445b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the internal buffer that holds the LW base parameters.  <a href="class_lo_ra_w_a_n_node.html#a84004883006b4a498d4899874952445b">More...</a><br /></td></tr>
 <tr class="separator:a84004883006b4a498d4899874952445b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a11701081ac6bd39a8a2b4bdbc248fac2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2">setBufferNonces</a> (uint8_t *persistentBuffer)</td></tr>
-<tr class="memdesc:a11701081ac6bd39a8a2b4bdbc248fac2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW base parameters with a supplied buffer.  <a href="class_lo_ra_w_a_n_node.html#a11701081ac6bd39a8a2b4bdbc248fac2">More...</a><br /></td></tr>
-<tr class="separator:a11701081ac6bd39a8a2b4bdbc248fac2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad99e2fa4738648a6f3efe72ff785def2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad99e2fa4738648a6f3efe72ff785def2">setBufferNonces</a> (const uint8_t *persistentBuffer)</td></tr>
+<tr class="memdesc:ad99e2fa4738648a6f3efe72ff785def2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW base parameters with a supplied buffer.  <a href="class_lo_ra_w_a_n_node.html#ad99e2fa4738648a6f3efe72ff785def2">More...</a><br /></td></tr>
+<tr class="separator:ad99e2fa4738648a6f3efe72ff785def2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0feeaed200d8f94ad94c3ed49f404847"><td class="memItemLeft" align="right" valign="top"><a id="a0feeaed200d8f94ad94c3ed49f404847"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a0feeaed200d8f94ad94c3ed49f404847">clearSession</a> ()</td></tr>
 <tr class="memdesc:a0feeaed200d8f94ad94c3ed49f404847"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear an active session, so that the device will have to rejoin the network. <br /></td></tr>
@@ -114,15 +114,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a90369a4f2c4da11527872a7bbbf9ab06"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">getBufferSession</a> ()</td></tr>
 <tr class="memdesc:a90369a4f2c4da11527872a7bbbf9ab06"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the pointer to the internal buffer that holds the LW session parameters.  <a href="class_lo_ra_w_a_n_node.html#a90369a4f2c4da11527872a7bbbf9ab06">More...</a><br /></td></tr>
 <tr class="separator:a90369a4f2c4da11527872a7bbbf9ab06"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadebe7a412aec8043aa2f8f57a202f49"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">setBufferSession</a> (uint8_t *persistentBuffer)</td></tr>
-<tr class="memdesc:aadebe7a412aec8043aa2f8f57a202f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW session parameters with a supplied buffer.  <a href="class_lo_ra_w_a_n_node.html#aadebe7a412aec8043aa2f8f57a202f49">More...</a><br /></td></tr>
-<tr class="separator:aadebe7a412aec8043aa2f8f57a202f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0e9f560f592e417060262c862099e15"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ad0e9f560f592e417060262c862099e15">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, uint8_t *nwkKey, uint8_t *appKey)</td></tr>
-<tr class="memdesc:ad0e9f560f592e417060262c862099e15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#ad0e9f560f592e417060262c862099e15">More...</a><br /></td></tr>
-<tr class="separator:ad0e9f560f592e417060262c862099e15"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47490d133066cb94887c11ddd0f0dfd3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a47490d133066cb94887c11ddd0f0dfd3">beginABP</a> (uint32_t addr, uint8_t *fNwkSIntKey, uint8_t *sNwkSIntKey, uint8_t *nwkSEncKey, uint8_t *appSKey)</td></tr>
-<tr class="memdesc:a47490d133066cb94887c11ddd0f0dfd3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#a47490d133066cb94887c11ddd0f0dfd3">More...</a><br /></td></tr>
-<tr class="separator:a47490d133066cb94887c11ddd0f0dfd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedeb50c9ccb81e8092233d34e039cfa4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aedeb50c9ccb81e8092233d34e039cfa4">setBufferSession</a> (const uint8_t *persistentBuffer)</td></tr>
+<tr class="memdesc:aedeb50c9ccb81e8092233d34e039cfa4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill the internal buffer that holds the LW session parameters with a supplied buffer.  <a href="class_lo_ra_w_a_n_node.html#aedeb50c9ccb81e8092233d34e039cfa4">More...</a><br /></td></tr>
+<tr class="separator:aedeb50c9ccb81e8092233d34e039cfa4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2df20a240812f184786dda5ace171ef"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#ab2df20a240812f184786dda5ace171ef">beginOTAA</a> (uint64_t joinEUI, uint64_t devEUI, const uint8_t *nwkKey, const uint8_t *appKey)</td></tr>
+<tr class="memdesc:ab2df20a240812f184786dda5ace171ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#ab2df20a240812f184786dda5ace171ef">More...</a><br /></td></tr>
+<tr class="separator:ab2df20a240812f184786dda5ace171ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43b259fd8804ef8d9d4922962e9ecae5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a43b259fd8804ef8d9d4922962e9ecae5">beginABP</a> (uint32_t addr, const uint8_t *fNwkSIntKey, const uint8_t *sNwkSIntKey, const uint8_t *nwkSEncKey, const uint8_t *appSKey)</td></tr>
+<tr class="memdesc:a43b259fd8804ef8d9d4922962e9ecae5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device credentials and activation configuration.  <a href="class_lo_ra_w_a_n_node.html#a43b259fd8804ef8d9d4922962e9ecae5">More...</a><br /></td></tr>
+<tr class="separator:a43b259fd8804ef8d9d4922962e9ecae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">activateOTAA</a> (uint8_t initialDr=RADIOLIB_LORAWAN_DATA_RATE_UNUSED, <a class="el" href="struct_lo_ra_w_a_n_join_event__t.html">LoRaWANJoinEvent_t</a> *joinEvent=NULL)</td></tr>
 <tr class="memdesc:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Join network by restoring OTAA session or performing over-the-air activation. By this procedure, the device will perform an exchange with the network server and set all necessary configuration.  <a href="class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd">More...</a><br /></td></tr>
 <tr class="separator:abd9e976eec64a3bd1ddf3331f2bc93cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,12 +139,12 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a85cf006ffd97ece3b2d2974b715540cb"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">sendReceive</a> (const char *strUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
 <tr class="memdesc:a85cf006ffd97ece3b2d2974b715540cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a85cf006ffd97ece3b2d2974b715540cb">More...</a><br /></td></tr>
 <tr class="separator:a85cf006ffd97ece3b2d2974b715540cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7123f9a907df9224b9b01282c12af459"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a7123f9a907df9224b9b01282c12af459">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t fPort=1, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
-<tr class="memdesc:a7123f9a907df9224b9b01282c12af459"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink but don't bother the user with downlink contents.  <a href="class_lo_ra_w_a_n_node.html#a7123f9a907df9224b9b01282c12af459">More...</a><br /></td></tr>
-<tr class="separator:a7123f9a907df9224b9b01282c12af459"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07ab107de181bde59c2731a5a64a1e2e"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a07ab107de181bde59c2731a5a64a1e2e">sendReceive</a> (uint8_t *dataUp, size_t lenUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
-<tr class="memdesc:a07ab107de181bde59c2731a5a64a1e2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#a07ab107de181bde59c2731a5a64a1e2e">More...</a><br /></td></tr>
-<tr class="separator:a07ab107de181bde59c2731a5a64a1e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9d5fcdbbb4fa357beedb820e395ae37"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#af9d5fcdbbb4fa357beedb820e395ae37">sendReceive</a> (const uint8_t *dataUp, size_t lenUp, uint8_t fPort=1, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:af9d5fcdbbb4fa357beedb820e395ae37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink but don't bother the user with downlink contents.  <a href="class_lo_ra_w_a_n_node.html#af9d5fcdbbb4fa357beedb820e395ae37">More...</a><br /></td></tr>
+<tr class="separator:af9d5fcdbbb4fa357beedb820e395ae37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafb2006b8d75549f667608156b5f8a5a"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aafb2006b8d75549f667608156b5f8a5a">sendReceive</a> (const uint8_t *dataUp, size_t lenUp, uint8_t fPort, uint8_t *dataDown, size_t *lenDown, bool isConfirmed=false, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventUp=NULL, <a class="el" href="struct_lo_ra_w_a_n_event__t.html">LoRaWANEvent_t</a> *eventDown=NULL)</td></tr>
+<tr class="memdesc:aafb2006b8d75549f667608156b5f8a5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send a message to the server and wait for a downlink during Rx1 and/or Rx2 window.  <a href="class_lo_ra_w_a_n_node.html#aafb2006b8d75549f667608156b5f8a5a">More...</a><br /></td></tr>
+<tr class="separator:aafb2006b8d75549f667608156b5f8a5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adef05650cf4eb92042ca5e2688c1e164"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">sendMacCommandReq</a> (uint8_t cid)</td></tr>
 <tr class="memdesc:adef05650cf4eb92042ca5e2688c1e164"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add a MAC command to the uplink queue. Only LinkCheck and DeviceTime are available to the user. Other commands are ignored; duplicate MAC commands are discarded.  <a href="class_lo_ra_w_a_n_node.html#adef05650cf4eb92042ca5e2688c1e164">More...</a><br /></td></tr>
 <tr class="separator:adef05650cf4eb92042ca5e2688c1e164"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -353,8 +353,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a47490d133066cb94887c11ddd0f0dfd3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47490d133066cb94887c11ddd0f0dfd3">&#9670;&nbsp;</a></span>beginABP()</h2>
+<a id="a43b259fd8804ef8d9d4922962e9ecae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43b259fd8804ef8d9d4922962e9ecae5">&#9670;&nbsp;</a></span>beginABP()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -368,25 +368,25 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>fNwkSIntKey</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>sNwkSIntKey</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>nwkSEncKey</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>appSKey</em>&#160;</td>
         </tr>
         <tr>
@@ -412,8 +412,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ad0e9f560f592e417060262c862099e15"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0e9f560f592e417060262c862099e15">&#9670;&nbsp;</a></span>beginOTAA()</h2>
+<a id="ab2df20a240812f184786dda5ace171ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2df20a240812f184786dda5ace171ef">&#9670;&nbsp;</a></span>beginOTAA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -433,13 +433,13 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>nwkKey</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>appKey</em>&#160;</td>
         </tr>
         <tr>
@@ -866,8 +866,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a07ab107de181bde59c2731a5a64a1e2e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07ab107de181bde59c2731a5a64a1e2e">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[3/4]</span></h2>
+<a id="aafb2006b8d75549f667608156b5f8a5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafb2006b8d75549f667608156b5f8a5a">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[3/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -878,7 +878,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t LoRaWANNode::sendReceive </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>dataUp</em>, </td>
         </tr>
         <tr>
@@ -954,8 +954,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a7123f9a907df9224b9b01282c12af459"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7123f9a907df9224b9b01282c12af459">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[4/4]</span></h2>
+<a id="af9d5fcdbbb4fa357beedb820e395ae37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9d5fcdbbb4fa357beedb820e395ae37">&#9670;&nbsp;</a></span>sendReceive() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -966,7 +966,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t LoRaWANNode::sendReceive </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>dataUp</em>, </td>
         </tr>
         <tr>
@@ -1054,8 +1054,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a11701081ac6bd39a8a2b4bdbc248fac2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a11701081ac6bd39a8a2b4bdbc248fac2">&#9670;&nbsp;</a></span>setBufferNonces()</h2>
+<a id="ad99e2fa4738648a6f3efe72ff785def2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad99e2fa4738648a6f3efe72ff785def2">&#9670;&nbsp;</a></span>setBufferNonces()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1063,7 +1063,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t LoRaWANNode::setBufferNonces </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>persistentBuffer</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1081,8 +1081,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="aadebe7a412aec8043aa2f8f57a202f49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aadebe7a412aec8043aa2f8f57a202f49">&#9670;&nbsp;</a></span>setBufferSession()</h2>
+<a id="aedeb50c9ccb81e8092233d34e039cfa4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedeb50c9ccb81e8092233d34e039cfa4">&#9670;&nbsp;</a></span>setBufferSession()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1090,7 +1090,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">int16_t LoRaWANNode::setBufferSession </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>persistentBuffer</em></td><td>)</td>
           <td></td>
         </tr>

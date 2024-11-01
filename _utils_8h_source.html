@@ -106,7 +106,7 @@ $(document).ready(function(){initNavTree('_utils_8h_source.html',''); initResiza
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160; </div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;uint32_t rlb_reflect(uint32_t in, uint8_t bits);</div>
 <div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> rlb_hexdump(<span class="keyword">const</span> <span class="keywordtype">char</span>* level, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t offset = 0, uint8_t width = 1, <span class="keywordtype">bool</span> be = <span class="keyword">false</span>);</div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="keywordtype">void</span> rlb_hexdump(<span class="keyword">const</span> <span class="keywordtype">char</span>* level, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t offset = 0, uint8_t width = 1, <span class="keywordtype">bool</span> be = <span class="keyword">false</span>);</div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#if RADIOLIB_DEBUG &amp;&amp; defined(RADIOLIB_BUILD_ARDUINO)</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="keywordtype">size_t</span> rlb_printf(<span class="keyword">const</span> <span class="keywordtype">char</span>* format, ...);</div>
