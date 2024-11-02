@@ -154,6 +154,7 @@ class TockHal : public RadioLibHal {
 
       gpio_funcs[interruptNum - 1] = NULL;
       libtock_lora_phy_gpio_disable_interrupt(interruptNum);
+      libtock_lora_phy_gpio_enable_input(interruptNum, libtock_pull_down);
     }
 
     void delay(unsigned long ms) override {
