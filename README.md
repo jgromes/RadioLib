@@ -4,14 +4,18 @@
 
 ## Universal wireless communication library for embedded devices
 
-## See the [Wiki](https://github.com/jgromes/RadioLib/wiki) and [FAQ](https://github.com/jgromes/RadioLib/wiki/Frequently-Asked-Questions) for further information. See the [GitHub Pages](https://jgromes.github.io/RadioLib) for detailed and up-to-date API reference.
-
 RadioLib allows its users to integrate all sorts of different wireless communication modules, protocols and even digital modes into a single consistent system.
 Want to add a Bluetooth interface to your LoRa network? Sure thing! Do you just want to go really old-school and play around with radio teletype, slow-scan TV, or even Hellschreiber using nothing but a cheap radio module? Why not!
 
 RadioLib natively supports Arduino, but can run in non-Arduino environments as well! See [this Wiki page](https://github.com/jgromes/RadioLib/wiki/Porting-to-non-Arduino-Platforms) and [examples/NonArduino](https://github.com/jgromes/RadioLib/tree/master/examples/NonArduino).
 
 RadioLib was originally created as a driver for [__RadioShield__](https://github.com/jgromes/RadioShield), but it can be used to control as many different wireless modules as you like - or at least as many as your microcontroller can handle!
+
+### Quick links:
+* [__Wiki__](https://github.com/jgromes/RadioLib/wiki) - contains useful general information on using this library
+* [__FAQ__](https://github.com/jgromes/RadioLib/wiki/Frequently-Asked-Questions) - frequently asked questions, and answers
+* [__API Reference__](https://jgromes.github.io/RadioLib) - full API reference, automatically generated from the source code
+* [__Status Code Decoder__](https://jgromes.github.io/status_decoder/decode.html) - decoder for status codes returned by RadioLib methods
 
 ### Supported modules:
 * __CC1101__ FSK radio module
