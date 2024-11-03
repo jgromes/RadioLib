@@ -504,6 +504,10 @@ void SX127x::clearFifoEmptyAction() {
   clearDio1Action();
 }
 
+void SX127x::setFifoThreshold(uint8_t threshold) {
+  this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, threshold, 5, 0);
+}
+
 void SX127x::setFifoFullAction(void (*func)(void)) {
   // set the interrupt
   this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FIFO_THRESH, RADIOLIB_SX127X_FIFO_THRESH, 5, 0);

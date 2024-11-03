@@ -762,6 +762,12 @@ class SX127x: public PhysicalLayer {
     void clearFifoEmptyAction();
 
     /*!
+      \brief Set FIFO threshold level.
+      \param Threshold level.
+    */
+    void SX127x::setFifoThreshold(uint8_t threshold);
+
+    /*!
       \brief Set interrupt service routine function to call when FIFO is full.
       \param func Pointer to interrupt service routine.
     */
