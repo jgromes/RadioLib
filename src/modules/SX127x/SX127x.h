@@ -763,6 +763,8 @@ class SX127x: public PhysicalLayer {
 
     /*!
       \brief Set FIFO threshold level.
+      Be aware that threshold is also set in setFifoFullAction method.
+      setFifoThreshold method must be called AFTER calling setFifoFullAction!
       \param Threshold level.
     */
     void setFifoThreshold(uint8_t threshold);
