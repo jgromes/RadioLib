@@ -15,7 +15,7 @@ RadioLib was originally created as a driver for [__RadioShield__](https://github
 * [__Wiki__](https://github.com/jgromes/RadioLib/wiki) - contains useful general information on using this library
 * [__FAQ__](https://github.com/jgromes/RadioLib/wiki/Frequently-Asked-Questions) - frequently asked questions, and answers
 * [__API Reference__](https://jgromes.github.io/RadioLib) - full API reference, automatically generated from the source code
-* [__Status Code Decoder__](https://jgromes.github.io/status_decoder/decode.html) - decoder for status codes returned by RadioLib methods
+* [__Status Code Decoder__](https://radiolib-org.github.io/status_decoder/decode.html) - decoder for status codes returned by RadioLib methods
 
 ### Supported modules:
 * __CC1101__ FSK radio module
