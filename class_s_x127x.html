@@ -194,6 +194,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#aaa6eb4363badc1c3450ad7a4d11af4b1">clearFifoEmptyAction</a> ()</td></tr>
 <tr class="memdesc:aaa6eb4363badc1c3450ad7a4d11af4b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when FIFO is empty. <br /></td></tr>
 <tr class="separator:aaa6eb4363badc1c3450ad7a4d11af4b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b9529ac87f62c32c9c5fac3dc6e08a9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a7b9529ac87f62c32c9c5fac3dc6e08a9">setFifoThreshold</a> (uint8_t threshold)</td></tr>
+<tr class="memdesc:a7b9529ac87f62c32c9c5fac3dc6e08a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set FIFO threshold level. Be aware that threshold is also set in setFifoFullAction method. setFifoThreshold method must be called AFTER calling setFifoFullAction!  <a href="class_s_x127x.html#a7b9529ac87f62c32c9c5fac3dc6e08a9">More...</a><br /></td></tr>
+<tr class="separator:a7b9529ac87f62c32c9c5fac3dc6e08a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a201c31366f32c41b801724fb662265c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x127x.html#a201c31366f32c41b801724fb662265c1">setFifoFullAction</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a201c31366f32c41b801724fb662265c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interrupt service routine function to call when FIFO is full.  <a href="class_s_x127x.html#a201c31366f32c41b801724fb662265c1">More...</a><br /></td></tr>
 <tr class="separator:a201c31366f32c41b801724fb662265c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2194,6 +2197,32 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">func</td><td>Pointer to interrupt service routine. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a7b9529ac87f62c32c9c5fac3dc6e08a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b9529ac87f62c32c9c5fac3dc6e08a9">&#9670;&nbsp;</a></span>setFifoThreshold()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX127x::setFifoThreshold </td>
+          <td>(</td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>threshold</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set FIFO threshold level. Be aware that threshold is also set in setFifoFullAction method. setFifoThreshold method must be called AFTER calling setFifoFullAction! </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">Threshold</td><td>level. </td></tr>
   </table>
   </dd>
 </dl>

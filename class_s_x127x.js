@@ -64,6 +64,7 @@ var class_s_x127x =
     [ "setFHSSHoppingPeriod", "class_s_x127x.html#a7f04a7e883057908df18f06c7f74c7e1", null ],
     [ "setFifoEmptyAction", "class_s_x127x.html#a6fbdfd8e2a2ad1eb7e59a73385847acb", null ],
     [ "setFifoFullAction", "class_s_x127x.html#a201c31366f32c41b801724fb662265c1", null ],
+    [ "setFifoThreshold", "class_s_x127x.html#a7b9529ac87f62c32c9c5fac3dc6e08a9", null ],
     [ "setFrequencyDeviation", "class_s_x127x.html#a448ea8a6a6011a9cdddd4e09bd6c9679", null ],
     [ "setIrqFlags", "class_s_x127x.html#aae42b94ab2ecf729f29f101222e97666", null ],
     [ "setLowBatteryThreshold", "class_s_x127x.html#a9ca9aa18e13e8390ec437e249e1d2472", null ],

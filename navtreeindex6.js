@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"group__status__codes.html#ga5584a219fcb1a8e1789142b18a3a511e":[2,6,62],
+"group__status__codes.html#ga55da4b2ee0661872a37f1c57fc61c666":[2,6,45],
 "group__status__codes.html#ga58ff08f4dba334cf8e26474ec2d3facd":[2,6,91],
 "group__status__codes.html#ga5d11e8ce64fb412c2169d0f30b9e9c62":[2,6,5],
 "group__status__codes.html#ga5d57c9ea944fdad3760fa54ed033ace5":[2,6,59],
@@ -66,8 +68,8 @@ var NAVTREEINDEX6 =
 "group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd":[2,7,1],
 "group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77":[2,7,0],
 "hierarchy.html":[3,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "libtock_hal_8h_source.html":[4,0,0,0,4,0],
 "lr1110__transceiver__0303_8h_source.html":[4,0,0,1,2,0,0],
 "lr1110__transceiver__0304_8h_source.html":[4,0,0,1,2,0,1],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "struct_lo_ra_w_a_n_channel_span__t.html#a1bfba15154185b75693542cd0547cb96":[3,0,21,3],
 "struct_lo_ra_w_a_n_channel_span__t.html#a50f5701ae19b79a0c8c487673135b2f2":[3,0,21,5],
 "struct_lo_ra_w_a_n_channel_span__t.html#a914d2b6f54e9c8d2841acf1d0652fd79":[3,0,21,1],
-"struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e":[3,0,21,4],
-"struct_lo_ra_w_a_n_channel_span__t.html#ab613b4ca3a2c99ef0aa53f8132f54535":[3,0,21,2],
-"struct_lo_ra_w_a_n_event__t.html":[3,0,22]
+"struct_lo_ra_w_a_n_channel_span__t.html#a958f8056a2611c7a503169457278541e":[3,0,21,4]
 };

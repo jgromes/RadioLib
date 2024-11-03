@@ -47,6 +47,7 @@ var class_r_f69 =
     [ "setEncoding", "class_r_f69.html#aae828ce8dda16da4e54d2f18b1fb8af2", null ],
     [ "setFifoEmptyAction", "class_r_f69.html#a788023a0de9d6b43cb4079d12ca90b8d", null ],
     [ "setFifoFullAction", "class_r_f69.html#a1a6ecb5fcc42c49bc3d9032e9c5db07b", null ],
+    [ "setFifoThreshold", "class_r_f69.html#a8032cba98d3aad99154698cdeff38b90", null ],
     [ "setFrequency", "class_r_f69.html#aa7f47c37eec6c7e3ebf6e6d30ebd5532", null ],
     [ "setFrequencyDeviation", "class_r_f69.html#adb9fbfedf95f34ac537815870b98a9be", null ],
     [ "setLnaTestBoost", "class_r_f69.html#aa14dbfd82cd75b9759d4d78bdb05c194", null ],
