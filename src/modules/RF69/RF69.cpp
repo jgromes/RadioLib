@@ -321,6 +321,10 @@ void RF69::clearFifoEmptyAction() {
   clearDio1Action();
 }
 
+void RF69::setFifoThreshold(uint8_t threshold) {
+  this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, threshold, 6, 0);
+}
+
 void RF69::setFifoFullAction(void (*func)(void)) {
   // set the interrupt
   this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_FIFO_THRESH, RADIOLIB_RF69_FIFO_THRESH, 6, 0);
