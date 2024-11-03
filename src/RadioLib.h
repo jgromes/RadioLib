@@ -4,11 +4,15 @@
 /*!
   \mainpage RadioLib Documentation
 
-  Universal wireless communication library for Arduino.
+  Universal wireless communication library for embedded devices.
 
   \par Currently Supported Wireless Modules and Protocols
   - CC1101 FSK module
+  - LLCC68 LoRa/FSK module
+  - LR11x0 LoRa/FSK/LR-FHSS module
+  - nRF24 FSK module
   - RF69 FSK module
+  - RFM2x FSK module
   - Si443x FSK module
   - SX126x LoRa/FSK module
   - SX127x LoRa/FSK module
@@ -22,6 +26,8 @@
     - Hellschreiber (HellClient)
     - 4-FSK (FSK4Client)
     - APRS (APRSClient)
+    - POCSAG (PagerClient)
+    - LoRaWAN (LoRaWANNode)
 
   \par Quick Links
   Documentation for most common methods can be found in its reference page (see the list above).\n
