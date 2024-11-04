@@ -43,7 +43,14 @@ void inline ArduinoHal::attachInterrupt(uint32_t interruptNum, void (*interruptC
   if(interruptNum == RADIOLIB_NC) {
     return;
   }
+#if defined(ARDUINO_ARCH_CH32)
+  ::attachInterrupt(interruptNum, GPIO_Mode_IN_FLOATING, interruptCb, EXTI_Mode_Interrupt,
+                    mode == RISING  ? EXTI_Trigger_Rising  :
+                    mode == FALLING ? EXTI_Trigger_Falling :
+                    EXTI_Trigger_Rising_Falling /* CHANGE */ );
+#else
   ::attachInterrupt(interruptNum, interruptCb,  RADIOLIB_ARDUINOHAL_INTERRUPT_MODE_CAST mode);
+#endif /* ARDUINO_ARCH_CH32 */
 }
 
 void inline ArduinoHal::detachInterrupt(uint32_t interruptNum) {
