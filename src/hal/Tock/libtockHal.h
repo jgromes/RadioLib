@@ -56,20 +56,6 @@
 typedef void (*gpioIrqFn)(void);
 
 gpioIrqFn gpio_funcs[4] = { NULL, NULL, NULL, NULL};
-uint32_t frequency = 0;
-
-/*
- * Get the the timer frequency in Hz.
- */
-int alarm_internal_frequency(uint32_t* frequency) {
-  syscall_return_t rval = command(0x0, 1, 0, 0);
-  return tock_command_return_u32_to_returncode(rval, frequency);
-}
-
-int alarm_internal_read(uint32_t* time) {
-  syscall_return_t rval = command(0x0, 2, 0, 0);
-  return tock_command_return_u32_to_returncode(rval, time);
-}
 
 static void lora_phy_gpio_Callback (int gpioPin,
                                     __attribute__ ((unused)) int arg2,
@@ -174,16 +160,11 @@ class TockHal : public RadioLibHal {
     }
 
     unsigned long millis() override {
-      uint32_t now;
+      struct timeval tv;
       unsigned long ms;
 
-      if (frequency == 0) {
-        alarm_internal_frequency(&frequency);
-      }
-
-      alarm_internal_read(&now);
-
-      ms = now / (frequency / 1000);
+      libtock_alarm_gettimeasticks(&tv);
+      ms = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 
 #if !defined(RADIOLIB_CLOCK_DRIFT_MS)
       return ms;
@@ -193,7 +174,10 @@ class TockHal : public RadioLibHal {
     }
 
     unsigned long micros() override {
-      return millis() / 1000;
+      struct timeval tv;
+
+      libtock_alarm_gettimeasticks(&tv);
+      return tv.tv_sec * 1000000 + tv.tv_usec;
     }
 
     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {
