@@ -50,7 +50,21 @@ add_executable(${PROJECT_NAME} main.cpp)
 # The build system for libtock-c is a bit odd and the version of libraries
 # built changes based on compiler version.
 if (RISCV_BUILD)
-    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
+    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0")
+        target_link_libraries(${PROJECT_NAME} PUBLIC
+            RadioLib
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/rv32imc/libtocksync.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/riscv/lib/gcc/riscv64-unknown-elf/14.1.0/rv32i/ilp32/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/riscv/riscv64-unknown-elf/lib/rv32i/ilp32/libm.a
+        )
+
+        target_include_directories(RadioLib AFTER PUBLIC
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.3.0.20230120/riscv/riscv64-unknown-elf/include/
+        )
+    elseif(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/rv32imc/libtock.a
@@ -80,7 +94,17 @@ if (RISCV_BUILD)
         )
     endif()
 else()
-    if(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
+    if (EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0")
+        target_link_libraries(${PROJECT_NAME} PUBLIC
+            RadioLib
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
+            $ENV{LIBTOCK_C_DIRECTORY}/libtock-sync/build/cortex-m4/libtocksync.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/arm/lib/gcc/arm-none-eabi/14.1.0/libgcc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-14.1.0/arm/arm-none-eabi/lib/libstdc++.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/arm/arm-none-eabi/lib/libc.a
+            $ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-newlib-4.4.0.20231231/arm/arm-none-eabi/lib/libm.a
+        )
+    elseif(EXISTS "$ENV{LIBTOCK_C_DIRECTORY}/lib/libtock-libc++-13.2.0")
         target_link_libraries(${PROJECT_NAME} PUBLIC
             RadioLib
             $ENV{LIBTOCK_C_DIRECTORY}/libtock/build/cortex-m4/libtock.a
