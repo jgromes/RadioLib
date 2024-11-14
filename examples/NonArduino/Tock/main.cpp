@@ -28,14 +28,14 @@
 #include <RadioLib.h>
 
 // include the hardware abstraction layer
-#include "hal/Tock/libtockHal.h"
+#include "RadioLib/libtockHal.h"
 
 // the entry point for the program
 int main(void) {
   printf("[SX1261] Initialising Radio ... \r\n");
 
   // create a new instance of the HAL class
-  TockHal* hal = new TockHal();
+  TockRadioLibHal* hal = new TockRadioLibHal();
 
   // now we can create the radio module
   // pinout corresponds to the SparkFun LoRa Thing Plus - expLoRaBLE
@@ -43,7 +43,7 @@ int main(void) {
   // DIO1 pin:  2
   // NRST pin:  4
   // BUSY pin:  1
-  Module* tock_module = new Module(hal, RADIO_NSS, RADIO_DIO_1, RADIO_RESET, RADIO_BUSY);
+  Module* tock_module = new Module(hal, RADIOLIB_RADIO_NSS, RADIOLIB_RADIO_DIO_1, RADIOLIB_RADIO_RESET, RADIOLIB_RADIO_BUSY);
   SX1262* radio = new SX1262(tock_module);
 
   // Setup the radio

@@ -3,9 +3,9 @@ set -e
 
 rm -rf ./build-*
 
-cd libtock-c/examples/cxx_hello
+pushd ${LIBTOCK_C_DIRECTORY}/examples/cxx_hello
 make -j4
-cd ../../../
+popd
 
 mkdir -p build-arm
 cd build-arm
