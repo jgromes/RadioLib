@@ -89,6 +89,5 @@ var annotated_dup =
     [ "SX1281", "class_s_x1281.html", "class_s_x1281" ],
     [ "SX1282", "class_s_x1282.html", "class_s_x1282" ],
     [ "SX128x", "class_s_x128x.html", "class_s_x128x" ],
-    [ "TockHal", "class_tock_hal.html", "class_tock_hal" ],
     [ "tone_t", "structtone__t.html", "structtone__t" ]
 ];

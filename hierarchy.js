@@ -95,8 +95,7 @@ var hierarchy =
     [ "RadioLibHal", "class_radio_lib_hal.html", [
       [ "EspHal", "class_esp_hal.html", null ],
       [ "PiHal", "class_pi_hal.html", null ],
-      [ "PicoHal", "class_pico_hal.html", null ],
-      [ "TockHal", "class_tock_hal.html", null ]
+      [ "PicoHal", "class_pico_hal.html", null ]
     ] ],
     [ "RadioLibPrint", "class_radio_lib_print.html", [
       [ "BellClient", "class_bell_client.html", null ],
