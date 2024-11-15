@@ -114,14 +114,16 @@
   //#define RADIOLIB_CLOCK_DRIFT_MS                         (0)
 #endif
 
-#if ARDUINO >= 100
+#if !defined(RADIOLIB_BUILD_GENERIC) && ARDUINO >= 100
   // Arduino build
   #include "Arduino.h"
   #define RADIOLIB_BUILD_ARDUINO
-#else
+#else 
   // generic build
   #include <stdio.h>
+  #ifndef RADIOLIB_BUILD_GENERIC
   #define RADIOLIB_BUILD_GENERIC
+  #endif
 #endif
 
 #if defined(RADIOLIB_BUILD_ARDUINO)
