@@ -133,10 +133,8 @@
  * RADIOLIB_DEFAULT_SPI - default SPIClass instance to use.
  * RADIOLIB_NONVOLATILE - macro to place variable into program storage (usually Flash).
  * RADIOLIB_NONVOLATILE_READ_BYTE - function/macro to read variables saved in program storage (usually Flash).
- * RADIOLIB_TYPE_ALIAS - construct to create an alias for a type, usually vai the `using` keyword.
+ * RADIOLIB_TYPE_ALIAS - construct to create an alias for a type, usually via the `using` keyword.
  * RADIOLIB_TONE_UNSUPPORTED - some platforms do not have tone()/noTone(), which is required for AFSK.
- *
- * In addition, some platforms may require RadioLib to disable specific drivers (such as ESP8266).
  *
  * Users may also specify their own configuration by uncommenting the RADIOLIB_CUSTOM_ARDUINO,
  * and then specifying all platform parameters in the section below. This will override automatic
