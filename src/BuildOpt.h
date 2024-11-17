@@ -118,7 +118,7 @@
   // Arduino build
   #include "Arduino.h"
   #define RADIOLIB_BUILD_ARDUINO
-#else 
+#else
   // generic build
   #include <stdio.h>
   #ifndef RADIOLIB_BUILD_GENERIC
