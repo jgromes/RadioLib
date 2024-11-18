@@ -1324,7 +1324,7 @@ int16_t SX127x::setIrqFlags(uint32_t irq) {
   uint8_t usedPinFlags = 0;
   bool conflict = false;
   int16_t modem = getActiveModem();
-  int16_t state;
+  int16_t state = RADIOLIB_ERR_NONE;
   for(uint8_t i = 0; i <= 31; i++) {
     // check if the bit is set
     uint32_t irqBit = irq & (1UL << i);
