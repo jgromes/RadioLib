@@ -43,6 +43,18 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
   END_OF_MODE_TABLE,
 };
 
+// flag to indicate that a packet was received
+volatile bool receivedFlag = false;
+
+// this function is called when a complete packet
+// is received by the module
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+void setFlag(void) {
+  // we got a packet, set the flag
+  receivedFlag = true;
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -95,18 +107,6 @@ void setup() {
   // radio.receive();
   // radio.readData();
   // radio.scanChannel();
-}
-
-// flag to indicate that a packet was received
-volatile bool receivedFlag = false;
-
-// this function is called when a complete packet
-// is received by the module
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-void setFlag(void) {
-  // we got a packet, set the flag
-  receivedFlag = true;
 }
 
 void loop() {

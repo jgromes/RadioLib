@@ -33,6 +33,18 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
   END_OF_MODE_TABLE,
 };
 
+// flag to indicate that a packet was detected or CAD timed out
+volatile bool scanFlag = false;
+
+// this function is called when a complete packet
+// is received by the module
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+void setFlag(void) {
+  // something happened, set the flag
+  scanFlag = true;
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -64,18 +76,6 @@ void setup() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
-}
-
-// flag to indicate that a packet was detected or CAD timed out
-volatile bool scanFlag = false;
-
-// this function is called when a complete packet
-// is received by the module
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-void setFlag(void) {
-  // something happened, set the flag
-  scanFlag = true;
 }
 
 void loop() {
