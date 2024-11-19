@@ -32,6 +32,12 @@ const int pin = 5;
 Radio radio = new RadioModule();
 */
 
+// this function is called when a new bit is received
+void readBit(void) {
+  // read the data bit
+  radio.readBit(pin);
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -57,12 +63,6 @@ void setup() {
 
   // start direct mode reception
   radio.receiveDirect();
-}
-
-// this function is called when a new bit is received
-void readBit(void) {
-  // read the data bit
-  radio.readBit(pin);
 }
 
 void loop() {

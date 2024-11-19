@@ -39,6 +39,39 @@ SX1278 radio = new Module(10, 2, 9, 3);
 Radio radio = new RadioModule();
 */
 
+// flag to indicate that a preamble was not detected
+volatile bool timeoutFlag = false;
+
+// flag to indicate that a preamble was detected
+volatile bool detectedFlag = false;
+
+// flag to indicate if we are currently receiving
+bool receiving = false;
+
+// this function is called when no preamble
+// is detected within timeout period
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+void setFlagTimeout(void) {
+  // we timed out, set the flag
+  timeoutFlag = true;
+}
+
+// this function is called when LoRa preamble
+// is detected within timeout period
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+void setFlagDetected(void) {
+  // we got a preamble, set the flag
+  detectedFlag = true;
+}
+
 void setup() {
   // Serial port speed must be high enough for this example
   Serial.begin(115200);
@@ -72,39 +105,6 @@ void setup() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
-}
-
-// flag to indicate that a preamble was not detected
-volatile bool timeoutFlag = false;
-
-// flag to indicate that a preamble was detected
-volatile bool detectedFlag = false;
-
-// flag to indicate if we are currently receiving
-bool receiving = false;
-
-// this function is called when no preamble
-// is detected within timeout period
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-#if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
-#endif
-void setFlagTimeout(void) {
-  // we timed out, set the flag
-  timeoutFlag = true;
-}
-
-// this function is called when LoRa preamble
-// is detected within timeout period
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-#if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
-#endif
-void setFlagDetected(void) {
-  // we got a preamble, set the flag
-  detectedFlag = true;
 }
 
 void loop() {
