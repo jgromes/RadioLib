@@ -62,6 +62,21 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
 // save transmission state between loops
 int transmissionState = RADIOLIB_ERR_NONE;
 
+// flag to indicate that a packet was sent
+volatile bool transmittedFlag = false;
+
+// this function is called when a complete packet
+// is transmitted by the module
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+void setFlag(void) {
+  // we sent a packet, set the flag
+  transmittedFlag = true;
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -96,21 +111,6 @@ void setup() {
                       0x89, 0xAB, 0xCD, 0xEF};
     state = radio.startTransmit(byteArr, 8);
   */
-}
-
-// flag to indicate that a packet was sent
-volatile bool transmittedFlag = false;
-
-// this function is called when a complete packet
-// is transmitted by the module
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-#if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
-#endif
-void setFlag(void) {
-  // we sent a packet, set the flag
-  transmittedFlag = true;
 }
 
 // counter to keep track of transmitted packets
