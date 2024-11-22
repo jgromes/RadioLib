@@ -3,8 +3,10 @@
 
   This example listens for LoRa transmissions using LLCC68 LoRa modules.
 
-  NOTE: LLCC68 modules offer the same features as SX1261 and has the same
-        interface. Please see SX126x examples for full reference.
+  NOTE: LLCC68 modules offer the same features as SX1261 and have the same
+        interface. The difference is in the available LoRa settings (not all
+        spreading factors are available on LLCC68).
+        Please see SX126x examples for full reference.
 
   WARNING: Often, LLCC68 modules are mislabeled. If you are seeing error -2
            (RADIOLIB_ERR_CHIP_NOT_FOUND) and debug mode shows "SX1261" as
