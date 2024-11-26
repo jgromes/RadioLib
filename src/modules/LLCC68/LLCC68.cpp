@@ -9,6 +9,13 @@ LLCC68::LLCC68(Module* mod) : SX1262(mod) {
 int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t pwr, uint16_t preambleLength, float tcxoVoltage, bool useRegulatorLDO) {
   // execute common part
   int16_t state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+  if(state == RADIOLIB_ERR_CHIP_NOT_FOUND) {
+    // bit of a hack, but some LLCC68 chips report as "SX1261", try that
+    // for full discussion, see https://github.com/jgromes/RadioLib/issues/1329
+    chipType = RADIOLIB_SX1261_CHIP_TYPE;
+    state = SX126x::begin(cr, syncWord, preambleLength, tcxoVoltage, useRegulatorLDO);
+    RADIOLIB_DEBUG_PRINTLN("LLCC68 version string not found, using SX1261 instead");
+  }
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
