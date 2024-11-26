@@ -346,15 +346,9 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
     }
   
     // if there is no (channel that allowed the) user-specified datarate, use a default datarate
-    // we use the floor of the average datarate of the first enabled channel
     if(initialDr == RADIOLIB_LORAWAN_DATA_RATE_UNUSED) {
-      for(int i = 0; i < RADIOLIB_LORAWAN_NUM_AVAILABLE_CHANNELS; i++) {
-        if(this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].enabled) {
-          uint8_t drMin = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMin;
-          uint8_t drMax = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][i].drMax;
-          drUp = (drMin + drMax) / 2;
-        }
-      }
+      // use the specified datarate from the first channel (this is always defined)
+      drUp = this->channelPlan[RADIOLIB_LORAWAN_UPLINK][0].dr;
     }
   }
 
@@ -2978,15 +2972,6 @@ void LoRaWANNode::selectChannelPlanDyn(bool joinRequest) {
   for(; num < 3 && this->band->txFreqs[num].enabled; num++) {
     this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num] = this->band->txFreqs[num];
     this->channelPlan[RADIOLIB_LORAWAN_DOWNLINK][num] = this->band->txFreqs[num];
-  }
-
-  // if we're about to send a JoinRequest, copy the JoinRequest channels to the next slots
-  if(joinRequest) {
-    size_t numJR = 0;
-    for(; numJR < 3 && this->band->txJoinReq[num].enabled; numJR++, num++) {
-      this->channelPlan[RADIOLIB_LORAWAN_UPLINK][num] = this->band->txFreqs[num];
-      this->channelPlan[RADIOLIB_LORAWAN_DOWNLINK][num] = this->band->txFreqs[num];
-    }
   }
 
   // clear all remaining channels

@@ -405,9 +405,6 @@ struct LoRaWANBand_t {
   /*! \brief A set of default uplink (TX) channels for dynamic bands */
   LoRaWANChannel_t txFreqs[3];
 
-  /*! \brief A set of possible extra channels for the Join-Request message for dynamic bands */
-  LoRaWANChannel_t txJoinReq[3];
-  
   /*! \brief The number of TX channel spans for fixed bands */
   uint8_t numTxSpans;
 
