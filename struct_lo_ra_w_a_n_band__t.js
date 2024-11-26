@@ -17,7 +17,6 @@ var struct_lo_ra_w_a_n_band__t =
     [ "rx2", "struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f", null ],
     [ "txAck", "struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2", null ],
     [ "txFreqs", "struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c", null ],
-    [ "txJoinReq", "struct_lo_ra_w_a_n_band__t.html#a9f6f43346f7c2e281b90d58a44565d38", null ],
     [ "txParamSupported", "struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6", null ],
     [ "txSpans", "struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3", null ],
     [ "txWoR", "struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e", null ]

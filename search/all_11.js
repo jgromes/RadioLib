@@ -15,10 +15,9 @@ var searchData=
   ['ts009_686',['TS009',['../class_lo_ra_w_a_n_node.html#a8226f4d0329d15da9ffc706e5781403a',1,'LoRaWANNode']]],
   ['txack_687',['txAck',['../struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2',1,'LoRaWANBand_t']]],
   ['txfreqs_688',['txFreqs',['../struct_lo_ra_w_a_n_band__t.html#a9bd952022473cb08e067c763325d689c',1,'LoRaWANBand_t']]],
-  ['txjoinreq_689',['txJoinReq',['../struct_lo_ra_w_a_n_band__t.html#a9f6f43346f7c2e281b90d58a44565d38',1,'LoRaWANBand_t']]],
-  ['txparamsupported_690',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
-  ['txspans_691',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
-  ['txwor_692',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
-  ['type_693',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type()'],['../structtone__t.html#abc1079d3ec7d98466dc948930a348d65',1,'tone_t::type()']]],
-  ['type_20aliases_20used_20by_20radiolib_2e_694',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]]
+  ['txparamsupported_689',['txParamSupported',['../struct_lo_ra_w_a_n_band__t.html#a4bbc7445702c32199f0bbd011d6f4da6',1,'LoRaWANBand_t']]],
+  ['txspans_690',['txSpans',['../struct_lo_ra_w_a_n_band__t.html#aa37a3cae13a68c2deb2968de26ad9bd3',1,'LoRaWANBand_t']]],
+  ['txwor_691',['txWoR',['../struct_lo_ra_w_a_n_band__t.html#a918f643c1fc6df722efd8f969c68cf7e',1,'LoRaWANBand_t']]],
+  ['type_692',['type',['../struct_l_r11x0_wifi_result__t.html#a7750bb14648b6ee4e96b73cd76a1ca2a',1,'LR11x0WifiResult_t::type()'],['../structtone__t.html#abc1079d3ec7d98466dc948930a348d65',1,'tone_t::type()']]],
+  ['type_20aliases_20used_20by_20radiolib_2e_693',['Type aliases used by RadioLib.',['../group__typedefs.html',1,'']]]
 ];
