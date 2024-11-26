@@ -52,7 +52,7 @@ You are making your own device using a third party LoRaWAN stack so there will n
 
 Choose the Frequency plan appropriate for your region. Consider that almost all countries have laws relating to what frequencies you use so don't get creative. For Europe please use the recommended option. For other regions use the entry marked 'used by TTN'.
 
-Choose LoRaWAN 1.1.0 - the last one in the list - the latest specfication. RadioLib uses RP001 Regional Parameters 1.1 revision A.
+Choose LoRaWAN 1.1.0 - the last one in the list - the latest specfication. RadioLib uses RP001 Regional Parameters 1.1 revision B.
 
 At this point you will be asked for your JoinEUI. As this is a DIY device and we are using RadioLib, you can use all zero's as recommended by The LoRa Alliance TR007 Technical Recommendations document. Once you've put in all zeros and clicked confirm you will be asked for a DevEUI, AppKey and NwkKey. It is preferable to have the console generate them so they are properly formatted.
 
