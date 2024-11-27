@@ -1,6 +1,7 @@
 // this example uses the embedded LoRa radio to transmit on 433.775 mhz with APRS encoding. 
 // it shows a normal aprs.sendPosition, as well as a aprs.sendMicE command. You should choose one. 
 // this has been tested to work on both a Nucleo_WL55JC2 (400 mhz version) and the Ebyte E77 module dev kit (400 mhz version)
+
 // include the library
 #include <Arduino.h>
 #include <RadioLib.h>
