@@ -1,15 +1,12 @@
-// this example uses the LoRa radio to transmit on 433.775 mhz with APRS encoding. 
-// it shows a normal aprs.sendPosition, as well as a aprs.sendMicE command. You should choose one
+// this example uses the embedded LoRa radio to transmit on 433.775 mhz with APRS encoding. 
+// it shows a normal aprs.sendPosition, as well as a aprs.sendMicE command. You should choose one. 
 // this has been tested to work on both a Nucleo_WL55JC2 (400 mhz version) and the Ebyte E77 module dev kit (400 mhz version)
 // include the library
 #include <Arduino.h>
 #include <RadioLib.h>
 
-uint8_t telemetry[] = {10, 20, 30, 40, 50};  // set telemetry array of different values
-uint8_t *telem1 = telemetry;  // Point to the first element of the array
-
 int count = 0;
-String packet = "";
+
 // no need to configure pins, signals are routed to the radio internally
 STM32WLx radio = new STM32WLx_Module();
 
@@ -49,7 +46,6 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
 void setup() {
   Serial.begin(9600);
   radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
-  
   // set RF switch control configuration
   // this has to be done prior to calling begin()
   //radio.setRfSwitchTable(rfswitch_pins, rfswitch_table);
