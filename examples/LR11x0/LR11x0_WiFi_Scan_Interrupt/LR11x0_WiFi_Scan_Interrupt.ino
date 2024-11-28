@@ -60,6 +60,20 @@ static const Module::RfSwitchMode_t rfswitch_table[] = {
   END_OF_MODE_TABLE,
 };
 
+// flag to indicate that a scan was completed
+volatile bool scanFlag = false;
+
+// this function is called when a scan is completed
+// IMPORTANT: this function MUST be 'void' type
+//            and MUST NOT have any arguments!
+#if defined(ESP8266) || defined(ESP32)
+  ICACHE_RAM_ATTR
+#endif
+void setFlag(void) {
+  // scan is complete, set the flag
+  scanFlag = true;
+}
+
 void setup() {
   Serial.begin(9600);
 
@@ -90,20 +104,6 @@ void setup() {
     Serial.print(F("failed, code "));
     Serial.println(state);
   }
-}
-
-// flag to indicate that a scan was completed
-volatile bool scanFlag = false;
-
-// this function is called when a scan is completed
-// IMPORTANT: this function MUST be 'void' type
-//            and MUST NOT have any arguments!
-#if defined(ESP8266) || defined(ESP32)
-  ICACHE_RAM_ATTR
-#endif
-void setFlag(void) {
-  // scan is complete, set the flag
-  scanFlag = true;
 }
 
 void loop() {

@@ -28,7 +28,7 @@ class SX1261 : public SX1262 {
     SX1261(Module* mod); // cppcheck-suppress noExplicitConstructor
 
     /*!
-      \brief Sets output power. Allowed values are in range from -17 to 14 dBm.
+      \brief Sets output power. Allowed values are in range from -17 to 15 dBm.
       \param power Output power to be set in dBm.
       \returns \ref status_codes
     */

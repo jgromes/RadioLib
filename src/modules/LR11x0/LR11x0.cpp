@@ -129,6 +129,8 @@ int16_t LR11x0::beginGNSS(uint8_t constellations, float tcxoVoltage) {
   state = this->clearErrors();
   RADIOLIB_ASSERT(state);
 
+  // set GNSS flag to reserve DIO11 for LF clock
+  this->gnss = true;
   state = this->configLfClock(RADIOLIB_LR11X0_LF_BUSY_RELEASE_DISABLED | RADIOLIB_LR11X0_LF_CLK_XOSC);
   RADIOLIB_ASSERT(state);
 
@@ -2066,6 +2068,7 @@ int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   this->mod->spiConfig.stream = true;
   this->mod->spiConfig.parseStatusCb = SPIparseStatus;
   this->mod->spiConfig.checkStatusCb = SPIcheckStatus;
+  this->gnss = false;
 
   // try to find the LR11x0 chip - this will also reset the module at least once
   if(!LR11x0::findChip(this->chipType)) {
@@ -2452,7 +2455,7 @@ int16_t LR11x0::setDioIrqParams(uint32_t irq1, uint32_t irq2) {
 }
 
 int16_t LR11x0::setDioIrqParams(uint32_t irq) {
-  return(setDioIrqParams(irq, 0));
+  return(setDioIrqParams(irq, this->gnss ? 0 : irq));
 }
 
 int16_t LR11x0::clearIrq(uint32_t irq) {
@@ -2463,7 +2466,7 @@ int16_t LR11x0::clearIrq(uint32_t irq) {
 }
 
 int16_t LR11x0::configLfClock(uint8_t setup) {
-  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CONFIG_LF_LOCK, true, &setup, 1));
+  return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CONFIG_LF_CLOCK, true, &setup, 1));
 }
 
 int16_t LR11x0::setTcxoMode(uint8_t tune, uint32_t delay) {
