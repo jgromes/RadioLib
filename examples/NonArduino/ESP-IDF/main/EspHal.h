@@ -7,7 +7,7 @@
 // this example only works on ESP32 and is unlikely to work on ESP32S2/S3 etc.
 // if you need high portability, you should probably use Arduino anyway ...
 #if CONFIG_IDF_TARGET_ESP32 == 0
-  #error Target is not ESP32!
+  #error This example HAL only supports ESP32 targets. Support for ESP32S2/S3 etc. can be added by adjusting this file to user needs.
 #endif
 
 // include all the dependencies
