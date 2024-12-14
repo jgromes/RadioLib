@@ -717,7 +717,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
     }
   } else {
     // for v1.0.4, the JoinNonce is simply a non-repeating value (we only check the last value)
-    if(joinNonceNew == this->joinNonce) {
+    if((this->joinNonce > 0) && (joinNonceNew == this->joinNonce)) {
       return(RADIOLIB_ERR_JOIN_NONCE_INVALID);
     }
   }
