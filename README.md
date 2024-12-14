@@ -94,4 +94,7 @@ SX127x, RFM9x, SX126x, LR11x0 and SX128x
 * __PJRC__
   * [__Teensy__](https://github.com/PaulStoffregen/cores) - Teensy 2.x, 3.x and 4.x boards
 
+* __Silicon Labs__
+  * [__EFR32__](https://github.com/SiliconLabs/arduino) - Silicon Labs xG24, xG27 and other boards
+
 The list above is by no means exhaustive - RadioLib code is independent of the used platform! Compilation of all examples is tested for all platforms officially supported prior to releasing new version. In addition, RadioLib includes an internal hardware abstraction layer, which allows it to be easily ported even to non-Arduino environments.

@@ -36,6 +36,7 @@ on:
           - MegaCore:avr:1281
           - teensy:avr:teensy41
           - arduino:renesas_uno:minima
+          - SiliconLabs:silabs:xg24explorerkit
 
 jobs:
   build:
@@ -118,6 +119,9 @@ jobs:
           - id: arduino:renesas_uno:minima
             run: |
               echo "skip-pattern=(STM32WL|LoRaWAN|LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
+          - id: SiliconLabs:silabs:xg24explorerkit
+            run: | 
+              echo "index-url=--additional-urls https://siliconlabs.github.io/arduino/package_arduinosilabs_index.json" >> $GITHUB_OUTPUT
 
     runs-on: ubuntu-latest
     name: ${{ matrix.id }}
