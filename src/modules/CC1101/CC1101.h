@@ -8,7 +8,7 @@
 
 // CC1101 physical layer properties
 #define RADIOLIB_CC1101_FREQUENCY_STEP_SIZE                     396.7285156
-#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       63
+#define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       64
 #define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
 
@@ -190,9 +190,6 @@
 
 // RADIOLIB_CC1101_REG_SYNC0
 #define RADIOLIB_CC1101_SYNC_WORD_LSB                           0x91        //  7     0   sync word LSB
-
-// RADIOLIB_CC1101_REG_PKTLEN
-#define RADIOLIB_CC1101_PACKET_LENGTH                           0xFF        //  7     0   packet length in bytes
 
 // RADIOLIB_CC1101_REG_PKTCTRL1
 #define RADIOLIB_CC1101_PQT                                     0x00        //  7     5   preamble quality threshold
