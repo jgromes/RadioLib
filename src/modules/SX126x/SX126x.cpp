@@ -641,7 +641,12 @@ int16_t SX126x::startReceive() {
 }
 
 int16_t SX126x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
-  (void)len;
+  // in implicit header mode, use the provided length if it is nonzero
+  // otherwise we trust the user has previously set the payload length manually
+  if((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (len != 0)) {
+    this->implicitLen = len;
+  }
+
   int16_t state = startReceiveCommon(timeout, irqFlags, irqMask);
   RADIOLIB_ASSERT(state);
 
