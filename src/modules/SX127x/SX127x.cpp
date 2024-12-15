@@ -417,8 +417,9 @@ int16_t SX127x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, Radi
       state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_DIO_MAPPING_1, RADIOLIB_SX127X_DIO1_LORA_FHSS_CHANGE_CHANNEL, 5, 4);
     }
 
-    // set expected packet length for SF6
-    if(this->spreadingFactor == 6) {
+    // in implicit header mode, use the provided length if it is nonzero
+    // otherwise we trust the user has previously set the payload length manually
+    if((this->implicitHdr) && (len != 0)) {
       state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH, len);
       this->packetLength = len;
     }
@@ -1211,12 +1212,12 @@ size_t SX127x::getPacketLength(bool update) {
   int16_t modem = getActiveModem();
 
   if(modem == RADIOLIB_SX127X_LORA) {
-    if(this->spreadingFactor != 6) {
-      // get packet length for SF7 - SF12
+    if(!this->implicitHdr) {
+      // get packet length for explicit header mode
       return(this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_RX_NB_BYTES));
 
     } else {
-      // return the cached value for SF6
+      // return the cached value for implicit header mode
       return(this->packetLength);
     }
 
@@ -1858,6 +1859,27 @@ float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
     // return the value
     return(rssi);
   }
+}
+
+int16_t SX127x::setHeaderType(uint8_t headerType, uint8_t bitIndex, size_t len) {
+  // check active modem
+  if(getActiveModem() != RADIOLIB_SX127X_LORA) {
+    return(RADIOLIB_ERR_WRONG_MODEM);
+  }
+
+  // set requested packet mode
+  Module* mod = this->getMod();
+  int16_t state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, headerType, bitIndex, bitIndex);
+  RADIOLIB_ASSERT(state);
+
+  // set length to register
+  state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH, len);
+  RADIOLIB_ASSERT(state);
+
+  // update cached value
+  SX127x::packetLength = len;
+
+  return(state);
 }
 
 int16_t SX127x::setLowBatteryThreshold(int8_t level, uint32_t pin) {
