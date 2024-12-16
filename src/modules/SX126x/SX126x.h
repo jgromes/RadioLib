@@ -823,6 +823,10 @@ class SX126x: public PhysicalLayer {
     /*!
       \brief Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535.
       \param preambleLength Preamble length to be set in symbols (LoRa) or bits (FSK).
+      NOTE: In FSK mode, sync word length limits the preamble detector length
+      (the number of preamble bits that must be detected to start receiving packet).
+      For details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45.
+      Preamble detector length is adjusted automatically each time this method is called.
       \returns \ref status_codes
     */
     int16_t setPreambleLength(size_t preambleLength) override;
@@ -887,6 +891,10 @@ class SX126x: public PhysicalLayer {
       Can also set LR-FHSS sync word, but its length must be 4 bytes.
       \param syncWord FSK sync word to be set.
       \param len FSK sync word length in bytes.
+      NOTE: In FSK mode, sync word length limits the preamble detector length
+      (the number of preamble bits that must be detected to start receiving packet).
+      For details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45.
+      Preamble detector length is adjusted automatically each time this method is called.
       \returns \ref status_codes
     */
     int16_t setSyncWord(uint8_t* syncWord, size_t len) override;
