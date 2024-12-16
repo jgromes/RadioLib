@@ -973,10 +973,13 @@ int16_t SX126x::setPreambleLength(size_t preambleLength) {
     return(setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled));
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     this->preambleLengthFSK = preambleLength;
-    this->preambleDetLength = preambleLength >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
-                              preambleLength >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
-                              preambleLength >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
-                              preambleLength >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
+    // maximum preamble detector length is limited by sync word length
+    // for details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45
+    uint8_t maxDetLen = RADIOLIB_MIN(this->syncWordLength, this->preambleLengthFSK);
+    this->preambleDetLength = maxDetLen >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
+                              maxDetLen >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
+                              maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
+                              maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
                               RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
     return(setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType));
   }
@@ -1214,6 +1217,15 @@ int16_t SX126x::setSyncWord(uint8_t* syncWord, size_t len) {
 
     // update packet parameters
     this->syncWordLength = len * 8;
+    
+    // maximum preamble detector length is limited by sync word length
+    // for details, see the note in SX1261 datasheet, Rev 2.1, section 6.2.2.1, page 45
+    uint8_t maxDetLen = RADIOLIB_MIN(this->syncWordLength, this->preambleLengthFSK);
+    this->preambleDetLength = maxDetLen >= 32 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_32 :
+                              maxDetLen >= 24 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_24 :
+                              maxDetLen >= 16 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_16 :
+                              maxDetLen >   0 ? RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_8 :
+                              RADIOLIB_SX126X_GFSK_PREAMBLE_DETECT_OFF;
     state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
 
     return(state);
