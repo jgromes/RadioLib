@@ -2542,7 +2542,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Sets preamble length for LoRa or FSK modem. Allowed values range from 1 to 65535. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK). </td></tr>
+    <tr><td class="paramname">preambleLength</td><td>Preamble length to be set in symbols (LoRa) or bits (FSK). NOTE: In FSK mode, sync word length limits the preamble detector length (the number of preamble bits that must be detected to start receiving packet). For details, see the note in <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> datasheet, Rev 2.1, section 6.2.2.1, page 45. Preamble detector length is adjusted automatically each time this method is called. </td></tr>
   </table>
   </dd>
 </dl>
@@ -2863,7 +2863,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">syncWord</td><td>FSK sync word to be set. </td></tr>
-    <tr><td class="paramname">len</td><td>FSK sync word length in bytes. </td></tr>
+    <tr><td class="paramname">len</td><td>FSK sync word length in bytes. NOTE: In FSK mode, sync word length limits the preamble detector length (the number of preamble bits that must be detected to start receiving packet). For details, see the note in <a class="el" href="class_s_x1261.html" title="Derived class for SX1261 modules.">SX1261</a> datasheet, Rev 2.1, section 6.2.2.1, page 45. Preamble detector length is adjusted automatically each time this method is called. </td></tr>
   </table>
   </dd>
 </dl>
