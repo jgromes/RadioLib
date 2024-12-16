@@ -526,7 +526,7 @@ int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
     state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, len, this->headerType, this->invertIQEnabled);
   
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType, len);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType, len);
     
     // address is taken from the register
     if(this->addrComp != RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF) {
@@ -748,7 +748,7 @@ int16_t SX126x::startReceiveCommon(uint32_t timeout, RadioLibIrqFlags_t irqFlags
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, this->implicitLen, this->headerType, this->invertIQEnabled);
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    state = setPacketParamsFSK(this->preambleLengthFSK, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
+    state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, this->addrComp, this->whitening, this->packetType);
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
   }
