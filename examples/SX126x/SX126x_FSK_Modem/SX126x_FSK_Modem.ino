@@ -126,33 +126,4 @@ void loop() {
     Serial.println(F("[SX1262] Failed to receive packet, code "));
     Serial.println(state);
   }
-
-  // FSK modem has built-in address filtering system
-  // it can be enabled by setting node address, broadcast
-  // address, or both
-  //
-  // to transmit packet to a particular address,
-  // use the following methods:
-  //
-  // radio.transmit("Hello World!", address);
-  // radio.startTransmit("Hello World!", address);
-
-  // set node address to 0x02
-  state = radio.setNodeAddress(0x02);
-  // set broadcast address to 0xFF
-  state = radio.setBroadcastAddress(0xFF);
-  if (state != RADIOLIB_ERR_NONE) {
-    Serial.println(F("[SX1262] Unable to set address filter, code "));
-    Serial.println(state);
-  }
-
-  // address filtering can also be disabled
-  // NOTE: calling this method will also erase previously set
-  //       node and broadcast address
-  /*
-    state = radio.disableAddressFiltering();
-    if (state != RADIOLIB_ERR_NONE) {
-      Serial.println(F("Unable to remove address filter, code "));
-    }
-  */
 }
