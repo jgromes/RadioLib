@@ -508,6 +508,8 @@ void SX126x::clearChannelScanAction() {
 }
 
 int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
+  (void)addr;
+  
   // check packet length
   if(len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
     return(RADIOLIB_ERR_PACKET_TOO_LONG);
