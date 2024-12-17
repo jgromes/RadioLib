@@ -1286,10 +1286,9 @@ class SX126x: public PhysicalLayer {
     bool ldroAuto = true;
 
     uint32_t bitRate = 0, frequencyDev = 0;
-    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, addrComp = 0, whitening = 0, packetType = 0;
+    uint8_t preambleDetLength = 0, rxBandwidth = 0, pulseShape = 0, crcTypeFSK = 0, syncWordLength = 0, whitening = 0, packetType = 0;
     uint16_t preambleLengthFSK = 0;
     float rxBandwidthKhz = 0;
-    uint8_t nodeAddr = 0;
 
     float dataRateMeasured = 0;
 
