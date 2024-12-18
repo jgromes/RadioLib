@@ -1068,7 +1068,7 @@ class LoRaWANNode {
     // setup uplink/downlink channel data rates and frequencies
     // for dynamic channels, there is a small set of predefined channels
     // in case of JoinRequest, add some optional extra frequencies 
-    void selectChannelPlanDyn(bool joinRequest = false);
+    void selectChannelPlanDyn();
 
     // setup uplink/downlink channel data rates and frequencies
     // for fixed bands, we only allow one sub-band at a time to be selected

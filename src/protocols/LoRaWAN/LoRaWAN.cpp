@@ -307,7 +307,7 @@ void LoRaWANNode::createSession(uint16_t lwMode, uint8_t initialDr) {
 
   // setup JoinRequest uplink/downlink frequencies and datarates
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn(true);
+    this->selectChannelPlanDyn();
   } else {
     this->selectChannelPlanFix();
   }
@@ -761,7 +761,7 @@ int16_t LoRaWANNode::processJoinAccept(LoRaWANJoinEvent_t *joinEvent) {
   
   // in case of dynamic band, reset the channels to clear JoinRequest-specific channels
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn(false);
+    this->selectChannelPlanDyn();
   }
 
   uint8_t cOcts[5];
@@ -1139,7 +1139,7 @@ void LoRaWANNode::adrBackoff() {
   }
 
   if(this->band->bandType == RADIOLIB_LORAWAN_BAND_DYNAMIC) {
-    this->selectChannelPlanDyn(false);      // revert to default frequencies
+    this->selectChannelPlanDyn();           // revert to default frequencies
   } else {
     this->selectChannelPlanFix();           // go back to default selected subband
   }
@@ -2962,7 +2962,7 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
   }
 }
 
-void LoRaWANNode::selectChannelPlanDyn(bool joinRequest) {
+void LoRaWANNode::selectChannelPlanDyn() {
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Setting up dynamic channels");
   
   size_t num = 0;
