@@ -39,7 +39,6 @@ var annotated_dup =
     [ "LR11x0WifiResultExtended_t", "struct_l_r11x0_wifi_result_extended__t.html", "struct_l_r11x0_wifi_result_extended__t" ],
     [ "LR11x0WifiResultFull_t", "struct_l_r11x0_wifi_result_full__t.html", "struct_l_r11x0_wifi_result_full__t" ],
     [ "LrFhssRate_t", "struct_lr_fhss_rate__t.html", "struct_lr_fhss_rate__t" ],
-    [ "M17Client", "class_m17_client.html", "class_m17_client" ],
     [ "Module", "class_module.html", "class_module" ],
     [ "MorseClient", "class_morse_client.html", "class_morse_client" ],
     [ "nRF24", "classn_r_f24.html", "classn_r_f24" ],

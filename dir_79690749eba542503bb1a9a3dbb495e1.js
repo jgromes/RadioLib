@@ -8,7 +8,6 @@ var dir_79690749eba542503bb1a9a3dbb495e1 =
     [ "FSK4", "dir_daa71c65dcbe444af3aedb7a2ef08741.html", "dir_daa71c65dcbe444af3aedb7a2ef08741" ],
     [ "Hellschreiber", "dir_c14921ab4918e015c91d11c846a1924a.html", "dir_c14921ab4918e015c91d11c846a1924a" ],
     [ "LoRaWAN", "dir_476f96e9e2af087ba14ea5b60a229ae6.html", "dir_476f96e9e2af087ba14ea5b60a229ae6" ],
-    [ "M17", "dir_6f58081cd2e9d169ec7decccfc9ebeeb.html", "dir_6f58081cd2e9d169ec7decccfc9ebeeb" ],
     [ "Morse", "dir_d916eb25599dc82f14db514c97a6ae6d.html", "dir_d916eb25599dc82f14db514c97a6ae6d" ],
     [ "Pager", "dir_6dea20bfcf2e1a380cdc520d491b79a2.html", "dir_6dea20bfcf2e1a380cdc520d491b79a2" ],
     [ "PhysicalLayer", "dir_2cdd3c47e80335731aa10f67042c391a.html", "dir_2cdd3c47e80335731aa10f67042c391a" ],
