@@ -13,7 +13,9 @@ var hierarchy =
     [ "CADScanConfig_t", "struct_c_a_d_scan_config__t.html", null ],
     [ "ChannelScanConfig_t", "union_channel_scan_config__t.html", null ],
     [ "DataRate_t", "union_data_rate__t.html", null ],
-    [ "FSK4Client", "class_f_s_k4_client.html", null ],
+    [ "FSK4Client", "class_f_s_k4_client.html", [
+      [ "M17Client", "class_m17_client.html", null ]
+    ] ],
     [ "FSKRate_t", "struct_f_s_k_rate__t.html", null ],
     [ "ITA2String", "class_i_t_a2_string.html", null ],
     [ "LoRaRate_t", "struct_lo_ra_rate__t.html", null ],
