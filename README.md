@@ -48,7 +48,7 @@ SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x, LR11x0 and
 SX127x, RFM9x, SX126x, RF69, SX1231, CC1101, nRF24L01, RFM2x, Si443x and SX128x
 * [__POCSAG__](https://www.sigidwiki.com/wiki/POCSAG) using 2-FSK for modules:  
 SX127x, RFM9x, RF69, SX1231, CC1101, nRF24L01, RFM2x and Si443x
-* [__LoRaWAN__](https://lora-alliance.org/) using LoRa for modules:  
+* [__LoRaWAN__](https://lora-alliance.org/) using LoRa and FSK for modules:  
 SX127x, RFM9x, SX126x, LR11x0 and SX128x  
 
 ### Supported Arduino platforms:
