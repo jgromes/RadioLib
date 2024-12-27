@@ -356,10 +356,9 @@ int16_t LR11x0::standby(uint8_t mode, bool wakeup) {
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
   if(wakeup) {
-    // pull NSS low for a while to wake up
-    this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-    this->mod->hal->delay(1);
-    this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
+    // send a NOP command - this pulls the NSS low to exit the sleep mode,
+    // while preventing interference with possible other SPI transactions
+    (void)this->mod->SPIwriteStream(RADIOLIB_LR11X0_CMD_NOP, NULL, 0, false, false);
   }
 
   uint8_t buff[] = { mode };
