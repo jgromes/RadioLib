@@ -467,8 +467,10 @@ int16_t SX126x::standby(uint8_t mode, bool wakeup) {
   this->mod->setRfSwitchState(Module::MODE_IDLE);
 
   if(wakeup) {
-    // pull NSS low to wake up
-    this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
+    // send a NOP command - this pulls the NSS low to exit the sleep mode,
+    // while preventing interference with possible other SPI transactions
+    // see https://github.com/jgromes/RadioLib/discussions/1364
+    (void)this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_NOP, NULL, 0, false, false);
   }
 
   uint8_t data[] = { mode };
