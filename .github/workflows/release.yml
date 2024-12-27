@@ -34,4 +34,4 @@ jobs:
       - name: ESP-IDF publish
         env:
           IDF_COMPONENT_API_TOKEN: ${{ secrets.IDF_COMPONENT_API_TOKEN }}
-        run: compote component upload --name TestLib --namespace jgromes
+        run: compote component upload --name RadioLib --namespace jgromes
