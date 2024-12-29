@@ -615,43 +615,7 @@ void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
 }
 
 void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
-  // prepare the buffers
-  size_t buffLen = 1 + numBytes;
-  #if RADIOLIB_STATIC_ONLY
-    uint8_t buffOut[RADIOLIB_STATIC_ARRAY_SIZE];
-    uint8_t buffIn[RADIOLIB_STATIC_ARRAY_SIZE];
-  #else
-    uint8_t* buffOut = new uint8_t[buffLen];
-    uint8_t* buffIn = new uint8_t[buffLen];
-  #endif
-  uint8_t* buffOutPtr = buffOut;
-
-  // copy the command
-  *(buffOutPtr++) = cmd;
-
-  // copy the data
-  if(write) {
-    memcpy(buffOutPtr, dataOut, numBytes);
-  } else {
-    memset(buffOutPtr, 0x00, numBytes);
-  }
-
-  // do the transfer
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-  this->mod->hal->spiBeginTransaction();
-  this->mod->hal->spiTransfer(buffOut, buffLen, buffIn);
-  this->mod->hal->spiEndTransaction();
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
-  
-  // copy the data
-  if(!write) {
-    memcpy(dataIn, &buffIn[1], numBytes);
-  }
-
-  #if !RADIOLIB_STATIC_ONLY
-    delete[] buffOut;
-    delete[] buffIn;
-  #endif
+  (void)this->mod->SPItransferStream(&cmd, 1, write, dataOut, dataIn, numBytes, false);
 }
 
 #endif
