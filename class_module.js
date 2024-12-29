@@ -19,7 +19,6 @@ var class_module =
     [ "Module", "class_module.html#a817178405f125e068e88bad62aeb6f3b", null ],
     [ "Module", "class_module.html#a919baf2e46c357ebfcdbc1025b6c551e", null ],
     [ "findRfSwitchMode", "class_module.html#a5699a937b62ba41387567b4d679b9377", null ],
-    [ "getCs", "class_module.html#aa6cac04c7cb6d5278a318db0966ad1a7", null ],
     [ "getGpio", "class_module.html#a4ec27f0ba5e0009ea9661a5110526b52", null ],
     [ "getIrq", "class_module.html#ab61bc5066c356e2d0d79f08a2bd0fbc9", null ],
     [ "getRst", "class_module.html#ad6cddbf3aebec9717a1a381dd81ad398", null ],
