@@ -19,13 +19,7 @@ int16_t CC1101::beginFSK4(float freq, float br, float freqDev, float rxBw, int8_
 }
 
 void CC1101::reset() {
-  // this is the manual power-on-reset sequence
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-  this->mod->hal->delayMicroseconds(5);
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
-  this->mod->hal->delayMicroseconds(40);
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-  this->mod->hal->delay(10);
+  // just send the command, the reset sequence as described in datasheet seems unnecessary in our usage
   SPIsendCommand(RADIOLIB_CC1101_CMD_RESET);
 }
 
