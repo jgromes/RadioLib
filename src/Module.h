@@ -382,12 +382,9 @@ class Module {
     int16_t SPItransferStream(const uint8_t* cmd, uint8_t cmdLen, bool write, uint8_t* dataOut, uint8_t* dataIn, size_t numBytes, bool waitForGpio);
 
     // pin number access methods
-
-    /*!
-      \brief Access method to get the pin number of SPI chip select.
-      \returns Pin number of SPI chip select configured in the constructor.
-    */
-    uint32_t getCs() const { return(csPin); }
+    // getCs is omitted on purpose, as it can interfere when accessing the SPI in a concurrent environment
+    // so it is considered to be part of the SPI pins and hence not accessible from outside
+    // see https://github.com/jgromes/RadioLib/discussions/1364
 
     /*!
       \brief Access method to get the pin number of interrupt/GPIO.
