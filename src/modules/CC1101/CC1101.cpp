@@ -1160,21 +1160,7 @@ void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
 }
 
 void CC1101::SPIsendCommand(uint8_t cmd) {
-  // pull NSS low
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelLow);
-
-  // start transfer
-  this->mod->hal->spiBeginTransaction();
-
-  // send the command byte
-  uint8_t status = 0;
-  this->mod->hal->spiTransfer(&cmd, 1, &status);
-
-  // stop transfer
-  this->mod->hal->spiEndTransaction();
-  this->mod->hal->digitalWrite(this->mod->getCs(), this->mod->hal->GpioLevelHigh);
-  RADIOLIB_DEBUG_SPI_PRINTLN("CMD\tW\t%02X\t%02X", cmd, status);
-  (void)status;
+  this->mod->SPItransferStream(&cmd, 1, true, NULL, NULL, 0, false);
 }
 
 #endif
