@@ -194,7 +194,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: size-file-${{ matrix.id }}
-          path: size_${{ matrix.id }}.csv
+          path: extras/test/ci/size_${{ matrix.id }}.csv
 
   metrics:
     runs-on: ubuntu-latest
