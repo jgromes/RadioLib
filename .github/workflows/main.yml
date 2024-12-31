@@ -187,6 +187,7 @@ jobs:
         if: ${{ env.run-build == 'true' }}
         run:
           |
+          cd $PWD/extras/test/ci
           ./parse_size.sh ${{ matrix.id }}
 
   metrics:
