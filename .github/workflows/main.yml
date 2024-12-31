@@ -180,28 +180,38 @@ jobs:
         if: ${{ env.run-build == 'true' }}
         run:
           |
-          for example in $(find $PWD/examples -name '*.ino' | sort); do
-            # check whether to skip this sketch
-            if [ ! -z '${{ steps.prep.outputs.skip-pattern }}' ] && [[ ${example} =~ ${{ steps.prep.outputs.skip-pattern }} ]]; then
-              # skip sketch
-              echo -e "\n\033[1;33mSkipped ${example##*/} (matched with ${{ steps.prep.outputs.skip-pattern }})\033[0m";
-            else
-              # apply special flags for LoRaWAN
-              if [[ ${example} =~ "LoRaWAN" ]]; then
-                flags="-DRADIOLIB_LORAWAN_DEV_ADDR=0 -DRADIOLIB_LORAWAN_FNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_SNWKSINT_KEY=0 -DRADIOLIB_LORAWAN_NWKSENC_KEY=0 -DRADIOLIB_LORAWAN_APPS_KEY=0 -DRADIOLIB_LORAWAN_APP_KEY=0 -DRADIOLIB_LORAWAN_NWK_KEY=0 -DRADIOLIB_LORAWAN_DEV_EUI=0 -DARDUINO_TTGO_LORA32_V1"
-              fi
+          cd $PWD/extras/test/ci
+          ./build_examples.sh ${{ matrix.id }} "${{ steps.prep.outputs.skip-pattern }}" ${{ steps.prep.outputs.options }}
+      
+      - name: Parse sizes
+        if: ${{ env.run-build == 'true' }}
+        run:
+          |
+          ./parse_size.sh ${{ matrix.id }}
 
-              # build sketch
-              echo -e "\n\033[1;33mBuilding ${example##*/} ... \033[0m";
-              arduino-cli compile --libraries /home/runner/work/RadioLib --fqbn ${{ matrix.id }}${{ steps.prep.outputs.options }} --build-property compiler.cpp.extra_flags="$flags" $example --warnings=${{ steps.prep.outputs.warnings }}
-              if [ $? -ne 0 ]; then
-                echo -e "\033[1;31m${example##*/} build FAILED\033[0m\n";
-                exit 1;
-              else
-                echo -e "\033[1;32m${example##*/} build PASSED\033[0m\n";
-              fi
-            fi
-          done
+  metrics:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Clone artifact repo
+        run:
+          |
+          cd $PWD/..
+          git clone https://${{ github.actor }}:${{ secrets.TARGET_REPO_TOKEN }}@github.com/radiolib-org/artifacts.git
+          cd artifacts
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+      
+      - name: Append sizes
+        run:
+          |
+          mkdir -p radiolib-ci/l0
+          cd radiolib-ci/l0
+          cp /tmp/size_*.csv radiolib-ci/l0/.
+          rm -r /tmp/size_*.csv
+          git add .
+          git commit -m "Push artifacts from $GITHUB_REPOSITORY"
+          git push origin main
 
   esp-build:
     runs-on: ubuntu-latest
