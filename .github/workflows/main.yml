@@ -189,6 +189,12 @@ jobs:
           |
           cd $PWD/extras/test/ci
           ./parse_size.sh ${{ matrix.id }}
+      
+      - name: Upload size report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: size-file-${{ matrix.id }}
+          path: size_${{ matrix.id }}.csv
 
   metrics:
     runs-on: ubuntu-latest
@@ -203,13 +209,19 @@ jobs:
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
       
+      - name: Download size artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: aggregated-sizes
+      
       - name: Push size files
         run:
           |
+          ls -R aggregated-sizes
           mkdir -p radiolib-ci/l0
           cd radiolib-ci/l0
-          cp /tmp/size_*.csv radiolib-ci/l0/.
-          rm -r /tmp/size_*.csv
+          cp aggregated-sizes/size_*.csv radiolib-ci/l0/.
+          rm -r aggregated-sizes/size_*.csv
           git add .
           git commit -m "Push artifacts from $GITHUB_REPOSITORY"
           git push origin main

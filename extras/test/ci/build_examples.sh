@@ -8,7 +8,7 @@ skip="$2"
 options="$3"
 
 # file for saving the compiled binary size reports
-size_file="/tmp/size_$board.txt"
+size_file="size_$board.txt"
 rm -f $size_file
 
 path="../../../examples"
