@@ -192,7 +192,7 @@ jobs:
       
       - name: Extract short commit hash
         id: short-hash
-        run: echo "::set-output name=short_sha::${GITHUB_SHA:0:8}"
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
       
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v3
