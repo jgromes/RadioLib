@@ -197,12 +197,12 @@ jobs:
         run:
           |
           cd $PWD/..
-          git clone https://${{ github.actor }}:${{ secrets.TARGET_REPO_TOKEN }}@github.com/radiolib-org/artifacts.git
+          git clone https://${{ github.actor }}:${{ secrets.ACTIONS_METRICS_PUSH_TOKEN }}@github.com/radiolib-org/artifacts.git
           cd artifacts
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
       
-      - name: Append sizes
+      - name: Push size files
         run:
           |
           mkdir -p radiolib-ci/l0
