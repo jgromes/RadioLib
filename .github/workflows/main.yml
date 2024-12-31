@@ -197,7 +197,7 @@ jobs:
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: size-file-${{ steps.short-hash.outputs.short_sha }}-${{ matrix.id }}
+          name: size-file-${{ steps.short-hash.outputs.short_sha }}-${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}
           path: extras/test/ci/size_${{ steps.short-hash.outputs.short_sha }}_${{ matrix.id }}.csv
 
   metrics:
