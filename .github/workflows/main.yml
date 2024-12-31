@@ -190,11 +190,15 @@ jobs:
           cd $PWD/extras/test/ci
           ./parse_size.sh ${{ matrix.id }}
       
+      - name: Extract short commit hash
+        id: short-hash
+        run: echo "::set-output name=short_sha::${GITHUB_SHA:0:8}"
+      
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: size-file-${{ matrix.id }}
-          path: extras/test/ci/size_${{ matrix.id }}.csv
+          name: size-file-${{ steps.short-hash.outputs.short_sha }}-${{ matrix.id }}
+          path: extras/test/ci/size_${{ steps.short-hash.outputs.short_sha }}_${{ matrix.id }}.csv
 
   metrics:
     runs-on: ubuntu-latest
@@ -223,7 +227,7 @@ jobs:
           cp aggregated-sizes/size_*.csv radiolib-ci/l0/.
           rm -r aggregated-sizes/size_*.csv
           git add .
-          git commit -m "Push artifacts from $GITHUB_REPOSITORY"
+          git commit -m "Push artifacts from $GITHUB_REPOSITORY ${{ steps.short-hash.outputs.short_sha }}"
           git push origin main
 
   esp-build:
