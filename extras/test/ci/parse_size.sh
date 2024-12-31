@@ -4,7 +4,7 @@ board=$1
 hash=$(git rev-parse --short HEAD)
 
 in_file="size_$board.txt"
-out_file="size_${hash}_$board.csv"
+out_file="size_${hash}_${board//:/-}.csv"
 rm -f $out_file
 
 # write the header
