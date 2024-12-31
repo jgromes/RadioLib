@@ -222,9 +222,9 @@ jobs:
         run:
           |
           ls -R aggregated-sizes
-          mkdir -p $PWD/../radiolib-ci/l0
-          cp aggregated-sizes/*/size_*.csv $PWD/../radiolib-ci/l0/.
-          cd $PWD/../radiolib-ci
+          mkdir -p $PWD/../artifacts/radiolib-ci/l0
+          cp aggregated-sizes/*/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
+          cd $PWD/../artifacts/radiolib-ci
           git add .
           git commit -m "Push artifacts from $GITHUB_REPOSITORY ${{ steps.short-hash.outputs.short_sha }}"
           git push origin main
