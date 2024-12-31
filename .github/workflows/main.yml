@@ -223,7 +223,7 @@ jobs:
           |
           ls -R aggregated-sizes
           mkdir -p $PWD/../radiolib-ci/l0
-          cp aggregated-sizes/*/size_*.csv radiolib-ci/l0/.
+          cp aggregated-sizes/*/size_*.csv $PWD/../radiolib-ci/l0/.
           cd $PWD/../radiolib-ci
           git add .
           git commit -m "Push artifacts from $GITHUB_REPOSITORY ${{ steps.short-hash.outputs.short_sha }}"
