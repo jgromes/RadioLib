@@ -197,7 +197,7 @@ jobs:
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: size-file-${{ steps.short-hash.outputs.short_sha }}-${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}
+          name: size-file-${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}
           path: extras/test/ci/size_${{ steps.short-hash.outputs.short_sha }}_${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}.csv
 
   metrics:
@@ -224,8 +224,8 @@ jobs:
           ls -R aggregated-sizes
           mkdir -p radiolib-ci/l0
           cd radiolib-ci/l0
-          cp aggregated-sizes/size_*.csv radiolib-ci/l0/.
-          rm -r aggregated-sizes/size_*.csv
+          cp aggregated-sizes/*/size_*.csv radiolib-ci/l0/.
+          rm -r aggregated-sizes
           git add .
           git commit -m "Push artifacts from $GITHUB_REPOSITORY ${{ steps.short-hash.outputs.short_sha }}"
           git push origin main
