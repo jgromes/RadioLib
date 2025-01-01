@@ -207,7 +207,6 @@ jobs:
       - name: Clone artifact repo
         run:
           |
-          echo "GIT_SHORT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           cd $PWD/..
           git clone https://${{ github.actor }}:${{ secrets.ACTIONS_METRICS_PUSH_TOKEN }}@github.com/radiolib-org/artifacts.git
           cd artifacts
@@ -227,7 +226,8 @@ jobs:
           cp aggregated-sizes/*/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
           cd $PWD/../artifacts/radiolib-ci
           git add .
-          git commit -m "Push artifacts https://github.com/jgromes/RadioLib/commit/$GIT_SHORT_HASH"
+          COMMIT_URL="https://github.com/jgromes/RadioLib/commit/$GITHUB_SHA"
+          git commit -m "Push artifacts from [${GITHUB_SHA:0:8}]($COMMIT_URL)"
           git push origin main
 
   esp-build:
