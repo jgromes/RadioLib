@@ -16,7 +16,7 @@ awk 'NR > 1 {
   filename_with_ext = path_parts[length(path_parts)];
   split(filename_with_ext, filename_parts, ".");
   filename = filename_parts[1];
-  print $17 "," $8 "," $9 "," $10 "," $11 "," filename
+  print $7 "," $8 "," $9 "," $10 "," $11 "," filename
 }' "$in_file" >> "$out_file"
 
 # remove input file
