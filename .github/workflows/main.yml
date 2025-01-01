@@ -227,7 +227,7 @@ jobs:
           cd $PWD/../artifacts/radiolib-ci
           git add .
           COMMIT_URL="https://github.com/jgromes/RadioLib/commit/$GITHUB_SHA"
-          git commit -m "Push artifacts from [${GITHUB_SHA:0:8}]($COMMIT_URL)"
+          git commit -m "Push artifacts from $COMMIT_URL"
           git push origin main
 
   esp-build:
