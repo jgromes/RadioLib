@@ -226,7 +226,7 @@ jobs:
           cp aggregated-sizes/*/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
           cd $PWD/../artifacts/radiolib-ci
           git add .
-          git commit -m "Push artifacts from $GITHUB_REPOSITORY ${{ steps.short-hash.outputs.short_sha }}"
+          git commit -m "Push artifacts from $GITHUB_REPOSITORY $(git rev-parse --short HEAD)"
           git push origin main
 
   esp-build:
