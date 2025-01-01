@@ -224,9 +224,10 @@ jobs:
           ls -R aggregated-sizes
           mkdir -p $PWD/../artifacts/radiolib-ci/l0
           cp aggregated-sizes/*/size_*.csv $PWD/../artifacts/radiolib-ci/l0/.
+          echo "GIT_SHORT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           cd $PWD/../artifacts/radiolib-ci
           git add .
-          git commit -m "Push artifacts from $GITHUB_REPOSITORY $(git rev-parse --short HEAD)"
+          git commit -m "Push artifacts https://github.com/jgromes/RadioLib/commit/$GIT_SHORT_HASH"
           git push origin main
 
   esp-build:
