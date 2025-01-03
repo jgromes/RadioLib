@@ -272,9 +272,10 @@ class Module {
       \param lsb Least significant bit of the register variable. Bits below this one will not be affected by the write operation.
       \param checkInterval Number of milliseconds between register writing and verification reading. Some registers need up to 10ms to process the change.
       \param checkMask Mask of bits to check, only bits set to 1 will be verified.
+      \param force Write new value even if the old value is the same.
       \returns \ref status_codes
     */
-    int16_t SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF);
+    int16_t SPIsetRegValue(uint32_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2, uint8_t checkMask = 0xFF, bool force = false);
 
     /*!
       \brief SPI burst read method.
