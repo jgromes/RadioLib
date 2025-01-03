@@ -1205,7 +1205,7 @@ int16_t SX127x::setFrequencyRaw(float newFreq) {
   // lsb needs to be written no matter what in order for the module to update the frequency
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FRF_MSB, (FRF & 0xFF0000) >> 16);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FRF_MID, (FRF & 0x00FF00) >> 8);
-    state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FRF_LSB, FRF & 0x0000FF, 7U, 0U, 2U, 0xFF, true);
+  state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_FRF_LSB, FRF & 0x0000FF, 7U, 0U, 2U, 0xFF, true);
   return(state);
 }
 
