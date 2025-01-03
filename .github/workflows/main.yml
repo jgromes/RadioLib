@@ -204,11 +204,18 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ACTIONS_METRICS_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       - name: Clone artifact repo
         run:
           |
           cd $PWD/..
-          git clone https://${{ github.actor }}:${{ secrets.ACTIONS_METRICS_PUSH_TOKEN }}@github.com/radiolib-org/artifacts.git
+          git clone git@github.com:radiolib-org/artifacts.git
           cd artifacts
           git config --global user.name "${{ github.actor }}"
           git config --global user.email "${{ github.actor }}@users.noreply.github.com"
