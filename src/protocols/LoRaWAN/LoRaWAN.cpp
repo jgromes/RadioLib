@@ -1177,10 +1177,18 @@ void LoRaWANNode::composeUplink(const uint8_t* in, uint8_t lenIn, uint8_t* out, 
     out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ENABLED;
     
     // AdrAckReq is set if no downlink has been received for >=Limit uplinks
-    // but it is unset once backoff has been completed (which is internally denoted by adrFCnt == FCNT_NONE)
     uint32_t adrLimit = 0x01 << this->adrLimitExp;
-    if(this->adrFCnt != RADIOLIB_LORAWAN_FCNT_NONE && (this->fCntUp - this->adrFCnt) >= adrLimit) {
-      out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ACK_REQ;
+    if(this->rev == 1) {
+      // AdrAckReq is unset once backoff has been completed 
+      // (which is internally denoted by adrFCnt == FCNT_NONE)
+      if(this->adrFCnt != RADIOLIB_LORAWAN_FCNT_NONE && (this->fCntUp - this->adrFCnt) >= adrLimit) {
+        out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ACK_REQ;
+      }
+    } else {  // rev == 0
+      // AdrAckReq is always set, also when backoff has been completed
+      if(this->adrFCnt == RADIOLIB_LORAWAN_FCNT_NONE || (this->fCntUp - this->adrFCnt) >= adrLimit) {
+        out[RADIOLIB_LORAWAN_FHDR_FCTRL_POS] |= RADIOLIB_LORAWAN_FCTRL_ADR_ACK_REQ;
+      }
     }
   }
   
@@ -1643,8 +1651,8 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     isConfirmedDown = true;
   }
 
-  // a downlink was received, so reset the ADR counter to the last uplink's fCnt
-  this->adrFCnt = this->getFCntUp();
+  // a downlink was received, so restart the ADR counter with the next uplink
+  this->adrFCnt = this->getFCntUp() + 1;
   
   // if this downlink is on FPort 0, the FOptsLen is the length of the payload
   // in any other case, the payload (length) is user accessible
