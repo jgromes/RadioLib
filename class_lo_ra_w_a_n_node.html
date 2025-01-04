@@ -169,9 +169,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a3d4bbd6d382496838954ab4ac1168b77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77">setDutyCycle</a> (bool enable=true, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerHour=0)</td></tr>
 <tr class="memdesc:a3d4bbd6d382496838954ab4ac1168b77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggle adherence to dutyCycle limits to on or off.  <a href="class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77">More...</a><br /></td></tr>
 <tr class="separator:a3d4bbd6d382496838954ab4ac1168b77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a288a86771bd40ac25f8f064c3a5b7f9d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a288a86771bd40ac25f8f064c3a5b7f9d">setDwellTime</a> (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerUplink)</td></tr>
-<tr class="memdesc:a288a86771bd40ac25f8f064c3a5b7f9d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set or disable uplink dwell time limitation; enabled by default if mandatory.  <a href="class_lo_ra_w_a_n_node.html#a288a86771bd40ac25f8f064c3a5b7f9d">More...</a><br /></td></tr>
-<tr class="separator:a288a86771bd40ac25f8f064c3a5b7f9d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62bfe68f6fe63c2e408dccbff6a34a4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f">setDwellTime</a> (bool enable, <a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> msPerUplink=0)</td></tr>
+<tr class="memdesc:a62bfe68f6fe63c2e408dccbff6a34a4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set or disable uplink dwell time limitation; enabled by default if mandatory.  <a href="class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f">More...</a><br /></td></tr>
+<tr class="separator:a62bfe68f6fe63c2e408dccbff6a34a4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2d9a53560ebfbaf006eefd9761424d80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#a2d9a53560ebfbaf006eefd9761424d80">setCSMA</a> (bool csmaEnabled, uint8_t maxChanges=4, uint8_t backoffMax=0, uint8_t difsSlots=2)</td></tr>
 <tr class="memdesc:a2d9a53560ebfbaf006eefd9761424d80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Configures CSMA for LoRaWAN as per TR013, LoRa Alliance.  <a href="class_lo_ra_w_a_n_node.html#a2d9a53560ebfbaf006eefd9761424d80">More...</a><br /></td></tr>
 <tr class="separator:a2d9a53560ebfbaf006eefd9761424d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1249,8 +1249,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="a288a86771bd40ac25f8f064c3a5b7f9d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a288a86771bd40ac25f8f064c3a5b7f9d">&#9670;&nbsp;</a></span>setDwellTime()</h2>
+<a id="a62bfe68f6fe63c2e408dccbff6a34a4f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62bfe68f6fe63c2e408dccbff6a34a4f">&#9670;&nbsp;</a></span>setDwellTime()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1258,9 +1258,19 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
         <tr>
           <td class="memname">void LoRaWANNode::setDwellTime </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
-          <td class="paramname"><em>msPerUplink</em></td><td>)</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>enable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a>&#160;</td>
+          <td class="paramname"><em>msPerUplink</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1268,7 +1278,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <p>Set or disable uplink dwell time limitation; enabled by default if mandatory. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">msPerUplink</td><td>The maximum allowed Time-on-Air per uplink in milliseconds (0 = no dwell time limitation, make sure you follow regulations/law!). </td></tr>
+    <tr><td class="paramname">enable</td><td>Whether to adhere to dwellTime limits or not (default true). </td></tr>
+    <tr><td class="paramname">msPerUplink</td><td>The maximum allowed Time-on-Air per uplink in milliseconds (default 0 = band default value); make sure you follow regulations/law! </td></tr>
   </table>
   </dd>
 </dl>

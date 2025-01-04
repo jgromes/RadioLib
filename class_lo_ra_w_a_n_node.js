@@ -32,7 +32,7 @@ var class_lo_ra_w_a_n_node =
     [ "setDatarate", "class_lo_ra_w_a_n_node.html#a14e8a8a098df28ff5ee294f235500499", null ],
     [ "setDeviceStatus", "class_lo_ra_w_a_n_node.html#a5449e301634dff1838a1b024b4067034", null ],
     [ "setDutyCycle", "class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77", null ],
-    [ "setDwellTime", "class_lo_ra_w_a_n_node.html#a288a86771bd40ac25f8f064c3a5b7f9d", null ],
+    [ "setDwellTime", "class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f", null ],
     [ "setRx2Dr", "class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025", null ],
     [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
