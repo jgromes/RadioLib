@@ -69,7 +69,7 @@ void setup() {
   node.setDutyCycle(true, 1250);
 
   // Update dwell time limits - 400ms is the limit for the US
-  node.setDwellTime(400);
+  node.setDwellTime(true, 400);
 
   Serial.println(F("Ready!\n"));
 }

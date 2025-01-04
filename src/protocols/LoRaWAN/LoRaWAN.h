@@ -744,10 +744,11 @@ class LoRaWANNode {
 
     /*!
       \brief Set or disable uplink dwell time limitation; enabled by default if mandatory.
+      \param enable Whether to adhere to dwellTime limits or not (default true).
       \param msPerUplink The maximum allowed Time-on-Air per uplink in milliseconds 
-      (0 = no dwell time limitation, make sure you follow regulations/law!).
+      (default 0 = band default value); make sure you follow regulations/law!
     */
-    void setDwellTime(RadioLibTime_t msPerUplink);
+    void setDwellTime(bool enable, RadioLibTime_t msPerUplink = 0);
 
     /*!
       \brief Configures CSMA for LoRaWAN as per TR013, LoRa Alliance.

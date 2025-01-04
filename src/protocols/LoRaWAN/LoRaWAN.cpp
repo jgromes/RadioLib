@@ -2696,8 +2696,15 @@ void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   }
 }
 
-void LoRaWANNode::setDwellTime(RadioLibTime_t msPerUplink) {
-  this->dwellTimeUp = msPerUplink;
+void LoRaWANNode::setDwellTime(bool enable, RadioLibTime_t msPerUplink) {
+  if(!enable) {
+    this->dwellTimeUp = 0;
+    
+  } else if(msPerUplink > 0) {
+    this->dwellTimeUp = msPerUplink;
+  } else {  //msPerUplink == 0
+    this->dwellTimeUp = this->band->dwellTimeUp;
+  }
 }
 
 // A user may enable CSMA to provide frames an additional layer of protection from interference.
