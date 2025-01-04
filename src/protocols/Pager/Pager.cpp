@@ -168,7 +168,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
       uint8_t blockPos = RADIOLIB_PAGER_PREAMBLE_LENGTH + 1 + framePos + 1 + i;
 
       // check if we need to skip a frame sync marker
-      if(((blockPos - (RADIOLIB_PAGER_PREAMBLE_LENGTH + 1)) % RADIOLIB_PAGER_BATCH_LEN) == 0) {
+      if(((blockPos - RADIOLIB_PAGER_PREAMBLE_LENGTH) % (RADIOLIB_PAGER_BATCH_LEN + 1)) == 0) {
         blockPos++;
         i++;
       }
@@ -497,6 +497,7 @@ bool PagerClient::addressMatched(uint32_t addr) {
 void PagerClient::write(uint32_t* data, size_t len) {
   // write code words from buffer
   for(size_t i = 0; i < len; i++) {
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("POCSAG W\t%d\t%08lX", i, (long unsigned int)data[i]);
     PagerClient::write(data[i]);
   }
 }
