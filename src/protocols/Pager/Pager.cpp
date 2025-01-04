@@ -93,7 +93,7 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
   }
 
   // Automatically set function bits based on given encoding
-  if (function == RADIOLIB_PAGER_FUNC_AUTO) {
+  if(function == RADIOLIB_PAGER_FUNC_AUTO) {
     if(encoding == RADIOLIB_PAGER_BCD) {
       function = RADIOLIB_PAGER_FUNC_BITS_NUMERIC;
 
@@ -101,14 +101,14 @@ int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t 
       function = RADIOLIB_PAGER_FUNC_BITS_ALPHA;
 
     } else {
-    return(RADIOLIB_ERR_INVALID_ENCODING);
+      return(RADIOLIB_ERR_INVALID_ENCODING);
 
     }
     if(len == 0) {
       function = RADIOLIB_PAGER_FUNC_BITS_TONE;
     }
   }
-  if (function > RADIOLIB_PAGER_FUNC_BITS_ALPHA) {
+  if(function > RADIOLIB_PAGER_FUNC_BITS_ALPHA) {
     return(RADIOLIB_ERR_INVALID_FUNCTION);
   }
 
@@ -323,7 +323,7 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
   state = readData(data, &length, addr);
 
   if(state == RADIOLIB_ERR_NONE) {
-    // check tone-only tramsissions
+    // check tone-only transmissions
     if(length == 0) {
       length = 6;
       strncpy((char*)data, "<tone>", length + 1);
