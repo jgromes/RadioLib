@@ -290,7 +290,8 @@ void LoRaWANNode::clearSession() {
   this->confFCntDown = RADIOLIB_LORAWAN_FCNT_NONE;
   this->adrFCnt = 0;
 
-  // reset number of retransmissions from ADR
+  // reset ADR state
+  this->txPowerSteps = 0;
   this->nbTrans = 1;
 
   // clear CSMA settings
@@ -1562,7 +1563,7 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     #if !RADIOLIB_STATIC_ONLY
       delete[] downlinkMsg;
     #endif
-    return(RADIOLIB_ERR_INVALID_PORT);
+    return(RADIOLIB_ERR_DOWNLINK_MALFORMED);
   }
   
   // get the frame counter
@@ -1711,15 +1712,24 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
 
   while(procLen < fOptsLen) {
     cid = *mPtr;      // MAC id is the first byte
+
+    // fetch length of MAC downlink payload
     state = this->getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true);
-    RADIOLIB_ASSERT(state);
+    if(state != RADIOLIB_ERR_NONE) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Unknown MAC CID %02x", cid);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Skipping remaining MAC commands");
+      break;
+    }
+
+    // already fetch length of MAC answer payload (if any)
     uint8_t fLenRe = 0;
-    state = this->getMacLen(cid, &fLenRe, RADIOLIB_LORAWAN_UPLINK, true);
-    RADIOLIB_ASSERT(state);
+    (void)this->getMacLen(cid, &fLenRe, RADIOLIB_LORAWAN_UPLINK, true);
+    // don't care about return value: the previous getMacLen() would have failed anyway
 
     if(procLen + fLen > fOptsLen) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Incomplete MAC command %02x (%d bytes, expected %d)", cid, fOptsLen, fLen);
-      return(RADIOLIB_ERR_INVALID_CID);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Incomplete MAC command %02x (%d bytes, expected %d)", cid, fOptsLen - procLen, fLen);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Skipping remaining MAC commands");
+      break;
     }
 
     bool reply = false;
