@@ -12,8 +12,6 @@ LoRaWANNode::LoRaWANNode(PhysicalLayer* phy, const LoRaWANBand_t* band, uint8_t 
   this->channels[RADIOLIB_LORAWAN_DIR_RX2] = this->band->rx2;
   this->txPowerMax = this->band->powerMax;
   this->subBand = subBand;
-  this->dwellTimeEnabledUp = this->dwellTimeUp != 0;
-  this->dwellTimeEnabledDn = this->dwellTimeDn != 0;
   memset(this->channelPlan, 0, sizeof(this->channelPlan));
 }
 
@@ -906,7 +904,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_ASSERT(state);
 
   // calculate JoinRequest time-on-air in milliseconds
-  if(this->dwellTimeEnabledUp) {
+  if(this->dwellTimeUp) {
     RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
     if(toa > this->dwellTimeUp) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dwell time exceeded: ToA = %lu, max = %d", (unsigned long)toa, this->dwellTimeUp);
@@ -1131,10 +1129,21 @@ void LoRaWANNode::adrBackoff() {
     }
   }
 
-  // try to decrease the datarate
+  // if datarate can be decreased, try it
   if(this->channels[RADIOLIB_LORAWAN_UPLINK].dr > 0) {
-    if(this->setDatarate(this->channels[RADIOLIB_LORAWAN_UPLINK].dr - 1) == RADIOLIB_ERR_NONE) {
-      return;
+    uint8_t oldDr = this->channels[RADIOLIB_LORAWAN_UPLINK].dr;
+
+    if(this->setDatarate(oldDr - 1) == RADIOLIB_ERR_NONE) {
+      // if there is no dwell time limit, a lower datarate is OK
+      if(!this->dwellTimeUp) {
+        return;
+      }
+      // if there is a dwell time limit, check if this datarate allows an empty uplink
+      if(this->phyLayer->getTimeOnAir(13) / 1000 < this->dwellTimeUp) { 
+        return;
+      }
+      // if the Time on Air of an empty uplink exceeded the dwell time, revert
+      this->setDatarate(oldDr);
     }
   }
 
@@ -2203,10 +2212,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       this->txPowerMax = eirpEncoding[maxEirpRaw];
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("TxParamSetupReq: dlDwell = %d, ulDwell = %d, maxEirp = %d dBm", dlDwell, ulDwell, eirpEncoding[maxEirpRaw]);
 
-      this->dwellTimeEnabledUp = ulDwell ? true : false;
       this->dwellTimeUp = ulDwell ? RADIOLIB_LORAWAN_DWELL_TIME : 0;
-
-      this->dwellTimeEnabledDn = dlDwell ? true : false;
       this->dwellTimeDn = dlDwell ? RADIOLIB_LORAWAN_DWELL_TIME : 0;
 
       memcpy(&this->bufferSession[RADIOLIB_LORAWAN_SESSION_TX_PARAM_SETUP], optIn, lenIn);
@@ -2690,13 +2696,8 @@ void LoRaWANNode::setDutyCycle(bool enable, RadioLibTime_t msPerHour) {
   }
 }
 
-void LoRaWANNode::setDwellTime(bool enable, RadioLibTime_t msPerUplink) {
-  this->dwellTimeEnabledUp = enable;
-  if(msPerUplink == 0) {
-    this->dwellTimeUp = this->band->dwellTimeUp;
-  } else {
-    this->dwellTimeUp = msPerUplink;
-  }
+void LoRaWANNode::setDwellTime(RadioLibTime_t msPerUplink) {
+  this->dwellTimeUp = msPerUplink;
 }
 
 // A user may enable CSMA to provide frames an additional layer of protection from interference.
@@ -3098,7 +3099,7 @@ int16_t LoRaWANNode::selectChannels() {
 
   // if downlink dwelltime is enabled, datarate < 2 cannot be used, so clip to 2
   // only in use on AS923_x bands
-  if(this->dwellTimeEnabledDn && rx1Dr < 2) {
+  if(this->dwellTimeDn && rx1Dr < 2) {
     rx1Dr = 2;
   }
   this->channels[RADIOLIB_LORAWAN_DOWNLINK].dr = rx1Dr;
@@ -3250,7 +3251,7 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
   maxLen += 13;                         // mandatory FHDR is 12/13 bytes
 
   // if not limited by dwell-time, just return maximum
-  if(!this->dwellTimeEnabledUp) {
+  if(!this->dwellTimeUp) {
     // subtract FHDR (13 bytes) as well as any FOpts
     return(maxLen - 13 - this->fOptsUpLen);
   }
