@@ -1930,7 +1930,6 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // only acknowledge if the radio is able to operate at or below the requested power level
       if(state == RADIOLIB_ERR_NONE || (state == RADIOLIB_ERR_INVALID_OUTPUT_POWER && powerActual < power)) {
         pwrAck = 1;
-        this->txPowerSteps = macTxSteps;
       } else {
         RADIOLIB_DEBUG_PROTOCOL_PRINTLN("ADR failed to configure Tx power %d, code %d!", power, state);
       }
@@ -1942,10 +1941,17 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       // if ACK not completely successful, revert and stop
       if(optOut[0] != 0x07) {
-        this->applyChannelMask(chMaskGrp0123, chMaskGrp45);
-        this->setAvailableChannels(chMaskActive);
+        // according to paragraph 4.3.1.1, if ADR is disabled, 
+        // the ADR channel mask must be accepted even if drAck/pwrAck fails.
+        // therefore, only revert the channel mask if ADR is enabled.
+        if(this->adrEnabled) {
+          this->applyChannelMask(chMaskGrp0123, chMaskGrp45);
+          this->setAvailableChannels(chMaskActive);
+        }
+        // revert datarate
         this->channels[RADIOLIB_LORAWAN_UPLINK].dr = currentDr;
-        // Tx power was not modified
+        // Tx power was not actually modified
+
         return(true);
       }
 
