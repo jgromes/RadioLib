@@ -482,7 +482,7 @@ int16_t SX128x::standby(uint8_t mode, bool wakeup) {
   if(wakeup) {
     // send a NOP command - this pulls the NSS low to exit the sleep mode,
     // while preventing interference with possible other SPI transactions
-    (void)this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_NOP, NULL, 0, false, false);
+    (void)this->mod->SPIwriteStream((uint16_t)RADIOLIB_SX128X_CMD_NOP, NULL, 0, false, false);
   }
 
   uint8_t data[] = { mode };
