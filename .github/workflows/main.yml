@@ -90,7 +90,7 @@ jobs:
           - id: STMicroelectronics:stm32:Nucleo_64:pnum=NUCLEO_WL55JC1
             run: |
               # Do *not* skip STM32WL examples
-              echo "skip-pattern='LR11x0_Firmware_Update'" >> $GITHUB_OUTPUT
+              echo "skip-pattern=(LR11x0_Firmware_Update)" >> $GITHUB_OUTPUT
               echo "index-url=--additional-urls https://raw.githubusercontent.com/stm32duino/BoardManagerFiles/main/package_stmicroelectronics_index.json" >> $GITHUB_OUTPUT
           - id: stm32duino:STM32F1:mapleMini
             run: |
