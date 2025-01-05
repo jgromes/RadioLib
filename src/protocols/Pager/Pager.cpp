@@ -497,7 +497,7 @@ bool PagerClient::addressMatched(uint32_t addr) {
 void PagerClient::write(uint32_t* data, size_t len) {
   // write code words from buffer
   for(size_t i = 0; i < len; i++) {
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("POCSAG W\t%d\t%08lX", i, (long unsigned int)data[i]);
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("POCSAG W\t%lu\t%08lX", (long unsigned int)i, (long unsigned int)data[i]);
     PagerClient::write(data[i]);
   }
 }
