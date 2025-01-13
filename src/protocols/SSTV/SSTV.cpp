@@ -219,7 +219,7 @@ int16_t SSTVClient::begin(float base, const SSTVMode_t& mode) {
   txMode = mode;
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0) / phyLayer->getFreqStep();
+  baseFreq = (base * 1000000.0f) / phyLayer->getFreqStep();
 
   // configure for direct mode
   return(phyLayer->startDirect());
@@ -345,7 +345,7 @@ void SSTVClient::sendLine(const uint32_t* imgLine) {
           case(tone_t::GENERIC):
             break;
         }
-        this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549), len);
+        this->tone(RADIOLIB_SSTV_TONE_BRIGHTNESS_MIN + ((float)color * 3.1372549f), len);
       }
     }
   }

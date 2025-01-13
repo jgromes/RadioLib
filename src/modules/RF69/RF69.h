@@ -12,7 +12,7 @@
 // RF69 physical layer properties
 #define RADIOLIB_RF69_FREQUENCY_STEP_SIZE                       61.03515625
 #define RADIOLIB_RF69_MAX_PACKET_LENGTH                         64
-#define RADIOLIB_RF69_CRYSTAL_FREQ                              32.0
+#define RADIOLIB_RF69_CRYSTAL_FREQ                              32.0f
 #define RADIOLIB_RF69_DIV_EXPONENT                              19
 
 // RF69 register map

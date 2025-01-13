@@ -364,7 +364,7 @@ int16_t SX128x::receive(uint8_t* data, size_t len) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625);
+  uint32_t timeoutValue = (uint32_t)((float)timeout / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -745,7 +745,7 @@ int16_t SX128x::getChannelScanResult() {
 }
 
 int16_t SX128x::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 2400.0, 2500.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 2400.0f, 2500.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // calculate raw value
   uint32_t frf = (freq * (uint32_t(1) << RADIOLIB_SX128X_DIV_EXPONENT)) / RADIOLIB_SX128X_CRYSTAL_FREQ;
@@ -757,21 +757,21 @@ int16_t SX128x::setBandwidth(float bw) {
   uint8_t modem = getPacketType();
   if(modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) {
     // check range for LoRa
-    RADIOLIB_CHECK_RANGE(bw, 203.125, 1625.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(bw, 203.125f, 1625.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
   } else if(modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING) {
     // check range for ranging
-    RADIOLIB_CHECK_RANGE(bw, 406.25, 1625.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(bw, 406.25f, 1625.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
   } else {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  if(fabsf(bw - 203.125) <= 0.001) {
+  if(fabsf(bw - 203.125f) <= 0.001f) {
     this->bandwidth = RADIOLIB_SX128X_LORA_BW_203_125;
-  } else if(fabsf(bw - 406.25) <= 0.001) {
+  } else if(fabsf(bw - 406.25f) <= 0.001f) {
     this->bandwidth = RADIOLIB_SX128X_LORA_BW_406_25;
-  } else if(fabsf(bw - 812.5) <= 0.001) {
+  } else if(fabsf(bw - 812.5f) <= 0.001f) {
     this->bandwidth = RADIOLIB_SX128X_LORA_BW_812_50;
-  } else if(fabsf(bw - 1625.0) <= 0.001) {
+  } else if(fabsf(bw - 1625.0f) <= 0.001f) {
     this->bandwidth = RADIOLIB_SX128X_LORA_BW_1625_00;
   } else {
     return(RADIOLIB_ERR_INVALID_BANDWIDTH);
@@ -1020,21 +1020,21 @@ int16_t SX128x::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
-  if(freqDev < 0.0) {
-    newFreqDev = 62.5;
+  if(freqDev < 0.0f) {
+    newFreqDev = 62.5f;
   }
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 62.5, 1000.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 62.5f, 1000.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // override for the lowest possible frequency deviation - required for some PhysicalLayer protocols
-  if(newFreqDev == 0.0) {
+  if(newFreqDev == 0.0f) {
     this->modIndex = RADIOLIB_SX128X_BLE_GFSK_MOD_IND_0_35;
     this->bitRate = RADIOLIB_SX128X_BLE_GFSK_BR_0_125_BW_0_3;
     return(setModulationParams(this->bitRate, this->modIndex, this->shaping));
   }
 
   // update modulation parameters
-  uint8_t modInd = (uint8_t)((8.0 * (newFreqDev / (float)this->bitRateKbps)) - 1.0);
+  uint8_t modInd = (uint8_t)((8.0f * (newFreqDev / (float)this->bitRateKbps)) - 1.0f);
   if(modInd > RADIOLIB_SX128X_BLE_GFSK_MOD_IND_4_00) {
     return(RADIOLIB_ERR_INVALID_MODULATION_PARAMETERS);
   }
@@ -1293,7 +1293,7 @@ float SX128x::getRSSI() {
     uint8_t rssiSync = packetStatus[0];
     float rssiMeasured = -1.0 * rssiSync/2.0;
     float snr = getSNR();
-    if(snr <= 0.0) {
+    if(snr <= 0.0f) {
       return(rssiMeasured - snr);
     } else {
       return(rssiMeasured);
@@ -1310,7 +1310,7 @@ float SX128x::getRSSI(bool packet) {
         // get instantaneous RSSI value
         uint8_t data[3] = {0, 0, 0}; // RssiInst, Status, RFU
         this->mod->SPIreadStream(RADIOLIB_SX128X_CMD_GET_RSSI_INST, data, 3);
-        return ((float)data[0] / (-2.0));
+        return ((float)data[0] / (-2.0f));
     } else {
         return this->getRSSI();
     }
@@ -1332,7 +1332,7 @@ float SX128x::getSNR() {
   if(snr < 128) {
     return(snr/4.0);
   } else {
-    return((snr - 256)/4.0);
+    return((snr - 256)/4.0f);
   }
 }
 
@@ -1361,9 +1361,9 @@ float SX128x::getFrequencyError() {
     // frequency error is negative
     efe |= (uint32_t) 0xFFF00000;
     efe = ~efe + 1;
-    error = 1.55 * (float) efe / (1600.0 / (float) this->bandwidthKhz) * -1.0;
+    error = 1.55f * (float) efe / (1600.0f / this->bandwidthKhz) * -1.0f;
   } else {
-    error = 1.55 * (float) efe / (1600.0 / (float) this->bandwidthKhz);
+    error = 1.55f * (float) efe / (1600.0f / this->bandwidthKhz);
   }
 
   return(error);
@@ -1436,7 +1436,7 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
       uint32_t N_symbolPreamble = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
 
       // calculate the number of symbols
-      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0 + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRateLoRa + 4);
+      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0f + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRateLoRa + 4);
 
     } else {
       // long interleaving - abandon hope all ye who enter here
@@ -1445,7 +1445,7 @@ RadioLibTime_t SX128x::getTimeOnAir(size_t len) {
     }
 
     // get time-on-air in us
-    return(((uint32_t(1) << sf) / this->bandwidthKhz) * N_symbol * 1000.0);
+    return(((uint32_t(1) << sf) / this->bandwidthKhz) * N_symbol * 1000.0f);
 
   } else {
     return(((uint32_t)len * 8 * 1000) / this->bitRateKbps);

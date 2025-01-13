@@ -219,7 +219,7 @@ int16_t LR11x0::transmit(const uint8_t* data, size_t len, uint8_t addr) {
   RadioLibTime_t elapsed = this->mod->hal->micros() - start;
 
   // update data rate
-  this->dataRateMeasured = (len*8.0)/((float)elapsed/1000000.0);
+  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000000.0f);
 
   return(finishTransmit());
 }
@@ -238,7 +238,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0);
+    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
@@ -246,8 +246,8 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
     if(len == 0) { 
       maxLen = 0xFF;
     }
-    float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
+    float brBps = ((float)(RADIOLIB_LR11X0_CRYSTAL_FREQ) * 1000000.0f * 32.0f) / (float)this->bitRate;
+    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
   
   } else if(modem == RADIOLIB_LR11X0_PACKET_TYPE_LR_FHSS) {
     // this modem cannot receive
@@ -261,7 +261,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0) / 30.52);
+  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 30.52f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -667,22 +667,22 @@ int16_t LR11x0::setBandwidth(float bw, bool high) {
 
   // ensure byte conversion doesn't overflow
   if (high) {
-    RADIOLIB_CHECK_RANGE(bw, 203.125, 815.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(bw, 203.125f, 815.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
 
-    if(fabsf(bw - 203.125) <= 0.001) {
+    if(fabsf(bw - 203.125f) <= 0.001f) {
       this->bandwidth = RADIOLIB_LR11X0_LORA_BW_203_125;
-    } else if(fabsf(bw - 406.25) <= 0.001) {
+    } else if(fabsf(bw - 406.25f) <= 0.001f) {
       this->bandwidth = RADIOLIB_LR11X0_LORA_BW_406_25;
-    } else if(fabsf(bw - 812.5) <= 0.001) {
+    } else if(fabsf(bw - 812.5f) <= 0.001f) {
       this->bandwidth = RADIOLIB_LR11X0_LORA_BW_812_50;
     } else {
       return(RADIOLIB_ERR_INVALID_BANDWIDTH);
     }
   } else {
-    RADIOLIB_CHECK_RANGE(bw, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(bw, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     
     // check allowed bandwidth values
-    uint8_t bw_div2 = bw / 2 + 0.01;
+    uint8_t bw_div2 = bw / 2 + 0.01f;
     switch (bw_div2)  {
       case 31: // 62.5:
         this->bandwidth = RADIOLIB_LR11X0_LORA_BW_62_5;
@@ -773,7 +773,7 @@ int16_t LR11x0::setSyncWord(uint8_t syncWord) {
 }
 
 int16_t LR11x0::setBitRate(float br) {
-  RADIOLIB_CHECK_RANGE(br, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+  RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
 
   // check active modem
   uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
@@ -785,7 +785,7 @@ int16_t LR11x0::setBitRate(float br) {
 
   // set bit rate value
   // TODO implement fractional bit rate configuration
-  this->bitRate = br * 1000.0;
+  this->bitRate = br * 1000.0f;
   return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
@@ -800,12 +800,12 @@ int16_t LR11x0::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
-  if(freqDev < 0.0) {
-    newFreqDev = 0.6;
+  if(freqDev < 0.0f) {
+    newFreqDev = 0.6f;
   }
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
-  this->frequencyDev = newFreqDev * 1000.0;
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  this->frequencyDev = newFreqDev * 1000.0f;
   return(setModulationParamsGFSK(this->bitRate, this->pulseShape, this->rxBandwidth, this->frequencyDev));
 }
 
@@ -824,47 +824,47 @@ int16_t LR11x0::setRxBandwidth(float rxBw) {
   }*/
 
   // check allowed receiver bandwidth values
-  if(fabsf(rxBw - 4.8) <= 0.001) {
+  if(fabsf(rxBw - 4.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_4_8;
-  } else if(fabsf(rxBw - 5.8) <= 0.001) {
+  } else if(fabsf(rxBw - 5.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_5_8;
-  } else if(fabsf(rxBw - 7.3) <= 0.001) {
+  } else if(fabsf(rxBw - 7.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_7_3;
-  } else if(fabsf(rxBw - 9.7) <= 0.001) {
+  } else if(fabsf(rxBw - 9.7f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_9_7;
-  } else if(fabsf(rxBw - 11.7) <= 0.001) {
+  } else if(fabsf(rxBw - 11.7f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_11_7;
-  } else if(fabsf(rxBw - 14.6) <= 0.001) {
+  } else if(fabsf(rxBw - 14.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_14_6;
-  } else if(fabsf(rxBw - 19.5) <= 0.001) {
+  } else if(fabsf(rxBw - 19.5f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_19_5;
-  } else if(fabsf(rxBw - 23.4) <= 0.001) {
+  } else if(fabsf(rxBw - 23.4f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_23_4;
-  } else if(fabsf(rxBw - 29.3) <= 0.001) {
+  } else if(fabsf(rxBw - 29.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_29_3;
-  } else if(fabsf(rxBw - 39.0) <= 0.001) {
+  } else if(fabsf(rxBw - 39.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_39_0;
-  } else if(fabsf(rxBw - 46.9) <= 0.001) {
+  } else if(fabsf(rxBw - 46.9f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_46_9;
-  } else if(fabsf(rxBw - 58.6) <= 0.001) {
+  } else if(fabsf(rxBw - 58.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_58_6;
-  } else if(fabsf(rxBw - 78.2) <= 0.001) {
+  } else if(fabsf(rxBw - 78.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_78_2;
-  } else if(fabsf(rxBw - 93.8) <= 0.001) {
+  } else if(fabsf(rxBw - 93.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_93_8;
-  } else if(fabsf(rxBw - 117.3) <= 0.001) {
+  } else if(fabsf(rxBw - 117.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_117_3;
-  } else if(fabsf(rxBw - 156.2) <= 0.001) {
+  } else if(fabsf(rxBw - 156.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_156_2;
-  } else if(fabsf(rxBw - 187.2) <= 0.001) {
+  } else if(fabsf(rxBw - 187.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_187_2;
-  } else if(fabsf(rxBw - 234.3) <= 0.001) {
+  } else if(fabsf(rxBw - 234.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_234_3;
-  } else if(fabsf(rxBw - 312.0) <= 0.001) {
+  } else if(fabsf(rxBw - 312.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_312_0;
-  } else if(fabsf(rxBw - 373.6) <= 0.001) {
+  } else if(fabsf(rxBw - 373.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_373_6;
-  } else if(fabsf(rxBw - 467.0) <= 0.001) {
+  } else if(fabsf(rxBw - 467.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_LR11X0_GFSK_RX_BW_467_0;
   } else {
     return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
@@ -1104,13 +1104,13 @@ int16_t LR11x0::checkDataRate(DataRate_t dr) {
   RADIOLIB_ASSERT(state);
 
   if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   
@@ -1158,28 +1158,28 @@ int16_t LR11x0::setTCXO(float voltage, uint32_t delay) {
   }
 
   // check 0 V disable
-  if(fabsf(voltage - 0.0) <= 0.001) {
+  if(fabsf(voltage - 0.0f) <= 0.001f) {
     setTcxoMode(0, 0);
     return(reset());
   }
 
   // check allowed voltage values
   uint8_t tune = 0;
-  if(fabsf(voltage - 1.6) <= 0.001) {
+  if(fabsf(voltage - 1.6f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_6;
-  } else if(fabsf(voltage - 1.7) <= 0.001) {
+  } else if(fabsf(voltage - 1.7f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_7;
-  } else if(fabsf(voltage - 1.8) <= 0.001) {
+  } else if(fabsf(voltage - 1.8f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_1_8;
-  } else if(fabsf(voltage - 2.2) <= 0.001) {
+  } else if(fabsf(voltage - 2.2f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_2;
-  } else if(fabsf(voltage - 2.4) <= 0.001) {
+  } else if(fabsf(voltage - 2.4f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_4;
-  } else if(fabsf(voltage - 2.7) <= 0.001) {
+  } else if(fabsf(voltage - 2.7f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_2_7;
-  } else if(fabsf(voltage - 3.0) <= 0.001) {
+  } else if(fabsf(voltage - 3.0f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_0;
-  } else if(fabsf(voltage - 3.3) <= 0.001) {
+  } else if(fabsf(voltage - 3.3f) <= 0.001f) {
     tune = RADIOLIB_LR11X0_TCXO_VOLTAGE_3_3;
   } else {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
@@ -1353,7 +1353,7 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
       uint32_t N_symbolPreamble = (this->preambleLengthLoRa & 0x0F) * (uint32_t(1) << ((this->preambleLengthLoRa & 0xF0) >> 4));
 
       // calculate the number of symbols
-      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0 + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRate + 4);
+      N_symbol = (float)N_symbolPreamble + coeff1 + 8.0f + ceilf((float)RADIOLIB_MAX((int16_t)(8 * len + N_bitCRC - coeff2 + N_symbolHeader), (int16_t)0) / (float)coeff3) * (float)(this->codingRate + 4);
 
     } else {
       // long interleaving - abandon hope all ye who enter here
@@ -1362,7 +1362,7 @@ RadioLibTime_t LR11x0::getTimeOnAir(size_t len) {
     }
 
     // get time-on-air in us
-    return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0);
+    return(((uint32_t(1) << this->spreadingFactor) / this->bandwidthKhz) * N_symbol * 1000.0f);
 
   } else if(type == RADIOLIB_LR11X0_PACKET_TYPE_GFSK) {
     return(((uint32_t)len * 8 * 1000000UL) / this->bitRate);
@@ -2082,7 +2082,7 @@ int16_t LR11x0::modSetup(float tcxoVoltage, uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
+  if(!this->XTAL && tcxoVoltage > 0.0f) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }
@@ -2759,7 +2759,7 @@ int16_t LR11x0::setModulationParamsLoRa(uint8_t sf, uint8_t bw, uint8_t cr, uint
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    if(symbolLength >= 16.0) {
+    if(symbolLength >= 16.0f) {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_ENABLED;
     } else {
       this->ldrOptimize = RADIOLIB_LR11X0_LORA_LDRO_DISABLED;

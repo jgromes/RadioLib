@@ -14,7 +14,7 @@
 // SX126X physical layer properties
 #define RADIOLIB_SX126X_FREQUENCY_STEP_SIZE                     0.9536743164
 #define RADIOLIB_SX126X_MAX_PACKET_LENGTH                       255
-#define RADIOLIB_SX126X_CRYSTAL_FREQ                            32.0
+#define RADIOLIB_SX126X_CRYSTAL_FREQ                            32.0f
 #define RADIOLIB_SX126X_DIV_EXPONENT                            25
 
 // SX126X SPI commands
@@ -201,7 +201,7 @@
 #define RADIOLIB_SX126X_CAL_IMG_863_MHZ_2                       0xDB
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_1                       0xE1
 #define RADIOLIB_SX126X_CAL_IMG_902_MHZ_2                       0xE9
-#define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   (20.0)
+#define RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ                   (20.0f)
 
 //RADIOLIB_SX126X_CMD_SET_PA_CONFIG
 #define RADIOLIB_SX126X_PA_CONFIG_HP_MAX                        0x07

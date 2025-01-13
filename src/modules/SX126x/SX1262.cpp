@@ -72,7 +72,7 @@ int16_t SX1262::setFrequency(float freq) {
 }
 
 int16_t SX1262::setFrequency(float freq, bool skipCalibration) {
-  RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 150.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // check if we need to recalibrate image
   if(!skipCalibration && (fabsf(freq - this->freqMHz) >= RADIOLIB_SX126X_CAL_IMG_FREQ_TRIG_MHZ)) {

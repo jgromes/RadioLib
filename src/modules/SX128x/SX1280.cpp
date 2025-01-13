@@ -178,7 +178,7 @@ float SX1280::getRangingResult() {
   // calculate the real result
   uint32_t uraw = ((uint32_t)data[0] << 16) | ((uint32_t)data[1] << 8) | data[2];
   int32_t raw = (uraw & ((1UL << 23) - 1)) | (uraw >> 23 << 31);
-  return((float)raw * 150.0 / (4.096 * this->bandwidthKhz));
+  return((float)raw * 150.0f / (4.096f * this->bandwidthKhz));
 }
 
 #endif

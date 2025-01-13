@@ -69,7 +69,7 @@ int16_t SX1279::beginFSK(float freq, float br, float freqDev, float rxBw, int8_t
 }
 
 int16_t SX1279::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 137.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 137.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);

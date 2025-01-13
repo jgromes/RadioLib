@@ -51,7 +51,7 @@ int16_t LR1110::setFrequency(float freq) {
 }
 
 int16_t LR1110::setFrequency(float freq, bool skipCalibration, float band) {
-  RADIOLIB_CHECK_RANGE(freq, 150.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 150.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
   
   // check if we need to recalibrate image
   int16_t state;
