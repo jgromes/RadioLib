@@ -51,11 +51,13 @@ int16_t LR1120::setFrequency(float freq) {
 }
 
 int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
+  #if RADIOLIB_CHECK_PARAMS
   if(!(((freq >= 150.0) && (freq <= 960.0)) ||
     ((freq >= 1900.0) && (freq <= 2200.0)) ||
     ((freq >= 2400.0) && (freq <= 2500.0)))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
+  #endif
 
   // check if we need to recalibrate image
   int16_t state;
