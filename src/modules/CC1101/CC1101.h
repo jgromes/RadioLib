@@ -615,6 +615,12 @@ class CC1101: public PhysicalLayer {
     int16_t standby(uint8_t mode) override;
 
     /*!
+      \brief Sets the module to sleep mode.
+      \returns \ref status_codes
+    */
+    int16_t sleep() override;
+    
+    /*!
       \brief Starts synchronous direct mode transmission.
       \param frf Raw RF frequency value. Defaults to 0, required for quick frequency shifts in RTTY.
       \returns \ref status_codes

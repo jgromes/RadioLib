@@ -116,6 +116,12 @@ int16_t CC1101::standby(uint8_t mode) {
   return(standby());
 }
 
+int16_t CC1101::sleep() {
+  int16_t state =standby();
+  SPIsendCommand(RADIOLIB_CC1101_CMD_POWER_DOWN);
+  return(state);
+}
+
 int16_t CC1101::transmitDirect(uint32_t frf) {
   return transmitDirect(true, frf);
 }
