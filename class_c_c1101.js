@@ -54,6 +54,7 @@ var class_c_c1101 =
     [ "setRxBandwidth", "class_c_c1101.html#a381d0059d7a0ccd8a2f54d7d3376f9b6", null ],
     [ "setSyncWord", "class_c_c1101.html#ab89b0932dbacadc34d049a2bd2292001", null ],
     [ "setSyncWord", "class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6", null ],
+    [ "sleep", "class_c_c1101.html#a0ead6224d4378274df465f779199bc92", null ],
     [ "standby", "class_c_c1101.html#a7612bf81e48086004c62548de2682266", null ],
     [ "standby", "class_c_c1101.html#af374ad0ecd820a01baef7d177a30132a", null ],
     [ "startReceive", "class_c_c1101.html#ae71e947abf6a07b194c6c6d64fd3eb19", null ],
