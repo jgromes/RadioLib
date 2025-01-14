@@ -93,10 +93,9 @@ class LR1120: public LR11x0 {
       \param band Half bandwidth for image calibration. For example,
       if carrier is 434 MHz and band is set to 4 MHz, then the image will be calibrate
       for band 430 - 438 MHz. Unused if calibrate is set to false, defaults to 4 MHz
-      \param skipRfValidation Skip frequency range validation 
       \returns \ref status_codes
     */
-    int16_t setFrequency(float freq, bool skipCalibration, float band = 4, bool skipRfValidation = false);
+    int16_t setFrequency(float freq, bool skipCalibration, float band = 4);
 
     /*!
       \brief Sets output power. Allowed values are in range from -9 to 22 dBm (high-power PA) or -17 to 14 dBm (low-power PA).
