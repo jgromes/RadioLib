@@ -63,17 +63,5 @@ var class_physical_layer =
     [ "startTransmit", "class_physical_layer.html#af79757dbbd62e080c1bad2e608ab940c", null ],
     [ "transmit", "class_physical_layer.html#a492b2d057dd803c3884fa1adc8e22534", null ],
     [ "transmit", "class_physical_layer.html#ada508497ee2e70170da3afe078e2fe0e", null ],
-    [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ],
-    [ "AFSKClient", "class_physical_layer.html#acb94e5999123b5a1c63dd279b2a5a251", null ],
-    [ "AX25Client", "class_physical_layer.html#a0012621c1414f4c7573e961b57884a5b", null ],
-    [ "BellClient", "class_physical_layer.html#af9f435b28f04a142bdf136fc6fdc49b3", null ],
-    [ "FSK4Client", "class_physical_layer.html#ac0313fe86041eb37d290019203e095d3", null ],
-    [ "FT8Client", "class_physical_layer.html#a3870f0bd18d0a60e195bc7d39058190c", null ],
-    [ "HellClient", "class_physical_layer.html#afeb005bab389f137def61f1acc3714d3", null ],
-    [ "LoRaWANNode", "class_physical_layer.html#a9ec0776e58831979405850594429e2d2", null ],
-    [ "M17Client", "class_physical_layer.html#a831cdfbf3895309806bef744d4bc77c6", null ],
-    [ "MorseClient", "class_physical_layer.html#ae5c5757c553100373984a416b6c3690a", null ],
-    [ "PagerClient", "class_physical_layer.html#a41ff2710d9e3a626becfa7a093900052", null ],
-    [ "RTTYClient", "class_physical_layer.html#a018393f703a257e39cd263cccf4ffad5", null ],
-    [ "SSTVClient", "class_physical_layer.html#ae8dd4f2f60ef4fd1fa1868a7a630ab20", null ]
+    [ "transmitDirect", "class_physical_layer.html#aa4c99ac794ee653c2061be4201724b65", null ]
 ];

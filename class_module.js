@@ -4,12 +4,6 @@ var class_module =
     [ "SPIConfig_t", "struct_module_1_1_s_p_i_config__t.html", "struct_module_1_1_s_p_i_config__t" ],
     [ "SPIcheckStatusCb_t", "class_module.html#a1ad7bef7d380d3b6b88dca99bd35d640", null ],
     [ "SPIparseStatusCb_t", "class_module.html#a9393088249856eab568126aeb2493e4a", null ],
-    [ "BitWidth_t", "class_module.html#af5e5dd089a3117f6499b818b426e2e0d", [
-      [ "BITS_0", "class_module.html#af5e5dd089a3117f6499b818b426e2e0da2ea83939f64337390afbdeb0bfdae3f0", null ],
-      [ "BITS_8", "class_module.html#af5e5dd089a3117f6499b818b426e2e0da52475d5a5e20c3593c9f761d0fb41118", null ],
-      [ "BITS_16", "class_module.html#af5e5dd089a3117f6499b818b426e2e0daf7ba9662a67fe1c7cef1c4761cebbd2e", null ],
-      [ "BITS_32", "class_module.html#af5e5dd089a3117f6499b818b426e2e0da6e2c4fafb92c8d9aff7c77f10ae6206a", null ]
-    ] ],
     [ "OpMode_t", "class_module.html#a5a67b3a63420d762ecba9448671c99bf", [
       [ "MODE_END_OF_TABLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa81cdd8986054c2ae5657eb5dfd536770", null ],
       [ "MODE_IDLE", "class_module.html#a5a67b3a63420d762ecba9448671c99bfa505acc66c5e0faa83d2216aca5f3e671", null ],

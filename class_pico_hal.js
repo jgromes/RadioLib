@@ -1,6 +1,5 @@
 var class_pico_hal =
 [
-    [ "PicoHal", "class_pico_hal.html#aeee113b1e6f90931126fea24b61d1bb2", null ],
     [ "attachInterrupt", "class_pico_hal.html#a960f5c3890a0ee6fd339d93ca9769c62", null ],
     [ "delay", "class_pico_hal.html#a1bab4dfe568d7107e569e848001e414a", null ],
     [ "delayMicroseconds", "class_pico_hal.html#a4a69597cf1a071a0fa61d1d292008628", null ],

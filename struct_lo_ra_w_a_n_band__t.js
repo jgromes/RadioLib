@@ -12,7 +12,6 @@ var struct_lo_ra_w_a_n_band__t =
     [ "payloadLenMax", "struct_lo_ra_w_a_n_band__t.html#a9b8143ac9bbf3ed45e7cc80fc71ce055", null ],
     [ "powerMax", "struct_lo_ra_w_a_n_band__t.html#a43fdafd540c93348f9b4a8958e021a4c", null ],
     [ "powerNumSteps", "struct_lo_ra_w_a_n_band__t.html#aa22d7d7670846b36d3104439d18e5f15", null ],
-    [ "rx1DrTable", "struct_lo_ra_w_a_n_band__t.html#a6f4fae45f4f53b843c5ccd9a03c7ce78", null ],
     [ "rx1Span", "struct_lo_ra_w_a_n_band__t.html#af8def1e0b5c3dc122557f71f5637a529", null ],
     [ "rx2", "struct_lo_ra_w_a_n_band__t.html#ae3ed10eddc647a6f770121a1662a854f", null ],
     [ "txAck", "struct_lo_ra_w_a_n_band__t.html#a709fdad617bd9138eef52bc7220c29f2", null ],

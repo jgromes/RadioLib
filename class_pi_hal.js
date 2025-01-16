@@ -1,7 +1,5 @@
 var class_pi_hal =
 [
-    [ "RadioLibISR", "class_pi_hal.html#a418882f00a562f9cb9c69f35e2d02815", null ],
-    [ "PiHal", "class_pi_hal.html#ad6a3d4e8b938a7ef12176407b163e5b7", null ],
     [ "attachInterrupt", "class_pi_hal.html#abcd33b2d926e14d98ead593e3cded31f", null ],
     [ "delay", "class_pi_hal.html#adf1482ac38f67d58e4d41e3e74323e5a", null ],
     [ "delayMicroseconds", "class_pi_hal.html#ab9ade61749459b508291d81e205ddacf", null ],
@@ -21,8 +19,5 @@ var class_pi_hal =
     [ "spiTransfer", "class_pi_hal.html#a96a0f36efd8e23893add3242bdef8be4", null ],
     [ "term", "class_pi_hal.html#ae5821694030ae6364012be3a34ef584d", null ],
     [ "tone", "class_pi_hal.html#a95856f347434694b018d0ad18126e041", null ],
-    [ "yield", "class_pi_hal.html#af0aca7bc69d8b31783656213e8a8873d", null ],
-    [ "interruptCallbacks", "class_pi_hal.html#afc9c9132975470401efc003ea62d5791", null ],
-    [ "interruptEnabled", "class_pi_hal.html#ae741a33f83a857176c2be1e07081da34", null ],
-    [ "interruptModes", "class_pi_hal.html#a3ed40fd4ef2890af172ad7ae1263b9db", null ]
+    [ "yield", "class_pi_hal.html#af0aca7bc69d8b31783656213e8a8873d", null ]
 ];
