@@ -291,6 +291,7 @@ jobs:
           LIBTOCK_C_DIRECTORY="$(pwd)/libtock-c" ./build.sh
 
   rpi-build:
+    if: false # self-hosted runner temporarily disabled
     runs-on: [self-hosted, ARM64]
     steps:
       - name: Checkout repository
@@ -322,6 +323,7 @@ jobs:
           ./build.sh
 
   rpi-test:
+    if: false # self-hosted runner temporarily disabled
     needs: rpi-build
     runs-on: [self-hosted, ARM64]
     steps:
