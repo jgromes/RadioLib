@@ -56,7 +56,7 @@ char MorseClient::decode(uint8_t symbol, uint8_t len) {
   }
 
   // nothing found
-  return(RADIOLIB_MORSE_UNSUPPORTED);
+  return(RADIOLIB_MORSE_UNKNOWN_SYMBOL);
 }
 
 #if !RADIOLIB_EXCLUDE_AFSK

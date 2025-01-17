@@ -14,6 +14,7 @@
 #define RADIOLIB_MORSE_INTER_SYMBOL                             0x00
 #define RADIOLIB_MORSE_CHAR_COMPLETE                            0x01
 #define RADIOLIB_MORSE_WORD_COMPLETE                            0x02
+#define RADIOLIB_MORSE_UNKNOWN_SYMBOL                           '*'
 
 // Morse character table: - using codes defined in ITU-R M.1677-1
 //                        - Morse code representation is saved LSb first, using additional bit as guard
