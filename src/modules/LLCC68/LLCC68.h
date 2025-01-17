@@ -48,14 +48,14 @@ class LLCC68: public SX1262 {
       \param bw LoRa bandwidth to be set in kHz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    int16_t setBandwidth(float bw) override;
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 11, depending on currently set spreading factor.
       \param sf LoRa spreading factor to be set.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Set data.
