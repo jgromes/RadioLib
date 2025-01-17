@@ -3,7 +3,8 @@
 set -e
 
 # build the test binary
-mkdir -p build
+rm -rf build
+mkdir build
 cd build
 cmake -G "CodeBlocks - Unix Makefiles" ..
 make -j4
