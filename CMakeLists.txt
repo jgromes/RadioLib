@@ -36,7 +36,7 @@ target_include_directories(RadioLib
 set_property(TARGET RadioLib PROPERTY CXX_STANDARD 20)
 
 # enable most warnings
-target_compile_options(RadioLib PRIVATE -Wall -Wextra)
+target_compile_options(RadioLib PRIVATE -Wall -Wextra -Wpedantic -Wdouble-promotion)
 
 include(GNUInstallDirs)
 
