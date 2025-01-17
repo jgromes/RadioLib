@@ -2352,7 +2352,10 @@ void LoRaWANNode::preprocessMacLinkAdr(uint8_t* mPtr, uint8_t cLen, uint8_t* mAd
     uint8_t chMaskCntl = (mPtr[opt * fLen + 4] & 0x70) >> 4;
     uint16_t chMask = LoRaWANNode::ntoh<uint16_t>(&mPtr[opt * fLen + 2]);
     switch(chMaskCntl) {
-      case 0 ... 3:
+      case 0:
+      case 1:
+      case 2:
+      case 3:
         chMaskGrp0123 |= (uint64_t)chMask << (16 * chMaskCntl);
         break;
       case 4:
