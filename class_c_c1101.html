@@ -231,9 +231,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearGdo2Action</b> (
 <tr class="memitem:a433f1a40b33be6c84d3665a1b4cd57d6" id="r_a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a> (uint8_t syncH, uint8_t syncL, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
 <tr class="memdesc:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 16-bit sync word as a two byte value.  <br /></td></tr>
 <tr class="separator:a433f1a40b33be6c84d3665a1b4cd57d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab89b0932dbacadc34d049a2bd2292001" id="r_ab89b0932dbacadc34d049a2bd2292001"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ab89b0932dbacadc34d049a2bd2292001">setSyncWord</a> (uint8_t *syncWord, uint8_t len, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
-<tr class="memdesc:ab89b0932dbacadc34d049a2bd2292001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 1 or 2 bytes of sync word.  <br /></td></tr>
-<tr class="separator:ab89b0932dbacadc34d049a2bd2292001"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5345d819ea74f583e4e54f3496aa63eb" id="r_a5345d819ea74f583e4e54f3496aa63eb"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#a5345d819ea74f583e4e54f3496aa63eb">setSyncWord</a> (const uint8_t *syncWord, uint8_t len, uint8_t maxErrBits=0, bool requireCarrierSense=false)</td></tr>
+<tr class="memdesc:a5345d819ea74f583e4e54f3496aa63eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets 1 or 2 bytes of sync word.  <br /></td></tr>
+<tr class="separator:a5345d819ea74f583e4e54f3496aa63eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae77c828c9c7cc12012fe011e8c4d3570" id="r_ae77c828c9c7cc12012fe011e8c4d3570"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_c1101.html#ae77c828c9c7cc12012fe011e8c4d3570">setPreambleLength</a> (uint8_t preambleLength, uint8_t qualityThreshold)</td></tr>
 <tr class="memdesc:ae77c828c9c7cc12012fe011e8c4d3570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets preamble length.  <br /></td></tr>
 <tr class="separator:ae77c828c9c7cc12012fe011e8c4d3570"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2143,8 +2143,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 
 </div>
 </div>
-<a id="ab89b0932dbacadc34d049a2bd2292001" name="ab89b0932dbacadc34d049a2bd2292001"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab89b0932dbacadc34d049a2bd2292001">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
+<a id="a5345d819ea74f583e4e54f3496aa63eb" name="a5345d819ea74f583e4e54f3496aa63eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5345d819ea74f583e4e54f3496aa63eb">&#9670;&#160;</a></span>setSyncWord() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2152,7 +2152,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
         <tr>
           <td class="memname">int16_t CC1101::setSyncWord </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>syncWord</em>, </td>
         </tr>
         <tr>

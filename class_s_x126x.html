@@ -222,10 +222,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> (
 <tr class="memitem:afdd901c5eac2ca8773d0977e2c493317" id="r_afdd901c5eac2ca8773d0977e2c493317"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afdd901c5eac2ca8773d0977e2c493317">getChannelScanResult</a> () override</td></tr>
 <tr class="memdesc:afdd901c5eac2ca8773d0977e2c493317"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read the channel scan result.  <br /></td></tr>
 <tr class="separator:afdd901c5eac2ca8773d0977e2c493317"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f60df59c80241d98ce078c0417a7f08" id="r_a2f60df59c80241d98ce078c0417a7f08"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">setBandwidth</a> (float bw)</td></tr>
+<tr class="memitem:a2f60df59c80241d98ce078c0417a7f08" id="r_a2f60df59c80241d98ce078c0417a7f08"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2f60df59c80241d98ce078c0417a7f08">setBandwidth</a> (float bw)</td></tr>
 <tr class="memdesc:a2f60df59c80241d98ce078c0417a7f08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz.  <br /></td></tr>
 <tr class="separator:a2f60df59c80241d98ce078c0417a7f08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5993359ace652fbdc862eb23fdd263d" id="r_ae5993359ace652fbdc862eb23fdd263d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae5993359ace652fbdc862eb23fdd263d">setSpreadingFactor</a> (uint8_t sf)</td></tr>
+<tr class="memitem:ae5993359ace652fbdc862eb23fdd263d" id="r_ae5993359ace652fbdc862eb23fdd263d"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#ae5993359ace652fbdc862eb23fdd263d">setSpreadingFactor</a> (uint8_t sf)</td></tr>
 <tr class="memdesc:ae5993359ace652fbdc862eb23fdd263d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets LoRa spreading factor. Allowed values range from 5 to 12.  <br /></td></tr>
 <tr class="separator:ae5993359ace652fbdc862eb23fdd263d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd3113858966e878e9c67a1e710bd586" id="r_afd3113858966e878e9c67a1e710bd586"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#afd3113858966e878e9c67a1e710bd586">setCodingRate</a> (uint8_t cr)</td></tr>
@@ -1934,6 +1934,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX126x::setBandwidth </td>
@@ -1943,6 +1946,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets LoRa bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125.0, 250.0 and 500.0 kHz. </p>
@@ -1953,6 +1961,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#ae1badfd85c9f1c79bd6868c0528a5f17">LLCC68</a>.</p>
 
 </div>
 </div>
@@ -2904,6 +2914,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t SX126x::setSpreadingFactor </td>
@@ -2913,6 +2926,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets LoRa spreading factor. Allowed values range from 5 to 12. </p>
@@ -2923,6 +2941,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_l_c_c68.html#aec65cb4a7a577c46573c9b0757dc52f4">LLCC68</a>.</p>
 
 </div>
 </div>

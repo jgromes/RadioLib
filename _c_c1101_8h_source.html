@@ -724,7 +724,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a id="l00823" name="l00823"></a><span class="lineno">  823</span> </div>
 <div class="line"><a id="l00832" name="l00832"></a><span class="lineno">  832</span>    int16_t <a class="code hl_function" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a>(uint8_t syncH, uint8_t syncL, uint8_t maxErrBits = 0, <span class="keywordtype">bool</span> requireCarrierSense = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00833" name="l00833"></a><span class="lineno">  833</span> </div>
-<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    int16_t <a class="code hl_function" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a>(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, <span class="keywordtype">bool</span> requireCarrierSense = <span class="keyword">false</span>);</div>
+<div class="line"><a id="l00842" name="l00842"></a><span class="lineno">  842</span>    int16_t <a class="code hl_function" href="class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6">setSyncWord</a>(<span class="keyword">const</span> uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, <span class="keywordtype">bool</span> requireCarrierSense = <span class="keyword">false</span>);</div>
 <div class="line"><a id="l00843" name="l00843"></a><span class="lineno">  843</span> </div>
 <div class="line"><a id="l00850" name="l00850"></a><span class="lineno">  850</span>    int16_t <a class="code hl_function" href="class_c_c1101.html#ae77c828c9c7cc12012fe011e8c4d3570">setPreambleLength</a>(uint8_t preambleLength, uint8_t qualityThreshold);</div>
 <div class="line"><a id="l00851" name="l00851"></a><span class="lineno">  851</span> </div>
@@ -784,7 +784,7 @@ $(document).ready(function(){initNavTree('_c_c1101_8h_source.html',''); initResi
 <div class="line"><a id="l01009" name="l01009"></a><span class="lineno"> 1009</span>    int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);</div>
 <div class="line"><a id="l01010" name="l01010"></a><span class="lineno"> 1010</span>    <span class="keywordtype">void</span> SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);</div>
 <div class="line"><a id="l01011" name="l01011"></a><span class="lineno"> 1011</span>    uint8_t SPIreadRegister(uint8_t reg);</div>
-<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    <span class="keywordtype">void</span> SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01012" name="l01012"></a><span class="lineno"> 1012</span>    <span class="keywordtype">void</span> SPIwriteRegisterBurst(uint8_t reg, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01013" name="l01013"></a><span class="lineno"> 1013</span>    <span class="keywordtype">void</span> SPIwriteRegister(uint8_t reg, uint8_t data);</div>
 <div class="line"><a id="l01014" name="l01014"></a><span class="lineno"> 1014</span> </div>
 <div class="line"><a id="l01015" name="l01015"></a><span class="lineno"> 1015</span>    <span class="keywordtype">void</span> SPIsendCommand(uint8_t cmd);</div>

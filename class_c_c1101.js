@@ -52,7 +52,7 @@ var class_c_c1101 =
     [ "setRfSwitchPins", "class_c_c1101.html#a5ef45183690bb1879f106af079b01140", null ],
     [ "setRfSwitchTable", "class_c_c1101.html#a7b401995be4bc136063a035ce1820634", null ],
     [ "setRxBandwidth", "class_c_c1101.html#a381d0059d7a0ccd8a2f54d7d3376f9b6", null ],
-    [ "setSyncWord", "class_c_c1101.html#ab89b0932dbacadc34d049a2bd2292001", null ],
+    [ "setSyncWord", "class_c_c1101.html#a5345d819ea74f583e4e54f3496aa63eb", null ],
     [ "setSyncWord", "class_c_c1101.html#a433f1a40b33be6c84d3665a1b4cd57d6", null ],
     [ "sleep", "class_c_c1101.html#a0ead6224d4378274df465f779199bc92", null ],
     [ "standby", "class_c_c1101.html#a7612bf81e48086004c62548de2682266", null ],
