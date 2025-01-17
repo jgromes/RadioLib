@@ -83,7 +83,7 @@ void SX1272::reset() {
 }
 
 int16_t SX1272::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 860.0, 1020.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 860.0f, 1020.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency and if successful, save the new setting
   int16_t state = SX127x::setFrequencyRaw(freq);
@@ -102,11 +102,11 @@ int16_t SX1272::setBandwidth(float bw) {
   uint8_t newBandwidth;
 
   // check allowed bandwidth values
-  if(fabsf(bw - 125.0) <= 0.001) {
+  if(fabsf(bw - 125.0f) <= 0.001f) {
     newBandwidth = RADIOLIB_SX1272_BW_125_00_KHZ;
-  } else if(fabsf(bw - 250.0) <= 0.001) {
+  } else if(fabsf(bw - 250.0f) <= 0.001f) {
     newBandwidth = RADIOLIB_SX1272_BW_250_00_KHZ;
-  } else if(fabsf(bw - 500.0) <= 0.001) {
+  } else if(fabsf(bw - 500.0f) <= 0.001f) {
     newBandwidth = RADIOLIB_SX1272_BW_500_00_KHZ;
   } else {
     return(RADIOLIB_ERR_INVALID_BANDWIDTH);
@@ -121,7 +121,7 @@ int16_t SX1272::setBandwidth(float bw) {
     if(this->ldroAuto) {
       float symbolLength = (float)(uint32_t(1) << SX127x::spreadingFactor) / (float)SX127x::bandwidth;
       Module* mod = this->getMod();
-      if(symbolLength >= 16.0) {
+      if(symbolLength >= 16.0f) {
         state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
       } else {
         state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
@@ -175,7 +175,7 @@ int16_t SX1272::setSpreadingFactor(uint8_t sf) {
     if(this->ldroAuto) {
       float symbolLength = (float)(uint32_t(1) << SX127x::spreadingFactor) / (float)SX127x::bandwidth;
       Module* mod = this->getMod();
-      if(symbolLength >= 16.0) {
+      if(symbolLength >= 16.0f) {
         state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_LOW_DATA_RATE_OPT_ON, 0, 0);
       } else {
         state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, RADIOLIB_SX1272_LOW_DATA_RATE_OPT_OFF, 0, 0);
@@ -258,15 +258,15 @@ int16_t SX1272::checkDataRate(DataRate_t dr) {
   // select interpretation based on active modem
   int16_t modem = getActiveModem();
   if(modem == RADIOLIB_SX127X_FSK_OOK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
-    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0 <= 250.0) && (dr.fsk.freqDev <= 200.0))) {
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    if(!((dr.fsk.freqDev + dr.fsk.bitRate/2.0f <= 250.0f) && (dr.fsk.freqDev <= 200.0f))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     }
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_SX127X_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 6, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   

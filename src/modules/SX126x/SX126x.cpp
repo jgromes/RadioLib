@@ -243,7 +243,7 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // update data rate
   RadioLibTime_t elapsed = this->mod->hal->millis() - start;
-  this->dataRateMeasured = (len*8.0)/((float)elapsed/1000.0);
+  this->dataRateMeasured = (len*8.0f)/((float)elapsed/1000.0f);
 
   return(finishTransmit());
 }
@@ -260,7 +260,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     // calculate timeout (100 LoRa symbols, the default for SX127x series)
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    timeout = (RadioLibTime_t)(symbolLength * 100.0);
+    timeout = (RadioLibTime_t)(symbolLength * 100.0f);
   
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
     // calculate timeout (500 % of expected time-one-air)
@@ -268,8 +268,8 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
     if(len == 0) {
       maxLen = 0xFF;
     }
-    float brBps = ((float)(RADIOLIB_SX126X_CRYSTAL_FREQ) * 1000000.0 * 32.0) / (float)this->bitRate;
-    timeout = (RadioLibTime_t)(((maxLen * 8.0) / brBps) * 1000.0 * 5.0);
+    float brBps = (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (float)this->bitRate;
+    timeout = (RadioLibTime_t)(((maxLen * 8.0f) / brBps) * 1000.0f * 5.0f);
 
   } else {
     return(RADIOLIB_ERR_UNKNOWN);
@@ -279,7 +279,7 @@ int16_t SX126x::receive(uint8_t* data, size_t len) {
   RADIOLIB_DEBUG_BASIC_PRINTLN("Timeout in %lu ms", timeout);
 
   // start reception
-  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0) / 15.625);
+  uint32_t timeoutValue = (uint32_t)(((float)timeout * 1000.0f) / 15.625f);
   state = startReceive(timeoutValue);
   RADIOLIB_ASSERT(state);
 
@@ -854,10 +854,10 @@ int16_t SX126x::setBandwidth(float bw) {
   }
 
   // ensure byte conversion doesn't overflow
-  RADIOLIB_CHECK_RANGE(bw, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(bw, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
 
   // check allowed bandwidth values
-  uint8_t bw_div2 = bw / 2 + 0.01;
+  uint8_t bw_div2 = bw / 2 + 0.01f;
   switch (bw_div2)  {
     case 3: // 7.8:
       this->bandwidth = RADIOLIB_SX126X_LORA_BW_7_8;
@@ -942,7 +942,7 @@ int16_t SX126x::setCurrentLimit(float currentLimit) {
   }
 
   // calculate raw value
-  uint8_t rawLimit = (uint8_t)(currentLimit / 2.5);
+  uint8_t rawLimit = (uint8_t)(currentLimit / 2.5f);
 
   // update register
   return(writeRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &rawLimit, 1));
@@ -954,7 +954,7 @@ float SX126x::getCurrentLimit() {
   readRegister(RADIOLIB_SX126X_REG_OCP_CONFIGURATION, &ocp, 1);
 
   // return the actual value
-  return((float)ocp * 2.5);
+  return((float)ocp * 2.5f);
 }
 
 int16_t SX126x::setPreambleLength(size_t preambleLength) {
@@ -986,14 +986,14 @@ int16_t SX126x::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
-  if(freqDev < 0.0) {
-    newFreqDev = 0.6;
+  if(freqDev < 0.0f) {
+    newFreqDev = 0.6f;
   }
 
-  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+  RADIOLIB_CHECK_RANGE(newFreqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
 
   // calculate raw frequency deviation value
-  uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0));
+  uint32_t freqDevRaw = (uint32_t)(((newFreqDev * 1000.0f) * (float)((uint32_t)(1) << 25)) / (RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f));
 
   // check modulation parameters
   this->frequencyDev = freqDevRaw;
@@ -1010,11 +1010,11 @@ int16_t SX126x::setBitRate(float br) {
   }
 
   if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-    RADIOLIB_CHECK_RANGE(br, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
 
   // calculate raw bit rate value
-  uint32_t brRaw = (uint32_t)((RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0 * 32.0) / (br * 1000.0));
+  uint32_t brRaw = (uint32_t)((RADIOLIB_SX126X_CRYSTAL_FREQ * 1000000.0f * 32.0f) / (br * 1000.0f));
 
   // check modulation parameters
   this->bitRate = brRaw;
@@ -1067,13 +1067,13 @@ int16_t SX126x::checkDataRate(DataRate_t dr) {
   // select interpretation based on active modem
   uint8_t modem = this->getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
     RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 12, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 0.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
     return(RADIOLIB_ERR_NONE);
   
@@ -1095,47 +1095,47 @@ int16_t SX126x::setRxBandwidth(float rxBw) {
   this->rxBandwidthKhz = rxBw;
 
   // check allowed receiver bandwidth values
-  if(fabsf(rxBw - 4.8) <= 0.001) {
+  if(fabsf(rxBw - 4.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_4_8;
-  } else if(fabsf(rxBw - 5.8) <= 0.001) {
+  } else if(fabsf(rxBw - 5.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_5_8;
-  } else if(fabsf(rxBw - 7.3) <= 0.001) {
+  } else if(fabsf(rxBw - 7.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_7_3;
-  } else if(fabsf(rxBw - 9.7) <= 0.001) {
+  } else if(fabsf(rxBw - 9.7f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_9_7;
-  } else if(fabsf(rxBw - 11.7) <= 0.001) {
+  } else if(fabsf(rxBw - 11.7f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_11_7;
-  } else if(fabsf(rxBw - 14.6) <= 0.001) {
+  } else if(fabsf(rxBw - 14.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_14_6;
-  } else if(fabsf(rxBw - 19.5) <= 0.001) {
+  } else if(fabsf(rxBw - 19.5f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_19_5;
-  } else if(fabsf(rxBw - 23.4) <= 0.001) {
+  } else if(fabsf(rxBw - 23.4f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_23_4;
-  } else if(fabsf(rxBw - 29.3) <= 0.001) {
+  } else if(fabsf(rxBw - 29.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_29_3;
-  } else if(fabsf(rxBw - 39.0) <= 0.001) {
+  } else if(fabsf(rxBw - 39.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_39_0;
-  } else if(fabsf(rxBw - 46.9) <= 0.001) {
+  } else if(fabsf(rxBw - 46.9f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_46_9;
-  } else if(fabsf(rxBw - 58.6) <= 0.001) {
+  } else if(fabsf(rxBw - 58.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_58_6;
-  } else if(fabsf(rxBw - 78.2) <= 0.001) {
+  } else if(fabsf(rxBw - 78.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_78_2;
-  } else if(fabsf(rxBw - 93.8) <= 0.001) {
+  } else if(fabsf(rxBw - 93.8f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_93_8;
-  } else if(fabsf(rxBw - 117.3) <= 0.001) {
+  } else if(fabsf(rxBw - 117.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_117_3;
-  } else if(fabsf(rxBw - 156.2) <= 0.001) {
+  } else if(fabsf(rxBw - 156.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_156_2;
-  } else if(fabsf(rxBw - 187.2) <= 0.001) {
+  } else if(fabsf(rxBw - 187.2f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_187_2;
-  } else if(fabsf(rxBw - 234.3) <= 0.001) {
+  } else if(fabsf(rxBw - 234.3f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_234_3;
-  } else if(fabsf(rxBw - 312.0) <= 0.001) {
+  } else if(fabsf(rxBw - 312.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_312_0;
-  } else if(fabsf(rxBw - 373.6) <= 0.001) {
+  } else if(fabsf(rxBw - 373.6f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_373_6;
-  } else if(fabsf(rxBw - 467.0) <= 0.001) {
+  } else if(fabsf(rxBw - 467.0f) <= 0.001f) {
     this->rxBandwidth = RADIOLIB_SX126X_GFSK_RX_BW_467_0;
   } else {
     return(RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
@@ -1373,7 +1373,7 @@ float SX126x::getRSSI(bool packet) {
     // get instantaneous RSSI value
     uint8_t rssiRaw = 0;
     this->mod->SPIreadStream(RADIOLIB_SX126X_CMD_GET_RSSI_INST, &rssiRaw, 1);
-    return((float)rssiRaw / (-2.0));
+    return((float)rssiRaw / (-2.0f));
   }
 }
 
@@ -1418,9 +1418,9 @@ float SX126x::getFrequencyError() {
     // frequency error is negative
     efe |= (uint32_t) 0xFFF00000;
     efe = ~efe + 1;
-    error = 1.55 * (float) efe / (1600.0 / (float) this->bandwidthKhz) * -1.0;
+    error = 1.55f * (float) efe / (1600.0f / (float) this->bandwidthKhz) * -1.0f;
   } else {
-    error = 1.55 * (float) efe / (1600.0 / (float) this->bandwidthKhz);
+    error = 1.55f * (float) efe / (1600.0f / (float) this->bandwidthKhz);
   }
 
   return(error);
@@ -1528,7 +1528,7 @@ RadioLibTime_t SX126x::getTimeOnAir(size_t len) {
 RadioLibTime_t SX126x::calculateRxTimeout(RadioLibTime_t timeoutUs) {
   // the timeout value is given in units of 15.625 microseconds
   // the calling function should provide some extra width, as this number of units is truncated to integer
-  RadioLibTime_t timeout = timeoutUs / 15.625;
+  RadioLibTime_t timeout = timeoutUs / 15.625f;
   return(timeout);
 }
 
@@ -1769,34 +1769,34 @@ int16_t SX126x::setTCXO(float voltage, uint32_t delay) {
   }
 
   // check 0 V disable
-  if(fabsf(voltage - 0.0) <= 0.001) {
+  if(fabsf(voltage - 0.0f) <= 0.001f) {
     return(reset(true));
   }
 
   // check alowed voltage values
   uint8_t data[4];
-  if(fabsf(voltage - 1.6) <= 0.001) {
+  if(fabsf(voltage - 1.6f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_6;
-  } else if(fabsf(voltage - 1.7) <= 0.001) {
+  } else if(fabsf(voltage - 1.7f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_7;
-  } else if(fabsf(voltage - 1.8) <= 0.001) {
+  } else if(fabsf(voltage - 1.8f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_1_8;
-  } else if(fabsf(voltage - 2.2) <= 0.001) {
+  } else if(fabsf(voltage - 2.2f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_2;
-  } else if(fabsf(voltage - 2.4) <= 0.001) {
+  } else if(fabsf(voltage - 2.4f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_4;
-  } else if(fabsf(voltage - 2.7) <= 0.001) {
+  } else if(fabsf(voltage - 2.7f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_2_7;
-  } else if(fabsf(voltage - 3.0) <= 0.001) {
+  } else if(fabsf(voltage - 3.0f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_0;
-  } else if(fabsf(voltage - 3.3) <= 0.001) {
+  } else if(fabsf(voltage - 3.3f) <= 0.001f) {
     data[0] = RADIOLIB_SX126X_DIO3_OUTPUT_3_3;
   } else {
     return(RADIOLIB_ERR_INVALID_TCXO_VOLTAGE);
   }
 
   // calculate delay
-  uint32_t delayValue = (float)delay / 15.625;
+  uint32_t delayValue = (float)delay / 15.625f;
   data[1] = (uint8_t)((delayValue >> 16) & 0xFF);
   data[2] = (uint8_t)((delayValue >> 8) & 0xFF);
   data[3] = (uint8_t)(delayValue & 0xFF);
@@ -2040,7 +2040,7 @@ int16_t SX126x::setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t 
   // calculate symbol length and enable low data rate optimization, if auto-configuration is enabled
   if(this->ldroAuto) {
     float symbolLength = (float)(uint32_t(1) << this->spreadingFactor) / (float)this->bandwidthKhz;
-    if(symbolLength >= 16.0) {
+    if(symbolLength >= 16.0f) {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_ON;
     } else {
       this->ldrOptimize = RADIOLIB_SX126X_LORA_LOW_DATA_RATE_OPTIMIZE_OFF;
@@ -2126,7 +2126,7 @@ int16_t SX126x::fixSensitivity() {
   RADIOLIB_ASSERT(state);
 
   // fix the value for LoRa with 500 kHz bandwidth
-  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (fabsf(this->bandwidthKhz - 500.0) <= 0.001)) {
+  if((getPacketType() == RADIOLIB_SX126X_PACKET_TYPE_LORA) && (fabsf(this->bandwidthKhz - 500.0f) <= 0.001f)) {
     sensitivityConfig &= 0xFB;
   } else {
     sensitivityConfig |= 0x04;
@@ -2232,7 +2232,7 @@ int16_t SX126x::modSetup(float tcxoVoltage, bool useRegulatorLDO, uint8_t modem)
   RADIOLIB_ASSERT(state);
 
   // set TCXO control, if requested
-  if(!this->XTAL && tcxoVoltage > 0.0) {
+  if(!this->XTAL && tcxoVoltage > 0.0f) {
     state = setTCXO(tcxoVoltage);
     RADIOLIB_ASSERT(state);
   }

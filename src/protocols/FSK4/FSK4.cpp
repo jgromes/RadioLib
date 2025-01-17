@@ -34,7 +34,7 @@ int16_t FSK4Client::begin(float base, uint32_t shift, uint16_t rate) {
   }
 
   // calculate 24-bit frequency
-  baseFreq = (base * 1000000.0) / phyLayer->getFreqStep();
+  baseFreq = (base * 1000000.0f) / phyLayer->getFreqStep();
 
   // configure for direct mode
   return(phyLayer->startDirect());

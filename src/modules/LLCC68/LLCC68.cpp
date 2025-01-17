@@ -38,7 +38,7 @@ int16_t LLCC68::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t sync
 }
 
 int16_t LLCC68::setBandwidth(float bw) {
-  RADIOLIB_CHECK_RANGE(bw, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(bw, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
   return(SX1262::setBandwidth(bw));
 }
 
@@ -95,14 +95,14 @@ int16_t LLCC68::checkDataRate(DataRate_t dr) {
   // select interpretation based on active modem
   uint8_t modem = this->getPacketType();
   if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
-    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6, 200.0, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
+    RADIOLIB_CHECK_RANGE(dr.fsk.bitRate, 0.6f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(dr.fsk.freqDev, 0.6f, 200.0f, RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
     return(RADIOLIB_ERR_NONE);
 
   } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0, 510.0, RADIOLIB_ERR_INVALID_BANDWIDTH);
+    RADIOLIB_CHECK_RANGE(dr.lora.bandwidth, 100.0f, 510.0f, RADIOLIB_ERR_INVALID_BANDWIDTH);
     RADIOLIB_CHECK_RANGE(dr.lora.codingRate, 5, 8, RADIOLIB_ERR_INVALID_CODING_RATE);
-    uint8_t bw_div2 = dr.lora.bandwidth / 2 + 0.01;
+    uint8_t bw_div2 = dr.lora.bandwidth / 2 + 0.01f;
     switch (bw_div2)  {
       case 62: // 125.0:
         RADIOLIB_CHECK_RANGE(dr.lora.spreadingFactor, 5, 9, RADIOLIB_ERR_INVALID_SPREADING_FACTOR);

@@ -43,7 +43,7 @@ int16_t BellClient::begin(const BellModem_t& modem) {
 
 int16_t BellClient::setModem(const BellModem_t& modem) {
   this->modemType = modem;
-  this->toneLen = (1000000.0/(float)this->modemType.baudRate)*this->correction;
+  this->toneLen = (1000000.0f/(float)this->modemType.baudRate)*this->correction;
   return(RADIOLIB_ERR_NONE);
 }
 

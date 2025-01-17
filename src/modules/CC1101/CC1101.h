@@ -9,7 +9,7 @@
 // CC1101 physical layer properties
 #define RADIOLIB_CC1101_FREQUENCY_STEP_SIZE                     396.7285156
 #define RADIOLIB_CC1101_MAX_PACKET_LENGTH                       64
-#define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0
+#define RADIOLIB_CC1101_CRYSTAL_FREQ                            26.0f
 #define RADIOLIB_CC1101_DIV_EXPONENT                            16
 
 // CC1101 SPI commands

@@ -22,7 +22,7 @@ int16_t Si4430::begin(float freq, float br, float freqDev, float rxBw, int8_t po
 }
 
 int16_t Si4430::setFrequency(float freq) {
-  RADIOLIB_CHECK_RANGE(freq, 900.0, 960.0, RADIOLIB_ERR_INVALID_FREQUENCY);
+  RADIOLIB_CHECK_RANGE(freq, 900.0f, 960.0f, RADIOLIB_ERR_INVALID_FREQUENCY);
 
   // set frequency
   return(Si443x::setFrequencyRaw(freq));

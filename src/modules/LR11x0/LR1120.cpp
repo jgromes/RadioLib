@@ -9,7 +9,7 @@ LR1120::LR1120(Module* mod) : LR11x0(mod) {
 
 int16_t LR1120::begin(float freq, float bw, uint8_t sf, uint8_t cr, uint8_t syncWord, int8_t power, uint16_t preambleLength, float tcxoVoltage) {
   // execute common part
-  int16_t state = LR11x0::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage, freq > 1000.0);
+  int16_t state = LR11x0::begin(bw, sf, cr, syncWord, preambleLength, tcxoVoltage, freq > 1000.0f);
   RADIOLIB_ASSERT(state);
 
   // configure publicly accessible settings
@@ -52,9 +52,9 @@ int16_t LR1120::setFrequency(float freq) {
 
 int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
   #if RADIOLIB_CHECK_PARAMS
-  if(!(((freq >= 150.0) && (freq <= 960.0)) ||
-    ((freq >= 1900.0) && (freq <= 2200.0)) ||
-    ((freq >= 2400.0) && (freq <= 2500.0)))) {
+  if(!(((freq >= 150.0f) && (freq <= 960.0f)) ||
+    ((freq >= 1900.0f) && (freq <= 2200.0f)) ||
+    ((freq >= 2400.0f) && (freq <= 2500.0f)))) {
       return(RADIOLIB_ERR_INVALID_FREQUENCY);
   }
   #endif
@@ -70,7 +70,7 @@ int16_t LR1120::setFrequency(float freq, bool skipCalibration, float band) {
   state = LR11x0::setRfFrequency((uint32_t)(freq*1000000.0f));
   RADIOLIB_ASSERT(state);
   this->freqMHz = freq;
-  this->highFreq = (freq > 1000.0);
+  this->highFreq = (freq > 1000.0f);
   return(RADIOLIB_ERR_NONE);
 }
 

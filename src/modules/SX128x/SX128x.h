@@ -12,7 +12,7 @@
 // SX128X physical layer properties
 #define RADIOLIB_SX128X_FREQUENCY_STEP_SIZE                     198.3642578
 #define RADIOLIB_SX128X_MAX_PACKET_LENGTH                       255
-#define RADIOLIB_SX128X_CRYSTAL_FREQ                            52.0
+#define RADIOLIB_SX128X_CRYSTAL_FREQ                            52.0f
 #define RADIOLIB_SX128X_DIV_EXPONENT                            18
 
 // SX128X SPI commands

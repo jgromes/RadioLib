@@ -2112,7 +2112,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
 
       // check if the frequency is allowed and possible
       if(macFreq >= this->band->freqMin && macFreq <= this->band->freqMax) {
-        if(this->phyLayer->setFrequency((float)macFreq / 10000.0) == RADIOLIB_ERR_NONE) {
+        if(this->phyLayer->setFrequency((float)macFreq / 10000.0f) == RADIOLIB_ERR_NONE) {
           freqAck = 1;
         }
       // otherwise, if frequency is 0, disable the channel which is also a valid option
@@ -2172,7 +2172,7 @@ bool LoRaWANNode::execMacCommand(uint8_t cid, uint8_t* optIn, uint8_t lenIn, uin
       // get the configuration
       uint8_t macChIndex = optIn[0];
       uint32_t macFreq = LoRaWANNode::ntoh<uint32_t>(&optIn[1], 3);
-      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DlChannelReq: index = %d, freq = %7.3f MHz", macChIndex, macFreq / 10000.0);
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("DlChannelReq: index = %d, freq = %7.3f MHz", macChIndex, macFreq / 10000.0f);
       uint8_t freqDlAck = 0;
       uint8_t freqUlAck = 0;
       

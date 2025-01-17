@@ -204,7 +204,7 @@ int16_t SX127x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
 
   // update data rate
   RadioLibTime_t elapsed = this->mod->hal->millis() - start;
-  this->dataRate = (len*8.0)/((float)elapsed/1000.0);
+  this->dataRate = (len*8.0f)/((float)elapsed/1000.0f);
 
   return(finishTransmit());
 }
@@ -224,7 +224,7 @@ int16_t SX127x::receive(uint8_t* data, size_t len) {
     RadioLibTime_t timeout = 0;
     if(this->mod->getGpio() == RADIOLIB_NC) {
       float symbolLength = (float) (uint32_t(1) << this->spreadingFactor) / (float) this->bandwidth;
-      timeout = (RadioLibTime_t)(symbolLength * 100.0);
+      timeout = (RadioLibTime_t)(symbolLength * 100.0f);
     }
 
     // wait for packet reception or timeout
@@ -844,14 +844,14 @@ float SX127x::getFrequencyError(bool autoCorrect) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = (((float)raw * (float)base)/32000000.0) * (this->bandwidth/500.0) * -1.0;
+      error = (((float)raw * (float)base)/32000000.0f) * (this->bandwidth/500.0f) * -1.0f;
     } else {
-      error = (((float)raw * (float)base)/32000000.0) * (this->bandwidth/500.0);
+      error = (((float)raw * (float)base)/32000000.0f) * (this->bandwidth/500.0f);
     }
 
     if(autoCorrect) {
       // adjust LoRa modem data rate
-      float ppmOffset = 0.95 * (error/32.0);
+      float ppmOffset = 0.95f * (error/32.0f);
       this->mod->SPIwriteRegister(0x27, (uint8_t)ppmOffset);
     }
 
@@ -870,9 +870,9 @@ float SX127x::getFrequencyError(bool autoCorrect) {
       // frequency error is negative
       raw |= (uint32_t)0xFFF00000;
       raw = ~raw + 1;
-      error = (float)raw * (32000000.0 / (float)(base << 19)) * -1.0;
+      error = (float)raw * (32000000.0f / (float)(base << 19)) * -1.0f;
     } else {
-      error = (float)raw * (32000000.0 / (float)(base << 19));
+      error = (float)raw * (32000000.0f / (float)(base << 19));
     }
 
     return(error);
@@ -894,7 +894,7 @@ float SX127x::getAFCError()
   raw |= this->mod->SPIreadRegister(RADIOLIB_SX127X_REG_AFC_LSB);
 
   uint32_t base = 1;
-  return raw * (32000000.0 / (float)(base << 19));
+  return raw * (32000000.0f / (float)(base << 19));
 }
 
 float SX127x::getSNR() {
@@ -921,9 +921,9 @@ int16_t SX127x::setBitRateCommon(float br, uint8_t fracRegAddr) {
   // check allowed bit rate
   // datasheet says 1.2 kbps should be the smallest possible, but 0.512 works fine
   if(ookEnabled) {
-    RADIOLIB_CHECK_RANGE(br, 0.5, 32.768002, RADIOLIB_ERR_INVALID_BIT_RATE);      // Found that 32.768 is 32.768002
+    RADIOLIB_CHECK_RANGE(br, 0.5f, 32.768002f, RADIOLIB_ERR_INVALID_BIT_RATE);      // Found that 32.768 is 32.768002
   } else {
-    RADIOLIB_CHECK_RANGE(br, 0.5, 300.0, RADIOLIB_ERR_INVALID_BIT_RATE);
+    RADIOLIB_CHECK_RANGE(br, 0.5f, 300.0f, RADIOLIB_ERR_INVALID_BIT_RATE);
   }
 
   // set mode to STANDBY
@@ -931,13 +931,13 @@ int16_t SX127x::setBitRateCommon(float br, uint8_t fracRegAddr) {
   RADIOLIB_ASSERT(state);
 
   // set bit rate
-  uint16_t bitRateRaw = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / br;
+  uint16_t bitRateRaw = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0f) / br;
   state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_MSB, (bitRateRaw & 0xFF00) >> 8, 7, 0);
   state |= this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_BITRATE_LSB, bitRateRaw & 0x00FF, 7, 0);
 
   // set fractional part of bit rate
   if(!ookEnabled) {
-    float bitRateRem = ((RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0) / (float)br) - (float)bitRateRaw;
+    float bitRateRem = ((RADIOLIB_SX127X_CRYSTAL_FREQ * 1000.0f) / br) - (float)bitRateRaw;
     uint8_t bitRateFrac = bitRateRem * 16;
     state |= this->mod->SPIsetRegValue(fracRegAddr, bitRateFrac, 7, 0);
   }
@@ -956,12 +956,12 @@ int16_t SX127x::setFrequencyDeviation(float freqDev) {
 
   // set frequency deviation to lowest available setting (required for digimodes)
   float newFreqDev = freqDev;
-  if(freqDev < 0.0) {
-    newFreqDev = 0.6;
+  if(freqDev < 0.0f) {
+    newFreqDev = 0.6f;
   }
 
   // check frequency deviation range
-  if(!((newFreqDev + this->bitRate/2.0 <= 250.0) && (freqDev <= 200.0))) {
+  if(!((newFreqDev + this->bitRate/2.0f <= 250.0f) && (freqDev <= 200.0f))) {
     return(RADIOLIB_ERR_INVALID_FREQUENCY_DEVIATION);
   }
 
@@ -981,8 +981,8 @@ uint8_t SX127x::calculateBWManExp(float bandwidth)
 {
   for(uint8_t e = 7; e >= 1; e--) {
     for(int8_t m = 2; m >= 0; m--) {
-      float point = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000000.0)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
-      if(fabsf(bandwidth - ((point / 1000.0) + 0.05)) <= 0.5) {
+      float point = (RADIOLIB_SX127X_CRYSTAL_FREQ * 1000000.0f)/(((4 * m) + 16) * ((uint32_t)1 << (e + 2)));
+      if(fabsf(bandwidth - ((point / 1000.0f) + 0.05f)) <= 0.5f) {
         return((m << 3) | e);
       }
     }
@@ -996,7 +996,7 @@ int16_t SX127x::setRxBandwidth(float rxBw) {
     return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(rxBw, 2.6f, 250.0f, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 
   // set mode to STANDBY
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -1012,7 +1012,7 @@ int16_t SX127x::setAFCBandwidth(float rxBw) {
       return(RADIOLIB_ERR_WRONG_MODEM);
   }
 
-  RADIOLIB_CHECK_RANGE(rxBw, 2.6, 250.0, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
+  RADIOLIB_CHECK_RANGE(rxBw, 2.6f, 250.0f, RADIOLIB_ERR_INVALID_RX_BANDWIDTH);
 
   // set mode to STANDBY
   int16_t state = setMode(RADIOLIB_SX127X_STANDBY);
@@ -1251,7 +1251,7 @@ float SX127x::getNumSymbols(size_t len) {
 
   // get Low Data Rate optimization flag
   float de = 0;
-  if (symbolLength >= 16.0) {
+  if (symbolLength >= 16.0f) {
     de = 1;
   }
 
@@ -1265,7 +1265,7 @@ float SX127x::getNumSymbols(size_t len) {
   float n_pre = (float) ((this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_MSB) << 8) | this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_PREAMBLE_LSB));
 
   // get number of payload symbols
-  float n_pay = 8.0 + RADIOLIB_MAX(ceilf((8.0 * (float) len - 4.0 * (float) this->spreadingFactor + 28.0 + 16.0 * crc - 20.0 * ih) / (4.0 * (float) this->spreadingFactor - 8.0 * de)) * (float) this->codingRate, 0.0);
+  float n_pay = 8.0f + RADIOLIB_MAX(ceilf((8.0f * (float) len - 4.0f * (float) this->spreadingFactor + 28.0f + 16.0f * crc - 20.0f * ih) / (4.0f * (float) this->spreadingFactor - 8.0f * de)) * (float) this->codingRate, 0.0f);
 
   // add 4.25 symbols for the sync
   return(n_pre + n_pay + 4.25f);
@@ -1301,7 +1301,7 @@ RadioLibTime_t SX127x::getTimeOnAir(size_t len) {
     }
 
     // calculate time-on-air in us {[(length in bytes) * (8 bits / 1 byte)] / [(Bit Rate in kbps) * (1000 bps / 1 kbps)]} * (1000000 us in 1 sec)
-    return((uint32_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (this->bitRate * 1000.0)) * 1000000.0));
+    return((uint32_t) (((crc + n_syncWord + n_pre + (float) (len * 8)) / (this->bitRate * 1000.0f)) * 1000000.0f));
   }
   
   return(RADIOLIB_ERR_UNKNOWN);
@@ -1448,9 +1448,9 @@ int16_t SX127x::setCrcFiltering(bool enable) {
 }
 
 int16_t SX127x::setRSSIThreshold(float dbm) {
-  RADIOLIB_CHECK_RANGE(dbm, -127.5, 0, RADIOLIB_ERR_INVALID_RSSI_THRESHOLD);
+  RADIOLIB_CHECK_RANGE(dbm, -127.5f, 0.0f, RADIOLIB_ERR_INVALID_RSSI_THRESHOLD);
 
-  return this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_THRESH, (uint8_t)(-2.0 * dbm), 7, 0);
+  return this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_RSSI_THRESH, (uint8_t)(-2.0f * dbm), 7, 0);
 }
 
 int16_t SX127x::setRSSIConfig(uint8_t smoothingSamples, int8_t offset) {
@@ -1830,7 +1830,7 @@ float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
       // spread-spectrum modulation signal can be received below noise floor
       // check last packet SNR and if it's less than 0, add it to reported RSSI to get the correct value
       float lastPacketSNR = SX127x::getSNR();
-      if(lastPacketSNR < 0.0) {
+      if(lastPacketSNR < 0.0f) {
         lastPacketRSSI += lastPacketSNR;
       }
       return(lastPacketRSSI);
@@ -1850,7 +1850,7 @@ float SX127x::getRSSI(bool packet, bool skipReceive, int16_t offset) {
     }
 
     // read the value for FSK
-    float rssi = (float)this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE_FSK) / -2.0;
+    float rssi = (float)this->mod->SPIgetRegValue(RADIOLIB_SX127X_REG_RSSI_VALUE_FSK) / -2.0f;
 
     // set mode back to standby
     if(!skipReceive) {
