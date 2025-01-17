@@ -783,14 +783,14 @@ class SX126x: public PhysicalLayer {
       \param bw LoRa bandwidth to be set in kHz.
       \returns \ref status_codes
     */
-    int16_t setBandwidth(float bw);
+    virtual int16_t setBandwidth(float bw);
 
     /*!
       \brief Sets LoRa spreading factor. Allowed values range from 5 to 12.
       \param sf LoRa spreading factor to be set.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf);
+    virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
       \brief Sets LoRa coding rate denominator. Allowed values range from 5 to 8.
