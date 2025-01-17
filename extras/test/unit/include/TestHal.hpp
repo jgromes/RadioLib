@@ -104,10 +104,18 @@ class TestHal : public RadioLibHal {
 
     void attachInterrupt(uint32_t interruptNum, void (*interruptCb)(void), uint32_t mode) override {
       HAL_LOG("TestHal::attachInterrupt(interruptNum=" << interruptNum << ", interruptCb=" << interruptCb << ", mode=" << mode << ")");
+
+      // TODO implement
+      (void)interruptNum;
+      (void)interruptCb;
+      (void)mode;
     }
 
     void detachInterrupt(uint32_t interruptNum) override {
       HAL_LOG("TestHal::detachInterrupt(interruptNum=" << interruptNum << ")");
+
+      // TODO implement
+      (void)interruptNum;
     }
 
     void delay(unsigned long ms) override {
@@ -159,6 +167,11 @@ class TestHal : public RadioLibHal {
 
     long pulseIn(uint32_t pin, uint32_t state, unsigned long timeout) override {
       HAL_LOG("TestHal::pulseIn(pin=" << pin << ", state=" << state << ", timeout=" << timeout << ")");
+
+      // TODO implement
+      (void)pin;
+      (void)state;
+      (void)timeout;
       return(0);
     }
 
@@ -199,10 +212,18 @@ class TestHal : public RadioLibHal {
 
     void tone(uint32_t pin, unsigned int frequency, unsigned long duration = 0) {
       HAL_LOG("TestHal::tone(pin=" << pin << ", frequency=" << frequency << ", duration=" << duration << ")");
+
+      // TODO implement
+      (void)pin;
+      (void)frequency;
+      (void)duration;
     }
 
     void noTone(uint32_t pin) {
       HAL_LOG("TestHal::noTone(pin=" << pin << ")");
+
+      // TODO implement
+      (void)pin;
     }
 
     // method to compare buffer to the internal SPI log, for verifying SPI transactions
