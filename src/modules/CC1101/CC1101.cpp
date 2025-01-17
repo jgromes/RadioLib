@@ -436,22 +436,22 @@ int16_t CC1101::setRxBandwidth(float rxBw) {
 }
 
 int16_t CC1101::autoSetRxBandwidth() {
-    // Uncertainty ~ +/- 40ppm for a cheap CC1101
-    // Uncertainty * 2 for both transmitter and receiver
-    float uncertainty = ((this->frequency) * 40 * 2);
-    uncertainty = (uncertainty/1000); //Since bitrate is in kBit
-    float minbw = ((this->bitRate) + uncertainty);
-    
-    int possibles[16] = {58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812};
-    
-    for (int i = 0; i < 16; i++) {
-      if (possibles[i] > minbw) {
-        int16_t state = setRxBandwidth(possibles[i]);
-        return(state);
-      }
+  // Uncertainty ~ +/- 40ppm for a cheap CC1101
+  // Uncertainty * 2 for both transmitter and receiver
+  float uncertainty = ((this->frequency) * 40 * 2);
+  uncertainty = (uncertainty/1000); //Since bitrate is in kBit
+  float minbw = ((this->bitRate) + uncertainty);
+  
+  const int options[16] = { 58, 68, 81, 102, 116, 135, 162, 203, 232, 270, 325, 406, 464, 541, 650, 812 };
+  
+  for(int i = 0; i < 16; i++) {
+    if(options[i] > minbw) {
+      return(setRxBandwidth(options[i]));
     }
-    return(RADIOLIB_ERR_UNKNOWN);
   }
+
+  return(RADIOLIB_ERR_UNKNOWN);
+}
 
 int16_t CC1101::setFrequencyDeviation(float freqDev) {
   // set frequency deviation to lowest available setting (required for digimodes)
@@ -519,7 +519,7 @@ int16_t CC1101::setOutputPower(int8_t pwr) {
     // PA_TABLE[0] is the power to be used when transmitting a 0  (no power)
     // PA_TABLE[1] is the power to be used when transmitting a 1  (full power)
 
-    uint8_t paValues[2] = {0x00, powerRaw};
+    const uint8_t paValues[2] = { 0x00, powerRaw };
     SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_PATABLE, paValues, 2);
     return(RADIOLIB_ERR_NONE);
 
@@ -598,7 +598,7 @@ int16_t CC1101::checkOutputPower(int8_t power, int8_t* clipped, uint8_t* raw) {
   return(RADIOLIB_ERR_INVALID_OUTPUT_POWER);
 }
 
-int16_t CC1101::setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
+int16_t CC1101::setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits, bool requireCarrierSense) {
   if((maxErrBits > 1) || (len != 2)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
   }
@@ -1007,7 +1007,7 @@ int16_t CC1101::beginCommon(float freq, float br, float freqDev, float rxBw, int
   RADIOLIB_ASSERT(state);
 
   // set default sync word
-  uint8_t sw[RADIOLIB_CC1101_DEFAULT_SW_LEN] = RADIOLIB_CC1101_DEFAULT_SW;
+  const uint8_t sw[RADIOLIB_CC1101_DEFAULT_SW_LEN] = RADIOLIB_CC1101_DEFAULT_SW;
   state = setSyncWord(sw[0], sw[1], 0, false);
   RADIOLIB_ASSERT(state);
 
@@ -1161,7 +1161,7 @@ void CC1101::SPIwriteRegister(uint8_t reg, uint8_t data) {
   return(this->mod->SPIwriteRegister(reg, data));
 }
 
-void CC1101::SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len) {
+void CC1101::SPIwriteRegisterBurst(uint8_t reg, const uint8_t* data, size_t len) {
   this->mod->SPIwriteRegisterBurst(reg | RADIOLIB_CC1101_CMD_BURST, data, len);
 }
 

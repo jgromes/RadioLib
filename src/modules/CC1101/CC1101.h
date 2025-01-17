@@ -839,7 +839,7 @@ class CC1101: public PhysicalLayer {
       \param requireCarrierSense Require carrier sense above threshold in addition to sync word.
       \returns \ref status_codes
     */
-    int16_t setSyncWord(uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
+    int16_t setSyncWord(const uint8_t* syncWord, uint8_t len, uint8_t maxErrBits = 0, bool requireCarrierSense = false);
 
     /*!
       \brief Sets preamble length.
@@ -1009,7 +1009,7 @@ class CC1101: public PhysicalLayer {
     int16_t SPIsetRegValue(uint8_t reg, uint8_t value, uint8_t msb = 7, uint8_t lsb = 0, uint8_t checkInterval = 2);
     void SPIreadRegisterBurst(uint8_t reg, uint8_t numBytes, uint8_t* inBytes);
     uint8_t SPIreadRegister(uint8_t reg);
-    void SPIwriteRegisterBurst(uint8_t reg, uint8_t* data, size_t len);
+    void SPIwriteRegisterBurst(uint8_t reg, const uint8_t* data, size_t len);
     void SPIwriteRegister(uint8_t reg, uint8_t data);
 
     void SPIsendCommand(uint8_t cmd);
