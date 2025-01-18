@@ -144,9 +144,6 @@ class HellClient: public RadioLibPrint {
     uint32_t pixelDuration = 0;
     bool invert = false;
 
-    size_t printNumber(unsigned long, uint8_t) override;
-    size_t printFloat(double, uint8_t) override;
-
     int16_t transmitDirect(uint32_t freq = 0, uint32_t freqHz = 0);
     int16_t standby();
 };
