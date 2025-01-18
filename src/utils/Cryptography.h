@@ -115,7 +115,7 @@ class RadioLibAES128 {
       to ensure the buffer is sufficiently large to save the data!
       \returns The number of bytes saved into the output buffer.
     */
-    size_t encryptECB(uint8_t* in, size_t len, uint8_t* out);
+    size_t encryptECB(const uint8_t* in, size_t len, uint8_t* out);
     
     /*!
       \brief Perform ECB-type AES decryption.
@@ -125,7 +125,7 @@ class RadioLibAES128 {
       to ensure the buffer is sufficiently large to save the data!
       \returns The number of bytes saved into the output buffer.
     */
-    size_t decryptECB(uint8_t* in, size_t len, uint8_t* out);
+    size_t decryptECB(const uint8_t* in, size_t len, uint8_t* out);
 
     /*!
       \brief Calculate message authentication code according to RFC4493.
@@ -133,7 +133,7 @@ class RadioLibAES128 {
       \param len Length of the input data.
       \param cmac Buffer to save the output MAC into. The buffer must be at least 16 bytes long!
     */
-    void generateCMAC(uint8_t* in, size_t len, uint8_t* cmac);
+    void generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac);
 
     /*!
       \brief Verify the received CMAC. This just calculates the CMAC again and compares the results.

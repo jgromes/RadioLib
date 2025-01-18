@@ -11,7 +11,7 @@ void RadioLibAES128::init(uint8_t* key) {
   this->keyExpansion(this->roundKey, key);
 }
 
-size_t RadioLibAES128::encryptECB(uint8_t* in, size_t len, uint8_t* out) {
+size_t RadioLibAES128::encryptECB(const uint8_t* in, size_t len, uint8_t* out) {
   size_t num_blocks = len / RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {
     num_blocks++;
@@ -27,7 +27,7 @@ size_t RadioLibAES128::encryptECB(uint8_t* in, size_t len, uint8_t* out) {
   return(num_blocks*RADIOLIB_AES128_BLOCK_SIZE);
 }
 
-size_t RadioLibAES128::decryptECB(uint8_t* in, size_t len, uint8_t* out) {
+size_t RadioLibAES128::decryptECB(const uint8_t* in, size_t len, uint8_t* out) {
   size_t num_blocks = len / RADIOLIB_AES128_BLOCK_SIZE;
   if(len % RADIOLIB_AES128_BLOCK_SIZE) {
     num_blocks++;
@@ -43,7 +43,7 @@ size_t RadioLibAES128::decryptECB(uint8_t* in, size_t len, uint8_t* out) {
   return(num_blocks*RADIOLIB_AES128_BLOCK_SIZE);
 }
 
-void RadioLibAES128::generateCMAC(uint8_t* in, size_t len, uint8_t* cmac) {
+void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) {
   uint8_t key1[RADIOLIB_AES128_BLOCK_SIZE];
   uint8_t key2[RADIOLIB_AES128_BLOCK_SIZE];
   this->generateSubkeys(key1, key2);
@@ -155,7 +155,8 @@ void RadioLibAES128::decipher(state_t* state, uint8_t* roundKey) {
 
 void RadioLibAES128::subWord(uint8_t* word) {
   for(size_t i = 0; i < 4; i++) {
-    word[i] = RADIOLIB_NONVOLATILE_READ_BYTE(&aesSbox[word[i]]);
+    uint8_t* ptr = const_cast<uint8_t*>(&aesSbox[word[i]]);
+    word[i] = RADIOLIB_NONVOLATILE_READ_BYTE(ptr);
   }
 }
 
@@ -198,7 +199,7 @@ void RadioLibAES128::generateSubkeys(uint8_t* key1, uint8_t* key2) {
     0x00, 0x00, 0x00, 0x00
   };
 
-  uint8_t const_Rb[] = {
+  const uint8_t const_Rb[] = {
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
@@ -221,7 +222,8 @@ void RadioLibAES128::generateSubkeys(uint8_t* key1, uint8_t* key2) {
 void RadioLibAES128::subBytes(state_t* state, const uint8_t* box) {
   for(size_t row = 0; row < 4; row++) {
     for(size_t col = 0; col < 4; col++) {
-      (*state)[col][row] = RADIOLIB_NONVOLATILE_READ_BYTE(&box[(*state)[col][row]]);
+      uint8_t* ptr = const_cast<uint8_t*>(&box[(*state)[col][row]]);
+      (*state)[col][row] = RADIOLIB_NONVOLATILE_READ_BYTE(ptr);
     }
   }
 }
