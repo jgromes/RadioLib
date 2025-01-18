@@ -14,7 +14,7 @@ AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* src
 
 }
 
-AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, uint8_t* info, uint16_t infoLen) {
+AX25Frame::AX25Frame(const char* destCallsign, uint8_t destSSID, const char* srcCallsign, uint8_t srcSSID, uint8_t control, uint8_t protocolID, const uint8_t* info, uint16_t infoLen) {
   // destination callsign/SSID
   memcpy(this->destCallsign, destCallsign, strlen(destCallsign));
   this->destCallsign[strlen(destCallsign)] = '\0';
@@ -142,7 +142,7 @@ AX25Frame& AX25Frame::operator=(const AX25Frame& frame) {
   return(*this);
 }
 
-int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, uint8_t* repeaterSSIDs, uint8_t numRepeaters) {
+int16_t AX25Frame::setRepeaters(char** repeaterCallsigns, const uint8_t* repeaterSSIDs, uint8_t numRepeaters) {
   // check number of repeaters
   if((numRepeaters < 1) || (numRepeaters > 8)) {
     return(RADIOLIB_ERR_INVALID_NUM_REPEATERS);
