@@ -208,6 +208,8 @@
 #define RADIOLIB_LORAWAN_MAX_MAC_COMMAND_LEN_UP                 (2)
 #define RADIOLIB_LORAWAN_MAX_NUM_ADR_COMMANDS                   (8)
 
+#define RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE                      (250)
+
 /*!
   \struct LoRaWANMacCommand_t
   \brief MAC command specification structure.
@@ -984,7 +986,7 @@ class LoRaWANNode {
     int16_t processJoinAccept(LoRaWANJoinEvent_t *joinEvent);
 
     // a join-accept can piggy-back a set of channels or channel masks
-    void processCFList(uint8_t* cfList);
+    void processCFList(const uint8_t* cfList);
 
     // check whether payload length and fport are allowed
     int16_t isValidUplink(uint8_t* len, uint8_t fPort);
@@ -999,7 +1001,7 @@ class LoRaWANNode {
     void micUplink(uint8_t* inOut, uint8_t lenInOut);
 
     // transmit uplink buffer on a specified channel
-    int16_t transmitUplink(LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans);
+    int16_t transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, uint8_t len, bool retrans);
 
     // wait for, open and listen during receive windows; only performs listening
     int16_t receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChannels, const RadioLibTime_t* dlDelays, uint8_t numWindows, RadioLibTime_t tReference);
@@ -1036,10 +1038,10 @@ class LoRaWANNode {
     bool isPersistentMacCommand(uint8_t cid, uint8_t dir);
 
     // push MAC command to queue, done by copy
-    int16_t pushMacCommand(uint8_t cid, uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir);
+    int16_t pushMacCommand(uint8_t cid, const uint8_t* cOcts, uint8_t* out, uint8_t* lenOut, uint8_t dir);
 
     // retrieve the payload of a certain MAC command, if present in the buffer
-    int16_t getMacPayload(uint8_t cid, uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t dir);
+    int16_t getMacPayload(uint8_t cid, const uint8_t* in, uint8_t lenIn, uint8_t* out, uint8_t dir);
 
     // delete a specific MAC command from queue, indicated by the command ID
     int16_t deleteMacCommand(uint8_t cid, uint8_t* inOut, uint8_t* lenInOut, uint8_t dir);
@@ -1087,7 +1089,7 @@ class LoRaWANNode {
 #endif
 
     // method to generate message integrity code
-    uint32_t generateMIC(uint8_t* msg, size_t len, uint8_t* key);
+    uint32_t generateMIC(const uint8_t* msg, size_t len, uint8_t* key);
 
     // method to verify message integrity code
     // it assumes that the MIC is the last 4 bytes of the message
