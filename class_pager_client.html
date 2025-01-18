@@ -116,9 +116,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adbab4e162a5719bd4407a42a85d26ff6" id="r_adbab4e162a5719bd4407a42a85d26ff6"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a> (const char *str, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD, uint8_t function=RADIOLIB_PAGER_FUNC_AUTO)</td></tr>
 <tr class="memdesc:adbab4e162a5719bd4407a42a85d26ff6"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:adbab4e162a5719bd4407a42a85d26ff6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9df7f8675170affc5256a896168601b" id="r_aa9df7f8675170affc5256a896168601b"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#aa9df7f8675170affc5256a896168601b">transmit</a> (uint8_t *data, size_t len, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD, uint8_t function=RADIOLIB_PAGER_FUNC_AUTO)</td></tr>
-<tr class="memdesc:aa9df7f8675170affc5256a896168601b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data.  <br /></td></tr>
-<tr class="separator:aa9df7f8675170affc5256a896168601b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8cd7dd862fa437658acdbd8147083a08" id="r_a8cd7dd862fa437658acdbd8147083a08"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#a8cd7dd862fa437658acdbd8147083a08">transmit</a> (const uint8_t *data, size_t len, uint32_t addr, uint8_t encoding=RADIOLIB_PAGER_BCD, uint8_t function=RADIOLIB_PAGER_FUNC_AUTO)</td></tr>
+<tr class="memdesc:a8cd7dd862fa437658acdbd8147083a08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary transmit method. Will transmit arbitrary binary data.  <br /></td></tr>
+<tr class="separator:a8cd7dd862fa437658acdbd8147083a08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac232570ac012ff315a1971ab0422fed3" id="r_ac232570ac012ff315a1971ab0422fed3"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a> (uint32_t pin, uint32_t addr, uint32_t mask=0xFFFFF)</td></tr>
 <tr class="memdesc:ac232570ac012ff315a1971ab0422fed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start reception of POCSAG packets.  <br /></td></tr>
 <tr class="separator:ac232570ac012ff315a1971ab0422fed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -463,8 +463,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9df7f8675170affc5256a896168601b" name="aa9df7f8675170affc5256a896168601b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9df7f8675170affc5256a896168601b">&#9670;&#160;</a></span>transmit() <span class="overload">[2/2]</span></h2>
+<a id="a8cd7dd862fa437658acdbd8147083a08" name="a8cd7dd862fa437658acdbd8147083a08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8cd7dd862fa437658acdbd8147083a08">&#9670;&#160;</a></span>transmit() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,7 +472,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">int16_t PagerClient::transmit </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
         <tr>

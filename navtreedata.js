@@ -58,7 +58,7 @@ var NAVTREEINDEX =
 "class_l_r1120.html#a8d13c0f91a90a2aab43229133caf41fb",
 "class_physical_layer.html#ac88f9185b5e9fdc1d89df9797dcdd9b7",
 "class_s_x1233.html#aec5f4cb505e9c1f200405e6535d2fc47",
-"class_s_x127x.html#a729b4f3f36096b5b15bae19c7876e823",
+"class_s_x127x.html#a6fbdfd8e2a2ad1eb7e59a73385847acb",
 "classn_r_f24.html#af0c21ff66c011dfdc1ad12bc7dd11c2f",
 "lr1120__transceiver__0101_8h.html#a41b3993acc55d29c9be76a82718c2ba4"
 ];

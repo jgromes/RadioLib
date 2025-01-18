@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    int16_t <a class="code hl_function" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(<span class="keyword">const</span> <span class="keywordtype">char</span>* str, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);</div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    int16_t <a class="code hl_function" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    int16_t <a class="code hl_function" href="class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6">transmit</a>(<span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);</div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">    #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE</span></div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    int16_t <a class="code hl_function" href="class_pager_client.html#ac232570ac012ff315a1971ab0422fed3">startReceive</a>(uint32_t pin, uint32_t addr, uint32_t mask = 0xFFFFF);</div>
@@ -206,7 +206,7 @@ $(document).ready(function(){initNavTree('_pager_8h_source.html',''); initResiza
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    <span class="keywordtype">size_t</span> filterNumAddresses = 0;</div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <span class="keywordtype">bool</span> inv = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordtype">void</span> write(uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordtype">void</span> write(<span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">void</span> write(uint32_t codeWord);</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    int16_t startReceiveCommon();</div>
 <div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    <span class="keywordtype">bool</span> addressMatched(uint32_t addr);</div>

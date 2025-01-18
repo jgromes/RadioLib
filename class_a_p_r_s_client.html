@@ -110,15 +110,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afa314fad96837523df4a73cf47986f82" id="r_afa314fad96837523df4a73cf47986f82"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#afa314fad96837523df4a73cf47986f82">APRSClient</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy)</td></tr>
 <tr class="memdesc:afa314fad96837523df4a73cf47986f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for LoRa mode.  <br /></td></tr>
 <tr class="separator:afa314fad96837523df4a73cf47986f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d1468be141940a12fd3964957f79c1a" id="r_a4d1468be141940a12fd3964957f79c1a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a4d1468be141940a12fd3964957f79c1a">begin</a> (char sym, char *callsign=NULL, uint8_t ssid=0, bool alt=false)</td></tr>
-<tr class="memdesc:a4d1468be141940a12fd3964957f79c1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
-<tr class="separator:a4d1468be141940a12fd3964957f79c1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aebc95b926fb3d37f8489f895aa576d0e" id="r_aebc95b926fb3d37f8489f895aa576d0e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#aebc95b926fb3d37f8489f895aa576d0e">sendPosition</a> (char *destCallsign, uint8_t destSSID, char *lat, char *lon, char *msg=NULL, char *time=NULL)</td></tr>
-<tr class="memdesc:aebc95b926fb3d37f8489f895aa576d0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit position.  <br /></td></tr>
-<tr class="separator:aebc95b926fb3d37f8489f895aa576d0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8f28eba026b0f0a25c8ba54a96f4743" id="r_af8f28eba026b0f0a25c8ba54a96f4743"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#af8f28eba026b0f0a25c8ba54a96f4743">sendMicE</a> (float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t *telem=NULL, size_t telemLen=0, char *grid=NULL, char *status=NULL, int32_t alt=RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED)</td></tr>
-<tr class="memdesc:af8f28eba026b0f0a25c8ba54a96f4743"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit position using Mic-E encoding.  <br /></td></tr>
-<tr class="separator:af8f28eba026b0f0a25c8ba54a96f4743"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5391412e6081f1fb6fc4e6dabcb0c450" id="r_a5391412e6081f1fb6fc4e6dabcb0c450"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a5391412e6081f1fb6fc4e6dabcb0c450">begin</a> (char sym, const char *callsign=NULL, uint8_t ssid=0, bool alt=false)</td></tr>
+<tr class="memdesc:a5391412e6081f1fb6fc4e6dabcb0c450"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method.  <br /></td></tr>
+<tr class="separator:a5391412e6081f1fb6fc4e6dabcb0c450"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd783aa3891c19910193ef9c01e1cce8" id="r_acd783aa3891c19910193ef9c01e1cce8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#acd783aa3891c19910193ef9c01e1cce8">sendPosition</a> (char *destCallsign, uint8_t destSSID, const char *lat, const char *lon, const char *msg=NULL, const char *time=NULL)</td></tr>
+<tr class="memdesc:acd783aa3891c19910193ef9c01e1cce8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit position.  <br /></td></tr>
+<tr class="separator:acd783aa3891c19910193ef9c01e1cce8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7fe08e1d0377c1e1953c7af38143a2" id="r_a9f7fe08e1d0377c1e1953c7af38143a2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a9f7fe08e1d0377c1e1953c7af38143a2">sendMicE</a> (float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, const uint8_t *telem=NULL, size_t telemLen=0, const char *grid=NULL, const char *status=NULL, int32_t alt=RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED)</td></tr>
+<tr class="memdesc:a9f7fe08e1d0377c1e1953c7af38143a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit position using Mic-E encoding.  <br /></td></tr>
+<tr class="separator:a9f7fe08e1d0377c1e1953c7af38143a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a05076f44e5708f1230894c11053707b1" id="r_a05076f44e5708f1230894c11053707b1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_a_p_r_s_client.html#a05076f44e5708f1230894c11053707b1">sendFrame</a> (char *destCallsign, uint8_t destSSID, char *info)</td></tr>
 <tr class="memdesc:a05076f44e5708f1230894c11053707b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transmit generic APRS frame.  <br /></td></tr>
 <tr class="separator:a05076f44e5708f1230894c11053707b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,8 +201,8 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4d1468be141940a12fd3964957f79c1a" name="a4d1468be141940a12fd3964957f79c1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d1468be141940a12fd3964957f79c1a">&#9670;&#160;</a></span>begin()</h2>
+<a id="a5391412e6081f1fb6fc4e6dabcb0c450" name="a5391412e6081f1fb6fc4e6dabcb0c450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5391412e6081f1fb6fc4e6dabcb0c450">&#9670;&#160;</a></span>begin()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -216,7 +216,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>callsign</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
@@ -318,8 +318,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af8f28eba026b0f0a25c8ba54a96f4743" name="af8f28eba026b0f0a25c8ba54a96f4743"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8f28eba026b0f0a25c8ba54a96f4743">&#9670;&#160;</a></span>sendMicE()</h2>
+<a id="a9f7fe08e1d0377c1e1953c7af38143a2" name="a9f7fe08e1d0377c1e1953c7af38143a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f7fe08e1d0377c1e1953c7af38143a2">&#9670;&#160;</a></span>sendMicE()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -357,7 +357,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>telem</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
@@ -369,13 +369,13 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>grid</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>status</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
@@ -411,8 +411,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aebc95b926fb3d37f8489f895aa576d0e" name="aebc95b926fb3d37f8489f895aa576d0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aebc95b926fb3d37f8489f895aa576d0e">&#9670;&#160;</a></span>sendPosition()</h2>
+<a id="acd783aa3891c19910193ef9c01e1cce8" name="acd783aa3891c19910193ef9c01e1cce8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd783aa3891c19910193ef9c01e1cce8">&#9670;&#160;</a></span>sendPosition()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -432,25 +432,25 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>lat</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>lon</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>msg</em> = <code>NULL</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">char *&#160;</td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>time</em> = <code>NULL</code>&#160;</td>
         </tr>
         <tr>

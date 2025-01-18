@@ -186,12 +186,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:a5b01677f5ce6bee54da8fc7098c339f4" id="r_a5b01677f5ce6bee54da8fc7098c339f4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a5b01677f5ce6bee54da8fc7098c339f4">setAddressWidth</a> (uint8_t addrWidth)</td></tr>
 <tr class="memdesc:a5b01677f5ce6bee54da8fc7098c339f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address width of transmit and receive pipes in bytes. Allowed values are 3, 4 or 5 bytes.  <br /></td></tr>
 <tr class="separator:a5b01677f5ce6bee54da8fc7098c339f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0e1f2dddf810213410a420205bbd8af" id="r_aa0e1f2dddf810213410a420205bbd8af"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#aa0e1f2dddf810213410a420205bbd8af">setTransmitPipe</a> (uint8_t *addr)</td></tr>
-<tr class="memdesc:aa0e1f2dddf810213410a420205bbd8af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address of transmit pipe. The address width must be the same as the same as the configured in setAddressWidth.  <br /></td></tr>
-<tr class="separator:aa0e1f2dddf810213410a420205bbd8af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31bcc5a8c3747bf08a273dbdadc5481a" id="r_a31bcc5a8c3747bf08a273dbdadc5481a"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a31bcc5a8c3747bf08a273dbdadc5481a">setReceivePipe</a> (uint8_t pipeNum, uint8_t *addr)</td></tr>
-<tr class="memdesc:a31bcc5a8c3747bf08a273dbdadc5481a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address of receive pipes 0 or 1. The address width must be the same as the same as the configured in setAddressWidth.  <br /></td></tr>
-<tr class="separator:a31bcc5a8c3747bf08a273dbdadc5481a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f122e94ed8095d1c42292d8fb6c3e80" id="r_a9f122e94ed8095d1c42292d8fb6c3e80"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#a9f122e94ed8095d1c42292d8fb6c3e80">setTransmitPipe</a> (const uint8_t *addr)</td></tr>
+<tr class="memdesc:a9f122e94ed8095d1c42292d8fb6c3e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address of transmit pipe. The address width must be the same as the same as the configured in setAddressWidth.  <br /></td></tr>
+<tr class="separator:a9f122e94ed8095d1c42292d8fb6c3e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3595667329715aef0e9f8d85f4116c4" id="r_ac3595667329715aef0e9f8d85f4116c4"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ac3595667329715aef0e9f8d85f4116c4">setReceivePipe</a> (uint8_t pipeNum, const uint8_t *addr)</td></tr>
+<tr class="memdesc:ac3595667329715aef0e9f8d85f4116c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address of receive pipes 0 or 1. The address width must be the same as the same as the configured in setAddressWidth.  <br /></td></tr>
+<tr class="separator:ac3595667329715aef0e9f8d85f4116c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5bc08aef88d8cf41c38369044005da8" id="r_ab5bc08aef88d8cf41c38369044005da8"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classn_r_f24.html#ab5bc08aef88d8cf41c38369044005da8">setReceivePipe</a> (uint8_t pipeNum, uint8_t addrByte)</td></tr>
 <tr class="memdesc:ab5bc08aef88d8cf41c38369044005da8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets address of receive pipes 2 - 5. The first 2 - 4 address bytes for these pipes are the same as for address pipe 1, only the last byte can be set.  <br /></td></tr>
 <tr class="separator:ab5bc08aef88d8cf41c38369044005da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1311,8 +1311,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 
 </div>
 </div>
-<a id="a31bcc5a8c3747bf08a273dbdadc5481a" name="a31bcc5a8c3747bf08a273dbdadc5481a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31bcc5a8c3747bf08a273dbdadc5481a">&#9670;&#160;</a></span>setReceivePipe() <span class="overload">[1/2]</span></h2>
+<a id="ac3595667329715aef0e9f8d85f4116c4" name="ac3595667329715aef0e9f8d85f4116c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3595667329715aef0e9f8d85f4116c4">&#9670;&#160;</a></span>setReceivePipe() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1326,7 +1326,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>addr</em>&#160;</td>
         </tr>
         <tr>
@@ -1387,8 +1387,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 
 </div>
 </div>
-<a id="aa0e1f2dddf810213410a420205bbd8af" name="aa0e1f2dddf810213410a420205bbd8af"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0e1f2dddf810213410a420205bbd8af">&#9670;&#160;</a></span>setTransmitPipe()</h2>
+<a id="a9f122e94ed8095d1c42292d8fb6c3e80" name="a9f122e94ed8095d1c42292d8fb6c3e80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f122e94ed8095d1c42292d8fb6c3e80">&#9670;&#160;</a></span>setTransmitPipe()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1396,7 +1396,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
         <tr>
           <td class="memname">int16_t nRF24::setTransmitPipe </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>addr</em></td><td>)</td>
           <td></td>
         </tr>

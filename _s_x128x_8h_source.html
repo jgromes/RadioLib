@@ -612,9 +612,9 @@ $(document).ready(function(){initNavTree('_s_x128x_8h_source.html',''); initResi
 <div class="line"><a id="l00890" name="l00890"></a><span class="lineno">  890</span> </div>
 <div class="line"><a id="l00891" name="l00891"></a><span class="lineno">  891</span>    <span class="comment">// SX128x SPI command implementations</span></div>
 <div class="line"><a id="l00892" name="l00892"></a><span class="lineno">  892</span>    uint8_t getStatus();</div>
-<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
+<div class="line"><a id="l00893" name="l00893"></a><span class="lineno">  893</span>    int16_t writeRegister(uint16_t addr, <span class="keyword">const</span> uint8_t* data, uint8_t numBytes);</div>
 <div class="line"><a id="l00894" name="l00894"></a><span class="lineno">  894</span>    int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);</div>
-<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
+<div class="line"><a id="l00895" name="l00895"></a><span class="lineno">  895</span>    int16_t writeBuffer(<span class="keyword">const</span> uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
 <div class="line"><a id="l00896" name="l00896"></a><span class="lineno">  896</span>    int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);</div>
 <div class="line"><a id="l00897" name="l00897"></a><span class="lineno">  897</span>    int16_t setTx(uint16_t periodBaseCount = RADIOLIB_SX128X_TX_TIMEOUT_NONE, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>
 <div class="line"><a id="l00898" name="l00898"></a><span class="lineno">  898</span>    int16_t setRx(uint16_t periodBaseCount, uint8_t periodBase = RADIOLIB_SX128X_PERIOD_BASE_15_625_US);</div>

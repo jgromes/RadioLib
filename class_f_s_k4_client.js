@@ -6,6 +6,6 @@ var class_f_s_k4_client =
     [ "idle", "class_f_s_k4_client.html#a79ca465012acc9223d61d5b063ff8257", null ],
     [ "setCorrection", "class_f_s_k4_client.html#aab85cb6519e5448dc332bf17bd60f90a", null ],
     [ "standby", "class_f_s_k4_client.html#a8b5765371ebbf68a21bc0bbfdf9f82ac", null ],
-    [ "write", "class_f_s_k4_client.html#aa59fb42d3eeafe5ab3f0437ef5567ec2", null ],
+    [ "write", "class_f_s_k4_client.html#a78ead0e1e85706ae513edbceb2184925", null ],
     [ "write", "class_f_s_k4_client.html#a31218736d4f9a3412ee9009a4c4f5a22", null ]
 ];

@@ -8,5 +8,5 @@ var class_pager_client =
     [ "startReceive", "class_pager_client.html#a9c0f13846fbc333a35a16a98b6575ca6", null ],
     [ "startReceive", "class_pager_client.html#ac232570ac012ff315a1971ab0422fed3", null ],
     [ "transmit", "class_pager_client.html#adbab4e162a5719bd4407a42a85d26ff6", null ],
-    [ "transmit", "class_pager_client.html#aa9df7f8675170affc5256a896168601b", null ]
+    [ "transmit", "class_pager_client.html#a8cd7dd862fa437658acdbd8147083a08", null ]
 ];

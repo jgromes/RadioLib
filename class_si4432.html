@@ -119,7 +119,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afb1f1ae46d04788aa42f6276efd231ac" id="r_afb1f1ae46d04788aa42f6276efd231ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4432.html#afb1f1ae46d04788aa42f6276efd231ac">Si4432</a> (<a class="el" href="class_module.html">Module</a> *mod)</td></tr>
 <tr class="memdesc:afb1f1ae46d04788aa42f6276efd231ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <br /></td></tr>
 <tr class="separator:afb1f1ae46d04788aa42f6276efd231ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5efc3a08f91a411da011201dc128fb34" id="r_a5efc3a08f91a411da011201dc128fb34"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4432.html#a5efc3a08f91a411da011201dc128fb34">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=181.1, int8_t power=10, uint8_t preambleLen=16)</td></tr>
+<tr class="memitem:a5efc3a08f91a411da011201dc128fb34" id="r_a5efc3a08f91a411da011201dc128fb34"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4432.html#a5efc3a08f91a411da011201dc128fb34">begin</a> (float freq=434.0, float br=4.8, float freqDev=5.0, float rxBw=181.1, int8_t power=10, uint8_t preambleLen=16)</td></tr>
 <tr class="memdesc:a5efc3a08f91a411da011201dc128fb34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization method. Must be called at least once from Arduino sketch to initialize the module.  <br /></td></tr>
 <tr class="separator:a5efc3a08f91a411da011201dc128fb34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed3561abdb30b4eaad52d984366aadf1" id="r_aed3561abdb30b4eaad52d984366aadf1"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_si4432.html#aed3561abdb30b4eaad52d984366aadf1">setFrequency</a> (float freq) override</td></tr>
@@ -412,6 +412,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">int16_t Si4432::begin </td>
@@ -455,6 +458,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Initialization method. Must be called at least once from Arduino sketch to initialize the module. </p>
@@ -470,6 +478,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_si4430.html#a9e45de584e2624c1132eb0d327d12433">Si4430</a>, and <a class="el" href="class_si4431.html#a42dad1ef76ecab9353d5a03c984d5d1e">Si4431</a>.</p>
 
 </div>
 </div>

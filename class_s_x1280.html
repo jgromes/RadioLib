@@ -122,9 +122,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3112e6bce39e6534711f5d76449f3dd2" id="r_a3112e6bce39e6534711f5d76449f3dd2"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a3112e6bce39e6534711f5d76449f3dd2">range</a> (bool master, uint32_t addr, uint16_t calTable[3][6]=NULL)</td></tr>
 <tr class="memdesc:a3112e6bce39e6534711f5d76449f3dd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blocking ranging method.  <br /></td></tr>
 <tr class="separator:a3112e6bce39e6534711f5d76449f3dd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78cebe909fb2776f11f6c50f4f241c10" id="r_a78cebe909fb2776f11f6c50f4f241c10"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a78cebe909fb2776f11f6c50f4f241c10">startRanging</a> (bool master, uint32_t addr, uint16_t calTable[3][6]=NULL)</td></tr>
-<tr class="memdesc:a78cebe909fb2776f11f6c50f4f241c10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven ranging method.  <br /></td></tr>
-<tr class="separator:a78cebe909fb2776f11f6c50f4f241c10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ebee012b3b550ddc912b298de3763e" id="r_a04ebee012b3b550ddc912b298de3763e"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a04ebee012b3b550ddc912b298de3763e">startRanging</a> (bool master, uint32_t addr, const uint16_t calTable[3][6]=NULL)</td></tr>
+<tr class="memdesc:a04ebee012b3b550ddc912b298de3763e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven ranging method.  <br /></td></tr>
+<tr class="separator:a04ebee012b3b550ddc912b298de3763e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91f4f241f02cd4e79d15a9ba08eb1e8f" id="r_a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x1280.html#a91f4f241f02cd4e79d15a9ba08eb1e8f">getRangingResult</a> ()</td></tr>
 <tr class="memdesc:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets ranging result of the last ranging exchange.  <br /></td></tr>
 <tr class="separator:a91f4f241f02cd4e79d15a9ba08eb1e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -532,8 +532,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 
 </div>
 </div>
-<a id="a78cebe909fb2776f11f6c50f4f241c10" name="a78cebe909fb2776f11f6c50f4f241c10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78cebe909fb2776f11f6c50f4f241c10">&#9670;&#160;</a></span>startRanging()</h2>
+<a id="a04ebee012b3b550ddc912b298de3763e" name="a04ebee012b3b550ddc912b298de3763e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04ebee012b3b550ddc912b298de3763e">&#9670;&#160;</a></span>startRanging()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -553,7 +553,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramtype">const uint16_t&#160;</td>
           <td class="paramname"><em>calTable</em>[3][6] = <code>NULL</code>&#160;</td>
         </tr>
         <tr>
