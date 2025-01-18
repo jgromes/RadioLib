@@ -2,7 +2,14 @@
 
 file=cppcheck.txt
 cppcheck --version
-cppcheck src --enable=all --force --inline-suppr --suppress=ConfigurationNotChecked --suppress=unusedFunction --quiet >> $file 2>&1
+cppcheck src --enable=all \
+             --force \
+             --inline-suppr \
+             --suppress=ConfigurationNotChecked \
+             --suppress=unusedFunction \
+             --suppress=missingIncludeSystem \
+             --suppress=missingInclude \
+             --quiet >> $file 2>&1
 echo "Cppcheck finished with exit code $?"
 
 error=$(grep ": error:" $file | wc -l)
