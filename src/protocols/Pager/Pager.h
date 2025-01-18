@@ -117,7 +117,7 @@ class PagerClient {
       \param function bits (NUMERIC, TONE, ACTIVATION, ALPHANUMERIC). Allowed values 0 to 3. Defaults to auto select by specified encoding
       \returns \ref status_codes
     */
-    int16_t transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
+    int16_t transmit(const uint8_t* data, size_t len, uint32_t addr, uint8_t encoding = RADIOLIB_PAGER_BCD, uint8_t function = RADIOLIB_PAGER_FUNC_AUTO);
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
@@ -190,7 +190,7 @@ class PagerClient {
     size_t filterNumAddresses = 0;
     bool inv = false;
 
-    void write(uint32_t* data, size_t len);
+    void write(const uint32_t* data, size_t len);
     void write(uint32_t codeWord);
     int16_t startReceiveCommon();
     bool addressMatched(uint32_t addr);

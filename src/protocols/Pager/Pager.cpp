@@ -67,10 +67,10 @@ int16_t PagerClient::transmit(String& str, uint32_t addr, uint8_t encoding, uint
 #endif
 
 int16_t PagerClient::transmit(const char* str, uint32_t addr, uint8_t encoding, uint8_t function) {
-  return(PagerClient::transmit((uint8_t*)str, strlen(str), addr, encoding, function));
+  return(PagerClient::transmit(reinterpret_cast<uint8_t*>(const_cast<char*>(str)), strlen(str), addr, encoding, function));
 }
 
-int16_t PagerClient::transmit(uint8_t* data, size_t len, uint32_t addr, uint8_t encoding, uint8_t function) {
+int16_t PagerClient::transmit(const uint8_t* data, size_t len, uint32_t addr, uint8_t encoding, uint8_t function) {
   if(addr > RADIOLIB_PAGER_ADDRESS_MAX) {
     return(RADIOLIB_ERR_INVALID_ADDRESS_WIDTH);
   }
@@ -326,14 +326,14 @@ int16_t PagerClient::readData(String& str, size_t len, uint32_t* addr) {
     // check tone-only transmissions
     if(length == 0) {
       length = 6;
-      strncpy((char*)data, "<tone>", length + 1);
+      strncpy(reinterpret_cast<char*>(data), "<tone>", length + 1);
     }
 
     // add null terminator
     data[length] = 0;
 
     // initialize Arduino String class
-    str = String((char*)data);
+    str = String(reinterpret_cast<char*>(data));
   }
 
   // deallocate temporary buffer
@@ -494,7 +494,7 @@ bool PagerClient::addressMatched(uint32_t addr) {
   return(false);
 }
 
-void PagerClient::write(uint32_t* data, size_t len) {
+void PagerClient::write(const uint32_t* data, size_t len) {
   // write code words from buffer
   for(size_t i = 0; i < len; i++) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("POCSAG W\t%lu\t%08lX", (long unsigned int)i, (long unsigned int)data[i]);
