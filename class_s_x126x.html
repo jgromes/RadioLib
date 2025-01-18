@@ -167,12 +167,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2fa0384a529746811e2dcb2eeb4188ec" id="r_a2fa0384a529746811e2dcb2eeb4188ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2fa0384a529746811e2dcb2eeb4188ec">standby</a> (uint8_t mode, bool wakeup=true)</td></tr>
 <tr class="memdesc:a2fa0384a529746811e2dcb2eeb4188ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
 <tr class="separator:a2fa0384a529746811e2dcb2eeb4188ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d" id="r_a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
+<tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d" id="r_a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <br /></td></tr>
 <tr class="separator:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6848afe4c16a47edb3e0b342a86ecdfd" id="r_a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memItemLeft" align="right" valign="top"><a id="a6848afe4c16a47edb3e0b342a86ecdfd" name="a6848afe4c16a47edb3e0b342a86ecdfd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>clearDio1Action</b> ()</td></tr>
-<tr class="memdesc:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates. <br /></td></tr>
+<tr class="memitem:a6848afe4c16a47edb3e0b342a86ecdfd" id="r_a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a6848afe4c16a47edb3e0b342a86ecdfd">clearDio1Action</a> ()</td></tr>
+<tr class="memdesc:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when DIO1 activates.  <br /></td></tr>
 <tr class="separator:a6848afe4c16a47edb3e0b342a86ecdfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7603aa60ae8d975eb262a4b7e2aed1d0" id="r_a7603aa60ae8d975eb262a4b7e2aed1d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a7603aa60ae8d975eb262a4b7e2aed1d0">setPacketReceivedAction</a> (void(*func)(void)) override</td></tr>
 <tr class="memdesc:a7603aa60ae8d975eb262a4b7e2aed1d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when a packet is received.  <br /></td></tr>
@@ -905,6 +904,35 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 <p>Clears interrupt service routine to call when a channel scan is finished. </p>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a169a4d04c5c50d3336e274d70930d9f6">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a6848afe4c16a47edb3e0b342a86ecdfd" name="a6848afe4c16a47edb3e0b342a86ecdfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6848afe4c16a47edb3e0b342a86ecdfd">&#9670;&#160;</a></span>clearDio1Action()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SX126x::clearDio1Action </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clears interrupt service routine to call when DIO1 activates. </p>
+
+<p>Reimplemented in <a class="el" href="class_s_t_m32_w_lx.html#a4b6cb18e61fb1de49d989748216d3512">STM32WLx</a>.</p>
 
 </div>
 </div>
@@ -2251,6 +2279,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void SX126x::setDio1Action </td>
@@ -2260,6 +2291,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Sets interrupt service routine to call when DIO1 activates. </p>
@@ -2269,6 +2305,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
   </table>
   </dd>
 </dl>
+
+<p>Reimplemented in <a class="el" href="class_s_t_m32_w_lx.html#ad96d18fea2a7fffa959b64c8c5d993a8">STM32WLx</a>.</p>
 
 </div>
 </div>

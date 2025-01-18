@@ -1112,7 +1112,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01628" name="l01628"></a><span class="lineno"> 1628</span>    <a class="code hl_class" href="class_module.html">Module</a>* getMod() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l01629" name="l01629"></a><span class="lineno"> 1629</span> </div>
 <div class="line"><a id="l01630" name="l01630"></a><span class="lineno"> 1630</span>    <span class="comment">// LR11x0 SPI command implementations</span></div>
-<div class="line"><a id="l01631" name="l01631"></a><span class="lineno"> 1631</span>    int16_t writeRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01631" name="l01631"></a><span class="lineno"> 1631</span>    int16_t writeRegMem32(uint32_t addr, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01632" name="l01632"></a><span class="lineno"> 1632</span>    int16_t readRegMem32(uint32_t addr, uint32_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01633" name="l01633"></a><span class="lineno"> 1633</span>    int16_t writeBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01634" name="l01634"></a><span class="lineno"> 1634</span>    int16_t readBuffer8(uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">size_t</span> offset);</div>
@@ -1128,7 +1128,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01644" name="l01644"></a><span class="lineno"> 1644</span>    int16_t setDioAsRfSwitch(uint8_t en, uint8_t stbyCfg, uint8_t rxCfg, uint8_t txCfg, uint8_t txHpCfg, uint8_t txHfCfg, uint8_t gnssCfg, uint8_t wifiCfg);</div>
 <div class="line"><a id="l01645" name="l01645"></a><span class="lineno"> 1645</span>    int16_t setDioIrqParams(uint32_t irq1, uint32_t irq2);</div>
 <div class="line"><a id="l01646" name="l01646"></a><span class="lineno"> 1646</span>    int16_t setDioIrqParams(uint32_t irq);</div>
-<div class="line"><a id="l01647" name="l01647"></a><span class="lineno"> 1647</span>    int16_t clearIrq(uint32_t irq);</div>
+<div class="line"><a id="l01647" name="l01647"></a><span class="lineno"> 1647</span>    int16_t clearIrqState(uint32_t irq);</div>
 <div class="line"><a id="l01648" name="l01648"></a><span class="lineno"> 1648</span>    int16_t configLfClock(uint8_t setup);</div>
 <div class="line"><a id="l01649" name="l01649"></a><span class="lineno"> 1649</span>    int16_t setTcxoMode(uint8_t tune, uint32_t delay);</div>
 <div class="line"><a id="l01650" name="l01650"></a><span class="lineno"> 1650</span>    int16_t reboot(<span class="keywordtype">bool</span> stay);</div>
@@ -1186,11 +1186,11 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01702" name="l01702"></a><span class="lineno"> 1702</span>    int16_t setRangingParameter(uint8_t symbolNum);</div>
 <div class="line"><a id="l01703" name="l01703"></a><span class="lineno"> 1703</span>    int16_t setRssiCalibration(<span class="keyword">const</span> int8_t* tune, int16_t gainOffset);</div>
 <div class="line"><a id="l01704" name="l01704"></a><span class="lineno"> 1704</span>    int16_t setLoRaSyncWord(uint8_t sync);</div>
-<div class="line"><a id="l01705" name="l01705"></a><span class="lineno"> 1705</span>    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, <span class="keywordtype">bool</span> hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01705" name="l01705"></a><span class="lineno"> 1705</span>    int16_t lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, <span class="keywordtype">bool</span> hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, <span class="keyword">const</span> uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01706" name="l01706"></a><span class="lineno"> 1706</span>    int16_t lrFhssSetSyncWord(uint32_t sync);</div>
-<div class="line"><a id="l01707" name="l01707"></a><span class="lineno"> 1707</span>    int16_t configBleBeacon(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01707" name="l01707"></a><span class="lineno"> 1707</span>    int16_t configBleBeacon(uint8_t chan, <span class="keyword">const</span> uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01708" name="l01708"></a><span class="lineno"> 1708</span>    int16_t getLoRaRxHeaderInfos(uint8_t* info);</div>
-<div class="line"><a id="l01709" name="l01709"></a><span class="lineno"> 1709</span>    int16_t bleBeaconSend(uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01709" name="l01709"></a><span class="lineno"> 1709</span>    int16_t bleBeaconSend(uint8_t chan, <span class="keyword">const</span> uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01710" name="l01710"></a><span class="lineno"> 1710</span> </div>
 <div class="line"><a id="l01711" name="l01711"></a><span class="lineno"> 1711</span>    int16_t <a class="code hl_function" href="class_l_r11x0.html#ade5478296ebc7e02281c95609d5d75ab">wifiScan</a>(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint8_t nbScanPerChan, uint16_t timeout, uint8_t abortOnTimeout);</div>
 <div class="line"><a id="l01712" name="l01712"></a><span class="lineno"> 1712</span>    int16_t wifiScanTimeLimit(uint8_t type, uint16_t mask, uint8_t acqMode, uint8_t nbMaxRes, uint16_t timePerChan, uint16_t timeout);</div>
@@ -1228,7 +1228,7 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01744" name="l01744"></a><span class="lineno"> 1744</span>    int16_t gnssGetResultSize(uint16_t* size);</div>
 <div class="line"><a id="l01745" name="l01745"></a><span class="lineno"> 1745</span>    int16_t gnssReadResults(uint8_t* result, uint16_t size);</div>
 <div class="line"><a id="l01746" name="l01746"></a><span class="lineno"> 1746</span>    int16_t gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc);</div>
-<div class="line"><a id="l01747" name="l01747"></a><span class="lineno"> 1747</span>    int16_t gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac);</div>
+<div class="line"><a id="l01747" name="l01747"></a><span class="lineno"> 1747</span>    int16_t gnssAlmanacFullUpdateSV(uint8_t svn, <span class="keyword">const</span> uint8_t* svnAlmanac);</div>
 <div class="line"><a id="l01748" name="l01748"></a><span class="lineno"> 1748</span>    int16_t gnssAlmanacReadAddrSize(uint32_t* addr, uint16_t* size);</div>
 <div class="line"><a id="l01749" name="l01749"></a><span class="lineno"> 1749</span>    int16_t gnssAlmanacReadSV(uint8_t svId, uint8_t* almanac);</div>
 <div class="line"><a id="l01750" name="l01750"></a><span class="lineno"> 1750</span>    int16_t gnssGetNbSvVisible(uint32_t time, <span class="keywordtype">float</span> lat, <span class="keywordtype">float</span> lon, uint8_t constellation, uint8_t* nbSv);</div>
@@ -1257,29 +1257,29 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01773" name="l01773"></a><span class="lineno"> 1773</span>    int16_t gnssWriteBitMaskSatActivated(uint8_t bitMask, uint32_t* bitMaskActivated0, uint32_t* bitMaskActivated1);</div>
 <div class="line"><a id="l01774" name="l01774"></a><span class="lineno"> 1774</span>    <span class="keywordtype">void</span> gnssAbort();</div>
 <div class="line"><a id="l01775" name="l01775"></a><span class="lineno"> 1775</span> </div>
-<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>    int16_t cryptoSetKey(uint8_t keyId, uint8_t* key);</div>
-<div class="line"><a id="l01777" name="l01777"></a><span class="lineno"> 1777</span>    int16_t cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key);</div>
-<div class="line"><a id="l01778" name="l01778"></a><span class="lineno"> 1778</span>    int16_t cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, uint8_t* header, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a id="l01779" name="l01779"></a><span class="lineno"> 1779</span>    int16_t cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t* mic);</div>
-<div class="line"><a id="l01780" name="l01780"></a><span class="lineno"> 1780</span>    int16_t cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span>* result);</div>
-<div class="line"><a id="l01781" name="l01781"></a><span class="lineno"> 1781</span>    int16_t cryptoAesEncrypt01(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a id="l01782" name="l01782"></a><span class="lineno"> 1782</span>    int16_t cryptoAesEncrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
-<div class="line"><a id="l01783" name="l01783"></a><span class="lineno"> 1783</span>    int16_t cryptoAesDecrypt(uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a id="l01776" name="l01776"></a><span class="lineno"> 1776</span>    int16_t cryptoSetKey(uint8_t keyId, <span class="keyword">const</span> uint8_t* key);</div>
+<div class="line"><a id="l01777" name="l01777"></a><span class="lineno"> 1777</span>    int16_t cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, <span class="keyword">const</span> uint8_t* key);</div>
+<div class="line"><a id="l01778" name="l01778"></a><span class="lineno"> 1778</span>    int16_t cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, <span class="keyword">const</span> uint8_t* header, <span class="keyword">const</span> uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a id="l01779" name="l01779"></a><span class="lineno"> 1779</span>    int16_t cryptoComputeAesCmac(uint8_t keyId, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, uint32_t* mic);</div>
+<div class="line"><a id="l01780" name="l01780"></a><span class="lineno"> 1780</span>    int16_t cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, <span class="keyword">const</span> uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span>* result);</div>
+<div class="line"><a id="l01781" name="l01781"></a><span class="lineno"> 1781</span>    int16_t cryptoAesEncrypt01(uint8_t keyId, <span class="keyword">const</span> uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a id="l01782" name="l01782"></a><span class="lineno"> 1782</span>    int16_t cryptoAesEncrypt(uint8_t keyId, <span class="keyword">const</span> uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a id="l01783" name="l01783"></a><span class="lineno"> 1783</span>    int16_t cryptoAesDecrypt(uint8_t keyId, <span class="keyword">const</span> uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
 <div class="line"><a id="l01784" name="l01784"></a><span class="lineno"> 1784</span>    int16_t cryptoStoreToFlash(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l01785" name="l01785"></a><span class="lineno"> 1785</span>    int16_t cryptoRestoreFromFlash(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l01786" name="l01786"></a><span class="lineno"> 1786</span>    int16_t cryptoSetParam(uint8_t <span class="keywordtype">id</span>, uint32_t value);</div>
 <div class="line"><a id="l01787" name="l01787"></a><span class="lineno"> 1787</span>    int16_t cryptoGetParam(uint8_t <span class="keywordtype">id</span>, uint32_t* value);</div>
-<div class="line"><a id="l01788" name="l01788"></a><span class="lineno"> 1788</span>    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
+<div class="line"><a id="l01788" name="l01788"></a><span class="lineno"> 1788</span>    int16_t cryptoCheckEncryptedFirmwareImage(uint32_t offset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
 <div class="line"><a id="l01789" name="l01789"></a><span class="lineno"> 1789</span>    int16_t cryptoCheckEncryptedFirmwareImageResult(<span class="keywordtype">bool</span>* result);</div>
 <div class="line"><a id="l01790" name="l01790"></a><span class="lineno"> 1790</span> </div>
 <div class="line"><a id="l01791" name="l01791"></a><span class="lineno"> 1791</span>    int16_t bootEraseFlash(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l01792" name="l01792"></a><span class="lineno"> 1792</span>    int16_t bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
+<div class="line"><a id="l01792" name="l01792"></a><span class="lineno"> 1792</span>    int16_t bootWriteFlashEncrypted(uint32_t offset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
 <div class="line"><a id="l01793" name="l01793"></a><span class="lineno"> 1793</span>    int16_t bootReboot(<span class="keywordtype">bool</span> stay);</div>
 <div class="line"><a id="l01794" name="l01794"></a><span class="lineno"> 1794</span>    int16_t bootGetPin(uint8_t* pin);</div>
 <div class="line"><a id="l01795" name="l01795"></a><span class="lineno"> 1795</span>    int16_t bootGetChipEui(uint8_t* eui);</div>
 <div class="line"><a id="l01796" name="l01796"></a><span class="lineno"> 1796</span>    int16_t bootGetJoinEui(uint8_t* eui);</div>
 <div class="line"><a id="l01797" name="l01797"></a><span class="lineno"> 1797</span>    </div>
-<div class="line"><a id="l01798" name="l01798"></a><span class="lineno"> 1798</span>    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
+<div class="line"><a id="l01798" name="l01798"></a><span class="lineno"> 1798</span>    int16_t SPIcommand(uint16_t cmd, <span class="keywordtype">bool</span> write, uint8_t* data, <span class="keywordtype">size_t</span> len, <span class="keyword">const</span> uint8_t* out = NULL, <span class="keywordtype">size_t</span> outLen = 0);</div>
 <div class="line"><a id="l01799" name="l01799"></a><span class="lineno"> 1799</span>    </div>
 <div class="line"><a id="l01800" name="l01800"></a><span class="lineno"> 1800</span><span class="preprocessor">#if !RADIOLIB_GODMODE</span></div>
 <div class="line"><a id="l01801" name="l01801"></a><span class="lineno"> 1801</span>  <span class="keyword">protected</span>:</div>
@@ -1324,9 +1324,9 @@ $(document).ready(function(){initNavTree('_l_r11x0_8h_source.html',''); initResi
 <div class="line"><a id="l01840" name="l01840"></a><span class="lineno"> 1840</span>    int16_t setHeaderType(uint8_t hdrType, <span class="keywordtype">size_t</span> len = 0xFF);</div>
 <div class="line"><a id="l01841" name="l01841"></a><span class="lineno"> 1841</span> </div>
 <div class="line"><a id="l01842" name="l01842"></a><span class="lineno"> 1842</span>    <span class="comment">// common methods to avoid some copy-paste</span></div>
-<div class="line"><a id="l01843" name="l01843"></a><span class="lineno"> 1843</span>    int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
+<div class="line"><a id="l01843" name="l01843"></a><span class="lineno"> 1843</span>    int16_t bleBeaconCommon(uint16_t cmd, uint8_t chan, <span class="keyword">const</span> uint8_t* payload, <span class="keywordtype">size_t</span> len);</div>
 <div class="line"><a id="l01844" name="l01844"></a><span class="lineno"> 1844</span>    int16_t writeCommon(uint16_t cmd, uint32_t addrOffset, <span class="keyword">const</span> uint32_t* data, <span class="keywordtype">size_t</span> len, <span class="keywordtype">bool</span> nonvolatile);</div>
-<div class="line"><a id="l01845" name="l01845"></a><span class="lineno"> 1845</span>    int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
+<div class="line"><a id="l01845" name="l01845"></a><span class="lineno"> 1845</span>    int16_t cryptoCommon(uint16_t cmd, uint8_t keyId, <span class="keyword">const</span> uint8_t* dataIn, <span class="keywordtype">size_t</span> len, uint8_t* dataOut);</div>
 <div class="line"><a id="l01846" name="l01846"></a><span class="lineno"> 1846</span>};</div>
 </div>
 <div class="line"><a id="l01847" name="l01847"></a><span class="lineno"> 1847</span> </div>
