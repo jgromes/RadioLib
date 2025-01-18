@@ -82,7 +82,7 @@ void RadioLibAES128::generateCMAC(const uint8_t* in, size_t len, uint8_t* cmac) 
   delete[] buff;
 }
 
-bool RadioLibAES128::verifyCMAC(uint8_t* in, size_t len, const uint8_t* cmac) {
+bool RadioLibAES128::verifyCMAC(const uint8_t* in, size_t len, const uint8_t* cmac) {
   uint8_t cmacReal[RADIOLIB_AES128_BLOCK_SIZE];
   this->generateCMAC(in, len, cmacReal);
   for(size_t i = 0; i < RADIOLIB_AES128_BLOCK_SIZE; i++) {
@@ -192,7 +192,7 @@ void RadioLibAES128::blockLeftshift(uint8_t* dst, const uint8_t* src) {
 }
 
 void RadioLibAES128::generateSubkeys(uint8_t* key1, uint8_t* key2) {
-  uint8_t const_Zero[] = {
+  const uint8_t const_Zero[] = {
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,
     0x00, 0x00, 0x00, 0x00,

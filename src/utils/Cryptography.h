@@ -142,7 +142,7 @@ class RadioLibAES128 {
       \param cmac CMAC to verify.
       \returns True if valid, false otherwise.
     */
-    bool verifyCMAC(uint8_t* in, size_t len, const uint8_t* cmac);
+    bool verifyCMAC(const uint8_t* in, size_t len, const uint8_t* cmac);
   
   private:
     uint8_t* keyPtr = nullptr;
