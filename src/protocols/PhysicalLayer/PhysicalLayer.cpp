@@ -51,7 +51,7 @@ int16_t PhysicalLayer::transmit(String& str, uint8_t addr) {
 #endif
 
 int16_t PhysicalLayer::transmit(const char* str, uint8_t addr) {
-  return(transmit((uint8_t*)str, strlen(str), addr));
+  return(transmit(reinterpret_cast<uint8_t*>(const_cast<char*>(str)), strlen(str), addr));
 }
 
 int16_t PhysicalLayer::transmit(const uint8_t* data, size_t len, uint8_t addr) {
@@ -96,7 +96,7 @@ int16_t PhysicalLayer::receive(String& str, size_t len) {
     data[length] = 0;
 
     // initialize Arduino String class
-    str = String((char*)data);
+    str = String(reinterpret_cast<char*>(data));
   }
 
   // deallocate temporary buffer
@@ -146,7 +146,7 @@ int16_t PhysicalLayer::startTransmit(String& str, uint8_t addr) {
 #endif
 
 int16_t PhysicalLayer::startTransmit(const char* str, uint8_t addr) {
-  return(startTransmit((uint8_t*)str, strlen(str), addr));
+  return(startTransmit(reinterpret_cast<uint8_t*>(const_cast<char*>(str)), strlen(str), addr));
 }
 
 int16_t PhysicalLayer::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
@@ -191,7 +191,7 @@ int16_t PhysicalLayer::readData(String& str, size_t len) {
     data[length] = 0;
 
     // initialize Arduino String class
-    str = String((char*)data);
+    str = String(reinterpret_cast<char*>(data));
   }
 
   // deallocate temporary buffer
