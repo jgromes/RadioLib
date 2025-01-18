@@ -2958,11 +2958,11 @@ void LoRaWANNode::getChannelPlanMask(uint64_t* chMaskGrp0123, uint32_t* chMaskGr
     // if a subband is set, we can set the channel indices straight from subband
     if(this->subBand > 0 && this->subBand <= 8) {
       // for sub band 1-8, set bank of 8 125kHz + single 500kHz channel
-      *chMaskGrp0123 |= 0xFF << ((this->subBand - 1) * 8);
-      *chMaskGrp45 |= 0x01 << ((this->subBand - 1) * 8);
+      *chMaskGrp0123 |= (uint64_t)0xFF << ((this->subBand - 1) * 8);
+      *chMaskGrp45 |= (uint32_t)0x01 << (this->subBand - 1);
     } else if(this->subBand > 8 && this->subBand <= 12) {
       // CN500 only: for sub band 9-12, set bank of 8 125kHz channels
-      *chMaskGrp45 |= 0xFF << ((this->subBand - 9) * 8);
+      *chMaskGrp45 |= (uint32_t)0xFF << ((this->subBand - 9) * 8);
     } else {
       // if subband is set to 0, all 125kHz channels are enabled.
       // however, we can 'only' store 16 channels, so we don't use all channels at once.
