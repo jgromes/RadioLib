@@ -37,7 +37,7 @@ class SX1280: public SX1281 {
       \param calTable Ranging calibration table - set to NULL to use the default.
       \returns \ref status_codes
     */
-    int16_t startRanging(bool master, uint32_t addr, uint16_t calTable[3][6] = NULL);
+    int16_t startRanging(bool master, uint32_t addr, const uint16_t calTable[3][6] = NULL);
 
     /*!
       \brief Gets ranging result of the last ranging exchange.

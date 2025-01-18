@@ -485,7 +485,7 @@ int16_t SX128x::standby(uint8_t mode, bool wakeup) {
     (void)this->mod->SPIwriteStream((uint16_t)RADIOLIB_SX128X_CMD_NOP, NULL, 0, false, false);
   }
 
-  uint8_t data[] = { mode };
+  const uint8_t data[] = { mode };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_STANDBY, data, 1));
 }
 
@@ -1129,7 +1129,7 @@ int16_t SX128x::setSyncWord(uint8_t syncWord, uint8_t controlBits) {
   }
 
   // update register
-  uint8_t data[2] = {(uint8_t)((syncWord & 0xF0) | ((controlBits & 0xF0) >> 4)), (uint8_t)(((syncWord & 0x0F) << 4) | (controlBits & 0x0F))};
+  const uint8_t data[2] = {(uint8_t)((syncWord & 0xF0) | ((controlBits & 0xF0) >> 4)), (uint8_t)(((syncWord & 0x0F) << 4) | (controlBits & 0x0F))};
   return(writeRegister(RADIOLIB_SX128X_REG_LORA_SYNC_WORD_MSB, data, 2));
 }
 
@@ -1177,7 +1177,7 @@ int16_t SX128x::setCRC(uint8_t len, uint32_t initial, uint16_t polynomial) {
     RADIOLIB_ASSERT(state);
 
     // set initial CRC value
-    uint8_t data[] = { (uint8_t)((initial >> 16) & 0xFF), (uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF) };
+    const uint8_t data[] = { (uint8_t)((initial >> 16) & 0xFF), (uint8_t)((initial >> 8) & 0xFF), (uint8_t)(initial & 0xFF) };
     state = writeRegister(RADIOLIB_SX128X_REG_BLE_CRC_INITIAL_MSB, data, 3);
     return(state);
 
@@ -1224,7 +1224,7 @@ int16_t SX128x::setAccessAddress(uint32_t addr) {
   }
 
   // set the address
-  uint8_t addrBuff[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
+  const uint8_t addrBuff[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
   return(SX128x::writeRegister(RADIOLIB_SX128X_REG_ACCESS_ADDRESS_BYTE_3, addrBuff, 4));
 }
 
@@ -1517,7 +1517,7 @@ uint8_t SX128x::getStatus() {
   return(data);
 }
 
-int16_t SX128x::writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
+int16_t SX128x::writeRegister(uint16_t addr, const uint8_t* data, uint8_t numBytes) {
   this->mod->SPIwriteRegisterBurst(addr, data, numBytes);
   return(RADIOLIB_ERR_NONE);
 }
@@ -1531,23 +1531,23 @@ int16_t SX128x::readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes) {
   return(state);
 }
 
-int16_t SX128x::writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
-  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_WRITE_BUFFER, offset };
+int16_t SX128x::writeBuffer(const uint8_t* data, uint8_t numBytes, uint8_t offset) {
+  const uint8_t cmd[] = { RADIOLIB_SX128X_CMD_WRITE_BUFFER, offset };
   return(this->mod->SPIwriteStream(cmd, 2, data, numBytes));
 }
 
 int16_t SX128x::readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset) {
-  uint8_t cmd[] = { RADIOLIB_SX128X_CMD_READ_BUFFER, offset };
+  const uint8_t cmd[] = { RADIOLIB_SX128X_CMD_READ_BUFFER, offset };
   return(this->mod->SPIreadStream(cmd, 2, data, numBytes));
 }
 
 int16_t SX128x::setTx(uint16_t periodBaseCount, uint8_t periodBase) {
-  uint8_t data[] = { periodBase, (uint8_t)((periodBaseCount >> 8) & 0xFF), (uint8_t)(periodBaseCount & 0xFF) };
+  const uint8_t data[] = { periodBase, (uint8_t)((periodBaseCount >> 8) & 0xFF), (uint8_t)(periodBaseCount & 0xFF) };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_TX, data, 3));
 }
 
 int16_t SX128x::setRx(uint16_t periodBaseCount, uint8_t periodBase) {
-  uint8_t data[] = { periodBase, (uint8_t)((periodBaseCount >> 8) & 0xFF), (uint8_t)(periodBaseCount & 0xFF) };
+  const uint8_t data[] = { periodBase, (uint8_t)((periodBaseCount >> 8) & 0xFF), (uint8_t)(periodBaseCount & 0xFF) };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_RX, data, 3));
 }
 
@@ -1567,42 +1567,42 @@ uint8_t SX128x::getPacketType() {
 }
 
 int16_t SX128x::setRfFrequency(uint32_t frf) {
-  uint8_t data[] = { (uint8_t)((frf >> 16) & 0xFF), (uint8_t)((frf >> 8) & 0xFF), (uint8_t)(frf & 0xFF) };
+  const uint8_t data[] = { (uint8_t)((frf >> 16) & 0xFF), (uint8_t)((frf >> 8) & 0xFF), (uint8_t)(frf & 0xFF) };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_RF_FREQUENCY, data, 3));
 }
 
 int16_t SX128x::setTxParams(uint8_t pwr, uint8_t rampTime) {
-  uint8_t data[] = { pwr, rampTime };
+  const uint8_t data[] = { pwr, rampTime };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_TX_PARAMS, data, 2));
 }
 
 int16_t SX128x::setBufferBaseAddress(uint8_t txBaseAddress, uint8_t rxBaseAddress) {
-  uint8_t data[] = { txBaseAddress, rxBaseAddress };
+  const uint8_t data[] = { txBaseAddress, rxBaseAddress };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_BUFFER_BASE_ADDRESS, data, 2));
 }
 
 int16_t SX128x::setModulationParams(uint8_t modParam1, uint8_t modParam2, uint8_t modParam3) {
-  uint8_t data[] = { modParam1, modParam2, modParam3 };
+  const uint8_t data[] = { modParam1, modParam2, modParam3 };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_MODULATION_PARAMS, data, 3));
 }
 
 int16_t SX128x::setPacketParamsGFSK(uint8_t preambleLen, uint8_t syncLen, uint8_t syncMatch, uint8_t crcLen, uint8_t whiten, uint8_t payLen, uint8_t hdrType) {
-  uint8_t data[] = { preambleLen, syncLen, syncMatch, hdrType, payLen, crcLen, whiten };
+  const uint8_t data[] = { preambleLen, syncLen, syncMatch, hdrType, payLen, crcLen, whiten };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS, data, 7));
 }
 
 int16_t SX128x::setPacketParamsBLE(uint8_t connState, uint8_t crcLen, uint8_t bleTest, uint8_t whiten) {
-  uint8_t data[] = { connState, crcLen, bleTest, whiten, 0x00, 0x00, 0x00 };
+  const uint8_t data[] = { connState, crcLen, bleTest, whiten, 0x00, 0x00, 0x00 };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS, data, 7));
 }
 
 int16_t SX128x::setPacketParamsLoRa(uint8_t preambleLen, uint8_t hdrType, uint8_t payLen, uint8_t crc, uint8_t invIQ) {
-  uint8_t data[] = { preambleLen, hdrType, payLen, crc, invIQ, 0x00, 0x00 };
+  const uint8_t data[] = { preambleLen, hdrType, payLen, crc, invIQ, 0x00, 0x00 };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_PARAMS, data, 7));
 }
 
 int16_t SX128x::setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask, uint16_t dio3Mask) {
-  uint8_t data[] = { (uint8_t)((irqMask >> 8) & 0xFF), (uint8_t)(irqMask & 0xFF),
+  const uint8_t data[] = { (uint8_t)((irqMask >> 8) & 0xFF), (uint8_t)(irqMask & 0xFF),
                      (uint8_t)((dio1Mask >> 8) & 0xFF), (uint8_t)(dio1Mask & 0xFF),
                      (uint8_t)((dio2Mask >> 8) & 0xFF), (uint8_t)(dio2Mask & 0xFF),
                      (uint8_t)((dio3Mask >> 8) & 0xFF), (uint8_t)(dio3Mask & 0xFF) };
@@ -1616,17 +1616,17 @@ uint16_t SX128x::getIrqStatus() {
 }
 
 int16_t SX128x::clearIrqStatus(uint16_t clearIrqParams) {
-  uint8_t data[] = { (uint8_t)((clearIrqParams >> 8) & 0xFF), (uint8_t)(clearIrqParams & 0xFF) };
+  const uint8_t data[] = { (uint8_t)((clearIrqParams >> 8) & 0xFF), (uint8_t)(clearIrqParams & 0xFF) };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_CLEAR_IRQ_STATUS, data, 2));
 }
 
 int16_t SX128x::setRangingRole(uint8_t role) {
-  uint8_t data[] = { role };
+  const uint8_t data[] = { role };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_RANGING_ROLE, data, 1));
 }
 
 int16_t SX128x::setPacketType(uint8_t type) {
-  uint8_t data[] = { type };
+  const uint8_t data[] = { type };
   return(this->mod->SPIwriteStream(RADIOLIB_SX128X_CMD_SET_PACKET_TYPE, data, 1));
 }
 

@@ -33,7 +33,7 @@ int16_t SX1280::range(bool master, uint32_t addr, uint16_t calTable[3][6]) {
   return(state);
 }
 
-int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]) {
+int16_t SX1280::startRanging(bool master, uint32_t addr, const uint16_t calTable[3][6]) {
   // check active modem
   uint8_t modem = getPacketType();
   if(!((modem == RADIOLIB_SX128X_PACKET_TYPE_LORA) || (modem == RADIOLIB_SX128X_PACKET_TYPE_RANGING))) {
@@ -80,7 +80,7 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]
   }
 
   // set ranging address
-  uint8_t addrBuff[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
+  const uint8_t addrBuff[] = { (uint8_t)((addr >> 24) & 0xFF), (uint8_t)((addr >> 16) & 0xFF), (uint8_t)((addr >> 8) & 0xFF), (uint8_t)(addr & 0xFF) };
   state = writeRegister(addrReg, addrBuff, 4);
   RADIOLIB_ASSERT(state);
 
@@ -116,7 +116,7 @@ int16_t SX1280::startRanging(bool master, uint32_t addr, uint16_t calTable[3][6]
     default:
       return(RADIOLIB_ERR_INVALID_BANDWIDTH);
   }
-  uint8_t calBuff[] = { (uint8_t)((val >> 8) & 0xFF), (uint8_t)(val & 0xFF) };
+  const uint8_t calBuff[] = { (uint8_t)((val >> 8) & 0xFF), (uint8_t)(val & 0xFF) };
   state = writeRegister(RADIOLIB_SX128X_REG_RANGING_CALIBRATION_MSB, calBuff, 2);
   RADIOLIB_ASSERT(state);
 
