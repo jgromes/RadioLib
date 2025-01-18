@@ -73,7 +73,8 @@ size_t HellClient::write(uint8_t b) {
   uint8_t buff[RADIOLIB_HELL_FONT_WIDTH];
   buff[0] = 0x00;
   for(uint8_t i = 0; i < RADIOLIB_HELL_FONT_WIDTH - 2; i++) {
-    buff[i + 1] = RADIOLIB_NONVOLATILE_READ_BYTE(&HellFont[pos][i]);
+    uint8_t* ptr = const_cast<uint8_t*>(&HellFont[pos][i]);
+    buff[i + 1] = RADIOLIB_NONVOLATILE_READ_BYTE(ptr);
   }
   buff[RADIOLIB_HELL_FONT_WIDTH - 1] = 0x00;
 
