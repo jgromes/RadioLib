@@ -122,11 +122,15 @@ uint16_t ITA2String::getBits(char c) {
   // search ITA2 table
   uint16_t code = 0x0000;
   for(uint8_t i = 0; i < RADIOLIB_ITA2_LENGTH; i++) {
-    if(RADIOLIB_NONVOLATILE_READ_BYTE(&ITA2Table[i][0]) == c) {
+    char* ptr = const_cast<char*>(&ITA2Table[i][0]);
+    if(RADIOLIB_NONVOLATILE_READ_BYTE(ptr) == c) {
       // character is in letter shift
       code = (RADIOLIB_ITA2_LTRS << 5) | i;
       break;
-    } else if(RADIOLIB_NONVOLATILE_READ_BYTE(&ITA2Table[i][1]) == c) {
+    }
+    
+    ptr = const_cast<char*>(&ITA2Table[i][1]);
+    if(RADIOLIB_NONVOLATILE_READ_BYTE(ptr) == c) {
       // character is in figures shift
       code = (RADIOLIB_ITA2_FIGS << 5) | i;
       break;

@@ -59,7 +59,7 @@ size_t RadioLibPrint::print(const __FlashStringHelper* fstr) {
     ITA2String ita2 = ITA2String(str);
     n = RadioLibPrint::print(ita2);
   } else {
-    n = write((uint8_t*)str, len);
+    n = write(reinterpret_cast<uint8_t*>(str), len);
   }
   #if !RADIOLIB_STATIC_ONLY
     delete[] str;
@@ -73,7 +73,7 @@ size_t RadioLibPrint::print(const String& str) {
     ITA2String ita2 = ITA2String(str.c_str());
     n = RadioLibPrint::print(ita2);
   } else {
-    n = write((uint8_t*)str.c_str(), str.length());
+    n = write(reinterpret_cast<uint8_t*>(const_cast<char*>(str.c_str())), str.length());
   }
   return(n);
 }
@@ -97,7 +97,7 @@ size_t RadioLibPrint::print(const char str[]) {
     ITA2String ita2 = ITA2String(str);
     n = RadioLibPrint::print(ita2);
   } else {
-    n = write((uint8_t*)str, strlen(str));
+    n = write(reinterpret_cast<uint8_t*>(const_cast<char*>(str)), strlen(str));
   }
   return(n);
 }

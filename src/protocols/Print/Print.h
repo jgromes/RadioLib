@@ -62,8 +62,8 @@ class RadioLibPrint {
     uint8_t encoding = RADIOLIB_ASCII_EXTENDED;
     const char* lineFeed = "\r\n";
 
-    size_t printNumber(unsigned long, uint8_t);
-    size_t printFloat(double, uint8_t);
+    virtual size_t printNumber(unsigned long, uint8_t);
+    virtual size_t printFloat(double, uint8_t);
 
 };
 
