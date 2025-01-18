@@ -35,7 +35,7 @@ class Si4432: public Si443x {
       \param preambleLen Preamble Length in bits. Defaults to 16 bits.
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16);
+    virtual int16_t begin(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 181.1, int8_t power = 10, uint8_t preambleLen = 16);
 
     // configuration methods
 
