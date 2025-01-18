@@ -106,7 +106,7 @@ class APRSClient {
       \param alt Whether to use the primary (false) or alternate (true) symbol table. Defaults to primary table.
       \returns \ref status_codes
     */
-    int16_t begin(char sym, char* callsign = NULL, uint8_t ssid = 0, bool alt = false);
+    int16_t begin(char sym, const char* callsign = NULL, uint8_t ssid = 0, bool alt = false);
 
     /*!
       \brief Transmit position.
@@ -118,7 +118,7 @@ class APRSClient {
       \param time Position timestamp. Defaults to NULL (no timestamp).
       \returns \ref status_codes
     */
-    int16_t sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg = NULL, char* time = NULL);
+    int16_t sendPosition(char* destCallsign, uint8_t destSSID, const char* lat, const char* lon, const char* msg = NULL, const char* time = NULL);
 
     /*!
       \brief Transmit position using Mic-E encoding.
@@ -133,7 +133,7 @@ class APRSClient {
       \param status Status message to send. NULL when not used.
       \param alt Altitude to send. RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED when not used.
     */
-    int16_t sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem = NULL, size_t telemLen = 0, char* grid = NULL, char* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);
+    int16_t sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, const uint8_t* telem = NULL, size_t telemLen = 0, const char* grid = NULL, const char* status = NULL, int32_t alt = RADIOLIB_APRS_MIC_E_ALTITUDE_UNUSED);
 
     /*!
       \brief Transmit generic APRS frame.

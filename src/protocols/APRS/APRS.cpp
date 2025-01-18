@@ -14,7 +14,7 @@ APRSClient::APRSClient(PhysicalLayer* phy) {
   phyLayer = phy;
 }
 
-int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
+int16_t APRSClient::begin(char sym, const char* callsign, uint8_t ssid, bool alt) {
   RADIOLIB_CHECK_RANGE(sym, ' ', '}', RADIOLIB_ERR_INVALID_SYMBOL);
   symbol = sym;
 
@@ -39,7 +39,7 @@ int16_t APRSClient::begin(char sym, char* callsign, uint8_t ssid, bool alt) {
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat, char* lon, char* msg, char* time) {
+int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, const char* lat, const char* lon, const char* msg, const char* time) {
   size_t len = 1 + strlen(lat) + 1 + strlen(lon);
   if(msg != NULL) {
     len += 1 + strlen(msg);
@@ -84,7 +84,7 @@ int16_t APRSClient::sendPosition(char* destCallsign, uint8_t destSSID, char* lat
   return(state);
 }
 
-int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, uint8_t* telem, size_t telemLen, char* grid, char* status, int32_t alt) {
+int16_t APRSClient::sendMicE(float lat, float lon, uint16_t heading, uint16_t speed, uint8_t type, const uint8_t* telem, size_t telemLen, const char* grid, const char* status, int32_t alt) {
   // sanity checks first
   if(((telemLen == 0) && (telem != NULL)) || ((telemLen != 0) && (telem == NULL))) {
     return(RADIOLIB_ERR_INVALID_MIC_E_TELEMETRY);
