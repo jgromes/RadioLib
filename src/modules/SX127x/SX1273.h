@@ -38,7 +38,7 @@ class SX1273: public SX1272 {
       Set to 0 to enable automatic gain control (recommended).
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
+    int16_t begin(float freq = 915.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0) override;
 
     // configuration methods
 
@@ -47,7 +47,7 @@ class SX1273: public SX1272 {
       \param sf %LoRa link spreading factor to be set.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf);
+    int16_t setSpreadingFactor(uint8_t sf) override;
 
     /*!
       \brief Set data.

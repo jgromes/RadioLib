@@ -6,7 +6,7 @@ SX127x::SX127x(Module* mod) : PhysicalLayer(RADIOLIB_SX127X_FREQUENCY_STEP_SIZE,
   this->mod = mod;
 }
 
-int16_t SX127x::begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength) {
+int16_t SX127x::begin(const uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWord, uint16_t preambleLength) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -69,7 +69,7 @@ int16_t SX127x::begin(uint8_t* chipVersions, uint8_t numVersions, uint8_t syncWo
   return(state);
 }
 
-int16_t SX127x::beginFSK(uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
+int16_t SX127x::beginFSK(const uint8_t* chipVersions, uint8_t numVersions, float freqDev, float rxBw, uint16_t preambleLength, bool enableOOK) {
   // set module properties
   this->mod->init();
   this->mod->hal->pinMode(this->mod->getIrq(), this->mod->hal->GpioModeInput);
@@ -548,7 +548,7 @@ bool SX127x::fifoAdd(uint8_t* data, int totalLen, int* remLen) {
 
 bool SX127x::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
   // get pointer to the correct position in data buffer
-  uint8_t* dataPtr = (uint8_t*)&data[*rcvLen];
+  uint8_t* dataPtr = const_cast<uint8_t*>(&data[*rcvLen]);
 
   // check how much data are we still expecting
   uint8_t len = RADIOLIB_SX127X_FIFO_THRESH - 1;
@@ -1869,12 +1869,11 @@ int16_t SX127x::setHeaderType(uint8_t headerType, uint8_t bitIndex, size_t len) 
   }
 
   // set requested packet mode
-  Module* mod = this->getMod();
-  int16_t state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, headerType, bitIndex, bitIndex);
+  int16_t state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_MODEM_CONFIG_1, headerType, bitIndex, bitIndex);
   RADIOLIB_ASSERT(state);
 
   // set length to register
-  state = mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH, len);
+  state = this->mod->SPIsetRegValue(RADIOLIB_SX127X_REG_PAYLOAD_LENGTH, len);
   RADIOLIB_ASSERT(state);
 
   // update cached value

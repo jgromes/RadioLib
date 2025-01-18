@@ -129,7 +129,7 @@ class SX1278: public SX127x {
       Set to 0 to enable automatic gain control (recommended).
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
+    virtual int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX127X_SYNC_WORD, int8_t power = 10, uint16_t preambleLength = 8, uint8_t gain = 0);
 
     /*!
       \brief FSK modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
@@ -143,7 +143,7 @@ class SX1278: public SX127x {
       \param enableOOK Use OOK modulation instead of FSK.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
+    virtual int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 125.0, int8_t power = 10, uint16_t preambleLength = 16, bool enableOOK = false);
 
     /*!
       \brief Reset method. Will reset the chip to the default state using RST pin.
@@ -171,7 +171,7 @@ class SX1278: public SX127x {
       \param sf %LoRa link spreading factor to be set.
       \returns \ref status_codes
     */
-    int16_t setSpreadingFactor(uint8_t sf);
+    virtual int16_t setSpreadingFactor(uint8_t sf);
 
     /*!
       \brief Sets %LoRa link coding rate denominator. Allowed values range from 5 to 8. Only available in %LoRa mode.
@@ -329,7 +329,7 @@ class SX1278: public SX127x {
     int16_t setSpreadingFactorRaw(uint8_t newSpreadingFactor);
     int16_t setCodingRateRaw(uint8_t newCodingRate);
 
-    int16_t configFSK();
+    int16_t configFSK() override;
     void errataFix(bool rx) override;
 
 #if !RADIOLIB_GODMODE
