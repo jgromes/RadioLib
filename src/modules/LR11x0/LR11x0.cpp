@@ -287,7 +287,7 @@ int16_t LR11x0::receive(uint8_t* data, size_t len) {
   // check whether this was a timeout or not
   if((getIrqStatus() & RADIOLIB_LR11X0_IRQ_TIMEOUT) || softTimeout) {
     standby();
-    clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+    clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
 
@@ -463,7 +463,7 @@ int16_t LR11x0::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   // set RF switch (if present)
@@ -483,7 +483,7 @@ int16_t LR11x0::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
 int16_t LR11x0::finishTransmit() {
   // clear interrupt flags
-  clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
 
   // set mode to standby to disable transmitter/RF switch
   return(standby());
@@ -515,7 +515,7 @@ int16_t LR11x0::startReceive(uint32_t timeout, uint32_t irqFlags, uint32_t irqMa
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   // set implicit mode and expected len if applicable
@@ -580,7 +580,7 @@ int16_t LR11x0::readData(uint8_t* data, size_t len) {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
 
   // check if CRC failed - this is done after reading data to give user the option to keep them
   RADIOLIB_ASSERT(crcState);
@@ -626,7 +626,7 @@ int16_t LR11x0::startChannelScan(const ChannelScanConfig_t &config) {
   RADIOLIB_ASSERT(state);
 
   // clear interrupt flags
-  state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   // set mode to CAD
@@ -1419,7 +1419,7 @@ int16_t LR11x0::setIrqFlags(uint32_t irq) {
 }
 
 int16_t LR11x0::clearIrqFlags(uint32_t irq) {
-  return(this->clearIrq(irq));
+  return(this->clearIrqState(irq));
 }
 
 uint8_t LR11x0::randomByte() {
@@ -1594,7 +1594,7 @@ void LR11x0::clearWiFiScanAction() {
 
 int16_t LR11x0::getWifiScanResultsCount(uint8_t* count) {
   // clear IRQ first, as this is likely to be called right after scan has finished
-  int16_t state = clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  int16_t state = clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   RADIOLIB_ASSERT(state);
 
   uint8_t buff[1] = { 0 };
@@ -1765,7 +1765,7 @@ int16_t LR11x0::updateFirmware(const uint32_t* image, size_t size, bool nonvolat
     uint32_t offset = i * maxLen;
     uint32_t len = (i == (numWrites - 1)) ? rem : maxLen;
     RADIOLIB_DEBUG_BASIC_PRINTLN("Writing chunk %d at offset %08lx (%u words)", (int)i, (unsigned long)offset, (unsigned int)len);
-    this->bootWriteFlashEncrypted(offset*sizeof(uint32_t), (uint32_t*)&image[offset], len, nonvolatile);
+    this->bootWriteFlashEncrypted(offset*sizeof(uint32_t), const_cast<uint32_t*>(&image[offset]), len, nonvolatile);
   }
 
   // kick the device from bootloader
@@ -1811,7 +1811,7 @@ int16_t LR11x0::isGnssScanCapable() {
     size_t len = sz > 32 ? 32 : sz/sizeof(uint32_t);
     state = this->readRegMem32(addr, buff, len);
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_HEXDUMP(NULL, (uint8_t*)buff, len*sizeof(uint32_t), addr);
+    RADIOLIB_DEBUG_HEXDUMP(NULL, reinterpret_cast<uint8_t*>(buff), len*sizeof(uint32_t), addr);
     addr += len*sizeof(uint32_t);
     sz -= len*sizeof(uint32_t);
   }
@@ -1870,7 +1870,7 @@ int16_t LR11x0::gnssScan(LR11x0GnssResult_t* res) {
 
   // distinguish between GNSS-done and GNSS-abort outcomes and clear the flags
   uint32_t irq = this->getIrqStatus();
-  this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  this->clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   if(irq & RADIOLIB_LR11X0_IRQ_GNSS_ABORT) {
     return(RADIOLIB_ERR_RX_TIMEOUT);
   }
@@ -1982,7 +1982,7 @@ int16_t LR11x0::updateGnssAlmanac(uint8_t constellation) {
 
   // distinguish between GNSS-done and GNSS-abort outcomes and clear the flags
   uint32_t irq = this->getIrqStatus();
-  this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  this->clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   if(irq & RADIOLIB_LR11X0_IRQ_GNSS_ABORT) {
     state = RADIOLIB_ERR_RX_TIMEOUT;
   }
@@ -2033,11 +2033,11 @@ int16_t LR11x0::getGnssSatellites(LR11x0GnssSatellite_t* sats, uint8_t numSats) 
 int16_t LR11x0::getModem(ModemType_t* modem) {
   RADIOLIB_ASSERT_PTR(modem);
 
-  uint8_t packetType = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
-  int16_t state = getPacketType(&packetType);
+  uint8_t type = RADIOLIB_LR11X0_PACKET_TYPE_NONE;
+  int16_t state = getPacketType(&type);
   RADIOLIB_ASSERT(state);
 
-  switch(packetType) {
+  switch(type) {
     case(RADIOLIB_LR11X0_PACKET_TYPE_LORA):
       *modem = ModemType_t::RADIOLIB_MODEM_LORA;
       return(RADIOLIB_ERR_NONE);
@@ -2114,7 +2114,7 @@ int16_t LR11x0::SPIcheckStatus(Module* mod) {
   return(LR11x0::SPIparseStatus(buff[0]));
 }
 
-int16_t LR11x0::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, uint8_t* out, size_t outLen) {
+int16_t LR11x0::SPIcommand(uint16_t cmd, bool write, uint8_t* data, size_t len, const uint8_t* out, size_t outLen) {
   int16_t state = RADIOLIB_ERR_UNKNOWN;
   if(!write) {
     // the SPI interface of LR11x0 requires two separate transactions for reading
@@ -2175,7 +2175,7 @@ int16_t LR11x0::config(uint8_t modem) {
   RADIOLIB_ASSERT(state);
 
   // clear IRQ
-  state = this->clearIrq(RADIOLIB_LR11X0_IRQ_ALL);
+  state = this->clearIrqState(RADIOLIB_LR11X0_IRQ_ALL);
   state |= this->setDioIrqParams(RADIOLIB_LR11X0_IRQ_NONE);
   RADIOLIB_ASSERT(state);
 
@@ -2289,7 +2289,7 @@ Module* LR11x0::getMod() {
   return(this->mod);
 }
 
-int16_t LR11x0::writeRegMem32(uint32_t addr, uint32_t* data, size_t len) {
+int16_t LR11x0::writeRegMem32(uint32_t addr, const uint32_t* data, size_t len) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
@@ -2457,7 +2457,7 @@ int16_t LR11x0::setDioIrqParams(uint32_t irq) {
   return(setDioIrqParams(irq, this->gnss ? 0 : irq));
 }
 
-int16_t LR11x0::clearIrq(uint32_t irq) {
+int16_t LR11x0::clearIrqState(uint32_t irq) {
   uint8_t buff[4] = {
     (uint8_t)((irq >> 24) & 0xFF), (uint8_t)((irq >> 16) & 0xFF), (uint8_t)((irq >> 8) & 0xFF), (uint8_t)(irq & 0xFF),
   };
@@ -2958,7 +2958,7 @@ int16_t LR11x0::setLoRaSyncWord(uint8_t sync) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_SET_LORA_SYNC_WORD, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, uint8_t* payload, size_t len) {
+int16_t LR11x0::lrFhssBuildFrame(uint8_t hdrCount, uint8_t cr, uint8_t grid, bool hop, uint8_t bw, uint16_t hopSeq, int8_t devOffset, const uint8_t* payload, size_t len) {
   // check maximum size
   const uint8_t maxLen[4][4] = {
     { 189, 178, 167, 155, },
@@ -3005,7 +3005,7 @@ int16_t LR11x0::lrFhssSetSyncWord(uint32_t sync) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_LR_FHSS_SET_SYNC_WORD, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::configBleBeacon(uint8_t chan, uint8_t* payload, size_t len) {
+int16_t LR11x0::configBleBeacon(uint8_t chan, const uint8_t* payload, size_t len) {
   return(this->bleBeaconCommon(RADIOLIB_LR11X0_CMD_CONFIG_BLE_BEACON, chan, payload, len));
 }
 
@@ -3019,11 +3019,11 @@ int16_t LR11x0::getLoRaRxHeaderInfos(uint8_t* info) {
   return(state);
 }
 
-int16_t LR11x0::bleBeaconSend(uint8_t chan, uint8_t* payload, size_t len) {
+int16_t LR11x0::bleBeaconSend(uint8_t chan, const uint8_t* payload, size_t len) {
   return(this->bleBeaconCommon(RADIOLIB_LR11X0_CMD_BLE_BEACON_SEND, chan, payload, len));
 }
 
-int16_t LR11x0::bleBeaconCommon(uint16_t cmd, uint8_t chan, uint8_t* payload, size_t len) {
+int16_t LR11x0::bleBeaconCommon(uint16_t cmd, uint8_t chan, const uint8_t* payload, size_t len) {
   // check maximum size
   // TODO what is the actual maximum?
   if(len > RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN) {
@@ -3366,7 +3366,7 @@ int16_t LR11x0::gnssAlmanacFullUpdateHeader(uint16_t date, uint32_t globalCrc) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_FULL_UPDATE, true, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::gnssAlmanacFullUpdateSV(uint8_t svn, uint8_t* svnAlmanac) {
+int16_t LR11x0::gnssAlmanacFullUpdateSV(uint8_t svn, const uint8_t* svnAlmanac) {
   uint8_t buff[RADIOLIB_LR11X0_GNSS_ALMANAC_BLOCK_SIZE] = { svn };
   memcpy(&buff[1], svnAlmanac, RADIOLIB_LR11X0_GNSS_ALMANAC_BLOCK_SIZE - 1);
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_GNSS_ALMANAC_FULL_UPDATE, true, buff, sizeof(buff)));
@@ -3640,7 +3640,7 @@ void LR11x0::gnssAbort() {
   // send the abort signal (single NOP)
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_8;
   // we need to call the most basic overload of the SPI write method otherwise the call will be ambiguous
-  uint8_t cmd[2] = { 0, 0 };
+  const uint8_t cmd[2] = { 0, 0 };
   this->mod->SPIwriteStream(cmd, 2, NULL, 0, false, false);
   this->mod->spiConfig.widths[RADIOLIB_MODULE_SPI_WIDTH_CMD] = Module::BITS_16;
 
@@ -3648,7 +3648,7 @@ void LR11x0::gnssAbort() {
   this->mod->hal->delay(3000);
 }
 
-int16_t LR11x0::cryptoSetKey(uint8_t keyId, uint8_t* key) {
+int16_t LR11x0::cryptoSetKey(uint8_t keyId, const uint8_t* key) {
   RADIOLIB_ASSERT_PTR(key);
   uint8_t buff[1 + RADIOLIB_AES128_KEY_SIZE] = { 0 };
   buff[0] = keyId;
@@ -3656,7 +3656,7 @@ int16_t LR11x0::cryptoSetKey(uint8_t keyId, uint8_t* key) {
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_SET_KEY, false, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key) {
+int16_t LR11x0::cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, const uint8_t* key) {
   RADIOLIB_ASSERT_PTR(key);
   uint8_t buff[2 + RADIOLIB_AES128_KEY_SIZE] = { 0 };
   buff[0] = srcKeyId;
@@ -3665,7 +3665,7 @@ int16_t LR11x0::cryptoDeriveKey(uint8_t srcKeyId, uint8_t dstKeyId, uint8_t* key
   return(this->SPIcommand(RADIOLIB_LR11X0_CMD_CRYPTO_DERIVE_KEY, false, buff, sizeof(buff)));
 }
 
-int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, uint8_t* header, uint8_t* dataIn, size_t len, uint8_t* dataOut) {
+int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint8_t lwVer, const uint8_t* header, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   // calculate buffer sizes
   size_t headerLen = 1;
   if(lwVer) {
@@ -3718,7 +3718,7 @@ int16_t LR11x0::cryptoProcessJoinAccept(uint8_t decKeyId, uint8_t verKeyId, uint
   return(state);
 }
 
-int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, size_t len, uint32_t* mic) {
+int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, const uint8_t* data, size_t len, uint32_t* mic) {
   size_t reqLen = sizeof(uint8_t) + len;
   #if RADIOLIB_STATIC_ONLY
     uint8_t reqBuff[sizeof(uint8_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
@@ -3745,7 +3745,7 @@ int16_t LR11x0::cryptoComputeAesCmac(uint8_t keyId, uint8_t* data, size_t len, u
   return(state);
 }
 
-int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* data, size_t len, bool* result) {
+int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, const uint8_t* data, size_t len, bool* result) {
    size_t reqLen = sizeof(uint8_t) + sizeof(uint32_t) + len;
   #if RADIOLIB_STATIC_ONLY
     uint8_t reqBuff[sizeof(uint8_t) + sizeof(uint32_t) + RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
@@ -3776,15 +3776,15 @@ int16_t LR11x0::cryptoVerifyAesCmac(uint8_t keyId, uint32_t micExp, uint8_t* dat
   return(state);
 }
 
-int16_t LR11x0::cryptoAesEncrypt01(uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut) {
+int16_t LR11x0::cryptoAesEncrypt01(uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   return(this->cryptoCommon(RADIOLIB_LR11X0_CMD_CRYPTO_AES_ENCRYPT_01, keyId, dataIn, len, dataOut));
 }
 
-int16_t LR11x0::cryptoAesEncrypt(uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut) {
+int16_t LR11x0::cryptoAesEncrypt(uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   return(this->cryptoCommon(RADIOLIB_LR11X0_CMD_CRYPTO_AES_ENCRYPT, keyId, dataIn, len, dataOut));
 }
 
-int16_t LR11x0::cryptoAesDecrypt(uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut) {
+int16_t LR11x0::cryptoAesDecrypt(uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   return(this->cryptoCommon(RADIOLIB_LR11X0_CMD_CRYPTO_AES_DECRYPT, keyId, dataIn, len, dataOut));
 }
 
@@ -3814,7 +3814,7 @@ int16_t LR11x0::cryptoGetParam(uint8_t id, uint32_t* value) {
   return(state);
 }
 
-int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile) {
+int16_t LR11x0::cryptoCheckEncryptedFirmwareImage(uint32_t offset, const uint32_t* data, size_t len, bool nonvolatile) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
@@ -3841,7 +3841,7 @@ int16_t LR11x0::bootEraseFlash(void) {
   return(state);
 }
 
-int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, uint32_t* data, size_t len, bool nonvolatile) {
+int16_t LR11x0::bootWriteFlashEncrypted(uint32_t offset, const uint32_t* data, size_t len, bool nonvolatile) {
   // check maximum size
   if(len > (RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN/sizeof(uint32_t))) {
     return(RADIOLIB_ERR_SPI_CMD_INVALID);
@@ -3889,7 +3889,8 @@ int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
   for(size_t i = 0; i < len; i++) {
     uint32_t bin = 0;
     if(nonvolatile) {
-      bin = RADIOLIB_NONVOLATILE_READ_DWORD(data + i);
+      uint32_t* ptr = const_cast<uint32_t*>(data) + i;
+      bin = RADIOLIB_NONVOLATILE_READ_DWORD(ptr);
     } else {
       bin = data[i];
     }
@@ -3906,7 +3907,7 @@ int16_t LR11x0::writeCommon(uint16_t cmd, uint32_t addrOffset, const uint32_t* d
   return(state);
 }
 
-int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, uint8_t* dataIn, size_t len, uint8_t* dataOut) {
+int16_t LR11x0::cryptoCommon(uint16_t cmd, uint8_t keyId, const uint8_t* dataIn, size_t len, uint8_t* dataOut) {
   // build buffers
   #if RADIOLIB_STATIC_ONLY
     uint8_t reqBuff[RADIOLIB_LR11X0_SPI_MAX_READ_WRITE_LEN];
