@@ -634,12 +634,12 @@ class SX126x: public PhysicalLayer {
       \brief Sets interrupt service routine to call when DIO1 activates.
       \param func ISR to call.
     */
-    void setDio1Action(void (*func)(void));
+    virtual void setDio1Action(void (*func)(void));
 
     /*!
       \brief Clears interrupt service routine to call when DIO1 activates.
     */
-    void clearDio1Action();
+    virtual void clearDio1Action();
 
     /*!
       \brief Sets interrupt service routine to call when a packet is received.
@@ -1238,14 +1238,14 @@ class SX126x: public PhysicalLayer {
     int16_t setTx(uint32_t timeout = 0);
     int16_t setRx(uint32_t timeout);
     int16_t setCad(uint8_t symbolNum, uint8_t detPeak, uint8_t detMin, uint8_t exitMode, RadioLibTime_t timeout);
-    int16_t writeRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
+    int16_t writeRegister(uint16_t addr, const uint8_t* data, uint8_t numBytes);
     int16_t readRegister(uint16_t addr, uint8_t* data, uint8_t numBytes);
-    int16_t writeBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
+    int16_t writeBuffer(const uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t readBuffer(uint8_t* data, uint8_t numBytes, uint8_t offset = 0x00);
     int16_t setDioIrqParams(uint16_t irqMask, uint16_t dio1Mask, uint16_t dio2Mask = RADIOLIB_SX126X_IRQ_NONE, uint16_t dio3Mask = RADIOLIB_SX126X_IRQ_NONE);
     virtual int16_t clearIrqStatus(uint16_t clearIrqParams = RADIOLIB_SX126X_IRQ_ALL);
     int16_t setRfFrequency(uint32_t frf);
-    int16_t calibrateImage(uint8_t* data);
+    int16_t calibrateImage(const uint8_t* data);
     uint8_t getPacketType();
     int16_t setTxParams(uint8_t power, uint8_t rampTime);
     int16_t setModulationParams(uint8_t sf, uint8_t bw, uint8_t cr, uint8_t ldro);

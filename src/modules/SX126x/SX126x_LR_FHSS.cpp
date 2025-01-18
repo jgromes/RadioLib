@@ -87,7 +87,7 @@ int16_t SX126x::buildLRFHSSPacket(const uint8_t* in, size_t in_len, uint8_t* out
   // for rates other than the 1/3 base, puncture the code
   if(this->lrFhssCr != RADIOLIB_SX126X_LR_FHSS_CR_1_3) {
     uint32_t matrix_index = 0;
-    uint8_t  matrix[15]   = { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0 };
+    const uint8_t matrix[15]   = { 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0 };
     uint8_t  matrix_len   = 0;
     switch(this->lrFhssCr) {
       case RADIOLIB_SX126X_LR_FHSS_CR_5_6:
@@ -364,7 +364,7 @@ int16_t SX126x::setLRFHSSHop(uint8_t index) {
     }
   }
 
-  uint8_t frq[4] = { (uint8_t)((freq_raw >> 24) & 0xFF), (uint8_t)((freq_raw >> 16) & 0xFF), (uint8_t)((freq_raw >> 8) & 0xFF), (uint8_t)(freq_raw & 0xFF) };
+  const uint8_t frq[4] = { (uint8_t)((freq_raw >> 24) & 0xFF), (uint8_t)((freq_raw >> 16) & 0xFF), (uint8_t)((freq_raw >> 8) & 0xFF), (uint8_t)(freq_raw & 0xFF) };
   int16_t state = writeRegister(RADIOLIB_SX126X_REG_LR_FHSS_FREQX_0(index), frq, sizeof(freq_raw));
   RADIOLIB_ASSERT(state);
 
@@ -380,7 +380,7 @@ int16_t SX126x::setLRFHSSHop(uint8_t index) {
   }
 
   // write hop length in symbols
-  uint8_t sym[2] = { (uint8_t)((numSymbols >> 8) & 0xFF), (uint8_t)(numSymbols & 0xFF) };
+  const uint8_t sym[2] = { (uint8_t)((numSymbols >> 8) & 0xFF), (uint8_t)(numSymbols & 0xFF) };
   state = writeRegister(RADIOLIB_SX126X_REG_LR_FHSS_NUM_SYMBOLS_FREQX_MSB(index), sym, sizeof(uint16_t));
   RADIOLIB_ASSERT(state);
 

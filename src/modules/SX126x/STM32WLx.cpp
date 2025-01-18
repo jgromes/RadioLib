@@ -45,7 +45,7 @@ int16_t STM32WLx::setOutputPower(int8_t power) {
   RADIOLIB_ASSERT(state);
 
   // check the user did not request power output that is not possible
-  Module* mod = this->getMod();
+  const Module* mod = this->getMod();
   bool hp_supported = mod->findRfSwitchMode(MODE_TX_HP);
   bool lp_supported = mod->findRfSwitchMode(MODE_TX_LP);
   if((!lp_supported && (power < -9)) || (!hp_supported && (power > 14))) {

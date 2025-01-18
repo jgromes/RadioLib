@@ -66,12 +66,12 @@ class STM32WLx : public SX1262 {
     /*!
       \copydoc SX1262::begin
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 1.6, bool useRegulatorLDO = false) override;
 
     /*!
       \copydoc SX1262::beginFSK
     */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false) override;
 
     // configuration methods
 
@@ -113,12 +113,12 @@ class STM32WLx : public SX1262 {
       \brief Sets interrupt service routine to call when DIO1/2/3 activates.
       \param func ISR to call.
     */
-    void setDio1Action(void (*func)(void));
+    void setDio1Action(void (*func)(void)) override;
 
     /*!
       \brief Clears interrupt service routine to call when DIO1/2/3 activates.
     */
-    void clearDio1Action();
+    void clearDio1Action() override;
 
     /*!
       \brief Sets interrupt service routine to call when a packet is received.
