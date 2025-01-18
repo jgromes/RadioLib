@@ -59,7 +59,7 @@ class FSK4Client {
       \param len Number of bytes to transmit.
       \returns Number of transmitted bytes.
     */
-    size_t write(uint8_t* buff, size_t len);
+    size_t write(const uint8_t* buff, size_t len);
 
     /*!
       \brief Transmit a single byte.

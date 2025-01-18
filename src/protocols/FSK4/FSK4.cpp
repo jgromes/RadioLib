@@ -54,7 +54,7 @@ int16_t FSK4Client::setCorrection(int16_t offsets[], float length) {
   return(RADIOLIB_ERR_NONE);
 }
 
-size_t FSK4Client::write(uint8_t* buff, size_t len) {
+size_t FSK4Client::write(const uint8_t* buff, size_t len) {
   size_t n = 0;
   for(size_t i = 0; i < len; i++) {
     n += FSK4Client::write(buff[i]);
