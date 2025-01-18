@@ -219,7 +219,7 @@ int16_t RF69::packetMode() {
   return(this->mod->SPIsetRegValue(RADIOLIB_RF69_REG_DATA_MODUL, RADIOLIB_RF69_PACKET_MODE, 6, 5));
 }
 
-void RF69::setAESKey(uint8_t* key) {
+void RF69::setAESKey(const uint8_t* key) {
   this->mod->SPIwriteRegisterBurst(RADIOLIB_RF69_REG_AES_KEY_1, key, 16);
 }
 
@@ -364,7 +364,7 @@ bool RF69::fifoAdd(uint8_t* data, int totalLen, int* remLen) {
 
 bool RF69::fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen) {
   // get pointer to the correct position in data buffer
-  uint8_t* dataPtr = (uint8_t*)&data[*rcvLen];
+  uint8_t* dataPtr = const_cast<uint8_t*>(&data[*rcvLen]);
 
   // check how much data are we still expecting
   uint8_t len = RADIOLIB_RF69_FIFO_THRESH - 1;
@@ -692,7 +692,7 @@ int16_t RF69::setOutputPower(int8_t pwr, bool highPower) {
   return(state);
 }
 
-int16_t RF69::setSyncWord(uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
+int16_t RF69::setSyncWord(const uint8_t* syncWord, size_t len, uint8_t maxErrBits) {
   // check constraints
   if((maxErrBits > 7) || (len > 8)) {
     return(RADIOLIB_ERR_INVALID_SYNC_WORD);
