@@ -5,5 +5,5 @@ var class_radio_lib_a_e_s128 =
     [ "encryptECB", "class_radio_lib_a_e_s128.html#a6d05efec834b1ae7c5e46f9ef80f1464", null ],
     [ "generateCMAC", "class_radio_lib_a_e_s128.html#a1330c5668c22e5f0b65681cf875f5fe3", null ],
     [ "init", "class_radio_lib_a_e_s128.html#a2f688dbdf2b0506c077ca4501e40e22e", null ],
-    [ "verifyCMAC", "class_radio_lib_a_e_s128.html#a235daad00bd77a406d7fc187bcb2192e", null ]
+    [ "verifyCMAC", "class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455", null ]
 ];

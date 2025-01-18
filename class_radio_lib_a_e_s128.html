@@ -120,9 +120,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1330c5668c22e5f0b65681cf875f5fe3" id="r_a1330c5668c22e5f0b65681cf875f5fe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a1330c5668c22e5f0b65681cf875f5fe3">generateCMAC</a> (const uint8_t *in, size_t len, uint8_t *cmac)</td></tr>
 <tr class="memdesc:a1330c5668c22e5f0b65681cf875f5fe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculate message authentication code according to RFC4493.  <br /></td></tr>
 <tr class="separator:a1330c5668c22e5f0b65681cf875f5fe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a235daad00bd77a406d7fc187bcb2192e" id="r_a235daad00bd77a406d7fc187bcb2192e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a235daad00bd77a406d7fc187bcb2192e">verifyCMAC</a> (uint8_t *in, size_t len, const uint8_t *cmac)</td></tr>
-<tr class="memdesc:a235daad00bd77a406d7fc187bcb2192e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify the received CMAC. This just calculates the CMAC again and compares the results.  <br /></td></tr>
-<tr class="separator:a235daad00bd77a406d7fc187bcb2192e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a793795f82f27abd34409a5c0e0e7c455" id="r_a793795f82f27abd34409a5c0e0e7c455"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_radio_lib_a_e_s128.html#a793795f82f27abd34409a5c0e0e7c455">verifyCMAC</a> (const uint8_t *in, size_t len, const uint8_t *cmac)</td></tr>
+<tr class="memdesc:a793795f82f27abd34409a5c0e0e7c455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Verify the received CMAC. This just calculates the CMAC again and compares the results.  <br /></td></tr>
+<tr class="separator:a793795f82f27abd34409a5c0e0e7c455"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class to perform AES encryption, decryption and CMAC. </p>
@@ -288,8 +288,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a235daad00bd77a406d7fc187bcb2192e" name="a235daad00bd77a406d7fc187bcb2192e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a235daad00bd77a406d7fc187bcb2192e">&#9670;&#160;</a></span>verifyCMAC()</h2>
+<a id="a793795f82f27abd34409a5c0e0e7c455" name="a793795f82f27abd34409a5c0e0e7c455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a793795f82f27abd34409a5c0e0e7c455">&#9670;&#160;</a></span>verifyCMAC()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +297,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool RadioLibAES128::verifyCMAC </td>
           <td>(</td>
-          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>in</em>, </td>
         </tr>
         <tr>
