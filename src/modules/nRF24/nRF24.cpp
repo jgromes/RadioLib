@@ -387,7 +387,7 @@ int16_t nRF24::setAddressWidth(uint8_t addrWidth) {
   return(state);
 }
 
-int16_t nRF24::setTransmitPipe(uint8_t* addr) {
+int16_t nRF24::setTransmitPipe(const uint8_t* addr) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -402,7 +402,7 @@ int16_t nRF24::setTransmitPipe(uint8_t* addr) {
   return(state);
 }
 
-int16_t nRF24::setReceivePipe(uint8_t pipeNum, uint8_t* addr) {
+int16_t nRF24::setReceivePipe(uint8_t pipeNum, const uint8_t* addr) {
   // set mode to standby
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
@@ -610,11 +610,11 @@ void nRF24::SPIreadRxPayload(uint8_t* data, uint8_t numBytes) {
   SPItransfer(RADIOLIB_NRF24_CMD_READ_RX_PAYLOAD, false, NULL, data, numBytes);
 }
 
-void nRF24::SPIwriteTxPayload(uint8_t* data, uint8_t numBytes) {
+void nRF24::SPIwriteTxPayload(const uint8_t* data, uint8_t numBytes) {
   SPItransfer(RADIOLIB_NRF24_CMD_WRITE_TX_PAYLOAD, true, data, NULL, numBytes);
 }
 
-void nRF24::SPItransfer(uint8_t cmd, bool write, uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
+void nRF24::SPItransfer(uint8_t cmd, bool write, const uint8_t* dataOut, uint8_t* dataIn, uint8_t numBytes) {
   (void)this->mod->SPItransferStream(&cmd, 1, write, dataOut, dataIn, numBytes, false);
 }
 
