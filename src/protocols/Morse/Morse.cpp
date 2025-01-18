@@ -48,7 +48,8 @@ char MorseClient::decode(uint8_t symbol, uint8_t len) {
 
   // iterate over the table
   for(uint8_t i = 0; i < sizeof(MorseTable); i++) {
-    uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[i]);
+    uint8_t* ptr = const_cast<uint8_t*>(&MorseTable[i]);
+    uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(ptr);
     if(code == symbol) {
       // match, return the index + ASCII offset
       return((char)(i + RADIOLIB_MORSE_ASCII_OFFSET));
@@ -129,7 +130,8 @@ size_t MorseClient::write(uint8_t b) {
   }
 
   // get morse code from lookup table
-  uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(&MorseTable[(uint8_t)(toupper(b) - RADIOLIB_MORSE_ASCII_OFFSET)]);
+  uint8_t* ptr = const_cast<uint8_t*>(&MorseTable[(uint8_t)(toupper(b) - RADIOLIB_MORSE_ASCII_OFFSET)]);
+  uint8_t code = RADIOLIB_NONVOLATILE_READ_BYTE(ptr);
 
   // check unsupported characters
   if(code == RADIOLIB_MORSE_UNSUPPORTED) {
