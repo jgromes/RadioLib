@@ -47,6 +47,9 @@ class TestHal : public RadioLibHal {
         this->gpio[i].event = false;
         this->gpio[i].func = PIN_UNASSIGNED;
       }
+
+      // wipe history log
+      this->spiLogWipe();
     }
 
     void term() override {
@@ -181,10 +184,6 @@ class TestHal : public RadioLibHal {
 
     void spiBeginTransaction() {
       HAL_LOG("TestHal::spiBeginTransaction()");
-
-      // wipe history log
-      memset(this->spiLog, 0x00, TEST_HAL_SPI_LOG_LENGTH);
-      this->spiLogPtr = this->spiLog;
     }
 
     void spiTransfer(uint8_t* out, size_t len, uint8_t* in) {
@@ -228,7 +227,14 @@ class TestHal : public RadioLibHal {
 
     // method to compare buffer to the internal SPI log, for verifying SPI transactions
     int spiLogMemcmp(const void* in, size_t n) {
-      return(memcmp(this->spiLog, in, n));
+      int ret = memcmp(this->spiLog, in, n);
+      this->spiLogWipe();
+      return(ret);
+    }
+
+    void spiLogWipe() {
+      memset(this->spiLog, 0x00, TEST_HAL_SPI_LOG_LENGTH);
+      this->spiLogPtr = this->spiLog;
     }
 
     // method that "connects" the emualted radio hardware to this HAL
