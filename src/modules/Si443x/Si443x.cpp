@@ -766,7 +766,7 @@ int16_t Si443x::updateClockRecovery() {
 
   // print that whole mess
   RADIOLIB_DEBUG_BASIC_PRINTLN("%X\n%X\n%X", bypass, decRate, manch);
-  RADIOLIB_DEBUG_BASIC_PRINT_FLOAT(rxOsr, 2);
+  RADIOLIB_DEBUG_BASIC_PRINT_FLOAT((double)rxOsr, 2);
   RADIOLIB_DEBUG_BASIC_PRINTLN("\t%d\t%X\n%lu\t%lX\n%d\t%X", rxOsr_fixed, rxOsr_fixed, (long unsigned int)ncoOff, (long unsigned int)ncoOff, crGain, crGain);
 
   // update oversampling ratio
