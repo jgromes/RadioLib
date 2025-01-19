@@ -59,9 +59,9 @@ void rlb_hexdump(const char* level, const uint8_t* data, size_t len, uint32_t of
       sprintf(strPtr++, "   ");
     }
     if(level) {
-      RADIOLIB_DEBUG_PRINT(level);
+      RADIOLIB_DEBUG_PRINT("%s", level);
     }
-    RADIOLIB_DEBUG_PRINT(str);
+    RADIOLIB_DEBUG_PRINT("%s", str);
     RADIOLIB_DEBUG_PRINTLN();
     rem_len -= 16;
   }
