@@ -139,15 +139,16 @@ size_t MorseClient::write(uint8_t b) {
   }
 
   // iterate through codeword until guard bit is reached
+  RADIOLIB_DEBUG_PROTOCOL_PRINT("%c ", b);
   while(code > RADIOLIB_MORSE_GUARDBIT) {
 
     // send dot or dash
     if (code & RADIOLIB_MORSE_DASH) {
-      RADIOLIB_DEBUG_PROTOCOL_PRINT("-");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG("-");
       transmitDirect(baseFreq, baseFreqHz);
       mod->waitForMicroseconds(mod->hal->micros(), dashLength*1000);
     } else {
-      RADIOLIB_DEBUG_PROTOCOL_PRINT(".");
+      RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG(".");
       transmitDirect(baseFreq, baseFreqHz);
       mod->waitForMicroseconds(mod->hal->micros(), dotLength*1000);
     }
@@ -163,7 +164,7 @@ size_t MorseClient::write(uint8_t b) {
   // letter space
   standby();
   mod->waitForMicroseconds(mod->hal->micros(), letterSpace*1000 - dotLength*1000);
-  RADIOLIB_DEBUG_PROTOCOL_PRINTLN();
+  RADIOLIB_DEBUG_PROTOCOL_PRINT_NOTAG("\n");
 
   return(1);
 }
