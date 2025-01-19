@@ -25,5 +25,4 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra)
 
 # set RadioLib debug
-#target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_BASIC RADIOLIB_DEBUG_SPI)
-#target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_PORT=stdout)
+#target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_BASIC RADIOLIB_DEBUG_SPI RADIOLIB_DEBUG_PROTOCOL)
