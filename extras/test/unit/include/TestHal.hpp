@@ -196,7 +196,12 @@ class TestHal : public RadioLibHal {
         // process the SPI byte
         in[i] = this->radio->HandleSPI(out[i]);
 
-        // outpu debug
+        // artificial delay to emulate SPI running at a finite speed
+        // this is added because timeouts are based on time duration,
+        // so we need to make sure some time actually elapses
+        this->delayMicroseconds(100);
+
+        // output debug
         HAL_LOG(fmt::format("out={:#02x}, in={:#02x}", out[i], in[i]));
       }
     }
