@@ -11,6 +11,7 @@
 #define RADIOLIB_SX123X_CHIP_REVISION_2_A                       0x21
 #define RADIOLIB_SX123X_CHIP_REVISION_2_B                       0x22
 #define RADIOLIB_SX123X_CHIP_REVISION_2_C                       0x23
+#define RADIOLIB_SX123X_CHIP_REVISION_2_D                       0x24
 
 // RADIOLIB_SX1231 specific register map
 #define RADIOLIB_SX1231_REG_TEST_OOK                            0x6E
