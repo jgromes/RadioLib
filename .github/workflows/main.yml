@@ -185,6 +185,10 @@ jobs:
           cd $PWD/extras/test/ci
           ./build_examples.sh ${{ matrix.id }} "${{ steps.prep.outputs.skip-pattern }}" ${{ steps.prep.outputs.options }}
       
+      - name: Extract short commit hash
+        id: short-hash
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+      
       - name: Parse sizes
         if: ${{ env.run-build == 'true' }}
         run:
@@ -192,10 +196,6 @@ jobs:
           cd $PWD/extras/test/ci
           ./parse_size.sh ${{ matrix.id }}
           cat size_${{ steps.short-hash.outputs.short_sha }}_${{ steps.split.outputs._0 }}-${{ steps.split.outputs._1 }}-${{ steps.split.outputs._2 }}.csv
-      
-      - name: Extract short commit hash
-        id: short-hash
-        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
       
       - name: Upload size report as artifact
         uses: actions/upload-artifact@v4
