@@ -17,7 +17,10 @@ int16_t SX1231::begin(float freq, float br, float freqDev, float rxBw, int8_t po
   bool flagFound = false;
   while((i < 10) && !flagFound) {
     int16_t version = getChipVersion();
-    if((version == RADIOLIB_SX123X_CHIP_REVISION_2_A) || (version == RADIOLIB_SX123X_CHIP_REVISION_2_B) || (version == RADIOLIB_SX123X_CHIP_REVISION_2_C)) {
+    if((version == RADIOLIB_SX123X_CHIP_REVISION_2_A) ||
+       (version == RADIOLIB_SX123X_CHIP_REVISION_2_B) ||
+       (version == RADIOLIB_SX123X_CHIP_REVISION_2_C) ||
+       (version == RADIOLIB_SX123X_CHIP_REVISION_2_D)) {
       flagFound = true;
       this->chipRevision = version;
     } else {
