@@ -266,7 +266,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   }
 
   // fill the FIFO
-  uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
+  uint8_t initialWrite = RADIOLIB_MIN((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
   SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(data), initialWrite);
   dataSent += initialWrite;
 
@@ -289,7 +289,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
 
     //If there is room add more data to the FIFO
     if (fifoBytes < RADIOLIB_CC1101_FIFO_SIZE) {
-        uint8_t bytesToWrite = min((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - fifoBytes), (uint8_t)(len - dataSent));
+        uint8_t bytesToWrite = RADIOLIB_MIN((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - fifoBytes), (uint8_t)(len - dataSent));
         SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(&data[dataSent]), bytesToWrite);
         dataSent += bytesToWrite;
     }
