@@ -285,7 +285,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
     do{
       fifoBytes = SPIgetRegValue(RADIOLIB_CC1101_REG_TXBYTES, 6, 0);
       prevFifobytes = SPIgetRegValue(RADIOLIB_CC1101_REG_TXBYTES, 6, 0);
-    } while (fifoBytes != prevFifobytes)
+    } while (fifoBytes != prevFifobytes);
 
     //If there is room add more data to the FIFO
     if (fifoBytes < RADIOLIB_CC1101_FIFO_SIZE) {
