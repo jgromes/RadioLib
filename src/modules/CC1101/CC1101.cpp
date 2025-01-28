@@ -240,7 +240,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_FSTXON);
 
   // Check MARCSTATE and wait until ready to tx
-  While(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {};
+  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {};
 
   // set GDO0 mapping
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
@@ -277,7 +277,7 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
 
   // Keep feeding the FIFO until the packet is done
-  While (dataSent < len) {
+  while (dataSent < len) {
     uint8_t fifoBytes = 0;
     uint8_t prevFifobytes = 0;
 
