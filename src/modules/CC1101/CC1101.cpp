@@ -236,23 +236,39 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // flush Tx FIFO
   SPIsendCommand(RADIOLIB_CC1101_CMD_FLUSH_TX);
 
+  // Turn on freq oscilator
+  SPIsendCommand(RADIOLIB_CC1101_CMD_FSTXON);
+
+  // Check MARCSTATE and wait until ready to tx
+  While(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x12) {};
+
   // set GDO0 mapping
   int16_t state = SPIsetRegValue(RADIOLIB_CC1101_REG_IOCFG2, RADIOLIB_CC1101_GDOX_SYNC_WORD_SENT_OR_PKT_RECEIVED, 5, 0);
   RADIOLIB_ASSERT(state);
 
+  // data put on FIFO
+  uint8_t dataSent = 0;
+
   // optionally write packet length
   if(this->packetLengthConfig == RADIOLIB_CC1101_LENGTH_CONFIG_VARIABLE) {
+    if (len > RADIOLIB_CC1101_MAX_PACKET_LENGTH - 1) {
+        return(RADIOLIB_ERR_PACKET_TOO_LONG);
+    }
     SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, len);
+    dataSent+= 1;
   }
 
   // check address filtering
   uint8_t filter = SPIgetRegValue(RADIOLIB_CC1101_REG_PKTCTRL1, 1, 0);
   if(filter != RADIOLIB_CC1101_ADR_CHK_NONE) {
     SPIwriteRegister(RADIOLIB_CC1101_REG_FIFO, addr);
+    dataSent += 1;
   }
 
   // fill the FIFO
-  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(data), len);
+  uint8_t initialWrite = min((uint8_t)len, (uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - dataSent));
+  SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(data), initialWrite);
+  dataSent += initialWrite;
 
   // set RF switch (if present)
   this->mod->setRfSwitchState(Module::MODE_TX);
@@ -260,6 +276,26 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
   // set mode to transmit
   SPIsendCommand(RADIOLIB_CC1101_CMD_TX);
 
+  // Keep feeding the FIFO until the packet is done
+  While (dataSent < len) {
+    uint8_t fifoBytes = 0;
+    uint8_t prevFifobytes = 0;
+
+    // Check number of bytes on FIFO twice due to the CC1101 errata. Block until two reads are equal.
+    do{
+      fifoBytes = SPIgetRegValue(RADIOLIB_CC1101_REG_TXBYTES, 6, 0);
+      prevFifobytes = SPIgetRegValue(RADIOLIB_CC1101_REG_TXBYTES, 6, 0);
+    } while (fifoBytes != prevFifobytes)
+
+    //If there is room add more data to the FIFO
+    if (fifoBytes < RADIOLIB_CC1101_FIFO_SIZE) {
+        uint8_t bytesToWrite = min((uint8_t)(RADIOLIB_CC1101_FIFO_SIZE - fifoBytes), (uint8_t)(len - dataSent));
+        SPIwriteRegisterBurst(RADIOLIB_CC1101_REG_FIFO, const_cast<uint8_t*>(&data[dataSent]), bytesToWrite);
+        dataSent += bytesToWrite;
+    }
+  }
+  // Check MARCSTATE for Idle
+  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {};
   return(state);
 }
 
