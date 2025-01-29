@@ -246,6 +246,7 @@ spectralScanAbort	KEYWORD2
 spectralScanGetStatus	KEYWORD2
 spectralScanGetResult	KEYWORD2
 setPaRampTime	KEYWORD2
+hopLRFHSS	KEYWORD2
 
 # nRF24
 setIrqAction	KEYWORD2

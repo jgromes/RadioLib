@@ -235,8 +235,7 @@ int16_t SX126x::transmit(const uint8_t* data, size_t len, uint8_t addr) {
         break;
       } else {
         // handle frequency hop
-        this->setLRFHSSHop(this->lrFhssHopNum % 16);
-        clearIrqStatus();
+        this->hopLRFHSS();
       }
     }
   }
@@ -475,6 +474,16 @@ int16_t SX126x::standby(uint8_t mode, bool wakeup) {
 
   const uint8_t data[] = { mode };
   return(this->mod->SPIwriteStream(RADIOLIB_SX126X_CMD_SET_STANDBY, data, 1));
+}
+
+int16_t SX126x::hopLRFHSS() {
+  if(!(this->getIrqFlags() & RADIOLIB_SX126X_IRQ_LR_FHSS_HOP)) {
+    return(RADIOLIB_ERR_TX_TIMEOUT);
+  }
+
+  int16_t state = this->setLRFHSSHop(this->lrFhssHopNum % 16);
+  RADIOLIB_ASSERT(state);
+  return(clearIrqStatus());
 }
 
 void SX126x::setDio1Action(void (*func)(void)) {
