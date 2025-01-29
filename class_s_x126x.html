@@ -167,6 +167,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2fa0384a529746811e2dcb2eeb4188ec" id="r_a2fa0384a529746811e2dcb2eeb4188ec"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a2fa0384a529746811e2dcb2eeb4188ec">standby</a> (uint8_t mode, bool wakeup=true)</td></tr>
 <tr class="memdesc:a2fa0384a529746811e2dcb2eeb4188ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the module to standby mode.  <br /></td></tr>
 <tr class="separator:a2fa0384a529746811e2dcb2eeb4188ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44cd61126a92193d8dde86bcb836f269" id="r_a44cd61126a92193d8dde86bcb836f269"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a44cd61126a92193d8dde86bcb836f269">hopLRFHSS</a> ()</td></tr>
+<tr class="memdesc:a44cd61126a92193d8dde86bcb836f269"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handle LR-FHSS hop. When using LR-FHSS in interrupt-driven mode, this method MUST be called each time an interrupt is triggered!  <br /></td></tr>
+<tr class="separator:a44cd61126a92193d8dde86bcb836f269"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0da667fe702d7b4aafaa4bf7e69ea40d" id="r_a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_s_x126x.html#a0da667fe702d7b4aafaa4bf7e69ea40d">setDio1Action</a> (void(*func)(void))</td></tr>
 <tr class="memdesc:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets interrupt service routine to call when DIO1 activates.  <br /></td></tr>
 <tr class="separator:a0da667fe702d7b4aafaa4bf7e69ea40d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1508,6 +1511,26 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>standbyXOSC</b></td><
 <dl class="section return"><dt>Returns</dt><dd>Expected time-on-air in microseconds. </dd></dl>
 
 <p>Reimplemented from <a class="el" href="class_physical_layer.html#a50e730a894f60b58034507ad7730dd3c">PhysicalLayer</a>.</p>
+
+</div>
+</div>
+<a id="a44cd61126a92193d8dde86bcb836f269" name="a44cd61126a92193d8dde86bcb836f269"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44cd61126a92193d8dde86bcb836f269">&#9670;&#160;</a></span>hopLRFHSS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t SX126x::hopLRFHSS </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Handle LR-FHSS hop. When using LR-FHSS in interrupt-driven mode, this method MUST be called each time an interrupt is triggered! </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 </div>
 </div>

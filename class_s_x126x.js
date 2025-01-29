@@ -31,6 +31,7 @@ var class_s_x126x =
     [ "getRSSI", "class_s_x126x.html#ab9db47423cf4e09ab126669d9fecbf0e", null ],
     [ "getSNR", "class_s_x126x.html#a59b761a67d15cdbfdccd6a759f464d00", null ],
     [ "getTimeOnAir", "class_s_x126x.html#a16eb0bdb051f3cf288db752d18182ae2", null ],
+    [ "hopLRFHSS", "class_s_x126x.html#a44cd61126a92193d8dde86bcb836f269", null ],
     [ "implicitHeader", "class_s_x126x.html#adec09cba71494bd927ad1da786606ca6", null ],
     [ "invertIQ", "class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e", null ],
     [ "randomByte", "class_s_x126x.html#a187a616285c5872f9603a86c122deaf2", null ],
