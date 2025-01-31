@@ -39,7 +39,7 @@ class LLCC68: public SX1262 {
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t pwr = 10, uint16_t preambleLength = 8, float tcxoVoltage = 0, bool useRegulatorLDO = false);
+    int16_t begin(float freq = 434.0, float bw = 125.0, uint8_t sf = 9, uint8_t cr = 7, uint8_t syncWord = RADIOLIB_SX126X_SYNC_WORD_PRIVATE, int8_t power = 10, uint16_t preambleLength = 8, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
     
     /*!
       \brief Initialization method for FSK modem.
@@ -49,13 +49,13 @@ class LLCC68: public SX1262 {
       \param rxBw Receiver bandwidth in kHz. Defaults to 156.2 kHz.
       \param power Output power in dBm. Defaults to 10 dBm.
       \param preambleLength FSK preamble length in bits. Defaults to 16 bits.
-      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 1.6 V.
+      \param tcxoVoltage TCXO reference voltage to be set on DIO3. Defaults to 0 V (XTAL).
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginFSK(float freq = 434.0, float br = 4.8, float freqDev = 5.0, float rxBw = 156.2, int8_t power = 10, uint16_t preambleLength = 16, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
     
     /*!
       \brief Initialization method for LR-FHSS modem. This modem only supports transmission!
@@ -64,13 +64,13 @@ class LLCC68: public SX1262 {
       \param cr LR-FHSS coding rate, one of RADIOLIB_SX126X_LR_FHSS_CR_* values. Defaults to 2/3 coding rate.
       \param narrowGrid Whether to use narrow (3.9 kHz) or wide (25.39 kHz) grid spacing. Defaults to true (narrow/non-FCC) grid.
       \param power Output power in dBm. Defaults to 10 dBm.
-      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 1.6 V.
+      \param tcxoVoltage TCXO reference voltage to be set. Defaults to 0 V (XTAL).
       If you are seeing -706/-707 error codes, it likely means you are using non-0 value for module with XTAL.
       To use XTAL, either set this value to 0, or set SX126x::XTAL to true.
       \param useRegulatorLDO Whether to use only LDO regulator (true) or DC-DC regulator (false). Defaults to false.
       \returns \ref status_codes
     */
-    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 1.6, bool useRegulatorLDO = false);
+    int16_t beginLRFHSS(float freq = 434.0, uint8_t bw = RADIOLIB_SX126X_LR_FHSS_BW_722_66, uint8_t cr = RADIOLIB_SX126X_LR_FHSS_CR_2_3, bool narrowGrid = true, int8_t power = 10, float tcxoVoltage = 0, bool useRegulatorLDO = false) override;
     
     // configuration methods
 
