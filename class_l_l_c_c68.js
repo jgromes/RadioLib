@@ -2,6 +2,8 @@ var class_l_l_c_c68 =
 [
     [ "LLCC68", "class_l_l_c_c68.html#abf66e5649ac09e5997e29cf637803261", null ],
     [ "begin", "class_l_l_c_c68.html#aa835ee301567f7dac079b42a2055c38c", null ],
+    [ "beginFSK", "class_l_l_c_c68.html#ab81931957180533a2d61a90bf7094b73", null ],
+    [ "beginLRFHSS", "class_l_l_c_c68.html#ae9a0480a268b338b16c4d9abdac5dbee", null ],
     [ "checkDataRate", "class_l_l_c_c68.html#a708183645ec0b9fec54d6369e7b1345f", null ],
     [ "setBandwidth", "class_l_l_c_c68.html#ae1badfd85c9f1c79bd6868c0528a5f17", null ],
     [ "setDataRate", "class_l_l_c_c68.html#ac630770441cadc547892173bde7504f9", null ],
