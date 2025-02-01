@@ -294,13 +294,16 @@ int16_t CC1101::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
         dataSent += bytesToWrite;
     }
   }
-  // Check MARCSTATE for Idle
-  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {};
   return(state);
 }
 
 int16_t CC1101::finishTransmit() {
   // set mode to standby to disable transmitter/RF switch
+  
+  // Check MARCSTATE for Idle
+  while(SPIgetRegValue(RADIOLIB_CC1101_REG_MARCSTATE, 4, 0) != 0x01) {};
+  //TODO: Timeout
+  
   int16_t state = standby();
   RADIOLIB_ASSERT(state);
 
