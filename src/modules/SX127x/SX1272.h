@@ -204,7 +204,7 @@ class SX1272: public SX127x {
       \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool useRfo);
+    int16_t setOutputPower(int8_t power, bool useRfo) override;
 
     /*!
       \brief Check if output power is configurable.
@@ -222,7 +222,7 @@ class SX1272: public SX127x {
       \param useRfo Whether to use the RFO (true) or the PA_BOOST (false) pin for the RF output.
       \returns \ref status_codes
     */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool useRfo);
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool useRfo) override;
 
     /*!
       \brief Sets gain of receiver LNA (low-noise amplifier). Can be set to any integer in range 1 to 6 where 1 is the highest gain.
