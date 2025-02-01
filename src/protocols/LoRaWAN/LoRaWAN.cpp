@@ -1377,7 +1377,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     if(waitLen > this->scanGuard) {
       waitLen -= this->scanGuard;
     }
-    mod->hal->delay(waitLen);
+    this->sleepDelay(waitLen);
 
     // open Rx window by starting receive with specified timeout
     // TODO remove default arguments
@@ -1387,7 +1387,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + scanGuard / 2));
     
     // wait for the timeout to complete (and a small additional delay)
-    mod->hal->delay(timeoutHost / 1000 + this->scanGuard / 2);
+    this->sleepDelay(timeoutHost / 1000 + this->scanGuard / 2);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", window);
 
     // if the IRQ bit for Rx Timeout is not set, something is received, so stop the windows
@@ -3310,6 +3310,10 @@ uint8_t LoRaWANNode::getMaxPayloadLen() {
   return(curLen - 13 - this->fOptsUpLen);
 }
 
+void LoRaWANNode::setSleepFunction(SleepCb_t cb) {
+  this->sleepCb = cb;
+}
+
 int16_t LoRaWANNode::findDataRate(uint8_t dr, DataRate_t* dataRate) {
   int16_t state = this->phyLayer->standby();
   if(state != RADIOLIB_ERR_NONE) {
@@ -3432,6 +3436,18 @@ void LoRaWANNode::processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_
     }
     remLen -= xorLen;
   }
+}
+
+void LoRaWANNode::sleepDelay(RadioLibTime_t ms) {
+  // if the user did not provide sleep callback, or the duration is short, just call delay
+  if((this->sleepCb == nullptr) || (ms <= RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD)) {
+    Module* mod = this->phyLayer->getMod();
+    mod->hal->delay(ms);
+    return;
+  }
+
+  // otherwise, call the user-provided callback
+  this->sleepCb(ms);
 }
 
 int16_t LoRaWANNode::checkBufferCommon(const uint8_t *buffer, uint16_t size) {

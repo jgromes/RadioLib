@@ -210,6 +210,9 @@
 
 #define RADIOLIB_LORAWAN_MAX_DOWNLINK_SIZE                      (250)
 
+// threshold at which sleeping via user callback enabled, in ms
+#define RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD                  (50)
+
 /*!
   \struct LoRaWANMacCommand_t
   \brief MAC command specification structure.
@@ -832,6 +835,18 @@ class LoRaWANNode {
     */
     uint8_t getMaxPayloadLen();
 
+    /*! \brief Callback to a user-provided sleep function. */
+    typedef void (*SleepCb_t)(RadioLibTime_t ms);
+
+    /*! 
+      \brief Set custom delay/sleep function callback. If set, LoRaWAN node will call
+      this function to wait for periods of time longer than RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD.
+      This can be used to lower the power consumption by putting the host microcontroller to sleep.
+      NOTE: Since this method will call a user-provided function, it is up to the user to ensure
+      that the time duration spent in that sleep function is accurate to at least 1 ms!
+    */
+    void setSleepFunction(SleepCb_t cb); 
+
     /*! 
       \brief TS009 Protocol Specification Verification switch
       (allows FPort 224 and cuts off uplink payload instead of rejecting if maximum length exceeded).
@@ -973,6 +988,8 @@ class LoRaWANNode {
     // allow port 226 for devices implementing TS011
     bool TS011 = false;
 
+    SleepCb_t sleepCb = nullptr;
+
     // this will reset the device credentials, so the device starts completely new
     void clearNonces();
 
@@ -1101,6 +1118,9 @@ class LoRaWANNode {
 
     // function to encrypt and decrypt payloads (regular uplink/downlink)
     void processAES(const uint8_t* in, size_t len, uint8_t* key, uint8_t* out, uint32_t fCnt, uint8_t dir, uint8_t ctrId, bool counter);
+
+    // function that allows sleeping via user-provided callback
+    void sleepDelay(RadioLibTime_t ms);
 
     // 16-bit checksum method that takes a uint8_t array of even length and calculates the checksum
     static uint16_t checkSum16(const uint8_t *key, uint16_t keyLen);
