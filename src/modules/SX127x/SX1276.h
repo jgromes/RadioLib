@@ -27,7 +27,7 @@ class SX1276: public SX1278 {
     /*!
       \brief %LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 1020.0 MHz.
-      \param bw %LoRa link bandwidth in kHz. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
+      \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
       \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.

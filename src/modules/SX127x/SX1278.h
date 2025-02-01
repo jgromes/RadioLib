@@ -118,7 +118,7 @@ class SX1278: public SX127x {
     /*!
       \brief %LoRa modem initialization method. Must be called at least once from Arduino sketch to initialize the module.
       \param freq Carrier frequency in MHz. Allowed values range from 137.0 MHz to 525.0 MHz.
-      \param bw %LoRa link bandwidth in kHz. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
+      \param bw %LoRa link bandwidth in kHz. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz.
       \param sf %LoRa link spreading factor. Allowed values range from 6 to 12.
       \param cr %LoRa link coding rate denominator. Allowed values range from 5 to 8.
       \param syncWord %LoRa sync word. Can be used to distinguish different networks. Note that value 0x34 is reserved for LoRaWAN networks.
@@ -160,7 +160,7 @@ class SX1278: public SX127x {
     int16_t setFrequency(float freq) override;
 
     /*!
-      \brief Sets %LoRa link bandwidth. Allowed values are 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
+      \brief Sets %LoRa link bandwidth. Allowed values are 7.8, 10.4, 15.6, 20.8, 31.25, 41.7, 62.5, 125, 250 and 500 kHz. Only available in %LoRa mode.
       \param bw %LoRa link bandwidth to be set in kHz.
       \returns \ref status_codes
     */
