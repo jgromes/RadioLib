@@ -1145,6 +1145,12 @@ class SX126x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getModem(ModemType_t* modem) override;
+    
+    /*! \copydoc PhysicalLayer::stageMode */
+    int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t cfg);
+
+    /*! \copydoc PhysicalLayer::launchMode */
+    int16_t launchMode();
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
