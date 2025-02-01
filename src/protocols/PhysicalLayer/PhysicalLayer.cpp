@@ -537,6 +537,16 @@ int16_t PhysicalLayer::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
+  (void)mode;
+  (void)cfg;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::launchMode() {
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 #if RADIOLIB_INTERRUPT_TIMING
 void PhysicalLayer::setInterruptSetup(void (*func)(uint32_t)) {
   Module* mod = getMod();
