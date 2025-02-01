@@ -253,9 +253,22 @@ int16_t PhysicalLayer::setOutputPower(int8_t power) {
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 
+int16_t PhysicalLayer::setOutputPower(int8_t power, bool forceHighPower) {
+  (void)power;
+  (void)forceHighPower;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
 int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped) {
   (void)power;
   (void)clipped;
+  return(RADIOLIB_ERR_UNSUPPORTED);
+}
+
+int16_t PhysicalLayer::checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) {
+  (void)power;
+  (void)clipped;
+  (void)forceHighPower;
   return(RADIOLIB_ERR_UNSUPPORTED);
 }
 

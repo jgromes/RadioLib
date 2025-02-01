@@ -114,7 +114,7 @@ class LR1120: public LR11x0 {
       Ignored when operating in 2.4 GHz band.
       \returns \ref status_codes
     */
-    int16_t setOutputPower(int8_t power, bool forceHighPower);
+    int16_t setOutputPower(int8_t power, bool forceHighPower) override;
 
     /*!
       \brief Check if output power is configurable.
@@ -134,7 +134,7 @@ class LR1120: public LR11x0 {
       Ignored when operating in 2.4 GHz band.
       \returns \ref status_codes
     */
-    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower);
+    int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower) override;
 
     /*!
       \brief Set modem for the radio to use. Will perform full reset and reconfigure the radio

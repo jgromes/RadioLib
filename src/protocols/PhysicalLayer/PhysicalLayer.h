@@ -372,6 +372,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t setOutputPower(int8_t power);
+    virtual int16_t setOutputPower(int8_t power, bool forceHighPower);
 
     /*!
       \brief Check if output power is configurable. Must be implemented in module class if the module supports it.
@@ -380,6 +381,7 @@ class PhysicalLayer {
       \returns \ref status_codes
     */
     virtual int16_t checkOutputPower(int8_t power, int8_t* clipped);
+    virtual int16_t checkOutputPower(int8_t power, int8_t* clipped, bool forceHighPower);
 
     /*!
       \brief Set sync word. Must be implemented in module class if the module supports it.
