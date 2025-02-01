@@ -740,13 +740,13 @@ class PhysicalLayer {
       \param cfg Confioguration of this mode (mode-dependent).
       \returns \ref status_codes
     */
-    int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t cfg);
+    virtual int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t cfg);
 
     /*!
       \brief Launch previously staged mode.
       \returns \ref status_codes
     */
-    int16_t launchMode();
+    virtual int16_t launchMode();
 
     #if RADIOLIB_INTERRUPT_TIMING
 
