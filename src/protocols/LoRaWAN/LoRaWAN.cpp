@@ -1718,14 +1718,14 @@ int16_t LoRaWANNode::parseDownlink(uint8_t* data, size_t* len, LoRaWANEvent_t* e
     cid = *mPtr;      // MAC id is the first byte
 
     // fetch length of MAC downlink payload
-    state = this->getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true);
+    state = this->getMacLen(cid, &fLen, RADIOLIB_LORAWAN_DOWNLINK, true, mPtr + 1);
     if(state != RADIOLIB_ERR_NONE) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Unknown MAC CID %02x", cid);
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("WARNING: Skipping remaining MAC commands");
       break;
     }
 
-    // already fetch length of MAC answer payload (if any)
+    // already fetch length of MAC answer payload (if any), include CID
     uint8_t fLenRe = 0;
     (void)this->getMacLen(cid, &fLenRe, RADIOLIB_LORAWAN_UPLINK, true);
     // don't care about return value: the previous getMacLen() would have failed anyway
@@ -2484,17 +2484,21 @@ int16_t LoRaWANNode::getMacDeviceTimeAns(uint32_t* gpsEpoch, uint8_t* fraction, 
   return(RADIOLIB_ERR_NONE);
 }
 
-int16_t LoRaWANNode::getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive) {
+int16_t LoRaWANNode::getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive, uint8_t* payload) {
+  (void)payload;
+
+  *len = 0;
+  if(inclusive) {
+    *len += 1;    // add one byte for CID
+  }
+  
   LoRaWANMacCommand_t cmd = RADIOLIB_LORAWAN_MAC_COMMAND_NONE;
   int16_t state = this->getMacCommand(cid, &cmd);
   RADIOLIB_ASSERT(state);
   if(dir == RADIOLIB_LORAWAN_UPLINK) {
-    *len = cmd.lenUp;
+    *len += cmd.lenUp;
   } else {
-    *len = cmd.lenDn;
-  }
-  if(inclusive) {
-    *len += 1;    // add one byte for CID
+    *len += cmd.lenDn;
   }
   return(RADIOLIB_ERR_NONE);
 }
@@ -2596,7 +2600,8 @@ void LoRaWANNode::clearMacCommands(uint8_t* inOut, uint8_t* lenInOut, uint8_t di
   uint8_t numDeleted = 0;
   while(i < *lenInOut) {
     uint8_t id = inOut[i];
-    uint8_t fLen = 1; // if there is an incorrect MAC command, we should at least move forward by one byte
+    uint8_t fLen = 0;
+    // include CID byte, so if command fails, we still move one byte forward
     (void)this->getMacLen(id, &fLen, dir, true);
 
     // only clear MAC command if it should not persist until a downlink is received

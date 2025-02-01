@@ -1030,7 +1030,8 @@ class LoRaWANNode {
 
     // get the length of a certain MAC command in a specific direction (up/down)
     // if inclusive is true, add one for the CID byte
-    int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false);
+    // include payload in case the MAC command has a dynamic length
+    virtual int16_t getMacLen(uint8_t cid, uint8_t* len, uint8_t dir, bool inclusive = false, uint8_t* payload = NULL);
 
     // find out of a MAC command should persist destruction
     // in uplink direction, some commands must persist if no downlink is received

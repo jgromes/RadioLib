@@ -628,6 +628,13 @@ class SX126x: public PhysicalLayer {
     */
     int16_t standby(uint8_t mode, bool wakeup = true);
 
+    /*!
+      \brief Handle LR-FHSS hop. 
+      When using LR-FHSS in interrupt-driven mode, this method MUST be called each time an interrupt is triggered!
+      \returns \ref status_codes
+    */
+    int16_t hopLRFHSS();
+
     // interrupt methods
 
     /*!
