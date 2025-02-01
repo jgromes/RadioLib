@@ -1364,8 +1364,17 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     RADIOLIB_ASSERT(state);
 
     // calculate the Rx timeout
-    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + 2*this->scanGuard*1000;
+    RadioLibTime_t timeoutHost = this->phyLayer->getTimeOnAir(0) + this->scanGuard*1000;
     RadioLibTime_t timeoutMod  = this->phyLayer->calculateRxTimeout(timeoutHost);
+    
+    // TODO remove default arguments
+    RadioModeConfig_t modeCfg;
+    modeCfg.receive.timeout = timeoutMod;
+    modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
+    modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
+    modeCfg.receive.len = 0;
+    state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, modeCfg);
+    RADIOLIB_ASSERT(state);
 
     // wait for the start of the Rx window
     RadioLibTime_t waitLen = tReference + dlDelays[window] - mod->hal->millis();
@@ -1380,14 +1389,13 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     mod->hal->delay(waitLen);
 
     // open Rx window by starting receive with specified timeout
-    // TODO remove default arguments
-    state = this->phyLayer->startReceive(timeoutMod, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0);
+    state = this->phyLayer->launchMode();
     tOpen = mod->hal->millis();
     RADIOLIB_ASSERT(state);
-    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + scanGuard / 2));
+    RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Opening Rx%d window (%d ms timeout)... <-- Rx Delay end ", window, (int)(timeoutHost / 1000 + 2));
     
     // wait for the timeout to complete (and a small additional delay)
-    mod->hal->delay(timeoutHost / 1000 + this->scanGuard / 2);
+    mod->hal->delay(timeoutHost / 1000 + 2);
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Closing Rx%d window", window);
 
     // if the IRQ bit for Rx Timeout is not set, something is received, so stop the windows
