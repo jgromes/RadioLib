@@ -906,13 +906,21 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_ASSERT(state);
 
   // calculate JoinRequest time-on-air in milliseconds
+  RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
+
   if(this->dwellTimeUp) {
-    RadioLibTime_t toa = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
     if(toa > this->dwellTimeUp) {
       RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dwell time exceeded: ToA = %lu, max = %d", (unsigned long)toa, this->dwellTimeUp);
       return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
     }
   }
+
+  RadioModeConfig_t modeCfg;
+  modeCfg.transmit.data = joinRequestMsg;
+  modeCfg.transmit.len = RADIOLIB_LORAWAN_JOIN_REQUEST_LEN;
+  modeCfg.transmit.addr = 0;
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, modeCfg);
+  RADIOLIB_ASSERT(state);
 
   // if requested, delay until transmitting JoinRequest
   RadioLibTime_t tNow = mod->hal->millis();
@@ -923,8 +931,26 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
     }
   }
 
-  // send it
-  state = this->phyLayer->transmit(joinRequestMsg, RADIOLIB_LORAWAN_JOIN_REQUEST_LEN);
+  // start transmission
+  state = this->phyLayer->launchMode();
+  RADIOLIB_ASSERT(state);
+
+  // sleep for the duration of the transmission
+  mod->hal->delay(toa);
+  RadioLibTime_t txEnd = mod->hal->millis();
+
+  // wait for an additional transmission duration as Tx timeout period
+  while(!mod->hal->digitalRead(mod->getIrq())) {
+    // yield for multi-threaded platforms
+    mod->hal->yield();
+
+    if(mod->hal->millis() > txEnd + toa) {
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
+  }
+  state = this->phyLayer->finishTransmit();
+
+  // set the timestamp so that we can measure when to start receiving
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_ASSERT(state);
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("JoinRequest sent (DevNonce = %d) <-- Rx Delay start", this->devNonce);
@@ -935,7 +961,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   LoRaWANNode::hton<uint16_t>(&this->bufferNonces[RADIOLIB_LORAWAN_NONCES_DEV_NONCE], this->devNonce);
 
   // set the Time on Air of the JoinRequest
-  this->lastToA = this->phyLayer->getTimeOnAir(RADIOLIB_LORAWAN_JOIN_REQUEST_LEN) / 1000;
+  this->lastToA = toa;
 
   // configure Rx1 and Rx2 delay for JoinAccept message - these are re-configured once a valid JoinAccept is received
   this->rxDelays[1] = RADIOLIB_LORAWAN_JOIN_ACCEPT_DELAY_1_MS;
@@ -1270,7 +1296,6 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   Module* mod = this->phyLayer->getMod();
 
   // check if the Rx windows were closed after sending the previous uplink
-  // this FORCES a user to call downlink() after an uplink()
   if(this->rxDelayEnd < this->rxDelayStart) {
     // not enough time elapsed since the last uplink, we may still be in an Rx window
     return(RADIOLIB_ERR_UPLINK_UNAVAILABLE);
@@ -1295,6 +1320,22 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
                                  RADIOLIB_LORAWAN_UPLINK, 
                                  this->txPowerMax - 2*this->txPowerSteps);
   RADIOLIB_ASSERT(state);
+
+  // check whether dwell time limitation is exceeded
+  RadioLibTime_t toa = this->phyLayer->getTimeOnAir(len) / 1000;
+  if(this->dwellTimeUp) {
+    if(toa > this->dwellTimeUp) {
+      RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Dwell time exceeded: ToA = %lu, max = %d", (unsigned long)toa, this->dwellTimeUp);
+      return(RADIOLIB_ERR_DWELL_TIME_EXCEEDED);
+    }
+  }
+
+  RadioModeConfig_t modeCfg;
+  modeCfg.transmit.data = in;
+  modeCfg.transmit.len = len;
+  modeCfg.transmit.addr = 0;
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, modeCfg);
+  RADIOLIB_ASSERT(state);
   
   // if requested, wait until transmitting uplink
   tNow = mod->hal->millis();
@@ -1305,14 +1346,31 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
     }
   }
 
-  state = this->phyLayer->transmit(in, len);
+  // start transmission
+  state = this->phyLayer->launchMode();
+  RADIOLIB_ASSERT(state);
+
+  // sleep for the duration of the transmission
+  mod->hal->delay(toa);
+  RadioLibTime_t txEnd = mod->hal->millis();
+
+  // wait for an additional transmission duration as Tx timeout period
+  while(!mod->hal->digitalRead(mod->getIrq())) {
+    // yield for multi-threaded platforms
+    mod->hal->yield();
+
+    if(mod->hal->millis() > txEnd + toa) {
+      return(RADIOLIB_ERR_TX_TIMEOUT);
+    }
+  }
+  state = this->phyLayer->finishTransmit();
 
   // set the timestamp so that we can measure when to start receiving
   this->rxDelayStart = mod->hal->millis();
   RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Uplink sent <-- Rx Delay start");
 
   // increase Time on Air of the uplink sequence
-  this->lastToA += this->phyLayer->getTimeOnAir(len) / 1000;
+  this->lastToA += toa;
 
   return(state);
 }
