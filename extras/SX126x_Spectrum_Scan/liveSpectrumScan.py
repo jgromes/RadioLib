@@ -170,6 +170,10 @@ class SpectrumScan:
                     except serial.SerialException as e:
                         LOG_WARNING(e)
                         continue
+                    except UnicodeDecodeError as e:
+                        LOG_WARNING("Please check the baud rate, as using a different value than the one set on the device may cause errors.")
+                        LOG_ERROR(e)
+                        continue
             
             com.reset_input_buffer()
             com.reset_output_buffer()
