@@ -168,8 +168,9 @@ class SpectrumScan:
                             continue
                         self.__data_dissector(bytestream)
                     except serial.SerialException as e:
-                        LOG_ERROR(e)
-                        break
+                        LOG_WARNING(e)
+                        continue
+            
             com.reset_input_buffer()
             com.reset_output_buffer()
             com.close()
@@ -232,6 +233,12 @@ class SpectrumScan:
         self.current_freq = args.freqStart
         self.start_freq = args.freqStart
         self.end_freq = args.freqEnd
+
+        try:
+            self.device_uart.open()
+        except serial.SerialException as e:
+            LOG_ERROR(e)
+            return
 
         # Update the initial values with the args values
         self.delta_freq = int((self.end_freq - self.start_freq) / DEFAULT_STEP_PER_FREQ)
