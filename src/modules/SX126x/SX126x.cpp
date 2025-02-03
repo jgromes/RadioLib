@@ -1622,7 +1622,7 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
         RADIOLIB_ASSERT(state);
 
         // activate hopping
-        uint8_t hopCfg[] = { RADIOLIB_SX126X_HOPPING_ENABLED, (uint8_t)frameLen, (uint8_t)this->lrFhssFrameHopsRem };
+        const uint8_t hopCfg[] = { RADIOLIB_SX126X_HOPPING_ENABLED, (uint8_t)frameLen, (uint8_t)this->lrFhssFrameHopsRem };
         state = writeRegister(RADIOLIB_SX126X_REG_HOPPING_ENABLE, hopCfg, 3);
         RADIOLIB_ASSERT(state);
 
