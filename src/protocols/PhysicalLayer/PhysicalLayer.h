@@ -151,7 +151,7 @@ struct ReceiveConfig_t {
 
 struct TransmitConfig_t {
   /*! \brief Binary data that will be transmitted. */
-  uint8_t* data;
+  const uint8_t* data;
 
   /*! \brief Length of binary data to transmit (in bytes). */
   size_t len;
@@ -306,7 +306,7 @@ class PhysicalLayer {
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len);
+    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
