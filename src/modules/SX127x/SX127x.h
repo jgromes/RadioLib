@@ -800,15 +800,6 @@ class SX127x: public PhysicalLayer {
     bool fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen);
 
     /*!
-      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
-      \param data Binary data that will be transmitted.
-      \param len Length of binary data to transmit (in bytes).
-      \param addr Node address to transmit the packet to. Only used in FSK mode.
-      \returns \ref status_codes
-    */
-    int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
-
-    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */
