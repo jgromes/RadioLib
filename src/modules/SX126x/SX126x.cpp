@@ -518,21 +518,6 @@ void SX126x::clearChannelScanAction() {
   this->clearDio1Action();
 }
 
-int16_t SX126x::startTransmit(const uint8_t* data, size_t len, uint8_t addr) {
-  RadioModeConfig_t cfg = {
-    .transmit = {
-      .data = const_cast<uint8_t*>(data),
-      .len = len,
-      .addr = addr,
-    }
-  };
-
-  int16_t state = this->stageMode(RADIOLIB_RADIO_MODE_TX, cfg);
-  RADIOLIB_ASSERT(state);
-
-  return(this->launchMode());
-}
-
 int16_t SX126x::finishTransmit() {
   // clear interrupt flags
   int16_t state = clearIrqStatus();
@@ -544,21 +529,6 @@ int16_t SX126x::finishTransmit() {
 
 int16_t SX126x::startReceive() {
   return(this->startReceive(RADIOLIB_SX126X_RX_TIMEOUT_INF, RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RADIOLIB_IRQ_RX_DEFAULT_MASK, 0));
-}
-
-int16_t SX126x::startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len) {
-  RadioModeConfig_t cfg = {
-    .receive = {
-      .timeout = timeout,
-      .irqFlags = irqFlags,
-      .irqMask = irqMask,
-      .len = len,
-    }
-  };
-
-  int16_t state = this->stageMode(RADIOLIB_RADIO_MODE_RX, cfg);
-  RADIOLIB_ASSERT(state);
-  return(this->launchMode());
 }
 
 int16_t SX126x::startReceiveDutyCycle(uint32_t rxPeriod, uint32_t sleepPeriod, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask) {
@@ -1568,44 +1538,43 @@ int16_t SX126x::getModem(ModemType_t* modem) {
   return(RADIOLIB_ERR_WRONG_MODEM);
 }
 
-int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
+int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) {
   int16_t state;
 
   switch(mode) {
     case(RADIOLIB_RADIO_MODE_RX): {
       // in implicit header mode, use the provided length if it is nonzero
       // otherwise we trust the user has previously set the payload length manually
-      if((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (cfg.receive.len != 0)) {
-        this->implicitLen = cfg.receive.len;
+      if((this->headerType == RADIOLIB_SX126X_LORA_HEADER_IMPLICIT) && (cfg->receive.len != 0)) {
+        this->implicitLen = cfg->receive.len;
       }
 
-      state = startReceiveCommon(cfg.receive.timeout, cfg.receive.irqFlags, cfg.receive.irqMask);
+      state = startReceiveCommon(cfg->receive.timeout, cfg->receive.irqFlags, cfg->receive.irqMask);
       RADIOLIB_ASSERT(state);
 
-      // set RF switch (if present)
-      this->mod->setRfSwitchState(Module::MODE_RX);
+      this->rxTimeout = cfg->receive.timeout;
     } break;
   
     case(RADIOLIB_RADIO_MODE_TX): {
       // check packet length
-      if(cfg.transmit.len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
+      if(cfg->transmit.len > RADIOLIB_SX126X_MAX_PACKET_LENGTH) {
         return(RADIOLIB_ERR_PACKET_TOO_LONG);
       }
 
       // maximum packet length is decreased by 1 when address filtering is active
       if((RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF != RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF) && 
-        (cfg.transmit.len > RADIOLIB_SX126X_MAX_PACKET_LENGTH - 1)) {
+        (cfg->transmit.len > RADIOLIB_SX126X_MAX_PACKET_LENGTH - 1)) {
         return(RADIOLIB_ERR_PACKET_TOO_LONG);
       }
 
       // set packet Length
-      int16_t state = RADIOLIB_ERR_NONE;
+      state = RADIOLIB_ERR_NONE;
       uint8_t modem = getPacketType();
       if(modem == RADIOLIB_SX126X_PACKET_TYPE_LORA) {
-        state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, cfg.transmit.len, this->headerType, this->invertIQEnabled);
+        state = setPacketParams(this->preambleLengthLoRa, this->crcTypeLoRa, cfg->transmit.len, this->headerType, this->invertIQEnabled);
       
       } else if(modem == RADIOLIB_SX126X_PACKET_TYPE_GFSK) {
-        state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType, cfg.transmit.len);
+        state = setPacketParamsFSK(this->preambleLengthFSK, this->preambleDetLength, this->crcTypeFSK, this->syncWordLength, RADIOLIB_SX126X_GFSK_ADDRESS_FILT_OFF, this->whitening, this->packetType, cfg->transmit.len);
 
       } else if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
         return(RADIOLIB_ERR_UNKNOWN);
@@ -1627,7 +1596,7 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
 
       // write packet to buffer
       if(modem != RADIOLIB_SX126X_PACKET_TYPE_LR_FHSS) {
-        state = writeBuffer(const_cast<uint8_t*>(cfg.transmit.data), cfg.transmit.len);
+        state = writeBuffer(cfg->transmit.data, cfg->transmit.len);
       
       } else {
         // first, reset the LR-FHSS state machine
@@ -1645,7 +1614,7 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
         this->lrFhssFrameBitsRem = 0;
         this->lrFhssFrameHopsRem = 0;
         this->lrFhssHopNum = 0;
-        state = buildLRFHSSPacket(const_cast<uint8_t*>(cfg.transmit.data), cfg.transmit.len, frame, &frameLen, &this->lrFhssFrameBitsRem, &this->lrFhssFrameHopsRem);
+        state = buildLRFHSSPacket(cfg->transmit.data, cfg->transmit.len, frame, &frameLen, &this->lrFhssFrameBitsRem, &this->lrFhssFrameHopsRem);
         RADIOLIB_ASSERT(state);
 
         // FIXME check max len for FHSS
@@ -1678,9 +1647,6 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
       // fix sensitivity
       state = fixSensitivity();
       RADIOLIB_ASSERT(state);
-
-      // set RF switch (if present)
-      this->mod->setRfSwitchState(this->txMode);
     } break;
     
     default:
@@ -1688,8 +1654,6 @@ int16_t SX126x::stageMode(RadioModeType_t mode, RadioModeConfig_t cfg) {
   }
 
   this->stagedMode = mode;
-  this->stagedConfig = cfg;
-
   return(state);
 }
 
@@ -1697,10 +1661,12 @@ int16_t SX126x::launchMode() {
   int16_t state;
   switch(this->stagedMode) {
     case(RADIOLIB_RADIO_MODE_RX): {
-      state = setRx(this->stagedConfig.receive.timeout);
+      this->mod->setRfSwitchState(Module::MODE_RX);
+      state = setRx(this->rxTimeout);
     } break;
   
     case(RADIOLIB_RADIO_MODE_TX): {
+      this->mod->setRfSwitchState(this->txMode);
       state = setTx(RADIOLIB_SX126X_TX_TIMEOUT_NONE);
       RADIOLIB_ASSERT(state);
 
