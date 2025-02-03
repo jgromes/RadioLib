@@ -919,7 +919,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   modeCfg.transmit.data = joinRequestMsg;
   modeCfg.transmit.len = RADIOLIB_LORAWAN_JOIN_REQUEST_LEN;
   modeCfg.transmit.addr = 0;
-  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, modeCfg);
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, &modeCfg);
   RADIOLIB_ASSERT(state);
 
   // if requested, delay until transmitting JoinRequest
@@ -1334,7 +1334,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   modeCfg.transmit.data = in;
   modeCfg.transmit.len = len;
   modeCfg.transmit.addr = 0;
-  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, modeCfg);
+  state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_TX, &modeCfg);
   RADIOLIB_ASSERT(state);
   
   // if requested, wait until transmitting uplink
@@ -1431,7 +1431,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     modeCfg.receive.irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS;
     modeCfg.receive.irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK;
     modeCfg.receive.len = 0;
-    state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, modeCfg);
+    state = this->phyLayer->stageMode(RADIOLIB_RADIO_MODE_RX, &modeCfg);
     RADIOLIB_ASSERT(state);
 
     // wait for the start of the Rx window

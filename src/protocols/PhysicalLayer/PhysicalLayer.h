@@ -737,10 +737,10 @@ class PhysicalLayer {
     /*!
       \brief Stage mode of the radio to be launched later using launchMode.
       \param mode Radio mode to prepare.
-      \param cfg Confioguration of this mode (mode-dependent).
+      \param cfg Configuration of this mode (mode-dependent).
       \returns \ref status_codes
     */
-    virtual int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t cfg);
+    virtual int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg);
 
     /*!
       \brief Launch previously staged mode.
@@ -770,7 +770,6 @@ class PhysicalLayer {
 #endif
     uint32_t irqMap[10] = { 0 };
     RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
-    RadioModeConfig_t stagedConfig = { .standby = { .mode = 0 } };
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);
