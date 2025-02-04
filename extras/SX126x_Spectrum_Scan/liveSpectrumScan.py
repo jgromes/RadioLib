@@ -11,7 +11,6 @@ import sys
 import serial
 import threading
 import argparse
-import platform
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
@@ -22,19 +21,11 @@ FREQ_FRAME_MARK = "FREQ"
 DEFAULT_COLOR_MAP = "BuGn"
 DEFAULT_RSSI_OFFSET = -11
 SCAN_WIDTH = 33
-DEFAULT_START_FREQ = 860
+DEFAULT_START_FREQ = 150
 DEFAULT_STEP_PER_FREQ = 0.2
-DEFAULT_END_FREQ = 928
+DEFAULT_END_FREQ = 960
 DEFAULT_BAUDRATE = 115200
 LIMIT_COUNT = 2
-
-if platform.system() == "Windows":
-    DEFAULT_COMPORT = "COM1"
-elif platform.system() == "Darwin":
-    DEFAULT_COMPORT = "/dev/tty.usbmodem0001"
-else:
-    DEFAULT_COMPORT = "/dev/ttyACM0"
-
 
 def LOG_INFO(message):
     """Function to log information."""
@@ -88,7 +79,6 @@ class SpectrumScan:
             "port",
             type=str,
             help="COM port to connect to the device",
-            default=DEFAULT_COMPORT,
         )
         self.parser.add_argument(
             "-b",
@@ -234,6 +224,7 @@ class SpectrumScan:
             self.rssi_offset = args.offset
 
         self.device_uart.port = args.port
+        self.device_uart.baudrate = args.baudrate
         self.current_freq = args.freqStart
         self.start_freq = args.freqStart
         self.end_freq = args.freqEnd
