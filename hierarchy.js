@@ -102,6 +102,8 @@ var hierarchy =
       [ "MorseClient", "class_morse_client.html", null ],
       [ "RTTYClient", "class_r_t_t_y_client.html", null ]
     ] ],
+    [ "RadioModeConfig_t", "union_radio_mode_config__t.html", null ],
+    [ "ReceiveConfig_t", "struct_receive_config__t.html", null ],
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
     [ "RFM95", "class_r_f_m95.html", null ],
@@ -110,8 +112,11 @@ var hierarchy =
     [ "RFM98", "class_r_f_m98.html", null ],
     [ "Module::RfSwitchMode_t", "struct_module_1_1_rf_switch_mode__t.html", null ],
     [ "RSSIScanConfig_t", "struct_r_s_s_i_scan_config__t.html", null ],
+    [ "SleepConfig_t", "struct_sleep_config__t.html", null ],
     [ "Module::SPIConfig_t", "struct_module_1_1_s_p_i_config__t.html", null ],
     [ "SSTVClient", "class_s_s_t_v_client.html", null ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", null ],
-    [ "tone_t", "structtone__t.html", null ]
+    [ "StandbyConfig_t", "struct_standby_config__t.html", null ],
+    [ "tone_t", "structtone__t.html", null ],
+    [ "TransmitConfig_t", "struct_transmit_config__t.html", null ]
 ];

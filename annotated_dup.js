@@ -52,6 +52,8 @@ var annotated_dup =
     [ "RadioLibCRC", "class_radio_lib_c_r_c.html", "class_radio_lib_c_r_c" ],
     [ "RadioLibHal", "class_radio_lib_hal.html", "class_radio_lib_hal" ],
     [ "RadioLibPrint", "class_radio_lib_print.html", null ],
+    [ "RadioModeConfig_t", "union_radio_mode_config__t.html", "union_radio_mode_config__t" ],
+    [ "ReceiveConfig_t", "struct_receive_config__t.html", "struct_receive_config__t" ],
     [ "RF69", "class_r_f69.html", "class_r_f69" ],
     [ "RFM22", "class_r_f_m22.html", null ],
     [ "RFM23", "class_r_f_m23.html", null ],
@@ -65,8 +67,10 @@ var annotated_dup =
     [ "Si4431", "class_si4431.html", "class_si4431" ],
     [ "Si4432", "class_si4432.html", "class_si4432" ],
     [ "Si443x", "class_si443x.html", "class_si443x" ],
+    [ "SleepConfig_t", "struct_sleep_config__t.html", "struct_sleep_config__t" ],
     [ "SSTVClient", "class_s_s_t_v_client.html", "class_s_s_t_v_client" ],
     [ "SSTVMode_t", "struct_s_s_t_v_mode__t.html", "struct_s_s_t_v_mode__t" ],
+    [ "StandbyConfig_t", "struct_standby_config__t.html", "struct_standby_config__t" ],
     [ "STM32WLx", "class_s_t_m32_w_lx.html", "class_s_t_m32_w_lx" ],
     [ "STM32WLx_Module", "class_s_t_m32_w_lx___module.html", null ],
     [ "Stm32wlxHal", "class_stm32wlx_hal.html", "class_stm32wlx_hal" ],
@@ -87,5 +91,6 @@ var annotated_dup =
     [ "SX1281", "class_s_x1281.html", "class_s_x1281" ],
     [ "SX1282", "class_s_x1282.html", "class_s_x1282" ],
     [ "SX128x", "class_s_x128x.html", "class_s_x128x" ],
-    [ "tone_t", "structtone__t.html", "structtone__t" ]
+    [ "tone_t", "structtone__t.html", "structtone__t" ],
+    [ "TransmitConfig_t", "struct_transmit_config__t.html", "struct_transmit_config__t" ]
 ];

@@ -202,18 +202,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearIrqAction</b> ()
 <tr class="memitem:a95ddec84ae2fb19989c333d42d4dc5fa" id="r_a95ddec84ae2fb19989c333d42d4dc5fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a95ddec84ae2fb19989c333d42d4dc5fa">clearPacketSentAction</a> () override</td></tr>
 <tr class="memdesc:a95ddec84ae2fb19989c333d42d4dc5fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears interrupt service routine to call when a packet is sent.  <br /></td></tr>
 <tr class="separator:a95ddec84ae2fb19989c333d42d4dc5fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a459825c5b46a2ca515e62042d605aa67" id="r_a459825c5b46a2ca515e62042d605aa67"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a459825c5b46a2ca515e62042d605aa67">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr=0) override</td></tr>
-<tr class="memdesc:a459825c5b46a2ca515e62042d605aa67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
-<tr class="separator:a459825c5b46a2ca515e62042d605aa67"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaff9a5b9b7636693c98bd1c93a5863e5" id="r_aaff9a5b9b7636693c98bd1c93a5863e5"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aaff9a5b9b7636693c98bd1c93a5863e5">finishTransmit</a> () override</td></tr>
 <tr class="memdesc:aaff9a5b9b7636693c98bd1c93a5863e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clean up after transmission is done.  <br /></td></tr>
 <tr class="separator:aaff9a5b9b7636693c98bd1c93a5863e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6ce285cc1b76ce028db6442a421ed8d" id="r_aa6ce285cc1b76ce028db6442a421ed8d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d">startReceive</a> () override</td></tr>
 <tr class="memdesc:aa6ce285cc1b76ce028db6442a421ed8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method with default parameters. Implemented for compatibility with <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>.  <br /></td></tr>
 <tr class="separator:aa6ce285cc1b76ce028db6442a421ed8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae79c42c4ceceb7a6897731d01d365281" id="r_ae79c42c4ceceb7a6897731d01d365281"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ae79c42c4ceceb7a6897731d01d365281">startReceive</a> (uint32_t timeout, uint32_t irqFlags=RADIOLIB_LR11X0_IRQ_RX_DONE, uint32_t irqMask=0, size_t len=0)</td></tr>
-<tr class="memdesc:ae79c42c4ceceb7a6897731d01d365281"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. IRQ1 will be activated when full packet is received.  <br /></td></tr>
-<tr class="separator:ae79c42c4ceceb7a6897731d01d365281"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0309154558a0d88e2e8957e4dbf6a2f8" id="r_a0309154558a0d88e2e8957e4dbf6a2f8"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a0309154558a0d88e2e8957e4dbf6a2f8">getIrqStatus</a> ()</td></tr>
 <tr class="memdesc:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the current IRQ status.  <br /></td></tr>
 <tr class="separator:a0309154558a0d88e2e8957e4dbf6a2f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -413,6 +407,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearWiFiScanAction</
 <tr class="memitem:adc8fbcfff7cd3b801dcee22e87bc2598" id="r_adc8fbcfff7cd3b801dcee22e87bc2598"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#adc8fbcfff7cd3b801dcee22e87bc2598">calibrateImageRejection</a> (float freqMin, float freqMax)</td></tr>
 <tr class="memdesc:adc8fbcfff7cd3b801dcee22e87bc2598"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform image rejection calibration for the specified frequency band. WARNING: Use at your own risk! Setting incorrect values may lead to decreased performance.  <br /></td></tr>
 <tr class="separator:adc8fbcfff7cd3b801dcee22e87bc2598"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66af76a767045af7ef248868ab6a6c28" id="r_a66af76a767045af7ef248868ab6a6c28"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a66af76a767045af7ef248868ab6a6c28">stageMode</a> (RadioModeType_t mode, <a class="el" href="union_radio_mode_config__t.html">RadioModeConfig_t</a> *cfg) override</td></tr>
+<tr class="memdesc:a66af76a767045af7ef248868ab6a6c28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stage mode of the radio to be launched later using launchMode.    <br /></td></tr>
+<tr class="separator:a66af76a767045af7ef248868ab6a6c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeae4664f6b20a8a88f625b71245480d" id="r_aaeae4664f6b20a8a88f625b71245480d"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#aaeae4664f6b20a8a88f625b71245480d">launchMode</a> () override</td></tr>
+<tr class="memdesc:aaeae4664f6b20a8a88f625b71245480d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.    <br /></td></tr>
+<tr class="separator:aaeae4664f6b20a8a88f625b71245480d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a492b2d057dd803c3884fa1adc8e22534" id="r_a492b2d057dd803c3884fa1adc8e22534"><td class="memItemLeft" align="right" valign="top">int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a492b2d057dd803c3884fa1adc8e22534">transmit</a> (const char *str, uint8_t addr=0)</td></tr>
 <tr class="memdesc:a492b2d057dd803c3884fa1adc8e22534"><td class="mdescLeft">&#160;</td><td class="mdescRight">C-string transmit method.  <br /></td></tr>
 <tr class="separator:a492b2d057dd803c3884fa1adc8e22534"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -428,6 +428,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>clearWiFiScanAction</
 <tr class="memitem:af79757dbbd62e080c1bad2e608ab940c" id="r_af79757dbbd62e080c1bad2e608ab940c"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#af79757dbbd62e080c1bad2e608ab940c">startTransmit</a> (const uint8_t *data, size_t len, uint8_t addr=0)</td></tr>
 <tr class="memdesc:af79757dbbd62e080c1bad2e608ab940c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven binary transmit method.  <br /></td></tr>
 <tr class="separator:af79757dbbd62e080c1bad2e608ab940c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18664ad615c5507ff1690baaca90b094" id="r_a18664ad615c5507ff1690baaca90b094"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a18664ad615c5507ff1690baaca90b094">startReceive</a> ()</td></tr>
+<tr class="memdesc:a18664ad615c5507ff1690baaca90b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to received mode using its default configuration.  <br /></td></tr>
+<tr class="separator:a18664ad615c5507ff1690baaca90b094"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93500dfbcfd39837e04c0f3eaa40d97" id="r_ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#ae93500dfbcfd39837e04c0f3eaa40d97">startReceive</a> (uint32_t timeout, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len=0)</td></tr>
+<tr class="memdesc:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <br /></td></tr>
+<tr class="separator:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3563453988a83d22dd07d4691543a300" id="r_a3563453988a83d22dd07d4691543a300"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_l_r11x0.html#a3563453988a83d22dd07d4691543a300">readData</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:a3563453988a83d22dd07d4691543a300"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads data that was received after calling startReceive method.  <br /></td></tr>
 <tr class="separator:a3563453988a83d22dd07d4691543a300"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1842,6 +1848,36 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 
 </div>
 </div>
+<a id="aaeae4664f6b20a8a88f625b71245480d" name="aaeae4664f6b20a8a88f625b71245480d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaeae4664f6b20a8a88f625b71245480d">&#9670;&#160;</a></span>launchMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::launchMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Launch previously staged mode.   </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a5c5977bc9f54f21665b022a99e6c87cc">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a89b16d2231f588b67dc3aab0c0a467f4" name="a89b16d2231f588b67dc3aab0c0a467f4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a89b16d2231f588b67dc3aab0c0a467f4">&#9670;&#160;</a></span>randomByte()</h2>
 
@@ -3251,6 +3287,54 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 
 </div>
 </div>
+<a id="a66af76a767045af7ef248868ab6a6c28" name="a66af76a767045af7ef248868ab6a6c28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66af76a767045af7ef248868ab6a6c28">&#9670;&#160;</a></span>stageMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t LR11x0::stageMode </td>
+          <td>(</td>
+          <td class="paramtype">RadioModeType_t&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_radio_mode_config__t.html">RadioModeConfig_t</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stage mode of the radio to be launched later using launchMode.   </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Radio mode to prepare. </td></tr>
+    <tr><td class="paramname">cfg</td><td>Configuration of this mode (mode-dependent). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a>   </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a06fa3b844c6028a78e29b7dff58c7c79">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="a74c3f3f8409f1fd0f41347b7d3c7dc24" name="a74c3f3f8409f1fd0f41347b7d3c7dc24"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a74c3f3f8409f1fd0f41347b7d3c7dc24">&#9670;&#160;</a></span>standby() <span class="overload">[1/2]</span></h2>
 
@@ -3386,8 +3470,38 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 
 </div>
 </div>
+<a id="a18664ad615c5507ff1690baaca90b094" name="a18664ad615c5507ff1690baaca90b094"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18664ad615c5507ff1690baaca90b094">&#9670;&#160;</a></span>startReceive() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::startReceive </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets module to received mode using its default configuration. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">PhysicalLayer</a>.</p>
+
+</div>
+</div>
 <a id="aa6ce285cc1b76ce028db6442a421ed8d" name="aa6ce285cc1b76ce028db6442a421ed8d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa6ce285cc1b76ce028db6442a421ed8d">&#9670;&#160;</a></span>startReceive() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6ce285cc1b76ce028db6442a421ed8d">&#9670;&#160;</a></span>startReceive() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3416,8 +3530,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 
 </div>
 </div>
-<a id="ae79c42c4ceceb7a6897731d01d365281" name="ae79c42c4ceceb7a6897731d01d365281"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae79c42c4ceceb7a6897731d01d365281">&#9670;&#160;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="ae93500dfbcfd39837e04c0f3eaa40d97" name="ae93500dfbcfd39837e04c0f3eaa40d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93500dfbcfd39837e04c0f3eaa40d97">&#9670;&#160;</a></span>startReceive() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3426,7 +3540,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int16_t LR11x0::startReceive </td>
+          <td class="memname">int16_t PhysicalLayer::startReceive </td>
           <td>(</td>
           <td class="paramtype">uint32_t&#160;</td>
           <td class="paramname"><em>timeout</em>, </td>
@@ -3434,14 +3548,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_LR11X0_IRQ_RX_DONE</code>, </td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_FLAGS</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>irqMask</em> = <code>0</code>, </td>
+          <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_MASK</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -3462,24 +3576,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Interrupt-driven receive method. IRQ1 will be activated when full packet is received. </p>
+<p>Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">timeout</td><td>Raw timeout value, expressed as multiples of 1/32.768 kHz (approximately 30.52 us). Defaults to RADIOLIB_LR11X0_RX_TIMEOUT_INF for infinite timeout (Rx continuous mode), set to RADIOLIB_LR11X0_RX_TIMEOUT_NONE for no timeout (Rx single mode). If timeout other than infinite is set, signal will be generated on IRQ1.</td></tr>
-    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags that will trigger IRQ1, defaults to RADIOLIB_LR11X0_IRQ_RX_DONE. </td></tr>
-    <tr><td class="paramname">irqMask</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
-    <tr><td class="paramname">len</td><td>Only for <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a> compatibility, not used. </td></tr>
+    <tr><td class="paramname">timeout</td><td>Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive). </td></tr>
+    <tr><td class="paramname">irqFlags</td><td>Sets the IRQ flags. </td></tr>
+    <tr><td class="paramname">irqMask</td><td>Sets the mask of IRQ flags that will trigger the radio interrupt pin. </td></tr>
+    <tr><td class="paramname">len</td><td>Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). </td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#ac88f9185b5e9fdc1d89df9797dcdd9b7">PhysicalLayer</a>.</p>
+<p>Reimplemented from <a class="el" href="class_physical_layer.html#ae93500dfbcfd39837e04c0f3eaa40d97">PhysicalLayer</a>.</p>
 
 </div>
 </div>
 <a id="a923654706eff5118ef6e84214e837f27" name="a923654706eff5118ef6e84214e837f27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a923654706eff5118ef6e84214e837f27">&#9670;&#160;</a></span>startTransmit() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a923654706eff5118ef6e84214e837f27">&#9670;&#160;</a></span>startTransmit() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3517,7 +3631,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
 </div>
 </div>
 <a id="af79757dbbd62e080c1bad2e608ab940c" name="af79757dbbd62e080c1bad2e608ab940c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79757dbbd62e080c1bad2e608ab940c">&#9670;&#160;</a></span>startTransmit() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af79757dbbd62e080c1bad2e608ab940c">&#9670;&#160;</a></span>startTransmit() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3562,61 +3676,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>XTAL</b></td></tr>
     <tr><td class="paramname">data</td><td>Binary data that will be transmitted. </td></tr>
     <tr><td class="paramname">len</td><td>Length of binary data to transmit (in bytes). </td></tr>
     <tr><td class="paramname">addr</td><td>Node address to transmit the packet to. Only used in FSK mode. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
-
-<p>Reimplemented from <a class="el" href="class_physical_layer.html#af79757dbbd62e080c1bad2e608ab940c">PhysicalLayer</a>.</p>
-
-</div>
-</div>
-<a id="a459825c5b46a2ca515e62042d605aa67" name="a459825c5b46a2ca515e62042d605aa67"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a459825c5b46a2ca515e62042d605aa67">&#9670;&#160;</a></span>startTransmit() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int16_t LR11x0::startTransmit </td>
-          <td>(</td>
-          <td class="paramtype">const uint8_t *&#160;</td>
-          <td class="paramname"><em>data</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>addr</em> = <code>0</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Interrupt-driven binary transmit method. Overloads for string-based transmissions are implemented in <a class="el" href="class_physical_layer.html" title="Provides common interface for protocols that run on LoRa/FSK modules, such as RTTY or LoRaWAN....">PhysicalLayer</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>Binary data to be sent. </td></tr>
-    <tr><td class="paramname">len</td><td>Number of bytes to send. </td></tr>
-    <tr><td class="paramname">addr</td><td>Address to send the data to. Will only be added if address filtering was enabled. </td></tr>
   </table>
   </dd>
 </dl>

@@ -143,9 +143,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18664ad615c5507ff1690baaca90b094" id="r_a18664ad615c5507ff1690baaca90b094"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a18664ad615c5507ff1690baaca90b094">startReceive</a> ()</td></tr>
 <tr class="memdesc:a18664ad615c5507ff1690baaca90b094"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets module to received mode using its default configuration.  <br /></td></tr>
 <tr class="separator:a18664ad615c5507ff1690baaca90b094"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac88f9185b5e9fdc1d89df9797dcdd9b7" id="r_ac88f9185b5e9fdc1d89df9797dcdd9b7"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ac88f9185b5e9fdc1d89df9797dcdd9b7">startReceive</a> (uint32_t timeout, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask, size_t len)</td></tr>
-<tr class="memdesc:ac88f9185b5e9fdc1d89df9797dcdd9b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <br /></td></tr>
-<tr class="separator:ac88f9185b5e9fdc1d89df9797dcdd9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae93500dfbcfd39837e04c0f3eaa40d97" id="r_ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ae93500dfbcfd39837e04c0f3eaa40d97">startReceive</a> (uint32_t timeout, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqFlags=RADIOLIB_IRQ_RX_DEFAULT_FLAGS, <a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a> irqMask=RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len=0)</td></tr>
+<tr class="memdesc:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt-driven receive method. A DIO pin will be activated when full packet is received. Must be implemented in module class.  <br /></td></tr>
+<tr class="separator:ae93500dfbcfd39837e04c0f3eaa40d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab82617fa3fa9f21d4cd427314ecc4af8" id="r_ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#ab82617fa3fa9f21d4cd427314ecc4af8">receive</a> (uint8_t *data, size_t len)</td></tr>
 <tr class="memdesc:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Binary receive method. Must be implemented in module class.  <br /></td></tr>
 <tr class="separator:ab82617fa3fa9f21d4cd427314ecc4af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -315,6 +315,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>dropSync</b> ()</td><
 <tr class="memitem:af061879bf694735297593c048d04a196" id="r_af061879bf694735297593c048d04a196"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#af061879bf694735297593c048d04a196">getModem</a> (ModemType_t *modem)</td></tr>
 <tr class="memdesc:af061879bf694735297593c048d04a196"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get modem currently in use by the radio.  <br /></td></tr>
 <tr class="separator:af061879bf694735297593c048d04a196"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06fa3b844c6028a78e29b7dff58c7c79" id="r_a06fa3b844c6028a78e29b7dff58c7c79"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a06fa3b844c6028a78e29b7dff58c7c79">stageMode</a> (RadioModeType_t mode, <a class="el" href="union_radio_mode_config__t.html">RadioModeConfig_t</a> *cfg)</td></tr>
+<tr class="memdesc:a06fa3b844c6028a78e29b7dff58c7c79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stage mode of the radio to be launched later using launchMode.  <br /></td></tr>
+<tr class="separator:a06fa3b844c6028a78e29b7dff58c7c79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c5977bc9f54f21665b022a99e6c87cc" id="r_a5c5977bc9f54f21665b022a99e6c87cc"><td class="memItemLeft" align="right" valign="top">virtual int16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_physical_layer.html#a5c5977bc9f54f21665b022a99e6c87cc">launchMode</a> ()</td></tr>
+<tr class="memdesc:a5c5977bc9f54f21665b022a99e6c87cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Launch previously staged mode.  <br /></td></tr>
+<tr class="separator:a5c5977bc9f54f21665b022a99e6c87cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
 Friends</h2></td></tr>
@@ -1058,6 +1064,36 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
 <p>Reimplemented in <a class="el" href="class_l_r11x0.html#af85c16956c2250dbf338a298c074d28c">LR11x0</a>, <a class="el" href="class_s_x126x.html#a269c8e4ae0d21af88e9422ccf9708c1e">SX126x</a>, <a class="el" href="class_s_x127x.html#a363a436978ba990e1bf7d73f648ad7e9">SX127x</a>, and <a class="el" href="class_s_x128x.html#a46e7979288205689ea97f1c26d1da07e">SX128x</a>.</p>
+
+</div>
+</div>
+<a id="a5c5977bc9f54f21665b022a99e6c87cc" name="a5c5977bc9f54f21665b022a99e6c87cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c5977bc9f54f21665b022a99e6c87cc">&#9670;&#160;</a></span>launchMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::launchMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Launch previously staged mode. </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#aaeae4664f6b20a8a88f625b71245480d">LR11x0</a>, <a class="el" href="class_s_x126x.html#aadc732e47fb44acf5d6e0ede7b00b4d2">SX126x</a>, <a class="el" href="class_s_x127x.html#a538b43314081e8b3eda95e0011d1e5b9">SX127x</a>, and <a class="el" href="class_s_x128x.html#ad34368fb77de08630ed06ae797c9e483">SX128x</a>.</p>
 
 </div>
 </div>
@@ -2117,6 +2153,54 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 
 </div>
 </div>
+<a id="a06fa3b844c6028a78e29b7dff58c7c79" name="a06fa3b844c6028a78e29b7dff58c7c79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06fa3b844c6028a78e29b7dff58c7c79">&#9670;&#160;</a></span>stageMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int16_t PhysicalLayer::stageMode </td>
+          <td>(</td>
+          <td class="paramtype">RadioModeType_t&#160;</td>
+          <td class="paramname"><em>mode</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="union_radio_mode_config__t.html">RadioModeConfig_t</a> *&#160;</td>
+          <td class="paramname"><em>cfg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Stage mode of the radio to be launched later using launchMode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">mode</td><td>Radio mode to prepare. </td></tr>
+    <tr><td class="paramname">cfg</td><td>Configuration of this mode (mode-dependent). </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
+
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a66af76a767045af7ef248868ab6a6c28">LR11x0</a>, <a class="el" href="class_s_x126x.html#ab30acdc12ee310873189df2cfa376ed6">SX126x</a>, <a class="el" href="class_s_x127x.html#a3bd7fb49a3b27707aff6636ff6dee550">SX127x</a>, and <a class="el" href="class_s_x128x.html#a65441afe4db0e96788d35b35a2075818">SX128x</a>.</p>
+
+</div>
+</div>
 <a id="acbcaf6aefcb77a354797e66222fe5018" name="acbcaf6aefcb77a354797e66222fe5018"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acbcaf6aefcb77a354797e66222fe5018">&#9670;&#160;</a></span>standby() <span class="overload">[1/2]</span></h2>
 
@@ -2291,12 +2375,12 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 <p>Sets module to received mode using its default configuration. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_c_c1101.html#ae71e947abf6a07b194c6c6d64fd3eb19">CC1101</a>, <a class="el" href="class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d">LR11x0</a>, <a class="el" href="classn_r_f24.html#a3c6aa3622c887118fb8d8cb2689fdff2">nRF24</a>, <a class="el" href="class_r_f69.html#a3bece228d369dcc1aab6a5b29d0685a8">RF69</a>, <a class="el" href="class_si443x.html#ae188dec3175a3aec96844a613e911500">Si443x</a>, <a class="el" href="class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc">SX126x</a>, <a class="el" href="class_s_x127x.html#abbe1076252a366c3c4aa323fdff7d40c">SX127x</a>, and <a class="el" href="class_s_x128x.html#a803eaca8bb7fdfa3570cf4aa95f8e729">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#a18664ad615c5507ff1690baaca90b094">LR11x0</a>, <a class="el" href="class_s_x126x.html#a18664ad615c5507ff1690baaca90b094">SX126x</a>, <a class="el" href="class_s_x127x.html#a18664ad615c5507ff1690baaca90b094">SX127x</a>, <a class="el" href="class_s_x128x.html#a18664ad615c5507ff1690baaca90b094">SX128x</a>, <a class="el" href="class_c_c1101.html#ae71e947abf6a07b194c6c6d64fd3eb19">CC1101</a>, <a class="el" href="class_l_r11x0.html#aa6ce285cc1b76ce028db6442a421ed8d">LR11x0</a>, <a class="el" href="classn_r_f24.html#a3c6aa3622c887118fb8d8cb2689fdff2">nRF24</a>, <a class="el" href="class_r_f69.html#a3bece228d369dcc1aab6a5b29d0685a8">RF69</a>, <a class="el" href="class_si443x.html#ae188dec3175a3aec96844a613e911500">Si443x</a>, <a class="el" href="class_s_x126x.html#a66ad433561b02fe61b09afd735ce56cc">SX126x</a>, <a class="el" href="class_s_x127x.html#abbe1076252a366c3c4aa323fdff7d40c">SX127x</a>, and <a class="el" href="class_s_x128x.html#a803eaca8bb7fdfa3570cf4aa95f8e729">SX128x</a>.</p>
 
 </div>
 </div>
-<a id="ac88f9185b5e9fdc1d89df9797dcdd9b7" name="ac88f9185b5e9fdc1d89df9797dcdd9b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac88f9185b5e9fdc1d89df9797dcdd9b7">&#9670;&#160;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
+<a id="ae93500dfbcfd39837e04c0f3eaa40d97" name="ae93500dfbcfd39837e04c0f3eaa40d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae93500dfbcfd39837e04c0f3eaa40d97">&#9670;&#160;</a></span>startReceive() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2314,19 +2398,19 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
-          <td class="paramname"><em>irqFlags</em>, </td>
+          <td class="paramname"><em>irqFlags</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_FLAGS</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__typedefs.html#gafaf66becf1112a55ba8ad7402b802b77">RadioLibIrqFlags_t</a>&#160;</td>
-          <td class="paramname"><em>irqMask</em>, </td>
+          <td class="paramname"><em>irqMask</em> = <code>RADIOLIB_IRQ_RX_DEFAULT_MASK</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>len</em>&#160;</td>
+          <td class="paramname"><em>len</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2353,7 +2437,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="class_s_x126x.html#a44856b641060cff8e9e2019901cd4751">SX126x</a>, <a class="el" href="class_s_x127x.html#acaab95d4bf57bf33f6269d2f099e48e0">SX127x</a>, <a class="el" href="class_c_c1101.html#abf153c8fcf2a0d60439426b03692642e">CC1101</a>, <a class="el" href="classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514">nRF24</a>, <a class="el" href="class_r_f69.html#a21ae7524fe573f1a7e74dee342418222">RF69</a>, <a class="el" href="class_si443x.html#ad5adec16d570b0d1b09420919dbe77e4">Si443x</a>, and <a class="el" href="class_l_r11x0.html#ae79c42c4ceceb7a6897731d01d365281">LR11x0</a>.</p>
+<p>Reimplemented in <a class="el" href="class_l_r11x0.html#ae93500dfbcfd39837e04c0f3eaa40d97">LR11x0</a>, <a class="el" href="class_s_x126x.html#ae93500dfbcfd39837e04c0f3eaa40d97">SX126x</a>, <a class="el" href="class_s_x127x.html#ae93500dfbcfd39837e04c0f3eaa40d97">SX127x</a>, <a class="el" href="class_s_x128x.html#ae93500dfbcfd39837e04c0f3eaa40d97">SX128x</a>, <a class="el" href="class_c_c1101.html#abf153c8fcf2a0d60439426b03692642e">CC1101</a>, <a class="el" href="classn_r_f24.html#a38b0084ad11090f918f4f370b9df7514">nRF24</a>, <a class="el" href="class_r_f69.html#a21ae7524fe573f1a7e74dee342418222">RF69</a>, and <a class="el" href="class_si443x.html#ad5adec16d570b0d1b09420919dbe77e4">Si443x</a>.</p>
 
 </div>
 </div>
@@ -2446,7 +2530,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>M17Client</b></td></
 </dl>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group__status__codes.html">Status Codes</a> </dd></dl>
 
-<p>Reimplemented in <a class="el" href="classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2">nRF24</a>, <a class="el" href="class_c_c1101.html#af79757dbbd62e080c1bad2e608ab940c">CC1101</a>, <a class="el" href="class_l_r11x0.html#af79757dbbd62e080c1bad2e608ab940c">LR11x0</a>, <a class="el" href="classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c">nRF24</a>, <a class="el" href="class_r_f69.html#af79757dbbd62e080c1bad2e608ab940c">RF69</a>, <a class="el" href="class_si443x.html#af79757dbbd62e080c1bad2e608ab940c">Si443x</a>, <a class="el" href="class_s_x126x.html#af79757dbbd62e080c1bad2e608ab940c">SX126x</a>, <a class="el" href="class_s_x127x.html#af79757dbbd62e080c1bad2e608ab940c">SX127x</a>, <a class="el" href="class_s_x128x.html#af79757dbbd62e080c1bad2e608ab940c">SX128x</a>, <a class="el" href="class_c_c1101.html#a6ff7e4066d189482c142e05384a38df0">CC1101</a>, <a class="el" href="class_l_r11x0.html#a459825c5b46a2ca515e62042d605aa67">LR11x0</a>, <a class="el" href="class_r_f69.html#af645f6b5d37812f6bb9ec11788e12066">RF69</a>, <a class="el" href="class_si443x.html#a187ea9ee96a67cd48e5b28be5b237c95">Si443x</a>, <a class="el" href="class_s_x126x.html#adf06ca0d64a61ce16a0a2f4f9a7d6a86">SX126x</a>, <a class="el" href="class_s_x127x.html#ae0902a990203ec67c628e5d006cbaa96">SX127x</a>, and <a class="el" href="class_s_x128x.html#a46fff7c4b2bb0eed3fd313d6413dc4e9">SX128x</a>.</p>
+<p>Reimplemented in <a class="el" href="classn_r_f24.html#a8b2365ad11840d1d05b0e17b37ddacd2">nRF24</a>, <a class="el" href="class_c_c1101.html#af79757dbbd62e080c1bad2e608ab940c">CC1101</a>, <a class="el" href="class_l_r11x0.html#af79757dbbd62e080c1bad2e608ab940c">LR11x0</a>, <a class="el" href="classn_r_f24.html#af79757dbbd62e080c1bad2e608ab940c">nRF24</a>, <a class="el" href="class_r_f69.html#af79757dbbd62e080c1bad2e608ab940c">RF69</a>, <a class="el" href="class_si443x.html#af79757dbbd62e080c1bad2e608ab940c">Si443x</a>, <a class="el" href="class_s_x126x.html#af79757dbbd62e080c1bad2e608ab940c">SX126x</a>, <a class="el" href="class_s_x127x.html#af79757dbbd62e080c1bad2e608ab940c">SX127x</a>, <a class="el" href="class_s_x128x.html#af79757dbbd62e080c1bad2e608ab940c">SX128x</a>, <a class="el" href="class_c_c1101.html#a6ff7e4066d189482c142e05384a38df0">CC1101</a>, <a class="el" href="class_r_f69.html#af645f6b5d37812f6bb9ec11788e12066">RF69</a>, and <a class="el" href="class_si443x.html#a187ea9ee96a67cd48e5b28be5b237c95">Si443x</a>.</p>
 
 </div>
 </div>
