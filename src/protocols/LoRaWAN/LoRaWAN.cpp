@@ -147,7 +147,7 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     // RETRANSMIT_TIMEOUT is 2s +/- 1s (RP v1.0.4)
     // must be present after any confirmed frame, so we force this here
     if(isConfirmed) {
-      mod->hal->delay(this->phyLayer->random(1000, 3000));
+      this->sleepDelay(this->phyLayer->random(1000, 3000));
     }
 
     // if an error occured or a downlink was received, stop retransmission
@@ -927,7 +927,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   if(this->tUplink > tNow) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
     if(this->tUplink > mod->hal->millis()) {
-      mod->hal->delay(this->tUplink - mod->hal->millis());
+      this->sleepDelay(this->tUplink - mod->hal->millis());
     }
   }
 
@@ -936,7 +936,7 @@ int16_t LoRaWANNode::activateOTAA(uint8_t joinDr, LoRaWANJoinEvent_t *joinEvent)
   RADIOLIB_ASSERT(state);
 
   // sleep for the duration of the transmission
-  mod->hal->delay(toa);
+  this->sleepDelay(toa);
   RadioLibTime_t txEnd = mod->hal->millis();
 
   // wait for an additional transmission duration as Tx timeout period
@@ -1342,7 +1342,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   if(this->tUplink > tNow) {
     RADIOLIB_DEBUG_PROTOCOL_PRINTLN("Delaying transmission by %lu ms", (unsigned long)(this->tUplink - tNow));
     if(this->tUplink > mod->hal->millis()) {
-      mod->hal->delay(this->tUplink - mod->hal->millis());
+      this->sleepDelay(this->tUplink - mod->hal->millis());
     }
   }
 
@@ -1351,7 +1351,7 @@ int16_t LoRaWANNode::transmitUplink(const LoRaWANChannel_t* chnl, uint8_t* in, u
   RADIOLIB_ASSERT(state);
 
   // sleep for the duration of the transmission
-  mod->hal->delay(toa);
+  this->sleepDelay(toa);
   RadioLibTime_t txEnd = mod->hal->millis();
 
   // wait for an additional transmission duration as Tx timeout period
@@ -1398,7 +1398,7 @@ int16_t LoRaWANNode::receiveCommon(uint8_t dir, const LoRaWANChannel_t* dlChanne
     // if function was called while Rx windows are in progress,
     // wait until last window closes to prevent very bad stuff
     if(now < tReference + dlDelays[numWindows]) {
-      mod->hal->delay(dlDelays[numWindows] + tReference - now);
+      this->sleepDelay(dlDelays[numWindows] + tReference - now);
     }
     // update the end timestamp in case user got stuck between uplink and downlink
     this->rxDelayEnd = mod->hal->millis();
