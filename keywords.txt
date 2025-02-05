@@ -343,6 +343,8 @@ setDataRate	KEYWORD2
 checkDataRate	KEYWORD2
 setModem	KEYWORD2
 getModem	KEYWORD2
+stageMode	KEYWORD2
+launchMode	KEYWORD2
 
 # LoRaWAN
 getBufferNonces	KEYWORD2

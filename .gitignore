@@ -11,9 +11,6 @@
 # Jetbrain IDEs
 .idea
 
-# Spectrum scan
-extras/SX126x_Spectrum_Scan/out/*
-
 # PlatformIO
 .pio*
 
