@@ -67,7 +67,6 @@ int16_t LoRaWANNode::sendReceive(const uint8_t* dataUp, size_t lenUp, uint8_t fP
     return(RADIOLIB_ERR_NULL_POINTER);
   }
   int16_t state = RADIOLIB_ERR_UNKNOWN;
-  Module* mod = this->phyLayer->getMod();
   
   // if after (at) ADR_ACK_LIMIT frames no RekeyConf was received, revert to Join state
   if(this->fCntUp == (1UL << this->adrLimitExp)) {
