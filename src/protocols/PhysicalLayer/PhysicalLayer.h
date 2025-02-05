@@ -130,6 +130,58 @@ union ChannelScanConfig_t {
   RSSIScanConfig_t rssi;
 };
 
+struct StandbyConfig_t {
+  /*! \brief Module-specific standby mode configuration. */
+  uint8_t mode;
+};
+
+struct ReceiveConfig_t {
+  /*! \brief  Raw timeout value. Some modules use this argument to specify operation mode (single vs. continuous receive). */
+  uint32_t timeout;
+  
+  /*! \brief Sets the IRQ flags. */
+  RadioLibIrqFlags_t irqFlags;
+  
+  /*! \brief Sets the mask of IRQ flags that will trigger the radio interrupt pin. */
+  RadioLibIrqFlags_t irqMask;
+  
+  /*! \brief Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode). */
+  size_t len;
+};
+
+struct TransmitConfig_t {
+  /*! \brief Binary data that will be transmitted. */
+  const uint8_t* data;
+
+  /*! \brief Length of binary data to transmit (in bytes). */
+  size_t len;
+
+  /*! \brief Node address to transmit the packet to. Only used in FSK mode. */
+  uint8_t addr;
+};
+
+struct SleepConfig_t {
+  /*! \brief Module-specific sleep mode configuration. */
+  uint8_t mode;
+};
+
+union RadioModeConfig_t {
+  /*! \brief Interpretation for standby mode */
+  StandbyConfig_t standby;
+
+  /*! \brief Interpretation for Rx mode */
+  ReceiveConfig_t receive;
+
+  /*! \brief Interpretation for Tx mode */
+  TransmitConfig_t transmit;
+
+  /*! \brief Interpretation for scanning */
+  ChannelScanConfig_t scan;
+
+  /*! \brief Interpretation for sleep mode */
+  SleepConfig_t sleep;
+};
+
 /*!
   \enum ModemType_t
   \brief Type of modem, used by setModem.
@@ -138,6 +190,19 @@ enum ModemType_t {
   RADIOLIB_MODEM_FSK = 0,
   RADIOLIB_MODEM_LORA,
   RADIOLIB_MODEM_LRFHSS,
+};
+
+/*!
+  \enum RadioModeType_t
+  \brief Basic radio operating modes, used by stageMode.
+*/
+enum RadioModeType_t {
+  RADIOLIB_RADIO_MODE_NONE = 0,
+  RADIOLIB_RADIO_MODE_STANDBY,
+  RADIOLIB_RADIO_MODE_RX,
+  RADIOLIB_RADIO_MODE_TX,
+  RADIOLIB_RADIO_MODE_SCAN,
+  RADIOLIB_RADIO_MODE_SLEEP,
 };
 
 /*!
@@ -241,7 +306,7 @@ class PhysicalLayer {
       \param len Packet length, needed for some modules under special circumstances (e.g. LoRa implicit header mode).
       \returns \ref status_codes
     */
-    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags, RadioLibIrqFlags_t irqMask, size_t len);
+    virtual int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0);
 
     /*!
       \brief Binary receive method. Must be implemented in module class.
@@ -669,6 +734,20 @@ class PhysicalLayer {
     */
     virtual int16_t getModem(ModemType_t* modem);
 
+    /*!
+      \brief Stage mode of the radio to be launched later using launchMode.
+      \param mode Radio mode to prepare.
+      \param cfg Configuration of this mode (mode-dependent).
+      \returns \ref status_codes
+    */
+    virtual int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg);
+
+    /*!
+      \brief Launch previously staged mode.
+      \returns \ref status_codes
+    */
+    virtual int16_t launchMode();
+
     #if RADIOLIB_INTERRUPT_TIMING
 
     /*!
@@ -690,6 +769,7 @@ class PhysicalLayer {
   protected:
 #endif
     uint32_t irqMap[10] = { 0 };
+    RadioModeType_t stagedMode = RADIOLIB_RADIO_MODE_NONE;
 
 #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     void updateDirectBuffer(uint8_t bit);

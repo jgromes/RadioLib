@@ -586,6 +586,7 @@ class SX127x: public PhysicalLayer {
     using PhysicalLayer::transmit;
     using PhysicalLayer::receive;
     using PhysicalLayer::startTransmit;
+    using PhysicalLayer::startReceive;
     using PhysicalLayer::readData;
 
     // constructor
@@ -799,15 +800,6 @@ class SX127x: public PhysicalLayer {
     bool fifoGet(volatile uint8_t* data, int totalLen, volatile int* rcvLen);
 
     /*!
-      \brief Interrupt-driven binary transmit method. Will start transmitting arbitrary binary data up to 255 bytes long using %LoRa or up to 63 bytes using FSK modem.
-      \param data Binary data that will be transmitted.
-      \param len Length of binary data to transmit (in bytes).
-      \param addr Node address to transmit the packet to. Only used in FSK mode.
-      \returns \ref status_codes
-    */
-    int16_t startTransmit(const uint8_t* data, size_t len, uint8_t addr = 0) override;
-
-    /*!
       \brief Clean up after transmission is done.
       \returns \ref status_codes
     */
@@ -819,19 +811,6 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t startReceive() override;
-
-    /*!
-      \brief Interrupt-driven receive method, implemented for compatibility with PhysicalLayer.
-      \param timeout Receive mode type and/or raw timeout value in symbols.
-      When set to 0, the timeout will be infinite and the device will remain
-      in Rx mode until explicitly commanded to stop (Rx continuous mode).
-      When non-zero (maximum 1023), the device will be set to Rx single mode and timeout will be set.
-      \param irqFlags Sets the IRQ flags, defaults to RX done, RX timeout, CRC error and header error. 
-      \param irqMask Sets the mask of IRQ flags that will trigger DIO1, defaults to RX done.
-      \param len Expected length of packet to be received. Required for LoRa spreading factor 6.
-      \returns \ref status_codes
-    */
-    int16_t startReceive(uint32_t timeout, RadioLibIrqFlags_t irqFlags = RADIOLIB_IRQ_RX_DEFAULT_FLAGS, RadioLibIrqFlags_t irqMask = RADIOLIB_IRQ_RX_DEFAULT_MASK, size_t len = 0) override;
 
     /*!
       \brief Reads data that was received after calling startReceive method. When the packet length is not known in advance,
@@ -1163,6 +1142,12 @@ class SX127x: public PhysicalLayer {
       \returns \ref status_codes
     */
     int16_t getModem(ModemType_t* modem) override;
+    
+    /*! \copydoc PhysicalLayer::stageMode */
+    int16_t stageMode(RadioModeType_t mode, RadioModeConfig_t* cfg) override;
+
+    /*! \copydoc PhysicalLayer::launchMode */
+    int16_t launchMode() override;
 
     #if !RADIOLIB_EXCLUDE_DIRECT_RECEIVE
     /*!
@@ -1268,6 +1253,7 @@ class SX127x: public PhysicalLayer {
     float dataRate = 0;
     bool packetLengthQueried = false; // FSK packet length is the first byte in FIFO, length can only be queried once
     uint8_t packetLengthConfig = RADIOLIB_SX127X_PACKET_VARIABLE;
+    uint8_t rxMode = RADIOLIB_SX127X_RXCONTINUOUS;
 
     int16_t config();
     int16_t directMode();
