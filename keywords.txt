@@ -379,6 +379,7 @@ getLastToA	KEYWORD2
 dutyCycleInterval	KEYWORD2
 timeUntilUplink	KEYWORD2
 getMaxPayloadLen	KEYWORD2
+setSleepFunction	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
