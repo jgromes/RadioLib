@@ -1,5 +1,6 @@
 var class_lo_ra_w_a_n_node =
 [
+    [ "SleepCb_t", "class_lo_ra_w_a_n_node.html#a3aec67bd3fa7ec0f6e4bf6b86d971e9e", null ],
     [ "LoRaWANNode", "class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76", null ],
     [ "activateABP", "class_lo_ra_w_a_n_node.html#a77483c51548e48a5dff4b707f7770e86", null ],
     [ "activateOTAA", "class_lo_ra_w_a_n_node.html#abd9e976eec64a3bd1ddf3331f2bc93cd", null ],
@@ -34,6 +35,7 @@ var class_lo_ra_w_a_n_node =
     [ "setDutyCycle", "class_lo_ra_w_a_n_node.html#a3d4bbd6d382496838954ab4ac1168b77", null ],
     [ "setDwellTime", "class_lo_ra_w_a_n_node.html#a62bfe68f6fe63c2e408dccbff6a34a4f", null ],
     [ "setRx2Dr", "class_lo_ra_w_a_n_node.html#addfd8ac3d0bfe5a273e9ba10e51f8025", null ],
+    [ "setSleepFunction", "class_lo_ra_w_a_n_node.html#a11c5f0867a9a8d731e980f865caebd99", null ],
     [ "setTxPower", "class_lo_ra_w_a_n_node.html#a9af613f7d923e7bdcfdbd020132c6d4b", null ],
     [ "timeUntilUplink", "class_lo_ra_w_a_n_node.html#a49e690c14858b46692e4ce9aa5a2566a", null ],
     [ "scanGuard", "class_lo_ra_w_a_n_node.html#a2176aa3d546e6b00e870a7e1e310c403", null ],

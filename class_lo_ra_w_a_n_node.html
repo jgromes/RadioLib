@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 
 <div class="header">
   <div class="summary">
+<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="class_lo_ra_w_a_n_node-members.html">List of all members</a>  </div>
@@ -103,6 +104,13 @@ $(document).ready(function(){initNavTree('class_lo_ra_w_a_n_node.html',''); init
 
 <p><code>#include &lt;<a class="el" href="_lo_ra_w_a_n_8h_source.html">LoRaWAN.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
+Public Types</h2></td></tr>
+<tr class="memitem:a3aec67bd3fa7ec0f6e4bf6b86d971e9e" id="r_a3aec67bd3fa7ec0f6e4bf6b86d971e9e"><td class="memItemLeft" align="right" valign="top"><a id="a3aec67bd3fa7ec0f6e4bf6b86d971e9e" name="a3aec67bd3fa7ec0f6e4bf6b86d971e9e"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><b>SleepCb_t</b>) (<a class="el" href="group__typedefs.html#ga210f31dd2bff7fb80563275648a5bbbd">RadioLibTime_t</a> ms)</td></tr>
+<tr class="memdesc:a3aec67bd3fa7ec0f6e4bf6b86d971e9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback to a user-provided sleep function. <br /></td></tr>
+<tr class="separator:a3aec67bd3fa7ec0f6e4bf6b86d971e9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aae05de563f765f14fe267e4d65844f76" id="r_aae05de563f765f14fe267e4d65844f76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_lo_ra_w_a_n_node.html#aae05de563f765f14fe267e4d65844f76">LoRaWANNode</a> (<a class="el" href="class_physical_layer.html">PhysicalLayer</a> *phy, const <a class="el" href="struct_lo_ra_w_a_n_band__t.html">LoRaWANBand_t</a> *band, uint8_t subBand=0)</td></tr>
@@ -221,6 +229,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>resetFCntDown</b> ()<
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>getMaxPayloadLen</b> ()</td></tr>
 <tr class="memdesc:ab723160aa317cd84550d0da3a0f52811"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the maximum allowed uplink payload size given the current MAC state. Most importantly, this includes dwell time limitations and ADR. <br /></td></tr>
 <tr class="separator:ab723160aa317cd84550d0da3a0f52811"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c5f0867a9a8d731e980f865caebd99" id="r_a11c5f0867a9a8d731e980f865caebd99"><td class="memItemLeft" align="right" valign="top"><a id="a11c5f0867a9a8d731e980f865caebd99" name="a11c5f0867a9a8d731e980f865caebd99"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setSleepFunction</b> (<a class="el" href="class_lo_ra_w_a_n_node.html#a3aec67bd3fa7ec0f6e4bf6b86d971e9e">SleepCb_t</a> cb)</td></tr>
+<tr class="memdesc:a11c5f0867a9a8d731e980f865caebd99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set custom delay/sleep function callback. If set, LoRaWAN node will call this function to wait for periods of time longer than RADIOLIB_LORAWAN_DELAY_SLEEP_THRESHOLD. This can be used to lower the power consumption by putting the host microcontroller to sleep. NOTE: Since this method will call a user-provided function, it is up to the user to ensure that the time duration spent in that sleep function is accurate to at least 1 ms! <br /></td></tr>
+<tr class="separator:a11c5f0867a9a8d731e980f865caebd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
