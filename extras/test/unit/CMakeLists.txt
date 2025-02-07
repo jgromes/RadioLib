@@ -18,11 +18,13 @@ add_executable(${PROJECT_NAME} ${TEST_SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 # link RadioLib
-target_link_libraries(${PROJECT_NAME} RadioLib fmt)
+target_link_libraries(${PROJECT_NAME} RadioLib fmt gcov)
 
 # set target properties and options
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra)
+set(BUILD_FLAGS -Wall -Wextra -fprofile-arcs -ftest-coverage -O0)
+target_compile_options(${PROJECT_NAME} PRIVATE ${BUILD_FLAGS})
+target_compile_options(RadioLib PRIVATE ${BUILD_FLAGS})
 
 # set RadioLib debug
 #target_compile_definitions(RadioLib PUBLIC RADIOLIB_DEBUG_BASIC RADIOLIB_DEBUG_SPI RADIOLIB_DEBUG_PROTOCOL)
