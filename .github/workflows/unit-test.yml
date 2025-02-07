@@ -32,7 +32,7 @@ jobs:
         ./coverage.sh
     
     - name: Upload coverage report as artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage_report
-          path: extras/test/unit/lcov.report.zip
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage_report
+        path: extras/test/unit/lcov.report.zip
